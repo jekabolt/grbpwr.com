@@ -7,5 +7,6 @@ Tags:
 Img: /static/img/fib-video-campaign/fib-video-campaign.jpg
 ---
 
-## https://player.vimeo.com/video/92060045
-## https://www.youtube.com/embed/1K5gSalu_iY
+## https://player.vimeo.com/video/513407003
+
+debut fibonacci collection video campaign

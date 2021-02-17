@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom">
-  <title>My Coffee Blog</title>
+  <title>GRB</title>
   <id>http://localhost</id>
-  <updated>2021-02-10T00:15:41+03:00</updated>
-  <subtitle>I&#39;m Clara and write alot about coffee. Welcome to my blog!</subtitle>
+  <updated>2021-02-15T13:23:54+03:00</updated>
+  <subtitle>hm</subtitle>
   <link href="http://localhost"></link>
   <author>
-    <name>Clara Crema</name>
+    <name>instagram.com/jkbgm</name>
   </author>
   <entry>
-    <title>About me</title>
-    <updated></updated>
-    <id>http://localhost/about</id>
-    <link href="http://localhost/about" rel="alternate"></link>
-    <summary type="html"></summary>
+    <title>Fibonacci Campaign</title>
+    <updated>2021-02-13T00:00:00Z</updated>
+    <id>http://localhost/blog/fib-video-campaign</id>
+    <link href="http://localhost/blog/fib-video-campaign" rel="alternate"></link>
+    <summary type="html">Video</summary>
   </entry>
   <entry>
-    <title>Steaming Milk for Cappuccino</title>
-    <updated>2020-08-15T00:00:00Z</updated>
-    <id>http://localhost/blog/steaming-milk-for-cappuccino</id>
-    <link href="http://localhost/blog/steaming-milk-for-cappuccino" rel="alternate"></link>
-    <summary type="html">This is a guide for steaming milk.</summary>
-  </entry>
-  <entry>
-    <title>Making Barista-Quality Espresso</title>
+    <title>Fib Lookbook</title>
     <updated>2020-08-14T00:00:00Z</updated>
-    <id>http://localhost/blog/making-barista-quality-espresso</id>
-    <link href="http://localhost/blog/making-barista-quality-espresso" rel="alternate"></link>
-    <summary type="html">This is a guide for making italian Espresso.</summary>
+    <id>http://localhost/blog/fib-lookbook</id>
+    <link href="http://localhost/blog/fib-lookbook" rel="alternate"></link>
+    <summary type="html">This is the first part of the collection lookbook</summary>
   </entry>
 </feed>

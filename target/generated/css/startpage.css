@@ -1,0 +1,41 @@
+body header {
+  width: 100%;
+  height: 10vh;
+  text-align: left;
+  top: 0; }
+  body header nav {
+    bottom: 0;
+    height: 60px;
+    line-height: 60px;
+    width: 100%; }
+    body header nav a {
+      color: black;
+      margin: auto;
+      padding: 10px 15px;
+      line-height: 1;
+      text-decoration: none;
+      font-size: xx-large; }
+
+body main a {
+  color: black;
+  margin: auto;
+  line-height: 1;
+  text-decoration: none; }
+
+body main img {
+  width: 70vw; }
+
+body main p a {
+  text-decoration: underline; }
+
+body main h1 a {
+  text-decoration: underline; }
+
+body #logo {
+  width: 10vw;
+  height: auto; }
+
+@media (min-width: 800px) {
+  body #logo {
+    width: 5vh;
+    height: auto; } }

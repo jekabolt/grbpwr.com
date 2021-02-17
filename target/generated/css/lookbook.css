@@ -1,0 +1,23 @@
+body header {
+  width: 100%;
+  height: 10vh;
+  text-align: left;
+  top: 0; }
+  body header nav {
+    bottom: 0;
+    height: 60px;
+    line-height: 60px;
+    width: 100%; }
+    body header nav a {
+      color: black;
+      margin: auto;
+      padding: 10px 15px;
+      line-height: 1;
+      text-decoration: none; }
+
+body main img {
+  width: 70vw; }
+
+body #logo {
+  width: 5%;
+  height: auto; }
