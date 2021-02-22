@@ -6,20 +6,32 @@
     <meta name="author" content="{{.Meta.Author}}" />
     <meta name="description" content="{{.Meta.Description}}" />
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/generated/css/startpage.css" />
 </head>
 
 <body>
+    <header>
+        <nav>
+            <a href="/"> <img id="logo" src="/static/img/grb-logo.svg" alt="G3"> </a>
+            <a href="/about">about</a>
+            <a href="/shop">Shop</a>
+            <a href="/contacts">contacts</a>
+        </nav>
+    </header>
+    <hr>
     <main>
         {{range $page := .Pages}}
         <div>
-            <h3>{{$page.Title}}</h3>
-            <!-- <p><small>Posted on {{$page.Date.Format "Jan 2 2006"}}</small></p> -->
-            <p>{{$page.Description}}</p>
-            <p><a href="{{$page.Href}}">read post</a></p>
+            <a href="{{$page.Href}}">
+                <h3>{{$page.Title}}</h3>
+                <!-- <p><small>Posted on {{$page.Date.Format "Jan 2 2006"}}</small></p> -->
+                <p>{{$page.Description}}</p>
+                <img src="{{$page.Img}}" alt="{{$page.Title}}" />
+            </a>
         </div>
         <p>
-            Tags: {{range $tag := $page.Tags}}
-            <a href={{$tag.Href}}>{{$tag}}</a> {{end}}
+            <!-- Tags: {{range $tag := $page.Tags}}
+            <a href={{$tag.Href}}>{{$tag}}</a> {{end}} -->
         </p>
         {{end}}
     </main>
