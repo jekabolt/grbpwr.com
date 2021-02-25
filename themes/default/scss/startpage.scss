@@ -1,7 +1,11 @@
 // @import "compass/css3";
 // @import "compass/reset";
 * {
-    // @include box-sizing(border-box);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+    padding: 4rem;
 }
 
 body {
@@ -31,6 +35,8 @@ body {
         // border-style: solid;
         // border-width: 2px;
         // padding: 10px;
+        margin-right: auto;
+        margin-left: auto;
         a {
             color: rgb(0, 0, 0);
             // display: inline-block;

@@ -1,7 +1,12 @@
 // @import "compass/css3";
 // @import "compass/reset";
 * {
-    // @include box-sizing(border-box);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 4rem;
 }
 
 body {
@@ -28,9 +33,6 @@ body {
         }
     }
     main {
-        // border-style: solid;
-        // border-width: 2px;
-        // padding: 10px;
         a {
             color: rgb(0, 0, 0);
             // display: inline-block;
@@ -39,18 +41,47 @@ body {
             line-height: 1;
             text-decoration: none;
         }
+        ul,
+        li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
         img {
-            width: 70vw;
+            width: 100%;
         }
-        p {
-            a {
-                text-decoration: underline;
+        h2 {
+            margin-top: 0;
+            margin-bottom: 0.4em;
+        }
+        /*Flex items*/
+        .list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .list-item {
+            display: flex;
+            padding: 0.5em;
+            width: 100%;
+        }
+        @media all and (min-width: 40em) {
+            .list-item {
+                width: 50%;
             }
         }
-        h1 {
-            a {
-                text-decoration: underline;
+        @media all and (min-width: 60em) {
+            .list-item {
+                width: 33.33%;
             }
+        }
+        .list-content {
+            display: flex;
+            flex-direction: column;
+            padding: 1em;
+            width: 100%;
+        }
+        .list-content p {
+            flex: 1 0 auto;
         }
     }
     #logo {

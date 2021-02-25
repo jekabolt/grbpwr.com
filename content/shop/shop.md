@@ -1,5 +1,5 @@
 ---
-Title: not found 
+Title: Shop
 Hidden: true
 ---
 

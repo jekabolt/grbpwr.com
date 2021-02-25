@@ -11,5 +11,6 @@ build:
   # If you have sassc installed, uncomment the following lines to test the before-hook functionality.
   - mkdir -p generated/css
   - sassc scss/startpage.scss generated/css/startpage.css
+  - sassc scss/shop.scss generated/css/shop.css
   - mkdir -p generated/js
   - cp -r js generated
