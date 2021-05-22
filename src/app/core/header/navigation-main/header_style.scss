@@ -1,20 +1,20 @@
 .logo {
 	width: 30px;
+
 }
 
 .header {
 	z-index: 98;
-	background-color: #fff;
 	position: fixed;
-	top: 0px;
-	left: 20px;
-	width: 335px;
-	margin: 0px auto 0px auto;
+	width: 100%;
+	top: 0;
 	height: 70px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
+
+	background-color: #fff;
 
 		.desktop_list_cart_and_sum {
 			.sum_cart {
@@ -26,9 +26,13 @@
 		h1 {
 			@extend %header_txt;
 			cursor: pointer;
-			&:hover {
-				
+			&:first-child{
+				padding: 0px 0px 0px 20px;
 			}
+			&:last-child{
+				padding: 0px 20px 0px 0px;
+			}
+
 
 	}
 }
@@ -41,17 +45,16 @@
 	}
 	.header {
 		position: relative;
-		display: flex;
+		display: block;
 		flex-direction: column;
-		max-width: 380px;
+		width: auto;
 		height: auto;
-		padding: 41px 0px 0px 0px;
+		padding: 41px 0px 0px 160px;
 
 		.desktop_list_cart_and_sum {
 			display: flex;
 
 			flex-direction: row;
-			padding: 0px 0px 0px 45px;
 				.sum_cart {
 				display: block;
 				padding: 0px 0px 0px 45px;
