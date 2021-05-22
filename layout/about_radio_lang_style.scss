@@ -1,0 +1,38 @@
+
+.radio_about_lable_ru {
+		h1	{
+			@extend %basik_txt;
+			text-decoration-line: none;
+			cursor: pointer;
+		}
+	}
+.radio_about_lable_en {
+		h1	{
+			@extend %basik_txt;
+			text-decoration-line: none;
+			cursor: pointer;
+		}
+	}
+
+.radio_about_checked_en{
+	opacity: 0;
+	position: relative;
+	left: -220px;
+	}
+.radio_about_checked_ru{
+	opacity: 0;
+	position: relative;
+	left: -220px;
+	}
+
+.radio_about_checked_en:checked ~ .radio_about_lable_en {
+		h1	{
+			text-decoration: underline;
+		}
+	}
+
+.radio_about_checked_ru:checked ~ .radio_about_lable_ru {
+		h1	{
+			text-decoration: underline;
+		}
+	}
