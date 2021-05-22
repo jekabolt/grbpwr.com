@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, HostBinding } from '@angular/core';
+import { Component, OnDestroy, OnInit, HostBinding, HostListener } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -18,18 +18,18 @@ export class NavigationMainComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.navbar-opened') navbarOpened = false;
 
-  @HostBinding('class.menu_btn_hide') navbarOpened2 = false;
-
   constructor(public authService: AuthService) { }
 
   toggleNavbar() {
     this.navbarOpened = !this.navbarOpened;
   }
 
-  toggleNavbar2() {
-    this.navbarOpened2 = !this.navbarOpened2;
+  @HostListener('window:keydown.escape', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (!this.navbarOpened) {
+      this.toggleNavbar()
+    }
   }
-
 
   ngOnInit() {
     this.authService.user.subscribe((user) => {
