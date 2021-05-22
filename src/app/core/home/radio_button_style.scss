@@ -1,0 +1,76 @@
+%null_radio {
+	position: absolute;
+	left: -200px;
+	opacity: 0;
+
+}
+
+.input_radio_no {
+	@extend %null_radio;
+	
+}
+
+.input_radio_yes {
+	@extend %null_radio;
+}
+
+.radio_update_no {
+	cursor: pointer;
+}
+
+.radio_update_yes {
+	cursor: pointer;
+}
+
+.input_radio_no:checked ~ .radio_update_no {
+	h1	{
+		text-decoration: underline;
+	}
+}
+
+.input_radio_yes:checked ~ .radio_update_yes {
+	h1	{
+		text-decoration: underline;
+	}
+}
+
+
+
+
+.payment_met_radio_card {
+	@extend %null_radio;
+}
+.payment_met_radio_bit {
+	@extend %null_radio;
+}
+.payment_met_radio_apple {
+	@extend %null_radio;
+}
+
+.pay_met_conten_card {
+	cursor: pointer;
+}
+
+.pay_met_conten_bit {
+	cursor: pointer;
+}
+
+.pay_met_conten_apple {
+	cursor: pointer;
+}
+
+.payment_met_radio_card:checked ~ .pay_met_conten_card {
+	h1 {
+		text-decoration: underline;
+	}
+}
+.payment_met_radio_bit:checked ~ .pay_met_conten_bit {
+	h1 {
+		text-decoration: underline;
+	}
+}
+.payment_met_radio_apple:checked ~ .pay_met_conten_apple {
+	h1 {
+		text-decoration: underline;
+	}
+}

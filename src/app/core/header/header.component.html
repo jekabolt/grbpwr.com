@@ -1,0 +1,60 @@
+<!-- Navbar-->
+<!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
+<header class="navbar navbar-sticky">
+
+    <app-search (onHideSearch)="showSearch = false" [showSearch]="showSearch" class="site-search-wrapper"></app-search>
+
+    <div class="site-branding">
+        <div class="inner">
+            <!-- Off-Canvas Toggle (#shop-categories)-->
+            <!-- <a class="offcanvas-toggle cats-toggle" href="" data-toggle="offcanvas"></a> -->
+            <!-- Off-Canvas Toggle (#mobile-menu)-->
+            <!-- <a class="offcanvas-toggle" href="" (click)="onMenuToggle($event)"></a> -->
+        </div>
+    </div>
+
+    <app-navigation-main></app-navigation-main>
+
+    <!-- Toolbar-->
+    <div class="toolbar">
+        <!-- <div class="inner">
+            <div class="tools"> -->
+        <!-- <div class="search">
+          <i (click)="showSearch = true" class="icon-search"></i>
+        </div> -->
+        <!-- <div class="account">
+                    <a *ngIf="!user; else whenLoggedIn" routerLink="/register-login"></a>
+
+                    <ng-template #whenLoggedIn>
+                        <a routerLink="/account/profile"></a>
+                    </ng-template>
+
+                    <i class="icon-head"></i>
+                    <ul *ngIf="user" class="toolbar-dropdown">
+                        <li class="sub-menu-user">
+                            <div class="user-info">
+                                <h6 class="user-name">{{ user.email }}
+                                    <span *ngIf="user.roles.admin"> (Admin)</span>
+                                </h6>
+                            </div>
+                        </li>
+                        <li>
+                            <a routerLink="/account/profile" href="">My Profile</a>
+                        </li>
+                        <li>
+                            <a routerLink="/account/orders" href="">Orders List</a>
+                        </li>
+                        <li class="sub-menu-separator"></li>
+                        <li>
+                            <a href="" (click)="onLogOut($event)">
+                                <i class="icon-unlock"></i>Logout</a>
+                        </li>
+                    </ul>
+                </div> -->
+
+        <!-- <app-toolbar-cart></app-toolbar-cart> -->
+
+        <!-- </div>
+        </div> -->
+    </div>
+</header>

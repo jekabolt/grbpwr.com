@@ -1,0 +1,234 @@
+<!-- Off-Canvas Category Menu-->
+<!-- <div class="offcanvas-container" id="shop-categories">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">Shop Categories</h3>
+  </div>
+  <nav class="offcanvas-menu">
+    <ul class="menu">
+      <li class="has-children">
+        <span>
+          <a href="#">Men's Shoes</a>
+          <span class="sub-menu-toggle"></span>
+        </span>
+        <ul class="offcanvas-submenu">
+          <li>
+            <a href="#">Sneakers</a>
+          </li>
+          <li>
+            <a href="#">Loafers</a>
+          </li>
+          <li>
+            <a href="#">Boat Shoes</a>
+          </li>
+          <li>
+            <a href="#">Sandals</a>
+          </li>
+          <li>
+            <a href="#">View All</a>
+          </li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <span>
+          <a href="#">Women's Shoes</a>
+          <span class="sub-menu-toggle"></span>
+        </span>
+        <ul class="offcanvas-submenu">
+          <li>
+            <a href="#">Sandals</a>
+          </li>
+          <li>
+            <a href="#">Flats</a>
+          </li>
+          <li>
+            <a href="#">Sneakers</a>
+          </li>
+          <li>
+            <a href="#">Heels</a>
+          </li>
+          <li>
+            <a href="#">View All</a>
+          </li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <span>
+          <a href="#">Men's Clothing</a>
+          <span class="sub-menu-toggle"></span>
+        </span>
+        <ul class="offcanvas-submenu">
+          <li>
+            <a href="#">Shirts &amp; Tops</a>
+          </li>
+          <li>
+            <a href="#">Pants</a>
+          </li>
+          <li>
+            <a href="#">Jackets</a>
+          </li>
+          <li>
+            <a href="#">View All</a>
+          </li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <span>
+          <a href="#">Women's Clothing</a>
+          <span class="sub-menu-toggle"></span>
+        </span>
+        <ul class="offcanvas-submenu">
+          <li>
+            <a href="#">Dresses</a>
+          </li>
+          <li>
+            <a href="#">Shirts &amp; Tops</a>
+          </li>
+          <li>
+            <a href="#">Shorts</a>
+          </li>
+          <li>
+            <a href="#">Swimwear</a>
+          </li>
+          <li>
+            <a href="#">View All</a>
+          </li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <span>
+          <a href="#">Kid's Shoes</a>
+          <span class="sub-menu-toggle"></span>
+        </span>
+        <ul class="offcanvas-submenu">
+          <li>
+            <a href="#">Boots</a>
+          </li>
+          <li>
+            <a href="#">Sandals</a>
+          </li>
+          <li>
+            <a href="#">Crib Shoes</a>
+          </li>
+          <li>
+            <a href="#">Loafers</a>
+          </li>
+          <li>
+            <a href="#">View All</a>
+          </li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <span>
+          <a href="#">Bags</a>
+          <span class="sub-menu-toggle"></span>
+        </span>
+        <ul class="offcanvas-submenu">
+          <li>
+            <a href="#">Handbags</a>
+          </li>
+          <li>
+            <a href="#">Backpacks</a>
+          </li>
+          <li>
+            <a href="#">Luggage</a>
+          </li>
+          <li>
+            <a href="#">Wallets</a>
+          </li>
+          <li>
+            <a href="#">View All</a>
+          </li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <span>
+          <a href="#">Accessories</a>
+          <span class="sub-menu-toggle"></span>
+        </span>
+        <ul class="offcanvas-submenu">
+          <li>
+            <a href="#">Sunglasses</a>
+          </li>
+          <li>
+            <a href="#">Hats</a>
+          </li>
+          <li>
+            <a href="#">Watches</a>
+          </li>
+          <li>
+            <a href="#">Jewelry</a>
+          </li>
+          <li>
+            <a href="#">Belts</a>
+          </li>
+          <li>
+            <a href="#">View All</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div> -->
+
+<!-- Off-Canvas Mobile Menu 
+TODO: maybe header should be here-->
+<!-- <div class="offcanvas-container" id="mobile-menu" [ngClass]="{'active': offcanvasService.offcanvasNavigationOpen | async}">
+    <a *ngIf="user" class="account-link" routerLink="/account/profile" (click)="onNavigationClick()">
+
+        <div class="user-info">
+            <span class="text-sm text-white opacity-60">Logged in as:</span>
+            <h6 class="user-name">{{ user.email }}<span *ngIf="user.roles.admin"> (Admin)</span></h6>
+        </div>
+    </a>
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li *ngIf="!user" routerLinkActive="active">
+            </li>
+            <li *ngIf="user" routerLinkActive="active">
+                <span>
+          <a routerLink="/account/profile" (click)="onNavigationClick()">
+            <span>My Profile</span>
+                </a>
+                </span>
+            </li>
+            <li *ngIf="user" routerLinkActive="active">
+                <span>
+          <a routerLink="/account/orders" (click)="onNavigationClick()">
+            <span>My Orders</span>
+                </a>
+                </span>
+            </li>
+            <li routerLinkActive="active">
+                <span>
+          <a routerLink="/home" (click)="onNavigationClick()">
+            <span>Home</span>
+                </a>
+                </span>
+            </li>
+            <li routerLinkActive="active">
+                <span>
+          <a routerLink="/products" (click)="onNavigationClick()">
+            <span>Products</span>
+                </a>
+                </span>
+            </li>
+            <li routerLinkActive="active">
+                <span>
+          <a routerLink="/cart" (click)="onNavigationClick()">
+            <span>Cart</span>
+                </a>
+                </span>
+            </li>
+            <li *ngIf="user && user.roles.admin" routerLinkActive="active">
+                <a routerLink="/admin/add" (click)="onNavigationClick()">
+                    <span>Add Product</span>
+                </a>
+            </li>
+            <li *ngIf="user">
+                <a href="" (click)="onLogout($event)">
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div> -->

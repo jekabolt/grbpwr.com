@@ -1,0 +1,136 @@
+.content {
+	.single_product_content_desktop {
+		.product_img {
+			width: 335px;
+			height: 335px;
+			background-color: #c4c4c4;
+		}
+		.img_slider_content{
+			width: 518px;
+
+			margin: 26px 0px 0px 0px;
+
+			display: none;
+			flex-direction: row;
+			justify-content: space-between;
+			.product_img_desktop_small {
+				width: 149px;
+				height: 148px;
+				background-color: #c4c4c4;
+			}
+		}
+		.product_description_single_page {
+			padding: 20px 0px 0px 0px;
+
+			width: 335px;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			h1 {
+				@extend %info_txt;
+				text-decoration-line: none;
+			}
+
+			h2{
+				@extend %header_txt;
+				text-decoration-line: none;
+			}
+		}
+
+		.size {
+			padding: 90px 0px 0px 0px;
+
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			h1 {
+				@extend %basik_txt;
+			}		
+		}
+
+		.add_to_card {
+			padding: 61px 0px 0px 0px;
+
+			text-align: right;
+
+			h1	{
+				@extend %basik_txt;
+				text-decoration-line: none;
+			}
+		}
+
+		.details {
+			padding: 101px 0px 14px 0px;
+			cursor: pointer;
+			
+
+			h1	{
+				@extend %basik_txt;
+				text-decoration-line: none;
+			}
+		}
+
+		.details_content {
+			padding: 0px 0px 20px 0px;
+			display: none;
+		
+
+
+			h1 {
+				@extend %info_txt;
+				text-decoration-line: none;
+			}
+		}
+
+		.active_details {
+		display: block;
+	}
+	}
+}
+
+ @media screen and (min-width: 768px) {
+ .content {
+ 	.single_product_content_desktop {
+ 		display: flex;
+ 		flex-direction: row;
+
+ 		.product_img {
+			width: 518px;
+			height: 518px;
+		}
+		.img_slider_content{
+			display: flex;
+		}
+	}
+ 	.description_desktop {
+ 		margin: 0px 0px 0px 20px;
+
+
+ 		.product_description_single_page {
+ 			flex-direction: column;
+ 			padding: 0px;
+ 			h1 {
+ 				padding: 0px 0px 10px 0px;
+ 			}
+ 		}
+ 		.details_content {
+ 			display: block;
+ 			padding: 46px 0px 0px 0px;
+ 		}
+ 		.size {
+ 			padding: 363px 0px 0px 0px;
+ 		}
+ 		.details {
+ 			padding: 14px 0px 0px 0px;
+ 		}
+ 		.add_to_card {
+ 			padding: 61px 0px 0px 0px;
+ 		}
+	}
+	}
+
+}
+
+

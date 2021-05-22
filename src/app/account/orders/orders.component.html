@@ -1,0 +1,31 @@
+<div class="padding-top-2x mt-2 hidden-lg-up">
+</div>
+<div class="table-responsive">
+    <table class="table table-hover margin-bottom-none">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Date Purchased</th>
+                <th>Status</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let order of orders">
+                <td>
+                    <a class="text-medium navi-link" href="#" data-toggle="modal" data-target="#orderDetails">{{order.number}}</a>
+                </td>
+                <td>{{order.date | date:'mediumDate'}}</td>
+                <td>
+                    <span class="text-info">{{order.status || 'In Progress'}}</span>
+                </td>
+                <td>
+                    <span class="text-medium">{{order.total | currency}}</span>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+<hr>

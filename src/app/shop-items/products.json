@@ -1,0 +1,48 @@
+[{
+    "categories": {
+        "Shawls": true
+    },
+    "currentRating": 3.4,
+    "date": "2018-04-02",
+    "description": "Shawl with faces ",
+    "id": 1174268122548,
+    "imageRefs": [
+        "product-images/1522678065417_[object File]"
+    ],
+    "imageURLs": [
+        "/img/shawl-clouds.jpg", "/img/shawl-clouds.jpg", "/img/shawl-clouds.jpg"
+    ],
+    "name": "Shawl 1",
+    "price": 150,
+    "priceNormal": 150,
+    "reduction": 0,
+    "sale": true,
+    "size": "",
+    "availableSizes": [
+        "OS"
+    ]
+
+}, {
+    "categories": {
+        "Shawls": true
+    },
+    "currentRating": 3.4,
+    "date": "2018-04-02",
+    "description": "Shawl with faces",
+    "id": 1,
+    "imageRefs": [
+        "product-images/1522678065417_[object File]"
+    ],
+    "imageURLs": [
+        "/img/shawl-clouds-2.jpg"
+    ],
+    "name": "Shawl 2",
+    "price": 150,
+    "priceNormal": 170,
+    "reduction": 12,
+    "sale": true,
+    "size": "",
+    "availableSizes": [
+        "S", "M", "L", "XL"
+    ]
+}]
