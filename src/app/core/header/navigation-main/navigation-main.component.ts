@@ -26,7 +26,7 @@ export class NavigationMainComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keydown.escape', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (!this.navbarOpened) {
+    if (this.navbarOpened) {
       this.toggleNavbar()
     }
   }
