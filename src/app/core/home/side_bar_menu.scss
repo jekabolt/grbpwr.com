@@ -1,0 +1,168 @@
+
+.side_bar_nav {
+	width: 265px;
+	height: 100%;
+
+	transform: translateX(-100%);
+	transition-duration: 0.2s;
+
+	background-color: #fff;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 99;
+}
+
+.side_bar_nav_list {
+	margin: 27px 0px 0px 66px;
+	display: flex;
+	flex-direction: column;
+	width: auto;
+	height: auto;
+		h1 {
+			@extend %basik_txt;
+			cursor: pointer;
+			line-height: 27px;
+			&:hover {
+			}
+		}
+		.side_bar_btn {
+			padding-bottom: 13px;
+			font-size: 22px;
+			text-decoration-line: none;
+		}
+
+		.desktop_inf {
+			display: none;
+			h1 {
+				cursor: pointer;
+			}
+
+		}
+
+		.desktop_arch {
+			display: none;
+		}
+
+		.info_and_line {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			.info_line {
+				width: 36px;
+				height: 1px;
+				background-color: #000;
+				margin: 20px 5px 0px 0px;
+
+				display: none;
+				}
+			}
+
+}	
+
+.side_bar_info_list {
+	margin: 250px 0px 0px 30px;
+		h1 {
+			@extend %info_txt;
+		}
+
+}
+
+.active_side_bar {
+		.bg_side_bar{
+			transform: translateX(0px);
+		}
+	transform: translateX(0%);
+	transition-duration: 0.2s;
+}
+
+.bg_side_bar {
+	position: absolute;
+	left: 265px;
+	width: 375px-265px;
+	height: 100%;
+	background-color: #000;
+	opacity: 0.7;
+	z-index: 97;
+
+	transform: translateX(-375px);
+}
+
+@media screen and (min-width: 768px) {
+
+
+
+	.side_bar_nav {
+		width: 380px;
+		transform: translateX(0%);
+		position: relative;
+		margin: 0px;
+		padding: 0px;
+
+		 	.bg_side_bar {
+		 		display: none;
+		 	}
+		 	.side_bar_btn {
+				display: none;
+			}
+			.desktop_inf {
+			display: block;
+			padding: 20px 0px 0px 0px;
+			}
+
+			.active_inf {
+				text-decoration-line: none;
+				
+			}
+
+
+			.desktop_arch {
+			display: block;
+			padding: 20px 0px 0px 0px;
+			}
+			
+
+			
+
+	}
+	.side_bar_nav_list {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		margin: 0px 0px 0px 160px;
+		padding: 22px 0px 0px 0px;
+
+		.info_and_line {
+				.active_line {
+				display: block;
+				}
+		}
+
+
+
+}
+
+	.side_bar_info_list {
+		opacity: 0;
+		transform: translateX(-120%);
+		transition-duration: 0.2s;
+
+
+		justify-content: center;
+		flex-direction: column;
+
+		margin: 0px 0px 0px 160px;
+	}
+
+	.active_info {
+		opacity: 1;
+		transform: translateX(0%);
+		transition-duration: 0.2s;
+	}
+
+
+
+}
+
+

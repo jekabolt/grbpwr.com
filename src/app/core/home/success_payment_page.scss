@@ -1,0 +1,26 @@
+.section_seccess_txt {
+
+
+	h2	{
+		@extend %basik_txt;
+		padding: 0px 0px 19px 0px;
+	}
+
+	h1	{
+		@extend %info_txt;
+		text-decoration-line: none;
+		padding: 0px 0px 32px 0px;
+	}
+
+}
+
+.section_next_button {
+	padding: 60px 0px 61px 0px;
+	h2	{
+		@extend %basik_txt;
+		text-decoration-line: none;
+		&:first-child {
+			padding: 0px 0px 22px 0px;
+		}
+	}
+}

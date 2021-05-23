@@ -1,0 +1,76 @@
+.logo {
+	width: 30px;
+
+}
+
+.header {
+	z-index: 98;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	height: 70px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+
+	background-color: #fff;
+
+		.desktop_list_cart_and_sum {
+			.sum_cart {
+			display: none;
+			}
+
+		}
+
+		h1 {
+			@extend %header_txt;
+			cursor: pointer;
+			&:first-child{
+				padding: 0px 0px 0px 20px;
+			}
+			&:last-child{
+				padding: 0px 20px 0px 0px;
+			}
+
+
+	}
+}
+
+  @media screen and (min-width: 768px) {
+ 	.logo {
+	width: 90px;
+
+	padding: 0px 0px 27px 0px;
+	}
+	.header {
+		position: relative;
+		display: block;
+		flex-direction: column;
+		width: auto;
+		height: auto;
+		padding: 41px 0px 0px 160px;
+
+		.desktop_list_cart_and_sum {
+			display: flex;
+
+			flex-direction: row;
+				.sum_cart {
+				display: block;
+				padding: 0px 0px 0px 45px;
+				}
+
+		}
+
+
+
+			#menu_btn {
+				display: none;
+			}
+
+			.sum_cart {
+			display: block;
+			}
+
+	}
+  }

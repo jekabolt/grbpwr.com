@@ -1,0 +1,47 @@
+.content {
+	.title {
+		h2	{
+			@extend %basik_txt;
+		}
+	}
+
+	.lang_selected_content {
+		width: 70px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+
+		padding: 29px 0px 20px 0px
+
+	}
+
+
+	.ru_lang_about_txt {
+		display: none;
+		h1 {
+			@extend %info_txt;
+			text-decoration-line: none;
+		}
+	}
+	.active_lang {
+			display: block;
+		}
+	.disactive_lang {
+			display: none;
+		}
+
+	.en_lang_about_txt {
+		h1 {
+			@extend %info_txt;
+			text-decoration-line: none;
+			padding: 0px 0px 20px 0px;
+		}
+	}
+
+
+
+}
+
+
+@import "about_radio_lang_style.scss";

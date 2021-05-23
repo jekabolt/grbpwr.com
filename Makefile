@@ -1,2 +1,2 @@
 run:
-	./bin/verless serve -w .
+	ng serve --host 0.0.0.0
