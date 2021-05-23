@@ -50,17 +50,18 @@
 			.info_line {
 				width: 36px;
 				height: 1px;
-				background-color: #000;
+				background-color:#fff;
 				margin: 20px 5px 0px 0px;
-
 				display: none;
 				}
-			}
+		}
 
 }	
 .wrapper_info_list {
+	position: absolute;
+	bottom: 0px;
 	overflow: hidden;
-	padding: 27px 0px 0px 0px;
+	margin: 275px 0px 0px 27px;
 
 	.side_bar_info_list {
 			h1 {
@@ -114,6 +115,11 @@
 			z-index: 99;
 			background-color: #fff;
 			}
+			.info_and_line {
+				.info_line {
+					background-color:#000;
+					}
+			}
 			
 
 			
@@ -130,6 +136,10 @@
 
 
 }
+.wrapper_info_list {
+	overflow: hidden;
+	position: relative;
+	margin: 0px 0px 0px 0px;
 
 	.side_bar_info_list {
 		opacity: 0;
@@ -145,5 +155,5 @@
 	}
 
 
-
+}
 }
