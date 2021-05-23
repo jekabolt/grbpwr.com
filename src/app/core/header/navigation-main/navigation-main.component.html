@@ -1,18 +1,17 @@
-<!-- Main Navigation-->
-<!-- <nav class="site-menu">
-    <ul> -->
-
-
 <header appChbgcolor class="header">
-	
-	<h1 (click)="toggleNavbar()" id="menu_btn">menu</h1>
 
-	<a href="index.html"><img class="logo" src="/img/grb-logo.png"></a>
+    <h1 (click)="toggleNavbar()" id="menu_btn">menu</h1>
 
-	<div class="desktop_list_cart_and_sum">
-		<a href="cart.html"><h1>cart</h1></a>
-		<div class="sum_cart"><h1>$0.00</h1></div>
-	</div>
+    <a routerLink="/home" href=""><img class="logo" src="/img/grb-logo.png"></a>
+
+    <div class="desktop_list_cart_and_sum">
+        <a routerLink="/cart" href="">
+            <h1>cart</h1>
+        </a>
+        <div class="sum_cart">
+            <h1>$0.00</h1>
+        </div>
+    </div>
 
 </header>
 
@@ -20,26 +19,32 @@
     <div (click)="toggleNavbar()" class="bg_side_bar"></div>
     <nav class="side_bar_nav_list">
         <h1 (click)="toggleNavbar()" id="menu_btn_hide" class="side_bar_btn">menu</h1>
-        <a href="list_product_page_tops.html">
-            <h1>tops</h1>
-        </a>
-        <a href="list_product_page_bottoms.html">
-            <h1>bottoms</h1>
-        </a>
-        <a href="list_product_page_accessories.html">
-            <h1>accessories</h1>
-        </a>
-        <a href="list_product_page_bags.html">
-            <h1>bags</h1>
-        </a>
-        <a href="list_product_page_boots.html">
-            <h1>boots</h1>
-        </a>
-        <a href="list_product_page_skirts.html">
-            <h1>skirts</h1>
+        <a routerLink="/tops" href="">
+            <h1 (click)="toggleNavbar()">tops</h1>
         </a>
 
-        <a href="">
+        <a routerLink="/bottoms" href="">
+            <h1 (click)="toggleNavbar()">bottoms</h1>
+        </a>
+
+        <a routerLink="/accessories" href="">
+            <h1 (click)="toggleNavbar()">accessories</h1>
+        </a>
+
+        <a routerLink="/bags" href="">
+            <h1 (click)="toggleNavbar()">bags</h1>
+        </a>
+
+        <a routerLink="/boots" href="">
+            <h1 (click)="toggleNavbar()">boots</h1>
+        </a>
+
+        <a routerLink="/skirts" href="">
+            <h1 (click)="toggleNavbar()">skirts</h1>
+        </a>
+
+
+        <a routerLink="/archive" href="">
             <h1 class="desktop_arch">archive</h1>
         </a>
 
@@ -47,49 +52,30 @@
             <figure class="info_line"></figure>
             <h1 (click)="toggleNavbar()" class="desktop_inf">info</h1>
         </div>
+
     </nav>
     <div class="wrapper_info_list">
-    <nav class="side_bar_info_list">
-        <a href="about_page.html">
-            <h1>about</h1>
-        </a>
-        <a href="contact_us_page.html">
-            <h1>contact us</h1>
-        </a>
-        <a href="shipping_page.html">
-            <h1>shipping</h1>
-        </a>
-        <a href="">
-            <h1>returns</h1>
-        </a>
-        <a href="">
-            <h1>privacy policy</h1>
-        </a>
-    </nav>
+        <nav class="side_bar_info_list">
+            <a routerLink="/about" href="">
+                <h1 (click)="toggleNavbar()">about</h1>
+            </a>
+
+            <a routerLink="/contact us" href="">
+                <h1 (click)="toggleNavbar()">contact us</h1>
+            </a>
+
+            <a routerLink="/shipping-method" href="">
+                <h1 (click)="toggleNavbar()">shipping</h1>
+            </a>
+
+            <a routerLink="/returns" href="">
+                <h1 (click)="toggleNavbar()">returns</h1>
+            </a>
+
+            <a routerLink="/privacy-policy" href="">
+                <h1 (click)="toggleNavbar()">privacy policy</h1>
+            </a>
+
+        </nav>
     </div>
 </header>
-
-<!-- TODO: add header -->
-<!-- <li routerLinkActive="active">
-            <a routerLink="/home" href="">
-                <img src="/img/grb-logo.png" alt="">
-            </a>
-
-        </li>
-        <li routerLinkActive="active">
-            <a routerLink="/products" href="">
-                <span>Products</span>
-            </a>
-        </li>
-        <li routerLinkActive="active">
-            <a routerLink="/cart" href="">
-                <span>Cart</span>
-            </a>
-        </li> -->
-<!-- <li *ngIf="user && user.roles.admin" routerLinkActive="active">
-            <a routerLink="/admin/add" href="">
-                <span>Add Product</span>
-            </a>
-        </li> -->
-<!-- </ul>
-</nav> -->

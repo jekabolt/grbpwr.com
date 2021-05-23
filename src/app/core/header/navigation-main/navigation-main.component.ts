@@ -17,12 +17,18 @@ export class NavigationMainComponent implements OnInit, OnDestroy {
   private authSubscription: Subscription;
 
   @HostBinding('class.navbar-opened') navbarOpened = false;
+  @HostBinding('class.info-opened') infoOpened = false;
 
   constructor(public authService: AuthService) { }
 
   toggleNavbar() {
     this.navbarOpened = !this.navbarOpened;
   }
+
+  toggleInfo() {
+    this.infoOpened = !this.infoOpened;
+  }
+
 
   @HostListener('window:keydown.escape', ['$event'])
   keyEvent(event: KeyboardEvent) {

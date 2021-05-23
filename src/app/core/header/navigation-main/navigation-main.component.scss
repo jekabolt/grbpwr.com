@@ -2,27 +2,23 @@
     width: 30px;
 }
 
-
 :host.navbar-opened {
-
     .side_bar_nav {
-			.info_and_line {
-				.info_line {
-					display: block;
-				}
-				h1{
-					text-decoration-line: none;
-				}
-			}
-		.wrapper_info_list {
-			.side_bar_info_list {
-				opacity: 1;
-				transform: translateY(0%);
-				transition-duration: 0.2s;
-				
-
-			}
-		}
+        .info_and_line {
+            .info_line {
+                display: block;
+            }
+            h1 {
+                text-decoration-line: none;
+            }
+        }
+        .wrapper_info_list {
+            .side_bar_info_list {
+                opacity: 1;
+                transform: translateY(0%);
+                transition-duration: 0.2s;
+            }
+        }
         .bg_side_bar {
             transform: translateX(0px);
         }
@@ -32,76 +28,61 @@
 }
 
 .header {
-	z-index: 98;
-	position: fixed;
-	width: 100%;
-	top: 0;
-	height: 70px;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-
-	background-color: #fff;
-
-		.desktop_list_cart_and_sum {
-			.sum_cart {
-			display: none;
-			}
-
-		}
-
-		h1 {
-			@extend %header_txt;
-			cursor: pointer;
-			&:first-child{
-				padding: 0px 0px 0px 20px;
-			}
-			&:last-child{
-				padding: 0px 20px 0px 0px;
-			}
-
-	}
+    z-index: 98;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    .desktop_list_cart_and_sum {
+        .sum_cart {
+            display: none;
+        }
+    }
+    h1 {
+        @extend %header_txt;
+        cursor: pointer;
+        &:first-child {
+            padding: 0px 0px 0px 20px;
+        }
+        &:last-child {
+            padding: 0px 20px 0px 0px;
+        }
+    }
 }
 
-  @media screen and (min-width: 768px) {
- 	.logo {
-	width: 90px;
-
-	padding: 0px 0px 27px 0px;
-	}
-	.header {
-		position: relative;
-		display: block;
-		flex-direction: column;
-		width: auto;
-		height: auto;
-		padding: 41px 0px 0px 160px;
-
-		.desktop_list_cart_and_sum {
-			display: flex;
-
-			flex-direction: row;
-				.sum_cart {
-				display: block;
-				padding: 0px 0px 0px 45px;
-				}
-
-		}
-
-
-
-			#menu_btn {
-				display: none;
-			}
-
-			.sum_cart {
-			display: block;
-			}
-
-	}
-  }
-
+@media screen and (min-width: 768px) {
+    .logo {
+        width: 90px;
+        padding: 0px 0px 27px 0px;
+    }
+    .header {
+        position: relative;
+        display: block;
+        flex-direction: column;
+        width: auto;
+        height: auto;
+        padding: 41px 0px 0px 160px;
+        .desktop_list_cart_and_sum {
+            display: flex;
+            flex-direction: row;
+            .sum_cart {
+                display: block;
+                padding: 0px 0px 0px 45px;
+            }
+        }
+        #menu_btn {
+            display: none;
+        }
+        .sum_cart {
+            display: block;
+        }
+    }
+}
 
 // 
 // 
@@ -109,27 +90,23 @@
 @import "nullstyle.scss";
 @import "side_bar_menu.scss";
 @import "header_style.scss";
-
-
-
 %basik_txt {
-	font-size: 20px;
-	font-weight: 600;
-	color: #000000;
-	line-height: 22px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000;
+    line-height: 22px;
 }
 
 %header_txt {
-	font-size: 22px;
-	font-weight: 600;
-	color: #000000;
-	line-height: 22px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #000000;
+    line-height: 22px;
 }
 
 %info_txt {
-	font-size: 18px;
-	font-weight: 400;
-	color: #000000;
-	line-height: 22px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #000000;
+    line-height: 22px;
 }
-
