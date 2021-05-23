@@ -60,20 +60,14 @@
 }	
 .wrapper_info_list {
 	overflow: hidden;
+	padding: 27px 0px 0px 0px;
+
 	.side_bar_info_list {
 			h1 {
 				@extend %info_txt;
 			}
 
 	}
-}
-
-.active_side_bar {
-		.bg_side_bar{
-			transform: translateX(0%);
-		}
-	transform: translateX(0%);
-	transition-duration: 0.2s;
 }
 
 .bg_side_bar {
@@ -131,7 +125,7 @@
 		flex-direction: column;
 		margin: 0px 0px 0px 160px;
 		padding: 22px 0px 0px 0px;
-		z-index: 99;
+
 		background-color: #fff;
 
 
@@ -141,7 +135,7 @@
 		opacity: 0;
 		transform: translateY(-120%);
 		transition-duration: 0.2s;
-		z-index: 97;
+
 
 
 		justify-content: center;

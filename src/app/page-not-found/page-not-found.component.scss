@@ -1,0 +1,16 @@
+@import "nullstyle.scss";
+.content_404 {
+    padding: 41px 0px 0px 0px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+        h1 {
+            text-align: center;
+            text-decoration-line: none;
+            padding: 55px 0px 0px 0px;
+        }
+        &:first-child {
+            padding: 200px 0px 0px 0px;
+        }
+}
