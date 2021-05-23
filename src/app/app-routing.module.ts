@@ -5,6 +5,10 @@ import { HomeComponent } from './core/home/home.component';
 import { CartComponent } from './cart/cart.component';
 import { AddEditComponent } from './admin/add-edit/add-edit.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AboutComponent } from './about/about.component';
+import { ShippingMethodsComponent } from './shipping-method/shipping-method.component';
+
+
 import { AdminGuard } from './admin/shared/admin.guard';
 import { CheckoutComponent } from './checkout/checkout.component';
 // import { RegisterLoginComponent } from './account/register-login/register-login.component';
@@ -39,6 +43,8 @@ const routes: Routes = [
     ]
   },
   { path: 'order-complete', component: CompleteComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'shipping-method', component: ShippingMethodsComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

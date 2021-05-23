@@ -20,12 +20,16 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CartComponent } from './cart/cart.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AboutComponent } from './about/about.component';
+import { ShippingMethodsComponent } from './shipping-method/shipping-method.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CartComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AboutComponent,
+    ShippingMethodsComponent
   ],
   imports: [
     BrowserModule,
