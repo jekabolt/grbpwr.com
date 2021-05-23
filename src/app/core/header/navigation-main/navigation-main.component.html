@@ -5,7 +5,7 @@
 
 <header appChbgcolor class="header">
 	
-	<h1 (click)="toggleNavbar()">menu</h1>
+	<h1 (click)="toggleNavbar()" id="menu_btn">menu</h1>
 
 	<a href="index.html"><img class="logo" src="/img/grb-logo.png"></a>
 
@@ -16,7 +16,7 @@
 
 </header>
 
-<header id="side_bar" class="side_bar_nav">
+<header class="side_bar_nav">
     <div (click)="toggleNavbar()" class="bg_side_bar"></div>
     <nav class="side_bar_nav_list">
         <h1 (click)="toggleNavbar()" id="menu_btn_hide" class="side_bar_btn">menu</h1>
@@ -44,11 +44,12 @@
         </a>
 
         <div class="info_and_line">
-            <figure id="info_line" class="info_line"></figure>
-            <h1 id="desktop_inf" class="desktop_inf">info</h1>
+            <figure class="info_line"></figure>
+            <h1 (click)="toggleNavbar()" class="desktop_inf">info</h1>
         </div>
     </nav>
-    <nav id="side_bar_info" class="side_bar_info_list">
+    <div class="wrapper_info_list">
+    <nav class="side_bar_info_list">
         <a href="about_page.html">
             <h1>about</h1>
         </a>
@@ -65,6 +66,7 @@
             <h1>privacy policy</h1>
         </a>
     </nav>
+    </div>
 </header>
 
 <!-- TODO: add header -->

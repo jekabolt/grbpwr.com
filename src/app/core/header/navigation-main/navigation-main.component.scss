@@ -4,7 +4,25 @@
 
 
 :host.navbar-opened {
+
     .side_bar_nav {
+			.info_and_line {
+				.info_line {
+					display: block;
+				}
+				h1{
+					text-decoration-line: none;
+				}
+			}
+		.wrapper_info_list {
+			.side_bar_info_list {
+				opacity: 1;
+				transform: translateY(0%);
+				transition-duration: 0.2s;
+				
+
+			}
+		}
         .bg_side_bar {
             transform: translateX(0px);
         }

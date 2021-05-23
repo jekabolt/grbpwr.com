@@ -72,3 +72,18 @@
 // @import 'layout/section';
 // @import 'layout/header';
 // @import 'layout/offcanvas-menu';
+
+body {
+
+    margin: 0px;
+    padding: 0px;
+    @media screen and (min-width: 768px) {
+        app-root {
+            .main-wrapper {
+                min-width: 903px;
+                display: flex;
+                flex-direction: row;
+            }
+        }
+    }
+}
