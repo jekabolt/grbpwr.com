@@ -1,7 +1,13 @@
-# RUN
-    `make run`
+# grbpwr.com site
 
-# DEPS
-    `yarn
+## Building the project
+
+```shell script
+    yarn
     yarn build
-    yarn link`
+    yarn link
+```
+## Run
+```shell script
+    make run
+```
