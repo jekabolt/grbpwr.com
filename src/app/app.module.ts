@@ -22,6 +22,7 @@ import { CartComponent } from './cart/cart.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AboutComponent } from './about/about.component';
 import { ShippingMethodsComponent } from './shipping-method/shipping-method.component';
+import { SingleProductComponent } from './single-product/single-product.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ShippingMethodsComponent } from './shipping-method/shipping-method.comp
     CartComponent,
     PageNotFoundComponent,
     AboutComponent,
-    ShippingMethodsComponent
+    ShippingMethodsComponent,
+    SingleProductComponent
   ],
   imports: [
     BrowserModule,
