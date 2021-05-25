@@ -216,6 +216,7 @@ h1, h2, h3, h4, h5, h6 {
 .header h1:last-child {
   padding: 0px 20px 0px 0px;
 }
+
 @media screen and (min-width: 768px) {
   .logo {
     width: 90px;
@@ -429,12 +430,9 @@ h1, h2, h3, h4, h5, h6 {
     padding: 61px 0px 0px 0px;
   }
 }
-.content {
-  max-width: 335px;
-}
 .content .cart_content {
   margin: 50px 0px 0px 0px;
-  max-width: 335px;
+  width: 100%;
   height: 198px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -445,21 +443,20 @@ h1, h2, h3, h4, h5, h6 {
           flex-direction: column;
 }
 .content .remove {
-  width: 335px;
-  text-align: right;
+  width: 100%;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  padding: 20px 0px 0px 0px;
 }
 .content .remove .line_remove {
-  width: 270px;
+  width: 80.5970149254%;
   height: 1px;
   background-color: #000;
 }
@@ -471,10 +468,6 @@ h1, h2, h3, h4, h5, h6 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
 }
 .content .cart_img_and_content .card_contents {
   display: -webkit-box;
@@ -528,14 +521,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 .content .cart_img_and_content .card_contents .number_product {
   padding: 52px 0px 0px 10px;
+  margin: 0px auto 0px auto;
   width: 72px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -554,12 +544,39 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #c4c4c4;
 }
 .content .total_cart {
-  background-color: #fff;
-  text-align: right;
-  padding: 20px 0px 20px 0px;
+  margin: 222px 93px 50px 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
 }
-.content .total_cart h1 {
-  text-decoration: none;
+.content .total_cart .line_checkout {
+  width: 57.0149253731%;
+  height: 1px;
+  background-color: #000;
+}
+.content .total_cart .total_and_checkout h1 {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+}
+.content .total_cart .total_and_checkout h1:last-child {
+  font-size: 28px;
+}
+@media screen and (min-width: 768px) {
+  .content .total_cart {
+    width: 100%;
+    margin: 222px 0px 50px 0px;
+  }
+  .content .total_cart .line_checkout {
+    width: 71.5393133998%;
+    height: 1px;
+    background-color: #000;
+  }
+  .content .total_cart .total_and_checkout {
+    text-align: right;
+  }
 }
 .payment_met_radio_apple, .payment_met_radio_bit, .payment_met_radio_card, .input_radio_yes, .input_radio_no {
   position: absolute;
@@ -987,7 +1004,7 @@ input:invalid {
           text-decoration-line: none;
 }
 
-body .content .product_content .product_place h2, body .content .go_to_archive h2, .side_bar_nav_list h1, .content .product_name, .content .view_all h1, .content .single_product_content_desktop .size h1, .content .single_product_content_desktop .add_to_card h1, .content .single_product_content_desktop .details h1, .content .remove h1, .content .cart_img_and_content .card_contents .price h1, .content .cart_img_and_content .card_contents .product_name_and_size h2, .content .total_cart h1 span, .input_content h2, .shipping_method h2, .payment_method h2, .card_details h2, .order_sum > h2:first-child, .order_sum .order h2, .order_sum .subtotal h2, .place_oreder h1, .section_seccess_txt h2, .section_next_button h2, .content .title h2, .radio_about_lable_ru h1, .radio_about_lable_en h1, .content .title h1, .content > h2, .content .shipping_lang_ru h2, .content .shipping_lang_en h2 {
+body .content .product_content .product_place h2, body .content .go_to_archive h2, .side_bar_nav_list h1, .content .product_name, .content .view_all h1, .content .single_product_content_desktop .size h1, .content .single_product_content_desktop .add_to_card h1, .content .single_product_content_desktop .details h1, .content .cart_img_and_content .card_contents .price h1, .content .cart_img_and_content .card_contents .product_name_and_size h2, .content .total_cart .total_and_checkout h1, .input_content h2, .shipping_method h2, .payment_method h2, .card_details h2, .order_sum > h2:first-child, .order_sum .order h2, .order_sum .subtotal h2, .place_oreder h1, .section_seccess_txt h2, .section_next_button h2, .content .title h2, .radio_about_lable_ru h1, .radio_about_lable_en h1, .content .title h1, .content > h2, .content .shipping_lang_ru h2, .content .shipping_lang_en h2 {
   font-size: 20px;
   font-weight: 600;
   color: #000000;
@@ -1001,7 +1018,7 @@ body .content .product_content .product_place h2, body .content .go_to_archive h
   line-height: 22px;
 }
 
-body .content .product_content .product_place h1, .side_bar_info_list h1, .content .single_product_content_desktop .product_description_single_page h1, .content .single_product_content_desktop .details_content h1, .content .cart_img_and_content .card_contents .product_name_and_size .name h1, .content .cart_img_and_content .card_contents .number_product h1, .content .cart_img_and_content .card_contents .number_product h2, .content .total_cart h1, .input_content h1, .shipping_method h1, .payment_method h1, .card_details h1, .order_sum .order h1, .order_sum .subtotal h1, .section_seccess_txt h1, .content .ru_lang_about_txt h1, .content .en_lang_about_txt h1, .content .input_and_email h1, .content .input_and_message h1, .content .social_link h1, .content .shipping_lang_ru h1, .content .shipping_lang_ru .shipping_txt_block_content span, .content .shipping_lang_en h1, .content .shipping_lang_en .shipping_txt_block_content span {
+body .content .product_content .product_place h1, .side_bar_info_list h1, .content .single_product_content_desktop .product_description_single_page h1, .content .single_product_content_desktop .details_content h1, .content .remove h1, .content .cart_img_and_content .card_contents .product_name_and_size .name h1, .content .cart_img_and_content .card_contents .number_product h1, .content .cart_img_and_content .card_contents .number_product h2, .content .total_cart .total_and_checkout h1:first-child, .input_content h1, .shipping_method h1, .payment_method h1, .card_details h1, .order_sum .order h1, .order_sum .subtotal h1, .section_seccess_txt h1, .content .ru_lang_about_txt h1, .content .en_lang_about_txt h1, .content .input_and_email h1, .content .input_and_message h1, .content .social_link h1, .content .shipping_lang_ru h1, .content .shipping_lang_ru .shipping_txt_block_content span, .content .shipping_lang_en h1, .content .shipping_lang_en .shipping_txt_block_content span {
   font-size: 18px;
   font-weight: 400;
   color: #000000;
