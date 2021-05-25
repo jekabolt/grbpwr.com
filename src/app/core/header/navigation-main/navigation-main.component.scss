@@ -2,28 +2,34 @@
     width: 30px;
 }
 
-:host.navbar-opened {
-    .side_bar_nav {
-        .info_and_line {
-            .info_line {
-                display: block;
-            }
-            h1 {
-                text-decoration-line: none;
-            }
+.side_bar_nav.navbar-opened {
+    .info_and_line {
+        .info_line {
+            display: block;
         }
-        .wrapper_info_list {
-            .side_bar_info_list {
-                opacity: 1;
-                transform: translateY(0%);
-                transition-duration: 0.2s;
-            }
+        h1 {
+            text-decoration-line: none;
         }
-        .bg_side_bar {
-            transform: translateX(0px);
+    }
+    .wrapper_info_list {
+        .side_bar_info_list {
+            opacity: 1;
+            transform: translateY(0%);
+            transition-duration: 0.2s;
         }
-        transform: translateX(0%);
-        transition-duration: 0.2s;
+    }
+    .bg_side_bar {
+        transform: translateX(0px);
+    }
+    transform: translateX(0%);
+    transition-duration: 0.2s;
+}
+
+.info-opened {
+    .side_bar_info_list {
+        transform: translateY(0%);
+        opacity: 1;
+        transition-duration: 0.3s;
     }
 }
 

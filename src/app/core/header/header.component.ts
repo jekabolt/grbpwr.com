@@ -47,6 +47,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
+  bgClicked() {
+    console.log(11)
+  }
+
   public onLogOut(e: Event) {
     this.authService.signOut();
     // this.router.navigate(['/register-login']);
