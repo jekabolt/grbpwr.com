@@ -430,6 +430,21 @@ h1, h2, h3, h4, h5, h6 {
     padding: 61px 0px 0px 0px;
   }
 }
+.content .nothing {
+  width: 100%;
+  height: 100%;
+  display: none;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.content .nothing h1 {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+}
 .content .cart_content {
   margin: 50px 0px 0px 0px;
   width: 100%;
@@ -1131,7 +1146,7 @@ body .content .product_content .product_place h2, body .content .go_to_archive h
           text-decoration-line: none;
 }
 
-body .content .product_content .product_place h1, .side_bar_info_list h1, .content .single_product_content_desktop .product_description_single_page h1, .content .single_product_content_desktop .details_content h1, .content .remove h1, .content .cart_img_and_content .card_contents .product_name_and_size .name h1, .content .cart_img_and_content .card_contents .number_product h1, .content .cart_img_and_content .card_contents .number_product h2, .content .total_cart .total_and_checkout h1:first-child, .input_content h1, .shipping_method h1, .payment_method h1, .card_details h1, .order_sum .order h1, .order_sum .subtotal h1, .section_seccess_txt h1, .content .ru_lang_about_txt h1, .content .en_lang_about_txt h1, .content .input_and_email h1, .content .input_and_message h1, .content .social_link h1, .content .shipping_lang_ru h1, .content .shipping_lang_ru .shipping_txt_block_content span, .content .shipping_lang_en h1, .content .shipping_lang_en .shipping_txt_block_content span, .content .video_conteiner h1, .content .video_conteiner .video_description h1, .content .en_lang_returns_txt h1, .content .ru_lang_returns_txt h1 {
+body .content .product_content .product_place h1, .side_bar_info_list h1, .content .single_product_content_desktop .product_description_single_page h1, .content .single_product_content_desktop .details_content h1, .content .nothing h1, .content .remove h1, .content .cart_img_and_content .card_contents .product_name_and_size .name h1, .content .cart_img_and_content .card_contents .number_product h1, .content .cart_img_and_content .card_contents .number_product h2, .content .total_cart .total_and_checkout h1:first-child, .input_content h1, .shipping_method h1, .payment_method h1, .card_details h1, .order_sum .order h1, .order_sum .subtotal h1, .section_seccess_txt h1, .content .ru_lang_about_txt h1, .content .en_lang_about_txt h1, .content .input_and_email h1, .content .input_and_message h1, .content .social_link h1, .content .shipping_lang_ru h1, .content .shipping_lang_ru .shipping_txt_block_content span, .content .shipping_lang_en h1, .content .shipping_lang_en .shipping_txt_block_content span, .content .video_conteiner h1, .content .video_conteiner .video_description h1, .content .en_lang_returns_txt h1, .content .ru_lang_returns_txt h1 {
   font-size: 18px;
   font-weight: 400;
   color: #000000;
