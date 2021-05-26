@@ -920,8 +920,16 @@ input:invalid {
   text-decoration: underline;
 }
 
+.content .title {
+  width: 100%;
+  text-align: left;
+}
+.content .title h1 {
+  font-size: 36px;
+}
 .content .input_and_email {
   padding: 56px 0px 0px 0px;
+  width: 100%;
 }
 .content .input_and_email h1 {
   padding: 0px 0px 5px 0px;
@@ -929,11 +937,12 @@ input:invalid {
           text-decoration-line: none;
 }
 .content .input_and_email input {
-  width: 335px;
+  width: 100%;
   height: 27px;
 }
 .content .input_and_message {
   padding: 27px 0px 0px 0px;
+  width: 100%;
 }
 .content .input_and_message h1 {
   padding: 0px 0px 5px 0px;
@@ -941,15 +950,36 @@ input:invalid {
           text-decoration-line: none;
 }
 .content .input_and_message input {
-  width: 335px;
+  width: 100%;
   height: 150px;
 }
-.content > h2 {
-  padding: 55px 0px 0px 0px;
+.content .submit_and_line {
+  width: 100%;
+  padding: 43px 0px 0px 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.content .submit_and_line .line {
+  width: 76.4179104478%;
+  height: 1px;
+  background-color: #000;
+}
+.content .submit_and_line h2 {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
   cursor: pointer;
 }
 .content .social_link {
   padding: 81px 0px 0px 0px;
+  width: 100%;
+  text-align: right;
 }
 .content .social_link h1 {
   -webkit-text-decoration-line: none;
@@ -1004,7 +1034,81 @@ input:invalid {
           text-decoration-line: none;
 }
 
-body .content .product_content .product_place h2, body .content .go_to_archive h2, .side_bar_nav_list h1, .content .product_name, .content .view_all h1, .content .single_product_content_desktop .size h1, .content .single_product_content_desktop .add_to_card h1, .content .single_product_content_desktop .details h1, .content .cart_img_and_content .card_contents .price h1, .content .cart_img_and_content .card_contents .product_name_and_size h2, .content .total_cart .total_and_checkout h1, .input_content h2, .shipping_method h2, .payment_method h2, .card_details h2, .order_sum > h2:first-child, .order_sum .order h2, .order_sum .subtotal h2, .place_oreder h1, .section_seccess_txt h2, .section_next_button h2, .content .title h2, .radio_about_lable_ru h1, .radio_about_lable_en h1, .content .title h1, .content > h2, .content .shipping_lang_ru h2, .content .shipping_lang_en h2 {
+.content {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.content .video_conteiner {
+  width: 89.3333333333%;
+  margin: 42px 0px 0px 0px;
+}
+.content .video_conteiner .video_archive {
+  width: 100%;
+  min-height: 200px;
+  background-color: #000;
+}
+.content .video_conteiner h2 {
+  padding: 20px 0px 0px 0px;
+}
+.content .video_conteiner h1 {
+  padding: 8px 0px 0px 0px;
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+}
+.content .video_conteiner .video_description {
+  width: 100%;
+  height: 1px;
+  overflow: hidden;
+  padding: 20px 0px 0px 0px;
+}
+.content .video_conteiner .video_description h1 {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+  -webkit-transform: translateY(-120%);
+          transform: translateY(-120%);
+  -webkit-transition-duration: 0.2s;
+          transition-duration: 0.2s;
+}
+.content .video_conteiner .video_description_act {
+  height: auto;
+}
+.content .video_conteiner .video_description_act h1 {
+  -webkit-transition-duration: 0.2s;
+          transition-duration: 0.2s;
+  -webkit-transform: translateY(0%);
+          transform: translateY(0%);
+}
+
+.content {
+  width: 89.3333333333%;
+  padding: 0px 0px 20px 0px;
+}
+.content .title {
+  width: 100%;
+  text-align: left;
+}
+.content .title h1 {
+  font-size: 36px;
+}
+.content .lang_switch {
+  width: 100%;
+}
+.content .en_lang_returns_txt h1 {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+  padding: 5px 0px 5px 0px;
+}
+.content .ru_lang_returns_txt {
+  display: none;
+}
+.content .ru_lang_returns_txt h1 {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+  padding: 5px 0px 5px 0px;
+}
+
+body .content .product_content .product_place h2, body .content .go_to_archive h2, .side_bar_nav_list h1, .content .product_name, .content .view_all h1, .content .single_product_content_desktop .size h1, .content .single_product_content_desktop .add_to_card h1, .content .single_product_content_desktop .details h1, .content .cart_img_and_content .card_contents .price h1, .content .cart_img_and_content .card_contents .product_name_and_size h2, .content .total_cart .total_and_checkout h1, .input_content h2, .shipping_method h2, .payment_method h2, .card_details h2, .order_sum > h2:first-child, .order_sum .order h2, .order_sum .subtotal h2, .place_oreder h1, .section_seccess_txt h2, .section_next_button h2, .content .title h2, .radio_about_lable_ru h1, .radio_about_lable_en h1, .content .submit_and_line h2, .content .shipping_lang_ru h2, .content .shipping_lang_en h2, .content .video_conteiner h2 {
   font-size: 20px;
   font-weight: 600;
   color: #000000;
@@ -1018,7 +1122,16 @@ body .content .product_content .product_place h2, body .content .go_to_archive h
   line-height: 22px;
 }
 
-body .content .product_content .product_place h1, .side_bar_info_list h1, .content .single_product_content_desktop .product_description_single_page h1, .content .single_product_content_desktop .details_content h1, .content .remove h1, .content .cart_img_and_content .card_contents .product_name_and_size .name h1, .content .cart_img_and_content .card_contents .number_product h1, .content .cart_img_and_content .card_contents .number_product h2, .content .total_cart .total_and_checkout h1:first-child, .input_content h1, .shipping_method h1, .payment_method h1, .card_details h1, .order_sum .order h1, .order_sum .subtotal h1, .section_seccess_txt h1, .content .ru_lang_about_txt h1, .content .en_lang_about_txt h1, .content .input_and_email h1, .content .input_and_message h1, .content .social_link h1, .content .shipping_lang_ru h1, .content .shipping_lang_ru .shipping_txt_block_content span, .content .shipping_lang_en h1, .content .shipping_lang_en .shipping_txt_block_content span {
+.content .title h1 {
+  font-size: 36px;
+  font-weight: 600;
+  color: #000000;
+  line-height: 22px;
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+}
+
+body .content .product_content .product_place h1, .side_bar_info_list h1, .content .single_product_content_desktop .product_description_single_page h1, .content .single_product_content_desktop .details_content h1, .content .remove h1, .content .cart_img_and_content .card_contents .product_name_and_size .name h1, .content .cart_img_and_content .card_contents .number_product h1, .content .cart_img_and_content .card_contents .number_product h2, .content .total_cart .total_and_checkout h1:first-child, .input_content h1, .shipping_method h1, .payment_method h1, .card_details h1, .order_sum .order h1, .order_sum .subtotal h1, .section_seccess_txt h1, .content .ru_lang_about_txt h1, .content .en_lang_about_txt h1, .content .input_and_email h1, .content .input_and_message h1, .content .social_link h1, .content .shipping_lang_ru h1, .content .shipping_lang_ru .shipping_txt_block_content span, .content .shipping_lang_en h1, .content .shipping_lang_en .shipping_txt_block_content span, .content .video_conteiner h1, .content .video_conteiner .video_description h1, .content .en_lang_returns_txt h1, .content .ru_lang_returns_txt h1 {
   font-size: 18px;
   font-weight: 400;
   color: #000000;

@@ -9,6 +9,9 @@
 @import "about_page_style.scss";
 @import "contact_us_page.scss";
 @import "shipping_style.scss";
+@import "archive_style.scss";
+@import "return_style.scss";
+
 
 
 %basik_txt {
@@ -23,6 +26,14 @@
 	font-weight: 600;
 	color: #000000;
 	line-height: 22px;
+}
+
+%title_txt {
+	font-size: 36px;
+	font-weight: 600;
+	color: #000000;
+	line-height: 22px;
+	text-decoration-line: none;
 }
 
 %info_txt {
