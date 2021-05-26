@@ -20,10 +20,10 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CartComponent } from './cart/cart.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AboutComponent } from './about/about.component';
-import { ShippingMethodsComponent } from './shipping-method/shipping-method.component';
+import { AboutComponent } from './info/about/about.component';
+import { ShippingMethodsComponent } from './info/shipping-method/shipping-method.component';
 import { SingleProductComponent } from './single-product/single-product.component';
-import { ReturnsComponent } from './returns/returns.component';
+import { ReturnsComponent } from './info/returns/returns.component';
 
 @NgModule({
   declarations: [

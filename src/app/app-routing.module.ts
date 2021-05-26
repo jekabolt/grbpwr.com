@@ -5,10 +5,10 @@ import { HomeComponent } from './core/home/home.component';
 import { CartComponent } from './cart/cart.component';
 import { AddEditComponent } from './admin/add-edit/add-edit.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AboutComponent } from './about/about.component';
-import { ShippingMethodsComponent } from './shipping-method/shipping-method.component';
+import { AboutComponent } from './info/about/about.component';
+import { ShippingMethodsComponent } from './info/shipping-method/shipping-method.component';
 import { SingleProductComponent } from './single-product/single-product.component';
-import { ReturnsComponent } from './returns/returns.component';
+import { ReturnsComponent } from './info/returns/returns.component';
 
 
 import { AdminGuard } from './admin/shared/admin.guard';
