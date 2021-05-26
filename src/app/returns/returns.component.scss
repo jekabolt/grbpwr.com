@@ -1,0 +1,60 @@
+%basik_txt {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000;
+    line-height: 22px;
+}
+
+%header_txt {
+    font-size: 22px;
+    font-weight: 600;
+    color: #000000;
+    line-height: 22px;
+}
+
+%title_txt {
+    font-size: 36px;
+    font-weight: 600;
+    color: #000000;
+    line-height: 22px;
+    text-decoration-line: none;
+}
+
+%info_txt {
+    font-size: 18px;
+    font-weight: 400;
+    color: #000000;
+    line-height: 22px;
+}
+
+@import "nullstyle.scss";
+.content {
+    width: 335/375*100%;
+    padding: 0px 0px 20px 0px;
+    .title {
+        width: 100%;
+        text-align: left;
+        h1 {
+            @extend %title_txt;
+            font-size: 36px;
+        }
+    }
+    .lang_switch {
+        width: 100%;
+    }
+    .en_lang_returns_txt {
+        h1 {
+            @extend %info_txt;
+            text-decoration-line: none;
+            padding: 5px 0px 5px 0px;
+        }
+    }
+    .ru_lang_returns_txt {
+        display: none;
+        h1 {
+            @extend %info_txt;
+            text-decoration-line: none;
+            padding: 5px 0px 5px 0px;
+        }
+    }
+}
