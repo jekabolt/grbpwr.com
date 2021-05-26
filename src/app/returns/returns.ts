@@ -1,0 +1,19 @@
+import { Component, HostBinding } from '@angular/core';
+
+@Component({
+  selector: 'app-returns',
+  templateUrl: './returns.component.html',
+  styleUrls: ['./returns.component.scss']
+})
+
+export class ReturnComponent {
+
+  @HostBinding('class.lang-ru') langRu = false;
+
+  constructor() { }
+
+  toggleLanguage() {
+    this.langRu = !this.langRu;
+  }
+
+}

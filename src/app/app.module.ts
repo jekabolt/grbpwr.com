@@ -23,6 +23,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AboutComponent } from './about/about.component';
 import { ShippingMethodsComponent } from './shipping-method/shipping-method.component';
 import { SingleProductComponent } from './single-product/single-product.component';
+import { ReturnComponent } from './returns/returns.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { SingleProductComponent } from './single-product/single-product.componen
     PageNotFoundComponent,
     AboutComponent,
     ShippingMethodsComponent,
-    SingleProductComponent
+    SingleProductComponent,
+    ReturnComponent
   ],
   imports: [
     BrowserModule,
