@@ -1,29 +1,28 @@
 %basik_txt {
-	font-size: 20px;
-	font-weight: 600;
-	color: #000000;
-	line-height: 22px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000;
+    line-height: 22px;
 }
 
 %header_txt {
-	font-size: 22px;
-	font-weight: 600;
-	color: #000000;
-	line-height: 22px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #000000;
+    line-height: 22px;
 }
 
 %info_txt {
-	font-size: 18px;
-	font-weight: 400;
-	color: #000000;
-	line-height: 22px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #000000;
+    line-height: 22px;
 }
 
 .content {
     .title {
         h2 {
-            
-             @extend %basik_txt;
+            @extend %basik_txt;
         }
     }
     .lang_selected_content {
@@ -37,8 +36,7 @@
     .ru_lang_about_txt {
         display: none;
         h1 {
-            
-             @extend %info_txt;
+            @extend %info_txt;
             text-decoration-line: none;
         }
     }
@@ -50,7 +48,7 @@
     }
     .en_lang_about_txt {
         h1 {
-             @extend %info_txt;
+            @extend %info_txt;
             text-decoration-line: none;
             padding: 0px 0px 20px 0px;
         }
@@ -60,7 +58,6 @@
 // radio button style
 .radio_about_lable_ru {
     h1 {
-        
         @extend %basik_txt;
         text-decoration-line: none;
         cursor: pointer;
@@ -69,8 +66,7 @@
 
 .radio_about_lable_en {
     h1 {
-        
-         @extend %basik_txt;
+        @extend %basik_txt;
         text-decoration-line: none;
         cursor: pointer;
     }

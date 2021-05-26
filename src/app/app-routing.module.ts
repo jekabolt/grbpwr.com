@@ -8,7 +8,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AboutComponent } from './about/about.component';
 import { ShippingMethodsComponent } from './shipping-method/shipping-method.component';
 import { SingleProductComponent } from './single-product/single-product.component';
-import { ReturnComponent } from './returns/returns.component';
+import { ReturnsComponent } from './returns/returns.component';
 
 
 import { AdminGuard } from './admin/shared/admin.guard';
@@ -44,12 +44,13 @@ const routes: Routes = [
       { path: 'profile', component: ProfileComponent }
     ]
   },
+
+  { path: 'returns', component: ReturnsComponent },
   { path: 'order-complete', component: CompleteComponent },
   { path: 'about', component: AboutComponent },
   { path: 'shipping-method', component: ShippingMethodsComponent },
-  { path: '**', component: PageNotFoundComponent },
   { path: 'single-product', component: SingleProductComponent },
-  { path: 'return', component: ReturnComponent },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

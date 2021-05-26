@@ -6,7 +6,7 @@ import { Component, HostBinding } from '@angular/core';
   styleUrls: ['./returns.component.scss']
 })
 
-export class ReturnComponent {
+export class ReturnsComponent {
 
   @HostBinding('class.lang-ru') langRu = false;
 

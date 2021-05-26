@@ -23,7 +23,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AboutComponent } from './about/about.component';
 import { ShippingMethodsComponent } from './shipping-method/shipping-method.component';
 import { SingleProductComponent } from './single-product/single-product.component';
-import { ReturnComponent } from './returns/returns.component';
+import { ReturnsComponent } from './returns/returns.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ import { ReturnComponent } from './returns/returns.component';
     AboutComponent,
     ShippingMethodsComponent,
     SingleProductComponent,
-    ReturnComponent
+    ReturnsComponent
   ],
   imports: [
     BrowserModule,
