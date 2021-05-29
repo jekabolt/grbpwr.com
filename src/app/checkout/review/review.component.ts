@@ -1,16 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
-import { CheckoutService } from '../shared/checkout.service';
-import { CartService } from '../../cart/shared/cart.service';
+import {CheckoutService} from '../shared/checkout.service';
+import {CartService} from '../../cart/shared/cart.service';
 
-import { CartItem } from '../../models/cart-item.model';
-import { Customer } from '../../models/customer.model';
-import { Order } from '../../models/order.model';
-import { User } from '../../models/user.model';
+import {CartItem} from '../../models/cart-item.model';
+import {Customer} from '../../models/customer.model';
+import {Order} from '../../models/order.model';
+import {User} from '../../models/user.model';
 
 @Component({
   selector: 'app-checkout-review',

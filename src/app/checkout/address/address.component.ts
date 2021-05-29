@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 
-import { CheckoutService } from '../shared/checkout.service';
+import {CheckoutService} from '../shared/checkout.service';
 
 @Component({
   selector: 'app-checkout-address',
