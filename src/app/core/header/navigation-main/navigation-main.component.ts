@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../../account/shared/auth.service';
 
 import { User } from '../../../models/user.model';
+import {CartService} from '../../../cart/shared/cart.service';
 
 
 @Component({
@@ -23,7 +24,9 @@ export class NavigationMainComponent implements OnInit, OnDestroy {
   public infoOpened = false
 
 
-  constructor(public authService: AuthService, private router: Router) {
+  constructor(public authService: AuthService,
+              public cartService: CartService,
+              private router: Router) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
