@@ -1,22 +1,18 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Params } from '@angular/router';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 
-import { from, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
-import { AuthService } from '../../account/shared/auth.service';
-import { CartService } from '../../cart/shared/cart.service';
-import { CartItem } from '../../models/cart-item.model';
-import { ProductsCacheService } from '../shared/products-cache.service';
-import { ProductService } from '../shared/product.service';
-import { MessageService } from '../../messages/message.service';
+import {AuthService} from '../../account/shared/auth.service';
+import {CartService} from '../../cart/shared/cart.service';
+import {CartItem} from '../../models/cart-item.model';
 
-import { Product } from '../../models/product.model';
-import { User } from '../../models/user.model';
+import {Product} from '../../models/product.model';
+import {User} from '../../models/user.model';
 
-import Products from '../../shop-items/products.json'
+import Products from '../../shop-items/products.json';
 
 @Component({
   selector: 'app-product-detail',
@@ -37,6 +33,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   public selectedQuantity: number;
   public selectedSize: string;
+  public cartButtonTitle = 'add to cart';
 
   constructor(
     private router: Router,
@@ -44,9 +41,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private location: Location,
     private authService: AuthService,
     private cartService: CartService,
-    private productsCacheService: ProductsCacheService,
-    private productService: ProductService,
-    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -92,7 +86,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   public setCartButtonText(lbl) {
     setTimeout(function () {
-      document.getElementById(lbl).innerHTML = "added";
+      this.cartButtonTitle = 'ADDED';
     }, 1500);
   }
 
@@ -102,11 +96,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   public onAddToCart(lbl) {
     if (this.selectedSize == undefined || this.selectedSize == "") {
-      document.getElementById(lbl).innerHTML = "select size";
+      this.cartButtonTitle = 'select size';
       this.setCartButtonText(lbl)
       return
     }
-    document.getElementById(lbl).innerHTML = "ITEM ADDED";
+    this.cartButtonTitle = 'ITEM ADDED';
     this.setCartButtonText(lbl)
 
     this.product.size = this.selectedSize
