@@ -1,13 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 
-import { AuthService } from '../../account/shared/auth.service';
-import { OffcanvasService } from '../shared/offcanvas.service';
+import {OffcanvasService} from '../shared/offcanvas.service';
 
-import { User } from '../../models/user.model';
-
+import {User} from '../../models/user.model';
 
 
 @Component({
@@ -21,9 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public showSearch;
 
 
-
   constructor(
-    private authService: AuthService,
     private router: Router,
     private offcanvasService: OffcanvasService
   ) {
@@ -42,17 +38,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.authSubscription = this.authService.user.subscribe((user) => {
-      this.user = user;
-    });
   }
 
   bgClicked() {
-    console.log(11)
+    console.log(11);
   }
 
   public onLogOut(e: Event) {
-    this.authService.signOut();
     // this.router.navigate(['/register-login']);
     e.preventDefault();
   }
@@ -65,6 +57,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.authSubscription.unsubscribe();
   }
-
 
 }

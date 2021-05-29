@@ -14,9 +14,6 @@ import { ReturnsComponent } from './info/returns/returns.component';
 
 import { CheckoutComponent } from './checkout/checkout.component';
 // import { RegisterLoginComponent } from './account/register-login/register-login.component';
-import { OrdersComponent } from './account/orders/orders.component';
-import { ProfileComponent } from './account/profile/profile.component';
-import { AccountComponent } from './account/account.component';
 import { ProductsListComponent } from './products/products-list/products-list.component';
 import { ProductDetailComponent } from './products/product-detail/product-detail.component';
 import { CompleteComponent } from './checkout/complete/complete.component';
@@ -29,20 +26,8 @@ const routes: Routes = [
   { path: 'cart', component: CartComponent },
 
   { path: 'checkout', component: CheckoutComponent },
-  // { path: 'register-login', component: RegisterLoginComponent },
-  {
-    path: 'account',
-    component: AccountComponent,
-    children: [
-      { path: '', redirectTo: 'profile', pathMatch: 'full' },
-      { path: 'orders', component: OrdersComponent },
-      { path: 'profile', component: ProfileComponent }
-    ]
-  },
-
 
   { path: 'order-complete', component: CompleteComponent },
-
 
   //info
   { path: 'shipping-method', component: ShippingMethodsComponent },

@@ -4,10 +4,8 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { AuthService } from '../../account/shared/auth.service';
 import { CheckoutService } from '../shared/checkout.service';
 import { CartService } from '../../cart/shared/cart.service';
-import { OrderService } from '../../account/orders/shared/order.service';
 
 import { CartItem } from '../../models/cart-item.model';
 import { Customer } from '../../models/customer.model';
@@ -31,13 +29,10 @@ export class ReviewComponent implements OnInit, OnDestroy {
   constructor(
     private cartService: CartService,
     private checkoutService: CheckoutService,
-    private orderService: OrderService,
     private router: Router,
-    private authService: AuthService,
   ) { }
 
   ngOnInit() {
-    this.authService.user.subscribe(user => this.user = user);
 
     this.items = this.cartService.getItems();
     this.total = this.cartService.getTotal();
@@ -75,33 +70,11 @@ export class ReviewComponent implements OnInit, OnDestroy {
   }
 
   private submitUserOrder(order, total, userUid) {
-    this.orderService
-      .addUserOrder(order, total, userUid)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (response) => {
-          this.cartService.clearCart();
-          this.checkoutService.resetSteps();
-          this.router.navigate(['/order-complete']);
-        },
-        (error) => {
-        }
-      );
+
   }
 
   private submitAnonOrder(order, total) {
-    this.orderService
-      .addAnonymousOrder(order, total)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (response) => {
-          this.cartService.clearCart();
-          this.checkoutService.resetSteps();
-          this.router.navigate(['/order-complete']);
-        },
-        (error) => {
-        }
-      );
+
   }
 
   ngOnDestroy() {

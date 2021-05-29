@@ -6,7 +6,6 @@ import { filter } from 'rxjs/operators';
 
 import { Subscription } from 'rxjs';
 
-import { AuthService } from '../../../account/shared/auth.service';
 
 import { User } from '../../../models/user.model';
 import {CartService} from '../../../cart/shared/cart.service';
@@ -24,7 +23,7 @@ export class NavigationMainComponent implements OnInit, OnDestroy {
   public infoOpened = false
 
 
-  constructor(public authService: AuthService,
+  constructor(
               public cartService: CartService,
               private router: Router) {
     this.router.events.pipe(
@@ -52,9 +51,7 @@ export class NavigationMainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.authService.user.subscribe((user) => {
-      this.user = user;
-    });
+
   }
 
   ngOnDestroy() {

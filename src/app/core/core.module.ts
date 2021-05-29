@@ -11,13 +11,11 @@ import { HomeComponent } from './home/home.component';
 import { MainSliderComponent } from './home/main-slider/main-slider.component';
 import { ProductWidgetComponent } from './home/product-widget/product-widget.component';
 import { PromoComponent } from './home/promo/promo.component';
-//as
+
 import { ProductService } from '../products/shared/product.service';
 import { CartService } from '../cart/shared/cart.service';
 import { PagerService } from '../pager/pager.service';
-import { OrderService } from '../account/orders/shared/order.service';
 import { CheckoutService } from '../checkout/shared/checkout.service';
-import { AuthService } from '../account/shared/auth.service';
 import { OffcanvasService } from './shared/offcanvas.service';
 import { PromoService } from './shared/promo.service';
 import { UiService } from '../products/shared/ui.service';
@@ -53,9 +51,7 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
         ProductsCacheService,
         CartService,
         PagerService,
-        OrderService,
         CheckoutService,
-        AuthService,
         OffcanvasService,
         PromoService,
         UiService
