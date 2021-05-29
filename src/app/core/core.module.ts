@@ -4,7 +4,6 @@ import { SharedModule } from '../shared/shared.module';
 
 import { ContentComponent } from './content/content.component';
 import { HeaderComponent } from './header/header.component';
-import { NavigationOffCanvasComponent } from './navigation-off-canvas/navigation-off-canvas.component';
 import { FooterComponent } from './content/footer/footer.component';
 import { NavigationMainComponent } from './header/navigation-main/navigation-main.component';
 import { ToolbarCartComponent } from './header/toolbar/cart/cart.component';
@@ -31,7 +30,6 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
     declarations: [
         ContentComponent,
         HeaderComponent,
-        NavigationOffCanvasComponent,
         FooterComponent,
         NavigationMainComponent,
         ToolbarCartComponent,
@@ -47,7 +45,6 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
     exports: [
         CommonModule,
         SharedModule,
-        NavigationOffCanvasComponent,
         HeaderComponent,
         ContentComponent
     ],

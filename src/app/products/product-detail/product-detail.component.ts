@@ -4,8 +4,6 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-
-import {AuthService} from '../../account/shared/auth.service';
 import {CartService} from '../../cart/shared/cart.service';
 import {CartItem} from '../../models/cart-item.model';
 
@@ -39,16 +37,15 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private location: Location,
-    private authService: AuthService,
     private cartService: CartService,
   ) { }
 
   ngOnInit(): void {
-    this.authService.user
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((user) => {
-        this.user = user;
-      });
+    // this.authService.user
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((user) => {
+    //     this.user = user;
+    //   });
 
     this.selectedQuantity = 1;
     this.imagesLoaded = [];

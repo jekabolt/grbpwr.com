@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { AuthService } from '../../account/shared/auth.service';
 import { CartService } from '../../cart/shared/cart.service';
 
 import { CartItem } from '../../models/cart-item.model';
@@ -23,14 +22,10 @@ export class ProductsListItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private cartService: CartService,
-    private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.imageLoading = true;
-    this.userSubscription = this.authService.user.subscribe((user) => {
-      this.user = user;
-    });
   }
 
   public onAddToCart() {
