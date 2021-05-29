@@ -21,25 +21,37 @@
         <div class="description_desktop">
 
             <div class="product_description_single_page">
-                <h1><app-page-title title="{{ product.name }}"></app-page-title></h1>
-                <h2><app-price [product]="product"></app-price></h2>
+                <h1>
+                    <app-page-title title="{{ product.name }}"></app-page-title>
+                </h1>
+                <h2>
+                    <app-price [product]="product"></app-price>
+                </h2>
             </div>
 
-            
-                <div class="form-control" id="quantity" (change)="onSelectSize($event)">
+
+            <!-- <div class="form-control" id="quantity" (change)="onSelectSize($event)">
                     <figure class="line_sz"></figure>
                     <section *ngFor="let sz of availableSizes"><h1>{{sz}}</h1></section>
                     <figure class="line_sz"></figure>
-                </div>
-    
-                <section class="add_btn">
-                    <figure class="line_add"></figure>
-                    <div  (click)="onAddToCart(cartButton.id, cartButton.value)" #cartButton id="cartButton">
-                        <h1>add to cart</h1>
-                    </div>
-                </section>
+                </div> -->
 
-            <div class="details">
+            <div class="form-group">
+                <label for="size">SIZE</label>
+                <select class="form-control" id="quantity" (change)="onSelectSize($event)">
+                                
+                                <option *ngFor="let sz of availableSizes">{{sz}}</option>
+                            </select>
+            </div>
+
+            <section class="add_btn">
+                <figure class="line_add"></figure>
+                <div (click)="onAddToCart(cartButton.id, cartButton.value)" #cartButton id="cartButton">
+                    <h1>add to cart</h1>
+                </div>
+            </section>
+
+            <div (click)="get()" class="details">
                 <h1 id="details">Details</h1>
             </div>
 

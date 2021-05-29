@@ -96,6 +96,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     }, 1500);
   }
 
+  public get() {
+    alert(this.cartService.getTotal())
+  }
+
   public onAddToCart(lbl) {
     if (this.selectedSize == undefined || this.selectedSize == "") {
       document.getElementById(lbl).innerHTML = "select size";
