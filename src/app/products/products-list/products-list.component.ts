@@ -78,7 +78,6 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    this.unsubscribe$.unsubscribe();
   }
 }

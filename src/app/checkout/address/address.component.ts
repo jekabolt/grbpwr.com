@@ -11,7 +11,6 @@ import {CheckoutService} from '../shared/checkout.service';
   styleUrls: ['./address.component.scss']
 })
 export class AddressComponent implements OnInit, OnDestroy {
-  private authSubscription: Subscription;
   @Input() public user;
   public formAddress: FormGroup;
   public countries: string[];
@@ -75,6 +74,5 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.authSubscription.unsubscribe();
   }
 }

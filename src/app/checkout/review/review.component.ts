@@ -78,7 +78,6 @@ export class ReviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe$.next(null);
-    this.unsubscribe$.complete();
+    this.unsubscribe$.unsubscribe();
   }
 }
