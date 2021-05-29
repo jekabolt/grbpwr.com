@@ -1,6 +1,5 @@
 
 import { combineLatest as observableCombineLatest, Observable, from as fromPromise, of } from 'rxjs';
-import { from } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { catchError, tap, switchMap, map } from 'rxjs/operators';

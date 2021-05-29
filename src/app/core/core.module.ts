@@ -1,7 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
-import { NgxSiemaModule } from 'ngx-siema';
 
 import { ContentComponent } from './content/content.component';
 import { HeaderComponent } from './header/header.component';
@@ -46,7 +45,6 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
     imports: [
         CommonModule,
         SharedModule,
-        NgxSiemaModule.forRoot()
     ],
     exports: [
         CommonModule,
