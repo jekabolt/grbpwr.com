@@ -7,7 +7,6 @@ import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../account/shared/auth.service';
 import { CheckoutService } from '../shared/checkout.service';
 import { CartService } from '../../cart/shared/cart.service';
-import { MessageService } from '../../messages/message.service';
 import { OrderService } from '../../account/orders/shared/order.service';
 
 import { CartItem } from '../../models/cart-item.model';
@@ -35,7 +34,6 @@ export class ReviewComponent implements OnInit, OnDestroy {
     private orderService: OrderService,
     private router: Router,
     private authService: AuthService,
-    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -87,7 +85,6 @@ export class ReviewComponent implements OnInit, OnDestroy {
           this.router.navigate(['/order-complete']);
         },
         (error) => {
-          this.messageService.addError('Could not submit order, try again.');
         }
       );
   }
@@ -103,7 +100,6 @@ export class ReviewComponent implements OnInit, OnDestroy {
           this.router.navigate(['/order-complete']);
         },
         (error) => {
-          this.messageService.addError('Could not submit order, try again.');
         }
       );
   }

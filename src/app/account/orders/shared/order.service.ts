@@ -5,13 +5,11 @@ import { AngularFireDatabase } from 'angularfire2/database';
 
 import { Order } from '../../../models/order.model';
 
-import { MessageService } from '../../../messages/message.service';
 import { AuthService } from '../../shared/auth.service';
 
 @Injectable()
 export class OrderService {
   constructor(
-    private messageService: MessageService,
     private authService: AuthService,
     private store: AngularFireDatabase
   ) { }
@@ -74,7 +72,6 @@ export class OrderService {
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      this.messageService.addError(`${operation} failed: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);

@@ -6,7 +6,6 @@ import * as firebase from 'firebase/app';
 import { Observable, of } from 'rxjs';
 import { take, takeUntil, switchMap, map } from 'rxjs/operators';
 
-import { MessageService } from '../../messages/message.service';
 import { User, Roles } from '../../models/user.model';
 
 @Injectable()
@@ -16,7 +15,6 @@ export class AuthService {
   constructor(
     private afAuth: AngularFireAuth,
     private db: AngularFireDatabase,
-    private messageService: MessageService
   ) {
     this.user = this.afAuth.authState
       .pipe(
@@ -76,19 +74,16 @@ export class AuthService {
 
   public signOut() {
     this.afAuth.auth.signOut();
-    this.messageService.add('You have been logged out.');
   }
 
   public updateProfile(userData: User) {
     this.updateExistingUser(userData);
-    this.messageService.add('User profile has been updated!');
   }
 
   public updatePassword(password: string) {
     return this.afAuth.auth.currentUser
       .updatePassword(password)
       .then(() => {
-        this.messageService.add('Password has been updated!');
       })
       .catch(function (error) {
         throw error;
@@ -100,7 +95,6 @@ export class AuthService {
       .updateEmail(email)
       .then(() => {
         this.updateExistingUser({ email: email });
-        this.messageService.add('User email have been updated!');
       })
       .catch(function (error) {
         throw error;

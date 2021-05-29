@@ -16,7 +16,6 @@ import { PromoComponent } from './home/promo/promo.component';
 import { SearchComponent } from './header/search/search.component';
 
 import { ProductService } from '../products/shared/product.service';
-import { MessageService } from '../messages/message.service';
 import { CartService } from '../cart/shared/cart.service';
 import { PagerService } from '../pager/pager.service';
 import { OrderService } from '../account/orders/shared/order.service';
@@ -59,7 +58,6 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
     providers: [
         ProductService,
         ProductsCacheService,
-        MessageService,
         CartService,
         PagerService,
         OrderService,

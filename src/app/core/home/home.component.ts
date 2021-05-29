@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { MessageService } from '../../messages/message.service';
 import { ProductService } from '../../products/shared/product.service';
 import { ProductsCacheService } from '../../products/shared/products-cache.service';
 import { PromoService } from '../shared/promo.service';
@@ -26,7 +25,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   public promos: Promo[];
 
   constructor(
-    private messageService: MessageService,
     private productsCache: ProductsCacheService,
     private productService: ProductService,
     private promoService: PromoService

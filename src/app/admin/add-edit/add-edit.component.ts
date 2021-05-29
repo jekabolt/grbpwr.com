@@ -4,7 +4,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable, Subscription, of } from 'rxjs';
 
-import { MessageService } from '../../messages/message.service';
 import { FileUploadService } from '../../products/shared/file-upload.service';
 import { ProductService } from '../../products/shared/product.service';
 import { ProductsCacheService } from '../../products/shared/products-cache.service';
@@ -39,7 +38,6 @@ export class AddEditComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     public fileUploadService: FileUploadService,
     private productsCacheService: ProductsCacheService,
-    private log: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -157,7 +155,6 @@ export class AddEditComponent implements OnInit, OnDestroy {
     } else if (this.mode === 'edit') {
       this.updateProduct(productToSubmit, files);
     } else {
-      this.log.addError('Please provide a file for your product');
       return;
     }
   }
@@ -171,7 +168,6 @@ export class AddEditComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        this.log.addError('Could not upload your product');
         return of(error);
       }
     );
@@ -182,8 +178,7 @@ export class AddEditComponent implements OnInit, OnDestroy {
     this.productService.updateProduct({ product, files }).subscribe(
       (response: Product) => {
         this.router.navigate(['/products/' + response.id]);
-      },
-      (error) => this.log.addError('Could not update your product')
+      }
     );
   }
 
@@ -194,7 +189,6 @@ export class AddEditComponent implements OnInit, OnDestroy {
         this.router.navigate(['/products']);
       });
     } else {
-      this.log.addError(`Cannot delete new product`);
     }
   }
 

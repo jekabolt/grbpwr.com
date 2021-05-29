@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ToastrModule } from 'ngx-toastr';
 import { ProductsModule } from './products/products.module';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
@@ -48,7 +47,6 @@ import { ReturnsComponent } from './info/returns/returns.component';
     AngularFireStorageModule, // imports firebase/storage only needed for storage features
     HttpClientModule,
     SharedModule,
-    ToastrModule.forRoot(),
     CoreModule,
     ProductsModule,
     CheckoutModule,

@@ -8,7 +8,6 @@ import { catchError, tap, switchMap, map } from 'rxjs/operators';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AuthService } from '../../account/shared/auth.service';
 import { FileUploadService } from './file-upload.service';
-import { MessageService } from '../../messages/message.service';
 
 import { Product } from '../../models/product.model';
 import { ProductsUrl } from './productsUrl';
@@ -20,15 +19,12 @@ export class ProductService {
   private productsUrl = ProductsUrl.productsUrl;
 
   constructor(
-    private messageService: MessageService,
     private angularFireDatabase: AngularFireDatabase,
     public authService: AuthService,
     private uploadService: FileUploadService,
   ) { }
 
-  /** Log a ProductService message with the MessageService */
   private log(message: string) {
-    this.messageService.add('ProductService: ' + message);
   }
 
   /**
@@ -135,7 +131,6 @@ export class ProductService {
           if (result) {
             return of(result);
           } else {
-            this.messageService.addError(`Found no Product with id=${id}`);
             return of(null);
           }
         }),
@@ -205,9 +200,6 @@ export class ProductService {
         return data.product;
       })
       .catch((error) => {
-        this.messageService.addError(
-          `Add Failed, Product ${data.product.name}`
-        );
         this.handleError(error);
         return error;
       });
@@ -224,7 +216,6 @@ export class ProductService {
       .remove()
       .then(() => this.log('success deleting' + product.name))
       .catch((error) => {
-        this.messageService.addError('Delete failed ' + product.name);
         this.handleError('delete product');
       });
   }
