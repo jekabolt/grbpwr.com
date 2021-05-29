@@ -1,6 +1,5 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import {AfterViewInit, EventEmitter, Injectable} from '@angular/core';
 import { CartItem } from '../../models/cart-item.model';
-import { MessageService } from '../../messages/message.service';
 
 @Injectable()
 export class CartService {
@@ -8,12 +7,15 @@ export class CartService {
   private cartItems: CartItem[];
   public itemsChanged: EventEmitter<CartItem[]> = new EventEmitter<CartItem[]>();
 
-  constructor(private messageService: MessageService) {
+  constructor() {
     this.cartItems = [];
+    if (localStorage.getItem('cart')) {
+      this.cartItems = JSON.parse(localStorage.getItem('cart'))
+    }
   }
 
   public getItems() {
-    return this.cartItems.slice();
+    return this.cartItems;
   }
 
   // Get Product ids out of CartItem[] in a new array
@@ -33,8 +35,8 @@ export class CartService {
     });
     if (ok) {
       this.cartItems.push(item);
-      this.messageService.add('Added to cart: ' + item.product.name);
     }
+    localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 
   public addItems(items: CartItem[]) {
@@ -47,7 +49,7 @@ export class CartService {
     const indexToRemove = this.cartItems.findIndex(element => element === item);
     this.cartItems.splice(indexToRemove, 1);
     this.itemsChanged.emit(this.cartItems.slice());
-    this.messageService.add('Deleted from cart: ' + item.product.name);
+    localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 
   public updateItemAmount(item: CartItem, newAmount: number) {
@@ -59,13 +61,13 @@ export class CartService {
       }
     });
     this.itemsChanged.emit(this.cartItems.slice());
-    this.messageService.add('Updated amount for: ' + item.product.name);
+    localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 
   public clearCart() {
     this.cartItems = [];
     this.itemsChanged.emit(this.cartItems.slice());
-    this.messageService.add('Cleared cart');
+    localStorage.removeItem('cart');
   }
 
   public getTotal() {
