@@ -92,13 +92,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   public setCartButtonText(lbl) {
     setTimeout(function () {
-      document.getElementById(lbl).innerHTML = "+ ADD TO CART";
+      document.getElementById(lbl).innerHTML = "added";
     }, 1500);
   }
 
   public onAddToCart(lbl) {
     if (this.selectedSize == undefined || this.selectedSize == "") {
-      document.getElementById(lbl).innerHTML = "SELECT SIZE";
+      document.getElementById(lbl).innerHTML = "select size";
       this.setCartButtonText(lbl)
       return
     }
