@@ -139,7 +139,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe$.next();
+    // this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 }
