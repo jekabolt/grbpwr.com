@@ -7,6 +7,8 @@ import { AddEditComponent } from './admin/add-edit/add-edit.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AboutComponent } from './info/about/about.component';
 import { ShippingMethodsComponent } from './info/shipping-method/shipping-method.component';
+import { ContactUsComponent } from './info/contact-us/contact-us.component';
+import { PrivacyPolicyComponent } from './info/privacy-policy/privacy-policy.component';
 import { SingleProductComponent } from './single-product/single-product.component';
 import { ReturnsComponent } from './info/returns/returns.component';
 
@@ -33,6 +35,7 @@ const routes: Routes = [
     component: AddEditComponent,
     canActivate: [AdminGuard]
   },
+
   { path: 'checkout', component: CheckoutComponent },
   // { path: 'register-login', component: RegisterLoginComponent },
   {
@@ -45,10 +48,17 @@ const routes: Routes = [
     ]
   },
 
-  { path: 'returns', component: ReturnsComponent },
+
   { path: 'order-complete', component: CompleteComponent },
-  { path: 'about', component: AboutComponent },
+
+
+  //info
   { path: 'shipping-method', component: ShippingMethodsComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'contact-us', component: ContactUsComponent },
+  { path: 'about', component: AboutComponent }, { path: 'about', component: AboutComponent },
+  { path: 'returns', component: ReturnsComponent },
+
   { path: 'single-product', component: SingleProductComponent },
   { path: '**', component: PageNotFoundComponent },
 ];

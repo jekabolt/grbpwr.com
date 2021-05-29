@@ -22,6 +22,8 @@ import { CartComponent } from './cart/cart.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AboutComponent } from './info/about/about.component';
 import { ShippingMethodsComponent } from './info/shipping-method/shipping-method.component';
+import { PrivacyPolicyComponent } from './info/privacy-policy/privacy-policy.component';
+import { ContactUsComponent } from './info/contact-us/contact-us.component';
 import { SingleProductComponent } from './single-product/single-product.component';
 import { ReturnsComponent } from './info/returns/returns.component';
 
@@ -32,6 +34,8 @@ import { ReturnsComponent } from './info/returns/returns.component';
     PageNotFoundComponent,
     AboutComponent,
     ShippingMethodsComponent,
+    PrivacyPolicyComponent,
+    ContactUsComponent,
     SingleProductComponent,
     ReturnsComponent
   ],
