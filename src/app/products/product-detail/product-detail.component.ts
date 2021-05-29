@@ -41,11 +41,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // this.authService.user
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe((user) => {
-    //     this.user = user;
-    //   });
 
     this.selectedQuantity = 1;
     this.imagesLoaded = [];
