@@ -18,8 +18,7 @@ import {ProductDetailComponent} from './products/product-detail/product-detail.c
 import {CompleteComponent} from './checkout/complete/complete.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'products', component: ProductsListComponent },
   { path: 'products/:id', component: ProductDetailComponent },
   { path: 'cart', component: CartComponent },
@@ -32,7 +31,7 @@ const routes: Routes = [
   { path: 'shipping-method', component: ShippingMethodsComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'contact-us', component: ContactUsComponent },
-  { path: 'about', component: AboutComponent }, { path: 'about', component: AboutComponent },
+  { path: 'about', component: AboutComponent },
   { path: 'returns', component: ReturnsComponent },
 
   { path: 'single-product', component: SingleProductComponent },

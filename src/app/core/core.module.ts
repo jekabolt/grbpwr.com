@@ -8,7 +8,6 @@ import { FooterComponent } from './content/footer/footer.component';
 import { NavigationMainComponent } from './header/navigation-main/navigation-main.component';
 import { ToolbarCartComponent } from './header/toolbar/cart/cart.component';
 import { HomeComponent } from './home/home.component';
-import { MainSliderComponent } from './home/main-slider/main-slider.component';
 import { ProductWidgetComponent } from './home/product-widget/product-widget.component';
 import { PromoComponent } from './home/promo/promo.component';
 
@@ -17,7 +16,6 @@ import { CartService } from '../cart/shared/cart.service';
 import { PagerService } from '../pager/pager.service';
 import { CheckoutService } from '../checkout/shared/checkout.service';
 import { OffcanvasService } from './shared/offcanvas.service';
-import { PromoService } from './shared/promo.service';
 import { UiService } from '../products/shared/ui.service';
 import { ProductsCacheService } from '../products/shared/products-cache.service';
 
@@ -32,7 +30,6 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
         NavigationMainComponent,
         ToolbarCartComponent,
         HomeComponent,
-        MainSliderComponent,
         ProductWidgetComponent,
         PromoComponent,
     ],
@@ -53,7 +50,6 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
         PagerService,
         CheckoutService,
         OffcanvasService,
-        PromoService,
         UiService
     ]
 })
