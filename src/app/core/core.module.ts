@@ -12,8 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { MainSliderComponent } from './home/main-slider/main-slider.component';
 import { ProductWidgetComponent } from './home/product-widget/product-widget.component';
 import { PromoComponent } from './home/promo/promo.component';
-import { SearchComponent } from './header/search/search.component';
-
+//as
 import { ProductService } from '../products/shared/product.service';
 import { CartService } from '../cart/shared/cart.service';
 import { PagerService } from '../pager/pager.service';
@@ -40,7 +39,6 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
         MainSliderComponent,
         ProductWidgetComponent,
         PromoComponent,
-        SearchComponent
     ],
     imports: [
         CommonModule,

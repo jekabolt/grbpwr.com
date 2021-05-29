@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';
+import {Injectable} from '@angular/core';
+import {AngularFireDatabase} from 'angularfire2/database';
+import {AngularFireAuth} from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
-import { Observable, of } from 'rxjs';
-import { take, takeUntil, switchMap, map } from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {map, switchMap, take} from 'rxjs/operators';
 
-import { User, Roles } from '../../models/user.model';
+import {User} from '../../models/user.model';
 
 @Injectable()
 export class AuthService {
