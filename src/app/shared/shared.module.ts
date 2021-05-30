@@ -1,10 +1,11 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {AppRoutingModule} from '../app-routing.module';
-import {FormsModule} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import {RouterModule} from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
-import {PriceComponent} from './price/price.component';
-import {PageTitleComponent} from '../core/page-title/page-title.component';
+import { AppRoutingModule } from '../app-routing.module';
+import { PageTitleComponent } from '../core/page-title/page-title.component';
+import { PriceComponent } from './price/price.component';
 
 @NgModule({
     declarations: [
@@ -12,15 +13,17 @@ import {PageTitleComponent} from '../core/page-title/page-title.component';
         PageTitleComponent
     ],
     imports: [
-        CommonModule,
         AppRoutingModule,
+        RouterModule,
+        CommonModule,
         FormsModule
     ],
     exports: [
+        AppRoutingModule,
+        RouterModule,
         PriceComponent,
         PageTitleComponent,
         CommonModule,
-        AppRoutingModule,
         FormsModule
     ]
 })

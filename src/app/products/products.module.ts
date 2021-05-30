@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 import {SharedModule} from '../shared/shared.module';
 
 import {ProductsListComponent} from './products-list/products-list.component';
@@ -15,7 +16,7 @@ import {SortPipe} from './shared/sort.pipe';
     ProductsListItemComponent,
     SortPipe,
   ],
-  imports: [SharedModule],
+  imports: [SharedModule,RouterModule],
   exports: [
     ProductDetailComponent,
     ProductsListComponent,

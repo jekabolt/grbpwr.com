@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import {RouterModule} from '@angular/router';
 import { AddressComponent } from './address/address.component';
 import { FooterComponent } from './footer/footer.component';
 import { PaymentComponent } from './payment/payment.component';
@@ -24,7 +25,8 @@ import { CompleteComponent } from './complete/complete.component';
     imports: [
         SharedModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RouterModule,
     ],
     exports: [
         SharedModule,
@@ -36,7 +38,8 @@ import { CompleteComponent } from './complete/complete.component';
         ShippingComponent,
         SidebarComponent,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RouterModule,
     ]
 })
 export class CheckoutModule { }

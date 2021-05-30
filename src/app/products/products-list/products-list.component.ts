@@ -35,11 +35,11 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.uiService.currentPagingPage$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((page) => {
-        this.currentPagingPage = page;
-      });
+    // this.uiService.currentPagingPage$
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((page) => {
+    //     this.currentPagingPage = page;
+    //   });
     this.getProducts();
   }
 

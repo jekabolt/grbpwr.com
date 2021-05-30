@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
 import { Subscription } from 'rxjs';
 
 import { CheckoutService } from './shared/checkout.service';

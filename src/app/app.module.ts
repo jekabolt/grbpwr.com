@@ -2,6 +2,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import {ProductsModule} from './products/products.module';
 import {SharedModule} from './shared/shared.module';
@@ -29,12 +30,13 @@ import {ReturnsComponent} from './info/returns/returns.component';
     PrivacyPolicyComponent,
     ContactUsComponent,
     SingleProductComponent,
-    ReturnsComponent
-  ],
+    ReturnsComponent,
+   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    RouterModule,
     SharedModule,
     CoreModule,
     ProductsModule,
