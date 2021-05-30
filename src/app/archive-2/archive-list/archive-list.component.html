@@ -4,18 +4,20 @@
 <div class="container padding-bottom-3x mb-1">
 
 
-    <div class="archive-list" [ngClass]="{'loading' : productsLoading}">
+    <div class="products-list" [ngClass]="{'loading' : articlesLoading}">
         <!-- Products Grid Mode View -->
         <div class="row" *ngIf="(uiService.displayMode$ | async) === 'grid'">
-            <app-archive-list-item ngClass="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let product of productsPaged" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
-            </app-archive-list-item>
+
+            <div *ngFor="let article of articlesPaged" [article]="articles" [displayMode]="(uiService.displayMode$ | async)">
+            </div>
+
         </div>
 
         <!-- Products List Mode View-->
-        <div class="row" *ngIf="(uiService.displayMode$ | async) === 'list'">
-            <app-archive-list-item ngClass="col-12" *ngFor="let product of products" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
-            </app-archive-list-item>
-        </div>
+        <!-- <div class="row" *ngIf="(uiService.displayMode$ | async) === 'list'">
+            <app-products-list-item ngClass="col-12" *ngFor="let product of products" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
+            </app-products-list-item>
+        </div> -->
     </div>
 
 

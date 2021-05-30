@@ -1,0 +1,37 @@
+[{
+    "category": "video",
+    "date": "2018-04-02",
+    "id": 1174268122548,
+
+    "heading": "Archive post 1 video",
+    "thumbnail": "http://some.jpg",
+    "description": "some description text",
+
+    "contentDescription": [{
+        "imageUrl": "",
+        "videoUrl": "http://some.url",
+        "description": "some description1 "
+    }, {
+        "imageUrl": "",
+        "videoUrl": "http://some.url",
+        "description": "some description1 "
+    }]
+}, {
+    "category": "image",
+    "date": "2018-04-02",
+    "id": 1174268122548,
+
+    "heading": "Archive post 2 images",
+    "thumbnail": "http://some.jpg",
+    "description": "some description text",
+
+    "contentDescription": [{
+        "imageUrl": "http://some.jpg",
+        "videoUrl": "",
+        "description": "some description2 "
+    }, {
+        "imageUrl": "http://some.jpg",
+        "videoUrl": "",
+        "description": "some description2 "
+    }]
+}]

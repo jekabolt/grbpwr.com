@@ -12,8 +12,8 @@ import {ReturnsComponent} from './info/returns/returns.component';
 
 
 import {CheckoutComponent} from './checkout/checkout.component';
-// import { RegisterLoginComponent } from './account/register-login/register-login.component';
 import {ProductsListComponent} from './products/products-list/products-list.component';
+import {ArchiveListComponent} from './archive/archive-list/archive-list.component';
 import {ProductDetailComponent} from './products/product-detail/product-detail.component';
 import {CompleteComponent} from './checkout/complete/complete.component';
 
@@ -21,6 +21,9 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'products', component: ProductsListComponent },
   { path: 'products/:id', component: ProductDetailComponent },
+
+  { path: 'archive', component: ArchiveListComponent },
+
   { path: 'cart', component: CartComponent },
 
   { path: 'checkout', component: CheckoutComponent },

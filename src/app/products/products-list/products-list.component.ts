@@ -1,10 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 import {PagerService} from '../../pager/pager.service';
-import {ProductsCacheService} from '../shared/products-cache.service';
-import {ProductService} from '../shared/product.service';
+// import {ProductsCacheService} from '../shared/products-cache.service';
+// import {ProductService} from '../shared/product.service';
 import {UiService} from '../shared/ui.service';
 import {SortPipe} from '../shared/sort.pipe';
 
@@ -18,7 +16,6 @@ import Products from '../../shop-items/products.json';
   styleUrls: ['./products-list.component.scss']
 })
 export class ProductsListComponent implements OnInit, OnDestroy {
-  unsubscribe$ = new Subject();
   products: Product[];
   productsPaged: Product[];
   pager: any = {};
@@ -27,19 +24,12 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   currentPagingPage: number;
 
   constructor(
-    private productService: ProductService,
-    private productsCacheService: ProductsCacheService,
     private pagerService: PagerService,
     private sortPipe: SortPipe,
     public uiService: UiService
   ) { }
 
   ngOnInit() {
-    // this.uiService.currentPagingPage$
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe((page) => {
-    //     this.currentPagingPage = page;
-    //   });
     this.getProducts();
   }
 
@@ -78,6 +68,5 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe$.unsubscribe();
   }
 }

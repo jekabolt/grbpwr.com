@@ -9,11 +9,11 @@ import { Product } from '../../models/product.model';
 import { User } from '../../models/user.model';
 
 @Component({
-  selector: 'app-products-list-item',
-  templateUrl: './products-list-item.component.html',
-  styleUrls: ['./products-list-item.component.scss']
+  selector: 'app-archive-list-item',
+  templateUrl: './archive-list-item.component.html',
+  styleUrls: ['./archive-list-item.component.scss']
 })
-export class ProductsListItemComponent implements OnInit, OnDestroy {
+export class ArchiveListItemComponent implements OnInit, OnDestroy {
   @Input() public product: Product;
   @Input() public displayMode: string;
   public user: User;
