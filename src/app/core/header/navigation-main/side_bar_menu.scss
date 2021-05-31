@@ -17,14 +17,17 @@
     width: auto;
     height: auto;
     h1 {
-        @extend %basik_txt;
+        @extend %info_txt;
         cursor: pointer;
-        line-height: 27px;
+        line-height: 32px;
+        padding: 7px 0px 0px 0px;
+        
     }
     .side_bar_btn {
         padding-bottom: 13px;
         font-size: 22px;
         text-decoration-line: none;
+        @extend %basik_txt;
     }
     .desktop_inf {
         display: none;
@@ -57,6 +60,7 @@
     .side_bar_info_list {
         h1 {
             @extend %info_txt;
+            text-decoration-line: none;
         }
     }
 }
@@ -74,16 +78,12 @@
 
 @media screen and (min-width: 768px) {
     .side_bar_nav {
-        width: 380px;
+        width: 245px;
         transform: translateX(0%);
-        position: relative;
         margin: 0px;
         padding: 0px;
         z-index: 98;
         .bg_side_bar {
-            display: none;
-        }
-        .side_bar_btn {
             display: none;
         }
         .desktop_inf {
@@ -92,13 +92,10 @@
             z-index: 99;
             background-color: #fff;
         }
-        .desktop_arch {
-            display: block;
-            padding: 20px 0px 0px 0px;
-            z-index: 99;
-            background-color: #fff;
-        }
         .info_and_line {
+            position: absolute;
+            bottom: 20px;
+            left: 40px;
             .info_line {
                 background-color: #000;
             }
@@ -108,21 +105,26 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
-        margin: 0px 0px 0px 160px;
+        margin: 40px 0px 0px 40px;
         padding: 22px 0px 0px 0px;
         background-color: #fff;
+
+        .side_bar_btn {
+            text-decoration-line: line-through;
+        }
     }
     .wrapper_info_list {
         overflow: hidden;
-        position: relative;
-        margin: 0px 0px 0px 0px;
+        position: absolute;
+        margin: 0px 0px 106px 40px;
+
         .side_bar_info_list {
             opacity: 0;
-            transform: translateY(-120%);
+            transform: translateY(120%);
             transition-duration: 0.2s;
             justify-content: center;
             flex-direction: column;
-            margin: 0px 0px 0px 160px;
+            margin: 0px auto 0px auto;
         }
     }
 }
