@@ -62,21 +62,22 @@
  
                 </tr>
 
+                <div class="shopping-cart-footer">
+
+                    <div class="total_and_currency">
+                       <p>Total: <strong>{{ total | currency }}</strong></p>
+                    </div>
+                    
+                    <section class="checkout_and_total">
+    
+                        <figure class="line_checkout"></figure> 
+                        <a *ngIf="items.length" class="btn btn-success" routerLink="/checkout"><p>Checkout</p></a>
+                    </section>
+                        
+                </div>
+
             </tbody>
 
-            <div class="shopping-cart-footer">
-
-                <div class="total_and_currency">
-                   <p>Total: <strong>{{ total | currency }}</strong></p>
-                </div>
-                
-                <section class="checkout_and_total">
-
-                    <figure class="line_checkout"></figure> 
-                    <a *ngIf="items.length" class="btn btn-success" routerLink="/checkout"><p>Checkout</p></a>
-                </section>
-                    
-            </div>
 
             <ng-template #noItemsInCart>
                 <tbody class="empty">
