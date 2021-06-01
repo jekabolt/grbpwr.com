@@ -1,12 +1,15 @@
 
 app-content {
-    width: 335/375*100%;
-    margin: 0px auto 0px auto;
+    width: 100%;
+    display: flex;
+    margin: 0px;
 }
 
 @media screen and (min-width: 768px) {
     app-content {
-        width: 950/1196*100%;
+        width: 100%;
         margin: 0px;
+        display: flex;
+        
     }
 }

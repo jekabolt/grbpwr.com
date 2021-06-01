@@ -24,7 +24,7 @@
 
                             <div class="product-info">
                                 <a routerLink="/products/{{item.product.id}}"><p>{{item.product.name}}</p></a>
-                                <p>({{item.size}})</p>  
+                                <p><strong>({{item.size}})</strong></p>  
                             </div>
                         
 
@@ -59,24 +59,24 @@
                     </a>
 
                 </div>
-
-
-                <div class="shopping-cart-footer">
-                    
-                        <figure class="line_checkout"></figure> 
-                    <section class="checkout_and_total">
-                        <div class="column text-lg">
-                            <span class="text-medium"><p>{{ total | currency }}</p></span>
-                        </div>
-                        <a *ngIf="items.length" class="btn btn-success" routerLink="/checkout"><p>Checkout</p></a>
-                    </section>
-                        
-                </div>
-
-
+ 
                 </tr>
 
             </tbody>
+
+            <div class="shopping-cart-footer">
+
+                <div class="total_and_currency">
+                   <p>Total: <strong>{{ total | currency }}</strong></p>
+                </div>
+                
+                <section class="checkout_and_total">
+
+                    <figure class="line_checkout"></figure> 
+                    <a *ngIf="items.length" class="btn btn-success" routerLink="/checkout"><p>Checkout</p></a>
+                </section>
+                    
+            </div>
 
             <ng-template #noItemsInCart>
                 <tbody class="empty">

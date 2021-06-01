@@ -21,8 +21,8 @@
 }
 
 .content {
-    width: 335/375*100%;
-    margin: 90px auto 0px auto;
+    width: 100%;
+    margin: 90px 0px 0px 0px;
     padding: 0px 0px 20px 0px;
     .single_product_content_desktop {
         .product_img {
@@ -35,15 +35,19 @@
             }
         }
         .img_slider_content {
-            width: 518px;
+            width: 100%;
             margin: 26px 0px 0px 0px;
-            display: none;
+            display: flex;
             flex-direction: row;
             justify-content: space-between;
             .product_img_desktop_small {
-                width: 149px;
-                height: 148px;
+                width: 66/335*100%;
+                height: 66px;
                 background-color: #c4c4c4;
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
             }
         }
         .product_description_single_page {
