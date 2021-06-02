@@ -1,25 +1,4 @@
-
-%basik_txt {
-    font-size: 20px;
-    font-weight: 600;
-    color: #000000;
-    line-height: 22px;
-}
-
-%header_txt {
-    font-size: 22px;
-    font-weight: 600;
-    color: #000000;
-    line-height: 22px;
-}
-
-%info_txt {
-    font-size: 18px;
-    font-weight: 400;
-    color: #000000;
-    line-height: 22px;
-}
-
+@import "../../../scss/common.scss";
 .content {
     width: 100%;
     margin: 90px 0px 0px 0px;
@@ -102,7 +81,6 @@
         .active_details {
             display: block;
         }
-
         .form-control {
             display: flex;
             width: 100%;
@@ -118,15 +96,12 @@
                 text-decoration-line: none;
             }
         }
-
         .add_btn {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
-
             cursor: pointer;
-
             padding: 60px 0px 0px 0px;
             h1 {
                 @extend %basik_txt;
@@ -145,7 +120,6 @@
     .content {
         margin: 169px 0px 0px 0px;
         width: 100%;
-
         .single_product_content_desktop {
             display: flex;
             .product_img {

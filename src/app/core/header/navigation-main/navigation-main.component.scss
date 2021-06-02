@@ -1,3 +1,4 @@
+@import "../../../../scss/common.scss";
 .logo {
     width: 30px;
 }
@@ -18,7 +19,19 @@
     }
 }
 
-
+* {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+}
 
 .header {
     z-index: 98;
@@ -49,7 +62,6 @@
 }
 
 @media screen and (min-width: 768px) {
-
     .desktop_logo_conteiner {
         position: absolute;
         height: 100%;
@@ -61,7 +73,6 @@
             width: 74px;
         }
     }
-   
     .header {
         height: 104px;
         width: 1196/1441*100vw;
@@ -83,27 +94,131 @@
     }
 }
 
-//
-//
-//
-@import "side_bar_menu.scss";
-%basik_txt {
-    font-size: 20px;
-    font-weight: 600;
-    color: #000000;
-    line-height: 22px;
+// sidebar menu
+.side_bar_nav {
+    width: 265px;
+    height: 100%;
+    transform: translateX(-100%);
+    transition-duration: 0.2s;
+    background-color: #fff;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 99;
 }
 
-%header_txt {
-    font-size: 22px;
-    font-weight: 600;
-    color: #000000;
-    line-height: 22px;
+.side_bar_nav_list {
+    margin: 27px 0px 0px 66px;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    height: auto;
+    h1 {
+        @extend %info_txt;
+        cursor: pointer;
+        line-height: 32px;
+        padding: 7px 0px 0px 0px;
+    }
+    .side_bar_btn {
+        padding-bottom: 13px;
+        font-size: 22px;
+        text-decoration-line: none;
+        @extend %basik_txt;
+    }
+    .desktop_inf {
+        display: none;
+        h1 {
+            cursor: pointer;
+        }
+    }
+    .desktop_arch {
+        display: none;
+    }
+    .info_and_line {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .info_line {
+            width: 36px;
+            height: 1px;
+            background-color: #fff;
+            margin: 20px 5px 0px 0px;
+            display: none;
+        }
+    }
 }
 
-%info_txt {
-    font-size: 18px;
-    font-weight: 400;
-    color: #000000;
-    line-height: 22px;
+.wrapper_info_list {
+    position: absolute;
+    bottom: 0px;
+    overflow: hidden;
+    margin: 275px 0px 20px 27px;
+    .side_bar_info_list {
+        h1 {
+            @extend %info_txt;
+            text-decoration-line: none;
+        }
+    }
+}
+
+.bg_side_bar {
+    position: absolute;
+    left: 265px;
+    width: 100vw;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.7;
+    z-index: 97;
+    transform: translateX(-100%);
+}
+
+@media screen and (min-width: 768px) {
+    .side_bar_nav {
+        width: 245px;
+        transform: translateX(0%);
+        margin: 0px;
+        padding: 0px;
+        z-index: 98;
+        .bg_side_bar {
+            display: none;
+        }
+        .desktop_inf {
+            display: block;
+            padding: 20px 0px 0px 0px;
+            z-index: 99;
+            background-color: #fff;
+        }
+        .info_and_line {
+            position: absolute;
+            bottom: 20px;
+            left: 40px;
+            .info_line {
+                background-color: #000;
+            }
+        }
+    }
+    .side_bar_nav_list {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin: 40px 0px 0px 40px;
+        padding: 22px 0px 0px 0px;
+        background-color: #fff;
+        .side_bar_btn {
+            text-decoration-line: line-through;
+        }
+    }
+    .wrapper_info_list {
+        overflow: hidden;
+        position: absolute;
+        margin: 0px 0px 106px 40px;
+        .side_bar_info_list {
+            opacity: 0;
+            transform: translateY(120%);
+            transition-duration: 0.2s;
+            justify-content: center;
+            flex-direction: column;
+            margin: 0px auto 0px auto;
+        }
+    }
 }
