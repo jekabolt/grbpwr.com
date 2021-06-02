@@ -3,21 +3,6 @@
 }
 
 .side_bar_nav.navbar-opened {
-    .info_and_line {
-        .info_line {
-            display: block;
-        }
-        h1 {
-            text-decoration-line: none;
-        }
-    }
-    .wrapper_info_list {
-        .side_bar_info_list {
-            opacity: 1;
-            transform: translateY(0%);
-            transition-duration: 0.2s;
-        }
-    }
     .bg_side_bar {
         transform: translateX(0px);
     }
@@ -29,9 +14,11 @@
     .side_bar_info_list {
         transform: translateY(0%);
         opacity: 1;
-        transition-duration: 0.3s;
+        transition-duration: 0.2s;
     }
 }
+
+
 
 .header {
     z-index: 98;
@@ -62,30 +49,36 @@
 }
 
 @media screen and (min-width: 768px) {
-    .logo {
-        width: 90px;
-        padding: 0px 0px 27px 0px;
-    }
-    .header {
-        position: relative;
-        display: block;
-        flex-direction: column;
-        width: auto;
-        height: auto;
-        padding: 41px 0px 0px 160px;
-        .desktop_list_cart_and_sum {
-            display: flex;
-            flex-direction: row;
-            .sum_cart {
-                display: block;
-                padding: 0px 0px 0px 45px;
-            }
+
+    .desktop_logo_conteiner {
+        position: absolute;
+        height: 100%;
+        width: 950/1196*100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .logo {
+            width: 74px;
         }
+    }
+   
+    .header {
+        height: 104px;
+        width: 1196/1441*100vw;
+        margin: 0px 0px 0px 245px;
         #menu_btn {
             display: none;
         }
-        .sum_cart {
-            display: block;
+        .desktop_list_cart_and_sum {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            padding: 40px 40px 0px 0px;
+            display: flex;
+            .sum_cart {
+                display: block;
+                padding: 0px 0px 0px 17px;
+            }
         }
     }
 }
@@ -94,7 +87,6 @@
 //
 //
 @import "side_bar_menu.scss";
-@import "header_style.scss";
 %basik_txt {
     font-size: 20px;
     font-weight: 600;

@@ -3,13 +3,20 @@
 body {
     margin: 0px;
     padding: 0px;
-    @media screen and (min-width: 768px) {
+    width: 100%;
+    height: 100%;
         app-root {
             .main-wrapper {
-                min-width: 903px;
+                width: 100%;
                 display: flex;
-                flex-direction: row;
+                margin: 0px;
             }
         }
-    }
+}
+
+
+.offcanvas-wrapper {
+    width: 100%;
+    margin: 0px auto 0px auto;
+    margin: 0px;
 }

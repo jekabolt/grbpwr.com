@@ -1,0 +1,58 @@
+<div class="content" [ngClass]="{'loading' : productLoading}">
+
+    <div *ngIf="product" class="single_product_content_desktop">
+
+        <section>
+
+            <div class="product_img" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
+                <img [hidden]="!imagesLoaded.includes(activeImageUrl)" class="img-fluid" src="{{activeImageUrl}}" alt="{{product.name}}" (load)="onImageLoad($event)">
+            </div>
+
+            <ul class="img_slider_content">
+                <li class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
+                    <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
+                        <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
+                    </a>
+                </li>
+            </ul>
+
+        </section>
+
+        <div class="description_desktop">
+
+            <div class="product_description_single_page">
+                <h1><app-page-title title="{{ product.name }}"></app-page-title></h1>
+                <h2><app-price [product]="product"></app-price></h2>
+            </div>
+
+            <div class="form-group">
+                <label for="size">SIZE</label>
+                <select class="form-control" id="quantity" (change)="onSelectSize($event)">
+
+                                <option *ngFor="let sz of availableSizes">{{sz}}</option>
+                            </select>
+            </div>
+
+            
+                    <figure class="line_sz"></figure>
+                    <figure class="line_sz"></figure>
+             
+                <section class="add_btn">
+                    <figure class="line_add"></figure>
+                    <div  (click)="onAddToCart(cartButton.id, cartButton.value)" #cartButton id="cartButton">
+                        <h1>add to cart</h1>
+                    </div>
+                </section>
+
+            <div class="details">
+                <h1 id="details">Details</h1>
+            </div>
+
+            <aside id="details_content" class="details_content">
+                <h1>{{product.description}}</h1>
+            </aside>
+
+        </div>
+
+    </div>
+</div>

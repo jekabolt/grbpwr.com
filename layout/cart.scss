@@ -1,3 +1,35 @@
+@import "null_style.scss";
+
+
+%basik_txt {
+	font-size: 20px;
+	font-weight: 600;
+	color: #000000;
+	line-height: 22px;
+}
+
+%header_txt {
+	font-size: 22px;
+	font-weight: 600;
+	color: #000000;
+	line-height: 22px;
+}
+
+%title_txt {
+	font-size: 36px;
+	font-weight: 600;
+	color: #000000;
+	line-height: 22px;
+	text-decoration-line: none;
+}
+
+%info_txt {
+	font-size: 18px;
+	font-weight: 400;
+	color: #000000;
+	line-height: 22px;
+}
+
 .content {
 
 	.nothing {
