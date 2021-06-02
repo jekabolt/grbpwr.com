@@ -1,0 +1,42 @@
+<h1 title="Products"></h1>
+
+<!-- Page Content-->
+<div class="container padding-bottom-3x mb-1">
+
+    <div class="archive-list" [ngClass]="{'loading' : productsLoading}">
+        <!-- Products Grid Mode View -->
+        <div class="row" *ngIf="(uiService.displayMode$ | async) === 'grid'">
+            <app-archive-list-item ngClass="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let product of productsPaged" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
+            </app-archive-list-item>
+        </div>
+
+        <!-- Products List Mode View -->
+        <!-- <div class="row" *ngIf="(uiService.displayMode$ | async) === 'list'">
+            <app-archive-list-item ngClass="col-12" *ngFor="let product of products" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
+            </app-archive-list-item>
+        </div> -->
+    </div>
+
+
+
+    <!-- Pagination-->
+    <!-- Don't show controls in case of one page only available -->
+    <!-- <nav *ngIf="pager.pages && pager.pages.length && pager.pages.length != 1 &&(uiService.displayMode$ | async) ==='grid'" class="pagination">
+        <div class="column text-left hidden-xs-down">
+            <a class="btn btn-outline-secondary btn-sm" [ngClass]="{disabled:pager.currentPage === 1}" (click)="setPage(pager.currentPage - 1)"><i class="icon-arrow-left"></i>&nbsp;Previous
+            </a>
+        </div>
+        <div class="column text-center">
+            <ul class="pages">
+                <li *ngFor="let page of pager.pages" [ngClass]="{active: pager.currentPage === page}">
+                    <a (click)="setPage(page)">{{page}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="column text-right hidden-xs-down">
+            <a class="btn btn-outline-secondary btn-sm" [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="setPage(pager.currentPage + 1)">Next&nbsp;
+                <i class="icon-arrow-right"></i>
+            </a>
+        </div>
+    </nav> -->
+</div>

@@ -4,6 +4,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {ProductsModule} from './products/products.module';
+import {ArchiveModule} from './archive/archive.module';
 import {SharedModule} from './shared/shared.module';
 import {CoreModule} from './core/core.module';
 import {CheckoutModule} from './checkout/checkout.module';
@@ -38,6 +39,7 @@ import {ReturnsComponent} from './info/returns/returns.component';
     SharedModule,
     CoreModule,
     ProductsModule,
+    ArchiveModule,
     CheckoutModule,
   ],
   bootstrap: [AppComponent]

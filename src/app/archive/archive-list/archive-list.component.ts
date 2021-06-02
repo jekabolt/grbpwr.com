@@ -1,9 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 import {PagerService} from '../../pager/pager.service';
-import {UiService} from '../shared/ui.service';
+import {UiServiceArchive} from '../shared/ui.service';
 import {SortPipe} from '../shared/sort.pipe';
 
 import {Product} from '../../models/product.model';
@@ -11,12 +9,11 @@ import {User} from '../../models/user.model';
 import Products from '../../shop-items/products.json';
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products-list.component.html',
-  styleUrls: ['./products-list.component.scss']
+  selector: 'app-archive',
+  templateUrl: './archive-list.component.html',
+  styleUrls: ['./archive-list.component.scss']
 })
-export class ProductsListComponent implements OnInit, OnDestroy {
-  unsubscribe$ = new Subject();
+export class ArchiveListComponent implements OnInit, OnDestroy {
   products: Product[];
   productsPaged: Product[];
   pager: any = {};
@@ -27,15 +24,10 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   constructor(
     private pagerService: PagerService,
     private sortPipe: SortPipe,
-    public uiService: UiService
+    public uiService: UiServiceArchive
   ) { }
 
   ngOnInit() {
-    this.uiService.currentPagingPage$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((page) => {
-        this.currentPagingPage = page;
-      });
     this.getProducts();
   }
 
@@ -74,6 +66,5 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe$.unsubscribe();
   }
 }
