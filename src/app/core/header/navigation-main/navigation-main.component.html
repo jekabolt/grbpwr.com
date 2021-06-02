@@ -1,6 +1,6 @@
 <header appChbgcolor class="header">
 
-    <h1 (click)="toggleNavbar()" id="menu_btn">menu</h1>
+    <p (click)="toggleNavbar()" id="menu_btn">menu</p>
 
     <div class="desktop_logo_conteiner">
         <a routerLink="/" href=""><img class="logo" src="/img/grb-logo.png"></a>
@@ -8,10 +8,10 @@
 
     <div class="desktop_list_cart_and_sum">
         <a routerLink="/cart" href="">
-            <h1>cart</h1>
+            <p>cart</p>
         </a>
         <div class="sum_cart">
-            <h1>${{cartService.getTotal()}}</h1>
+            <p>${{cartService.getTotal()}}</p>
         </div>
     </div>
 
@@ -22,35 +22,35 @@
 
 
     <nav class="side_bar_nav_list">
-        <h1 (click)=toggleNavbar() id="menu_btn_hide" class="side_bar_btn">menu</h1>
+        <p (click)=toggleNavbar() id="menu_btn_hide" class="side_bar_btn">menu</p>
         <a routerLink="/tops" href="">
-            <h1>tops</h1>
+            <p>tops</p>
         </a>
 
         <a routerLink="/bottoms" href="">
-            <h1>bottoms</h1>
+            <p>bottoms</p>
         </a>
 
         <a routerLink="/accessories" href="">
-            <h1>accessories</h1>
+            <p>accessories</p>
         </a>
 
         <a routerLink="/bags" href="">
-            <h1>bags</h1>
+            <p>bags</p>
         </a>
 
         <a routerLink="/boots" href="">
-            <h1>boots</h1>
+            <p>boots</p>
         </a>
 
         <a routerLink="/skirts" href="">
-            <h1>skirts</h1>
+            <p>skirts</p>
         </a>
 
 
         <div (click)=toggleInfo() class="info_and_line">
             <figure class="info_line"></figure>
-            <h1 class="desktop_inf">info</h1>
+            <p class="desktop_inf">info</p>
         </div>
 
     </nav>
@@ -59,23 +59,23 @@
     <div [class.info-opened]="infoOpened" class="wrapper_info_list ">
         <nav class="side_bar_info_list">
             <a routerLink="/about" href="">
-                <h1>about</h1>
+                <p>about</p>
             </a>
 
             <a routerLink="/contact-us" href="">
-                <h1>contact us</h1>
+                <p>contact us</p>
             </a>
 
             <a routerLink="/shipping-method" href="">
-                <h1>shipping</h1>
+                <p>shipping</p>
             </a>
 
             <a routerLink="/returns" href="">
-                <h1>returns</h1>
+                <p>returns</p>
             </a>
 
             <a routerLink="/privacy-policy" href="">
-                <h1>privacy policy</h1>
+                <p>privacy policy</p>
             </a>
 
         </nav>

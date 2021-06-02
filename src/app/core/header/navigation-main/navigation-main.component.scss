@@ -49,7 +49,7 @@
             display: none;
         }
     }
-    h1 {
+    p {
         @extend %header_txt;
         cursor: pointer;
         &:first-child {
@@ -113,7 +113,7 @@
     flex-direction: column;
     width: auto;
     height: auto;
-    h1 {
+    p {
         @extend %info_txt;
         cursor: pointer;
         line-height: 32px;
@@ -127,7 +127,7 @@
     }
     .desktop_inf {
         display: none;
-        h1 {
+        p {
             cursor: pointer;
         }
     }
@@ -154,7 +154,7 @@
     overflow: hidden;
     margin: 275px 0px 20px 27px;
     .side_bar_info_list {
-        h1 {
+        p {
             @extend %info_txt;
             text-decoration-line: none;
         }

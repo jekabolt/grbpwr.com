@@ -34,7 +34,7 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
-            h1 {
+            p {
                 @extend %info_txt;
                 text-decoration-line: none;
                 margin: 0px;
@@ -50,14 +50,14 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            h1 {
+            p {
                 @extend %basik_txt;
             }
         }
         .add_to_card {
             padding: 61px 0px 0px 0px;
             text-align: right;
-            h1 {
+            p {
                 @extend %basik_txt;
                 text-decoration-line: none;
             }
@@ -65,7 +65,7 @@
         .details {
             padding: 101px 0px 14px 0px;
             cursor: pointer;
-            h1 {
+            p {
                 @extend %basik_txt;
                 text-decoration-line: none;
             }
@@ -73,7 +73,7 @@
         .details_content {
             padding: 0px 0px 20px 0px;
             display: none;
-            h1 {
+            p {
                 @extend %info_txt;
                 text-decoration-line: none;
             }
@@ -91,7 +91,7 @@
                 height: 1px;
                 background-color: #000;
             }
-            h1 {
+            p {
                 @extend %basik_txt;
                 text-decoration-line: none;
             }
@@ -103,7 +103,7 @@
             width: 100%;
             cursor: pointer;
             padding: 60px 0px 0px 0px;
-            h1 {
+            p {
                 @extend %basik_txt;
                 text-decoration-line: none;
             }
@@ -148,7 +148,7 @@
             min-width: 339px;
             .product_description_single_page {
                 padding: 0px;
-                h1 {
+                p {
                     padding: 0px 0px 10px 0px;
                 }
             }

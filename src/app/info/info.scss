@@ -14,7 +14,7 @@
     }
     .ru_lang_txt {
         display: none;
-        h1 {
+        p {
             @extend %info_txt;
             text-decoration-line: none;
         }
@@ -26,7 +26,7 @@
         display: none;
     }
     .en_lang_txt {
-        h1 {
+        p {
             @extend %info_txt;
             text-decoration-line: none;
             padding: 0px 0px 20px 0px;

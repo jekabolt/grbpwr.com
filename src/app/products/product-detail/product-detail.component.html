@@ -21,9 +21,9 @@
         <div class="description_desktop">
 
             <div class="product_description_single_page">
-                <h1>
+                <p>
                     <app-page-title title="{{ product.name }}"></app-page-title>
-                </h1>
+                </p>
                 <h2>
                     <app-price [product]="product"></app-price>
                 </h2>
@@ -32,7 +32,7 @@
 
             <!-- <div class="form-control" id="quantity" (change)="onSelectSize($event)">
                     <figure class="line_sz"></figure>
-                    <section *ngFor="let sz of availableSizes"><h1>{{sz}}</h1></section>
+                    <section *ngFor="let sz of availableSizes"><p>{{sz}}</p></section>
                     <figure class="line_sz"></figure>
                 </div> -->
 
@@ -47,16 +47,16 @@
             <section class="add_btn">
                 <figure class="line_add"></figure>
                 <div (click)="onAddToCart(cartButton.id)" #cartButton id="cartButton">
-                    <h1>{{cartButtonTitle}}</h1>
+                    <p>{{cartButtonTitle}}</p>
                 </div>
             </section>
 
             <div (click)="get()" class="details">
-                <h1 id="details">Details</h1>
+                <p id="details">Details</p>
             </div>
 
             <aside id="details_content" class="details_content">
-                <h1>{{product.description}}</h1>
+                <p>{{product.description}}</p>
             </aside>
 
         </div>
