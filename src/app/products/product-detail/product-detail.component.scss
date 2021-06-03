@@ -1,7 +1,7 @@
 @import "../../../scss/common.scss";
 .content {
-    width: 100%;
-    margin: 90px 0px 0px 0px;
+    width: 335/375*100%;
+    margin: 90px auto 0px auto;
     padding: 0px 0px 20px 0px;
     .single_product_content_desktop {
         .product_img {
@@ -19,6 +19,10 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+
+            li {
+                list-style-type: none;
+            }
             .product_img_desktop_small {
                 width: 66/335*100%;
                 height: 66px;
@@ -118,8 +122,8 @@
 
 @media screen and (min-width: 768px) {
     .content {
-        margin: 169px 0px 0px 0px;
-        width: 100%;
+        margin: 169px auto 0px auto;
+        width: 1361/1441*100%;
         .single_product_content_desktop {
             display: flex;
             .product_img {
@@ -128,9 +132,6 @@
             }
             .img_slider_content {
                 display: flex;
-                li {
-                    list-style-type: none;
-                }
                 .product_img_desktop_small {
                     img {
                         width: 100%;

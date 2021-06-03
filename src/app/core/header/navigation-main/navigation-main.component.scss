@@ -62,21 +62,19 @@
 }
 
 @media screen and (min-width: 768px) {
-    .desktop_logo_conteiner {
-        position: absolute;
-        height: 100%;
-        width: 950/1196*100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        .logo {
-            width: 74px;
-        }
-    }
+
+    
     .header {
         height: 104px;
-        width: 1196/1441*100vw;
-        margin: 0px 0px 0px 245px;
+        width: 100%;
+        margin: 0px;
+
+        z-index: 100;
+
+        .logo {
+            width: 74px;
+            margin: 40px 0px 0px 40px;
+        }
         #menu_btn {
             display: none;
         }
@@ -117,7 +115,7 @@
         @extend %info_txt;
         cursor: pointer;
         line-height: 32px;
-        padding: 7px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
     }
     .side_bar_btn {
         padding-bottom: 13px;
@@ -141,7 +139,6 @@
         .info_line {
             width: 36px;
             height: 1px;
-            background-color: #fff;
             margin: 20px 5px 0px 0px;
             display: none;
         }
@@ -176,9 +173,14 @@
     .side_bar_nav {
         width: 245px;
         transform: translateX(0%);
-        margin: 0px;
+        margin: 0px 0px 0px 0px;
         padding: 0px;
         z-index: 98;
+
+        #menu_btn_hide {
+            display: none;
+        }
+
         .bg_side_bar {
             display: none;
         }
@@ -186,7 +188,6 @@
             display: block;
             padding: 20px 0px 0px 0px;
             z-index: 99;
-            background-color: #fff;
         }
         .info_and_line {
             position: absolute;
@@ -195,14 +196,18 @@
             .info_line {
                 background-color: #000;
             }
+            .desktop_inf {
+                font-size: 34px;
+                font-weight: 500;
+            }
         }
     }
     .side_bar_nav_list {
         display: flex;
         justify-content: center;
         flex-direction: column;
-        margin: 40px 0px 0px 40px;
-        padding: 22px 0px 0px 0px;
+        margin: 173px 0px 0px 40px;
+        padding: 0px 0px 0px 0px;
         background-color: #fff;
         .side_bar_btn {
             text-decoration-line: line-through;
@@ -211,7 +216,7 @@
     .wrapper_info_list {
         overflow: hidden;
         position: absolute;
-        margin: 0px 0px 106px 40px;
+        margin: 0px 0px 60px 40px;
         .side_bar_info_list {
             opacity: 0;
             transform: translateY(120%);

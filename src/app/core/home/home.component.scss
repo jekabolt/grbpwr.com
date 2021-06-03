@@ -1,6 +1,8 @@
 @import "../../../scss/common.scss";
+
+
 .content {
-    min-width: 335/375*100%;
+    width: 335/375*100%;
     display: flex;
     flex-direction: column;
     margin: 130px auto 0px auto;
@@ -8,7 +10,7 @@
         padding: 0px 0px 50px 0px;
     }
     .clip {
-        min-width: 335/375*100%;
+        min-width: 100%;
         display: flex;
         padding: 0px 0px 10px 0px;
         background-color: #000000;
@@ -60,8 +62,8 @@
 
 @media screen and (min-width: 768px) {
     .content {
-        width: 100%;
-        margin: 42px 0px 20px 0px;
+        max-width: 950/1441*100%;
+        margin: 140px 0px 0px 294px;
         .clip {
             min-width: 80%;
             margin: 0px 0px 30px 0px;
@@ -72,6 +74,11 @@
         }
         .product_img {
             height: 19vw !important;
+        }
+        .go_to_archive {
+            .line {
+                width: 784/950  *100%;
+            }
         }
     }
 }
