@@ -1,7 +1,9 @@
 .info-content {
+    width: 335/375*100%;
+    margin: 80px auto 80px auto;
     .title {
         h2 {
-            @extend %basik_txt;
+            @extend %title_txt;
         }
     }
     .lang_selected_content {
@@ -12,24 +14,29 @@
         justify-content: space-between;
         padding: 29px 0px 20px 0px
     }
-    .ru_lang_txt {
-        display: none;
-        p {
-            @extend %info_txt;
+    p {
+        @extend %info_txt;
+        text-decoration-line: none;
+        padding: 0px 0px 20px 0px;
+    }
+
+    .section_next_button {
+        margin: 349px 0px 0px 0px;
+        width: 100%;
+        text-align: right;
+        a {
+            p{
+            text-decoration: none;
+            color: #000;
             text-decoration-line: none;
+            @extend %basik_txt;
+           }
         }
-    }
-    .active_lang {
-        display: block;
-    }
-    .disactive_lang {
-        display: none;
-    }
-    .en_lang_txt {
-        p {
-            @extend %info_txt;
-            text-decoration-line: none;
-            padding: 0px 0px 20px 0px;
+        .line {
+            width: 100%;
+            height: 1px;
+            background-color: #000;
         }
+
     }
 }

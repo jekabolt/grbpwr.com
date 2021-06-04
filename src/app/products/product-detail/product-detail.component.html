@@ -9,11 +9,25 @@
             </div>
 
             <ul class="img_slider_content">
+
                 <li class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
                     <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
                         <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
                     </a>
                 </li>
+
+                <li class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
+                    <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
+                        <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
+                    </a>
+                </li>
+
+                <li class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
+                    <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
+                        <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
+                    </a>
+                </li>
+
             </ul>
 
         </section>
@@ -37,11 +51,14 @@
                 </div> -->
 
             <div class="form-group">
-                <label for="size">SIZE</label>
+
                 <select class="form-control" id="quantity" (change)="onSelectSize($event)">
 
-                                <option *ngFor="let sz of availableSizes">{{sz}}</option>
-                            </select>
+                    <option *ngFor="let sz of availableSizes"><p>{{sz}}</p></option>
+                    
+
+                </select>
+
             </div>
 
             <section class="add_btn">
