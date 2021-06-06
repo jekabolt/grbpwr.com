@@ -39,8 +39,8 @@
     ],
     "name": "Shawl 2",
     "price": 150,
-    "priceNormal": 170,
-    "reduction": 12,
+    "priceNormal": 0,
+    "reduction": 0,
     "sale": true,
     "size": "",
     "availableSizes": [
