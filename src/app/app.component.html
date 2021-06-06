@@ -1,5 +1,6 @@
-<div class="main-wrapper" [ngClass]="{'offcanvas-open': offcanvasService.offcanvasNavigationOpen | async}">
+<div class="main-wrapper">
     <!-- <app-top-bar></app-top-bar> -->
-    <app-header></app-header>
+    <app-header *ngIf="visible"></app-header>
+    <!-- <app-header></app-header> -->
     <app-content></app-content>
 </div>

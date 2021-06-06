@@ -37,6 +37,7 @@ export class ProductsListItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if(this.userSubscription && !this.userSubscription.closed)
     this.userSubscription.unsubscribe();
   }
 }

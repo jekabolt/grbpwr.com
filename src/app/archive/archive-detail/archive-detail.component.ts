@@ -139,6 +139,7 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if(this.unsubscribe$ && !this.unsubscribe$.closed)
     this.unsubscribe$.unsubscribe();
   }
 }

@@ -57,6 +57,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if(this.cartSubscription && !this.cartSubscription.closed)
     this.cartSubscription.unsubscribe();
   }
 }

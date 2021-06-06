@@ -4,8 +4,6 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { filter } from 'rxjs/operators';
 
-import { Subscription } from 'rxjs';
-
 
 import { User } from '../../../models/user.model';
 import {CartService} from '../../../cart/shared/cart.service';
@@ -18,7 +16,6 @@ import {CartService} from '../../../cart/shared/cart.service';
 })
 export class NavigationMainComponent implements OnInit, OnDestroy {
   public user: User;
-  private authSubscription: Subscription;
   public navbarOpened = false
   public infoOpened = false
 
@@ -55,6 +52,6 @@ export class NavigationMainComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.authSubscription.unsubscribe();
+
   }
 }

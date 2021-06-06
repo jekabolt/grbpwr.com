@@ -33,7 +33,7 @@ export class ArchiveListComponent implements OnInit, OnDestroy {
 
   getProducts() {
     this.productsLoading = true;
-    this.products = products;
+    this.products = Products;
     this.setPage(this.currentPagingPage);
     this.productsLoading = false;
   }
