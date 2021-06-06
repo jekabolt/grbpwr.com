@@ -2,25 +2,13 @@
 
     <div *ngIf="product" class="single_product_content_desktop">
 
-        <section>
+        <section class="img_content">
 
             <div class="product_img" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
                 <img [hidden]="!imagesLoaded.includes(activeImageUrl)" class="img-fluid" src="{{activeImageUrl}}" alt="{{product.name}}" (load)="onImageLoad($event)">
             </div>
 
             <ul class="img_slider_content">
-
-                <li class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
-                    <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                        <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
-                    </a>
-                </li>
-
-                <li class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
-                    <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                        <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
-                    </a>
-                </li>
 
                 <li class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
                     <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
@@ -55,7 +43,6 @@
                 <select class="form-control" id="quantity" (change)="onSelectSize($event)">
 
                     <option *ngFor="let sz of availableSizes"><p>{{sz}}</p></option>
-                    
 
                 </select>
 
