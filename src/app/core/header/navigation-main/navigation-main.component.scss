@@ -43,7 +43,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: #fff;
+    
     .desktop_list_cart_and_sum {
         .sum_cart {
             display: none;
@@ -111,6 +111,11 @@
     flex-direction: column;
     width: auto;
     height: auto;
+
+    z-index: 100;
+
+    background-color: #fff;
+
     p {
         @extend %info_txt;
         cursor: pointer;
@@ -209,6 +214,7 @@
         margin: 173px 0px 0px 40px;
         padding: 0px 0px 0px 0px;
         background-color: #fff;
+        z-index: 100;
         .side_bar_btn {
             text-decoration-line: line-through;
         }
@@ -217,6 +223,7 @@
         overflow: hidden;
         position: absolute;
         margin: 0px 0px 60px 40px;
+        z-index: 99;
         .side_bar_info_list {
             opacity: 0;
             transform: translateY(120%);
@@ -224,6 +231,7 @@
             justify-content: center;
             flex-direction: column;
             margin: 0px auto 0px auto;
+            z-index: 99;
         }
     }
 }
