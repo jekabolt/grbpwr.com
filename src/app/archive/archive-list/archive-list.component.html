@@ -1,17 +1,13 @@
 <section class="content">
 
-    <div *ngFor="let product of products" class="video_conteiner">
+    <div *ngFor="let article of articles" class="video_conteiner">
 
         <div class="video_archive"></div>
 
         <a href="" class="video_archive">
-            <img [src]="product.mainImage" alt="{{product.name}}">
+            <img [src]="article.mainImage" alt="{{article.name}}">
+            <p>{{ article.title }}</p>
         </a>
-
-        <p>{{ product.name }}</p>
-
-        <p>Video</p>
-
     </div>
 
 </section>

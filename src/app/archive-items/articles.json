@@ -1,0 +1,27 @@
+[{
+    "id": 1,
+    "date": "2018-04-02",
+    "title": "Article 1",
+    "description": "description 1",
+    "descriptionAlternative": "",
+    "mainImage": "/img/tumb.png",
+    "type": "",
+    "article": [{
+        "mediaLink": "",
+        "description": "description 1",
+        "descriptionAlternative": ""
+    }]
+}, {
+    "id": 2,
+    "date": "2018-04-02",
+    "title": "Article 1",
+    "description": "description 2",
+    "descriptionAlternative": "",
+    "mainImage": "/img/tumb.png",
+    "type": "",
+    "article": [{
+        "mediaLink": "",
+        "description": "description 2",
+        "descriptionAlternative": ""
+    }]
+}]
