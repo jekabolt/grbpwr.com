@@ -1,11 +1,13 @@
-// @import '~scss/common';
-// @import '~scss/components/radio';
-// @import '../info';
+    @import '~scss/common';
+
 
 .content {
     width: 335/375*100%;
     margin: 86px auto 0px auto;
+
+
 }
+
 
 @media screen and (min-width: 768px) {
     .content {
