@@ -1,4 +1,4 @@
-@import "common.scss";
+@import "../../../scss/common.scss";
 .content {
     width: 335/375*100%;
     margin: 89px auto 0px auto;
@@ -6,11 +6,7 @@
     .video_conteiner {
         width: 100%;
         margin: 42px 0px 0px 0px;
-        .video_archive {
-            width: 100%;
-            min-height: 200px;
-            background-color: #000;
-        }
+        .video_archive {}
         p {
             padding: 20px 0px 0px 0px;
             @extend %basik_txt;
@@ -36,11 +32,10 @@
         .video_description_act {
             height: auto;
             h1 {
-            transition-duration: 0.2s;
-            transform: translateY(0%);
+                transition-duration: 0.2s;
+                transform: translateY(0%);
             }
         }
-
     }
 }
 

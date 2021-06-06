@@ -1,42 +1,17 @@
 <section class="content">
 
-    <div class="video_conteiner">
+    <div *ngFor="let product of products" class="video_conteiner">
 
         <div class="video_archive"></div>
 
-        <p>Fibonacci Campaign</p>
+        <a href="" class="video_archive">
+            <img [src]="product.mainImage" alt="{{product.name}}">
+        </a>
+
+        <p>{{ product.name }}</p>
 
         <p>Video</p>
 
-        <!-- <div class="video_description">
-            <h1>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Commodi aperiam accusamus eaque qui dolor architecto atque 
-                ea earum mollitia alias nesciunt cum molestias quia voluptate 
-                quam velit repudiandae, ipsum delectus.
-            </h1>
-        </div> -->
-
     </div>
 
-
-    <div class="video_conteiner">
-
-        <div class="video_archive"></div>
-
-        <p>Fibonacci Campaign</p>
-
-        <p>Video</p>
-
-        <!-- <div class="video_description">
-            <h1>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Commodi aperiam accusamus eaque qui dolor architecto atque 
-                ea earum mollitia alias nesciunt cum molestias quia voluptate 
-                quam velit repudiandae, ipsum delectus.
-            </h1>
-        </div> -->
-
-    </div>
-    
 </section>

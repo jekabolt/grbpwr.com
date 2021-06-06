@@ -14,7 +14,7 @@ import Products from '../../shop-items/products.json';
   styleUrls: ['./archive-list.component.scss']
 })
 export class ArchiveListComponent implements OnInit, OnDestroy {
-  products: Product[];
+  products: Product[ ];
   productsPaged: Product[];
   pager: any = {};
   user: User;
