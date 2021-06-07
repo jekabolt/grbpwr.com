@@ -3,90 +3,98 @@
 
 <!-- Page Content-->
 <div class="content">
-  
-        <table class="table">
 
-            <tbody *ngIf="items.length; else noItemsInCart">
+    <table class="table">
 
-                <tr *ngFor="let item of items">
+        <tbody *ngIf="items.length; else noItemsInCart">
+
+            <tr *ngFor="let item of items">
 
                 <div class="container_cart">
 
                     <section class="img_and_description">
-                        
+
                         <div class="product-item">
                             <a class="product-thumb" routerLink="/products/{{item.product.id}}">
-                               <img [src]="item.product.imageURLs[0]" alt="Product">
+                                <img [src]="item.product.imageURLs[0]" alt="Product">
                             </a>
                         </div>
 
                         <section class="product_description">
 
                             <div class="product-info">
-                                <a routerLink="/products/{{item.product.id}}"><p>{{item.product.name}}</p></a>
-                                <p><strong>({{item.size}})</strong></p>  
+                                <a routerLink="/products/{{item.product.id}}">
+                                    <p>{{item.product.name}}</p>
+                                </a>
+                                <p><strong>({{item.size}})</strong></p>
                             </div>
-                        
 
-                        
+
+
                             <div class="input-group">
-                                    
+
                                 <button class="btn_plus" type="button" (click)="decreaseAmount(item)">-</button>
-                                 
+
                                 <input type="text" class="form-contro" placeholder="" [(ngModel)]="item.amount" (blur)="checkAmount(item)">
-                                        
+
                                 <button class="btn_minus" type="button" (click)="increaseAmount(item)">+</button>
-                                        
-                             </div>
-    
-                            
+
+                            </div>
+
+
 
                             <div class="price">
-                                <p><app-price [product]="item.product"></app-price></p>
+                                <p>
+                                    <app-price [product]="item.product"></app-price>
+                                </p>
                             </div>
-                               
 
-                            
-                            
+
+
+
 
                         </section>
 
                     </section>
 
                     <a class="remove-from-cart" href="#" data-toggle="tooltip" title="Remove item" (click)="onRemoveItem($event, item)">
-                            <figure class="remove_line"></figure>
-                            <p>remove</p>
+                        <figure class="remove_line"></figure>
+                        <p>remove</p>
                     </a>
 
                 </div>
- 
-                </tr>
 
-                <div class="shopping-cart-footer">
+            </tr>
 
-                    <div class="total_and_currency">
-                       <p>Total: <strong>{{ total | currency }}</strong></p>
-                    </div>
-                    
-                    <section class="checkout_and_total">
-    
-                        <figure class="line_checkout"></figure> 
-                        <a *ngIf="items.length" class="btn btn-success" routerLink="/checkout"><p>Checkout</p></a>
-                    </section>
-                        
+            <div class="shopping-cart-footer">
+
+                <div class="total_and_currency">
+                    <p>Total: <strong>{{ total | currency }}</strong></p>
                 </div>
 
+                <section class="checkout_and_total">
+
+                    <figure class="line_checkout"></figure>
+                    <a *ngIf="items.length" class="btn btn-success" routerLink="/checkout">
+                        <p>Checkout</p>
+                    </a>
+                </section>
+
+            </div>
+
+        </tbody>
+
+
+        <ng-template #noItemsInCart>
+            <tbody class="empty">
+                <tr>
+                    <td colspan="5">
+                        <p>nothing</p>
+                    </td>
+                </tr>
             </tbody>
+        </ng-template>
 
-
-            <ng-template #noItemsInCart>
-                <tbody class="empty">
-                    <tr>
-                        <td colspan="5"><p>nothing</p></td>
-                    </tr>
-                </tbody>
-            </ng-template>
-
-        </table>
+    </table>
 
 </div>

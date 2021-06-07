@@ -1,14 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {PagerService} from '../../pager/pager.service';
-import {ArchiveCacheService} from '../shared/archive-cache.service';
-import {ArchiveService} from '../shared/archive.service';
-import {UiService} from '../shared/ui.service';
+import {UiServiceArchive} from '../shared/ui.service';
 import {SortPipe} from '../shared/sort.pipe';
 
-import {Product} from '../../models/product.model';
+import {ArchiveArticle} from '../../models/archive.model';
 import {User} from '../../models/user.model';
-import Products from '../../shop-items/products.json';
+import Articles from '../../archive-items/articles.json';
 
 @Component({
   selector: 'app-archive',
@@ -16,28 +14,28 @@ import Products from '../../shop-items/products.json';
   styleUrls: ['./archive-list.component.scss']
 })
 export class ArchiveListComponent implements OnInit, OnDestroy {
-  products: Product[];
-  productsPaged: Product[];
+  articles: ArchiveArticle[ ];
+  articlesPaged: ArchiveArticle[];
   pager: any = {};
   user: User;
-  productsLoading: boolean;
+  articlesLoading: boolean;
   currentPagingPage: number;
 
   constructor(
     private pagerService: PagerService,
     private sortPipe: SortPipe,
-    public uiService: UiService
+    public uiService: UiServiceArchive
   ) { }
 
   ngOnInit() {
-    this.getProducts();
+    this.getArticles();
   }
 
-  getProducts() {
-    this.productsLoading = true;
-    this.products = Products;
+  getArticles() {
+    this.articlesLoading = true;
+    this.articles = Articles;
     this.setPage(this.currentPagingPage);
-    this.productsLoading = false;
+    this.articlesLoading = false;
   }
 
   onDisplayModeChange(mode: string, e: Event) {
@@ -49,8 +47,8 @@ export class ArchiveListComponent implements OnInit, OnDestroy {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-    this.pager = this.pagerService.getPager(this.products.length, page, 8);
-    this.productsPaged = this.products.slice(
+    this.pager = this.pagerService.getPager(this.articles.length, page, 8);
+    this.articlesPaged = this.articles.slice(
       this.pager.startIndex,
       this.pager.endIndex + 1
     );
@@ -59,7 +57,7 @@ export class ArchiveListComponent implements OnInit, OnDestroy {
 
   onSort(sortBy: string) {
     this.sortPipe.transform(
-      this.products,
+      this.articles,
       sortBy.replace(':reverse', ''),
       sortBy.endsWith(':reverse')
     );

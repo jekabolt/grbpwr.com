@@ -13,32 +13,35 @@ import {ReturnsComponent} from './info/returns/returns.component';
 
 import {CheckoutComponent} from './checkout/checkout.component';
 import {ProductsListComponent} from './products/products-list/products-list.component';
-import {ArchiveListComponent} from './archive/archive-list/archive-list.component';
 import {ProductDetailComponent} from './products/product-detail/product-detail.component';
+
+import {ArchiveListComponent} from './archive/archive-list/archive-list.component';
+import {ArchiveDetailComponent} from './archive/archive-detail/archive-detail.component';
 import {CompleteComponent} from './checkout/complete/complete.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'products', component: ProductsListComponent },
-  { path: 'products/:id', component: ProductDetailComponent },
+  { path: '', component: HomeComponent,  data: {header:true} },
+  { path: 'products', component: ProductsListComponent,  data: {header:true} },
+  { path: 'products/:id', component: ProductDetailComponent ,  data: {header:false}},
 
-  { path: 'archive', component: ArchiveListComponent },
+  { path: 'archive', component: ArchiveListComponent,  data: {header:true} },
+  { path: 'archive/:id', component: ArchiveDetailComponent,  data: {header:true} },
 
-  { path: 'cart', component: CartComponent },
+  { path: 'cart', component: CartComponent,  data: {header:true} },
 
-  { path: 'checkout', component: CheckoutComponent },
+  { path: 'checkout', component: CheckoutComponent,data: {header:false} },
 
-  { path: 'order-complete', component: CompleteComponent },
+  { path: 'order-complete', component: CompleteComponent,  data: {header:true} },
 
   //info
-  { path: 'shipping-method', component: ShippingMethodsComponent },
-  { path: 'privacy-policy', component: PrivacyPolicyComponent },
-  { path: 'contact-us', component: ContactUsComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'returns', component: ReturnsComponent },
+  { path: 'shipping-method', component: ShippingMethodsComponent,  data: {header:true} },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent,  data: {header:true} },
+  { path: 'contact-us', component: ContactUsComponent,  data: {header:true} },
+  { path: 'about', component: AboutComponent,  data: {header:true} },
+  { path: 'returns', component: ReturnsComponent,  data: {header:true} },
 
-  { path: 'single-product', component: SingleProductComponent },
-  { path: '**', component: PageNotFoundComponent },
+  { path: 'single-product', component: SingleProductComponent,  data: {header:true} },
+  { path: '**', component: PageNotFoundComponent, data: {header:false} },
 ];
 
 @NgModule({

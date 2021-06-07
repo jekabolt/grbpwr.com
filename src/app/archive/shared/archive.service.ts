@@ -1,11 +1,10 @@
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
 
-import {ArchiveUrl} from './archiveUrl';
 
 @Injectable({providedIn: 'root'})
 export class ArchiveService {
-  private productsUrl = ArchiveUrl.productsUrl;
+
 
   constructor(
 

@@ -2,18 +2,18 @@
 <div class="page-title">
     <div class="container">
         <div class="column">
-            <h1>{{ title }}</h1>
+            <p>{{ title }}</p>
         </div>
         <!-- <div class="column">
             <ul class="breadcrumbs">
                 <li>
-                    <a routerLink="/home" href="">Home</a>
+                    <a routerLink="/" href="">Home</a>
                 </li>
                 <ng-container *ngFor="let child of children">
                     <li class="separator">&nbsp;</li>
                     <li>
                         <a *ngIf="child.link; else noLink" [routerLink]="child.link">{{ child.title }}</a>
-                        
+
                     </li>
                 </ng-container>
             </ul>

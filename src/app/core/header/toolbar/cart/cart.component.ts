@@ -35,6 +35,7 @@ export class ToolbarCartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if(this.cartSubscription && !this.cartSubscription.closed)
     this.cartSubscription.unsubscribe();
   }
 }

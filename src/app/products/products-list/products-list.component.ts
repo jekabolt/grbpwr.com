@@ -1,8 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {PagerService} from '../../pager/pager.service';
-// import {ProductsCacheService} from '../shared/products-cache.service';
-// import {ProductService} from '../shared/product.service';
 import {UiService} from '../shared/ui.service';
 import {SortPipe} from '../shared/sort.pipe';
 

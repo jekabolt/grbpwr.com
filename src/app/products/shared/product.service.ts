@@ -1,11 +1,9 @@
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
 
-import {ProductsUrl} from './productsUrl';
-
 @Injectable()
 export class ProductService {
-  private productsUrl = ProductsUrl.productsUrl;
+
 
   constructor(
 

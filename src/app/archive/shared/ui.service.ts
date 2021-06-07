@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
-export class UiService {
+export class UiServiceArchive {
   public sorting$: BehaviorSubject<string>;
   public displayMode$: BehaviorSubject<string>;
   public currentPagingPage$: BehaviorSubject<number>;

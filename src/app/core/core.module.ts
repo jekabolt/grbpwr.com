@@ -14,13 +14,13 @@ import { PromoComponent } from './home/promo/promo.component';
 
 import { ProductService } from '../products/shared/product.service';
 import { ArchiveService } from '../archive/shared/archive.service';
-
 import { CartService } from '../cart/shared/cart.service';
 import { PagerService } from '../pager/pager.service';
 import { CheckoutService } from '../checkout/shared/checkout.service';
 import { OffcanvasService } from './shared/offcanvas.service';
 import { UiService } from '../products/shared/ui.service';
 import { ProductsCacheService } from '../products/shared/products-cache.service';
+import { UiServiceArchive } from '../archive/shared/ui.service';
 import { ArchiveCacheService } from '../archive/shared/archive-cache.service';
 
 import { throwIfAlreadyLoaded } from './module-import-guard';
@@ -58,7 +58,8 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
         PagerService,
         CheckoutService,
         OffcanvasService,
-        UiService
+        UiService,
+        UiServiceArchive,
     ]
 })
 export class CoreModule {

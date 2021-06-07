@@ -2,8 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
-// import {ProductService} from '../../products/shared/product.service';
-// import {ProductsCacheService} from '../../products/shared/products-cache.service';
 
 import {Product} from '../../models/product.model';
 
@@ -18,14 +16,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   public productsBestRated: Product[];
 
   constructor(
-    // private productsCache: ProductsCacheService,
-    // private productService: ProductService,
   ) { }
 
   ngOnInit() {
   }
 
   ngOnDestroy() {
+    if(this.unsubscribe$ && !this.unsubscribe$.closed)
     this.unsubscribe$.unsubscribe();
   }
 }

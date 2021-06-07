@@ -24,6 +24,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if(this.checkoutSubscription && !this.checkoutSubscription.closed)
     this.checkoutSubscription.unsubscribe();
   }
 }

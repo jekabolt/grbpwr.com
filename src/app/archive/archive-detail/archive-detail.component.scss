@@ -1,27 +1,7 @@
-%basik_txt {
-    font-size: 20px;
-    font-weight: 600;
-    color: #000000;
-    line-height: 22px;
-}
-
-%header_txt {
-    font-size: 22px;
-    font-weight: 600;
-    color: #000000;
-    line-height: 22px;
-}
-
-%info_txt {
-    font-size: 18px;
-    font-weight: 400;
-    color: #000000;
-    line-height: 22px;
-}
-
+@import "../../../scss/common.scss";
 .content {
-    width: 335/375*100%;
-    margin: 90px auto 0px auto;
+    width: 100%;
+    margin: 90px 0px 0px 0px;
     padding: 0px 0px 20px 0px;
     .single_product_content_desktop {
         .product_img {
@@ -34,15 +14,19 @@
             }
         }
         .img_slider_content {
-            width: 518px;
+            width: 100%;
             margin: 26px 0px 0px 0px;
-            display: none;
+            display: flex;
             flex-direction: row;
             justify-content: space-between;
             .product_img_desktop_small {
-                width: 149px;
-                height: 148px;
+                width: 66/335*100%;
+                height: 66px;
                 background-color: #c4c4c4;
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
             }
         }
         .product_description_single_page {
@@ -50,7 +34,7 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
-            h1 {
+            p {
                 @extend %info_txt;
                 text-decoration-line: none;
                 margin: 0px;
@@ -66,14 +50,14 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            h1 {
+            p {
                 @extend %basik_txt;
             }
         }
         .add_to_card {
             padding: 61px 0px 0px 0px;
             text-align: right;
-            h1 {
+            p {
                 @extend %basik_txt;
                 text-decoration-line: none;
             }
@@ -81,7 +65,7 @@
         .details {
             padding: 101px 0px 14px 0px;
             cursor: pointer;
-            h1 {
+            p {
                 @extend %basik_txt;
                 text-decoration-line: none;
             }
@@ -89,7 +73,7 @@
         .details_content {
             padding: 0px 0px 20px 0px;
             display: none;
-            h1 {
+            p {
                 @extend %info_txt;
                 text-decoration-line: none;
             }
@@ -107,7 +91,7 @@
                 height: 1px;
                 background-color: #000;
             }
-            h1 {
+            p {
                 @extend %basik_txt;
                 text-decoration-line: none;
             }
@@ -119,7 +103,7 @@
             width: 100%;
             cursor: pointer;
             padding: 60px 0px 0px 0px;
-            h1 {
+            p {
                 @extend %basik_txt;
                 text-decoration-line: none;
             }
@@ -134,8 +118,8 @@
 
 @media screen and (min-width: 768px) {
     .content {
-        margin: 42px 0px 0px 0px;
-        width: 903/1440*100%;
+        margin: 169px 0px 0px 0px;
+        width: 100%;
         .single_product_content_desktop {
             display: flex;
             .product_img {
@@ -152,7 +136,7 @@
                         width: 100%;
                         height: 100%;
                     }
-                    .archive-thumbnail-image {
+                    .product-thumbnail-image {
                         width: 100%;
                         height: 100%;
                     }
@@ -164,7 +148,7 @@
             min-width: 339px;
             .product_description_single_page {
                 padding: 0px;
-                h1 {
+                p {
                     padding: 0px 0px 10px 0px;
                 }
             }

@@ -1,6 +1,6 @@
 // radio button style
 .radio_lable_ru {
-    h1 {
+    p {
         @extend %basik_txt;
         text-decoration-line: none;
         cursor: pointer;
@@ -8,7 +8,7 @@
 }
 
 .radio_lable_en {
-    h1 {
+    p {
         @extend %basik_txt;
         text-decoration-line: none;
         cursor: pointer;
@@ -28,13 +28,13 @@
 }
 
 .radio_checked_en:checked~.radio_lable_en {
-    h1 {
+    p {
         text-decoration: underline;
     }
 }
 
 .radio_checked_ru:checked~.radio_lable_ru {
-    h1 {
+    p {
         text-decoration: underline;
     }
 }

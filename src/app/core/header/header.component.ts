@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 
 import {OffcanvasService} from '../shared/offcanvas.service';
 
@@ -17,7 +16,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    private router: Router,
     private offcanvasService: OffcanvasService
   ) {
 
