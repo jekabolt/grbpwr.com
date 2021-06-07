@@ -2,6 +2,25 @@
 
     <div *ngIf="product" class="single_product_content_desktop">
 
+        <header class="header_product">
+            
+                <a class="back_and_line" routerLink="/" href="">
+                    <div class="line"></div>
+                    <p>go back</p>
+                </a>
+
+            <a routerLink="/" href=""><img class="logo" src="/img/grb-logo.svg"></a>
+
+            <div class="desktop_list_cart_and_sum">
+                <a routerLink="/cart" href="">
+                    <p>cart</p>
+                </a>
+                <div class="sum_cart">
+                    <p>${{cartService.getTotal()}}</p>
+                </div>
+            </div>
+        </header>
+
         <section class="img_content">
 
             <div class="product_img" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
