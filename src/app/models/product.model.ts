@@ -11,6 +11,7 @@ export class Product {
     public priceNormal: number = 0,
     public reduction: number = 0,
     public imageURLs: string[] = [],
+    public mainImage: string = '',
     public imageRefs: string[] = [],
     public availableSizes: string[] = [],
     public categories: {} = {},

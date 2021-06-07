@@ -1,42 +1,13 @@
 <section class="content">
 
-    <div class="video_conteiner">
+    <div *ngFor="let article of articles" class="video_conteiner">
 
         <div class="video_archive"></div>
 
-        <p>Fibonacci Campaign</p>
-
-        <p>Video</p>
-
-        <!-- <div class="video_description">
-            <h1>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Commodi aperiam accusamus eaque qui dolor architecto atque 
-                ea earum mollitia alias nesciunt cum molestias quia voluptate 
-                quam velit repudiandae, ipsum delectus.
-            </h1>
-        </div> -->
-
+        <a href="" class="video_archive">
+            <img [src]="article.mainImage" alt="{{article.name}}">
+            <p>{{ article.title }}</p>
+        </a>
     </div>
 
-
-    <div class="video_conteiner">
-
-        <div class="video_archive"></div>
-
-        <p>Fibonacci Campaign</p>
-
-        <p>Video</p>
-
-        <!-- <div class="video_description">
-            <h1>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Commodi aperiam accusamus eaque qui dolor architecto atque 
-                ea earum mollitia alias nesciunt cum molestias quia voluptate 
-                quam velit repudiandae, ipsum delectus.
-            </h1>
-        </div> -->
-
-    </div>
-    
 </section>

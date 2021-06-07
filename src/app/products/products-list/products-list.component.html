@@ -4,38 +4,7 @@
 <div class="container padding-bottom-3x mb-1">
     <!-- Shop Toolbar-->
     <div class="shop-toolbar padding-bottom-1x mb-2">
-        <!-- <div class="column">
-            <div class="shop-sorting">
-                <label for="sorting">Sort by:</label>
-                <select class="form-control" id="sorting" #selectSort (change)="onSort(selectSort.value)">
-                    <option value="date:reverse" [selected]="(uiService.sorting$ | async) === 'date:reverse'">Newest Articles</option>
-                    <option value="price" [selected]="(uiService.sorting$ | async) === 'price'">Low - High Price</option>
-                    <option value="price:reverse" [selected]="(uiService.sorting$ | async) === 'price:reverse'">High - Low Price</option>
-                    <option value="name" [selected]="(uiService.sorting$ | async) === 'name'">A - Z Order</option>
-                    <option value="name:reverse" [selected]="(uiService.sorting$ | async) === 'name:reverse'">Z - A Order</option>
-                </select>
-                <span class="text-muted">Showing:&nbsp;</span>
-                <span>1 - 12 items</span>
-            </div>
-        </div>
-        <div class="column">
-            <a *ngIf="user && user.roles.admin" class="btn btn-primary mt-0 mr-0 align-top" routerLink="/admin/add" href="">
-                <i class="icon-plus"></i>
-                <span> Add Product</span>
-            </a>
-            <div class="shop-view">
-                <a href="" class="grid-view" [ngClass]="{active: (uiService.displayMode$ | async) === 'grid'}" (click)="onDisplayModeChange('grid', $event)">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </a>
-                <a href="" class="list-view" [ngClass]="{active: (uiService.displayMode$ | async) === 'list'}" (click)="onDisplayModeChange('list', $event)">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </a>
-            </div>
-        </div> -->
+
     </div>
 
 

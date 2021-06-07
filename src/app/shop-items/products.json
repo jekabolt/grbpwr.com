@@ -12,6 +12,7 @@
     "imageURLs": [
         "/img/tumb.png", "/img/tumb2.png", "/img/tumb3.png"
     ],
+    "mainImage": "/img/tumb.png",
     "name": "Shawl 1",
     "price": 150,
     "priceNormal": 150,
@@ -37,6 +38,7 @@
     "imageURLs": [
         "/img/shawl-clouds-2.jpg"
     ],
+    "mainImage": "/img/shawl-clouds-2.jpg",
     "name": "Shawl 2",
     "price": 150,
     "priceNormal": 0,
