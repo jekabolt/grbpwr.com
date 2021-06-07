@@ -1,33 +1,38 @@
-<h4>Choose Shipping Method</h4>
+<section class="title"><p>shipping method</p></section>
 <hr class="padding-bottom-1x">
 <form [formGroup]="formShipping">
     <div class="table-responsive">
         <table class="table">
             <thead class="thead-default">
-                <tr>
-                    <th>Shipping method</th>
-                    <th>Delivery time</th>
-                    <th>Handling fee</th>
-                    <th></th>
-                </tr>
             </thead>
-            <tbody>
-                <tr *ngFor="let shippingMethod of shippingMethods">
-                    <td class="align-middle">
-                        <span class="text-medium">{{shippingMethod.method}}</span>
-                    </td>
-                    <td class="align-middle">{{shippingMethod.time}}</td>
-                    <td class="align-middle">{{shippingMethod.fee | currency}}</td>
-                    <td class="align-middle">
-                        <label class="custom-control custom-radio">
-              <input class="form-control-radio" type="radio" name="shippingMethod" value="{{shippingMethod.value}}" formControlName="shippingMethod">
-              <span class="custom-control-indicator"></span>
-            </label>
-                    </td>
-                </tr>
-            </tbody>
+
+
+               
+                    <tbody>
+                        
+                        <tr *ngFor="let shippingMethod of shippingMethods">
+                            <section class="shipping_method_content">
+
+                                <div class="fee_time_method">
+                                <td class="align-middle"><p>{{shippingMethod.fee | currency}}</p></td>
+                                <td class="align-middle"><p>{{shippingMethod.time}}</p></td>
+                                <td class="align-middle"><p>{{shippingMethod.method}}</p></td>
+                                </div>
+
+                            <td class="align-middle">
+                                <label class="custom-control custom-radio">
+                                <input class="form-control-radio" type="radio" name="shippingMethod" value="{{shippingMethod.value}}" formControlName="shippingMethod">
+                                <span class="custom-control-indicator"></span>
+                
+                                </label>
+                            </td>
+                        </section>
+                        </tr>
+
+                    </tbody>
+               
+
         </table>
     </div>
 </form>
 
-<app-checkout-footer [buttons]="['back', 'continue']" (back)="onBack()" (continue)="onContinue()" [continueEnabled]="formShipping.valid"></app-checkout-footer>

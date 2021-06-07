@@ -1,5 +1,5 @@
     @import '~scss/common';
-
+    @import 'radio_button_style.scss';
 
 .content {
     width: 335/375*100%;
@@ -11,7 +11,7 @@
 
 @media screen and (min-width: 768px) {
     .content {
-        width: 940/1441*100%;
-        margin: 169px 0px 0px 245px;
+        width: 1154/1441*100%;
+        margin: 169px auto 0px auto;
     }
 }

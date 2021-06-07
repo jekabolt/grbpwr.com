@@ -1,14 +1,32 @@
 @import '~scss/common';
-
+@import 'radio_button_style.scss';
 p {
     text-decoration-line: none;
-    padding: 25px 0px 0px 0px;
+    padding: 25px 0px 10px 0px;
 }
 .title {
     p {
         text-decoration-line: none;
         @extend %basik_txt;
         padding: 50px 0px 0px 0px;
+    }
+}
+
+.send_updates_checked_block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    p {
+        text-decoration-line: none;
+    }
+    .radio_block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 98px;
     }
 }
 
@@ -46,7 +64,7 @@ p {
     height: 46px;
 
     border: solid #000 1px;
-    padding: 10px;
+    padding: 0px;
 }
 .form-control-feedback {
 }

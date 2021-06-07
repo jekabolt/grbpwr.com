@@ -1,0 +1,38 @@
+@import '~scss/common';
+@import 'radio_button_style.scss';
+p {
+    text-decoration-line: none;
+    padding: 25px 0px 10px 0px;
+}
+.title {
+    p {
+        text-decoration-line: none;
+        @extend %basik_txt;
+        padding: 50px 0px 0px 0px;
+    }
+}
+.shipping_method_content {
+    width: 100%;
+    height: 46px;
+    border: solid #000 1px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 50px 0px 0px 0px;
+
+    .fee_time_method {
+        display: flex;
+        align-items: center;
+    }
+}
+
+tr {
+    width: 100%;
+} 
+
+.table {
+    width: 100%;
+}
+

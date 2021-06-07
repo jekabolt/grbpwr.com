@@ -17,16 +17,20 @@
             @extend %info_txt;
             padding: 55px 0px 0px 0px;
         }
-        &:nth-child(5) {
-            padding: 77px 0px 0px 0px;
-            text-decoration-line: line-through;
+    }
+    a {
+        p {
+                padding: 77px 0px 0px 0px;
+                text-decoration-line: line-through;
+            }
+            
         }
-        &:nth-child(6) {
-            padding: 9px 0px 0px 0px;
-            text-decoration-line: line-through;
+        &:last-child {
+            padding: 7px 0px 0px 0px;
         }
     }
-}
+
+
 
 @media screen and (min-width: 768px) {
     .content_404 {

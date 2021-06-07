@@ -40,7 +40,7 @@
 
             <div class="form-group">
 
-                <select class="form-control" id="quantity" (change)="onSelectSize($event)">
+                <select form="size" class="form-control" id="quantity" (change)="onSelectSize($event)">
 
                     <option *ngFor="let sz of availableSizes"><p>{{sz}}</p></option>
 
