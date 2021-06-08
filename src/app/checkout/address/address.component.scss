@@ -30,6 +30,20 @@ p {
     }
 }
 
+.postal_code_and_city {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .form-group_split {
+        width: 487/1154*100%;
+
+        .posatl_and_city {
+            width:100%;
+        }
+    }
+}
+
 
 #firstname {
 }

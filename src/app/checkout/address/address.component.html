@@ -8,7 +8,7 @@
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
                 <label for="email"><p>e-mail</p></label>
                 <input class="form-control" type="email" id="email" name="email" formControlName="email">
-                <div class="form-control-feedback" *ngIf="formAddress.get('email').invalid && formAddress.get('email').touched">Please enter your E-mail!</div>
+                <div class="form-control-feedback" *ngIf="formAddress.get('email').invalid && formAddress.get('email').touched"><p>please enter your e-mail!</p></div>
             </div>
 
             <div class="send_updates_checked_block">
@@ -37,45 +37,55 @@
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
                 <label for="email"><p>first namel</p></label>
                 <input class="form-control" type="email" id="email" name="email" formControlName="email">
-                <div class="form-control-feedback" *ngIf="formAddress.get('email').invalid && formAddress.get('email').touched">Please enter your E-mail!</div>
+                
             </div>
 
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
                 <label for="email"><p>last name</p></label>
                 <input class="form-control" type="email" id="email" name="email" formControlName="email">
-                <div class="form-control-feedback" *ngIf="formAddress.get('email').invalid && formAddress.get('email').touched">Please enter your E-mail!</div>
+                
             </div>
 
-            <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
-                <label for="email"><p>postal code</p></label>
-                <input class="form-control" type="email" id="email" name="email" formControlName="email">
-                <div class="form-control-feedback" *ngIf="formAddress.get('email').invalid && formAddress.get('email').touched">Please enter your E-mail!</div>
-            </div>
+            <section class="postal_code_and_city">
+
+                <div class="form-group_split" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
+                    <label for="email"><p>postal code</p></label>
+                    <input class="form-control posatl_and_city" type="email" id="email" name="email" formControlName="email">
+                    
+                </div>
+
+                <div class="form-group_split" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
+                    <label for="email"><p>city</p></label>
+                    <input class="form-control posatl_and_city" type="email" id="email" name="email" formControlName="email">
+                    
+                </div>
+
+            </section>
 
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
                 <label for="email"><p>address</p></label>
                 <input class="form-control" type="email" id="email" name="email" formControlName="email">
-                <div class="form-control-feedback" *ngIf="formAddress.get('email').invalid && formAddress.get('email').touched">Please enter your E-mail!</div>
+                
             </div>
 
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
                 <label for="email"><p>appartment/suite</p></label>
                 <input class="form-control" type="email" id="email" name="email" formControlName="email">
-                <div class="form-control-feedback" *ngIf="formAddress.get('email').invalid && formAddress.get('email').touched">Please enter your E-mail!</div>
+                
             </div>
 
 
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
                 <label for="email"><p>country</p></label>
                 <input class="form-control" type="email" id="email" name="email" formControlName="email">
-                <div class="form-control-feedback" *ngIf="formAddress.get('email').invalid && formAddress.get('email').touched">Please enter your E-mail!</div>
+                
             </div>
 
 
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
                 <label for="email"><p>phone</p></label>
                 <input class="form-control" type="email" id="email" name="email" formControlName="email">
-                <div class="form-control-feedback" *ngIf="formAddress.get('email').invalid && formAddress.get('email').touched">Please enter your E-mail!</div>
+                
             </div>
         </div>
 

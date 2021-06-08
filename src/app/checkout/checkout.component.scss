@@ -15,3 +15,11 @@
         margin: 169px auto 0px auto;
     }
 }
+
+.title {
+    p {
+        text-decoration-line: none;
+        @extend %basik_txt;
+        padding: 50px 0px 0px 0px;
+    }
+}
