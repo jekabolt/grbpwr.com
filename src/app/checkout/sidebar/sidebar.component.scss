@@ -1,0 +1,44 @@
+.footer {
+    padding: 0px 0px 20px 0px;
+    .cart_and_shipping_total {
+        margin: 24px 0px 0px 0px;
+        padding: 0px 0px 28px 0px;
+        border-bottom: solid #000 1px;
+        .total_container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+
+            p {
+                text-decoration-line: none;
+            }
+        }
+    }
+    .total_container {
+        padding: 21px 0px 0px 0px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        p {
+            text-decoration-line: none;
+        }
+    }
+}
+
+@media screen and (min-width: 768px) {
+
+    .footer {
+        .cart_and_shipping_total {
+            .total_container {
+                width: 307/1151*100%;
+            }
+        }
+    
+        .total_container {
+            width: 307/1151*100%;
+        }
+    }
+   
+}
+    
+

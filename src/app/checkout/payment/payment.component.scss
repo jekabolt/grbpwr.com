@@ -14,10 +14,16 @@
     align-items: center;
 
     margin: 0px auto 0px auto;
-    width: 400/1154*100%;
+    width: 100%;
 
     p {
         @extend %info_txt;
-        text-decoration-line: none;
+        text-decorations-line: none;
+    }
+}
+
+@media screen and (min-width: 786px) {
+    .payment_met_content {
+        width: 400/1154*100%;
     }
 }

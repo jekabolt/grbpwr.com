@@ -1,43 +1,30 @@
 <section class="title"><p>order summary</p></section>
-<hr class="padding-bottom-1x">
-<div class="table-responsive shopping-cart">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th class="text-center">Subtotal</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of items; let i = index">
-                <td>
+        
+            <tr class="product_container" *ngFor="let item of items; let i = index">
+                
                     <div class="product-item">
+
                         <a class="product-thumb" routerLink="/products/{{item.product.id}}">
                             <img [src]="item.product.imageURLs[0]" alt="{{item.product.name}}">
                         </a>
-                        <div class="product-info">
-                            <h4 class="product-title">
-                                <a routerLink="/products/{{item.product.id}}">{{item.product.name}}
-                                    <small>x {{item.amount}}</small>
+
+                        <section class="product-info">
+
+                            <div>
+
+                                <a routerLink="/products/{{item.product.id}}"><p><span>{{item.product.name}}</span></p>
                                 </a>
-                            </h4>
-                        </div>
+
+                                <p>size:<span>{{item.size}}</span></p>
+
+                            </div>
+
+                                    <p><span>{{ (item.product.price * item.amount) | currency }}</span></p>
+
+                        </section>
+
                     </div>
-                </td>
-                <td class="text-center text-lg text-medium">{{ (item.product.price * item.amount) | currency }}</td>
-                <td class="text-center">
-                    <a class="btn btn-outline-primary btn-sm" routerLink="/cart">Edit</a>
-                </td>
+                
             </tr>
-        </tbody>
-    </table>
-</div>
-<div class="shopping-cart-footer">
-    <div class="column"></div>
-    <div class="column text-lg">Subtotal:
-        <span class="text-medium">{{ total | currency }}</span>
-    </div>
-</div>
 
 
