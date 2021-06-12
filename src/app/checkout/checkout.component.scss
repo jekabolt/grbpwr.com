@@ -8,6 +8,16 @@
 
 }
 
+.main-title {
+    width: 100%;
+    text-align: center;
+    p{
+        @extend %title_txt;
+        padding: 0px 0px 100px 0px;
+        text-decoration-line: line-through;
+    }
+}
+
 
 @media screen and (min-width: 768px) {
     .content {

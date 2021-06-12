@@ -1,47 +1,47 @@
 @import "../../../scss/common.scss";
+
 .content {
     width: 335/375*100%;
-    margin: 89px auto 0px auto;
-    align-items: center;
-    .video_conteiner {
-        width: 100%;
-        margin: 42px 0px 0px 0px;
-        .video_archive {}
-        p {
-            padding: 20px 0px 0px 0px;
+    margin: 92px auto 0px auto;
+
+    p {
+        text-decoration-line: none;
+
+        width: 292px;
+      
+       
+        &:first-child {
             @extend %basik_txt;
-            &:last-child {
-                padding: 8px 0px 0px 0px;
-                @extend %info_txt;
-                text-decoration-line: none;
-            }
+            font-size: 42px;
+            line-height: 51px;
+            text-decoration-line: line-through;
         }
-        .video_description {
-            width: 100%;
-            height: 1px;
-            overflow: hidden;
-            padding: 20px 0px 0px 0px;
-            h1 {
-                @extend %info_txt;
-                text-decoration-line: none;
-                transform: translateY(-120%);
-                transition-duration: 0.2s;
-            }
-        }
-        //TODO
-        .video_description_act {
-            height: auto;
-            h1 {
-                transition-duration: 0.2s;
-                transform: translateY(0%);
-            }
+
+        &:last-child {
+            @extend %info_txt;
+
         }
     }
+
+    .video_archive {
+        width: 100%;
+
+        padding: 42px 0px 0px 0px;
+        .ing_acrhive {
+            width: 100%;
+        }
+        p{
+            @extend %info_txt;
+
+            padding: 43px 0px 44px 0px;
+        }
+    }
+
 }
 
 @media screen and (min-width: 768px) {
     .content {
-        width: 950/1441*100%;
+        width: 653/1025*100%;
         margin: 169px 0px 0px 245px;
     }
 }

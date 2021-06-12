@@ -46,6 +46,6 @@
     "sale": true,
     "size": "",
     "availableSizes": [
-        "S", "M", "L", "XL"
+         "S", "M", "L", "xl"
     ]
 }]

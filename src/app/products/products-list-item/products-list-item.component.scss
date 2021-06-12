@@ -1,0 +1,19 @@
+.content {
+    width: 335/365*100%;
+}
+
+@media screen and (max-width: 768px) {
+    .content {
+        width: 950/1440*100%;
+        margin: 169px 0px 245px 0px;
+
+        .product-card {
+            img {
+                width: 150px;
+            }
+        }
+
+        
+    }
+    
+}

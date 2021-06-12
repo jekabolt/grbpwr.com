@@ -27,15 +27,18 @@
                 <img [hidden]="!imagesLoaded.includes(activeImageUrl)" class="img-fluid" src="{{activeImageUrl}}" alt="{{product.name}}" (load)="onImageLoad($event)">
             </div>
 
-            <ul class="img_slider_content">
+            <div class="img_slider_content">
 
-                <li class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
-                    <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                        <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
-                    </a>
-                </li>
+                <input class="img" id="img_fuck" type="checkbox"> 
 
-            </ul>
+
+                    <label class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
+                        <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
+                            <img  for="img_fuck" [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
+                        </a>
+                    </label>
+
+            </div>
 
         </section>
 
@@ -59,11 +62,25 @@
 
             <div class="form-group">
 
-                <select form="size" class="form-control" id="quantity" (change)="onSelectSize($event)">
+                <!-- <select form="size" class="form-control" id="quantity" (change)="onSelectSize($event)"> -->
+ 
+                    <!-- <div   class="form-control">
+                        <p form="size" (click)="ondivSize($event)" *ngFor="let sz of availableSizes">{{sz}}</p>
+                    </div> -->
 
-                    <option *ngFor="let sz of availableSizes"><p>{{sz}}</p></option>
+                <!-- </select> -->
 
-                </select>
+               
+ 
+                    <div class="form-control">
+                        <figure class="line_sz"></figure>
+                        <div class="size_content" form="size" (click)="ondivSize($event)"  *ngFor="let sz of availableSizes">
+                                <label  class="size_button"><p>{{sz}}</p></label>
+                        </div>
+                    </div> 
+
+
+                       
 
             </div>
 

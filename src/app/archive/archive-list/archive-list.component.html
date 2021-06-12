@@ -1,13 +1,16 @@
 <section class="content">
 
-    <div *ngFor="let article of articles" class="video_conteiner">
+    <p>fib lookbook</p>
+    <p>This is the first part of the collection lookbook</p>
 
-        <div class="video_archive"></div>
+        <div *ngFor="let article of articles" class="video_conteiner">
 
-        <a href="" class="video_archive">
-            <img [src]="article.mainImage" alt="{{article.name}}">
-            <p>{{ article.title }}</p>
-        </a>
-    </div>
+            <a href="" class="video_archive">
+            <div class="video_archive">
+                <img class="ing_acrhive" [src]="article.mainImage" alt="{{article.name}}">
+                <p>{{ article.title }}</p>
+            </div>
+            </a>
+        </div>
 
 </section>
