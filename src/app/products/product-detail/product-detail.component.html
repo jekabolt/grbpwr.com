@@ -29,14 +29,11 @@
 
             <div class="img_slider_content">
 
-                <input class="img" id="img_fuck" type="checkbox"> 
-
-
-                    <label class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
-                        <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                            <img  for="img_fuck" [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
-                        </a>
-                    </label>
+                    <div class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
+                            <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
+                                <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
+                            </a>
+                    </div>
 
             </div>
 
@@ -75,7 +72,7 @@
                     <div class="form-control">
                         <figure class="line_sz"></figure>
                         <div class="size_content" form="size" (click)="ondivSize($event)"  *ngFor="let sz of availableSizes">
-                                <label  class="size_button"><p>{{sz}}</p></label>
+                                <div [class.size-active]="sizeActive" (click)="toggleSize()"  class="size_button"><p>{{sz}}</p></div>
                         </div>
                     </div> 
 

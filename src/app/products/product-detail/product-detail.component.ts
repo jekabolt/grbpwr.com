@@ -21,6 +21,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject();
   @Input() public product: Product;
   public productLoading: boolean;
+  public sizeActive = false
 
   public user: User;
 
@@ -39,6 +40,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private location: Location,
     private cartService: CartService,
   ) { }
+
+  toggleSize() {
+    this.sizeActive = !this.sizeActive;
+  }
 
   ngOnInit(): void {
 
