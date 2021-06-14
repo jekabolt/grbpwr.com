@@ -136,10 +136,7 @@
                         z-index: 97;
                         width: 60px;
                         cursor: pointer;
-                        
-                        // &:active {
-                        //     z-index: 99;
-                        // }
+                
                         p {
                             @extend %basik_txt;
                             text-decoration-line: none;

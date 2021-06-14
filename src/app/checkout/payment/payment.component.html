@@ -7,15 +7,11 @@
          
             <tbody class="payment_met_content">
                 <tr *ngFor="let paymentMethod of paymentMethods">
-                    <td class="align-middle">
-                        <span><p>{{paymentMethod}}</p></span>
-                    </td>
-                    <td class="align-middle">
-                        <label class="custom-control custom-radio">
-            <input class="form-control-radio" type="radio" name="paymentMethod" value="{{paymentMethod}}" formControlName="paymentMethod">
-            <span class="custom-control-indicator"></span>
-          </label>
-                    </td>
+         
+            <input id="paymentMethod" class="form-control-radio" type="radio" name="paymentMethod" value="{{paymentMethod}}" formControlName="paymentMethod">
+
+            <label class="payment_selector" for="paymentMethod"><p>{{paymentMethod}}</p></label>
+            
                 </tr>
             </tbody>
        
