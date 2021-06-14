@@ -18,6 +18,10 @@
         justify-content: space-between;
         width: 89px;
         padding: 63px 0px 0px 0px;
+
+        p{ 
+            @extend %info_txt;
+        }
     }
 
     section {
