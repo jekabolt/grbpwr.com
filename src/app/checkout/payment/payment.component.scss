@@ -16,10 +16,15 @@
     margin: 0px auto 0px auto;
     width: 100%;
 
+    p {
+        cursor: pointer;
+    }
+
     .form-control-radio {
         position: absolute;
         opacity: 0;
         left: 700px;
+       
     }
 
     .form-control-radio:checked~.payment_selector {

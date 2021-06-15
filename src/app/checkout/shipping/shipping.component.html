@@ -19,13 +19,15 @@
                                 <td class="align-middle"><p>{{shippingMethod.method}}</p></td>
                                 </div>
 
-                            <td class="align-middle">
-                                <label class="custom-control custom-radio">
-                                <input class="form-control-radio" type="radio" name="shippingMethod" value="{{shippingMethod.value}}" formControlName="shippingMethod">
-                                <span class="custom-control-indicator"></span>
-                
+                            <div class="align-middle">
+                                <label for="shipping_checked" class="custom-control">
+                                    <p class="yes">yes</p>
+                                    <p class="no">no</p>
                                 </label>
-                            </td>
+                                
+                                <input id="shipping_checked" class="form-control-radio" type="radio" name="shippingMethod" value="{{shippingMethod.value}}" formControlName="shippingMethod">
+                                
+                            </div>
                         </section>
                         </tr>
 
