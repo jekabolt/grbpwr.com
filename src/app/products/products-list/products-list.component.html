@@ -1,27 +1,26 @@
-<app-page-title title="Products" [children]="[{title: 'Products'}]"></app-page-title>
+
+<app-page-title class="title_product_list" title="Products" [children]="[{title: 'Products'}]"></app-page-title>
 
 <!-- Page Content-->
-<div class="container padding-bottom-3x mb-1">
     <!-- Shop Toolbar-->
-    <div class="shop-toolbar padding-bottom-1x mb-2">
 
+<section class="content">
+    <div class="product_content">
+        <div class="product_place" [ngClass]="{'loading' : productsLoading}">
+            <!-- Products Grid Mode View -->
+            <div class="product" *ngIf="(uiService.displayMode$ | async) === 'grid'">
+                <app-products-list-item ngClass="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let product of productsPaged" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
+                </app-products-list-item>
+            </div>
+
+            <!-- Products List Mode View-->
+            <div class="product_place" *ngIf="(uiService.displayMode$ | async) === 'list'">
+                <app-products-list-item ngClass="col-12" *ngFor="let product of products" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
+                </app-products-list-item>
+            </div>
+        </div>  
     </div>
-
-
-    <div class="products-list" [ngClass]="{'loading' : productsLoading}">
-        <!-- Products Grid Mode View -->
-        <div class="row" *ngIf="(uiService.displayMode$ | async) === 'grid'">
-            <app-products-list-item ngClass="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let product of productsPaged" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
-            </app-products-list-item>
-        </div>
-
-        <!-- Products List Mode View-->
-        <div class="row" *ngIf="(uiService.displayMode$ | async) === 'list'">
-            <app-products-list-item ngClass="col-12" *ngFor="let product of products" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
-            </app-products-list-item>
-        </div>
-    </div>
-
+</section>
 
 
     <!-- Pagination-->

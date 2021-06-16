@@ -1,30 +1,30 @@
-<section class="content">
-    <div class="product-card" [ngClass]="{'product-list': displayMode === 'list'}">
+
+    <div class="product_place" [ngClass]="{'product-list': displayMode === 'list'}">
         <!-- //TODO: sold out -->
         <!-- <div *ngIf="product.reduction" class="product-badge text-danger">{{ product.reduction }}% Off</div> -->
 
 
         <a class="product-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/products/{{product.id}}">
-            <img [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.imageURLs[0]}}" alt="{{product.name}}" />
+            <img class="product_img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.imageURLs[0]}}" alt="{{product.name}}" />
         </a>
         <div class="product-info">
-            <h3 class="product-title">
+            <p class="product-title">
                 <a routerLink="/products/{{product.id}}">{{product.name}}</a>
-            </h3>
-            <h4 class="product-price">
+            </p>
+            <p class="product-price">
                 <app-price [product]="product"></app-price>
-            </h4>
-            <p *ngIf="displayMode === 'list'" class="hidden-xs-down">{{product.description}}</p>
-            <div class="product-buttons">
-                <!-- <button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist">
+            </p>
+            <h2 *ngIf="displayMode === 'list'" class="hidden-xs-down">{{product.description}}</h2>
+            <!-- <div class="product-buttons">
+                <button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist">
             <i class="icon-heart"></i>
-        </button> -->
-                <!-- <button class="btn btn-outline-primary btn-sm" (click)="onAddToCart()">Add to Cart</button>s -->
+        </button>
+                <button class="btn btn-outline-primary btn-sm" (click)="onAddToCart()">Add to Cart</button>s
 
-                <!-- <button *ngIf="user && user.roles.admin" class="btn btn-primary btn-sm" routerLink="/admin/edit/{{product.id}}">
+                <button *ngIf="user && user.roles.admin" class="btn btn-primary btn-sm" routerLink="/admin/edit/{{product.id}}">
             Edit
-        </button> -->
-            </div>
+        </button>
+            </div> -->
         </div>
     </div>
-</section>
+

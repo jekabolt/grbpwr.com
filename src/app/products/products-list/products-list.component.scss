@@ -1,0 +1,44 @@
+@import "../../../scss/common.scss";
+
+.content {
+    width: 335/375*100%;
+    margin: 84px auto 0px auto;
+    display: flex;
+
+    .product_content {
+        width: 100%;
+        height: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 20px;
+        .product_place {
+            display: flex;
+            flex-direction: column;
+            padding: 0px 0px 72px 0px;
+            .product_img {
+                min-width: 42%;
+                height: 42vw;
+                background-color: #ddd;
+            }
+            p {
+                padding: 20px 0px 0px 0px;
+                @extend %info_txt;
+            }
+            h2 {
+                padding: 7px 0px 0px 0px;
+                @extend %basik_txt;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .content {
+        width: 950/1440*100%;
+        margin: 84px 0px 0px 245px;
+        .product_content {
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-column-gap: 28px;
+        }
+    }
+}
