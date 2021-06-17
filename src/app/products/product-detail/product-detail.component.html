@@ -33,11 +33,14 @@
 
             <div class="img_slider_content">
 
-                    <div class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
+                    <div for="zoom" class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
                             <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
                                 <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
                             </a>
+                              
                     </div>
+
+                    
 
             </div>
 
