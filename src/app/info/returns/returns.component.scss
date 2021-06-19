@@ -2,3 +2,9 @@
 @import '~scss/components/radio';
 @import '../info';
 
+.title {
+    p {
+        @extend %title_txt;
+        text-decoration-line: line-through;
+    }
+}

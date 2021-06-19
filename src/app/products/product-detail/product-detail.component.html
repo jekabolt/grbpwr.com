@@ -4,14 +4,12 @@
 
         <header class="header_product">
             
-                <a class="back_and_line" routerLink="/" href="">
-                    <div class="line">
-                        <figure class="arrow">
-
-                        </figure>
-                    </div>
-                    <p>go back</p>
-                </a>
+            <a class="back_and_line" routerLink="/" href="">
+                <div class="line">
+                    <figure class="arrow"> </figure>
+                </div>
+                <p>go back</p>
+            </a>
 
             <a routerLink="/" href=""><img class="logo" src="/img/grb-logo.svg"></a>
 
@@ -23,6 +21,7 @@
                     <p>${{cartService.getTotal()}}</p>
                 </div>
             </div>
+
         </header>
 
         <section class="img_content">
@@ -50,7 +49,9 @@
 
             <div class="product_description_single_page">
                 <p>
-                    <app-page-title title="{{ product.name }}"></app-page-title>
+                    {{ product.name }}
+                    <!-- <app-page-title title="{{ product.name }}"></app-page-title> -->
+                    
                 </p>
                 <h2>
                     <app-price [product]="product"></app-price>
@@ -95,13 +96,19 @@
                 </div>
             </section>
 
-            <div (click)="get()" class="details">
+            <!-- <div (click)="get()" class="details">
+                <p id="details">Details</p>
+            </div> -->
+
+            <div (click)="ShowDetail()" class="details">
                 <p id="details">Details</p>
             </div>
+  
 
-            <aside id="details_content" class="details_content">
-                <p>{{product.description}}</p>
-            </aside>
+             <aside [class.details_content_acrtive]="detailsActive" id="details_content" class="details_content">
+                 <p>{{product.description}}</p>
+             </aside>
+    
 
         </div>
 

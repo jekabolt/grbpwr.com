@@ -136,7 +136,7 @@
             display: flex;
             justify-content: space-between;
             p {
-                @extend %info_txt;
+                @extend %basik_txt;
                 text-decoration-line: none;
                 margin: 0px;
                 padding: 0px;
@@ -171,16 +171,25 @@
                 text-decoration-line: none;
             }
         }
+           
         .details_content {
+            overflow: hidden;
             padding: 0px 0px 20px 0px;
-            display: none;
-            p {
-                @extend %info_txt;
-                text-decoration-line: none;
-            }
+                p {
+                    @extend %info_txt;
+                    text-decoration-line: none;
+                    transform: translateY(-100px);
+                    transition-duration: 0.2s;
+                    opacity: 0;
+                }
         }
-        .active_details {
-            display: block;
+        .details_content_acrtive {
+            p {
+                transform: translateY(0);
+                transition-duration: 0.2s;
+                opacity: 1;
+            }
+
         }
 
         .form-group {
@@ -367,12 +376,12 @@
                 }
             }
             .details_content {
-                display: block;
                 padding: 46px 0px 0px 0px;
             }
             .size {
                 padding: 363px 0px 0px 0px;
             }
+           
             .details {
                 padding: 60px 0px 0px 0px;
             }

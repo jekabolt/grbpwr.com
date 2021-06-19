@@ -18,17 +18,20 @@
             padding: 55px 0px 0px 0px;
         }
     }
-    a {
-        p {
-                padding: 77px 0px 0px 0px;
-                text-decoration-line: line-through;
+    .next_link {
+        margin: 77px 0px 0px 0px;
+        a {
+            p {
+                    text-decoration-line: line-through;
+                }
+                
             }
-            
-        }
-        &:last-child {
-            padding: 7px 0px 0px 0px;
+            &:last-child {
+                padding: 10px 0px 0px 0px;
+            }
         }
     }
+   
 
 
 

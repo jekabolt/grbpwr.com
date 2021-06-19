@@ -5,13 +5,14 @@
 
 .content {
     width: 335/375*100%;
-    margin: 86px auto 0px auto;
+    margin: 80px auto 78px auto;
 	.title {
 		width: 100%;
 		text-align: left;
 		p {
 			@extend %title_txt;
 			font-size: 36px;
+			text-decoration-line: line-through;
 		}
 	}
 
@@ -88,6 +89,6 @@
 @media screen and (min-width: 768px) {
     .content {
         width: 950/1441*100%;
-        margin: 169px 0px 0px 245px;
+        margin: 91px 0px 0px 245px;
     }
 }

@@ -22,6 +22,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   @Input() public product: Product;
   public productLoading: boolean;
   public sizeActive = false
+  public detailsActive = false
 
   public user: User;
 
@@ -43,6 +44,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   toggleSize() {
     this.sizeActive = !this.sizeActive;
+  }
+
+  ShowDetail() {
+    this.detailsActive = !this.detailsActive;
   }
 
   ngOnInit(): void {
