@@ -64,17 +64,17 @@
 
 @media screen and (min-width: 768px) {
     .content {
-        max-width: 950/1441*100%;
-        margin: 140px 0px 0px 294px;
+        max-width: 1361/1440*100%;
+        margin: 0px auto;
         .clip {
-            height: 37vw;
+            height: 47vw;
         }
         .product_content {
             grid-template-columns: 1fr 1fr 1fr;
             grid-row-gap: 28px;
         }
         .product_img {
-            height: 19vw !important;
+            height: 28vw !important;
         }
         .go_to_archive {
             .line {

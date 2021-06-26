@@ -1,8 +1,14 @@
 <header appChbgcolor class="header">
 
-    <p (click)="toggleNavbar()" id="menu_btn">menu</p>
+    <div class="nav_bar_container" id="menu_btn">
+        <p (click)="toggleNavbar()" id="menu_btn">menu</p>
+    </div>
 
-    <a routerLink="/" href=""><img class="logo" src="/img/grb-logo.svg"></a>
+   
+    <div class="nav_bar_container">
+        <a routerLink="/" href=""><img class="logo" src="/img/grb-logo.svg"></a>
+    </div>
+  
 
     <div class="desktop_list_cart_and_sum">
         <a routerLink="/cart" href="">

@@ -1,7 +1,4 @@
 @import "../../../../scss/common.scss";
-.logo {
-    width: 30px;
-}
 
 .side_bar_nav.navbar-opened {
     .bg_side_bar {
@@ -43,8 +40,19 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
+    .nav_bar_container {
+        width: 21%;
+        display: flex;
+        justify-content: center;
+        .logo {
+            width: 30px;
+        }
+        
+    }
     
     .desktop_list_cart_and_sum {
+        width: 21%;
         .sum_cart {
             display: none;
         }
@@ -71,10 +79,14 @@
 
         z-index: 100;
 
-        .logo {
-            width: 74px;
-            margin: 40px 0px 0px 40px;
-        }   
+        .nav_bar_container {
+            display: block  ;
+
+            .logo {
+                width: 60px;
+            }   
+        }
+
         #menu_btn {
             display: none;
         }
@@ -91,6 +103,10 @@
         }
     }
 }
+
+
+
+
 
 // sidebar menu
 .side_bar_nav {
@@ -176,11 +192,13 @@
 
 @media screen and (min-width: 768px) {
     .side_bar_nav {
-        width: 245px;
+        width: 100%;
+        height: 100px;
         transform: translateX(0%);
         margin: 0px 0px 0px 0px;
         padding: 0px;
         z-index: 98;
+
 
         #menu_btn_hide {
             display: none;
@@ -196,6 +214,7 @@
         }
         .info_and_line {
             position: absolute;
+            display: none;
             bottom: 20px;
             left: 40px;
             .info_line {
@@ -209,12 +228,20 @@
     }
     .side_bar_nav_list {
         display: flex;
-        justify-content: center;
-        flex-direction: column;
-        margin: 173px 0px 0px 40px;
+        justify-content: space-between;
+        flex-direction: row;
+        margin: 55px 0px 0px 249px;
         padding: 0px 0px 0px 0px;
         background-color: #fff;
         z-index: 100;
+
+
+        width: 655/1440*100%;
+        p {
+            text-decoration: none;
+            cursor: pointer;
+            line-height: 22px;
+        }
         .side_bar_btn {
             text-decoration-line: line-through;
         }
