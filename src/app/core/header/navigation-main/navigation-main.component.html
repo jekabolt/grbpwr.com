@@ -1,23 +1,48 @@
 <header appChbgcolor class="header">
 
-    <div class="nav_bar_container" id="menu_btn">
-        <p (click)="toggleNavbar()" id="menu_btn">menu</p>
-    </div>
-
    
-    <div class="nav_bar_container">
+        <p  (click)="toggleNavbar()" id="menu_btn">menu</p>
         <a routerLink="/" href=""><img class="logo" src="/img/grb-logo.svg"></a>
-    </div>
-  
-
-    <div class="desktop_list_cart_and_sum">
-        <a routerLink="/cart" href="">
-            <p>cart</p>
-        </a>
-        <div class="sum_cart">
-            <p>${{cartService.getTotal()}}</p>
+        <nav class="side_bar_nav_list">
+            <p (click)=toggleNavbar() id="menu_btn_hide" class="side_bar_btn">menu</p>
+            <a routerLink="/tops" href="">
+                <p>tops</p>
+            </a>
+    
+            <a routerLink="/bottoms" href="">
+                <p>bottoms</p>
+            </a>
+    
+            <a routerLink="/accessories" href="">
+                <p>accessories</p>
+            </a>
+    
+            <a routerLink="/bags" href="">
+                <p>bags</p>
+            </a>
+    
+            <a routerLink="/boots" href="">
+                <p>boots</p>
+            </a>
+    
+            <a routerLink="/skirts" href="">
+                <p>skirts</p>
+            </a>
+    
+    
+            <div (click)=toggleInfo() class="info_and_line">
+                <figure class="info_line"></figure>
+                <p class="desktop_inf">info</p>
+            </div>
+    
+        </nav>
+        <div class="nav_bar_container">
+            <a class="cart" routerLink="/cart" href="">
+                <p>cart</p>
+            </a>
+            <p class="desktop_cart_sum">${{cartService.getTotal()}}</p>
         </div>
-    </div>
+
 
 </header>
 
@@ -85,3 +110,11 @@
         </nav>
     </div>
 </header>
+
+<footer class="footer">
+    <div class="footer_body">
+
+    </div>
+</footer> 
+
+<!-- TODO -->
