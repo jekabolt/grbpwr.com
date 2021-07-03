@@ -135,6 +135,7 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
+
             p {
                 @extend %basik_txt;
                 text-decoration-line: none;
@@ -368,6 +369,35 @@
         .description_desktop {
             padding: 0px 0px 0px 20px;
             width: 601/1361*100%;
+
+            .cross {
+                width: 40px;
+                height: 40px;
+
+                margin: 0px 0px 80px 0px;
+
+                cursor: pointer;
+                float: right;
+                .line_cross_1 {
+                    width: 40px;
+                    height: 2px;
+                    position: absolute;
+
+                    background-color: #000;
+
+                    transform: rotate(45deg);
+
+                }
+                .line_cross_2 {
+                    width: 40px;
+                    height: 2px;
+                    position: absolute;
+
+                    background-color: #000;
+
+                    transform: rotate(-45deg);
+                }
+            }
 
             .product_description_single_page {
                 padding: 0px;

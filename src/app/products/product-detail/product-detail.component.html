@@ -2,27 +2,7 @@
 
     <div *ngIf="product" class="single_product_content_desktop">
 
-        <header class="header_product">
-            
-            <a class="back_and_line" routerLink="/" href="">
-                <div class="line">
-                    <figure class="arrow"> </figure>
-                </div>
-                <p>go back</p>
-            </a>
-
-
-            <div class="desktop_list_cart_and_sum">
-                <a routerLink="/cart" href="">
-                    <p>cart</p>
-                </a>
-                <div class="sum_cart">
-                    <p>${{cartService.getTotal()}}</p>
-                </div>
-            </div>
-
-        </header>
-
+        
         <section class="img_content">
 
             <div class="product_img" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
@@ -45,6 +25,11 @@
         </section>
 
         <div class="description_desktop">
+
+            <section class="cross">
+                    <div class="line_cross_1"></div>
+                    <div class="line_cross_2"></div>
+            </section>
 
             <div class="product_description_single_page">
                 <p>
