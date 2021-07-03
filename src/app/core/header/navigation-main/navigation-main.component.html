@@ -1,5 +1,5 @@
 <header appChbgcolor class="header">
-
+    <div class="header_container">
    
         <p  (click)="toggleNavbar()" id="menu_btn">menu</p>
         <a routerLink="/" href=""><img class="logo" src="/img/grb-logo.svg"></a>
@@ -42,7 +42,7 @@
             </a>
             <p id="cart_sum" class="desktop_cart_sum">${{cartService.getTotal()}}</p>
         </div>
-
+    </div>
 
 </header>
 
@@ -111,70 +111,3 @@
     </div>
 </header>
 
-<footer class="footer">
-        <section class="info_and_currency">
-                <nav class="info_list">
-                    <a routerLink="/about" href="">
-                        <p>about</p>
-                    </a>
-        
-                    <a routerLink="/contact-us" href="">
-                        <p>contact us</p>
-                    </a>
-        
-                    <a routerLink="/shipping-method" href="">
-                        <p>shipping</p>
-                    </a>
-        
-                    <a routerLink="/returns" href="">
-                        <p>returns</p>
-                    </a>
-        
-                    <a routerLink="/privacy-policy" href="">
-                        <p>privacy policy</p>
-                    </a>
-        
-                </nav>
-                <div class="currency">
-                    <input class="currency_input currency_usd" checked id="usd" name="currency" type="radio">
-                    <label class="currency_label currency_usd" for="usd"><p>usd</p></label>
-
-                    <input class="currency_input currency_byn" id="byn" name="currency" type="radio">
-                    <label class="currency_label currency_byn" for="byn"><p>byn</p></label>
-
-                    <input class="currency_input currency_rub" id="rub" name="currency" type="radio">
-                    <label class="currency_label currency_rub" for="rub"><p>rub</p></label>
-
-                    <input class="currency_input currency_eur" id="eur" name="currency" type="radio">
-                    <label class="currency_label currency_eur" for="eur"><p>eur</p></label>
-                </div>
-        </section>
-        <section class="legal_info">
-            <div class="left_info">
-                <p>
-                    ИП Комар Ева Андреевна<br>
-                    Юр. адрес: 224000, Брестская область, г.Брест<br>
-                    ул.Суворова, д. 112<br>
-                    УНП: 291555594<br>
-                </p>
-            </div>
-            <div class="right_info">
-                <p>
-                    Свидетельство о регистрации 0750946 от 02.12.2019 
-                    Регистрирующий орган: Администрация Московского района г.Бреста
-                </p>
-                <div class="icon_legal_info">
-                    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Visa_2014_logo_detail.svg">
-                    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
-                    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/7/77/Alfa-Bank.svg">
-                    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg">
-                    <img class="icon" src="https://upload.wikimedia.org/wikipedia/ru/0/07/Samsung_Pay_Logo.svg">
-                    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Visa_2014_logo_detail.svg">
-                    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Visa_2014_logo_detail.svg">
-                    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Visa_2014_logo_detail.svg">
-                    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Visa_2014_logo_detail.svg">
-                    
-                </div>
-            </div>
-        </section>
-</footer> 

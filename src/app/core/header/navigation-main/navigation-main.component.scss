@@ -40,227 +40,109 @@
     justify-content: center;
     align-items: center;
 
+    .header_container {
+        width: 335/375*100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-    .nav_bar_container {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        #cart_sum {
-            display: none;
-        }
-        p {
-            cursor: pointer;
-            @extend basik_txt !optional;
-            font-weight: 600;
-        }
-        a {
-            color: #000;
-        }
-    }
-
-    .side_bar_nav_list {
-        display: none;
-    }
-
-    .logo {
-        width: 30px;
-        margin: 0px auto;
-    }
-    #menu_btn {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        font-weight: 600;
-    }
-}
-
-
-
-
-.footer {
-    width: 335/375*100%;
-    height: 801px;
-    background-color: #fff;
-    margin: 260px auto 0px auto;
-    display: flex;
-    flex-direction: column;
-        .info_and_currency {
-            height: 321px;
-            width: 100%;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            border-top: solid #000 1px;
-            border-bottom: solid #000 1px;
-
-            position: relative;
-
-            .info_list {
-                display: none;
-                a {
-                    color: #000;
-                    p {
-                    text-decoration: none;
-                    @extend %info_txt;
-                    }
-                }
-            }
-            .currency {
-                display: flex;
-                float: left;
-                justify-content: space-between;
-
-                position: absolute;
-                right: 0px;
-                bottom: 40px;
-                
-                width: 243px;
-
-                .currency_input {
-                    position: absolute;
-                    left: -200px;
-                    opacity: 0;
-                }
-
-                .currency_usd:checked~.currency_usd {
-                    p {
-                        text-decoration: underline;
-                        opacity: 1;
-                    }
-                }
-
-                .currency_byn:checked~.currency_byn {
-                    p {
-                        text-decoration: underline;
-                        opacity: 1;
-                    }
-                }
-
-                .currency_eur:checked~.currency_eur {
-                    p {
-                        text-decoration: underline;
-                        opacity: 1;
-                    }
-                }
-
-                .currency_rub:checked~.currency_rub {
-                    p {
-                        text-decoration: underline;
-                        opacity: 1;
-                    }
-                }
-
-                .currency_label {
-                    p {
-                        text-decoration: none;
-                        cursor: pointer;
-                        opacity: 0.5;
-                    }
-                }
-            }
-        }
-        .legal_info {
-            padding: 180px 0px 0px 0px;
-            display: flex;
-            justify-content: space-between;
-
-            p {
-                text-decoration: none;
-            }
-
-            .left_info {
-                width: 446px;
-            }
-            .right_info {
-                width: 446px;
-                text-align: right;
-            }
-
-            .icon_legal_info {
-                margin: 50px 0px 0px 0px;
-                
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-
-                .icon {
-                    width: 40px;
-                }
-            }
-        }
-}
-
-@media screen and (min-width: 768px) {
-    .footer {
-        width: 1360/1440*100%;
-            .info_and_currency {
-                .info_list {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    width: 770/1440*100%;
-                }
-            }
-    }
-    
-
-    
-    .header {
-        height: 70px;
-        width: 100%;
-        margin: 0px;
-
-        z-index: 100;
-
-        justify-content: space-between;
-        background-color: #fff;
+        position: relative;
 
         .nav_bar_container {
-            display: flex;
-            position: relative;
-            top: 0px;
+            position: absolute;
             right: 0px;
-            flex-direction: row;
-            align-items: center;
-            height: 100%;
-
-            margin-right: 40px;
             #cart_sum {
-                display: block;
-                padding-left: 20px;
+                display: none;
             }
             p {
                 cursor: pointer;
-                text-decoration: none;
-                @extend info_txt !optional;
+                @extend basik_txt !optional;
+                font-weight: 600;
             }
             a {
                 color: #000;
             }
         }
-
-            .logo {
-                width: 60px;
-                margin-left: 40px;
-            }
-
-        #menu_btn {
+    
+        .side_bar_nav_list {
             display: none;
         }
+    
+        .logo {
+            width: 30px;
+        }
+        #menu_btn {
+            font-weight: 600;
+            position: absolute;
+            left: 0px;
+        }
+    }
+}
 
-        .side_bar_nav_list {
-            display: block;
+
+
+@media screen and (min-width: 768px) {
+
+    
+    .header {
+        height: 130px;
+        width: 100% !important;
+
+        z-index: 100;
+        justify-content: center;
+
+        .header_container {
+            width: 1290/1440*100%;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            width: 625/1440*100%;
-
-            margin: 0px;
-            #menu_btn_hide {
+            align-items: center;
+            
+            .nav_bar_container {
+                display: flex;  
+                position: relative;
+                top: 0px;
+                right: 0px;
+                flex-direction: row;
+                align-items: center;
+                height: 100%;
+    
+                #cart_sum {
+                    display: block;
+                    padding-left: 20px;
+                }
+                p {
+                    cursor: pointer;
+                    text-decoration: none;
+                    @extend info_txt !optional;
+                }
+                a {
+                    color: #000;
+                }
+            }
+    
+                .logo {
+                    width: 60px;
+                    margin: 0px;
+                    position: relative;
+                }
+    
+            #menu_btn {
                 display: none;
-                
+            }
+    
+            .side_bar_nav_list {
+                display: block;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 625/1440*100%;
+    
+                margin: 0px;
+                #menu_btn_hide {
+                    display: none;
+                    
+                }
             }
         }
     }
@@ -294,7 +176,6 @@
 
     z-index: 100;
 
-    background-color: #fff;
 
     p {
         @extend %info_txt;

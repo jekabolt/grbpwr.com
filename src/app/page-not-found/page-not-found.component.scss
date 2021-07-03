@@ -6,6 +6,10 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+
+    .logo {
+        width: 90px;
+    }
     p {
         text-align: center;
         @extend %basik_txt;
