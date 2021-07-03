@@ -1,76 +1,65 @@
 @import '~scss/common';
-
 .content {
     width: 335/375*100%;
     margin: 80px auto 80px auto;
-
-
     .title {
         h2 {
-            @extend %basik_txt;
+            @extend %default_text;
             text-decoration-line: none;
         }
-
         margin: 0px 0px 20px 0px;
     }
-
     .input_form_price {
         padding: 20px 0px 0px 0px;
-		width: 100%;
+        width: 100%;
         display: flex;
-		p{
-			@extend %info_txt;
-			padding: 0px 0px 5px 0px;
-			text-decoration-line: none;
-		}
-		textarea{
-			width: 30%;
-			height: 27px;
+        p {
+            @extend %info_txt;
+            padding: 0px 0px 5px 0px;
+            text-decoration-line: none;
+        }
+        textarea {
+            width: 30%;
+            height: 27px;
             padding: 10px;
-
             border: solid #000 1px;
-
             resize: none;
-		}
+        }
     }
-
     .input_form {
-		padding: 20px 0px 0px 0px;
-		width: 100%;
-		p{
-			@extend %info_txt;
-			padding: 0px 0px 5px 0px;
-			text-decoration-line: none;
-		}
-		textarea{
-			width: 100%;
-			height: 27px;
+        padding: 20px 0px 0px 0px;
+        width: 100%;
+        p {
+            @extend %info_txt;
+            padding: 0px 0px 5px 0px;
+            text-decoration-line: none;
+        }
+        textarea {
+            width: 100%;
+            height: 27px;
             padding: 10px;
-
             border: solid #000 1px;
-
             resize: none;
-		}
-	}
+        }
+    }
     .section_next_button {
         margin: 50px 0px 0px 0px;
         width: 100%;
         text-align: right;
         padding: 0px 0px 20px 0px;
         a {
-            p{
-            text-decoration: none;
-            color: #000;
-            text-decoration-line: none;
-            @extend %basik_txt;
-           }
+            p {
+                text-decoration: none;
+                color: #000;
+                text-decoration-line: none;
+                @extend %default_text;
+            }
         }
         .line {
             width: 100%;
             height: 1px;
             background-color: #000;
         }
-
     }
 }
 

@@ -1,5 +1,4 @@
 @import "../../../../scss/common.scss";
-
 .side_bar_nav.navbar-opened {
     .bg_side_bar {
         transform: translateX(0px);
@@ -39,15 +38,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
     .header_container {
         width: 335/375*100%;
         display: flex;
         justify-content: center;
         align-items: center;
-
         position: relative;
-
         .nav_bar_container {
             position: absolute;
             right: 0px;
@@ -56,18 +52,16 @@
             }
             p {
                 cursor: pointer;
-                @extend basik_txt !optional;
+                @extend default_text !optional;
                 font-weight: 600;
             }
             a {
                 color: #000;
             }
         }
-    
         .side_bar_nav_list {
             display: none;
         }
-    
         .logo {
             width: 30px;
         }
@@ -80,34 +74,26 @@
     }
 }
 
-
-
 @media screen and (min-width: 768px) {
-
-    
     .header {
         height: 130px;
         width: 100% !important;
-
         z-index: 100;
         justify-content: center;
-
         .header_container {
             width: 1360/1440*100%;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            
             .nav_bar_container {
-                display: flex;  
+                display: flex;
                 position: relative;
                 top: 0px;
                 right: 0px;
                 flex-direction: row;
                 align-items: center;
                 height: 100%;
-    
                 #cart_sum {
                     display: block;
                     padding-left: 20px;
@@ -121,39 +107,28 @@
                     color: #000;
                 }
             }
-    
-                .logo {
-                    width: 60px;
-                    margin: 0px;
-                    position: relative;
-                }
-    
+            .logo {
+                width: 60px;
+                margin: 0px;
+                position: relative;
+            }
             #menu_btn {
                 display: none;
             }
-    
             .side_bar_nav_list {
                 display: block;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
                 width: 625/1440*100%;
-    
                 margin: 0px;
                 #menu_btn_hide {
                     display: none;
-                    
                 }
             }
         }
     }
 }
-
-
-
-
-
-
 
 // sidebar menu
 .side_bar_nav {
@@ -174,10 +149,7 @@
     flex-direction: column;
     width: auto;
     height: auto;
-
     z-index: 100;
-
-
     p {
         @extend %info_txt;
         cursor: pointer;
@@ -188,7 +160,7 @@
         padding-bottom: 13px;
         font-size: 22px;
         text-decoration-line: none;
-        @extend %basik_txt;
+        @extend %default_text;
     }
     .desktop_inf {
         display: none;
@@ -239,12 +211,9 @@
 @media screen and (min-width: 768px) {
     .side_bar_nav {
         display: none;
-
-
         #menu_btn_hide {
             display: none;
         }
-
         .bg_side_bar {
             display: none;
         }
@@ -269,7 +238,6 @@
     }
     .side_bar_nav_list {
         display: none;
-
         width: 655/1440*100%;
         p {
             text-decoration: none;
@@ -296,4 +264,3 @@
         }
     }
 }
-

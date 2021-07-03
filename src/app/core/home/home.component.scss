@@ -30,9 +30,12 @@
             height: 1px;
             background-color: #000000;
         }
-        h2 {
-            @extend %basik_txt;
-            text-decoration-line: none;
+        a {
+            color: #000;
+            h2 {
+                @extend %default_txt !optional;
+                text-decoration-line: none;
+            }
         }
     }
     .product_content {
@@ -56,7 +59,7 @@
             }
             h2 {
                 padding: 7px 0px 0px 0px;
-                @extend %basik_txt;
+                @extend %default_txt !optional;
             }
         }
     }

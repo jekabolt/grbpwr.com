@@ -4,10 +4,11 @@ p {
     text-decoration-line: none;
     padding: 25px 0px 10px 0px;
 }
+
 .title {
     p {
         text-decoration-line: none;
-        @extend %basik_txt;
+        @extend %default_text;
         padding: 50px 0px 0px 0px;
     }
 }
@@ -17,7 +18,6 @@ p {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-
     p {
         text-decoration-line: none;
     }
@@ -25,7 +25,6 @@ p {
         display: flex;
         justify-content: space-between;
         align-items: center;
-
         width: 98px;
     }
 }
@@ -34,59 +33,55 @@ p {
     display: flex;
     justify-content: space-between;
     width: 100%;
-
     .form-group_split {
         width: 487/1154*100%;
-
         .posatl_and_city {
-            width:100%;
+            width: 100%;
         }
     }
 }
 
+#firstname {}
 
-#firstname {
-}
-#lastname {
-}
-#address1 {
-}
-#address2 {
-}
-#zip {
-}
-#city {
-}
-#email {
-}
-#phone {
-}
-#company {
-}
-#country {
-}
-.padding-bottom-1x {
-}
-.row {
-}
-.col-sm-6 {
-}
-.form-group {
-}
+#lastname {}
+
+#address1 {}
+
+#address2 {}
+
+#zip {}
+
+#city {}
+
+#email {}
+
+#phone {}
+
+#company {}
+
+#country {}
+
+.padding-bottom-1x {}
+
+.row {}
+
+.col-sm-6 {}
+
+.form-group {}
+
 .form-control {
     width: 100%;
     height: 46px;
-
     border: solid #000 1px;
     padding: 0px;
 }
-.form-control-feedback {
-}
-.custom-control.custom-checkbox {
-}
-.custom-control-input {
-}
-.custom-control-indicator {
-}
-.custom-control-description {
-}
+
+.form-control-feedback {}
+
+.custom-control.custom-checkbox {}
+
+.custom-control-input {}
+
+.custom-control-indicator {}
+
+.custom-control-description {}
