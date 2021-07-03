@@ -1,34 +1,29 @@
 @import '~scss/common';
 @import '~scss/components/radio';
 @import '../info';
-
 .content {
     width: 335/375*100%;
     margin: 86px auto 80px auto;
-
     .title {
         p {
             @extend %title_txt;
-			text-decoration-line: line-through;
+            text-decoration-line: line-through;
         }
     }
-
     .lang_selected_content {
         display: flex;
         justify-content: space-between;
         width: 70px;
         padding: 78px 0px 20px 0px;
-
-        p{ 
+        p {
             @extend %info_txt;
         }
     }
-
     section {
         padding: 0px 0px 20px 0px;
         .shipping_txt_block_content {
             h2 {
-                @extend %basik_txt;
+                @extend %default_text;
                 text-decoration-line: none;
                 padding: 0px 0px 0px 0px;
             }
@@ -39,9 +34,6 @@
             }
         }
     }
-
-	
-
     // .section_next_button {
     //     margin: 349px 0px 0px 0px;
     //     width: 100%;
@@ -52,7 +44,7 @@
     //         text-decoration: none;
     //         color: #000;
     //         text-decoration-line: none;
-    //         @extend %basik_txt;
+    //         @extend %default_text;
     //        }
     //     }
     //     .line {
@@ -60,7 +52,6 @@
     //         height: 1px;
     //         background-color: #000;
     //     }
-
     // }
 }
 

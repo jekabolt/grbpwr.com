@@ -1,44 +1,30 @@
 @import "../../../scss/common.scss";
-
 ::-webkit-scrollbar {
     display: none;
 }
-
-
 
 .content {
     width: 335/375*100%;
     margin: 90px auto 0px auto;
     padding: 0px 0px 20px 0px;
     .single_product_content_desktop {
-
         .header_product {
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             width: 100%;
             height: 105px;
-
             position: fixed;
             top: 0px;
             left: 0px;
-
             margin: 0px;
-
             z-index: 111;
-
-            
-
             .back_and_line {
                 margin: 0px 0px 0px 40px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-
                 cursor: pointer;
-
-
                 .line {
                     display: none;
                     width: 90/226*100%;
@@ -48,35 +34,26 @@
                         width: 8px;
                         height: 8px;
                         position: relative;
-                        
                         top: -4px;
                         left: 0px;
-
                         transform: rotate(45deg);
                         border-bottom: solid #000 1px;
                         border-left: solid #000 1px;
-
                     }
                 }
-
                 p {
                     color: #000;
                     font-size: 22px;
                     font-weight: 500;
                     text-decoration: none;
                 }
-
             }
-
             .logo {
                 width: 30px;
             }
-
             .desktop_list_cart_and_sum {
                 display: flex;
-
                 margin: 0px 40px 0px 0px;
-
                 a {
                     cursor: pointer;
                     color: #000;
@@ -84,21 +61,17 @@
                         font-size: 22px;
                         font-weight: 700;
                         padding: 0px 20px 0px 0px;
-                        
                     }
                 }
-
                 .sum_cart {
-                     p {
-                    text-decoration-line: none;
-                    font-size: 22px;
-                    
-                    font-weight: 700;
-                }
+                    p {
+                        text-decoration-line: none;
+                        font-size: 22px;
+                        font-weight: 700;
+                    }
                 }
             }
         }
-
         .product_img {
             width: 100%;
             height: 89vw;
@@ -112,18 +85,15 @@
             width: 100%;
             margin: 26px 0px 0px 0px;
             display: flex;
-
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
             grid-column-gap: 17px;
-            
             li {
                 list-style-type: none;
             }
             .product_img_desktop_small {
                 width: 19vw;
-                height: 19vw;   
-
+                height: 19vw;
                 img {
                     width: 100%;
                     height: 100%;
@@ -135,9 +105,8 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
-
             p {
-                @extend %basik_txt;
+                @extend %default_text;
                 text-decoration-line: none;
                 margin: 0px;
                 padding: 0px;
@@ -153,14 +122,14 @@
             flex-direction: row;
             justify-content: space-between;
             p {
-                @extend %basik_txt;
+                @extend %default_text;
             }
         }
         .add_to_card {
             padding: 61px 0px 0px 0px;
             text-align: right;
             p {
-                @extend %basik_txt;
+                @extend %default_text;
                 text-decoration-line: none;
             }
         }
@@ -168,21 +137,20 @@
             padding: 101px 0px 14px 0px;
             cursor: pointer;
             p {
-                @extend %basik_txt;
+                @extend %default_text;
                 text-decoration-line: none;
             }
         }
-           
         .details_content {
             overflow: hidden;
             padding: 0px 0px 20px 0px;
-                p {
-                    @extend %info_txt;
-                    text-decoration-line: none;
-                    transform: translateY(-100px);
-                    transition-duration: 0.2s;
-                    opacity: 0;
-                }
+            p {
+                @extend %info_txt;
+                text-decoration-line: none;
+                transform: translateY(-100px);
+                transition-duration: 0.2s;
+                opacity: 0;
+            }
         }
         .details_content_acrtive {
             p {
@@ -190,61 +158,47 @@
                 transition-duration: 0.2s;
                 opacity: 1;
             }
-
         }
-
         .form-group {
             padding: 70px 0px 0px 0px;
             width: 100%;
             .form-control {
-                display: flex;                      
+                display: flex;
                 width: 100%;
                 justify-content: space-around;
                 align-items: center;
-
-
                 .line_sz {
                     width: 335/375*100%;
                     height: 1px;
-
                     border-bottom: solid #000 1px;
-
                     position: absolute;
-
-                    
                     z-index: 98;
                 }
                 .size_content_active {
-                       z-index: 99;
+                    z-index: 99;
                 }
-
                 .size_content {
                     display: flex;
                     justify-content: center;
-
                     .size_button {
                         display: flex;
                         justify-content: center;
-    
                         background-color: #fff;
                         z-index: 97;
                         width: 60px;
                         cursor: pointer;
-                
                         p {
-                            @extend %basik_txt;
+                            @extend %default_text;
                             text-decoration-line: none;
                             text-transform: lowercase;
                         }
                     }
-
                     .size-active {
                         z-index: 99;
                     }
                 }
             }
         }
-        
         .add_btn {
             display: flex;
             justify-content: space-between;
@@ -253,7 +207,7 @@
             cursor: pointer;
             padding: 60px 0px 0px 0px;
             p {
-                @extend %basik_txt;
+                @extend %default_text;
                 text-decoration-line: none;
             }
             .line_add {
@@ -266,52 +220,36 @@
 }
 
 @media screen and (min-width: 768px) {
-    
     .content {
         z-index: 101;
         margin: 140px auto 0px auto;
         width: 1360/1440*100%;
         overflow: hidden;
         .single_product_content_desktop {
-
             overflow: hidden;
-
             .header_product {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-
                 width: 100%;
                 height: 105px;
-
                 position: fixed;
                 top: 0px;
                 left: 0px;
-
                 margin: 0px;
-
                 z-index: 111;
-
-                
-
                 .back_and_line {
                     width: 226/1440*100%;
-
                     .line {
                         display: block;
                     }
-
                 }
-
                 .logo {
                     width: 74px;
                 }
-
                 .desktop_list_cart_and_sum {
                     display: flex;
-
                     margin: 0px 40px 0px 0px;
-
                     a {
                         cursor: pointer;
                         color: #000;
@@ -319,21 +257,17 @@
                             font-size: 22px;
                             font-weight: 700;
                             padding: 0px 20px 0px 0px;
-                            
                         }
                     }
-
                     .sum_cart {
-                         p {
-                        text-decoration-line: none;
-                        font-size: 22px;
-                        
-                        font-weight: 700;
-                    }
+                        p {
+                            text-decoration-line: none;
+                            font-size: 22px;
+                            font-weight: 700;
+                        }
                     }
                 }
             }
-
             display: flex;
             .product_img {
                 display: none;
@@ -342,11 +276,9 @@
                 display: flex;
                 flex-direction: column;
                 margin: 0px 0px 0px 0px;
-
                 width: 688/1361*100vw;
                 height: 731px;
                 overflow-x: auto;
-                
                 .product_img_desktop_small {
                     padding: 0px 0px 45px 0px;
                     width: 100%;
@@ -355,10 +287,8 @@
                         width: 74vw;
                         height: 74vw;
                         position: absolute;
-    
                         z-index: 106;
                     }
-
                     img {
                         width: 100%;
                         height: 100%;
@@ -369,36 +299,27 @@
         .description_desktop {
             padding: 0px 0px 0px 20px;
             width: 601/1361*100%;
-
             .cross {
                 width: 40px;
                 height: 40px;
-
                 margin: 0px 0px 50px 0px;
-
                 cursor: pointer;
                 float: right;
                 .line_cross_1 {
                     width: 40px;
                     height: 4px;
                     position: absolute;
-
                     background-color: #000;
-
                     transform: rotate(45deg);
-
                 }
                 .line_cross_2 {
                     width: 40px;
                     height: 4px;
                     position: absolute;
-
                     background-color: #000;
-
                     transform: rotate(-45deg);
                 }
             }
-
             .product_description_single_page {
                 padding: 0px;
                 p {
@@ -411,18 +332,15 @@
             .size {
                 padding: 363px 0px 0px 0px;
             }
-           
             .details {
                 padding: 60px 0px 0px 0px;
             }
             .add_to_card {
                 padding: 61px 0px 0px 0px;
             }
-
             .form-group {
-            overflow: hidden;
+                overflow: hidden;
                 .form-control {
-
                     .line_sz {
                         width: 601/1441*100%;
                     }

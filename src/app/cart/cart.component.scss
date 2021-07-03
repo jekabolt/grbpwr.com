@@ -50,7 +50,7 @@
             }
             a {
                 p {
-                    @extend %basik_txt;
+                    @extend %default_text;
                     text-decoration-line: none;
                 }
             }
@@ -75,7 +75,7 @@
                 min-height: 1px;
                 background-color: #000;
             }
-            @extend %basik_txt;
+            @extend %default_text;
             text-decoration-line: none;
             text-decoration: none;
             color: #000;

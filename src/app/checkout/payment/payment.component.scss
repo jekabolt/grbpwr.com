@@ -1,9 +1,8 @@
 @import '~scss/common';
-
 .title {
     p {
         text-decoration-line: none;
-        @extend %basik_txt;
+        @extend %default_text;
         padding: 50px 0px 0px 0px;
     }
 }
@@ -12,21 +11,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     margin: 0px auto 0px auto;
     width: 100%;
-
     p {
         cursor: pointer;
     }
-
     .form-control-radio {
         position: absolute;
         opacity: 0;
         left: 700px;
-       
     }
-
     .form-control-radio:checked~.payment_selector {
         p {
             text-decoration: underline;
@@ -36,7 +30,6 @@
         p {
             @extend %info_txt;
             text-decoration-line: none;
-            
         }
     }
 }
