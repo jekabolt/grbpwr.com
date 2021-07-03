@@ -45,8 +45,16 @@
         position: absolute;
         top: 20px;
         right: 20px;
-        .desktop_cat_sum {
+        #cart_sum {
             display: none;
+        }
+        p {
+            cursor: pointer;
+            @extend basik_txt !optional;
+            font-weight: 600;
+        }
+        a {
+            color: #000;
         }
     }
 
@@ -62,8 +70,11 @@
         position: absolute;
         top: 20px;
         left: 20px;
+        font-weight: 600;
     }
 }
+
+
 
 
 .footer {
@@ -216,10 +227,10 @@
             height: 100%;
 
             margin-right: 40px;
-            .desktop_cart_sum {
+            #cart_sum {
                 display: block;
                 padding-left: 20px;
-            } 
+            }
             p {
                 cursor: pointer;
                 text-decoration: none;
