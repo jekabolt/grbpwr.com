@@ -179,6 +179,7 @@
             justify-content: center;
             .icon {
                 width: 300/375*100%;
+                height: auto;
             }
         }
 }
@@ -228,6 +229,7 @@
             .icon_legal_info {
                 .icon {
                     width: 504/1440*100%;
+                    height: auto;
                 }
             }
     }
