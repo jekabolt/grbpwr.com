@@ -111,6 +111,19 @@
 
 <footer class="footer">
     <section class="info_and_currency">
+            <div class="currency">
+                <input (click)="toggleCurrencyUSD()" class="currency_input currency_usd" checked id="usd" name="currency" type="radio">
+                <label class="currency_label currency_usd" for="usd"><p>usd</p></label>
+
+                <input  (click)="toggleCurrencyBYN()" class="currency_input currency_byn" id="byn" name="currency" type="radio">
+                <label class="currency_label currency_byn" for="byn"><p>byn</p></label>
+
+                <input  (click)="toggleCurrencyRUB()" class="currency_input currency_rub" id="rub" name="currency" type="radio">
+                <label class="currency_label currency_rub" for="rub"><p>rub</p></label>
+
+                <input  (click)="toggleCurrencyEUR()" class="currency_input currency_eur" id="eur" name="currency" type="radio">
+                <label class="currency_label currency_eur" for="eur"><p>eur</p></label>
+            </div>
             <nav class="info_list">
                 <a routerLink="/about" href="">
                     <p>about</p>
@@ -133,19 +146,6 @@
                 </a>
     
             </nav>
-            <div class="currency">
-                <input class="currency_input currency_usd" checked id="usd" name="currency" type="radio">
-                <label class="currency_label currency_usd" for="usd"><p>usd</p></label>
-
-                <input class="currency_input currency_byn" id="byn" name="currency" type="radio">
-                <label class="currency_label currency_byn" for="byn"><p>byn</p></label>
-
-                <input class="currency_input currency_rub" id="rub" name="currency" type="radio">
-                <label class="currency_label currency_rub" for="rub"><p>rub</p></label>
-
-                <input class="currency_input currency_eur" id="eur" name="currency" type="radio">
-                <label class="currency_label currency_eur" for="eur"><p>eur</p></label>
-            </div>
     </section>
     <section class="legal_info">
         <div class="left_info">
@@ -164,15 +164,8 @@
         </div>
     </section>
     <div class="icon_legal_info">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Visa_2014_logo_detail.svg">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/7/77/Alfa-Bank.svg">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/ru/0/07/Samsung_Pay_Logo.svg">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Visa_2014_logo_detail.svg">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Visa_2014_logo_detail.svg">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Visa_2014_logo_detail.svg">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Visa_2014_logo_detail.svg">
+        <img class="icon" src="/img/bank-logo.png">
+        
         
     </div>
 </footer> 

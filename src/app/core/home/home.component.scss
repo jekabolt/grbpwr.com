@@ -12,7 +12,7 @@
 
     .clip {
         width: 100%;
-        height: 53vw;
+        height: 55vw !important;
         padding: 0px 0px 10px 0px;
 
     }
@@ -76,7 +76,8 @@
             width: 100%;
 
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-around;
             align-items: center;
 
             border-top: solid #000 1px;
@@ -85,7 +86,13 @@
             position: relative;
 
             .info_list {
-                display: none;
+                width: 100%;
+                height: 180px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+
                 a {
                     color: #000;
                     p {
@@ -99,11 +106,7 @@
                 float: left;
                 justify-content: space-between;
 
-                position: absolute;
-                right: 0px;
-                bottom: 40px;
-                
-                width: 243px;
+                width: 100%;
 
                 .currency_input {
                     position: absolute;
@@ -151,6 +154,7 @@
         .legal_info {
             padding: 180px 0px 0px 0px;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
 
             p {
@@ -167,15 +171,11 @@
         }
         .icon_legal_info {
             margin: 85px 0px 0px 0px;
-            
             width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            grid-row-gap: 20px;
-
+            display: flex;
+            justify-content: center;
             .icon {
-                width: 40px;
-                margin: 0px 10px;
+                width: 300/375*100%;
             }
         }
 }
@@ -183,7 +183,7 @@
 
 @media screen and (min-width: 768px) {
     .content {
-        max-width: 1360/1440*100%;
+        width: 1360/1440*100%;
         margin: 130px auto 0px auto;
         .clip {
             height: 47vw;
@@ -204,24 +204,27 @@
 
     .footer {
         width: 1360/1440*100%;
+
             .info_and_currency {
                 .info_list {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
                     width: 770/1440*100%;
+                    flex-direction: row;
+                }
+
+                .currency {
+                    position: absolute;
+                    right: 0px;
+                    bottom: 40px;
+
+                    width: 243px;
                 }
             }
+            .legal_info {
+                flex-direction: row;
+            }
             .icon_legal_info {
-                margin: 85px 0px 0px 0px;
-                
-                width: 100%;
-                display: flex;
-                justify-content: center;
-    
                 .icon {
-                    width: 40px;
-                    margin: 0px 10px;
+                    width: 504/1440*100%;
                 }
             }
     }

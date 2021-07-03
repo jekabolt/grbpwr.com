@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, HostBinding} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
@@ -15,6 +15,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject();
   public products: Product[];
   public productsBestRated: Product[];
+
+  @HostBinding('class.currencyRub') currencyRub = true;
+
+  toggleCurrencyRUB() {
+    this.currencyRub = !this.currencyRub;
+  }
 
   constructor(
 

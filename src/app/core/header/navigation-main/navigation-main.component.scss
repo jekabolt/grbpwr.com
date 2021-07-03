@@ -75,6 +75,7 @@
             font-weight: 600;
             position: absolute;
             left: 0px;
+            cursor: pointer;
         }
     }
 }
@@ -92,7 +93,7 @@
         justify-content: center;
 
         .header_container {
-            width: 1290/1440*100%;
+            width: 1360/1440*100%;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -215,7 +216,7 @@
     position: absolute;
     bottom: 0px;
     overflow: hidden;
-    margin: 275px 0px 20px 27px;
+    margin: 275px 0px 20px 66px;
     .side_bar_info_list {
         p {
             @extend %info_txt;
