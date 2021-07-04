@@ -165,12 +165,9 @@
                 text-decoration: none;
             }
 
-            .left_info {
-                width: 446px;
-            }
             .right_info {
-                width: 446px;
-                text-align: right;
+                text-align: left;
+                padding: 40px 0px 0px 0px;
             }
         }
         .icon_legal_info {
@@ -181,6 +178,7 @@
             .icon {
                 width: 30px;
                 margin: 0px 7px;
+                height: 30px;
             }
         }
 }
@@ -226,12 +224,22 @@
             }
             .legal_info {
                 flex-direction: row;
+
+                .left_info {
+                    width: 446px;
+                }
+                .right_info {
+                    width: 446px;
+                    text-align: right;
+                    padding: 0px;
+                }
             }
             .icon_legal_info {
                 width: 540/1440*100%;
                 .icon {
                     width: 55px;
                     margin: 0px 7px;
+                    height: 55px;
                 }
             }
     }
