@@ -51,14 +51,14 @@
             flex-direction: row;
             justify-content: space-between;
             p {
-                @extend %basik_txt;
+                @extend %default_text;
             }
         }
         .add_to_card {
             padding: 61px 0px 0px 0px;
             text-align: right;
             p {
-                @extend %basik_txt;
+                @extend %default_text;
                 text-decoration-line: none;
             }
         }
@@ -66,7 +66,7 @@
             padding: 101px 0px 14px 0px;
             cursor: pointer;
             p {
-                @extend %basik_txt;
+                @extend %default_text;
                 text-decoration-line: none;
             }
         }
@@ -92,7 +92,7 @@
                 background-color: #000;
             }
             p {
-                @extend %basik_txt;
+                @extend %default_text;
                 text-decoration-line: none;
             }
         }
@@ -104,7 +104,7 @@
             cursor: pointer;
             padding: 60px 0px 0px 0px;
             p {
-                @extend %basik_txt;
+                @extend %default_text;
                 text-decoration-line: none;
             }
             .line_add {

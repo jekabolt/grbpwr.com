@@ -1,33 +1,29 @@
 @import "../../../scss/common.scss";
-
-
-        .product_place {
-            display: flex;
-            flex-direction: column;
-            padding: 0px 0px 72px 0px;
-            .product-thumb {
-                min-width: 42%;
-                height: 42vw;
-                .product_img {
-                    width: 100%;
-                    height: 42vw;
-                    background-color: #ddd;
-                }
-            }
-            p {
-                padding: 12px 0px 0px 0px;
-                @extend %info_txt;
-                a {
-                    color: #000;
-                }
-                &:last-child {
-                    padding: 7px 0px 0px 0px;
-                    @extend %basik_txt;
-                }
-            }
-            
+.product_place {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 0px 72px 0px;
+    .product-thumb {
+        min-width: 42%;
+        height: 42vw;
+        .product_img {
+            width: 100%;
+            height: 42vw;
+            background-color: #ddd;
         }
-
+    }
+    p {
+        padding: 12px 0px 0px 0px;
+        @extend %info_txt;
+        a {
+            color: #000;
+        }
+        &:last-child {
+            padding: 7px 0px 0px 0px;
+            @extend %default_text;
+        }
+    }
+}
 
 @media screen and (min-width: 768px) {
     .product-thumb {

@@ -6,9 +6,12 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    .logo {
+        width: 90px;
+    }
     p {
         text-align: center;
-        @extend %basik_txt;
+        @extend %default_text;
         text-decoration-line: none;
         &:nth-child(2) {
             padding: 177px 0px 0px 0px;
@@ -22,18 +25,14 @@
         margin: 77px 0px 0px 0px;
         a {
             p {
-                    text-decoration-line: line-through;
-                }
-                
-            }
-            &:last-child {
-                padding: 10px 0px 0px 0px;
+                text-decoration-line: line-through;
             }
         }
+        &:last-child {
+            padding: 10px 0px 0px 0px;
+        }
     }
-   
-
-
+}
 
 @media screen and (min-width: 768px) {
     .content_404 {

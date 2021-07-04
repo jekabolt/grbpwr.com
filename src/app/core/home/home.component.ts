@@ -16,6 +16,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   public products: Product[];
   public productsBestRated: Product[];
 
+
+
   constructor(
 
   ) { }

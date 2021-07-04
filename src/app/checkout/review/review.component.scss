@@ -1,5 +1,4 @@
 @import '~scss/common';
-
 p {
     color: #000;
     text-decoration-line: none;
@@ -11,14 +10,14 @@ p {
     }
 }
 
-
 .title {
     p {
         text-decoration-line: none;
-        @extend %basik_txt;
+        @extend %default_text;
         padding: 50px 0px 0px 0px;
     }
 }
+
 .product_container {
     display: flex;
     min-width: 100%;
@@ -26,39 +25,29 @@ p {
         margin: 43px 0px 0px 0px;
         padding: 0px 0px 28px 0px;
         min-width: 100%;
-
         display: flex;
         align-items: flex-start;
-        
-    
         border-bottom: solid #000 1px;
-
         .product-info {
             text-align: left;
             height: 154px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-
             padding: 0px 0px 0px 10px;
-
             div {
                 p {
                     padding: 0px 0px 16px 0px;
                 }
             }
         }
-        
-    
         img {
             width: 154px;
         }
-    }   
-    
+    }
 }
 
 @media screen and (min-width: 768px) {
-
     .product_container {
         .product-item {
             display: flex;
@@ -66,10 +55,7 @@ p {
             .product-info {
                 text-align: right;
                 padding: 0px;
-        
             }
-        }  
+        }
     }
 }
-    
-

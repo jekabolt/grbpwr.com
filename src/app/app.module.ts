@@ -20,6 +20,7 @@ import {ContactUsComponent} from './info/contact-us/contact-us.component';
 import {SingleProductComponent} from './single-product/single-product.component';
 import {ReturnsComponent} from './info/returns/returns.component';
 import { AdminComponent } from './admin/admin.component';
+import { FooterComponent } from './core/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AdminComponent } from './admin/admin.component';
     ContactUsComponent,
     SingleProductComponent,
     ReturnsComponent,
-    AdminComponent
+    AdminComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

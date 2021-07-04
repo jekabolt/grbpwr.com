@@ -1,8 +1,4 @@
 @import "../../../../scss/common.scss";
-.logo {
-    width: 30px;
-}
-
 .side_bar_nav.navbar-opened {
     .bg_side_bar {
         transform: translateX(0px);
@@ -40,53 +36,95 @@
     top: 0;
     height: 70px;
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    
-    .desktop_list_cart_and_sum {
-        .sum_cart {
+    .header_container {
+        width: 335/375*100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        .nav_bar_container {
+            position: absolute;
+            right: 0px;
+            #cart_sum {
+                display: none;
+            }
+            p {
+                cursor: pointer;
+                @extend default_text !optional;
+                font-weight: 600;
+            }
+            a {
+                color: #000;
+            }
+        }
+        .side_bar_nav_list {
             display: none;
         }
-    }
-    p {
-        @extend %header_txt;
-        cursor: pointer;
-        &:first-child {
-            padding: 0px 0px 0px 20px;
+        .logo {
+            width: 30px;
         }
-        &:last-child {
-            padding: 0px 20px 0px 0px;
+        #menu_btn {
+            font-weight: 600;
+            position: absolute;
+            left: 0px;
+            cursor: pointer;
         }
     }
 }
 
 @media screen and (min-width: 768px) {
-
-    
     .header {
-        height: 104px;
-        width: 100%;
-        margin: 0px;
-
+        height: 130px;
+        width: 100% !important;
         z-index: 100;
-
-        .logo {
-            width: 74px;
-            margin: 40px 0px 0px 40px;
-        }   
-        #menu_btn {
-            display: none;
-        }
-        .desktop_list_cart_and_sum {
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            padding: 40px 40px 0px 0px;
+        justify-content: center;
+        .header_container {
+            width: 1360/1440*100%;
             display: flex;
-            .sum_cart {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            .nav_bar_container {
+                display: flex;
+                position: relative;
+                top: 0px;
+                right: 0px;
+                flex-direction: row;
+                align-items: center;
+                height: 100%;
+                #cart_sum {
+                    display: block;
+                    padding-left: 20px;
+                }
+                p {
+                    cursor: pointer;
+                    text-decoration: none;
+                    @extend info_txt !optional;
+                }
+                a {
+                    color: #000;
+                }
+            }
+            .logo {
+                width: 60px;
+                margin: 0px;
+                position: relative;
+            }
+            #menu_btn {
+                display: none;
+            }
+            .side_bar_nav_list {
                 display: block;
-                padding: 0px 0px 0px 17px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 625/1440*100%;
+                margin: 0px;
+                #menu_btn_hide {
+                    display: none;
+                }
             }
         }
     }
@@ -111,11 +149,7 @@
     flex-direction: column;
     width: auto;
     height: auto;
-
     z-index: 100;
-
-    background-color: #fff;
-
     p {
         @extend %info_txt;
         cursor: pointer;
@@ -126,7 +160,7 @@
         padding-bottom: 13px;
         font-size: 22px;
         text-decoration-line: none;
-        @extend %basik_txt;
+        @extend %default_text;
     }
     .desktop_inf {
         display: none;
@@ -154,7 +188,7 @@
     position: absolute;
     bottom: 0px;
     overflow: hidden;
-    margin: 275px 0px 20px 27px;
+    margin: 275px 0px 20px 66px;
     .side_bar_info_list {
         p {
             @extend %info_txt;
@@ -176,16 +210,10 @@
 
 @media screen and (min-width: 768px) {
     .side_bar_nav {
-        width: 245px;
-        transform: translateX(0%);
-        margin: 0px 0px 0px 0px;
-        padding: 0px;
-        z-index: 98;
-
+        display: none;
         #menu_btn_hide {
             display: none;
         }
-
         .bg_side_bar {
             display: none;
         }
@@ -196,6 +224,7 @@
         }
         .info_and_line {
             position: absolute;
+            display: none;
             bottom: 20px;
             left: 40px;
             .info_line {
@@ -208,13 +237,13 @@
         }
     }
     .side_bar_nav_list {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        margin: 173px 0px 0px 40px;
-        padding: 0px 0px 0px 0px;
-        background-color: #fff;
-        z-index: 100;
+        display: none;
+        width: 655/1440*100%;
+        p {
+            text-decoration: none;
+            cursor: pointer;
+            line-height: 22px;
+        }
         .side_bar_btn {
             text-decoration-line: line-through;
         }

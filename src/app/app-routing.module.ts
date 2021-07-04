@@ -24,7 +24,7 @@ import { AdminComponent } from './admin/admin.component';
 const routes: Routes = [
   { path: '', component: HomeComponent,  data: {header:true} },
   { path: 'products', component: ProductsListComponent,  data: {header:true} },
-  { path: 'products/:id', component: ProductDetailComponent ,  data: {header:false}},
+  { path: 'products/:id', component: ProductDetailComponent ,  data: {header:true}},
 
   { path: 'archive', component: ArchiveListComponent,  data: {header:true} },
   { path: 'archive/:id', component: ArchiveDetailComponent,  data: {header:true} },
@@ -50,7 +50,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

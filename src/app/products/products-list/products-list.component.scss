@@ -1,10 +1,8 @@
 @import "../../../scss/common.scss";
-
 .content {
     width: 335/375*100%;
     margin: 84px auto 0px auto;
     display: flex;
-
     .product_content {
         width: 100%;
         height: auto;
@@ -26,7 +24,7 @@
             }
             h2 {
                 padding: 7px 0px 0px 0px;
-                @extend %basik_txt;
+                @extend %default_text;
             }
         }
     }

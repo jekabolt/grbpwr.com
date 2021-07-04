@@ -1,42 +1,31 @@
 @import "../../../scss/common.scss";
-
 .content {
     width: 335/375*100%;
     margin: 92px auto 0px auto;
-
     p {
         text-decoration-line: none;
-
         width: 292px;
-      
-       
         &:first-child {
-            @extend %basik_txt;
+            @extend %default_text;
             font-size: 42px;
             line-height: 51px;
             text-decoration-line: line-through;
         }
-
         &:last-child {
             @extend %info_txt;
-
         }
     }
-
     .video_archive {
         width: 100%;
-
         padding: 42px 0px 0px 0px;
         .ing_acrhive {
             width: 100%;
         }
-        p{
+        p {
             @extend %info_txt;
-
             padding: 43px 0px 44px 0px;
         }
     }
-
 }
 
 @media screen and (min-width: 768px) {
