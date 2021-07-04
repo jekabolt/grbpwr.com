@@ -18,6 +18,11 @@ p {
     }
 }
 
+
+input:focus {
+    outline: none;
+}
+
 .product_container {
     display: flex;
     min-width: 100%;

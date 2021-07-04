@@ -13,6 +13,11 @@ p {
     }
 }
 
+
+input:focus {
+    outline: none;
+}
+
 .shipping_method_content {
     width: 100%;
     height: 46px;
