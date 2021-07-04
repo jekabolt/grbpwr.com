@@ -1,6 +1,7 @@
 @import "nullstyle";
 
 body {
+    touch-action: manipulation;
     margin: 0px;
     padding: 0px;
     width: 100%;
