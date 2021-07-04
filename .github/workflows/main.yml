@@ -26,7 +26,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v1
         with:
-          name: dist.${GITHUB_SHA::6}
+          name: dist
           path: dist
   deploy:
     runs-on: ubuntu-latest
