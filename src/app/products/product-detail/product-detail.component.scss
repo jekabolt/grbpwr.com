@@ -8,70 +8,7 @@
     margin: 90px auto 0px auto;
     padding: 0px 0px 20px 0px;
     .single_product_content_desktop {
-        .header_product {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            height: 105px;
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            margin: 0px;
-            z-index: 111;
-            .back_and_line {
-                margin: 0px 0px 0px 40px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                cursor: pointer;
-                .line {
-                    display: none;
-                    width: 90/226*100%;
-                    height: 1px;
-                    background-color: #000;
-                    .arrow {
-                        width: 8px;
-                        height: 8px;
-                        position: relative;
-                        top: -4px;
-                        left: 0px;
-                        transform: rotate(45deg);
-                        border-bottom: solid #000 1px;
-                        border-left: solid #000 1px;
-                    }
-                }
-                p {
-                    color: #000;
-                    font-size: 22px;
-                    font-weight: 500;
-                    text-decoration: none;
-                }
-            }
-            .logo {
-                width: 30px;
-            }
-            .desktop_list_cart_and_sum {
-                display: flex;
-                margin: 0px 40px 0px 0px;
-                a {
-                    cursor: pointer;
-                    color: #000;
-                    p {
-                        font-size: 22px;
-                        font-weight: 700;
-                        padding: 0px 20px 0px 0px;
-                    }
-                }
-                .sum_cart {
-                    p {
-                        text-decoration-line: none;
-                        font-size: 22px;
-                        font-weight: 700;
-                    }
-                }
-            }
-        }
+       
         .product_img {
             width: 100%;
             height: 89vw;
@@ -174,12 +111,25 @@
                     position: absolute;
                     z-index: 98;
                 }
-                .size_content_active {
-                    z-index: 99;
-                }
+
                 .size_content {
                     display: flex;
                     justify-content: center;
+                    .size_input {
+                        position: absolute;
+                        opacity: 0;
+                        left: -200px;
+                    }
+                    .size_input:checked~.size_button {
+                        z-index: 99;
+                    }
+
+                    .size_input:disabled~.size_button {
+                        p {
+                            opacity: 0.5;
+                        }
+                    }
+
                     .size_button {
                         display: flex;
                         justify-content: center;
@@ -192,9 +142,6 @@
                             text-decoration-line: none;
                             text-transform: lowercase;
                         }
-                    }
-                    .size-active {
-                        z-index: 99;
                     }
                 }
             }
@@ -227,47 +174,6 @@
         overflow: hidden;
         .single_product_content_desktop {
             overflow: hidden;
-            .header_product {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-                height: 105px;
-                position: fixed;
-                top: 0px;
-                left: 0px;
-                margin: 0px;
-                z-index: 111;
-                .back_and_line {
-                    width: 226/1440*100%;
-                    .line {
-                        display: block;
-                    }
-                }
-                .logo {
-                    width: 74px;
-                }
-                .desktop_list_cart_and_sum {
-                    display: flex;
-                    margin: 0px 40px 0px 0px;
-                    a {
-                        cursor: pointer;
-                        color: #000;
-                        p {
-                            font-size: 22px;
-                            font-weight: 700;
-                            padding: 0px 20px 0px 0px;
-                        }
-                    }
-                    .sum_cart {
-                        p {
-                            text-decoration-line: none;
-                            font-size: 22px;
-                            font-weight: 700;
-                        }
-                    }
-                }
-            }
             display: flex;
             .product_img {
                 display: none;

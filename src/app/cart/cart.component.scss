@@ -124,7 +124,7 @@
                     justify-content: space-between;
                     align-items: center;
                     width: 112px;
-                    padding: 20px 0px 0px 0px;
+                    padding: 20px 0px 0px 10px;
                     margin: 0px auto 0px auto;
                     .btn_plus {
                         @extend %info_txt;
@@ -152,7 +152,7 @@
 @media screen and (min-width: 768px) {
     .content {
         width: 1360/1441*100%;
-        margin: 90px auto 0px auto;
+        margin: 140px auto 0px auto;
         .shopping-cart-footer {
             .checkout_and_total {
                 .line_checkout {

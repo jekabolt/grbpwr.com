@@ -47,8 +47,9 @@
                 <div class="form-control">
 
                     <figure class="line_sz"></figure>
-                    <div *ngFor="let item of sizes ">
-                        <input id="{{item.sz}}" (change)="onRadioSize(item.sz)" [value]='item.sz' type="radio" name="enums" [(ngModel)]="radioSelected" [attr.disabled]="!item.avb ? false : null"> {{item.sz}}
+                    <div class="size_content" *ngFor="let item of sizes ">
+                        <input class="size_input" id="{{item.sz}}" (change)="onRadioSize(item.sz)" [value]='item.sz' type="radio" name="enums" [(ngModel)]="radioSelected" [attr.disabled]="!item.avb ? false : null"> 
+                        <label class="size_button" for="{{item.sz}}"><p> {{item.sz}}</p></label>
                     </div>
 
                 </div>
