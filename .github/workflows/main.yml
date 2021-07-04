@@ -37,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Instal angular
-        run: npm i -g @angular/cli
+        run: sudo npm i -g @angular/cli
       - name: Install dependencies
         run: npm i
       - name: Build production
