@@ -52,9 +52,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.detailsActive = !this.detailsActive;
   }
 
-  GoBack() {
-    this.location.back();
-  }
 
   ngOnInit(): void {
 
