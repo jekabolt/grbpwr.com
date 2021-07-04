@@ -151,8 +151,8 @@
 
 @media screen and (min-width: 768px) {
     .content {
-        max-width: 854/1441*100%;
-        margin: 90px 0px 0px 294px;
+        width: 1360/1441*100%;
+        margin: 90px auto 0px auto;
         .shopping-cart-footer {
             .checkout_and_total {
                 .line_checkout {
