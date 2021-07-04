@@ -174,13 +174,13 @@
             }
         }
         .icon_legal_info {
-            margin: 85px 0px 0px 0px;
-            width: 100%;
+            margin: 85px auto 0px auto;
+            width: 280/375*100%;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             .icon {
-                width: 300/375*100%;
-                height: auto;
+                width: 30px;
+                margin: 0px 7px;
             }
         }
 }
@@ -228,9 +228,10 @@
                 flex-direction: row;
             }
             .icon_legal_info {
+                width: 540/1440*100%;
                 .icon {
-                    width: 504/1440*100%;
-                    height: auto;
+                    width: 55px;
+                    margin: 0px 7px;
                 }
             }
     }
