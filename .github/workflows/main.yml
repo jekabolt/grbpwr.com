@@ -47,4 +47,4 @@ jobs:
           sudo apt-get update
           sudo apt-get install sshpass -y
       - name: Deploy production
-        run: sshpass -v -p '${{ secrets.SSH_PASS }}' scp -r ./dist/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/grbpwr.com/html
+        run: sshpass -v -p '${{ secrets.SSH_PASS }}' scp -v -o stricthostkeychecking=no -r ./dist/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/grbpwr.com/html
