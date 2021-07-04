@@ -26,6 +26,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   public user: User;
 
+  public sizes: {avb: boolean, sz: string }[]
   public availableSizes: string[];
   public imagesLoaded: string[];
   public activeImageUrl: string;
@@ -42,8 +43,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private cartService: CartService,
   ) { }
 
-  toggleSize() {
-    this.sizeActive = !this.sizeActive;
+
+  toggleSize(){
+     this.sizeActive = !this.sizeActive;
   }
 
   ShowDetail() {
@@ -58,6 +60,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
     this.selectedQuantity = 1;
     this.imagesLoaded = [];
+
+    this.sizes = [
+      { sz: "xs", avb: true },
+      { sz: "s", avb: true },
+      { sz: "m", avb: false },
+      { sz: "l", avb: true },
+    ];
 
     this.route.params
       .pipe(takeUntil(this.unsubscribe$))
@@ -119,6 +128,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   public onSelectSize(event) {
     this.selectedSize = String(event.target.value);
+  }
+
+  public onRadioSize(sz) {
+    this.selectedSize = sz;
   }
 
   public onImageLoad(e: any) {

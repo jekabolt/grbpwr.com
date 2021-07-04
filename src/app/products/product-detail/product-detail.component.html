@@ -2,32 +2,32 @@
 
     <div *ngIf="product" class="single_product_content_desktop">
 
-        
+
         <section class="img_content">
             <div class="product_img" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
                 <img [hidden]="!imagesLoaded.includes(activeImageUrl)" class="img-fluid" src="{{activeImageUrl}}" alt="{{product.name}}" (load)="onImageLoad($event)">
             </div>
             <div class="img_slider_content">
-                    <div class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
-                            <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                                <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
-                            </a>
-                    </div>
+                <div class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
+                    <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
+                        <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
+                    </a>
+                </div>
             </div>
         </section>
 
         <div class="description_desktop">
 
             <section (click)="GoBack()" class="cross">
-                    <div class="line_cross_1"></div>
-                    <div class="line_cross_2"></div>
+                <div class="line_cross_1"></div>
+                <div class="line_cross_2"></div>
             </section>
 
             <div class="product_description_single_page">
                 <p>
                     {{ product.name }}
                     <!-- <app-page-title title="{{ product.name }}"></app-page-title> -->
-                    
+
                 </p>
                 <h2>
                     <app-price [product]="product"></app-price>
@@ -44,24 +44,45 @@
             <div class="form-group">
 
                 <!-- <select form="size" class="form-control" id="quantity" (change)="onSelectSize($event)"> -->
- 
-                    <!-- <div   class="form-control">
+
+                <!-- <div   class="form-control">
                         <p form="size" (click)="ondivSize($event)" *ngFor="let sz of availableSizes">{{sz}}</p>
                     </div> -->
 
                 <!-- </select> -->
 
-               
- 
-                    <div class="form-control">
-                        <figure class="line_sz"></figure>
-                        <div class="size_content" form="size" (click)="ondivSize($event)"  *ngFor="let sz of availableSizes">
-                                <div [class.size-active]="sizeActive" (click)="toggleSize()"  class="size_button"><p>{{sz}}</p></div>
+
+
+                <!-- <div class="form-control">
+                    <figure class="line_sz"></figure>
+                    <div class="size_content" form="size" *ngFor="let sz of availableSizes">
+
+                        <div [class.size-active]="sizeActive" (click)="toggleSize()" class="size_button">
+                            <p>{{sz}}</p>
                         </div>
-                    </div> 
+
+                    </div>
+                </div> -->
 
 
-                       
+                <!-- <li *ngFor="let item of mapSizes | keyvalue">
+                    <span>key: {{item.key}} </span>
+                    <span>value: {{item.value}} </span>
+                </li> -->
+
+                <div class="form-control">
+
+                    <figure class="line_sz"></figure>
+                    <div *ngFor="let item of sizes ">
+                        <!-- <label for="enum_answer_{{item.sz}"> -->
+                        <input id="{{item.sz}}" (change)="onRadioSize(item.sz)" [value]='item.sz' type="radio" name="enums" [(ngModel)]="radioSelected" [attr.disabled]="!item.avb ? false : null"> {{item.sz}}
+                        <!-- </label> -->
+                    </div>
+
+                </div>
+
+
+
 
             </div>
 
@@ -79,12 +100,12 @@
             <div (click)="ShowDetail()" class="details">
                 <p id="details">Details</p>
             </div>
-  
 
-             <aside [class.details_content_acrtive]="detailsActive" id="details_content" class="details_content">
-                 <p>{{product.description}}</p>
-             </aside>
-    
+
+            <aside [class.details_content_acrtive]="detailsActive" id="details_content" class="details_content">
+                <p>{{product.description}}</p>
+            </aside>
+
 
         </div>
 
