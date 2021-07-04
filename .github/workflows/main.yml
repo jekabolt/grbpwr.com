@@ -18,6 +18,8 @@ jobs:
           node-version: "12.x"
       - name: Install dependencies
         run: npm i
+      - name: Instal angular
+        run: npm i -g @angular/cli
       - name: Build
         run: ng build --base-href https://grbpwr.com --configuration production
       - name: Archive build
