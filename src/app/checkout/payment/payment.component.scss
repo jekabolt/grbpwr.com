@@ -3,7 +3,7 @@
     p {
         text-decoration-line: none;
         @extend %default_text;
-        padding: 50px 0px 0px 0px;
+        padding: 50px 0px 43px 0px;
     }
 }
 
@@ -19,7 +19,7 @@
     .form-control-radio {
         position: absolute;
         opacity: 0;
-        left: 700px;
+        left: -200;
     }
     .form-control-radio:checked~.payment_selector {
         p {
@@ -38,4 +38,9 @@
     .payment_met_content {
         width: 400/1154*100%;
     }
+}
+
+
+input:focus {
+    outline: none;
 }
