@@ -10,36 +10,41 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Use Node 12.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: "12.x"
-      - name: Install dependencies
-        run: npm i
-      - name: Instal angular
-        run: npm i -g @angular/cli
-      - name: Build
-        run: ng build --base-href ${{ secrets.BASE_HREF }} --configuration production
-      - name: Archive build
-        if: success()
-        uses: actions/upload-artifact@v1
-        with:
-          name: dist
-          path: dist
+      - name: lel
+        run: echo kk
+      # - name: Checkout
+      #   uses: actions/checkout@v2
+      # - name: Use Node 12.x
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: "12.x"
+      # - name: Install dependencies
+      #   run: npm i
+      # - name: Instal angular
+      #   run: npm i -g @angular/cli
+      # - name: Build
+      #   run: ng build --base-href ${{ secrets.BASE_HREF }} --configuration production
+      # - name: Archive build
+      #   if: success()
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: dist
+      #     path: dist
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          name: deploy_dist
-      - name: Build and deploy
+      - name: Instal angular
+        run: npm i -g @angular/cli
+      - name: Install dependencies
+        run: npm i
+      - name: Build production
+        run: ng build --base-href ${{ secrets.BASE_HREF }} --configuration production
+      - name: Instal sshpass
         run: |
           sudo apt-get update
           sudo apt-get install sshpass -y
-          npm install -g @angular/cli
-          ng build --base-href ${{ secrets.BASE_HREF }} --configuration production
-          sshpass -v -p '${{ secrets.SSH_PASS }}' scp -r ./dist/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/grbpwr.com/html
+      - name: Deploy production
+        run: sshpass -v -p '${{ secrets.SSH_PASS }}' scp -r ./dist/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/grbpwr.com/html
