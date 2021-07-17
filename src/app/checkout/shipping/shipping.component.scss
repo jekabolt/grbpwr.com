@@ -42,11 +42,13 @@ input:focus {
         .form-control-radio {
             @extend %null_radio;
         }
-        .form-control-radio:checked~.yes {
-            text-decoration: underline;
-        }
-        .form-control-radio:checked~.no {
-            text-decoration: none;
+        .form-control-radio:checked~.custom-control {
+            .yes {
+                text-decoration: underline;
+            }
+            .no {
+                text-decoration: none;
+            }
         }
     }
 }

@@ -1,17 +1,14 @@
 
 <section class="title"><p>payment method</p></section>
-<hr class="padding-bottom-1x">
+
 <form [formGroup]="formPayment">
     
         
          
             <tbody class="payment_met_content">
                 <tr *ngFor="let paymentMethod of paymentMethods">
-         
-            <input id="paymentMethod" class="form-control-radio" type="radio" name="paymentMethod" value="{{paymentMethod}}" formControlName="paymentMethod">
-
-            <label class="payment_selector" for="paymentMethod"><p>{{paymentMethod}}</p></label>
-            
+            <input id="{{paymentMethod}}" class="form-control-radio" type="radio" name="paymentMethod" value="{{paymentMethod}}" formControlName="paymentMethod">
+            <label class="payment_selector" for="{{paymentMethod}}"><p>{{paymentMethod}}</p></label>
                 </tr>
             </tbody>
        

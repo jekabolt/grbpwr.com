@@ -2,7 +2,6 @@
 
     <div *ngIf="product" class="single_product_content_desktop">
 
-
         <section class="img_content">
             <div class="product_img" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
                 <img [hidden]="!imagesLoaded.includes(activeImageUrl)" class="img-fluid" src="{{activeImageUrl}}" alt="{{product.name}}" (load)="onImageLoad($event)">
@@ -45,7 +44,7 @@
                     <figure class="line_sz"></figure>
                     <div class="size_content" *ngFor="let item of sizes ">
                         <input class="size_input" id="{{item.sz}}" (change)="onRadioSize(item.sz)" [value]='item.sz' type="radio" name="enums" [(ngModel)]="radioSelected" [attr.disabled]="!item.avb ? false : null"> 
-                        <label class="size_button" for="{{item.sz}}"><p> {{item.sz}}</p></label>
+                        <label class="size_button" for="{{item.sz}}"><p>{{item.sz}}</p></label>
                     </div>
 
                 </div>

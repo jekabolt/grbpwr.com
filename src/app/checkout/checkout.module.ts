@@ -9,6 +9,7 @@ import { CheckoutComponent } from './checkout.component';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompleteComponent } from './complete/complete.component';
+import { PaymentMethodComponent } from './payment-method/payment-method.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import { CompleteComponent } from './complete/complete.component';
         ReviewComponent,
         ShippingComponent,
         SidebarComponent,
-        CompleteComponent
+        CompleteComponent,
+        PaymentMethodComponent
     ],
     imports: [
         SharedModule,

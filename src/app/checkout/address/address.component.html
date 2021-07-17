@@ -32,56 +32,56 @@
             <section class="title"><p>shipping address</p></section>
 
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
-                <label for="email"><p>first namel</p></label>
-                <input class="form-control" type="email" id="email" name="email" formControlName="email">
+                <label for="name"><p>first namel</p></label>
+                <input class="form-control" type="name" id="name" name="name" formControlName="email">
                 
             </div>
 
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
-                <label for="email"><p>last name</p></label>
-                <input class="form-control" type="email" id="email" name="email" formControlName="email">
+                <label for="lastName"><p>last name</p></label>
+                <input class="form-control" type="name" id="lastName" name="lastName" formControlName="email">
                 
             </div>
 
             <section class="postal_code_and_city">
 
                 <div class="form-group_split" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
-                    <label for="email"><p>postal code</p></label>
-                    <input class="form-control posatl_and_city" type="email" id="email" name="email" formControlName="email">
+                    <label for="postal_code"><p>postal code</p></label>
+                    <input class="form-control posatl_and_city" type="number" id="postal_code" name="postal_code" formControlName="email">
                     
                 </div>
 
                 <div class="form-group_split" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
-                    <label for="email"><p>city</p></label>
-                    <input class="form-control posatl_and_city" type="email" id="email" name="email" formControlName="email">
+                    <label for="city"><p>city</p></label>
+                    <input  min="1" max="4" class="form-control posatl_and_city" type="city" id="city" name="city" formControlName="email">
                     
                 </div>
 
             </section>
 
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
-                <label for="email"><p>address</p></label>
-                <input class="form-control" type="email" id="email" name="email" formControlName="email">
+                <label for="address"><p>address</p></label>
+                <input class="form-control" type="text" id="address" name="address" formControlName="email">
                 
             </div>
 
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
-                <label for="email"><p>appartment/suite</p></label>
-                <input class="form-control" type="email" id="email" name="email" formControlName="email">
-                
-            </div>
-
-
-            <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
-                <label for="email"><p>country</p></label>
-                <input class="form-control" type="email" id="email" name="email" formControlName="email">
+                <label for="appartment"><p>appartment/suite</p></label>
+                <input class="form-control" type="text" id="appartment" name="appartment" formControlName="email">
                 
             </div>
 
 
             <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
-                <label for="email"><p>phone</p></label>
-                <input class="form-control" type="email" id="email" name="email" formControlName="email">
+                <label for="country"><p>country</p></label>
+                <input class="form-control" type="country" id="country" name="country" formControlName="email">
+                
+            </div>
+
+
+            <div class="form-group" [ngClass]="{'has-danger': formAddress.get('email').invalid && formAddress.get('email').touched}">
+                <label for="phone"><p>phone</p></label>
+                <input class="form-control" type="tel" id="phone" name="phone" formControlName="email">
                 
             </div>
         </div>

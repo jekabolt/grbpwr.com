@@ -28,6 +28,10 @@ p {
         width: 98px;
     }
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
 
 .postal_code_and_city {
     display: flex;
@@ -38,6 +42,10 @@ p {
         .posatl_and_city {
             width: 100%;
         }
+    }
+    #postal_code {
+    resize: none;
+
     }
 }
 
