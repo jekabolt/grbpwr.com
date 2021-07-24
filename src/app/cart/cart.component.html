@@ -52,7 +52,7 @@
                                 <figure class="cross"></figure>
                                 <figure class="cross2"></figure>
                             </a>
-                            <p>
+                            <p class="product_price">
                                 <app-price [product]="item.product"></app-price>
                             </p>
                         </div>
@@ -60,9 +60,12 @@
 
                     </section>
 
-                    <a class="remove-from-cart" href="#" data-toggle="tooltip" title="Remove item" (click)="onRemoveItem($event, item)">
-                        <figure class="remove_line"></figure>
-                    </a>
+                    <div class="remove-from-cart" href="#" data-toggle="tooltip" title="Remove item" (click)="onRemoveItem($event, item)">
+                        <figure class="line"></figure>
+                        <p class="product_price_mob">
+                            <app-price [product]="item.product"></app-price>
+                        </p>
+                    </div>
 
                 </div>
 
