@@ -1,5 +1,5 @@
 @import '~scss/common';
-@import 'radio_button_style.scss';
+@import '~scss/components/radio_button_checkout.scss';
 p {
     text-decoration-line: none;
     padding: 0px 5px 0px 5px;
@@ -12,7 +12,6 @@ p {
         padding: 50px 0px 0px 0px;
     }
 }
-
 
 input:focus {
     outline: none;
