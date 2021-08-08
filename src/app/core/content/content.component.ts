@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { OffcanvasService } from '../shared/offcanvas.service';
+// import { OffcanvasService } from '../shared/offcanvas.service';
 
 @Component({
   selector: 'app-content',
@@ -8,9 +8,9 @@ import { OffcanvasService } from '../shared/offcanvas.service';
   styleUrls: ['./content.component.scss']
 })
 export class ContentComponent {
-  constructor(private offcanvasService: OffcanvasService) {}
+  // constructor(private offcanvasService: OffcanvasService) {}
 
   onMenuClose(e: Event) {
-    this.offcanvasService.closeOffcanvasNavigation();
+    // this.offcanvasService.closeOffcanvasNavigation();
   }
 }

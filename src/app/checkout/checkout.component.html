@@ -1,18 +1,13 @@
-<!-- <app-page-title title="Checkout" [children]="[{title: 'Checkout'}]"></app-page-title> -->
-
 <div class="content">
-        
-<!-- 
-            <div class="checkout-steps">
-                <button [ngClass]="{'active': i === activeStep, 'active-sibling': i === activeStep-1}" *ngFor="let step of steps; let i = index"><span class="angle" *ngIf="i < steps.length-1"></span>{{step}}</button>
-            </div> -->
-            <div class="main-title"><p>checkout</p></div>
+    <div class="main-title">
+        <p>checkout</p>
+    </div>
 
-            <app-checkout-address [ngClass]="{'d-none': activeStep !== 0}"></app-checkout-address>
-            <app-checkout-shipping [ngClass]="{'d-none': activeStep !== 1}"></app-checkout-shipping>
-            <app-checkout-payment [ngClass]="{'d-none': activeStep !== 2}"></app-checkout-payment>
-            <app-payment-method  [ngClass]="{'d-none': activeStep !== 3}"></app-payment-method>
-            <app-checkout-review [ngClass]="{'d-none': activeStep !== 4}"></app-checkout-review>
-            <app-checkout-sidebar></app-checkout-sidebar>
+    <app-checkout-address [ngClass]="{'d-none': activeStep !== 0}"></app-checkout-address>
+    <app-checkout-shipping [ngClass]="{'d-none': activeStep !== 1}"></app-checkout-shipping>
+    <app-checkout-payment [ngClass]="{'d-none': activeStep !== 2}"></app-checkout-payment>
+    <app-payment-method [ngClass]="{'d-none': activeStep !== 3}"></app-payment-method>
+    <app-checkout-review [ngClass]="{'d-none': activeStep !== 4}"></app-checkout-review>
+    <app-checkout-sidebar></app-checkout-sidebar>
 
 </div>
