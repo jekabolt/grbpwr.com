@@ -5,9 +5,6 @@
         <table class="table">
             <thead class="thead-default">
             </thead>
-
-
-               
                     <tbody>
                         
                         <tr *ngFor="let shippingMethod of shippingMethods">
@@ -20,20 +17,16 @@
                                 </div>
 
                             <div class="align-middle">
-                                <label for="shipping_checked" class="custom-control">
+                                <input checked id="{{shippingMethod.method}}" class="form-control-radio" type="radio" name="shippingMethod" value="{{shippingMethod.value}}" formControlName="shippingMethod">
+                                <label for="{{shippingMethod.method}}" class="custom-control">
                                     <p class="yes">yes</p>
                                     <p class="no">no</p>
                                 </label>
-                                
-                                <input id="shipping_checked" class="form-control-radio" type="radio" name="shippingMethod" value="{{shippingMethod.value}}" formControlName="shippingMethod">
-                                
+                                 
                             </div>
                         </section>
                         </tr>
-
                     </tbody>
-               
-
         </table>
     </div>
 </form>

@@ -26,41 +26,46 @@
                                 <a routerLink="/products/{{item.product.id}}">
                                     <p>{{item.product.name}}</p>
                                 </a>
-                                <p><strong>({{item.size}})</strong></p>
+                            </div>
+
+                            <div class="product-size">
+                                <p id="size_desktop">size</p>
+                                <p><strong>{{item.size}}</strong></p>
                             </div>
 
 
 
                             <div class="input-group">
 
-                                <button class="btn_plus" type="button" (click)="decreaseAmount(item)">-</button>
+                                <button class="btn_plus" type="button" (click)="decreaseAmount(item)"><p>-</p></button>
 
                                 <input type="text" class="form-contro" placeholder="" [(ngModel)]="item.amount" (blur)="checkAmount(item)">
 
-                                <button class="btn_minus" type="button" (click)="increaseAmount(item)">+</button>
+                                <button class="btn_minus" type="button" (click)="increaseAmount(item)"><p>+</p></button>
 
                             </div>
-
-
-
-                            <div class="price">
-                                <p>
-                                    <app-price [product]="item.product"></app-price>
-                                </p>
-                            </div>
-
-
-
-
 
                         </section>
 
+                        <div class="price">
+                            <a class="cross_container" href="#" data-toggle="tooltip" title="Remove item" (click)="onRemoveItem($event, item)">
+                                <figure class="cross"></figure>
+                                <figure class="cross2"></figure>
+                            </a>
+                            <p class="product_price">
+                                <app-price [product]="item.product"></app-price>
+                            </p>
+                        </div>
+
+
                     </section>
 
-                    <a class="remove-from-cart" href="#" data-toggle="tooltip" title="Remove item" (click)="onRemoveItem($event, item)">
-                        <figure class="remove_line"></figure>
-                        <p>remove</p>
-                    </a>
+                    <div class="remove-from-cart" href="#" data-toggle="tooltip" title="Remove item" (click)="onRemoveItem($event, item)">
+                        <figure class="line"></figure>
+                        <p class="product_price_mob">
+                            <app-price [product]="item.product"></app-price>
+                        </p>
+                    </div>
 
                 </div>
 

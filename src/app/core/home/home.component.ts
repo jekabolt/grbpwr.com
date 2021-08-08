@@ -1,10 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-
 import {Subject} from 'rxjs';
 
-
+// models 
 import {Product} from '../../models/product.model';
-import {Promo} from '../../models/promo.model';
 
 @Component({
   selector: 'app-home',

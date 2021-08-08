@@ -19,7 +19,6 @@ import {ProductDetailComponent} from './products/product-detail/product-detail.c
 import {ArchiveListComponent} from './archive/archive-list/archive-list.component';
 import {ArchiveDetailComponent} from './archive/archive-detail/archive-detail.component';
 import {CompleteComponent} from './checkout/complete/complete.component';
-import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent,  data: {header:true} },
@@ -31,7 +30,7 @@ const routes: Routes = [
 
   { path: 'cart', component: CartComponent,  data: {header:true} },
 
-  { path: 'checkout', component: CheckoutComponent,data: {header:false} },
+  { path: 'checkout', component: CheckoutComponent,data: {header:true} },
 
   { path: 'order-complete', component: CompleteComponent,  data: {header:true} },
 
@@ -45,8 +44,6 @@ const routes: Routes = [
   { path: 'single-product', component: SingleProductComponent,  data: {header:true} },
   { path: '**', component: PageNotFoundComponent, data: {header:false} },
 
-  //admin
-  { path: 'admin', component: AdminComponent,  data: {header:false} },
 ];
 
 @NgModule({

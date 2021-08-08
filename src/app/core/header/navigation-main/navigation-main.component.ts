@@ -4,8 +4,6 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { filter } from 'rxjs/operators';
 
-
-import { User } from '../../../models/user.model';
 import {CartService} from '../../../cart/shared/cart.service';
 
 
@@ -15,7 +13,6 @@ import {CartService} from '../../../cart/shared/cart.service';
   styleUrls: ['./navigation-main.component.scss']
 })
 export class NavigationMainComponent implements OnInit, OnDestroy {
-  public user: User;
   public navbarOpened = false
   public infoOpened = false
 

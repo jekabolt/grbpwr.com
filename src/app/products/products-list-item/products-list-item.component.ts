@@ -6,7 +6,6 @@ import { CartService } from '../../cart/shared/cart.service';
 
 import { CartItem } from '../../models/cart-item.model';
 import { Product } from '../../models/product.model';
-import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-products-list-item',
@@ -17,7 +16,6 @@ export class ProductsListItemComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   @Input() public product: Product;
   @Input() public displayMode: string;
-  public user: User;
   public imageLoading: boolean;
 
   constructor(

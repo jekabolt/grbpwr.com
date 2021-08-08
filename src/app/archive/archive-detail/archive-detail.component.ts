@@ -8,7 +8,6 @@ import {CartService} from '../../cart/shared/cart.service';
 import {CartItem} from '../../models/cart-item.model';
 
 import {Product} from '../../models/product.model';
-import {User} from '../../models/user.model';
 
 import Products from '../../shop-items/products.json';
 
@@ -21,8 +20,6 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject();
   @Input() public product: Product;
   public productLoading: boolean;
-
-  public user: User;
 
   public availableSizes: string[];
   public imagesLoaded: string[];

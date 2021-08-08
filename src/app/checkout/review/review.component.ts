@@ -10,7 +10,6 @@ import {CartService} from '../../cart/shared/cart.service';
 import {CartItem} from '../../models/cart-item.model';
 import {Customer} from '../../models/customer.model';
 import {Order} from '../../models/order.model';
-import {User} from '../../models/user.model';
 
 @Component({
   selector: 'app-checkout-review',
@@ -23,8 +22,6 @@ export class ReviewComponent implements OnInit, OnDestroy {
   customer: Customer;
   paymentMethod: string;
   unsubscribe$ = new Subject();
-  user: User;
-
 
   constructor(
     private cartService: CartService,
@@ -56,7 +53,8 @@ export class ReviewComponent implements OnInit, OnDestroy {
   }
 
   public onCompleteOrder() {
-    const userUid = this.user ? this.user.uid : false;
+    // TODO:
+    const userUid = 1
     const order = this.checkoutService.getOrderInProgress();
     const total = this.cartService.getTotal();
 
