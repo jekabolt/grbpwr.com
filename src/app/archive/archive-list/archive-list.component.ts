@@ -4,8 +4,7 @@ import {PagerService} from '../../pager/pager.service';
 import {UiServiceArchive} from '../shared/ui.service';
 import {SortPipe} from '../shared/sort.pipe';
 
-import {ArchiveArticle} from '../../models/archive.model';
-import {User} from '../../models/user.model';
+import {ArchiveArticle} from '../../models/archive.model'
 import Articles from '../../archive-items/articles.json';
 
 @Component({
@@ -17,7 +16,6 @@ export class ArchiveListComponent implements OnInit, OnDestroy {
   articles: ArchiveArticle[ ];
   articlesPaged: ArchiveArticle[];
   pager: any = {};
-  user: User;
   articlesLoading: boolean;
   currentPagingPage: number;
 

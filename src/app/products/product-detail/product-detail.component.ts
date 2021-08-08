@@ -8,7 +8,6 @@ import {CartService} from '../../cart/shared/cart.service';
 import {CartItem} from '../../models/cart-item.model';
 
 import {Product} from '../../models/product.model';
-import {User} from '../../models/user.model';
 
 import Products from '../../shop-items/products.json';
 
@@ -23,8 +22,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   public productLoading: boolean;
   public sizeActive = false
   public detailsActive = false
-
-  public user: User;
 
   public sizes: {avb: boolean, sz: string }[]
   public availableSizes: string[];

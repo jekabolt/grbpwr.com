@@ -3,13 +3,10 @@ import {CommonModule} from '@angular/common';
 import {AppRoutingModule} from '../app-routing.module';
 import {FormsModule} from '@angular/forms';
 
-import {PriceComponent} from './price/price.component';
-import {PageTitleComponent} from '../core/page-title/page-title.component';
 
 @NgModule({
     declarations: [
-        PriceComponent,
-        PageTitleComponent
+
     ],
     imports: [
         CommonModule,
@@ -17,8 +14,7 @@ import {PageTitleComponent} from '../core/page-title/page-title.component';
         FormsModule
     ],
     exports: [
-        PriceComponent,
-        PageTitleComponent,
+        // PriceComponent,
         CommonModule,
         AppRoutingModule,
         FormsModule
