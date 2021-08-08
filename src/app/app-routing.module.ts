@@ -30,7 +30,7 @@ const routes: Routes = [
 
   { path: 'cart', component: CartComponent,  data: {header:true} },
 
-  { path: 'checkout', component: CheckoutComponent,data: {header:false} },
+  { path: 'checkout', component: CheckoutComponent,data: {header:true} },
 
   { path: 'order-complete', component: CompleteComponent,  data: {header:true} },
 
