@@ -1,5 +1,5 @@
 @import '~scss/common';
-@import 'radio_button_style.scss';
+@import '~scss/components/radio_button_checkout.scss';
 p {
     text-decoration-line: none;
     padding: 25px 0px 10px 0px;
@@ -28,6 +28,7 @@ p {
         width: 98px;
     }
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -44,8 +45,7 @@ input::-webkit-inner-spin-button {
         }
     }
     #postal_code {
-    resize: none;
-
+        resize: none;
     }
 }
 
@@ -60,4 +60,3 @@ input:focus {
     padding: 0px 0px 0px 5px;
     font-size: 20px;
 }
-
