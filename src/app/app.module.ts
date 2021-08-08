@@ -1,6 +1,5 @@
 // Modules
 import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {ProductsModule} from './products/products.module';
@@ -20,8 +19,6 @@ import {ContactUsComponent} from './info/contact-us/contact-us.component';
 import {SingleProductComponent} from './single-product/single-product.component';
 import {ReturnsComponent} from './info/returns/returns.component';
 
-import { FooterComponent } from './core/footer/footer.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,11 +30,9 @@ import { FooterComponent } from './core/footer/footer.component';
     ContactUsComponent,
     SingleProductComponent,
     ReturnsComponent,
-    FooterComponent
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
     CoreModule,

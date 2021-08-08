@@ -1,0 +1,100 @@
+.footer {
+    width: 335/375*100%;
+    background-color: #fff;
+    margin: 260px auto 0px auto;
+    padding: 0px 0px 50px 0px;
+    display: flex;
+    flex-direction: column;
+    .info_and_currency {
+        height: 321px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        border-top: solid #000 1px;
+        border-bottom: solid #000 1px;
+        position: relative;
+        .info_list {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            a {
+                color: #000;
+                p {
+                    text-decoration: none;
+                    @extend %info_txt;
+                }
+            }
+        }
+        .currency {
+            display: flex;
+            float: left;
+            justify-content: space-between;
+            width: 100%;
+            .currency_input {
+                position: absolute;
+                left: -200px;
+                opacity: 0;
+            }
+            .currency_usd:checked~.currency_usd {
+                p {
+                    text-decoration: underline;
+                    opacity: 1;
+                }
+            }
+            .currency_byn:checked~.currency_byn {
+                p {
+                    text-decoration: underline;
+                    opacity: 1;
+                }
+            }
+            .currency_eur:checked~.currency_eur {
+                p {
+                    text-decoration: underline;
+                    opacity: 1;
+                }
+            }
+            .currency_rub:checked~.currency_rub {
+                p {
+                    text-decoration: underline;
+                    opacity: 1;
+                }
+            }
+            .currency_label {
+                p {
+                    text-decoration: none;
+                    cursor: pointer;
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
+    .legal_info {
+        padding: 180px 0px 0px 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        p {
+            text-decoration: none;
+        }
+        .right_info {
+            text-align: left;
+            padding: 40px 0px 0px 0px;
+        }
+    }
+    .icon_legal_info {
+        margin: 85px auto 0px auto;
+        width: 280/375*100%;
+        display: flex;
+        justify-content: space-between;
+        .icon {
+            width: 30px;
+            margin: 0px 7px;
+            height: 30px;
+        }
+    }
+}

@@ -7,17 +7,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  public showSearch;
-  constructor(
-  ) {
-
-  }
+  constructor() {}
 
   ngOnInit() {
-  }
-
-  bgClicked() {
-    console.log(11);
   }
 
   public onMenuToggle(e: Event) {

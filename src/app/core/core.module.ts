@@ -4,7 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { ContentComponent } from './content/content.component';
 import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './content/footer/footer.component';
+import { FooterComponent } from './footer/footer.component';
 import { NavigationMainComponent } from './header/navigation-main/navigation-main.component';
 import { HomeComponent } from './home/home.component';
 
@@ -38,6 +38,7 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
         CommonModule,
         SharedModule,
         HeaderComponent,
+        FooterComponent,
         ContentComponent
     ],
     providers: [
