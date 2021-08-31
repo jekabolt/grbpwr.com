@@ -1,20 +1,31 @@
-export class Product {
-  public imageFeaturedUrl?;
+export interface Product {
+  id:             number;
+  dateCreated:    number;
+  lat:            number;
+  mainImage:      string;
+  name:           string;
+  price:          Price;
+  availableSizes: AvailableSizes;
+  description:    string;
+  categories:     string[];
+  productImages:  string[];
+  selectedSize?:  string;
+}
 
-  constructor(
-    public id: number = 1,
-    public date: string = new Date().toISOString().split('T')[0],
-    public name: string = '',
-    public size: string = '',
-    public description: string = '',
-    public price: number = 0,
-    public priceNormal: number = 0,
-    public reduction: number = 0,
-    public imageURLs: string[] = [],
-    public mainImage: string = '',
-    public imageRefs: string[] = [],
-    public availableSizes: string[] = [],
-    public categories: {} = {},
-    public sale: boolean = false
-  ) { }
+export interface AvailableSizes {
+  xxs?: number;
+  xs?: number;
+  s?: number;
+  m?: number;
+  l?: number;
+  xl?: number;
+  xxl?: number;
+  os?: number;
+}
+
+export interface Price {
+  usd?: number;
+  rub?: number;
+  byn?: number;
+  eur?: number;
 }

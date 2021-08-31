@@ -3,16 +3,19 @@
     <div *ngIf="product" class="single_product_content_desktop">
 
         <section class="img_content">
-            <div class="product_img" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                <img [hidden]="!imagesLoaded.includes(activeImageUrl)" class="img-fluid" src="{{activeImageUrl}}" alt="{{product.name}}" (load)="onImageLoad($event)">
+
+            <div class="product_img">
+                <img src="{{activeImageUrl}}" alt="{{product.name}}">
             </div>
+
             <div class="img_slider_content">
                 <div class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
                     <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                        <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
+                        <img [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
                     </a>
                 </div>
             </div>
+
         </section>
 
         <div class="description_desktop">
@@ -28,12 +31,6 @@
             </div>
 
 
-            <!-- <div class="form-control" id="quantity" (change)="onSelectSize($event)">
-                    <figure class="line_sz"></figure>
-                    <section *ngFor="let sz of availableSizes"><p>{{sz}}</p></section>
-                    <figure class="line_sz"></figure>
-                </div> -->
-
             <div class="form-group">
 
 
@@ -46,9 +43,6 @@
                     </div>
 
                 </div>
-
-
-
 
             </div>
 

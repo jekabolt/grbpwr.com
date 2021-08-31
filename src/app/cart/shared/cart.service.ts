@@ -27,7 +27,7 @@ export class CartService {
     let ok = true
     this.cartItems.forEach(function (cartItem) {
       if (cartItem.product.id === item.product.id &&
-        cartItem.size === item.product.size) {
+        cartItem.size === item.product.selectedSize) { 
         cartItem.amount += item.amount;
         ok = false
         return
@@ -73,7 +73,7 @@ export class CartService {
   public getTotal() {
     let total = 0;
     this.cartItems.forEach((cartItem) => {
-      total += cartItem.amount * cartItem.product.price;
+      total += cartItem.amount * cartItem.product.price.byn;
     });
     return total;
   }

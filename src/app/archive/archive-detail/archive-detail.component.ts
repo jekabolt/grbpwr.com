@@ -7,7 +7,7 @@ import {takeUntil} from 'rxjs/operators';
 import {CartService} from '../../cart/shared/cart.service';
 import {CartItem} from '../../models/cart-item.model';
 
-import {Product} from '../../models/product.model';
+import {Product, AvailableSizes} from '../../models/product.model';
 
 import Products from '../../shop-items/products.json';
 
@@ -21,7 +21,7 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
   @Input() public product: Product;
   public productLoading: boolean;
 
-  public availableSizes: string[];
+  public availableSizes: AvailableSizes;
   public imagesLoaded: string[];
   public activeImageUrl: string;
   public activeImageIndex: number;
@@ -69,7 +69,7 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
 
   public onSelectThumbnail(event, index) {
     event.preventDefault();
-    this.activeImageUrl = this.product.imageURLs[index];
+    this.activeImageUrl = this.product.productImages[index];
     this.activeImageIndex = index;
   }
 
@@ -92,8 +92,8 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
     this.cartButtonTitle = 'ITEM ADDED';
     this.setCartButtonText(lbl)
 
-    this.product.size = this.selectedSize
-    this.cartService.addItem(new CartItem(this.product, this.selectedQuantity, this.product.size));
+    this.product.selectedSize = this.selectedSize
+    this.cartService.addItem(new CartItem(this.product, this.selectedQuantity, this.product.selectedSize));
   }
 
   public onSelectQuantity(event) {
@@ -111,12 +111,13 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
   private setupProduct() {
     if (this.product) {
       this.checkCategories();
-      this.product.imageURLs.forEach((obj, i) => {
+      this.product.productImages.forEach((obj, i) => {
         if (!obj.includes('://')) {
-          this.product.imageURLs[i] = location.origin + obj
+          this.product.productImages[i] = location.origin + obj
         }
       });
-      this.activeImageUrl = this.product.imageURLs[0];
+      // this.activeImageUrl = this.product.productImages[0];
+      this.activeImageUrl = this.product.mainImage;
       this.activeImageIndex = 0;
       this.availableSizes = this.product.availableSizes
     }

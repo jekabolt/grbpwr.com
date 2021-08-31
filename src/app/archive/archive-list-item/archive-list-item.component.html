@@ -1,6 +1,6 @@
 <div class="archive-card" [ngClass]="{'archive-list': displayMode === 'list'}">
     <a class="archive-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/products/{{product.id}}">
-        <img [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.imageURLs[0]}}" alt="{{product.name}}" />
+        <img [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.mainImage}}" alt="{{product.name}}" />
     </a>
     <div class="archive-info">
         <h3 class="archive-title">

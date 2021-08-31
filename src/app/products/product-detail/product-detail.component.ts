@@ -7,9 +7,12 @@ import {takeUntil} from 'rxjs/operators';
 import {CartService} from '../../cart/shared/cart.service';
 import {CartItem} from '../../models/cart-item.model';
 
-import {Product} from '../../models/product.model';
+import {Product , AvailableSizes} from '../../models/product.model';
 
 import Products from '../../shop-items/products.json';
+
+// Services
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -24,7 +27,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   public detailsActive = false
 
   public sizes: {avb: boolean, sz: string }[]
-  public availableSizes: string[];
+  public availableSizes: AvailableSizes;
   public imagesLoaded: string[];
   public activeImageUrl: string;
   public activeImageIndex: number;
@@ -38,6 +41,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private location: Location,
     private cartService: CartService,
+    private apiService: ApiService
   ) { }
 
 
@@ -62,34 +66,92 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       { sz: "l", avb: true },
     ];
 
-    this.route.params
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((params: Params) => {
-        this.getProduct();
-      });
-  }
-
-  private getProduct(): void {
-    this.productLoading = true;
     const id = +this.route.snapshot.paramMap.get('id');
-
-    Products.forEach((obj, index) => {
-      if (obj.id == id) {
-        this.product = obj;
-        this.setupProduct();
+    this.apiService.getProductByID(String(id)).subscribe(product => {
+      if (product.id == id) {
+          this.setupProduct(product);
+          this.productLoading = false;
+          return
+      } else{
         this.productLoading = false;
-        return
+        this.router.navigate(['/404-product-not-found']);
       }
-    });
-    if (this.productLoading) {
-      this.productLoading = false;
-      this.router.navigate(['/404-product-not-found']);
-    }
+    });    
+
   }
+
+  public setSizes(as: AvailableSizes) {
+    this.sizes = []
+    if(as.hasOwnProperty('xxs')) {
+      if (as.xxs == 0) {
+        this.sizes.push({ sz: "xxs", avb: false })
+      }else{
+        this.sizes.push({ sz: "xxs", avb: true })
+      }
+    }
+
+    if(as.hasOwnProperty('xs')) {
+      if (as.xs == 0) {
+        this.sizes.push({ sz: "xs", avb: false })
+      }else{
+        this.sizes.push({ sz: "xs", avb: true })
+      }
+    }
+
+    if(as.hasOwnProperty('s')) {
+      if (as.s == 0) {
+        this.sizes.push({ sz: "s", avb: false })
+      }else{
+        this.sizes.push({ sz: "s", avb: true })
+      }
+    }
+
+    if(as.hasOwnProperty('m')) {
+      if (as.m == 0) {
+        this.sizes.push({ sz: "m", avb: false })
+      }else{
+        this.sizes.push({ sz: "m", avb: true })
+      }
+    }
+
+    if(as.hasOwnProperty('l')) {
+      if (as.l == 0) {
+        this.sizes.push({ sz: "l", avb: false })
+      }else{
+        this.sizes.push({ sz: "l", avb: true })
+      }
+    }
+
+    if(as.hasOwnProperty('xl')) {
+      if (as.xl == 0) {
+        this.sizes.push({ sz: "xl", avb: false })
+      }else{
+        this.sizes.push({ sz: "xl", avb: true })
+      }
+    }
+
+    if(as.hasOwnProperty('xxl')) {
+      if (as.xxl == 0) {
+        this.sizes.push({ sz: "xxl", avb: false })
+      }else{
+        this.sizes.push({ sz: "xxl", avb: true })
+      }
+    }
+
+    if(as.hasOwnProperty('os')) {
+      if (as.os == 0) {
+        this.sizes.push({ sz: "os", avb: false })
+      }else{
+        this.sizes.push({ sz: "os", avb: true })
+      }
+    }
+
+  }
+
 
   public onSelectThumbnail(event, index) {
     event.preventDefault();
-    this.activeImageUrl = this.product.imageURLs[index];
+    this.activeImageUrl = this.product.productImages[index];
     this.activeImageIndex = index;
   }
 
@@ -112,8 +174,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.cartButtonTitle = 'ITEM ADDED';
     this.setCartButtonText(lbl)
 
-    this.product.size = this.selectedSize
-    this.cartService.addItem(new CartItem(this.product, this.selectedQuantity, this.product.size));
+    this.product.selectedSize = this.selectedSize
+    this.cartService.addItem(new CartItem(this.product, this.selectedQuantity, this.product.selectedSize));
   }
 
   public onSelectQuantity(event) {
@@ -132,31 +194,20 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.imagesLoaded.push(e.target.src);
   }
 
-  private setupProduct() {
-    if (this.product) {
-      this.checkCategories();
-      this.product.imageURLs.forEach((obj, i) => {
+  private setupProduct(product:Product) {
+    if (product) {
+      this.product = product
+      this.setSizes(product.availableSizes)
+      product.productImages.forEach((obj, i) => {
         if (!obj.includes('://')) {
-          this.product.imageURLs[i] = location.origin + obj
+          product.productImages[i] = location.origin + obj
         }
       });
-      this.activeImageUrl = this.product.imageURLs[0];
+      this.activeImageUrl = product.productImages[0];
       this.activeImageIndex = 0;
-      this.availableSizes = this.product.availableSizes
+      this.availableSizes = product.availableSizes
+      
     }
-  }
-
-  private checkCategories() {
-    const categories = Object.keys(this.product.categories).map(
-      (category, index, inputArray) => {
-        category = index < inputArray.length - 1 ? category + ',' : category;
-        return category;
-      }
-    );
-    this.product.categories =
-      categories.length >= 1 && !Array.isArray(this.product.categories)
-        ? categories
-        : [];
   }
 
   ngOnDestroy() {

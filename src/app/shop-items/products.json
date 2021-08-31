@@ -1,50 +1,52 @@
 [{
-    "categories": {
-        "Shawls": true
+        "id": 1628418483,
+        "dateCreated": 1628418483,
+        "lat": 1628418483,
+        "mainImage": "https://grbpwr.fra1.digitaloceanspaces.com/grbpwr-com/2021/August/1628418483.jpg",
+        "name": "1",
+        "price": {
+            "usd": 1,
+            "rub": 1,
+            "byn": 1,
+            "eur": 1
+        },
+        "availableSizes": {
+            "os": 1
+        },
+        "description": "mega kek",
+        "categories": [
+            "top",
+            "kek"
+        ],
+        "productImages": [
+            "https://grbpwr.fra1.digitaloceanspaces.com/grbpwr-com/2021/August/1628418482.jpg",
+            "https://grbpwr.fra1.digitaloceanspaces.com/grbpwr-com/2021/August/1628418482.jpg"
+        ]
     },
-    "currentRating": 3.4,
-    "date": "2018-04-02",
-    "description": "Shawl with faces ",
-    "id": 1174268122548,
-    "imageRefs": [
-        "product-images/1522678065417_[object File]"
-    ],
-    "imageURLs": [
-        "/img/tumb.png", "/img/tumb2.png", "/img/tumb3.png"
-    ],
-    "mainImage": "/img/tumb.png",
-    "name": "Shawl 1",
-    "price": 150,
-    "priceNormal": 150,
-    "reduction": 0,
-    "sale": true,
-    "size": "",
-    "availableSizes": [
-        "OS"
-    ]
-
-}, {
-    "categories": {
-        "Shawls": true
-    },
-    "currentRating": 3.4,
-    "date": "2018-04-02",
-    "description": "Shawl with faces",
-    "id": 1,
-    "imageRefs": [
-        "product-images/1522678065417_[object File]"
-    ],
-    "imageURLs": [
-        "/img/shawl-clouds-2.jpg"
-    ],
-    "mainImage": "/img/shawl-clouds-2.jpg",
-    "name": "Shawl 2",
-    "price": 150,
-    "priceNormal": 0,
-    "reduction": 0,
-    "sale": true,
-    "size": "",
-    "availableSizes": [
-         "S", "M", "L", "xl"
-    ]
-}]
+    {
+        "id": 1628422397,
+        "dateCreated": 1628422397,
+        "lat": 1628422397,
+        "mainImage": "https://grbpwr.fra1.digitaloceanspaces.com/grbpwr-com/2021/August/1628422396.jpg",
+        "name": "Keeek",
+        "price": {
+            "usd": 1,
+            "rub": 1,
+            "byn": 1,
+            "eur": 1
+        },
+        "availableSizes": {
+            "os": 1
+        },
+        "description": "Eblo",
+        "categories": [
+            "Mega",
+            "kek"
+        ],
+        "productImages": [
+            "https://grbpwr.fra1.digitaloceanspaces.com/grbpwr-com/2021/August/1628422395.jpg",
+            "https://grbpwr.fra1.digitaloceanspaces.com/grbpwr-com/2021/August/1628422396.jpg",
+            "https://grbpwr.fra1.digitaloceanspaces.com/grbpwr-com/2021/August/1628422396.jpg"
+        ]
+    }
+]
