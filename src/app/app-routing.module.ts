@@ -7,7 +7,6 @@ import {AboutComponent} from './info/about/about.component';
 import {ShippingMethodsComponent} from './info/shipping-method/shipping-method.component';
 import {ContactUsComponent} from './info/contact-us/contact-us.component';
 import {PrivacyPolicyComponent} from './info/privacy-policy/privacy-policy.component';
-import {SingleProductComponent} from './single-product/single-product.component';
 import {ReturnsComponent} from './info/returns/returns.component';
 
 
@@ -41,7 +40,6 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent,  data: {header:true} },
   { path: 'returns', component: ReturnsComponent,  data: {header:true} },
 
-  { path: 'single-product', component: SingleProductComponent,  data: {header:true} },
   { path: '**', component: PageNotFoundComponent, data: {header:false} },
 
 ];
