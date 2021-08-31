@@ -16,7 +16,6 @@ import {AboutComponent} from './info/about/about.component';
 import {ShippingMethodsComponent} from './info/shipping-method/shipping-method.component';
 import {PrivacyPolicyComponent} from './info/privacy-policy/privacy-policy.component';
 import {ContactUsComponent} from './info/contact-us/contact-us.component';
-import {SingleProductComponent} from './single-product/single-product.component';
 import {ReturnsComponent} from './info/returns/returns.component';
 
 @NgModule({
@@ -28,7 +27,6 @@ import {ReturnsComponent} from './info/returns/returns.component';
     ShippingMethodsComponent,
     PrivacyPolicyComponent,
     ContactUsComponent,
-    SingleProductComponent,
     ReturnsComponent,
   ],
   imports: [

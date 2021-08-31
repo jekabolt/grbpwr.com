@@ -15,65 +15,16 @@
 
     </section>
 
-    <section class="product_content">
+
+    <section class="product_content" *ngFor="let product of products">
 
         <div class="product_place">
-
-            <a routerLink="/products/1" href="">
-                <section class="product_img"></section>
+            <a routerLink="/products/{{ product.id }}" href="">
+                <img class="product_img" src="{{ product.mainImage }}" alt="{{ product.name }}">
+                <p>{{ product.name }}</p>
+                <h2>${{ product.price.usd }}</h2>
             </a>
-
-            <a href="">
-                <p>scarf souls</p>
-            </a>
-
-            <h2>170$</h2>
-
         </div>
-
-        <div class="product_place">
-
-            <a routerLink="/products/1" href="">
-                <section class="product_img"></section>
-            </a>
-
-            <a routerLink="/products/1" href="">
-                <p>scarf souls</p>
-            </a>
-
-            <h2>170$</h2>
-
-        </div>
-
-        <div class="product_place">
-
-            <a routerLink="/products/1" href="">
-                <section class="product_img"></section>
-            </a>
-
-            <a routerLink="/products/1" href="">
-                <p>scarf souls</p>
-            </a>
-
-            <h2>170$</h2>
-
-        </div>
-
-        <div class="product_place">
-
-            <a routerLink="/products/1" href="">
-                <section class="product_img"></section>
-            </a>
-
-            <a routerLink="/products/1" href="">
-                <p>scarf souls</p>
-            </a>
-
-            <h2>170$</h2>
-
-        </div>
-
-
 
     </section>
 

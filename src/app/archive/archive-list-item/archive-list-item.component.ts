@@ -26,7 +26,7 @@ export class ArchiveListItemComponent implements OnInit, OnDestroy {
   }
 
   public onAddToCart() {
-    this.cartService.addItem(new CartItem(this.product, 1, this.product.size));
+    this.cartService.addItem(new CartItem(this.product, 1, this.product.selectedSize));
   }
 
   public onImageLoad() {
