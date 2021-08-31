@@ -1,6 +1,4 @@
 @import "../../../scss/common.scss";
-
-
 .content {
     width: 335/375*100%;
     display: flex;
@@ -9,14 +7,11 @@
     .product_name {
         padding: 0px 0px 50px 0px;
     }
-
     .clip {
         width: 100%;
         height: 55vw !important;
         padding: 0px 0px 10px 0px;
-
     }
-
     .go_to_archive {
         width: 100%;
         padding: 0px 0px 58px 0px;
@@ -52,7 +47,6 @@
             .product_img {
                 min-width: 42%;
                 height: 42vw;
-                background-color: #ddd;
             }
             p {
                 padding: 20px 0px 0px 0px;
@@ -66,8 +60,6 @@
     }
 }
 
-
-
 .footer {
     width: 335/375*100%;
     background-color: #fff;
@@ -75,114 +67,99 @@
     padding: 0px 0px 50px 0px;
     display: flex;
     flex-direction: column;
-        .info_and_currency {
-            height: 321px;
+    .info_and_currency {
+        height: 321px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        border-top: solid #000 1px;
+        border-bottom: solid #000 1px;
+        position: relative;
+        .info_list {
             width: 100%;
-
+            height: 180px;
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
-
-            border-top: solid #000 1px;
-            border-bottom: solid #000 1px;
-
-            position: relative;
-
-            .info_list {
-                width: 100%;
-                height: 180px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: center;
-
-                a {
-                    color: #000;
-                    p {
+            a {
+                color: #000;
+                p {
                     text-decoration: none;
                     @extend %info_txt;
-                    }
-                }
-            }
-            .currency {
-                display: flex;
-                float: left;
-                justify-content: space-between;
-
-                width: 100%;
-
-                .currency_input {
-                    position: absolute;
-                    left: -200px;
-                    opacity: 0;
-                }
-
-                .currency_usd:checked~.currency_usd {
-                    p {
-                        text-decoration: underline;
-                        opacity: 1;
-                    }
-                }
-
-                .currency_byn:checked~.currency_byn {
-                    p {
-                        text-decoration: underline;
-                        opacity: 1;
-                    }
-                }
-
-                .currency_eur:checked~.currency_eur {
-                    p {
-                        text-decoration: underline;
-                        opacity: 1;
-                    }
-                }
-
-                .currency_rub:checked~.currency_rub {
-                    p {
-                        text-decoration: underline;
-                        opacity: 1;
-                    }
-                }
-
-                .currency_label {
-                    p {
-                        text-decoration: none;
-                        cursor: pointer;
-                        opacity: 0.5;
-                    }
                 }
             }
         }
-        .legal_info {
-            padding: 180px 0px 0px 0px;
+        .currency {
             display: flex;
-            flex-direction: column;
+            float: left;
             justify-content: space-between;
-
-            p {
-                text-decoration: none;
+            width: 100%;
+            .currency_input {
+                position: absolute;
+                left: -200px;
+                opacity: 0;
             }
-
-            .right_info {
-                text-align: left;
-                padding: 40px 0px 0px 0px;
+            .currency_usd:checked~.currency_usd {
+                p {
+                    text-decoration: underline;
+                    opacity: 1;
+                }
+            }
+            .currency_byn:checked~.currency_byn {
+                p {
+                    text-decoration: underline;
+                    opacity: 1;
+                }
+            }
+            .currency_eur:checked~.currency_eur {
+                p {
+                    text-decoration: underline;
+                    opacity: 1;
+                }
+            }
+            .currency_rub:checked~.currency_rub {
+                p {
+                    text-decoration: underline;
+                    opacity: 1;
+                }
+            }
+            .currency_label {
+                p {
+                    text-decoration: none;
+                    cursor: pointer;
+                    opacity: 0.5;
+                }
             }
         }
-        .icon_legal_info {
-            margin: 85px auto 0px auto;
-            width: 280/375*100%;
-            display: flex;
-            justify-content: space-between;
-            .icon {
-                width: 30px;
-                margin: 0px 7px;
-                height: 30px;
-            }
+    }
+    .legal_info {
+        padding: 180px 0px 0px 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        p {
+            text-decoration: none;
         }
+        .right_info {
+            text-align: left;
+            padding: 40px 0px 0px 0px;
+        }
+    }
+    .icon_legal_info {
+        margin: 85px auto 0px auto;
+        width: 280/375*100%;
+        display: flex;
+        justify-content: space-between;
+        .icon {
+            width: 30px;
+            margin: 0px 7px;
+            height: 30px;
+        }
+    }
 }
-
 
 @media screen and (min-width: 768px) {
     .content {
@@ -200,48 +177,42 @@
         }
         .go_to_archive {
             .line {
-                width: 784/950  *100%;
+                width: 784/950 *100%;
             }
         }
     }
-
     .footer {
         width: 1360/1440*100%;
-
-            .info_and_currency {
-                .info_list {
-                    width: 770/1440*100%;
-                    flex-direction: row;
-                }
-
-                .currency {
-                    position: absolute;
-                    right: 0px;
-                    bottom: 40px;
-
-                    width: 243px;
-                }
-            }
-            .legal_info {
+        .info_and_currency {
+            .info_list {
+                width: 770/1440*100%;
                 flex-direction: row;
-
-                .left_info {
-                    width: 446px;
-                }
-                .right_info {
-                    width: 446px;
-                    text-align: right;
-                    padding: 0px;
-                }
             }
-            .icon_legal_info {
-                width: 540/1440*100%;
-                .icon {
-                    width: 55px;
-                    margin: 0px 7px;
-                    height: 55px;
-                }
+            .currency {
+                position: absolute;
+                right: 0px;
+                bottom: 40px;
+                width: 243px;
             }
+        }
+        .legal_info {
+            flex-direction: row;
+            .left_info {
+                width: 446px;
+            }
+            .right_info {
+                width: 446px;
+                text-align: right;
+                padding: 0px;
+            }
+        }
+        .icon_legal_info {
+            width: 540/1440*100%;
+            .icon {
+                width: 55px;
+                margin: 0px 7px;
+                height: 55px;
+            }
+        }
     }
-    
 }
