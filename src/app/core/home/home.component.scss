@@ -216,3 +216,74 @@
         }
     }
 }
+
+// iframe 
+// .holds-the-iframe {
+//     background: url(https://grbpwr.fra1.cdn.digitaloceanspaces.com/grbpwr-com/heros/hero.png) no-repeat center/80%;
+// }
+#iframe {
+    position: absolute;
+}
+
+// loader 
+.base {
+    z-index: -100;
+    height: 9em;
+    left: 50%;
+    margin: -7.5em;
+    padding: 3em;
+    position: absolute;
+    top: 50%;
+    width: 9em;
+    transform: rotateX(45deg) rotateZ(45deg);
+    transform-style: preserve-3d;
+}
+
+.cube,
+.cube:after,
+.cube:before {
+    z-index: -100;
+    content: '';
+    float: left;
+    height: 3em;
+    position: absolute;
+    width: 3em;
+}
+
+
+/* Top */
+
+.cube {
+    z-index: -100;
+    background: url('../../../img/smal-logo.png') no-repeat center/85%;
+    background-color: black;
+    position: relative;
+    transform: translateZ(3em);
+    transform-style: preserve-3d;
+    transition: .25s;
+    // box-shadow: 13em 13em 1.5em rgba(0, 0, 0, 0.1);
+    &:after {
+        // Left
+        background-color: shade(white, 10);
+        transform: rotateX(-90deg) translateY(3em);
+        transform-origin: 100% 100%;
+    }
+    &:before {
+        // Right
+        background-color: shade(white, 20);
+        transform: rotateY(90deg) translateX(3em);
+        transform-origin: 100% 0;
+    }
+    animation: anim 1s ease-in-out infinite;
+    @for $i from 1 to 10 {
+        &:nth-child(#{$i}) {
+            animation-delay:#{$i * .05s}
+        }
+    }
+}
+
+@keyframes anim {
+    50% {
+        transform: translateZ(0.5em);
+    }
+}

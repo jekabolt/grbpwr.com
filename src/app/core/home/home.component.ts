@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
-import {PagerService} from '../../pager/pager.service';
 // import {UiService} from '../shared/ui.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 // models 
 import {Product} from '../../models/product.model';
@@ -20,12 +20,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   public productsPaged: Product[];
   public pager: any = {};
   public currentPagingPage: number = 1;
+
+  url: string = "https://player.vimeo.com/video/521417674?autoplay=1&loop=1&background=1";
+  urlSafe: SafeResourceUrl;
+
   constructor( 
     private apiService: ApiService,
-    private pagerService: PagerService,
+    public sanitizer: DomSanitizer,
   ) { }
 
   ngOnInit() {   
+    this.urlSafe= this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+    
     this.apiService.getProducts().subscribe(res => {
       this.products = res; 
     });   
