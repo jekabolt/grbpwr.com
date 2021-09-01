@@ -20,9 +20,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   public productsPaged: Product[];
   public pager: any = {};
   public currentPagingPage: number = 1;
-
+  
   url: string = "https://player.vimeo.com/video/521417674?autoplay=1&loop=1&background=1";
   urlSafe: SafeResourceUrl;
+  // @ViewChild('iframe', {static:true}) iframe:ElementRef;
 
   constructor( 
     private apiService: ApiService,
@@ -40,5 +41,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if(this.unsubscribe$ && !this.unsubscribe$.closed)
     this.unsubscribe$.unsubscribe();
+  }
+
+  onLoad(event: any) {
+    if (event.target.src) {
+        alert(event.target.src)
+    }
   }
 }
