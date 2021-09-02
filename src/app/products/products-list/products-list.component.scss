@@ -1,8 +1,13 @@
-@import "../../../scss/common.scss";
+@import "../../../scss/index.scss";
 .content {
     width: 335/375*100%;
     margin: 84px auto 0px auto;
     display: flex;
+    flex-direction: column;
+    h1 {
+        @extend %header_txt;
+        margin: 20px 0px;
+    }
     .product_content {
         width: 100%;
         height: auto;

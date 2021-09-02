@@ -2,10 +2,7 @@
 
 
 .content {
-    width: 335/375*100%;
-    display: flex;
     flex-direction: column;
-    margin: 130px auto 0px auto;
     .product_name {
         padding: 0px 0px 50px 0px;
     }
@@ -44,7 +41,7 @@
             flex-direction: column;
             padding: 0px 0px 72px 0px;
             .product-img {
-                min-width: 42%;
+                width: 100%;
                 height: 42vw;
             }
             p {
