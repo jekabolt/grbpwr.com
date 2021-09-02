@@ -26,7 +26,6 @@
             background-color: #000000;
         }
         a {
-            color: #000;
             p {
                 @extend %default_txt !optional;
                 text-decoration-line: none;
@@ -44,7 +43,7 @@
             display: flex;
             flex-direction: column;
             padding: 0px 0px 72px 0px;
-            .product_img {
+            .product-img {
                 min-width: 42%;
                 height: 42vw;
             }
@@ -172,7 +171,8 @@
             grid-template-columns: 1fr 1fr 1fr;
             grid-row-gap: 28px;
         }
-        .product_img {
+        .product-img {
+            width: 28vw;
             height: 28vw !important;
         }
         .go_to_archive {

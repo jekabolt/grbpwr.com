@@ -26,3 +26,10 @@
     line-height: 22px;
     text-decoration-line: none;
 }
+
+a {
+    color: #000000;
+    &:visited {
+        color: #000000;
+    }
+}
