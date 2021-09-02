@@ -13,13 +13,17 @@
             <p>go to archive</p>
         </a>
     </section>
-    <section class="product_content">
-        <div class="product_place" *ngFor="let product of products">
-            <a routerLink="/products/{{ product.id }}" href="">
-                <img class="product-img" src="{{ product.mainImage }}" alt="{{ product.name }}">
-                <p>{{ product.name }}</p>
-                <h2>${{ product.price.usd }}</h2>
-            </a>
+    <section class="product-container">
+        <div class="product" *ngFor="let product of products">
+                <a routerLink="/products/{{ product.id }}" href="">
+                    <img class="product-img" src="{{ product.mainImage }}" alt="{{ product.name }}">
+                </a>
+                <a routerLink="/products/{{ product.id }}" href="">
+                    <p>{{ product.name }}</p>
+                </a>
+                <a routerLink="/products/{{ product.id }}" href="">
+                    <h2>${{ product.price.usd }}</h2>
+                </a>
         </div>
     </section>
 </div>

@@ -33,13 +33,13 @@
             }
         }
     }
-    .product_content {
+    .product-container {
         width: 100%;
         height: auto;
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-column-gap: 20px;
-        .product_place {
+        .product {
             display: flex;
             flex-direction: column;
             padding: 0px 0px 72px 0px;
@@ -167,12 +167,12 @@
         .clip {
             height: 47vw;
         }
-        .product_content {
+        .product-container {
             grid-template-columns: 1fr 1fr 1fr;
             grid-row-gap: 28px;
         }
         .product-img {
-            width: 28vw;
+            width: 100%;
             height: 28vw !important;
         }
         .go_to_archive {
