@@ -1,5 +1,7 @@
-app-content {
-    width: 100%;
-    display: flex;
-    margin: 0px;
-}
+@import './variable.scss';
+@import './reset.scss';
+@import './common.scss'; //temporary
+
+//сomponents
+@import './components/radio.scss';
+@import './components/radio_button_checkout.scss';

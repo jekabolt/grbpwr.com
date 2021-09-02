@@ -1,4 +1,5 @@
-@import "../../../scss/common.scss";
+@import "../../../scss/index.scss";
+
 .footer {
     width: 335/375*100%;
     background-color: #fff;
@@ -98,4 +99,41 @@
             height: 30px;
         }
     }
+}
+@media screen and (min-width: 768px) {
+    .footer {
+        width: 1360/1440*100%;
+        .info_and_currency {
+            .info_list {
+                width: 770/1440*100%;
+                flex-direction: row;
+            }
+            .currency {
+                position: absolute;
+                right: 0px;
+                bottom: 40px;
+                width: 243px;
+            }
+        }
+        .legal_info {
+            flex-direction: row;
+            .left_info {
+                width: 446px;
+            }
+            .right_info {
+                width: 446px;
+                text-align: right;
+                padding: 0px;
+            }
+        }
+        .icon_legal_info {
+            width: 540/1440*100%;
+            .icon {
+                width: 55px;
+                margin: 0px 7px;
+                height: 55px;
+            }
+        }
+    }
+
 }

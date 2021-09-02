@@ -1,24 +1,2 @@
-@import "nullstyle";
+@import './index.scss';
 
-body {
-    touch-action: manipulation;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 100%;
-        app-root {
-            .main-wrapper {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                margin: 0px;
-            }
-        }
-}
-
-
-.offcanvas-wrapper {
-    width: 100%;
-    margin: 0px auto 0px auto;
-    margin: 0px;
-}
