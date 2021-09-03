@@ -9,11 +9,11 @@
         <a class="cart" routerLink="/cart" href="">cart ${{cartService.getTotal()}}</a>
     </table>
 </header>
-    
-    
+
+
 <header [class.navbar-opened]="navbarOpened" class="side_bar_nav">
     <div class="bg_side_bar" (click)=toggleNavbar()></div>
-        <nav class="side_bar_nav_list">
+    <nav class="side_bar_nav_list">
         <p (click)=toggleNavbar() id="menu_btn_hide" class="side_bar_btn">menu</p>
         <a routerLink="/tops" href="">
             <p>tops</p>
@@ -23,22 +23,22 @@
         </a>
         <a routerLink="/accessories" href="">
             <p>accessories</p>
-        </a>   
+        </a>
         <a routerLink="/bags" href="">
             <p>bags</p>
-        </a>    
+        </a>
         <a routerLink="/boots" href="">
             <p>boots</p>
-        </a>    
+        </a>
         <a routerLink="/skirts" href="">
             <p>skirts</p>
         </a>
-        <div (click)=toggleInfo() class="info_and_line">
+        <div (click)=toggleNavbar() class="info_and_line">
             <figure class="info_line"></figure>
             <p class="desktop_inf">info</p>
-        </div>    
-        </nav>   
-     <div [class.info-opened]="infoOpened" class="wrapper_info_list ">
+        </div>
+    </nav>
+    <div [class.info-opened]="infoOpened" class="wrapper_info_list ">
         <nav class="side_bar_info_list">
             <a routerLink="/about" href="">
                 <p>about</p>
