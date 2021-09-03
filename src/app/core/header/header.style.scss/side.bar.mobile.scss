@@ -1,0 +1,134 @@
+
+.side_bar_nav {
+    width: 265px;
+    height: 100%;
+    transform: translateX(-100%);
+    transition-duration: 0.2s;
+    background-color: #fff;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 99;
+}
+
+.side_bar_nav_list {
+    margin: 27px 0px 0px 66px;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    height: auto;
+    z-index: 100;
+    p {
+        @extend %info_txt;
+        cursor: pointer;
+        line-height: 32px;
+        padding: 0px 0px 0px 0px;
+    }
+    .side_bar_btn {
+        padding-bottom: 13px;
+        font-size: 22px;
+        text-decoration-line: none;
+        @extend %default_text;
+    }
+    .desktop_inf {
+        display: none;
+        p {
+            cursor: pointer;
+        }
+    }
+    .desktop_arch {
+        display: none;
+    }
+    .info_and_line {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .info_line {
+            width: 36px;
+            height: 1px;
+            margin: 20px 5px 0px 0px;
+            display: none;
+        }
+    }
+}
+
+.wrapper_info_list {
+    position: absolute;
+    bottom: 0px;
+    overflow: hidden;
+    margin: 275px 0px 20px 66px;
+    .side_bar_info_list {
+        p {
+            @extend %info_txt;
+            text-decoration-line: none;
+        }
+    }
+}
+
+.bg_side_bar {
+    position: absolute;
+    left: 265px;
+    width: 100vw;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.7;
+    z-index: 97;
+    transform: translateX(-100%);
+}
+
+@media screen and (min-width: 768px) {
+    .side_bar_nav {
+        display: none;
+        #menu_btn_hide {
+            display: none;
+        }
+        .bg_side_bar {
+            display: none;
+        }
+        .desktop_inf {
+            display: block;
+            padding: 20px 0px 0px 0px;
+            z-index: 99;
+        }
+        .info_and_line {
+            position: absolute;
+            display: none;
+            bottom: 20px;
+            left: 40px;
+            .info_line {
+                background-color: #000;
+            }
+            .desktop_inf {
+                font-size: 28px;
+                font-weight: 500;
+            }
+        }
+    }
+    .side_bar_nav_list {
+        display: none;
+        width: 655/1440*100%;
+        p {
+            text-decoration: none;
+            cursor: pointer;
+            line-height: 22px;
+        }
+        .side_bar_btn {
+            text-decoration-line: line-through;
+        }
+    }
+    .wrapper_info_list {
+        overflow: hidden;
+        position: absolute;
+        margin: 0px 0px 60px 40px;
+        z-index: 99;
+        .side_bar_info_list {
+            opacity: 0;
+            transform: translateY(120%);
+            transition-duration: 0.2s;
+            justify-content: center;
+            flex-direction: column;
+            margin: 0px auto 0px auto;
+            z-index: 99;
+        }
+    }
+}
