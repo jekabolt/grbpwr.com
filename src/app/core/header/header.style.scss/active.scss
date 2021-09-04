@@ -1,17 +1,9 @@
-.side_bar_nav.navbar-opened {
-    .bg_side_bar {
+.side-bar-navigation.opened {
+    .background {
         transform: translateX(0px);
     }
     transform: translateX(0%);
     transition-duration: 0.2s;
-}
-
-.wrapper_info_list.info-opened {
-    .side_bar_info_list {
-        transform: translateY(0%);
-        opacity: 1;
-        transition-duration: 0.2s;
-    }
 }
 
 * {
