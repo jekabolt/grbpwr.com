@@ -1,9 +1,7 @@
 @import '~scss/common';
 @import '~scss/components/radio';
 @import '../info';
-.content {
-    width: 335/375*100%;
-    margin: 86px auto 80px auto;
+.info-main-container {
     .title {
         p {
             @extend %title_txt;
