@@ -1,8 +1,15 @@
-%default_text {
+%main-text-no-line-through {
     font-size: 20px;
     font-weight: 600;
     color: #000000;
     line-height: 22px;
+}
+%main-text-line-through {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000;
+    line-height: 22px;
+    text-decoration-line: line-through;
 }
 
 %header_txt {
@@ -25,11 +32,4 @@
     color: #000000;
     line-height: 22px;
     text-decoration-line: none;
-}
-
-a {
-    color: #000000;
-    &:visited {
-        color: #000000;
-    }
 }

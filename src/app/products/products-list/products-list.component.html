@@ -1,5 +1,5 @@
 <div class="content" [ngClass]="{'loading' : productsLoading}">
-    <!-- Products Grid Mode View -->
+    <h1>Products</h1>
     <div class="product_content" *ngIf="(uiService.displayMode$ | async) === 'grid'">
         <app-products-list-item *ngFor="let product of productsPaged" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
         </app-products-list-item>
@@ -11,7 +11,7 @@
 
 <!-- Pagination-->
 <!-- Don't show controls in case of one page only available -->
-<nav *ngIf="pager.pages && pager.pages.length && pager.pages.length != 1 &&(uiService.displayMode$ | async) ==='grid'" class="pagination">
+<!-- <nav *ngIf="pager.pages && pager.pages.length && pager.pages.length != 1 &&(uiService.displayMode$ | async) ==='grid'" class="pagination">
     <div class="column text-left hidden-xs-down">
         <a class="btn btn-outline-secondary btn-sm" [ngClass]="{disabled:pager.currentPage === 1}" (click)="setPage(pager.currentPage - 1)"><i class="icon-arrow-left"></i>&nbsp;Previous
             </a>
@@ -28,4 +28,4 @@
                 <i class="icon-arrow-right"></i>
             </a>
     </div>
-</nav>
+</nav> -->

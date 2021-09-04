@@ -1,289 +1,99 @@
-@import "../../../scss/common.scss";
-.content {
-    width: 335/375*100%;
-    display: flex;
-    flex-direction: column;
-    margin: 130px auto 0px auto;
-    .product_name {
-        padding: 0px 0px 50px 0px;
-    }
-    .clip {
-        width: 100%;
-        height: 55vw !important;
-        padding: 0px 0px 10px 0px;
-    }
-    .go_to_archive {
-        width: 100%;
-        padding: 0px 0px 58px 0px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        .line {
-            display: flex;
-            width: 180/335*100%;
-            height: 1px;
-            background-color: #000000;
-        }
-        a {
-            color: #000;
-            p {
-                @extend %default_txt !optional;
-                text-decoration-line: none;
-                font-size: 22px;
-            }
-        }
-    }
-    .product_content {
-        width: 100%;
-        height: auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-column-gap: 20px;
-        .product_place {
-            display: flex;
-            flex-direction: column;
-            padding: 0px 0px 72px 0px;
-            .product_img {
-                min-width: 42%;
-                height: 42vw;
-            }
-            p {
-                padding: 20px 0px 0px 0px;
-                @extend %info_txt;
-            }
-            h2 {
-                padding: 7px 0px 0px 0px;
-                @extend %default_txt !optional;
-            }
-        }
-    }
-}
+@import '../../../scss/index.scss';
 
-.footer {
-    width: 335/375*100%;
-    background-color: #fff;
-    margin: 260px auto 0px auto;
-    padding: 0px 0px 50px 0px;
+.clip {
+    width: 100%;
+    height: 55vw !important;
+    padding-bottom: 10px;
+}
+.go-to-archive {
+    width: 100%;
+    padding-bottom: 58px;
     display: flex;
-    flex-direction: column;
-    .info_and_currency {
-        height: 321px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        border-top: solid #000 1px;
-        border-bottom: solid #000 1px;
-        position: relative;
-        .info_list {
-            width: 100%;
-            height: 180px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            a {
-                color: #000;
-                p {
-                    text-decoration: none;
-                    @extend %info_txt;
-                }
-            }
-        }
-        .currency {
-            display: flex;
-            float: left;
-            justify-content: space-between;
-            width: 100%;
-            .currency_input {
-                position: absolute;
-                left: -200px;
-                opacity: 0;
-            }
-            .currency_usd:checked~.currency_usd {
-                p {
-                    text-decoration: underline;
-                    opacity: 1;
-                }
-            }
-            .currency_byn:checked~.currency_byn {
-                p {
-                    text-decoration: underline;
-                    opacity: 1;
-                }
-            }
-            .currency_eur:checked~.currency_eur {
-                p {
-                    text-decoration: underline;
-                    opacity: 1;
-                }
-            }
-            .currency_rub:checked~.currency_rub {
-                p {
-                    text-decoration: underline;
-                    opacity: 1;
-                }
-            }
-            .currency_label {
-                p {
-                    text-decoration: none;
-                    cursor: pointer;
-                    opacity: 0.5;
-                }
-            }
-        }
-    }
-    .legal_info {
-        padding: 180px 0px 0px 0px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    a {
         p {
-            text-decoration: none;
-        }
-        .right_info {
-            text-align: left;
-            padding: 40px 0px 0px 0px;
-        }
-    }
-    .icon_legal_info {
-        margin: 85px auto 0px auto;
-        width: 280/375*100%;
-        display: flex;
-        justify-content: space-between;
-        .icon {
-            width: 30px;
-            margin: 0px 7px;
-            height: 30px;
+            @extend %main-text-no-line-through;
         }
     }
 }
-
+.product-container {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 20px;
+    .product {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 72px;
+        .product-img {
+            width: 100%;
+            height: 42vw;
+        }
+        p {
+            padding-top: 20px;
+            @extend %info_txt;
+        }
+        h2 {
+            padding-top: 7px;
+            @extend %main-text-line-through;
+        }
+    }
+}
 @media screen and (min-width: 768px) {
-    .content {
-        width: 1360/1440*100%;
-        margin: 130px auto 0px auto;
+    .main-container {
         .clip {
             height: 47vw;
         }
-        .product_content {
+        .product-container {
             grid-template-columns: 1fr 1fr 1fr;
             grid-row-gap: 28px;
         }
-        .product_img {
+        .product-img {
+            width: 100%;
             height: 28vw !important;
         }
-        .go_to_archive {
-            .line {
-                width: 784/950 *100%;
-            }
-        }
-    }
-    .footer {
-        width: 1360/1440*100%;
-        .info_and_currency {
-            .info_list {
-                width: 770/1440*100%;
-                flex-direction: row;
-            }
-            .currency {
-                position: absolute;
-                right: 0px;
-                bottom: 40px;
-                width: 243px;
-            }
-        }
-        .legal_info {
-            flex-direction: row;
-            .left_info {
-                width: 446px;
-            }
-            .right_info {
-                width: 446px;
-                text-align: right;
-                padding: 0px;
-            }
-        }
-        .icon_legal_info {
-            width: 540/1440*100%;
-            .icon {
-                width: 55px;
-                margin: 0px 7px;
-                height: 55px;
-            }
-        }
     }
 }
 
-// iframe 
+
+
+.hero {
+    z-index: 100;
+}
+
+iframe {
+    z-index: -100;
+}
+
+#wave>svg {
+    min-width: 500px;
+    min-height: 500px;
+    position: inherit;
+    z-index: -100;
+}
+
+.svg {
+    background-image: url(../../../img/index.svg);
+    background-repeat: no-repeat;
+    min-height: 200px;
+}
+
 // .holds-the-iframe {
-//     background: url(https://grbpwr.fra1.cdn.digitaloceanspaces.com/grbpwr-com/heros/hero.png) no-repeat center/80%;
-// }
-#iframe {
-    position: absolute;
+.content {
+    // background: url(../../../img/index.svg) center center no-repeat;
+    height: 100%;
+    background-image: url(../../../img/index.svg);
+    background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    background-size: cover;
 }
 
-// loader 
-.base {
-    z-index: -100;
-    height: 9em;
-    left: 50%;
-    margin: -7.5em;
-    padding: 3em;
-    position: absolute;
-    top: 50%;
-    width: 9em;
-    transform: rotateX(45deg) rotateZ(45deg);
-    transform-style: preserve-3d;
-}
-
-.cube,
-.cube:after,
-.cube:before {
-    z-index: -100;
-    content: '';
-    float: left;
-    height: 3em;
-    position: absolute;
-    width: 3em;
-}
-
-
-/* Top */
-
-.cube {
-    z-index: -100;
-    background: url('../../../img/smal-logo.png') no-repeat center/85%;
-    background-color: black;
-    position: relative;
-    transform: translateZ(3em);
-    transform-style: preserve-3d;
-    transition: .25s;
-    // box-shadow: 13em 13em 1.5em rgba(0, 0, 0, 0.1);
-    &:after {
-        // Left
-        background-color: shade(white, 10);
-        transform: rotateX(-90deg) translateY(3em);
-        transform-origin: 100% 100%;
-    }
-    &:before {
-        // Right
-        background-color: shade(white, 20);
-        transform: rotateY(90deg) translateX(3em);
-        transform-origin: 100% 0;
-    }
-    animation: anim 1s ease-in-out infinite;
-    @for $i from 1 to 10 {
-        &:nth-child(#{$i}) {
-            animation-delay:#{$i * .05s}
-        }
-    }
-}
-
-@keyframes anim {
-    50% {
-        transform: translateZ(0.5em);
-    }
+iframe {
+    // position: absolute;
+    // overflow: visible !important;
+    // z-index: 100;
 }

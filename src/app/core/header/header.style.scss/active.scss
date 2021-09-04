@@ -1,0 +1,29 @@
+.side_bar_nav.navbar-opened {
+    .bg_side_bar {
+        transform: translateX(0px);
+    }
+    transform: translateX(0%);
+    transition-duration: 0.2s;
+}
+
+.wrapper_info_list.info-opened {
+    .side_bar_info_list {
+        transform: translateY(0%);
+        opacity: 1;
+        transition-duration: 0.2s;
+    }
+}
+
+* {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+}

@@ -5,7 +5,6 @@ import { SharedModule } from '../shared/shared.module';
 import { ContentComponent } from './content/content.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { NavigationMainComponent } from './header/navigation-main/navigation-main.component';
 import { HomeComponent } from './home/home.component';
 
 import { ProductService } from '../products/shared/product.service';
@@ -27,7 +26,6 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
         ContentComponent,
         HeaderComponent,
         FooterComponent,
-        NavigationMainComponent,
         HomeComponent,
     ],
     imports: [
