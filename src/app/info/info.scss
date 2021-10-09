@@ -3,30 +3,26 @@
     margin: 80px auto 80px auto;
     display: flex;
     flex-direction: column;
-    .title {
-        h2 {
-            @extend %title_txt;
-            text-decoration-line: line-through;
-        }
+    h2 {
+        @extend %title_txt;
+        text-decoration-line: line-through;
     }
-    .lang_selected_content {
+    .lang-selected-container {
         width: 70px;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        padding: 78px 0px 20px 0px;
+        margin-top: 78px;
         p {
             @extend %info_txt;
             text-decoration-line: none;
         }
     }
-    .description_info {
-        p {
-            @extend %info_txt;
-            text-decoration-line: none;
-            padding: 0px 0px 20px 0px;
-        }
+    >p {
+        margin-top: 20px;
+        @extend %info_txt;
+        text-decoration-line: none;
     }
     .next-button {
         margin-top: 100px;
@@ -52,15 +48,8 @@
 @media screen and (min-width: 768px) {
     .info-main-container {
         margin-top: 130px;
-        .info-content {
-            margin: 140px 0px 0px 245px;
-            width: 950/1441*100%;
+        >p {
+            width: 500px;  
         }
-    }
-}
-
-.description_info {
-    p {
-        width: 345px;
     }
 }
