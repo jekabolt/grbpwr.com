@@ -12,8 +12,8 @@ export class ReturnsComponent {
 
   constructor() { }
 
-  toggleLanguage() {
-    this.langRu = !this.langRu;
+  toggleLanguage(indicator) {
+    this.langRu = indicator;
   }
 
 }

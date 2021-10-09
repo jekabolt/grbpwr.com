@@ -1,11 +1,11 @@
 <div class="info-main-container">
     <h2>returns</h2>
     <div class="lang-selected-container">
-        <input (click)="toggleLanguage()" id="en" class="radio_checked_en" type="radio" name="lang" checked>
+        <input (click)="toggleLanguage(false)" id="en" class="radio_checked_en" type="radio" name="lang" checked>
         <label id="en_lang" for="en" class="radio_lable_en">
             <p>en</p>
         </label>
-        <input (click)="toggleLanguage()" id="ru" class="radio_checked_ru" type="radio" name="lang">
+        <input (click)="toggleLanguage(true)" id="ru" class="radio_checked_ru" type="radio" name="lang">
         <label id="ru_lang" for="ru" class="radio_lable_ru">
             <p>ru</p>
         </label>
