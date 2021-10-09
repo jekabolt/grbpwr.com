@@ -28,8 +28,8 @@
             padding: 0px 0px 20px 0px;
         }
     }
-    .section_next_button {
-        margin: 349px 0px 0px 0px;
+    .next-button {
+        margin-top: 100px;
         width: 100%;
         text-align: right;
         padding: 0px 0px 20px 0px;
@@ -50,9 +50,12 @@
 }
 
 @media screen and (min-width: 768px) {
-    .info-content {
-        margin: 140px 0px 0px 245px;
-        width: 950/1441*100%;
+    .info-main-container {
+        margin-top: 130px;
+        .info-content {
+            margin: 140px 0px 0px 245px;
+            width: 950/1441*100%;
+        }
     }
 }
 
