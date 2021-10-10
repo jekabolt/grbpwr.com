@@ -1,25 +1,25 @@
 [{
     "id": 1,
-    "date": "2018-04-02",
+    "dateCreated": 1633273798458,
     "title": "Article 1",
     "description": "description 1",
     "descriptionAlternative": "",
     "mainImage": "/img/tumb.png",
     "type": "",
-    "article": [{
+    "content": [{
         "mediaLink": "",
         "description": "description 1",
         "descriptionAlternative": ""
     }]
 }, {
     "id": 2,
-    "date": "2018-04-02",
+    "dateCreated": 1633273798459,
     "title": "Article 1",
     "description": "description 2",
     "descriptionAlternative": "",
     "mainImage": "/img/tumb.png",
     "type": "",
-    "article": [{
+    "content": [{
         "mediaLink": "",
         "description": "description 2",
         "descriptionAlternative": ""
