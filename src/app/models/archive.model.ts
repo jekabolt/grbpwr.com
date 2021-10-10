@@ -1,12 +1,23 @@
+// To parse this data:
+//
+//   import { Convert, ArchiveArticle } from "./file";
+//
+//   const archiveArticle = Convert.toArchiveArticle(json);
+//
+// These functions will throw an error if the JSON doesn't
+// match the expected interface, even if the JSON is valid.
+
 export interface ArchiveArticle {
-  id:                     number;
-  dateCreated:            number;
-  title:                  string;
-  description:            string;
-  descriptionAlternative: string;
-  mainImage:              string;
-  type:                   string;
-  content:                Content[];
+  article: Article;
+}
+
+export interface Article {
+  id:          number;
+  dateCreated: number;
+  title:       string;
+  description: string;
+  mainImage:   string;
+  content:     Content[];
 }
 
 export interface Content {
@@ -22,7 +33,7 @@ export class Convert {
       return cast(JSON.parse(json), r("ArchiveArticle"));
   }
 
-  public static ArchiveArticleToJson(value: ArchiveArticle): string {
+  public static archiveArticleToJson(value: ArchiveArticle): string {
       return JSON.stringify(uncast(value, r("ArchiveArticle")), null, 2);
   }
 }
@@ -161,13 +172,14 @@ function r(name: string) {
 
 const typeMap: any = {
   "ArchiveArticle": o([
+      { json: "article", js: "article", typ: r("Article") },
+  ], false),
+  "Article": o([
       { json: "id", js: "id", typ: 0 },
       { json: "dateCreated", js: "dateCreated", typ: 0 },
       { json: "title", js: "title", typ: "" },
       { json: "description", js: "description", typ: "" },
-      { json: "descriptionAlternative", js: "descriptionAlternative", typ: "" },
       { json: "mainImage", js: "mainImage", typ: "" },
-      { json: "type", js: "type", typ: "" },
       { json: "content", js: "content", typ: a(r("Content")) },
   ], false),
   "Content": o([
