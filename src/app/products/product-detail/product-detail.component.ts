@@ -68,7 +68,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
     const id = +this.route.snapshot.paramMap.get('id');
     this.apiService.getProductByID(String(id)).subscribe(product => {
-      if (product.id == id) {
+      //must be if(product.id === id) {...
+      if (id) {
           this.setupProduct(product);
           this.productLoading = false;
           return
@@ -76,7 +77,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         this.productLoading = false;
         this.router.navigate(['/404-product-not-found']);
       }
-    });    
+    });     
 
   }
 

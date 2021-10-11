@@ -3,12 +3,12 @@
     <!-- <div *ngIf="product.reduction" class="product-badge text-danger">{{ product.reduction }}% Off</div> -->
 
 
-    <a class="product-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/products/{{product.id}}">
-        <img class="product_img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.mainImage}}" alt="{{product.name}}" />
+    <a class="product-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/products/{{product.product.id}}">
+        <img class="product_img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.product.mainImage}}" alt="{{product.name}}" />
     </a>
     <div class="product-info">
         <p class="product-title">
-            <a routerLink="/products/{{product.id}}">{{product.name}}</a>
+            <a routerLink="/products/{{product.product.id}}">{{product.product.name}}</a>
         </p>
         <p class="product-price">
 
