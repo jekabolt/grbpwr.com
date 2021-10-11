@@ -1,11 +1,11 @@
 <div class="content" [ngClass]="{'loading' : productLoading}">
     <div *ngIf="product" class="single_product_content_desktop">
         <section class="img-container">
-            <img class="product_img" src="{{activeImageUrl}}" alt="{{product.name}}">
+            <img class="product_img" src="{{activeImageUrl}}" alt="{{product.product.name}}">
             <div class="img_slider_content">
-                <div class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
+                <div class="product_img_desktop_small" *ngFor="let image of product.product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
                     <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                        <img [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
+                        <img [src]="image" alt="{{product.product.name}}" (load)="onImageLoad($event)">
                     </a>
                 </div>
             </div>
@@ -13,7 +13,7 @@
         <div class="description_desktop">
             <div class="product_description_single_page">
                 <p>
-                    {{ product.name }}
+                    {{ product.product.name }}
                 </p>
             </div>
             <div class="form-group">
@@ -35,7 +35,7 @@
                 <p id="details">Details</p>
             </div>
             <aside [class.details_content_acrtive]="detailsActive" id="details_content" class="details_content">
-                <p>{{product.description}}</p>
+                <p>{{product.product.description}}</p>
             </aside>
         </div>
     </div>

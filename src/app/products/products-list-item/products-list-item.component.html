@@ -1,26 +1,26 @@
 <div class="product_place" [ngClass]="{'product-list': displayMode === 'list'}">
     <!-- //TODO: sold out -->
-    <!-- <div *ngIf="product.reduction" class="product-badge text-danger">{{ product.reduction }}% Off</div> -->
+    <!-- <div *ngIf="product.product.reduction" class="product-badge text-danger">{{ product.product.reduction }}% Off</div> -->
 
 
-    <a class="product-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/products/{{product.id}}">
-        <img class="product_img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.mainImage}}" alt="{{product.name}}" />
+    <a class="product-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/products/{{product.product.id}}">
+        <img class="product_img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.product.mainImage}}" alt="{{product.product.name}}" />
     </a>
     <div class="product-info">
         <p class="product-title">
-            <a routerLink="/products/{{product.id}}">{{product.name}}</a>
+            <a routerLink="/products/{{product.product.id}}">{{product.product.name}}</a>
         </p>
         <p class="product-price">
 
         </p>
-        <h2 *ngIf="displayMode === 'list'" class="hidden-xs-down">{{product.description}}</h2>
+        <h2 *ngIf="displayMode === 'list'" class="hidden-xs-down">{{product.product.description}}</h2>
         <!-- <div class="product-buttons">
                 <button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist">
             <i class="icon-heart"></i>
         </button>
                 <button class="btn btn-outline-primary btn-sm" (click)="onAddToCart()">Add to Cart</button>s
 
-                <button *ngIf="user && user.roles.admin" class="btn btn-primary btn-sm" routerLink="/admin/edit/{{product.id}}">
+                <button *ngIf="user && user.roles.admin" class="btn btn-primary btn-sm" routerLink="/admin/edit/{{product.product.id}}">
             Edit
         </button>
             </div> -->

@@ -59,16 +59,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.selectedQuantity = 1;
     this.imagesLoaded = [];
 
-    this.sizes = [
-      { sz: "xs", avb: true },
-      { sz: "s", avb: true },
-      { sz: "m", avb: false },
-      { sz: "l", avb: true },
-    ];
+    this.sizes = [];
 
     const id = +this.route.snapshot.paramMap.get('id');
     this.apiService.getProductByID(String(id)).subscribe(product => {
-      if (product.id == id) {
+      if (product.product.id == id) {
           this.setupProduct(product);
           this.productLoading = false;
           return
@@ -151,7 +146,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   public onSelectThumbnail(event, index) {
     event.preventDefault();
-    this.activeImageUrl = this.product.productImages[index];
+    this.activeImageUrl = this.product.product.productImages[index];
     this.activeImageIndex = index;
   }
 
@@ -174,8 +169,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.cartButtonTitle = 'ITEM ADDED';
     this.setCartButtonText(lbl)
 
-    this.product.selectedSize = this.selectedSize
-    this.cartService.addItem(new CartItem(this.product, this.selectedQuantity, this.product.selectedSize));
+    this.product.product.selectedSize = this.selectedSize
+    this.cartService.addItem(new CartItem(this.product, this.selectedQuantity, this.product.product.selectedSize));
   }
 
   public onSelectQuantity(event) {
@@ -197,15 +192,15 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   private setupProduct(product:Product) {
     if (product) {
       this.product = product
-      this.setSizes(product.availableSizes)
-      product.productImages.forEach((obj, i) => {
+      this.setSizes(product.product.availableSizes)
+      product.product.productImages.forEach((obj, i) => {
         if (!obj.includes('://')) {
-          product.productImages[i] = location.origin + obj
+          product.product.productImages[i] = location.origin + obj
         }
       });
-      this.activeImageUrl = product.productImages[0];
+      this.activeImageUrl = product.product.productImages[0];
       this.activeImageIndex = 0;
-      this.availableSizes = product.availableSizes
+      this.availableSizes = product.product.availableSizes
       
     }
   }

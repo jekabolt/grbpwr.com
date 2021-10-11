@@ -1,16 +1,7 @@
-<section class="content">
-
-    <p>fib lookbook</p>
-    <p>This is the first part of the collection lookbook</p>
-
-        <div *ngFor="let article of articles" class="video_conteiner">
-
-            <a href="" class="video_archive">
-            <div class="video_archive">
-                <img class="ing_acrhive" [src]="article.mainImage" alt="{{article.name}}">
-                <p>{{ article.title }}</p>
-            </div>
-            </a>
-        </div>
-
-</section>
+<div class="content" [ngClass]="{'loading' : productsLoading}">
+    <h1>Products</h1>
+    <div class="product_content" *ngIf="(uiService.displayMode$ | async) === 'grid'">
+        <app-archive-list-item *ngFor="let product of productsPaged" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
+        </app-archive-list-item>
+    </div>
+</div>
