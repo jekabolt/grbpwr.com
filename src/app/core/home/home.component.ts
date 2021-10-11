@@ -33,7 +33,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.urlSafe= this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
     
       this.apiService.getProducts().subscribe(res => {
-        this.products = res; 
+        this.products = res;
+        console.log(this.products)
         console.log(this.products)
       });   
     }

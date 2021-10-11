@@ -4,7 +4,7 @@
 
 
     <a class="product-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/products/{{product.product.id}}">
-        <img class="product_img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.product.mainImage}}" alt="{{product.name}}" />
+        <img class="product_img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.product.mainImage}}" alt="{{product.product.name}}" />
     </a>
     <div class="product-info">
         <p class="product-title">

@@ -1,9 +1,9 @@
-<div class="content" [ngClass]="{'loading' : productLoading}">
+<div class="content-product" [ngClass]="{'loading' : productLoading}">
     <div *ngIf="product" class="single_product_content_desktop">
         <section class="img-container">
             <img class="product_img" src="{{activeImageUrl}}" alt="{{product.product.name}}">
             <div class="img_slider_content">
-                <div class="product_img_desktop_small" *ngFor="let image of imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
+                <div class="product_img_desktop_small" *ngFor="let image of product.product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
                     <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
                         <img [src]="image" alt="{{product.product.name}}" (load)="onImageLoad($event)">
                     </a>
