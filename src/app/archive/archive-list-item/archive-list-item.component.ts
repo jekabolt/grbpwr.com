@@ -13,6 +13,7 @@ import { Product } from '../../models/product.model';
   styleUrls: ['./archive-list-item.component.scss']
 })
 export class ArchiveListItemComponent implements OnInit, OnDestroy {
+  private userSubscription: Subscription;
   @Input() public product: Product;
   @Input() public displayMode: string;
   public imageLoading: boolean;
@@ -26,7 +27,7 @@ export class ArchiveListItemComponent implements OnInit, OnDestroy {
   }
 
   public onAddToCart() {
-    this.cartService.addItem(new CartItem(this.product, 1, this.product.selectedSize));
+    this.cartService.addItem(new CartItem(this.product, 1, this.product.product.selectedSize));
   }
 
   public onImageLoad() {
@@ -34,5 +35,7 @@ export class ArchiveListItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if(this.userSubscription && !this.userSubscription.closed)
+    this.userSubscription.unsubscribe();
   }
 }
