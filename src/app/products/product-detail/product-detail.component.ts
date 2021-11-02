@@ -71,7 +71,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         this.productLoading = false;
         this.router.navigate(['/404-product-not-found']);
       }
-    });    
+    });     
 
   }
 

@@ -3,7 +3,7 @@
     display: none;
 }
 
-.content {
+.content-product {
     width: 335/375*100%;
     margin: 90px auto 0px auto;
     padding: 0px 0px 20px 0px;
@@ -112,7 +112,6 @@
                     position: absolute;
                     z-index: 98;
                 }
-
                 .size_content {
                     display: flex;
                     justify-content: center;
@@ -168,7 +167,7 @@
 }
 
 @media screen and (min-width: 768px) {
-    .content {
+    .content-product {
         z-index: 101;
         margin: 140px auto 0px auto;
         width: 1360/1440*100%;

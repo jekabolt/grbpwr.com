@@ -11,15 +11,15 @@
     </section>
     <section class="product-container">
         <div class="product" *ngFor="let product of products">
-            <a routerLink="/products/{{ product.product.id }}" href="">
-                <img class="product-img" src="{{ product.product.mainImage }}" alt="{{ product.product.name }}">
-            </a>
-            <a routerLink="/products/{{ product.product.id }}" href="">
-                <p>{{ product.product.name }}</p>
-            </a>
-            <a routerLink="/products/{{ product.product.id }}" href="">
-                <h2>${{ product.product.price.usd }}</h2>
-            </a>
+                <a routerLink="/products/{{ product.product.id }}" href="">
+                    <img class="product-img" src="{{ product.product.mainImage }}" alt="{{ product.product.name }}">
+                </a>
+                <a routerLink="/products/{{ product.product.id }}" href="">
+                    <p>{{ product.product.name }}</p>
+                </a>
+                <a routerLink="/products/{{ product.product.id }}" href="">
+                    <h2>${{ product.product.price.usd }}</h2>
+                </a>
         </div>
     </section>
 </div>
