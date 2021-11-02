@@ -3,13 +3,11 @@ import {Location} from '@angular/common';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 
 import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 import {CartService} from '../../cart/shared/cart.service';
 import {CartItem} from '../../models/cart-item.model';
 
 import {Product , AvailableSizes} from '../../models/product.model';
 
-import Products from '../../shop-items/products.json';
 
 // Services
 import { ApiService } from '../../services/api.service';

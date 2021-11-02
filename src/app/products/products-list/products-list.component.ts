@@ -6,8 +6,6 @@ import {UiService} from '../shared/ui.service';
 import {SortPipe} from '../shared/sort.pipe';
 
 import {Product} from '../../models/product.model';
-import Products from '../../shop-items/products.json';
-
 
 // Services
 import { ApiService } from '../../services/api.service';
