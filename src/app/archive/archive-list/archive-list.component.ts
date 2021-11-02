@@ -5,8 +5,7 @@ import {PagerService} from '../../pager/pager.service';
 import {UiServiceArchive} from '../shared/ui.service';
 import {SortPipe} from '../shared/sort.pipe';
 
-import {Product} from '../../models/product.model';
-import Products from '../../shop-items/products.json';
+import {ArchiveArticle} from '../../models/archive.model';
 
 
 // Services
@@ -20,10 +19,10 @@ import { ApiService } from '../../services/api.service';
 
 export class ArchiveListComponent implements OnInit, OnDestroy {
     public unsubscribe$ = new Subject();
-    public products: Product[];
-    public productsPaged: Product[];
+    public articles: ArchiveArticle[];
+    public articlesPaged: ArchiveArticle[];
     public pager: any = {};
-    public productsLoading: boolean;
+    public articlesLoading: boolean;
     public currentPagingPage: number;
   
     constructor(
@@ -40,9 +39,9 @@ export class ArchiveListComponent implements OnInit, OnDestroy {
           this.currentPagingPage = page;
         });
       
-      this.apiService.getProducts().subscribe(res => {
-        this.products = res;
-        this.setPage(this.currentPagingPage, this.products);
+      this.apiService.getArchiveArticles().subscribe(res => {       
+        this.articles = res;
+        this.setPage(this.currentPagingPage, this.articles);
       });    
     } 
     
@@ -52,18 +51,17 @@ export class ArchiveListComponent implements OnInit, OnDestroy {
       e.preventDefault();
     }
   
-    setPage(page: number, products: Product[]) {
-      this.apiService.getProducts().subscribe((products=>{
+    
+    setPage(page: number, articles: ArchiveArticle[]) {
         if (page < 1 || page > this.pager.totalPages) {
           return;
         }
-        this.pager = this.pagerService.getPager(products.length, page, 8);
-        this.productsPaged = products.slice(
+        this.pager = this.pagerService.getPager(articles.length, page, 8);
+        this.articlesPaged = articles.slice(
           this.pager.startIndex,
           this.pager.endIndex + 1
         );
         this.uiService.currentPagingPage$.next(page);
-      }));
     }
   
   
