@@ -1,6 +1,3 @@
-
-
-
 <!-- Page Content-->
 <div class="content">
 
@@ -15,16 +12,16 @@
                     <section class="img_and_description">
 
                         <div class="product-item">
-                            <a class="product-thumb" routerLink="/products/{{item.product.id}}">
-                                <img [src]="item.product.imageURLs[0]" alt="Product">
+                            <a class="product-thumb" routerLink="/products/{{item.product.product.id}}">
+                                <img [src]="item.product.product.mainImage" alt="{{item.product.product.name}}">
                             </a>
                         </div>
 
                         <section class="product_description">
 
                             <div class="product-info">
-                                <a routerLink="/products/{{item.product.id}}">
-                                    <p>{{item.product.name}}</p>
+                                <a routerLink="/products/{{item.product.product.id}}">
+                                    <p>{{item.product.product.name}}</p>
                                 </a>
                             </div>
 
