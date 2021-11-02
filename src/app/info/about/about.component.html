@@ -1,41 +1,21 @@
-<div class="info-content">
-
-    <section class="title">
-        <h2>about</h2>
-    </section>
-
-    <div class="lang_selected_content">
-
-        <input (click)="toggleLanguage()" id="en" class="radio_checked_en" type="radio" name="lang" checked>
-
+<div class="info-main-container">
+    <h2>about</h2>
+    <div class="lang-selected-container">
+        <input (click)="toggleLanguage(true)" id="en" class="radio_checked_en" type="radio" name="lang" checked>
         <label id="en_lang" for="en" class="radio_lable_en">
             <p>en</p>
         </label>
-
-        <input (click)="toggleLanguage()" id="ru" class="radio_checked_ru" type="radio" name="lang">
-
+        <input (click)="toggleLanguage(false)" id="ru" class="radio_checked_ru" type="radio" name="lang">
         <label id="ru_lang" for="ru" class="radio_lable_ru">
             <p>ru</p>
         </label>
-
     </div>
-
-    <div class="description_info">
-        <p>
-            {{!langRu ? "G3 — Никто не знает что это, но это есть. Мы создаем или не создаем нарративы и объекты. Одобряем действия, не порицаем бездействие. Компиляция культур. Ограничены своим опытом но не мировосприятием. Будет дополнено.": "G3. Nobody knows what
-            it is, but it exists. We create or don't create narratives and objects. Appreciate action, not criticizing inaction. Culture compilation. Limited by our experience not by the mentality."}}
-
-        </p>
-    </div>
-
-
-    <section class="section_next_button">
-
-        <a href="/">
-          <p>continue shopping</p>
-        </a>
-
+    <p>
+        {{!langRu ? "G3 — Никто не знает что это, но это есть. Мы создаем или не создаем нарративы и объекты. Одобряем действия, не порицаем бездействие. Компиляция культур. Ограничены своим опытом но не мировосприятием. Будет дополнено.": "G3. Nobody knows what
+        it is, but it exists. We create or don't create narratives and objects. Appreciate action, not criticizing inaction. Culture compilation. Limited by our experience not by the mentality."}}
+    </p>
+    <section class="next-button">
+        <a href="/">continue shopping</a>
         <figure class="line"></figure>
-
     </section>
 </div>

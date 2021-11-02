@@ -1,62 +1,41 @@
 <div class="content" [ngClass]="{'loading' : productLoading}">
+    <div *ngIf="article" class="single_product_content_desktop">
+        <section class="img-container">
 
-    <div *ngIf="product" class="single_product_content_desktop">
 
-        <section>
+            <p>
+                {{article.title}}
+            </p>
 
-            <div class="product_img" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                <img [hidden]="!imagesLoaded.includes(activeImageUrl)" class="img-fluid" src="{{activeImageUrl}}" alt="{{product.name}}" (load)="onImageLoad($event)">
-            </div>
-
-            <ul class="img_slider_content">
-                <li class="product_img_desktop_small" *ngFor="let image of product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
+            <!-- <img class="product_img" src="{{activeImageUrl}}" alt="{{product.product.name}}">
+            <div class="img_slider_content">
+                <div class="product_img_desktop_small" *ngFor="let image of product.product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
                     <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                        <img [hidden]="!imagesLoaded.includes(image)" [src]="image" alt="{{product.name}}" (load)="onImageLoad($event)">
+                        <img [src]="image" alt="{{product.product.name}}" (load)="onImageLoad($event)">
                     </a>
-                </li>
-            </ul>
-
+                </div>
+            </div> -->
         </section>
 
-        <div class="description_desktop">
-
+        <!-- <div class="description_desktop">
             <div class="product_description_single_page">
                 <p>
-
+                    {{product.product.name}}
                 </p>
             </div>
-
-
-            <!-- <div class="form-control" id="quantity" (change)="onSelectSize($event)">
-                  <figure class="line_sz"></figure>
-                  <section *ngFor="let sz of availableSizes"><p>{{sz}}</p></section>
-                  <figure class="line_sz"></figure>
-              </div> -->
-
             <div class="form-group">
-                <label for="size">SIZE</label>
-                <select class="form-control" id="quantity" (change)="onSelectSize($event)">
-
-                              <option *ngFor="let sz of availableSizes">{{sz}}</option>
-                          </select>
-            </div>
-
-            <section class="add_btn">
-                <figure class="line_add"></figure>
-                <div (click)="onAddToCart(cartButton.id)" #cartButton id="cartButton">
-                    <p>{{cartButtonTitle}}</p>
+                <div class="form-control">
+                    <figure class="line_sz"></figure>
+                    <div class="size_content" *ngFor="let item of sizes ">
+                        <input class="size_input" id="{{item.sz}}" (change)="onRadioSize(item.sz)" [value]='item.sz' type="radio" name="enums" [(ngModel)]="radioSelected" [attr.disabled]="!item.avb ? false : null">
+                        <label class="size_button" for="{{item.sz}}"><p>{{item.sz}}</p></label>
+                    </div>
                 </div>
-            </section>
-
-            <div (click)="get()" class="details">
-                <p id="details">Details</p>
             </div>
 
-            <aside id="details_content" class="details_content">
-                <p>{{product.description}}</p>
+            <aside [class.details_content_acrtive]="detailsActive" id="details_content" class="details_content">
+                <p>{{product.product.description}}</p>
             </aside>
-
-        </div>
-
+        </div> -->
     </div>
 </div>

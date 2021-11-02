@@ -21,25 +21,26 @@ export class HomeComponent implements OnInit, OnDestroy {
   public pager: any = {};
   public currentPagingPage: number = 1;
   
-  url: string = "https://player.vimeo.com/video/521417674?autoplay=1&loop=1&background=1";
+  url: string = "https://player.vimeo.com/video/521417674?autoplay=1&loop=1&muted=1&controls=0";
   urlSafe: SafeResourceUrl;
-  // @ViewChild('iframe', {static:true}) iframe:ElementRef;
-
+  
   constructor( 
     private apiService: ApiService,
     public sanitizer: DomSanitizer,
-  ) { }
-
-  ngOnInit() {   
-    this.urlSafe= this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+    ) { }
     
-    this.apiService.getProducts().subscribe(res => {
-      this.products = res; 
-    });   
-  }
-
-  ngOnDestroy() {
-    if(this.unsubscribe$ && !this.unsubscribe$.closed)
+    ngOnInit() {   
+      this.urlSafe= this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+    
+      this.apiService.getProducts().subscribe(res => {
+        this.products = res;
+        console.log(this.products)
+        console.log(this.products)
+      });   
+    }
+    
+    ngOnDestroy() {
+      if(this.unsubscribe$ && !this.unsubscribe$.closed)
     this.unsubscribe$.unsubscribe();
   }
 
@@ -49,3 +50,4 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 }
+

@@ -6,55 +6,27 @@
             <a routerLink="/about" href="">about</a>
             <a routerLink="/archive">archive</a>
         </nav>
-        <a class="cart" routerLink="/cart" href="">cart ${{cartService.getTotal()}}</a>
+        <!-- <a class="cart" routerLink="/cart" href="">cart ${{cartService.getTotal()}}</a> -->
     </table>
 </header>
 
 
-<header [class.navbar-opened]="navbarOpened" class="side_bar_nav">
-    <div class="bg_side_bar" (click)=toggleNavbar()></div>
-    <nav class="side_bar_nav_list">
-        <p (click)=toggleNavbar() id="menu_btn_hide" class="side_bar_btn">menu</p>
-        <a routerLink="/tops" href="">
-            <p>tops</p>
-        </a>
-        <a routerLink="/bottoms" href="">
-            <p>bottoms</p>
-        </a>
-        <a routerLink="/accessories" href="">
-            <p>accessories</p>
-        </a>
-        <a routerLink="/bags" href="">
-            <p>bags</p>
-        </a>
-        <a routerLink="/boots" href="">
-            <p>boots</p>
-        </a>
-        <a routerLink="/skirts" href="">
-            <p>skirts</p>
-        </a>
-        <div (click)=toggleNavbar() class="info_and_line">
-            <figure class="info_line"></figure>
-            <p class="desktop_inf">info</p>
-        </div>
+<header [class.opened]="navbarOpened" class="side-bar-navigation">
+    <div class="background" (click)=toggleNavbar()></div>
+    <nav class="side-bar-navigation-list">
+        <p (click)=toggleNavbar()>menu</p>
+        <a routerLink="/tops" href="">tops</a>
+        <a routerLink="/bottoms" href="">bottoms</a>
+        <a routerLink="/accessories" href="">accessories</a>   
+        <a routerLink="/bags" href="">bags</a>    
+        <a routerLink="/boots" href="">boots</a>    
+        <a routerLink="/skirts" href="">skirts</a> 
+    </nav>   
+    <nav class="side-bar-info-list">
+        <a routerLink="/about" href="">about</a>
+        <a routerLink="/contact-us" href="">contact us</a>
+        <a routerLink="/shipping-method" href="">shipping</a>
+        <a routerLink="/returns" href="">returns</a>
+        <a routerLink="/privacy-policy" href="">privacy policy</a>
     </nav>
-    <div [class.info-opened]="infoOpened" class="wrapper_info_list ">
-        <nav class="side_bar_info_list">
-            <a routerLink="/about" href="">
-                <p>about</p>
-            </a>
-            <a routerLink="/contact-us" href="">
-                <p>contact us</p>
-            </a>
-            <a routerLink="/shipping-method" href="">
-                <p>shipping</p>
-            </a>
-            <a routerLink="/returns" href="">
-                <p>returns</p>
-            </a>
-            <a routerLink="/privacy-policy" href="">
-                <p>privacy policy</p>
-            </a>
-        </nav>
-    </div>
 </header>

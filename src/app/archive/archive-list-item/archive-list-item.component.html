@@ -1,15 +1,13 @@
-<div class="archive-card" [ngClass]="{'archive-list': displayMode === 'list'}">
-    <a class="archive-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/products/{{product.id}}">
-        <img [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.mainImage}}" alt="{{product.name}}" />
+<div class="article-place">
+
+    <a class="article-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/archive/{{article.article.id}}">
+        <img class="article-img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{article.article.mainImage}}" alt="{{article.article.title}}" />
     </a>
-    <div class="archive-info">
-        <h3 class="archive-title">
-            <a routerLink="/products/{{product.id}}">{{product.name}}</a>
-        </h3>
+    <div>
+        <p>
+            <a routerLink="/archive/{{article.article.id}}">{{article.article.title}}</a>
+        </p>
 
-        <p *ngIf="displayMode === 'list'" class="hidden-xs-down">{{product.description}}</p>
-        <div class="archive-buttons">
-
-        </div>
+        <h2>{{article.article.description}}</h2>
     </div>
 </div>

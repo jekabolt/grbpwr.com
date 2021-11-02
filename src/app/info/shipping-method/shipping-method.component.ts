@@ -12,8 +12,8 @@ export class ShippingMethodsComponent {
 
   constructor() { }
 
-  toggleLanguage() {
-    this.langRu = !this.langRu;
+  toggleLanguage(indicator) {
+    this.langRu = indicator;
   }
 
 }

@@ -28,7 +28,7 @@ export class ProductsCacheService {
     return this.getProducts(fallback).pipe(
       switchMap((products) => {
         const selectedProduct = products.find((product) => {
-          return product.id === key;
+          return product.product.id === key;
         });
         return of(selectedProduct);
       }),

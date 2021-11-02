@@ -1,16 +1,7 @@
-<section class="content">
-
-    <p>fib lookbook</p>
-    <p>This is the first part of the collection lookbook</p>
-
-        <div *ngFor="let article of articles" class="video_conteiner">
-
-            <a href="" class="video_archive">
-            <div class="video_archive">
-                <img class="ing_acrhive" [src]="article.mainImage" alt="{{article.name}}">
-                <p>{{ article.title }}</p>
-            </div>
-            </a>
-        </div>
-
-</section>
+<div class="content" [ngClass]="{'loading' : articlesLoading}">
+    <h1>Articles</h1>
+    <div class="article-content">
+        <app-archive-list-item *ngFor="let article of articlesPaged" [article]="article">
+        </app-archive-list-item>
+    </div>
+</div>

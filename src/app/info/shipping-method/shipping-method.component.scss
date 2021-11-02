@@ -1,66 +1,14 @@
 @import '~scss/common';
 @import '~scss/components/radio';
 @import '../info';
-.content {
-    width: 335/375*100%;
-    margin: 86px auto 80px auto;
-    .title {
-        p {
-            @extend %title_txt;
-            text-decoration-line: line-through;
-        }
+.info-main-container {
+    h3 {
+        @extend %default_text;
+        text-decoration-line: none;
+        margin-top: 24px
     }
-    .lang_selected_content {
-        display: flex;
-        justify-content: space-between;
-        width: 70px;
-        padding: 78px 0px 20px 0px;
-        p {
-            @extend %info_txt;
-        }
-    }
-    section {
-        padding: 0px 0px 20px 0px;
-        .shipping_txt_block_content {
-            h2 {
-                @extend %default_text;
-                text-decoration-line: none;
-                padding: 0px 0px 0px 0px;
-            }
-            p {
-                @extend %info_txt;
-                text-decoration-line: none;
-                padding: 12px 0px 36px 0px;
-            }
-        }
-    }
-    // .section_next_button {
-    //     margin: 349px 0px 0px 0px;
-    //     width: 100%;
-    //     text-align: right;
-    //     padding: 0px 0px 20px 0px;
-    //     a {
-    //         p{
-    //         text-decoration: none;
-    //         color: #000;
-    //         text-decoration-line: none;
-    //         @extend %default_text;
-    //        }
-    //     }
-    //     .line {
-    //         width: 100%;
-    //         height: 1px;
-    //         background-color: #000;
-    //     }
-    // }
-}
-
-@media screen and (min-width: 768px) {
-    .content {
-        width: 950/1440*100%;
-        margin: 140px 0px 0px 245px;
-    }
-    .shipping_txt_block_content {
-        width: 345px;
+    p {
+        @extend %info_txt;
+        text-decoration-line: none;
     }
 }
