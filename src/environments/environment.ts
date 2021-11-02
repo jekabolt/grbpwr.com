@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  API_SERVER_URL: "https://backend.grbpwr.com/",
+  API_SERVER_URL: "https://backend.grbpwr.com",
 };

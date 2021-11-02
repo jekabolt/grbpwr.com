@@ -13,7 +13,7 @@ export class ApiService {
   constructor(private http: HttpClient) {
   }
 
-  apiPrefix = "api/" 
+  apiPrefix = "/api/" 
  
   getProducts(): Observable<Product[]> {
     console.log('getProducts '+this.baseURL +this.apiPrefix+ 'product')
