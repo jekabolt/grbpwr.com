@@ -20,14 +20,14 @@ export class CartService {
 
   // Get Product ids out of CartItem[] in a new array
   private getItemIds() {
-    return this.getItems().map(cartItem => cartItem.product.product.id);
+    return this.getItems().map(cartItem => cartItem.product.id);
   }
 
   public addItem(item: CartItem) {
     let ok = true
     this.cartItems.forEach(function (cartItem) {
-      if (cartItem.product.product.id === item.product.product.id &&
-        cartItem.size === item.product.product.selectedSize) { 
+      if (cartItem.product.id === item.product.id &&
+        cartItem.size === item.product.selectedSize) { 
         cartItem.amount += item.amount;
         ok = false
         return
@@ -54,7 +54,7 @@ export class CartService {
 
   public updateItemAmount(item: CartItem, newAmount: number) {
     this.cartItems.forEach((cartItem) => {
-      if (cartItem.product.product.id === item.product.product.id &&
+      if (cartItem.product.id === item.product.id &&
         cartItem.size === item.size) {
         cartItem.amount = newAmount;
         return
@@ -72,9 +72,8 @@ export class CartService {
 
   public getTotal() {
     let total = 0;
-    this.cartItems.forEach((cartItem) => {
-      //cannot find price
-      total += cartItem.amount * cartItem.product.product.price.usd;
+    this.cartItems.forEach(cartItem => {
+      total += cartItem.amount * cartItem.product.price.usd;
     });
     return total;
   }
