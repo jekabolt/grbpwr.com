@@ -34,8 +34,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     
       this.apiService.getProducts().subscribe(res => {
         this.products = res;
-        console.log(this.products)
-        console.log(this.products)
       });   
     }
     

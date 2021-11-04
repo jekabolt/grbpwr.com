@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { CartService } from '../../cart/shared/cart.service';
 
 import { CartItem } from '../../models/cart-item.model';
-import { Product } from '../../models/product.model';
+import { ProductClass } from '../../models/product.model';
 
 @Component({
   selector: 'app-products-list-item',
@@ -14,7 +14,7 @@ import { Product } from '../../models/product.model';
 })
 export class ProductsListItemComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
-  @Input() public product: Product;
+  @Input() public product: ProductClass;
   @Input() public displayMode: string;
   public imageLoading: boolean;
 
@@ -27,7 +27,7 @@ export class ProductsListItemComponent implements OnInit, OnDestroy {
   }
 
   public onAddToCart() {
-    this.cartService.addItem(new CartItem(this.product, 1, this.product.product.selectedSize));
+    this.cartService.addItem(new CartItem(this.product, 1, this.product.selectedSize));
   }
 
   public onImageLoad() {
