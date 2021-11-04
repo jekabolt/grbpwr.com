@@ -74,6 +74,7 @@ export class CartService {
     let total = 0;
     this.cartItems.forEach((cartItem) => {
       //cannot find price
+      console.log(cartItem)
       total += cartItem.amount * cartItem.product.product.price.usd;
     });
     return total;
