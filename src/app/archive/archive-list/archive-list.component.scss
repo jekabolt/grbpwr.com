@@ -8,7 +8,7 @@
         @extend %header_txt;
         margin: 20px 0px;
     }
-    .product_content {
+    .article-content {
         width: 100%;
         height: auto;
         display: grid;
@@ -39,7 +39,7 @@
     .content {
         width: 950/1440*100%;
         margin: 84px 0px 0px 245px;
-        .product_content {
+        .article-content {
             grid-template-columns: 1fr 1fr 1fr;
             grid-column-gap: 28px;
         }
