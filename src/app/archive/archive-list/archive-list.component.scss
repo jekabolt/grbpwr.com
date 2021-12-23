@@ -1,6 +1,6 @@
 @import "../../../scss/index.scss";
 .content {
-    width: 335/375*100%;
+    width: calc(335/375)*100%;
     margin: 84px auto 0px auto;
     display: flex;
     flex-direction: column;
@@ -37,7 +37,7 @@
 
 @media screen and (min-width: 768px) {
     .content {
-        width: 950/1440*100%;
+        width: calc(950/1440)*100%;
         margin: 84px 0px 0px 245px;
         .article-content {
             grid-template-columns: 1fr 1fr 1fr;

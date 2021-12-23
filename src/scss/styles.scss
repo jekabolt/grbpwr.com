@@ -1,14 +1,13 @@
 @import './index.scss';
-
 .content {
-    width: 335/375*100%;
+    width: calc(335/375)*100%;
     display: flex;
     margin: 130px auto 0px auto;
 }
 
 @media screen and (min-width: 768px) {
     .content {
-        width: 1360/1440*100%;
+        width: calc(1360/1440)*100%;
         margin: 130px auto 0px auto;
     }
 }

@@ -1,7 +1,6 @@
 @import "../../../scss/index.scss";
-
 .footer {
-    width: 335/375*100%;
+    width: calc(335/375)*100%;
     background-color: #fff;
     margin: 260px auto 0px auto;
     padding: 0px 0px 50px 0px;
@@ -90,7 +89,7 @@
     }
     .icon_legal_info {
         margin: 85px auto 0px auto;
-        width: 280/375*100%;
+        width: calc(280/375)*100%;
         display: flex;
         justify-content: space-between;
         .icon {
@@ -100,12 +99,13 @@
         }
     }
 }
+
 @media screen and (min-width: 768px) {
     .footer {
-        width: 1360/1440*100%;
+        width: calc(1360/1440)*100%;
         .info_and_currency {
             .info_list {
-                width: 770/1440*100%;
+                width: calc(770/1440)*100%;
                 flex-direction: row;
             }
             .currency {
@@ -127,7 +127,7 @@
             }
         }
         .icon_legal_info {
-            width: 540/1440*100%;
+            width: calc(540/1440)*100%;
             .icon {
                 width: 55px;
                 margin: 0px 7px;
@@ -135,5 +135,4 @@
             }
         }
     }
-
 }

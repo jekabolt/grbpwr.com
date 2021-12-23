@@ -6,6 +6,7 @@
         padding: 50px 0px 43px 0px;
     }
 }
+
 .payment_met_content {
     display: flex;
     justify-content: space-between;
@@ -35,10 +36,9 @@
 
 @media screen and (min-width: 786px) {
     .payment_met_content {
-        width: 400/1154*100%;
+        width: calc(400/1154)*100%;
     }
 }
-
 
 input:focus {
     outline: none;

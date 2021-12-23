@@ -28,12 +28,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-
         padding: 46px 0px 20px 0px;
         cursor: pointer;
         .line {
-            width: 572/1151*100%;
+            width: calc(572/1151)*100%;
             height: 1px;
             background-color: #000;
         }
@@ -48,21 +46,21 @@
     .footer {
         .cart_and_shipping_total {
             .total_container {
-                width: 307/1151*100%;
+                width: calc(307/1151)*100%;
             }
         }
         .total_container {
-            width: 307/1151*100%;
+            width: calc(307/1151)*100%;
         }
         .place_order {
             padding: 76px 0px 20px 0px;
             .line {
-                width: 572/1151*100%;
+                width: calc(572/1151)*100%;
                 height: 1px;
                 background-color: #000;
             }
             p {
-                width: 553/1151*100%;
+                width: calc(553/1151)*100%;
             }
         }
     }

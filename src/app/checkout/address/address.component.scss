@@ -39,7 +39,7 @@ input::-webkit-inner-spin-button {
     justify-content: space-between;
     width: 100%;
     .form-group_split {
-        width: 487/1154*100%;
+        width: calc(487/1154)*100%;
         .posatl_and_city {
             width: 100%;
         }
