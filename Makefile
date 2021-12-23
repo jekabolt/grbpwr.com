@@ -12,7 +12,7 @@ image:
 image-run:
 	docker run -d --name grbpwr.com -e SERVER_PORT=8080 -p 8080:8080 $(REPOSITORY)/${IMAGE_NAME}:$(VERSION)
 
-BASE_HREF = https://grbpwr.com/
+BASE_HREF = https://grbpwr-com-9b4m5.ondigitalocean.app
 build-static:
 	ng build --base-href ${BASE_HREF} --configuration production --output-path=output
 
