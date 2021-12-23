@@ -1,7 +1,7 @@
 @import '~scss/common';
 @import '~scss/components/radio_button_checkout.scss';
 .content {
-    width: 335/375*100%;
+    width: calc(335/375)*100%;
     margin: 86px auto 0px auto;
 }
 
@@ -21,7 +21,7 @@ input:focus {
 
 @media screen and (min-width: 768px) {
     .content {
-        width: 1154/1441*100%;
+        width: calc(1154/1441)*100%;
         margin: 169px auto 0px auto;
     }
 }
