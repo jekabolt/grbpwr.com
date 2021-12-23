@@ -12,16 +12,16 @@
                     <section class="img_and_description">
 
                         <div class="product-item">
-                            <a class="product-thumb" routerLink="/products/{{item.product.product.id}}">
-                                <img [src]="item.product.product.mainImage" alt="{{item.product.product.name}}">
+                            <a class="product-thumb" routerLink="/products/{{item.product.id}}">
+                                <img [src]="item.product.mainImage" alt="{{item.product.name}}">
                             </a>
                         </div>
 
                         <section class="product_description">
 
                             <div class="product-info">
-                                <a routerLink="/products/{{item.product.product.id}}">
-                                    <p>{{item.product.product.name}}</p>
+                                <a routerLink="/products/{{item.product.id}}">
+                                    <p>{{item.product.name}}</p>
                                 </a>
                             </div>
 
@@ -45,7 +45,7 @@
                         </section>
 
                         <div class="price">
-                            <a class="cross_container" href="#" data-toggle="tooltip" title="Remove item" (click)="onRemoveItem($event, item)">
+                            <a class="cross_container" href="#s" data-toggle="tooltip" title="Remove item" (click)="onRemoveItem($event, item)">
                                 <figure class="cross"></figure>
                                 <figure class="cross2"></figure>
                             </a>

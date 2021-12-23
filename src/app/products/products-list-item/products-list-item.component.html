@@ -3,17 +3,17 @@
     <!-- <div *ngIf="product.product.reduction" class="product-badge text-danger">{{ product.product.reduction }}% Off</div> -->
 
 
-    <a class="product-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/products/{{product.product.id}}">
-        <img class="product_img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.product.mainImage}}" alt="{{product.product.name}}" />
+    <a class="product-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/products/{{product.id}}">
+        <img class="product_img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{product.mainImage}}" alt="{{product.name}}" />
     </a>
     <div>
         <p>
-            <a routerLink="/products/{{product.product.id}}">{{product.product.name}}</a>
+            <a routerLink="/products/{{product.id}}">{{product.name}}</a>
         </p>
         <p class="product-price">
 
         </p>
-        <h2 *ngIf="displayMode === 'list'">{{product.product.description}}</h2>
+        <h2 *ngIf="displayMode === 'list'">{{product.description}}</h2>
         <!-- <div class="product-buttons">
                 <button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist">
             <i class="icon-heart"></i>

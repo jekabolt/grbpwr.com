@@ -6,7 +6,7 @@ import {Subject} from 'rxjs';
 import {CartService} from '../../cart/shared/cart.service';
 import {CartItem} from '../../models/cart-item.model';
 
-import {Product , AvailableSizes} from '../../models/product.model';
+import {ProductClass , AvailableSizes} from '../../models/product.model';
 
 
 // Services
@@ -19,7 +19,7 @@ import { ApiService } from '../../services/api.service';
 })
 export class ProductDetailComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject();
-  @Input() public product: Product;
+  @Input() public product: ProductClass;
   public productLoading: boolean;
   public sizeActive = false
   public detailsActive = false
@@ -62,7 +62,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     const id = +this.route.snapshot.paramMap.get('id');
     this.apiService.getProductByID(String(id)).subscribe(product => {
       if (product.product.id == id) {
-          this.setupProduct(product);
+          this.setupProduct(product.product);
           this.productLoading = false;
           return
       } else{
@@ -144,7 +144,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   public onSelectThumbnail(event, index) {
     event.preventDefault();
-    this.activeImageUrl = this.product.product.productImages[index];
+    this.activeImageUrl = this.product.productImages[index];
     this.activeImageIndex = index;
   }
 
@@ -167,8 +167,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.cartButtonTitle = 'ITEM ADDED';
     this.setCartButtonText(lbl)
 
-    this.product.product.selectedSize = this.selectedSize
-    this.cartService.addItem(new CartItem(this.product, this.selectedQuantity, this.product.product.selectedSize));
+    this.product.selectedSize = this.selectedSize
+    this.cartService.addItem(new CartItem(this.product, this.selectedQuantity, this.product.selectedSize));
   }
 
   public onSelectQuantity(event) {
@@ -187,18 +187,18 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.imagesLoaded.push(e.target.src);
   }
 
-  private setupProduct(product:Product) {
+  private setupProduct(product:ProductClass) {
     if (product) {
       this.product = product
-      this.setSizes(product.product.availableSizes)
-      product.product.productImages.forEach((obj, i) => {
+      this.setSizes(product.availableSizes)
+      product.productImages.forEach((obj, i) => {
         if (!obj.includes('://')) {
-          product.product.productImages[i] = location.origin + obj
+          product.productImages[i] = location.origin + obj
         }
       });
-      this.activeImageUrl = product.product.productImages[0];
+      this.activeImageUrl = product.productImages[0];
       this.activeImageIndex = 0;
-      this.availableSizes = product.product.availableSizes
+      this.availableSizes = product.availableSizes
       
     }
   }

@@ -20,7 +20,7 @@ import { ApiService } from '../../services/api.service';
 
 export class ArchiveDetailComponent implements OnInit, OnDestroy {
     private unsubscribe$ = new Subject();
-    @Input() public article: Article;
+    @Input() public article: ArchiveArticle;
     public productLoading: boolean;
     public sizeActive = false
     public detailsActive = false
@@ -63,7 +63,7 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
       const id = +this.route.snapshot.paramMap.get('id');
       this.apiService.getArchiveArticleByID(String(id)).subscribe(article => {     
         if (article.article.id == id) {
-            this.setupArticle(article.article);
+            this.setupArticle(article);
             this.productLoading = false;
             return
         } else{
@@ -78,7 +78,7 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
       this.imagesLoaded.push(e.target.src);
     }
   
-    private setupArticle(article:Article) {
+    private setupArticle(article:ArchiveArticle) {
       if (article) {
         this.article = article
         // article.content.forEach((obj, i) => {
