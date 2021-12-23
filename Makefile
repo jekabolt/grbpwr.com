@@ -14,4 +14,4 @@ image-run:
 
 BASE_HREF = https://grbpwr.com
 build-static:
-	ng build --base-href ${BASE_HREF} --configuration production
+	ng build --base-href ${BASE_HREF} --configuration production --output-path=output
