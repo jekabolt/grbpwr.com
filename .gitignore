@@ -4,7 +4,6 @@
 layout
 
 # compiled output
-/dist
 /tmp
 /out-tsc
 /server/compiled
