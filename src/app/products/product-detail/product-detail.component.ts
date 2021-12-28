@@ -199,7 +199,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       this.activeImageUrl = product.productImages[0];
       this.activeImageIndex = 0;
       this.availableSizes = product.availableSizes
-      
     }
   }
 
