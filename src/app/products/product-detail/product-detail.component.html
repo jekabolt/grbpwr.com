@@ -1,7 +1,6 @@
 <div class="content-product" [ngClass]="{'loading' : productLoading}">
     <div *ngIf="product" class="single_product_content_desktop">
         <section class="img-container">
-
             <img class="product_img" src="{{activeImageUrl}}" alt="{{product.name}}">
             <div class="img_slider_content">
                 <div class="product_img_desktop_small" *ngFor="let image of product.productImages; let i = index" [ngClass]="{'active': i === activeImageIndex}">
