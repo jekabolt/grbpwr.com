@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  API_SERVER_URL: "http://172.20.10.3:8081",
+  API_SERVER_URL: "https://backend.grbpwr.com",
 };
+//http://172.20.10.3:8081
