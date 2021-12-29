@@ -6,6 +6,7 @@ import { ContentComponent } from './content/content.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
+import { AnimationComponents } from './animation/animation.components'
 
 import { ProductService } from '../products/shared/product.service';
 import { ArchiveService } from '../archive/shared/archive.service';
@@ -27,6 +28,7 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
         HeaderComponent,
         FooterComponent,
         HomeComponent,
+        AnimationComponents
     ],
     imports: [
         CommonModule,

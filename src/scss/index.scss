@@ -12,6 +12,10 @@
     flex-direction: column;
 }
 
+img {
+    object-fit: contain;
+}
+
 .line {
     display: flex;
     width: calc(180/335)*100%;

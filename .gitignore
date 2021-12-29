@@ -2,7 +2,7 @@
 
 #
 layout
-
+yarn.lock
 # compiled output
 /tmp
 /out-tsc
