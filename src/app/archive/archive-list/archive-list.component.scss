@@ -1,12 +1,13 @@
 @import "../../../scss/index.scss";
+@import '../../../scss/common';
 .content {
     width: calc(335/375)*100%;
     margin: 84px auto 0px auto;
     display: flex;
     flex-direction: column;
-    h1 {
-        @extend %header_txt;
-        margin: 20px 0px;
+    h2 {
+        @extend %title_txt;
+        text-decoration-line: line-through;
     }
     .article-content {
         width: 100%;
@@ -37,11 +38,9 @@
 
 @media screen and (min-width: 768px) {
     .content {
-        width: calc(950/1440)*100%;
-        margin: 84px 0px 0px 245px;
-        .article-content {
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-column-gap: 28px;
+        margin-top: 130px;
+        >p {
+            width: 500px;
         }
     }
 }
