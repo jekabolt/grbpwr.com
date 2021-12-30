@@ -164,7 +164,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       this.setCartButtonText(lbl)
       return
     }
-    this.cartButtonTitle = 'ITEM ADDED';
+    this.cartButtonTitle = 'item added';
     this.setCartButtonText(lbl)
 
     this.product.selectedSize = this.selectedSize
