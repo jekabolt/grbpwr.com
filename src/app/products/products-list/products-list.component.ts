@@ -59,6 +59,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
         this.pager.startIndex,
         this.pager.endIndex + 1
       );
+      console.log(this.productsPaged[0])
       this.uiService.currentPagingPage$.next(page);
     }));
   }
