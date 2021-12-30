@@ -1,6 +1,7 @@
 .info-main-container {
     width: calc(335/375)*100%;
-    margin: 80px auto 80px auto;
+    margin: 80px auto 0px auto;
+    padding-bottom: 80px;
     display: flex;
     flex-direction: column;
     h2 {
@@ -30,12 +31,10 @@
         text-align: right;
         padding: 0px 0px 20px 0px;
         a {
-            p {
-                text-decoration: none;
-                color: #000;
-                text-decoration-line: none;
-                @extend %default_text;
-            }
+            text-decoration: none;
+            color: #000;
+            text-decoration-line: none;
+            @extend %default_text;
         }
         .line {
             width: 100%;

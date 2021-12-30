@@ -1,5 +1,5 @@
 <div class="content" [ngClass]="{'loading' : productsLoading}">
-    <h1>Products</h1>
+    <h1>products</h1>
     <div class="product_content" *ngIf="(uiService.displayMode$ | async) === 'grid'">
         <app-products-list-item *ngFor="let product of productsPaged" [product]="product" [displayMode]="(uiService.displayMode$ | async)">
         </app-products-list-item>

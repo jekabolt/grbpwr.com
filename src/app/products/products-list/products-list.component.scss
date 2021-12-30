@@ -1,14 +1,18 @@
 @import "../../../scss/index.scss";
 .content {
     width: calc(335/375)*100%;
-    margin: 84px auto 0px auto;
+    margin: 80px auto 0px auto;
+    padding-bottom: 80px;
     display: flex;
     flex-direction: column;
     h1 {
         @extend %header_txt;
-        margin: 20px 0px;
+        font-size: 36px;
+        font-weight: 600;
+        text-decoration: line-through;
     }
     .product_content {
+        padding-top: 78px;
         width: 100%;
         height: auto;
         display: grid;
@@ -37,8 +41,7 @@
 
 @media screen and (min-width: 768px) {
     .content {
-        width: calc(950/1440)*100%;
-        margin: 84px 0px 0px 245px;
+        margin-top: 130px;
         .product_content {
             grid-template-columns: 1fr 1fr 1fr;
             grid-column-gap: 28px;
