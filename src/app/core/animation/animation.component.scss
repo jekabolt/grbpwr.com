@@ -1,16 +1,15 @@
 .base {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
   z-index: -100;
-  height: 9em;
-  left: 50%;
-  margin: -7.5em;
-  padding: 3em;
-  position: absolute;
-  top: 50%;
-  width: 9em;
+  position: relative;
+  top: 100%;
   transform: rotateX(45deg) rotateZ(45deg);
   transform-style: preserve-3d;
+}
+
+.wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 .cube,
@@ -29,7 +28,6 @@
   z-index: -100;
   background: url("https://grbpwr.fra1.cdn.digitaloceanspaces.com/grbpwr-com/heros/grb-logo.png") no-repeat center/85%;
   background-color: black;
-  position: relative;
   transform: translateZ(3em);
   transform-style: preserve-3d;
   transition: 0.25s;
