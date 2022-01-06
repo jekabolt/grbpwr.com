@@ -1,6 +1,6 @@
 @import "../../../scss/common.scss";
 .article-place {
-    display: flex;
+    // display: flex;
     flex-direction: column;
     padding: 0px 0px 72px 0px;
     .article-thumb {
@@ -9,7 +9,6 @@
         .article-img {
             width: 100%;
             height: 42vw;
-            background-color: #ddd;
         }
     }
     p {
@@ -29,7 +28,7 @@
     .article-thumb {
         height: 19vw !important;
         .article-img {
-            height: 19vw !important;
+            // height: 19vw !important;
         }
     }
 }

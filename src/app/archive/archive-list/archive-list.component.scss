@@ -1,18 +1,20 @@
 @import "../../../scss/index.scss";
-@import '../../../scss/common';
 .content {
     width: calc(335/375)*100%;
-    margin: 84px auto 0px auto;
+    margin: 80px auto 0px auto;
+    padding-bottom: 80px;
     display: flex;
     flex-direction: column;
-    h2 {
-        @extend %title_txt;
-        text-decoration-line: line-through;
+    h1 {
+        @extend %header_txt;
+        font-size: 36px;
+        font-weight: 600;
+        text-decoration: line-through;
     }
     .article-content {
+        padding-top: 78px;
         width: 100%;
         height: auto;
-        display: grid;
         grid-template-columns: 1fr 1fr;
         grid-column-gap: 20px;
         .product_place {
@@ -22,7 +24,6 @@
             .product_img {
                 min-width: 42%;
                 height: 42vw;
-                background-color: #ddd;
             }
             p {
                 padding: 20px 0px 0px 0px;
@@ -39,8 +40,10 @@
 @media screen and (min-width: 768px) {
     .content {
         margin-top: 130px;
-        >p {
-            width: 500px;
+        .article-content {
+            display: initial;
+            // grid-template-columns: 1fr 1fr 1fr;
+            // grid-column-gap: 28px;
         }
     }
 }
