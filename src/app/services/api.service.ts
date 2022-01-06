@@ -14,25 +14,26 @@ export class ApiService {
   }
 
   apiPrefix = "/api/" 
+  apiUrl = this.baseURL + this.apiPrefix
  
   getProducts(): Observable<Product[]> {
-    console.log('getProducts '+this.baseURL +this.apiPrefix+ 'product')
-    return this.http.get<Product[]>(this.baseURL +this.apiPrefix+ 'product')
+    console.log('getProducts '+this.apiUrl+ 'product')
+    return this.http.get<Product[]>(this.apiUrl+ 'product')
   }
 
   getProductByID(id:string): Observable<Product> {
-    console.log('getProductByID '+this.baseURL +this.apiPrefix+ 'product/'+ id)
-    return this.http.get<Product>(this.baseURL +this.apiPrefix+ 'product/' + id)
+    console.log('getProductByID '+this.apiUrl+ 'product/'+ id)
+    return this.http.get<Product>(this.apiUrl+ 'product/' + id)
   }
 
   getArchiveArticleByID(id:string): Observable<ArchiveArticle> {
-    console.log('getArchiveArticleByID '+this.baseURL +this.apiPrefix+ 'archive/'+ id)
-    return this.http.get<ArchiveArticle>(this.baseURL +this.apiPrefix+ 'archive/' + id)
+    console.log('getArchiveArticleByID '+this.apiUrl+ 'archive/'+ id)
+    return this.http.get<ArchiveArticle>(this.apiUrl+ 'archive/' + id)
   }
 
   getArchiveArticles(): Observable<ArchiveArticle[]> {
-    console.log('getArchiveArticles '+this.baseURL +this.apiPrefix+ 'archive')
-    return this.http.get<ArchiveArticle[]>(this.baseURL +this.apiPrefix+ 'archive')
+    console.log('getArchiveArticles '+this.apiUrl+ 'archive')
+    return this.http.get<ArchiveArticle[]>(this.apiUrl+ 'archive')
   }
    
 }
