@@ -1,6 +1,8 @@
 @import "../../../scss/common.scss";
 .article-place {
-    // display: flex;
+    img {
+        object-fit: cover;
+    }
     flex-direction: column;
     padding: 0px 0px 72px 0px;
     .article-thumb {
