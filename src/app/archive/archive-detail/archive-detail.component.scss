@@ -19,22 +19,19 @@
 
 .archive-detail-container {
     width: calc(335/375)*100%;
-    margin: 90px auto 0px auto;
-    padding: 0px 0px 20px 0px;
-    .archive-title-container {
-        margin: 120px auto;
-        h1 {
-            @extend %header_txt;
-            font-size: 36px;
-            font-weight: 900;
-            text-decoration: line-through;
-        }
+    margin: 130px auto 0px auto;
+    padding-bottom: 20px;
+    .archive-title {
         h2 {
-            padding-top: 7px;
+            @extend %title_txt;
+            text-decoration-line: line-through !important;
         }
         h3 {
-            padding-top: 7px;
-            @extend %main-text-line-through;
+            padding-top: 20px;
+            @extend %info_txt;
+        }
+        p {
+            padding-top: 78px;
         }
     }
     .content {
