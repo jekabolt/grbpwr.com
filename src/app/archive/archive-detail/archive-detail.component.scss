@@ -25,21 +25,26 @@
         h2 {
             @extend %title_txt;
             text-decoration-line: line-through !important;
-        }
-        h3 {
-            padding-top: 20px;
-            @extend %info_txt;
+            padding-bottom: 8px;
         }
         p {
-            padding-top: 78px;
+            &:first-child {
+                @extend %info_txt;
+            }
+            &:last-child {
+                padding-top: 20px;
+            }
         }
     }
     .content {
-        width: calc(335/375)*100%;
-        margin: 80px auto 0px auto;
-        padding-bottom: 80px;
+        width: 100%;
+        margin: 0px;
+        margin: 20px auto 0px;
         display: flex;
         flex-direction: column;
+        .desctiption-container {
+            padding-top: 20px;
+        }
     }
 }
 
@@ -53,7 +58,6 @@
         }
     }
     .content {
-        margin-top: 130px;
         .article-content {
             display: initial;
             // grid-template-columns: 1fr 1fr 1fr;
