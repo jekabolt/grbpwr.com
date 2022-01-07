@@ -1,4 +1,5 @@
 @import "../../../scss/common.scss";
+@import '../../../scss/index.scss';
 .article-place {
     img {
         object-fit: cover;
@@ -13,16 +14,14 @@
             height: 42vw;
         }
     }
-    p {
-        padding: 12px 0px 0px 0px;
+    a {
+        padding-top: 20px;
         @extend %info_txt;
-        a {
-            color: #000;
-        }
-        &:last-child {
-            padding: 7px 0px 0px 0px;
-            @extend %default_text;
-        }
+        color: #000;
+    }
+    h2 {
+        padding-top: 7px;
+        @extend %main-text-line-through;
     }
 }
 

@@ -1,12 +1,11 @@
 <div class="archive-detail-container">
-
-    <div class="archive-title-container">
-        <h1>{{article.article.title}}</h1>
-        <h3>{{date}}</h3>
-        <h2>{{article.article.description}}</h2>
+    <div class="archive-title">
+        <h2>{{article.article.title}}</h2>
+        <p>{{date}}</p>
+        <p>{{article.article.description}}</p>
     </div>
     <div *ngFor="let subContent of article.article.content" class="content">
-        <div *ngIf="subContent.isVideo" class="single_product_content_desktop">
+        <div *ngIf="subContent.isVideo">
             <div class="holds-the-iframe">
                 <iframe frameborder="0" controls="false" loop="true" class="clip" [src]="subContent.safeResourceUrl" onload=""></iframe>
                 <app-animation></app-animation>

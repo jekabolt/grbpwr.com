@@ -15,7 +15,7 @@
                     <img class="product-img" src="{{ product.product.mainImage }}" alt="{{ product.product.name }}">
                 </a>
                 <a routerLink="/products/{{ product.product.id }}" href="">
-                    <p>{{ product.product.name }}</p>
+                    {{ product.product.name }}
                 </a>
                 <a routerLink="/products/{{ product.product.id }}" href="">
                     <h2>${{ product.product.price.usd }}</h2>
