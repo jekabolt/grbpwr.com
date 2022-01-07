@@ -1,7 +1,5 @@
 @import '../../../scss/index.scss';
-
-
-.holds-the-iframe{
+.holds-the-iframe {
     position: relative;
     width: 100%;
     height: 55vw;
@@ -12,17 +10,8 @@
         position: absolute;
         top: 0px;
     }
-    .animation-on-load {
-        width: 100%;
-        height: 100%;
-        z-index: 98;
-
-        background-image: url("../../../img/load.gif");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 30%;
-    }    
 }
+
 .go-to-archive {
     width: 100%;
     margin-top: 40px;
@@ -37,6 +26,7 @@
         }
     }
 }
+
 .product-container {
     width: 100%;
     height: auto;
@@ -62,9 +52,10 @@
         }
     }
 }
+
 @media screen and (min-width: 768px) {
     .main-container {
-        .holds-the-iframe{
+        .holds-the-iframe {
             height: 47vw;
             .clip {
                 height: 47vw;

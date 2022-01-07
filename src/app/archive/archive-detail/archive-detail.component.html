@@ -1,45 +1,22 @@
-<div class="content" [ngClass]="{'loading' : productLoading}">
-    <div *ngIf="article" class="single_product_content_desktop">
-        <section class="img-container">
+<div class="archive-detail-container">
 
-
-            <p>
-                {{article.article.title}}
-            </p>
-
-            <p>
-                {{article.article.title}}
-            </p>
-
-            <!-- <img class="product_img" src="{{activeImageUrl}}" alt="{{product.product.name}}">
-            <div class="img_slider_content">
-                <div class="product_img_desktop_small" *ngFor="let image of product.product.imageURLs; let i = index" [ngClass]="{'active': i === activeImageIndex}">
-                    <a href="" (click)="onSelectThumbnail($event, i)" class="product-thumbnail-image" [ngClass]="{'loading': !imagesLoaded.includes(activeImageUrl)}">
-                        <img [src]="image" alt="{{product.product.name}}" (load)="onImageLoad($event)">
-                    </a>
-                </div>
-            </div> -->
-        </section>
-
-        <!-- <div class="description_desktop">
-            <div class="product_description_single_page">
-                <p>
-                    {{product.product.name}}
-                </p>
-            </div>
-            <div class="form-group">
-                <div class="form-control">
-                    <figure class="line_sz"></figure>
-                    <div class="size_content" *ngFor="let item of sizes ">
-                        <input class="size_input" id="{{item.sz}}" (change)="onRadioSize(item.sz)" [value]='item.sz' type="radio" name="enums" [(ngModel)]="radioSelected" [attr.disabled]="!item.avb ? false : null">
-                        <label class="size_button" for="{{item.sz}}"><p>{{item.sz}}</p></label>
-                    </div>
-                </div>
-            </div>
-
-            <aside [class.details_content_acrtive]="detailsActive" id="details_content" class="details_content">
-                <p>{{product.product.description}}</p>
-            </aside>
-        </div> -->
+    <div class="archive-title-container">
+        <h1>{{article.article.title}}</h1>
+        <h3>{{date}}</h3>
+        <h2>{{article.article.description}}</h2>
     </div>
+    <div *ngFor="let subContent of article.article.content" class="content">
+        <div *ngIf="subContent.isVideo" class="single_product_content_desktop">
+            <div class="holds-the-iframe">
+                <iframe frameborder="0" controls="false" loop="true" class="clip" [src]="subContent.safeResourceUrl" onload=""></iframe>
+                <app-animation></app-animation>
+            </div>
+            <section class="desctiption-container">
+                <p>
+                    {{subContent.description}}
+                </p>
+            </section>
+        </div>
+    </div>
+
 </div>

@@ -7,6 +7,8 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
+import {SafeResourceUrl} from '@angular/platform-browser';
+
 export interface ArchiveArticle {
   article: Article;
 }
@@ -24,6 +26,8 @@ export interface Content {
   mediaLink:              string;
   description:            string;
   descriptionAlternative: string;
+  isVideo:                boolean;
+  safeResourceUrl:        SafeResourceUrl;
 }
 
 // Converts JSON strings to/from your types
