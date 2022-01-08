@@ -1,6 +1,8 @@
 <div class="main-container">
     <div class="holds-the-iframe">
-        <iframe frameborder="0" controls="false" loop="true" class="clip" [src]="urlSafe" onload=""></iframe>
+        <video loop autoplay muted style="width: 100%; height: 100%; display: block; margin: 0px;" poster="https://grbpwr.fra1.digitaloceanspaces.com/grbpwr-com/videos/first.jpg"><source [src]="urlSafe" type="video/mp4"></video>
+
+        <!-- <iframe frameborder="0" controls="false" loop="true" class="clip" [src]="urlSafe" onload=""></iframe> -->
         <app-animation></app-animation>
     </div>
     <section class="go-to-archive">
@@ -11,15 +13,15 @@
     </section>
     <section class="product-container">
         <div class="product" *ngFor="let product of products">
-                <a routerLink="/products/{{ product.product.id }}" href="">
-                    <img class="product-img" src="{{ product.product.mainImage }}" alt="{{ product.product.name }}">
-                </a>
-                <a routerLink="/products/{{ product.product.id }}" href="">
+            <a routerLink="/products/{{ product.product.id }}" href="">
+                <img class="product-img" src="{{ product.product.mainImage }}" alt="{{ product.product.name }}">
+            </a>
+            <a routerLink="/products/{{ product.product.id }}" href="">
                     {{ product.product.name }}
                 </a>
-                <a routerLink="/products/{{ product.product.id }}" href="">
-                    <h2>${{ product.product.price.usd }}</h2>
-                </a>
+            <a routerLink="/products/{{ product.product.id }}" href="">
+                <h2>${{ product.product.price.usd }}</h2>
+            </a>
         </div>
     </section>
 </div>
