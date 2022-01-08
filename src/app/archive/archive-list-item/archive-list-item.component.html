@@ -2,6 +2,9 @@
     <a class="article-thumb" [ngClass]="{'loading': imageLoading}" routerLink="/archive/{{article.article.id}}">
         <img class="article-img" [hidden]="imageLoading" (load)="onImageLoad()" src="{{article.article.mainImage}}" alt="{{article.article.title}}" />
     </a>
-    <a routerLink="/archive/{{article.article.id}}">{{article.article.title}}</a>
-    <h2>{{article.article.description}}</h2>
+
+    <a routerLink="/archive/{{article.article.id}}">{{date}}</a>
+    <a routerLink="/archive/{{article.article.id}}">
+        <h2>{{article.article.title}}</h2>
+    </a>
 </div>

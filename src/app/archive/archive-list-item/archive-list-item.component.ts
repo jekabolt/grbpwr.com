@@ -11,12 +11,14 @@ export class ArchiveListItemComponent implements OnInit, OnDestroy {
   @Input() public article: ArchiveArticle;
   @Input() public displayMode: string;
   public imageLoading: boolean;
+  public date: string;
 
   constructor(
   ) { }
 
   ngOnInit() {
     this.imageLoading = true; 
+    this.date = new Date(this.article.article.dateCreated*1000).toLocaleDateString("en-US")
   }
 
   public onImageLoad() {

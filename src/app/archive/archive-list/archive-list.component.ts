@@ -30,7 +30,6 @@ export class ArchiveListComponent implements OnInit, OnDestroy {
   
     constructor(
       private pagerService: PagerService,
-      private sortPipe: SortPipe,
       public uiService: UiServiceArchive,
       private apiService: ApiService,
       private titleService: Title
