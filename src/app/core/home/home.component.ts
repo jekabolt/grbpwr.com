@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public currentPagingPage: number = 1;
   public pageTitle = "grbpwr";
   
-  url: string = "https://player.vimeo.com/video/619710465?autoplay=1&sidedock=0&loop=1&muted=1&controls=0&&color=00000&title=0&byline=0&portrait=0";
+  url: string = "https://grbpwr.fra1.digitaloceanspaces.com/grbpwr-com/videos/first.mp4";
   urlSafe: SafeResourceUrl;
   
   constructor( 
