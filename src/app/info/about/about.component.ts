@@ -1,4 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-about',
@@ -9,8 +10,13 @@ import { Component, HostBinding } from '@angular/core';
 export class AboutComponent {
 
   @HostBinding('class.lang-ru') langRu = true;
+  public pageTitle = "about";
 
-  constructor() { }
+  constructor(
+    private titleService: Title,
+  ) { 
+    this.titleService.setTitle(this.pageTitle);
+  }
 
   toggleLanguage(indicator) {
     this.langRu = indicator;

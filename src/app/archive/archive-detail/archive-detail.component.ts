@@ -1,5 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Title} from "@angular/platform-browser";
 
 import {Subject} from 'rxjs';
 
@@ -28,7 +29,10 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
       private route: ActivatedRoute,
       private apiService: ApiService,
       public sanitizer: DomSanitizer,
-    ) { }
+      private titleService: Title
+    ) { 
+     
+    }
 
   
     ngOnInit(): void {
@@ -37,6 +41,7 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
         if (article.article.id == id) {
             this.setupArticle(article);
             this.articleLoading = false;
+            this.titleService.setTitle(this.article.article.title);
             return
         } else{
           this.articleLoading = false;
@@ -44,7 +49,6 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
           this.router.navigate(['/#/404']);
         }
       });    
-  
     }
 
   

@@ -1,4 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Title} from "@angular/platform-browser";
+
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {PagerService} from '../../pager/pager.service';
@@ -22,13 +24,17 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   public pager: any = {};
   public productsLoading: boolean;
   public currentPagingPage: number;
+  public pageTitle = "products";
 
   constructor(
     private pagerService: PagerService,
     private sortPipe: SortPipe,
     public uiService: UiService,
-    private apiService: ApiService
-  ) { }
+    private apiService: ApiService,
+    private titleService: Title,
+  ) {
+    this.titleService.setTitle(this.pageTitle);
+   }
 
   ngOnInit() {
     this.uiService.currentPagingPage$

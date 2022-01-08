@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Title } from "@angular/platform-browser";
 
 import { Subscription } from 'rxjs';
 
@@ -13,8 +14,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   checkoutSubscription: Subscription;
   steps: string[];
   activeStep: number;
+  public pageTitle = "checkout";
 
-  constructor(private checkoutService: CheckoutService) { }
+  constructor(
+    private checkoutService: CheckoutService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle(this.pageTitle);
+  }
 
   ngOnInit() {
     this.steps = ['1. Address', '2. Shipping', '3. Payment', '4. Review'];
