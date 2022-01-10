@@ -1,3 +1,7 @@
 @import '~scss/common';
 @import '~scss/components/radio';
 @import '../info';
+.info-main-container {
+    max-width: 100%;
+    overflow-x: hidden;
+}
