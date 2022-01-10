@@ -9,7 +9,7 @@ import {Title} from "@angular/platform-browser";
 
 export class PrivacyPolicyComponent {
 
-  @HostBinding('class.lang-ru') langRu = false;
+  @HostBinding('class.lang-ru') langRu = true;
 
   public pageTitle = "privacy";
 
@@ -19,8 +19,8 @@ export class PrivacyPolicyComponent {
     this.titleService.setTitle(this.pageTitle);
   }
 
-  toggleLanguage() {
-    this.langRu = !this.langRu;
+  toggleLanguage(indicator) {
+    this.langRu = indicator;
   }
 
 }
