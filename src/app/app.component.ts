@@ -1,6 +1,7 @@
 import { Component, } from '@angular/core';
 import {Router,ActivatedRoute,NavigationEnd} from '@angular/router';
 import { filter , map, mergeMap} from 'rxjs/operators';
+import { LogService } from '@dagonmetric/ng-log';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,11 @@ import { filter , map, mergeMap} from 'rxjs/operators';
 })
 
 export class AppComponent {
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+      private router: Router,
+      private activatedRoute: ActivatedRoute,
+      private readonly logService: LogService
+  ){}
   visible: boolean = true;
 
   sub: any;
