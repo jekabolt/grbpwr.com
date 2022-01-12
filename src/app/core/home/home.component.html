@@ -3,12 +3,14 @@
         <iframe frameborder="0" controls="false" loop="true" class="clip" [src]="urlSafe" onload=""></iframe>
         <app-animation></app-animation>
     </div>
-    <section class="go-to-archive">
-        <figure class="line"></figure>
-        <a routerLink="/archive">
+    <a routerLink="/archive">
+        <section class="go-to-archive">
+            <figure class="line"></figure>
+
             <p>go to archive</p>
-        </a>
-    </section>
+
+        </section>
+    </a>
     <section class="product-container">
         <div class="product" *ngFor="let product of products">
             <a routerLink="/products/{{ product.product.id }}" href="">
