@@ -30,14 +30,13 @@ export class ReviewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-
     this.items = this.cartService.getItems();
     this.total = this.cartService.getTotal();
     this.cartService.itemsChanged
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((items: CartItem[]) => {
-        this.items = items;
-        this.total = this.cartService.getTotal();
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((items: CartItem[]) => {
+      this.items = items;
+      this.total = this.cartService.getTotal();
       });
     this.customer = this.checkoutService.getOrderInProgress().customer;
     this.checkoutService.orderInProgressChanged
