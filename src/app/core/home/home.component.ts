@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {Title} from "@angular/platform-browser";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { LogService, Logger } from '@dagonmetric/ng-log';
 
 // models 
 import {Product} from '../../models/product.model';
@@ -16,7 +15,6 @@ import { ApiService } from '../../services/api.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  private readonly logger: Logger;
   private unsubscribe$ = new Subject();
   public products: Product[];
   public productsPaged: Product[];
@@ -32,17 +30,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     private apiService: ApiService,
     public sanitizer: DomSanitizer,
     private titleService:Title,
-    private readonly logService: LogService
+
     ) {
       this.titleService.setTitle(this.pageTitle);
-      this.logger = this.logService.createLogger('app-home');
+  
     }
     
     ngOnInit() {   
-      this.logger.trackPageView({
-        name: this.pageTitle,
-        uri: '/'
-      });
       this.urlSafe= this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
       this.apiService.getProducts().subscribe(res => {
         this.products = res;

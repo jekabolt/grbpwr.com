@@ -7,8 +7,6 @@ import {ArchiveModule} from './archive/archive.module';
 import {SharedModule} from './shared/shared.module';
 import {CoreModule} from './core/core.module';
 import {CheckoutModule} from './checkout/checkout.module';
-import {LogModule} from '@dagonmetric/ng-log';
-import {GTagLoggerModule} from '@dagonmetric/ng-log-gtag';
 
 // Components
 import {AppComponent} from './app.component';
@@ -40,11 +38,6 @@ import {ReturnsComponent} from './info/returns/returns.component';
     ProductsModule,
     ArchiveModule,
     CheckoutModule,
-    // ng-log modules
-    LogModule,
-    GTagLoggerModule.withOptions({
-      measurementId: 'G-YX09JT9HVC' // TODO: to env
-    })
   ],
   bootstrap: [AppComponent]
 })

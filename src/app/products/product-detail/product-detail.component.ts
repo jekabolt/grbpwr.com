@@ -200,6 +200,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
           product.productImages[i] = location.origin + obj
         }
       });
+      this.product.description
       this.activeImageUrl = product.productImages[0];
       this.activeImageIndex = 0;
       this.availableSizes = product.availableSizes
