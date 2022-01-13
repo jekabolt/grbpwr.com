@@ -1,6 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Title} from "@angular/platform-browser";
 
 import {Subject} from 'rxjs';
 import {CartService} from '../../cart/shared/cart.service';
@@ -34,12 +35,14 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   public selectedSize: string;
   public cartButtonTitle = 'add to cart';
 
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private location: Location,
     private cartService: CartService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private titleService: Title,
   ) { }
 
 
@@ -64,6 +67,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       if (product.product.id == id) {
           this.setupProduct(product.product);
           this.productLoading = false;
+          this.titleService.setTitle(this.product.name);
           return
       } else{
         this.productLoading = false;
@@ -196,6 +200,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
           product.productImages[i] = location.origin + obj
         }
       });
+      this.product.description
       this.activeImageUrl = product.productImages[0];
       this.activeImageIndex = 0;
       this.availableSizes = product.availableSizes

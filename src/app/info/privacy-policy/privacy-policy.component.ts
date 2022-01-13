@@ -1,4 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-privacy-policy',
@@ -8,12 +9,18 @@ import { Component, HostBinding } from '@angular/core';
 
 export class PrivacyPolicyComponent {
 
-  @HostBinding('class.lang-ru') langRu = false;
+  @HostBinding('class.lang-ru') langRu = true;
 
-  constructor() { }
+  public pageTitle = "privacy";
 
-  toggleLanguage() {
-    this.langRu = !this.langRu;
+  constructor(
+    private titleService: Title,
+  ) { 
+    this.titleService.setTitle(this.pageTitle);
+  }
+
+  toggleLanguage(indicator) {
+    this.langRu = indicator;
   }
 
 }

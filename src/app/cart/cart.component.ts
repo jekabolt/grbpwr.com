@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Title} from "@angular/platform-browser";
 
 import { Subscription } from 'rxjs';
 
@@ -14,8 +15,14 @@ export class CartComponent implements OnInit, OnDestroy {
   private cartSubscription: Subscription;
   public items: CartItem[];
   public total: number;
+  public pageTitle = "cart";
 
-  constructor(private cartService: CartService) { }
+  constructor(
+    private cartService: CartService,
+    private titleService: Title
+  ) { 
+    this.titleService.setTitle(this.pageTitle);
+  }
 
   ngOnInit() {
     this.items = this.cartService.getItems();

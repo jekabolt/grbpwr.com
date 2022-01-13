@@ -9,7 +9,10 @@ import { filter , map, mergeMap} from 'rxjs/operators';
 })
 
 export class AppComponent {
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+      private router: Router,
+      private activatedRoute: ActivatedRoute,
+  ){}
   visible: boolean = true;
 
   sub: any;

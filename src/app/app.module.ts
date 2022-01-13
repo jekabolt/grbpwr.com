@@ -18,6 +18,7 @@ import {PrivacyPolicyComponent} from './info/privacy-policy/privacy-policy.compo
 import {ContactUsComponent} from './info/contact-us/contact-us.component';
 import {ReturnsComponent} from './info/returns/returns.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
