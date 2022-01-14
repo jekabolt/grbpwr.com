@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Title , Meta} from "@angular/platform-browser";
 
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -32,12 +31,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     private sortPipe: SortPipe,
     public uiService: UiService,
     private apiService: ApiService,
-    private titleService: Title,
-    private meta: Meta
   ) {
-    this.titleService.setTitle(this.pageTitle);
-    this.meta.addTag({ name: 'og:description', content: this.pageMetaDescription });  
-    this.meta.addTag({ name: 'og:image', content: "src/img/smal-logo.png"}); 
+
    }
 
   ngOnInit() {

@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Title} from "@angular/platform-browser";
+import {Title , Meta} from "@angular/platform-browser";
 
 import {Subject} from 'rxjs';
 
@@ -29,7 +29,8 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
       private route: ActivatedRoute,
       private apiService: ApiService,
       public sanitizer: DomSanitizer,
-      private titleService: Title
+      private titleService: Title,
+      private meta: Meta
     ) { 
      
     }
@@ -42,6 +43,9 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
             this.setupArticle(article);
             this.articleLoading = false;
             this.titleService.setTitle(this.article.article.title);
+            this.meta.updateTag({ name: 'description', content: this.article.article.description });  
+            this.meta.updateTag({ name: 'og:image', content: this.article.article.mainImage});  
+            this.meta.updateTag({ name: 'og:description', content: this.article.article.description }); 
             return
         } else{
           this.articleLoading = false;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Title} from "@angular/platform-browser";
+
 
 @Component({
   selector: 'app-page-not-found',
@@ -10,8 +10,7 @@ export class PageNotFoundComponent {
   public pageTitle = "not found";
 
   constructor(
-    private titleService: Title,
   ) { 
-    this.titleService.setTitle(this.pageTitle);
+
   }
 }
