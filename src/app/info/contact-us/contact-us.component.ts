@@ -1,5 +1,4 @@
 import { Component, HostBinding } from '@angular/core';
-import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-contact-us',
@@ -13,9 +12,8 @@ export class ContactUsComponent {
   public pageTitle = "contact us";
 
   constructor(
-    private titleService: Title,
   ) { 
-    this.titleService.setTitle(this.pageTitle);
+
   }
 
   toggleLanguage() {

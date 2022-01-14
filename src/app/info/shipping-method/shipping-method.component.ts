@@ -1,5 +1,4 @@
 import { Component, HostBinding } from '@angular/core';
-import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-shipping-method',
@@ -14,9 +13,7 @@ export class ShippingMethodsComponent {
   public pageTitle = "shipping";
 
   constructor(
-    private titleService: Title,
   ) { 
-    this.titleService.setTitle(this.pageTitle);
   }
 
   toggleLanguage(indicator) {

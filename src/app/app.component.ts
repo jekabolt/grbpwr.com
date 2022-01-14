@@ -1,6 +1,7 @@
 import { Component, } from '@angular/core';
 import {Router,ActivatedRoute,NavigationEnd} from '@angular/router';
 import { filter , map, mergeMap} from 'rxjs/operators';
+import { SeoService } from './services/ceo.service';
 declare let gtag: Function;
 @Component({
   selector: 'app-root',
@@ -12,11 +13,27 @@ export class AppComponent {
   constructor(
       private router: Router,
       private activatedRoute: ActivatedRoute,
+      private seoService: SeoService
   ){}
   visible: boolean = true;
 
   sub: any;
   ngOnInit() {
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      map(e => this.activatedRoute),
+      map((route) => {
+        while (route.firstChild) route = route.firstChild;
+        return route;
+      }),
+      filter((route) => route.outlet === 'primary'),
+      mergeMap((route) => route.data),
+    ).subscribe(data => {
+      let seoData = data['seo'];
+      this.seoService.updateTitle(seoData['title']);
+      this.seoService.updateMetaTags(seoData['metaTags']);
+    });
+
     this.setUpAnalytics()
     this.sub = this.router.events.pipe(
               filter(events => events instanceof NavigationEnd),
@@ -29,8 +46,15 @@ export class AppComponent {
               })).pipe(
               filter(route => route.outlet === "primary"),
               mergeMap(route => route.data))
-          .subscribe(x => x.header === true ? this.visible = true : this.visible = false)
+              .subscribe(data => {
+                let seoData = data['seo'];
+                this.seoService.updateTitle(seoData['title']);
+                this.seoService.updateMetaTags(seoData['metaTags']);
+                data.header === true ? this.visible = true : this.visible = false
+              });
+         
   }
+
 
   setUpAnalytics() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))

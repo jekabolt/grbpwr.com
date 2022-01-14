@@ -5,6 +5,7 @@
 
 export const environment = {
   production: true,
+  APP_URL:"https://grbpwr.com",
   API_SERVER_URL: "https://backend.grbpwr.com",
 };
   
