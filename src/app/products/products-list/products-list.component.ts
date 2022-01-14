@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Title} from "@angular/platform-browser";
+import {Title , Meta} from "@angular/platform-browser";
 
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -25,6 +25,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   public productsLoading: boolean;
   public currentPagingPage: number;
   public pageTitle = "products";
+  public pageMetaDescription = "Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.";
 
   constructor(
     private pagerService: PagerService,
@@ -32,8 +33,11 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     public uiService: UiService,
     private apiService: ApiService,
     private titleService: Title,
+    private meta: Meta
   ) {
     this.titleService.setTitle(this.pageTitle);
+    this.meta.addTag({ name: 'og:description', content: this.pageMetaDescription });  
+    this.meta.addTag({ name: 'og:image', content: "src/img/smal-logo.png"}); 
    }
 
   ngOnInit() {
