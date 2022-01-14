@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {Title} from "@angular/platform-browser";
+import {Title , Meta} from "@angular/platform-browser";
 
 import {Subject} from 'rxjs';
 import {CartService} from '../../cart/shared/cart.service';
@@ -43,7 +43,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private apiService: ApiService,
     private titleService: Title,
-  ) { }
+    private meta: Meta
+  ) {
+   }
 
 
   toggleSize(){
@@ -68,6 +70,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
           this.setupProduct(product.product);
           this.productLoading = false;
           this.titleService.setTitle(this.product.name);
+          this.meta.addTag({ name: 'og:image', content: this.product.mainImage});  
+          // <meta property="" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
           return
       } else{
         this.productLoading = false;
