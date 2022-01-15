@@ -27,18 +27,37 @@ export class SeoService {
   }
 
   updateUrlPath(extraPath: string){
-    
     var url = this.meta.getTag('name= "url"')
-    this.meta.updateTag({name:"url",content:url.content+extraPath})
-    this.meta.updateTag({property:"og:url",content:url.content+extraPath})
-    this.meta.updateTag({property:"twitter:url",content:url.content+extraPath})
+    var newUrl = url.content+extraPath
+    this.meta.updateTag({name:"url",content:newUrl})
+    this.meta.updateTag({property:"og:url",content:newUrl})
+    this.meta.updateTag({property:"twitter:url",content:newUrl})
+  }
+
+  getMetaImage(url, callback, meta) {
+    var img = new Image();
+    img.src = url;
+    img.onload = function() { callback(img.width, img.height, meta); }
   }
 
   updateImage(imageUrl: string){
+    let img = new Image();
+    img.src = imageUrl;  
+    
     this.meta.updateTag({property:"og:image",content:imageUrl},)
     this.meta.updateTag({property:"og:image:secure_url",content:imageUrl},)
     this.meta.updateTag({property:"og:image:alt",content:imageUrl},)
     this.meta.updateTag({property:"og:image:type",content:"image/jpeg"},)
+    this.meta.updateTag({property:"og:image",content:imageUrl},)
+
+    this.getMetaImage(
+      imageUrl,
+      function(width, height,meta) { 
+        meta.updateTag({property:"og:image:width",width},)
+        meta.updateTag({property:"og:image:height",height},)
+      },
+      this.meta
+    );
 
     this.meta.updateTag({property:"twitter:image:secure_url",content:imageUrl},)
     this.meta.updateTag({property:"twitter:image",content:imageUrl},) 
@@ -47,6 +66,7 @@ export class SeoService {
 
 
   updateMeta(mt:MetaTags){
+    this.meta.updateTag({name:"robots",content:"index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"})
     this.meta.updateTag({name:"url",content:mt.url})
     this.meta.updateTag({name:"title",content:mt.title})
     this.meta.updateTag({name:"image",content:mt.image})
@@ -55,16 +75,25 @@ export class SeoService {
 
   updateOGMetaTags(mt:MetaTags){
     var og: MetaDefinition[] = [
+      {property:"og:locale",content:"en_GB"},
+      {property:"og:site_name",content:"grbpwr"},
       {property:"og:type",content:"website"},
       {property:"og:url",content:mt.url},
       {property:"og:title",content:mt.title},
       {property:"og:description",content:mt.description},
       {property:"og:image",content:mt.image},
-      {property:"og:image:secure_url",content:mt.image},
       {property:"og:image:alt",content:mt.image},
       {property:"og:image:type",content:"image/jpeg"},
     ];
     og.forEach(m=> this.meta.updateTag(m))
+    this.getMetaImage(
+      mt.image,
+      function(width, height,meta) { 
+        meta.updateTag({property:"og:image:width",width},)
+        meta.updateTag({property:"og:image:height",height},)
+      },
+      this.meta
+    );
   }
   updateTwitterMetaTags(mt:MetaTags){
     var twitter: MetaDefinition[] = [
