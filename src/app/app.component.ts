@@ -19,21 +19,6 @@ export class AppComponent {
 
   sub: any;
   ngOnInit() {
-    this.router.events.pipe(
-      filter(e => e instanceof NavigationEnd),
-      map(e => this.activatedRoute),
-      map((route) => {
-        while (route.firstChild) route = route.firstChild;
-        return route;
-      }),
-      filter((route) => route.outlet === 'primary'),
-      mergeMap((route) => route.data),
-    ).subscribe(data => {
-      let seoData = data['seo'];
-      this.seoService.updateTitle(seoData['title']);
-      this.seoService.updateMetaTags(seoData['metaTags']);
-    });
-
     this.setUpAnalytics()
     this.sub = this.router.events.pipe(
               filter(events => events instanceof NavigationEnd),
@@ -48,8 +33,7 @@ export class AppComponent {
               mergeMap(route => route.data))
               .subscribe(data => {
                 let seoData = data['seo'];
-                this.seoService.updateTitle(seoData['title']);
-                this.seoService.updateMetaTags(seoData['metaTags']);
+                this.seoService.updateAllMetaTags(seoData['metaTags']);
                 data.header === true ? this.visible = true : this.visible = false
               });
          

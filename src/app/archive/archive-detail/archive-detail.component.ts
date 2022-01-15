@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Title , Meta} from "@angular/platform-browser";
+
 
 import {Subject} from 'rxjs';
 
@@ -10,6 +10,7 @@ import {ArchiveArticle, Content} from '../../models/archive.model';
 
 // Services
 import { ApiService } from '../../services/api.service';
+import { SeoService } from '../../services/ceo.service';
 
 @Component({
   selector: 'app-archive-detail',
@@ -29,8 +30,7 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
       private route: ActivatedRoute,
       private apiService: ApiService,
       public sanitizer: DomSanitizer,
-      private titleService: Title,
-      private meta: Meta
+      public seoService: SeoService,
     ) { 
      
     }
@@ -42,10 +42,11 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
         if (article.article.id == id) {
             this.setupArticle(article);
             this.articleLoading = false;
-            this.titleService.setTitle(this.article.article.title);
-            this.meta.updateTag({ name: 'description', content: this.article.article.description });  
-            this.meta.updateTag({ name: 'og:image', content: this.article.article.mainImage});  
-            this.meta.updateTag({ name: 'og:description', content: this.article.article.description }); 
+  
+            this.seoService.updateTitle(this.article.article.title)
+            this.seoService.updateDescription(this.article.article.description)
+            this.seoService.updateImage(this.article.article.mainImage)
+            this.seoService.updateUrlPath(this.article.article.id.toString())
             return
         } else{
           this.articleLoading = false;
