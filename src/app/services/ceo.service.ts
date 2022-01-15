@@ -35,6 +35,7 @@ export class SeoService {
   }
 
   updateImage(imageUrl: string){
+    this.meta.updateTag({property:"og:image",content:imageUrl},)
     this.meta.updateTag({property:"og:image:secure_url",content:imageUrl},)
     this.meta.updateTag({property:"og:image:alt",content:imageUrl},)
     this.meta.updateTag({property:"og:image:type",content:"image/jpeg"},)
@@ -58,6 +59,7 @@ export class SeoService {
       {property:"og:url",content:mt.url},
       {property:"og:title",content:mt.title},
       {property:"og:description",content:mt.description},
+      {property:"og:image",content:mt.image},
       {property:"og:image:secure_url",content:mt.image},
       {property:"og:image:alt",content:mt.image},
       {property:"og:image:type",content:"image/jpeg"},
