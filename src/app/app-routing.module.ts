@@ -18,6 +18,7 @@ import {CompleteComponent} from './checkout/complete/complete.component';
 
 import { environment } from '../environments/environment';
 
+
 const routes: Routes = [
   { 
     path: '',
@@ -25,15 +26,12 @@ const routes: Routes = [
     data: {
       header:true,
       seo: {
-        title: 'grbpwr',
-        metaTags: [
-          { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-          { property: 'og:title', content: 'grbpwr' },
-          { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-          { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-          { property: 'og:url', content: environment.APP_URL },
-          { name: "twitter:card", content: "summary_large_image" },
-        ]
+        metaTags: {
+          description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+          title:"grbpwr",
+          image:environment.APP_URL + '/img/meta-default-pic.jpg',
+          url:environment.APP_URL,
+        }
       }
     } 
   },
@@ -44,15 +42,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'products',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"products",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/products',
+          }
         }
       } 
   },
@@ -62,15 +57,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'products',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"products",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/products/',
+          }
         }
       } 
   },
@@ -80,15 +72,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'archive',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"archive",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/archive',
+          }
         }
       } 
   },
@@ -98,15 +87,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'archive',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"archive",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/archive/',
+          }
         }
       } 
   },
@@ -116,15 +102,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'cart',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"cart",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/cart',
+          }
         }
       } 
   },
@@ -134,15 +117,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'checkout',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"checkout",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/checkout',
+          }
         }
       } 
   },
@@ -152,15 +132,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'order-complete',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"order complete",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/order-complete',
+          }
         }
       } 
   },
@@ -172,15 +149,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'shipping-method',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"shipping method",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/shipping-method',
+          }
         }
       } 
   },
@@ -190,15 +164,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'privacy-policy',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"privacy policy",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/privacy-policy',
+          }
         }
       } 
   },
@@ -208,15 +179,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'contact-us',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"contact us",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/contact-us',
+          }
         }
       } 
   },
@@ -226,15 +194,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'about',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"about",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/about',
+          }
         }
       } 
   },
@@ -244,15 +209,12 @@ const routes: Routes = [
       data: {
         header:true,
         seo: {
-          title: 'returns',
-          metaTags: [
-            { name: 'description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:title', content: 'grbpwr' },
-            { property: 'og:description', content: 'Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.' },
-            { property: 'og:image', content: environment.APP_URL + '/img/small-logo.png' },
-            { property: 'og:url', content: environment.APP_URL },
-            { name: "twitter:card", content: "summary_large_image" },
-          ]
+          metaTags: {
+            description:"Shop the latest grbpwr menswear, womenswear, shoes and accessories now on the official grbpwr online store with worldwide express shipping.",
+            title:"returns",
+            image:environment.APP_URL + '/img/meta-default-pic.jpg',
+            url:environment.APP_URL + '/returns',
+          }
         }
       } 
   },

@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {Title , Meta} from "@angular/platform-browser";
 
 import {Subject} from 'rxjs';
 import {CartService} from '../../cart/shared/cart.service';
@@ -12,6 +11,7 @@ import {ProductClass , AvailableSizes} from '../../models/product.model';
 
 // Services
 import { ApiService } from '../../services/api.service';
+import { SeoService } from '../../services/ceo.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -42,8 +42,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private location: Location,
     private cartService: CartService,
     private apiService: ApiService,
-    private titleService: Title,
-    private meta: Meta
+    public seoService: SeoService,
   ) {
    }
 
@@ -69,10 +68,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       if (product.product.id == id) {
           this.setupProduct(product.product);
           this.productLoading = false;
-          this.titleService.setTitle(this.product.name);
-          this.meta.updateTag({ name: 'description', content: this.product.description });  
-          this.meta.updateTag({ name: 'og:image', content: this.product.mainImage});  
-          this.meta.updateTag({ name: 'og:description', content: this.product.description }); 
+
+          this.seoService.updateTitle(this.product.name)
+          this.seoService.updateDescription(this.product.description)
+          this.seoService.updateImage(this.product.mainImage)
+          this.seoService.updateUrlPath(this.product.id.toString())
           return
       } else{
         this.productLoading = false;
