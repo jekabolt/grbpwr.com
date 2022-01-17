@@ -42,7 +42,6 @@ export class ArchiveDetailComponent implements OnInit, OnDestroy {
         if (article.article.id == id) {
             this.setupArticle(article);
             this.articleLoading = false;
-  
             this.seoService.updateTitle(this.article.article.title)
             this.seoService.updateDescription(this.article.article.description)
             this.seoService.updateImage(this.article.article.mainImage)
