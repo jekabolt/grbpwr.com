@@ -7,6 +7,7 @@ export const environment = {
   production: false,
   APP_URL:"https://grbpwr.com",
   API_SERVER_URL: "https://backend.grbpwr.com",
+  GOOGLE_ID:"G-YX09JT9HVC",
   // API_SERVER_URL: "http://172.20.10.3:8081",
   // API_SERVER_URL: "http://localhost:8081",
  

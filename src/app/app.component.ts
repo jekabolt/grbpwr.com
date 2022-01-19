@@ -2,6 +2,8 @@ import { Component, } from '@angular/core';
 import {Router,ActivatedRoute,NavigationEnd} from '@angular/router';
 import { filter , map, mergeMap} from 'rxjs/operators';
 import { SeoService } from './services/ceo.service';
+import { environment } from '../environments/environment';
+
 declare let gtag: Function;
 @Component({
   selector: 'app-root',
@@ -20,30 +22,32 @@ export class AppComponent {
   sub: any;
   ngOnInit() {
     this.setUpAnalytics()
-    this.sub = this.router.events.pipe(
-              filter(events => events instanceof NavigationEnd),
-              map(evt => this.activatedRoute),
-              map(route => {
-                  while (route.firstChild) {
-                      route = route.firstChild;
-                  }
-                  return route;
-              })).pipe(
-              filter(route => route.outlet === "primary"),
-              mergeMap(route => route.data))
-              .subscribe(data => {
-                let seoData = data['seo'];
-                this.seoService.updateAllMetaTags(seoData['metaTags']);
-                data.header === true ? this.visible = true : this.visible = false
-              });
-         
+    this.setUpMeta()
   }
 
 
+  setUpMeta() {
+    this.sub = this.router.events.pipe(
+      filter(events => events instanceof NavigationEnd),
+      map(evt => this.activatedRoute),
+      map(route => {
+          while (route.firstChild) {
+              route = route.firstChild;
+          }
+          return route;
+      })).pipe(
+      filter(route => route.outlet === "primary"),
+      mergeMap(route => route.data))
+      .subscribe(data => {
+        let seoData = data['seo'];
+        this.seoService.updateAllMetaTags(seoData['metaTags']);
+        data.header === true ? this.visible = true : this.visible = false
+      });
+  }
   setUpAnalytics() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))
         .subscribe((event: NavigationEnd) => {
-            gtag('config', 'G-YOUR-GOOGLE-ID',
+            gtag('config', environment.GOOGLE_ID,
                 {
                     page_path: event.urlAfterRedirects
                 }
