@@ -28,7 +28,6 @@ export class CartService {
     this.cartItems.forEach(function (cartItem) {
       if (cartItem.product.id === item.product.id &&
         cartItem.size === item.product.selectedSize) { 
-        cartItem.amount += item.amount;
         ok = false
         return
       }
@@ -52,18 +51,6 @@ export class CartService {
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 
-  public updateItemAmount(item: CartItem, newAmount: number) {
-    this.cartItems.forEach((cartItem) => {
-      if (cartItem.product.id === item.product.id &&
-        cartItem.size === item.size) {
-        cartItem.amount = newAmount;
-        return
-      }
-    });
-    this.itemsChanged.emit(this.cartItems.slice());
-    localStorage.setItem('cart', JSON.stringify(this.cartItems));
-  }
-
   public clearCart() {
     this.cartItems = [];
     this.itemsChanged.emit(this.cartItems.slice());
@@ -73,7 +60,7 @@ export class CartService {
   public getTotal() {
     let total = 0;
     this.cartItems.forEach(cartItem => {
-      total += cartItem.amount * cartItem.product.price.usd;
+      total += cartItem.product.price.usd;
     });
     return total;
   }

@@ -12,6 +12,7 @@ import {ProductClass , AvailableSizes} from '../../models/product.model';
 // Services
 import { ApiService } from '../../services/api.service';
 import { SeoService } from '../../services/ceo.service';
+import { GTagService } from '../../services/gtag.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -176,8 +177,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.cartButtonTitle = 'item added';
     this.setCartButtonText(lbl)
 
-    this.product.selectedSize = this.selectedSize
-    this.cartService.addItem(new CartItem(this.product, this.selectedQuantity, this.product.selectedSize));
+    let ci: CartItem = {
+      product:this.product,
+      size:this.selectedSize
+    };
+    this.cartService.addItem(ci);
   }
 
   public onSelectQuantity(event) {

@@ -1,9 +1,6 @@
 import { ProductClass } from './product.model';
-
-export class CartItem {
-  constructor(
-    public product: ProductClass,
-    public amount: number,
-    public size: string,
-  ) { }
+export interface CartItem {
+  product?: ProductClass;
+  size?:  string;
 }
+
