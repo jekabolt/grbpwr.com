@@ -10,11 +10,8 @@ export class PrivacyPolicyComponent {
 
   @HostBinding('class.lang-ru') langRu = true;
 
-  public pageTitle = "privacy";
-
   constructor(
   ) { 
-    
   }
 
   toggleLanguage(indicator) {

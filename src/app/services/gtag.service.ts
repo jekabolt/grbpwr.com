@@ -10,7 +10,7 @@ export class GTagService {
 
   constructor() { }
 
-  addToCart(prd:Product){
+  onAddToCart(prd:Product){
       gtag('event', 'ADD_TO_CART', {
             'event_category': 'CART',
             'value': Convert.productToJson(prd)
@@ -18,5 +18,4 @@ export class GTagService {
       )
   }
 
-  
 }

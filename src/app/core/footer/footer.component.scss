@@ -1,4 +1,6 @@
+@import '../../../scss/components/radio.scss';
 @import "../../../scss/index.scss";
+@import "../../../scss/common";
 .footer {
     width: calc(335/375)*100%;
     background-color: #fff;
@@ -31,46 +33,51 @@
                 }
             }
         }
-        .currency {
-            display: flex;
-            float: left;
-            justify-content: space-between;
-            width: 100%;
-            .currency_input {
-                position: absolute;
-                left: -200px;
-                opacity: 0;
+    }
+    .currency {
+        margin: 85px auto 0px auto;
+        color: #000;
+        p {
+            @extend %info_txt;
+        }
+        display: flex;
+        float: left;
+        justify-content: space-between;
+        width: 100%;
+        .currency_input {
+            position: absolute;
+            left: -200px;
+            opacity: 0;
+        }
+        .currency_usd:checked~.currency_usd {
+            p {
+                text-decoration: underline;
+                opacity: 1;
             }
-            .currency_usd:checked~.currency_usd {
-                p {
-                    text-decoration: underline;
-                    opacity: 1;
-                }
+        }
+        .currency_byn:checked~.currency_byn {
+            p {
+                text-decoration: underline;
+                opacity: 1;
             }
-            .currency_byn:checked~.currency_byn {
-                p {
-                    text-decoration: underline;
-                    opacity: 1;
-                }
+        }
+        .currency_eur:checked~.currency_eur {
+            p {
+                text-decoration: underline;
+                opacity: 1;
             }
-            .currency_eur:checked~.currency_eur {
-                p {
-                    text-decoration: underline;
-                    opacity: 1;
-                }
+        }
+        .currency_rub:checked~.currency_rub {
+            p {
+                text-decoration: underline;
+                opacity: 1;
             }
-            .currency_rub:checked~.currency_rub {
-                p {
-                    text-decoration: underline;
-                    opacity: 1;
-                }
-            }
-            .currency_label {
-                p {
-                    text-decoration: none;
-                    cursor: pointer;
-                    opacity: 0.5;
-                }
+        }
+        .currency_label {
+            p {
+                text-decoration: none;
+                cursor: pointer;
+                opacity: 0.5;
             }
         }
     }

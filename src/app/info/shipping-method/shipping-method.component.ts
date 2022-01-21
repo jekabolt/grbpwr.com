@@ -8,9 +8,7 @@ import { Component, HostBinding } from '@angular/core';
 
 export class ShippingMethodsComponent {
 
-  @HostBinding('class.lang-ru') langRu = false;
-
-  public pageTitle = "shipping";
+  @HostBinding('class.lang-ru') langRu = true;
 
   constructor(
   ) { 

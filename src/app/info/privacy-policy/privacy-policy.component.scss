@@ -5,3 +5,10 @@
     max-width: 100%;
     overflow-x: hidden;
 }
+
+.title {
+    p {
+        @extend %title_txt;
+        text-decoration-line: line-through;
+    }
+}
