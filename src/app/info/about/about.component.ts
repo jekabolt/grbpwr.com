@@ -9,7 +9,6 @@ import { Component, HostBinding } from '@angular/core';
 export class AboutComponent {
 
   @HostBinding('class.lang-ru') langRu = true;
-  public pageTitle = "about";
 
   constructor(
   ) { 

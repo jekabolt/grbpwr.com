@@ -8,14 +8,10 @@ import { Component, HostBinding } from '@angular/core';
 
 export class ReturnsComponent {
 
-  @HostBinding('class.lang-ru') langRu = false;
-
-
+  @HostBinding('class.lang-ru') langRu = true;
 
   constructor(
-  
   ) { 
-  
   }
 
   toggleLanguage(indicator) {

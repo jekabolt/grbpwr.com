@@ -1,5 +1,5 @@
 // radio button style
-.radio_lable_ru {
+.radio_label {
     p {
         @extend %default_text;
         text-decoration-line: none;
@@ -7,33 +7,34 @@
     }
 }
 
-.radio_lable_en {
-    p {
-        @extend %default_text;
-        text-decoration-line: none;
-        cursor: pointer;
-    }
-}
-
-.radio_checked_en {
+.radio {
     opacity: 0;
     position: absolute;
     left: -220px;
 }
 
-.radio_checked_ru {
-    opacity: 0;
-    position: absolute;
-    left: -220px;
-}
-
-.radio_checked_en:checked~.radio_lable_en {
-    p {
-        text-decoration: underline;
-    }
-}
-
-.radio_checked_ru:checked~.radio_lable_ru {
+// .radio_checked:checked~.radio_label {
+//     p {
+//         text-decoration: underline;
+//     }
+// }
+// .radio_checked:not(:checked)~.radio_label {
+//     p {
+//         text-decoration: none;
+//     }
+// }
+// input[type="checkbox"]~.radio_label {
+//     // Unchecked Styles
+//     p {
+//         text-decoration: none;
+//     }
+// }
+// input[type="checkbox"]:checked~.radio_label {
+//     p {
+//         text-decoration: underline;
+//     }
+// }
+.radio:checked+.radio_label {
     p {
         text-decoration: underline;
     }

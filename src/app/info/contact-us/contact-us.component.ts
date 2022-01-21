@@ -8,16 +8,14 @@ import { Component, HostBinding } from '@angular/core';
 
 export class ContactUsComponent {
 
-  @HostBinding('class.lang-ru') langRu = false;
-  public pageTitle = "contact us";
+  @HostBinding('class.lang-ru') langRu = true;
 
   constructor(
   ) { 
-
   }
 
-  toggleLanguage() {
-    this.langRu = !this.langRu;
+  toggleLanguage(indicator) {
+    this.langRu = indicator;
   }
 
 }
