@@ -44,6 +44,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private apiService: ApiService,
     public seoService: SeoService,
+    public gTagService: GTagService
   ) {
    }
 
@@ -164,10 +165,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     }, 1500);
   }
 
-  public get() {
-    alert(this.cartService.getTotal())
-  }
-
   public onAddToCart(lbl) {
     if (this.selectedSize == undefined || this.selectedSize == "") {
       this.cartButtonTitle = 'select size';
@@ -182,6 +179,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       size:this.selectedSize
     };
     this.cartService.addItem(ci);
+    this.gTagService.onAddToCart(ci)
+    setTimeout(() => {
+      this.router.navigate(['cart'])
+    }, 1000);
   }
 
   public onSelectQuantity(event) {
