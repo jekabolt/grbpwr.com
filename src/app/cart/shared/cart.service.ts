@@ -1,4 +1,4 @@
-import {AfterViewInit, EventEmitter, Injectable} from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { CartItem } from '../../models/cart-item.model';
 
 @Injectable()
