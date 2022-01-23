@@ -57,12 +57,27 @@ export class CartService {
     localStorage.removeItem('cart');
   }
 
-  public getTotal() {
-    let total = 0;
+  public getTotal(currency:string) {
+    let totalUSD = 0;
+    let totalEUR = 0;
+    let totalRUB = 0;
+
     this.cartItems.forEach(cartItem => {
-      total += cartItem.product.price.usd;
+      totalUSD += cartItem.product.price.usd;
+      totalEUR += cartItem.product.price.eur;
+      totalRUB += cartItem.product.price.rub;
     });
-    return total;
+    switch (currency) {
+      case "usd":
+         return totalUSD
+      case "eur":
+        return totalEUR
+      case "rub":
+        return totalRUB
+      default:
+        console.log("No such currency exists!");
+        return totalUSD
+    }
   }
 
 }

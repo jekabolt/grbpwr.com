@@ -38,7 +38,9 @@
                                 <figure class="cross2"></figure>
                             </a>
                             <p class="product_price">
-                                <strong>${{item.product.price.usd}} USD</strong>
+                                <strong *ngIf="usd">${{item.product.price.usd}} USD</strong>
+                                <strong *ngIf="eur">${{item.product.price.eur}} EUR</strong>
+                                <strong *ngIf="rub">${{item.product.price.rub}} RUB</strong>
                             </p>
                         </div>
 
@@ -48,7 +50,9 @@
                     <div class="remove-from-cart" href="#" data-toggle="tooltip" title="Remove item" (click)="onRemoveItem($event, item)">
                         <figure class="line"></figure>
                         <p class="product_price_mob">
-                            <strong>${{item.product.price.usd}} USD</strong>
+                            <strong *ngIf="usd">${{item.product.price.usd}} USD</strong>
+                            <strong *ngIf="eur">${{item.product.price.eur}} EUR</strong>
+                            <strong *ngIf="rub">${{item.product.price.rub}} RUB</strong>
                         </p>
                     </div>
 
@@ -59,7 +63,9 @@
             <div class="shopping-cart-footer">
 
                 <div class="total_and_currency">
-                    <p>Total: <strong>{{ total | currency }}</strong></p>
+                    <p *ngIf="usd">Total: <strong>{{ total }} USD</strong></p>
+                    <p *ngIf="eur">Total: <strong>{{ total }} EUR</strong></p>
+                    <p *ngIf="rub">Total: <strong>{{ total }} RUB</strong></p>
                 </div>
 
                 <section class="checkout_and_total">

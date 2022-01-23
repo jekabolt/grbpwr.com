@@ -20,5 +20,6 @@ export class FooterComponent implements OnInit {
   updateCurrency(currency) {
     this.onCurrencyChange.emit(currency)
     this.localeService.setDefaultCurrency(currency)
+    window.location.reload();
   }
 }

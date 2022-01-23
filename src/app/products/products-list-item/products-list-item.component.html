@@ -6,9 +6,10 @@
         <p>
             <a routerLink="/products/{{product.product.id}}">{{product.product.name}}</a>
         </p>
-        <p class="product-price">
+        <p *ngIf="usd" class="product-price"> ${{product.product.price.usd}} </p>
+        <p *ngIf="eur" class="product-price"> {{product.product.price.eur}}€ </p>
+        <p *ngIf="rub" class="product-price"> {{product.product.price.rub}} RUB </p>
 
-        </p>
         <h2 *ngIf="displayMode === 'list'">{{product.product.description}}</h2>
     </div>
 </div>
