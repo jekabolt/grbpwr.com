@@ -23,17 +23,17 @@
     </section>
 
     <div class="currency">
-        <input id="usd" class="radio" type="radio" name="currency" checked>
+        <input (click)="updateCurrency('usd')" id="usd" class="radio" type="radio" name="currency">
         <label class="radio_label" id="usd_currency" for="usd">
                   <p>usd</p>
             </label>
 
-        <input id="eur" class="radio" type="radio" name="currency">
+        <input (click)="updateCurrency('eur')" id="eur" class="radio" type="radio" name="currency">
         <label class="radio_label" id="eur_currency" for="eur">
                 <p>eur</p>
             </label>
 
-        <input id="rub" class="radio" type="radio" name="currency">
+        <input (click)="updateCurrency('rub')" id="rub" class="radio" type="radio" name="currency">
         <label class="radio_label" id="rub_currency" for="rub">
                 <p>rub</p>
             </label>
