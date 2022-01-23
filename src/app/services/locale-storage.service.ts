@@ -3,14 +3,25 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class LocalStorageLocaleService {
+export class LocaleService {
 
   constructor() { }
-
-  saveLocale(){
+  
+  setLocale(locale:string){
    
   }
   getLocale(){
    
+  }
+
+  setDefaultCurrency(currency:string){
+    localStorage.setItem('currency', currency);
+  }
+
+  getCurrency():string{
+   if (!localStorage.getItem('currency')) {
+     return "usd"
+   }
+   return localStorage.getItem('currency')
   }
 }

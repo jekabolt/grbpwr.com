@@ -20,9 +20,12 @@
                     {{ product.product.name }}
                 </a>
             <a routerLink="/products/{{ product.product.id }}" href="">
-                <h2>${{ product.product.price.usd }}</h2>
+                <h2 *ngIf="usd">${{ product.product.price.usd }}</h2>
+                <h2 *ngIf="eur">{{ product.product.price.eur }}€</h2>
+                <h2 *ngIf="rub">{{ product.product.price.rub }} RUB</h2>
             </a>
         </div>
     </section>
 </div>
-<app-footer></app-footer>
+
+<app-footer (onCurrencyChange)="changeCurrency($event)"></app-footer>
