@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {Title} from "@angular/platform-browser";
-
 import { Subscription } from 'rxjs';
 
 import { CartService } from './shared/cart.service';
 import { CartItem } from '../models/cart-item.model';
+import { LocaleService } from '../services/locale-storage.service'
 
 @Component({
   selector: 'app-cart',
@@ -15,22 +14,27 @@ export class CartComponent implements OnInit, OnDestroy {
   private cartSubscription: Subscription;
   public items: CartItem[];
   public total: number;
-  public pageTitle = "cart";
+  public currencySelected: string;
+  public usd: boolean;
+  public eur: boolean;
+  public rub: boolean;
+  
 
   constructor(
     private cartService: CartService,
-    private titleService: Title
+    public localeService: LocaleService,
   ) { 
-    this.titleService.setTitle(this.pageTitle);
   }
 
   ngOnInit() {
+    this.currencySelected = this.localeService.getCurrency()
+    this.setCurrency(this.currencySelected)
     this.items = this.cartService.getItems();
-    this.total = this.cartService.getTotal();
+    this.total = this.cartService.getTotal(this.currencySelected);
     this.cartSubscription = this.cartService.itemsChanged.subscribe(
       (items: CartItem[]) => {
         this.items = items;
-        this.total = this.cartService.getTotal();
+        this.total = this.cartService.getTotal(this.currencySelected);
       }
     );
   }
@@ -47,6 +51,29 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartService.removeItem(item);
   }
 
+  setCurrency(currency){
+    switch (currency) {
+      case "usd":
+          this.usd = true
+          this.eur = false
+          this.rub = false
+          break;
+      case "eur":
+          this.usd = false
+          this.eur = true
+          this.rub = false
+          break;
+      case "rub":
+          this.usd = false
+          this.eur = false
+          this.rub = true
+          break;
+      default:
+          console.log("No such currency exists!");
+          this.usd = true
+          break;
+    }
+  }
 
   ngOnDestroy() {
     if(this.cartSubscription && !this.cartSubscription.closed)

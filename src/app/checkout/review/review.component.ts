@@ -10,6 +10,7 @@ import {CartService} from '../../cart/shared/cart.service';
 import {CartItem} from '../../models/cart-item.model';
 import {Customer} from '../../models/customer.model';
 import {Order} from '../../models/order.model';
+import { LocaleService } from '../../services/locale-storage.service'
 
 @Component({
   selector: 'app-checkout-review',
@@ -22,21 +23,24 @@ export class ReviewComponent implements OnInit, OnDestroy {
   customer: Customer;
   paymentMethod: string;
   unsubscribe$ = new Subject();
+  public currencySelected: string;
 
   constructor(
     private cartService: CartService,
     private checkoutService: CheckoutService,
     private router: Router,
+    public localeService: LocaleService,
   ) { }
 
   ngOnInit() {
+    this.currencySelected = this.localeService.getCurrency()
     this.items = this.cartService.getItems();
-    this.total = this.cartService.getTotal();
+    this.total = this.cartService.getTotal(this.currencySelected);
     this.cartService.itemsChanged
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((items: CartItem[]) => {
       this.items = items;
-      this.total = this.cartService.getTotal();
+      this.total = this.cartService.getTotal(this.currencySelected);
       });
     this.customer = this.checkoutService.getOrderInProgress().customer;
     this.checkoutService.orderInProgressChanged
@@ -55,7 +59,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
     // TODO:
     const userUid = 1
     const order = this.checkoutService.getOrderInProgress();
-    const total = this.cartService.getTotal();
+    const total = this.cartService.getTotal(this.currencySelected);
 
     this.checkoutService.setOrderItems(this.cartService.getItems());
 

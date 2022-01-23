@@ -6,7 +6,10 @@
             <a routerLink="/about" href="">about</a>
             <a routerLink="/archive">archive</a>
         </nav>
-        <a class="cart" routerLink="/cart" href="">cart ${{cartService.getTotal()}}</a>
+
+        <a *ngIf="usd" class="cart" routerLink="/cart" href="">cart ${{cartService.getTotal(currencySelected)}}</a>
+        <a *ngIf="eur" class="cart" routerLink="/cart" href="">cart {{cartService.getTotal(currencySelected)}}€</a>
+        <a *ngIf="rub" class="cart" routerLink="/cart" href="">cart {{cartService.getTotal(currencySelected)}}RUB</a>
     </table>
 </header>
 
