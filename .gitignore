@@ -1,54 +1,36 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
-
-#
-layout
-yarn.lock
-# compiled output
-/tmp
-/out-tsc
-/server/compiled
-/.angular
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-*node_modules
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
 
-#config values
-.env
+# testing
+/coverage
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# next.js
+/.next/
+/out/
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# production
+/build
 
 # misc
-/.angular/cache
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-testem.log
-/typings
-.env
-server/compiled/
-src/img/uploads/
-src/assets/uploads
-
-# e2e
-/e2e/*.js
-/e2e/*.map
-
-# System Files
 .DS_Store
-Thumbs.db
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
