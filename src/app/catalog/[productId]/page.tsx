@@ -1,4 +1,10 @@
-export default async function ProductPage({ params }: any) {
+interface ProductPageProps {
+  params: {
+    productId: string;
+  };
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
   const data = await fetch(
     `http://worldtimeapi.org/api/timezone/Europe/${params.productId}`,
     {

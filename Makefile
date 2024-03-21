@@ -1,17 +1,17 @@
 VERSION := $(shell git describe --tags --always --long |sed -e "s/^v//")
 
-.PHONY: generate internal/statics proto
+.PHONY: proto
 
 init: submodules clean proto
 
 install: ## Install the web dependencies
-	yarn install
+	pnpm i
 
 dev: ## Run the local dev server
-	yarn dev
+	pnpm dev
 
 build-dist: ## Build dist version
-	yarn build
+	pnpm build
 
 proto:
 	buf generate

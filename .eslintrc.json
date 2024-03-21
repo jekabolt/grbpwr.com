@@ -1,3 +1,44 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:security/recommended",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended" // Ensures Prettier rules are enforced via ESLint
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "react-hooks",
+    "@typescript-eslint",
+    "jsx-a11y",
+    "security",
+    "prettier" // Adds Prettier as an ESLint plugin
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-unnecessary-type-constraint": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "prettier/prettier": "error", // Enforces Prettier formatting as ESLint errors
+    "jsx-a11y/accessible-emoji": "warn", // Example accessibility rule
+    "security/detect-object-injection": "off" // Example security rule (might need to adjust based on project)
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  }
 }
