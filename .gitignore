@@ -1,7 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -15,13 +14,6 @@
 
 # proto api
 /src/api
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
 
 # debug
 npm-debug.log*
@@ -37,3 +29,55 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+src/api/proto-http/*
+
+#
+layout
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+/server/compiled
+/build
+
+# dependencies
+*node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+server/compiled/
+src/img/uploads/
+src/assets/uploads
+jsconfig.json
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db
