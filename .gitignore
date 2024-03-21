@@ -13,6 +13,9 @@
 /.next/
 /out/
 
+# proto api
+/src/api
+
 # production
 /build
 

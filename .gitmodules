@@ -1,0 +1,4 @@
+
+[submodule "proto"]
+	path = proto
+	url = git@github.com:jekabolt/grbpwr-proto.git

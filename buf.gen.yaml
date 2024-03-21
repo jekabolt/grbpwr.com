@@ -1,0 +1,7 @@
+version: v1
+managed:
+  enabled: true
+plugins:
+  - plugin: typescript-http
+    out: src/api/proto-http
+    opt: paths=source_relative
