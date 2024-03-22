@@ -34,3 +34,13 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Generate protobuff API
+
+1. brew install go
+2. brew install bufbuild/buf/buf
+3. go install go.einride.tech/protoc-gen-typescript-http@latest
+<!-- 4. add  -->
+4. make sure go in path
+5. make sure typescript-http go module is linked to go
+6. maybe you will need to copy typescript-http to be availavle as protoc-...something
