@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CatalogPage from "@/components/CatalogPage";
 
 export default function Page() {
   return (
@@ -12,6 +13,8 @@ export default function Page() {
         </Link>
       </div>
       <h1 className="text-[200px]">Categories</h1>
+
+      <CatalogPage />
     </main>
   );
 }
