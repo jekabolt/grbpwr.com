@@ -1,18 +1,36 @@
-import { createFrontendServiceClient } from "../api/proto-http/frontend";
+import { createFrontendServiceClient } from "@/api/proto-http/frontend";
 
-interface requestHandlerParams {
+type Object = {
+  [key: string]: unknown;
+};
+
+interface RequestHandlerParams {
   path: string;
   method: string;
-  body?: any;
+  body: string | null;
 }
 
-const requestHandler = async ({ path, method, body }: requestHandlerParams) => {
+interface ProtoMetaParams {
+  service: string;
+  method: string;
+}
+
+const fetchParams: Object = {
+  GetHero: {
+    next: {
+      revalidate: 15,
+    },
+  },
+};
+
+const requestHandler = async (
+  { path, method, body }: RequestHandlerParams,
+  { method: serviceMethod }: ProtoMetaParams
+) => {
   const response = await fetch(`${process.env.BACKEND_URL}/${path}`, {
     method,
     body,
-    // next: {
-    //   revalidate: 15,
-    // },
+    ...(fetchParams[serviceMethod] as Object),
   });
 
   return await response.json();

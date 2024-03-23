@@ -13,6 +13,7 @@ export default async function Page() {
       <Link href="/catalog" className="hover:underline">
         Catalog
       </Link>
+      {JSON.stringify(hero)}
       <h1 className="text-[200px]">Home</h1>
     </main>
   );
