@@ -25,7 +25,7 @@ const fetchParams: Object = {
 
 const requestHandler = async (
   { path, method, body }: RequestHandlerParams,
-  { method: serviceMethod }: ProtoMetaParams
+  { method: serviceMethod }: ProtoMetaParams,
 ) => {
   const response = await fetch(`${process.env.BACKEND_URL}/${path}`, {
     method,

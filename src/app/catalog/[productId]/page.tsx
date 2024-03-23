@@ -11,7 +11,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       next: {
         revalidate: 60,
       },
-    }
+    },
   );
 
   const data1 = await data.json();
