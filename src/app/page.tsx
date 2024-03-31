@@ -11,7 +11,12 @@ export default async function Page() {
 
   return (
     <main className="p-2">
-      <div>{`id: ${id} createdAt: ${createdAt}`}</div>
+      <div>
+        <span className="text-xl font-bold">
+          revalidate time: <span className="text-orange-400">15 seconds</span>
+        </span>{" "}
+        {`id: ${id} createdAt: ${createdAt}`}
+      </div>
       <div className="flex flex-col gap-10 md:flex-row">
         <div>
           <span className="text-2xl font-bold">hero.main</span>
