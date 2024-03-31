@@ -13,7 +13,7 @@
 /out/
 
 # proto api
-/src/api/proto-http
+# /src/api/proto-http
 
 # debug
 npm-debug.log*
@@ -29,8 +29,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-src/api/proto-http/*
 
 #
 layout
