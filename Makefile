@@ -17,7 +17,7 @@ proto:
 	buf generate
 
 clean:
-	rm -rf dist
+	rm -rf .next
 	rm -rf src/api/proto-http/*
 
 submodules:
