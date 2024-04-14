@@ -10,7 +10,7 @@ export default function ProductsSection({ products }: { products?: any[] }) {
         <div key={i} className="relative col-span-1">
           <Link
             className="absolute z-10 h-full w-full hover:border hover:border-pink-400"
-            href={`/catalog/${product.id}`}
+            href={`/catalog/${product.slug}`}
           ></Link>
 
           <div className="relative h-[400px]">

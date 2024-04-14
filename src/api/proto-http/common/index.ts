@@ -411,6 +411,7 @@ export type Product = {
   id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
+  slug: string | undefined;
   productInsert: ProductInsert | undefined;
 };
 

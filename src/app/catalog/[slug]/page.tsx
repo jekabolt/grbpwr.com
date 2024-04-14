@@ -4,7 +4,7 @@ import { Fragment } from "react";
 
 interface ProductPageProps {
   params: {
-    productId: string;
+    slug: string;
   };
 }
 
@@ -14,10 +14,10 @@ const catalogData = [
 ];
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { hero } = await serviceClient.GetHero({});
+  const { product } = await serviceClient.GetProduct({ slug: params.slug });
 
   // @ts-ignore
-  console.log(hero?.productsFeatured[0]);
+  console.log(product);
 
   // const data = await fetch(
   //   `http://worldtimeapi.org/api/timezone/Europe/${params.productId}`,
@@ -34,6 +34,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <main>
       <div className="flex flex-col bg-white pb-20 pt-5">
+        {JSON.stringify(product)}
         <div className="flex w-full flex-col items-start px-5 max-md:max-w-full max-md:pr-5">
           <div className="flex w-full gap-5 self-stretch max-md:max-w-full max-md:flex-wrap">
             <div className="flex-auto max-md:max-w-full">
@@ -43,32 +44,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <div className="flex gap-5 max-md:flex-col max-md:gap-0">
                       <div className="flex w-6/12 flex-col max-md:ml-0 max-md:w-full">
                         <div className="z-10 flex grow flex-col">
-                          <div className="flex justify-between gap-5 text-sm font-medium">
-                            <div className="flex flex-col whitespace-nowrap text-zinc-800">
-                              <div className="mt-8 flex gap-2">
-                                <div className="h-[11px] w-2 shrink-0 self-start bg-black" />
-                                <p>catalog</p>
-                              </div>
-                            </div>
-                            <div className="mt-16 flex gap-3 self-end lowercase text-neutral-500 max-md:mt-10">
-                              {catalogData.map(
-                                ({ label, separator }, index) => (
-                                  <Fragment key={index}>
-                                    <p>{label}</p>
-                                    {separator && (
-                                      <span className="text-base font-bold uppercase">
-                                        {separator}
-                                      </span>
-                                    )}
-                                  </Fragment>
-                                ),
-                              )}
-                            </div>
-                          </div>
                           <div className="mt-40 flex justify-between gap-5 max-md:mt-10">
-                            <p className="my-auto text-sm font-medium text-neutral-500">
-                              archive
-                            </p>
                             <div className="flex flex-col">
                               <div className="flex flex-col justify-center bg-zinc-100">
                                 <Image
@@ -130,10 +106,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               </div>
             </div>
-            <div className="mt-20 flex flex-col self-start text-sm font-medium text-neutral-500 max-md:mt-10">
-              <p>cart (03)</p>
-              <p className="mt-80 max-md:mt-10">about</p>
-            </div>
           </div>
           <p className="ml-28 mt-3.5 w-[537px] text-xs lowercase leading-3 text-zinc-800 max-md:max-w-full">
             Nobody knows what it is, but it exists. We create or don\t create
@@ -143,21 +115,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <p className="ml-28 mt-7 text-xs font-medium lowercase leading-3 text-zinc-800 underline max-md:ml-2.5">
             measurments
           </p>
-        </div>
-        <div className="mt-5 flex w-full max-w-[1398px] justify-between gap-5 self-center max-md:max-w-full max-md:flex-wrap">
-          <div className="my-auto flex justify-between gap-5 whitespace-nowrap px-5 text-sm text-zinc-800">
-            <p className="font-medium text-neutral-500">delivery</p>
-            <p className="my-auto">xs</p>
-            <p className="my-auto">s</p>
-            <p className="font-medium underline">m</p>
-            <p>l</p>
-            <p>xl</p>
-          </div>
-          <div className="flex justify-between gap-5 px-5 font-medium max-md:max-w-full max-md:flex-wrap">
-            <button className="justify-center bg-black px-9 py-2 text-lg text-white max-md:px-5">
-              add to cart
-            </button>
-          </div>
         </div>
       </div>
     </main>
