@@ -8,6 +8,19 @@ interface ProductPageProps {
   };
 }
 
+export function generateStaticParams() {
+  // TODO: add request
+
+  return [
+    {
+      slug: "44_6_grbpwr_white_a",
+    },
+    {
+      slug: "43_15_asdasd_aaaa_mikhail",
+    },
+  ];
+}
+
 const catalogData = [
   { label: "cloth", separator: "/" },
   { label: "Jackets & Coats", separator: "/" },
