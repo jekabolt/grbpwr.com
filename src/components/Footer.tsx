@@ -8,7 +8,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="mt-[480px] flex w-full max-w-[1286px] items-end justify-between gap-5 self-center px-5 text-xs font-medium text-black max-md:mt-10 max-md:max-w-full max-md:flex-wrap">
+    <footer className="mt-24 flex w-full items-end justify-between gap-5 self-center px-5 text-xs font-medium text-black max-md:mt-10 max-md:max-w-full max-md:flex-wrap">
       <div className="mt-24 flex justify-center gap-0 whitespace-nowrap bg-black px-1.5 py-0.5 text-xs lowercase text-white max-md:mt-10">
         <div>currency:</div>
         {/* <CustomImage
