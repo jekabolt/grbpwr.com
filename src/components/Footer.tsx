@@ -1,10 +1,23 @@
-import Image from "next/image";
+import { serviceClient } from "@/lib/api";
 
 export default function Footer() {
-  async function handleSubmit(data: any): Promise<void> {
+  async function handleSubmit(data: FormData): Promise<void> {
     "use server";
 
-    console.log(data);
+    try {
+      const payload: { email: string; name: string } = {
+        email: data.get("email") as string,
+        name: "no field for name",
+      };
+
+      await serviceClient.SubscribeNewsletter(payload);
+
+      localStorage.setItem("grbpwr-newsletter-subscribed", "true");
+    } catch (error) {
+      console.log("Failed to subscribe: ", error);
+    }
+
+    console.log("Subscribed to newsletter 📤");
   }
 
   return (

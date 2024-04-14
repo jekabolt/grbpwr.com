@@ -1,9 +1,7 @@
-import Image from "next/image";
-
-import Hero from "@/components/sections/Hero";
-
-import { serviceClient } from "@/lib/api";
+import HeroSection from "@/components/sections/HeroSection";
 import AdsSection from "@/components/sections/AdsSection";
+import ProductsSection from "@/components/sections/ProductsSection";
+import { serviceClient } from "@/lib/api";
 
 export default async function Page() {
   const { hero } = await serviceClient.GetHero({});
@@ -13,36 +11,10 @@ export default async function Page() {
   const { main, ads, productsFeatured } = hero;
 
   return (
-    <main className="">
-      <Hero {...main} />
+    <main className="space-y-24">
+      <HeroSection {...main} />
       <AdsSection ads={ads} />
-
-      <div className="mx-auto space-y-10">
-        <span className="text-2xl font-bold">hero.productsFeatured</span>
-        {productsFeatured &&
-          productsFeatured.map((product, i) => (
-            <div key={i} className="space-y-2">
-              <Image
-                src={product?.productInsert?.thumbnail || ""}
-                alt="ad hero image"
-                height={200}
-                width={200}
-              />
-              {product.productInsert &&
-                Object.entries(product.productInsert).map(
-                  ([key, value]) =>
-                    key !== "contentLink" && (
-                      <p key={key}>
-                        <span className="font-bold">{key}</span>:{" "}
-                        {typeof value === "string"
-                          ? value
-                          : JSON.stringify(value)}
-                      </p>
-                    ),
-                )}
-            </div>
-          ))}
-      </div>
+      <ProductsSection products={productsFeatured} />
     </main>
   );
 }
