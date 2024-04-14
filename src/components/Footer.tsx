@@ -11,8 +11,6 @@ export default function Footer() {
       };
 
       await serviceClient.SubscribeNewsletter(payload);
-
-      localStorage.setItem("grbpwr-newsletter-subscribed", "true");
     } catch (error) {
       console.log("Failed to subscribe: ", error);
     }
