@@ -136,7 +136,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
           <p className="ml-28 mt-3.5 w-[537px] text-xs lowercase leading-3 text-zinc-800 max-md:max-w-full">
-            Nobody knows what it is, but it exists. We create or don't create
+            Nobody knows what it is, but it exists. We create or don\t create
             narratives and objects. Appreciate action, not criticizing inaction.
             Culture compilation. Limited by our experience not by the mentality.
           </p>
