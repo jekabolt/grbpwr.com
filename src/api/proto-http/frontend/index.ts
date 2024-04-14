@@ -35,6 +35,7 @@ export type common_Product = {
   id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
+  slug: string | undefined;
   productInsert: common_ProductInsert | undefined;
 };
 
@@ -261,12 +262,11 @@ export type common_CurrencyRate = {
   rate: googletype_Decimal | undefined;
 };
 
-export type GetProductByNameRequest = {
-  // Product name
-  name: string | undefined;
+export type GetProductRequest = {
+  slug: string | undefined;
 };
 
-export type GetProductByNameResponse = {
+export type GetProductResponse = {
   product: common_ProductFull | undefined;
 };
 
@@ -606,7 +606,7 @@ export interface FrontendService {
   // Get hero information
   GetHero(request: GetHeroRequest): Promise<GetHeroResponse>;
   // Get product brand and name
-  GetProductByName(request: GetProductByNameRequest): Promise<GetProductByNameResponse>;
+  GetProduct(request: GetProductRequest): Promise<GetProductResponse>;
   // Get paged products
   GetProductsPaged(request: GetProductsPagedRequest): Promise<GetProductsPagedResponse>;
   // Submit an order
@@ -662,11 +662,11 @@ export function createFrontendServiceClient(
         method: "GetHero",
       }) as Promise<GetHeroResponse>;
     },
-    GetProductByName(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.name) {
-        throw new Error("missing required field request.name");
+    GetProduct(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.slug) {
+        throw new Error("missing required field request.slug");
       }
-      const path = `api/frontend/product/${request.name}`; // eslint-disable-line quotes
+      const path = `api/frontend/product/${request.slug}`; // eslint-disable-line quotes
       const body = null;
       const queryParams: string[] = [];
       let uri = path;
@@ -679,8 +679,8 @@ export function createFrontendServiceClient(
         body,
       }, {
         service: "FrontendService",
-        method: "GetProductByName",
-      }) as Promise<GetProductByNameResponse>;
+        method: "GetProduct",
+      }) as Promise<GetProductResponse>;
     },
     GetProductsPaged(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/products/paged`; // eslint-disable-line quotes
