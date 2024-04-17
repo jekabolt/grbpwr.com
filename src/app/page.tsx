@@ -1,6 +1,6 @@
 import HeroSection from "@/components/sections/HeroSection";
 import AdsSection from "@/components/sections/AdsSection";
-import ProductsSection from "@/components/sections/ProductsSection";
+import ProductsSection from "@/components/sections/ProductsGridSection";
 import { serviceClient } from "@/lib/api";
 
 export default async function Page() {
