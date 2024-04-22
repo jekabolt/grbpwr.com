@@ -13,3 +13,25 @@
     --foreground: 210 40% 98%;
   }
 }
+
+@layer base {
+  /* * {
+    @apply border-border;
+  } */
+
+  /* html {
+    font-family: "InterFace", system-ui, sans-serif;
+    font-optical-sizing: auto;
+    font-variation-settings: "slnt" 0;
+  } */
+
+  body {
+    /* @apply bg-background text-foreground; */
+  }
+}
+/* 
+@layer utilities {
+  .container {
+    @apply mx-auto max-w-2xl;
+  }
+} */
