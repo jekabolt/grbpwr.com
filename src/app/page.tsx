@@ -10,8 +10,8 @@ export default async function Page() {
 
   const { main, ads, productsFeatured } = hero;
 
-  // console.log("productsFeatured");
-  // console.log(productsFeatured);
+  console.log("productsFeatured");
+  console.log(productsFeatured);
 
   return (
     <main className="space-y-24">

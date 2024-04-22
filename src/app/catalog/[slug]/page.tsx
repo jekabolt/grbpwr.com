@@ -27,9 +27,12 @@ const catalogData = [
 ];
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { product } = await serviceClient.GetProduct({ slug: params.slug });
+  const { product } = await serviceClient.GetProduct({
+    slug: "2_18_grbpwr_white_a",
+  });
 
   // @ts-ignore
+  console.log("product2222");
   console.log(product);
 
   // const data = await fetch(
