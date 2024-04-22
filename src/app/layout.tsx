@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import Header from "@/components/global/Header";
 
 import Footer from "@/components/global/Footer";
-import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import "./globals.css";
@@ -42,7 +41,6 @@ export default function RootLayout({
           </div>
         </div>
         <Footer />
-        <Toaster />
       </body>
     </html>
   );
