@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 
 import Header from "@/components/global/Header";
-
 import Footer from "@/components/global/Footer";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import { FeatureMono } from "../fonts";
 
 export const metadata: Metadata = {
   title: "grbpwr.com title",
@@ -22,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "relative min-h-screen")}>
+      <body className={cn(FeatureMono.className, "relative min-h-screen")}>
         <div className="mx-auto max-w-7xl">
           <Header />
           <div className="flex w-full">
