@@ -1,9 +1,21 @@
-import Link from "next/link";
+import Layout from "@/components/global/Layout";
+import ProductsSection from "@/components/sections/ProductsGridSection";
+import { serviceClient } from "@/lib/api";
 
-export default function Page() {
+export default async function Page() {
+  const { products } = await serviceClient.GetProductsPaged({
+    limit: 50,
+    offset: 0,
+    sortFactors: undefined,
+    orderFactor: undefined,
+    filterConditions: undefined,
+  });
+
+  console.log(products);
+
   return (
-    <div>
-      <h1 className="text-[140px]">Categories</h1>
-    </div>
+    <Layout>
+      <ProductsSection products={products} />
+    </Layout>
   );
 }

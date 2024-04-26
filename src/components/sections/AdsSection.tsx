@@ -1,6 +1,11 @@
+import { common_HeroInsert } from "@/api/proto-http/frontend";
 import Image from "next/image";
 
-export default function AdsSection({ ads }: { ads?: any[] }) {
+export default function AdsSection({
+  ads,
+}: {
+  ads: common_HeroInsert[] | undefined;
+}) {
   return (
     <div className="space-y-24">
       <div className="grid grid-cols-2 gap-3">
