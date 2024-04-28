@@ -1,5 +1,6 @@
-import HeroSection from "@/components/sections/HeroSection";
+import Layout from "@/components/global/Layout";
 import AdsSection from "@/components/sections/AdsSection";
+import HeroSection from "@/components/sections/HeroSection";
 import ProductsSection from "@/components/sections/ProductsGridSection";
 import { serviceClient } from "@/lib/api";
 
@@ -10,14 +11,15 @@ export default async function Page() {
 
   const { main, ads, productsFeatured } = hero;
 
-  console.log("productsFeatured");
-  console.log(productsFeatured);
-
   return (
-    <main className="space-y-24">
+    <div>
       <HeroSection {...main} />
-      <AdsSection ads={ads} />
-      <ProductsSection products={productsFeatured} />
-    </main>
+      <Layout>
+        <div className="space-y-24">
+          <AdsSection ads={ads} />
+          <ProductsSection products={productsFeatured} />
+        </div>
+      </Layout>
+    </div>
   );
 }

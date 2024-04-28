@@ -1,7 +1,7 @@
-import { common_Product } from "@/api/proto-http/frontend";
-import Link from "next/link";
+import type { common_Product } from "@/api/proto-http/frontend";
 import Image from "@/components/elements/Image";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 // todo: match with api
 const currencyMap = {
@@ -15,6 +15,13 @@ export default function ProductItem({
   product: common_Product;
   className: string;
 }) {
+  const isSaleApplied = product.productInsert?.salePercentage?.value !== "0";
+
+  const priceWithSale =
+    (parseFloat(product.productInsert?.price?.value || "0") *
+      (100 - parseInt(product.productInsert?.salePercentage?.value || "0"))) /
+    100;
+
   return (
     <div className={cn("relative", className)}>
       <Link
@@ -31,11 +38,22 @@ export default function ProductItem({
       </div>
       <div className="flex w-full gap-3">
         {/* todo: change to css variable */}
-        <span className="grow text-xs font-medium text-[#311EEE] underline">
-          {product.productInsert?.name}
+        <span className="flex grow flex-col text-xs font-medium text-[#311EEE] underline">
+          <span>{product.productInsert?.brand}</span>
+          <span>{product.productInsert?.name}</span>
         </span>
-        <span className="block w-24 text-right text-sm font-medium">
-          {currencyMap.eth} {product.productInsert?.price?.value}
+        <span className="flex w-24 flex-col text-right text-sm font-medium">
+          {product.productInsert?.preorder && (
+            <span className="text-[#757575]">preorder</span>
+          )}
+          <span className={isSaleApplied ? "text-[#757575] line-through" : ""}>
+            {currencyMap.eth} {product.productInsert?.price?.value}
+          </span>
+          {isSaleApplied && (
+            <span>
+              {currencyMap.eth} {priceWithSale}
+            </span>
+          )}
         </span>
       </div>
     </div>
