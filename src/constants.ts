@@ -7,3 +7,5 @@ export const footerLinks: { text: string; href: string }[] = [
   { text: "gh", href: "https://www.github.com/grbpwr/" },
   { text: "p", href: "https://www.pinterest.com/grbpwr/" },
 ];
+
+export const catalogLimit = 16;

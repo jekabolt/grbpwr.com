@@ -2,6 +2,7 @@
 
 import type { common_Product } from "@/api/proto-http/frontend";
 import ProductsSection from "@/components/sections/ProductsGridSection";
+import { catalogLimit } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
 
@@ -14,7 +15,6 @@ export default function Catalog({
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const limit = 16;
   const pageRef = useRef(2);
   const hasMoreRef = useRef(hasMore);
 
@@ -23,8 +23,8 @@ export default function Catalog({
     setIsLoading(true);
     try {
       const response = await serviceClient.GetProductsPaged({
-        limit: limit,
-        offset: (pageRef.current - 1) * limit,
+        limit: catalogLimit,
+        offset: (pageRef.current - 1) * catalogLimit,
         sortFactors: undefined,
         orderFactor: undefined,
         filterConditions: undefined,
@@ -33,7 +33,7 @@ export default function Catalog({
       pageRef.current += 1;
       setItems((prevItems) => [...prevItems, ...(response.products || [])]);
       // To-DO we don't have count of all products on response, so last request could has 16 so we will make additional request that makes no sense - fix
-      if (!response.products || response.products.length < limit) {
+      if (!response.products || response.products.length < catalogLimit) {
         hasMoreRef.current = false;
         setHasMore(false);
       }

@@ -11,9 +11,6 @@ export default async function Page() {
 
   const { main, ads, productsFeatured } = hero;
 
-  console.log("productsFeatured");
-  console.log(productsFeatured);
-
   return (
     <div>
       <HeroSection {...main} />
