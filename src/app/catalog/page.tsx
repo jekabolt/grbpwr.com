@@ -1,6 +1,6 @@
+import Catalog from "@/components/elements/Catalog";
 import Layout from "@/components/global/Layout";
 import { serviceClient } from "@/lib/api";
-import Catalog from "./Catalog";
 
 export default async function Page() {
   const response = await serviceClient.GetProductsPaged({

@@ -15,11 +15,14 @@ export default async function Page() {
   console.log(productsFeatured);
 
   return (
-    <Layout topContent={<HeroSection {...main} />}>
-      <div className="space-y-24">
-        <AdsSection ads={ads} />
-        <ProductsSection products={productsFeatured} />
-      </div>
-    </Layout>
+    <div>
+      <HeroSection {...main} />
+      <Layout>
+        <div className="space-y-24">
+          <AdsSection ads={ads} />
+          <ProductsSection products={productsFeatured} />
+        </div>
+      </Layout>
+    </div>
   );
 }

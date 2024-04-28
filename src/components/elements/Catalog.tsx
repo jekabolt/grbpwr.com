@@ -1,9 +1,9 @@
 "use client";
 
-import { common_Product } from "@/api/proto-http/frontend";
+import type { common_Product } from "@/api/proto-http/frontend";
 import ProductsSection from "@/components/sections/ProductsGridSection";
 import { serviceClient } from "@/lib/api";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Catalog({
   firstPageItems,
@@ -11,28 +11,30 @@ export default function Catalog({
   firstPageItems: common_Product[];
 }) {
   const [items, setItems] = useState<common_Product[]>(firstPageItems);
-  const [page, setPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
   const limit = 16;
+  const pageRef = useRef(2);
+  const hasMoreRef = useRef(hasMore);
 
   const fetchData = async () => {
-    if (!hasMore) return;
+    if (!hasMoreRef.current || isLoading) return;
     setIsLoading(true);
-    console.log(page);
     try {
       const response = await serviceClient.GetProductsPaged({
         limit: limit,
-        offset: (page - 1) * limit,
+        offset: (pageRef.current - 1) * limit,
         sortFactors: undefined,
         orderFactor: undefined,
         filterConditions: undefined,
       });
 
-      setPage((prevPage) => prevPage + 1);
+      pageRef.current += 1;
       setItems((prevItems) => [...prevItems, ...(response.products || [])]);
+      // To-DO we don't have count of all products on response, so last request could has 16 so we will make additional request that makes no sense - fix
       if (!response.products || response.products.length < limit) {
+        hasMoreRef.current = false;
         setHasMore(false);
       }
     } catch (error) {
@@ -55,7 +57,11 @@ export default function Catalog({
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [page, hasMore]);
+  }, []);
+
+  useEffect(() => {
+    hasMoreRef.current = hasMore;
+  }, [hasMore]);
 
   return (
     <div>

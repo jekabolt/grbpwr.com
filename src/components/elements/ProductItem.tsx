@@ -1,4 +1,4 @@
-import { common_Product } from "@/api/proto-http/frontend";
+import type { common_Product } from "@/api/proto-http/frontend";
 import Image from "@/components/elements/Image";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -15,18 +15,12 @@ export default function ProductItem({
   product: common_Product;
   className: string;
 }) {
-  const saleApplied = () => {
-    return product.productInsert?.salePercentage?.value !== "0";
-  };
+  const isSaleApplied = product.productInsert?.salePercentage?.value !== "0";
 
-  const priceWithSale = () => {
-    //TO-DO convert to selected currency
-    return (
-      (parseFloat(product.productInsert?.price?.value || "0") *
-        (100 - parseInt(product.productInsert?.salePercentage?.value || "0"))) /
-      100
-    );
-  };
+  const priceWithSale =
+    (parseFloat(product.productInsert?.price?.value || "0") *
+      (100 - parseInt(product.productInsert?.salePercentage?.value || "0"))) /
+    100;
 
   return (
     <div className={cn("relative", className)}>
@@ -52,12 +46,12 @@ export default function ProductItem({
           {product.productInsert?.preorder && (
             <span className="text-[#757575]">preorder</span>
           )}
-          <span className={saleApplied() ? "text-[#757575] line-through" : ""}>
+          <span className={isSaleApplied ? "text-[#757575] line-through" : ""}>
             {currencyMap.eth} {product.productInsert?.price?.value}
           </span>
-          {saleApplied() && (
+          {isSaleApplied && (
             <span>
-              {currencyMap.eth} {priceWithSale()}
+              {currencyMap.eth} {priceWithSale}
             </span>
           )}
         </span>
