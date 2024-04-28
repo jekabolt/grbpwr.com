@@ -15,6 +15,19 @@ export default function ProductItem({
   product: common_Product;
   className: string;
 }) {
+  const saleApplied = () => {
+    return product.productInsert?.salePercentage?.value !== "0";
+  };
+
+  const priceWithSale = () => {
+    //TO-DO convert to selected currency
+    return (
+      (parseFloat(product.productInsert?.price?.value || "0") *
+        (100 - parseInt(product.productInsert?.salePercentage?.value || "0"))) /
+      100
+    );
+  };
+
   return (
     <div className={cn("relative", className)}>
       <Link
@@ -35,8 +48,18 @@ export default function ProductItem({
           <span>{product.productInsert?.brand}</span>
           <span>{product.productInsert?.name}</span>
         </span>
-        <span className="block w-24 text-right text-sm font-medium">
-          {currencyMap.eth} {product.productInsert?.price?.value}
+        <span className="flex w-24 flex-col text-right text-sm font-medium">
+          {product.productInsert?.preorder && (
+            <span className="text-[#757575]">preorder</span>
+          )}
+          <span className={saleApplied() ? "text-[#757575] line-through" : ""}>
+            {currencyMap.eth} {product.productInsert?.price?.value}
+          </span>
+          {saleApplied() && (
+            <span>
+              {currencyMap.eth} {priceWithSale()}
+            </span>
+          )}
         </span>
       </div>
     </div>

@@ -27,11 +27,14 @@ const requestHandler = async (
   { path, method, body }: RequestHandlerParams,
   { method: serviceMethod }: ProtoMetaParams,
 ) => {
-  const response = await fetch(`${process.env.BACKEND_URL}/${path}`, {
-    method,
-    body,
-    ...(fetchParams[serviceMethod] as Object),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`,
+    {
+      method,
+      body,
+      ...(fetchParams[serviceMethod] as Object),
+    },
+  );
 
   return await response.json();
 };
