@@ -16,6 +16,9 @@ export default async function Page() {
       <HeroSection {...main} />
       <CoreLayout>
         <AdsSection ads={ads} />
+        <div className="justify-center bg-black px-8 py-6 text-[232px] font-medium lowercase leading-[208.8px] text-white max-md:max-w-full max-md:px-5 max-md:text-4xl">
+          VIEW ALL
+        </div>
         <ProductsSection products={productsFeatured} />
       </CoreLayout>
     </>
