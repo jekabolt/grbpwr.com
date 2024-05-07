@@ -2,8 +2,9 @@ import { footerLinks as links, footerYear as year } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import Link from "next/link";
 import FooterForm from "./FooterForm";
+import { cn } from "@/lib/utils";
 
-export default function Footer() {
+export default function Footer({ className }: { className?: string }) {
   async function formSubmitClick(data: FormData): Promise<void> {
     "use server";
     try {
@@ -18,7 +19,12 @@ export default function Footer() {
   }
 
   return (
-    <footer className="grid grid-cols-1 gap-14 p-2 lg:grid-cols-2 lg:gap-10">
+    <footer
+      className={cn(
+        "grid grid-cols-1 gap-14 p-2 lg:grid-cols-2 lg:gap-10",
+        className,
+      )}
+    >
       <div className="col-span-1 lg:order-last">
         <FooterForm formSubmitClick={formSubmitClick} />
       </div>
