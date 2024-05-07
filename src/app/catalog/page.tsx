@@ -1,5 +1,5 @@
-import Catalog from "@/components/elements/Catalog";
-import Layout from "@/components/global/Layout";
+import Catalog from "@/components/Catalog";
+import CoreLayout from "@/components/layouts/CoreLayout";
 import { catalogLimit } from "@/constants";
 import { serviceClient } from "@/lib/api";
 
@@ -11,9 +11,10 @@ export default async function Page() {
     orderFactor: undefined,
     filterConditions: undefined,
   });
+
   return (
-    <Layout>
+    <CoreLayout>
       <Catalog firstPageItems={response.products || []} />
-    </Layout>
+    </CoreLayout>
   );
 }

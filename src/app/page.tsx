@@ -1,4 +1,4 @@
-import Layout from "@/components/global/Layout";
+import CoreLayout from "@/components/layouts/CoreLayout";
 import AdsSection from "@/components/sections/AdsSection";
 import HeroSection from "@/components/sections/HeroSection";
 import ProductsSection from "@/components/sections/ProductsGridSection";
@@ -12,14 +12,12 @@ export default async function Page() {
   const { main, ads, productsFeatured } = hero;
 
   return (
-    <div>
+    <>
       <HeroSection {...main} />
-      <Layout>
-        <div className="space-y-24">
-          <AdsSection ads={ads} />
-          <ProductsSection products={productsFeatured} />
-        </div>
-      </Layout>
-    </div>
+      <CoreLayout>
+        <AdsSection ads={ads} />
+        <ProductsSection products={productsFeatured} />
+      </CoreLayout>
+    </>
   );
 }
