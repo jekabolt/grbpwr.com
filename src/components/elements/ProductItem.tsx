@@ -1,5 +1,5 @@
 import type { common_Product } from "@/api/proto-http/frontend";
-import Image from "@/components/elements/Image";
+import Image from "@/components/global/Image";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
