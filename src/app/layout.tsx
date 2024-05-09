@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(FeatureMono.className, "relative min-h-screen")}>
-        <main>{children}</main>
+        <main className="lightTheme">{children}</main>
       </body>
     </html>
   );

@@ -21,7 +21,7 @@ export default function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
-        "grid grid-cols-1 gap-14 p-2 lg:grid-cols-2 lg:gap-10",
+        "grid grid-cols-1 gap-14 p-2 text-textColor lg:grid-cols-2 lg:gap-10",
         className,
       )}
     >
@@ -46,7 +46,7 @@ export default function Footer({ className }: { className?: string }) {
             </Link>
           </div>
           <div>
-            <span className="bg-black px-1.5 py-0.5 text-white">
+            <span className="bg-textColor px-1.5 py-0.5 text-buttonTextColor">
               currency: {"[tbd]"}
             </span>
           </div>

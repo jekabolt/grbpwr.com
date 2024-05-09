@@ -33,7 +33,7 @@ export default function FooterForm({ formSubmitClick }: FooterFormProps) {
       />
       <SubmitButton
         text="subscribe"
-        className="block w-36 bg-black px-1.5 text-center text-sm text-white"
+        className="block w-36 bg-textColor px-1.5 text-center text-sm text-buttonTextColor"
       />
     </form>
   );

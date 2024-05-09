@@ -3,14 +3,20 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+  .lightTheme {
+    --background: #fff;
+    --text: #000;
+    --button-text: #fff;
+    --highlight-text: #311eee;
+    --error: #ff0000;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+  .blueTheme {
+    --background: #311eee;
+    --text: #fff;
+    --button-text: #000;
+    --highlight-text: #fff;
+    --error: #ff0000;
   }
 }
 
