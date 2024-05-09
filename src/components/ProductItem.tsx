@@ -38,23 +38,23 @@ export default function ProductItem({
       </div>
       <div className="flex w-full gap-3">
         {/* todo: change to css variable */}
-        <span className="flex grow flex-col text-xs font-medium text-[#311EEE] underline">
+        <div className="flex grow flex-col text-xs font-medium text-highlightTextColor underline">
           <span>{product.productInsert?.brand}</span>
           <span>{product.productInsert?.name}</span>
-        </span>
-        <span className="flex w-24 flex-col text-right text-sm font-medium">
+        </div>
+        <div className="flex w-24 flex-col text-right text-sm font-medium text-textColor">
           {product.productInsert?.preorder && (
-            <span className="text-[#757575]">preorder</span>
+            <span className="opacity-50">preorder</span>
           )}
-          <span className={isSaleApplied ? "text-[#757575] line-through" : ""}>
+          <span className={isSaleApplied ? "line-through opacity-50" : ""}>
             {currencyMap.eth} {product.productInsert?.price?.value}
           </span>
           {isSaleApplied && (
-            <span>
+            <span className="text">
               {currencyMap.eth} {priceWithSale}
             </span>
           )}
-        </span>
+        </div>
       </div>
     </div>
   );

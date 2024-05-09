@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="backdrop-md sticky top-0 z-20 flex items-center justify-between p-5 backdrop-blur-md md:justify-start">
+    <header className="backdrop-md sticky top-0 z-20 flex items-center justify-between p-5 text-textColor backdrop-blur-md md:justify-start">
       <div className="grow basis-0 text-sm underline md:hidden">menu</div>
       <Link href="/">
         <Image
@@ -13,7 +13,7 @@ export default function Header() {
           alt="logo"
         />
       </Link>
-      <div className="grow basis-0 text-right text-sm text-blue-600 underline md:hidden">
+      <div className="grow basis-0 text-right text-sm underline md:hidden">
         cart {"(19)"}
       </div>
     </header>
