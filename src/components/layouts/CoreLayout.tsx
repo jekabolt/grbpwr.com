@@ -9,7 +9,7 @@ export default function CoreLayout({
 }>) {
   return (
     <div className="bg-bgColor">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto">
         <Header />
         <div className="flex">
           <div className="relative hidden w-24 text-sm text-highlightTextColor underline md:block">

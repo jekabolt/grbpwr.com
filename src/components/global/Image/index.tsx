@@ -19,7 +19,8 @@ export default function ImageComponent({
         // blurDataURL={`${asset.filename}/m/filters:quality(5):blur(10)`}
         src={src}
         alt={alt}
-        className="h-full w-full"
+        className="h-full w-full "
+        sizes="(max-width: 1280px) 100vw, 1280px"
         style={{
           // todo: handle multiple images
           objectFit: undefined,

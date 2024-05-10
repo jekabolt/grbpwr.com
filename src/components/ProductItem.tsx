@@ -1,12 +1,8 @@
 import type { common_Product } from "@/api/proto-http/frontend";
 import Image from "@/components/global/Image";
+import { currencyMap } from "@/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-
-// todo: match with api
-const currencyMap = {
-  eth: "eth",
-};
 
 export default function ProductItem({
   product,

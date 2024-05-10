@@ -9,3 +9,8 @@ export const footerLinks: { text: string; href: string }[] = [
 ];
 
 export const catalogLimit = 16;
+
+export const currencyMap = {
+  eth: "eth",
+};
+export const MAX_LIMIT = 9999999;
