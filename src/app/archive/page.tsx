@@ -21,7 +21,7 @@ export default async function Page() {
           {nonEmptyArchives?.map((a, i) => (
             <div key={a.archive?.id || i} className="text-textColor">
               <div className="flex gap-3">
-                {/* todo: fix images. make sure all the images have known size */}
+                {/* todo: fix images. make sure all the images have known size + add scroll when there are more images  */}
                 {a.items?.map((i) => (
                   <div key={i.id} className="h-80 w-80">
                     <Image
