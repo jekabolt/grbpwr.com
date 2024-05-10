@@ -37,7 +37,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <CoreLayout>
       <div className="flex flex-col bg-white pb-20 pt-5">
         <div className="flex w-full flex-wrap items-end">
-          {/* First column, adjusts with screen size */}
+          {/* TO-DO set width based on screen size */}
           <div className="flex h-[400px] w-full flex-col justify-end sm:w-1/2 md:h-[400px] md:w-1/6">
             {product?.media?.[0]?.productMediaInsert?.fullSize && (
               <Image
@@ -48,7 +48,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
           </div>
 
-          {/* Second column, adjusts with screen size */}
           <div className="flex h-[800px] w-full flex-col sm:w-1/2 md:w-1/3">
             {product?.media?.[1]?.productMediaInsert?.fullSize && (
               <Image
@@ -59,7 +58,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
           </div>
 
-          {/* Third column, adjusts with screen size */}
           <div className="flex h-[800px] w-full flex-col sm:w-1/2 md:w-1/3">
             {product?.media?.[2]?.productMediaInsert?.fullSize && (
               <Image
@@ -70,7 +68,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
           </div>
 
-          {/* Fourth column, adjusts with screen size */}
           <div className="flex h-[400px] w-full flex-col justify-end sm:w-1/2 md:h-[400px] md:w-1/6">
             {product?.media?.[3]?.productMediaInsert?.fullSize && (
               <Image
@@ -93,7 +90,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mt-4">
             {product?.product?.productInsert?.description}
           </div>
-          <div className="mt-4">Measurements</div>
+          <div className="mt-4">measurements</div>
           <div className="mt-4 flex justify-between gap-2">
             <div className="flex gap-2">
               {product?.sizes?.map((size) => (
