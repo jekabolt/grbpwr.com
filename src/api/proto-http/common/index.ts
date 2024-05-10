@@ -203,6 +203,7 @@ export type ShipmentCarrierInsert = {
   carrier: string | undefined;
   price: googletype_Decimal | undefined;
   allowed: boolean | undefined;
+  description: string | undefined;
 };
 
 export type ShipmentCarrier = {
@@ -279,6 +280,7 @@ export type OrderItem = {
   productSalePercentage: string | undefined;
   productBrand: string | undefined;
   categoryId: number | undefined;
+  sku: string | undefined;
   orderItem: OrderItemInsert | undefined;
 };
 

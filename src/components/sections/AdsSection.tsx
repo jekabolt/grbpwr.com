@@ -1,5 +1,5 @@
 import { common_HeroInsert } from "@/api/proto-http/frontend";
-import Image from "next/image";
+import Image from "@/components/global/Image";
 
 export default function AdsSection({
   ads,
@@ -14,8 +14,7 @@ export default function AdsSection({
             <Image
               src={a.contentLink || ""}
               alt="ad hero image"
-              fill
-              className="object-cover"
+              aspectRatio="4/3"
             />
           </div>
         ) : null,

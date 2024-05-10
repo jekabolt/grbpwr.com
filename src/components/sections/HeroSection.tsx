@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/global/Image";
 
 export default function Hero({ contentLink }: any) {
   if (!contentLink) return null;
@@ -6,7 +6,9 @@ export default function Hero({ contentLink }: any) {
   return (
     // todo: rework + change bg color
     <div className="flex h-screen items-center justify-center bg-slate-50">
-      <Image height={300} width={400} src={contentLink} alt="main hero image" />
+      <div className="h-[600px] w-[800px]">
+        <Image src={contentLink} alt="main hero image" aspectRatio="4/3" />
+      </div>
     </div>
   );
 }
