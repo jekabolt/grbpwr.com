@@ -209,6 +209,7 @@ export type common_ShipmentCarrierInsert = {
   carrier: string | undefined;
   price: googletype_Decimal | undefined;
   allowed: boolean | undefined;
+  description: string | undefined;
 };
 
 export type common_Size = {
@@ -337,6 +338,7 @@ export type common_FilterConditions = {
 
 export type GetProductsPagedResponse = {
   products: common_Product[] | undefined;
+  total: number | undefined;
 };
 
 export type SubmitOrderRequest = {
@@ -394,11 +396,12 @@ export type common_Order = {
   promoId: number | undefined;
 };
 
-export type GetOrderByUUIDRequest = {
-  uuid: string | undefined;
+export type UpdateOrderShippingCarrierRequest = {
+  orderUuid: string | undefined;
+  shippingCarrierId: number | undefined;
 };
 
-export type GetOrderByUUIDResponse = {
+export type UpdateOrderShippingCarrierResponse = {
   order: common_OrderFull | undefined;
 };
 
@@ -422,6 +425,7 @@ export type common_OrderItem = {
   productSalePercentage: string | undefined;
   productBrand: string | undefined;
   categoryId: number | undefined;
+  sku: string | undefined;
   orderItem: common_OrderItemInsert | undefined;
 };
 
@@ -482,6 +486,14 @@ export type common_Address = {
   addressInsert: common_AddressInsert | undefined;
 };
 
+export type GetOrderByUUIDRequest = {
+  orderUuid: string | undefined;
+};
+
+export type GetOrderByUUIDResponse = {
+  order: common_OrderFull | undefined;
+};
+
 export type ValidateOrderItemsInsertRequest = {
   items: common_OrderItemInsert[] | undefined;
 };
@@ -492,7 +504,7 @@ export type ValidateOrderItemsInsertResponse = {
 };
 
 export type ValidateOrderByUUIDRequest = {
-  uuid: string | undefined;
+  orderUuid: string | undefined;
 };
 
 export type ValidateOrderByUUIDResponse = {
@@ -500,13 +512,20 @@ export type ValidateOrderByUUIDResponse = {
 };
 
 export type GetOrderInvoiceRequest = {
-  orderId: number | undefined;
+  orderUuid: string | undefined;
   paymentMethod: common_PaymentMethodNameEnum | undefined;
 };
 
 export type GetOrderInvoiceResponse = {
   expiredAt: wellKnownTimestamp | undefined;
   payment: common_PaymentInsert | undefined;
+};
+
+export type CancelOrderInvoiceRequest = {
+  orderUuid: string | undefined;
+};
+
+export type CancelOrderInvoiceResponse = {
 };
 
 export type CheckCryptoPaymentRequest = {
@@ -518,7 +537,7 @@ export type CheckCryptoPaymentResponse = {
 };
 
 export type ApplyPromoCodeRequest = {
-  orderId: number | undefined;
+  orderUuid: string | undefined;
   promoCode: string | undefined;
 };
 
@@ -527,7 +546,7 @@ export type ApplyPromoCodeResponse = {
 };
 
 export type UpdateOrderItemsRequest = {
-  orderId: number | undefined;
+  orderUuid: string | undefined;
   items: common_OrderItemInsert[] | undefined;
 };
 
@@ -537,7 +556,6 @@ export type UpdateOrderItemsResponse = {
 
 export type SubscribeNewsletterRequest = {
   email: string | undefined;
-  name: string | undefined;
 };
 
 export type SubscribeNewsletterResponse = {
@@ -611,12 +629,15 @@ export interface FrontendService {
   GetProductsPaged(request: GetProductsPagedRequest): Promise<GetProductsPagedResponse>;
   // Submit an order
   SubmitOrder(request: SubmitOrderRequest): Promise<SubmitOrderResponse>;
+  UpdateOrderShippingCarrier(request: UpdateOrderShippingCarrierRequest): Promise<UpdateOrderShippingCarrierResponse>;
   // Retrieves an order by its ID
   GetOrderByUUID(request: GetOrderByUUIDRequest): Promise<GetOrderByUUIDResponse>;
   ValidateOrderItemsInsert(request: ValidateOrderItemsInsertRequest): Promise<ValidateOrderItemsInsertResponse>;
   ValidateOrderByUUID(request: ValidateOrderByUUIDRequest): Promise<ValidateOrderByUUIDResponse>;
   // Generate an invoice for the order or return the existing one
   GetOrderInvoice(request: GetOrderInvoiceRequest): Promise<GetOrderInvoiceResponse>;
+  // Cancel an invoice for the order
+  CancelOrderInvoice(request: CancelOrderInvoiceRequest): Promise<CancelOrderInvoiceResponse>;
   // CheckCryptoPayment checks the crypto payment if it has been received and updates the order status if it has been received
   CheckCryptoPayment(request: CheckCryptoPaymentRequest): Promise<CheckCryptoPaymentResponse>;
   // ApplyPromoCode applies promo code on selected order id
@@ -756,11 +777,31 @@ export function createFrontendServiceClient(
         method: "SubmitOrder",
       }) as Promise<SubmitOrderResponse>;
     },
-    GetOrderByUUID(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.uuid) {
-        throw new Error("missing required field request.uuid");
+    UpdateOrderShippingCarrier(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.orderUuid) {
+        throw new Error("missing required field request.order_uuid");
       }
-      const path = `api/frontend/orders/${request.uuid}`; // eslint-disable-line quotes
+      const path = `api/frontend/order/${request.orderUuid}/update-shipping-carrier`; // eslint-disable-line quotes
+      const body = JSON.stringify(request);
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return handler({
+        path: uri,
+        method: "POST",
+        body,
+      }, {
+        service: "FrontendService",
+        method: "UpdateOrderShippingCarrier",
+      }) as Promise<UpdateOrderShippingCarrierResponse>;
+    },
+    GetOrderByUUID(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.orderUuid) {
+        throw new Error("missing required field request.order_uuid");
+      }
+      const path = `api/frontend/orders/${request.orderUuid}`; // eslint-disable-line quotes
       const body = null;
       const queryParams: string[] = [];
       let uri = path;
@@ -794,10 +835,10 @@ export function createFrontendServiceClient(
       }) as Promise<ValidateOrderItemsInsertResponse>;
     },
     ValidateOrderByUUID(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.uuid) {
-        throw new Error("missing required field request.uuid");
+      if (!request.orderUuid) {
+        throw new Error("missing required field request.order_uuid");
       }
-      const path = `api/admin/orders/validate/${request.uuid}`; // eslint-disable-line quotes
+      const path = `api/admin/orders/validate/${request.orderUuid}`; // eslint-disable-line quotes
       const body = JSON.stringify(request);
       const queryParams: string[] = [];
       let uri = path;
@@ -814,13 +855,13 @@ export function createFrontendServiceClient(
       }) as Promise<ValidateOrderByUUIDResponse>;
     },
     GetOrderInvoice(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.orderId) {
-        throw new Error("missing required field request.order_id");
+      if (!request.orderUuid) {
+        throw new Error("missing required field request.order_uuid");
       }
       if (!request.paymentMethod) {
         throw new Error("missing required field request.payment_method");
       }
-      const path = `api/frontend/order/${request.orderId}/${request.paymentMethod}/invoice`; // eslint-disable-line quotes
+      const path = `api/frontend/order/${request.orderUuid}/${request.paymentMethod}/invoice`; // eslint-disable-line quotes
       const body = JSON.stringify(request);
       const queryParams: string[] = [];
       let uri = path;
@@ -835,6 +876,26 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "GetOrderInvoice",
       }) as Promise<GetOrderInvoiceResponse>;
+    },
+    CancelOrderInvoice(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.orderUuid) {
+        throw new Error("missing required field request.order_uuid");
+      }
+      const path = `api/frontend/order/${request.orderUuid}/invoice/cancel`; // eslint-disable-line quotes
+      const body = JSON.stringify(request);
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return handler({
+        path: uri,
+        method: "POST",
+        body,
+      }, {
+        service: "FrontendService",
+        method: "CancelOrderInvoice",
+      }) as Promise<CancelOrderInvoiceResponse>;
     },
     CheckCryptoPayment(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.orderUuid) {
