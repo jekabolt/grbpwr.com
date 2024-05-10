@@ -18,9 +18,11 @@ export async function generateStaticParams() {
     filterConditions: undefined,
   });
 
-  return response.products?.map((product) => ({
-    slug: product.slug,
-  }));
+  return (
+    response.products?.map((product) => ({
+      slug: product.slug!,
+    })) || []
+  );
 }
 
 const catalogData = [

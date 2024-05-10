@@ -57,7 +57,7 @@ export default function Catalog({
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  });
 
   useEffect(() => {
     hasMoreRef.current = hasMore;
