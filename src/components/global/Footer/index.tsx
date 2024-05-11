@@ -4,7 +4,13 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import FooterForm from "./FooterForm";
 
-export default function Footer({ className }: { className?: string }) {
+export default function Footer({
+  className,
+  hideForm,
+}: {
+  className?: string;
+  hideForm?: boolean;
+}) {
   async function formSubmitClick(data: FormData): Promise<void> {
     "use server";
     try {
@@ -26,7 +32,7 @@ export default function Footer({ className }: { className?: string }) {
       )}
     >
       <div className="col-span-1 lg:order-last">
-        <FooterForm formSubmitClick={formSubmitClick} />
+        {!hideForm && <FooterForm formSubmitClick={formSubmitClick} />}
       </div>
 
       <div className="col-span-1 flex h-full flex-col gap-4 text-xs lg:flex-row-reverse lg:justify-between">

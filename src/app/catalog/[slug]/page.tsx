@@ -36,7 +36,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   });
 
   return (
-    <CoreLayout>
+    <CoreLayout hideForm>
       <div className="flex flex-col bg-white pb-20 pt-5">
         <div className="flex w-full flex-wrap items-end">
           {/* TO-DO set width based on screen size */}

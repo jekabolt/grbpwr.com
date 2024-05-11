@@ -4,8 +4,10 @@ import Link from "@/components/global/Link";
 
 export default function CoreLayout({
   children,
+  hideForm,
 }: Readonly<{
   children: React.ReactNode;
+  hideForm?: boolean;
 }>) {
   return (
     <div className="bg-bgColor">
@@ -32,7 +34,7 @@ export default function CoreLayout({
             </div>
           </div>
         </div>
-        <Footer className="mt-24" />
+        <Footer className="mt-24" hideForm={hideForm} />
       </div>
     </div>
   );
