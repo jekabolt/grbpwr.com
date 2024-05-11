@@ -1,8 +1,8 @@
-import { footerLinks as links, footerYear as year } from "@/constants";
+import { FOOTER_LINKS as links, FOOTER_YEAR as year } from "@/constants";
 import { serviceClient } from "@/lib/api";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import FooterForm from "./FooterForm";
-import { cn } from "@/lib/utils";
 
 export default function Footer({ className }: { className?: string }) {
   async function formSubmitClick(data: FormData): Promise<void> {

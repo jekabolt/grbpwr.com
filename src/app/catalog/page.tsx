@@ -1,11 +1,11 @@
 import Catalog from "@/components/Catalog";
 import CoreLayout from "@/components/layouts/CoreLayout";
-import { catalogLimit } from "@/constants";
+import { CATALOG_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 
 export default async function Page() {
   const response = await serviceClient.GetProductsPaged({
-    limit: catalogLimit,
+    limit: CATALOG_LIMIT,
     offset: 0,
     sortFactors: undefined,
     orderFactor: undefined,
