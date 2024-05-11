@@ -1,6 +1,4 @@
-import Catalog from "@/components/Catalog";
 import CoreLayout from "@/components/layouts/CoreLayout";
-import { catalogLimit } from "@/constants";
 import { serviceClient } from "@/lib/api";
 
 import Image from "@/components/global/Image";
