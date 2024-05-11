@@ -1,6 +1,6 @@
 import Image from "@/components/global/Image";
 import CoreLayout from "@/components/layouts/CoreLayout";
-import { MAX_LIMIT, currencyMap } from "@/constants";
+import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 
 interface ProductPageProps {
@@ -86,7 +86,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div>{product?.product?.productInsert?.name}</div>
             <div>
               {product?.product?.productInsert?.price?.value}
-              {currencyMap.eth}
+              {CURRENCY_MAP.eth}
             </div>
           </div>
           <div className="mt-4">

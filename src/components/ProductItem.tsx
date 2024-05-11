@@ -1,6 +1,6 @@
 import type { common_Product } from "@/api/proto-http/frontend";
 import Image from "@/components/global/Image";
-import { currencyMap } from "@/constants";
+import { CURRENCY_MAP } from "@/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -43,11 +43,11 @@ export default function ProductItem({
             <span className="opacity-50">preorder</span>
           )}
           <span className={isSaleApplied ? "line-through opacity-50" : ""}>
-            {currencyMap.eth} {product.productInsert?.price?.value}
+            {CURRENCY_MAP.eth} {product.productInsert?.price?.value}
           </span>
           {isSaleApplied && (
             <span className="text">
-              {currencyMap.eth} {priceWithSale}
+              {CURRENCY_MAP.eth} {priceWithSale}
             </span>
           )}
         </div>
