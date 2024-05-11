@@ -14,9 +14,9 @@ export default function CoreLayout({
         <div className="flex">
           <div className="relative hidden w-24 md:block">
             <div className="sticky top-24 flex flex-col items-center gap-60">
-              <Link style="navigationLink" title="Catalog" href="/catalog" />
-              <Link style="navigationLink" title="Archive" href="/archive" />
-              <Link style="navigationLink" title="Shipping" href="/shipping" />
+              <Link style="mainNavigation" title="Catalog" href="/catalog" />
+              <Link style="mainNavigation" title="Archive" href="/archive" />
+              <Link style="mainNavigation" title="Shipping" href="/shipping" />
             </div>
           </div>
 
@@ -26,9 +26,9 @@ export default function CoreLayout({
 
           <div className="relative hidden w-24 md:block">
             <div className="sticky top-24 flex flex-col items-center gap-60">
-              <Link style="navigationLink" title="Cart" href="/cart" />
-              <Link style="navigationLink" title="About" href="/about" />
-              <Link style="navigationLink" title="Contacts" href="/contacts" />
+              <Link style="mainNavigation" title="Cart" href="/cart" />
+              <Link style="mainNavigation" title="About" href="/about" />
+              <Link style="mainNavigation" title="Contacts" href="/contacts" />
             </div>
           </div>
         </div>

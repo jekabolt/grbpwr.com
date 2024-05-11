@@ -1,6 +1,14 @@
-export type LinkStyle = "navigationLink";
+export type LinkStyle = "mainNavigation" | "bigButton";
 
-function NavigationLinkStyleComponent({ children }: any) {
+type StyleComponentType = {
+  children: React.ReactNode;
+};
+
+function DefaultStyleComponent({ children }: StyleComponentType) {
+  return <span>{children}</span>;
+}
+
+function mainNavigationStyleComponent({ children }: StyleComponentType) {
   return (
     <span className="text-sm text-highlightTextColor underline">
       {children}
@@ -8,12 +16,17 @@ function NavigationLinkStyleComponent({ children }: any) {
   );
 }
 
-function DefaultStyleComponent({ children }: any) {
-  return <span>232323</span>;
+function BigButtonStyleComponent({ children }: StyleComponentType) {
+  return (
+    <span className="block w-full border-8 border-textColor bg-textColor p-2 text-7xl text-buttonTextColor transition-all hover:bg-buttonTextColor hover:text-textColor lg:px-5 lg:py-6 lg:text-[164px]">
+      {children}
+    </span>
+  );
 }
 
 const componentsStyleMap: Record<LinkStyle, any> = {
-  navigationLink: NavigationLinkStyleComponent,
+  mainNavigation: mainNavigationStyleComponent,
+  bigButton: BigButtonStyleComponent,
 };
 
 export function getComponentByStyle(style: LinkStyle) {
