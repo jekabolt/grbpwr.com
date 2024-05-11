@@ -1,6 +1,6 @@
 import Footer from "@/components/global/Footer";
 import Header from "@/components/global/Header";
-import Link from "next/link";
+import Link from "@/components/global/Link";
 
 export default function CoreLayout({
   children,
@@ -12,13 +12,11 @@ export default function CoreLayout({
       <div className="mx-auto max-w-7xl">
         <Header />
         <div className="flex">
-          <div className="relative hidden w-24 text-sm text-highlightTextColor underline md:block">
+          <div className="relative hidden w-24 md:block">
             <div className="sticky top-24 flex flex-col items-center gap-60">
-              <Link className="" href="/catalog">
-                Catalog
-              </Link>
-              <Link href="/archive">Archive</Link>
-              <Link href="/shipping">Shipping</Link>
+              <Link style="navigationLink" title="Catalog" href="/catalog" />
+              <Link style="navigationLink" title="Archive" href="/archive" />
+              <Link style="navigationLink" title="Shipping" href="/shipping" />
             </div>
           </div>
 
@@ -26,11 +24,11 @@ export default function CoreLayout({
             {children}
           </div>
 
-          <div className="relative hidden w-24 text-sm text-highlightTextColor underline md:block">
+          <div className="relative hidden w-24 md:block">
             <div className="sticky top-24 flex flex-col items-center gap-60">
-              <Link href="/cart">Cart</Link>
-              <Link href="/about">About</Link>
-              <Link href="/contacts">Contacts</Link>
+              <Link style="navigationLink" title="Cart" href="/cart" />
+              <Link style="navigationLink" title="About" href="/about" />
+              <Link style="navigationLink" title="Contacts" href="/contacts" />
             </div>
           </div>
         </div>
