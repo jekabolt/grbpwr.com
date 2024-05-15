@@ -3,6 +3,7 @@ import { serviceClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import FooterForm from "./FooterForm";
+import Popover from "@/components/ui/Popover";
 
 export default function Footer({
   className,
@@ -53,7 +54,8 @@ export default function Footer({
           </div>
           <div>
             <span className="bg-textColor px-1.5 py-0.5 text-buttonTextColor">
-              currency: {"[tbd]"}
+              {/* currency: {"[tbd]"} */}
+              <Popover />
             </span>
           </div>
         </div>
