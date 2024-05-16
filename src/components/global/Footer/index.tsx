@@ -3,7 +3,24 @@ import { serviceClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import FooterForm from "./FooterForm";
-import Popover from "@/components/ui/Popover";
+import GenericPopover from "@/components/ui/Popover";
+
+// todo: sync with BE
+const currencyNameMap = {
+  t: "ethereum",
+  b: "bitcoin",
+  e: "euro",
+  "0": "united states dollar",
+  ":": "united states dollar",
+  $: "united states dollar",
+  "%": "united states dollar",
+  "&": "united states dollar",
+  "*": "united states dollar",
+  ")": "united states dollar",
+  "[": "united states dollar",
+  "]": "united states dollar",
+  "@": "united states dollar",
+};
 
 export default function Footer({
   className,
@@ -24,6 +41,8 @@ export default function Footer({
       throw error;
     }
   }
+
+  const currentCurrency = "eth";
 
   return (
     <footer
@@ -53,10 +72,22 @@ export default function Footer({
             </Link>
           </div>
           <div>
-            <span className="bg-textColor px-1.5 py-0.5 text-buttonTextColor">
-              {/* currency: {"[tbd]"} */}
-              <Popover />
-            </span>
+            <GenericPopover
+              title="currency"
+              openText={`Currency: ${currentCurrency}`}
+            >
+              <div className="space-y-2 px-12 pb-7">
+                {Object.entries(currencyNameMap).map(([k, v]) => (
+                  <button
+                    key={k + v}
+                    className="flex items-center gap-1 text-sm first:underline"
+                  >
+                    <span>{k}</span>
+                    <span>{v}</span>
+                  </button>
+                ))}
+              </div>
+            </GenericPopover>
           </div>
         </div>
       </div>

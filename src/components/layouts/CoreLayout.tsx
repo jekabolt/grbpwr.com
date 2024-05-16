@@ -13,9 +13,6 @@ export default function CoreLayout({
     <div className="bg-bgColor">
       <div className="mx-auto max-w-7xl">
         <Header />
-        <Footer className="mt-24" hideForm={hideForm} />
-        <Footer className="mt-24" hideForm={hideForm} />
-
         <div className="flex">
           <div className="relative hidden w-24 md:block">
             <div className="sticky top-24 flex flex-col items-center gap-60">
@@ -37,6 +34,7 @@ export default function CoreLayout({
             </div>
           </div>
         </div>
+        <Footer className="mt-24" hideForm={hideForm} />
       </div>
     </div>
   );
