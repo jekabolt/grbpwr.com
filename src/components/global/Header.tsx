@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="backdrop-md sticky top-0 z-20 flex items-center justify-between p-5 text-textColor backdrop-blur-md md:justify-start">
+    <header className="sticky top-0 z-20 flex items-center justify-between bg-bgColor p-2 py-5 text-textColor backdrop-blur-md md:justify-start lg:p-5">
       <div className="grow basis-0 text-sm underline md:hidden">menu</div>
       <Link href="/" className="h-10 w-10">
         <Image
