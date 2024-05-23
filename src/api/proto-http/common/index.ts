@@ -289,6 +289,33 @@ export type OrderStatus = {
   name: OrderStatusEnum | undefined;
 };
 
+export type MediaFull = {
+  // Media ID
+  id: number | undefined;
+  // Media created date
+  createdAt: wellKnownTimestamp | undefined;
+  // media
+  media: MediaInsert | undefined;
+};
+
+export type MediaInsert = {
+  // Full-size media URL
+  fullSize: MediaInfo | undefined;
+  // Thumbnail media URL
+  thumbnail: MediaInfo | undefined;
+  // Compressed media URL
+  compressed: MediaInfo | undefined;
+};
+
+export type MediaInfo = {
+  // Media URL
+  mediaUrl: string | undefined;
+  // width
+  width: number | undefined;
+  // height
+  height: number | undefined;
+};
+
 export type CategoryEnum =
   | "CATEGORY_ENUM_UNKNOWN"
   | "CATEGORY_ENUM_T_SHIRT"
@@ -355,7 +382,7 @@ export type MeasurementName = {
 export type ProductNew = {
   product: ProductInsert | undefined;
   sizeMeasurements: SizeWithMeasurementInsert[] | undefined;
-  media: ProductMediaInsert[] | undefined;
+  mediaIds: number[] | undefined;
   tags: ProductTagInsert[] | undefined;
 };
 
@@ -391,12 +418,6 @@ export type ProductMeasurementInsert = {
   measurementValue: googletype_Decimal | undefined;
 };
 
-export type ProductMediaInsert = {
-  fullSize: string | undefined;
-  thumbnail: string | undefined;
-  compressed: string | undefined;
-};
-
 export type ProductTagInsert = {
   tag: string | undefined;
 };
@@ -405,7 +426,7 @@ export type ProductFull = {
   product: Product | undefined;
   sizes: ProductSize[] | undefined;
   measurements: ProductMeasurement[] | undefined;
-  media: ProductMedia[] | undefined;
+  media: MediaFull[] | undefined;
   tags: ProductTag[] | undefined;
 };
 
@@ -430,13 +451,6 @@ export type ProductMeasurement = {
   productSizeId: number | undefined;
   measurementNameId: number | undefined;
   measurementValue: googletype_Decimal | undefined;
-};
-
-export type ProductMedia = {
-  id: number | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  productId: number | undefined;
-  productMediaInsert: ProductMediaInsert | undefined;
 };
 
 export type ProductTag = {
@@ -510,24 +524,6 @@ export type HeroFull = {
   main: HeroInsert | undefined;
   ads: HeroInsert[] | undefined;
   productsFeatured: Product[] | undefined;
-};
-
-export type Media = {
-  // Media ID
-  id: number | undefined;
-  // Media created date
-  createdAt: wellKnownTimestamp | undefined;
-  // media
-  media: MediaInsert | undefined;
-};
-
-export type MediaInsert = {
-  // Full-size media URL
-  fullSize: string | undefined;
-  // Thumbnail media URL
-  thumbnail: string | undefined;
-  // Compressed media URL
-  compressed: string | undefined;
 };
 
 // Subscriber represents the subscriber table

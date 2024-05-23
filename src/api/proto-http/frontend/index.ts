@@ -275,7 +275,7 @@ export type common_ProductFull = {
   product: common_Product | undefined;
   sizes: common_ProductSize[] | undefined;
   measurements: common_ProductMeasurement[] | undefined;
-  media: common_ProductMedia[] | undefined;
+  media: common_MediaFull[] | undefined;
   tags: common_ProductTag[] | undefined;
 };
 
@@ -294,17 +294,31 @@ export type common_ProductMeasurement = {
   measurementValue: googletype_Decimal | undefined;
 };
 
-export type common_ProductMedia = {
+export type common_MediaFull = {
+  // Media ID
   id: number | undefined;
+  // Media created date
   createdAt: wellKnownTimestamp | undefined;
-  productId: number | undefined;
-  productMediaInsert: common_ProductMediaInsert | undefined;
+  // media
+  media: common_MediaInsert | undefined;
 };
 
-export type common_ProductMediaInsert = {
-  fullSize: string | undefined;
-  thumbnail: string | undefined;
-  compressed: string | undefined;
+export type common_MediaInsert = {
+  // Full-size media URL
+  fullSize: common_MediaInfo | undefined;
+  // Thumbnail media URL
+  thumbnail: common_MediaInfo | undefined;
+  // Compressed media URL
+  compressed: common_MediaInfo | undefined;
+};
+
+export type common_MediaInfo = {
+  // Media URL
+  mediaUrl: string | undefined;
+  // width
+  width: number | undefined;
+  // height
+  height: number | undefined;
 };
 
 export type common_ProductTag = {

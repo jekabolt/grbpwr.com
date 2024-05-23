@@ -23,7 +23,7 @@ export default function ImageComponent({
         sizes="(max-width: 1280px) 100vw, 1280px"
         style={{
           // todo: handle multiple images
-          objectFit: undefined,
+          objectFit: "fill",
           //   marginTop: 0,
           //   marginBottom: 0,
           //   objectFit: fit || undefined,

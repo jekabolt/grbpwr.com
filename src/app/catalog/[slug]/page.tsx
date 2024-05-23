@@ -2,6 +2,7 @@ import Image from "@/components/global/Image";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
+import { calculateAspectRatio } from "@/lib/utils";
 
 interface ProductPageProps {
   params: {
@@ -38,47 +39,60 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <CoreLayout hideForm>
       <div className="flex flex-col bg-white pb-20 pt-5">
-        <div className="flex w-full flex-wrap items-end">
+        <div className="flex h-auto w-full flex-wrap items-end">
           {/* TO-DO set width based on screen size */}
-          <div className="flex h-[400px] w-full flex-col justify-end sm:w-1/2 md:h-[400px] md:w-1/6">
-            {product?.media?.[0]?.productMediaInsert?.fullSize && (
-              <Image
-                src={product.media[0].productMediaInsert.fullSize}
-                alt="Product image"
-                aspectRatio="4/3"
-              />
-            )}
-          </div>
 
-          <div className="flex h-[800px] w-full flex-col sm:w-1/2 md:w-1/3">
-            {product?.media?.[1]?.productMediaInsert?.fullSize && (
+          {product?.media?.[0]?.media?.fullSize && (
+            <div className="flex h-full w-1/6 flex-col justify-end">
               <Image
-                src={product.media[1].productMediaInsert.fullSize}
+                src={product?.media?.[0]?.media?.fullSize.mediaUrl!}
                 alt="Product image"
-                aspectRatio="4/3"
+                aspectRatio={calculateAspectRatio(
+                  product?.media?.[0]?.media?.fullSize.width,
+                  product?.media?.[0]?.media?.fullSize.height,
+                )}
               />
-            )}
-          </div>
+            </div>
+          )}
 
-          <div className="flex h-[800px] w-full flex-col sm:w-1/2 md:w-1/3">
-            {product?.media?.[2]?.productMediaInsert?.fullSize && (
+          {product?.media?.[1]?.media?.fullSize && (
+            <div className="flex h-full w-1/3 flex-col">
               <Image
-                src={product.media[2].productMediaInsert.fullSize}
+                src={product?.media?.[1]?.media?.fullSize.mediaUrl!}
                 alt="Product image"
-                aspectRatio="4/3"
+                aspectRatio={calculateAspectRatio(
+                  product?.media?.[1]?.media?.fullSize.width,
+                  product?.media?.[1]?.media?.fullSize.height,
+                )}
               />
-            )}
-          </div>
+            </div>
+          )}
 
-          <div className="flex h-[400px] w-full flex-col justify-end sm:w-1/2 md:h-[400px] md:w-1/6">
-            {product?.media?.[3]?.productMediaInsert?.fullSize && (
+          {product?.media?.[2]?.media?.fullSize && (
+            <div className="flex h-full w-1/3 flex-col ">
               <Image
-                src={product.media[3].productMediaInsert.fullSize}
+                src={product?.media?.[2]?.media?.fullSize.mediaUrl!}
                 alt="Product image"
-                aspectRatio="4/3"
+                aspectRatio={calculateAspectRatio(
+                  product?.media?.[2]?.media?.fullSize.width,
+                  product?.media?.[2]?.media?.fullSize.height,
+                )}
               />
-            )}
-          </div>
+            </div>
+          )}
+
+          {product?.media?.[3]?.media?.fullSize && (
+            <div className="flex h-full w-1/6 flex-col justify-end ">
+              <Image
+                src={product?.media?.[3]?.media?.fullSize.mediaUrl!}
+                alt="Product image"
+                aspectRatio={calculateAspectRatio(
+                  product?.media?.[3]?.media?.fullSize.width,
+                  product?.media?.[3]?.media?.fullSize.height,
+                )}
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex w-1/2 flex-col ">

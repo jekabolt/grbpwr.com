@@ -42,3 +42,13 @@ export function shouldInsertEmpty(index: number) {
   }
   return false;
 }
+
+export function calculateAspectRatio(
+  width: number | undefined,
+  height: number | undefined,
+) {
+  if (!width || !height) {
+    return "4/3";
+  }
+  return `${width}/${height}`;
+}
