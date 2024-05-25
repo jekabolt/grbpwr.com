@@ -1,11 +1,15 @@
-export type LinkStyle = "mainNavigation" | "bigButton";
+export enum LinkStyle {
+  mainNavigation = "mainNavigation",
+  bigButton = "bigButton",
+  default = "default",
+}
 
 type StyleComponentType = {
   children: React.ReactNode;
 };
 
 function DefaultStyleComponent({ children }: StyleComponentType) {
-  return <span>{children}</span>;
+  return children;
 }
 
 function mainNavigationStyleComponent({ children }: StyleComponentType) {
@@ -25,8 +29,9 @@ function BigButtonStyleComponent({ children }: StyleComponentType) {
 }
 
 const componentsStyleMap: Record<LinkStyle, any> = {
-  mainNavigation: mainNavigationStyleComponent,
-  bigButton: BigButtonStyleComponent,
+  [LinkStyle.mainNavigation]: mainNavigationStyleComponent,
+  [LinkStyle.bigButton]: BigButtonStyleComponent,
+  [LinkStyle.default]: DefaultStyleComponent,
 };
 
 export function getComponentByStyle(style: LinkStyle) {

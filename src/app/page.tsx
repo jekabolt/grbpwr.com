@@ -5,6 +5,7 @@ import HeroSection from "@/components/sections/HeroSection";
 import ProductsSection from "@/components/sections/ProductsGridSection";
 import { serviceClient } from "@/lib/api";
 import Link from "@/components/global/Link";
+import { LinkStyle } from "@/components/global/Link/styles";
 
 export default async function Page() {
   const { hero } = await serviceClient.GetHero({});
@@ -18,7 +19,7 @@ export default async function Page() {
       <HeroSection {...main} />
       <CoreLayout>
         <AdsSection ads={ads} />
-        <Link style="bigButton" href="/catalog" title="view all" />
+        <Link style={LinkStyle.bigButton} href="/catalog" title="view all" />
         <ProductsSection products={productsFeatured} />
       </CoreLayout>
     </>
