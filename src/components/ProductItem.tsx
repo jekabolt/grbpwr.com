@@ -29,7 +29,8 @@ export default function ProductItem({
         <Image
           src={product.productInsert?.thumbnail || ""}
           alt={product.productInsert?.name || ""}
-          aspectRatio="4/3"
+          aspectRatio="4/3" // take from BE values
+          fit="cover"
         />
       </div>
       <div className="flex w-full gap-3">

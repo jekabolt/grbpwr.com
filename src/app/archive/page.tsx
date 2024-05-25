@@ -18,14 +18,15 @@ export default async function Page() {
         <div className="flex flex-col gap-14">
           {nonEmptyArchives?.map((a, i) => (
             <div key={a.archive?.id || i} className="text-textColor">
-              <div className="flex gap-3">
+              <div className="flex gap-3 overflow-x-scroll">
                 {/* todo: fix images. make sure all the images have known size + add scroll when there are more images  */}
                 {a.items?.map((i) => (
-                  <div key={i.id} className="h-80 w-80">
+                  <div key={i.id} className="h-80">
                     <Image
                       src={i.archiveItemInsert?.media || ""}
                       alt={i.archiveItemInsert?.title || ""}
-                      aspectRatio="4/1"
+                      aspectRatio="3/4"
+                      fit="contain"
                     />
                   </div>
                 ))}

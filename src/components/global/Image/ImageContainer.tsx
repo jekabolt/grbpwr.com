@@ -6,7 +6,7 @@ export default function ImageContainer({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`relative h-full w-full`} style={{ aspectRatio }}>
+    <div className="relative h-full w-full" style={{ aspectRatio }}>
       {children}
     </div>
   );
