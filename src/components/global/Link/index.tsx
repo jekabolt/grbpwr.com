@@ -2,13 +2,13 @@ import Link from "next/link";
 import { getComponentByStyle, LinkStyle } from "./styles";
 
 export default function GlobalLink({
-  style,
+  style = LinkStyle.default,
   href,
   title,
 }: {
-  style: LinkStyle;
+  style?: LinkStyle;
   href: string;
-  title: any;
+  title?: string;
 }) {
   const Component = getComponentByStyle(style);
 
