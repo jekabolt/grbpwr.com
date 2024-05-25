@@ -1,5 +1,5 @@
-import Image from "@/components/global/Image";
 import CoreLayout from "@/components/layouts/CoreLayout";
+import GlobalImage from "@/components/global/Image";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { calculateAspectRatio } from "@/lib/utils";
@@ -39,60 +39,27 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <CoreLayout hideForm>
       <div className="flex flex-col bg-white pb-20 pt-5">
-        <div className="flex h-auto w-full flex-wrap items-end">
+        <div className="grid w-full grid-cols-6 items-end gap-2">
           {/* TO-DO set width based on screen size */}
 
-          {product?.media?.[0]?.media?.fullSize && (
-            <div className="flex h-full w-1/6 flex-col justify-end">
-              <Image
-                src={product?.media?.[0]?.media?.fullSize.mediaUrl!}
-                alt="Product image"
-                aspectRatio={calculateAspectRatio(
-                  product?.media?.[0]?.media?.fullSize.width,
-                  product?.media?.[0]?.media?.fullSize.height,
-                )}
-              />
+          {product?.media?.map((i) => (
+            <div
+              className="group col-span-2 first:col-span-1 last:col-span-1"
+              key={i.id}
+            >
+              <div className="h-[600px] group-first:h-[300px] group-last:h-[300px]">
+                <GlobalImage
+                  src={i?.media?.fullSize?.mediaUrl!}
+                  alt="Product image"
+                  aspectRatio={calculateAspectRatio(
+                    i?.media?.fullSize?.width,
+                    i?.media?.fullSize?.height,
+                  )}
+                  fit="cover"
+                />
+              </div>
             </div>
-          )}
-
-          {product?.media?.[1]?.media?.fullSize && (
-            <div className="flex h-full w-1/3 flex-col">
-              <Image
-                src={product?.media?.[1]?.media?.fullSize.mediaUrl!}
-                alt="Product image"
-                aspectRatio={calculateAspectRatio(
-                  product?.media?.[1]?.media?.fullSize.width,
-                  product?.media?.[1]?.media?.fullSize.height,
-                )}
-              />
-            </div>
-          )}
-
-          {product?.media?.[2]?.media?.fullSize && (
-            <div className="flex h-full w-1/3 flex-col ">
-              <Image
-                src={product?.media?.[2]?.media?.fullSize.mediaUrl!}
-                alt="Product image"
-                aspectRatio={calculateAspectRatio(
-                  product?.media?.[2]?.media?.fullSize.width,
-                  product?.media?.[2]?.media?.fullSize.height,
-                )}
-              />
-            </div>
-          )}
-
-          {product?.media?.[3]?.media?.fullSize && (
-            <div className="flex h-full w-1/6 flex-col justify-end ">
-              <Image
-                src={product?.media?.[3]?.media?.fullSize.mediaUrl!}
-                alt="Product image"
-                aspectRatio={calculateAspectRatio(
-                  product?.media?.[3]?.media?.fullSize.width,
-                  product?.media?.[3]?.media?.fullSize.height,
-                )}
-              />
-            </div>
-          )}
+          ))}
         </div>
 
         <div className="flex w-1/2 flex-col ">
