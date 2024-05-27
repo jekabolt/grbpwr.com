@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "react-photo-view/dist/react-photo-view.css";
 
 @layer base {
   .lightTheme {
@@ -35,6 +36,11 @@
     /* @apply bg-background text-foreground; */
   }
 }
+
+@layer photo-view {
+  @import './photo-view.css'; 
+}
+
 /* 
 @layer utilities {
   .container {

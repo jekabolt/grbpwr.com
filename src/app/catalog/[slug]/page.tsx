@@ -1,4 +1,5 @@
-import { ProductMedia } from "@/components/ProductMedia";
+import { MediaProvider } from "@/components/global/MediaProvider";
+import { ProductMediaProviderItem } from "@/components/global/MediaProvider/ProductMediaProviderItem";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
@@ -38,7 +39,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <CoreLayout hideForm>
       <div className="flex flex-col bg-white pb-20 pt-5">
-        {product?.media && <ProductMedia productMedia={product.media} />}
+        {product?.media && (
+          <div className="grid w-full grid-cols-6 items-end gap-2">
+            <MediaProvider
+              mediaList={product.media}
+              ItemComponent={ProductMediaProviderItem}
+            />
+            ;
+          </div>
+        )}
         <div className="flex w-1/2 flex-col ">
           <div className="mt-4 flex justify-between">
             <div>{product?.product?.productInsert?.name}</div>
