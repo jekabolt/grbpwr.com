@@ -5,7 +5,7 @@ import GlobalImage from "@/components/global/Image";
 import { calculateAspectRatio } from "@/lib/utils";
 import { PhotoView } from "react-photo-view";
 
-export function ProductMediaProviderItem({
+export function ProductMediaItem({
   singleMedia,
 }: {
   singleMedia: common_MediaFull;

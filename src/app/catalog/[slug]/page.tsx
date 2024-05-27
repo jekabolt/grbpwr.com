@@ -1,5 +1,5 @@
 import { MediaProvider } from "@/components/global/MediaProvider";
-import { ProductMediaProviderItem } from "@/components/global/MediaProvider/ProductMediaProviderItem";
+import { ProductMediaItem } from "@/components/global/MediaProvider/ProductMediaItem";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
@@ -43,7 +43,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="grid w-full grid-cols-6 items-end gap-2">
             <MediaProvider
               mediaList={product.media}
-              ItemComponent={ProductMediaProviderItem}
+              ItemComponent={ProductMediaItem}
             />
             ;
           </div>
