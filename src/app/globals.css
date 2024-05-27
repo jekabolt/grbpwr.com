@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "react-photo-view/dist/react-photo-view.css";
 
 @layer base {
   .lightTheme {
@@ -21,6 +20,10 @@
   }
 }
 
+@layer media-view {
+  @import "react-photo-view/dist/react-photo-view.css";
+}
+
 @layer base {
   /* * {
     @apply border-border;
@@ -35,10 +38,6 @@
   body {
     /* @apply bg-background text-foreground; */
   }
-}
-
-@layer photo-view {
-  @import './photo-view.css'; 
 }
 
 /* 
