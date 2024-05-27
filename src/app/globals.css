@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer media-view, base;
+
 @layer base {
   .lightTheme {
     --background: #fff;
@@ -18,13 +20,7 @@
     --highlight-text: #fff;
     --error: #ff0000;
   }
-}
 
-@layer media-view {
-  @import "react-photo-view/dist/react-photo-view.css";
-}
-
-@layer base {
   /* * {
     @apply border-border;
   } */
@@ -38,6 +34,10 @@
   body {
     /* @apply bg-background text-foreground; */
   }
+}
+
+@layer media-view {
+  @import "react-photo-view/dist/react-photo-view.css";
 }
 
 /* 
