@@ -45,7 +45,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               mediaList={product.media}
               ItemComponent={ProductMediaItem}
             />
-            ;
           </div>
         )}
         <div className="flex w-1/2 flex-col ">

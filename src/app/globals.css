@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer media-view, base;
-
 @layer base {
   .lightTheme {
     --background: #fff;
@@ -34,10 +32,6 @@
   body {
     /* @apply bg-background text-foreground; */
   }
-}
-
-@layer media-view {
-  @import "react-photo-view/dist/react-photo-view.css";
 }
 
 /* 
