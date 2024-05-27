@@ -18,9 +18,7 @@
     --highlight-text: #fff;
     --error: #ff0000;
   }
-}
 
-@layer base {
   /* * {
     @apply border-border;
   } */
@@ -35,6 +33,7 @@
     /* @apply bg-background text-foreground; */
   }
 }
+
 /* 
 @layer utilities {
   .container {
