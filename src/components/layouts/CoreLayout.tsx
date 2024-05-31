@@ -2,7 +2,7 @@ import Footer from "@/components/global/Footer";
 import Header from "@/components/global/Header";
 import Link from "@/components/global/Link";
 import { LinkStyle } from "@/components/global/Link/styles";
-import HoverCart from "@/components/Cart/HoverCart";
+import HoverCart from "@/components/cart/HoverCart";
 
 export default function CoreLayout({
   children,

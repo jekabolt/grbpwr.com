@@ -1,6 +1,8 @@
+import { addItemToCookie } from "@/actions/cart";
 import { MediaProvider } from "@/components/global/MediaProvider";
 import { ProductMediaItem } from "@/components/global/MediaProvider/ProductMediaItem";
 import CoreLayout from "@/components/layouts/CoreLayout";
+import AddToCartButton from "@/components/productPage/AddToCartButton";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 
@@ -32,8 +34,10 @@ const catalogData = [
 ];
 
 export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = params;
+
   const { product } = await serviceClient.GetProduct({
-    slug: params.slug,
+    slug,
   });
 
   return (
@@ -65,9 +69,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div key={size.id}>{size.sizeId}</div>
               ))}
             </div>
-            <button className="block w-36 bg-textColor px-1.5 text-center text-sm text-buttonTextColor">
-              add to cart
-            </button>
+            <AddToCartButton slug={slug} addItemToCookie={addItemToCookie} />
           </div>
         </div>
       </div>
