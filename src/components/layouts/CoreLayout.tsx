@@ -2,6 +2,7 @@ import Footer from "@/components/global/Footer";
 import Header from "@/components/global/Header";
 import Link from "@/components/global/Link";
 import { LinkStyle } from "@/components/global/Link/styles";
+import HoverCart from "@/components/Cart/HoverCart";
 
 export default function CoreLayout({
   children,
@@ -41,11 +42,13 @@ export default function CoreLayout({
 
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <Link
-                style={LinkStyle.mainNavigation}
-                title="cart"
-                href="/cart"
-              />
+              <HoverCart>
+                <Link
+                  style={LinkStyle.mainNavigation}
+                  title="cart"
+                  href="/cart"
+                />
+              </HoverCart>
               <Link
                 style={LinkStyle.mainNavigation}
                 title="about"
