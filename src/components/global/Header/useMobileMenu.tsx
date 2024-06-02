@@ -48,31 +48,21 @@ function MobileMenuDropdown({
         {"[x]"}
       </button>
       <nav className="space-y-6">
-        <GlobalLink
-          style={LinkStyle.mainNavigation}
-          title="catalog"
-          href="/catalog"
-        />
-        <GlobalLink
-          style={LinkStyle.mainNavigation}
-          title="archive"
-          href="/archive"
-        />
-        <GlobalLink
-          style={LinkStyle.mainNavigation}
-          title="about"
-          href="/about"
-        />
-        <GlobalLink
-          style={LinkStyle.mainNavigation}
-          title="shipping"
-          href="/shipping"
-        />
-        <GlobalLink
-          style={LinkStyle.mainNavigation}
-          title="contacts"
-          href="/contacts"
-        />
+        <GlobalLink style={LinkStyle.mainNavigation} href="/catalog">
+          catalog
+        </GlobalLink>
+        <GlobalLink style={LinkStyle.mainNavigation} href="/archive">
+          archive
+        </GlobalLink>
+        <GlobalLink style={LinkStyle.mainNavigation} href="/about">
+          about
+        </GlobalLink>
+        <GlobalLink style={LinkStyle.mainNavigation} href="/shipping">
+          shipping
+        </GlobalLink>
+        <GlobalLink style={LinkStyle.mainNavigation} href="/contacts">
+          contacts
+        </GlobalLink>
       </nav>
     </div>
   );

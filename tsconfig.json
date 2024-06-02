@@ -19,13 +19,15 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
+    "./node_modules/@types/react",
     "src/app/about/page.mdx"
   ],
   "exclude": ["node_modules"]

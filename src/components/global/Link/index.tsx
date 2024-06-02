@@ -1,21 +1,24 @@
 import Link from "next/link";
 import { getComponentByStyle, LinkStyle } from "./styles";
+import React from "react";
 
 export default function GlobalLink({
   style = LinkStyle.default,
   href,
-  title,
+  children,
+  className,
 }: {
   style?: LinkStyle;
   href: string;
-  title?: string;
+  children?: React.ReactNode;
+  className?: string;
 }) {
   const Component = getComponentByStyle(style);
 
   return (
-    <div>
+    <div className={className}>
       <Link href={href}>
-        <Component>{title}</Component>
+        <Component>{children}</Component>
       </Link>
     </div>
   );

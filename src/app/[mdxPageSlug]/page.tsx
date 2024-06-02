@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import CoreLayout from "@/components/layouts/CoreLayout";
 import AboutMdx from "./about.mdx";
 import ContactsMdx from "./contacts.mdx";
 
@@ -13,6 +14,12 @@ const MDX_FILES_MAP: Record<string, any> = {
   contacts: ContactsMdx,
 };
 
+export function generateStaticParams() {
+  return Object.keys(MDX_FILES_MAP).map((mdxPageSlug) => ({
+    mdxPageSlug,
+  }));
+}
+
 export default function Page({ params }: Props) {
   const { mdxPageSlug } = params;
 
@@ -22,5 +29,11 @@ export default function Page({ params }: Props) {
     return notFound();
   }
 
-  return <MdxComponent />;
+  return (
+    <CoreLayout>
+      <div className="prose lg:prose-xl">
+        <MdxComponent />
+      </div>
+    </CoreLayout>
+  );
 }

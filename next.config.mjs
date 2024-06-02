@@ -18,6 +18,10 @@ const nextConfig = {
       },
     ],
   },
+  pageExtensions: ["mdx", "ts", "tsx"],
+  experimental: {
+    ppr: true,
+  },
 };
 
 export default mdxConfig(nextConfig);

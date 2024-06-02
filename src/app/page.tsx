@@ -19,7 +19,9 @@ export default async function Page() {
       <HeroSection {...main} />
       <CoreLayout>
         <AdsSection ads={ads} />
-        <Link style={LinkStyle.bigButton} href="/catalog" title="view all" />
+        <Link style={LinkStyle.bigButton} href="/catalog">
+          view all
+        </Link>
         <ProductsSection products={productsFeatured} />
       </CoreLayout>
     </>
