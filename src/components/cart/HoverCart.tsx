@@ -3,6 +3,7 @@ import NextLink from "next/link";
 import { getCartCookie } from "@/lib/utils/cart";
 import { serviceClient } from "@/lib/api";
 import CartItemRow from "./CartItemRow";
+import GlobalLink from "@/components/global/Link";
 
 export default async function HoverCart({
   children,
@@ -35,7 +36,12 @@ export default async function HoverCart({
             <div className="relative">
               <div className="no-scroll-bar relative max-h-[800px] space-y-5 overflow-y-scroll pb-5">
                 {products.map((p) => (
-                  <CartItemRow key={p?.product?.id as number} product={p} />
+                  <GlobalLink
+                    key={p?.product?.id as number}
+                    href={`/catalog/${p?.product?.slug}`}
+                  >
+                    <CartItemRow product={p} />
+                  </GlobalLink>
                 ))}
               </div>
               <div className="absolute bottom-0 left-0 h-28 w-full bg-gradient-to-t from-bgColor"></div>
