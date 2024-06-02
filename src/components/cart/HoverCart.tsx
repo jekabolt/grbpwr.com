@@ -10,6 +10,9 @@ export default async function HoverCart({
   children: React.ReactNode;
 }) {
   const cart = getCartCookie();
+
+  if (!cart) return <>{children}</>;
+
   const cartProductSlugs = Object.keys(cart);
 
   const productsPromises = cartProductSlugs.map((s) =>
@@ -27,11 +30,11 @@ export default async function HoverCart({
       <div className="group relative">
         {children}
         <div className="blueTheme">
-          <div className="absolute -top-1 right-0 z-30 w-[500px] bg-bgColor p-5 group-hover:block">
+          <div className="absolute -top-1 right-0 z-30 hidden w-[500px] bg-bgColor p-5 group-hover:block">
             <div className="mb-6 text-textColor">added to cart {"[06]"}</div>
             <div className="relative">
               <div className="no-scroll-bar relative max-h-[800px] space-y-5 overflow-y-scroll pb-5">
-                {products.map((p, i) => (
+                {products.map((p) => (
                   <CartItemRow key={p?.product?.id as number} product={p} />
                 ))}
               </div>
