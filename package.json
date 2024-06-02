@@ -11,15 +11,20 @@
     "gen": "cd proto && git pull origin main && cd .. && make proto"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.0.1",
+    "@mdx-js/react": "^3.0.1",
+    "@next/mdx": "15.0.0-canary.6",
     "@radix-ui/react-popover": "1.0.7",
     "@uidotdev/usehooks": "^2.4.1",
     "clsx": "2.1.0",
-    "next": "14.2.3",
-    "react": "18",
-    "react-dom": "18",
+    "next": "15.0.0-canary.6",
+    "react": "19.0.0-rc-6d3110b4d9-20240531",
+    "react-dom": "19.0.0-rc-6d3110b4d9-20240531",
     "react-photo-view": "^1.2.4"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.13",
+    "@types/mdx": "^2.0.13",
     "@types/node": "20",
     "@types/react": "^18.3.3",
     "@types/react-dom": "18",
@@ -27,6 +32,7 @@
     "eslint": "8.57.0",
     "eslint-config-next": "14.1.4",
     "postcss": "8",
+    "postcss-nesting": "^12.1.5",
     "prettier": "3.2.5",
     "prettier-plugin-tailwindcss": "0.5.12",
     "tailwind-merge": "^2.3.0",
