@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-
-import { cn } from "@/lib/utils";
+import RootLayoutComponent from "@/components/layouts/RootLayout";
 import { FeatureMono } from "../fonts";
 import "./globals.css";
 
@@ -16,8 +15,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(FeatureMono.className, "relative min-h-screen")}>
-        <main className="lightTheme">{children}</main>
+      <body className={FeatureMono.className}>
+        <RootLayoutComponent>{children}</RootLayoutComponent>
       </body>
     </html>
   );

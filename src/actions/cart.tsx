@@ -1,5 +1,5 @@
-import type { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
+import { getCartCookie } from "@/lib/utils/cart";
 
 export const GRBPWR_CART = "grbpwr-cart";
 
@@ -18,11 +18,9 @@ export async function addItemToCookie(itemSlug: string) {
   }
 
   try {
-    const cart = (cookieStore.get(GRBPWR_CART) as RequestCookie)
-      .value as string;
-    const cartJson = JSON.parse(cart);
+    const cart = getCartCookie();
 
-    const currentProduct = cartJson[itemSlug];
+    const currentProduct = cart[itemSlug];
 
     let newCurrentProduct = currentProduct
       ? { ...currentProduct, quanity: currentProduct.quanity + 1 }
@@ -30,7 +28,7 @@ export async function addItemToCookie(itemSlug: string) {
 
     cookieStore.set(
       GRBPWR_CART,
-      JSON.stringify({ ...cartJson, [itemSlug]: newCurrentProduct }),
+      JSON.stringify({ ...cart, [itemSlug]: newCurrentProduct }),
     );
   } catch (error) {
     console.log("failed to parse cart", error);

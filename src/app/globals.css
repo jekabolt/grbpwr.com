@@ -34,9 +34,18 @@
   }
 }
 
-/* 
 @layer utilities {
-  .container {
-    @apply mx-auto max-w-2xl;
+  .no-scroll-bar {
+    &::-webkit-scrollbar {
+      @apply hidden;
+    }
+
+    &::-webkit-scrollbar-track {
+      @apply hidden;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @apply hidden;
+    }
   }
-} */
+}

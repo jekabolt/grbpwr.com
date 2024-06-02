@@ -5,6 +5,7 @@ import CoreLayout from "@/components/layouts/CoreLayout";
 import AddToCartButton from "@/components/productPage/AddToCartButton";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
+import { Suspense } from "react";
 
 interface ProductPageProps {
   params: {
@@ -69,7 +70,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div key={size.id}>{size.sizeId}</div>
               ))}
             </div>
-            <AddToCartButton slug={slug} addItemToCookie={addItemToCookie} />
+            <Suspense>
+              <AddToCartButton slug={slug} addItemToCookie={addItemToCookie} />
+            </Suspense>
           </div>
         </div>
       </div>

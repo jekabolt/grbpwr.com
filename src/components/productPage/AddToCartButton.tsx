@@ -11,6 +11,8 @@ export default function AddToCartButton({ addItemToCookie, slug }: Props) {
     await addItemToCookie(slug);
   }
 
+  // todo: check if product is in stock
+
   return (
     <button
       onClick={handleButtonClick}
