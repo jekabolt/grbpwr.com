@@ -1,31 +1,8 @@
-// todo: make it global link style
-import NextLink from "next/link";
-import { getCartCookie } from "@/lib/utils/cart";
-import { serviceClient } from "@/lib/api";
-import CartItemRow from "./CartItemRow";
 import GlobalLink from "@/components/global/Link";
+import CartProductsList from "./CartProductsList";
+import { Suspense } from "react";
 
-export default async function HoverCart({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const cart = getCartCookie();
-
-  if (!cart) return <>{children}</>;
-
-  const cartProductSlugs = Object.keys(cart);
-
-  const productsPromises = cartProductSlugs.map((s) =>
-    serviceClient.GetProduct({
-      slug: s,
-    }),
-  );
-
-  const products = await Promise.all(productsPromises).then((v) =>
-    v.map((p) => p.product),
-  );
-
+export default function HoverCart({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <div className="group relative">
@@ -35,14 +12,9 @@ export default async function HoverCart({
             <div className="mb-6 text-textColor">added to cart {"[06]"}</div>
             <div className="relative">
               <div className="no-scroll-bar relative max-h-[800px] space-y-5 overflow-y-scroll pb-5">
-                {products.map((p) => (
-                  <GlobalLink
-                    key={p?.product?.id as number}
-                    href={`/catalog/${p?.product?.slug}`}
-                  >
-                    <CartItemRow product={p} />
-                  </GlobalLink>
-                ))}
+                <Suspense fallback={null}>
+                  <CartProductsList />
+                </Suspense>
               </div>
               <div className="absolute bottom-0 left-0 h-28 w-full bg-gradient-to-t from-bgColor"></div>
             </div>
@@ -52,12 +24,12 @@ export default async function HoverCart({
             </div>
             <div className="flex justify-end">
               {/* todo: make it global link style */}
-              <NextLink
+              <GlobalLink
                 href="/cart"
                 className="block w-44 bg-textColor py-2 text-center text-sm text-bgColor"
               >
                 checkout
-              </NextLink>
+              </GlobalLink>
             </div>
           </div>
         </div>

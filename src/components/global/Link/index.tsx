@@ -6,15 +6,17 @@ export default function GlobalLink({
   style = LinkStyle.default,
   href,
   children,
+  className,
 }: {
   style?: LinkStyle;
   href: string;
   children?: React.ReactNode;
+  className?: string;
 }) {
   const Component = getComponentByStyle(style);
 
   return (
-    <div>
+    <div className={className}>
       <Link href={href}>
         <Component>{children}</Component>
       </Link>

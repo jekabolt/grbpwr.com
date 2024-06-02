@@ -37,19 +37,11 @@ export default function CoreLayout({
 
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <Suspense
-                fallback={
-                  <GlobalLink style={LinkStyle.mainNavigation} href="/cart">
-                    cart
-                  </GlobalLink>
-                }
-              >
-                <HoverCart>
-                  <GlobalLink style={LinkStyle.mainNavigation} href="/cart">
-                    cart
-                  </GlobalLink>
-                </HoverCart>
-              </Suspense>
+              <HoverCart>
+                <GlobalLink style={LinkStyle.mainNavigation} href="/cart">
+                  cart
+                </GlobalLink>
+              </HoverCart>
               <GlobalLink style={LinkStyle.mainNavigation} href="/about">
                 about
               </GlobalLink>
