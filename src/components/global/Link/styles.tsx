@@ -2,6 +2,7 @@ export enum LinkStyle {
   mainNavigation = "mainNavigation",
   bigButton = "bigButton",
   default = "default",
+  notFoundCatalogButton = "notFoundCatalogButton",
 }
 
 type StyleComponentType = {
@@ -28,10 +29,19 @@ function BigButtonStyleComponent({ children }: StyleComponentType) {
   );
 }
 
+function NotFoundCatalogButtonStyleComponent({ children }: StyleComponentType) {
+  return (
+    <span className="block w-36 bg-textColor px-1.5 text-center text-sm text-buttonTextColor">
+      {children}
+    </span>
+  );
+}
+
 const componentsStyleMap: Record<LinkStyle, any> = {
   [LinkStyle.mainNavigation]: mainNavigationStyleComponent,
   [LinkStyle.bigButton]: BigButtonStyleComponent,
   [LinkStyle.default]: DefaultStyleComponent,
+  [LinkStyle.notFoundCatalogButton]: NotFoundCatalogButtonStyleComponent,
 };
 
 export function getComponentByStyle(style: LinkStyle) {
