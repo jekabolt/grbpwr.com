@@ -1,20 +1,24 @@
-import { common_HeroInsert } from "@/api/proto-http/frontend";
+import { common_HeroItem } from "@/api/proto-http/frontend";
 import Image from "@/components/global/Image";
+import { calculateAspectRatio } from "@/lib/utils";
 
 export default function AdsSection({
   ads,
 }: {
-  ads: common_HeroInsert[] | undefined;
+  ads: common_HeroItem[] | undefined;
 }) {
   return (
     <div className="grid grid-cols-2 gap-3">
       {ads?.map((a) =>
-        a.contentLink ? (
-          <div key={a.contentLink} className="relative col-span-1 h-[600px]">
+        a.media?.media?.fullSize ? (
+          <div key={a.media.id} className="relative col-span-1 h-[600px]">
             <Image
-              src={a.contentLink || ""}
+              src={a.media.media.fullSize.mediaUrl || ""}
               alt="ad hero image"
-              aspectRatio="4/3"
+              aspectRatio={calculateAspectRatio(
+                a?.media?.media?.fullSize.width,
+                a?.media?.media?.fullSize.height,
+              )}
             />
           </div>
         ) : null,
