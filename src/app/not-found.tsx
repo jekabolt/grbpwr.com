@@ -11,7 +11,8 @@ export default function NotFound() {
         <div className=" text-left">
           <p className="mb-4 text-sm">page not found.</p>
           <p className="mb-6 text-xs">
-            sorry, the page you are looking for doesn't exist or has been moved.
+            sorry, the page you are looking for doesn&apos;t exist or has been
+            moved.
             <br />
             please go back to the homepage or contact us if the problem
             persists.
