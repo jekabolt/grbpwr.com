@@ -1,7 +1,8 @@
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { serviceClient } from "@/lib/api";
 
-import Image from "@/components/global/Image";
+import { MediaProvider } from "@/components/global/MediaProvider";
+import { ArchiveMediaItem } from "@/components/global/MediaProvider/ArchiveMediaItem";
 
 export default async function Page() {
   const { archives } = await serviceClient.GetArchivesPaged({
@@ -20,23 +21,20 @@ export default async function Page() {
             <div key={a.archive?.id || i} className="text-textColor">
               <div className="flex gap-3 overflow-x-scroll">
                 {/* todo: fix images. make sure all the images have known size + add scroll when there are more images  */}
-                {a.items?.map((i) => (
-                  <div key={i.id} className="h-80">
-                    <Image
-                      src={i.archiveItemInsert?.media || ""}
-                      alt={i.archiveItemInsert?.title || ""}
-                      aspectRatio="3/4"
-                      fit="contain"
-                    />
-                  </div>
-                ))}
+
+                {a.items && (
+                  <MediaProvider
+                    mediaList={a.items.map((x) => x.archiveItem?.media!)}
+                    ItemComponent={ArchiveMediaItem}
+                  />
+                )}
               </div>
               {/* todo: doublec check foint sizes for mobile */}
               <div className="text-md mb-4 mt-6 lg:text-xl">
-                {a.archive?.archiveInsert?.heading}
+                {a.archive?.archiveBody?.heading}
               </div>
               <div className="flex justify-between gap-6">
-                <p>{a.archive?.archiveInsert?.description}</p>
+                <p>{a.archive?.archiveBody?.description}</p>
                 <p>{a.archive?.createdAt}</p>
               </div>
             </div>

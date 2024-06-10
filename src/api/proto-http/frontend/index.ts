@@ -14,8 +14,8 @@ export type GetHeroResponse = {
 export type common_HeroFull = {
   id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
-  main: common_HeroInsert | undefined;
-  ads: common_HeroInsert[] | undefined;
+  main: common_HeroItem | undefined;
+  ads: common_HeroItem[] | undefined;
   productsFeatured: common_Product[] | undefined;
 };
 
@@ -24,11 +24,37 @@ export type common_HeroFull = {
 // Offsets other than "Z" are also accepted.
 type wellKnownTimestamp = string;
 
-export type common_HeroInsert = {
-  contentLink: string | undefined;
-  contentType: string | undefined;
+export type common_HeroItem = {
+  media: common_MediaFull | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
+};
+
+export type common_MediaFull = {
+  // Media ID
+  id: number | undefined;
+  // Media created date
+  createdAt: wellKnownTimestamp | undefined;
+  // media
+  media: common_MediaItem | undefined;
+};
+
+export type common_MediaItem = {
+  // Full-size media URL
+  fullSize: common_MediaInfo | undefined;
+  // Thumbnail media URL
+  thumbnail: common_MediaInfo | undefined;
+  // Compressed media URL
+  compressed: common_MediaInfo | undefined;
+};
+
+export type common_MediaInfo = {
+  // Media URL
+  mediaUrl: string | undefined;
+  // width
+  width: number | undefined;
+  // height
+  height: number | undefined;
 };
 
 export type common_Product = {
@@ -294,33 +320,6 @@ export type common_ProductMeasurement = {
   measurementValue: googletype_Decimal | undefined;
 };
 
-export type common_MediaFull = {
-  // Media ID
-  id: number | undefined;
-  // Media created date
-  createdAt: wellKnownTimestamp | undefined;
-  // media
-  media: common_MediaInsert | undefined;
-};
-
-export type common_MediaInsert = {
-  // Full-size media URL
-  fullSize: common_MediaInfo | undefined;
-  // Thumbnail media URL
-  thumbnail: common_MediaInfo | undefined;
-  // Compressed media URL
-  compressed: common_MediaInfo | undefined;
-};
-
-export type common_MediaInfo = {
-  // Media URL
-  mediaUrl: string | undefined;
-  // width
-  width: number | undefined;
-  // height
-  height: number | undefined;
-};
-
 export type common_ProductTag = {
   id: number | undefined;
   productId: number | undefined;
@@ -344,7 +343,7 @@ export type common_FilterConditions = {
   to: string | undefined;
   onSale: boolean | undefined;
   color: string | undefined;
-  categoryId: number | undefined;
+  categoryIds: number[] | undefined;
   sizesIds: number[] | undefined;
   preorder: boolean | undefined;
   byTag: string | undefined;
@@ -595,7 +594,7 @@ export type GetArchivesPagedResponse = {
 // ArchiveFull represents a full archive with items.
 export type common_ArchiveFull = {
   archive: common_Archive | undefined;
-  items: common_ArchiveItem[] | undefined;
+  items: common_ArchiveItemFull[] | undefined;
 };
 
 // Archive represents an archive entity.
@@ -603,35 +602,27 @@ export type common_Archive = {
   id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
-  archiveInsert: common_ArchiveInsert | undefined;
+  archiveBody: common_ArchiveBody | undefined;
 };
 
-// ArchiveInsert represents the insertable fields of an archive.
-export type common_ArchiveInsert = {
+// ArchiveBody represents the insertable fields of an archive.
+export type common_ArchiveBody = {
   heading: string | undefined;
   description: string | undefined;
 };
 
-// ArchiveItem represents an item within an archive.
-export type common_ArchiveItem = {
+// ArchiveItemFull represents an item within an archive.
+export type common_ArchiveItemFull = {
   id: number | undefined;
   archiveId: number | undefined;
-  archiveItemInsert: common_ArchiveItemInsert | undefined;
+  archiveItem: common_ArchiveItem | undefined;
 };
 
-// ArchiveItemInsert represents the insertable fields of an archive item.
-export type common_ArchiveItemInsert = {
-  media: string | undefined;
+// ArchiveItem represents the insertable fields of an archive item.
+export type common_ArchiveItem = {
+  media: common_MediaFull | undefined;
   url: string | undefined;
   title: string | undefined;
-};
-
-export type GetArchiveByIdRequest = {
-  id: number | undefined;
-};
-
-export type GetArchiveByIdResponse = {
-  archive: common_ArchiveFull | undefined;
 };
 
 export interface FrontendService {
@@ -664,8 +655,6 @@ export interface FrontendService {
   UnsubscribeNewsletter(request: UnsubscribeNewsletterRequest): Promise<UnsubscribeNewsletterResponse>;
   // GetArchivesPaged retrieves paged archives.
   GetArchivesPaged(request: GetArchivesPagedRequest): Promise<GetArchivesPagedResponse>;
-  // GetArchiveById retrieves an archive by ID.
-  GetArchiveById(request: GetArchiveByIdRequest): Promise<GetArchiveByIdResponse>;
 }
 
 type RequestType = {
@@ -747,8 +736,10 @@ export function createFrontendServiceClient(
       if (request.filterConditions?.color) {
         queryParams.push(`filterConditions.color=${encodeURIComponent(request.filterConditions.color.toString())}`)
       }
-      if (request.filterConditions?.categoryId) {
-        queryParams.push(`filterConditions.categoryId=${encodeURIComponent(request.filterConditions.categoryId.toString())}`)
+      if (request.filterConditions?.categoryIds) {
+        request.filterConditions.categoryIds.forEach((x) => {
+          queryParams.push(`filterConditions.categoryIds=${encodeURIComponent(x.toString())}`)
+        })
       }
       if (request.filterConditions?.sizesIds) {
         request.filterConditions.sizesIds.forEach((x) => {
@@ -1024,26 +1015,6 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "GetArchivesPaged",
       }) as Promise<GetArchivesPagedResponse>;
-    },
-    GetArchiveById(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.id) {
-        throw new Error("missing required field request.id");
-      }
-      const path = `api/frontend/archive/${request.id}`; // eslint-disable-line quotes
-      const body = null;
-      const queryParams: string[] = [];
-      let uri = path;
-      if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
-      }
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-      }, {
-        service: "FrontendService",
-        method: "GetArchiveById",
-      }) as Promise<GetArchiveByIdResponse>;
     },
   };
 }

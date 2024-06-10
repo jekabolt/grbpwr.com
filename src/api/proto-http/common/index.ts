@@ -2,18 +2,13 @@
 /* eslint-disable camelcase */
 // @ts-nocheck
 
-// ArchiveFull represents a full archive with items.
-export type ArchiveFull = {
-  archive: Archive | undefined;
-  items: ArchiveItem[] | undefined;
-};
-
-// Archive represents an archive entity.
-export type Archive = {
+export type MediaFull = {
+  // Media ID
   id: number | undefined;
+  // Media created date
   createdAt: wellKnownTimestamp | undefined;
-  updatedAt: wellKnownTimestamp | undefined;
-  archiveInsert: ArchiveInsert | undefined;
+  // media
+  media: MediaItem | undefined;
 };
 
 // Encoded using RFC 3339, where generated output will always be Z-normalized
@@ -21,30 +16,68 @@ export type Archive = {
 // Offsets other than "Z" are also accepted.
 type wellKnownTimestamp = string;
 
-// ArchiveInsert represents the insertable fields of an archive.
-export type ArchiveInsert = {
+export type MediaItem = {
+  // Full-size media URL
+  fullSize: MediaInfo | undefined;
+  // Thumbnail media URL
+  thumbnail: MediaInfo | undefined;
+  // Compressed media URL
+  compressed: MediaInfo | undefined;
+};
+
+export type MediaInfo = {
+  // Media URL
+  mediaUrl: string | undefined;
+  // width
+  width: number | undefined;
+  // height
+  height: number | undefined;
+};
+
+// ArchiveFull represents a full archive with items.
+export type ArchiveFull = {
+  archive: Archive | undefined;
+  items: ArchiveItemFull[] | undefined;
+};
+
+// Archive represents an archive entity.
+export type Archive = {
+  id: number | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
+  archiveBody: ArchiveBody | undefined;
+};
+
+// ArchiveBody represents the insertable fields of an archive.
+export type ArchiveBody = {
   heading: string | undefined;
   description: string | undefined;
 };
 
-// ArchiveItem represents an item within an archive.
-export type ArchiveItem = {
+// ArchiveItemFull represents an item within an archive.
+export type ArchiveItemFull = {
   id: number | undefined;
   archiveId: number | undefined;
-  archiveItemInsert: ArchiveItemInsert | undefined;
+  archiveItem: ArchiveItem | undefined;
 };
 
-// ArchiveItemInsert represents the insertable fields of an archive item.
-export type ArchiveItemInsert = {
-  media: string | undefined;
+// ArchiveItem represents the insertable fields of an archive item.
+export type ArchiveItem = {
+  media: MediaFull | undefined;
   url: string | undefined;
   title: string | undefined;
 };
 
 // ArchiveNew represents a new archive with items for insertion.
 export type ArchiveNew = {
-  archive: ArchiveInsert | undefined;
-  items: ArchiveItemInsert[] | undefined;
+  archive: ArchiveBody | undefined;
+  itemsInsert: ArchiveItemInsert[] | undefined;
+};
+
+export type ArchiveItemInsert = {
+  mediaId: number | undefined;
+  url: string | undefined;
+  title: string | undefined;
 };
 
 export type Address = {
@@ -92,7 +125,7 @@ export type FilterConditions = {
   to: string | undefined;
   onSale: boolean | undefined;
   color: string | undefined;
-  categoryId: number | undefined;
+  categoryIds: number[] | undefined;
   sizesIds: number[] | undefined;
   preorder: boolean | undefined;
   byTag: string | undefined;
@@ -287,33 +320,6 @@ export type OrderItem = {
 export type OrderStatus = {
   id: number | undefined;
   name: OrderStatusEnum | undefined;
-};
-
-export type MediaFull = {
-  // Media ID
-  id: number | undefined;
-  // Media created date
-  createdAt: wellKnownTimestamp | undefined;
-  // media
-  media: MediaInsert | undefined;
-};
-
-export type MediaInsert = {
-  // Full-size media URL
-  fullSize: MediaInfo | undefined;
-  // Thumbnail media URL
-  thumbnail: MediaInfo | undefined;
-  // Compressed media URL
-  compressed: MediaInfo | undefined;
-};
-
-export type MediaInfo = {
-  // Media URL
-  mediaUrl: string | undefined;
-  // width
-  width: number | undefined;
-  // height
-  height: number | undefined;
 };
 
 export type CategoryEnum =
@@ -511,9 +517,14 @@ export type CurrencyMap = {
   currencies: { [key: string]: CurrencyRate } | undefined;
 };
 
-export type HeroInsert = {
-  contentLink: string | undefined;
-  contentType: string | undefined;
+export type HeroItemInsert = {
+  mediaId: number | undefined;
+  exploreLink: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type HeroItem = {
+  media: MediaFull | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
 };
@@ -521,8 +532,8 @@ export type HeroInsert = {
 export type HeroFull = {
   id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
-  main: HeroInsert | undefined;
-  ads: HeroInsert[] | undefined;
+  main: HeroItem | undefined;
+  ads: HeroItem[] | undefined;
   productsFeatured: Product[] | undefined;
 };
 
