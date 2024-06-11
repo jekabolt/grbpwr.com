@@ -9,7 +9,6 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
-  args: { href: "/" },
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -33,5 +32,12 @@ export const UnderlinedButton: Story = {
   args: {
     style: LinkStyle.underlinedButton,
     children: "underlined button",
+  },
+};
+
+export const SimpleButton: Story = {
+  args: {
+    style: LinkStyle.simpleButton,
+    children: "simple button",
   },
 };

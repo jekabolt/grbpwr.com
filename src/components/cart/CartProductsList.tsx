@@ -1,7 +1,8 @@
 import CartItemRow from "@/components/cart/CartItemRow";
-import GlobalLink from "@/components/global/Link";
+import Button from "@/components/ui/Button";
 import { serviceClient } from "@/lib/api";
 import { getCartCookie } from "@/lib/utils/cart";
+import Link from "next/link";
 
 export default async function CartProductsList() {
   const cart = getCartCookie();
@@ -21,11 +22,10 @@ export default async function CartProductsList() {
   );
 
   return products.map((p) => (
-    <GlobalLink
-      key={p?.product?.id as number}
-      href={`/catalog/${p?.product?.slug}`}
-    >
-      <CartItemRow product={p} />
-    </GlobalLink>
+    <Button key={p?.product?.id as number} asChild>
+      <Link href={`/catalog/${p?.product?.slug}`}>
+        <CartItemRow product={p} />
+      </Link>
+    </Button>
   ));
 }

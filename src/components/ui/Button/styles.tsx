@@ -1,7 +1,8 @@
 export enum LinkStyle {
-  underlinedButton = "underlinedButton",
-  bigButton = "bigButton",
   default = "default",
+  bigButton = "bigButton",
+  underlinedButton = "underlinedButton",
+  simpleButton = "simpleButton",
 }
 
 type StyleComponentType = {
@@ -28,14 +29,21 @@ function BigButtonStyleComponent({ children }: StyleComponentType) {
   );
 }
 
+function SimpleButtonStyleComponent({ children }: StyleComponentType) {
+  return (
+    <span className="block w-48 bg-textColor py-2 text-center leading-3 text-bgColor lg:text-lg lg:leading-5">
+      {children}
+    </span>
+  );
+}
+
 const componentsStyleMap: Record<LinkStyle, any> = {
   [LinkStyle.underlinedButton]: UnderlinedButtonStyleComponent,
   [LinkStyle.bigButton]: BigButtonStyleComponent,
   [LinkStyle.default]: DefaultStyleComponent,
+  [LinkStyle.simpleButton]: SimpleButtonStyleComponent,
 };
 
 export function getComponentByStyle(style: LinkStyle) {
-  console.log("componentsStyleMap[style]");
-  console.log(componentsStyleMap[style]);
   return componentsStyleMap[style] || DefaultStyleComponent;
 }

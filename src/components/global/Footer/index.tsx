@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import FooterForm from "./FooterForm";
 import GenericPopover from "@/components/ui/Popover";
+import Button from "@/components/ui/Button";
 
 // todo: sync with BE
 const currencyNameMap = {
@@ -56,20 +57,20 @@ export default function Footer({
       </div>
 
       <div className="col-span-1 flex h-full flex-col gap-4 text-xs lg:flex-row-reverse lg:justify-between">
-        <div className="space-x-5">
+        <div className="flex space-x-5">
           {links.map((link) => (
-            <Link href={link.href} key={link.text} className="hover:underline">
-              {link.text}
-            </Link>
+            <Button asChild key={link.text}>
+              <Link href={link.href}>{link.text}</Link>
+            </Button>
           ))}
         </div>
 
         <div className="flex justify-between gap-4 lg:flex-row-reverse">
           <div className="flex items-start gap-6 lg:gap-10">
             <div>grbpwr {year}©</div>
-            <Link className="hover:underline" href="/privacy-policy">
-              privacy policy
-            </Link>
+            <Button asChild>
+              <Link href="privacy-policy">privacy policy</Link>
+            </Button>
           </div>
           <div>
             <GenericPopover
