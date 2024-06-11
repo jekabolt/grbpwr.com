@@ -1,7 +1,7 @@
 import Footer from "@/components/global/Footer";
 import Header from "@/components/global/Header";
 import Button from "@/components/ui/Button";
-import { LinkStyle } from "@/components/ui/Button/styles";
+import { ButtonStyle } from "@/components/ui/Button/styles";
 import HoverCart from "@/components/cart/HoverCart";
 import Link from "next/link";
 
@@ -19,13 +19,13 @@ export default function CoreLayout({
         <div className="flex">
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <Button style={LinkStyle.underlinedButton}>
+              <Button style={ButtonStyle.underlinedButton}>
                 <Link href="/catalog">catalog</Link>
               </Button>
-              <Button style={LinkStyle.underlinedButton}>
+              <Button style={ButtonStyle.underlinedButton}>
                 <Link href="/archive">archive</Link>
               </Button>
-              <Button style={LinkStyle.underlinedButton}>
+              <Button style={ButtonStyle.underlinedButton}>
                 <Link href="/shipping">shipping</Link>
               </Button>
             </nav>
@@ -38,14 +38,14 @@ export default function CoreLayout({
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
               <HoverCart>
-                <Button style={LinkStyle.underlinedButton}>
+                <Button style={ButtonStyle.underlinedButton}>
                   <Link href="/cart">cart</Link>
                 </Button>
               </HoverCart>
-              <Button style={LinkStyle.underlinedButton}>
+              <Button style={ButtonStyle.underlinedButton}>
                 <Link href="/about">about</Link>
               </Button>
-              <Button style={LinkStyle.underlinedButton}>
+              <Button style={ButtonStyle.underlinedButton}>
                 <Link href="/contacts">contacts</Link>
               </Button>
             </nav>

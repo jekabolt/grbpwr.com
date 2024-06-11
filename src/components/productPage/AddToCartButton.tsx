@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/ui/Button";
-import { LinkStyle } from "@/components/ui/Button/styles";
+import { ButtonStyle } from "@/components/ui/Button/styles";
 
 type Props = {
   addItemToCookie: (slug: string) => Promise<void>;
@@ -17,7 +17,7 @@ export default function AddToCartButton({ addItemToCookie, slug }: Props) {
   // todo: check if product is in stock
 
   return (
-    <Button style={LinkStyle.simpleButton} onClick={handleButtonClick}>
+    <Button style={ButtonStyle.simpleButton} onClick={handleButtonClick}>
       add to cart
     </Button>
   );

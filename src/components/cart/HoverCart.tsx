@@ -1,7 +1,7 @@
 import Button from "@/components/ui/Button";
 import CartProductsList from "./CartProductsList";
 import { Suspense } from "react";
-import { LinkStyle } from "../ui/Button/styles";
+import { ButtonStyle } from "../ui/Button/styles";
 import Link from "next/link";
 
 export default function HoverCart({ children }: { children: React.ReactNode }) {
@@ -25,7 +25,7 @@ export default function HoverCart({ children }: { children: React.ReactNode }) {
               <span>170$</span>
             </div>
             <div className="flex justify-end">
-              <Button asChild style={LinkStyle.simpleButton}>
+              <Button asChild style={ButtonStyle.simpleButton}>
                 <Link href="/cart">checkout</Link>
               </Button>
             </div>

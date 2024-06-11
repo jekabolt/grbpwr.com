@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { LinkStyle } from "@/components/ui/Button/styles";
+import { ButtonStyle } from "@/components/ui/Button/styles";
 import Button from "@/components/ui/Button";
 
 const meta = {
@@ -16,28 +16,28 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    style: LinkStyle.default,
+    style: ButtonStyle.default,
     children: "default button",
   },
 };
 
 export const BigButton: Story = {
   args: {
-    style: LinkStyle.bigButton,
+    style: ButtonStyle.bigButton,
     children: "big button",
   },
 };
 
 export const UnderlinedButton: Story = {
   args: {
-    style: LinkStyle.underlinedButton,
+    style: ButtonStyle.underlinedButton,
     children: "underlined button",
   },
 };
 
 export const SimpleButton: Story = {
   args: {
-    style: LinkStyle.simpleButton,
+    style: ButtonStyle.simpleButton,
     children: "simple button",
   },
 };

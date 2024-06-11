@@ -1,4 +1,4 @@
-export enum LinkStyle {
+export enum ButtonStyle {
   default = "default",
   bigButton = "bigButton",
   underlinedButton = "underlinedButton",
@@ -37,13 +37,13 @@ function SimpleButtonStyleComponent({ children }: StyleComponentType) {
   );
 }
 
-const componentsStyleMap: Record<LinkStyle, any> = {
-  [LinkStyle.underlinedButton]: UnderlinedButtonStyleComponent,
-  [LinkStyle.bigButton]: BigButtonStyleComponent,
-  [LinkStyle.default]: DefaultStyleComponent,
-  [LinkStyle.simpleButton]: SimpleButtonStyleComponent,
+const componentsStyleMap: Record<ButtonStyle, any> = {
+  [ButtonStyle.underlinedButton]: UnderlinedButtonStyleComponent,
+  [ButtonStyle.bigButton]: BigButtonStyleComponent,
+  [ButtonStyle.default]: DefaultStyleComponent,
+  [ButtonStyle.simpleButton]: SimpleButtonStyleComponent,
 };
 
-export function getComponentByStyle(style: LinkStyle) {
+export function getComponentByStyle(style: ButtonStyle) {
   return componentsStyleMap[style] || DefaultStyleComponent;
 }

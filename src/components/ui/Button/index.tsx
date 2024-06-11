@@ -1,14 +1,14 @@
-import { getComponentByStyle, LinkStyle } from "./styles";
+import { getComponentByStyle, ButtonStyle } from "./styles";
 import React from "react";
 import { Slot } from "@radix-ui/react-slot";
 
 export default function Button({
-  style = LinkStyle.default,
+  style = ButtonStyle.default,
   asChild,
   children,
   ...props
 }: {
-  style?: LinkStyle;
+  style?: ButtonStyle;
   asChild?: boolean;
   children: React.ReactNode;
   [k: string]: any;

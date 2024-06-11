@@ -3,7 +3,7 @@ import CartProductsList from "@/components/cart/CartProductsList";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import CartProductsSkeleton from "@/components/skeletons/CartProductsSkeleton";
 import Button from "@/components/ui/Button";
-import { LinkStyle } from "@/components/ui/Button/styles";
+import { ButtonStyle } from "@/components/ui/Button/styles";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -27,7 +27,7 @@ export default async function Page() {
             <p className="mb-8 text-sm">total:</p>
             <p className="mb-2 text-lg">170$</p>
 
-            <Button asChild style={LinkStyle.simpleButton}>
+            <Button asChild style={ButtonStyle.simpleButton}>
               <Link href="/cart">checkout</Link>
             </Button>
           </div>

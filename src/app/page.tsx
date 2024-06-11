@@ -1,5 +1,5 @@
 import Button from "@/components/ui/Button";
-import { LinkStyle } from "@/components/ui/Button/styles";
+import { ButtonStyle } from "@/components/ui/Button/styles";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import AdsSection from "@/components/sections/AdsSection";
 import HeroSection from "@/components/sections/HeroSection";
@@ -20,7 +20,7 @@ export default async function Page() {
       {main && <HeroSection {...main} />}
       <CoreLayout>
         <AdsSection ads={ads} />
-        <Button asChild style={LinkStyle.bigButton}>
+        <Button asChild style={ButtonStyle.bigButton}>
           <Link href="/catalog">view all</Link>
         </Button>
         <ProductsSection products={productsFeatured} />
