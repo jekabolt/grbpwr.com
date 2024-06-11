@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useClickAway } from "@uidotdev/usehooks";
 
 import GlobalLink from "@/components/global/Link";
-import { LinkStyle } from "@/components/global/Link/styles";
+import { LinkStyle } from "@/components/global/Button/styles";
 
 export default function useMovileMenu() {
   const [isOpen, setOpenStatus] = useState(false);

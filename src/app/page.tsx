@@ -1,5 +1,5 @@
 import Link from "@/components/global/Link";
-import { LinkStyle } from "@/components/global/Link/styles";
+import { LinkStyle } from "@/components/global/Button/styles";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import AdsSection from "@/components/sections/AdsSection";
 import HeroSection from "@/components/sections/HeroSection";

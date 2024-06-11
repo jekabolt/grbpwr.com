@@ -1,5 +1,5 @@
 export enum LinkStyle {
-  mainNavigation = "mainNavigation",
+  underlinedButton = "underlinedButton",
   bigButton = "bigButton",
   default = "default",
 }
@@ -12,7 +12,7 @@ function DefaultStyleComponent({ children }: StyleComponentType) {
   return children;
 }
 
-function mainNavigationStyleComponent({ children }: StyleComponentType) {
+function UnderlinedButtonStyleComponent({ children }: StyleComponentType) {
   return (
     <span className="text-sm text-highlightTextColor underline">
       {children}
@@ -29,7 +29,7 @@ function BigButtonStyleComponent({ children }: StyleComponentType) {
 }
 
 const componentsStyleMap: Record<LinkStyle, any> = {
-  [LinkStyle.mainNavigation]: mainNavigationStyleComponent,
+  [LinkStyle.underlinedButton]: UnderlinedButtonStyleComponent,
   [LinkStyle.bigButton]: BigButtonStyleComponent,
   [LinkStyle.default]: DefaultStyleComponent,
 };

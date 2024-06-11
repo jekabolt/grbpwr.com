@@ -1,7 +1,7 @@
 import Footer from "@/components/global/Footer";
 import Header from "@/components/global/Header";
 import GlobalLink from "@/components/global/Link";
-import { LinkStyle } from "@/components/global/Link/styles";
+import { LinkStyle } from "@/components/global/Button/styles";
 import HoverCart from "@/components/cart/HoverCart";
 import { Suspense } from "react";
 

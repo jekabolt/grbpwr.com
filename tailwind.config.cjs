@@ -1,7 +1,5 @@
-import type { Config } from "tailwindcss";
-
 const config = {
-  content: ["./src/**/*.{ts,tsx}", "./**/*.stories.{ts,tsx}"],
+  content: ["./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     extend: {
@@ -15,6 +13,6 @@ const config = {
     },
   },
   plugins: [require("@tailwindcss/typography")],
-} satisfies Config;
+};
 
-export default config;
+module.exports = config;

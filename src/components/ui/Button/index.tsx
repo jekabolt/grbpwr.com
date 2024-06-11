@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getComponentByStyle, LinkStyle } from "./styles";
 import React from "react";
 
-export default function GlobalLink({
+export default function Button({
   style = LinkStyle.default,
   href,
   children,
