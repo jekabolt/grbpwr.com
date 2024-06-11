@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "@/components/global/Image";
 import useMobileMenu from "./useMobileMenu";
+import Button from "@/components/ui/Button";
 
 export default function Header() {
   const { triggerElement, dropdownElement } = useMobileMenu();
@@ -17,6 +18,7 @@ export default function Header() {
           aspectRatio="4/3"
         />
       </Link>
+
       <div className="grow basis-0 text-right text-sm underline md:hidden">
         cart {"(19)"}
       </div>

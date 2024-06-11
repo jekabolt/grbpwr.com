@@ -1,6 +1,8 @@
-import GlobalLink from "@/components/global/Link";
+import Button from "@/components/ui/Button";
 import CartProductsList from "./CartProductsList";
 import { Suspense } from "react";
+import { ButtonStyle } from "../ui/Button/styles";
+import Link from "next/link";
 
 export default function HoverCart({ children }: { children: React.ReactNode }) {
   return (
@@ -23,13 +25,9 @@ export default function HoverCart({ children }: { children: React.ReactNode }) {
               <span>170$</span>
             </div>
             <div className="flex justify-end">
-              {/* todo: make it global link style */}
-              <GlobalLink
-                href="/cart"
-                className="block w-44 bg-textColor py-2 text-center text-sm text-bgColor"
-              >
-                checkout
-              </GlobalLink>
+              <Button asChild style={ButtonStyle.simpleButton}>
+                <Link href="/cart">checkout</Link>
+              </Button>
             </div>
           </div>
         </div>

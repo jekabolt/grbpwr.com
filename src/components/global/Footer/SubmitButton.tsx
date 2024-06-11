@@ -2,18 +2,19 @@
 
 // @ts-ignore
 import { useFormStatus } from "react-dom";
+import Button from "@/components/ui/Button";
+import { ButtonStyle } from "@/components/ui/Button/styles";
 
-interface SubmitButtonProps {
+type Props = {
   text: string;
-  className?: string;
-}
+};
 
-export function SubmitButton({ text, className = "" }: SubmitButtonProps) {
+export function SubmitButton({ text }: Props) {
   const { pending } = useFormStatus();
 
   return (
-    <button type="submit" className={className} disabled={pending}>
+    <Button style={ButtonStyle.simpleButton} type="submit" disabled={pending}>
       {text}
-    </button>
+    </Button>
   );
 }
