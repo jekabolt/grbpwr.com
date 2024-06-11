@@ -27,8 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "./node_modules/@types/react",
-    "src/app/about/page.mdx"
+    "./node_modules/@types/react"
   ],
   "exclude": ["node_modules"]
 }

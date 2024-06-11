@@ -35,5 +35,7 @@ const componentsStyleMap: Record<LinkStyle, any> = {
 };
 
 export function getComponentByStyle(style: LinkStyle) {
+  console.log("componentsStyleMap[style]");
+  console.log(componentsStyleMap[style]);
   return componentsStyleMap[style] || DefaultStyleComponent;
 }

@@ -15,6 +15,8 @@ export default function GlobalLink({
 }) {
   const Component = getComponentByStyle(style);
 
+  console.log(style);
+
   return (
     <div className={className}>
       <Link href={href}>
