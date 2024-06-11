@@ -1,9 +1,9 @@
 import Footer from "@/components/global/Footer";
 import Header from "@/components/global/Header";
-import GlobalLink from "@/components/global/Link";
-import { LinkStyle } from "@/components/global/Link/styles";
+import Button from "@/components/ui/Button";
+import { ButtonStyle } from "@/components/ui/Button/styles";
 import HoverCart from "@/components/cart/HoverCart";
-import { Suspense } from "react";
+import Link from "next/link";
 
 export default function CoreLayout({
   children,
@@ -19,15 +19,15 @@ export default function CoreLayout({
         <div className="flex">
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <GlobalLink style={LinkStyle.mainNavigation} href="/catalog">
-                catalog
-              </GlobalLink>
-              <GlobalLink style={LinkStyle.mainNavigation} href="/archive">
-                archive
-              </GlobalLink>
-              <GlobalLink style={LinkStyle.mainNavigation} href="/shipping">
-                shipping
-              </GlobalLink>
+              <Button style={ButtonStyle.underlinedButton}>
+                <Link href="/catalog">catalog</Link>
+              </Button>
+              <Button style={ButtonStyle.underlinedButton}>
+                <Link href="/archive">archive</Link>
+              </Button>
+              <Button style={ButtonStyle.underlinedButton}>
+                <Link href="/shipping">shipping</Link>
+              </Button>
             </nav>
           </div>
 
@@ -38,16 +38,16 @@ export default function CoreLayout({
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
               <HoverCart>
-                <GlobalLink style={LinkStyle.mainNavigation} href="/cart">
-                  cart
-                </GlobalLink>
+                <Button style={ButtonStyle.underlinedButton}>
+                  <Link href="/cart">cart</Link>
+                </Button>
               </HoverCart>
-              <GlobalLink style={LinkStyle.mainNavigation} href="/about">
-                about
-              </GlobalLink>
-              <GlobalLink style={LinkStyle.mainNavigation} href="/contacts">
-                contacts
-              </GlobalLink>
+              <Button style={ButtonStyle.underlinedButton}>
+                <Link href="/about">about</Link>
+              </Button>
+              <Button style={ButtonStyle.underlinedButton}>
+                <Link href="/contacts">contacts</Link>
+              </Button>
             </nav>
           </div>
         </div>

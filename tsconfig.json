@@ -28,7 +28,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "./node_modules/@types/react",
-    "src/app/about/page.mdx"
+    "tailwind.config.cjs"
   ],
   "exclude": ["node_modules"]
 }

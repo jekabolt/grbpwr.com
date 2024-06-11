@@ -1,5 +1,3 @@
-import type { Config } from "tailwindcss";
-
 const config = {
   content: ["./src/**/*.{ts,tsx}"],
   prefix: "",
@@ -15,6 +13,6 @@ const config = {
     },
   },
   plugins: [require("@tailwindcss/typography")],
-} satisfies Config;
+};
 
-export default config;
+module.exports = config;

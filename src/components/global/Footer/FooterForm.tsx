@@ -31,10 +31,7 @@ export default function FooterForm({ formSubmitClick }: FooterFormProps) {
         aria-label="Email"
         placeholder="us@grbpwr.com"
       />
-      <SubmitButton
-        text="subscribe"
-        className="block w-36 bg-textColor px-1.5 text-center text-sm text-buttonTextColor"
-      />
+      <SubmitButton text="subscribe" />
     </form>
   );
 }

@@ -2,6 +2,9 @@ import { Suspense } from "react";
 import CartProductsList from "@/components/cart/CartProductsList";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import CartProductsSkeleton from "@/components/skeletons/CartProductsSkeleton";
+import Button from "@/components/ui/Button";
+import { ButtonStyle } from "@/components/ui/Button/styles";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +26,10 @@ export default async function Page() {
           <div className="sticky top-20">
             <p className="mb-8 text-sm">total:</p>
             <p className="mb-2 text-lg">170$</p>
-            <button className="w-44 bg-black p-2 text-white">checkout</button>
+
+            <Button asChild style={ButtonStyle.simpleButton}>
+              <Link href="/cart">checkout</Link>
+            </Button>
           </div>
         </div>
       </div>

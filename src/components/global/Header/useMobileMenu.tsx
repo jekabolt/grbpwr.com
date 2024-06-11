@@ -3,8 +3,9 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { useClickAway } from "@uidotdev/usehooks";
 
-import GlobalLink from "@/components/global/Link";
-import { LinkStyle } from "@/components/global/Link/styles";
+import Button from "@/components/ui/Button";
+import { ButtonStyle } from "@/components/ui/Button/styles";
+import Link from "next/link";
 
 export default function useMovileMenu() {
   const [isOpen, setOpenStatus] = useState(false);
@@ -48,21 +49,21 @@ function MobileMenuDropdown({
         {"[x]"}
       </button>
       <nav className="space-y-6">
-        <GlobalLink style={LinkStyle.mainNavigation} href="/catalog">
-          catalog
-        </GlobalLink>
-        <GlobalLink style={LinkStyle.mainNavigation} href="/archive">
-          archive
-        </GlobalLink>
-        <GlobalLink style={LinkStyle.mainNavigation} href="/about">
-          about
-        </GlobalLink>
-        <GlobalLink style={LinkStyle.mainNavigation} href="/shipping">
-          shipping
-        </GlobalLink>
-        <GlobalLink style={LinkStyle.mainNavigation} href="/contacts">
-          contacts
-        </GlobalLink>
+        <Button asChild style={ButtonStyle.underlinedButton}>
+          <Link href="/catalog">catalog</Link>
+        </Button>
+        <Button asChild style={ButtonStyle.underlinedButton}>
+          <Link href="/archive">archive</Link>
+        </Button>
+        <Button asChild style={ButtonStyle.underlinedButton}>
+          <Link href="/about">about</Link>
+        </Button>
+        <Button asChild style={ButtonStyle.underlinedButton}>
+          <Link href="/shipping">shipping</Link>
+        </Button>
+        <Button asChild style={ButtonStyle.underlinedButton}>
+          <Link href="/contacts">contacts</Link>
+        </Button>
       </nav>
     </div>
   );
