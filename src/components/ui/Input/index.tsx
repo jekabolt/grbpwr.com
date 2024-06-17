@@ -1,19 +1,17 @@
 import { InputStyle, getComponentByStyle } from "./styles";
 
 export default function Input({
+  id,
   type = "text",
   style = InputStyle.default,
   label,
-  disabled = false,
-  readOnly = false,
   errorMessage,
   ...props
 }: {
+  id: string;
   type?: "email" | "number" | "tel" | "text";
   style?: InputStyle;
   label?: string;
-  disabled?: boolean;
-  readOnly?: boolean;
   errorMessage?: string;
   [k: string]: any;
 }) {
@@ -21,15 +19,11 @@ export default function Input({
 
   return (
     <div>
-      {label && <label>{label}:</label>}
+      <label htmlFor={id} className={label ? "" : "hidden"}>
+        {label}:
+      </label>
       {errorMessage && <p className="text-red-700">{errorMessage}</p>}
-      <input
-        type={type}
-        disabled={disabled}
-        readOnly={readOnly}
-        className={`${inputStyleClass}`}
-        {...props}
-      />
+      <input id={id} type={type} className={`${inputStyleClass}`} {...props} />
     </div>
   );
 }

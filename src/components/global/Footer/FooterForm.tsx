@@ -1,5 +1,6 @@
 "use client";
 
+import Input from "@/components/ui/Input";
 import { SubmitButton } from "./SubmitButton";
 
 type FooterFormProps = {
@@ -22,15 +23,9 @@ export default function FooterForm({ formSubmitClick }: FooterFormProps) {
         subscribe to our newsletter and receive news, information about
         promotions and pleasant surprises from grbpwr.com
       </p>
-      <label htmlFor="email">email</label>
-      <input
-        type="email"
-        name="email"
-        required
-        className=""
-        aria-label="Email"
-        placeholder="us@grbpwr.com"
-      />
+      <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/3 2xl:w-1/3">
+        <Input id="newsletter" type="email" placeholder="email" />
+      </div>
       <SubmitButton text="subscribe" />
     </form>
   );
