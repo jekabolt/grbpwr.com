@@ -1,4 +1,4 @@
-import { InputStyle, getInputStyleClass } from "./styles";
+import { InputStyle, getComponentByStyle } from "./styles";
 
 export default function Input({
   type = "text",
@@ -17,12 +17,12 @@ export default function Input({
   errorMessage?: string;
   [k: string]: any;
 }) {
-  const inputStyleClass = getInputStyleClass(style);
+  const inputStyleClass = getComponentByStyle(style);
 
   return (
     <div>
-      {label && <div>{label}:</div>}
-      {errorMessage && <div className="text-red-700">{errorMessage}</div>}
+      {label && <label>{label}:</label>}
+      {errorMessage && <p className="text-red-700">{errorMessage}</p>}
       <input
         type={type}
         disabled={disabled}
