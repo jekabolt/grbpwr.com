@@ -19,5 +19,6 @@ export const Default: Story = {
     id: "default",
     style: CheckboxStyle.default,
     label: "checkbox label",
+    name: "checkbox",
   },
 };

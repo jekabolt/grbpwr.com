@@ -20,6 +20,7 @@ export const Default: Story = {
     style: InputStyle.default,
     label: "label",
     type: "text",
+    name: "input",
   },
 };
 
@@ -30,5 +31,6 @@ export const DefaultWithError: Story = {
     label: "label",
     type: "text",
     errorMessage: "error message",
+    name: "input",
   },
 };
