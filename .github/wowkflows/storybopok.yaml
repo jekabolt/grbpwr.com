@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - feature/deploy-sb
+      - "feature/deploy-sb"
 
 permissions:
   contents: write
