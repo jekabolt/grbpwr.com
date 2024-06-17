@@ -5,6 +5,7 @@ export default function Input({
   type = "text",
   style = InputStyle.default,
   label,
+  name,
   errorMessage,
   ...props
 }: {
@@ -12,6 +13,7 @@ export default function Input({
   type?: "email" | "number" | "tel" | "text";
   style?: InputStyle;
   label?: string;
+  name: string;
   errorMessage?: string;
   [k: string]: any;
 }) {
