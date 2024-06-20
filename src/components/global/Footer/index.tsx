@@ -2,7 +2,7 @@ import { FOOTER_LINKS as links, FOOTER_YEAR as year } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import FooterForm from "./FooterForm";
+import FooterForm from "../../forms/NewslatterForm";
 import GenericPopover from "@/components/ui/Popover";
 import Button from "@/components/ui/Button";
 

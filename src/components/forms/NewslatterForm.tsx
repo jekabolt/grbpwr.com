@@ -7,7 +7,7 @@ type FooterFormProps = {
   formSubmitClick: (data: FormData) => Promise<void>;
 };
 
-export default function FooterForm({ formSubmitClick }: FooterFormProps) {
+export default function NewslatterForm({ formSubmitClick }: FooterFormProps) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

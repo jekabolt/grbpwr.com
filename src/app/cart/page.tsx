@@ -5,6 +5,7 @@ import CartProductsSkeleton from "@/components/skeletons/CartProductsSkeleton";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
 import Link from "next/link";
+import ConfirmOrderForm from "@/components/forms/ConfirmOrderForm";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +33,11 @@ export default async function Page() {
             </Button>
           </div>
         </div>
+      </div>
+
+      <div className="mt-12">
+        <h1 className="mb-12 text-3xl">form test fields</h1>
+        <ConfirmOrderForm />
       </div>
     </CoreLayout>
   );
