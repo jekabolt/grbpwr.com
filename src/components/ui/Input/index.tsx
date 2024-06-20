@@ -1,12 +1,13 @@
+import { Label } from "@radix-ui/react-label";
+import { cn } from "@/lib/utils";
+
 export default function Input({
-  id,
   type = "text",
   label,
   name,
   errorMessage,
   ...props
 }: {
-  id: string;
   type?: "email" | "number" | "tel" | "text";
   label?: string;
   name: string;
@@ -14,13 +15,18 @@ export default function Input({
   [k: string]: any;
 }) {
   return (
-    <div>
-      <label htmlFor={id} className={label ? undefined : "hidden"}>
+    <div className="space-y-2">
+      <Label
+        htmlFor={name}
+        className={cn({
+          hidden: !label,
+        })}
+      >
         {label}:
-      </label>
+      </Label>
       {errorMessage && <p className="text-errorColor">{errorMessage}</p>}
       <input
-        id={id}
+        id={name}
         type={type}
         className="w-full border-b border-textColor text-lg focus:border-b focus:border-textColor focus:outline-none"
         {...props}

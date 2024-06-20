@@ -7,6 +7,9 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    label: "label:",
+  },
   tags: ["autodocs"],
 } satisfies Meta<typeof Checkbox>;
 
@@ -15,8 +18,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    id: "default",
-    label: "checkbox label",
     name: "checkbox",
   },
 };

@@ -7,6 +7,9 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    label: "label:",
+  },
   tags: ["autodocs"],
 } satisfies Meta<typeof Input>;
 
@@ -15,19 +18,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    id: "default",
-    label: "label",
-    type: "text",
     name: "input",
   },
 };
 
 export const DefaultWithError: Story = {
   args: {
-    id: "default-with-error",
-    label: "label",
-    type: "text",
     errorMessage: "error message",
-    name: "input",
+    name: "input with error",
   },
 };
