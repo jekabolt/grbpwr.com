@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import Input from "@/components/ui/Input";
+import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
   title: "Input/Input",
@@ -26,5 +26,14 @@ export const DefaultWithError: Story = {
   args: {
     errorMessage: "error message",
     name: "input with error",
+  },
+};
+
+export const DefaultWithMask: Story = {
+  args: {
+    errorMessage: "error message",
+    name: "input date (mm/yy)",
+    mask: "__/__",
+    placeholder: "mm/yy",
   },
 };
