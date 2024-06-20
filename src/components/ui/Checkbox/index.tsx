@@ -1,6 +1,7 @@
 import { Label } from "@radix-ui/react-label";
 import * as Checkbox from "@radix-ui/react-checkbox";
 
+// todo: add error handling, add error option to storybook
 export default function CheckboxGlobal({
   label,
   name,
