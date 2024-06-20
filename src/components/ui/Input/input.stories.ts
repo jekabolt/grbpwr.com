@@ -1,6 +1,5 @@
-import Input from "@/components/ui/Input";
-import { InputStyle } from "@/components/ui/Input/styles";
 import type { Meta, StoryObj } from "@storybook/react";
+import Input from "@/components/ui/Input";
 
 const meta = {
   title: "Input/Input",
@@ -17,7 +16,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     id: "default",
-    style: InputStyle.default,
     label: "label",
     type: "text",
     name: "input",
@@ -27,7 +25,6 @@ export const Default: Story = {
 export const DefaultWithError: Story = {
   args: {
     id: "default-with-error",
-    style: InputStyle.default,
     label: "label",
     type: "text",
     errorMessage: "error message",
