@@ -4,9 +4,8 @@ import Input from "@/components/ui/Input";
 import Checkbox from "@/components/ui/Checkbox";
 import Select from "@/components/ui/Select";
 import { SubmitButton } from "./SubmitButton";
-import { Label } from "@radix-ui/react-select";
 
-export default function NewslatterForm() {
+export default function ConfirmOrderForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {};
 
   return (
