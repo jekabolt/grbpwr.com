@@ -22,7 +22,7 @@ export default forwardRef<HTMLInputElement, InputProps>(function Input(
           hidden: !label,
         })}
       >
-        {label}
+        {label}:
       </Label>
       {errorMessage && <p className="text-errorColor">{errorMessage}</p>}
       <input

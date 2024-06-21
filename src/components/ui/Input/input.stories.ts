@@ -8,7 +8,7 @@ const meta = {
     layout: "centered",
   },
   args: {
-    label: "label:",
+    label: "label",
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof Input>;
