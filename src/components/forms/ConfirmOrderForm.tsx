@@ -1,8 +1,9 @@
 "use client";
 
-import Input from "@/components/ui/Input";
 import Checkbox from "@/components/ui/Checkbox";
+import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
+import InputMask from "../ui/InputMask";
 import { SubmitButton } from "./SubmitButton";
 
 export default function ConfirmOrderForm() {
@@ -11,11 +12,13 @@ export default function ConfirmOrderForm() {
   return (
     // todo: change to react-hook form
     <form onSubmit={handleSubmit} className="space-y-10">
-      <Input
-        label="some label:"
-        type="email"
-        placeholder="email"
-        name="email"
+      <Input label="some label" type="email" placeholder="email" name="email" />
+      <InputMask
+        mask="__/__"
+        label="some label (mm/yy)"
+        type="text"
+        placeholder="mm/yy"
+        name="expiration date"
       />
       <Checkbox name="newsletter" label="subscribe to our newsletter" />
       <Select

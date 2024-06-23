@@ -1,9 +1,9 @@
-import Input from "@/components/ui/Input";
 import type { Meta, StoryObj } from "@storybook/react";
+import InputMask from ".";
 
 const meta = {
-  title: "Input/Input",
-  component: Input,
+  title: "InputMask/InputMask",
+  component: InputMask,
   parameters: {
     layout: "centered",
   },
@@ -11,7 +11,7 @@ const meta = {
     label: "label",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof Input>;
+} satisfies Meta<typeof InputMask>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -19,12 +19,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     name: "input",
-  },
-};
-
-export const DefaultWithError: Story = {
-  args: {
-    errorMessage: "error message",
-    name: "input with error",
+    mask: "__/__",
+    placeholder: "mm/yy",
   },
 };
