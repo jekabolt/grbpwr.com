@@ -1,43 +1,27 @@
 import React from "react";
-import { Label } from "@radix-ui/react-label";
 import * as Select from "@radix-ui/react-select";
 import { cn } from "@/lib/utils";
 
 export default function SelectComponent({
-  label,
   name,
-  errorMessage,
   items,
   ...props
 }: {
-  label?: string;
   name: string;
-  errorMessage?: string;
   items: { value: string; label: string }[];
   [k: string]: any;
 }) {
   return (
-    <div className="space-y-2">
-      <Label
-        htmlFor={name}
-        className={cn("block", {
-          hidden: !label,
-        })}
-      >
-        {label}:
-      </Label>
-      {errorMessage && <p className="text-errorColor">{errorMessage}</p>}
-      <Select.Root>
-        <SelectTrigger placeholder="country/region">arrow down</SelectTrigger>
-        <SelectContent>
-          {items.map((item) => (
-            <SelectItem key={item.value} value={item.value}>
-              {item.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select.Root>
-    </div>
+    <Select.Root {...props}>
+      <SelectTrigger placeholder="country/region">arrow down</SelectTrigger>
+      <SelectContent>
+        {items.map((item) => (
+          <SelectItem key={item.value} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select.Root>
   );
 }
 

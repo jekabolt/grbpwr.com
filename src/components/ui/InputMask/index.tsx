@@ -1,14 +1,14 @@
 import { InputMask as InputMaskControl, Replacement } from "@react-input/mask";
 import Input, { InputProps } from "../Input";
 
-interface InputMaskProps extends InputProps {
+export interface InputMaskProps extends InputProps {
   mask: string;
   replacement?: string | Replacement;
 }
 
 export default function InputMask({
   mask,
-  replacement = { _: /\d/ },
+  replacement = { _: /\d/, d: /\d/, m: /\d/, y: /\d/ },
   type = "text",
   label,
   name,
