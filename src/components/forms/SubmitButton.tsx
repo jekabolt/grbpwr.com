@@ -7,13 +7,18 @@ import { ButtonStyle } from "@/components/ui/Button/styles";
 
 type Props = {
   text: string;
+  disabled?: boolean;
 };
 
-export function SubmitButton({ text }: Props) {
+export function SubmitButton({ text, disabled }: Props) {
   const { pending } = useFormStatus();
 
   return (
-    <Button style={ButtonStyle.simpleButton} type="submit" disabled={pending}>
+    <Button
+      style={ButtonStyle.simpleButton}
+      type="submit"
+      disabled={disabled || pending}
+    >
       {text}
     </Button>
   );
