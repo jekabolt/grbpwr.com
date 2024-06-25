@@ -29,7 +29,7 @@ export default async function Page() {
             <p className="mb-2 text-lg">170$</p>
 
             <Button asChild style={ButtonStyle.simpleButton}>
-              <Link href="/cart">checkout</Link>
+              <Link href="/cart/checkout">checkout</Link>
             </Button>
           </div>
         </div>
