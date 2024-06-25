@@ -28,10 +28,14 @@ export const CheckboxField = ({ label, control, name, description }: Props) => {
         <FormItem>
           <div className="flex items-center gap-x-2">
             <FormControl>
-              <Checkbox {...field} />
+              <Checkbox
+                {...field}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
             </FormControl>
             <div
-              className={cn({
+              className={cn("leading-none", {
                 "space-y-1": description,
               })}
             >

@@ -33,7 +33,7 @@ export const InputField = ({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input disabled={loading} {...field} {...props} />
+            <Input type={type} disabled={loading} {...field} {...props} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

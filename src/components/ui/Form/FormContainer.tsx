@@ -26,7 +26,8 @@ export const FormContainer = ({
         {children}
         <FormFooter>
           <SubmitButton
-            text={initialData ? "Save changes" : "Create"}
+            text="submit"
+            // text={initialData ? "Save changes" : "create"}
             disabled={loading}
           />
         </FormFooter>

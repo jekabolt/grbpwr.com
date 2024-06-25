@@ -5,7 +5,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "..";
 import RadioGroup, { RadioGroupsProps } from "@/components/ui/RadioGroup";
@@ -31,9 +30,13 @@ export const RadioGroupField = ({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
           <FormControl>
-            <RadioGroup disabled={loading} {...field} {...props} />
+            <RadioGroup
+              disabled={loading}
+              {...field}
+              onValueChange={field.onChange}
+              {...props}
+            />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

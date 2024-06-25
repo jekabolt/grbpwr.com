@@ -70,20 +70,23 @@ export default function ConfirmOrderForm({
       <InputField
         control={form.control}
         loading={loading}
+        type="number"
         name="phone"
         label="phone number:"
         placeholder="James Bond"
       />
-      <CheckboxField
-        control={form.control}
-        name="subscribe"
-        label="email me with news and offers to our newsletter"
-      />
-      <CheckboxField
-        control={form.control}
-        name="termsOfService"
-        label="i accept the privacy policy and terms & conditions"
-      />
+      <div className="space-y-2">
+        <CheckboxField
+          control={form.control}
+          name="subscribe"
+          label="email me with news and offers to our newsletter"
+        />
+        <CheckboxField
+          control={form.control}
+          name="termsOfService"
+          label="i accept the privacy policy and terms & conditions"
+        />
+      </div>
 
       <h2 className="mb-8 text-lg">shipping address</h2>
       <div className="grid grid-cols-2 gap-6">
@@ -124,7 +127,7 @@ export default function ConfirmOrderForm({
       <SelectField
         control={form.control}
         loading={loading}
-        name="country"
+        name="state"
         label="state:"
         items={[
           { label: "Sweden", value: "sweden" },
@@ -155,14 +158,14 @@ export default function ConfirmOrderForm({
         loading={loading}
         name="additionalAddress"
         label="additional address:"
-        placeholder="sjyrniesu 10"
+        placeholder=""
       />
       <InputField
         control={form.control}
         loading={loading}
         name="company"
         label="company:"
-        placeholder="sjyrniesu 10"
+        placeholder="Channel"
       />
       <InputField
         control={form.control}
