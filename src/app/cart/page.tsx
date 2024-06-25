@@ -34,11 +34,6 @@ export default async function Page() {
           </div>
         </div>
       </div>
-
-      <div className="mt-12">
-        <h1 className="mb-12 text-3xl">form test fields</h1>
-        <ConfirmOrderForm />
-      </div>
     </CoreLayout>
   );
 }

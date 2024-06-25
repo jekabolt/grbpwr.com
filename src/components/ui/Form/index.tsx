@@ -94,7 +94,12 @@ const FormLabel = forwardRef<
   const { formItemId } = useFormField();
 
   return (
-    <Label ref={ref} className={className} htmlFor={formItemId} {...props} />
+    <Label
+      ref={ref}
+      className={cn("text-xs", className)}
+      htmlFor={formItemId}
+      {...props}
+    />
   );
 });
 

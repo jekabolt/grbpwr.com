@@ -6,8 +6,8 @@ import Select from "@/components/ui/Select";
 type Props = {
   name: string;
   label: string;
-  placeholder?: string;
   loading?: boolean;
+  placeholder?: string;
   control: Control<any>;
   items: {
     label: string;
@@ -15,13 +15,7 @@ type Props = {
   }[];
 };
 
-export const SelectField = ({
-  loading,
-  control,
-  items,
-  name,
-  label,
-}: Props) => {
+export const SelectField = ({ control, items, name, label }: Props) => {
   return (
     <FormField
       control={control}
@@ -29,12 +23,7 @@ export const SelectField = ({
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
-          <Select
-            onValueChange={field.onChange}
-            value={field.value}
-            name={name}
-            items={items}
-          />
+          <Select {...field} items={items} />
           <FormMessage />
         </FormItem>
       )}
