@@ -6,6 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "..";
 import Checkbox from "@/components/ui/Checkbox";
 import { cn } from "@/lib/utils";
@@ -24,23 +25,25 @@ export const CheckboxField = ({ label, control, name, description }: Props) => {
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex items-center gap-x-2 space-y-0">
-          <FormControl>
-            <Checkbox
-              name={name}
-              checked={field.value}
-              onCheckedChange={field.onChange}
-            />
-          </FormControl>
-
-          <div
-            className={cn("leading-3", {
-              "space-y-1": description,
-            })}
-          >
-            <FormLabel>{label}</FormLabel>
-            <FormDescription>{description}</FormDescription>
+        <FormItem>
+          <div className="flex items-center gap-x-2">
+            <FormControl>
+              <Checkbox
+                {...field}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            </FormControl>
+            <div
+              className={cn("leading-none", {
+                "space-y-1": description,
+              })}
+            >
+              <FormLabel>{label}</FormLabel>
+              <FormDescription>{description}</FormDescription>
+            </div>
           </div>
+          <FormMessage />
         </FormItem>
       )}
     />

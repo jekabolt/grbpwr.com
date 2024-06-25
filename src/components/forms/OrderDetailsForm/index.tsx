@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/Form";
 import { InputField } from "@/components/ui/Form/fields/InputField";
 import { InputMaskedField } from "@/components/ui/Form/fields/InputMaskedField";
 import { CheckboxField } from "@/components/ui/Form/fields/CheckboxField";
+import { RadioGroupField } from "@/components/ui/Form/fields/RadioGroupField";
 
-import { SubmitButton } from "../SubmitButton";
 import { orderDetailsSchema, defaultData, OrderDetailsData } from "./schema";
 import { SelectField } from "@/components/ui/Form/fields/SelectField";
 import { FormContainer } from "@/components/ui/Form/FormContainer";
@@ -58,40 +56,59 @@ export default function ConfirmOrderForm({
       initialData={initialData}
       onSubmit={onSubmit}
       loading={loading}
+      className="space-y-6"
     >
-      <InputField
-        control={form.control}
-        loading={loading}
-        name="name"
-        label="name:"
-        placeholder="James Bond"
-      />
+      <h2 className="mb-8 text-lg">contact</h2>
       <InputField
         control={form.control}
         loading={loading}
         name="email"
-        label="email:"
+        label="email address:"
         type="email"
         placeholder="james.bond@example.com"
       />
-      <InputMaskedField
+      <InputField
         control={form.control}
         loading={loading}
-        name="dateOfBirth"
-        mask="dd.mm.yyyy"
-        label="date of birth:"
-        placeholder="01.01.2000"
+        type="number"
+        name="phone"
+        label="phone number:"
+        placeholder="James Bond"
       />
-      <CheckboxField
-        control={form.control}
-        name="termsOfService"
-        label="agree to the terms of service"
-      />
-      <CheckboxField
-        control={form.control}
-        name="subscribe"
-        label="subscribe to our newsletter"
-      />
+      <div className="space-y-2">
+        <CheckboxField
+          control={form.control}
+          name="subscribe"
+          label="email me with news and offers to our newsletter"
+        />
+        <CheckboxField
+          control={form.control}
+          name="termsOfService"
+          label="i accept the privacy policy and terms & conditions"
+        />
+      </div>
+
+      <h2 className="mb-8 text-lg">shipping address</h2>
+      <div className="grid grid-cols-2 gap-6">
+        <div className="col-span-1">
+          <InputField
+            control={form.control}
+            loading={loading}
+            name="firstName"
+            label="first name:"
+            placeholder="James"
+          />
+        </div>
+        <div className="col-span-1">
+          <InputField
+            control={form.control}
+            loading={loading}
+            name="lastName"
+            label="last name:"
+            placeholder="Bond"
+          />
+        </div>
+      </div>
       <SelectField
         control={form.control}
         loading={loading}
@@ -105,6 +122,85 @@ export default function ConfirmOrderForm({
           { label: "Iceland", value: "iceland" },
           { label: "Ireland", value: "ireland" },
         ]}
+      />
+
+      <SelectField
+        control={form.control}
+        loading={loading}
+        name="state"
+        label="state:"
+        items={[
+          { label: "Sweden", value: "sweden" },
+          { label: "Norway", value: "norway" },
+          { label: "Denmark", value: "denmark" },
+          { label: "Finland", value: "finland" },
+          { label: "Iceland", value: "iceland" },
+          { label: "Ireland", value: "ireland" },
+        ]}
+      />
+
+      <InputField
+        control={form.control}
+        loading={loading}
+        name="city"
+        label="city:"
+        placeholder="London"
+      />
+      <InputField
+        control={form.control}
+        loading={loading}
+        name="address"
+        label="streat and houce number:"
+        placeholder="sjyrniesu 10"
+      />
+      <InputField
+        control={form.control}
+        loading={loading}
+        name="additionalAddress"
+        label="additional address:"
+        placeholder=""
+      />
+      <InputField
+        control={form.control}
+        loading={loading}
+        name="company"
+        label="company:"
+        placeholder="Channel"
+      />
+      <InputField
+        control={form.control}
+        loading={loading}
+        name="postalCode"
+        label="postal code:"
+        placeholder="37892"
+      />
+
+      <h2 className="mb-8 text-lg">shipping method</h2>
+
+      <RadioGroupField
+        control={form.control}
+        loading={loading}
+        name="shippingMethod"
+        label="shippingMethod"
+        items={[
+          {
+            label: "dhl standart",
+            value: "dhl-standart",
+          },
+          {
+            label: "dhl express",
+            value: "dhl-express",
+          },
+        ]}
+      />
+
+      <InputMaskedField
+        control={form.control}
+        loading={loading}
+        name="dateOfBirth"
+        mask="dd.mm.yyyy"
+        label="date of birth:"
+        placeholder="01.01.2000"
       />
     </FormContainer>
   );

@@ -29,12 +29,7 @@ export const SelectField = ({
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
-          <Select
-            onValueChange={field.onChange}
-            value={field.value}
-            name={name}
-            items={items}
-          />
+          <Select onValueChange={field.onChange} items={items} {...field} />
           <FormMessage />
         </FormItem>
       )}

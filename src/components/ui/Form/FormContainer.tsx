@@ -9,6 +9,7 @@ type Props = {
   onSubmit: (data: any) => void;
   loading?: boolean;
   children: React.ReactNode;
+  className?: string;
 };
 
 export const FormContainer = ({
@@ -17,14 +18,16 @@ export const FormContainer = ({
   onSubmit,
   loading,
   children,
+  className,
 }: Props) => {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
+      <form onSubmit={form.handleSubmit(onSubmit)} className={className}>
         {children}
         <FormFooter>
           <SubmitButton
-            text={initialData ? "Save changes" : "Create"}
+            text="submit"
+            // text={initialData ? "Save changes" : "create"}
             disabled={loading}
           />
         </FormFooter>

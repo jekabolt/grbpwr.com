@@ -24,9 +24,12 @@ export default function HoverCart({ children }: { children: React.ReactNode }) {
               <span>total:</span>
               <span>170$</span>
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-2">
               <Button asChild style={ButtonStyle.simpleButton}>
-                <Link href="/cart">checkout</Link>
+                <Link href="/cart">cart</Link>
+              </Button>
+              <Button asChild style={ButtonStyle.simpleButton}>
+                <Link href="/cart/checkout">checkout</Link>
               </Button>
             </div>
           </div>
