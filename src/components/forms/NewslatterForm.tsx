@@ -24,7 +24,13 @@ export default function NewslatterForm({ formSubmitClick }: FooterFormProps) {
         promotions and pleasant surprises from grbpwr.com
       </p>
       <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/3 2xl:w-1/3">
-        <Input id="newsletter" type="email" placeholder="email" name="email" />
+        <Input
+          id="newsletter"
+          type="email"
+          required
+          placeholder="email"
+          name="email"
+        />
       </div>
       <SubmitButton text="subscribe" />
     </form>

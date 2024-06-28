@@ -14,7 +14,7 @@ export default function HoverCart({ children }: { children: React.ReactNode }) {
             <div className="mb-6 text-textColor">added to cart {"[06]"}</div>
             <div className="relative">
               <div className="no-scroll-bar relative max-h-[800px] space-y-5 overflow-y-scroll pb-5">
-                <Suspense fallback={null}>
+                <Suspense fallback={"LOADING......LOADING......LOADING......"}>
                   <CartProductsList />
                 </Suspense>
               </div>

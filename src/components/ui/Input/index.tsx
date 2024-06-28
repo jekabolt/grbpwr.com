@@ -15,7 +15,7 @@ export default forwardRef<HTMLInputElement, InputProps>(function Input(
       id={name}
       type={type}
       ref={forwardedRef}
-      className="w-full border-b border-textColor text-lg focus:border-b focus:border-textColor focus:outline-none"
+      className="w-full border-b border-textColor bg-bgColor text-lg focus:border-b focus:border-textColor focus:outline-none"
       {...props}
     />
   );
