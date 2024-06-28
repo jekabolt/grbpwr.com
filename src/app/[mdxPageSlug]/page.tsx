@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import AboutMdx from "./about.mdx";
 import ContactsMdx from "./contacts.mdx";
+import ShippingMdx from "./shipping.mdx";
 
 type Props = {
   params: {
@@ -12,6 +13,7 @@ type Props = {
 const MDX_FILES_MAP: Record<string, any> = {
   about: AboutMdx,
   contacts: ContactsMdx,
+  shipping: ShippingMdx,
 };
 
 export function generateStaticParams() {
