@@ -1,4 +1,3 @@
-import { serviceClient } from "@/lib/api";
 import { createCartId, getCartCookie } from "@/lib/utils/cart";
 import { cookies } from "next/headers";
 
@@ -6,12 +5,6 @@ export const GRBPWR_CART = "grbpwr-cart";
 
 export async function addItemToCookie(slug: string, size?: string) {
   "use server";
-
-  const product = await serviceClient
-    .GetProduct({
-      slug: slug,
-    })
-    .then((x) => x.product);
 
   const cartId = createCartId(slug, size);
 
