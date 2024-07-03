@@ -1,21 +1,40 @@
-import { common_ProductFull } from "@/api/proto-http/frontend";
 import CartItemRow from "@/components/cart/CartItemRow";
 import Button from "@/components/ui/Button";
+import { serviceClient } from "@/lib/api";
+import { getProductPrice } from "@/lib/utils";
 import { getCartCookie } from "@/lib/utils/cart";
 import Link from "next/link";
 
-export default function CartProductsList() {
+export default async function CartProductsList() {
   const cart = getCartCookie();
 
   if (!cart || !cart.products) return null;
 
   const cartItems = Object.values(cart.products) as {
     quantity: number;
-    product: common_ProductFull | undefined;
+    slug: string;
     size?: string;
   }[];
 
-  return cartItems.map((p) => (
+  const productsPromises = cartItems.map(async (item) => {
+    const response = await serviceClient.GetProduct({ slug: item.slug });
+    const product = response.product;
+
+    return {
+      quantity: item.quantity,
+      slug: item.slug,
+      size: item.size,
+      product: product,
+    };
+  });
+
+  const products = await Promise.all(productsPromises);
+
+  // TOTAL PRICE
+  let totalPrice = 0;
+  products.forEach((x) => (totalPrice += getProductPrice(x.product)));
+
+  return products.map((p) => (
     <Button key={p?.product?.product?.id as number} asChild>
       <Link href={`/catalog/${p?.product?.product?.slug}`}>
         <CartItemRow
