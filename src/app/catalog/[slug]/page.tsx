@@ -71,7 +71,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
               ))}
             </div>
             <Suspense>
-              <AddToCartButton slug={slug} addItemToCookie={addItemToCookie} />
+              {/* TO-DO pass size from form */}
+              <AddToCartButton
+                slug={slug}
+                size="size2"
+                addItemToCookie={addItemToCookie}
+              />
             </Suspense>
           </div>
         </div>

@@ -19,3 +19,10 @@ export function getCartCookie() {
 
   return null;
 }
+
+export function createCartId(slug: string, size?: string): string {
+  if (!size) {
+    return slug;
+  }
+  return `${slug}_${size}`;
+}
