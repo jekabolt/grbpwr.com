@@ -1,24 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import InputMask from ".";
+import Popover from ".";
 
 const meta = {
-  title: "UI/InputMask",
-  component: InputMask,
+  title: "UI/Popover",
+  component: Popover,
   parameters: {
     layout: "centered",
   },
   args: {
-    name: "input",
+    title: "popover title",
+    openElement: "open element or text",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof InputMask>;
+} satisfies Meta<typeof Popover>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    mask: "__/__",
-    placeholder: "mm/yy",
+    children: "popover content",
   },
 };

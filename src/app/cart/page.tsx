@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import CartProductsList from "@/components/cart/CartProductsList";
 import CoreLayout from "@/components/layouts/CoreLayout";
-import CartProductsSkeleton from "@/components/skeletons/CartProductsSkeleton";
+import { CartProductsSkeleton } from "@/components/ui/Skeleton";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
 import Link from "next/link";

@@ -11,7 +11,7 @@ export default function GenericPopover({
   contentProps,
 }: {
   children: React.ReactNode;
-  openElement?: React.ReactNode;
+  openElement: React.ReactNode;
   title: string;
   openText?: string;
   contentProps?: any;

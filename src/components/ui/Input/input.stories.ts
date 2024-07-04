@@ -2,13 +2,13 @@ import Input from "@/components/ui/Input";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "Input/Input",
+  title: "UI/Input",
   component: Input,
   parameters: {
     layout: "centered",
   },
   args: {
-    label: "label",
+    name: "input",
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof Input>;
@@ -16,15 +16,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    name: "input",
-  },
-};
+export const Default: Story = {};
 
 export const DefaultWithError: Story = {
   args: {
-    errorMessage: "error message",
+    // todo: add error props
     name: "input with error",
   },
 };

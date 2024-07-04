@@ -1,6 +1,6 @@
 import { type Control } from "react-hook-form";
 
-import { FormField, FormItem, FormLabel, FormMessage } from "..";
+import { FormField, FormItem, FormLabel, FormMessage } from "../..";
 import Select from "@/components/ui/Select";
 
 type Props = {
@@ -15,13 +15,13 @@ type Props = {
   }[];
 };
 
-export const SelectField = ({
+export default function SelectField({
   loading,
   control,
   items,
   name,
   label,
-}: Props) => {
+}: Props) {
   return (
     <FormField
       control={control}
@@ -35,4 +35,4 @@ export const SelectField = ({
       )}
     />
   );
-};
+}

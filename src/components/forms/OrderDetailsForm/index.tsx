@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { InputField } from "@/components/ui/Form/fields/InputField";
 import { InputMaskedField } from "@/components/ui/Form/fields/InputMaskedField";
-import { CheckboxField } from "@/components/ui/Form/fields/CheckboxField";
+import CheckboxField from "@/components/ui/Form/fields/CheckboxField";
 import { RadioGroupField } from "@/components/ui/Form/fields/RadioGroupField";
 
 import { orderDetailsSchema, defaultData, OrderDetailsData } from "./schema";

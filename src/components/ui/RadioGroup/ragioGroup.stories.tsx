@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Select from "@/components/ui/Select";
+import RadioGroup from ".";
 
 const meta = {
-  title: "UI/Select",
-  component: Select,
+  title: "UI/RadioGroup",
+  component: RadioGroup,
   parameters: {
     layout: "centered",
   },
@@ -15,17 +15,14 @@ const meta = {
     ),
   ],
   args: {
-    name: "select",
+    name: "radio group",
     items: [
       { label: "item 1", value: "1" },
       { label: "item 2", value: "2" },
-      { label: "item 3", value: "3" },
-      { label: "item 4", value: "4" },
-      { label: "item 5", value: "5" },
     ],
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof Select>;
+} satisfies Meta<typeof RadioGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -35,6 +32,6 @@ export const Default: Story = {};
 export const DefaultWithError: Story = {
   args: {
     // todo: add error props
-    name: "select with error",
+    name: "radio group with error",
   },
 };
