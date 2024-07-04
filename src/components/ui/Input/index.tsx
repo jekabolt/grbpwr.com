@@ -1,31 +1,22 @@
-import { InputStyle, getComponentByStyle } from "./styles";
+import { forwardRef } from "react";
 
-export default function Input({
-  id,
-  type = "text",
-  style = InputStyle.default,
-  label,
-  name,
-  errorMessage,
-  ...props
-}: {
-  id: string;
+export interface InputProps {
   type?: "email" | "number" | "tel" | "text";
-  style?: InputStyle;
-  label?: string;
   name: string;
-  errorMessage?: string;
   [k: string]: any;
-}) {
-  const inputStyleClass = getComponentByStyle(style);
-
-  return (
-    <div>
-      <label htmlFor={id} className={label ? "" : "hidden"}>
-        {label}:
-      </label>
-      {errorMessage && <p className="text-red-700">{errorMessage}</p>}
-      <input id={id} type={type} className={`${inputStyleClass}`} {...props} />
-    </div>
-  );
 }
+
+export default forwardRef<HTMLInputElement, InputProps>(function Input(
+  { type = "text", name, ...props },
+  forwardedRef,
+) {
+  return (
+    <input
+      id={name}
+      type={type}
+      ref={forwardedRef}
+      className="w-full border-b border-textColor bg-bgColor text-lg focus:border-b focus:border-textColor focus:outline-none"
+      {...props}
+    />
+  );
+});

@@ -1,3 +1,4 @@
+import { common_ProductFull } from "@/api/proto-http/frontend";
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -51,4 +52,10 @@ export function calculateAspectRatio(
     return "4/3";
   }
   return `${width}/${height}`;
+}
+
+export function getProductPrice(
+  product: common_ProductFull | undefined,
+): number {
+  return Number(product?.product?.productInsert?.price?.value) || 0;
 }

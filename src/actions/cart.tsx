@@ -1,17 +1,23 @@
+import { createCartId, getCartCookie } from "@/lib/utils/cart";
 import { cookies } from "next/headers";
-import { getCartCookie } from "@/lib/utils/cart";
 
 export const GRBPWR_CART = "grbpwr-cart";
 
-export async function addItemToCookie(itemSlug: string) {
+export async function addItemToCookie(slug: string, size?: string) {
   "use server";
+
+  const cartId = createCartId(slug, size);
 
   const cookieStore = cookies();
 
   if (!cookieStore.has(GRBPWR_CART)) {
     cookieStore.set(
       GRBPWR_CART,
-      JSON.stringify({ [itemSlug]: { quanity: 1, color: "todo" } }),
+      JSON.stringify({
+        products: {
+          [cartId]: { slug: slug, size: size, quantity: 1 },
+        },
+      }),
     );
 
     return;
@@ -20,16 +26,71 @@ export async function addItemToCookie(itemSlug: string) {
   try {
     const cart = getCartCookie();
 
-    const currentProduct = cart[itemSlug];
+    const currentProduct = cart.products[cartId];
 
     let newCurrentProduct = currentProduct
-      ? { ...currentProduct, quanity: currentProduct.quanity + 1 }
-      : { quanity: 1, color: "todo" };
+      ? { ...currentProduct, quantity: currentProduct.quantity + 1, size: size }
+      : { quantity: 1, slug: slug, size: size };
 
     cookieStore.set(
       GRBPWR_CART,
-      JSON.stringify({ ...cart, [itemSlug]: newCurrentProduct }),
+      JSON.stringify({
+        products: { ...cart.products, [cartId]: newCurrentProduct },
+      }),
     );
+  } catch (error) {
+    console.log("failed to parse cart", error);
+  }
+}
+
+// todo: check
+export async function removeItemFromCookie(slug: string, size?: string) {
+  "use server";
+  const cookieStore = cookies();
+
+  if (!cookieStore.has(GRBPWR_CART)) return;
+
+  const cartId = createCartId(slug, size);
+
+  try {
+    const cart = getCartCookie();
+    cookieStore.set(
+      GRBPWR_CART,
+      JSON.stringify({
+        products: { ...cart.products, [cartId]: undefined },
+      }),
+    );
+  } catch (error) {
+    console.log("failed to parse cart", error);
+  }
+}
+
+export async function decreaseItemCountFromCookie(slug: string, size?: string) {
+  "use server";
+  const cookieStore = cookies();
+
+  if (!cookieStore.has(GRBPWR_CART)) return;
+
+  const cartId = createCartId(slug, size);
+
+  try {
+    const cart = getCartCookie();
+    if (cart.products[cartId].quantity > 1) {
+      cookieStore.set(
+        GRBPWR_CART,
+        JSON.stringify({
+          products: {
+            ...cart.products,
+            [cartId]: {
+              ...cart.products[cartId],
+              quantity: cart.products[cartId].quantity - 1,
+            },
+          },
+        }),
+      );
+    } else {
+      removeItemFromCookie(cartId);
+    }
   } catch (error) {
     console.log("failed to parse cart", error);
   }
