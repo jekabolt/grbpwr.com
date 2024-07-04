@@ -17,3 +17,5 @@ jobs:
         name: Deploy Storybook to Github pages
         with:
           path: storybook-static
+          install_command: pnpm install
+          build_command: pnpm build-storybook
