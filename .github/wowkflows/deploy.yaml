@@ -4,7 +4,9 @@ on:
       - "feature/deploy-sb"
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
@@ -13,4 +15,4 @@ jobs:
       - id: build-publish
         uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
         with:
-          path: storybook-static
+          path: build
