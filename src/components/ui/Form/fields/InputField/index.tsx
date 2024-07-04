@@ -5,38 +5,35 @@ import {
   FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
-} from "..";
-import RadioGroup, { RadioGroupsProps } from "@/components/ui/RadioGroup";
+} from "../..";
+import Input, { InputProps } from "@/components/ui/Input";
 
-interface RadioGroupFieldProps extends RadioGroupsProps {
+type Props = InputProps & {
   description?: string;
   loading?: boolean;
   control: Control<any>;
-  label: string;
-}
+};
 
-export const RadioGroupField = ({
+export default function InputField({
   loading,
   control,
   name,
   label,
   description,
+  type = "text",
   ...props
-}: RadioGroupFieldProps) => {
+}: Props) {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
         <FormItem>
+          <FormLabel>{label}</FormLabel>
           <FormControl>
-            <RadioGroup
-              disabled={loading}
-              {...field}
-              onValueChange={field.onChange}
-              {...props}
-            />
+            <Input type={type} disabled={loading} {...field} {...props} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
@@ -44,4 +41,4 @@ export const RadioGroupField = ({
       )}
     />
   );
-};
+}

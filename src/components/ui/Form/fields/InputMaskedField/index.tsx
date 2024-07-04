@@ -7,7 +7,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "..";
+} from "../..";
 import InputMask, { InputMaskProps } from "@/components/ui/InputMask";
 
 type Props = InputMaskProps & {
@@ -16,14 +16,14 @@ type Props = InputMaskProps & {
   control: Control<any>;
 };
 
-export const InputMaskedField = ({
+export default function InputMaskedField({
   loading,
   control,
   name,
   label,
   description,
   ...props
-}: Props) => {
+}: Props) {
   return (
     <FormField
       control={control}
@@ -40,4 +40,4 @@ export const InputMaskedField = ({
       )}
     />
   );
-};
+}

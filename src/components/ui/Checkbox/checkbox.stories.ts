@@ -2,13 +2,13 @@ import Checkbox from "@/components/ui/Checkbox";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "Checkbox/Checkbox",
+  title: "UI/Checkbox",
   component: Checkbox,
   parameters: {
     layout: "centered",
   },
   args: {
-    label: "label:",
+    name: "checkbox",
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof Checkbox>;
@@ -18,6 +18,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    name: "checkbox",
+    name: "checkboxinoin",
   },
 };

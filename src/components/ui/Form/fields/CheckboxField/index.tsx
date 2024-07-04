@@ -7,7 +7,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "..";
+} from "../..";
 import Checkbox from "@/components/ui/Checkbox";
 import { cn } from "@/lib/utils";
 
@@ -19,7 +19,12 @@ type Props = {
   control: Control<any>;
 };
 
-export const CheckboxField = ({ label, control, name, description }: Props) => {
+export default function CheckboxField({
+  label,
+  control,
+  name,
+  description,
+}: Props) {
   return (
     <FormField
       control={control}
@@ -48,4 +53,4 @@ export const CheckboxField = ({ label, control, name, description }: Props) => {
       )}
     />
   );
-};
+}

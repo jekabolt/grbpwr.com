@@ -1,10 +1,9 @@
 import CoreLayout from "@/components/layouts/CoreLayout";
-import ConfirmOrderForm from "@/components/forms/OrderDetailsForm";
+import ConfirmOrderForm from "@/components/forms/CheckoutForm";
 
 export default async function Page() {
   return (
     <CoreLayout>
-      <h1 className="mb-12 text-3xl">form test fields</h1>
       <ConfirmOrderForm />
     </CoreLayout>
   );

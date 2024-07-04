@@ -6,7 +6,7 @@ import { CATALOG_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
 
-export default function Catalog({
+export default function CatalogSection({
   firstPageItems,
 }: {
   firstPageItems: common_Product[];

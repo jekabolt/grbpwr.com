@@ -3,10 +3,13 @@ import { ButtonStyle } from "@/components/ui/Button/styles";
 import Button from "@/components/ui/Button";
 
 const meta = {
-  title: "Button/Button",
+  title: "UI/Button",
   component: Button,
   parameters: {
     layout: "centered",
+  },
+  args: {
+    style: ButtonStyle.default,
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof Button>;
@@ -16,7 +19,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    style: ButtonStyle.default,
     children: "default button",
   },
 };

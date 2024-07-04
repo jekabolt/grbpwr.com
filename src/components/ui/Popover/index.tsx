@@ -2,29 +2,21 @@
 
 import React from "react";
 import * as Popover from "@radix-ui/react-popover";
-
+type Props = {
+  children: React.ReactNode;
+  openElement: React.ReactNode;
+  title: string;
+  contentProps?: any;
+};
 export default function GenericPopover({
-  openText,
   openElement,
   title,
   children,
   contentProps,
-}: {
-  children: React.ReactNode;
-  openElement?: React.ReactNode;
-  title: string;
-  openText?: string;
-  contentProps?: any;
-}) {
+}: Props) {
   return (
     <Popover.Root>
-      <Popover.Trigger>
-        {openElement || (
-          <span className="bg-textColor px-2 py-1 text-buttonTextColor">
-            {openText}
-          </span>
-        )}
-      </Popover.Trigger>
+      <Popover.Trigger>{openElement}</Popover.Trigger>
       <PopoverContent title={title} {...contentProps}>
         {children}
       </PopoverContent>
@@ -40,7 +32,6 @@ function PopoverContent({
   children: React.ReactNode;
   title: string;
 }) {
-  console.log(contentProps);
   return (
     <Popover.Portal>
       <Popover.Content

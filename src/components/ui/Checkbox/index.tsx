@@ -5,7 +5,7 @@ export default function CheckboxGlobal({
   ...props
 }: {
   name: string;
-  [k: string]: any;
+  [k: string]: unknown;
 }) {
   return (
     <Checkbox.Root

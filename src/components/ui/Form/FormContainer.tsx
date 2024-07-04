@@ -10,6 +10,8 @@ type Props = {
   loading?: boolean;
   children: React.ReactNode;
   className?: string;
+  ctaLabel: string;
+  footerSide?: "left" | "right";
 };
 
 export const FormContainer = ({
@@ -19,14 +21,16 @@ export const FormContainer = ({
   loading,
   children,
   className,
+  ctaLabel,
+  footerSide,
 }: Props) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className={className}>
         {children}
-        <FormFooter>
+        <FormFooter side={footerSide}>
           <SubmitButton
-            text="submit"
+            text={ctaLabel}
             // text={initialData ? "Save changes" : "create"}
             disabled={loading}
           />

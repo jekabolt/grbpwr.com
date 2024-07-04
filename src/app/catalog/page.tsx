@@ -1,4 +1,4 @@
-import Catalog from "@/components/Catalog";
+import CatalogSection from "@/components/sections/CatalogSection";
 import Filters from "@/components/Filters";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { CATALOG_LIMIT } from "@/constants";
@@ -17,7 +17,7 @@ export default async function Page() {
     <CoreLayout>
       <div>
         <Filters />
-        <Catalog firstPageItems={response.products || []} />
+        <CatalogSection firstPageItems={response.products || []} />
       </div>
     </CoreLayout>
   );

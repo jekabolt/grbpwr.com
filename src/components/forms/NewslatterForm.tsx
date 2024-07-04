@@ -7,6 +7,7 @@ type FooterFormProps = {
   formSubmitClick: (data: FormData) => Promise<void>;
 };
 
+// todo: add react hook form same as order details form
 export default function NewslatterForm({ formSubmitClick }: FooterFormProps) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
