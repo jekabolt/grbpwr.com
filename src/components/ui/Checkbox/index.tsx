@@ -7,8 +7,6 @@ export default function CheckboxGlobal({
   name: string;
   [k: string]: unknown;
 }) {
-  console.log("props111");
-  console.log(props);
   return (
     <Checkbox.Root
       className="flex h-3 w-3 flex-none appearance-none items-center justify-center border border-textColor"

@@ -13,14 +13,12 @@ type Props = RadioGroupsProps & {
   description?: string;
   loading?: boolean;
   control: Control<any>;
-  label: string;
 };
 
 export default function RadioGroupField({
   loading,
   control,
   name,
-  label,
   description,
   ...props
 }: Props) {
