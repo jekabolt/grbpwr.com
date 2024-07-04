@@ -9,18 +9,18 @@ import CheckboxField from "@/components/ui/Form/fields/CheckboxField";
 import RadioGroupField from "@/components/ui/Form/fields/RadioGroupField";
 import AddressFields from "./AddressFields";
 
-import { orderDetailsSchema, defaultData, OrderDetailsData } from "./schema";
+import { checkoutSchema, defaultData, CheckoutData } from "./schema";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
 
-export default function ConfirmOrderForm({
+export default function CheckoutForm({
   initialData,
 }: {
-  initialData?: OrderDetailsData;
+  initialData?: CheckoutData;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const form = useForm<OrderDetailsData>({
-    resolver: zodResolver(orderDetailsSchema),
+  const form = useForm<CheckoutData>({
+    resolver: zodResolver(checkoutSchema),
     defaultValues: initialData || defaultData,
   });
 
@@ -29,7 +29,7 @@ export default function ConfirmOrderForm({
   );
   const paymentMethod = form.watch("paymentMethod");
 
-  const onSubmit = async (data: OrderDetailsData) => {
+  const onSubmit = async (data: CheckoutData) => {
     // "use server";
     console.log("data:");
     console.log(data);

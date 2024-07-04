@@ -5,7 +5,7 @@ import { CartProductsSkeleton } from "@/components/ui/Skeleton";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
 import Link from "next/link";
-import ConfirmOrderForm from "@/components/forms/OrderDetailsForm";
+import ConfirmOrderForm from "@/components/forms/CheckoutForm";
 
 export const dynamic = "force-dynamic";
 

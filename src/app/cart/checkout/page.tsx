@@ -1,5 +1,5 @@
 import CoreLayout from "@/components/layouts/CoreLayout";
-import ConfirmOrderForm from "@/components/forms/OrderDetailsForm";
+import ConfirmOrderForm from "@/components/forms/CheckoutForm";
 
 export default async function Page() {
   return (

@@ -12,7 +12,7 @@ const addressFields = {
   postalCode: z.string().min(2),
 };
 
-export const orderDetailsSchema = z.object({
+export const checkoutSchema = z.object({
   email: z.string().email(),
   phone: z.string().min(5),
   subscribe: z.boolean().optional(),
@@ -40,7 +40,7 @@ export const orderDetailsSchema = z.object({
   rememberMe: z.boolean().optional(),
 });
 
-export const defaultData: z.infer<typeof orderDetailsSchema> = {
+export const defaultData: z.infer<typeof checkoutSchema> = {
   email: "",
   phone: "",
   termsOfService: false,
@@ -62,4 +62,4 @@ export const defaultData: z.infer<typeof orderDetailsSchema> = {
   rememberMe: false, // todo: groom the feature
 };
 
-export type OrderDetailsData = z.infer<typeof orderDetailsSchema>;
+export type CheckoutData = z.infer<typeof checkoutSchema>;
