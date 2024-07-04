@@ -75,7 +75,11 @@ export default function Footer({
           <div>
             <GenericPopover
               title="currency"
-              openText={`Currency: ${currentCurrency}`}
+              openElement={
+                <span className="bg-textColor px-2 py-1 text-buttonTextColor">
+                  {`Currency: ${currentCurrency}`}
+                </span>
+              }
             >
               <div className="space-y-2 px-12 pb-7">
                 {Object.entries(currencyNameMap).map(([k, v]) => (
