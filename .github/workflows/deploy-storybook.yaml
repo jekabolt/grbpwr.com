@@ -14,5 +14,6 @@ jobs:
     steps:
       - id: build-publish
         uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
+        name: Deploy Storybook to Github pages
         with:
           path: storybook-static
