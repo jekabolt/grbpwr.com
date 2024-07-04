@@ -1,4 +1,4 @@
-## Storybook preview
+## UI elements preview (Storybook)
 [https://jekabolt.github.io/grbpwr.com](https://jekabolt.github.io/grbpwr.com)
 
 ## Production
