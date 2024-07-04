@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - "feature/deploy-sb"
+      - "master"
 
 permissions:
   contents: read
