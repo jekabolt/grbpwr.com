@@ -54,14 +54,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
         )}
         <div className="flex w-1/2 flex-col ">
           <div className="mt-4 flex justify-between">
-            <div>{product?.product?.productInsert?.name}</div>
+            <div>{product?.product?.productDisplay?.productBody?.name}</div>
             <div>
-              {product?.product?.productInsert?.price?.value}
+              {product?.product?.productDisplay?.productBody?.price?.value}
               {CURRENCY_MAP.eth}
             </div>
           </div>
           <div className="mt-4">
-            {product?.product?.productInsert?.description}
+            {product?.product?.productDisplay?.productBody?.description}
           </div>
           <div className="mt-4">measurements</div>
           <div className="mt-4 flex justify-between gap-2">

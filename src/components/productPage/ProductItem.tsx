@@ -1,9 +1,9 @@
 import type { common_Product } from "@/api/proto-http/frontend";
 import Image from "@/components/global/Image";
+import Button from "@/components/ui/Button";
 import { CURRENCY_MAP } from "@/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import Button from "@/components/ui/Button";
 
 export default function ProductItem({
   product,
@@ -12,11 +12,15 @@ export default function ProductItem({
   product: common_Product;
   className: string;
 }) {
-  const isSaleApplied = product.productInsert?.salePercentage?.value !== "0";
+  const isSaleApplied =
+    product.productDisplay?.productBody?.salePercentage?.value !== "0";
 
   const priceWithSale =
-    (parseFloat(product.productInsert?.price?.value || "0") *
-      (100 - parseInt(product.productInsert?.salePercentage?.value || "0"))) /
+    (parseFloat(product.productDisplay?.productBody?.price?.value || "0") *
+      (100 -
+        parseInt(
+          product.productDisplay?.productBody?.salePercentage?.value || "0",
+        ))) /
     100;
 
   return (
@@ -25,8 +29,8 @@ export default function ProductItem({
         <Link href={`/catalog/${product.slug}`}>
           <div className="relative h-80">
             <Image
-              src={product.productInsert?.thumbnail || ""}
-              alt={product.productInsert?.name || ""}
+              src={product.productDisplay?.thumbnail?.thumbnail?.mediaUrl || ""}
+              alt={product.productDisplay?.productBody?.name || ""}
               aspectRatio="4/3" // take from BE values
               fit="cover"
             />
@@ -34,15 +38,16 @@ export default function ProductItem({
           <div className="flex w-full gap-3">
             {/* todo: change to css variable */}
             <div className="flex grow flex-col text-xs font-medium text-highlightTextColor underline">
-              <span>{product.productInsert?.brand}</span>
-              <span>{product.productInsert?.name}</span>
+              <span>{product.productDisplay?.productBody?.brand}</span>
+              <span>{product.productDisplay?.productBody?.name}</span>
             </div>
             <div className="flex w-24 flex-col text-right text-sm font-medium text-textColor">
-              {product.productInsert?.preorder && (
+              {product.productDisplay?.productBody?.preorder && (
                 <span className="opacity-50">preorder</span>
               )}
               <span className={isSaleApplied ? "line-through opacity-50" : ""}>
-                {CURRENCY_MAP.eth} {product.productInsert?.price?.value}
+                {CURRENCY_MAP.eth}{" "}
+                {product.productDisplay?.productBody?.price?.value}
               </span>
               {isSaleApplied && (
                 <span className="text">

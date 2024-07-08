@@ -62,10 +62,15 @@ export type common_Product = {
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
   slug: string | undefined;
-  productInsert: common_ProductInsert | undefined;
+  productDisplay: common_ProductDisplay | undefined;
 };
 
-export type common_ProductInsert = {
+export type common_ProductDisplay = {
+  productBody: common_ProductBody | undefined;
+  thumbnail: common_MediaItem | undefined;
+};
+
+export type common_ProductBody = {
   preorder: string | undefined;
   name: string | undefined;
   brand: string | undefined;
@@ -73,7 +78,6 @@ export type common_ProductInsert = {
   color: string | undefined;
   colorHex: string | undefined;
   countryOfOrigin: string | undefined;
-  thumbnail: string | undefined;
   price: googletype_Decimal | undefined;
   salePercentage: googletype_Decimal | undefined;
   categoryId: number | undefined;

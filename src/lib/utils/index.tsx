@@ -57,5 +57,7 @@ export function calculateAspectRatio(
 export function getProductPrice(
   product: common_ProductFull | undefined,
 ): number {
-  return Number(product?.product?.productInsert?.price?.value) || 0;
+  return (
+    Number(product?.product?.productDisplay?.productBody?.price?.value) || 0
+  );
 }

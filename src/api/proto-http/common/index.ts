@@ -393,6 +393,11 @@ export type ProductNew = {
 };
 
 export type ProductInsert = {
+  productBody: ProductBody | undefined;
+  thumbnailMediaId: number | undefined;
+};
+
+export type ProductBody = {
   preorder: string | undefined;
   name: string | undefined;
   brand: string | undefined;
@@ -400,7 +405,6 @@ export type ProductInsert = {
   color: string | undefined;
   colorHex: string | undefined;
   countryOfOrigin: string | undefined;
-  thumbnail: string | undefined;
   price: googletype_Decimal | undefined;
   salePercentage: googletype_Decimal | undefined;
   categoryId: number | undefined;
@@ -441,7 +445,12 @@ export type Product = {
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
   slug: string | undefined;
-  productInsert: ProductInsert | undefined;
+  productDisplay: ProductDisplay | undefined;
+};
+
+export type ProductDisplay = {
+  productBody: ProductBody | undefined;
+  thumbnail: MediaItem | undefined;
 };
 
 export type ProductSize = {
