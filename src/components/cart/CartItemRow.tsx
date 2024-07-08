@@ -26,15 +26,15 @@ export default function CartItemRow({
       <div className="flex w-1/2 gap-6">
         <div className="h-full w-28 flex-none">
           <ImageComponent
-            src={p?.productInsert?.thumbnail || ""}
+            src={p?.productDisplay?.thumbnail?.thumbnail?.mediaUrl || ""}
             alt="product"
             fit="cover"
             aspectRatio="2/3"
           />
         </div>
         <div className="space-y-2">
-          <p className="text-md">{p?.productInsert?.name}</p>
-          <p className="text-sm">{p?.productInsert?.color}</p>
+          <p className="text-md">{p?.productDisplay?.productBody?.name}</p>
+          <p className="text-sm">{p?.productDisplay?.productBody?.color}</p>
           <p className="text-xs">{size}</p>
         </div>
       </div>
@@ -53,9 +53,11 @@ export default function CartItemRow({
           size={size}
           removeItemFromCookie={removeItemFromCookie}
         />
-        <p className="text-md">BTC {p?.productInsert?.price?.value}</p>
+        <p className="text-md">
+          BTC {p?.productDisplay?.productBody?.price?.value}
+        </p>
         <p className="text-xs line-through">
-          BTC {p?.productInsert?.price?.value}
+          BTC {p?.productDisplay?.productBody?.price?.value}
         </p>
       </div>
     </div>
