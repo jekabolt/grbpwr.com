@@ -17,9 +17,7 @@ interface ProtoMetaParams {
 
 const fetchParams: Object = {
   GetHero: {
-    next: {
-      revalidate: 15,
-    },
+    cache: "no-store",
   },
   GetProduct: {
     next: {

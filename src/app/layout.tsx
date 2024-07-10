@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import RootLayoutComponent from "@/components/layouts/RootLayout";
 import { FeatureMono } from "../fonts";
+import HeroContextLayout from "@/components/layouts/HeroContextLayout";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={FeatureMono.className}>
-        <RootLayoutComponent>{children}</RootLayoutComponent>
+        <HeroContextLayout>
+          <RootLayoutComponent>{children}</RootLayoutComponent>
+        </HeroContextLayout>
       </body>
     </html>
   );

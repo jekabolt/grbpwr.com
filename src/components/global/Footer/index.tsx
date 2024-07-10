@@ -1,10 +1,10 @@
+import Link from "next/link";
 import { FOOTER_LINKS as links, FOOTER_YEAR as year } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import FooterForm from "../../forms/NewslatterForm";
-import GenericPopover from "@/components/ui/Popover";
 import Button from "@/components/ui/Button";
+import FooterForm from "../../forms/NewslatterForm";
+import CurrencyPopover from "./CurrencyPopover";
 
 // todo: sync with BE
 const currencyNameMap = {
@@ -32,6 +32,7 @@ export default function Footer({
 }) {
   async function formSubmitClick(data: FormData): Promise<void> {
     "use server";
+
     try {
       const payload: { email: string; name: string } = {
         email: data.get("email") as string,
@@ -72,28 +73,7 @@ export default function Footer({
               <Link href="privacy-policy">privacy policy</Link>
             </Button>
           </div>
-          <div>
-            <GenericPopover
-              title="currency"
-              openElement={
-                <span className="bg-textColor px-2 py-1 text-buttonTextColor">
-                  {`Currency: ${currentCurrency}`}
-                </span>
-              }
-            >
-              <div className="space-y-2 px-12 pb-7">
-                {Object.entries(currencyNameMap).map(([k, v]) => (
-                  <button
-                    key={k + v}
-                    className="flex items-center gap-1 text-sm first:underline"
-                  >
-                    <span>{k}</span>
-                    <span>{v}</span>
-                  </button>
-                ))}
-              </div>
-            </GenericPopover>
-          </div>
+          <CurrencyPopover />
         </div>
       </div>
     </footer>
