@@ -26,7 +26,7 @@ export default function CartItemRow({
       <div className="flex w-1/2 gap-6">
         <div className="h-full w-28 flex-none">
           <ImageComponent
-            src={p?.productDisplay?.thumbnail?.thumbnail?.mediaUrl || ""}
+            src={p?.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl || ""}
             alt="product"
             fit="cover"
             aspectRatio="2/3"

@@ -5,11 +5,12 @@ import CoreLayout from "@/components/layouts/CoreLayout";
 import AddToCartButton from "@/components/productPage/AddToCartButton";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 interface ProductPageProps {
   params: {
-    slug: string;
+    productParams: string[];
   };
 }
 
@@ -24,7 +25,7 @@ export async function generateStaticParams() {
 
   return (
     response.products?.map((product) => ({
-      slug: product.slug!,
+      slug: product.slug?.replace("product/", "").split("/") || [],
     })) || []
   );
 }
@@ -35,10 +36,19 @@ const catalogData = [
 ];
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug } = params;
+  const { productParams } = params;
+
+  if (productParams.length !== 4) {
+    return notFound();
+  }
+
+  const [gender, brand, name, id] = productParams;
 
   const { product } = await serviceClient.GetProduct({
-    slug,
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
   });
 
   return (
@@ -73,8 +83,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <Suspense>
               {/* TO-DO pass size from form */}
               <AddToCartButton
-                slug={slug}
-                size="size2"
+                slug={productParams.join("/")}
+                size={"size2"}
                 addItemToCookie={addItemToCookie}
               />
             </Suspense>
