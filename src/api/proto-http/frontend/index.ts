@@ -67,11 +67,11 @@ export type common_Product = {
 
 export type common_ProductDisplay = {
   productBody: common_ProductBody | undefined;
-  thumbnail: common_MediaItem | undefined;
+  thumbnail: common_MediaFull | undefined;
 };
 
 export type common_ProductBody = {
-  preorder: string | undefined;
+  preorder: wellKnownTimestamp | undefined;
   name: string | undefined;
   brand: string | undefined;
   sku: string | undefined;
@@ -294,7 +294,10 @@ export type common_CurrencyRate = {
 };
 
 export type GetProductRequest = {
-  slug: string | undefined;
+  gender: string | undefined;
+  brand: string | undefined;
+  name: string | undefined;
+  id: number | undefined;
 };
 
 export type GetProductResponse = {
@@ -691,10 +694,19 @@ export function createFrontendServiceClient(
       }) as Promise<GetHeroResponse>;
     },
     GetProduct(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.slug) {
-        throw new Error("missing required field request.slug");
+      if (!request.gender) {
+        throw new Error("missing required field request.gender");
       }
-      const path = `api/frontend/product/${request.slug}`; // eslint-disable-line quotes
+      if (!request.brand) {
+        throw new Error("missing required field request.brand");
+      }
+      if (!request.name) {
+        throw new Error("missing required field request.name");
+      }
+      if (!request.id) {
+        throw new Error("missing required field request.id");
+      }
+      const path = `api/frontend/product/${request.gender}/${request.brand}/${request.name}/${request.id}`; // eslint-disable-line quotes
       const body = null;
       const queryParams: string[] = [];
       let uri = path;
