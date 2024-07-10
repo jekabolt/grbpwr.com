@@ -26,10 +26,13 @@ export default function ProductItem({
   return (
     <div className={cn("relative", className)}>
       <Button asChild>
-        <Link href={`/catalog/${product.slug}`}>
+        <Link href={product?.slug || ""}>
           <div className="relative h-80">
             <Image
-              src={product.productDisplay?.thumbnail?.thumbnail?.mediaUrl || ""}
+              src={
+                product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
+                ""
+              }
               alt={product.productDisplay?.productBody?.name || ""}
               aspectRatio="4/3" // take from BE values
               fit="cover"

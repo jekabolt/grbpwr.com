@@ -17,7 +17,13 @@ export default async function CartProductsList() {
   }[];
 
   const productsPromises = cartItems.map(async (item) => {
-    const response = await serviceClient.GetProduct({ slug: item.slug });
+    const [gender, brand, name, id] = item.slug.split("/");
+    const response = await serviceClient.GetProduct({
+      gender,
+      brand,
+      name,
+      id: parseInt(id),
+    });
     const product = response.product;
 
     return {
@@ -36,7 +42,7 @@ export default async function CartProductsList() {
 
   return products.map((p) => (
     <Button key={p?.product?.product?.id as number} asChild>
-      <Link href={`/catalog/${p?.product?.product?.slug}`}>
+      <Link href={p?.product?.product?.slug || ""}>
         <CartItemRow
           product={p?.product}
           quantity={p?.quantity}
