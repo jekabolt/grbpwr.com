@@ -398,7 +398,7 @@ export type ProductInsert = {
 };
 
 export type ProductBody = {
-  preorder: string | undefined;
+  preorder: wellKnownTimestamp | undefined;
   name: string | undefined;
   brand: string | undefined;
   sku: string | undefined;
@@ -450,7 +450,7 @@ export type Product = {
 
 export type ProductDisplay = {
   productBody: ProductBody | undefined;
-  thumbnail: MediaItem | undefined;
+  thumbnail: MediaFull | undefined;
 };
 
 export type ProductSize = {
