@@ -11,13 +11,26 @@ export default async function CartProductsList() {
   if (!cart || !cart.products) return null;
 
   const cartItems = Object.values(cart.products) as {
+    // todo: add price to calculate total amount in any place in the app
     quantity: number;
     slug: string;
     size?: string;
   }[];
 
+  console.log("cartItems22");
+  console.log(cartItems);
+
   const productsPromises = cartItems.map(async (item) => {
     const [gender, brand, name, id] = item.slug.split("/");
+
+    console.log("23232323e, id");
+    console.log({
+      gender,
+      brand,
+      name,
+      id: parseInt(id),
+    });
+
     const response = await serviceClient.GetProduct({
       gender,
       brand,
