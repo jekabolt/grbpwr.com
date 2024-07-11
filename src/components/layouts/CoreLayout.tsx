@@ -2,8 +2,10 @@ import Footer from "@/components/global/Footer";
 import Header from "@/components/global/Header";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
-import HoverCart from "@/components/cart/HoverCart";
+import CartPopup from "@/components/cart/CartPopup";
 import Link from "next/link";
+import { Suspense } from "react";
+import CartProductsList from "../cart/CartProductsList";
 
 export default function CoreLayout({
   children,
@@ -37,11 +39,11 @@ export default function CoreLayout({
 
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <HoverCart>
-                <Button style={ButtonStyle.underlinedButton}>
-                  <Link href="/cart">cart</Link>
-                </Button>
-              </HoverCart>
+              <CartPopup>
+                <Suspense fallback={null}>
+                  <CartProductsList />
+                </Suspense>
+              </CartPopup>
               <Button style={ButtonStyle.underlinedButton}>
                 <Link href="/about">about</Link>
               </Button>

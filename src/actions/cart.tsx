@@ -15,7 +15,11 @@ export async function addItemToCookie(slug: string, size?: string) {
       GRBPWR_CART,
       JSON.stringify({
         products: {
-          [cartId]: { slug: slug, size: size, quantity: 1 },
+          [cartId]: {
+            slug: slug.replace("/product", ""),
+            size: size,
+            quantity: 1,
+          },
         },
       }),
     );
