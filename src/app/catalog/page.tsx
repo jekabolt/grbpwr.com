@@ -17,7 +17,10 @@ export default async function Page() {
     <CoreLayout>
       <div>
         <Filters />
-        <CatalogSection firstPageItems={response.products || []} />
+        <CatalogSection
+          total={response.total || 0}
+          firstPageItems={response.products || []}
+        />
       </div>
     </CoreLayout>
   );
