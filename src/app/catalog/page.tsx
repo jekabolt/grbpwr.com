@@ -3,21 +3,33 @@ import Filters from "@/components/Filters";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { CATALOG_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
+import { getValidatedGetProductsPagedParams } from "@/lib/utils/queryFilters";
 
-export default async function Page() {
+interface CatalogPageProps {
+  searchParams: {
+    category?: string;
+    gender?: string;
+    order?: string;
+    sort?: string;
+    size?: string;
+  };
+}
+
+export default async function CatalogPage({ searchParams }: CatalogPageProps) {
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
-    sortFactors: undefined,
-    orderFactor: undefined,
-    filterConditions: undefined,
+    ...getValidatedGetProductsPagedParams(searchParams),
   });
 
   return (
     <CoreLayout>
       <div>
         <Filters />
-        <CatalogSection firstPageItems={response.products || []} />
+        <CatalogSection
+          total={response.total || 0}
+          firstPageItems={response.products || []}
+        />
       </div>
     </CoreLayout>
   );

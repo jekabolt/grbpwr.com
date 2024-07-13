@@ -59,6 +59,9 @@ importers:
       react-hook-form:
         specifier: ^7.52.0
         version: 7.52.0(react@19.0.0-rc-6d3110b4d9-20240531)
+      react-intersection-observer:
+        specifier: ^9.13.0
+        version: 9.13.0(react-dom@19.0.0-rc-6d3110b4d9-20240531(react@19.0.0-rc-6d3110b4d9-20240531))(react@19.0.0-rc-6d3110b4d9-20240531)
       react-photo-view:
         specifier: ^1.2.4
         version: 1.2.4(react-dom@19.0.0-rc-6d3110b4d9-20240531(react@19.0.0-rc-6d3110b4d9-20240531))(react@19.0.0-rc-6d3110b4d9-20240531)
@@ -5293,6 +5296,15 @@ packages:
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
+
+  react-intersection-observer@9.13.0:
+    resolution: {integrity: sha512-y0UvBfjDiXqC8h0EWccyaj4dVBWMxgEx0t5RGNzQsvkfvZwugnKwxpu70StY4ivzYuMajavwUDjH4LJyIki9Lw==}
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -12948,6 +12960,12 @@ snapshots:
   react-hook-form@7.52.0(react@19.0.0-rc-6d3110b4d9-20240531):
     dependencies:
       react: 19.0.0-rc-6d3110b4d9-20240531
+
+  react-intersection-observer@9.13.0(react-dom@19.0.0-rc-6d3110b4d9-20240531(react@19.0.0-rc-6d3110b4d9-20240531))(react@19.0.0-rc-6d3110b4d9-20240531):
+    dependencies:
+      react: 19.0.0-rc-6d3110b4d9-20240531
+    optionalDependencies:
+      react-dom: 19.0.0-rc-6d3110b4d9-20240531(react@19.0.0-rc-6d3110b4d9-20240531)
 
   react-is@16.13.1: {}
 

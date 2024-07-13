@@ -17,19 +17,8 @@ export default async function CartProductsList() {
     size?: string;
   }[];
 
-  console.log("cartItems22");
-  console.log(cartItems);
-
   const productsPromises = cartItems.map(async (item) => {
     const [gender, brand, name, id] = item.slug.split("/");
-
-    console.log("23232323e, id");
-    console.log({
-      gender,
-      brand,
-      name,
-      id: parseInt(id),
-    });
 
     const response = await serviceClient.GetProduct({
       gender,
