@@ -1,12 +1,11 @@
-import { addItemToCookie } from "@/actions/cart";
 import { MediaProvider } from "@/components/global/MediaProvider";
 import { ProductMediaItem } from "@/components/global/MediaProvider/ProductMediaItem";
 import CoreLayout from "@/components/layouts/CoreLayout";
-import AddToCartButton from "@/components/productPage/AddToCartButton";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { addCartProduct } from "@/actions/cart";
+import AddToCartForm from "@/components/forms/AddToCartForm";
 
 interface ProductPageProps {
   params: {
@@ -51,6 +50,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     id: parseInt(id),
   });
 
+  console.log("product22");
+  console.log(product);
+
   return (
     <CoreLayout hideForm>
       <div className="flex flex-col bg-white pb-20 pt-5">
@@ -74,21 +76,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product?.product?.productDisplay?.productBody?.description}
           </div>
           <div className="mt-4">measurements</div>
-          <div className="mt-4 flex justify-between gap-2">
-            <div className="flex gap-2">
-              {product?.sizes?.map((size) => (
-                <div key={size.id}>{size.sizeId}</div>
-              ))}
-            </div>
-            <Suspense>
-              {/* TO-DO pass size from form */}
-              <AddToCartButton
-                slug={productParams.join("/")}
-                size={"size2"}
-                addItemToCookie={addItemToCookie}
-              />
-            </Suspense>
-          </div>
+          <AddToCartForm
+            handleSubmit={addCartProduct}
+            slug={product?.product?.slug || ""}
+            // price={0}
+            sizes={product?.sizes || []}
+          />
         </div>
       </div>
     </CoreLayout>

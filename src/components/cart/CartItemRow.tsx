@@ -1,21 +1,16 @@
-import {
-  addItemToCookie,
-  decreaseItemCountFromCookie,
-  removeItemFromCookie,
-} from "@/actions/cart";
+import { removeCartProduct, changeCartProductQuanity } from "@/actions/cart";
 import type { common_ProductFull } from "@/api/proto-http/frontend";
 import ImageComponent from "../global/Image";
-import CartItemAmount from "./CartItemAmount";
-import RemoveFromCartButton from "./RemoveFromCartButton";
+import ProductAmountButtons from "./ProductAmountButtons";
 
 export default function CartItemRow({
   product,
-  quantity,
+  quanity,
   size,
 }: {
   product?: common_ProductFull;
-  quantity: number;
-  size?: string;
+  quanity: number;
+  size: string;
 }) {
   if (!product) return null;
 
@@ -38,21 +33,16 @@ export default function CartItemRow({
           <p className="text-xs">{size}</p>
         </div>
       </div>
-      <div className="flex w-1/2 justify-end whitespace-nowrap text-sm">
-        <CartItemAmount
-          slug={p?.slug!}
+      <div className="flex w-1/2 whitespace-nowrap text-sm">
+        <ProductAmountButtons
+          slug={p?.slug || ""}
           size={size}
-          quantity={quantity}
-          decreaseItemAmount={decreaseItemCountFromCookie}
-          increaseItemAmount={addItemToCookie}
+          removeProduct={removeCartProduct}
+          changeProductAmount={changeCartProductQuanity}
         />
+        <div className="font-bold">quanity: {quanity}</div>
       </div>
       <div className="flex w-1/2 flex-col items-end space-y-2">
-        <RemoveFromCartButton
-          slug={p?.slug!}
-          size={size}
-          removeItemFromCookie={removeItemFromCookie}
-        />
         <p className="text-md">
           BTC {p?.productDisplay?.productBody?.price?.value}
         </p>

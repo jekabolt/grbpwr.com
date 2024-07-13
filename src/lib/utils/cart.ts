@@ -2,7 +2,22 @@ import { GRBPWR_CART } from "@/actions/cart";
 import type { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
-export function getCartCookie() {
+type CookieCartProductData = { quanity: number };
+type CookieCartProduct = Record<string, CookieCartProductData>;
+
+export function getCartProductKey(slug: string, size: string) {
+  return `${slug}-${size}`;
+}
+
+export function getCartProductSlugAndSizeFromKey(key: string) {
+  const [slug, size] = key.split("-");
+
+  if (!slug || !size) return null;
+
+  return { slug, size };
+}
+
+export function getCookieCart(): { products: CookieCartProduct } | null {
   const cookieStore = cookies();
 
   if (!cookieStore.has(GRBPWR_CART)) return null;
@@ -20,9 +35,92 @@ export function getCartCookie() {
   return null;
 }
 
-export function createCartId(slug: string, size?: string): string {
-  if (!size) {
-    return slug;
+export function createCookieCartProduct(productSlug: string, size: string) {
+  const cookieStore = cookies();
+
+  cookieStore.set(
+    GRBPWR_CART,
+    JSON.stringify({
+      products: {
+        [getCartProductKey(productSlug, size)]: {
+          quanity: 1,
+        },
+      },
+    }),
+  );
+}
+
+export function updateCookieCartProduct(
+  productSlug: string,
+  size: string,
+  quanity: number,
+) {
+  const cartData = getCookieCart();
+  const cookieStore = cookies();
+
+  const productKey = getCartProductKey(productSlug, size);
+
+  cookieStore.set(
+    GRBPWR_CART,
+    JSON.stringify({
+      ...cartData,
+      products: {
+        ...cartData?.products,
+        [productKey]: {
+          ...cartData?.products[productKey],
+          quanity,
+        },
+      },
+    }),
+  );
+}
+
+export function removeCookieCartProduct(productSlug: string, size: string) {
+  const cartData = getCookieCart();
+  const cookieStore = cookies();
+
+  cookieStore.set(
+    GRBPWR_CART,
+    JSON.stringify({
+      ...cartData,
+      products: {
+        ...cartData?.products,
+        [getCartProductKey(productSlug, size)]: undefined,
+      },
+    }),
+  );
+}
+
+export function changeCookieCartProductQuanity(
+  productSlug: string,
+  size: string,
+  operation: "increase" | "decrease",
+) {
+  const cartData = getCookieCart();
+  const cookieStore = cookies();
+
+  let operationValue = 0;
+  if (operation === "increase") {
+    operationValue = 1;
   }
-  return `${slug}_${size}`;
+  if (operation === "decrease") {
+    operationValue = -1;
+  }
+
+  const productKey = getCartProductKey(productSlug, size);
+  const initialQuanity = cartData?.products[productKey].quanity || 0;
+
+  cookieStore.set(
+    GRBPWR_CART,
+    JSON.stringify({
+      ...cartData,
+      products: {
+        ...cartData?.products,
+        [productKey]: {
+          ...cartData?.products[productKey],
+          quanity: initialQuanity + operationValue,
+        },
+      },
+    }),
+  );
 }

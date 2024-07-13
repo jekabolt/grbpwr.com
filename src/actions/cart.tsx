@@ -1,100 +1,75 @@
-import { createCartId, getCartCookie } from "@/lib/utils/cart";
-import { cookies } from "next/headers";
+import {
+  createCookieCartProduct,
+  getCookieCart,
+  updateCookieCartProduct,
+  removeCookieCartProduct,
+  changeCookieCartProductQuanity,
+  getCartProductKey,
+} from "@/lib/utils/cart";
 
 export const GRBPWR_CART = "grbpwr-cart";
 
-export async function addItemToCookie(slug: string, size?: string) {
+export async function addCartProduct(slug: string, size: string) {
   "use server";
 
-  const cartId = createCartId(slug, size);
-
-  const cookieStore = cookies();
-
-  if (!cookieStore.has(GRBPWR_CART)) {
-    cookieStore.set(
-      GRBPWR_CART,
-      JSON.stringify({
-        products: {
-          [cartId]: {
-            slug: slug.replace("/product", ""),
-            size: size,
-            quantity: 1,
-          },
-        },
-      }),
-    );
-
-    return;
-  }
+  const cartData = getCookieCart();
 
   try {
-    const cart = getCartCookie();
+    if (!cartData) {
+      createCookieCartProduct(slug, size);
 
-    const currentProduct = cart.products[cartId];
-
-    let newCurrentProduct = currentProduct
-      ? { ...currentProduct, quantity: currentProduct.quantity + 1, size: size }
-      : { quantity: 1, slug: slug, size: size };
-
-    cookieStore.set(
-      GRBPWR_CART,
-      JSON.stringify({
-        products: { ...cart.products, [cartId]: newCurrentProduct },
-      }),
-    );
-  } catch (error) {
-    console.log("failed to parse cart", error);
-  }
-}
-
-// todo: check
-export async function removeItemFromCookie(slug: string, size?: string) {
-  "use server";
-  const cookieStore = cookies();
-
-  if (!cookieStore.has(GRBPWR_CART)) return;
-
-  const cartId = createCartId(slug, size);
-
-  try {
-    const cart = getCartCookie();
-    cookieStore.set(
-      GRBPWR_CART,
-      JSON.stringify({
-        products: { ...cart.products, [cartId]: undefined },
-      }),
-    );
-  } catch (error) {
-    console.log("failed to parse cart", error);
-  }
-}
-
-export async function decreaseItemCountFromCookie(slug: string, size?: string) {
-  "use server";
-  const cookieStore = cookies();
-
-  if (!cookieStore.has(GRBPWR_CART)) return;
-
-  const cartId = createCartId(slug, size);
-
-  try {
-    const cart = getCartCookie();
-    if (cart.products[cartId].quantity > 1) {
-      cookieStore.set(
-        GRBPWR_CART,
-        JSON.stringify({
-          products: {
-            ...cart.products,
-            [cartId]: {
-              ...cart.products[cartId],
-              quantity: cart.products[cartId].quantity - 1,
-            },
-          },
-        }),
-      );
-    } else {
-      removeItemFromCookie(cartId);
+      return;
     }
+
+    const productKey = getCartProductKey(slug, size);
+    const cartProduct = cartData.products[productKey];
+    let newProductQuanity;
+
+    if (cartProduct) {
+      newProductQuanity = cartProduct.quanity + 1;
+    } else {
+      newProductQuanity = 1;
+    }
+
+    updateCookieCartProduct(slug, size, newProductQuanity);
+  } catch (error) {
+    console.log("failed to parse cart", error);
+  }
+}
+
+export async function removeCartProduct(slug: string, size: string) {
+  "use server";
+
+  try {
+    removeCookieCartProduct(slug, size);
+  } catch (error) {
+    console.log("failed to parse cart", error);
+  }
+}
+
+export async function changeCartProductQuanity({
+  slug,
+  size,
+  operation,
+}: {
+  slug: string;
+  size: string;
+  operation: "increase" | "decrease";
+}) {
+  "use server";
+
+  try {
+    const cartData = getCookieCart();
+    if (
+      operation === "decrease" &&
+      cartData?.products[getCartProductKey(slug, size)]?.quanity === 1
+    ) {
+      removeCookieCartProduct(slug, size);
+
+      return;
+    }
+
+    changeCookieCartProductQuanity(slug, size, operation);
   } catch (error) {
     console.log("failed to parse cart", error);
   }

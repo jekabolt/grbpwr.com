@@ -21,6 +21,7 @@ export default function SelectField({
   items,
   name,
   label,
+  ...props
 }: Props) {
   return (
     <FormField
@@ -29,7 +30,12 @@ export default function SelectField({
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
-          <Select onValueChange={field.onChange} items={items} {...field} />
+          <Select
+            onValueChange={field.onChange}
+            items={items}
+            {...field}
+            {...props}
+          />
           <FormMessage />
         </FormItem>
       )}
