@@ -24,11 +24,6 @@ const fetchParams: Object = {
       revalidate: 15,
     },
   },
-  GetProductsPaged: {
-    next: {
-      revalidate: 15,
-    },
-  },
   GetArchivesPaged: {
     next: {
       revalidate: 15,

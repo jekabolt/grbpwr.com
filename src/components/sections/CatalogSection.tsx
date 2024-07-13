@@ -4,6 +4,8 @@ import type { common_Product } from "@/api/proto-http/frontend";
 import ProductsSection from "@/components/sections/ProductsGridSection";
 import { CATALOG_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
+import { getValidatedGetProductsPagedParams } from "@/lib/utils/queryFilters";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -14,6 +16,7 @@ export default function CatalogSection({
   firstPageItems: common_Product[];
   total: number;
 }) {
+  const searchParams = useSearchParams();
   const [items, setItems] = useState<common_Product[]>(firstPageItems);
   const [isLoading, setIsLoading] = useState(false);
   const { ref, inView } = useInView();
@@ -21,6 +24,12 @@ export default function CatalogSection({
   const pageRef = useRef(2);
   const hasMoreRef = useRef(total >= CATALOG_LIMIT);
 
+  useEffect(() => {
+    setItems(firstPageItems);
+    hasMoreRef.current = total >= CATALOG_LIMIT;
+    pageRef.current = 2;
+    setIsLoading(false);
+  }, [firstPageItems, total]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const loadMoreData = async () => {
@@ -31,9 +40,13 @@ export default function CatalogSection({
       const response = await serviceClient.GetProductsPaged({
         limit: CATALOG_LIMIT,
         offset: (pageRef.current - 1) * CATALOG_LIMIT,
-        sortFactors: undefined,
-        orderFactor: undefined,
-        filterConditions: undefined,
+        ...getValidatedGetProductsPagedParams({
+          gender: searchParams.get("gender"),
+          category: searchParams.get("category"),
+          size: searchParams.get("size"),
+          sort: searchParams.get("sort"),
+          order: searchParams.get("order"),
+        }),
       });
 
       pageRef.current += 1;

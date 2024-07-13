@@ -29,7 +29,7 @@ export default function Sort() {
       <FilterOptionButtons
         defaultValue={defaultValue || ""}
         handleFilterChange={handleFilterChange}
-        values={dictionary?.orderFactors || []}
+        values={dictionary?.sortFactors || []}
         defaultOptionText="none"
       />
     </GenericPopover>
