@@ -13,7 +13,7 @@ export default function SelectComponent({
 }) {
   return (
     <Select.Root {...props}>
-      <SelectTrigger placeholder="country/region">arrow down</SelectTrigger>
+      <SelectTrigger placeholder={props.placeholder}>arrow down</SelectTrigger>
       <SelectContent>
         {items.map((item) => (
           <SelectItem key={item.value} value={item.value}>

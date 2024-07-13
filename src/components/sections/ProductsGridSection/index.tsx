@@ -1,6 +1,6 @@
 import type { common_Product } from "@/api/proto-http/frontend";
 // import { shouldInsertEmpty } from "@/lib/utils";
-import ProductItem from "@/components/productPage/ProductItem";
+import ProductItem from "./ProductItem";
 
 export default function ProductsGridSection({
   products,

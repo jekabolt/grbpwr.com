@@ -2,53 +2,64 @@ import CartItemRow from "@/components/cart/CartItemRow";
 import Button from "@/components/ui/Button";
 import { serviceClient } from "@/lib/api";
 import { getProductPrice } from "@/lib/utils";
-import { getCartCookie } from "@/lib/utils/cart";
+import {
+  getCartProductSlugAndSizeFromKey,
+  getCookieCart,
+} from "@/lib/utils/cart";
 import Link from "next/link";
 
 export default async function CartProductsList() {
-  const cart = getCartCookie();
+  const cartData = getCookieCart();
 
-  if (!cart || !cart.products) return null;
+  if (!cartData || !cartData.products) return null;
 
-  const cartItems = Object.values(cart.products) as {
-    // todo: add price to calculate total amount in any place in the app
-    quantity: number;
-    slug: string;
-    size?: string;
-  }[];
+  const productsPromises = Object.entries(cartData.products).map(
+    async ([productCartKey, { quanity }]) => {
+      const productSlugAndSize =
+        getCartProductSlugAndSizeFromKey(productCartKey);
 
-  const productsPromises = cartItems.map(async (item) => {
-    const [gender, brand, name, id] = item.slug.split("/");
+      if (productSlugAndSize) {
+        const { slug, size } = productSlugAndSize;
+        const item = {
+          slug,
+          size,
+          quanity,
+        };
 
-    const response = await serviceClient.GetProduct({
-      gender,
-      brand,
-      name,
-      id: parseInt(id),
-    });
-    const product = response.product;
+        const [gender, brand, name, id] = slug
+          ?.replaceAll("/product/", "")
+          .split("/");
 
-    return {
-      quantity: item.quantity,
-      slug: item.slug,
-      size: item.size,
-      product: product,
-    };
-  });
+        try {
+          const response = await serviceClient.GetProduct({
+            gender,
+            brand,
+            name,
+            id: parseInt(id),
+          });
 
-  const products = await Promise.all(productsPromises);
+          const product = response.product;
 
-  // TOTAL PRICE
-  let totalPrice = 0;
-  products.forEach((x) => (totalPrice += getProductPrice(x.product)));
+          return {
+            ...item,
+            product: product,
+          };
+        } catch (error) {
+          console.log("failed to fetch cart product", error);
+        }
+      }
+    },
+  );
+
+  const products = (await Promise.all(productsPromises)).filter(Boolean);
 
   return products.map((p) => (
     <Button key={p?.product?.product?.id as number} asChild>
       <Link href={p?.product?.product?.slug || ""}>
         <CartItemRow
           product={p?.product}
-          quantity={p?.quantity}
-          size={p?.size}
+          quanity={p?.quanity || 0}
+          size={p?.size || ""}
         />
       </Link>
     </Button>
