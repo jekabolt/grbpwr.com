@@ -50,8 +50,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     id: parseInt(id),
   });
 
-  console.log("product22");
-  console.log(product);
+  const baseCurrencyPrice =
+    product?.product?.productDisplay?.productBody?.price?.value;
 
   return (
     <CoreLayout hideForm>
@@ -76,12 +76,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product?.product?.productDisplay?.productBody?.description}
           </div>
           <div className="mt-4">measurements</div>
-          <AddToCartForm
-            handleSubmit={addCartProduct}
-            slug={product?.product?.slug || ""}
-            // price={0}
-            sizes={product?.sizes || []}
-          />
+          {baseCurrencyPrice &&
+            product?.product?.slug &&
+            product?.sizes?.length && (
+              <AddToCartForm
+                handleSubmit={addCartProduct}
+                slug={product.product.slug}
+                price={parseInt(baseCurrencyPrice)}
+                sizes={product.sizes}
+              />
+            )}
         </div>
       </div>
     </CoreLayout>

@@ -15,6 +15,7 @@ export default function CartItemRow({
   if (!product) return null;
 
   const { product: p } = product;
+  const basicCurrencyValue = p?.productDisplay?.productBody?.price?.value;
 
   return (
     <div className="flex justify-between gap-6 text-textColor">
@@ -34,12 +35,15 @@ export default function CartItemRow({
         </div>
       </div>
       <div className="flex w-1/2 whitespace-nowrap text-sm">
-        <ProductAmountButtons
-          slug={p?.slug || ""}
-          size={size}
-          removeProduct={removeCartProduct}
-          changeProductAmount={changeCartProductQuanity}
-        />
+        {p?.slug && basicCurrencyValue && (
+          <ProductAmountButtons
+            slug={p?.slug || ""}
+            size={size}
+            price={parseInt(basicCurrencyValue)}
+            removeProduct={removeCartProduct}
+            changeProductAmount={changeCartProductQuanity}
+          />
+        )}
         <div className="font-bold">quanity: {quanity}</div>
       </div>
       <div className="flex w-1/2 flex-col items-end space-y-2">

@@ -1,13 +1,19 @@
 "use client";
 
-import Button from "@/components/ui/Button";
 import { useState } from "react";
-import { ButtonStyle } from "../ui/Button/styles";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { useClickAway } from "@uidotdev/usehooks";
+import Button from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
+import { ButtonStyle } from "../ui/Button/styles";
 
-export default function CartPopup({ children }: { children: React.ReactNode }) {
+export default function CartPopup({
+  children,
+  itemsQuanity,
+}: {
+  children: React.ReactNode;
+  itemsQuanity?: number;
+}) {
   const [open, setOpenStatus] = useState(false);
 
   const ref = useClickAway<HTMLDivElement>(() => {
@@ -21,7 +27,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
           onClick={() => setOpenStatus(!open)}
           style={ButtonStyle.underlinedButton}
         >
-          cart
+          cart {itemsQuanity ? `(${itemsQuanity})` : ""}
         </Button>
         <div className="blueTheme">
           <div
@@ -33,16 +39,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
             )}
           >
             <div className="mb-6 text-textColor">added to cart {"[06]"}</div>
-            <div className="relative">
-              <div className="no-scroll-bar relative max-h-[800px] space-y-5 overflow-y-scroll pb-5">
-                {children}
-              </div>
-              <div className="absolute bottom-0 left-0 h-28 w-full bg-gradient-to-t from-bgColor"></div>
-            </div>
-            <div className="mb-3 flex justify-between border-t border-dashed border-textColor pt-5 text-textColor">
-              <span>total:</span>
-              <span>170$</span>
-            </div>
+            {children}
             <div className="flex justify-end gap-2">
               <Button asChild style={ButtonStyle.simpleButton}>
                 <Link href="/cart">cart</Link>

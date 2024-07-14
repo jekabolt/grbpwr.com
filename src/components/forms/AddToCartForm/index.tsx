@@ -12,10 +12,20 @@ export default function AddToCartForm({
   handleSubmit,
   sizes,
   slug,
+  price,
 }: {
-  handleSubmit: (slug: string, size: string) => Promise<void>;
+  handleSubmit: ({
+    slug,
+    size,
+    price,
+  }: {
+    slug: string;
+    size: string;
+    price: number;
+  }) => Promise<void>;
   slug: string;
   sizes: common_ProductSize[];
+  price: number;
 }) {
   const [loading, setLoadingStatus] = useState(false);
   const form = useForm<AddToCartData>({
@@ -27,7 +37,7 @@ export default function AddToCartForm({
 
     setLoadingStatus(true);
     try {
-      await handleSubmit(slug, data.size);
+      await handleSubmit({ slug, size: data.size, price });
     } catch (error) {
       console.error(error);
     } finally {

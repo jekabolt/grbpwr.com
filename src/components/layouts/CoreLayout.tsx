@@ -6,6 +6,7 @@ import CartPopup from "@/components/cart/CartPopup";
 import Link from "next/link";
 import { Suspense } from "react";
 import CartProductsList from "../cart/CartProductsList";
+import TotalPrice from "../cart/TotalPrice";
 
 export default function CoreLayout({
   children,
@@ -39,9 +40,19 @@ export default function CoreLayout({
 
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <CartPopup>
+              <CartPopup itemsQuanity={22}>
                 <Suspense fallback={null}>
-                  <CartProductsList />
+                  <div className="relative">
+                    <div className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll pb-5">
+                      <CartProductsList />
+                    </div>
+
+                    {/* when cursor is in gradient area-scroll doesnt work */}
+                    <div className="absolute bottom-0 left-0 h-28 w-full bg-gradient-to-t from-bgColor"></div>
+                  </div>
+                  <div className="mb-3 flex justify-between border-t border-dashed border-textColor pt-5 text-textColor">
+                    <TotalPrice />
+                  </div>
                 </Suspense>
               </CartPopup>
               <Button style={ButtonStyle.underlinedButton}>

@@ -1,7 +1,6 @@
 import CartItemRow from "@/components/cart/CartItemRow";
 import Button from "@/components/ui/Button";
 import { serviceClient } from "@/lib/api";
-import { getProductPrice } from "@/lib/utils";
 import {
   getCartProductSlugAndSizeFromKey,
   getCookieCart,
@@ -10,6 +9,9 @@ import Link from "next/link";
 
 export default async function CartProductsList() {
   const cartData = getCookieCart();
+
+  console.log("cartData");
+  console.log(cartData);
 
   if (!cartData || !cartData.products) return null;
 
