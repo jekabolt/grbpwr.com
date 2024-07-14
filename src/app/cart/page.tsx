@@ -5,10 +5,11 @@ import { CartProductsSkeleton } from "@/components/ui/Skeleton";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
 import Link from "next/link";
+import TotalPrice from "@/components/cart/TotalPrice";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page() {
+export default async function CartPage() {
   return (
     <CoreLayout>
       <div className="relative flex gap-32">
@@ -24,8 +25,9 @@ export default async function Page() {
         </div>
         <div className="relative grow">
           <div className="sticky top-20">
-            <p className="mb-8 text-sm">total:</p>
-            <p className="mb-2 text-lg">170$</p>
+            {/* <p className="mb-8 text-sm">total:</p>
+            <p className="mb-2 text-lg">170$</p> */}
+            <TotalPrice />
 
             <Button asChild style={ButtonStyle.simpleButton}>
               <Link href="/cart/checkout">checkout</Link>

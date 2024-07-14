@@ -8,14 +8,23 @@ type Props = {
     slug,
     size,
     operation,
+    price,
   }: {
     slug: string;
     size: string;
+    price: number;
     operation: "increase" | "decrease";
   }) => void;
-  removeProduct: (slug: string, size: string) => void;
+  removeProduct: ({
+    productSlug,
+    size,
+  }: {
+    productSlug: string;
+    size: string;
+  }) => void;
   slug: string;
   size: string;
+  price: number;
 };
 
 export default function ProductAmountButtons({
@@ -23,6 +32,7 @@ export default function ProductAmountButtons({
   removeProduct,
   slug,
   size,
+  price,
 }: Props) {
   // todo: check if product is in stock
 
@@ -31,23 +41,31 @@ export default function ProductAmountButtons({
       <div className="flex ">
         <Button
           style={ButtonStyle.default}
-          onClick={() =>
-            changeProductAmount({ slug, size, operation: "increase" })
-          }
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+
+            changeProductAmount({ slug, size, operation: "increase", price });
+          }}
         >
           [+]
         </Button>
         <Button
           style={ButtonStyle.default}
-          onClick={() =>
-            changeProductAmount({ slug, size, operation: "decrease" })
-          }
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+
+            changeProductAmount({ slug, size, operation: "decrease", price });
+          }}
         >
           [-]
         </Button>
         <Button
           style={ButtonStyle.default}
-          onClick={() => removeProduct(slug, size)}
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+
+            removeProduct({ productSlug: slug, size });
+          }}
         >
           [x]
         </Button>

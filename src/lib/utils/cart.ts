@@ -2,7 +2,7 @@ import { GRBPWR_CART } from "@/actions/cart";
 import type { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
-type CookieCartProductData = { quanity: number };
+type CookieCartProductData = { quanity: number; price: number };
 type CookieCartProduct = Record<string, CookieCartProductData>;
 
 export function getCartProductKey(slug: string, size: string) {
@@ -35,7 +35,15 @@ export function getCookieCart(): { products: CookieCartProduct } | null {
   return null;
 }
 
-export function createCookieCartProduct(productSlug: string, size: string) {
+export function createCookieCartProduct({
+  productSlug,
+  size,
+  price,
+}: {
+  productSlug: string;
+  size: string;
+  price: number;
+}) {
   const cookieStore = cookies();
 
   cookieStore.set(
@@ -44,17 +52,22 @@ export function createCookieCartProduct(productSlug: string, size: string) {
       products: {
         [getCartProductKey(productSlug, size)]: {
           quanity: 1,
+          price,
         },
       },
     }),
   );
 }
 
-export function updateCookieCartProduct(
-  productSlug: string,
-  size: string,
-  quanity: number,
-) {
+export function updateCookieCartProduct({
+  productSlug,
+  size,
+  data,
+}: {
+  productSlug: string;
+  size: string;
+  data: CookieCartProductData;
+}) {
   const cartData = getCookieCart();
   const cookieStore = cookies();
 
@@ -68,7 +81,7 @@ export function updateCookieCartProduct(
         ...cartData?.products,
         [productKey]: {
           ...cartData?.products[productKey],
-          quanity,
+          ...data,
         },
       },
     }),
@@ -86,40 +99,6 @@ export function removeCookieCartProduct(productSlug: string, size: string) {
       products: {
         ...cartData?.products,
         [getCartProductKey(productSlug, size)]: undefined,
-      },
-    }),
-  );
-}
-
-export function changeCookieCartProductQuanity(
-  productSlug: string,
-  size: string,
-  operation: "increase" | "decrease",
-) {
-  const cartData = getCookieCart();
-  const cookieStore = cookies();
-
-  let operationValue = 0;
-  if (operation === "increase") {
-    operationValue = 1;
-  }
-  if (operation === "decrease") {
-    operationValue = -1;
-  }
-
-  const productKey = getCartProductKey(productSlug, size);
-  const initialQuanity = cartData?.products[productKey].quanity || 0;
-
-  cookieStore.set(
-    GRBPWR_CART,
-    JSON.stringify({
-      ...cartData,
-      products: {
-        ...cartData?.products,
-        [productKey]: {
-          ...cartData?.products[productKey],
-          quanity: initialQuanity + operationValue,
-        },
       },
     }),
   );
