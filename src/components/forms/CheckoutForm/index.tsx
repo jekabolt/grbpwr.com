@@ -1,16 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { FormContainer } from "@/components/ui/Form/FormContainer";
-import InputField from "@/components/ui/Form/fields/InputField";
 import CheckboxField from "@/components/ui/Form/fields/CheckboxField";
+import InputField from "@/components/ui/Form/fields/InputField";
 import RadioGroupField from "@/components/ui/Form/fields/RadioGroupField";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import AddressFields from "./AddressFields";
 
-import { checkoutSchema, defaultData, CheckoutData } from "./schema";
+import {
+  SubmitOrderRequest,
+  common_AddressInsert,
+  common_BuyerInsert,
+  common_OrderNew,
+} from "@/api/proto-http/frontend";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
+import { serviceClient } from "@/lib/api";
+import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 
 export default function CheckoutForm({
   initialData,
@@ -29,31 +36,67 @@ export default function CheckoutForm({
   );
   const paymentMethod = form.watch("paymentMethod");
 
+  console.log(paymentMethod);
+
   const onSubmit = async (data: CheckoutData) => {
-    // "use server";
-    console.log("data:");
-    console.log(data);
-    // try {
-    //   setLoading(true);
-    //   const path = `${spaceId}/${resource}`;
-    //   const apiBaseUrl = `${apiRoutes.spaces}/${path}`;
-    //   const resourceUrl = `${routes.dashboard}/${path}`;
-
-    //   if (initialData) {
-    //     await axios.patch(`${apiBaseUrl}/${itemId}`, data);
-    //   } else {
-    //     await axios.post(apiBaseUrl, data);
-    //   }
-
-    //   router.refresh();
-    //   router.push(resourceUrl);
-    //   toast({ title: `Resource ${initialData ? "updated" : "created"}.` });
-    // } catch (error) {
-    //   toastError(error, "An error occurred while creating the resource.");
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      const response = await serviceClient.SubmitOrder(
+        createSubmitOrderRequest(data),
+      );
+      console.log("Order submitted successfully:", response);
+    } catch (error) {
+      console.error("Error submitting order:", error);
+    }
   };
+
+  function createSubmitOrderRequest(data: CheckoutData): SubmitOrderRequest {
+    const shippingAddress: common_AddressInsert = {
+      street: data.address,
+      houseNumber: "1", // Extract house number if applicable
+      apartmentNumber: data.additionalAddress,
+      city: data.city,
+      state: data.state,
+      country: data.country,
+      postalCode: data.postalCode,
+    };
+
+    const billingAddress: common_AddressInsert | undefined =
+      data.billingAddressIsSameAsAddress
+        ? shippingAddress
+        : data.billingAddress
+          ? {
+              street: data.billingAddress.address,
+              houseNumber: "1", // Extract house number if applicable
+              apartmentNumber: data.billingAddress.additionalAddress,
+              city: data.billingAddress.city,
+              state: data.billingAddress.state,
+              country: data.billingAddress.country,
+              postalCode: data.billingAddress.postalCode,
+            }
+          : undefined;
+
+    const buyer: common_BuyerInsert = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phone: data.phone,
+      receivePromoEmails: data.subscribe,
+    };
+
+    const order: common_OrderNew = {
+      items: [], // Populate this with actual order items
+      shippingAddress,
+      billingAddress,
+      buyer,
+      paymentMethodId: parseInt(data.paymentMethod), // Assuming paymentMethod is an ID in string format
+      shipmentCarrierId: 1, // Set the carrier ID based on the shippingMethod (map this appropriately)
+      promoCode: "", // Add promo code if applicable
+    };
+
+    return {
+      order,
+    };
+  }
 
   return (
     <FormContainer
