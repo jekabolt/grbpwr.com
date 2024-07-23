@@ -1,8 +1,8 @@
 "use client";
 
-import type { Control } from "react-hook-form";
 import InputField from "@/components/ui/Form/fields/InputField";
 import SelectField from "@/components/ui/Form/fields/SelectField";
+import type { Control } from "react-hook-form";
 
 type Props = {
   loading: boolean;
@@ -74,7 +74,7 @@ export default function AddressFields({ loading, control, prefix }: Props) {
         control={control}
         loading={loading}
         name={prefix ? `${prefix}.address` : "address"}
-        label="streat and houce number:"
+        label="street and house number:"
         placeholder="sjyrniesu 10"
       />
       <InputField

@@ -16,7 +16,7 @@ export default async function CartProductsList() {
   if (!cartData || !cartData.products) return null;
 
   const productsPromises = Object.entries(cartData.products).map(
-    async ([productCartKey, { quanity }]) => {
+    async ([productCartKey, { quantity }]) => {
       const productSlugAndSize =
         getCartProductSlugAndSizeFromKey(productCartKey);
 
@@ -25,7 +25,7 @@ export default async function CartProductsList() {
         const item = {
           slug,
           size,
-          quanity,
+          quantity,
         };
 
         const [gender, brand, name, id] = slug
@@ -60,7 +60,7 @@ export default async function CartProductsList() {
       <Link href={p?.product?.product?.slug || ""}>
         <CartItemRow
           product={p?.product}
-          quanity={p?.quanity || 0}
+          quantity={p?.quantity || 0}
           size={p?.size || ""}
         />
       </Link>
