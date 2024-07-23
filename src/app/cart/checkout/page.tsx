@@ -17,7 +17,6 @@ export default async function Page() {
 
     for (const key in cartItems.products) {
       const productData = cartItems.products[key];
-      console.log(productData);
       const slugAndSize = getCartProductSlugAndSizeFromKey(key);
 
       if (!slugAndSize) continue;
