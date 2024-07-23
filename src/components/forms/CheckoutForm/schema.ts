@@ -30,7 +30,7 @@ export const checkoutSchema = z.object({
     .object({
       // todo: add validation of the mask
       // reuse same mask constant for inout and for schema
-      number: z.string().length(16),
+      number: z.string().length(19),
       fullName: z.string().min(3),
       expirationDate: z.string().length(5),
       cvc: z.string().length(3),

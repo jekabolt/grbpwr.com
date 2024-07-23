@@ -1,15 +1,15 @@
-import { removeCartProduct, changeCartProductQuanity } from "@/actions/cart";
+import { changeCartProductquantity, removeCartProduct } from "@/actions/cart";
 import type { common_ProductFull } from "@/api/proto-http/frontend";
 import ImageComponent from "../global/Image";
 import ProductAmountButtons from "./ProductAmountButtons";
 
 export default function CartItemRow({
   product,
-  quanity,
+  quantity,
   size,
 }: {
   product?: common_ProductFull;
-  quanity: number;
+  quantity: number;
   size: string;
 }) {
   if (!product) return null;
@@ -41,10 +41,10 @@ export default function CartItemRow({
             size={size}
             price={parseInt(basicCurrencyValue)}
             removeProduct={removeCartProduct}
-            changeProductAmount={changeCartProductQuanity}
+            changeProductAmount={changeCartProductquantity}
           />
         )}
-        <div className="font-bold">quanity: {quanity}</div>
+        <div className="font-bold">quantity: {quantity}</div>
       </div>
       <div className="flex w-1/2 flex-col items-end space-y-2">
         <p className="text-md">

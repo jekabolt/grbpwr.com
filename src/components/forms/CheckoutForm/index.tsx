@@ -13,6 +13,7 @@ import {
   SubmitOrderRequest,
   common_AddressInsert,
   common_BuyerInsert,
+  common_OrderItemInsert,
   common_OrderNew,
 } from "@/api/proto-http/frontend";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
@@ -21,8 +22,10 @@ import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 
 export default function CheckoutForm({
   initialData,
+  orderItems,
 }: {
   initialData?: CheckoutData;
+  orderItems: common_OrderItemInsert[];
 }) {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -52,7 +55,7 @@ export default function CheckoutForm({
   function createSubmitOrderRequest(data: CheckoutData): SubmitOrderRequest {
     const shippingAddress: common_AddressInsert = {
       street: data.address,
-      houseNumber: "1", // Extract house number if applicable
+      houseNumber: "1", // common_AddressInsert will be changed to just have full address
       apartmentNumber: data.additionalAddress,
       city: data.city,
       state: data.state,
@@ -66,7 +69,7 @@ export default function CheckoutForm({
         : data.billingAddress
           ? {
               street: data.billingAddress.address,
-              houseNumber: "1", // Extract house number if applicable
+              houseNumber: "1", // common_AddressInsert will be changed to just have full address
               apartmentNumber: data.billingAddress.additionalAddress,
               city: data.billingAddress.city,
               state: data.billingAddress.state,
@@ -84,13 +87,16 @@ export default function CheckoutForm({
     };
 
     const order: common_OrderNew = {
-      items: [], // Populate this with actual order items
+      items: orderItems,
       shippingAddress,
       billingAddress,
       buyer,
-      paymentMethodId: parseInt(data.paymentMethod), // Assuming paymentMethod is an ID in string format
-      shipmentCarrierId: 1, // Set the carrier ID based on the shippingMethod (map this appropriately)
-      promoCode: "", // Add promo code if applicable
+      // TO-DO map payment method and carrier id from dictionary
+      // paymentMethodId: mapPaymentMethod(data.paymentMethod),
+      // shipmentCarrierId: mapShipmentCarrierId(data.shippingMethod),
+      paymentMethodId: 1,
+      shipmentCarrierId: 1,
+      promoCode: undefined, // Add promo code if applicable
     };
 
     return {

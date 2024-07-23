@@ -2,7 +2,7 @@ import { GRBPWR_CART } from "@/actions/cart";
 import type { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
-type CookieCartProductData = { quanity: number; price: number };
+type CookieCartProductData = { quantity: number; price: number };
 type CookieCartProduct = Record<string, CookieCartProductData>;
 
 export function getCartProductKey(slug: string, size: string) {
@@ -51,7 +51,7 @@ export function createCookieCartProduct({
     JSON.stringify({
       products: {
         [getCartProductKey(productSlug, size)]: {
-          quanity: 1,
+          quantity: 1,
           price,
         },
       },

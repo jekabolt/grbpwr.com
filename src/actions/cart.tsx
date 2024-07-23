@@ -1,9 +1,9 @@
 import {
   createCookieCartProduct,
-  getCookieCart,
-  updateCookieCartProduct,
-  removeCookieCartProduct,
   getCartProductKey,
+  getCookieCart,
+  removeCookieCartProduct,
+  updateCookieCartProduct,
 } from "@/lib/utils/cart";
 
 export const GRBPWR_CART = "grbpwr-cart";
@@ -31,15 +31,15 @@ export async function addCartProduct({
     const productKey = getCartProductKey(slug, size);
     const cartProduct = cartData.products[productKey];
     const newProduct = {
-      quanity: 0,
+      quantity: 0,
       price: 0,
     };
 
     if (cartProduct) {
-      newProduct.quanity = cartProduct.quanity + 1;
+      newProduct.quantity = cartProduct.quantity + 1;
       newProduct.price = cartProduct.price + price;
     } else {
-      newProduct.quanity = 1;
+      newProduct.quantity = 1;
       newProduct.price = price;
     }
 
@@ -65,7 +65,7 @@ export async function removeCartProduct({
   }
 }
 
-export async function changeCartProductQuanity({
+export async function changeCartProductquantity({
   slug,
   size,
   operation,
@@ -85,24 +85,24 @@ export async function changeCartProductQuanity({
     const productKey = getCartProductKey(slug, size);
     const cartProduct = cartData.products[productKey];
 
-    if (operation === "decrease" && cartProduct.quanity === 1) {
+    if (operation === "decrease" && cartProduct.quantity === 1) {
       removeCookieCartProduct(slug, size);
 
       return;
     }
 
     const newProduct = {
-      quanity: cartProduct.quanity,
+      quantity: cartProduct.quantity,
       price: cartProduct.price,
     };
 
     if (operation === "decrease") {
-      newProduct.quanity = cartProduct.quanity - 1;
+      newProduct.quantity = cartProduct.quantity - 1;
       newProduct.price = cartProduct.price - price;
     }
 
     if (operation === "increase") {
-      newProduct.quanity = cartProduct.quanity + 1;
+      newProduct.quantity = cartProduct.quantity + 1;
       newProduct.price = cartProduct.price + price;
     }
 

@@ -1,8 +1,8 @@
+import CartPopup from "@/components/cart/CartPopup";
 import Footer from "@/components/global/Footer";
 import Header from "@/components/global/Header";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
-import CartPopup from "@/components/cart/CartPopup";
 import Link from "next/link";
 import { Suspense } from "react";
 import CartProductsList from "../cart/CartProductsList";
@@ -40,7 +40,7 @@ export default function CoreLayout({
 
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <CartPopup itemsQuanity={22}>
+              <CartPopup itemsQuantity={22}>
                 <Suspense fallback={null}>
                   <div className="relative">
                     <div className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll pb-5">

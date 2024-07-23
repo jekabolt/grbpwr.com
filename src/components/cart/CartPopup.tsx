@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useClickAway } from "@uidotdev/usehooks";
 import Button from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { useClickAway } from "@uidotdev/usehooks";
+import Link from "next/link";
+import { useState } from "react";
 import { ButtonStyle } from "../ui/Button/styles";
 
 export default function CartPopup({
   children,
-  itemsQuanity,
+  itemsQuantity,
 }: {
   children: React.ReactNode;
-  itemsQuanity?: number;
+  itemsQuantity?: number;
 }) {
   const [open, setOpenStatus] = useState(false);
 
@@ -27,7 +27,7 @@ export default function CartPopup({
           onClick={() => setOpenStatus(!open)}
           style={ButtonStyle.underlinedButton}
         >
-          cart {itemsQuanity ? `(${itemsQuanity})` : ""}
+          cart {itemsQuantity ? `(${itemsQuantity})` : ""}
         </Button>
         <div className="blueTheme">
           <div
