@@ -1,4 +1,4 @@
-import { changeCartProductquantity, removeCartProduct } from "@/actions/cart";
+import { changeCartProductQuantity, removeCartProduct } from "@/actions/cart";
 import type { common_ProductFull } from "@/api/proto-http/frontend";
 import ImageComponent from "../global/Image";
 import ProductAmountButtons from "./ProductAmountButtons";
@@ -41,7 +41,7 @@ export default function CartItemRow({
             size={size}
             price={parseInt(basicCurrencyValue)}
             removeProduct={removeCartProduct}
-            changeProductAmount={changeCartProductquantity}
+            changeProductAmount={changeCartProductQuantity}
           />
         )}
         <div className="font-bold">quantity: {quantity}</div>

@@ -65,7 +65,7 @@ export async function removeCartProduct({
   }
 }
 
-export async function changeCartProductquantity({
+export async function changeCartProductQuantity({
   slug,
   size,
   operation,
