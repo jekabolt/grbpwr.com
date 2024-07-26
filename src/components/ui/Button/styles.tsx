@@ -15,7 +15,11 @@ function DefaultStyleComponent({ children }: StyleComponentType) {
 }
 
 function UnderlinedButtonStyleComponent({ children }: StyleComponentType) {
-  return <span className="text-sm text-textColor underline">{children}</span>;
+  return (
+    <span className="cursor-pointer text-sm text-textColor underline">
+      {children}
+    </span>
+  );
 }
 
 function UnderlinedHightlightButtonStyleComponent({

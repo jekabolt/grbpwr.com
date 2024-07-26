@@ -2,7 +2,7 @@ import { addCartProduct } from "@/actions/cart";
 import AddToCartForm from "@/components/forms/AddToCartForm";
 import { MediaProvider } from "@/components/global/MediaProvider";
 import { ProductMediaItem } from "@/components/global/MediaProvider/ProductMediaItem";
-import ModalContent from "@/components/global/Modal/ModalContent";
+import Modal from "@/components/global/Modal/Modal";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import MeasurementsModalContent from "@/components/product/MeasurementsModalContent";
 import Button from "@/components/ui/Button";
@@ -80,7 +80,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product?.product?.productDisplay?.productBody?.description}
           </div>
           <div className="mt-4">
-            <ModalContent
+            <Modal
               openElement={
                 <Button asChild style={ButtonStyle.underlinedButton}>
                   measurements
@@ -88,7 +88,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               }
             >
               <MeasurementsModalContent />
-            </ModalContent>
+            </Modal>
           </div>
 
           {baseCurrencyPrice &&

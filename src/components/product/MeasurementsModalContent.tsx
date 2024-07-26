@@ -1,6 +1,10 @@
+"use client";
+import { useLockBodyScroll } from "@uidotdev/usehooks";
+
 export default function MeasurementsModalContent() {
+  useLockBodyScroll();
   return (
-    <div className="flex h-full w-full text-white">
+    <div className="flex h-full w-full pt-20 text-buttonTextColor">
       <div className="w-1/2 ">Image placeholder</div>
       <div className="w-1/2 ">
         <div className="mb-20 flex h-full flex-col">

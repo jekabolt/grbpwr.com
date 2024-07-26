@@ -1,22 +1,33 @@
+"use client";
+
+import { useState } from "react";
+
 export default function Modal({
-  isOpen,
-  onClose,
   children,
+  openElement,
 }: {
-  isOpen: boolean;
-  onClose: () => void;
   children: React.ReactNode;
+  openElement: React.ReactNode;
 }) {
-  if (!isOpen) return null;
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
   return (
-    <div className="fixed inset-0 z-50  bg-black">
-      <button
-        onClick={onClose}
-        className="absolute right-4 top-4 cursor-pointer text-2xl text-white"
-      >
-        [closeIcon]
-      </button>
-      <div className="h-full w-full pt-20">{children}</div>
+    <div>
+      <div onClick={openModal}>{openElement}</div>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 bg-textColor">
+          <button
+            onClick={closeModal}
+            className="absolute right-4 top-4 cursor-pointer text-buttonTextColor"
+          >
+            [closeIcon]
+          </button>
+          {children}
+        </div>
+      )}
     </div>
   );
 }
