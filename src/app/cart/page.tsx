@@ -6,10 +6,13 @@ import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
 import Link from "next/link";
 import TotalPrice from "@/components/cart/TotalPrice";
+import { getCookieCart } from "@/lib/utils/cart";
 
 export const dynamic = "force-dynamic";
 
 export default async function CartPage() {
+  const cartItems = getCookieCart();
+
   return (
     <CoreLayout>
       <div className="relative flex gap-32">
@@ -29,9 +32,11 @@ export default async function CartPage() {
             <p className="mb-2 text-lg">170$</p> */}
             <TotalPrice />
 
-            <Button asChild style={ButtonStyle.simpleButton}>
-              <Link href="/cart/checkout">checkout</Link>
-            </Button>
+            {Object.keys(cartItems?.products || {}).length && (
+              <Button asChild style={ButtonStyle.simpleButton}>
+                <Link href="/cart/checkout">checkout</Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>
