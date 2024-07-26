@@ -15,7 +15,6 @@ export default async function Page() {
 
   const orderItems = Object.entries(cartProducts).reduce(
     (acc, [key, value]) => {
-      console.log(key, value);
       const slugAndSize = getCartProductSlugAndSizeFromKey(key);
 
       if (!slugAndSize) return acc;
