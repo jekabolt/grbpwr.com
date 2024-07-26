@@ -20,7 +20,7 @@ import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
 import { serviceClient } from "@/lib/api";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 
-export default function CheckoutForm({
+export default function NewOrderForm({
   initialData,
   orderItems,
 }: {
@@ -43,6 +43,8 @@ export default function CheckoutForm({
 
   const onSubmit = async (data: CheckoutData) => {
     try {
+      // todo: check if all items are in stock
+
       const response = await serviceClient.SubmitOrder(
         createSubmitOrderRequest(data),
       );
