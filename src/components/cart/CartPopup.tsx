@@ -10,9 +10,11 @@ import { ButtonStyle } from "../ui/Button/styles";
 export default function CartPopup({
   children,
   itemsQuantity,
+  hasCartProducts,
 }: {
   children: React.ReactNode;
   itemsQuantity?: number;
+  hasCartProducts?: boolean;
 }) {
   const [open, setOpenStatus] = useState(false);
 
@@ -44,9 +46,11 @@ export default function CartPopup({
               <Button asChild style={ButtonStyle.simpleButton}>
                 <Link href="/cart">cart</Link>
               </Button>
-              <Button asChild style={ButtonStyle.simpleButton}>
-                <Link href="/cart/checkout">checkout</Link>
-              </Button>
+              {hasCartProducts && (
+                <Button asChild style={ButtonStyle.simpleButton}>
+                  <Link href="/cart/checkout">checkout</Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>

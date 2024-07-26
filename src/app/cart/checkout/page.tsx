@@ -1,5 +1,6 @@
 import { common_OrderItemInsert } from "@/api/proto-http/frontend";
-import CheckoutForm from "@/components/forms/CheckoutForm";
+import NewOrderForm from "@/components/forms/NewOrderForm";
+import { redirect } from "next/navigation";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import {
   getCartProductSlugAndSizeFromKey,
@@ -7,51 +8,37 @@ import {
 } from "@/lib/utils/cart";
 
 export default async function Page() {
-  const orderItems = createOrderArray();
+  const cartData = getCookieCart();
+  const cartProducts = cartData?.products;
 
-  function createOrderArray(): common_OrderItemInsert[] {
-    const cartItems = getCookieCart();
-    if (!cartItems || !cartItems.products) return [];
+  if (!cartProducts || !Object.keys(cartProducts)) return redirect("/cart");
 
-    const orderArray: common_OrderItemInsert[] = [];
-
-    for (const key in cartItems.products) {
-      const productData = cartItems.products[key];
+  const orderItems = Object.entries(cartProducts).reduce(
+    (acc, [key, value]) => {
       const slugAndSize = getCartProductSlugAndSizeFromKey(key);
 
-      if (!slugAndSize) continue;
+      if (!slugAndSize) return acc;
 
-      const { slug, size } = slugAndSize;
-      const productId = getProductIdFromSlug(slug);
+      const [_, __, ___, id] = slugAndSize.slug
+        .replaceAll("/product/", "")
+        .split("/");
 
-      //TO-DO map size id from dictionary
-      // const sizeId = getSizeIdBySize(size);
-
-      const sizeId = 1;
-
-      const orderItem: common_OrderItemInsert = {
-        productId,
-        quantity: productData.quantity,
-        sizeId,
+      const item = {
+        productId: Number(id),
+        quantity: value.quantity,
+        sizeId: Number(slugAndSize.size),
       };
 
-      orderArray.push(orderItem);
-    }
+      acc.push(item);
 
-    return orderArray;
-  }
-
-  function getProductIdFromSlug(slug: string): number | undefined {
-    const [gender, brand, name, id] = slug
-      ?.replaceAll("/product/", "")
-      .split("/");
-
-    return id ? parseInt(id) : undefined;
-  }
+      return acc;
+    },
+    [] as common_OrderItemInsert[],
+  );
 
   return (
     <CoreLayout>
-      <CheckoutForm orderItems={orderItems} />
+      <NewOrderForm orderItems={orderItems} />
     </CoreLayout>
   );
 }

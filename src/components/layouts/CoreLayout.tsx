@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import CartProductsList from "../cart/CartProductsList";
 import TotalPrice from "../cart/TotalPrice";
+import { getCookieCart } from "@/lib/utils/cart";
 
 export default function CoreLayout({
   children,
@@ -15,6 +16,11 @@ export default function CoreLayout({
   children: React.ReactNode;
   hideForm?: boolean;
 }>) {
+  const cartData = getCookieCart();
+  const hasCartProducts =
+    cartData?.products && Object.keys(cartData?.products).length > 0;
+  const productsNumber = Object.keys(cartData?.products || {}).length;
+
   return (
     <div className="min-h-screen bg-bgColor">
       <div className="relative mx-auto max-w-7xl">
@@ -40,7 +46,10 @@ export default function CoreLayout({
 
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <CartPopup itemsQuantity={22}>
+              <CartPopup
+                itemsQuantity={productsNumber}
+                hasCartProducts={hasCartProducts}
+              >
                 <Suspense fallback={null}>
                   <div className="relative">
                     <div className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll pb-5">
