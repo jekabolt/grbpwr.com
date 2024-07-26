@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { ButtonStyle } from "@/components/ui/Button/styles";
 import Button from "@/components/ui/Button";
+import { ButtonStyle } from "@/components/ui/Button/styles";
+import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
   title: "UI/Button",
@@ -34,6 +34,13 @@ export const UnderlinedButton: Story = {
   args: {
     style: ButtonStyle.underlinedButton,
     children: "underlined button",
+  },
+};
+
+export const UnderlinedHightlightButton: Story = {
+  args: {
+    style: ButtonStyle.underlinedHightlightButton,
+    children: "underlined hightlight button",
   },
 };
 

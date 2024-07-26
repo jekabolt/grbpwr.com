@@ -22,13 +22,13 @@ export default function CoreLayout({
         <div className="flex">
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <Button style={ButtonStyle.underlinedButton}>
+              <Button style={ButtonStyle.underlinedHightlightButton}>
                 <Link href="/catalog">catalog</Link>
               </Button>
-              <Button style={ButtonStyle.underlinedButton}>
+              <Button style={ButtonStyle.underlinedHightlightButton}>
                 <Link href="/archive">archive</Link>
               </Button>
-              <Button style={ButtonStyle.underlinedButton}>
+              <Button style={ButtonStyle.underlinedHightlightButton}>
                 <Link href="/shipping">shipping</Link>
               </Button>
             </nav>
@@ -55,10 +55,10 @@ export default function CoreLayout({
                   </div>
                 </Suspense>
               </CartPopup>
-              <Button style={ButtonStyle.underlinedButton}>
+              <Button style={ButtonStyle.underlinedHightlightButton}>
                 <Link href="/about">about</Link>
               </Button>
-              <Button style={ButtonStyle.underlinedButton}>
+              <Button style={ButtonStyle.underlinedHightlightButton}>
                 <Link href="/contacts">contacts</Link>
               </Button>
             </nav>

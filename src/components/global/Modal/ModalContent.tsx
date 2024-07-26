@@ -5,10 +5,10 @@ import Modal from "./Modal";
 
 export default function ModalContent({
   children,
-  modalChildren,
+  openElement,
 }: {
   children: React.ReactNode;
-  modalChildren: React.ReactNode;
+  openElement: React.ReactNode;
 }) {
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -17,9 +17,9 @@ export default function ModalContent({
 
   return (
     <div>
-      <div onClick={openModal}>{children}</div>
+      <div onClick={openModal}>{openElement}</div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        {modalChildren}
+        {children}
       </Modal>
     </div>
   );

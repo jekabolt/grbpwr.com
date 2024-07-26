@@ -17,7 +17,7 @@ export default function NotFound() {
           please go back to the homepage or contact us if the problem persists.
         </p>
         <div className="flex gap-x-20">
-          <Button asChild style={ButtonStyle.underlinedButton}>
+          <Button asChild style={ButtonStyle.underlinedHightlightButton}>
             <Link href="/contacts">contact us</Link>
           </Button>
           <Button asChild style={ButtonStyle.simpleButton}>

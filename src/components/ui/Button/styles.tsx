@@ -2,6 +2,7 @@ export enum ButtonStyle {
   default = "default",
   bigButton = "bigButton",
   underlinedButton = "underlinedButton",
+  underlinedHightlightButton = "underlinedHightlightButton",
   simpleButton = "simpleButton",
 }
 
@@ -14,6 +15,12 @@ function DefaultStyleComponent({ children }: StyleComponentType) {
 }
 
 function UnderlinedButtonStyleComponent({ children }: StyleComponentType) {
+  return <span className="text-sm text-textColor underline">{children}</span>;
+}
+
+function UnderlinedHightlightButtonStyleComponent({
+  children,
+}: StyleComponentType) {
   return (
     <span className="text-sm text-highlightTextColor underline">
       {children}
@@ -39,6 +46,8 @@ function SimpleButtonStyleComponent({ children }: StyleComponentType) {
 
 const componentsStyleMap: Record<ButtonStyle, any> = {
   [ButtonStyle.underlinedButton]: UnderlinedButtonStyleComponent,
+  [ButtonStyle.underlinedHightlightButton]:
+    UnderlinedHightlightButtonStyleComponent,
   [ButtonStyle.bigButton]: BigButtonStyleComponent,
   [ButtonStyle.default]: DefaultStyleComponent,
   [ButtonStyle.simpleButton]: SimpleButtonStyleComponent,

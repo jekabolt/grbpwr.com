@@ -5,6 +5,8 @@ import { ProductMediaItem } from "@/components/global/MediaProvider/ProductMedia
 import ModalContent from "@/components/global/Modal/ModalContent";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import MeasurementsModalContent from "@/components/product/MeasurementsModalContent";
+import Button from "@/components/ui/Button";
+import { ButtonStyle } from "@/components/ui/Button/styles";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { notFound } from "next/navigation";
@@ -78,8 +80,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product?.product?.productDisplay?.productBody?.description}
           </div>
           <div className="mt-4">
-            <ModalContent modalChildren={<MeasurementsModalContent />}>
-              <div className="cursor-pointer underline">measurements</div>
+            <ModalContent
+              openElement={
+                <Button asChild style={ButtonStyle.underlinedButton}>
+                  measurements
+                </Button>
+              }
+            >
+              <MeasurementsModalContent />
             </ModalContent>
           </div>
 
