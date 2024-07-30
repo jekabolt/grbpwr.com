@@ -2,7 +2,7 @@ import { addCartProduct } from "@/actions/cart";
 import AddToCartForm from "@/components/forms/AddToCartForm";
 import { MediaProvider } from "@/components/global/MediaProvider";
 import { ProductMediaItem } from "@/components/global/MediaProvider/ProductMediaItem";
-import Modal from "@/components/global/Modal/Modal";
+import Modal from "@/components/ui/Modal";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import MeasurementsModalContent from "@/components/product/MeasurementsModalContent";
 import Button from "@/components/ui/Button";
