@@ -1,7 +1,7 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
 import { useClickAway } from "@uidotdev/usehooks";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
@@ -49,19 +49,19 @@ function MobileMenuDropdown({
         {"[x]"}
       </button>
       <nav className="space-y-6">
-        <Button asChild style={ButtonStyle.underlinedButton}>
+        <Button asChild style={ButtonStyle.underlinedHightlightButton}>
           <Link href="/catalog">catalog</Link>
         </Button>
-        <Button asChild style={ButtonStyle.underlinedButton}>
+        <Button asChild style={ButtonStyle.underlinedHightlightButton}>
           <Link href="/archive">archive</Link>
         </Button>
-        <Button asChild style={ButtonStyle.underlinedButton}>
+        <Button asChild style={ButtonStyle.underlinedHightlightButton}>
           <Link href="/about">about</Link>
         </Button>
-        <Button asChild style={ButtonStyle.underlinedButton}>
+        <Button asChild style={ButtonStyle.underlinedHightlightButton}>
           <Link href="/shipping">shipping</Link>
         </Button>
-        <Button asChild style={ButtonStyle.underlinedButton}>
+        <Button asChild style={ButtonStyle.underlinedHightlightButton}>
           <Link href="/contacts">contacts</Link>
         </Button>
       </nav>

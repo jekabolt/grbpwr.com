@@ -1,11 +1,15 @@
+import { addCartProduct } from "@/actions/cart";
+import AddToCartForm from "@/components/forms/AddToCartForm";
 import { MediaProvider } from "@/components/global/MediaProvider";
 import { ProductMediaItem } from "@/components/global/MediaProvider/ProductMediaItem";
+import Modal from "@/components/ui/Modal";
 import CoreLayout from "@/components/layouts/CoreLayout";
+import MeasurementsModalContent from "@/components/product/MeasurementsModalContent";
+import Button from "@/components/ui/Button";
+import { ButtonStyle } from "@/components/ui/Button/styles";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { notFound } from "next/navigation";
-import { addCartProduct } from "@/actions/cart";
-import AddToCartForm from "@/components/forms/AddToCartForm";
 
 interface ProductPageProps {
   params: {
@@ -75,7 +79,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mt-4">
             {product?.product?.productDisplay?.productBody?.description}
           </div>
-          <div className="mt-4">measurements</div>
+          <div className="mt-4">
+            <Modal
+              openElement={
+                <Button asChild style={ButtonStyle.underlinedButton}>
+                  measurements
+                </Button>
+              }
+            >
+              <MeasurementsModalContent />
+            </Modal>
+          </div>
+
           {baseCurrencyPrice &&
             product?.product?.slug &&
             product?.sizes?.length && (

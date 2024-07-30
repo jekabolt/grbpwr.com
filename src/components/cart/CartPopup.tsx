@@ -27,7 +27,7 @@ export default function CartPopup({
       <div className="group relative" ref={ref}>
         <Button
           onClick={() => setOpenStatus(!open)}
-          style={ButtonStyle.underlinedButton}
+          style={ButtonStyle.underlinedHightlightButton}
         >
           cart {itemsQuantity ? `(${itemsQuantity})` : ""}
         </Button>
