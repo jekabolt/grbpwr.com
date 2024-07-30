@@ -1,4 +1,4 @@
-import Header from "@/components/global/Header";
+import Header from "@/components/sections/Header";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
 import Link from "next/link";

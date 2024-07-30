@@ -1,4 +1,3 @@
-import CartItemRow from "@/components/cart/CartItemRow";
 import Button from "@/components/ui/Button";
 import { serviceClient } from "@/lib/api";
 import {
@@ -6,6 +5,7 @@ import {
   getCookieCart,
 } from "@/lib/utils/cart";
 import Link from "next/link";
+import CartItemRow from "./CartItemRow";
 
 export default async function CartProductsList() {
   const cartData = getCookieCart();

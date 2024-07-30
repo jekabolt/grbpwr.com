@@ -4,7 +4,7 @@ import { common_MediaFull } from "@/api/proto-http/frontend";
 import { PhotoProvider } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 
-export function MediaProvider({
+export function FullscreenImagesCarousel({
   mediaList,
   ItemComponent,
 }: {

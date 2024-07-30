@@ -1,5 +1,5 @@
 import { common_HeroItem } from "@/api/proto-http/frontend";
-import Image from "@/components/global/Image";
+import Image from "@/components/ui/Image";
 import { calculateAspectRatio } from "@/lib/utils";
 
 export default function AdsSection({

@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useClickAway } from "@uidotdev/usehooks";
 import Link from "next/link";
 import { useState } from "react";
-import { ButtonStyle } from "../ui/Button/styles";
+import { ButtonStyle } from "@/components/ui/Button/styles";
 
 export default function CartPopup({
   children,

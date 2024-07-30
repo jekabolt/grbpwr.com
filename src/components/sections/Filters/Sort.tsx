@@ -1,7 +1,7 @@
 "use client";
 
 import GenericPopover from "@/components/ui/Popover";
-import { useHeroContext } from "../contexts/HeroContext";
+import { useHeroContext } from "@/components/contexts/HeroContext";
 import useFilterQueryParams from "./useFilterQueryParams";
 import FilterOptionButtons from "./FilterOptionButtons";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { common_MediaFull } from "@/api/proto-http/frontend";
-import GlobalImage from "@/components/global/Image";
+import GlobalImage from "@/components/ui/Image";
 import { calculateAspectRatio } from "@/lib/utils";
 import { PhotoView } from "react-photo-view";
 
