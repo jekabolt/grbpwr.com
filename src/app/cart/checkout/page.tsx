@@ -1,4 +1,7 @@
-import { common_OrderItemInsert } from "@/api/proto-http/frontend";
+import {
+  common_OrderItemInsert,
+  common_OrderNew,
+} from "@/api/proto-http/frontend";
 import NewOrderForm from "@/components/forms/NewOrderForm";
 import { redirect } from "next/navigation";
 import CoreLayout from "@/components/layouts/CoreLayout";
@@ -6,6 +9,7 @@ import {
   getCartProductSlugAndSizeFromKey,
   getCookieCart,
 } from "@/lib/utils/cart";
+import { serviceClient } from "@/lib/api";
 
 export default async function Page() {
   const cartData = getCookieCart();
@@ -36,9 +40,49 @@ export default async function Page() {
     [] as common_OrderItemInsert[],
   );
 
+  async function submitNewOrder(newOrderData: common_OrderNew) {
+    "use server";
+
+    try {
+      const submitOrderResponse = await serviceClient.SubmitOrder({
+        order: newOrderData,
+      });
+
+      console.log("new order");
+      console.log(submitOrderResponse);
+
+      const { order } = submitOrderResponse;
+
+      if (!order?.uuid) {
+        console.log("no data to create order invoice");
+
+        return {
+          ok: false,
+        };
+      }
+
+      const getOrderInvoiceResponse = await serviceClient.GetOrderInvoice({
+        orderUuid: order.uuid,
+        paymentMethod: "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA",
+      });
+
+      console.log("new invoice");
+      console.log(getOrderInvoiceResponse);
+
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      console.error("Error submitting new order:", error);
+      return {
+        ok: false,
+      };
+    }
+  }
+
   return (
     <CoreLayout>
-      <NewOrderForm orderItems={orderItems} />
+      <NewOrderForm submitNewOrder={submitNewOrder} orderItems={orderItems} />
     </CoreLayout>
   );
 }

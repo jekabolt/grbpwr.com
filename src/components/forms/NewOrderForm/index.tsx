@@ -9,23 +9,22 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import AddressFields from "./AddressFields";
 
-import {
-  SubmitOrderRequest,
-  common_AddressInsert,
-  common_BuyerInsert,
+import type {
   common_OrderItemInsert,
   common_OrderNew,
 } from "@/api/proto-http/frontend";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
-import { serviceClient } from "@/lib/api";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
+import { mapFormFieldToOrderDataFormat } from "./utils";
 
 export default function NewOrderForm({
   initialData,
   orderItems,
+  submitNewOrder,
 }: {
   initialData?: CheckoutData;
   orderItems: common_OrderItemInsert[];
+  submitNewOrder: (newOrderData: common_OrderNew) => Promise<{ ok: boolean }>;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -39,72 +38,17 @@ export default function NewOrderForm({
   );
   const paymentMethod = form.watch("paymentMethod");
 
-  console.log(paymentMethod);
-
   const onSubmit = async (data: CheckoutData) => {
-    try {
-      // todo: check if all items are in stock
+    const newOrderData = mapFormFieldToOrderDataFormat(data, orderItems);
 
-      const response = await serviceClient.SubmitOrder(
-        createSubmitOrderRequest(data),
-      );
-      console.log("Order submitted successfully:", response);
+    try {
+      await submitNewOrder(newOrderData);
+
+      console.log("New order submitted successfully");
     } catch (error) {
-      console.error("Error submitting order:", error);
+      console.error("Error submitting new order:", error);
     }
   };
-
-  function createSubmitOrderRequest(data: CheckoutData): SubmitOrderRequest {
-    const shippingAddress: common_AddressInsert = {
-      street: data.address,
-      houseNumber: "1", // common_AddressInsert will be changed to just have full address
-      apartmentNumber: data.additionalAddress,
-      city: data.city,
-      state: data.state,
-      country: data.country,
-      postalCode: data.postalCode,
-    };
-
-    const billingAddress: common_AddressInsert | undefined =
-      data.billingAddressIsSameAsAddress
-        ? shippingAddress
-        : data.billingAddress
-          ? {
-              street: data.billingAddress.address,
-              houseNumber: "1", // common_AddressInsert will be changed to just have full address
-              apartmentNumber: data.billingAddress.additionalAddress,
-              city: data.billingAddress.city,
-              state: data.billingAddress.state,
-              country: data.billingAddress.country,
-              postalCode: data.billingAddress.postalCode,
-            }
-          : undefined;
-
-    const buyer: common_BuyerInsert = {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      phone: data.phone,
-      receivePromoEmails: data.subscribe,
-    };
-
-    const order: common_OrderNew = {
-      items: orderItems,
-      shippingAddress,
-      billingAddress,
-      buyer,
-      // TO-DO map payment method and carrier id from dictionary
-      // paymentMethodId: mapPaymentMethod(data.paymentMethod),
-      // shipmentCarrierId: mapShipmentCarrierId(data.shippingMethod),
-      paymentMethodId: 1,
-      shipmentCarrierId: 1,
-      promoCode: undefined, // Add promo code if applicable
-    };
-
-    return {
-      order,
-    };
-  }
 
   return (
     <FormContainer
