@@ -1,11 +1,11 @@
 import { Suspense } from "react";
-import CartProductsList from "@/components/cart/CartProductsList";
+import CartProductsList from "@/components/sections/Cart/CartProductsList";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { CartProductsSkeleton } from "@/components/ui/Skeleton";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
 import Link from "next/link";
-import TotalPrice from "@/components/cart/TotalPrice";
+import TotalPrice from "@/components/sections/Cart/TotalPrice";
 import { getCookieCart } from "@/lib/utils/cart";
 
 export const dynamic = "force-dynamic";

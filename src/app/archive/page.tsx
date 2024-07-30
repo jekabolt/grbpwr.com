@@ -1,8 +1,8 @@
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { serviceClient } from "@/lib/api";
 
-import { MediaProvider } from "@/components/global/MediaProvider";
-import { ArchiveMediaItem } from "@/components/global/MediaProvider/ArchiveMediaItem";
+import { FullscreenImagesCarousel } from "@/components/sections/FullscreenImagesCarousel";
+import { ArchiveMediaItem } from "@/components/sections/FullscreenImagesCarousel/ArchiveMediaItem";
 
 export default async function Page() {
   const { archives } = await serviceClient.GetArchivesPaged({
@@ -23,7 +23,7 @@ export default async function Page() {
                 {/* todo: fix images. make sure all the images have known size + add scroll when there are more images  */}
 
                 {a.items && (
-                  <MediaProvider
+                  <FullscreenImagesCarousel
                     mediaList={a.items.map((x) => x.archiveItem?.media!)}
                     ItemComponent={ArchiveMediaItem}
                   />

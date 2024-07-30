@@ -1,12 +1,9 @@
 import { addCartProduct } from "@/actions/cart";
 import AddToCartForm from "@/components/forms/AddToCartForm";
-import { MediaProvider } from "@/components/global/MediaProvider";
-import { ProductMediaItem } from "@/components/global/MediaProvider/ProductMediaItem";
-import Modal from "@/components/ui/Modal";
+import { FullscreenImagesCarousel } from "@/components/sections/FullscreenImagesCarousel";
+import { ProductMediaItem } from "@/components/sections/FullscreenImagesCarousel/ProductMediaItem";
 import CoreLayout from "@/components/layouts/CoreLayout";
-import MeasurementsModalContent from "@/components/product/MeasurementsModalContent";
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import MeasurementsModal from "@/components/sections/MeasurementsModal";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { notFound } from "next/navigation";
@@ -62,7 +59,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="flex flex-col bg-white pb-20 pt-5">
         {product?.media && (
           <div className="grid w-full grid-cols-6 items-end gap-2">
-            <MediaProvider
+            <FullscreenImagesCarousel
               mediaList={product.media}
               ItemComponent={ProductMediaItem}
             />
@@ -80,15 +77,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product?.product?.productDisplay?.productBody?.description}
           </div>
           <div className="mt-4">
-            <Modal
-              openElement={
-                <Button asChild style={ButtonStyle.underlinedButton}>
-                  measurements
-                </Button>
-              }
-            >
-              <MeasurementsModalContent />
-            </Modal>
+            <MeasurementsModal />
           </div>
 
           {baseCurrencyPrice &&

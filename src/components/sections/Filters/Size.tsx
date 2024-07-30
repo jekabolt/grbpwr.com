@@ -1,21 +1,20 @@
 "use client";
-
-import { useHeroContext } from "../contexts/HeroContext";
-import GenericPopover from "../ui/Popover";
+import { useHeroContext } from "@/components/contexts/HeroContext";
+import GenericPopover from "@/components/ui/Popover";
 import useFilterQueryParams from "./useFilterQueryParams";
 import FilterOptionButtons from "./FilterOptionButtons";
 
 function Trigger({ defaultValue }: { defaultValue: string }) {
   return (
     <div>
-      order <span className="underline">{defaultValue}</span>
+      size <span className="underline">{defaultValue}</span>
     </div>
   );
 }
 
-export default function Order() {
+export default function Size() {
   const { dictionary } = useHeroContext();
-  const { defaultValue, handleFilterChange } = useFilterQueryParams("order");
+  const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
 
   return (
     <GenericPopover
@@ -23,14 +22,14 @@ export default function Order() {
         side: "bottom",
         align: "end",
       }}
-      title="order_by"
+      title="size"
       openElement={<Trigger defaultValue={defaultValue || ""} />}
     >
       <FilterOptionButtons
-        defaultOptionText="none"
         defaultValue={defaultValue || ""}
         handleFilterChange={handleFilterChange}
-        values={dictionary?.orderFactors || []}
+        values={dictionary?.sizes || []}
+        defaultOptionText="all sizes"
       />
     </GenericPopover>
   );

@@ -1,5 +1,5 @@
 import { common_HeroItem } from "@/api/proto-http/frontend";
-import Image from "@/components/global/Image";
+import Image from "@/components/ui/Image";
 
 export default function Hero({ media }: common_HeroItem) {
   if (!media) return null;
