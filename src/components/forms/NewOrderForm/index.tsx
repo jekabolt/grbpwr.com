@@ -42,7 +42,9 @@ export default function NewOrderForm({
     const newOrderData = mapFormFieldToOrderDataFormat(data, orderItems);
 
     try {
-      await submitNewOrder(newOrderData);
+      const data = await submitNewOrder(newOrderData);
+
+      console.log("submit new order response", data);
 
       console.log("New order submitted successfully");
     } catch (error) {

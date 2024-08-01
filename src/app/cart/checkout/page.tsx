@@ -71,6 +71,8 @@ export default async function Page() {
 
       return {
         ok: true,
+        submitOrderResponse,
+        getOrderInvoiceResponse,
       };
     } catch (error) {
       console.error("Error submitting new order:", error);
