@@ -110,49 +110,95 @@ export type BuyerInsert = {
   receivePromoEmails: boolean | undefined;
 };
 
-export type OrderFactor =
-  | "ORDER_FACTOR_UNKNOWN"
-  | "ORDER_FACTOR_ASC"
-  | "ORDER_FACTOR_DESC";
-export type SortFactor =
-  | "SORT_FACTOR_UNKNOWN"
-  | "SORT_FACTOR_CREATED_AT"
-  | "SORT_FACTOR_UPDATED_AT"
-  | "SORT_FACTOR_NAME"
-  | "SORT_FACTOR_PRICE";
-export type FilterConditions = {
-  from: string | undefined;
-  to: string | undefined;
-  onSale: boolean | undefined;
-  color: string | undefined;
-  categoryIds: number[] | undefined;
-  sizesIds: number[] | undefined;
-  preorder: boolean | undefined;
-  byTag: string | undefined;
-};
-
-export type PaymentMethodNameEnum =
-  | "PAYMENT_METHOD_NAME_ENUM_UNKNOWN"
-  | "PAYMENT_METHOD_NAME_ENUM_CARD"
-  | "PAYMENT_METHOD_NAME_ENUM_ETH"
-  | "PAYMENT_METHOD_NAME_ENUM_USDT_TRON"
-  | "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA";
-// Payment represents the payment table
-export type Payment = {
+export type CategoryEnum =
+  | "CATEGORY_ENUM_UNKNOWN"
+  | "CATEGORY_ENUM_T_SHIRT"
+  | "CATEGORY_ENUM_JEANS"
+  | "CATEGORY_ENUM_DRESS"
+  | "CATEGORY_ENUM_JACKET"
+  | "CATEGORY_ENUM_SWEATER"
+  | "CATEGORY_ENUM_PANT"
+  | "CATEGORY_ENUM_SKIRT"
+  | "CATEGORY_ENUM_SHORT"
+  | "CATEGORY_ENUM_BLAZER"
+  | "CATEGORY_ENUM_COAT"
+  | "CATEGORY_ENUM_SOCKS"
+  | "CATEGORY_ENUM_UNDERWEAR"
+  | "CATEGORY_ENUM_BRA"
+  | "CATEGORY_ENUM_HAT"
+  | "CATEGORY_ENUM_SCARF"
+  | "CATEGORY_ENUM_GLOVES"
+  | "CATEGORY_ENUM_SHOES"
+  | "CATEGORY_ENUM_BELT"
+  | "CATEGORY_ENUM_OTHER";
+export type SizeEnum =
+  | "SIZE_ENUM_UNKNOWN"
+  | "SIZE_ENUM_XXS"
+  | "SIZE_ENUM_XS"
+  | "SIZE_ENUM_S"
+  | "SIZE_ENUM_M"
+  | "SIZE_ENUM_L"
+  | "SIZE_ENUM_XL"
+  | "SIZE_ENUM_XXL"
+  | "SIZE_ENUM_OS";
+export type MeasurementNameEnum =
+  | "MEASUREMENT_NAME_ENUM_UNKNOWN"
+  | "MEASUREMENT_NAME_ENUM_WAIST"
+  | "MEASUREMENT_NAME_ENUM_INSEAM"
+  | "MEASUREMENT_NAME_ENUM_LENGTH"
+  | "MEASUREMENT_NAME_ENUM_RISE"
+  | "MEASUREMENT_NAME_ENUM_HIPS"
+  | "MEASUREMENT_NAME_ENUM_SHOULDERS"
+  | "MEASUREMENT_NAME_ENUM_BUST"
+  | "MEASUREMENT_NAME_ENUM_SLEEVE"
+  | "MEASUREMENT_NAME_ENUM_WIDTH"
+  | "MEASUREMENT_NAME_ENUM_HEIGHT";
+export type GenderEnum =
+  | "GENDER_ENUM_UNKNOWN"
+  | "GENDER_ENUM_MALE"
+  | "GENDER_ENUM_FEMALE"
+  | "GENDER_ENUM_UNISEX";
+export type Category = {
   id: number | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  modifiedAt: wellKnownTimestamp | undefined;
-  paymentInsert: PaymentInsert | undefined;
+  name: CategoryEnum | undefined;
 };
 
-export type PaymentInsert = {
-  paymentMethod: PaymentMethodNameEnum | undefined;
-  transactionId: string | undefined;
-  transactionAmount: googletype_Decimal | undefined;
-  transactionAmountPaymentCurrency: googletype_Decimal | undefined;
-  payer: string | undefined;
-  payee: string | undefined;
-  isTransactionDone: boolean | undefined;
+export type Size = {
+  id: number | undefined;
+  name: SizeEnum | undefined;
+};
+
+export type MeasurementName = {
+  id: number | undefined;
+  name: MeasurementNameEnum | undefined;
+};
+
+export type ProductNew = {
+  product: ProductInsert | undefined;
+  sizeMeasurements: SizeWithMeasurementInsert[] | undefined;
+  mediaIds: number[] | undefined;
+  tags: ProductTagInsert[] | undefined;
+};
+
+export type ProductInsert = {
+  productBody: ProductBody | undefined;
+  thumbnailMediaId: number | undefined;
+};
+
+export type ProductBody = {
+  preorder: wellKnownTimestamp | undefined;
+  name: string | undefined;
+  brand: string | undefined;
+  sku: string | undefined;
+  color: string | undefined;
+  colorHex: string | undefined;
+  countryOfOrigin: string | undefined;
+  price: googletype_Decimal | undefined;
+  salePercentage: googletype_Decimal | undefined;
+  categoryId: number | undefined;
+  description: string | undefined;
+  hidden: boolean | undefined;
+  targetGender: GenderEnum | undefined;
 };
 
 // A representation of a decimal value, such as 2.5. Clients may convert values
@@ -207,6 +253,124 @@ export type googletype_Decimal = {
   // Services **should** error with `400 Bad Request` (`INVALID_ARGUMENT` in
   // gRPC) if the service receives a value outside of the supported range.
   value: string | undefined;
+};
+
+export type SizeWithMeasurementInsert = {
+  productSize: ProductSizeInsert | undefined;
+  measurements: ProductMeasurementInsert[] | undefined;
+};
+
+export type ProductSizeInsert = {
+  quantity: googletype_Decimal | undefined;
+  sizeId: number | undefined;
+};
+
+export type ProductMeasurementInsert = {
+  measurementNameId: number | undefined;
+  measurementValue: googletype_Decimal | undefined;
+};
+
+export type ProductTagInsert = {
+  tag: string | undefined;
+};
+
+export type ProductFull = {
+  product: Product | undefined;
+  sizes: ProductSize[] | undefined;
+  measurements: ProductMeasurement[] | undefined;
+  media: MediaFull[] | undefined;
+  tags: ProductTag[] | undefined;
+};
+
+export type Product = {
+  id: number | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
+  slug: string | undefined;
+  productDisplay: ProductDisplay | undefined;
+};
+
+export type ProductDisplay = {
+  productBody: ProductBody | undefined;
+  thumbnail: MediaFull | undefined;
+};
+
+export type ProductSize = {
+  id: number | undefined;
+  quantity: googletype_Decimal | undefined;
+  productId: number | undefined;
+  sizeId: number | undefined;
+};
+
+export type ProductMeasurement = {
+  id: number | undefined;
+  productId: number | undefined;
+  productSizeId: number | undefined;
+  measurementNameId: number | undefined;
+  measurementValue: googletype_Decimal | undefined;
+};
+
+export type ProductTag = {
+  id: number | undefined;
+  productId: number | undefined;
+  productTagInsert: ProductTagInsert | undefined;
+};
+
+export type ProductMeasurementUpdate = {
+  sizeId: number | undefined;
+  measurementNameId: number | undefined;
+  measurementValue: googletype_Decimal | undefined;
+};
+
+export type SizeWithMeasurement = {
+  productSize: ProductSize | undefined;
+  measurements: ProductMeasurement[] | undefined;
+};
+
+export type OrderFactor =
+  | "ORDER_FACTOR_UNKNOWN"
+  | "ORDER_FACTOR_ASC"
+  | "ORDER_FACTOR_DESC";
+export type SortFactor =
+  | "SORT_FACTOR_UNKNOWN"
+  | "SORT_FACTOR_CREATED_AT"
+  | "SORT_FACTOR_UPDATED_AT"
+  | "SORT_FACTOR_NAME"
+  | "SORT_FACTOR_PRICE";
+export type FilterConditions = {
+  from: string | undefined;
+  to: string | undefined;
+  onSale: boolean | undefined;
+  gender: GenderEnum | undefined;
+  color: string | undefined;
+  categoryIds: number[] | undefined;
+  sizesIds: number[] | undefined;
+  preorder: boolean | undefined;
+  byTag: string | undefined;
+};
+
+export type PaymentMethodNameEnum =
+  | "PAYMENT_METHOD_NAME_ENUM_UNKNOWN"
+  | "PAYMENT_METHOD_NAME_ENUM_CARD"
+  | "PAYMENT_METHOD_NAME_ENUM_ETH"
+  | "PAYMENT_METHOD_NAME_ENUM_USDT_TRON"
+  | "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA";
+// Payment represents the payment table
+export type Payment = {
+  id: number | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  modifiedAt: wellKnownTimestamp | undefined;
+  paymentInsert: PaymentInsert | undefined;
+};
+
+export type PaymentInsert = {
+  paymentMethod: PaymentMethodNameEnum | undefined;
+  transactionId: string | undefined;
+  transactionAmount: googletype_Decimal | undefined;
+  transactionAmountPaymentCurrency: googletype_Decimal | undefined;
+  payer: string | undefined;
+  payee: string | undefined;
+  isTransactionDone: boolean | undefined;
 };
 
 // PaymentMethod represents the payment_method table
@@ -320,169 +484,6 @@ export type OrderItem = {
 export type OrderStatus = {
   id: number | undefined;
   name: OrderStatusEnum | undefined;
-};
-
-export type CategoryEnum =
-  | "CATEGORY_ENUM_UNKNOWN"
-  | "CATEGORY_ENUM_T_SHIRT"
-  | "CATEGORY_ENUM_JEANS"
-  | "CATEGORY_ENUM_DRESS"
-  | "CATEGORY_ENUM_JACKET"
-  | "CATEGORY_ENUM_SWEATER"
-  | "CATEGORY_ENUM_PANT"
-  | "CATEGORY_ENUM_SKIRT"
-  | "CATEGORY_ENUM_SHORT"
-  | "CATEGORY_ENUM_BLAZER"
-  | "CATEGORY_ENUM_COAT"
-  | "CATEGORY_ENUM_SOCKS"
-  | "CATEGORY_ENUM_UNDERWEAR"
-  | "CATEGORY_ENUM_BRA"
-  | "CATEGORY_ENUM_HAT"
-  | "CATEGORY_ENUM_SCARF"
-  | "CATEGORY_ENUM_GLOVES"
-  | "CATEGORY_ENUM_SHOES"
-  | "CATEGORY_ENUM_BELT"
-  | "CATEGORY_ENUM_OTHER";
-export type SizeEnum =
-  | "SIZE_ENUM_UNKNOWN"
-  | "SIZE_ENUM_XXS"
-  | "SIZE_ENUM_XS"
-  | "SIZE_ENUM_S"
-  | "SIZE_ENUM_M"
-  | "SIZE_ENUM_L"
-  | "SIZE_ENUM_XL"
-  | "SIZE_ENUM_XXL"
-  | "SIZE_ENUM_OS";
-export type MeasurementNameEnum =
-  | "MEASUREMENT_NAME_ENUM_UNKNOWN"
-  | "MEASUREMENT_NAME_ENUM_WAIST"
-  | "MEASUREMENT_NAME_ENUM_INSEAM"
-  | "MEASUREMENT_NAME_ENUM_LENGTH"
-  | "MEASUREMENT_NAME_ENUM_RISE"
-  | "MEASUREMENT_NAME_ENUM_HIPS"
-  | "MEASUREMENT_NAME_ENUM_SHOULDERS"
-  | "MEASUREMENT_NAME_ENUM_BUST"
-  | "MEASUREMENT_NAME_ENUM_SLEEVE"
-  | "MEASUREMENT_NAME_ENUM_WIDTH"
-  | "MEASUREMENT_NAME_ENUM_HEIGHT";
-export type GenderEnum =
-  | "GENDER_ENUM_UNKNOWN"
-  | "GENDER_ENUM_MALE"
-  | "GENDER_ENUM_FEMALE"
-  | "GENDER_ENUM_UNISEX";
-export type Category = {
-  id: number | undefined;
-  name: CategoryEnum | undefined;
-};
-
-export type Size = {
-  id: number | undefined;
-  name: SizeEnum | undefined;
-};
-
-export type MeasurementName = {
-  id: number | undefined;
-  name: MeasurementNameEnum | undefined;
-};
-
-export type ProductNew = {
-  product: ProductInsert | undefined;
-  sizeMeasurements: SizeWithMeasurementInsert[] | undefined;
-  mediaIds: number[] | undefined;
-  tags: ProductTagInsert[] | undefined;
-};
-
-export type ProductInsert = {
-  productBody: ProductBody | undefined;
-  thumbnailMediaId: number | undefined;
-};
-
-export type ProductBody = {
-  preorder: wellKnownTimestamp | undefined;
-  name: string | undefined;
-  brand: string | undefined;
-  sku: string | undefined;
-  color: string | undefined;
-  colorHex: string | undefined;
-  countryOfOrigin: string | undefined;
-  price: googletype_Decimal | undefined;
-  salePercentage: googletype_Decimal | undefined;
-  categoryId: number | undefined;
-  description: string | undefined;
-  hidden: boolean | undefined;
-  targetGender: GenderEnum | undefined;
-};
-
-export type SizeWithMeasurementInsert = {
-  productSize: ProductSizeInsert | undefined;
-  measurements: ProductMeasurementInsert[] | undefined;
-};
-
-export type ProductSizeInsert = {
-  quantity: googletype_Decimal | undefined;
-  sizeId: number | undefined;
-};
-
-export type ProductMeasurementInsert = {
-  measurementNameId: number | undefined;
-  measurementValue: googletype_Decimal | undefined;
-};
-
-export type ProductTagInsert = {
-  tag: string | undefined;
-};
-
-export type ProductFull = {
-  product: Product | undefined;
-  sizes: ProductSize[] | undefined;
-  measurements: ProductMeasurement[] | undefined;
-  media: MediaFull[] | undefined;
-  tags: ProductTag[] | undefined;
-};
-
-export type Product = {
-  id: number | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  updatedAt: wellKnownTimestamp | undefined;
-  slug: string | undefined;
-  productDisplay: ProductDisplay | undefined;
-};
-
-export type ProductDisplay = {
-  productBody: ProductBody | undefined;
-  thumbnail: MediaFull | undefined;
-};
-
-export type ProductSize = {
-  id: number | undefined;
-  quantity: googletype_Decimal | undefined;
-  productId: number | undefined;
-  sizeId: number | undefined;
-};
-
-export type ProductMeasurement = {
-  id: number | undefined;
-  productId: number | undefined;
-  productSizeId: number | undefined;
-  measurementNameId: number | undefined;
-  measurementValue: googletype_Decimal | undefined;
-};
-
-export type ProductTag = {
-  id: number | undefined;
-  productId: number | undefined;
-  productTagInsert: ProductTagInsert | undefined;
-};
-
-export type ProductMeasurementUpdate = {
-  sizeId: number | undefined;
-  measurementNameId: number | undefined;
-  measurementValue: googletype_Decimal | undefined;
-};
-
-export type SizeWithMeasurement = {
-  productSize: ProductSize | undefined;
-  measurements: ProductMeasurement[] | undefined;
 };
 
 export type Dictionary = {
