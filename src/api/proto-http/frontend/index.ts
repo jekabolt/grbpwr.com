@@ -349,6 +349,7 @@ export type common_FilterConditions = {
   from: string | undefined;
   to: string | undefined;
   onSale: boolean | undefined;
+  gender: common_GenderEnum | undefined;
   color: string | undefined;
   categoryIds: number[] | undefined;
   sizesIds: number[] | undefined;
@@ -748,6 +749,9 @@ export function createFrontendServiceClient(
       }
       if (request.filterConditions?.onSale) {
         queryParams.push(`filterConditions.onSale=${encodeURIComponent(request.filterConditions.onSale.toString())}`)
+      }
+      if (request.filterConditions?.gender) {
+        queryParams.push(`filterConditions.gender=${encodeURIComponent(request.filterConditions.gender.toString())}`)
       }
       if (request.filterConditions?.color) {
         queryParams.push(`filterConditions.color=${encodeURIComponent(request.filterConditions.color.toString())}`)
