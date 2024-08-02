@@ -103,3 +103,10 @@ export function removeCookieCartProduct(productSlug: string, size: string) {
     }),
   );
 }
+
+export function clearCookieCartProducts() {
+  const cartData = getCookieCart();
+  const cookieStore = cookies();
+
+  cookieStore.set(GRBPWR_CART, JSON.stringify({ ...cartData, products: {} }));
+}

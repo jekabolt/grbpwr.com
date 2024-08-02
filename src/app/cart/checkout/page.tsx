@@ -10,6 +10,7 @@ import {
   getCookieCart,
 } from "@/lib/utils/cart";
 import { serviceClient } from "@/lib/api";
+import { clearCartProducts } from "@/actions/cart";
 
 export default async function Page() {
   const cartData = getCookieCart();
@@ -48,9 +49,6 @@ export default async function Page() {
         order: newOrderData,
       });
 
-      console.log("new order");
-      console.log(submitOrderResponse);
-
       const { order } = submitOrderResponse;
 
       if (!order?.uuid) {
@@ -66,12 +64,17 @@ export default async function Page() {
         paymentMethod: "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA",
       });
 
-      console.log("new invoice");
-      console.log(getOrderInvoiceResponse);
+      console.log({
+        ok: true,
+        order,
+        getOrderInvoiceResponse,
+      });
+
+      clearCartProducts();
 
       return {
         ok: true,
-        submitOrderResponse,
+        order,
         getOrderInvoiceResponse,
       };
     } catch (error) {
