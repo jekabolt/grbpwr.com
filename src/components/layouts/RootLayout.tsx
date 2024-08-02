@@ -3,5 +3,6 @@ type Props = {
 };
 
 export default function RootLayout({ children }: Props) {
+  // add header to this layout (invoices page)
   return <div className="lightTheme relative min-h-screen">{children}</div>;
 }
