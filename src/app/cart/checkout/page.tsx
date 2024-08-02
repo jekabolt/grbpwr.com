@@ -66,13 +66,17 @@ export default async function Page() {
 
       console.log({
         ok: true,
-        submitOrderResponse,
+        order,
         getOrderInvoiceResponse,
       });
 
       clearCartProducts();
 
-      redirect(`/invoices/crypto/${order.uuid}`);
+      return {
+        ok: true,
+        order,
+        getOrderInvoiceResponse,
+      };
     } catch (error) {
       console.error("Error submitting new order:", error);
       return {

@@ -12,10 +12,12 @@ import AddressFields from "./AddressFields";
 import type {
   common_OrderItemInsert,
   common_OrderNew,
+  common_Order,
 } from "@/api/proto-http/frontend";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import { mapFormFieldToOrderDataFormat } from "./utils";
+import { useRouter } from "next/navigation";
 
 export default function NewOrderForm({
   initialData,
@@ -24,9 +26,12 @@ export default function NewOrderForm({
 }: {
   initialData?: CheckoutData;
   orderItems: common_OrderItemInsert[];
-  submitNewOrder: (newOrderData: common_OrderNew) => Promise<{ ok: boolean }>;
+  submitNewOrder: (
+    newOrderData: common_OrderNew,
+  ) => Promise<{ ok: boolean; order?: common_Order }>;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const form = useForm<CheckoutData>({
     resolver: zodResolver(checkoutSchema),
@@ -43,10 +48,10 @@ export default function NewOrderForm({
 
     try {
       const data = await submitNewOrder(newOrderData);
-
       console.log("submit new order response", data);
-
       console.log("New order submitted successfully");
+
+      router.replace(`/invoices/crypto/${data.order?.uuid}`);
     } catch (error) {
       console.error("Error submitting new order:", error);
     }
