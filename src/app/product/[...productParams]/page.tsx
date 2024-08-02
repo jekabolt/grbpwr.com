@@ -1,11 +1,12 @@
-import { MediaProvider } from "@/components/global/MediaProvider";
-import { ProductMediaItem } from "@/components/global/MediaProvider/ProductMediaItem";
+import { addCartProduct } from "@/actions/cart";
+import AddToCartForm from "@/components/forms/AddToCartForm";
+import { FullscreenImagesCarousel } from "@/components/sections/FullscreenImagesCarousel";
+import { ProductMediaItem } from "@/components/sections/FullscreenImagesCarousel/ProductMediaItem";
 import CoreLayout from "@/components/layouts/CoreLayout";
+import MeasurementsModal from "@/components/sections/MeasurementsModal";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { notFound } from "next/navigation";
-import { addCartProduct } from "@/actions/cart";
-import AddToCartForm from "@/components/forms/AddToCartForm";
 
 interface ProductPageProps {
   params: {
@@ -58,7 +59,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="flex flex-col bg-white pb-20 pt-5">
         {product?.media && (
           <div className="grid w-full grid-cols-6 items-end gap-2">
-            <MediaProvider
+            <FullscreenImagesCarousel
               mediaList={product.media}
               ItemComponent={ProductMediaItem}
             />
@@ -75,7 +76,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mt-4">
             {product?.product?.productDisplay?.productBody?.description}
           </div>
-          <div className="mt-4">measurements</div>
+          <div className="mt-4">
+            <MeasurementsModal />
+          </div>
+
           {baseCurrencyPrice &&
             product?.product?.slug &&
             product?.sizes?.length && (

@@ -1,5 +1,5 @@
 import CatalogSection from "@/components/sections/CatalogSection";
-import Filters from "@/components/Filters";
+import Filters from "@/components/sections/Filters";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { CATALOG_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";

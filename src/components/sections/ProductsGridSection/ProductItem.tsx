@@ -1,5 +1,5 @@
 import type { common_Product } from "@/api/proto-http/frontend";
-import Image from "@/components/global/Image";
+import Image from "@/components/ui/Image";
 import Button from "@/components/ui/Button";
 import { CURRENCY_MAP } from "@/constants";
 import { cn } from "@/lib/utils";

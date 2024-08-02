@@ -1,5 +1,5 @@
 import { serviceClient } from "@/lib/api";
-import { HeroContextProvider } from "../contexts/HeroContext";
+import { HeroContextProvider } from "@/components/contexts/HeroContext";
 
 type Props = {
   children: React.ReactNode;

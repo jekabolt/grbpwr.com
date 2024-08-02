@@ -1,6 +1,6 @@
 import { changeCartProductQuantity, removeCartProduct } from "@/actions/cart";
 import type { common_ProductFull } from "@/api/proto-http/frontend";
-import ImageComponent from "../global/Image";
+import ImageComponent from "@/components/ui/Image";
 import ProductAmountButtons from "./ProductAmountButtons";
 
 export default function CartItemRow({
