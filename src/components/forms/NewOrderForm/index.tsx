@@ -15,9 +15,10 @@ import type {
   common_Order,
 } from "@/api/proto-http/frontend";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
-import { CheckoutData, checkoutSchema, defaultData } from "./schema";
+import { CheckoutData, defaultData, checkoutSchema } from "./schema";
 import { mapFormFieldToOrderDataFormat } from "./utils";
 import { useRouter } from "next/navigation";
+import { useHeroContext } from "@/components/contexts/HeroContext";
 
 export default function NewOrderForm({
   initialData,
@@ -30,6 +31,10 @@ export default function NewOrderForm({
     newOrderData: common_OrderNew,
   ) => Promise<{ ok: boolean; order?: common_Order }>;
 }) {
+  const { dictionary } = useHeroContext();
+  console.log(dictionary);
+  // console.log(paymentMethods);
+  // use useActionState() instead
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -110,17 +115,12 @@ export default function NewOrderForm({
           control={form.control}
           loading={loading}
           name="shippingMethod"
-          // label="shippingMethod"
-          items={[
-            {
-              label: "dhl standart",
-              value: "dhl-standart",
-            },
-            {
-              label: "dhl express",
-              value: "dhl-express",
-            },
-          ]}
+          items={
+            dictionary?.shipmentCarriers?.map((c) => ({
+              label: c.shipmentCarrier?.carrier || "",
+              value: c.id + "" || "",
+            })) || []
+          }
         />
       </div>
       <div className="space-y-4">
@@ -150,35 +150,15 @@ export default function NewOrderForm({
           control={form.control}
           loading={loading}
           name="paymentMethod"
-          items={[
-            {
-              label: "credit card",
-              value: "card",
-            },
-            {
-              label: "google pay",
-              value: "googlePay",
-            },
-            {
-              label: "apple pay",
-              value: "applePay",
-            },
-            {
-              label: "klarna",
-              value: "klarna",
-            },
-            {
-              label: "trx usdt",
-              value: "trxUsdt",
-            },
-            {
-              label: "eth",
-              value: "eth",
-            },
-          ]}
+          items={
+            dictionary?.paymentMethods?.map((p) => ({
+              label: p.name as string,
+              value: p.name as string,
+            })) || []
+          }
         />
 
-        {paymentMethod === "card" && (
+        {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD" && (
           <>
             <InputMaskedField
               control={form.control}
