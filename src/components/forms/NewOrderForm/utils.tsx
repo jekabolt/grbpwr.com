@@ -53,7 +53,7 @@ export function mapFormFieldToOrderDataFormat(
     // shipmentCarrierId: mapShipmentCarrierId(data.shippingMethod),
     paymentMethod: "PAYMENT_METHOD_NAME_ENUM_CARD",
     shipmentCarrierId: 1,
-    promoCode: undefined, // Add promo code if applicable
+    promoCode: data.promoCode, // Add promo code if applicable
   };
 
   return newOrderData;
