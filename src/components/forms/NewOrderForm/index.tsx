@@ -46,6 +46,9 @@ export default function NewOrderForm({
   );
   const paymentMethod = form.watch("paymentMethod");
 
+  const isShippingFree = form.watch("isShippingFree");
+  const discount = form.watch("discount");
+
   const onSubmit = async (data: CheckoutData) => {
     const newOrderData = mapFormFieldToOrderDataFormat(data, orderItems);
 
@@ -230,7 +233,31 @@ export default function NewOrderForm({
       </div>
 
       <div className="space-y-4">
+        <h2 className="text-lg">Order summary</h2>
         <PromoCode control={form.control} loading={loading} />
+        <div className="flex justify-between">
+          <div>subtotal:</div>
+          <div>{totalPrice}</div>
+        </div>
+        <div className="flex justify-between">
+          <div>shipping price:</div>
+          {/* to-do pass shipping price */}
+          <div>{isShippingFree ? 0 : 10}</div>
+        </div>
+        {!!discount && (
+          <div className="flex justify-between">
+            <div>discount:</div>
+            <div>{discount}%</div>
+          </div>
+        )}
+        <hr className="h-px bg-textColor" />
+        <div className="flex justify-between">
+          <div>grand total:</div>
+          {/* to-do add shipping price */}
+          <div>
+            {(totalPrice * (100 - discount)) / 100} + shipping price to-do
+          </div>
+        </div>
       </div>
     </FormContainer>
   );

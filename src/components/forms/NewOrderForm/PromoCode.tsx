@@ -17,26 +17,22 @@ export default function PromoCode({ loading, control }: Props) {
   const { setValue, getValues } = useFormContext();
 
   const applyPromoCode = async () => {
-    console.log("apply");
     setPromoLoading(true);
     const promoCode = getValues("promoCode");
 
-    try {
-      const response = await serviceClient.ApplyPromoCode({
-        orderUuid: undefined,
-        promoCode: promoCode,
-      });
-      // TO-DO use refactored endpoint
-      //   setValue('discount', response.discount);
-      console.log(response);
-      setValue("discount", 10);
-      setPromoLoading(false);
-    } catch (error) {
-      // remove
-      setValue("discount", 10);
-      console.error("Error applying promo:", error);
-      setPromoLoading(false);
+    const response = await serviceClient.ApplyPromoCode({
+      orderUuid: "",
+      promoCode: promoCode,
+    });
+    if (response.promo?.allowed) {
+      setValue("discount", response.promo.discount?.value ?? 0);
+      setValue("isShippingFree", !!response.promo.freeShipping);
+    } else {
+      setValue("discount", 0);
+      setValue("isShippingFree", false);
+      // TO-DO show toast - promo not allowed
     }
+    setPromoLoading(false);
   };
 
   return (
