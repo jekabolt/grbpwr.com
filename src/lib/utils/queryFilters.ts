@@ -36,6 +36,7 @@ export function getValidatedGetProductsPagedParams({
       color: undefined,
       preorder: undefined,
       byTag: undefined,
+      gender: undefined,
     },
   };
 }

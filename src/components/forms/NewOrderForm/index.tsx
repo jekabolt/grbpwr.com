@@ -9,28 +9,32 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import AddressFields from "./AddressFields";
 
-import {
-  SubmitOrderRequest,
-  common_AddressInsert,
-  common_BuyerInsert,
+import type {
+  common_Order,
   common_OrderItemInsert,
   common_OrderNew,
 } from "@/api/proto-http/frontend";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
-import { serviceClient } from "@/lib/api";
+import { useRouter } from "next/navigation";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
+import { mapFormFieldToOrderDataFormat } from "./utils";
 
 export default function NewOrderForm({
   initialData,
   orderItems,
   totalPrice,
+  submitNewOrder,
 }: {
   initialData?: CheckoutData;
   orderItems: common_OrderItemInsert[];
   totalPrice: number;
+  submitNewOrder: (
+    newOrderData: common_OrderNew,
+  ) => Promise<{ ok: boolean; order?: common_Order }>;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const form = useForm<CheckoutData>({
     resolver: zodResolver(checkoutSchema),
@@ -42,72 +46,19 @@ export default function NewOrderForm({
   );
   const paymentMethod = form.watch("paymentMethod");
 
-  console.log(paymentMethod);
-
   const onSubmit = async (data: CheckoutData) => {
-    try {
-      // todo: check if all items are in stock
+    const newOrderData = mapFormFieldToOrderDataFormat(data, orderItems);
 
-      const response = await serviceClient.SubmitOrder(
-        createSubmitOrderRequest(data),
-      );
-      console.log("Order submitted successfully:", response);
+    try {
+      const data = await submitNewOrder(newOrderData);
+      console.log("submit new order response", data);
+      console.log("New order submitted successfully");
+
+      router.replace(`/invoices/crypto/${data.order?.uuid}`);
     } catch (error) {
-      console.error("Error submitting order:", error);
+      console.error("Error submitting new order:", error);
     }
   };
-
-  function createSubmitOrderRequest(data: CheckoutData): SubmitOrderRequest {
-    const shippingAddress: common_AddressInsert = {
-      street: data.address,
-      houseNumber: "1", // common_AddressInsert will be changed to just have full address
-      apartmentNumber: data.additionalAddress,
-      city: data.city,
-      state: data.state,
-      country: data.country,
-      postalCode: data.postalCode,
-    };
-
-    const billingAddress: common_AddressInsert | undefined =
-      data.billingAddressIsSameAsAddress
-        ? shippingAddress
-        : data.billingAddress
-          ? {
-              street: data.billingAddress.address,
-              houseNumber: "1", // common_AddressInsert will be changed to just have full address
-              apartmentNumber: data.billingAddress.additionalAddress,
-              city: data.billingAddress.city,
-              state: data.billingAddress.state,
-              country: data.billingAddress.country,
-              postalCode: data.billingAddress.postalCode,
-            }
-          : undefined;
-
-    const buyer: common_BuyerInsert = {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      phone: data.phone,
-      receivePromoEmails: data.subscribe,
-    };
-
-    const order: common_OrderNew = {
-      items: orderItems,
-      shippingAddress,
-      billingAddress,
-      buyer,
-      // TO-DO map payment method and carrier id from dictionary
-      // paymentMethodId: mapPaymentMethod(data.paymentMethod),
-      // shipmentCarrierId: mapShipmentCarrierId(data.shippingMethod),
-      paymentMethodId: 1,
-      shipmentCarrierId: 1,
-      promoCode: data.promoCode, // Add promo code if applicable
-    };
-
-    return {
-      order,
-    };
-  }
 
   return (
     <FormContainer

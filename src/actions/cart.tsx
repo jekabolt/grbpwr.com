@@ -1,4 +1,5 @@
 import {
+  clearCookieCartProducts,
   createCookieCartProduct,
   getCartProductKey,
   getCookieCart,
@@ -114,4 +115,10 @@ export async function changeCartProductQuantity({
   } catch (error) {
     console.log("failed to parse cart", error);
   }
+}
+
+export async function clearCartProducts() {
+  "use server";
+
+  clearCookieCartProducts();
 }

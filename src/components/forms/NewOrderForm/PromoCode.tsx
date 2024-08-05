@@ -32,6 +32,8 @@ export default function PromoCode({ loading, control }: Props) {
       setValue("discount", 10);
       setPromoLoading(false);
     } catch (error) {
+      // remove
+      setValue("discount", 10);
       console.error("Error applying promo:", error);
       setPromoLoading(false);
     }
