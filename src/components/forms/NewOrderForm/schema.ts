@@ -38,6 +38,9 @@ export const checkoutSchema = z.object({
     .optional(),
 
   rememberMe: z.boolean().optional(),
+
+  promoCode: z.string().optional(),
+  discount: z.number(),
 });
 
 export const defaultData: z.infer<typeof checkoutSchema> = {
@@ -60,6 +63,8 @@ export const defaultData: z.infer<typeof checkoutSchema> = {
   paymentMethod: "card",
   creditCard: undefined,
   rememberMe: false, // todo: groom the feature
+  promoCode: "",
+  discount: 0,
 };
 
 export type CheckoutData = z.infer<typeof checkoutSchema>;

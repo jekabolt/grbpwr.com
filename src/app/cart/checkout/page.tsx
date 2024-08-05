@@ -1,11 +1,11 @@
 import { common_OrderItemInsert } from "@/api/proto-http/frontend";
 import NewOrderForm from "@/components/forms/NewOrderForm";
-import { redirect } from "next/navigation";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import {
   getCartProductSlugAndSizeFromKey,
   getCookieCart,
 } from "@/lib/utils/cart";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
   const cartData = getCookieCart();
@@ -13,7 +13,7 @@ export default async function Page() {
 
   if (!cartProducts || !Object.keys(cartProducts)) return redirect("/cart");
 
-  const orderItems = Object.entries(cartProducts).reduce(
+  const order = Object.entries(cartProducts).reduce(
     (acc, [key, value]) => {
       const slugAndSize = getCartProductSlugAndSizeFromKey(key);
 
@@ -29,16 +29,17 @@ export default async function Page() {
         sizeId: Number(slugAndSize.size),
       };
 
-      acc.push(item);
+      acc.items.push(item);
+      acc.totalPrice += value.price * value.quantity;
 
       return acc;
     },
-    [] as common_OrderItemInsert[],
+    { items: [] as common_OrderItemInsert[], totalPrice: 0 },
   );
 
   return (
     <CoreLayout>
-      <NewOrderForm orderItems={orderItems} />
+      <NewOrderForm orderItems={order.items} totalPrice={order.totalPrice} />
     </CoreLayout>
   );
 }

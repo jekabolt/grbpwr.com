@@ -18,14 +18,17 @@ import {
 } from "@/api/proto-http/frontend";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
 import { serviceClient } from "@/lib/api";
+import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 
 export default function NewOrderForm({
   initialData,
   orderItems,
+  totalPrice,
 }: {
   initialData?: CheckoutData;
   orderItems: common_OrderItemInsert[];
+  totalPrice: number;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -98,7 +101,7 @@ export default function NewOrderForm({
       // shipmentCarrierId: mapShipmentCarrierId(data.shippingMethod),
       paymentMethodId: 1,
       shipmentCarrierId: 1,
-      promoCode: undefined, // Add promo code if applicable
+      promoCode: data.promoCode, // Add promo code if applicable
     };
 
     return {
@@ -273,6 +276,10 @@ export default function NewOrderForm({
           name="rememberMe"
           label="Save my information for a faster checkouts"
         />
+      </div>
+
+      <div className="space-y-4">
+        <PromoCode control={form.control} loading={loading} />
       </div>
     </FormContainer>
   );
