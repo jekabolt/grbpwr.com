@@ -10,22 +10,25 @@ import { useForm } from "react-hook-form";
 import AddressFields from "./AddressFields";
 
 import type {
+  common_Order,
   common_OrderItemInsert,
   common_OrderNew,
-  common_Order,
 } from "@/api/proto-http/frontend";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
+import { useRouter } from "next/navigation";
+import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import { mapFormFieldToOrderDataFormat } from "./utils";
-import { useRouter } from "next/navigation";
 
 export default function NewOrderForm({
   initialData,
   orderItems,
+  totalPrice,
   submitNewOrder,
 }: {
   initialData?: CheckoutData;
   orderItems: common_OrderItemInsert[];
+  totalPrice: number;
   submitNewOrder: (
     newOrderData: common_OrderNew,
   ) => Promise<{ ok: boolean; order?: common_Order }>;
@@ -42,6 +45,9 @@ export default function NewOrderForm({
     "billingAddressIsSameAsAddress",
   );
   const paymentMethod = form.watch("paymentMethod");
+
+  const isShippingFree = form.watch("isShippingFree");
+  const discount = form.watch("discount");
 
   const onSubmit = async (data: CheckoutData) => {
     const newOrderData = mapFormFieldToOrderDataFormat(data, orderItems);
@@ -224,6 +230,34 @@ export default function NewOrderForm({
           name="rememberMe"
           label="Save my information for a faster checkouts"
         />
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-lg">Order summary</h2>
+        <PromoCode control={form.control} loading={loading} />
+        <div className="flex justify-between">
+          <div>subtotal:</div>
+          <div>{totalPrice}</div>
+        </div>
+        <div className="flex justify-between">
+          <div>shipping price:</div>
+          {/* to-do pass shipping price */}
+          <div>{isShippingFree ? 0 : 10}</div>
+        </div>
+        {!!discount && (
+          <div className="flex justify-between">
+            <div>discount:</div>
+            <div>{discount}%</div>
+          </div>
+        )}
+        <hr className="h-px bg-textColor" />
+        <div className="flex justify-between">
+          <div>grand total:</div>
+          {/* to-do add shipping price */}
+          <div>
+            {(totalPrice * (100 - discount)) / 100} + shipping price to-do
+          </div>
+        </div>
       </div>
     </FormContainer>
   );

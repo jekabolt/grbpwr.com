@@ -371,7 +371,7 @@ export type common_OrderNew = {
   shippingAddress: common_AddressInsert | undefined;
   billingAddress: common_AddressInsert | undefined;
   buyer: common_BuyerInsert | undefined;
-  paymentMethodId: number | undefined;
+  paymentMethod: common_PaymentMethodNameEnum | undefined;
   shipmentCarrierId: number | undefined;
   promoCode: string | undefined;
 };
@@ -383,12 +383,12 @@ export type common_OrderItemInsert = {
 };
 
 export type common_AddressInsert = {
-  street: string | undefined;
-  houseNumber: string | undefined;
-  apartmentNumber: string | undefined;
-  city: string | undefined;
-  state: string | undefined;
   country: string | undefined;
+  state: string | undefined;
+  city: string | undefined;
+  addressLineOne: string | undefined;
+  addressLineTwo: string | undefined;
+  company: string | undefined;
   postalCode: string | undefined;
 };
 
@@ -564,6 +564,7 @@ export type ApplyPromoCodeRequest = {
 
 export type ApplyPromoCodeResponse = {
   order: common_OrderFull | undefined;
+  promo: common_PromoCodeInsert | undefined;
 };
 
 export type UpdateOrderItemsRequest = {
@@ -927,7 +928,7 @@ export function createFrontendServiceClient(
         throw new Error("missing required field request.order_uuid");
       }
       const path = `api/frontend/order/check/${request.orderUuid}`; // eslint-disable-line quotes
-      const body = JSON.stringify(request);
+      const body = null;
       const queryParams: string[] = [];
       let uri = path;
       if (queryParams.length > 0) {
@@ -935,7 +936,7 @@ export function createFrontendServiceClient(
       }
       return handler({
         path: uri,
-        method: "POST",
+        method: "GET",
         body,
       }, {
         service: "FrontendService",

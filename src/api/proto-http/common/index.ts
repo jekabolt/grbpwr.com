@@ -86,12 +86,12 @@ export type Address = {
 };
 
 export type AddressInsert = {
-  street: string | undefined;
-  houseNumber: string | undefined;
-  apartmentNumber: string | undefined;
-  city: string | undefined;
-  state: string | undefined;
   country: string | undefined;
+  state: string | undefined;
+  city: string | undefined;
+  addressLineOne: string | undefined;
+  addressLineTwo: string | undefined;
+  company: string | undefined;
   postalCode: string | undefined;
 };
 
@@ -433,7 +433,7 @@ export type OrderNew = {
   shippingAddress: AddressInsert | undefined;
   billingAddress: AddressInsert | undefined;
   buyer: BuyerInsert | undefined;
-  paymentMethodId: number | undefined;
+  paymentMethod: PaymentMethodNameEnum | undefined;
   shipmentCarrierId: number | undefined;
   promoCode: string | undefined;
 };
