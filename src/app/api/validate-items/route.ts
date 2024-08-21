@@ -5,16 +5,15 @@ import {
   getCookieCart,
 } from "@/lib/utils/cart";
 import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
   try {
     const cartData = getCookieCart();
 
+    console.log(cartData);
     if (!cartData || !cartData.products) {
-      return res.status(200).json({ result: [] });
+      return NextResponse.json({ result: [] }, { status: 200 });
     }
 
     const items = Object.entries(cartData.products).map(([key, quantity]) => {
@@ -52,8 +51,9 @@ export default async function handler(
       });
     }
 
-    return res.status(200).json({ result: response });
+    console.log(response);
+    return NextResponse.json({ result: response }, { status: 200 });
   } catch (error) {
-    return res.status(500).json({ error });
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }

@@ -25,8 +25,8 @@ export function getCookieCart(): { products: CookieCartProduct } | null {
   try {
     const cart = (cookieStore.get(GRBPWR_CART) as RequestCookie)
       .value as string;
-    const cartJson = JSON.parse(cart);
 
+    const cartJson = JSON.parse(cart);
     return cartJson;
   } catch (error) {
     console.log("failed to parse cart", error);
