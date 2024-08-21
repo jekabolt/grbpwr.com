@@ -474,8 +474,11 @@ export type OrderItem = {
   thumbnail: string | undefined;
   productName: string | undefined;
   productPrice: string | undefined;
+  productPriceWithSale: string | undefined;
   productSalePercentage: string | undefined;
   productBrand: string | undefined;
+  slug: string | undefined;
+  color: string | undefined;
   categoryId: number | undefined;
   sku: string | undefined;
   orderItem: OrderItemInsert | undefined;

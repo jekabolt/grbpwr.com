@@ -401,7 +401,39 @@ export type common_BuyerInsert = {
 };
 
 export type SubmitOrderResponse = {
+  orderUuid: string | undefined;
+  orderStatus: common_OrderStatusEnum | undefined;
+  expiredAt: wellKnownTimestamp | undefined;
+  payment: common_PaymentInsert | undefined;
+};
+
+export type common_PaymentInsert = {
+  paymentMethod: common_PaymentMethodNameEnum | undefined;
+  transactionId: string | undefined;
+  transactionAmount: googletype_Decimal | undefined;
+  transactionAmountPaymentCurrency: googletype_Decimal | undefined;
+  payer: string | undefined;
+  payee: string | undefined;
+  isTransactionDone: boolean | undefined;
+};
+
+export type GetOrderByUUIDRequest = {
+  orderUuid: string | undefined;
+};
+
+export type GetOrderByUUIDResponse = {
+  order: common_OrderFull | undefined;
+};
+
+export type common_OrderFull = {
   order: common_Order | undefined;
+  orderItems: common_OrderItem[] | undefined;
+  payment: common_Payment | undefined;
+  shipment: common_Shipment | undefined;
+  promoCode: common_PromoCode | undefined;
+  buyer: common_Buyer | undefined;
+  billing: common_Address | undefined;
+  shipping: common_Address | undefined;
 };
 
 export type common_Order = {
@@ -417,34 +449,17 @@ export type common_Order = {
   promoId: number | undefined;
 };
 
-export type UpdateOrderShippingCarrierRequest = {
-  orderUuid: string | undefined;
-  shippingCarrierId: number | undefined;
-};
-
-export type UpdateOrderShippingCarrierResponse = {
-  order: common_OrderFull | undefined;
-};
-
-export type common_OrderFull = {
-  order: common_Order | undefined;
-  orderItems: common_OrderItem[] | undefined;
-  payment: common_Payment | undefined;
-  shipment: common_Shipment | undefined;
-  promoCode: common_PromoCode | undefined;
-  buyer: common_Buyer | undefined;
-  billing: common_Address | undefined;
-  shipping: common_Address | undefined;
-};
-
 export type common_OrderItem = {
   id: number | undefined;
   orderId: number | undefined;
   thumbnail: string | undefined;
   productName: string | undefined;
   productPrice: string | undefined;
+  productPriceWithSale: string | undefined;
   productSalePercentage: string | undefined;
   productBrand: string | undefined;
+  slug: string | undefined;
+  color: string | undefined;
   categoryId: number | undefined;
   sku: string | undefined;
   orderItem: common_OrderItemInsert | undefined;
@@ -456,16 +471,6 @@ export type common_Payment = {
   createdAt: wellKnownTimestamp | undefined;
   modifiedAt: wellKnownTimestamp | undefined;
   paymentInsert: common_PaymentInsert | undefined;
-};
-
-export type common_PaymentInsert = {
-  paymentMethod: common_PaymentMethodNameEnum | undefined;
-  transactionId: string | undefined;
-  transactionAmount: googletype_Decimal | undefined;
-  transactionAmountPaymentCurrency: googletype_Decimal | undefined;
-  payer: string | undefined;
-  payee: string | undefined;
-  isTransactionDone: boolean | undefined;
 };
 
 // Shipment represents the shipment table
@@ -507,21 +512,18 @@ export type common_Address = {
   addressInsert: common_AddressInsert | undefined;
 };
 
-export type GetOrderByUUIDRequest = {
-  orderUuid: string | undefined;
-};
-
-export type GetOrderByUUIDResponse = {
-  order: common_OrderFull | undefined;
-};
-
 export type ValidateOrderItemsInsertRequest = {
   items: common_OrderItemInsert[] | undefined;
+  promoCode: string | undefined;
+  shipmentCarrierId: number | undefined;
 };
 
 export type ValidateOrderItemsInsertResponse = {
-  items: common_OrderItemInsert[] | undefined;
+  validItems: common_OrderItem[] | undefined;
+  hasChanged: boolean | undefined;
   subtotal: googletype_Decimal | undefined;
+  totalSale: googletype_Decimal | undefined;
+  promo: common_PromoCodeInsert | undefined;
 };
 
 export type ValidateOrderByUUIDRequest = {
@@ -555,25 +557,6 @@ export type CheckCryptoPaymentRequest = {
 
 export type CheckCryptoPaymentResponse = {
   payment: common_Payment | undefined;
-};
-
-export type ApplyPromoCodeRequest = {
-  orderUuid: string | undefined;
-  promoCode: string | undefined;
-};
-
-export type ApplyPromoCodeResponse = {
-  order: common_OrderFull | undefined;
-  promo: common_PromoCodeInsert | undefined;
-};
-
-export type UpdateOrderItemsRequest = {
-  orderUuid: string | undefined;
-  items: common_OrderItemInsert[] | undefined;
-};
-
-export type UpdateOrderItemsResponse = {
-  order: common_OrderFull | undefined;
 };
 
 export type SubscribeNewsletterRequest = {
@@ -643,7 +626,6 @@ export interface FrontendService {
   GetProductsPaged(request: GetProductsPagedRequest): Promise<GetProductsPagedResponse>;
   // Submit an order
   SubmitOrder(request: SubmitOrderRequest): Promise<SubmitOrderResponse>;
-  UpdateOrderShippingCarrier(request: UpdateOrderShippingCarrierRequest): Promise<UpdateOrderShippingCarrierResponse>;
   // Retrieves an order by its ID
   GetOrderByUUID(request: GetOrderByUUIDRequest): Promise<GetOrderByUUIDResponse>;
   ValidateOrderItemsInsert(request: ValidateOrderItemsInsertRequest): Promise<ValidateOrderItemsInsertResponse>;
@@ -654,10 +636,6 @@ export interface FrontendService {
   CancelOrderInvoice(request: CancelOrderInvoiceRequest): Promise<CancelOrderInvoiceResponse>;
   // CheckCryptoPayment checks the crypto payment if it has been received and updates the order status if it has been received
   CheckCryptoPayment(request: CheckCryptoPaymentRequest): Promise<CheckCryptoPaymentResponse>;
-  // ApplyPromoCode applies promo code on selected order id
-  ApplyPromoCode(request: ApplyPromoCodeRequest): Promise<ApplyPromoCodeResponse>;
-  // Update order items
-  UpdateOrderItems(request: UpdateOrderItemsRequest): Promise<UpdateOrderItemsResponse>;
   // Subscribe to the newsletter
   SubscribeNewsletter(request: SubscribeNewsletterRequest): Promise<SubscribeNewsletterResponse>;
   // Unsubscribe from the newsletter
@@ -803,31 +781,11 @@ export function createFrontendServiceClient(
         method: "SubmitOrder",
       }) as Promise<SubmitOrderResponse>;
     },
-    UpdateOrderShippingCarrier(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.orderUuid) {
-        throw new Error("missing required field request.order_uuid");
-      }
-      const path = `api/frontend/order/${request.orderUuid}/update-shipping-carrier`; // eslint-disable-line quotes
-      const body = JSON.stringify(request);
-      const queryParams: string[] = [];
-      let uri = path;
-      if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
-      }
-      return handler({
-        path: uri,
-        method: "POST",
-        body,
-      }, {
-        service: "FrontendService",
-        method: "UpdateOrderShippingCarrier",
-      }) as Promise<UpdateOrderShippingCarrierResponse>;
-    },
     GetOrderByUUID(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.orderUuid) {
         throw new Error("missing required field request.order_uuid");
       }
-      const path = `api/frontend/orders/${request.orderUuid}`; // eslint-disable-line quotes
+      const path = `api/frontend/order/${request.orderUuid}`; // eslint-disable-line quotes
       const body = null;
       const queryParams: string[] = [];
       let uri = path;
@@ -844,7 +802,7 @@ export function createFrontendServiceClient(
       }) as Promise<GetOrderByUUIDResponse>;
     },
     ValidateOrderItemsInsert(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      const path = `api/admin/orders/validate-items`; // eslint-disable-line quotes
+      const path = `api/frontend/orders/validate-items`; // eslint-disable-line quotes
       const body = JSON.stringify(request);
       const queryParams: string[] = [];
       let uri = path;
@@ -864,7 +822,7 @@ export function createFrontendServiceClient(
       if (!request.orderUuid) {
         throw new Error("missing required field request.order_uuid");
       }
-      const path = `api/admin/orders/validate/${request.orderUuid}`; // eslint-disable-line quotes
+      const path = `api/frontend/orders/validate/${request.orderUuid}`; // eslint-disable-line quotes
       const body = JSON.stringify(request);
       const queryParams: string[] = [];
       let uri = path;
@@ -942,40 +900,6 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "CheckCryptoPayment",
       }) as Promise<CheckCryptoPaymentResponse>;
-    },
-    ApplyPromoCode(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      const path = `api/frontend/order/promo/apply`; // eslint-disable-line quotes
-      const body = JSON.stringify(request);
-      const queryParams: string[] = [];
-      let uri = path;
-      if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
-      }
-      return handler({
-        path: uri,
-        method: "POST",
-        body,
-      }, {
-        service: "FrontendService",
-        method: "ApplyPromoCode",
-      }) as Promise<ApplyPromoCodeResponse>;
-    },
-    UpdateOrderItems(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      const path = `api/frontend/order/update/items`; // eslint-disable-line quotes
-      const body = JSON.stringify(request);
-      const queryParams: string[] = [];
-      let uri = path;
-      if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
-      }
-      return handler({
-        path: uri,
-        method: "POST",
-        body,
-      }, {
-        service: "FrontendService",
-        method: "UpdateOrderItems",
-      }) as Promise<UpdateOrderItemsResponse>;
     },
     SubscribeNewsletter(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/newsletter/subscribe`; // eslint-disable-line quotes

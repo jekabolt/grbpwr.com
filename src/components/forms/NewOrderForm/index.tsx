@@ -11,8 +11,8 @@ import AddressFields from "./AddressFields";
 
 import type {
   common_Order,
-  common_OrderItemInsert,
   common_OrderNew,
+  ValidateOrderItemsInsertResponse,
 } from "@/api/proto-http/frontend";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
 import { useRouter } from "next/navigation";
@@ -22,16 +22,19 @@ import { mapFormFieldToOrderDataFormat } from "./utils";
 
 export default function NewOrderForm({
   initialData,
-  orderItems,
-  totalPrice,
+  order,
   submitNewOrder,
+  validateOrderItems,
 }: {
   initialData?: CheckoutData;
-  orderItems: common_OrderItemInsert[];
-  totalPrice: number;
+  order?: ValidateOrderItemsInsertResponse;
   submitNewOrder: (
     newOrderData: common_OrderNew,
   ) => Promise<{ ok: boolean; order?: common_Order }>;
+  validateOrderItems: (
+    promoCode: string | undefined,
+    shipmentCarrierId: number | undefined,
+  ) => Promise<ValidateOrderItemsInsertResponse | undefined>;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -46,11 +49,11 @@ export default function NewOrderForm({
   );
   const paymentMethod = form.watch("paymentMethod");
 
-  const isShippingFree = form.watch("isShippingFree");
-  const discount = form.watch("discount");
-
   const onSubmit = async (data: CheckoutData) => {
-    const newOrderData = mapFormFieldToOrderDataFormat(data, orderItems);
+    const newOrderData = mapFormFieldToOrderDataFormat(
+      data,
+      order?.validItems?.map((x) => x.orderItem!) || [],
+    );
 
     try {
       const data = await submitNewOrder(newOrderData);
@@ -237,26 +240,23 @@ export default function NewOrderForm({
         <PromoCode control={form.control} loading={loading} />
         <div className="flex justify-between">
           <div>subtotal:</div>
-          <div>{totalPrice}</div>
+          <div>{order?.subtotal?.value}</div>
         </div>
         <div className="flex justify-between">
           <div>shipping price:</div>
           {/* to-do pass shipping price */}
-          <div>{isShippingFree ? 0 : 10}</div>
+          <div>{order?.promo?.freeShipping ? 0 : 10}</div>
         </div>
-        {!!discount && (
+        {!!order?.promo?.discount?.value && (
           <div className="flex justify-between">
             <div>discount:</div>
-            <div>{discount}%</div>
+            <div>{order?.promo?.discount?.value}%</div>
           </div>
         )}
         <hr className="h-px bg-textColor" />
         <div className="flex justify-between">
           <div>grand total:</div>
-          {/* to-do add shipping price */}
-          <div>
-            {(totalPrice * (100 - discount)) / 100} + shipping price to-do
-          </div>
+          <div>{order?.totalSale?.value}</div>
         </div>
       </div>
     </FormContainer>

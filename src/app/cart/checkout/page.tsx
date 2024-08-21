@@ -7,40 +7,45 @@ import NewOrderForm from "@/components/forms/NewOrderForm";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { serviceClient } from "@/lib/api";
 import {
-  getCartProductSlugAndSizeFromKey,
+  getCartProductIdAndSizeFromKey,
   getCookieCart,
 } from "@/lib/utils/cart";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
-  const cartData = getCookieCart();
-  const cartProducts = cartData?.products;
+  async function validateOrderItems(
+    promoCode: string | undefined,
+    shipmentCarrierId: number | undefined,
+  ) {
+    "use server";
+    const cartData = getCookieCart();
 
-  if (!cartProducts || !Object.keys(cartProducts)) return redirect("/cart");
+    if (!cartData || !cartData.products) return redirect("/cart");
 
-  const order = Object.entries(cartProducts).reduce(
-    (acc, [key, value]) => {
-      const slugAndSize = getCartProductSlugAndSizeFromKey(key);
+    try {
+      const order = await (async () =>
+        serviceClient.ValidateOrderItemsInsert({
+          items: Object.entries(cartData.products).map(([key, quantity]) => {
+            const productIdAndSize = getCartProductIdAndSizeFromKey(key);
+            return {
+              productId: Number(productIdAndSize?.id),
+              sizeId: Number(productIdAndSize?.size),
+              quantity,
+            } as common_OrderItemInsert;
+          }),
+          shipmentCarrierId: shipmentCarrierId,
+          promoCode: promoCode,
+        }))();
 
-      if (!slugAndSize) return acc;
-
-      const [_, __, ___, id] = slugAndSize.slug
-        .replaceAll("/product/", "")
-        .split("/");
-
-      const item = {
-        productId: Number(id),
-        quantity: value.quantity,
-        sizeId: Number(slugAndSize.size),
-      };
-
-      acc.items.push(item);
-      acc.totalPrice += value.price * value.quantity;
-
-      return acc;
-    },
-    { items: [] as common_OrderItemInsert[], totalPrice: 0 },
-  );
+      if (order.hasChanged) {
+        // show toast - order items changed and init new cookies
+      }
+      return order;
+    } catch (e) {
+      // error validating order items
+      console.log(e);
+    }
+  }
 
   async function submitNewOrder(newOrderData: common_OrderNew) {
     "use server";
@@ -86,12 +91,14 @@ export default async function Page() {
     }
   }
 
+  const order = await validateOrderItems(undefined, undefined);
+
   return (
     <CoreLayout>
       <NewOrderForm
         submitNewOrder={submitNewOrder}
-        orderItems={order.items}
-        totalPrice={order.totalPrice}
+        validateOrderItems={validateOrderItems}
+        order={order}
       />
     </CoreLayout>
   );

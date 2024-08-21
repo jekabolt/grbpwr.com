@@ -5,24 +5,18 @@ import { ButtonStyle } from "@/components/ui/Button/styles";
 
 type Props = {
   changeProductAmount: ({
-    slug,
+    id,
     size,
     operation,
     price,
   }: {
-    slug: string;
+    id: number;
     size: string;
     price: number;
     operation: "increase" | "decrease";
   }) => void;
-  removeProduct: ({
-    productSlug,
-    size,
-  }: {
-    productSlug: string;
-    size: string;
-  }) => void;
-  slug: string;
+  removeProduct: ({ id, size }: { id: number; size: string }) => void;
+  id: number;
   size: string;
   price: number;
 };
@@ -30,7 +24,7 @@ type Props = {
 export default function ProductAmountButtons({
   changeProductAmount,
   removeProduct,
-  slug,
+  id,
   size,
   price,
 }: Props) {
@@ -44,7 +38,7 @@ export default function ProductAmountButtons({
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
 
-            changeProductAmount({ slug, size, operation: "increase", price });
+            changeProductAmount({ id, size, operation: "increase", price });
           }}
         >
           [+]
@@ -54,7 +48,7 @@ export default function ProductAmountButtons({
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
 
-            changeProductAmount({ slug, size, operation: "decrease", price });
+            changeProductAmount({ id, size, operation: "decrease", price });
           }}
         >
           [-]
@@ -64,7 +58,7 @@ export default function ProductAmountButtons({
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
 
-            removeProduct({ productSlug: slug, size });
+            removeProduct({ id, size });
           }}
         >
           [x]

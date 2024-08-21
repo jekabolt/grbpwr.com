@@ -2,19 +2,19 @@ import { GRBPWR_CART } from "@/actions/cart";
 import type { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
-type CookieCartProductData = { quantity: number; price: number };
-type CookieCartProduct = Record<string, CookieCartProductData>;
+// type CookieCartProductData = { quantity: number; price: number };
+type CookieCartProduct = Record<string, number>;
 
-export function getCartProductKey(slug: string, size: string) {
-  return `${slug}-${size}`;
+export function getCartProductKey(id: number, size: string) {
+  return `${id}-${size}`;
 }
 
-export function getCartProductSlugAndSizeFromKey(key: string) {
-  const [slug, size] = key.split("-");
+export function getCartProductIdAndSizeFromKey(key: string) {
+  const [id, size] = key.split("-");
 
-  if (!slug || !size) return null;
+  if (!id || !size) return null;
 
-  return { slug, size };
+  return { id, size };
 }
 
 export function getCookieCart(): { products: CookieCartProduct } | null {
@@ -36,13 +36,13 @@ export function getCookieCart(): { products: CookieCartProduct } | null {
 }
 
 export function createCookieCartProduct({
-  productSlug,
+  id,
   size,
-  price,
+  quantity = 1,
 }: {
-  productSlug: string;
+  id: number;
   size: string;
-  price: number;
+  quantity?: number;
 }) {
   const cookieStore = cookies();
 
@@ -50,28 +50,25 @@ export function createCookieCartProduct({
     GRBPWR_CART,
     JSON.stringify({
       products: {
-        [getCartProductKey(productSlug, size)]: {
-          quantity: 1,
-          price,
-        },
+        [getCartProductKey(id, size)]: quantity,
       },
     }),
   );
 }
 
 export function updateCookieCartProduct({
-  productSlug,
+  id,
   size,
-  data,
+  quantity,
 }: {
-  productSlug: string;
+  id: number;
   size: string;
-  data: CookieCartProductData;
+  quantity: number;
 }) {
   const cartData = getCookieCart();
   const cookieStore = cookies();
 
-  const productKey = getCartProductKey(productSlug, size);
+  const productKey = getCartProductKey(id, size);
 
   cookieStore.set(
     GRBPWR_CART,
@@ -79,16 +76,13 @@ export function updateCookieCartProduct({
       ...cartData,
       products: {
         ...cartData?.products,
-        [productKey]: {
-          ...cartData?.products[productKey],
-          ...data,
-        },
+        [productKey]: quantity,
       },
     }),
   );
 }
 
-export function removeCookieCartProduct(productSlug: string, size: string) {
+export function removeCookieCartProduct(id: number, size: string) {
   const cartData = getCookieCart();
   const cookieStore = cookies();
 
@@ -98,7 +92,7 @@ export function removeCookieCartProduct(productSlug: string, size: string) {
       ...cartData,
       products: {
         ...cartData?.products,
-        [getCartProductKey(productSlug, size)]: undefined,
+        [getCartProductKey(id, size)]: undefined,
       },
     }),
   );

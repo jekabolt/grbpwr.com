@@ -1,13 +1,13 @@
 import CartPopup from "@/components/sections/Cart/CartPopup";
+import CartProductsList from "@/components/sections/Cart/CartProductsList";
+import TotalPrice from "@/components/sections/Cart/TotalPrice";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
+import { getCookieCart } from "@/lib/utils/cart";
 import Link from "next/link";
 import { Suspense } from "react";
-import CartProductsList from "@/components/sections/Cart/CartProductsList";
-import TotalPrice from "@/components/sections/Cart/TotalPrice";
-import { getCookieCart } from "@/lib/utils/cart";
 
 export default function CoreLayout({
   children,

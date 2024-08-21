@@ -1,12 +1,12 @@
-import { Suspense } from "react";
-import CartProductsList from "@/components/sections/Cart/CartProductsList";
 import CoreLayout from "@/components/layouts/CoreLayout";
-import { CartProductsSkeleton } from "@/components/ui/Skeleton";
+import CartProductsList from "@/components/sections/Cart/CartProductsList";
+import TotalPrice from "@/components/sections/Cart/TotalPrice";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
-import Link from "next/link";
-import TotalPrice from "@/components/sections/Cart/TotalPrice";
+import { CartProductsSkeleton } from "@/components/ui/Skeleton";
 import { getCookieCart } from "@/lib/utils/cart";
+import Link from "next/link";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 

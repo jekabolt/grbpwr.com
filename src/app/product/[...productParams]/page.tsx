@@ -1,8 +1,8 @@
 import { addCartProduct } from "@/actions/cart";
 import AddToCartForm from "@/components/forms/AddToCartForm";
+import CoreLayout from "@/components/layouts/CoreLayout";
 import { FullscreenImagesCarousel } from "@/components/sections/FullscreenImagesCarousel";
 import { ProductMediaItem } from "@/components/sections/FullscreenImagesCarousel/ProductMediaItem";
-import CoreLayout from "@/components/layouts/CoreLayout";
 import MeasurementsModal from "@/components/sections/MeasurementsModal";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
@@ -80,16 +80,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <MeasurementsModal />
           </div>
 
-          {baseCurrencyPrice &&
-            product?.product?.slug &&
-            product?.sizes?.length && (
-              <AddToCartForm
-                handleSubmit={addCartProduct}
-                slug={product.product.slug}
-                price={parseInt(baseCurrencyPrice)}
-                sizes={product.sizes}
-              />
-            )}
+          {product?.product?.id && product?.sizes?.length && (
+            <AddToCartForm
+              handleSubmit={addCartProduct}
+              id={product.product.id}
+              sizes={product.sizes}
+            />
+          )}
         </div>
       </div>
     </CoreLayout>
