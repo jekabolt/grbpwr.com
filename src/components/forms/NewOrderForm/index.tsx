@@ -114,7 +114,7 @@ export default function NewOrderForm({
         <RadioGroupField
           control={form.control}
           loading={loading}
-          name="shippingMethod"
+          name="shippingMethodId"
           items={
             dictionary?.shipmentCarriers?.map((c) => ({
               label: c.shipmentCarrier?.carrier || "",

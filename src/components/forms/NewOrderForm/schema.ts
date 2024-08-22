@@ -21,7 +21,7 @@ const baseCheckoutSchema = z.object({
     message: "You must accept the terms & conditions",
   }),
   ...addressFields,
-  shippingMethod: z.string().min(1),
+  shippingMethodId: z.string().min(1),
 
   billingAddressIsSameAsAddress: z.boolean(),
   billingAddress: z.object(addressFields).optional(),
@@ -65,7 +65,7 @@ export const defaultData: z.infer<typeof checkoutSchema> = {
   additionalAddress: "",
   company: "",
   postalCode: "",
-  shippingMethod: "",
+  shippingMethodId: "",
   subscribe: false,
   billingAddressIsSameAsAddress: true,
   billingAddress: undefined,

@@ -61,7 +61,7 @@ export default async function Page() {
 
       const getOrderInvoiceResponse = await serviceClient.GetOrderInvoice({
         orderUuid: order.uuid,
-        paymentMethod: "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA",
+        paymentMethod: newOrderData.paymentMethod,
       });
 
       console.log({
