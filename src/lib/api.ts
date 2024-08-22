@@ -1,4 +1,5 @@
 import { createFrontendServiceClient } from "@/api/proto-http/frontend";
+import { getCookieCart } from "./utils/cart";
 
 type Object = {
   [key: string]: unknown;
@@ -48,34 +49,3 @@ const requestHandler = async (
 };
 
 export const serviceClient = createFrontendServiceClient(requestHandler);
-
-async function fetchValidateItems(
-  shipmentCarrierId: number | undefined,
-  promoCode: string | undefined,
-) {
-  const url = "http://localhost:3000/api/validate-items/";
-  //const headers = { "Content-Type": "application/json" };
-  const body = JSON.stringify({
-    shipmentCarrierId,
-    promoCode,
-  });
-
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    });
-    //console.log(response);
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    //console.log(error);
-    return null; // or handle error more specifically if needed
-  }
-}
-
-export default fetchValidateItems;

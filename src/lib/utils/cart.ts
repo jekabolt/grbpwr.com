@@ -1,4 +1,4 @@
-import { GRBPWR_CART } from "@/actions/cart";
+import { GRBPWR_CART } from "@/constants";
 import type { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
@@ -103,4 +103,20 @@ export function clearCookieCartProducts() {
   const cookieStore = cookies();
 
   cookieStore.set(GRBPWR_CART, JSON.stringify({ ...cartData, products: {} }));
+}
+
+export function getValidateOrderItemsInsertItems() {
+  const cartData = getCookieCart();
+
+  if (!cartData || !cartData.products) return [];
+
+  return Object.entries(cartData.products).map(([key, quantity]) => {
+    const productIdAndSize = getCartProductIdAndSizeFromKey(key);
+
+    return {
+      productId: Number(productIdAndSize?.id),
+      sizeId: Number(productIdAndSize?.size),
+      quantity,
+    };
+  });
 }

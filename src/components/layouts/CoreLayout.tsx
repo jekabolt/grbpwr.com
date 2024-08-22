@@ -12,9 +12,11 @@ import { Suspense } from "react";
 export default function CoreLayout({
   children,
   hideForm,
+  hidePopupCart,
 }: Readonly<{
   children: React.ReactNode;
   hideForm?: boolean;
+  hidePopupCart?: boolean;
 }>) {
   const cartData = getCookieCart();
   const hasCartProducts =
@@ -49,20 +51,23 @@ export default function CoreLayout({
               <CartPopup
                 itemsQuantity={productsNumber}
                 hasCartProducts={hasCartProducts}
+                hidePopupCart={hidePopupCart}
               >
-                <Suspense fallback={null}>
-                  <div className="relative">
-                    <div className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll pb-5">
-                      <CartProductsList />
-                    </div>
+                {hidePopupCart ? null : (
+                  <Suspense fallback={null}>
+                    <div className="relative">
+                      <div className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll pb-5">
+                        <CartProductsList />
+                      </div>
 
-                    {/* when cursor is in gradient area-scroll doesnt work */}
-                    <div className="absolute bottom-0 left-0 h-28 w-full bg-gradient-to-t from-bgColor"></div>
-                  </div>
-                  <div className="mb-3 flex justify-between border-t border-dashed border-textColor pt-5 text-textColor">
-                    <TotalPrice />
-                  </div>
-                </Suspense>
+                      {/* when cursor is in gradient area-scroll doesnt work */}
+                      <div className="absolute bottom-0 left-0 h-28 w-full bg-gradient-to-t from-bgColor"></div>
+                    </div>
+                    <div className="mb-3 flex justify-between border-t border-dashed border-textColor pt-5 text-textColor">
+                      <TotalPrice />
+                    </div>
+                  </Suspense>
+                )}
               </CartPopup>
               <Button style={ButtonStyle.underlinedHightlightButton}>
                 <Link href="/about">about</Link>

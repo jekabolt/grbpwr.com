@@ -14,3 +14,5 @@ export const CURRENCY_MAP = {
   eth: "eth",
 };
 export const MAX_LIMIT = 9999999;
+
+export const GRBPWR_CART = "grbpwr-cart";

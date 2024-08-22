@@ -7,8 +7,6 @@ import {
   updateCookieCartProduct,
 } from "@/lib/utils/cart";
 
-export const GRBPWR_CART = "grbpwr-cart";
-
 export async function addCartProduct({
   id,
   size,

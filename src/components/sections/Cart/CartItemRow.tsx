@@ -26,12 +26,12 @@ export default function CartItemRow({
         <div className="space-y-2">
           <p className="text-md">{product.productName}</p>
           <p className="text-sm">{product.color}</p>
-          // TO-DO map size id
+          {/* // TO-DO map size id */}
           <p className="text-xs">{product.orderItem?.sizeId}</p>
         </div>
       </div>
       <div className="flex w-1/2 whitespace-nowrap text-sm">
-        {product.id && basicCurrencyValue && (
+        {product.id !== undefined && basicCurrencyValue && (
           <ProductAmountButtons
             id={product.id}
             // MAP size id or use size id on cookie key

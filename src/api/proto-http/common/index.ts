@@ -51,7 +51,7 @@ export type Archive = {
 // ArchiveBody represents the insertable fields of an archive.
 export type ArchiveBody = {
   heading: string | undefined;
-  description: string | undefined;
+  text: string | undefined;
 };
 
 // ArchiveItemFull represents an item within an archive.
@@ -65,7 +65,7 @@ export type ArchiveItemFull = {
 export type ArchiveItem = {
   media: MediaFull | undefined;
   url: string | undefined;
-  title: string | undefined;
+  name: string | undefined;
 };
 
 // ArchiveNew represents a new archive with items for insertion.
@@ -77,7 +77,7 @@ export type ArchiveNew = {
 export type ArchiveItemInsert = {
   mediaId: number | undefined;
   url: string | undefined;
-  title: string | undefined;
+  name: string | undefined;
 };
 
 export type Address = {
@@ -534,18 +534,19 @@ export type HeroItemInsert = {
   mediaId: number | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
+  isMain: boolean | undefined;
 };
 
 export type HeroItem = {
   media: MediaFull | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
+  isMain: boolean | undefined;
 };
 
 export type HeroFull = {
   id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
-  main: HeroItem | undefined;
   ads: HeroItem[] | undefined;
   productsFeatured: Product[] | undefined;
 };

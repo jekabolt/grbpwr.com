@@ -14,7 +14,6 @@ export type GetHeroResponse = {
 export type common_HeroFull = {
   id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
-  main: common_HeroItem | undefined;
   ads: common_HeroItem[] | undefined;
   productsFeatured: common_Product[] | undefined;
 };
@@ -28,6 +27,7 @@ export type common_HeroItem = {
   media: common_MediaFull | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
+  isMain: boolean | undefined;
 };
 
 export type common_MediaFull = {
@@ -600,7 +600,7 @@ export type common_Archive = {
 // ArchiveBody represents the insertable fields of an archive.
 export type common_ArchiveBody = {
   heading: string | undefined;
-  description: string | undefined;
+  text: string | undefined;
 };
 
 // ArchiveItemFull represents an item within an archive.
@@ -614,7 +614,7 @@ export type common_ArchiveItemFull = {
 export type common_ArchiveItem = {
   media: common_MediaFull | undefined;
   url: string | undefined;
-  title: string | undefined;
+  name: string | undefined;
 };
 
 export interface FrontendService {
