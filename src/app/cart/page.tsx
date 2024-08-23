@@ -30,7 +30,7 @@ export default async function CartPage() {
           <div className="sticky top-20">
             {/* <p className="mb-8 text-sm">total:</p>
             <p className="mb-2 text-lg">170$</p> */}
-            <TotalPrice />
+            {/* <TotalPrice /> */}
 
             {Object.keys(cartItems?.products || {}).length && (
               <Button asChild style={ButtonStyle.simpleButton}>

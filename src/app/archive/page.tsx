@@ -34,6 +34,7 @@ export default async function Page() {
                 {a.archive?.archiveBody?.heading}
               </div>
               <div className="flex justify-between gap-6">
+                {/* @ts-ignore */}
                 <p>{a.archive?.archiveBody?.description}</p>
                 <p>{a.archive?.createdAt}</p>
               </div>

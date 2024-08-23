@@ -1,39 +1,39 @@
 "use client";
 
+import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
 import InputField from "@/components/ui/Form/fields/InputField";
-import { serviceClient } from "@/lib/api";
 import { useState } from "react";
 import { useFormContext, type Control } from "react-hook-form";
 
 type Props = {
   loading: boolean;
   control: Control<any>;
+  validateItemsAndUpdateCookie: () => Promise<ValidateOrderItemsInsertResponse | null>;
+  freeShipmentCarrierId?: number;
 };
 
-export default function PromoCode({ loading, control }: Props) {
+export default function PromoCode({
+  loading,
+  control,
+  validateItemsAndUpdateCookie,
+  freeShipmentCarrierId,
+}: Props) {
   const [promoLoading, setPromoLoading] = useState(false);
-  const { setValue, getValues } = useFormContext();
+  const { setValue } = useFormContext();
 
-  const applyPromoCode = async () => {
+  async function handleApplyPromoClick() {
     setPromoLoading(true);
-    const promoCode = getValues("promoCode");
 
-    const response = await serviceClient.ApplyPromoCode({
-      orderUuid: "",
-      promoCode: promoCode,
-    });
-    if (response.promo?.allowed) {
-      setValue("discount", response.promo.discount?.value ?? 0);
-      setValue("isShippingFree", !!response.promo.freeShipping);
-    } else {
-      setValue("discount", 0);
-      setValue("isShippingFree", false);
-      // TO-DO show toast - promo not allowed
+    const response = await validateItemsAndUpdateCookie();
+
+    if (response?.promo?.freeShipping) {
+      setValue("shipmentCarrierId", freeShipmentCarrierId + "");
     }
+
     setPromoLoading(false);
-  };
+  }
 
   return (
     <>
@@ -45,9 +45,7 @@ export default function PromoCode({ loading, control }: Props) {
       />
       <Button
         style={ButtonStyle.simpleButton}
-        onClick={() => {
-          applyPromoCode();
-        }}
+        onClick={handleApplyPromoClick}
         disabled={promoLoading || loading}
       >
         apply

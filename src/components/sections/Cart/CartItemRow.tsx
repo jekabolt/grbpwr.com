@@ -34,8 +34,7 @@ export default function CartItemRow({
         {product.id !== undefined && basicCurrencyValue && (
           <ProductAmountButtons
             id={product.id}
-            // MAP size id or use size id on cookie key
-            size={product.orderItem?.sizeId}
+            size={product.orderItem?.sizeId + "" || ""}
             price={parseInt(basicCurrencyValue)}
             removeProduct={removeCartProduct}
             changeProductAmount={changeCartProductQuantity}

@@ -64,7 +64,7 @@ export default function CoreLayout({
                       <div className="absolute bottom-0 left-0 h-28 w-full bg-gradient-to-t from-bgColor"></div>
                     </div>
                     <div className="mb-3 flex justify-between border-t border-dashed border-textColor pt-5 text-textColor">
-                      <TotalPrice />
+                      {/* <TotalPrice /> */}
                     </div>
                   </Suspense>
                 )}

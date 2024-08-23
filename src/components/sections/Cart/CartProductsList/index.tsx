@@ -43,18 +43,13 @@ export default async function CartProductsList() {
     }
   };
 
-  console.log("itemsitemsitemsitems");
-  console.log(items);
-  console.log("_________response");
-  console.log(response);
-
   return (
     <div>
       {response.hasChanged && (
         <HACK__UpdateCookieCart updateCookieCart={updateCookieCart} />
       )}
-      {response?.validItems?.map((p) => (
-        <Button key={p.id as number} asChild>
+      {response?.validItems?.map((p, i) => (
+        <Button key={(p.id as number) + i} asChild>
           <Link href={p.slug || ""}>
             <CartItemRow product={p} />
           </Link>

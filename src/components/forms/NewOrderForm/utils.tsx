@@ -48,12 +48,9 @@ export function mapFormFieldToOrderDataFormat(
     shippingAddress,
     billingAddress,
     buyer,
-    // TO-DO map payment method and carrier id from dictionary
-    // paymentMethodId: mapPaymentMethod(data.paymentMethod),
-    // shipmentCarrierId: mapShipmentCarrierId(data.shippingMethod),
-    paymentMethod: "PAYMENT_METHOD_NAME_ENUM_CARD",
-    shipmentCarrierId: 1,
-    promoCode: data.promoCode, // Add promo code if applicable
+    paymentMethod: data.paymentMethod,
+    shipmentCarrierId: parseInt(data.shipmentCarrierId),
+    promoCode: data.promoCode,
   };
 
   return newOrderData;
