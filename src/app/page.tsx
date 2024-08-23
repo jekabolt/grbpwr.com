@@ -13,11 +13,12 @@ export default async function Page() {
 
   if (!hero) return notFound();
 
-  const { main, ads, productsFeatured } = hero;
+  const { productsFeatured, ads } = hero;
 
   return (
     <>
-      {main && <HeroSection {...main} />}
+      {/* ads */}
+      {/* {rest?.main && <HeroSection {...main} />} */}
       <CoreLayout>
         <AdsSection ads={ads} />
         <Button asChild style={ButtonStyle.bigButton}>

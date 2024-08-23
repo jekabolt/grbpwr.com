@@ -1,31 +1,21 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { FormContainer } from "@/components/ui/Form/FormContainer";
 import { common_ProductSize } from "@/api/proto-http/frontend";
 import SelectField from "@/components/ui/Form/fields/SelectField";
-import { addToCartSchema, AddToCartData } from "./schema";
+import { FormContainer } from "@/components/ui/Form/FormContainer";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { AddToCartData, addToCartSchema } from "./schema";
 
 export default function AddToCartForm({
   handleSubmit,
   sizes,
-  slug,
-  price,
+  id,
 }: {
-  handleSubmit: ({
-    slug,
-    size,
-    price,
-  }: {
-    slug: string;
-    size: string;
-    price: number;
-  }) => Promise<void>;
-  slug: string;
+  handleSubmit: ({ id, size }: { id: number; size: string }) => Promise<void>;
+  id: number;
   sizes: common_ProductSize[];
-  price: number;
 }) {
   const [loading, setLoadingStatus] = useState(false);
   const form = useForm<AddToCartData>({
@@ -37,7 +27,7 @@ export default function AddToCartForm({
 
     setLoadingStatus(true);
     try {
-      await handleSubmit({ slug, size: data.size, price });
+      await handleSubmit({ id, size: data.size });
     } catch (error) {
       console.error(error);
     } finally {

@@ -20,6 +20,7 @@ export default function RadioGroupField({
   control,
   name,
   description,
+  onChange,
   ...props
 }: Props) {
   return (
@@ -32,7 +33,13 @@ export default function RadioGroupField({
             <RadioGroup
               disabled={loading}
               {...field}
-              onValueChange={field.onChange}
+              onValueChange={(v: string) => {
+                if (onChange) {
+                  onChange(v);
+                }
+
+                field.onChange(v);
+              }}
               {...props}
             />
           </FormControl>

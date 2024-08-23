@@ -1,4 +1,5 @@
 import { createFrontendServiceClient } from "@/api/proto-http/frontend";
+import { getCookieCart } from "./utils/cart";
 
 type Object = {
   [key: string]: unknown;

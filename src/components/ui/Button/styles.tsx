@@ -42,7 +42,7 @@ function BigButtonStyleComponent({ children }: StyleComponentType) {
 
 function SimpleButtonStyleComponent({ children }: StyleComponentType) {
   return (
-    <span className="block w-48 bg-textColor py-2 text-center leading-3 text-bgColor lg:text-lg lg:leading-5">
+    <span className="block w-48 cursor-pointer bg-textColor py-2 text-center leading-3 text-bgColor lg:text-lg lg:leading-5">
       {children}
     </span>
   );

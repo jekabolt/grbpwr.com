@@ -51,7 +51,7 @@ export type Archive = {
 // ArchiveBody represents the insertable fields of an archive.
 export type ArchiveBody = {
   heading: string | undefined;
-  description: string | undefined;
+  text: string | undefined;
 };
 
 // ArchiveItemFull represents an item within an archive.
@@ -65,7 +65,7 @@ export type ArchiveItemFull = {
 export type ArchiveItem = {
   media: MediaFull | undefined;
   url: string | undefined;
-  title: string | undefined;
+  name: string | undefined;
 };
 
 // ArchiveNew represents a new archive with items for insertion.
@@ -77,7 +77,7 @@ export type ArchiveNew = {
 export type ArchiveItemInsert = {
   mediaId: number | undefined;
   url: string | undefined;
-  title: string | undefined;
+  name: string | undefined;
 };
 
 export type Address = {
@@ -86,12 +86,12 @@ export type Address = {
 };
 
 export type AddressInsert = {
-  street: string | undefined;
-  houseNumber: string | undefined;
-  apartmentNumber: string | undefined;
-  city: string | undefined;
-  state: string | undefined;
   country: string | undefined;
+  state: string | undefined;
+  city: string | undefined;
+  addressLineOne: string | undefined;
+  addressLineTwo: string | undefined;
+  company: string | undefined;
   postalCode: string | undefined;
 };
 
@@ -433,7 +433,7 @@ export type OrderNew = {
   shippingAddress: AddressInsert | undefined;
   billingAddress: AddressInsert | undefined;
   buyer: BuyerInsert | undefined;
-  paymentMethodId: number | undefined;
+  paymentMethod: PaymentMethodNameEnum | undefined;
   shipmentCarrierId: number | undefined;
   promoCode: string | undefined;
 };
@@ -474,8 +474,11 @@ export type OrderItem = {
   thumbnail: string | undefined;
   productName: string | undefined;
   productPrice: string | undefined;
+  productPriceWithSale: string | undefined;
   productSalePercentage: string | undefined;
   productBrand: string | undefined;
+  slug: string | undefined;
+  color: string | undefined;
   categoryId: number | undefined;
   sku: string | undefined;
   orderItem: OrderItemInsert | undefined;
@@ -531,18 +534,19 @@ export type HeroItemInsert = {
   mediaId: number | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
+  isMain: boolean | undefined;
 };
 
 export type HeroItem = {
   media: MediaFull | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
+  isMain: boolean | undefined;
 };
 
 export type HeroFull = {
   id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
-  main: HeroItem | undefined;
   ads: HeroItem[] | undefined;
   productsFeatured: Product[] | undefined;
 };

@@ -1,45 +1,25 @@
+import { addCartProduct, clearCartProducts } from "@/actions/cart";
 import {
+  common_OrderItem,
   common_OrderItemInsert,
   common_OrderNew,
 } from "@/api/proto-http/frontend";
 import NewOrderForm from "@/components/forms/NewOrderForm";
-import { redirect } from "next/navigation";
 import CoreLayout from "@/components/layouts/CoreLayout";
-import {
-  getCartProductSlugAndSizeFromKey,
-  getCookieCart,
-} from "@/lib/utils/cart";
 import { serviceClient } from "@/lib/api";
-import { clearCartProducts } from "@/actions/cart";
+import { getValidateOrderItemsInsertItems } from "@/lib/utils/cart";
+import { redirect } from "next/navigation";
 
-export default async function Page() {
-  const cartData = getCookieCart();
-  const cartProducts = cartData?.products;
+export default async function CheckoutPage() {
+  const items = getValidateOrderItemsInsertItems();
 
-  if (!cartProducts || !Object.keys(cartProducts)) return redirect("/cart");
+  if (items.length === 0) return null;
 
-  const orderItems = Object.entries(cartProducts).reduce(
-    (acc, [key, value]) => {
-      const slugAndSize = getCartProductSlugAndSizeFromKey(key);
-
-      if (!slugAndSize) return acc;
-
-      const [_, __, ___, id] = slugAndSize.slug
-        .replaceAll("/product/", "")
-        .split("/");
-
-      const item = {
-        productId: Number(id),
-        quantity: value.quantity,
-        sizeId: Number(slugAndSize.size),
-      };
-
-      acc.push(item);
-
-      return acc;
-    },
-    [] as common_OrderItemInsert[],
-  );
+  const response = await serviceClient.ValidateOrderItemsInsert({
+    items,
+    shipmentCarrierId: undefined,
+    promoCode: undefined,
+  });
 
   async function submitNewOrder(newOrderData: common_OrderNew) {
     "use server";
@@ -49,9 +29,7 @@ export default async function Page() {
         order: newOrderData,
       });
 
-      const { order } = submitOrderResponse;
-
-      if (!order?.uuid) {
+      if (!submitOrderResponse?.orderUuid) {
         console.log("no data to create order invoice");
 
         return {
@@ -59,23 +37,16 @@ export default async function Page() {
         };
       }
 
-      const getOrderInvoiceResponse = await serviceClient.GetOrderInvoice({
-        orderUuid: order.uuid,
-        paymentMethod: "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA",
-      });
-
       console.log({
         ok: true,
-        order,
-        getOrderInvoiceResponse,
+        order: submitOrderResponse,
       });
 
       clearCartProducts();
 
       return {
         ok: true,
-        order,
-        getOrderInvoiceResponse,
+        order: submitOrderResponse,
       };
     } catch (error) {
       console.error("Error submitting new order:", error);
@@ -85,9 +56,33 @@ export default async function Page() {
     }
   }
 
+  const updateCookieCart = async (validItems: common_OrderItem[]) => {
+    "use server";
+
+    clearCartProducts();
+
+    for (const p of validItems) {
+      if (
+        p.orderItem?.productId &&
+        p.orderItem.quantity &&
+        p.orderItem.sizeId
+      ) {
+        addCartProduct({
+          id: p.orderItem.productId,
+          size: p.orderItem.sizeId.toString(),
+          quantity: p.orderItem.quantity,
+        });
+      }
+    }
+  };
+
   return (
-    <CoreLayout>
-      <NewOrderForm submitNewOrder={submitNewOrder} orderItems={orderItems} />
+    <CoreLayout hidePopupCart>
+      <NewOrderForm
+        submitNewOrder={submitNewOrder}
+        order={response}
+        updateCookieCart={updateCookieCart}
+      />
     </CoreLayout>
   );
 }

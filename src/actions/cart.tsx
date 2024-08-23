@@ -7,16 +7,14 @@ import {
   updateCookieCartProduct,
 } from "@/lib/utils/cart";
 
-export const GRBPWR_CART = "grbpwr-cart";
-
 export async function addCartProduct({
-  slug,
+  id,
   size,
-  price,
+  quantity = 1,
 }: {
-  slug: string;
+  id: number;
   size: string;
-  price: number;
+  quantity?: number;
 }) {
   "use server";
 
@@ -24,56 +22,53 @@ export async function addCartProduct({
 
   try {
     if (!cartData) {
-      createCookieCartProduct({ productSlug: slug, size, price });
+      createCookieCartProduct({ id, size, quantity });
 
       return;
     }
 
-    const productKey = getCartProductKey(slug, size);
-    const cartProduct = cartData.products[productKey];
-    const newProduct = {
-      quantity: 0,
-      price: 0,
-    };
+    const productKey = getCartProductKey(id, size);
+    const cartProductQuantity = cartData.products[productKey];
+    let newProductQuantity = 0;
 
-    if (cartProduct) {
-      newProduct.quantity = cartProduct.quantity + 1;
-      newProduct.price = cartProduct.price + price;
+    if (cartProductQuantity > 0) {
+      newProductQuantity = cartProductQuantity + quantity;
     } else {
-      newProduct.quantity = 1;
-      newProduct.price = price;
+      newProductQuantity = quantity;
     }
 
-    updateCookieCartProduct({ productSlug: slug, size, data: newProduct });
+    updateCookieCartProduct({
+      id,
+      size,
+      quantity: newProductQuantity,
+    });
   } catch (error) {
     console.log("failed to parse cart", error);
   }
 }
 
 export async function removeCartProduct({
-  productSlug,
+  id,
   size,
 }: {
-  productSlug: string;
+  id: number;
   size: string;
 }) {
   "use server";
 
   try {
-    removeCookieCartProduct(productSlug, size);
+    removeCookieCartProduct(id, size);
   } catch (error) {
     console.log("failed to parse cart", error);
   }
 }
 
 export async function changeCartProductQuantity({
-  slug,
+  id,
   size,
   operation,
-  price,
 }: {
-  slug: string;
-  price: number;
+  id: number;
   size: string;
   operation: "increase" | "decrease";
 }) {
@@ -83,34 +78,29 @@ export async function changeCartProductQuantity({
   try {
     if (!cartData) return;
 
-    const productKey = getCartProductKey(slug, size);
-    const cartProduct = cartData.products[productKey];
+    const productKey = getCartProductKey(id, size);
+    const cartProductQuantity = cartData.products[productKey];
 
-    if (operation === "decrease" && cartProduct.quantity === 1) {
-      removeCookieCartProduct(slug, size);
+    if (operation === "decrease" && cartProductQuantity === 1) {
+      removeCookieCartProduct(id, size);
 
       return;
     }
 
-    const newProduct = {
-      quantity: cartProduct.quantity,
-      price: cartProduct.price,
-    };
+    let newProductQuantity = cartProductQuantity;
 
     if (operation === "decrease") {
-      newProduct.quantity = cartProduct.quantity - 1;
-      newProduct.price = cartProduct.price - price;
+      newProductQuantity = cartProductQuantity - 1;
     }
 
     if (operation === "increase") {
-      newProduct.quantity = cartProduct.quantity + 1;
-      newProduct.price = cartProduct.price + price;
+      newProductQuantity = cartProductQuantity + 1;
     }
 
     updateCookieCartProduct({
-      productSlug: slug,
+      id,
       size,
-      data: newProduct,
+      quantity: newProductQuantity,
     });
   } catch (error) {
     console.log("failed to parse cart", error);

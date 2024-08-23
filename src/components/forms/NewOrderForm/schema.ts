@@ -12,7 +12,7 @@ const addressFields = {
   postalCode: z.string().min(2),
 };
 
-export const checkoutSchema = z.object({
+const baseCheckoutSchema = z.object({
   email: z.string().email(),
   phone: z.string().min(5),
   subscribe: z.boolean().optional(),
@@ -20,25 +20,37 @@ export const checkoutSchema = z.object({
     message: "You must accept the terms & conditions",
   }),
   ...addressFields,
-  shippingMethod: z.string().min(1),
+  shipmentCarrierId: z.string().min(1),
+  promoCode: z.string().optional(),
 
   billingAddressIsSameAsAddress: z.boolean(),
   billingAddress: z.object(addressFields).optional(),
 
-  paymentMethod: z.string(),
-  creditCard: z
-    .object({
+  rememberMe: z.boolean().optional(),
+});
+
+export const checkoutSchema = z.discriminatedUnion("paymentMethod", [
+  baseCheckoutSchema.extend({
+    paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
+  }),
+  baseCheckoutSchema.extend({
+    paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
+  }),
+  baseCheckoutSchema.extend({
+    paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
+  }),
+  baseCheckoutSchema.extend({
+    paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
+    creditCard: z.object({
       // todo: add validation of the mask
       // reuse same mask constant for inout and for schema
       number: z.string().length(19),
       fullName: z.string().min(3),
       expirationDate: z.string().length(5),
       cvc: z.string().length(3),
-    })
-    .optional(),
-
-  rememberMe: z.boolean().optional(),
-});
+    }),
+  }),
+]);
 
 export const defaultData: z.infer<typeof checkoutSchema> = {
   email: "",
@@ -53,13 +65,19 @@ export const defaultData: z.infer<typeof checkoutSchema> = {
   additionalAddress: "",
   company: "",
   postalCode: "",
-  shippingMethod: "",
+  shipmentCarrierId: "",
   subscribe: false,
   billingAddressIsSameAsAddress: true,
   billingAddress: undefined,
-  paymentMethod: "card",
-  creditCard: undefined,
+  paymentMethod: "PAYMENT_METHOD_NAME_ENUM_CARD",
+  creditCard: {
+    number: "",
+    fullName: "",
+    expirationDate: "",
+    cvc: "",
+  },
   rememberMe: false, // todo: groom the feature
+  promoCode: "",
 };
 
 export type CheckoutData = z.infer<typeof checkoutSchema>;

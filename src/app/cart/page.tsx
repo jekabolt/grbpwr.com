@@ -1,12 +1,12 @@
-import { Suspense } from "react";
-import CartProductsList from "@/components/sections/Cart/CartProductsList";
 import CoreLayout from "@/components/layouts/CoreLayout";
-import { CartProductsSkeleton } from "@/components/ui/Skeleton";
+import CartProductsList from "@/components/sections/Cart/CartProductsList";
+import TotalPrice from "@/components/sections/Cart/TotalPrice";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
-import Link from "next/link";
-import TotalPrice from "@/components/sections/Cart/TotalPrice";
+import { CartProductsSkeleton } from "@/components/ui/Skeleton";
 import { getCookieCart } from "@/lib/utils/cart";
+import Link from "next/link";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +14,7 @@ export default async function CartPage() {
   const cartItems = getCookieCart();
 
   return (
-    <CoreLayout>
+    <CoreLayout hidePopupCart>
       <div className="relative flex gap-32">
         <div className="w-1/2">
           <div className="w-full">
@@ -30,7 +30,7 @@ export default async function CartPage() {
           <div className="sticky top-20">
             {/* <p className="mb-8 text-sm">total:</p>
             <p className="mb-2 text-lg">170$</p> */}
-            <TotalPrice />
+            {/* <TotalPrice /> */}
 
             {Object.keys(cartItems?.products || {}).length && (
               <Button asChild style={ButtonStyle.simpleButton}>

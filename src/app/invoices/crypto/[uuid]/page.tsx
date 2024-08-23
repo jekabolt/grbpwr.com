@@ -24,8 +24,6 @@ export default async function Page({ params }: Props) {
     ? await QRCode.toDataURL(cryptoPaymentInvoice.payment.paymentInsert.payee)
     : undefined;
 
-  console.log(cryptoPaymentInvoice.payment.paymentInsert);
-
   return (
     <CoreLayout>
       <V0GenUi

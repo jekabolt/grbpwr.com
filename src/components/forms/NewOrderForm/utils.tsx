@@ -11,9 +11,9 @@ export function mapFormFieldToOrderDataFormat(
   orderItems: common_OrderItemInsert[],
 ) {
   const shippingAddress: common_AddressInsert = {
-    street: data.address,
-    houseNumber: "1", // common_AddressInsert will be changed to just have full address
-    apartmentNumber: data.additionalAddress,
+    addressLineOne: data.address,
+    addressLineTwo: data.additionalAddress,
+    company: data.company,
     city: data.city,
     state: data.state,
     country: data.country,
@@ -25,9 +25,9 @@ export function mapFormFieldToOrderDataFormat(
       ? shippingAddress
       : data.billingAddress
         ? {
-            street: data.billingAddress.address,
-            houseNumber: "1", // common_AddressInsert will be changed to just have full address
-            apartmentNumber: data.billingAddress.additionalAddress,
+            addressLineOne: data.billingAddress.address,
+            addressLineTwo: data.billingAddress.additionalAddress,
+            company: data.billingAddress.company,
             city: data.billingAddress.city,
             state: data.billingAddress.state,
             country: data.billingAddress.country,
@@ -48,12 +48,9 @@ export function mapFormFieldToOrderDataFormat(
     shippingAddress,
     billingAddress,
     buyer,
-    // TO-DO map payment method and carrier id from dictionary
-    // paymentMethodId: mapPaymentMethod(data.paymentMethod),
-    // shipmentCarrierId: mapShipmentCarrierId(data.shippingMethod),
-    paymentMethodId: 1,
-    shipmentCarrierId: 1,
-    promoCode: undefined, // Add promo code if applicable
+    paymentMethod: data.paymentMethod,
+    shipmentCarrierId: parseInt(data.shipmentCarrierId),
+    promoCode: data.promoCode,
   };
 
   return newOrderData;

@@ -7,6 +7,7 @@ export default function TotalPrice() {
   if (!cartData) return;
 
   const total = Object.values(cartData.products).reduce(
+    // @ts-ignore
     (acc, p) => acc + p.price,
     0,
   );
