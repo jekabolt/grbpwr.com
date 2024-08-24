@@ -1,6 +1,7 @@
 import { changeCartProductQuantity, removeCartProduct } from "@/actions/cart";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import ImageComponent from "@/components/ui/Image";
+import Size from "../Common/Size";
 import ProductAmountButtons from "./ProductAmountButtons";
 
 export default function CartItemRow({
@@ -9,8 +10,6 @@ export default function CartItemRow({
   product?: common_OrderItem;
 }) {
   if (!product) return null;
-
-  const basicCurrencyValue = product.productPrice;
 
   return (
     <div className="flex justify-between gap-6 text-textColor">
@@ -26,16 +25,18 @@ export default function CartItemRow({
         <div className="space-y-2">
           <p className="text-md">{product.productName}</p>
           <p className="text-sm">{product.color}</p>
-          {/* // TO-DO map size id */}
-          <p className="text-xs">{product.orderItem?.sizeId}</p>
+          <p className="text-xs">
+            {product.orderItem?.sizeId && (
+              <Size sizeId={product.orderItem?.sizeId} />
+            )}
+          </p>
         </div>
       </div>
       <div className="flex w-1/2 whitespace-nowrap text-sm">
-        {product.id !== undefined && basicCurrencyValue && (
+        {product.orderItem?.productId !== undefined && (
           <ProductAmountButtons
-            id={product.id}
+            id={product.orderItem?.productId}
             size={product.orderItem?.sizeId + "" || ""}
-            price={parseInt(basicCurrencyValue)}
             removeProduct={removeCartProduct}
             changeProductAmount={changeCartProductQuantity}
           />

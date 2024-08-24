@@ -8,17 +8,14 @@ type Props = {
     id,
     size,
     operation,
-    price,
   }: {
     id: number;
     size: string;
-    price: number;
     operation: "increase" | "decrease";
   }) => void;
   removeProduct: ({ id, size }: { id: number; size: string }) => void;
   id: number;
   size: string;
-  price: number;
 };
 
 export default function ProductAmountButtons({
@@ -26,7 +23,6 @@ export default function ProductAmountButtons({
   removeProduct,
   id,
   size,
-  price,
 }: Props) {
   // todo: check if product is in stock
 
@@ -38,7 +34,7 @@ export default function ProductAmountButtons({
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
 
-            changeProductAmount({ id, size, operation: "increase", price });
+            changeProductAmount({ id, size, operation: "increase" });
           }}
         >
           [+]
@@ -48,7 +44,7 @@ export default function ProductAmountButtons({
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
 
-            changeProductAmount({ id, size, operation: "decrease", price });
+            changeProductAmount({ id, size, operation: "decrease" });
           }}
         >
           [-]
