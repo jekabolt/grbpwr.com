@@ -1,13 +1,10 @@
+import { addCartProduct, clearCartProducts } from "@/actions/cart";
 import Button from "@/components/ui/Button";
 import { serviceClient } from "@/lib/api";
+import { getValidateOrderItemsInsertItems } from "@/lib/utils/cart";
 import Link from "next/link";
 import CartItemRow from "../CartItemRow";
-import {
-  getCartProductIdAndSizeFromKey,
-  getCookieCart,
-  getValidateOrderItemsInsertItems,
-} from "@/lib/utils/cart";
-import { clearCartProducts, addCartProduct } from "@/actions/cart";
+import SelectedCurrency from "../TotalPrice/SelectedCurrency";
 import HACK__UpdateCookieCart from "./HACK__UpdateCookieCart";
 
 export default async function CartProductsList() {
@@ -55,6 +52,8 @@ export default async function CartProductsList() {
           </Link>
         </Button>
       ))}
+      <p className="mb-8 text-sm">total:</p>
+      <SelectedCurrency baseCurrencyTotal={Number(response.totalSale?.value)} />
     </div>
   );
 }

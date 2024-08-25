@@ -5,24 +5,23 @@ import CheckboxField from "@/components/ui/Form/fields/CheckboxField";
 import InputField from "@/components/ui/Form/fields/InputField";
 import RadioGroupField from "@/components/ui/Form/fields/RadioGroupField";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import AddressFields from "./AddressFields";
 
 import type {
-  common_Order,
   common_OrderNew,
   SubmitOrderResponse,
   ValidateOrderItemsInsertResponse,
 } from "@/api/proto-http/frontend";
+import { useHeroContext } from "@/components/contexts/HeroContext";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
+import { serviceClient } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import { mapFormFieldToOrderDataFormat } from "./utils";
-import { useHeroContext } from "@/components/contexts/HeroContext";
-import { serviceClient } from "@/lib/api";
-import { toast } from "sonner";
 
 export default function NewOrderForm({
   order,
