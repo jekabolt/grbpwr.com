@@ -81,7 +81,6 @@ export type ArchiveItemInsert = {
 };
 
 export type Address = {
-  id: number | undefined;
   addressInsert: AddressInsert | undefined;
 };
 
@@ -96,9 +95,6 @@ export type AddressInsert = {
 };
 
 export type Buyer = {
-  id: number | undefined;
-  billingAddressId: number | undefined;
-  shippingAddressId: number | undefined;
   buyerInsert: BuyerInsert | undefined;
 };
 
@@ -357,7 +353,6 @@ export type PaymentMethodNameEnum =
   | "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA";
 // Payment represents the payment table
 export type Payment = {
-  id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
   modifiedAt: wellKnownTimestamp | undefined;
   paymentInsert: PaymentInsert | undefined;
@@ -392,7 +387,6 @@ export type PromoCodeInsert = {
 
 // PromoCode represents the promo_code table
 export type PromoCode = {
-  id: number | undefined;
   promoCodeInsert: PromoCodeInsert | undefined;
 };
 
@@ -410,7 +404,7 @@ export type ShipmentCarrier = {
 
 // Shipment represents the shipment table
 export type Shipment = {
-  id: number | undefined;
+  cost: googletype_Decimal | undefined;
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
   carrierId: number | undefined;
@@ -458,13 +452,10 @@ export type OrderFull = {
 export type Order = {
   id: number | undefined;
   uuid: string | undefined;
-  buyerId: number | undefined;
   placed: wellKnownTimestamp | undefined;
   modified: wellKnownTimestamp | undefined;
-  paymentId: number | undefined;
   totalPrice: googletype_Decimal | undefined;
   orderStatusId: number | undefined;
-  shipmentId: number | undefined;
   promoId: number | undefined;
 };
 
