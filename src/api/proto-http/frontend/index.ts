@@ -439,13 +439,10 @@ export type common_OrderFull = {
 export type common_Order = {
   id: number | undefined;
   uuid: string | undefined;
-  buyerId: number | undefined;
   placed: wellKnownTimestamp | undefined;
   modified: wellKnownTimestamp | undefined;
-  paymentId: number | undefined;
   totalPrice: googletype_Decimal | undefined;
   orderStatusId: number | undefined;
-  shipmentId: number | undefined;
   promoId: number | undefined;
 };
 
@@ -467,7 +464,6 @@ export type common_OrderItem = {
 
 // Payment represents the payment table
 export type common_Payment = {
-  id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
   modifiedAt: wellKnownTimestamp | undefined;
   paymentInsert: common_PaymentInsert | undefined;
@@ -475,7 +471,7 @@ export type common_Payment = {
 
 // Shipment represents the shipment table
 export type common_Shipment = {
-  id: number | undefined;
+  cost: googletype_Decimal | undefined;
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
   carrierId: number | undefined;
@@ -486,7 +482,6 @@ export type common_Shipment = {
 
 // PromoCode represents the promo_code table
 export type common_PromoCode = {
-  id: number | undefined;
   promoCodeInsert: common_PromoCodeInsert | undefined;
 };
 
@@ -501,14 +496,10 @@ export type common_PromoCodeInsert = {
 };
 
 export type common_Buyer = {
-  id: number | undefined;
-  billingAddressId: number | undefined;
-  shippingAddressId: number | undefined;
   buyerInsert: common_BuyerInsert | undefined;
 };
 
 export type common_Address = {
-  id: number | undefined;
   addressInsert: common_AddressInsert | undefined;
 };
 
