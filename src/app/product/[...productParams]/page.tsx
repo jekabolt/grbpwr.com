@@ -56,7 +56,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <CoreLayout hideForm>
-      <div className="flex flex-col bg-white pb-20 pt-5">
+      <div className="relative flex flex-col bg-white pb-20 pt-5">
         {product?.media && (
           <div className="grid w-full grid-cols-6 items-end gap-2">
             <FullscreenImagesCarousel
@@ -65,7 +65,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             />
           </div>
         )}
-        <div className="flex w-1/2 flex-col ">
+        <div className="flex w-1/2 flex-col">
           <div className="mt-4 flex justify-between">
             <div>{product?.product?.productDisplay?.productBody?.name}</div>
             <div>
@@ -77,7 +77,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product?.product?.productDisplay?.productBody?.description}
           </div>
           <div className="mt-4">
-            <MeasurementsModal />
+            <MeasurementsModal
+              addCartProduct={addCartProduct}
+              sizes={product?.sizes}
+              productId={product?.product?.id}
+            />
           </div>
 
           {product?.product?.id && product?.sizes?.length && (

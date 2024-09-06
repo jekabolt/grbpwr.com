@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AddToCartData, addToCartSchema } from "./schema";
 
+// todo: rework this to share logic with measurement modal
 export default function AddToCartForm({
   handleSubmit,
   sizes,
@@ -27,6 +28,7 @@ export default function AddToCartForm({
 
     setLoadingStatus(true);
     try {
+      console.log({ id, size: data.size });
       await handleSubmit({ id, size: data.size });
     } catch (error) {
       console.error(error);

@@ -97,6 +97,9 @@ export default function NewOrderForm({
       shipmentCarrierId: parseInt(customShipmentCarrierId || shipmentCarrierId),
     });
 
+    console.log("response222");
+    console.log(response);
+
     setOrderData(response);
 
     if (response.hasChanged && response.validItems) {
