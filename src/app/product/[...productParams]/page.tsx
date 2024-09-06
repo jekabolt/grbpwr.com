@@ -77,7 +77,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {product?.product?.productDisplay?.productBody?.description}
           </div>
           <div className="mt-4">
-            <MeasurementsModal />
+            <MeasurementsModal
+              addCartProduct={addCartProduct}
+              sizes={product?.sizes}
+              productId={product?.product?.id}
+            />
           </div>
 
           {product?.product?.id && product?.sizes?.length && (

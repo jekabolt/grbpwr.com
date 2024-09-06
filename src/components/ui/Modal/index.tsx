@@ -1,5 +1,6 @@
 "use client";
 
+import { Slot } from "@radix-ui/react-slot";
 import { useState } from "react";
 
 export default function Modal({
@@ -23,9 +24,10 @@ export default function Modal({
             onClick={closeModal}
             className="absolute right-4 top-4 cursor-pointer text-buttonTextColor"
           >
-            [closeIcon]
+            [X]
           </button>
-          {children}
+          {/* @ts-ignore */}
+          <Slot setModalOpen={setModalOpen}>{children}</Slot>
         </div>
       )}
     </div>
