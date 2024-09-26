@@ -46,6 +46,8 @@ export type common_MediaItem = {
   thumbnail: common_MediaInfo | undefined;
   // Compressed media URL
   compressed: common_MediaInfo | undefined;
+  // BlurHash
+  blurhash: string | undefined;
 };
 
 export type common_MediaInfo = {
@@ -185,6 +187,7 @@ export type common_CategoryEnum =
   | "CATEGORY_ENUM_GLOVES"
   | "CATEGORY_ENUM_SHOES"
   | "CATEGORY_ENUM_BELT"
+  | "CATEGORY_ENUM_BAG"
   | "CATEGORY_ENUM_OTHER";
 export type common_MeasurementName = {
   id: number | undefined;
@@ -227,7 +230,9 @@ export type common_PaymentMethod = {
 export type common_PaymentMethodNameEnum =
   | "PAYMENT_METHOD_NAME_ENUM_UNKNOWN"
   | "PAYMENT_METHOD_NAME_ENUM_CARD"
+  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
   | "PAYMENT_METHOD_NAME_ENUM_ETH"
+  | "PAYMENT_METHOD_NAME_ENUM_ETH_TEST"
   | "PAYMENT_METHOD_NAME_ENUM_USDT_TRON"
   | "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA";
 export type common_ShipmentCarrier = {
@@ -414,6 +419,7 @@ export type common_PaymentInsert = {
   transactionAmountPaymentCurrency: googletype_Decimal | undefined;
   payer: string | undefined;
   payee: string | undefined;
+  clientSecret: string | undefined;
   isTransactionDone: boolean | undefined;
 };
 
@@ -450,6 +456,7 @@ export type common_OrderItem = {
   id: number | undefined;
   orderId: number | undefined;
   thumbnail: string | undefined;
+  blurhash: string | undefined;
   productName: string | undefined;
   productPrice: string | undefined;
   productPriceWithSale: string | undefined;
@@ -542,11 +549,11 @@ export type CancelOrderInvoiceRequest = {
 export type CancelOrderInvoiceResponse = {
 };
 
-export type CheckCryptoPaymentRequest = {
+export type CheckPaymentRequest = {
   orderUuid: string | undefined;
 };
 
-export type CheckCryptoPaymentResponse = {
+export type CheckPaymentResponse = {
   payment: common_Payment | undefined;
 };
 
@@ -625,8 +632,8 @@ export interface FrontendService {
   GetOrderInvoice(request: GetOrderInvoiceRequest): Promise<GetOrderInvoiceResponse>;
   // Cancel an invoice for the order
   CancelOrderInvoice(request: CancelOrderInvoiceRequest): Promise<CancelOrderInvoiceResponse>;
-  // CheckCryptoPayment checks the crypto payment if it has been received and updates the order status if it has been received
-  CheckCryptoPayment(request: CheckCryptoPaymentRequest): Promise<CheckCryptoPaymentResponse>;
+  // CheckPayment checks the crypto payment if it has been received and updates the order status if it has been received
+  CheckPayment(request: CheckPaymentRequest): Promise<CheckPaymentResponse>;
   // Subscribe to the newsletter
   SubscribeNewsletter(request: SubscribeNewsletterRequest): Promise<SubscribeNewsletterResponse>;
   // Unsubscribe from the newsletter
@@ -872,7 +879,7 @@ export function createFrontendServiceClient(
         method: "CancelOrderInvoice",
       }) as Promise<CancelOrderInvoiceResponse>;
     },
-    CheckCryptoPayment(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    CheckPayment(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.orderUuid) {
         throw new Error("missing required field request.order_uuid");
       }
@@ -889,8 +896,8 @@ export function createFrontendServiceClient(
         body,
       }, {
         service: "FrontendService",
-        method: "CheckCryptoPayment",
-      }) as Promise<CheckCryptoPaymentResponse>;
+        method: "CheckPayment",
+      }) as Promise<CheckPaymentResponse>;
     },
     SubscribeNewsletter(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/newsletter/subscribe`; // eslint-disable-line quotes

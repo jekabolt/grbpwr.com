@@ -23,6 +23,8 @@ export type MediaItem = {
   thumbnail: MediaInfo | undefined;
   // Compressed media URL
   compressed: MediaInfo | undefined;
+  // BlurHash
+  blurhash: string | undefined;
 };
 
 export type MediaInfo = {
@@ -126,6 +128,7 @@ export type CategoryEnum =
   | "CATEGORY_ENUM_GLOVES"
   | "CATEGORY_ENUM_SHOES"
   | "CATEGORY_ENUM_BELT"
+  | "CATEGORY_ENUM_BAG"
   | "CATEGORY_ENUM_OTHER";
 export type SizeEnum =
   | "SIZE_ENUM_UNKNOWN"
@@ -348,7 +351,9 @@ export type FilterConditions = {
 export type PaymentMethodNameEnum =
   | "PAYMENT_METHOD_NAME_ENUM_UNKNOWN"
   | "PAYMENT_METHOD_NAME_ENUM_CARD"
+  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
   | "PAYMENT_METHOD_NAME_ENUM_ETH"
+  | "PAYMENT_METHOD_NAME_ENUM_ETH_TEST"
   | "PAYMENT_METHOD_NAME_ENUM_USDT_TRON"
   | "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA";
 // Payment represents the payment table
@@ -365,6 +370,7 @@ export type PaymentInsert = {
   transactionAmountPaymentCurrency: googletype_Decimal | undefined;
   payer: string | undefined;
   payee: string | undefined;
+  clientSecret: string | undefined;
   isTransactionDone: boolean | undefined;
 };
 
@@ -463,6 +469,7 @@ export type OrderItem = {
   id: number | undefined;
   orderId: number | undefined;
   thumbnail: string | undefined;
+  blurhash: string | undefined;
   productName: string | undefined;
   productPrice: string | undefined;
   productPriceWithSale: string | undefined;
