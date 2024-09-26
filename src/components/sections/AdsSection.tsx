@@ -19,6 +19,7 @@ export default function AdsSection({
                 a?.media?.media?.fullSize.width,
                 a?.media?.media?.fullSize.height,
               )}
+              blurHash={a?.media?.media?.blurhash}
             />
           </div>
         ) : null,

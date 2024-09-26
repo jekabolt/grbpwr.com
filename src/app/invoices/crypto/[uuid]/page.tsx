@@ -1,9 +1,9 @@
-import QRCode from "qrcode";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { serviceClient } from "@/lib/api";
+import QRCode from "qrcode";
 
-import V0GenUi from "./V0GenUi";
 import { redirect } from "next/navigation";
+import V0GenUi from "./V0GenUi";
 
 interface Props {
   params: {
@@ -14,7 +14,7 @@ interface Props {
 export default async function Page({ params }: Props) {
   const { uuid } = params;
 
-  const cryptoPaymentInvoice = await serviceClient.CheckCryptoPayment({
+  const cryptoPaymentInvoice = await serviceClient.CheckPayment({
     orderUuid: uuid,
   });
 
