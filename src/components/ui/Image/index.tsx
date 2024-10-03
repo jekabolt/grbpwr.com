@@ -1,4 +1,4 @@
-import { blurhashToBase64 } from "blurhash-base64";
+// import { blurhashToBase64 } from "blurhash-base64";
 import Image from "next/image";
 import ImageContainer from "./ImageContainer";
 
@@ -8,14 +8,14 @@ export default function ImageComponent({
   alt,
   sizes = "(max-width: 1280px) 100vw, 1280px",
   fit,
-  blurHash,
+  // blurHash,
 }: {
   alt: string;
   src: string;
   aspectRatio: string;
   sizes?: string;
   fit?: "cover" | "contain";
-  blurHash?: string;
+  // blurHash?: string;
 }) {
   return (
     <ImageContainer aspectRatio={aspectRatio}>
@@ -28,8 +28,8 @@ export default function ImageComponent({
         style={{
           objectFit: fit,
         }}
-        placeholder={blurHash ? "blur" : undefined}
-        blurDataURL={blurHash ? blurhashToBase64(blurHash) : undefined}
+        // placeholder={blurHash ? "blur" : undefined}
+        // blurDataURL={blurHash ? blurhashToBase64(blurHash) : undefined}
       />
     </ImageContainer>
   );

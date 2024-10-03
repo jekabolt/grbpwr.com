@@ -20,7 +20,7 @@ export default function CartItemRow({
             alt="product"
             fit="cover"
             aspectRatio="2/3"
-            blurHash={product.blurhash}
+            // blurHash={product.blurhash}
           />
         </div>
         <div className="space-y-2">

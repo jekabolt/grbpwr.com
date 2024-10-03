@@ -36,7 +36,7 @@ export default function ProductItem({
               alt={product.productDisplay?.productBody?.name || ""}
               aspectRatio="4/3" // take from BE values
               fit="cover"
-              blurHash={product.productDisplay?.thumbnail?.media?.blurhash}
+              // blurHash={product.productDisplay?.thumbnail?.media?.blurhash}
             />
           </div>
           <div className="flex w-full gap-3">
