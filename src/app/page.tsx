@@ -13,19 +13,20 @@ export default async function Page() {
 
   if (!hero) return notFound();
 
-  const main = hero.ads?.find((x) => x.isMain);
+  // const main = hero?.ads?.find((x) => x.isMain);
 
-  const ads = hero.ads?.filter((x) => !x.isMain);
+  // const ads = hero.ads?.filter((x) => !x.isMain);
 
   return (
     <>
-      {main && <HeroSection {...main} />}
+      {/* {main && <HeroSection {...main} />} */}
       <CoreLayout>
-        <AdsSection ads={ads} />
+        <h1 className="font0-bold my-10 text-9xl">rework</h1>
+        {/* <AdsSection ads={ads} /> */}
         <Button asChild style={ButtonStyle.bigButton}>
           <Link href="/catalog">view all</Link>
         </Button>
-        <ProductsSection products={hero.productsFeatured} />
+        {/* <ProductsSection products={hero.productsFeatured} /> */}
       </CoreLayout>
     </>
   );

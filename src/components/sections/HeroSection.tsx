@@ -1,7 +1,7 @@
-import { common_HeroItem } from "@/api/proto-http/frontend";
+// import { common_HeroItem } from "@/api/proto-http/frontend";
 import Image from "@/components/ui/Image";
 
-export default function Hero({ media }: common_HeroItem) {
+export default function Hero({ media }: any) {
   if (!media) return null;
 
   return (

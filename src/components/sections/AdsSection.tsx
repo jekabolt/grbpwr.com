@@ -1,12 +1,9 @@
-import { common_HeroItem } from "@/api/proto-http/frontend";
+// import { common_HeroItem } from "@/api/proto-http/frontend";
+
 import Image from "@/components/ui/Image";
 import { calculateAspectRatio } from "@/lib/utils";
 
-export default function AdsSection({
-  ads,
-}: {
-  ads: common_HeroItem[] | undefined;
-}) {
+export default function AdsSection({ ads }: { ads: any[] | undefined }) {
   return (
     <div className="grid grid-cols-2 gap-3">
       {ads?.map((a) =>
