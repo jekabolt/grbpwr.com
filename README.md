@@ -1,9 +1,17 @@
 ## Install
+1. install
 ```
 pnpm install
 
 pnpm gen
+```
 
+3. create .env with following
+```
+NEXT_PUBLIC_BACKEND_URL=https://backend.grbpwr.com
+
+4. 
+```
 pnpm dev
 ```
 
