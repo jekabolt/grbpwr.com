@@ -24,10 +24,17 @@ export default async function CheckoutPage() {
   async function submitNewOrder(newOrderData: common_OrderNew) {
     "use server";
 
+    console.log("order data: ", {
+      order: newOrderData,
+    });
+
     try {
       const submitOrderResponse = await serviceClient.SubmitOrder({
         order: newOrderData,
       });
+
+      console.log("submit order response: ");
+      console.log(submitOrderResponse);
 
       if (!submitOrderResponse?.orderUuid) {
         console.log("no data to create order invoice");

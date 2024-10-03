@@ -70,13 +70,14 @@ export default function NewOrderForm({
 
     try {
       const newOrderResponse = await submitNewOrder(newOrderData);
-      console.log("submit new order response", data);
-      console.log("New order submitted successfully");
 
-      console.log("newOrderResponse212121");
-      console.log(newOrderResponse);
-
-      // router.replace(`/invoices/crypto/${newOrderResponse?.order?.orderUuid}`);
+      if (newOrderResponse.ok) {
+        console.log("submit new order response on the client", data);
+        router.replace(`/invoices/${newOrderResponse.order?.orderUuid}`);
+      } else {
+        console.log("error submitting new order");
+        router.push("/cart");
+      }
     } catch (error) {
       console.error("Error submitting new order:", error);
     }
@@ -98,9 +99,6 @@ export default function NewOrderForm({
       promoCode,
       shipmentCarrierId: parseInt(customShipmentCarrierId || shipmentCarrierId),
     });
-
-    console.log("response222");
-    console.log(response);
 
     setOrderData(response);
 
@@ -210,7 +208,8 @@ export default function NewOrderForm({
             }
           />
 
-          {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD" && (
+          {(paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD" ||
+            paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") && (
             <>
               <InputMaskedField
                 control={form.control}

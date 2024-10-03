@@ -14,7 +14,7 @@ interface Props {
 export default async function Page({ params }: Props) {
   const { uuid } = params;
 
-  const cryptoPaymentInvoice = await serviceClient.CheckCryptoPayment({
+  const cryptoPaymentInvoice = await serviceClient.CheckPayment({
     orderUuid: uuid,
   });
 

@@ -28,7 +28,6 @@ export default function AddToCartForm({
 
     setLoadingStatus(true);
     try {
-      console.log({ id, size: data.size });
       await handleSubmit({ id, size: data.size });
     } catch (error) {
       console.error(error);

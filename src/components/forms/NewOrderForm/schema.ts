@@ -12,6 +12,13 @@ const addressFields = {
   postalCode: z.string().min(2),
 };
 
+const creditCardFields = {
+  number: z.string().length(19),
+  fullName: z.string().min(3),
+  expirationDate: z.string().length(5),
+  cvc: z.string().length(3),
+};
+
 const baseCheckoutSchema = z.object({
   email: z.string().email(),
   phone: z.string().min(5),
@@ -40,15 +47,12 @@ export const checkoutSchema = z.discriminatedUnion("paymentMethod", [
     paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
   }),
   baseCheckoutSchema.extend({
+    paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
+    creditCard: z.object(creditCardFields),
+  }),
+  baseCheckoutSchema.extend({
     paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
-    creditCard: z.object({
-      // todo: add validation of the mask
-      // reuse same mask constant for inout and for schema
-      number: z.string().length(19),
-      fullName: z.string().min(3),
-      expirationDate: z.string().length(5),
-      cvc: z.string().length(3),
-    }),
+    creditCard: z.object(creditCardFields),
   }),
 ]);
 
