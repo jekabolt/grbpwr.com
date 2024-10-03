@@ -73,7 +73,7 @@ export default function NewOrderForm({
 
       if (newOrderResponse.ok) {
         console.log("submit new order response on the client", data);
-        router.replace(`/invoices/${newOrderResponse.order?.orderUuid}`);
+        router.replace(`/invoice/${newOrderResponse.order?.orderUuid}`);
       } else {
         console.log("error submitting new order");
         router.push("/cart");

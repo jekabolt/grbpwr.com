@@ -18,7 +18,7 @@ export default async function Page({ params }: Props) {
     orderUuid: uuid,
   });
 
-  if (!cryptoPaymentInvoice?.payment) redirect("/invoices");
+  if (!cryptoPaymentInvoice?.payment) redirect("/invoice");
 
   const qrBase64Code = cryptoPaymentInvoice?.payment?.paymentInsert?.payee
     ? await QRCode.toDataURL(cryptoPaymentInvoice.payment.paymentInsert.payee)
