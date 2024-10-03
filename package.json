@@ -24,6 +24,8 @@
     "@radix-ui/react-select": "^2.1.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@react-input/mask": "^1.2.5",
+    "@stripe/react-stripe-js": "^2.8.0",
+    "@stripe/stripe-js": "^4.6.0",
     "@uidotdev/usehooks": "^2.4.1",
     "blurhash-base64": "^0.0.3",
     "clsx": "2.1.0",
