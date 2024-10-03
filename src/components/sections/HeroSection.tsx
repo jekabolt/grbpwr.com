@@ -12,7 +12,7 @@ export default function Hero({ media }: common_HeroItem) {
           src={media.media?.fullSize?.mediaUrl!}
           alt="main hero image"
           aspectRatio="4/3"
-          blurHash={media.media?.blurhash}
+          // blurHash={media.media?.blurhash}
         />
       </div>
     </div>
