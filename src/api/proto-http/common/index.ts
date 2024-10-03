@@ -23,6 +23,8 @@ export type MediaItem = {
   thumbnail: MediaInfo | undefined;
   // Compressed media URL
   compressed: MediaInfo | undefined;
+  // BlurHash
+  blurhash: string | undefined;
 };
 
 export type MediaInfo = {
@@ -126,6 +128,7 @@ export type CategoryEnum =
   | "CATEGORY_ENUM_GLOVES"
   | "CATEGORY_ENUM_SHOES"
   | "CATEGORY_ENUM_BELT"
+  | "CATEGORY_ENUM_BAG"
   | "CATEGORY_ENUM_OTHER";
 export type SizeEnum =
   | "SIZE_ENUM_UNKNOWN"
@@ -348,7 +351,9 @@ export type FilterConditions = {
 export type PaymentMethodNameEnum =
   | "PAYMENT_METHOD_NAME_ENUM_UNKNOWN"
   | "PAYMENT_METHOD_NAME_ENUM_CARD"
+  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
   | "PAYMENT_METHOD_NAME_ENUM_ETH"
+  | "PAYMENT_METHOD_NAME_ENUM_ETH_TEST"
   | "PAYMENT_METHOD_NAME_ENUM_USDT_TRON"
   | "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA";
 // Payment represents the payment table
@@ -365,6 +370,7 @@ export type PaymentInsert = {
   transactionAmountPaymentCurrency: googletype_Decimal | undefined;
   payer: string | undefined;
   payee: string | undefined;
+  clientSecret: string | undefined;
   isTransactionDone: boolean | undefined;
 };
 
@@ -463,6 +469,7 @@ export type OrderItem = {
   id: number | undefined;
   orderId: number | undefined;
   thumbnail: string | undefined;
+  blurhash: string | undefined;
   productName: string | undefined;
   productPrice: string | undefined;
   productPriceWithSale: string | undefined;
@@ -521,25 +528,78 @@ export type CurrencyMap = {
   currencies: { [key: string]: CurrencyRate } | undefined;
 };
 
-export type HeroItemInsert = {
-  mediaId: number | undefined;
-  exploreLink: string | undefined;
-  exploreText: string | undefined;
-  isMain: boolean | undefined;
+export type HeroType =
+  | "HERO_TYPE_UNKNOWN"
+  | "HERO_TYPE_SINGLE_ADD"
+  | "HERO_TYPE_DOUBLE_ADD"
+  | "HERO_TYPE_MAIN_ADD"
+  | "HERO_TYPE_FEATURED_PRODUCTS";
+export type HeroFull = {
+  entities: HeroEntity[] | undefined;
 };
 
-export type HeroItem = {
+export type HeroEntity = {
+  type: HeroType | undefined;
+  singleAdd: HeroSingleAdd | undefined;
+  doubleAdd: HeroDoubleAdd | undefined;
+  mainAdd: HeroMainAdd | undefined;
+  featuredProducts: HeroFeaturedProducts | undefined;
+};
+
+export type HeroSingleAdd = {
   media: MediaFull | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
-  isMain: boolean | undefined;
 };
 
-export type HeroFull = {
-  id: number | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  ads: HeroItem[] | undefined;
-  productsFeatured: Product[] | undefined;
+export type HeroDoubleAdd = {
+  left: HeroSingleAdd | undefined;
+  right: HeroSingleAdd | undefined;
+};
+
+export type HeroMainAdd = {
+  singleAdd: HeroSingleAdd | undefined;
+};
+
+export type HeroFeaturedProducts = {
+  products: Product[] | undefined;
+  title: string | undefined;
+  exploreText: string | undefined;
+  exploreLink: string | undefined;
+};
+
+export type HeroFullInsert = {
+  entities: HeroEntityInsert[] | undefined;
+};
+
+export type HeroEntityInsert = {
+  type: HeroType | undefined;
+  singleAdd: HeroSingleAddInsert | undefined;
+  doubleAdd: HeroDoubleAddInsert | undefined;
+  mainAdd: HeroMainAddInsert | undefined;
+  featuredProducts: HeroFeaturedProductsInsert | undefined;
+};
+
+export type HeroSingleAddInsert = {
+  mediaId: number | undefined;
+  exploreLink: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type HeroDoubleAddInsert = {
+  left: HeroSingleAddInsert | undefined;
+  right: HeroSingleAddInsert | undefined;
+};
+
+export type HeroMainAddInsert = {
+  singleAdd: HeroSingleAddInsert | undefined;
+};
+
+export type HeroFeaturedProductsInsert = {
+  productIds: number[] | undefined;
+  title: string | undefined;
+  exploreText: string | undefined;
+  exploreLink: string | undefined;
 };
 
 // Subscriber represents the subscriber table

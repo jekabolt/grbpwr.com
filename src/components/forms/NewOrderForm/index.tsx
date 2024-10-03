@@ -18,7 +18,6 @@ import { useHeroContext } from "@/components/contexts/HeroContext";
 import InputMaskedField from "@/components/ui/Form/fields/InputMaskedField";
 import { serviceClient } from "@/lib/api";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import { mapFormFieldToOrderDataFormat } from "./utils";
@@ -74,7 +73,10 @@ export default function NewOrderForm({
       console.log("submit new order response", data);
       console.log("New order submitted successfully");
 
-      router.replace(`/invoices/crypto/${newOrderResponse?.order?.orderUuid}`);
+      console.log("newOrderResponse212121");
+      console.log(newOrderResponse);
+
+      // router.replace(`/invoices/crypto/${newOrderResponse?.order?.orderUuid}`);
     } catch (error) {
       console.error("Error submitting new order:", error);
     }
@@ -103,7 +105,6 @@ export default function NewOrderForm({
     setOrderData(response);
 
     if (response.hasChanged && response.validItems) {
-      toast("something has changed");
       updateCookieCart(response.validItems);
     }
 
