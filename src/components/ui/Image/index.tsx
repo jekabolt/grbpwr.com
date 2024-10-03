@@ -1,3 +1,4 @@
+import { blurhashToBase64 } from "blurhash-base64";
 import Image from "next/image";
 import ImageContainer from "./ImageContainer";
 
@@ -7,19 +8,18 @@ export default function ImageComponent({
   alt,
   sizes = "(max-width: 1280px) 100vw, 1280px",
   fit,
+  blurHash,
 }: {
   alt: string;
   src: string;
   aspectRatio: string;
   sizes?: string;
   fit?: "cover" | "contain";
+  blurHash?: string;
 }) {
   return (
     <ImageContainer aspectRatio={aspectRatio}>
       <Image
-        // loader={storyBlokImageLoader}
-        // blurDataURL={`${asset.filename}/m/filters:quality(5):blur(10)`}
-        // loading={isPrioritized ? "eager" : "lazy"}
         fill
         src={src}
         alt={alt}
@@ -28,6 +28,8 @@ export default function ImageComponent({
         style={{
           objectFit: fit,
         }}
+        placeholder={blurHash ? "blur" : undefined}
+        blurDataURL={blurHash ? blurhashToBase64(blurHash) : undefined}
       />
     </ImageContainer>
   );

@@ -1,9 +1,9 @@
-import QRCode from "qrcode";
 import CoreLayout from "@/components/layouts/CoreLayout";
 import { serviceClient } from "@/lib/api";
+import QRCode from "qrcode";
 
-import V0GenUi from "./V0GenUi";
 import { redirect } from "next/navigation";
+import V0GenUi from "./V0GenUi";
 
 interface Props {
   params: {

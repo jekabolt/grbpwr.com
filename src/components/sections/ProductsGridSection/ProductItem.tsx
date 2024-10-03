@@ -1,6 +1,6 @@
 import type { common_Product } from "@/api/proto-http/frontend";
-import Image from "@/components/ui/Image";
 import Button from "@/components/ui/Button";
+import Image from "@/components/ui/Image";
 import { CURRENCY_MAP } from "@/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -36,6 +36,7 @@ export default function ProductItem({
               alt={product.productDisplay?.productBody?.name || ""}
               aspectRatio="4/3" // take from BE values
               fit="cover"
+              blurHash={product.productDisplay?.thumbnail?.media?.blurhash}
             />
           </div>
           <div className="flex w-full gap-3">

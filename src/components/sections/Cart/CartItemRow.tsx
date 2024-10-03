@@ -1,6 +1,6 @@
 import { changeCartProductQuantity, removeCartProduct } from "@/actions/cart";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
-import ImageComponent from "@/components/ui/Image";
+import Image from "@/components/ui/Image";
 import Size from "../Common/Size";
 import ProductAmountButtons from "./ProductAmountButtons";
 
@@ -15,11 +15,12 @@ export default function CartItemRow({
     <div className="flex justify-between gap-6 text-textColor">
       <div className="flex w-1/2 gap-6">
         <div className="h-full w-28 flex-none">
-          <ImageComponent
+          <Image
             src={product.thumbnail || ""}
             alt="product"
             fit="cover"
             aspectRatio="2/3"
+            blurHash={product.blurhash}
           />
         </div>
         <div className="space-y-2">

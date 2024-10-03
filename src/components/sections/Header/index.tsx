@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import Image from "@/components/ui/Image";
+import Link from "next/link";
 import useMobileMenu from "./useMobileMenu";
-import Button from "@/components/ui/Button";
 
 export default function Header() {
   const { triggerElement, dropdownElement } = useMobileMenu();
