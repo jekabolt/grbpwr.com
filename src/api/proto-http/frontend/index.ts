@@ -12,22 +12,27 @@ export type GetHeroResponse = {
 };
 
 export type common_HeroFull = {
-  id: number | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  ads: common_HeroItem[] | undefined;
-  productsFeatured: common_Product[] | undefined;
+  entities: common_HeroEntity[] | undefined;
 };
 
-// Encoded using RFC 3339, where generated output will always be Z-normalized
-// and uses 0, 3, 6 or 9 fractional digits.
-// Offsets other than "Z" are also accepted.
-type wellKnownTimestamp = string;
+export type common_HeroEntity = {
+  type: common_HeroType | undefined;
+  singleAdd: common_HeroSingleAdd | undefined;
+  doubleAdd: common_HeroDoubleAdd | undefined;
+  mainAdd: common_HeroMainAdd | undefined;
+  featuredProducts: common_HeroFeaturedProducts | undefined;
+};
 
-export type common_HeroItem = {
+export type common_HeroType =
+  | "HERO_TYPE_UNKNOWN"
+  | "HERO_TYPE_SINGLE_ADD"
+  | "HERO_TYPE_DOUBLE_ADD"
+  | "HERO_TYPE_MAIN_ADD"
+  | "HERO_TYPE_FEATURED_PRODUCTS";
+export type common_HeroSingleAdd = {
   media: common_MediaFull | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
-  isMain: boolean | undefined;
 };
 
 export type common_MediaFull = {
@@ -38,6 +43,11 @@ export type common_MediaFull = {
   // media
   media: common_MediaItem | undefined;
 };
+
+// Encoded using RFC 3339, where generated output will always be Z-normalized
+// and uses 0, 3, 6 or 9 fractional digits.
+// Offsets other than "Z" are also accepted.
+type wellKnownTimestamp = string;
 
 export type common_MediaItem = {
   // Full-size media URL
@@ -57,6 +67,22 @@ export type common_MediaInfo = {
   width: number | undefined;
   // height
   height: number | undefined;
+};
+
+export type common_HeroDoubleAdd = {
+  left: common_HeroSingleAdd | undefined;
+  right: common_HeroSingleAdd | undefined;
+};
+
+export type common_HeroMainAdd = {
+  singleAdd: common_HeroSingleAdd | undefined;
+};
+
+export type common_HeroFeaturedProducts = {
+  products: common_Product[] | undefined;
+  title: string | undefined;
+  exploreText: string | undefined;
+  exploreLink: string | undefined;
 };
 
 export type common_Product = {
@@ -549,14 +575,6 @@ export type CancelOrderInvoiceRequest = {
 export type CancelOrderInvoiceResponse = {
 };
 
-export type CheckPaymentRequest = {
-  orderUuid: string | undefined;
-};
-
-export type CheckPaymentResponse = {
-  payment: common_Payment | undefined;
-};
-
 export type SubscribeNewsletterRequest = {
   email: string | undefined;
 };
@@ -632,8 +650,6 @@ export interface FrontendService {
   GetOrderInvoice(request: GetOrderInvoiceRequest): Promise<GetOrderInvoiceResponse>;
   // Cancel an invoice for the order
   CancelOrderInvoice(request: CancelOrderInvoiceRequest): Promise<CancelOrderInvoiceResponse>;
-  // CheckPayment checks the crypto payment if it has been received and updates the order status if it has been received
-  CheckPayment(request: CheckPaymentRequest): Promise<CheckPaymentResponse>;
   // Subscribe to the newsletter
   SubscribeNewsletter(request: SubscribeNewsletterRequest): Promise<SubscribeNewsletterResponse>;
   // Unsubscribe from the newsletter
@@ -878,26 +894,6 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "CancelOrderInvoice",
       }) as Promise<CancelOrderInvoiceResponse>;
-    },
-    CheckPayment(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.orderUuid) {
-        throw new Error("missing required field request.order_uuid");
-      }
-      const path = `api/frontend/order/check/${request.orderUuid}`; // eslint-disable-line quotes
-      const body = null;
-      const queryParams: string[] = [];
-      let uri = path;
-      if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
-      }
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-      }, {
-        service: "FrontendService",
-        method: "CheckPayment",
-      }) as Promise<CheckPaymentResponse>;
     },
     SubscribeNewsletter(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/newsletter/subscribe`; // eslint-disable-line quotes

@@ -1,31 +1,38 @@
 import CoreLayout from "@/components/layouts/CoreLayout";
-import AdsSection from "@/components/sections/AdsSection";
-import HeroSection from "@/components/sections/HeroSection";
+import HeroAds from "@/components/sections/HeroSection/Ads";
+import HeroMain from "@/components/sections/HeroSection/Main";
 import ProductsSection from "@/components/sections/ProductsGridSection";
 import Button from "@/components/ui/Button";
 import { ButtonStyle } from "@/components/ui/Button/styles";
 import { serviceClient } from "@/lib/api";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
 export default async function Page() {
   const { hero } = await serviceClient.GetHero({});
 
-  if (!hero) return notFound();
-
-  const main = hero.ads?.find((x) => x.isMain);
-
-  const ads = hero.ads?.filter((x) => !x.isMain);
+  //if (!hero?.entities || hero?.entities?.length === 0) return notFound();
 
   return (
     <>
-      {main && <HeroSection {...main} />}
+      <HeroMain main={hero?.entities?.[0].mainAdd} />
       <CoreLayout>
-        <AdsSection ads={ads} />
+        {hero?.entities?.map((e) => {
+          switch (e.type) {
+            case "HERO_TYPE_SINGLE_ADD":
+              return <HeroAds singleAd={e.singleAdd}></HeroAds>;
+            case "HERO_TYPE_DOUBLE_ADD":
+              return <HeroAds doubleAd={e.doubleAdd}></HeroAds>;
+            case "HERO_TYPE_FEATURED_PRODUCTS":
+              return (
+                <ProductsSection products={e.featuredProducts?.products} />
+              );
+            default:
+              return null;
+          }
+        })}
         <Button asChild style={ButtonStyle.bigButton}>
           <Link href="/catalog">view all</Link>
         </Button>
-        <ProductsSection products={hero.productsFeatured} />
       </CoreLayout>
     </>
   );
