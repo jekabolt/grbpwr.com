@@ -528,25 +528,78 @@ export type CurrencyMap = {
   currencies: { [key: string]: CurrencyRate } | undefined;
 };
 
-export type HeroItemInsert = {
-  mediaId: number | undefined;
-  exploreLink: string | undefined;
-  exploreText: string | undefined;
-  isMain: boolean | undefined;
+export type HeroType =
+  | "HERO_TYPE_UNKNOWN"
+  | "HERO_TYPE_SINGLE_ADD"
+  | "HERO_TYPE_DOUBLE_ADD"
+  | "HERO_TYPE_MAIN_ADD"
+  | "HERO_TYPE_FEATURED_PRODUCTS";
+export type HeroFull = {
+  entities: HeroEntity[] | undefined;
 };
 
-export type HeroItem = {
+export type HeroEntity = {
+  type: HeroType | undefined;
+  singleAdd: HeroSingleAdd | undefined;
+  doubleAdd: HeroDoubleAdd | undefined;
+  mainAdd: HeroMainAdd | undefined;
+  featuredProducts: HeroFeaturedProducts | undefined;
+};
+
+export type HeroSingleAdd = {
   media: MediaFull | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
-  isMain: boolean | undefined;
 };
 
-export type HeroFull = {
-  id: number | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  ads: HeroItem[] | undefined;
-  productsFeatured: Product[] | undefined;
+export type HeroDoubleAdd = {
+  left: HeroSingleAdd | undefined;
+  right: HeroSingleAdd | undefined;
+};
+
+export type HeroMainAdd = {
+  singleAdd: HeroSingleAdd | undefined;
+};
+
+export type HeroFeaturedProducts = {
+  products: Product[] | undefined;
+  title: string | undefined;
+  exploreText: string | undefined;
+  exploreLink: string | undefined;
+};
+
+export type HeroFullInsert = {
+  entities: HeroEntityInsert[] | undefined;
+};
+
+export type HeroEntityInsert = {
+  type: HeroType | undefined;
+  singleAdd: HeroSingleAddInsert | undefined;
+  doubleAdd: HeroDoubleAddInsert | undefined;
+  mainAdd: HeroMainAddInsert | undefined;
+  featuredProducts: HeroFeaturedProductsInsert | undefined;
+};
+
+export type HeroSingleAddInsert = {
+  mediaId: number | undefined;
+  exploreLink: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type HeroDoubleAddInsert = {
+  left: HeroSingleAddInsert | undefined;
+  right: HeroSingleAddInsert | undefined;
+};
+
+export type HeroMainAddInsert = {
+  singleAdd: HeroSingleAddInsert | undefined;
+};
+
+export type HeroFeaturedProductsInsert = {
+  productIds: number[] | undefined;
+  title: string | undefined;
+  exploreText: string | undefined;
+  exploreLink: string | undefined;
 };
 
 // Subscriber represents the subscriber table
