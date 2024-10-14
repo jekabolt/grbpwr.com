@@ -1,10 +1,10 @@
-import CoreLayout from "@/components/layouts/CoreLayout";
+import NavigationLayout from "@/components/layouts/NavigationLayout";
 import V0GenForm from "./V0GenForm";
 
 export default function Page() {
   return (
-    <CoreLayout>
+    <NavigationLayout>
       <V0GenForm />
-    </CoreLayout>
+    </NavigationLayout>
   );
 }

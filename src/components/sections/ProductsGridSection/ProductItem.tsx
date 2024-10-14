@@ -1,5 +1,5 @@
 import type { common_Product } from "@/api/proto-http/frontend";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import Image from "@/components/ui/Image";
 import { CURRENCY_MAP } from "@/constants";
 import { cn } from "@/lib/utils";
@@ -41,7 +41,7 @@ export default function ProductItem({
           </div>
           <div className="flex w-full gap-3">
             {/* todo: change to css variable */}
-            <div className="flex grow flex-col text-xs font-medium text-highlightTextColor underline">
+            <div className="flex grow flex-col text-xs font-medium text-highlightColor underline">
               <span>{product.productDisplay?.productBody?.brand}</span>
               <span>{product.productDisplay?.productBody?.name}</span>
             </div>

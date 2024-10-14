@@ -5,36 +5,26 @@ import { SubmitButton } from "@/components/forms/SubmitButton";
 
 type Props = {
   form: UseFormReturn<any>;
-  initialData: any;
+  submitButton?: React.ReactNode;
   onSubmit: (data: any) => void;
-  loading?: boolean;
   children: React.ReactNode;
   className?: string;
-  ctaLabel: string;
   footerSide?: "left" | "right";
 };
 
 export const FormContainer = ({
   form,
-  initialData,
   onSubmit,
-  loading,
   children,
   className,
-  ctaLabel,
   footerSide,
+  submitButton,
 }: Props) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className={className}>
         {children}
-        <FormFooter side={footerSide}>
-          <SubmitButton
-            text={ctaLabel}
-            // text={initialData ? "Save changes" : "create"}
-            disabled={loading}
-          />
-        </FormFooter>
+        <FormFooter side={footerSide}>{submitButton}</FormFooter>
       </form>
     </Form>
   );

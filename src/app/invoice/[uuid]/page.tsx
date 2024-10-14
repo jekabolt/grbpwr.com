@@ -1,4 +1,4 @@
-import CoreLayout from "@/components/layouts/CoreLayout";
+import NavigationLayout from "@/components/layouts/NavigationLayout";
 import { serviceClient } from "@/lib/api";
 import QRCode from "qrcode";
 
@@ -25,7 +25,7 @@ export default async function Page({ params }: Props) {
     : undefined;
 
   return (
-    <CoreLayout>
+    <NavigationLayout>
       <V0GenUi
         qrBase64Code={qrBase64Code}
         euroAmount={
@@ -39,6 +39,6 @@ export default async function Page({ params }: Props) {
         orderId={uuid}
         payeeAddress={cryptoPaymentInvoice.payment?.paymentInsert?.payee || ""}
       />
-    </CoreLayout>
+    </NavigationLayout>
   );
 }

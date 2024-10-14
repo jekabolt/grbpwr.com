@@ -1,5 +1,4 @@
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import { Button } from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import MeasurementsModalContent from "./MeasurementsModalContent";
 import { common_ProductSize } from "@/api/proto-http/frontend";
@@ -29,7 +28,7 @@ export default function MeasurementsModal({
   return (
     <Modal
       openElement={
-        <Button asChild style={ButtonStyle.underlinedButton}>
+        <Button asChild variant="underline">
           measurements
         </Button>
       }

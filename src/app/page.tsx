@@ -1,9 +1,8 @@
-import CoreLayout from "@/components/layouts/CoreLayout";
+import NavigationLayout from "@/components/layouts/NavigationLayout";
 import AdsSection from "@/components/sections/AdsSection";
 import HeroSection from "@/components/sections/HeroSection";
 import ProductsSection from "@/components/sections/ProductsGridSection";
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import { Button } from "@/components/ui/Button";
 import { serviceClient } from "@/lib/api";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -20,14 +19,14 @@ export default async function Page() {
   return (
     <>
       {/* {main && <HeroSection {...main} />} */}
-      <CoreLayout>
+      <NavigationLayout>
         <h1 className="font0-bold my-10 text-9xl">rework</h1>
         {/* <AdsSection ads={ads} /> */}
-        <Button asChild style={ButtonStyle.bigButton}>
-          <Link href="/catalog">view all</Link>
+        <Button asChild size="giant" variant="simple">
+          <Link href="/catalog">wdview all</Link>
         </Button>
         {/* <ProductsSection products={hero.productsFeatured} /> */}
-      </CoreLayout>
+      </NavigationLayout>
     </>
   );
 }

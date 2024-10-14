@@ -28,6 +28,7 @@
     "@stripe/stripe-js": "^4.6.0",
     "@uidotdev/usehooks": "^2.4.1",
     "blurhash-base64": "^0.0.3",
+    "class-variance-authority": "^0.7.0",
     "clsx": "2.1.0",
     "next": "15.0.0-canary.6",
     "qrcode": "^1.5.3",

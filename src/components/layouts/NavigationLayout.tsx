@@ -3,8 +3,7 @@ import CartProductsList from "@/components/sections/Cart/CartProductsList";
 import TotalPrice from "@/components/sections/Cart/TotalPrice";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import { Button } from "@/components/ui/Button";
 import { getCookieCart } from "@/lib/utils/cart";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -30,13 +29,13 @@ export default function CoreLayout({
         <div className="flex">
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <Button style={ButtonStyle.underlinedHightlightButton}>
+              <Button variant="underlineWithColors">
                 <Link href="/catalog">catalog</Link>
               </Button>
-              <Button style={ButtonStyle.underlinedHightlightButton}>
+              <Button variant="underlineWithColors">
                 <Link href="/archive">archive</Link>
               </Button>
-              <Button style={ButtonStyle.underlinedHightlightButton}>
+              <Button variant="underlineWithColors">
                 <Link href="/shipping">shipping</Link>
               </Button>
             </nav>
@@ -69,10 +68,10 @@ export default function CoreLayout({
                   </Suspense>
                 )}
               </CartPopup>
-              <Button style={ButtonStyle.underlinedHightlightButton}>
+              <Button variant="underlineWithColors">
                 <Link href="/about">about</Link>
               </Button>
-              <Button style={ButtonStyle.underlinedHightlightButton}>
+              <Button variant="underlineWithColors">
                 <Link href="/contacts">contacts</Link>
               </Button>
             </nav>

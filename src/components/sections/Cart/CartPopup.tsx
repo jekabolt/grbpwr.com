@@ -1,11 +1,10 @@
 "use client";
 
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { useClickAway } from "@uidotdev/usehooks";
 import Link from "next/link";
 import { useState } from "react";
-import { ButtonStyle } from "@/components/ui/Button/styles";
 
 export default function CartPopup({
   children,
@@ -28,7 +27,7 @@ export default function CartPopup({
     <div className="group relative" ref={ref}>
       <Button
         onClick={hidePopupCart ? undefined : () => setOpenStatus(!open)}
-        style={ButtonStyle.underlinedHightlightButton}
+        variant="underlineWithColors"
       >
         cart {itemsQuantity ? `(${itemsQuantity})` : ""}
       </Button>
@@ -44,11 +43,11 @@ export default function CartPopup({
           <div className="mb-6 text-textColor">added to cart {"[06]"}</div>
           {children}
           <div className="flex justify-end gap-2">
-            <Button asChild style={ButtonStyle.simpleButton}>
+            <Button asChild variant="main">
               <Link href="/cart">cart</Link>
             </Button>
             {hasCartProducts && (
-              <Button asChild style={ButtonStyle.simpleButton}>
+              <Button asChild variant="main">
                 <Link href="/cart/checkout">checkout</Link>
               </Button>
             )}

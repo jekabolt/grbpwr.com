@@ -1,5 +1,5 @@
 import { addCartProduct, clearCartProducts } from "@/actions/cart";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { serviceClient } from "@/lib/api";
 import { getValidateOrderItemsInsertItems } from "@/lib/utils/cart";
 import Link from "next/link";

@@ -39,11 +39,10 @@ export default function AddToCartForm({
   return (
     <FormContainer
       form={form}
-      initialData={{}}
       onSubmit={onSubmit}
-      loading={loading}
       className="space-y-8"
-      ctaLabel="add to cart"
+      // <AddToCartFo
+      submitButton={"add to cart" as any}
       footerSide="right"
     >
       <SelectField

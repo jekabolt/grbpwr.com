@@ -5,7 +5,7 @@ import {
   common_OrderNew,
 } from "@/api/proto-http/frontend";
 import NewOrderForm from "@/components/forms/NewOrderForm";
-import CoreLayout from "@/components/layouts/CoreLayout";
+import NavigationLayout from "@/components/layouts/NavigationLayout";
 import { serviceClient } from "@/lib/api";
 import { getValidateOrderItemsInsertItems } from "@/lib/utils/cart";
 import { redirect } from "next/navigation";
@@ -21,49 +21,7 @@ export default async function CheckoutPage() {
     promoCode: undefined,
   });
 
-  async function submitNewOrder(newOrderData: common_OrderNew) {
-    "use server";
-
-    console.log("order data: ", {
-      order: newOrderData,
-    });
-
-    try {
-      const submitOrderResponse = await serviceClient.SubmitOrder({
-        order: newOrderData,
-      });
-
-      console.log("submit order response: ");
-      console.log(submitOrderResponse);
-
-      if (!submitOrderResponse?.orderUuid) {
-        console.log("no data to create order invoice");
-
-        return {
-          ok: false,
-        };
-      }
-
-      console.log({
-        ok: true,
-        order: submitOrderResponse,
-      });
-
-      clearCartProducts();
-
-      return {
-        ok: true,
-        order: submitOrderResponse,
-      };
-    } catch (error) {
-      console.error("Error submitting new order:", error);
-      return {
-        ok: false,
-      };
-    }
-  }
-
-  const updateCookieCart = async (validItems: common_OrderItem[]) => {
+  async function updateCookieCart(validItems: common_OrderItem[]) {
     "use server";
 
     clearCartProducts();
@@ -81,15 +39,11 @@ export default async function CheckoutPage() {
         });
       }
     }
-  };
+  }
 
   return (
-    <CoreLayout hidePopupCart>
-      <NewOrderForm
-        submitNewOrder={submitNewOrder}
-        order={response}
-        updateCookieCart={updateCookieCart}
-      />
-    </CoreLayout>
+    <NavigationLayout hidePopupCart>
+      <NewOrderForm order={response} updateCookieCart={updateCookieCart} />
+    </NavigationLayout>
   );
 }

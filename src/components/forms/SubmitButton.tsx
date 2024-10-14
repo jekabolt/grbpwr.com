@@ -2,8 +2,7 @@
 
 // @ts-ignore
 import { useFormStatus } from "react-dom";
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import { Button } from "@/components/ui/Button";
 
 type Props = {
   text: string;
@@ -15,9 +14,10 @@ export function SubmitButton({ text, disabled }: Props) {
 
   return (
     <Button
-      style={ButtonStyle.simpleButton}
       type="submit"
       disabled={disabled || pending}
+      loading={pending}
+      variant="main"
     >
       {text}
     </Button>

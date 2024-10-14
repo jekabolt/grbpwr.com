@@ -4,11 +4,19 @@ const config = {
   theme: {
     extend: {
       colors: {
-        bgColor: "var(--background)",
         textColor: "var(--text)",
-        buttonTextColor: "var(--button-text)",
-        highlightTextColor: "var(--highlight-text)",
+        textInactiveColor: "var(--inactive)",
+        bgColor: "var(--background)",
+        highlightColor: "var(--highlight)",
         errorColor: "var(--error)",
+        buttonTextColor: "var(--button-text)",
+        visitedLinkColor: "var(--visited-link)",
+      },
+      fontSize: {
+        textGiantSize: "var(--text-giant)",
+        textGiantSmallSize: "var(--text-giant-small)",
+        textBaseSize: "var(--text-base)",
+        textSmallSize: "var(--text-small)",
       },
     },
   },
