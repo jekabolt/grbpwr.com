@@ -10,12 +10,11 @@ export default function SelectedCurrency({
   const { selectedCurrency } = useHeroContext();
 
   return (
-    <div>
-      <div>total</div>
-      <div> base currency: {baseCurrencyTotal}</div>
-      <div>
-        todo: convert to {selectedCurrency}: {baseCurrencyTotal}
-      </div>
+    <div className="flex justify-between text-textColor">
+      <span>SUBTOTAL:</span>
+      <span>
+        {selectedCurrency} {baseCurrencyTotal}
+      </span>
     </div>
   );
 }

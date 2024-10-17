@@ -9,7 +9,7 @@ type Props = {
   disabled?: boolean;
 };
 
-export function SubmitButton({ text, disabled }: Props) {
+export function SubmitButton({ text, disabled = false }: Props) {
   const { pending } = useFormStatus();
 
   return (
@@ -18,6 +18,7 @@ export function SubmitButton({ text, disabled }: Props) {
       disabled={disabled || pending}
       loading={pending}
       variant="main"
+      size="lg"
     >
       {text}
     </Button>

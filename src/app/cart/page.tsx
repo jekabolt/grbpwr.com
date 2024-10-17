@@ -13,7 +13,7 @@ export default async function CartPage() {
   const cartItems = getCookieCart();
 
   return (
-    <NavigationLayout hidePopupCart>
+    <NavigationLayout>
       <div className="relative flex gap-32">
         <div className="w-1/2">
           <div className="w-full">

@@ -42,7 +42,7 @@ export default async function CheckoutPage() {
   }
 
   return (
-    <NavigationLayout hidePopupCart>
+    <NavigationLayout>
       <NewOrderForm order={response} updateCookieCart={updateCookieCart} />
     </NavigationLayout>
   );

@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AddToCartData, addToCartSchema } from "./schema";
+import { SubmitButton } from "../SubmitButton";
 
 // todo: rework this to share logic with measurement modal
 export default function AddToCartForm({
@@ -41,8 +42,7 @@ export default function AddToCartForm({
       form={form}
       onSubmit={onSubmit}
       className="space-y-8"
-      // <AddToCartFo
-      submitButton={"add to cart" as any}
+      submitButton={<SubmitButton text="ADD TO CART" disabled={loading} />}
       footerSide="right"
     >
       <SelectField

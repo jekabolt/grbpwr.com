@@ -55,7 +55,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     product?.product?.productDisplay?.productBody?.price?.value;
 
   return (
-    <NavigationLayout hideForm>
+    <NavigationLayout>
       <div className="relative flex flex-col bg-white pb-20 pt-5">
         {product?.media && (
           <div className="grid w-full grid-cols-6 items-end gap-2">
