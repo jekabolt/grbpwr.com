@@ -41,8 +41,8 @@
   }
 
   ::selection {
-    background-color: var(--text-select); /* Applying the --text-select color */
-    color: var(--text); /* Optionally, change the text color */
+    background-color: var(--text-select); 
+    color: var(--text); 
   }
 
   /* * {
