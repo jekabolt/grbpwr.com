@@ -12,9 +12,5 @@ export default function TotalPrice() {
     0,
   );
 
-  return (
-    <div>
-      <SelectedCurrency baseCurrencyTotal={total} />
-    </div>
-  );
+  return <SelectedCurrency baseCurrencyTotal={total} />;
 }

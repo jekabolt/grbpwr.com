@@ -12,6 +12,13 @@ const addressFields = {
   postalCode: z.string().min(2),
 };
 
+// const creditCardFields = {
+//   number: z.string().length(19),
+//   fullName: z.string().min(3),
+//   expirationDate: z.string().length(5),
+//   cvc: z.string().length(3),
+// };
+
 const baseCheckoutSchema = z.object({
   email: z.string().email(),
   phone: z.string().min(5),
@@ -27,30 +34,16 @@ const baseCheckoutSchema = z.object({
   billingAddress: z.object(addressFields).optional(),
 
   rememberMe: z.boolean().optional(),
+  paymentMethod: z.union([
+    z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
+  ]),
 });
 
-export const checkoutSchema = z.discriminatedUnion("paymentMethod", [
-  baseCheckoutSchema.extend({
-    paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
-  }),
-  baseCheckoutSchema.extend({
-    paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
-  }),
-  baseCheckoutSchema.extend({
-    paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
-  }),
-  baseCheckoutSchema.extend({
-    paymentMethod: z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
-    creditCard: z.object({
-      // todo: add validation of the mask
-      // reuse same mask constant for inout and for schema
-      number: z.string().length(19),
-      fullName: z.string().min(3),
-      expirationDate: z.string().length(5),
-      cvc: z.string().length(3),
-    }),
-  }),
-]);
+export const checkoutSchema = baseCheckoutSchema;
 
 export const defaultData: z.infer<typeof checkoutSchema> = {
   email: "",
@@ -69,13 +62,13 @@ export const defaultData: z.infer<typeof checkoutSchema> = {
   subscribe: false,
   billingAddressIsSameAsAddress: true,
   billingAddress: undefined,
-  paymentMethod: "PAYMENT_METHOD_NAME_ENUM_CARD",
-  creditCard: {
-    number: "",
-    fullName: "",
-    expirationDate: "",
-    cvc: "",
-  },
+  paymentMethod: "PAYMENT_METHOD_NAME_ENUM_CARD_TEST",
+  // creditCard: {
+  //   number: "4242424242424242",
+  //   fullName: "wdwd wdwd",
+  //   expirationDate: "11/30",
+  //   cvc: "122",
+  // },
   rememberMe: false, // todo: groom the feature
   promoCode: "",
 };

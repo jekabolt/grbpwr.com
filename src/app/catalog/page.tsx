@@ -1,6 +1,6 @@
 import CatalogSection from "@/components/sections/CatalogSection";
 import Filters from "@/components/sections/Filters";
-import CoreLayout from "@/components/layouts/CoreLayout";
+import NavigationLayout from "@/components/layouts/NavigationLayout";
 import { CATALOG_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { getValidatedGetProductsPagedParams } from "@/lib/utils/queryFilters";
@@ -23,7 +23,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
   });
 
   return (
-    <CoreLayout>
+    <NavigationLayout>
       <div>
         <Filters />
         <CatalogSection
@@ -31,6 +31,6 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
           firstPageItems={response.products || []}
         />
       </div>
-    </CoreLayout>
+    </NavigationLayout>
   );
 }

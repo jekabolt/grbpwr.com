@@ -3,20 +3,41 @@
 @tailwind utilities;
 
 @layer base {
-  .lightTheme {
-    --background: #fff;
+  :root {
+    /* COLORS */
     --text: #000;
-    --button-text: #fff;
-    --highlight-text: #311eee;
+    --inactive: #cccccc;
+    --background: #fff;
+    --highlight: #311eee;
     --error: #ff0000;
+    --text-select: #75fb4c;
+    /* components-specific colors */
+    --button-text: #fff;
+    --visited-link: #501089;
+
+    /* TEXT */
+    --text-giant: 200px;
+    --text-giant-small: 110px;
+    --text-base: @apply text-base;
+    --text-small: @apply text-xs;
   }
 
   .blueTheme {
-    --background: #311eee;
     --text: #fff;
-    --button-text: #000;
-    --highlight-text: #fff;
+    --inactive: #cccccc;
+    --background: #311eee;
+    --highlight: #fff;
     --error: #ff0000;
+    --text-select: #75fb4c;
+    /* components-specific colors */
+    --button-text: #000;
+    --visited-link: #501089;
+
+    /* TEXT */
+    --text-giant: 200px;
+    --text-giant-small: 110px;
+    --text-base: @apply text-base;
+    --text-small: @apply text-xs;
   }
 
   /* * {

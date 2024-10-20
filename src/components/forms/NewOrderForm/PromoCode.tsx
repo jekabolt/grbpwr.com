@@ -1,8 +1,7 @@
 "use client";
 
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import { Button } from "@/components/ui/Button";
 import InputField from "@/components/ui/Form/fields/InputField";
 import { useState } from "react";
 import { useFormContext, type Control } from "react-hook-form";
@@ -44,7 +43,7 @@ export default function PromoCode({
         label="discount code or gift card"
       />
       <Button
-        style={ButtonStyle.simpleButton}
+        variant="main"
         onClick={handleApplyPromoClick}
         disabled={promoLoading || loading}
       >

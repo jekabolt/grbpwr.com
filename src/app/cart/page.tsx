@@ -1,8 +1,7 @@
-import CoreLayout from "@/components/layouts/CoreLayout";
+import NavigationLayout from "@/components/layouts/NavigationLayout";
 import CartProductsList from "@/components/sections/Cart/CartProductsList";
 import TotalPrice from "@/components/sections/Cart/TotalPrice";
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import { Button } from "@/components/ui/Button";
 import { CartProductsSkeleton } from "@/components/ui/Skeleton";
 import { getCookieCart } from "@/lib/utils/cart";
 import Link from "next/link";
@@ -14,7 +13,7 @@ export default async function CartPage() {
   const cartItems = getCookieCart();
 
   return (
-    <CoreLayout hidePopupCart>
+    <NavigationLayout>
       <div className="relative flex gap-32">
         <div className="w-1/2">
           <div className="w-full">
@@ -33,13 +32,13 @@ export default async function CartPage() {
             {/* <TotalPrice /> */}
 
             {Object.keys(cartItems?.products || {}).length && (
-              <Button asChild style={ButtonStyle.simpleButton}>
+              <Button asChild size="lg" variant="main">
                 <Link href="/cart/checkout">checkout</Link>
               </Button>
             )}
           </div>
         </div>
       </div>
-    </CoreLayout>
+    </NavigationLayout>
   );
 }

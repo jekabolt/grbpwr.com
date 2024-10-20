@@ -3,8 +3,7 @@
 import { useClickAway } from "@uidotdev/usehooks";
 import { Dispatch, SetStateAction, useState } from "react";
 
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
 export default function useMovileMenu() {
@@ -29,9 +28,13 @@ function MobileMenuTrigger({
   setOpenStatus: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
-    <button className="text-sm underline" onClick={() => setOpenStatus(true)}>
+    <Button
+      size="sm"
+      variant="underlineWithColors"
+      onClick={() => setOpenStatus(true)}
+    >
       menu
-    </button>
+    </Button>
   );
 }
 
@@ -49,19 +52,19 @@ function MobileMenuDropdown({
         {"[x]"}
       </button>
       <nav className="space-y-6">
-        <Button asChild style={ButtonStyle.underlinedHightlightButton}>
+        <Button asChild variant="underlineWithColors">
           <Link href="/catalog">catalog</Link>
         </Button>
-        <Button asChild style={ButtonStyle.underlinedHightlightButton}>
+        <Button asChild variant="underlineWithColors">
           <Link href="/archive">archive</Link>
         </Button>
-        <Button asChild style={ButtonStyle.underlinedHightlightButton}>
+        <Button asChild variant="underlineWithColors">
           <Link href="/about">about</Link>
         </Button>
-        <Button asChild style={ButtonStyle.underlinedHightlightButton}>
+        <Button asChild variant="underlineWithColors">
           <Link href="/shipping">shipping</Link>
         </Button>
-        <Button asChild style={ButtonStyle.underlinedHightlightButton}>
+        <Button asChild variant="underlineWithColors">
           <Link href="/contacts">contacts</Link>
         </Button>
       </nav>

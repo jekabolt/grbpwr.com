@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import RootLayoutComponent from "@/components/layouts/RootLayout";
 import { FeatureMono } from "../fonts";
-import HeroContextLayout from "@/components/layouts/HeroContextLayout";
+import { CommonLayout } from "@/components/layouts/CommonLayout";
 
 import "./globals.css";
 
@@ -18,9 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={FeatureMono.className}>
-        <HeroContextLayout>
-          <RootLayoutComponent>{children}</RootLayoutComponent>
-        </HeroContextLayout>
+        <CommonLayout>{children}</CommonLayout>
       </body>
     </html>
   );

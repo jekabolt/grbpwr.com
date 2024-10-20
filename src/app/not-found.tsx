@@ -1,6 +1,5 @@
 import Header from "@/components/sections/Header";
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import "./globals.css";
 
@@ -17,10 +16,10 @@ export default function NotFound() {
           please go back to the homepage or contact us if the problem persists.
         </p>
         <div className="flex gap-x-20">
-          <Button asChild style={ButtonStyle.underlinedHightlightButton}>
+          <Button asChild variant="underlineWithColors">
             <Link href="/contacts">contact us</Link>
           </Button>
-          <Button asChild style={ButtonStyle.simpleButton}>
+          <Button asChild variant="underlineWithColors">
             <Link href="/catalog">catalog</Link>
           </Button>
         </div>

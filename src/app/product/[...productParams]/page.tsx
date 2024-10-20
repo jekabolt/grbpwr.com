@@ -1,6 +1,6 @@
 import { addCartProduct } from "@/actions/cart";
 import AddToCartForm from "@/components/forms/AddToCartForm";
-import CoreLayout from "@/components/layouts/CoreLayout";
+import NavigationLayout from "@/components/layouts/NavigationLayout";
 import { FullscreenImagesCarousel } from "@/components/sections/FullscreenImagesCarousel";
 import { ProductMediaItem } from "@/components/sections/FullscreenImagesCarousel/ProductMediaItem";
 import MeasurementsModal from "@/components/sections/MeasurementsModal";
@@ -55,7 +55,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     product?.product?.productDisplay?.productBody?.price?.value;
 
   return (
-    <CoreLayout hideForm>
+    <NavigationLayout>
       <div className="relative flex flex-col bg-white pb-20 pt-5">
         {product?.media && (
           <div className="grid w-full grid-cols-6 items-end gap-2">
@@ -93,6 +93,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
           )}
         </div>
       </div>
-    </CoreLayout>
+    </NavigationLayout>
   );
 }

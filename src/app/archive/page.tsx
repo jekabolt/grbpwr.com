@@ -1,4 +1,4 @@
-import CoreLayout from "@/components/layouts/CoreLayout";
+import NavigationLayout from "@/components/layouts/NavigationLayout";
 import { serviceClient } from "@/lib/api";
 
 import { FullscreenImagesCarousel } from "@/components/sections/FullscreenImagesCarousel";
@@ -15,7 +15,7 @@ export default async function Page() {
 
   return (
     <div className="blueTheme">
-      <CoreLayout>
+      <NavigationLayout>
         <div className="flex flex-col gap-14">
           {nonEmptyArchives?.map((a, i) => (
             <div key={a.archive?.id || i} className="text-textColor">
@@ -40,7 +40,7 @@ export default async function Page() {
             </div>
           ))}
         </div>
-      </CoreLayout>
+      </NavigationLayout>
     </div>
   );
 }

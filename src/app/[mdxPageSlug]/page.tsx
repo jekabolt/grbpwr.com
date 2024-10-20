@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import CoreLayout from "@/components/layouts/CoreLayout";
+import NavigationLayout from "@/components/layouts/NavigationLayout";
 import AboutMdx from "./about.mdx";
 import ContactsMdx from "./contacts.mdx";
 import ShippingMdx from "./shipping.mdx";
@@ -32,10 +32,10 @@ export default function Page({ params }: Props) {
   }
 
   return (
-    <CoreLayout>
+    <NavigationLayout>
       <div className="prose lg:prose-xl">
         <MdxComponent />
       </div>
-    </CoreLayout>
+    </NavigationLayout>
   );
 }

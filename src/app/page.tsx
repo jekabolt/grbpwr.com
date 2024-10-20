@@ -1,9 +1,8 @@
-import CoreLayout from "@/components/layouts/CoreLayout";
+import NavigationLayout from "@/components/layouts/NavigationLayout";
 import HeroAds from "@/components/sections/HeroSection/Ads";
 import HeroMain from "@/components/sections/HeroSection/Main";
 import ProductsSection from "@/components/sections/ProductsGridSection";
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import { Button } from "@/components/ui/Button";
 import { serviceClient } from "@/lib/api";
 import Link from "next/link";
 
@@ -15,7 +14,7 @@ export default async function Page() {
   return (
     <>
       <HeroMain main={hero?.entities?.[0].mainAdd} />
-      <CoreLayout>
+      <NavigationLayout>
         {hero?.entities?.map((e) => {
           switch (e.type) {
             case "HERO_TYPE_SINGLE_ADD":
@@ -30,10 +29,10 @@ export default async function Page() {
               return null;
           }
         })}
-        <Button asChild style={ButtonStyle.bigButton}>
+        <Button asChild size="giant" variant="simple">
           <Link href="/catalog">view all</Link>
         </Button>
-      </CoreLayout>
+      </NavigationLayout>
     </>
   );
 }

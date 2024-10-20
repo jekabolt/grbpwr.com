@@ -33,7 +33,7 @@ export default function NewslatterForm({ formSubmitClick }: FooterFormProps) {
           name="email"
         />
       </div>
-      <SubmitButton text="subscribe" />
+      <SubmitButton text="SUBSCRIBE" />
     </form>
   );
 }

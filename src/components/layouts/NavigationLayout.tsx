@@ -3,25 +3,22 @@ import CartProductsList from "@/components/sections/Cart/CartProductsList";
 import TotalPrice from "@/components/sections/Cart/TotalPrice";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
-import Button from "@/components/ui/Button";
-import { ButtonStyle } from "@/components/ui/Button/styles";
+import { Button } from "@/components/ui/Button";
 import { getCookieCart } from "@/lib/utils/cart";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default function CoreLayout({
+export default function NavigationLayout({
   children,
   hideForm,
-  hidePopupCart,
 }: Readonly<{
   children: React.ReactNode;
   hideForm?: boolean;
-  hidePopupCart?: boolean;
 }>) {
   const cartData = getCookieCart();
   const hasCartProducts =
     cartData?.products && Object.keys(cartData?.products).length > 0;
-  const productsNumber = Object.keys(cartData?.products || {}).length;
+  const itemsQuantity = Object.keys(cartData?.products || {}).length;
 
   return (
     <div className="min-h-screen bg-bgColor">
@@ -30,13 +27,13 @@ export default function CoreLayout({
         <div className="flex">
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
-              <Button style={ButtonStyle.underlinedHightlightButton}>
+              <Button variant="underlineWithColors" asChild>
                 <Link href="/catalog">catalog</Link>
               </Button>
-              <Button style={ButtonStyle.underlinedHightlightButton}>
+              <Button variant="underlineWithColors" asChild>
                 <Link href="/archive">archive</Link>
               </Button>
-              <Button style={ButtonStyle.underlinedHightlightButton}>
+              <Button variant="underlineWithColors" asChild>
                 <Link href="/shipping">shipping</Link>
               </Button>
             </nav>
@@ -49,30 +46,19 @@ export default function CoreLayout({
           <div className="relative hidden w-24 md:block">
             <nav className="sticky top-24 flex flex-col items-center gap-60">
               <CartPopup
-                itemsQuantity={productsNumber}
+                itemsQuantity={itemsQuantity}
                 hasCartProducts={hasCartProducts}
-                hidePopupCart={hidePopupCart}
               >
-                {hidePopupCart ? null : (
-                  <Suspense fallback={null}>
-                    <div className="relative">
-                      <div className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll pb-5">
-                        <CartProductsList />
-                      </div>
-
-                      {/* when cursor is in gradient area-scroll doesnt work */}
-                      <div className="absolute bottom-0 left-0 h-28 w-full bg-gradient-to-t from-bgColor"></div>
-                    </div>
-                    <div className="mb-3 flex justify-between border-t border-dashed border-textColor pt-5 text-textColor">
-                      {/* <TotalPrice /> */}
-                    </div>
-                  </Suspense>
-                )}
+                <Suspense fallback={null}>
+                  <div className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll">
+                    <CartProductsList className="border-b border-dashed border-textColor pb-6" />
+                  </div>
+                </Suspense>
               </CartPopup>
-              <Button style={ButtonStyle.underlinedHightlightButton}>
+              <Button variant="underlineWithColors" asChild>
                 <Link href="/about">about</Link>
               </Button>
-              <Button style={ButtonStyle.underlinedHightlightButton}>
+              <Button variant="underlineWithColors" asChild>
                 <Link href="/contacts">contacts</Link>
               </Button>
             </nav>
