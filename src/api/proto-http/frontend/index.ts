@@ -575,14 +575,6 @@ export type CancelOrderInvoiceRequest = {
 export type CancelOrderInvoiceResponse = {
 };
 
-export type CheckPaymentRequest = {
-  orderUuid: string | undefined;
-};
-
-export type CheckPaymentResponse = {
-  payment: common_Payment | undefined;
-};
-
 export type SubscribeNewsletterRequest = {
   email: string | undefined;
 };
@@ -658,8 +650,6 @@ export interface FrontendService {
   GetOrderInvoice(request: GetOrderInvoiceRequest): Promise<GetOrderInvoiceResponse>;
   // Cancel an invoice for the order
   CancelOrderInvoice(request: CancelOrderInvoiceRequest): Promise<CancelOrderInvoiceResponse>;
-  // CheckPayment checks the crypto payment if it has been received and updates the order status if it has been received
-  CheckPayment(request: CheckPaymentRequest): Promise<CheckPaymentResponse>;
   // Subscribe to the newsletter
   SubscribeNewsletter(request: SubscribeNewsletterRequest): Promise<SubscribeNewsletterResponse>;
   // Unsubscribe from the newsletter
@@ -904,26 +894,6 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "CancelOrderInvoice",
       }) as Promise<CancelOrderInvoiceResponse>;
-    },
-    CheckPayment(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.orderUuid) {
-        throw new Error("missing required field request.order_uuid");
-      }
-      const path = `api/frontend/order/check/${request.orderUuid}`; // eslint-disable-line quotes
-      const body = null;
-      const queryParams: string[] = [];
-      let uri = path;
-      if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
-      }
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-      }, {
-        service: "FrontendService",
-        method: "CheckPayment",
-      }) as Promise<CheckPaymentResponse>;
     },
     SubscribeNewsletter(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/newsletter/subscribe`; // eslint-disable-line quotes
