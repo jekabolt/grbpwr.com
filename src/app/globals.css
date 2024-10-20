@@ -40,6 +40,11 @@
     --text-small: @apply text-xs;
   }
 
+  ::selection {
+    background-color: var(--text-select); /* Applying the --text-select color */
+    color: var(--text); /* Optionally, change the text color */
+  }
+
   /* * {
     @apply border-border;
   } */
