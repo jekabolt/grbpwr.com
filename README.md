@@ -12,6 +12,7 @@ pnpm gen
 
 ```
 make init
+
 ```
 
 3. create .env with following
