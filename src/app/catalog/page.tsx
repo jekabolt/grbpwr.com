@@ -1,32 +1,33 @@
-import CatalogSection from "@/components/sections/CatalogSection";
-import Filters from "@/components/sections/Filters";
+import {InfinityScrollCatalog} from "@/features/infinity-scroll-catalog";
+import Filters from "@/features/catalog-filters";
 import NavigationLayout from "@/components/layouts/NavigationLayout";
 import { CATALOG_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
-import { getValidatedGetProductsPagedParams } from "@/lib/utils/queryFilters";
+import { getProductsPagedQueryParams } from "@/features/catalog-filters/utils";
 
 interface CatalogPageProps {
-  searchParams: {
+  searchParams: Promise<{
     category?: string;
     gender?: string;
     order?: string;
     sort?: string;
     size?: string;
-  };
+  }>;
 }
 
-export default async function CatalogPage({ searchParams }: CatalogPageProps) {
+export default async function CatalogPage(props: CatalogPageProps) {
+  const searchParams = await props.searchParams;
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
-    ...getValidatedGetProductsPagedParams(searchParams),
+    ...getProductsPagedQueryParams(searchParams),
   });
 
   return (
     <NavigationLayout>
       <div>
         <Filters />
-        <CatalogSection
+        <InfinityScrollCatalog
           total={response.total || 0}
           firstPageItems={response.products || []}
         />

@@ -8,7 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../..";
-import Checkbox from "@/components/ui/Checkbox";
+import Checkbox from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
 type Props = {

@@ -5,9 +5,9 @@ import ContactsMdx from "./contacts.mdx";
 import ShippingMdx from "./shipping.mdx";
 
 type Props = {
-  params: {
+  params: Promise<{
     mdxPageSlug: string;
-  };
+  }>;
 };
 
 const MDX_FILES_MAP: Record<string, any> = {
@@ -22,7 +22,8 @@ export function generateStaticParams() {
   }));
 }
 
-export default function Page({ params }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
   const { mdxPageSlug } = params;
 
   const MdxComponent = MDX_FILES_MAP[mdxPageSlug];

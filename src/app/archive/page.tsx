@@ -1,8 +1,8 @@
 import NavigationLayout from "@/components/layouts/NavigationLayout";
 import { serviceClient } from "@/lib/api";
 
-import { FullscreenImagesCarousel } from "@/components/sections/FullscreenImagesCarousel";
-import { ArchiveMediaItem } from "@/components/sections/FullscreenImagesCarousel/ArchiveMediaItem";
+import { FullscreenImagesCarousel } from "@/features/images-carousel";
+import { ArchiveMediaItem } from "@/features/images-carousel/ArchiveMediaItem";
 
 export default async function Page() {
   const { archives } = await serviceClient.GetArchivesPaged({

@@ -1,23 +1,21 @@
-import CartPopup from "@/components/sections/Cart/CartPopup";
-import CartProductsList from "@/components/sections/Cart/CartProductsList";
-import TotalPrice from "@/components/sections/Cart/TotalPrice";
-import Footer from "@/components/sections/Footer";
-import Header from "@/components/sections/Header";
-import { Button } from "@/components/ui/Button";
-import { getCookieCart } from "@/lib/utils/cart";
+import CartPopup from "@/features/cart/CartPopup";
+import CartProductsList from "@/features/cart/CartProductsList";
+import TotalPrice from "@/features/cart/TotalPrice";
+import {Footer} from "@/features/footer";
+import {Header} from "@/features/header";
+import { Button } from "@/components/ui/button";
+import { getCookieCart } from "@/features/cart/utils";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default function NavigationLayout({
+export default async function NavigationLayout({
   children,
   hideForm,
 }: Readonly<{
   children: React.ReactNode;
   hideForm?: boolean;
 }>) {
-  const cartData = getCookieCart();
-  const hasCartProducts =
-    cartData?.products && Object.keys(cartData?.products).length > 0;
+  const cartData = await getCookieCart();
   const itemsQuantity = Object.keys(cartData?.products || {}).length;
 
   return (
@@ -47,7 +45,6 @@ export default function NavigationLayout({
             <nav className="sticky top-24 flex flex-col items-center gap-60">
               <CartPopup
                 itemsQuantity={itemsQuantity}
-                hasCartProducts={hasCartProducts}
               >
                 <Suspense fallback={null}>
                   <div className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll">

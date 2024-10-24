@@ -1,6 +1,6 @@
 "use client";
 
-import Input from "@/components/ui/Input";
+import Input from "@/components/ui/input";
 import { SubmitButton } from "./SubmitButton";
 
 type FooterFormProps = {

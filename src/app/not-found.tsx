@@ -1,5 +1,5 @@
-import Header from "@/components/sections/Header";
-import { Button } from "@/components/ui/Button";
+import { Header } from "@/features/header";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import "./globals.css";
 

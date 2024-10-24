@@ -7,7 +7,7 @@ import {
   FormItem,
   FormMessage,
 } from "../..";
-import RadioGroup, { RadioGroupsProps } from "@/components/ui/RadioGroup";
+import RadioGroup, { RadioGroupsProps } from "@/components/ui/radio-group";
 
 type Props = RadioGroupsProps & {
   description?: string;
