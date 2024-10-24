@@ -2,7 +2,7 @@
 
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { Button } from "@/components/ui/button";
-import InputField from "@/components/ui/form/fields/InputField";
+import InputField from "@/components/ui/form/fields/input-field";
 import { useState } from "react";
 import { useFormContext, type Control } from "react-hook-form";
 

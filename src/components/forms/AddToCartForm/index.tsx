@@ -1,8 +1,8 @@
 "use client";
 
 import { common_ProductSize } from "@/api/proto-http/frontend";
-import SelectField from "@/components/ui/form/fields/SelectField";
-import { FormContainer } from "@/components/ui/form/FormContainer";
+import SelectField from "@/components/ui/form/fields/select-field";
+import { FormContainer } from "@/components/ui/form/form-container";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
