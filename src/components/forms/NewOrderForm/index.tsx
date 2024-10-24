@@ -1,9 +1,9 @@
 "use client";
 
-import { FormContainer } from "@/components/ui/form/FormContainer";
-import CheckboxField from "@/components/ui/form/fields/CheckboxField";
-import InputField from "@/components/ui/form/fields/InputField";
-import RadioGroupField from "@/components/ui/form/fields/RadioGroupField";
+import { FormContainer } from "@/components/ui/form/form-container";
+import CheckboxField from "@/components/ui/form/fields/checkbox-field";
+import InputField from "@/components/ui/form/fields/input-field";
+import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,7 +15,7 @@ import type {
   ValidateOrderItemsInsertResponse,
 } from "@/api/proto-http/frontend";
 import { useHeroContext } from "@/components/contexts/HeroContext";
-import InputMaskedField from "@/components/ui/form/fields/InputMaskedField";
+import InputMaskedField from "@/components/ui/form/fields/input-masked-field";
 import { serviceClient } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import PromoCode from "./PromoCode";

@@ -1,7 +1,7 @@
 "use client";
 
-import InputField from "@/components/ui/form/fields/InputField";
-import SelectField from "@/components/ui/form/fields/SelectField";
+import InputField from "@/components/ui/form/fields/input-field";
+import SelectField from "@/components/ui/form/fields/select-field";
 import type { Control } from "react-hook-form";
 
 type Props = {

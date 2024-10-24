@@ -7,7 +7,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../..";
+} from "..";
 import Checkbox from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 

@@ -5,23 +5,22 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
-} from "../..";
-import { InputMaskProps, InputMask } from "@/components/ui/input-masked";
+} from "..";
+import RadioGroup, { RadioGroupsProps } from "@/components/ui/radio-group";
 
-type Props = InputMaskProps & {
+type Props = RadioGroupsProps & {
   description?: string;
   loading?: boolean;
   control: Control<any>;
 };
 
-export default function InputMaskedField({
+export default function RadioGroupField({
   loading,
   control,
   name,
-  label,
   description,
+  onChange,
   ...props
 }: Props) {
   return (
@@ -30,9 +29,19 @@ export default function InputMaskedField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
           <FormControl>
-            <InputMask disabled={loading} {...field} {...props} />
+            <RadioGroup
+              disabled={loading}
+              {...field}
+              onValueChange={(v: string) => {
+                if (onChange) {
+                  onChange(v);
+                }
+
+                field.onChange(v);
+              }}
+              {...props}
+            />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

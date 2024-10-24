@@ -7,22 +7,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../..";
-import Input, { InputProps } from "@/components/ui/input";
+} from "..";
+import { InputMaskProps, InputMask } from "@/components/ui/input-masked";
 
-type Props = InputProps & {
+type Props = InputMaskProps & {
   description?: string;
   loading?: boolean;
   control: Control<any>;
 };
 
-export default function InputField({
+export default function InputMaskedField({
   loading,
   control,
   name,
   label,
   description,
-  type = "text",
   ...props
 }: Props) {
   return (
@@ -33,7 +32,7 @@ export default function InputField({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input type={type} disabled={loading} {...field} {...props} />
+            <InputMask disabled={loading} {...field} {...props} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
