@@ -8,6 +8,8 @@ import { HeroContextProvider } from "@/components/contexts/HeroContext";
 export async function CommonLayout({ children }: Props) {
   const heroData = await serviceClient.GetHero({});
 
+  // todo: add cart context
+
   return (
     <HeroContextProvider {...heroData}>
       <div className="lightTheme relative min-h-screen">{children}</div>

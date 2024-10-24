@@ -8,7 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../..";
-import Input, { InputProps } from "@/components/ui/Input";
+import Input, { InputProps } from "@/components/ui/input";
 
 type Props = InputProps & {
   description?: string;

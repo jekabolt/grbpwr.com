@@ -1,4 +1,4 @@
-import { addCartProduct, clearCartProducts } from "@/actions/cart";
+import { addCartProduct, clearCartProducts } from "@/features/cart/action";
 import {
   common_OrderItem,
   common_OrderItemInsert,
@@ -7,11 +7,11 @@ import {
 import NewOrderForm from "@/components/forms/NewOrderForm";
 import NavigationLayout from "@/components/layouts/NavigationLayout";
 import { serviceClient } from "@/lib/api";
-import { getValidateOrderItemsInsertItems } from "@/lib/utils/cart";
+import { getValidateOrderItemsInsertItems } from "@/features/cart/utils";
 import { redirect } from "next/navigation";
 
 export default async function CheckoutPage() {
-  const items = getValidateOrderItemsInsertItems();
+  const items = await getValidateOrderItemsInsertItems();
 
   if (items.length === 0) return null;
 

@@ -8,7 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../..";
-import InputMask, { InputMaskProps } from "@/components/ui/InputMask";
+import { InputMaskProps, InputMask } from "@/components/ui/input-masked";
 
 type Props = InputMaskProps & {
   description?: string;

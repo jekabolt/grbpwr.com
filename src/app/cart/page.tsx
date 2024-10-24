@@ -1,16 +1,16 @@
 import NavigationLayout from "@/components/layouts/NavigationLayout";
-import CartProductsList from "@/components/sections/Cart/CartProductsList";
-import TotalPrice from "@/components/sections/Cart/TotalPrice";
-import { Button } from "@/components/ui/Button";
-import { CartProductsSkeleton } from "@/components/ui/Skeleton";
-import { getCookieCart } from "@/lib/utils/cart";
+import CartProductsList from "@/features/cart/CartProductsList";
+import TotalPrice from "@/features/cart/TotalPrice";
+import { Button } from "@/components/ui/button";
+import { CartProductsSkeleton } from "@/components/ui/skeleton";
+import { getCookieCart } from "@/features/cart/utils";
 import Link from "next/link";
 import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
 export default async function CartPage() {
-  const cartItems = getCookieCart();
+  const cartItems = await getCookieCart();
 
   return (
     <NavigationLayout>

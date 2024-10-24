@@ -1,17 +1,17 @@
-import { addCartProduct } from "@/actions/cart";
+import { addCartProduct } from "@/features/cart/action";
 import AddToCartForm from "@/components/forms/AddToCartForm";
 import NavigationLayout from "@/components/layouts/NavigationLayout";
-import { FullscreenImagesCarousel } from "@/components/sections/FullscreenImagesCarousel";
-import { ProductMediaItem } from "@/components/sections/FullscreenImagesCarousel/ProductMediaItem";
-import MeasurementsModal from "@/components/sections/MeasurementsModal";
+import { FullscreenImagesCarousel } from "@/features/images-carousel";
+import { ProductMediaItem } from "@/features/images-carousel/ProductMediaItem";
+import MeasurementsModal from "@/features/measurements-modal";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import { notFound } from "next/navigation";
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     productParams: string[];
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -35,7 +35,8 @@ const catalogData = [
   { label: "Jackets & Coats", separator: "/" },
 ];
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage(props: ProductPageProps) {
+  const params = await props.params;
   const { productParams } = params;
 
   if (productParams.length !== 4) {

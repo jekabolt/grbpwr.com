@@ -8,7 +8,7 @@
 
 import { useCopyToClipboard } from "@uidotdev/usehooks";
 
-import Image from "@/components/ui/Image";
+import Image from "@/components/ui/image";
 
 interface Props {
   euroAmount: string;

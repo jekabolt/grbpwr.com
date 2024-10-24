@@ -5,12 +5,13 @@ import V0GenUiOrder from "./V0GenUi";
 import V0GenUiQRCode from "./V0GenUiQRCode";
 
 interface Props {
-  params: {
+  params: Promise<{
     uuid: string;
-  };
+  }>;
 }
 
-export default async function OrderPage({ params }: Props) {
+export default async function OrderPage(props: Props) {
+  const params = await props.params;
   const { uuid } = params;
 
   const response = await serviceClient.GetOrderByUUID({ orderUuid: uuid });
