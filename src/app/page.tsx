@@ -1,9 +1,10 @@
 import Link from "next/link";
-import NavigationLayout from "@/components/layouts/NavigationLayout";
-import { Ads } from "@/features/hero/ads";
-import { MainAds } from "@/features/hero/main";
-import { Button } from "@/components/ui/button";
+
 import { serviceClient } from "@/lib/api";
+import { Button } from "@/components/ui/button";
+import { Ads } from "@/app/_components/ads";
+import { MainAds } from "@/app/_components/main-ads";
+import NavigationLayout from "@/app/_components/navigation-layout";
 
 export default async function Page() {
   const { hero } = await serviceClient.GetHero({});

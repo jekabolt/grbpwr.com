@@ -1,7 +1,7 @@
 "use client";
 
-import { Slot } from "@radix-ui/react-slot";
 import { useState } from "react";
+import { Slot } from "@radix-ui/react-slot";
 
 export default function Modal({
   children,

@@ -1,4 +1,5 @@
 import { InputMask as InputMaskControl, Replacement } from "@react-input/mask";
+
 import Input, { type InputProps } from "./input";
 
 export interface InputMaskProps extends InputProps {

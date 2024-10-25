@@ -30,5 +30,5 @@
     "@ianvs/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss"
   ],
-  "tailwindConfig": "./packages/ui/tailwind.config.ts"
+  "tailwindConfig": "./tailwind.config.ts"
 }

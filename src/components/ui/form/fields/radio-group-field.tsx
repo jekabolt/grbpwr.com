@@ -1,5 +1,7 @@
 import { type Control } from "react-hook-form";
 
+import RadioGroup, { RadioGroupsProps } from "@/components/ui/radio-group";
+
 import {
   FormControl,
   FormDescription,
@@ -7,7 +9,6 @@ import {
   FormItem,
   FormMessage,
 } from "..";
-import RadioGroup, { RadioGroupsProps } from "@/components/ui/radio-group";
 
 type Props = RadioGroupsProps & {
   description?: string;

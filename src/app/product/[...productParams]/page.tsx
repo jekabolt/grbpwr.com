@@ -1,12 +1,14 @@
-import { addCartProduct } from "@/features/cart/action";
-import AddToCartForm from "@/components/forms/AddToCartForm";
-import NavigationLayout from "@/components/layouts/NavigationLayout";
-import { FullscreenImagesCarousel } from "@/features/images-carousel";
-import { ProductMediaItem } from "@/features/images-carousel/ProductMediaItem";
-import MeasurementsModal from "@/features/measurements-modal";
-import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
-import { serviceClient } from "@/lib/api";
 import { notFound } from "next/navigation";
+import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
+
+import { addCartProduct } from "@/lib/actions/cart";
+import { serviceClient } from "@/lib/api";
+import { FullscreenImagesCarousel } from "@/components/images-carousel";
+import { ProductMediaItem } from "@/components/images-carousel/ProductMediaItem";
+import NavigationLayout from "@/app/_components/navigation-layout";
+
+import AddToCartForm from "./_components/add-to-cart-form";
+import MeasurementsModal from "./_components/measurements-modal";
 
 interface ProductPageProps {
   params: Promise<{

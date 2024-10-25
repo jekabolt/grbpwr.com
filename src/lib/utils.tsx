@@ -14,4 +14,3 @@ export function calculateAspectRatio(
   }
   return `${width}/${height}`;
 }
-

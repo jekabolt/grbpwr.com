@@ -1,9 +1,11 @@
-import {InfinityScrollCatalog} from "@/features/infinity-scroll-catalog";
-import Filters from "@/features/catalog-filters";
-import NavigationLayout from "@/components/layouts/NavigationLayout";
 import { CATALOG_LIMIT } from "@/constants";
+
 import { serviceClient } from "@/lib/api";
-import { getProductsPagedQueryParams } from "@/features/catalog-filters/utils";
+import NavigationLayout from "@/app/_components/navigation-layout";
+
+import Filters from "./_components/catalog-filters";
+import { InfinityScrollCatalog } from "./_components/infinity-scroll-catalog";
+import { getProductsPagedQueryParams } from "./_components/utils";
 
 interface CatalogPageProps {
   searchParams: Promise<{

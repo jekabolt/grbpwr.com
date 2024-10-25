@@ -1,7 +1,6 @@
 import { type UseFormReturn } from "react-hook-form";
 
 import { Form, FormFooter } from "@/components/ui/form";
-import { SubmitButton } from "@/components/forms/SubmitButton";
 
 type Props = {
   form: UseFormReturn<any>;

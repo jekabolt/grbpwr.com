@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useId } from "react";
+import { Label } from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import {
   Controller,
@@ -12,7 +13,6 @@ import {
 } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
-import { Label } from "@radix-ui/react-label";
 
 const Form = FormProvider;
 
@@ -71,7 +71,7 @@ const FormItemContext = createContext<FormItemContextValue>(
   {} as FormItemContextValue,
 );
 
-function FormItem ({ className, ref, ...props }: any)  {
+function FormItem({ className, ref, ...props }: any) {
   const id = useId();
 
   return (
@@ -79,11 +79,11 @@ function FormItem ({ className, ref, ...props }: any)  {
       <div ref={ref} className={cn("space-y-2", className)} {...props} />
     </FormItemContext.Provider>
   );
-};
+}
 
 FormItem.displayName = "FormItem";
 
-function FormLabel ({ className, ref, ...props }: any)  {
+function FormLabel({ className, ref, ...props }: any) {
   const { formItemId } = useFormField();
 
   return (
@@ -94,11 +94,11 @@ function FormLabel ({ className, ref, ...props }: any)  {
       {...props}
     />
   );
-};
+}
 
 FormLabel.displayName = "FormLabel";
 
-function FormControl (props: any)  {
+function FormControl(props: any) {
   const { error, formItemId, formDescriptionId, formMessageId } =
     useFormField();
 
@@ -114,11 +114,11 @@ function FormControl (props: any)  {
       {...props}
     />
   );
-};
+}
 
 FormControl.displayName = "FormControl";
 
-function FormDescription ({ className, ref, ...props }: any)  {
+function FormDescription({ className, ref, ...props }: any) {
   const { formDescriptionId } = useFormField();
 
   return (
@@ -133,7 +133,7 @@ function FormDescription ({ className, ref, ...props }: any)  {
 
 FormDescription.displayName = "FormDescription";
 
-function FormMessage ({ className, children, ref, ...props }: any)  {
+function FormMessage({ className, children, ref, ...props }: any) {
   const { error, formMessageId } = useFormField();
   const body = error ? String(error?.message) : children;
 
