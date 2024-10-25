@@ -1,8 +1,8 @@
 "use client";
 
 import InputField from "@/components/ui/form/fields/input-field";
-import SelectField from "@/components/ui/form/fields/select-field";
 import type { Control } from "react-hook-form";
+import SelectField from "@/components/ui/form/fields/select-field";
 
 type Props = {
   loading: boolean;

@@ -1,7 +1,7 @@
 import { type Control } from "react-hook-form";
 
 import { FormField, FormItem, FormLabel, FormMessage } from "..";
-import Select from "@/components/ui/select";
+import Select from "../../select";
 
 type Props = {
   name: string;
