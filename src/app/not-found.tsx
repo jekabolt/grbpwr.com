@@ -1,6 +1,8 @@
-import { Header } from "@/features/header";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+import { Header } from "@/app/_components/header";
+
 import "./globals.css";
 
 export default function NotFound() {

@@ -15,12 +15,12 @@ function ImageContainer({
 }
 
 type ImageProps = {
-    alt: string;
-    src: string;
-    aspectRatio: string;
-    sizes?: string;
-    fit?: "cover" | "contain";
-  }
+  alt: string;
+  src: string;
+  aspectRatio: string;
+  sizes?: string;
+  fit?: "cover" | "contain";
+};
 
 export default function ImageComponent({
   aspectRatio,

@@ -1,5 +1,7 @@
 import { type Control } from "react-hook-form";
 
+import { InputMask, InputMaskProps } from "@/components/ui/input-masked";
+
 import {
   FormControl,
   FormDescription,
@@ -8,7 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "..";
-import { InputMaskProps, InputMask } from "@/components/ui/input-masked";
 
 type Props = InputMaskProps & {
   description?: string;

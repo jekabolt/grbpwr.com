@@ -1,5 +1,8 @@
 import { type Control } from "react-hook-form";
 
+import { cn } from "@/lib/utils";
+import Checkbox from "@/components/ui/checkbox";
+
 import {
   FormControl,
   FormDescription,
@@ -8,8 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from "..";
-import Checkbox from "@/components/ui/checkbox";
-import { cn } from "@/lib/utils";
 
 type Props = {
   name: string;

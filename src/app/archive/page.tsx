@@ -1,8 +1,9 @@
-import NavigationLayout from "@/components/layouts/NavigationLayout";
 import { serviceClient } from "@/lib/api";
+import { FullscreenImagesCarousel } from "@/components/images-carousel";
+import { ArchiveMediaItem } from "@/components/images-carousel/ArchiveMediaItem";
+import NavigationLayout from "@/app/_components/navigation-layout";
 
-import { FullscreenImagesCarousel } from "@/features/images-carousel";
-import { ArchiveMediaItem } from "@/features/images-carousel/ArchiveMediaItem";
+import { InfinityScrollCatalog } from "../catalog/_components/infinity-scroll-catalog";
 
 export default async function Page() {
   const { archives } = await serviceClient.GetArchivesPaged({

@@ -1,5 +1,6 @@
 import React from "react";
 import * as Select from "@radix-ui/react-select";
+
 import { cn } from "@/lib/utils";
 
 export default function SelectComponent({
@@ -26,23 +27,23 @@ export default function SelectComponent({
 }
 
 // todo: add type
-export function SelectItem ({ children, className, ref, ...props }: any) {
-    return (
-      <Select.Item
-        className={cn(
-          "relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[35px] text-[13px] leading-none text-textColor data-[disabled]:pointer-events-none data-[highlighted]:bg-textColor data-[highlighted]:text-textColor data-[disabled]:opacity-30 data-[highlighted]:outline-none",
-          className,
-        )}
-        {...props}
-        ref={ref}
-      >
-        <Select.ItemText>{children}</Select.ItemText>
-        <Select.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
-          {/* <CheckIcon /> */}
-          check icon
-        </Select.ItemIndicator>
-      </Select.Item>
-    );
+export function SelectItem({ children, className, ref, ...props }: any) {
+  return (
+    <Select.Item
+      className={cn(
+        "relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[35px] text-[13px] leading-none text-textColor data-[disabled]:pointer-events-none data-[highlighted]:bg-textColor data-[highlighted]:text-textColor data-[disabled]:opacity-30 data-[highlighted]:outline-none",
+        className,
+      )}
+      {...props}
+      ref={ref}
+    >
+      <Select.ItemText>{children}</Select.ItemText>
+      <Select.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
+        {/* <CheckIcon /> */}
+        check icon
+      </Select.ItemIndicator>
+    </Select.Item>
+  );
 }
 
 SelectItem.displayName = Select.Item.displayName;

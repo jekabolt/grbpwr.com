@@ -1,5 +1,7 @@
 import { type Control } from "react-hook-form";
 
+import Input, { InputProps } from "@/components/ui/input";
+
 import {
   FormControl,
   FormDescription,
@@ -8,7 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "..";
-import Input, { InputProps } from "@/components/ui/input";
 
 type Props = InputProps & {
   description?: string;
