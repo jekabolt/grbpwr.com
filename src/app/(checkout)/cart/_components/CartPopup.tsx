@@ -4,16 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { useClickAway } from "@uidotdev/usehooks";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-export default function CartPopup({
-  children,
-  itemsQuantity,
-}: {
-  children: React.ReactNode;
-  itemsQuantity?: number;
-}) {
+export default function CartPopup({ children }: { children: React.ReactNode }) {
+  const products = useCart((state) => state.products);
+  const itemsQuantity = Object.keys(products).length;
   const [open, setOpenStatus] = useState(false);
 
   const ref = useClickAway<HTMLDivElement>(() => {

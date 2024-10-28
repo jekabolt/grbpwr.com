@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 
-import { addCartProduct } from "@/lib/actions/cart";
+// import { addCartProduct } from "@/lib/actions/cart";
 import { serviceClient } from "@/lib/api";
 import { FullscreenImagesCarousel } from "@/components/images-carousel";
 import { ProductMediaItem } from "@/components/images-carousel/ProductMediaItem";
@@ -81,7 +81,7 @@ export default async function ProductPage(props: ProductPageProps) {
           </div>
           <div className="mt-4">
             <MeasurementsModal
-              addCartProduct={addCartProduct}
+              // addCartProduct={addCartProduct}
               sizes={product?.sizes}
               productId={product?.product?.id}
             />
@@ -89,7 +89,7 @@ export default async function ProductPage(props: ProductPageProps) {
 
           {product?.product?.id && product?.sizes?.length && (
             <AddToCartForm
-              handleSubmit={addCartProduct}
+              // handleSubmit={addCartProduct}
               id={product.product.id}
               sizes={product.sizes}
             />

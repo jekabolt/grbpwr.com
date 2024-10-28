@@ -1,22 +1,20 @@
 "use client";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { Button } from "@/components/ui/button";
 
 type Props = {
-  removeProduct: ({ id, size }: { id: number; size: string }) => void;
   id: number;
   size: string;
 };
 
-export default function ProductRemoveButton({
-  id,
-  size,
-  removeProduct,
-}: Props) {
+export default function ProductRemoveButton({ id, size }: Props) {
+  const { removeProduct } = useCart((state) => state);
+
   return (
     <Button
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-        removeProduct({ id, size });
+        removeProduct(id, size);
       }}
       variant="underline"
     >

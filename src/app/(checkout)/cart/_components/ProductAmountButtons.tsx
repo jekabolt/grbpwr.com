@@ -1,33 +1,22 @@
 "use client";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { Button } from "@/components/ui/button";
 
 type Props = {
-  changeProductAmount: ({
-    id,
-    size,
-    operation,
-  }: {
-    id: number;
-    size: string;
-    operation: "increase" | "decrease";
-  }) => void;
   id: number;
   size: string;
   children: React.ReactNode;
 };
 
-export default function ProductAmountButtons({
-  id,
-  size,
-  children,
-  changeProductAmount,
-}: Props) {
+export default function ProductAmountButtons({ id, size, children }: Props) {
+  const { increaseQuantity, decreaseQuantity } = useCart((state) => state);
+
   return (
     <div className="flex gap-1">
       <Button
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-          changeProductAmount({ id, size, operation: "increase" });
+          increaseQuantity(id, size);
         }}
       >
         +
@@ -35,7 +24,7 @@ export default function ProductAmountButtons({
       {children}
       <Button
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-          changeProductAmount({ id, size, operation: "decrease" });
+          decreaseQuantity(id, size);
         }}
       >
         -

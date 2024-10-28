@@ -12,11 +12,11 @@ import { AddToCartData, addToCartSchema } from "./schema";
 
 // todo: rework this to share logic with measurement modal
 export default function AddToCartForm({
-  handleSubmit,
+  // handleSubmit,
   sizes,
   id,
 }: {
-  handleSubmit: ({ id, size }: { id: number; size: string }) => Promise<void>;
+  // handleSubmit: ({ id, size }: { id: number; size: string }) => Promise<void>;
   id: number;
   sizes: common_ProductSize[];
 }) {
@@ -30,7 +30,7 @@ export default function AddToCartForm({
 
     setLoadingStatus(true);
     try {
-      await handleSubmit({ id, size: data.size });
+      // await handleSubmit({ id, size: data.size });
     } catch (error) {
       console.error(error);
     } finally {

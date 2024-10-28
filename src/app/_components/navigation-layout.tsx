@@ -4,8 +4,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CartPopup from "@/app/(checkout)/cart/_components/CartPopup";
 import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList";
-// import TotalPrice from "@/features/cart/TotalPrice";
-import { getCookieCart } from "@/app/(checkout)/cart/_components/utils";
 
 import { Footer } from "./footer";
 import { Header } from "./header";
@@ -17,12 +15,8 @@ export default async function NavigationLayout({
   children: React.ReactNode;
   hideForm?: boolean;
 }>) {
-  const cartData = await getCookieCart();
-  const itemsQuantity = Object.keys(cartData?.products || {}).length;
-
   return (
     <div className="min-h-screen bg-bgColor">
-      {/* <div className="relative mx-auto max-w-7xl"> */}
       <Header />
       <div className="flex">
         <div className="relative hidden w-24 md:block">
@@ -45,7 +39,7 @@ export default async function NavigationLayout({
 
         <div className="relative hidden w-24 md:block">
           <nav className="sticky top-24 flex flex-col items-center gap-60">
-            <CartPopup itemsQuantity={itemsQuantity}>
+            <CartPopup>
               <Suspense fallback={null}>
                 <div className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll">
                   <CartProductsList className="border-b border-dashed border-textColor pb-6" />
@@ -63,6 +57,5 @@ export default async function NavigationLayout({
       </div>
       <Footer className="mt-24" hideForm={hideForm} />
     </div>
-    // </div>
   );
 }
