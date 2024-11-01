@@ -1,3 +1,6 @@
+import { StateCreator } from "zustand";
+import { PersistOptions } from "zustand/middleware";
+
 export interface CartProduct {
   id: number;
   size: string;
@@ -19,3 +22,8 @@ export interface CartActions {
 }
 
 export type CartStore = CartState & CartActions;
+
+export type CartPersist = (
+  config: StateCreator<CartStore>,
+  options: PersistOptions<CartStore>,
+) => StateCreator<CartStore>;

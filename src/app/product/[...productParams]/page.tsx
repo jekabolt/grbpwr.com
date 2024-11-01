@@ -3,12 +3,13 @@ import { CURRENCY_MAP, MAX_LIMIT } from "@/constants";
 
 // import { addCartProduct } from "@/lib/actions/cart";
 import { serviceClient } from "@/lib/api";
+import { cn } from "@/lib/utils";
 import { FullscreenImagesCarousel } from "@/components/images-carousel";
 import { ProductMediaItem } from "@/components/images-carousel/ProductMediaItem";
 import NavigationLayout from "@/app/_components/navigation-layout";
 
-import AddToCartForm from "./_components/add-to-cart-form";
 import MeasurementsModal from "./_components/measurements-modal";
+import AddToCartForm from "./_components/select-size-add-to-cart";
 
 interface ProductPageProps {
   params: Promise<{
@@ -57,44 +58,46 @@ export default async function ProductPage(props: ProductPageProps) {
   const baseCurrencyPrice =
     product?.product?.productDisplay?.productBody?.price?.value;
 
+  const productMedia = [...(product?.media || []), ...(product?.media || [])];
+
   return (
     <NavigationLayout>
-      <div className="relative flex flex-col bg-white pb-20 pt-5">
-        {product?.media && (
-          <div className="grid w-full grid-cols-6 items-end gap-2">
-            <FullscreenImagesCarousel
-              mediaList={product.media}
-              ItemComponent={ProductMediaItem}
-            />
+      <div className="grid grid-cols-10 items-end gap-1">
+        {productMedia.map((m) => (
+          <div
+            key={m.id}
+            className={cn({
+              "col-span-3 first:col-span-2 last:col-span-2":
+                productMedia.length === 4,
+              "col-span-4 first:col-span-3 last:col-span-3":
+                productMedia.length === 3,
+              "col-span-5": productMedia.length === 2,
+            })}
+          >
+            <ProductMediaItem singleMedia={m} />
           </div>
-        )}
-        <div className="flex w-1/2 flex-col">
-          <div className="mt-4 flex justify-between">
-            <div>{product?.product?.productDisplay?.productBody?.name}</div>
-            <div>
-              {product?.product?.productDisplay?.productBody?.price?.value}
-              {CURRENCY_MAP.eth}
-            </div>
+        ))}
+      </div>
+      <div className="grid grid-cols-2 gap-20">
+        <div className="space-y-6">
+          <div className="flex justify-between gap-2">
+            <span>Product name</span>
+            <span>Product price</span>
           </div>
-          <div className="mt-4">
-            {product?.product?.productDisplay?.productBody?.description}
+          <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed at
+            doloribus, iste ad itaque rem dicta laudantium iure nisi nulla
+            deserunt, vel, vero quibusdam inventore cumque quis libero?
+            Consequatur, in.
           </div>
-          <div className="mt-4">
-            <MeasurementsModal
-              // addCartProduct={addCartProduct}
-              sizes={product?.sizes}
-              productId={product?.product?.id}
-            />
+          <div>
+            <span className="underline">measurements</span>
           </div>
-
-          {product?.product?.id && product?.sizes?.length && (
-            <AddToCartForm
-              // handleSubmit={addCartProduct}
-              id={product.product.id}
-              sizes={product.sizes}
-            />
-          )}
         </div>
+        <AddToCartForm
+          sizes={product?.sizes || []}
+          id={product?.product?.id || 0}
+        />
       </div>
     </NavigationLayout>
   );
