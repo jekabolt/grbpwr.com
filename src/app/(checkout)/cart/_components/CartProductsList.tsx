@@ -1,17 +1,13 @@
 "use client";
 
-// import { addCartProduct, clearCartProducts } from "@/lib/actions/cart";
-import { cache, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 
 import { serviceClient } from "@/lib/api";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import CartItemRow from "@/app/(checkout)/cart/_components/CartItemRow";
 
-import SelectedCurrency from "./TotalPrice";
-
-// import SelectedCurrency from "@/app/(checkout)/cart/_components/TotalPrice/SelectedCurrency";
-// import { getValidateOrderItemsInsertItems } from "@/app/(checkout)/cart/_components/utils";
+import TotalPrice from "./TotalPrice";
 
 // wrapped in suspense. new technics should be used
 // think how make it easy
@@ -32,7 +28,7 @@ export default function CartProductsList({
         items: products.map((p) => ({
           productId: p.id,
           quantity: p.quantity,
-          sizeId: p.size,
+          sizeId: Number(p.size),
         })),
         shipmentCarrierId: undefined,
         promoCode: undefined,
@@ -44,14 +40,12 @@ export default function CartProductsList({
     fetchData();
   }, [products]);
 
-  console.log(cartItemFullResponse);
-
   return (
     <div className={"space-y-6"}>
       {cartItemFullResponse?.validItems?.map((p) => (
         <CartItemRow key={p.slug} product={p} className={className} />
       ))}
-      <SelectedCurrency />
+      <TotalPrice />
     </div>
   );
 }
