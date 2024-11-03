@@ -14,9 +14,12 @@ export interface CartState {
 }
 
 export interface CartActions {
-  addProduct: (product: CartProduct) => void;
+  increaseQuantity: (
+    productId: number,
+    size: string,
+    quantity?: number,
+  ) => void;
   removeProduct: (productId: number, size: string) => void;
-  increaseQuantity: (productId: number, size: string) => void;
   decreaseQuantity: (productId: number, size: string) => void;
   clearCart: () => void;
 }

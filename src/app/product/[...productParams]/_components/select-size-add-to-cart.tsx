@@ -13,16 +13,14 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 
-// todo: rework this to share logic with measurement modal
 export default function AddToCartForm({
   sizes,
   id,
 }: {
-  // handleSubmit: ({ id, size }: { id: number; size: string }) => Promise<void>;
   id: number;
   sizes: common_ProductSize[];
 }) {
-  const { addProduct, products } = useCart((state) => state);
+  const { increaseQuantity, products } = useCart((state) => state);
   const [activeSizeId, setActiveSizeId] = useState<number | null>(
     sizes[0].sizeId as number,
   );
@@ -50,13 +48,7 @@ export default function AddToCartForm({
       <Button
         variant={"main"}
         size={"lg"}
-        onClick={() =>
-          addProduct({
-            id,
-            size: activeSizeId?.toString() || "",
-            quantity: 1,
-          })
-        }
+        onClick={() => increaseQuantity(id, activeSizeId?.toString() || "", 1)}
       >
         add to cart
       </Button>
