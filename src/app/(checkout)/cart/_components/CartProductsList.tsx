@@ -16,9 +16,9 @@ export default function CartProductsList({
 
   return (
     <div className={"space-y-6"}>
-      {products?.map((p) => (
+      {products?.map((p, i) => (
         <CartItemRow
-          key={p?.productData?.id + "" + p?.productData?.orderId}
+          key={p?.productData?.id + "" + p?.productData?.orderId + i}
           product={p.productData}
           className={className}
         />

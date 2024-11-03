@@ -13,6 +13,7 @@ export interface CartState {
   products: CartProduct[];
   totalItems: number;
   totalPrice: number;
+  subTotalPrice: number;
 }
 
 export interface CartActions {

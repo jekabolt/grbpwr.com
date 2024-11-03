@@ -5,14 +5,22 @@ import { useDataContext } from "@/components/DataContext";
 
 export default function SelectedCurrency() {
   const { selectedCurrency } = useDataContext();
-  const totalPrice = useCart((state) => state.totalPrice);
+  const { totalPrice, subTotalPrice } = useCart((state) => state);
 
   return (
-    <div className="flex justify-between text-textColor">
-      <span>SUBTOTAL:</span>
-      <span>
-        {totalPrice} {selectedCurrency}
-      </span>
+    <div className="text-textColor">
+      <div className="flex justify-between">
+        <span>TOTAL:</span>
+        <span>
+          {totalPrice} {selectedCurrency}
+        </span>
+      </div>
+      <div className="flex justify-between">
+        <span>SUBTOTAL:</span>
+        <span>
+          {subTotalPrice} {selectedCurrency}
+        </span>
+      </div>
     </div>
   );
 }

@@ -3,12 +3,13 @@ import { createStore } from "zustand/vanilla";
 
 import { serviceClient } from "@/lib/api";
 
-import { CartProduct, CartState, CartStore } from "./store-types";
+import { CartState, CartStore } from "./store-types";
 
 export const defaultInitState: CartState = {
   products: [],
   totalItems: 0,
   totalPrice: 0,
+  subTotalPrice: 0,
 };
 
 export const createCartStore = (initState: CartState = defaultInitState) => {
@@ -78,6 +79,8 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
                 (sum, p) => sum + p.quantity,
                 0,
               ),
+              totalPrice: Number(response.totalSale?.value || 0),
+              subTotalPrice: Number(response.subtotal?.value || 0),
             });
           } catch (error) {
             console.error("increaseQuantity failed 💩:", error);
@@ -135,6 +138,8 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
                 (sum, p) => sum + p.quantity,
                 0,
               ),
+              totalPrice: Number(response.totalSale?.value || 0),
+              subTotalPrice: Number(response.subtotal?.value || 0),
             });
           } catch (error) {
             console.error("decreaseQuantity failed 💩:", error);
@@ -151,6 +156,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             totalItems: updatedProducts.reduce((sum, p) => sum + p.quantity, 0),
           });
         },
+
         clearCart: () => {
           set(defaultInitState);
         },
@@ -162,6 +168,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           products: state.products,
           totalItems: state.totalItems,
           totalPrice: state.totalPrice,
+          subTotalPrice: state.subTotalPrice,
         }),
       },
     ),
