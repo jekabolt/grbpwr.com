@@ -38,11 +38,6 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             updatedProducts = [...products, { id: productId, size, quantity }];
           }
 
-          set({
-            products: updatedProducts,
-            totalItems: updatedProducts.reduce((sum, p) => sum + p.quantity, 0),
-          });
-
           try {
             const response = await serviceClient.ValidateOrderItemsInsert({
               items: updatedProducts.map((p) => ({
@@ -63,8 +58,6 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
               const newQuantity =
                 validatedItem?.orderItem?.quantity || product.quantity;
-
-              delete validatedItem?.orderItem;
 
               return {
                 ...product,
@@ -91,16 +84,16 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           const { products } = get();
           const updatedProducts = products
             .map((p) =>
-              p.id === productId && p.size === size && p.quantity > 1
+              p.id === productId && p.size === size
                 ? { ...p, quantity: p.quantity - 1 }
                 : p,
             )
             .filter((p) => p.quantity > 0);
 
-          set({
-            products: updatedProducts,
-            totalItems: updatedProducts.reduce((sum, p) => sum + p.quantity, 0),
-          });
+          if (updatedProducts.length === 0) {
+            set(defaultInitState);
+            return;
+          }
 
           try {
             const response = await serviceClient.ValidateOrderItemsInsert({
@@ -122,8 +115,6 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
               const newQuantity =
                 validatedItem?.orderItem?.quantity || product.quantity;
-
-              delete validatedItem?.orderItem;
 
               return {
                 ...product,
