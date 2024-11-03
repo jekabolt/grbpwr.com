@@ -6,13 +6,13 @@ import Modal from "@/components/ui/modal";
 import MeasurementsModalContent from "./measurements-modal-content";
 
 interface Props {
-  addCartProduct: ({ id, size }: { id: number; size: string }) => Promise<void>;
+  // addCartProduct: ({ id, size }: { id: number; size: string }) => Promise<void>;
   productId: number | undefined;
   sizes: common_ProductSize[] | undefined;
 }
 
 export default function MeasurementsModal({
-  addCartProduct,
+  // addCartProduct,
   productId,
   sizes,
 }: Props) {
@@ -20,10 +20,10 @@ export default function MeasurementsModal({
     "use server";
 
     if (productId && selectedSize) {
-      await addCartProduct({
-        id: productId,
-        size: selectedSize.toString(),
-      });
+      // await addCartProduct({
+      // id: productId,
+      // size: selectedSize.toString(),
+      // });
     }
   }
 

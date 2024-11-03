@@ -10,6 +10,8 @@ import {
 } from "react";
 import type { GetHeroResponse } from "@/api/proto-http/frontend";
 
+import { serviceClient } from "@/lib/api";
+
 const DataContext = createContext<
   GetHeroResponse & {
     selectedCurrency: string;
@@ -31,6 +33,10 @@ export function DataContextProvider({
     props.dictionary?.baseCurrency || "",
   );
 
+  // const heroData = await serviceClient.GetHero({});
+
+  // console.log("selectedCurrency", selectedCurrency);
+  // }, []);
   // todo: add cart context
 
   return (

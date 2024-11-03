@@ -4,7 +4,7 @@ import { cva, VariantProps } from "class-variance-authority";
 const buttonVariants = cva("disabled:cursor-not-allowed", {
   variants: {
     variant: {
-      default: ["text-textBaseSize"],
+      default: ["text-textBaseSize", "disabled:opacity-50"],
       simple: ["text-bgColor", "bg-textColor"],
       main: [
         "border",

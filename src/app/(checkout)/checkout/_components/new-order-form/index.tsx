@@ -92,32 +92,22 @@ async function submitNewOrder(newOrderData: common_OrderNew) {
   }
 }
 
-export default function NewOrderForm({
-  order,
-  // submitNewOrder,
-  updateCookieCart,
-}: {
-  order?: ValidateOrderItemsInsertResponse;
-  // submitNewOrder: (
-  // newOrderData: common_OrderNew,
-  // ) => Promise<{ ok: boolean; order?: SubmitOrderResponse }>;
-  updateCookieCart: (validItems: any[]) => void;
-}) {
+export default function NewOrderForm() {
   const [newOrderStripeToken, setNewOrderStripeToken] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [orderData, setOrderData] = useState<
     ValidateOrderItemsInsertResponse | undefined
-  >(order);
+  >(undefined);
   const { dictionary } = useDataContext();
   const router = useRouter();
 
   const defaultValues = {
-    ...defaultData,
-    promoCustomConditions: {
-      totalSale: order?.totalSale,
-      subtotal: order?.subtotal,
-      promo: order?.promo,
-    },
+    // ...defaultData,
+    // promoCustomConditions: {
+    //   totalSale: order?.totalSale,
+    //   subtotal: order?.subtotal,
+    //   promo: order?.promo,
+    // },
   };
   const form = useForm<CheckoutData>({
     resolver: zodResolver(checkoutSchema),
@@ -189,7 +179,7 @@ export default function NewOrderForm({
     setOrderData(response);
 
     if (response.hasChanged && response.validItems) {
-      updateCookieCart(response.validItems);
+      // updateCookieCart(response.validItems);
     }
 
     return response;

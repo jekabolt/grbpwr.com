@@ -1,9 +1,5 @@
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 
-import {
-  changeCartProductQuantity,
-  removeCartProduct,
-} from "@/lib/actions/cart";
 import { cn } from "@/lib/utils";
 import Image from "@/components/ui/image";
 
@@ -42,17 +38,14 @@ export default function CartItemRow({
           <ProductAmountButtons
             id={product.orderItem?.productId}
             size={product.orderItem?.sizeId + "" || ""}
-            changeProductAmount={changeCartProductQuantity}
-          >
-            {product.orderItem?.quantity || 0}
-          </ProductAmountButtons>
+            quantity={product.orderItem?.quantity || 3}
+          />
         )}
       </div>
       <div className="flex grow flex-col items-end justify-between gap-3">
         <ProductRemoveButton
           id={product.orderItem?.productId || 0}
           size={product.orderItem?.sizeId + "" || ""}
-          removeProduct={removeCartProduct}
         />
         <p>BTC {product.productPrice}</p>
       </div>
