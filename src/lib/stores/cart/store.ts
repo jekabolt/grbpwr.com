@@ -1,6 +1,8 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 
+import { serviceClient } from "@/lib/api";
+
 import { CartProduct, CartState, CartStore } from "./store-types";
 
 export const defaultInitState: CartState = {
@@ -14,7 +16,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
     persist(
       (set, get) => ({
         ...initState,
-        increaseQuantity: (
+        increaseQuantity: async (
           productId: number,
           size: string,
           quantity: number = 1,
@@ -39,8 +41,50 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             products: updatedProducts,
             totalItems: updatedProducts.reduce((sum, p) => sum + p.quantity, 0),
           });
+
+          try {
+            const response = await serviceClient.ValidateOrderItemsInsert({
+              items: updatedProducts.map((p) => ({
+                productId: p.id,
+                quantity: p.quantity,
+                sizeId: Number(p.size),
+              })),
+              shipmentCarrierId: undefined,
+              promoCode: undefined,
+            });
+
+            const validatedProducts = updatedProducts.map((product) => {
+              const validatedItem = response.validItems?.find(
+                (item) =>
+                  item.orderItem?.productId === product.id &&
+                  item.orderItem?.sizeId === Number(product.size),
+              );
+
+              const newQuantity =
+                validatedItem?.orderItem?.quantity || product.quantity;
+
+              delete validatedItem?.orderItem;
+
+              return {
+                ...product,
+                quantity: newQuantity,
+                productData: validatedItem,
+              };
+            });
+
+            set({
+              products: validatedProducts,
+              totalItems: validatedProducts.reduce(
+                (sum, p) => sum + p.quantity,
+                0,
+              ),
+            });
+          } catch (error) {
+            console.error("increaseQuantity failed 💩:", error);
+          }
         },
-        decreaseQuantity: (productId: number, size: string) => {
+
+        decreaseQuantity: async (productId: number, size: string) => {
           const { products } = get();
           const updatedProducts = products
             .map((p) =>
@@ -49,11 +93,54 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
                 : p,
             )
             .filter((p) => p.quantity > 0);
+
           set({
             products: updatedProducts,
             totalItems: updatedProducts.reduce((sum, p) => sum + p.quantity, 0),
           });
+
+          try {
+            const response = await serviceClient.ValidateOrderItemsInsert({
+              items: updatedProducts.map((p) => ({
+                productId: p.id,
+                quantity: p.quantity,
+                sizeId: Number(p.size),
+              })),
+              shipmentCarrierId: undefined,
+              promoCode: undefined,
+            });
+
+            const validatedProducts = updatedProducts.map((product) => {
+              const validatedItem = response.validItems?.find(
+                (item) =>
+                  item.orderItem?.productId === product.id &&
+                  item.orderItem?.sizeId === Number(product.size),
+              );
+
+              const newQuantity =
+                validatedItem?.orderItem?.quantity || product.quantity;
+
+              delete validatedItem?.orderItem;
+
+              return {
+                ...product,
+                quantity: newQuantity,
+                productData: validatedItem,
+              };
+            });
+
+            set({
+              products: validatedProducts,
+              totalItems: validatedProducts.reduce(
+                (sum, p) => sum + p.quantity,
+                0,
+              ),
+            });
+          } catch (error) {
+            console.error("decreaseQuantity failed 💩:", error);
+          }
         },
+
         removeProduct: (productId: number, size: string) => {
           const { products } = get();
           const updatedProducts = products.filter(

@@ -30,6 +30,10 @@ export default function AddToCartForm({
       ?.name as common_SizeEnum,
   }));
 
+  const handleAddToCart = async () => {
+    await increaseQuantity(id, activeSizeId?.toString() || "", 1);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex gap-10">
@@ -43,12 +47,8 @@ export default function AddToCartForm({
           </Button>
         ))}
       </div>
-      <Button
-        variant={"main"}
-        size={"lg"}
-        onClick={() => increaseQuantity(id, activeSizeId?.toString() || "", 1)}
-      >
-        add to cart
+      <Button variant={"main"} size={"lg"} onClick={handleAddToCart}>
+        Add to cart
       </Button>
     </div>
   );

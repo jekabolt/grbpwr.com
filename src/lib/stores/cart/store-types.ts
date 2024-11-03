@@ -1,3 +1,4 @@
+import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { StateCreator } from "zustand";
 import { PersistOptions } from "zustand/middleware";
 
@@ -5,6 +6,7 @@ export interface CartProduct {
   id: number;
   size: string;
   quantity: number;
+  productData?: common_OrderItem;
 }
 
 export interface CartState {
@@ -18,9 +20,9 @@ export interface CartActions {
     productId: number,
     size: string,
     quantity?: number,
-  ) => void;
+  ) => Promise<void>;
   removeProduct: (productId: number, size: string) => void;
-  decreaseQuantity: (productId: number, size: string) => void;
+  decreaseQuantity: (productId: number, size: string) => Promise<void>;
   clearCart: () => void;
 }
 
