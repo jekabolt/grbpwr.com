@@ -1,6 +1,5 @@
 import CartPopup from "@/components/sections/Cart/CartPopup";
 import CartProductsList from "@/components/sections/Cart/CartProductsList";
-import TotalPrice from "@/components/sections/Cart/TotalPrice";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import { Button } from "@/components/ui/Button";
