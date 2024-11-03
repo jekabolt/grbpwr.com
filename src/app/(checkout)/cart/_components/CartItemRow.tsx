@@ -38,9 +38,8 @@ export default function CartItemRow({
           <ProductAmountButtons
             id={product.orderItem?.productId}
             size={product.orderItem?.sizeId + "" || ""}
-          >
-            {product.orderItem?.quantity || 0}
-          </ProductAmountButtons>
+            quantity={product.orderItem?.quantity || 3}
+          />
         )}
       </div>
       <div className="flex grow flex-col items-end justify-between gap-3">

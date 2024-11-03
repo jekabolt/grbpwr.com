@@ -30,7 +30,17 @@ export default function AddToCartForm({
       ?.name as common_SizeEnum,
   }));
 
+  const productQuanityInCart = products.find(
+    (p) => p.id === id && p.size === activeSizeId?.toString(),
+  )?.quantity;
+
+  const isMaxQuantity =
+    productQuanityInCart &&
+    productQuanityInCart >= (dictionary?.maxOrderItems || 3);
+
   const handleAddToCart = async () => {
+    if (isMaxQuantity) return;
+
     await increaseQuantity(id, activeSizeId?.toString() || "", 1);
   };
 
@@ -47,7 +57,12 @@ export default function AddToCartForm({
           </Button>
         ))}
       </div>
-      <Button variant={"main"} size={"lg"} onClick={handleAddToCart}>
+      <Button
+        variant="main"
+        size="lg"
+        disabled={isMaxQuantity}
+        onClick={handleAddToCart}
+      >
         Add to cart
       </Button>
     </div>
