@@ -1,13 +1,11 @@
 "use client";
 
-import { useOptimistic, useState } from "react";
+import { useState } from "react";
 import type {
   common_ProductSize,
   common_SizeEnum,
 } from "@/api/proto-http/frontend";
 import { SIZE_NAME_MAP } from "@/constants";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useDataContext } from "@/components/DataContext";
