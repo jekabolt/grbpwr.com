@@ -11,6 +11,7 @@ const config = {
         errorColor: "var(--error)",
         buttonTextColor: "var(--button-text)",
         visitedLinkColor: "var(--visited-link)",
+        acidColor: "var(--text-select)",
       },
       fontSize: {
         textGiantSize: "var(--text-giant)",
