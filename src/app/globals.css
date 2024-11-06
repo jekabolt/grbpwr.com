@@ -51,7 +51,9 @@
   } */
 
   body {
-    /* @apply bg-background text-foreground; */
+    ::selection {
+      @apply bg-acidColor text-bgColor;
+    }
   }
 }
 
