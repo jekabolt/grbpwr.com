@@ -10,9 +10,11 @@ import ProductRemoveButton from "./ProductRemoveButton";
 export default function CartItemRow({
   product,
   className,
+  hideQuantityButtons,
 }: {
   product?: common_OrderItem;
   className?: string;
+  hideQuantityButtons?: boolean;
 }) {
   if (!product) return null;
 
@@ -34,19 +36,23 @@ export default function CartItemRow({
             <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
           </div>
         </div>
-        {product.orderItem?.productId !== undefined && (
+        {product.orderItem?.productId !== undefined && !hideQuantityButtons ? (
           <ProductAmountButtons
             id={product.orderItem?.productId}
             size={product.orderItem?.sizeId + "" || ""}
             quantity={product.orderItem?.quantity || 3}
           />
+        ) : (
+          product.orderItem?.quantity || 3
         )}
       </div>
       <div className="flex grow flex-col items-end justify-between gap-3">
-        <ProductRemoveButton
-          id={product.orderItem?.productId || 0}
-          size={product.orderItem?.sizeId + "" || ""}
-        />
+        {!hideQuantityButtons && (
+          <ProductRemoveButton
+            id={product.orderItem?.productId || 0}
+            size={product.orderItem?.sizeId + "" || ""}
+          />
+        )}
         <p>BTC {product.productPrice}</p>
       </div>
     </div>

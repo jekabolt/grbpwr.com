@@ -40,11 +40,7 @@ export default async function NavigationLayout({
         <div className="relative hidden w-24 md:block">
           <nav className="sticky top-24 flex flex-col items-center gap-60">
             <CartPopup>
-              <Suspense fallback={null}>
-                <div className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll">
-                  <CartProductsList className="border-b border-dashed border-textColor pb-6" />
-                </div>
-              </Suspense>
+              <CartProductsList className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll border-b border-dashed border-textColor pb-6" />
             </CartPopup>
             <Button variant="underlineWithColors" asChild>
               <Link href="/about">about</Link>
