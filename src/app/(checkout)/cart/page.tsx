@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { serviceClient } from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import { CartProductsSkeleton } from "@/components/ui/skeleton";
+// import { CartProductsSkeleton } from "@/components/ui/skeleton";
 import NavigationLayout from "@/app/_components/navigation-layout";
 
 import CartProductsList from "./_components/CartProductsList";
@@ -20,7 +20,13 @@ export default async function CartPage() {
           <div className="w-full">
             <p className="mb-8 text-sm">order summary:</p>
             <div className="space-y-8">
-              <Suspense fallback={<CartProductsSkeleton />}>
+              <Suspense
+                fallback={
+                  <div className="text-9xl font-bold text-yellow-400">
+                    add shell, loading...
+                  </div>
+                }
+              >
                 <CartProductsList />
               </Suspense>
             </div>
