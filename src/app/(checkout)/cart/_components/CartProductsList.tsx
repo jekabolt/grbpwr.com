@@ -9,10 +9,14 @@ import TotalPrice from "./TotalPrice";
 // think how make it easy
 export default function CartProductsList({
   className,
+  hideQuantityButtons,
 }: {
   className?: string;
+  hideQuantityButtons?: boolean;
 }) {
   const products = useCart((state) => state.products);
+
+  console.log(products);
 
   return (
     <div className={"space-y-6"}>
@@ -21,6 +25,7 @@ export default function CartProductsList({
           key={p?.productData?.id + "" + p?.productData?.orderId + i}
           product={p.productData}
           className={className}
+          hideQuantityButtons={hideQuantityButtons}
         />
       ))}
       <TotalPrice />
