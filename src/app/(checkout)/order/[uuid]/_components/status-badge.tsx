@@ -27,5 +27,5 @@ const getStatusInfo = (statusId: number) => {
 export function StatusBadge({ statusId }: { statusId: number }) {
   const { text, color } = getStatusInfo(statusId);
 
-  return <span className={cn("block p-2.5", color)}>{text}</span>;
+  return <span className={cn("inline-block p-2.5", color)}>{text}</span>;
 }
