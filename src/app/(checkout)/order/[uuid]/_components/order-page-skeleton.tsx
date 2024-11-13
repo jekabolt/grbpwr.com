@@ -25,7 +25,7 @@ export function OrderPageSkeleton() {
       </div>
 
       {/* Second Grid - Shipping/Payment Details */}
-      <div className="grid min-h-52 gap-10 border-b border-dashed border-textInactiveColor py-10 md:grid-cols-5">
+      <div className="mb-10 grid min-h-52 gap-10 border-b border-dashed border-textInactiveColor py-10 md:grid-cols-5">
         <div className="space-y-4">
           <Text variant="inactive">shipping address</Text>
           <Skeleton className="h-6 w-48" />

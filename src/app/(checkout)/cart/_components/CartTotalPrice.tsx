@@ -3,7 +3,7 @@
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useDataContext } from "@/components/DataContext";
 
-export default function SelectedCurrency() {
+export default function CartTotalPrice() {
   const { selectedCurrency } = useDataContext();
   const { totalPrice, subTotalPrice } = useCart((state) => state);
 

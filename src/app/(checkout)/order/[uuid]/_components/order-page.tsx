@@ -6,8 +6,8 @@ import type { common_OrderFull } from "@/api/proto-http/frontend";
 
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import ItemRow from "@/app/(checkout)/cart/_components/ItemRow";
 
-import CartProductsList from "../../../cart/_components/CartProductsList";
 import { StatusBadge } from "./status-badge";
 
 export function OrderPageComponent({
@@ -36,7 +36,7 @@ export function OrderPageComponent({
 
   return (
     <div>
-      <div className="grid gap-10 border-b border-dashed border-textInactiveColor py-10 md:grid-cols-5">
+      <div className="grid grid min-h-52 gap-10 border-b border-dashed border-textInactiveColor py-10 md:grid-cols-5">
         <div className="space-y-4">
           <Text variant="inactive">order id</Text>
           <Text variant="default">{`#${order?.uuid}`}</Text>
@@ -63,7 +63,7 @@ export function OrderPageComponent({
         </div>
       </div>
 
-      <div className="mb-10 grid gap-10 border-b border-dashed border-textInactiveColor py-10 md:grid-cols-5 ">
+      <div className="mb-10 grid grid min-h-52 gap-10 border-b border-dashed border-textInactiveColor py-10 md:grid-cols-5 ">
         <div className="space-y-4">
           <Text variant="inactive">shipping address</Text>
           {shipping && (
@@ -108,8 +108,14 @@ export function OrderPageComponent({
         </div>
       </div>
 
-      <div className="lg:w-1/3">
-        <CartProductsList hideQuantityButtons />
+      <div className="space-y-6 lg:w-1/3">
+        {orderItems?.map((item, i) => (
+          <ItemRow
+            key={item?.id + "" + item.orderId + i}
+            product={item}
+            hideQuantityButtons
+          />
+        ))}
       </div>
     </div>
   );

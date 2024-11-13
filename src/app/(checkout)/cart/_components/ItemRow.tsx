@@ -7,7 +7,7 @@ import CartItemSize from "./CartItemSize";
 import ProductAmountButtons from "./ProductAmountButtons";
 import ProductRemoveButton from "./ProductRemoveButton";
 
-export default function CartItemRow({
+export default function ItemRow({
   product,
   className,
   hideQuantityButtons,

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import NavigationLayout from "@/app/_components/navigation-layout";
 
 import CartProductsList from "./_components/CartProductsList";
-import TotalPrice from "./_components/TotalPrice";
+import TotalPrice from "./_components/CartTotalPrice";
 
 // todo: change cache
 export const dynamic = "force-dynamic";
