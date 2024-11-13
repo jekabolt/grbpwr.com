@@ -1,7 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 
-const buttonVariants = cva("disabled:cursor-not-allowed", {
+const buttonVariants = cva("disabled:cursor-not-allowed block", {
   variants: {
     variant: {
       default: ["text-textBaseSize", "disabled:opacity-50"],
