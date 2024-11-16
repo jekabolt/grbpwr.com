@@ -17,9 +17,9 @@ export default function NotFoundPage() {
           moved. please go back to the homepage or contact us if the problem
           persists.
         </Text>
-        <div className="flex items-center gap-8 lg:gap-x-20">
-          <Button variant="underlineWithColors" asChild>
-            <Link href="/contacts-us">contact us</Link>
+        <div className="flex gap-x-20">
+          <Button asChild variant="underlineWithColors">
+            <Link href="/about">contact us</Link>
           </Button>
           <Button variant="main" size="lg" asChild>
             <Link href="/catalog">catalog</Link>
