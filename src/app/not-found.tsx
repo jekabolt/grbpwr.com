@@ -22,7 +22,7 @@ export default function NotFound() {
         </Text>
         <div className="flex gap-x-20">
           <Button asChild variant="underlineWithColors">
-            <Link href="/contacts">contact us</Link>
+            <Link href="/about">contact us</Link>
           </Button>
           <Button asChild variant="underlineWithColors">
             <Link href="/catalog">catalog</Link>

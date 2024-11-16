@@ -11,7 +11,13 @@ const textVariants = cva("text-textColor", {
     },
     size: {
       default: ["text-textBaseSize"],
-      giant: ["lg:text-textGiantSize", "text-textGiantSmallSize"],
+      giant: [
+        "lg:text-textGiantSize",
+        "text-textGiantSmallSize",
+        "leading-tight",
+        "lg:leading-tight",
+        "whitespace-nowrap",
+      ],
       small: ["text-textSmallSize"],
     },
   },
