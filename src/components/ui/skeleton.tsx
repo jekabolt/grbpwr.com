@@ -1,12 +1,16 @@
-export function CartProductsSkeleton() {
+import { cn } from "@/lib/utils";
+
+export function Skeleton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className="space-y-8">
-      {[1, 2, 3, 4, 5].map((v) => (
-        <div
-          className="h-32 w-full animate-pulse rounded-lg bg-gray-200"
-          key={v}
-        ></div>
-      ))}
-    </div>
+    <div
+      className={cn(
+        "animate-pulse rounded-md bg-gray-200/60 dark:bg-gray-700/60",
+        className,
+      )}
+      {...props}
+    />
   );
 }
