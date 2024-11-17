@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { FeatureMono } from "@/fonts";
 
+import { CookieBanner } from "@/components/ui/cookie-banner";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={FeatureMono.className}>
         <div className="lightTheme relative min-h-screen">{children}</div>
+        <CookieBanner />
       </body>
     </html>
   );
