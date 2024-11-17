@@ -5,6 +5,12 @@ import { useEffect, useState } from "react";
 import { Text } from "@/components/ui/text";
 
 import { Button } from "./button";
+import RadioGroupComponent from "./radio-group";
+
+const cookieOptions = [
+  { label: "accept all", value: "accept" },
+  { label: "deny all", value: "deny" },
+];
 
 export function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,8 +23,10 @@ export function CookieBanner() {
     }
   }, []);
 
-  const handleConsent = (e: any) => {
-    setConsent(e.target.value as "accept" | "deny");
+  if (!isVisible) return null;
+
+  const handleConsent = (value: string) => {
+    setConsent(value as "accept" | "deny");
   };
 
   const handleSubmit = () => {
@@ -30,7 +38,6 @@ export function CookieBanner() {
     setIsVisible(false);
   };
 
-  if (!isVisible) return null;
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 space-y-6 bg-white p-4">
       <div>
@@ -41,34 +48,13 @@ export function CookieBanner() {
           you can manage your preferences regarding your data trough our website
         </Text>
       </div>
-      <div className="grid max-w-xs grid-cols-2 gap-0">
-        <div className="flex items-center gap-1">
-          <input
-            type="radio"
-            id="accept"
-            value="accept"
-            onChange={handleConsent}
-            name="cookieConsent"
-            className="h-3 w-3 appearance-none rounded-full border border-black  checked:border-black checked:bg-black checked:hover:border-black checked:hover:bg-black focus:outline-none focus:ring-black"
-          />
-          <Text htmlFor="accept" component="label">
-            accept all
-          </Text>
-        </div>
-        <div className="flex items-center gap-1">
-          <input
-            type="radio"
-            id="deny"
-            value="deny"
-            onChange={handleConsent}
-            name="cookieConsent"
-            className="h-3 w-3 appearance-none rounded-full border border-black  checked:border-black checked:bg-black checked:hover:border-black checked:hover:bg-black focus:outline-none focus:ring-black"
-          />
-          <Text htmlFor="deny" component="label">
-            deny all
-          </Text>
-        </div>
-      </div>
+      <RadioGroupComponent
+        name="cookieConsent"
+        items={cookieOptions}
+        onValueChange={handleConsent}
+        value={consent ?? undefined}
+        className="grid max-w-xs grid-cols-2"
+      />
       <div>
         <Button
           variant="main"

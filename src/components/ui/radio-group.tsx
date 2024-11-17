@@ -1,6 +1,8 @@
 import { Label } from "@radix-ui/react-label";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 
+import { Text } from "./text";
+
 export interface RadioGroupsProps {
   name: string;
   items: {
@@ -37,7 +39,7 @@ export default function RadioGroupComponent({
             className="cursor-pointer text-xs leading-3 text-textColor"
             htmlFor={`${value}-r`}
           >
-            {label}
+            <Text component="span">{label}</Text>
           </Label>
         </div>
       ))}
