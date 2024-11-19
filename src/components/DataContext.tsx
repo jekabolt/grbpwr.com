@@ -10,8 +10,6 @@ import {
 } from "react";
 import type { GetHeroResponse } from "@/api/proto-http/frontend";
 
-import { serviceClient } from "@/lib/api";
-
 const DataContext = createContext<
   GetHeroResponse & {
     selectedCurrency: string;

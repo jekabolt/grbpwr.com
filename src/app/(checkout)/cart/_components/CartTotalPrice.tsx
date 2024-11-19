@@ -8,7 +8,7 @@ export default function CartTotalPrice() {
   const { totalPrice, subTotalPrice } = useCart((state) => state);
 
   return (
-    <div className="text-textColor">
+    <div className="border-t border-dashed border-textColor pt-6 text-textColor">
       <div className="flex justify-between">
         <span>TOTAL:</span>
         <span>

@@ -1,9 +1,9 @@
-import { Suspense } from "react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import CartPopup from "@/app/(checkout)/cart/_components/CartPopup";
 import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList";
+import CartTotalPrice from "@/app/(checkout)/cart/_components/CartTotalPrice";
 
 import { Footer } from "./footer";
 import { Header } from "./header";
@@ -40,7 +40,10 @@ export default async function NavigationLayout({
         <div className="relative hidden w-24 md:block">
           <nav className="sticky top-24 flex flex-col items-center gap-60">
             <CartPopup>
-              <CartProductsList className="no-scroll-bar relative max-h-[500px] space-y-5 overflow-y-scroll border-b border-dashed border-textColor pb-6" />
+              <div className="relative max-h-[500px] space-y-6 overflow-y-scroll">
+                <CartProductsList />
+              </div>
+              <CartTotalPrice />
             </CartPopup>
             <Button variant="underlineWithColors" asChild>
               <Link href="/about">about</Link>

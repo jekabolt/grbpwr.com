@@ -7,19 +7,11 @@ import CartItemSize from "./CartItemSize";
 import ProductAmountButtons from "./ProductAmountButtons";
 import ProductRemoveButton from "./ProductRemoveButton";
 
-export default function ItemRow({
-  product,
-  className,
-  hideQuantityButtons,
-}: {
-  product?: common_OrderItem;
-  className?: string;
-  hideQuantityButtons?: boolean;
-}) {
+export default function ItemRow({ product, hideQuantityButtons }: Props) {
   if (!product) return null;
 
   return (
-    <div className={cn("flex justify-between gap-3 text-textColor", className)}>
+    <div className="flex justify-between gap-3 border-b border-dashed border-textInactiveColor pb-6 text-textColor last:border-b-0 last:pb-0">
       <div className="h-full w-28 flex-none">
         <Image
           src={product.thumbnail || ""}
@@ -46,7 +38,11 @@ export default function ItemRow({
           product.orderItem?.quantity || 3
         )}
       </div>
-      <div className="flex grow flex-col items-end justify-between gap-3">
+      <div
+        className={cn("flex grow flex-col items-end justify-between gap-3", {
+          "justify-end": hideQuantityButtons,
+        })}
+      >
         {!hideQuantityButtons && (
           <ProductRemoveButton
             id={product.orderItem?.productId || 0}
@@ -58,3 +54,8 @@ export default function ItemRow({
     </div>
   );
 }
+
+type Props = {
+  product?: common_OrderItem;
+  hideQuantityButtons?: boolean;
+};
