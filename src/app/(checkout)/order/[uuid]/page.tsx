@@ -51,7 +51,7 @@ export default async function OrderPage(props: Props) {
   // }
 
   return (
-    <div className="flex min-h-screen flex-col justify-between gap-40 px-16 pb-10 pt-20">
+    <div className="flex min-h-screen flex-col justify-between gap-40 px-2 pb-10 pt-10 lg:px-16 lg:pt-20">
       <div>
         <Text variant="uppercase" component="h1">
           Order info

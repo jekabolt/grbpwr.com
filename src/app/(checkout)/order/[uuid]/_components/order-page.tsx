@@ -4,11 +4,14 @@ import { use } from "react";
 import Link from "next/link";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 
-import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import ItemRow from "@/app/(checkout)/cart/_components/ItemRow";
 
+import { OrderProductsList } from "./order-products-list";
+import {
+  DesktopOrderSecondaryInfo,
+  MobileOrderSecondaryInfo,
+} from "./order-secondary-info";
 import { StatusBadge } from "./status-badge";
 
 export function OrderPageComponent({
@@ -17,28 +20,15 @@ export function OrderPageComponent({
   orderPromise: Promise<{ order: common_OrderFull | undefined }>;
 }) {
   const { order: orderData } = use(orderPromise);
-  const { dictionary } = useDataContext();
 
   if (!orderData) return null;
 
-  const {
-    order,
-    orderItems,
-    payment,
-    shipment,
-    promoCode,
-    buyer,
-    billing,
-    shipping,
-  } = orderData;
-
-  const shipmentCarrierName = dictionary?.shipmentCarriers?.find(
-    (carrier) => carrier.id === shipment?.carrierId,
-  )?.shipmentCarrier?.carrier;
+  const { order, orderItems, shipment, promoCode, billing, shipping } =
+    orderData;
 
   return (
     <div>
-      <div className="grid min-h-52 gap-10 border-b border-dashed border-textInactiveColor py-10 md:grid-cols-4">
+      <div className="grid min-h-52 gap-6 border-dashed border-textInactiveColor py-10 md:grid-cols-4 lg:gap-10 lg:border-b">
         <div className="space-y-4">
           <Text variant="inactive">order id</Text>
           <Text variant="default">{`#${order?.uuid}`}</Text>
@@ -69,36 +59,23 @@ export function OrderPageComponent({
         </div>
       </div>
 
-      <div className="mb-10 grid min-h-52 gap-10 border-b border-dashed border-textInactiveColor py-10 md:grid-cols-4">
-        <div className="space-y-4">
-          <Text variant="inactive">shipping address</Text>
-          {shipping && (
-            <Text variant="default">
-              {`${shipping.addressInsert?.addressLineOne}, ${shipping.addressInsert?.city}`}
-            </Text>
-          )}
-        </div>
-        <div className="space-y-4">
-          <Text variant="inactive">billing address</Text>
-          {billing && (
-            <Text variant="default">
-              {`${billing.addressInsert?.addressLineOne}, ${billing.addressInsert?.city}`}
-            </Text>
-          )}
-        </div>
-        <div className="space-y-4">
-          <Text variant="inactive">shipping method</Text>
-          <Text variant="default">{shipmentCarrierName}</Text>
-        </div>
-        <div className="space-y-4">
-          <Text variant="inactive">receipt</Text>
-          <Button variant="underlineWithColors" size="default" asChild>
-            <Link href={"/some-page"}>link</Link>
-          </Button>
-        </div>
-      </div>
+      <DesktopOrderSecondaryInfo
+        shipping={shipping}
+        billing={billing}
+        shipment={shipment}
+      />
 
-      <div className="grid grid-cols-2 gap-72">
+      <OrderProductsList orderItems={orderItems || []} className="lg:hidden" />
+
+      <div className="grid grid-cols-1 gap-10 pt-10 lg:grid-cols-2 lg:gap-72 lg:pt-0">
+        <div className="lg:hidden">
+          <MobileOrderSecondaryInfo
+            shipping={shipping}
+            billing={billing}
+            shipment={shipment}
+          />
+        </div>
+
         <div className="col-span-1 space-y-8">
           <Text variant="inactive">order summary</Text>
 
@@ -135,15 +112,11 @@ export function OrderPageComponent({
             <Text variant="default">{order?.totalPrice?.value}</Text>
           </div>
         </div>
-        <div className="col-span-1 space-y-6">
-          {orderItems?.map((item, i) => (
-            <ItemRow
-              key={item?.id + "" + item.orderId + i}
-              product={item}
-              hideQuantityButtons
-            />
-          ))}
-        </div>
+
+        <OrderProductsList
+          orderItems={orderItems || []}
+          className="col-span-1 hidden lg:block"
+        />
       </div>
     </div>
   );
