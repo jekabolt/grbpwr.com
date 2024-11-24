@@ -25,6 +25,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "2.1.0",
+    "embla-carousel-react": "^8.5.1",
     "next": "15.0.1",
     "qrcode": "^1.5.3",
     "react": "19.0.0-rc-65a56d0e-20241020",

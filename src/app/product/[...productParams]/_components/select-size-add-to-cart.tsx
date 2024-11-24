@@ -14,9 +14,7 @@ import { Button } from "@/components/ui/button";
 
 export function AddToCartForm({ sizes, id, className }: Props) {
   const { increaseQuantity, products } = useCart((state) => state);
-  const [activeSizeId, setActiveSizeId] = useState<number | null>(
-    sizes[0].sizeId as number,
-  );
+  const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const { dictionary } = useDataContext();
 
   const sizeNames = sizes.map((s) => ({
@@ -34,7 +32,7 @@ export function AddToCartForm({ sizes, id, className }: Props) {
     productQuanityInCart >= (dictionary?.maxOrderItems || 3);
 
   const handleAddToCart = async () => {
-    if (isMaxQuantity) return;
+    if (!activeSizeId || isMaxQuantity) return;
 
     await increaseQuantity(id, activeSizeId?.toString() || "", 1);
   };
@@ -44,7 +42,9 @@ export function AddToCartForm({ sizes, id, className }: Props) {
       <div className="flex grow justify-between">
         {sizeNames.map(({ name, id }, i) => (
           <Button
-            variant={activeSizeId === id ? "underline" : "default"}
+            className={cn("p-1", {
+              "bg-textColor text-bgColor": activeSizeId === id,
+            })}
             key={id}
             onClick={() => setActiveSizeId(id)}
           >
@@ -55,7 +55,7 @@ export function AddToCartForm({ sizes, id, className }: Props) {
       <Button
         variant="main"
         size="lg"
-        disabled={isMaxQuantity}
+        disabled={!activeSizeId || isMaxQuantity}
         onClick={handleAddToCart}
       >
         ADD TO CARD

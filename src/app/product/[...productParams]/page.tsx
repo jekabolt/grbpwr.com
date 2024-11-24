@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import { MAX_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
-import { ProductMediaItem } from "@/components/images-carousel/ProductMediaItem";
 
+import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
 interface ProductPageProps {
@@ -49,14 +49,10 @@ export default async function ProductPage(props: ProductPageProps) {
 
   return (
     <div>
-      <div className="relative grid h-screen w-full grid-cols-2">
-        {productMedia.map((m) => (
-          <div key={m.id} className="col-span-1 h-full">
-            <ProductMediaItem singleMedia={m} />
-          </div>
-        ))}
-      </div>
-
+      <ProductImagesCarousel
+        productMedia={productMedia}
+        className="h-screen w-full"
+      />
       {product && (
         <ProductInfo product={product} className="absolute bottom-5 right-32" />
       )}
