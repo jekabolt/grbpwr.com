@@ -26,7 +26,7 @@ export const AccordionTrigger = forwardRef<any, any>(
     <AccordionPrimitives.Header className="flex">
       <AccordionPrimitives.Trigger
         className={cn(
-          "group flex flex-1 cursor-default items-center gap-5 outline-none",
+          "group flex w-full flex-1 cursor-default cursor-pointer items-center justify-between gap-5 outline-none",
           className,
         )}
         {...props}

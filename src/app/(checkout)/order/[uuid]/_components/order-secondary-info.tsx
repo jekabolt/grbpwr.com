@@ -66,12 +66,7 @@ export function MobileOrderSecondaryInfo({
   )?.shipmentCarrier?.carrier;
 
   return (
-    <AccordionRoot
-      type="single"
-      defaultValue="item-1"
-      collapsible
-      className="space-y-6"
-    >
+    <AccordionRoot type="single" collapsible className="space-y-6">
       <AccordionItem value="item-1" className="space-y-4">
         <AccordionTrigger>
           <Text variant="inactive">shipping address</Text>

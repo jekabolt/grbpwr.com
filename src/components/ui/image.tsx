@@ -4,7 +4,7 @@ function ImageContainer({
   aspectRatio,
   children,
 }: {
-  aspectRatio: string;
+  aspectRatio?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -30,7 +30,7 @@ export default function ImageComponent({
   fit,
 }: ImageProps) {
   return (
-    <ImageContainer aspectRatio={aspectRatio}>
+    <ImageContainer aspectRatio={fit !== "cover" ? aspectRatio : undefined}>
       <Image
         fill
         src={src}

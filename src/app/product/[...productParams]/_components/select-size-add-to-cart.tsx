@@ -8,16 +8,11 @@ import type {
 import { SIZE_NAME_MAP } from "@/constants";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 
-export default function AddToCartForm({
-  sizes,
-  id,
-}: {
-  id: number;
-  sizes: common_ProductSize[];
-}) {
+export function AddToCartForm({ sizes, id, className }: Props) {
   const { increaseQuantity, products } = useCart((state) => state);
   const [activeSizeId, setActiveSizeId] = useState<number | null>(
     sizes[0].sizeId as number,
@@ -45,8 +40,8 @@ export default function AddToCartForm({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-10">
+    <div className={cn(className)}>
+      <div className="flex grow justify-between">
         {sizeNames.map(({ name, id }, i) => (
           <Button
             variant={activeSizeId === id ? "underline" : "default"}
@@ -63,8 +58,14 @@ export default function AddToCartForm({
         disabled={isMaxQuantity}
         onClick={handleAddToCart}
       >
-        Add to cart
+        ADD TO CARD
       </Button>
     </div>
   );
+}
+
+interface Props {
+  id: number;
+  sizes: common_ProductSize[];
+  className?: string;
 }
