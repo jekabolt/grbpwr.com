@@ -20,7 +20,7 @@ export default function Component() {
       </Text>
       <Text variant="uppercase">introduction</Text>
       <Text size="small" className="pb-6 leading-none">
-        welcome to grbpwr's privacy policy. we respect your privacy and are
+        welcome to grbpwr&apos;s privacy policy. we respect your privacy and are
         committed to protecting your personal data. this policy outlines how we
         handle your personal data when you visit our website, irrespective of
         where you visit from, and informs you about your privacy rights and

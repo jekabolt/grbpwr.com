@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
 import { Button } from "./button";
@@ -20,9 +21,6 @@ interface Props {
 export function CookieBanner({ isPrivacyPage = false }: Props) {
   const [isVisible, setIsVisible] = useState(false);
   const [consent, setConsent] = useState<"accept" | "deny" | null>(null);
-  const baseStyles = isPrivacyPage
-    ? "space-y-6"
-    : "fixed bottom-0 left-0 right-0 z-50 space-y-6 bg-white p-4";
 
   useEffect(() => {
     const savedConsent = localStorage.getItem("cookieConsent");
@@ -50,7 +48,13 @@ export function CookieBanner({ isPrivacyPage = false }: Props) {
   };
 
   return (
-    <div className={baseStyles}>
+    <div
+      className={cn({
+        "fixed bottom-0 left-0 right-0 z-50 space-y-6 bg-white p-4":
+          !isPrivacyPage,
+        "space-y-6": isPrivacyPage,
+      })}
+    >
       <div>
         <Text variant="uppercase">
           {isPrivacyPage
