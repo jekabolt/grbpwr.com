@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CareComposition from "@/components/ui/care-composition";
 import { CookieBanner } from "@/components/ui/cookie-banner";
+import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";
 
 const links = [
@@ -90,13 +91,13 @@ export default function Component() {
       </ul>
       <CareComposition className="mb-10 space-y-6" />
       <Text variant="uppercase">5. your rights</Text>
-      <Text size="small" className="leading-none">
+      <Text size="small" component="span" className="mb-6 block leading-none">
         as a european resident, you are entitled to access, correct, delete, or
         transfer your personal data, or object to its processing. to exercise
         these rights, please contact us via email at&nbsp;
-        <Text variant="inactive" component="span">
-          info@gibpwr.com
-        </Text>
+        <span className="inline-flex items-center">
+          <CopyText text="info@gibpwr.com" />
+        </span>
         , or by phone or postal mail at our company address listed on our
         website.
       </Text>
