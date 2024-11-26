@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";
 
 export default function Component() {
@@ -19,22 +20,22 @@ export default function Component() {
       <div className="grid grid-cols-2 gap-2">
         <div className="space-y-0">
           <Text variant="uppercase">customers</Text>
-          <Text size="small" className="leading-none">
+          <Text size="small" component="span" className="block leading-none">
             If you are a customer or you got questions or problems please
-            contact us via email{" "}
-            <Text component="span" variant="inactive">
-              customercare@grbpwr.com
-            </Text>
+            contact us via email&nbsp;
+            <span className="inline-flex items-center">
+              <CopyText text="customercare@grbpwr.com" />
+            </span>
           </Text>
         </div>
         <div>
           <Text variant="uppercase">corporation</Text>
-          <Text size="small" className="leading-none">
+          <Text size="small" component="span" className="block leading-none">
             If you are a designer, store or other business entity please contact
-            us via email{" "}
-            <Text component="span" variant="inactive">
-              work@grbpwr.com
-            </Text>
+            us via email&nbsp;
+            <span className="inline-flex items-center">
+              <CopyText text="work@grbpwr.com" />
+            </span>
           </Text>
         </div>
       </div>
@@ -50,7 +51,7 @@ export default function Component() {
       </div>
       <div className="flex gap-6">
         <Button variant="underlineWithColors" asChild>
-          <Link href="/terms-of-service">terms of service</Link>
+          <Link href="/terms-and-conditions">terms of service</Link>
         </Button>
         <Button variant="underlineWithColors" asChild>
           <Link href="/privacy-policy">privacy policy</Link>
