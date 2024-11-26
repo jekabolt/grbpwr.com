@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
 import { Text } from "@/components/ui/text";
 
 import { Button } from "./button";
-import copied from "./copy-images/checkmark-circle-outline-svgrepo-com.svg";
-import copy from "./copy-images/copy-icon.svg";
+import { CopyCheckIcon } from "./icons/copy-check-icon";
+import { CopyIcon } from "./icons/copy-icon";
 
 interface Props {
   text: string;
@@ -34,9 +33,9 @@ export default function CopyText({ text }: Props) {
       </Text>
       <Button size="sm" onClick={handleCopy} asChild>
         {isCopied ? (
-          <Image src={copied} alt="copied" width={15} height={15} />
+          <CopyCheckIcon className="text-textColor" />
         ) : (
-          <Image src={copy} alt="copy" width={15} height={15} />
+          <CopyIcon className="text-textColor" />
         )}
       </Button>
     </div>
