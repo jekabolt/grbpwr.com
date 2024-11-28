@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type {
   common_OrderNew,
-  SubmitOrderResponse,
   ValidateOrderItemsInsertResponse,
 } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,14 +14,13 @@ import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import InputField from "@/components/ui/form/fields/input-field";
-import InputMaskedField from "@/components/ui/form/fields/input-masked-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import { FormContainer } from "@/components/ui/form/form-container";
 
 import StripeSecureCardForm from "../StripeSecureCardForm";
 import AddressFields from "./AddressFields";
 import PromoCode from "./PromoCode";
-import { CheckoutData, checkoutSchema, defaultData } from "./schema";
+import { CheckoutData, checkoutSchema } from "./schema";
 import { mapFormFieldToOrderDataFormat } from "./utils";
 
 // import { clearCartProducts } from "@/features/cart/action";
