@@ -18,7 +18,7 @@ export function mapFormFieldToOrderDataFormat(
     city: data.city,
     state: data.state,
     // country: data.country,
-    country: "US",
+    country: data.country,
     postalCode: data.postalCode,
   };
 
@@ -32,7 +32,7 @@ export function mapFormFieldToOrderDataFormat(
             company: data.billingAddress.company,
             city: data.billingAddress.city,
             state: data.billingAddress.state,
-            country: "US",
+            country: data.country,
             // country: data.billingAddress.country,
             postalCode: data.billingAddress.postalCode,
           }
