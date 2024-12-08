@@ -77,17 +77,15 @@ export function Button({
   const Component = asChild ? Slot : "button";
 
   return (
-    <div>
-      <Component
-        {...props}
-        className={buttonVariants({
-          variant,
-          size,
-          className,
-        })}
-      >
-        {children}
-      </Component>
-    </div>
+    <Component
+      {...props}
+      className={buttonVariants({
+        variant,
+        size,
+        className,
+      })}
+    >
+      {children}
+    </Component>
   );
 }

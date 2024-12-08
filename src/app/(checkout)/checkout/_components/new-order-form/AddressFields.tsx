@@ -5,6 +5,8 @@ import type { Control } from "react-hook-form";
 import InputField from "@/components/ui/form/fields/input-field";
 import SelectField from "@/components/ui/form/fields/select-field";
 
+import { countries } from "./country-list";
+
 type Props = {
   loading: boolean;
   control: Control<any>;
@@ -39,14 +41,7 @@ export default function AddressFields({ loading, control, prefix }: Props) {
         loading={loading}
         name={prefix ? `${prefix}.country` : "country"}
         label="country/region:"
-        items={[
-          { label: "Sweden", value: "sweden" },
-          { label: "Norway", value: "norway" },
-          { label: "Denmark", value: "denmark" },
-          { label: "Finland", value: "finland" },
-          { label: "Iceland", value: "iceland" },
-          { label: "Ireland", value: "ireland" },
-        ]}
+        items={countries}
       />
 
       <SelectField

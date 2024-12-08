@@ -24,7 +24,7 @@ export function ProductMediaItem({
           singleMedia?.media?.fullSize?.width,
           singleMedia?.media?.fullSize?.height,
         )}
-        fit="cover"
+        fit="contain"
       />
       {/* </div> */}
       {/* </PhotoView> */}

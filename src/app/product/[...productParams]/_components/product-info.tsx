@@ -16,8 +16,13 @@ export function ProductInfo({ className, product }: Props) {
     product?.product?.productDisplay?.productBody?.price?.value;
 
   return (
-    <div className={cn("w-[600px] space-y-6 bg-bgColor", className)}>
-      <div className="flex items-center justify-between gap-x-20">
+    <div
+      className={cn(
+        "relative flex flex-col gap-y-6 bg-bgColor lg:w-[600px]",
+        className,
+      )}
+    >
+      <div className="order-first flex items-center justify-between gap-x-20">
         <Text variant="uppercase" component="h1">
           {product?.product?.productDisplay?.productBody?.name}
         </Text>
@@ -25,12 +30,16 @@ export function ProductInfo({ className, product }: Props) {
           {"[CUR]"} {baseCurrencyPrice}
         </Text>
       </div>
-      <Text>
+      <Text className="order-last lg:order-none">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed at
         doloribus, iste ad itaque rem dicta laudantium iure nisi nulla deserunt,
         vel, vero quibusdam inventore cumque quis libero? Consequatur, in.
       </Text>
-      <AccordionRoot type="single" collapsible className="w-40 space-y-6">
+      <AccordionRoot
+        type="single"
+        collapsible
+        className="order-last w-40 space-y-6 lg:order-none"
+      >
         <AccordionItem value="item-1" className="space-y-4">
           <AccordionTrigger>
             <Text variant="uppercase">composition</Text>
@@ -52,11 +61,11 @@ export function ProductInfo({ className, product }: Props) {
         </AccordionItem>
       </AccordionRoot>
 
-      <Text variant="underlined" size="small">
+      <Text className="order-1 lg:order-none" variant="underlined" size="small">
         measurements
       </Text>
       <AddToCartForm
-        className="flex items-center justify-between gap-x-20"
+        className="order-first flex w-full flex-col items-center justify-between gap-y-6 lg:order-none lg:flex-row lg:gap-x-20"
         sizes={product?.sizes || []}
         id={product?.product?.id || 0}
       />

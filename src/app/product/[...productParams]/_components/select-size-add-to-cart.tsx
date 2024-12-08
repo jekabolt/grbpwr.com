@@ -39,8 +39,8 @@ export function AddToCartForm({ sizes, id, className }: Props) {
 
   return (
     <div className={cn(className)}>
-      <div className="flex grow justify-between">
-        {sizeNames.map(({ name, id }, i) => (
+      <div className="flex w-full grow justify-between">
+        {sizeNames.map(({ name, id }) => (
           <Button
             className={cn("p-1", {
               "bg-textColor text-bgColor": activeSizeId === id,
@@ -53,6 +53,7 @@ export function AddToCartForm({ sizes, id, className }: Props) {
         ))}
       </div>
       <Button
+        className="sticky bottom-0 w-full"
         variant="main"
         size="lg"
         disabled={!activeSizeId || isMaxQuantity}

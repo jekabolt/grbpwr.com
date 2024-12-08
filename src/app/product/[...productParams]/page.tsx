@@ -49,12 +49,16 @@ export default async function ProductPage(props: ProductPageProps) {
 
   return (
     <div>
+      <div className="h-12 w-full bg-white lg:hidden">new dis header?</div>
       <ProductImagesCarousel
         productMedia={productMedia}
-        className="h-screen w-full"
+        className="w-full lg:h-screen"
       />
       {product && (
-        <ProductInfo product={product} className="absolute bottom-5 right-32" />
+        <ProductInfo
+          product={product}
+          className="p-2.5 lg:absolute lg:bottom-5 lg:right-32 lg:p-0"
+        />
       )}
     </div>
   );
