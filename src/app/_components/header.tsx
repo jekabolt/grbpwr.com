@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import CartPopup from "../(checkout)/cart/_components/CartPopup";
 import CartProductsList from "../(checkout)/cart/_components/CartProductsList";
 import CartTotalPrice from "../(checkout)/cart/_components/CartTotalPrice";
+import CurrencyPopover from "./currency-popover";
 
 export function Header() {
   return (
@@ -23,14 +24,14 @@ export function Header() {
         </Button>
       </nav>
 
-      <Button asChild variant="main">
-        <Link href="/">grbpwr</Link>
+      <Button asChild variant="main" className="flex-none">
+        <Link href="/" className="flex-1 text-center">
+          grbpwr
+        </Link>
       </Button>
 
       <div className="flex items-center gap-x-1">
-        <Button asChild variant="main">
-          <Link href="/archive">currency $</Link>
-        </Button>
+        <CurrencyPopover />
 
         <CartPopup>
           <div className="relative max-h-[500px] space-y-6 overflow-y-scroll">
