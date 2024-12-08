@@ -22,7 +22,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
       <Button onClick={() => setOpenStatus((v) => !v)} variant="main">
         cart {itemsQuantity ? `(${itemsQuantity})` : ""}
       </Button>
-      <div className="blueTheme">
+      <div className="">
         <div
           className={cn(
             "absolute -top-1 right-0 z-30 hidden w-[500px] space-y-6 bg-bgColor p-2.5",
