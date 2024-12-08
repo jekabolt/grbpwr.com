@@ -76,7 +76,6 @@ export function Footer({
               <Link href="privacy-policy">privacy policy</Link>
             </Button>
           </div>
-          <CurrencyPopover />
         </div>
       </div>
     </footer>

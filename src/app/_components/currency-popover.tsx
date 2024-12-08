@@ -4,6 +4,30 @@ import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import GenericPopover from "@/components/ui/popover";
 
+export const currencySymbols: Record<string, string> = {
+  Bitcoin: "₿", // Bitcoin
+  CHF: "Fr", // Swiss Franc
+  CNY: "¥", // Chinese Yuan
+  CZK: "Kč", // Czech Republic Koruna
+  DKK: "kr", // Danish Krone
+  EUR: "€", // Euro
+  Ethereum: "Ξ", // Ethereum
+  GBP: "£", // British Pound Sterling
+  GEL: "₾", // Georgian Lari
+  HKD: "$", // Hong Kong Dollar
+  HUF: "Ft", // Hungarian Forint
+  ILS: "₪", // Israeli New Sheqel
+  JPY: "¥", // Japanese Yen
+  NOK: "kr", // Norwegian Krone
+  PLN: "zł", // Polish Zloty
+  RUB: "₽", // Russian Ruble
+  SEK: "kr", // Swedish Krona
+  SGD: "$", // Singapore Dollar
+  TRY: "₺", // Turkish Lira
+  UAH: "₴", // Ukrainian Hryvnia
+  USD: "$", // United States Dollar
+};
+
 export default function Component() {
   const { rates, selectedCurrency, setSelectedCurrency } = useDataContext();
 
@@ -11,26 +35,36 @@ export default function Component() {
 
   return (
     <GenericPopover
-      title="currency"
       openElement={
-        <span className="bg-textColor px-2 py-1 text-buttonTextColor">
-          {`Currency: ${selectedCurrency}`}
+        <span className="min-w-8 bg-textColor px-2 py-1 text-buttonTextColor">
+          {`Currency: ${currencySymbols[selectedCurrency]}`}
         </span>
       }
+      contentProps={{
+        sideOffset: 16,
+        align: "end",
+      }}
     >
-      <div className="space-y-2 px-12 pb-7">
+      <div className="min-w-80 space-y-2 pl-4">
         {Object.entries(rates.currencies).map(([k, v]) => (
-          <button
-            key={k}
-            onClick={() => {
-              setSelectedCurrency(k);
-            }}
-            className={cn("flex items-center gap-1 text-sm", {
-              underline: k === selectedCurrency,
+          <div
+            className={cn("leading-none", {
+              "bg-bgColor  text-textColor": k === selectedCurrency,
             })}
+            key={k}
           >
-            {v.description} {JSON.stringify(v.rate)}
-          </button>
+            <button
+              onClick={() => {
+                setSelectedCurrency(k);
+              }}
+              className="flex w-full"
+            >
+              <span className="block min-w-8 text-left">
+                {currencySymbols[k]}{" "}
+              </span>
+              {v.description}
+            </button>
+          </div>
         ))}
       </div>
     </GenericPopover>
