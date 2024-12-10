@@ -6,7 +6,7 @@ export default function LogoLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen space-y-2 bg-bgColor p-2">
+    <div className="min-h-screen space-y-2 bg-bgColor p-2 pb-20">
       <div className="mb-4 size-8">
         <Image src={"/grbpwr-logo.webp"} alt="grpwr logo" aspectRatio="1/1" />
       </div>

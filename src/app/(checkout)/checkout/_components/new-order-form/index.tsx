@@ -199,7 +199,9 @@ export default function NewOrderForm() {
           <div className="space-y-8">
             <Text variant="uppercase">Order summary</Text>
 
-            <CartProductsList hideQuantityButtons />
+            <div className="max-h-[50vh] overflow-y-scroll">
+              <CartProductsList hideQuantityButtons />
+            </div>
             <div className="space-y-4">
               {/* ПОМЕНЯТЬ ВСЕ ЦЕН НА ЗНАЧЕНИЯ ФОРМЫ, тк иначе сложно обновлять значения независимо из разных мест */}
               <PromoCode
