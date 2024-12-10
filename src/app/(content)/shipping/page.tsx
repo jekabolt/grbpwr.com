@@ -49,7 +49,7 @@ export default function Component() {
       <CareComposition className="mb-10 space-y-6" />
       <Text variant="uppercase">order status:</Text>
       <Text size="small" component="span" className="mb-6 block leading-none">
-        once your order is shipped, we'll send you an email with a tracking
+        once your order is shipped, we&apos;ll send you an email with a tracking
         number. please allow 48 hours for tracking information to update. if
         your order has not arrived within 7 days post-shipment, please contact
         us at&nbsp;
@@ -62,8 +62,8 @@ export default function Component() {
       <Text variant="uppercase">first-time order policy:</Text>
       <Text size="small" className="leading-none">
         for security reasons, first-time orders may need to be shipped to the
-        cardholder's verified billing or work address. please ensure all details
-        are accurate to avoid delays.
+        cardholder&apos;s verified billing or work address. please ensure all
+        details are accurate to avoid delays.
       </Text>
       <CareComposition className="mb-10 space-y-6" />
       <Text variant="uppercase">rejected parcels:</Text>
