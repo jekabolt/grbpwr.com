@@ -7,7 +7,7 @@ import { useDataContext } from "@/components/DataContext";
 
 import { Button } from "./button";
 
-export function NavigationMenuComponent() {
+export function NavigationMenuComponent({ className }: { className?: string }) {
   const { dictionary } = useDataContext();
 
   const categoriesGroups = groupCategories(
@@ -15,7 +15,7 @@ export function NavigationMenuComponent() {
   );
 
   return (
-    <NavigationMenu.Root className="">
+    <NavigationMenu.Root className={cn("flex-none", className)}>
       <NavigationMenu.List className="flex list-none gap-5">
         <NavigationMenu.Item>
           <NavigationMenu.Trigger

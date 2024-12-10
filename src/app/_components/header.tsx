@@ -13,15 +13,16 @@ import CurrencyPopover from "./currency-popover";
 export function Header() {
   return (
     <header className="text sticky top-2 z-20 flex h-12 items-center justify-between bg-textColor p-3 py-2 lg:px-5 lg:py-3">
-      <NavigationMenuComponent />
+      <NavigationMenuComponent className="grow basis-0" />
 
-      <Button asChild variant="main" className="flex-none">
-        <Link href="/" className="flex-1 text-center">
-          grbpwr
-        </Link>
-      </Button>
+      <Link
+        href="/"
+        className="flex-none text-center text-bgColor hover:animate-ping"
+      >
+        grbpwr
+      </Link>
 
-      <div className="flex items-center gap-x-5">
+      <div className="flex grow basis-0 items-center justify-end gap-x-5">
         <CurrencyPopover />
 
         <CartPopup>
