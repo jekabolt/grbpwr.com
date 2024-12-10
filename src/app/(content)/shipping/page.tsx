@@ -6,7 +6,7 @@ import TextWrapper from "@/components/ui/text-wrapper";
 export default function Component() {
   return (
     <TextWrapper>
-      <Text variant="uppercase" component="h2">
+      <Text variant="uppercase" component="h1">
         shipping
       </Text>
       <Text variant="uppercase">order processing and delivery time:</Text>
