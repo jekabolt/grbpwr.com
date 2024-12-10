@@ -6,8 +6,8 @@ import * as Popover from "@radix-ui/react-popover";
 type Props = {
   children: React.ReactNode;
   openElement: React.ReactNode;
-  title: string;
-  contentProps?: any;
+  title?: string;
+  contentProps?: Popover.PopoverContentProps;
 };
 export default function GenericPopover({
   openElement,
@@ -31,24 +31,25 @@ function PopoverContent({
   ...contentProps
 }: {
   children: React.ReactNode;
-  title: string;
+  title?: string;
 }) {
   return (
     <Popover.Portal>
       <Popover.Content
         side="top"
         align="center"
-        // {/* todo: change to correct theme collor */}
-        className="bg-black p-3 text-white"
+        className="bg-textColor px-2.5 py-6 text-bgColor"
         {...contentProps}
       >
-        <div className="mb-4 flex justify-between">
-          <span className="block">{title}</span>
-          <Popover.Close aria-label="Close">
-            {/* todo: change to icon */}
-            {"["}X{"]"}
-          </Popover.Close>
-        </div>
+        {title && (
+          <div className="mb-4 flex justify-between">
+            <span className="block">{title}</span>
+            <Popover.Close aria-label="Close">
+              {/* todo: change to icon */}
+              {"["}X{"]"}
+            </Popover.Close>
+          </div>
+        )}
         {children}
       </Popover.Content>
     </Popover.Portal>

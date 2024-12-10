@@ -16,7 +16,7 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
         <Image
           src={product.thumbnail || ""}
           alt="product"
-          fit="cover"
+          fit="contain"
           aspectRatio="3/4"
         />
       </div>

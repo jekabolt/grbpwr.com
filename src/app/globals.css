@@ -40,6 +40,42 @@
     --text-small: @apply text-xs;
   }
 
+  .blueTheme {
+    --text: #fff;
+    --inactive: #cccccc;
+    --background: #311eee;
+    --highlight: #fff;
+    --error: #ff0000;
+    --text-select: #75fb4c;
+    /* components-specific colors */
+    --button-text: #000;
+    --visited-link: #b3edff;
+
+    /* TEXT */
+    --text-giant: 200px;
+    --text-giant-small: 110px;
+    --text-base: @apply text-base;
+    --text-small: @apply text-xs;
+  }
+
+  .blackTheme {
+    --text: #fff;
+    --inactive: #cccccc;
+    --background: #000;
+    --highlight: #535353;
+    --error: #ff0000;
+    --text-select: #75fb4c;
+    /* components-specific colors */
+    --button-text: #fff;
+    --visited-link: #501089;
+
+    /* TEXT */
+    --text-giant: 200px;
+    --text-giant-small: 110px;
+    --text-base: @apply text-base;
+    --text-small: @apply text-xs;
+  }
+
   /* * {
     @apply border-border;
   } */

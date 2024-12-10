@@ -1,11 +1,17 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 
-const buttonVariants = cva("disabled:cursor-not-allowed block", {
+export const buttonVariants = cva("disabled:cursor-not-allowed block", {
   variants: {
     variant: {
       default: ["text-textBaseSize", "disabled:opacity-50"],
-      simple: ["text-bgColor", "bg-textColor"],
+      simple: [
+        "text-bgColor",
+        "bg-textColor",
+        "hover:bg-bgColor",
+        "hover:text-textColor",
+      ],
+      simpleReverse: ["text-textColor", "bg-bgColor"],
       main: [
         "border",
         "border-textColor",
@@ -26,14 +32,17 @@ const buttonVariants = cva("disabled:cursor-not-allowed block", {
         "text-center",
       ],
       underline: [
-        "text-textBaseSize",
-        "border-textColor",
+        "text-textColor",
+        "underline",
+        "disabled:text-textInactiveColor",
+      ],
+      underlineReverse: [
+        "text-bgColor",
         "underline",
         "disabled:text-textInactiveColor",
       ],
       underlineWithColors: [
         "underline",
-        "text-textBaseSize",
         "text-highlightColor",
         "disabled:text-textInactiveColor",
         "visited:text-visitedLinkColor",

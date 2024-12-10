@@ -11,7 +11,7 @@ export default async function Page() {
 
   return (
     <>
-      <MainAds main={hero?.entities?.[0]?.mainAdd} />
+      {/* <MainAds main={hero?.entities?.[0]?.mainAdd} /> */}
       <NavigationLayout>
         <Ads entities={hero?.entities || []} />
         <Button asChild size="giant" variant="simple">

@@ -19,16 +19,13 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="group relative" ref={ref}>
-      <Button
-        onClick={() => setOpenStatus((v) => !v)}
-        variant="underlineWithColors"
-      >
+      <Button onClick={() => setOpenStatus((v) => !v)} variant="main">
         cart {itemsQuantity ? `(${itemsQuantity})` : ""}
       </Button>
-      <div className="blueTheme">
+      <div className="blackTheme">
         <div
           className={cn(
-            "absolute -top-1 right-0 z-30 hidden w-[500px] space-y-6 bg-bgColor p-2.5",
+            "absolute right-0 top-10 z-30 hidden w-[500px] space-y-6 bg-bgColor p-2.5",
             {
               block: open,
             },
@@ -43,7 +40,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
           </div>
           {children}
           <Button asChild variant="main" size="lg" className="block w-full">
-            <Link href="/checkout">PROCEED TO CHECKOUT</Link>
+            <Link href="/checkout">GO TO CHECKOUT</Link>
           </Button>
         </div>
       </div>
