@@ -13,12 +13,12 @@ import { serviceClient } from "@/lib/api";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
-import InputField from "@/components/ui/form/fields/input-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import { FormContainer } from "@/components/ui/form/form-container";
 
 import StripeSecureCardForm from "../StripeSecureCardForm";
 import AddressFields from "./AddressFields";
+import ContactFieldsGroup from "./contact-fields-group";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema } from "./schema";
 import { mapFormFieldToOrderDataFormat } from "./utils";
@@ -192,37 +192,7 @@ export default function NewOrderForm() {
         submitButton={<Button>pay</Button>}
       >
         <div>
-          <div className="space-y-4">
-            <h2 className="mb-8 text-lg">contact</h2>
-            <InputField
-              control={form.control}
-              loading={loading}
-              name="email"
-              label="email address:"
-              type="email"
-              placeholder="james.bond@example.com"
-            />
-            <InputField
-              control={form.control}
-              loading={loading}
-              type="number"
-              name="phone"
-              label="phone number:"
-              placeholder="James Bond"
-            />
-            <div className="space-y-2">
-              <CheckboxField
-                control={form.control}
-                name="subscribe"
-                label="email me with news and offers to our newsletter"
-              />
-              <CheckboxField
-                control={form.control}
-                name="termsOfService"
-                label="i accept the privacy policy and terms & conditions"
-              />
-            </div>
-          </div>
+          <ContactFieldsGroup form={form} loading={loading} />
 
           <div className="space-y-4">
             <h2 className="mb-8 text-lg">shipping address</h2>
