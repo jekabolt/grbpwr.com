@@ -1,10 +1,11 @@
 import CareComposition from "@/components/ui/care-composition";
 import { Text } from "@/components/ui/text";
+import TextWrapper from "@/components/ui/text-wrapper";
 
 export default function Component() {
   return (
-    <div className="prose-lg">
-      <Text variant="uppercase" className="mb-10">
+    <TextWrapper>
+      <Text variant="uppercase" component="h1">
         returns and cancelations policy
       </Text>
       <Text variant="uppercase">eligibility for returns:</Text>
@@ -88,6 +89,6 @@ export default function Component() {
         costs for international returns.
       </Text>
       <CareComposition className="mb-10 space-y-6" />
-    </div>
+    </TextWrapper>
   );
 }

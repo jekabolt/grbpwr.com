@@ -1,11 +1,12 @@
 import CareComposition from "@/components/ui/care-composition";
 import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";
+import TextWrapper from "@/components/ui/text-wrapper";
 
 export default function Component() {
   return (
-    <div className="prose-lg">
-      <Text variant="uppercase" className="mb-10">
+    <TextWrapper>
+      <Text variant="uppercase" component="h2">
         shipping
       </Text>
       <Text variant="uppercase">order processing and delivery time:</Text>
@@ -78,6 +79,6 @@ export default function Component() {
         we do not ship to p.o. boxes.
       </Text>
       <CareComposition className="mb-10 space-y-6" />
-    </div>
+    </TextWrapper>
   );
 }
