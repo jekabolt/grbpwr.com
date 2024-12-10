@@ -11,9 +11,9 @@ import { useForm } from "react-hook-form";
 import { serviceClient } from "@/lib/api";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
-import CheckboxField from "@/components/ui/form/fields/checkbox-field";
-import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
-import { FormContainer } from "@/components/ui/form/form-container";
+import { Form } from "@/components/ui/form";
+import { Text } from "@/components/ui/text";
+import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList";
 
 import StripeSecureCardForm from "../StripeSecureCardForm";
 import ContactFieldsGroup from "./contact-fields-group";
@@ -180,82 +180,67 @@ export default function NewOrderForm() {
   };
 
   return (
-    <>
-      <FormContainer
-        form={form}
-        onSubmit={onSubmit}
-        footerSide="right"
-        submitButton={<Button>pay</Button>}
-      >
-        <div className="space-y-16">
-          <ContactFieldsGroup control={form.control} loading={loading} />
-          <ShippingFieldsGroup
-            control={form.control}
-            loading={loading}
-            validateItemsAndUpdateCookie={validateItemsAndUpdateCookie}
-          />
-          <PaymentFieldsGroup
-            form={form}
-            loading={loading}
-            validateItemsAndUpdateCookie={validateItemsAndUpdateCookie}
-          />
-
-          <div className="space-y-4"></div>
-
-          <div className="space-y-4">
-            <h2 className="mb-8 text-lg">remember me</h2>
-            <CheckboxField
-              control={form.control}
-              name="rememberMe"
-              label="Save my information for a faster checkouts"
-            />
-          </div>
-        </div>
-        <div>
-          <div className="space-y-4">
-            <h2 className="text-lg">Order summary</h2>
-            {/* ПОМЕНЯТЬ ВСЕ ЦЕН НА ЗНАЧЕНИЯ ФОРМЫ, тк иначе сложно обновлять значения независимо из разных мест */}
-            <PromoCode
-              freeShipmentCarrierId={2}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="grid gap-28 lg:grid-cols-2">
+          <div className="space-y-16">
+            <ContactFieldsGroup control={form.control} loading={loading} />
+            <ShippingFieldsGroup
               control={form.control}
               loading={loading}
               validateItemsAndUpdateCookie={validateItemsAndUpdateCookie}
             />
-            <div className="flex justify-between">
-              <div>subtotal:</div>
-              <div>{orderData?.subtotal?.value}</div>
-            </div>
-            <div className="flex justify-between">
-              <div>shipping price:</div>
-              {/* to-do pass shipping price */}
-              <div>
-                {orderData?.promo?.freeShipping
-                  ? 0
-                  : dictionary?.shipmentCarriers?.find(
-                      (c) => c.id + "" === shipmentCarrierId,
-                    )?.shipmentCarrier?.price?.value || 0}
-              </div>
-            </div>
-            {!!orderData?.promo?.discount?.value && (
+            <PaymentFieldsGroup
+              form={form}
+              loading={loading}
+              validateItemsAndUpdateCookie={validateItemsAndUpdateCookie}
+            />
+          </div>
+          <div className="space-y-8">
+            <Text variant="uppercase">Order summary</Text>
+
+            <CartProductsList hideQuantityButtons />
+            <div className="space-y-4">
+              {/* ПОМЕНЯТЬ ВСЕ ЦЕН НА ЗНАЧЕНИЯ ФОРМЫ, тк иначе сложно обновлять значения независимо из разных мест */}
+              <PromoCode
+                freeShipmentCarrierId={2}
+                control={form.control}
+                loading={loading}
+                validateItemsAndUpdateCookie={validateItemsAndUpdateCookie}
+              />
               <div className="flex justify-between">
-                <div>discount:</div>
-                <div>{orderData?.promo?.discount?.value}%</div>
+                <div>subtotal:</div>
+                <div>{orderData?.subtotal?.value}</div>
               </div>
-            )}
-            <hr className="h-px bg-textColor" />
-            <div className="flex justify-between">
-              <div>grand total:</div>
-              <div>{orderData?.totalSale?.value}</div>
+              <div className="flex justify-between">
+                <div>shipping price:</div>
+                {/* to-do pass shipping price */}
+                <div>
+                  {orderData?.promo?.freeShipping
+                    ? 0
+                    : dictionary?.shipmentCarriers?.find(
+                        (c) => c.id + "" === shipmentCarrierId,
+                      )?.shipmentCarrier?.price?.value || 0}
+                </div>
+              </div>
+              {!!orderData?.promo?.discount?.value && (
+                <div className="flex justify-between">
+                  <div>discount:</div>
+                  <div>{orderData?.promo?.discount?.value}%</div>
+                </div>
+              )}
+              <hr className="h-px bg-textColor" />
+              <div className="flex justify-between">
+                <div>grand total:</div>
+                <div>{orderData?.totalSale?.value}</div>
+              </div>
             </div>
+            <Button variant={"main"} size={"lg"} className="w-full">
+              pay
+            </Button>
           </div>
         </div>
-      </FormContainer>
-      {newOrderStripeToken && (
-        <>
-          <h1 className="text-3xl text-green-600">{newOrderStripeToken}</h1>
-          <StripeSecureCardForm clientSecret={newOrderStripeToken} />
-        </>
-      )}
-    </>
+      </form>
+    </Form>
   );
 }
