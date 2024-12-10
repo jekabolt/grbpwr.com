@@ -14,6 +14,8 @@ import {
 
 import { cn } from "@/lib/utils";
 
+import { Text } from "../text";
+
 const Form = FormProvider;
 
 type FormFieldContextValue<
@@ -87,12 +89,9 @@ function FormLabel({ className, ref, ...props }: any) {
   const { formItemId } = useFormField();
 
   return (
-    <Label
-      ref={ref}
-      className={cn("text-xs", className)}
-      htmlFor={formItemId}
-      {...props}
-    />
+    <Label ref={ref} className={cn(className)} htmlFor={formItemId} {...props}>
+      <Text size="small">{props.children}</Text>
+    </Label>
   );
 }
 

@@ -1,7 +1,7 @@
 import { serviceClient } from "@/lib/api";
 import { FullscreenImagesCarousel } from "@/components/images-carousel";
 import { ArchiveMediaItem } from "@/components/images-carousel/ArchiveMediaItem";
-import NavigationLayout from "@/app/_components/navigation-layout";
+import NavigationLayout from "@/components/navigation-layout";
 
 import { InfinityScrollCatalog } from "../catalog/_components/infinity-scroll-catalog";
 

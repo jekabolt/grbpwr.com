@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 import { serviceClient } from "@/lib/api";
+import NavigationLayout from "@/components/navigation-layout";
 import { Button } from "@/components/ui/button";
 import { Ads } from "@/app/_components/ads";
 import { MainAds } from "@/app/_components/main-ads";
-import NavigationLayout from "@/app/_components/navigation-layout";
 
 export default async function Page() {
   const { hero } = await serviceClient.GetHero({});

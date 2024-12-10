@@ -2,9 +2,9 @@ import { Suspense } from "react";
 import Link from "next/link";
 
 import { serviceClient } from "@/lib/api";
-import { Button } from "@/components/ui/button";
 // import { CartProductsSkeleton } from "@/components/ui/skeleton";
-import NavigationLayout from "@/app/_components/navigation-layout";
+import NavigationLayout from "@/components/navigation-layout";
+import { Button } from "@/components/ui/button";
 
 import CartProductsList from "./_components/CartProductsList";
 import TotalPrice from "./_components/CartTotalPrice";

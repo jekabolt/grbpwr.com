@@ -6,7 +6,7 @@ import { Text } from "./text";
 export interface RadioGroupsProps {
   name: string;
   items: {
-    label: string;
+    label: string | React.ReactNode;
     value: string;
   }[];
   // todo: add disabled
@@ -29,11 +29,11 @@ export default function RadioGroupComponent({
       {items.map(({ value, label }) => (
         <div key={value} className="flex items-center gap-x-2">
           <RadioGroup.Item
-            className="h-3 w-3 cursor-pointer border border-textColor"
+            className="h-3 w-3 cursor-pointer rounded-full border border-textColor"
             value={value}
             id={`${value}-r`}
           >
-            <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-3 after:w-3 after:bg-textColor after:content-['']" />
+            <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-2 after:w-2 after:rounded-full after:bg-textColor after:content-['']" />
           </RadioGroup.Item>
           <Label
             className="cursor-pointer text-xs leading-3 text-textColor"
