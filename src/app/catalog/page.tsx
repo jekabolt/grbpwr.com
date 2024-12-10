@@ -1,7 +1,7 @@
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
-import NavigationLayout from "@/app/_components/navigation-layout";
+import NavigationLayout from "@/components/navigation-layout";
 
 import Filters from "./_components/catalog-filters";
 import { InfinityScrollCatalog } from "./_components/infinity-scroll-catalog";

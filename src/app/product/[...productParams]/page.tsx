@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { MAX_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
-import NavigationLayout from "@/app/_components/navigation-layout";
+import NavigationLayout from "@/components/navigation-layout";
 
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
