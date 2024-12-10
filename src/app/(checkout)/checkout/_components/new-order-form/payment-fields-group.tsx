@@ -14,14 +14,9 @@ import { AddressFields } from "./shipping-fields-group";
 type Props = {
   loading: boolean;
   form: UseFormReturn<any>;
-  validateItemsAndUpdateCookie: (shipmentCarrierId: string) => Promise<any>;
 };
 
-export default function ShippingFieldsGroup({
-  loading,
-  form,
-  validateItemsAndUpdateCookie,
-}: Props) {
+export default function ShippingFieldsGroup({ loading, form }: Props) {
   const { dictionary } = useDataContext();
 
   const { control, watch } = form;
@@ -41,9 +36,7 @@ export default function ShippingFieldsGroup({
         control={form.control}
         loading={loading}
         name="paymentMethod"
-        onChange={validateItemsAndUpdateCookie}
-        // @ts-ignore
-        items={paymentMethodsItems}
+        items={paymentMethodsItems as any}
       />
 
       {/* оплата картой делается на отдельной странице */}

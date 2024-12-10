@@ -14,13 +14,13 @@ import FieldsGroupContainer from "./fields-group-container";
 type Props = {
   loading: boolean;
   control: Control<any>;
-  validateItemsAndUpdateCookie: (shipmentCarrierId: string) => Promise<any>;
+  validateItems: (shipmentCarrierId: string) => Promise<any>;
 };
 
 export default function ShippingFieldsGroup({
   loading,
   control,
-  validateItemsAndUpdateCookie,
+  validateItems,
 }: Props) {
   const { dictionary } = useDataContext();
 
@@ -35,7 +35,7 @@ export default function ShippingFieldsGroup({
             control={control}
             loading={loading}
             name="shipmentCarrierId"
-            onChange={validateItemsAndUpdateCookie}
+            onChange={validateItems}
             // label="shippingMethod"
             // @ts-ignore
             items={dictionary?.shipmentCarriers?.map((c) => ({

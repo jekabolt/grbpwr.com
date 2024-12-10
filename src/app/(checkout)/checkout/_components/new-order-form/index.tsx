@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type {
-  common_OrderNew,
-  ValidateOrderItemsInsertResponse,
-} from "@/api/proto-http/frontend";
+import type { common_OrderNew } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -21,6 +18,7 @@ import PaymentFieldsGroup from "./payment-fields-group";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
+import { useValidatedProducts } from "./useValidatedProducts";
 import { mapFormFieldToOrderDataFormat } from "./utils";
 
 // import { clearCartProducts } from "@/features/cart/action";
@@ -93,9 +91,6 @@ async function submitNewOrder(newOrderData: common_OrderNew) {
 export default function NewOrderForm() {
   const [newOrderStripeToken, setNewOrderStripeToken] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [orderData, setOrderData] = useState<
-    ValidateOrderItemsInsertResponse | undefined
-  >(undefined);
   const { dictionary } = useDataContext();
 
   const defaultValues = {
@@ -110,13 +105,10 @@ export default function NewOrderForm() {
     resolver: zodResolver(checkoutSchema),
     defaultValues,
   });
-
-  const paymentMethod = form.watch("paymentMethod");
-  const promoCode = form.watch("promoCode");
-  const shipmentCarrierId = form.watch("shipmentCarrierId");
+  const { products, validateItems } = useValidatedProducts(form);
 
   const onSubmit = async (data: CheckoutData) => {
-    const response = await validateItemsAndUpdateCookie();
+    const response = await validateItems();
 
     const newOrderData = mapFormFieldToOrderDataFormat(
       data,
@@ -153,32 +145,6 @@ export default function NewOrderForm() {
     }
   };
 
-  const validateItemsAndUpdateCookie = async (
-    customShipmentCarrierId?: string,
-  ) => {
-    const items = orderData?.validItems?.map((i) => ({
-      productId: i.orderItem?.productId,
-      quantity: i.orderItem?.quantity,
-      sizeId: i.orderItem?.sizeId,
-    }));
-
-    if (!items || items?.length === 0) return null;
-
-    const response = await serviceClient.ValidateOrderItemsInsert({
-      items,
-      promoCode,
-      shipmentCarrierId: parseInt(customShipmentCarrierId || shipmentCarrierId),
-    });
-
-    setOrderData(response);
-
-    if (response.hasChanged && response.validItems) {
-      // updateCookieCart(response.validItems);
-    }
-
-    return response;
-  };
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -188,54 +154,53 @@ export default function NewOrderForm() {
             <ShippingFieldsGroup
               control={form.control}
               loading={loading}
-              validateItemsAndUpdateCookie={validateItemsAndUpdateCookie}
+              validateItems={validateItems}
             />
-            <PaymentFieldsGroup
-              form={form}
-              loading={loading}
-              validateItemsAndUpdateCookie={validateItemsAndUpdateCookie}
-            />
+            <PaymentFieldsGroup form={form} loading={loading} />
           </div>
           <div className="space-y-8">
             <Text variant="uppercase">Order summary</Text>
 
             <div className="max-h-[50vh] overflow-y-scroll">
-              <CartProductsList hideQuantityButtons />
+              <CartProductsList
+                hideQuantityButtons
+                validatedProducts={products}
+              />
             </div>
             <div className="space-y-4">
               {/* ПОМЕНЯТЬ ВСЕ ЦЕН НА ЗНАЧЕНИЯ ФОРМЫ, тк иначе сложно обновлять значения независимо из разных мест */}
               <PromoCode
                 freeShipmentCarrierId={2}
-                control={form.control}
+                form={form}
                 loading={loading}
-                validateItemsAndUpdateCookie={validateItemsAndUpdateCookie}
+                validateItems={validateItems}
               />
               <div className="flex justify-between">
                 <div>subtotal:</div>
-                <div>{orderData?.subtotal?.value}</div>
+                {/* <div>{orderData?.subtotal?.value}</div> */}
               </div>
               <div className="flex justify-between">
                 <div>shipping price:</div>
                 {/* to-do pass shipping price */}
-                <div>
+                {/* <div>
                   {orderData?.promo?.freeShipping
                     ? 0
                     : dictionary?.shipmentCarriers?.find(
                         (c) => c.id + "" === shipmentCarrierId,
                       )?.shipmentCarrier?.price?.value || 0}
-                </div>
+                </div> */}
               </div>
-              {!!orderData?.promo?.discount?.value && (
+              {/* {!!orderData?.promo?.discount?.value && (
                 <div className="flex justify-between">
                   <div>discount:</div>
                   <div>{orderData?.promo?.discount?.value}%</div>
                 </div>
-              )}
+              )} */}
               <hr className="h-px bg-textColor" />
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <div>grand total:</div>
                 <div>{orderData?.totalSale?.value}</div>
-              </div>
+              </div> */}
             </div>
             <Button variant={"main"} size={"lg"} className="w-full">
               pay
