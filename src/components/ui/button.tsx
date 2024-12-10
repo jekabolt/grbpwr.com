@@ -11,6 +11,7 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
         "hover:bg-bgColor",
         "hover:text-textColor",
       ],
+      simpleReverse: ["text-textColor", "bg-bgColor"],
       main: [
         "border",
         "border-textColor",

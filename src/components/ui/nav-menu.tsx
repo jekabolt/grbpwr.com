@@ -1,4 +1,4 @@
-import React from "react";
+import { useSearchParams } from "next/navigation";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import { groupCategories } from "@/lib/categories-map";
@@ -33,14 +33,16 @@ export function NavigationMenuComponent() {
                 <Button variant={"underlineReverse"}>WOMEN</Button>
               </div>
 
-              {Object.entries(categoriesGroups).map(([key, category]) => (
+              {Object.entries(categoriesGroups).map(([key, category], i) => (
                 <LinksGroup
+                  groupIndex={i}
                   className="w-40"
                   key={key}
                   title={category.title}
                   links={category.items.map((item) => ({
                     title: item.label.toLowerCase(),
                     href: item.href,
+                    id: item.id,
                   }))}
                 />
               ))}
@@ -68,29 +70,40 @@ export function NavigationMenuComponent() {
 }
 
 function LinksGroup({
+  groupIndex,
   className,
   title,
   links,
 }: {
+  groupIndex: number;
   className?: string;
   title: string;
   links: {
     title: string;
     href: string;
+    id: string;
   }[];
 }) {
+  const category = useSearchParams().get("category");
+
   return (
     <div className={cn("space-y-4", className)}>
       <p className="uppercase text-bgColor">{title}</p>
       <div className="space-y-2">
         <div className="w-full">
-          <Button variant="simple" asChild>
+          <Button
+            variant={!category && groupIndex === 0 ? "simpleReverse" : "simple"}
+            asChild
+          >
             <NavigationMenu.Link href="/catalog">view all</NavigationMenu.Link>
           </Button>
         </div>
-        {links.map((link, i) => (
+        {links.map((link) => (
           <div className="w-full" key={link.href}>
-            <Button variant="simple" asChild>
+            <Button
+              variant={category === link.id ? "simpleReverse" : "simple"}
+              asChild
+            >
               <NavigationMenu.Link href={link.href}>
                 {link.title}
               </NavigationMenu.Link>
