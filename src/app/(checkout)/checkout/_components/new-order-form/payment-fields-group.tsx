@@ -7,6 +7,7 @@ import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import { Text } from "@/components/ui/text";
 
+import { paymentMethodNamesMap } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 import { AddressFields } from "./shipping-fields-group";
 
@@ -21,9 +22,18 @@ export default function ShippingFieldsGroup({
   form,
   validateItemsAndUpdateCookie,
 }: Props) {
-  const { control, watch } = form;
   const { dictionary } = useDataContext();
+
+  const { control, watch } = form;
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
+
+  const paymentMethodsItems = dictionary?.paymentMethods
+    ?.filter((v) => v.allowed)
+    .map((v) => ({
+      label:
+        paymentMethodNamesMap[v.name as keyof typeof paymentMethodNamesMap],
+      value: v.name,
+    }));
 
   return (
     <FieldsGroupContainer stage="3/3" title="payment method">
@@ -33,10 +43,7 @@ export default function ShippingFieldsGroup({
         name="paymentMethod"
         onChange={validateItemsAndUpdateCookie}
         // @ts-ignore
-        items={dictionary?.paymentMethods?.map((c) => ({
-          label: c.name || "",
-          value: c.name || "",
-        }))}
+        items={paymentMethodsItems}
       />
 
       {/* оплата картой делается на отдельной странице */}

@@ -8,7 +8,7 @@ import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
 
-import { countries } from "./country-list";
+import { countries } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 
 type Props = {
