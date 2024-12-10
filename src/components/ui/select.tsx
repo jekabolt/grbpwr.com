@@ -77,7 +77,7 @@ export function SelectContent({ children }: { children: React.ReactNode }) {
         <Select.ScrollUpButton className="flex h-6 cursor-default items-center justify-center bg-bgColor text-textColor">
           arrow up
         </Select.ScrollUpButton>
-        <Select.Viewport className="bg-bgColor p-[5px] ">
+        <Select.Viewport className="max-h-[300px] bg-bgColor p-[5px]">
           {children}
         </Select.Viewport>
         <Select.ScrollDownButton className="flex h-6 cursor-default items-center justify-center bg-bgColor text-textColor">

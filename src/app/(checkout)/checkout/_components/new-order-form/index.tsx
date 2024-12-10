@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import type {
   common_OrderNew,
   ValidateOrderItemsInsertResponse,
@@ -17,10 +16,11 @@ import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import { FormContainer } from "@/components/ui/form/form-container";
 
 import StripeSecureCardForm from "../StripeSecureCardForm";
-import AddressFields from "./AddressFields";
 import ContactFieldsGroup from "./contact-fields-group";
+import PaymentFieldsGroup from "./payment-fields-group";
 import PromoCode from "./PromoCode";
-import { CheckoutData, checkoutSchema } from "./schema";
+import { CheckoutData, checkoutSchema, defaultData } from "./schema";
+import ShippingFieldsGroup from "./shipping-fields-group";
 import { mapFormFieldToOrderDataFormat } from "./utils";
 
 // import { clearCartProducts } from "@/features/cart/action";
@@ -97,10 +97,9 @@ export default function NewOrderForm() {
     ValidateOrderItemsInsertResponse | undefined
   >(undefined);
   const { dictionary } = useDataContext();
-  const router = useRouter();
 
   const defaultValues = {
-    // ...defaultData,
+    ...defaultData,
     // promoCustomConditions: {
     //   totalSale: order?.totalSale,
     //   subtotal: order?.subtotal,
@@ -112,9 +111,6 @@ export default function NewOrderForm() {
     defaultValues,
   });
 
-  const billingAddressIsSameAsAddress = form.watch(
-    "billingAddressIsSameAsAddress",
-  );
   const paymentMethod = form.watch("paymentMethod");
   const promoCode = form.watch("promoCode");
   const shipmentCarrierId = form.watch("shipmentCarrierId");
@@ -191,105 +187,20 @@ export default function NewOrderForm() {
         footerSide="right"
         submitButton={<Button>pay</Button>}
       >
-        <div>
-          <ContactFieldsGroup form={form} loading={loading} />
+        <div className="space-y-16">
+          <ContactFieldsGroup control={form.control} loading={loading} />
+          <ShippingFieldsGroup
+            control={form.control}
+            loading={loading}
+            validateItemsAndUpdateCookie={validateItemsAndUpdateCookie}
+          />
+          <PaymentFieldsGroup
+            form={form}
+            loading={loading}
+            validateItemsAndUpdateCookie={validateItemsAndUpdateCookie}
+          />
 
-          <div className="space-y-4">
-            <h2 className="mb-8 text-lg">shipping address</h2>
-            <AddressFields control={form.control} loading={loading} />
-          </div>
-
-          <div className="space-y-4">
-            <h2 className="mb-8 text-lg">shipping method</h2>
-
-            <RadioGroupField
-              control={form.control}
-              loading={loading}
-              name="shipmentCarrierId"
-              onChange={validateItemsAndUpdateCookie}
-              // label="shippingMethod"
-              // @ts-ignore
-              items={dictionary?.shipmentCarriers?.map((c) => ({
-                label: c.shipmentCarrier?.carrier || "",
-                value: c.id + "" || "",
-              }))}
-            />
-          </div>
-          <div className="space-y-4">
-            <h2 className="mb-8 text-lg">billing address</h2>
-            <p className="mb-2 text-sm">
-              Select the address that matches your card or payment method
-            </p>
-            <CheckboxField
-              control={form.control}
-              name="billingAddressIsSameAsAddress"
-              label="Same as shipping address"
-            />
-
-            {!billingAddressIsSameAsAddress && (
-              <AddressFields
-                prefix="billingAddress"
-                control={form.control}
-                loading={loading}
-              />
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <h2 className="mb-8 text-lg">payment</h2>
-
-            <RadioGroupField
-              control={form.control}
-              loading={loading}
-              name="paymentMethod"
-              items={
-                dictionary?.paymentMethods?.map((p) => ({
-                  label: p.name as string,
-                  value: p.name as string,
-                })) || []
-              }
-            />
-
-            {/* {(paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD" ||
-              paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") && (
-              <div>
-                <h1 className="text-9xl font-bold">stripe elements</h1>
-                <InputMaskedField
-                  control={form.control}
-                  name="creditCard.number"
-                  label="card number:"
-                  mask={"dddd dddd dddd dddd"}
-                  placeholder="4242 4242 4242 4242"
-                />
-                <InputField
-                  control={form.control}
-                  name="creditCard.fullName"
-                  label="name on card:"
-                  placeholder="James Bond"
-                />
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="col-span-1">
-                    <InputMaskedField
-                      control={form.control}
-                      name="creditCard.expirationDate"
-                      label="expiration date:"
-                      mask={"__/__"}
-                      placeholder="MM/YY"
-                    />
-                  </div>
-                  <div className="col-span-1">
-                    <InputMaskedField
-                      control={form.control}
-                      name="creditCard.cvc"
-                      label="security code:"
-                      mask={"___"}
-                      placeholder="123"
-                    />
-                  </div>
-                </div>
-              </div>
-            )} */}
-          </div>
+          <div className="space-y-4"></div>
 
           <div className="space-y-4">
             <h2 className="mb-8 text-lg">remember me</h2>

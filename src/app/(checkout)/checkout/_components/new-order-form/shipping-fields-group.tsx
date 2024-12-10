@@ -2,18 +2,62 @@
 
 import type { Control } from "react-hook-form";
 
+import { useDataContext } from "@/components/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
+import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";
+import { Text } from "@/components/ui/text";
 
 import { countries } from "./country-list";
+import FieldsGroupContainer from "./fields-group-container";
 
 type Props = {
   loading: boolean;
   control: Control<any>;
-  prefix?: string;
+  validateItemsAndUpdateCookie: (shipmentCarrierId: string) => Promise<any>;
 };
 
-export default function AddressFields({ loading, control, prefix }: Props) {
+export default function ShippingFieldsGroup({
+  loading,
+  control,
+  validateItemsAndUpdateCookie,
+}: Props) {
+  const { dictionary } = useDataContext();
+
+  return (
+    <FieldsGroupContainer stage="2/3" title="shipping address/delivery method">
+      <AddressFields loading={loading} control={control} />
+      <div>
+        <div className="space-y-4">
+          <Text variant="uppercase">shipping method</Text>
+
+          <RadioGroupField
+            control={control}
+            loading={loading}
+            name="shipmentCarrierId"
+            onChange={validateItemsAndUpdateCookie}
+            // label="shippingMethod"
+            // @ts-ignore
+            items={dictionary?.shipmentCarriers?.map((c) => ({
+              label: c.shipmentCarrier?.carrier || "",
+              value: c.id + "" || "",
+            }))}
+          />
+        </div>
+      </div>
+    </FieldsGroupContainer>
+  );
+}
+
+export function AddressFields({
+  loading,
+  control,
+  prefix,
+}: {
+  loading: boolean;
+  control: Control<any>;
+  prefix?: string;
+}) {
   return (
     <>
       <div className="grid grid-cols-2 gap-6">
