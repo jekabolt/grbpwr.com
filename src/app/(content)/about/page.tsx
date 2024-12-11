@@ -57,10 +57,10 @@ export default function Component() {
           <Link href="/privacy-policy">privacy policy</Link>
         </Button>
         <Button variant="underlineWithColors" asChild>
-          <Link href="/shipping-policy">shipping policy</Link>
+          <Link href="/shipping">shipping policy</Link>
         </Button>
         <Button variant="underlineWithColors" asChild>
-          <Link href="/return-policy">return policy</Link>
+          <Link href="/refund-return-policy">return policy</Link>
         </Button>
       </div>
     </div>

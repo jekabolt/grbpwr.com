@@ -5,6 +5,7 @@ import CareComposition from "@/components/ui/care-composition";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";
+import TextWrapper from "@/components/ui/text-wrapper";
 
 const links = [
   { href: "facebook", label: "facebook" },
@@ -15,8 +16,8 @@ const links = [
 
 export default function Component() {
   return (
-    <div className="prose-lg">
-      <Text variant="uppercase" className="mb-10">
+    <TextWrapper>
+      <Text variant="uppercase" component="h1">
         privacy policy
       </Text>
       <Text variant="uppercase">introduction</Text>
@@ -110,6 +111,6 @@ export default function Component() {
       </Text>
       <CareComposition className="mb-10 space-y-6" />
       <CookieBanner isPrivacyPage={true} />
-    </div>
+    </TextWrapper>
   );
 }
