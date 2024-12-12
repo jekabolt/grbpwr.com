@@ -15,10 +15,11 @@ import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList
 import StripeSecureCardForm from "../StripeSecureCardForm";
 import ContactFieldsGroup from "./contact-fields-group";
 import PaymentFieldsGroup from "./payment-fields-group";
+import { PriceSummary } from "./price-summary";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
-import { useValidatedProducts } from "./useValidatedProducts";
+import { useValidatedOrder } from "./useValidatedOrder";
 import { mapFormFieldToOrderDataFormat } from "./utils";
 
 // import { clearCartProducts } from "@/features/cart/action";
@@ -91,7 +92,6 @@ async function submitNewOrder(newOrderData: common_OrderNew) {
 export default function NewOrderForm() {
   const [newOrderStripeToken, setNewOrderStripeToken] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
-  const { dictionary } = useDataContext();
 
   const defaultValues = {
     ...defaultData,
@@ -105,7 +105,8 @@ export default function NewOrderForm() {
     resolver: zodResolver(checkoutSchema),
     defaultValues,
   });
-  const { products, validateItems } = useValidatedProducts(form);
+
+  const { order, validateItems } = useValidatedOrder(form);
 
   const onSubmit = async (data: CheckoutData) => {
     const response = await validateItems();
@@ -145,6 +146,7 @@ export default function NewOrderForm() {
     }
   };
 
+  console.log(order);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -164,43 +166,17 @@ export default function NewOrderForm() {
             <div className="max-h-[50vh] overflow-y-scroll">
               <CartProductsList
                 hideQuantityButtons
-                validatedProducts={products}
+                validatedProducts={order?.validItems}
               />
             </div>
-            <div className="space-y-4">
-              {/* ПОМЕНЯТЬ ВСЕ ЦЕН НА ЗНАЧЕНИЯ ФОРМЫ, тк иначе сложно обновлять значения независимо из разных мест */}
+            <div className="space-y-8">
               <PromoCode
                 freeShipmentCarrierId={2}
                 form={form}
                 loading={loading}
                 validateItems={validateItems}
               />
-              <div className="flex justify-between">
-                <div>subtotal:</div>
-                {/* <div>{orderData?.subtotal?.value}</div> */}
-              </div>
-              <div className="flex justify-between">
-                <div>shipping price:</div>
-                {/* to-do pass shipping price */}
-                {/* <div>
-                  {orderData?.promo?.freeShipping
-                    ? 0
-                    : dictionary?.shipmentCarriers?.find(
-                        (c) => c.id + "" === shipmentCarrierId,
-                      )?.shipmentCarrier?.price?.value || 0}
-                </div> */}
-              </div>
-              {/* {!!orderData?.promo?.discount?.value && (
-                <div className="flex justify-between">
-                  <div>discount:</div>
-                  <div>{orderData?.promo?.discount?.value}%</div>
-                </div>
-              )} */}
-              <hr className="h-px bg-textColor" />
-              {/* <div className="flex justify-between">
-                <div>grand total:</div>
-                <div>{orderData?.totalSale?.value}</div>
-              </div> */}
+              <PriceSummary form={form} order={order} />
             </div>
             <Button variant={"main"} size={"lg"} className="w-full">
               pay

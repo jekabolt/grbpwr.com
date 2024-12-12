@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { common_OrderItem } from "@/api/proto-http/frontend";
+import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { UseFormReturn } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
@@ -9,11 +9,13 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 
 import { CheckoutData } from "./schema";
 
-export function useValidatedProducts(form: UseFormReturn<CheckoutData>) {
-  const [validatedProducts, setValidatedProducts] = useState<
-    common_OrderItem[] | undefined
+export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
+  const [validatedOrder, setValidatedOrder] = useState<
+    ValidateOrderItemsInsertResponse | undefined
   >(undefined);
   const products = useCart((cart) => cart.products);
+
+  console.log(products);
 
   const validateItems = async () => {
     const items = products.map((p) => ({
@@ -36,16 +38,16 @@ export function useValidatedProducts(form: UseFormReturn<CheckoutData>) {
     console.log("finished validating products 🎉");
 
     if (response.validItems) {
-      setValidatedProducts(response.validItems);
+      setValidatedOrder(response);
     }
 
     return response;
   };
 
   useEffect(() => {
-    validateItems();
+    if (products.length !== 0 && !validatedOrder) validateItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [products]);
 
-  return { products: validatedProducts, validateItems };
+  return { order: validatedOrder, validateItems };
 }
