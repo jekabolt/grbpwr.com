@@ -1,4 +1,4 @@
-import { type Control } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import Checkbox from "@/components/ui/checkbox";
@@ -17,15 +17,22 @@ type Props = {
   label: string;
   description?: string;
   loading?: boolean;
-  control: Control<any>;
+  disabled?: boolean;
+  [k: string]: any;
 };
 
 export default function CheckboxField({
   label,
-  control,
   name,
   description,
+  ...props
 }: Props) {
+  const { control, trigger } = useFormContext();
+
+  function onBlur() {
+    trigger(name);
+  }
+
   return (
     <FormField
       control={control}
@@ -38,6 +45,8 @@ export default function CheckboxField({
                 {...field}
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                onBlur={onBlur}
+                {...props}
               />
             </FormControl>
             <div

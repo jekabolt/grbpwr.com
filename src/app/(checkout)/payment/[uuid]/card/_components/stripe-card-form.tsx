@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import {
   CardCvcElement,
   CardElement,
@@ -7,11 +10,8 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 
-export default function CheckoutForm({
-  clientSecret,
-}: {
-  clientSecret: string;
-}) {
+export function StripeCardForm({ clientSecret, uuid }: Props) {
+  const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -41,6 +41,12 @@ export default function CheckoutForm({
 
     console.log(`stripe response:-0--0`);
     console.log({ error, paymentIntent });
+
+    if (paymentIntent?.status === "succeeded") {
+      console.log("Payment successful");
+
+      router.push(`/order/${uuid}`);
+    }
   };
 
   return (
@@ -52,4 +58,9 @@ export default function CheckoutForm({
       <button disabled={!stripe}>Submit stripe pay</button>
     </form>
   );
+}
+
+interface Props {
+  clientSecret: string;
+  uuid: string;
 }

@@ -1,4 +1,4 @@
-import { type Control } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import Input, { InputProps } from "@/components/ui/input";
 
@@ -14,18 +14,22 @@ import {
 type Props = InputProps & {
   description?: string;
   loading?: boolean;
-  control: Control<any>;
 };
 
 export default function InputField({
   loading,
-  control,
   name,
   label,
   description,
   type = "text",
   ...props
 }: Props) {
+  const { control, trigger } = useFormContext();
+
+  function onBlur() {
+    trigger(name);
+  }
+
   return (
     <FormField
       control={control}
@@ -34,7 +38,13 @@ export default function InputField({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input type={type} disabled={loading} {...field} {...props} />
+            <Input
+              type={type}
+              disabled={loading}
+              {...field}
+              {...props}
+              onBlur={onBlur}
+            />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

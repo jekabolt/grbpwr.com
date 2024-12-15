@@ -1,4 +1,4 @@
-import { type Control } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import { FormField, FormItem, FormLabel, FormMessage } from "..";
 import Select from "../../select";
@@ -8,21 +8,26 @@ type Props = {
   label: string;
   placeholder?: string;
   loading?: boolean;
-  control: Control<any>;
   items: {
     label: string;
     value: string;
   }[];
+  [k: string]: any;
 };
 
 export default function SelectField({
   loading,
-  control,
   items,
   name,
   label,
   ...props
 }: Props) {
+  const { control, trigger } = useFormContext();
+
+  function onBlur() {
+    trigger(name);
+  }
+
   return (
     <FormField
       control={control}
@@ -35,6 +40,7 @@ export default function SelectField({
             items={items}
             {...field}
             {...props}
+            onBlur={onBlur}
           />
           <FormMessage />
         </FormItem>
