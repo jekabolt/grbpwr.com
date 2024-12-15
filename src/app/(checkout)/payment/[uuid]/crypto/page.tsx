@@ -45,7 +45,7 @@ export default async function Page(props: Props) {
 }
 
 interface Props {
-  params: {
+  params: Promise<{
     uuid: string;
-  };
+  }>;
 }
