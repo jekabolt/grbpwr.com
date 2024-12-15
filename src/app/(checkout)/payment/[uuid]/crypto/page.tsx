@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import QRCode from "qrcode";
 
 import { serviceClient } from "@/lib/api";
@@ -11,6 +11,13 @@ export default async function Page(props: Props) {
 
   const orderResponse = await serviceClient.GetOrderByUUID({ orderUuid: uuid });
   const order = orderResponse.order;
+
+  if (
+    order?.payment?.paymentInsert?.paymentMethod !==
+    "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"
+  ) {
+    notFound();
+  }
 
   const euroAmount =
     order?.payment?.paymentInsert?.transactionAmount?.value || "";
