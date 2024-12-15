@@ -1,7 +1,5 @@
 "use client";
 
-import type { Control } from "react-hook-form";
-
 import { useDataContext } from "@/components/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
@@ -10,29 +8,32 @@ import { Text } from "@/components/ui/text";
 
 import { countries } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
+import { CONTACT_GROUP_FIELDS } from "./hooks/constants";
+import { useDisabledGroup } from "./hooks/useFormDisabledGroup";
 
 type Props = {
   loading: boolean;
-  control: Control<any>;
   validateItems: (shipmentCarrierId: string) => Promise<any>;
 };
 
-export default function ShippingFieldsGroup({
-  loading,
-  control,
-  validateItems,
-}: Props) {
+export default function ShippingFieldsGroup({ loading, validateItems }: Props) {
   const { dictionary } = useDataContext();
+  const { isGroupDisabled } = useDisabledGroup({
+    fields: CONTACT_GROUP_FIELDS,
+  });
 
   return (
-    <FieldsGroupContainer stage="2/3" title="shipping address/delivery method">
-      <AddressFields loading={loading} control={control} />
+    <FieldsGroupContainer
+      stage="2/3"
+      title="shipping address/delivery method"
+      disabled={isGroupDisabled}
+    >
+      <AddressFields loading={loading} disabled={isGroupDisabled} />
       <div>
         <div className="space-y-4">
           <Text variant="uppercase">shipping method</Text>
 
           <RadioGroupField
-            control={control}
             loading={loading}
             name="shipmentCarrierId"
             onChange={validateItems}
@@ -51,45 +52,44 @@ export default function ShippingFieldsGroup({
 
 export function AddressFields({
   loading,
-  control,
   prefix,
+  disabled,
 }: {
   loading: boolean;
-  control: Control<any>;
   prefix?: string;
+  disabled?: boolean;
 }) {
   return (
     <>
       <div className="grid grid-cols-2 gap-6">
         <div className="col-span-1">
           <InputField
-            control={control}
             loading={loading}
             name={prefix ? `${prefix}.firstName` : "firstName"}
             label="first name:"
             placeholder="James"
+            disabled={disabled}
           />
         </div>
         <div className="col-span-1">
           <InputField
-            control={control}
             loading={loading}
             name={prefix ? `${prefix}.lastName` : "lastName"}
             label="last name:"
             placeholder="Bond"
+            disabled={disabled}
           />
         </div>
       </div>
       <SelectField
-        control={control}
         loading={loading}
         name={prefix ? `${prefix}.country` : "country"}
         label="country/region:"
         items={countries}
+        disabled={disabled}
       />
 
       <SelectField
-        control={control}
         loading={loading}
         name={prefix ? `${prefix}.state` : "state"}
         label="state:"
@@ -101,42 +101,43 @@ export function AddressFields({
           { label: "Iceland", value: "iceland" },
           { label: "Ireland", value: "ireland" },
         ]}
+        disabled={disabled}
       />
 
       <InputField
-        control={control}
         loading={loading}
         name={prefix ? `${prefix}.city` : "city"}
         label="city:"
         placeholder="London"
+        disabled={disabled}
       />
       <InputField
-        control={control}
         loading={loading}
         name={prefix ? `${prefix}.address` : "address"}
         label="street and house number:"
         placeholder="sjyrniesu 10"
+        disabled={disabled}
       />
       <InputField
-        control={control}
         loading={loading}
         name={prefix ? `${prefix}.additionalAddress` : "additionalAddress"}
         label="additional address:"
         placeholder=""
+        disabled={disabled}
       />
       <InputField
-        control={control}
         loading={loading}
         name={prefix ? `${prefix}.company` : "company"}
         label="company:"
         placeholder="Channel"
+        disabled={disabled}
       />
       <InputField
-        control={control}
         loading={loading}
         name={prefix ? `${prefix}.postalCode` : "postalCode"}
         label="postal code:"
         placeholder="37892"
+        disabled={disabled}
       />
     </>
   );

@@ -14,12 +14,12 @@ import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList
 
 import StripeSecureCardForm from "../StripeSecureCardForm";
 import ContactFieldsGroup from "./contact-fields-group";
+import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import PaymentFieldsGroup from "./payment-fields-group";
 import { PriceSummary } from "./price-summary";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
-import { useValidatedOrder } from "./useValidatedOrder";
 import { mapFormFieldToOrderDataFormat } from "./utils";
 
 // import { clearCartProducts } from "@/features/cart/action";
@@ -146,19 +146,17 @@ export default function NewOrderForm() {
     }
   };
 
-  console.log(order);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-28 lg:grid-cols-2">
           <div className="space-y-16">
-            <ContactFieldsGroup control={form.control} loading={loading} />
+            <ContactFieldsGroup loading={loading} />
             <ShippingFieldsGroup
-              control={form.control}
               loading={loading}
               validateItems={validateItems}
             />
-            <PaymentFieldsGroup form={form} loading={loading} />
+            <PaymentFieldsGroup loading={loading} />
           </div>
           <div className="space-y-8">
             <Text variant="uppercase">Order summary</Text>

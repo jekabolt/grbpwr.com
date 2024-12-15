@@ -7,15 +7,13 @@ import { UseFormReturn } from "react-hook-form";
 import { serviceClient } from "@/lib/api";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
-import { CheckoutData } from "./schema";
+import { CheckoutData } from "../schema";
 
 export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   const [validatedOrder, setValidatedOrder] = useState<
     ValidateOrderItemsInsertResponse | undefined
   >(undefined);
   const products = useCart((cart) => cart.products);
-
-  console.log(products);
 
   const validateItems = async () => {
     const items = products.map((p) => ({

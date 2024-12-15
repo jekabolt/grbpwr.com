@@ -7,7 +7,6 @@ import { Text } from "@/components/ui/text";
 export function PriceSummary({ order, form }: PriceSummaryProps) {
   const { dictionary } = useDataContext();
 
-  console.log(order);
   if (!order) return null;
 
   const promoPercentageOff = parseInt(order.promo?.discount?.value || "0");
@@ -17,9 +16,6 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
   const selectedShipmentCarrierPrice = dictionary?.shipmentCarriers?.find(
     (c) => c.id + "" === selectedShipmentCarrierId,
   )?.shipmentCarrier?.price?.value;
-
-  console.log(dictionary?.shipmentCarriers, selectedShipmentCarrierId);
-
   return (
     <>
       <div className="space-y-3">

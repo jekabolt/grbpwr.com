@@ -1,4 +1,4 @@
-import { type Control } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import RadioGroup, { RadioGroupsProps } from "@/components/ui/radio-group";
 
@@ -13,17 +13,17 @@ import {
 type Props = RadioGroupsProps & {
   description?: string;
   loading?: boolean;
-  control: Control<any>;
 };
 
 export default function RadioGroupField({
   loading,
-  control,
   name,
   description,
   onChange,
   ...props
 }: Props) {
+  const { control } = useFormContext();
+
   return (
     <FormField
       control={control}

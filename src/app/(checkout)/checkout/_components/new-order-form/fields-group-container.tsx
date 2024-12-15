@@ -9,12 +9,16 @@ export default function FieldsGroupContainer({
   stage,
   title,
   children,
+  defaultOpenState = false,
+  disabled = false,
 }: {
   stage: string;
   title: string;
   children: React.ReactNode;
+  defaultOpenState?: boolean;
+  disabled?: boolean;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(defaultOpenState);
 
   function handleToggle() {
     setIsOpen((v) => !v);
@@ -27,10 +31,10 @@ export default function FieldsGroupContainer({
         onClick={handleToggle}
       >
         <div className="flex gap-x-6">
-          <Text variant="uppercase" className="w-8">
+          <Text variant={disabled ? "inactive" : "uppercase"} className="w-8">
             {stage}
           </Text>
-          <Text variant="uppercase" component="h2">
+          <Text variant={disabled ? "inactive" : "uppercase"} component="h2">
             {title}
           </Text>
         </div>

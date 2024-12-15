@@ -1,6 +1,6 @@
 "use client";
 
-import type { UseFormReturn } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import { useDataContext } from "@/components/DataContext";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
@@ -9,17 +9,22 @@ import { Text } from "@/components/ui/text";
 
 import { paymentMethodNamesMap } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
+import { SHIPPING_GROUP_FIELDS } from "./hooks/constants";
+import { useDisabledGroup } from "./hooks/useFormDisabledGroup";
 import { AddressFields } from "./shipping-fields-group";
 
 type Props = {
   loading: boolean;
-  form: UseFormReturn<any>;
 };
 
-export default function ShippingFieldsGroup({ loading, form }: Props) {
+export default function ShippingFieldsGroup({ loading }: Props) {
   const { dictionary } = useDataContext();
+  const { watch } = useFormContext();
 
-  const { control, watch } = form;
+  const { isGroupDisabled } = useDisabledGroup({
+    fields: SHIPPING_GROUP_FIELDS,
+  });
+
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
 
   const paymentMethodsItems = dictionary?.paymentMethods
@@ -31,12 +36,16 @@ export default function ShippingFieldsGroup({ loading, form }: Props) {
     }));
 
   return (
-    <FieldsGroupContainer stage="3/3" title="payment method">
+    <FieldsGroupContainer
+      stage="3/3"
+      title="payment method"
+      disabled={isGroupDisabled}
+    >
       <RadioGroupField
-        control={form.control}
         loading={loading}
         name="paymentMethod"
         items={paymentMethodsItems as any}
+        disabled={isGroupDisabled}
       />
 
       {/* оплата картой делается на отдельной странице */}
@@ -90,18 +99,14 @@ export default function ShippingFieldsGroup({ loading, form }: Props) {
           select the address that matches your card or payment method
         </Text>
         <CheckboxField
-          control={control}
           name="billingAddressIsSameAsAddress"
           label="same as shipping address"
+          disabled={isGroupDisabled}
         />
       </div>
 
       {!billingAddressIsSameAsAddress && (
-        <AddressFields
-          prefix="billingAddress"
-          control={control}
-          loading={loading}
-        />
+        <AddressFields prefix="billingAddress" loading={loading} />
       )}
     </FieldsGroupContainer>
   );
