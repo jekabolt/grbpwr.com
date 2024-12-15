@@ -2,9 +2,10 @@
 
 import { useRouter } from "next/navigation";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-export function BackButton() {
+export function BackButton({ className }: { className?: string }) {
   const router = useRouter();
 
   function handleClick() {
@@ -18,10 +19,12 @@ export function BackButton() {
   return (
     <Button
       variant="underlineWithColors"
-      className="w-16"
+      className={cn("w-16", className)}
       onClick={handleClick}
+      size="sm"
     >
-      {"<"} back
+      {"<"}
+      <span className="hidden lg:inline"> back</span>
     </Button>
   );
 }

@@ -1,28 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import type { common_OrderNew } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
-import { useDataContext } from "@/components/DataContext";
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
-import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList";
 
-import StripeSecureCardForm from "../StripeSecureCardForm";
 import ContactFieldsGroup from "./contact-fields-group";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
+import { MobileProductsCarousel } from "./mobile-products-carousel";
+import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
 import { PriceSummary } from "./price-summary";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
 import { mapFormFieldToOrderDataFormat } from "./utils";
-
-// import { clearCartProducts } from "@/features/cart/action";
 
 async function submitNewOrder(newOrderData: common_OrderNew) {
   console.log("order data: ", {
@@ -90,8 +89,9 @@ async function submitNewOrder(newOrderData: common_OrderNew) {
 }
 
 export default function NewOrderForm() {
-  const [newOrderStripeToken, setNewOrderStripeToken] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const clearCart = useCart((cart) => cart.clearCart);
 
   const defaultValues = {
     ...defaultData,
@@ -121,23 +121,23 @@ export default function NewOrderForm() {
       const newOrderResponse = await submitNewOrder(newOrderData);
       console.log("submit order finish");
 
-      if (newOrderResponse.order?.payment?.clientSecret) {
-        // todo: change flow
-        setNewOrderStripeToken(
-          newOrderResponse.order?.payment?.clientSecret || "",
-        );
+      if (newOrderResponse.ok) {
+        clearCart();
 
-        console.log("new clientSecret");
+        const paymentType = newOrderResponse.order?.payment?.paymentMethod;
+        switch (paymentType) {
+          case "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA":
+            router.push(`/payment/${newOrderResponse.order?.orderUuid}/crypto`);
+            break;
+          case "PAYMENT_METHOD_NAME_ENUM_CARD_TEST":
+            const clientSecret = newOrderResponse.order?.payment?.clientSecret;
 
-        return;
-      } else {
-        // if (newOrderResponse.ok) {
-        //   console.log("submit new order response on the client", data);
-        //   router.replace(`/invoice/${newOrderResponse.order?.orderUuid}`);
-        // } else {
-        //   console.log("error submitting new order");
-        //   router.push("/cart");
-        // }
+            // case "PAYMENT_METHOD_NAME_ENUM_CARD":
+            router.push(
+              `/payment/${newOrderResponse.order?.orderUuid}/card?clientSecret=${clientSecret}`,
+            );
+            break;
+        }
       }
 
       console.log("finish and doesnt redirect");
@@ -149,8 +149,8 @@ export default function NewOrderForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-28 lg:grid-cols-2">
-          <div className="space-y-16">
+        <div className="grid gap-14 lg:grid-cols-2 lg:gap-28">
+          <div className="space-y-10 lg:space-y-16">
             <ContactFieldsGroup loading={loading} />
             <ShippingFieldsGroup
               loading={loading}
@@ -161,12 +161,8 @@ export default function NewOrderForm() {
           <div className="space-y-8">
             <Text variant="uppercase">Order summary</Text>
 
-            <div className="max-h-[50vh] overflow-y-scroll">
-              <CartProductsList
-                hideQuantityButtons
-                validatedProducts={order?.validItems}
-              />
-            </div>
+            <OrderProducts validatedProducts={order?.validItems} />
+
             <div className="space-y-8">
               <PromoCode
                 freeShipmentCarrierId={2}

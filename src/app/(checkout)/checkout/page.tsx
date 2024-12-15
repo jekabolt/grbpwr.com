@@ -8,10 +8,10 @@ export default async function CheckoutPage() {
   return (
     <LogoLayout>
       <div className="flex gap-x-12">
-        <BackButton />
+        <BackButton className="absolute left-0 top-3 lg:relative lg:top-0" />
         <Text variant="uppercase">Checkout</Text>
       </div>
-      <div className="px-28">
+      <div className="lg:px-28">
         <NewOrderForm />
       </div>
     </LogoLayout>

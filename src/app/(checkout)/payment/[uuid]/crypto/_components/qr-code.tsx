@@ -18,7 +18,7 @@ interface Props {
   qrBase64Code?: string;
 }
 
-export default function Component({
+export function QrCode({
   euroAmount,
   cryptoAmount,
   orderId,
