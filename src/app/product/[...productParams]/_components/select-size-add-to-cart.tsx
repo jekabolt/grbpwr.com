@@ -53,7 +53,7 @@ export function AddToCartForm({ sizes, id, className }: Props) {
         ))}
       </div>
       <Button
-        className="sticky bottom-0 w-full"
+        className="w-full"
         variant="main"
         size="lg"
         disabled={!activeSizeId || isMaxQuantity}

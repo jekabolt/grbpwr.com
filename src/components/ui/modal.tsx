@@ -19,10 +19,10 @@ export default function Modal({
     <div>
       <div onClick={openModal}>{openElement}</div>
       {isModalOpen && (
-        <div className="absolute left-0 top-0 z-50 h-full w-full bg-textColor">
+        <div className="absolute left-0 top-0 z-50 h-full w-full ">
           <button
             onClick={closeModal}
-            className="absolute right-4 top-4 cursor-pointer text-buttonTextColor"
+            className="absolute right-0 top-0 cursor-pointer"
           >
             [X]
           </button>

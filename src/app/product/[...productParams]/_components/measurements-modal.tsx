@@ -28,13 +28,7 @@ export default function MeasurementsModal({
   }
 
   return (
-    <Modal
-      openElement={
-        <Button asChild variant="underline">
-          measurements
-        </Button>
-      }
-    >
+    <Modal openElement={<Button variant="underline">measurements</Button>}>
       <MeasurementsModalContent
         sizes={sizes}
         handleAddToCartClick={handleAddToCartClick}
