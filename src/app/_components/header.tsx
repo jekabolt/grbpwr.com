@@ -3,17 +3,17 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { NavigationMenuComponent } from "@/components/ui/nav-menu";
 
 import CartPopup from "../(checkout)/cart/_components/CartPopup";
 import CartProductsList from "../(checkout)/cart/_components/CartProductsList";
 import CartTotalPrice from "../(checkout)/cart/_components/CartTotalPrice";
 import CurrencyPopover from "./currency-popover";
+import { HeaderLeftNav } from "./header-left-nav";
 
 export function Header() {
   return (
-    <header className="text sticky top-2 z-20 flex h-12 items-center justify-between bg-textColor p-3 py-2 lg:px-5 lg:py-3">
-      <NavigationMenuComponent className="grow basis-0" />
+    <header className="text fixed bottom-2 left-2 right-2 z-20 flex h-12 items-center justify-between bg-textColor p-3 py-2 lg:sticky lg:top-2 lg:px-5 lg:py-3">
+      <HeaderLeftNav />
 
       <Link
         href="/"
@@ -23,7 +23,9 @@ export function Header() {
       </Link>
 
       <div className="flex grow basis-0 items-center justify-end gap-x-5">
-        <CurrencyPopover />
+        <div className="hidden lg:block">
+          <CurrencyPopover />
+        </div>
 
         <CartPopup>
           <div className="relative max-h-[500px] space-y-6 overflow-y-scroll">
