@@ -53,7 +53,7 @@ function Menu({
   );
 
   return (
-    <div className="theme blackTheme absolute -bottom-2 -left-2 z-50 flex h-screen w-screen flex-col justify-between overflow-hidden bg-bgColor p-2">
+    <div className="blackTheme absolute -bottom-2 -left-2 z-50 flex h-full h-screen w-screen flex-col justify-between overflow-hidden bg-bgColor p-2">
       <div className="space-y-14">
         <div className="flex h-12 items-center justify-between">
           {activeCategory ? (
