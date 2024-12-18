@@ -1,3 +1,5 @@
+"use client";
+
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
@@ -65,6 +67,10 @@ export function ProductInfo({ className, product }: Props) {
       <MeasurementsModal
         productId={product?.product?.id || 0}
         sizes={product?.sizes || []}
+        categoryId={
+          product?.product?.productDisplay?.productBody?.categoryId || 0
+        }
+        gender={product.product?.productDisplay?.productBody?.targetGender}
       />
       <AddToCartForm
         className="order-first flex w-full flex-col items-center justify-between gap-y-6 lg:order-none lg:flex-row lg:gap-x-20"

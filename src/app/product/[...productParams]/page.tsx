@@ -50,7 +50,7 @@ export default async function ProductPage(props: ProductPageProps) {
 
   return (
     <NavigationLayout>
-      <div className="h-12 w-full bg-white lg:hidden">new dis header?</div>
+      {/* <div className="h-12 w-full bg-white lg:hidden">new dis header?</div> */}
       <ProductImagesCarousel
         productMedia={productMedia}
         className="w-full lg:h-screen"
