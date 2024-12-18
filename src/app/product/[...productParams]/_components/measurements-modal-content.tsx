@@ -1,20 +1,56 @@
 "use client";
 
 import { useState } from "react";
-import { common_ProductSize } from "@/api/proto-http/frontend";
+import {
+  common_GenderEnum,
+  common_ProductSize,
+  common_SizeEnum,
+} from "@/api/proto-http/frontend";
+import { SIZE_NAME_MAP } from "@/constants";
 import { useLockBodyScroll } from "@uidotdev/usehooks";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
+import { useDataContext } from "@/components/DataContext";
+import { Button } from "@/components/ui/button";
+import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/utils/render_thumbnail";
+import RadioGroupComponent from "@/components/ui/radio-group";
+import { Text } from "@/components/ui/text";
+
+const unitOptions = [
+  { label: "cm", value: "cm" },
+  { label: "inches", value: "inches" },
+];
+
 export default function MeasurementsModalContent({
-  handleAddToCartClick,
+  // handleAddToCartClick,
+  id,
   sizes,
   setModalOpen,
+  categoryId,
+  gender,
 }: {
+  id: number | undefined;
   setModalOpen?: any;
-  handleAddToCartClick: (selectedSize: number | undefined) => Promise<void>;
+  // handleAddToCartClick?: (selectedSize: number | undefined) => Promise<void>;
   sizes: common_ProductSize[] | undefined;
+  categoryId: number | undefined;
+  gender: common_GenderEnum | undefined;
 }) {
+  const { increaseQuantity } = useCart((state) => state);
   const [selectedSize, setSelectedSize] = useState<number | undefined>();
   const [unit, setUnit] = useState("cm");
+  const { dictionary } = useDataContext();
+  const sizeNames = sizes?.map((s) => ({
+    id: s.sizeId as number,
+    name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)
+      ?.name as common_SizeEnum,
+  }));
+
+  const handleAddToCart = async () => {
+    if (!selectedSize) return;
+
+    await increaseQuantity(id!, selectedSize?.toString() || "", 1);
+  };
 
   console.log("setModalOpen22");
   console.log(setModalOpen);
@@ -22,84 +58,57 @@ export default function MeasurementsModalContent({
   useLockBodyScroll();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black p-8 text-white">
-      <div className="flex w-full max-w-6xl flex-col gap-8 md:flex-row">
-        <div className="relative flex-1">
-          <img
-            src="/placeholder.svg?height=800&width=400"
-            alt="White jeans"
-            className="w-full"
-          />
-          <div className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-blue-600 text-2xl font-bold">
-            J
-          </div>
-          <div className="absolute left-0 top-1/2 bg-blue-600 px-2 py-1 text-sm">
-            hi
-            <br />
-            43 cm
-          </div>
+    <div className="h-auto w-auto  bg-bgColor">
+      <div className="bottom-[-10px] left-[-500px] flex h-[614px] w-full items-center justify-center bg-bgColor sm:w-[500px] lg:absolute">
+        <CategoryThumbnail categoryId={categoryId} gender={gender} size={400} />
+      </div>
+      <div className="grid gap-10">
+        <Text variant="uppercase">measurements</Text>
+        <div className="flex gap-12">
+          {sizeNames?.map(({ name, id }) => (
+            <Button
+              key={id}
+              className={`uppercase ${selectedSize === id ? "bg-black text-white" : ""}`}
+              onClick={() => setSelectedSize(id)}
+            >
+              {SIZE_NAME_MAP[name]}
+            </Button>
+          ))}
         </div>
-        <div className="flex-1 space-y-6">
-          <div className="flex items-center justify-between">
-            <h1 className="font-mono text-2xl">measurements</h1>
-          </div>
-          <div className="flex gap-4 text-lg">
-            {sizes?.map((size) => (
-              <button
-                key={size.id}
-                className={`uppercase ${selectedSize === size.sizeId ? "underline" : ""}`}
-                onClick={() => setSelectedSize(size?.sizeId)}
-              >
-                {size.sizeId}
-              </button>
-            ))}
-          </div>
-          <p className="text-sm text-gray-400">*select size</p>
-          <button
-            onClick={async () => {
-              await handleAddToCartClick(selectedSize);
-              setModalOpen(false);
-            }}
-            className="w-full bg-white px-4 py-2 text-lg font-bold text-black"
+
+        <RadioGroupComponent
+          name="unit"
+          items={unitOptions}
+          value={unit}
+          onValueChange={setUnit}
+        />
+
+        <table>
+          <tbody>
+            <tr>
+              <td>lenth</td>
+              <td>76 cm</td>
+            </tr>
+            <tr>
+              <td>chest</td>
+              <td>43 cm</td>
+            </tr>
+            <tr>
+              <td>shoulders</td>
+              <td>34 cm</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="flex w-full justify-end ">
+          <Button
+            variant="main"
+            size="lg"
+            disabled={!selectedSize}
+            className="w-full uppercase sm:w-1/2"
+            onClick={handleAddToCart}
           >
             add to cart
-          </button>
-          <div className="flex gap-4">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                checked={unit === "cm"}
-                onChange={() => setUnit("cm")}
-                className="form-radio text-white"
-              />
-              cm
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                checked={unit === "inches"}
-                onChange={() => setUnit("inches")}
-                className="form-radio text-white"
-              />
-              inches
-            </label>
-          </div>
-          <table className="w-full">
-            <tbody>
-              <tr>
-                <td>lenth</td>
-                <td>76 cm</td>
-              </tr>
-              <tr>
-                <td>chest</td>
-                <td>43 cm</td>
-              </tr>
-              <tr>
-                <td>shoulders</td>
-                <td>34 cm</td>
-              </tr>
-            </tbody>
-          </table>
+          </Button>
         </div>
       </div>
     </div>

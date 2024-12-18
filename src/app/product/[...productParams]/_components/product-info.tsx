@@ -1,3 +1,5 @@
+"use client";
+
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
@@ -9,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import { Text } from "@/components/ui/text";
 
+import MeasurementsModal from "./measurements-modal";
 import { AddToCartForm } from "./select-size-add-to-cart";
 
 export function ProductInfo({ className, product }: Props) {
@@ -18,7 +21,7 @@ export function ProductInfo({ className, product }: Props) {
   return (
     <div
       className={cn(
-        "relative flex flex-col gap-y-6 bg-bgColor lg:w-[600px]",
+        "relative flex h-auto flex-col gap-y-6 bg-bgColor lg:w-[600px]",
         className,
       )}
     >
@@ -61,9 +64,14 @@ export function ProductInfo({ className, product }: Props) {
         </AccordionItem>
       </AccordionRoot>
 
-      <Text className="order-1 lg:order-none" variant="underlined" size="small">
-        measurements
-      </Text>
+      <MeasurementsModal
+        productId={product?.product?.id || 0}
+        sizes={product?.sizes || []}
+        categoryId={
+          product?.product?.productDisplay?.productBody?.categoryId || 0
+        }
+        gender={product.product?.productDisplay?.productBody?.targetGender}
+      />
       <AddToCartForm
         className="order-first flex w-full flex-col items-center justify-between gap-y-6 lg:order-none lg:flex-row lg:gap-x-20"
         sizes={product?.sizes || []}
