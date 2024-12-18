@@ -28,7 +28,7 @@ export const currencySymbols: Record<string, string> = {
   USD: "$", // United States Dollar
 };
 
-export default function Component() {
+export default function CurrencyPopover() {
   const { rates, selectedCurrency, setSelectedCurrency } = useDataContext();
 
   if (!rates?.currencies) return null;

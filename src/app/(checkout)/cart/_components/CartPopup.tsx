@@ -20,7 +20,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   return (
     <div className="group relative" ref={ref}>
       <Button onClick={() => setOpenStatus((v) => !v)} variant="main">
-        cart {itemsQuantity ? `(${itemsQuantity})` : ""}
+        cart {itemsQuantity ? `[${itemsQuantity}]` : ""}
       </Button>
       <div className="blackTheme">
         <div
