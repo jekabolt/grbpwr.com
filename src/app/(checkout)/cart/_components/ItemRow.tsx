@@ -2,6 +2,7 @@ import type { common_OrderItem } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
 import Image from "@/components/ui/image";
+import { Text } from "@/components/ui/text";
 
 import CartItemSize from "./CartItemSize";
 import ProductAmountButtons from "./ProductAmountButtons";
@@ -22,9 +23,9 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
       </div>
       <div className="flex grow flex-col justify-between gap-3">
         <div className="space-y-3">
-          <p>{product.productName}</p>
+          <Text variant="uppercase">{product.productName}</Text>
           <div>
-            <p>{product.color}</p>
+            <Text>{product.color}</Text>
             <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
           </div>
         </div>
