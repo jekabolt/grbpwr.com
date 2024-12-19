@@ -12,7 +12,7 @@ import { useLockBodyScroll } from "@uidotdev/usehooks";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
-import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/utils/render_thumbnail";
+import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
 import RadioGroupComponent from "@/components/ui/radio-group";
 import { Text } from "@/components/ui/text";
 

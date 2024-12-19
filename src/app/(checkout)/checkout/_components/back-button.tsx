@@ -9,11 +9,12 @@ export function BackButton({ className }: { className?: string }) {
   const router = useRouter();
 
   function handleClick() {
-    router.back();
-
-    if (window.history.length <= 1) {
-      router.push("/cart");
-    }
+    // if (window.history.length <= 1) {
+    //   router.push("/support");
+    // } else {
+    //   router.back();
+    // }
+    router.push("/cart");
   }
 
   return (

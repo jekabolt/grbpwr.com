@@ -1,21 +1,20 @@
 import { common_GenderEnum } from "@/api/proto-http/frontend";
 
-import { BagIcon } from "@/components/ui/categories-thumbnails/bag";
-import { BeltIcon } from "@/components/ui/categories-thumbnails/belt";
-import { BraIcon } from "@/components/ui/categories-thumbnails/bra";
-import { CoatIcon } from "@/components/ui/categories-thumbnails/coat";
-import { DressIcon } from "@/components/ui/categories-thumbnails/dress";
-import { JacketIcon } from "@/components/ui/categories-thumbnails/jacket";
-import { OtherIcon } from "@/components/ui/categories-thumbnails/other";
-import { ScarfIcon } from "@/components/ui/categories-thumbnails/scarf";
-
-import { PantsIcon } from "../pants";
-import { ShortIcon } from "../shorts";
-import { SkirtIcon } from "../skirt";
-import { SweaterIcon } from "../sweater";
-import { TShirtIcon } from "../t_shirt";
-import { UnderwearFIcon } from "../underwear_f";
-import { UnderwearMIcon } from "../underwear_m";
+import { BagIcon } from "@/components/ui/icons/bag";
+import { BeltIcon } from "@/components/ui/icons/belt";
+import { BraIcon } from "@/components/ui/icons/bra";
+import { CoatIcon } from "@/components/ui/icons/coat";
+import { DressIcon } from "@/components/ui/icons/dress";
+import { JacketIcon } from "@/components/ui/icons/jacket";
+import { OtherIcon } from "@/components/ui/icons/other";
+import { PantsIcon } from "@/components/ui/icons/pants";
+import { ScarfIcon } from "@/components/ui/icons/scarf";
+import { ShortIcon } from "@/components/ui/icons/shorts";
+import { SkirtIcon } from "@/components/ui/icons/skirt";
+import { SweaterIcon } from "@/components/ui/icons/sweater";
+import { TShirtIcon } from "@/components/ui/icons/t-shirt";
+import { UnderwearFIcon } from "@/components/ui/icons/underwear-f";
+import { UnderwearMIcon } from "@/components/ui/icons/underwear-m";
 
 export const CATEGORY_ICONS_MAP: Record<
   number,
