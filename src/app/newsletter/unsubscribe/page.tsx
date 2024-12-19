@@ -4,7 +4,7 @@ import { Header } from "@/app/_components/header";
 
 export default function Unsubscribe() {
   return (
-    <div>
+    <div className="relative">
       <Header />
       <div className="space-y-6 px-2.5 pt-6 lg:px-24 lg:pt-0">
         <Text className="lg:max-w-xl">

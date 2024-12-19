@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
@@ -7,7 +8,7 @@ import { useDataContext } from "@/components/DataContext";
 
 import { Button } from "./button";
 
-export function NavigationMenuComponent({ className }: { className?: string }) {
+export function DesktopNavigationMenu({ className }: { className?: string }) {
   const { dictionary } = useDataContext();
 
   const categoriesGroups = groupCategories(
@@ -23,7 +24,7 @@ export function NavigationMenuComponent({ className }: { className?: string }) {
               "bg-textColor text-bgColor data-[state=open]:bg-bgColor data-[state=open]:text-textColor",
             )}
           >
-            catalog
+            <Link href="/catalog">catalog</Link>
           </NavigationMenu.Trigger>
           <NavigationMenu.Content className="absolute left-0 top-0 bg-textColor p-5">
             <div className="flex gap-x-8">
@@ -91,10 +92,7 @@ function LinksGroup({
       <p className="uppercase text-bgColor">{title}</p>
       <div className="space-y-2">
         <div className="w-full">
-          <Button
-            variant={!category && groupIndex === 0 ? "simpleReverse" : "simple"}
-            asChild
-          >
+          <Button variant="simple" asChild>
             <NavigationMenu.Link href="/catalog">view all</NavigationMenu.Link>
           </Button>
         </div>

@@ -8,7 +8,7 @@ import "./globals.css";
 
 export default function NotFoundPage() {
   return (
-    <div>
+    <div className="relative">
       <Header />
       <div className="space-y-6 px-2.5 pt-6 lg:px-24 lg:pt-0">
         <Text component="h1">page not found</Text>
