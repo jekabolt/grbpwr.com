@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
+import { Button } from "@/components/ui/button";
 import GenericPopover from "@/components/ui/popover";
 
 export const currencySymbols: Record<string, string> = {
@@ -36,9 +37,9 @@ export default function CurrencyPopover() {
   return (
     <GenericPopover
       openElement={
-        <span className="min-w-8 bg-textColor px-2 py-1 text-buttonTextColor">
+        <Button size="sm" variant="simple">
           {`Currency: ${currencySymbols[selectedCurrency]}`}
-        </span>
+        </Button>
       }
       contentProps={{
         sideOffset: 16,

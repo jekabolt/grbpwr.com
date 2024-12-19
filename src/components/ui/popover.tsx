@@ -38,7 +38,7 @@ function PopoverContent({
       <Popover.Content
         side="top"
         align="center"
-        className="bg-textColor px-2.5 py-6 text-bgColor"
+        className="z-50 bg-textColor px-2.5 py-6 text-bgColor"
         {...contentProps}
       >
         {title && (

@@ -30,3 +30,10 @@ export const SIZE_NAME_MAP: Record<common_SizeEnum, string> = {
   SIZE_ENUM_XXL: "xxl",
   SIZE_ENUM_OS: "os",
 };
+
+export const GENDER_MAP: Record<string, common_GenderEnum> = {
+  men: "GENDER_ENUM_MALE",
+  women: "GENDER_ENUM_FEMALE",
+  unisex: "GENDER_ENUM_UNISEX",
+  ukn: "GENDER_ENUM_UNKNOWN",
+};
