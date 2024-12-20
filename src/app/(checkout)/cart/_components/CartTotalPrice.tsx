@@ -9,7 +9,7 @@ export default function CartTotalPrice() {
   const { subTotalPrice } = useCart((state) => state);
 
   return (
-    <div className="prose-lg">
+    <div className="space-y-6">
       <Text variant="uppercase">subtotal:</Text>
       <Text variant="uppercase">
         {subTotalPrice} {selectedCurrency}
