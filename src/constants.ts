@@ -1,4 +1,7 @@
-import type { common_SizeEnum } from "./api/proto-http/frontend";
+import type {
+  common_GenderEnum,
+  common_SizeEnum,
+} from "./api/proto-http/frontend";
 
 export const FOOTER_YEAR = new Date().getFullYear();
 
