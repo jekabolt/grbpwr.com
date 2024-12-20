@@ -1,29 +1,28 @@
-"use client";
-
+import { serviceClient } from "@/lib/api";
+import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
 
-type FooterFormProps = {
-  formSubmitClick: (data: FormData) => Promise<void>;
-};
-
-// todo: add react hook form same as order details form
-export default function NewslatterForm({ formSubmitClick }: FooterFormProps) {
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    try {
-      await formSubmitClick(formData);
-    } catch (error) {}
+export default function NewslatterForm() {
+  const handleSubmit = async (values: any) => {
+    console.log(new FormData(values));
+    // try {
+    //   await serviceClient.SubscribeNewsletter({
+    //     email: formData.get("email") as string,
+    //   });
+    // } catch (error) {}
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <p className="text-sm">newsletter</p>
-      <p className="text-xs">
-        subscribe to our newsletter and receive news, information about
-        promotions and pleasant surprises from grbpwr.com
-      </p>
-      <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/3 2xl:w-1/3">
+    <form action={handleSubmit}>
+      <Text variant="uppercase" className="mb-6">
+        newsletter
+      </Text>
+      {/* // make a label */}
+      <label htmlFor="newsletter" className="mb-3 block">
+        <Text size="small">email</Text>
+      </label>
+      <div className="flex items-center gap-4">
         <Input
           id="newsletter"
           type="email"
@@ -31,9 +30,10 @@ export default function NewslatterForm({ formSubmitClick }: FooterFormProps) {
           placeholder="email"
           name="email"
         />
+        <Button variant="simple" size={"sm"} type="submit">
+          subscribe
+        </Button>
       </div>
-      subscribe
-      {/* <SubmitButton text="SUBSCRIBE" /> */}
     </form>
   );
 }

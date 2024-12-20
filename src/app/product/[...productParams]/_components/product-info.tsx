@@ -73,7 +73,7 @@ export function ProductInfo({ className, product }: Props) {
         gender={product.product?.productDisplay?.productBody?.targetGender}
       />
       <AddToCartForm
-        className="order-first flex w-full flex-col items-center justify-between gap-y-6 lg:order-none lg:flex-row lg:gap-x-20"
+        className="order-1 flex w-full flex-col items-center justify-between gap-y-6 lg:order-none lg:flex-row lg:gap-x-20"
         sizes={product?.sizes || []}
         id={product?.product?.id || 0}
       />

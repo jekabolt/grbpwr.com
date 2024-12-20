@@ -10,7 +10,7 @@ function Input({ type = "text", name, ref, ...props }: InputProps) {
       id={name}
       type={type}
       ref={ref}
-      className="w-full border-b border-textColor bg-bgColor text-lg focus:border-b focus:border-textColor focus:outline-none"
+      className="w-full border-b border-textColor bg-bgColor text-lg text-textColor focus:border-b focus:border-textColor focus:outline-none"
       {...props}
     />
   );

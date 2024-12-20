@@ -49,8 +49,7 @@ export default async function ProductPage(props: ProductPageProps) {
   const productMedia = [...(product?.media || [])];
 
   return (
-    <NavigationLayout>
-      {/* <div className="h-12 w-full bg-white lg:hidden">new dis header?</div> */}
+    <div>
       <ProductImagesCarousel
         productMedia={productMedia}
         className="w-full lg:h-screen"
@@ -61,6 +60,6 @@ export default async function ProductPage(props: ProductPageProps) {
           className="p-2.5 lg:absolute lg:bottom-[130px] lg:right-32 lg:p-0"
         />
       )}
-    </NavigationLayout>
+    </div>
   );
 }
