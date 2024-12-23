@@ -11,7 +11,7 @@ export default function NavigationLayout({
   return (
     <div className="relative min-h-screen bg-bgColor pb-14 lg:pb-0">
       <Header />
-      <div className="w-full px-2 md:px-0 lg:w-full">{children}</div>
+      <div className="w-full lg:w-full">{children}</div>
       <Footer className="mt-24" hideForm={hideForm} />
     </div>
   );
