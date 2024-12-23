@@ -12,7 +12,7 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
   if (!product) return null;
 
   return (
-    <div className="flex justify-between gap-3 border-b border-dashed border-textInactiveColor pb-6 text-textColor last:border-b-0 last:pb-0">
+    <div className="flex justify-between gap-3 border-b border-dashed border-textInactiveColor pb-6 pt-6 text-textColor last:border-b-0 last:pb-0">
       <div className="h-full w-28 flex-none">
         <Image
           src={product.thumbnail || ""}
