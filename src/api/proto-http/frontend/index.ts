@@ -17,20 +17,23 @@ export type common_HeroFull = {
 
 export type common_HeroEntity = {
   type: common_HeroType | undefined;
-  singleAdd: common_HeroSingleAdd | undefined;
-  doubleAdd: common_HeroDoubleAdd | undefined;
-  mainAdd: common_HeroMainAdd | undefined;
+  single: common_HeroSingle | undefined;
+  double: common_HeroDouble | undefined;
+  main: common_HeroMain | undefined;
   featuredProducts: common_HeroFeaturedProducts | undefined;
+  featuredProductsTag: common_HeroFeaturedProductsTag | undefined;
 };
 
 export type common_HeroType =
   | "HERO_TYPE_UNKNOWN"
-  | "HERO_TYPE_SINGLE_ADD"
-  | "HERO_TYPE_DOUBLE_ADD"
-  | "HERO_TYPE_MAIN_ADD"
-  | "HERO_TYPE_FEATURED_PRODUCTS";
-export type common_HeroSingleAdd = {
+  | "HERO_TYPE_SINGLE"
+  | "HERO_TYPE_DOUBLE"
+  | "HERO_TYPE_MAIN"
+  | "HERO_TYPE_FEATURED_PRODUCTS"
+  | "HERO_TYPE_FEATURED_PRODUCTS_TAG";
+export type common_HeroSingle = {
   media: common_MediaFull | undefined;
+  headline: string | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
 };
@@ -69,18 +72,20 @@ export type common_MediaInfo = {
   height: number | undefined;
 };
 
-export type common_HeroDoubleAdd = {
-  left: common_HeroSingleAdd | undefined;
-  right: common_HeroSingleAdd | undefined;
+export type common_HeroDouble = {
+  left: common_HeroSingle | undefined;
+  right: common_HeroSingle | undefined;
 };
 
-export type common_HeroMainAdd = {
-  singleAdd: common_HeroSingleAdd | undefined;
+export type common_HeroMain = {
+  single: common_HeroSingle | undefined;
+  tag: string | undefined;
+  description: string | undefined;
 };
 
 export type common_HeroFeaturedProducts = {
   products: common_Product[] | undefined;
-  title: string | undefined;
+  headline: string | undefined;
   exploreText: string | undefined;
   exploreLink: string | undefined;
 };
@@ -110,6 +115,8 @@ export type common_ProductBody = {
   salePercentage: googletype_Decimal | undefined;
   categoryId: number | undefined;
   description: string | undefined;
+  careInstructions: string | undefined;
+  composition: string | undefined;
   hidden: boolean | undefined;
   targetGender: common_GenderEnum | undefined;
 };
@@ -173,6 +180,11 @@ export type common_GenderEnum =
   | "GENDER_ENUM_MALE"
   | "GENDER_ENUM_FEMALE"
   | "GENDER_ENUM_UNISEX";
+export type common_HeroFeaturedProductsTag = {
+  tag: string | undefined;
+  products: common_HeroFeaturedProducts | undefined;
+};
+
 export type common_Dictionary = {
   categories: common_Category[] | undefined;
   measurements: common_MeasurementName[] | undefined;
@@ -186,6 +198,8 @@ export type common_Dictionary = {
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
+  careInstructions: { [key: string]: string } | undefined;
+  composition: { [key: string]: string } | undefined;
 };
 
 export type common_Category = {
@@ -524,6 +538,7 @@ export type common_PromoCodeInsert = {
   freeShipping: boolean | undefined;
   discount: googletype_Decimal | undefined;
   expiration: wellKnownTimestamp | undefined;
+  start: wellKnownTimestamp | undefined;
   allowed: boolean | undefined;
   voucher: boolean | undefined;
 };
@@ -633,6 +648,14 @@ export type common_ArchiveItem = {
   name: string | undefined;
 };
 
+export type GetArchiveByIdRequest = {
+  id: number | undefined;
+};
+
+export type GetArchiveByIdResponse = {
+  archive: common_ArchiveFull | undefined;
+};
+
 export interface FrontendService {
   // Get hero information
   GetHero(request: GetHeroRequest): Promise<GetHeroResponse>;
@@ -656,6 +679,8 @@ export interface FrontendService {
   UnsubscribeNewsletter(request: UnsubscribeNewsletterRequest): Promise<UnsubscribeNewsletterResponse>;
   // GetArchivesPaged retrieves paged archives.
   GetArchivesPaged(request: GetArchivesPagedRequest): Promise<GetArchivesPagedResponse>;
+  // GetArchiveById retrieves an archive by its ID.
+  GetArchiveById(request: GetArchiveByIdRequest): Promise<GetArchiveByIdResponse>;
 }
 
 type RequestType = {
@@ -954,6 +979,26 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "GetArchivesPaged",
       }) as Promise<GetArchivesPagedResponse>;
+    },
+    GetArchiveById(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.id) {
+        throw new Error("missing required field request.id");
+      }
+      const path = `api/frontend/archive/${request.id}`; // eslint-disable-line quotes
+      const body = null;
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return handler({
+        path: uri,
+        method: "GET",
+        body,
+      }, {
+        service: "FrontendService",
+        method: "GetArchiveById",
+      }) as Promise<GetArchiveByIdResponse>;
     },
   };
 }

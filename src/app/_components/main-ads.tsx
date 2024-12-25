@@ -1,16 +1,16 @@
-import { common_HeroMainAdd } from "@/api/proto-http/frontend";
+import { common_HeroMain } from "@/api/proto-http/frontend";
 
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
-export function MainAds({ main }: { main?: common_HeroMainAdd }) {
+export function MainAds({ main }: { main?: common_HeroMain }) {
   if (!main) return null;
 
   return (
     <div className="relative h-screen w-full md:-mt-20 md:h-full ">
       <div className="h-screen md:h-[800px]">
         <Image
-          src={main.singleAdd?.media?.media?.fullSize?.mediaUrl!}
+          src={main.single?.media?.media?.fullSize?.mediaUrl!}
           alt="main hero image"
           aspectRatio="4/3"
           fit="cover"
