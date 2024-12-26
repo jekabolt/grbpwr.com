@@ -196,6 +196,8 @@ export type ProductBody = {
   salePercentage: googletype_Decimal | undefined;
   categoryId: number | undefined;
   description: string | undefined;
+  careInstructions: string | undefined;
+  composition: string | undefined;
   hidden: boolean | undefined;
   targetGender: GenderEnum | undefined;
 };
@@ -387,6 +389,7 @@ export type PromoCodeInsert = {
   freeShipping: boolean | undefined;
   discount: googletype_Decimal | undefined;
   expiration: wellKnownTimestamp | undefined;
+  start: wellKnownTimestamp | undefined;
   allowed: boolean | undefined;
   voucher: boolean | undefined;
 };
@@ -500,6 +503,8 @@ export type Dictionary = {
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
+  careInstructions: { [key: string]: string } | undefined;
+  composition: { [key: string]: string } | undefined;
 };
 
 export type Genders = {
@@ -530,42 +535,52 @@ export type CurrencyMap = {
 
 export type HeroType =
   | "HERO_TYPE_UNKNOWN"
-  | "HERO_TYPE_SINGLE_ADD"
-  | "HERO_TYPE_DOUBLE_ADD"
-  | "HERO_TYPE_MAIN_ADD"
-  | "HERO_TYPE_FEATURED_PRODUCTS";
+  | "HERO_TYPE_SINGLE"
+  | "HERO_TYPE_DOUBLE"
+  | "HERO_TYPE_MAIN"
+  | "HERO_TYPE_FEATURED_PRODUCTS"
+  | "HERO_TYPE_FEATURED_PRODUCTS_TAG";
 export type HeroFull = {
   entities: HeroEntity[] | undefined;
 };
 
 export type HeroEntity = {
   type: HeroType | undefined;
-  singleAdd: HeroSingleAdd | undefined;
-  doubleAdd: HeroDoubleAdd | undefined;
-  mainAdd: HeroMainAdd | undefined;
+  single: HeroSingle | undefined;
+  double: HeroDouble | undefined;
+  main: HeroMain | undefined;
   featuredProducts: HeroFeaturedProducts | undefined;
+  featuredProductsTag: HeroFeaturedProductsTag | undefined;
 };
 
-export type HeroSingleAdd = {
+export type HeroSingle = {
   media: MediaFull | undefined;
+  headline: string | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
 };
 
-export type HeroDoubleAdd = {
-  left: HeroSingleAdd | undefined;
-  right: HeroSingleAdd | undefined;
+export type HeroDouble = {
+  left: HeroSingle | undefined;
+  right: HeroSingle | undefined;
 };
 
-export type HeroMainAdd = {
-  singleAdd: HeroSingleAdd | undefined;
+export type HeroMain = {
+  single: HeroSingle | undefined;
+  tag: string | undefined;
+  description: string | undefined;
 };
 
 export type HeroFeaturedProducts = {
   products: Product[] | undefined;
-  title: string | undefined;
+  headline: string | undefined;
   exploreText: string | undefined;
   exploreLink: string | undefined;
+};
+
+export type HeroFeaturedProductsTag = {
+  tag: string | undefined;
+  products: HeroFeaturedProducts | undefined;
 };
 
 export type HeroFullInsert = {
@@ -574,30 +589,41 @@ export type HeroFullInsert = {
 
 export type HeroEntityInsert = {
   type: HeroType | undefined;
-  singleAdd: HeroSingleAddInsert | undefined;
-  doubleAdd: HeroDoubleAddInsert | undefined;
-  mainAdd: HeroMainAddInsert | undefined;
+  single: HeroSingleInsert | undefined;
+  double: HeroDoubleInsert | undefined;
+  main: HeroMainInsert | undefined;
   featuredProducts: HeroFeaturedProductsInsert | undefined;
+  featuredProductsTag: HeroFeaturedProductsTagInsert | undefined;
 };
 
-export type HeroSingleAddInsert = {
+export type HeroSingleInsert = {
   mediaId: number | undefined;
+  headline: string | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
 };
 
-export type HeroDoubleAddInsert = {
-  left: HeroSingleAddInsert | undefined;
-  right: HeroSingleAddInsert | undefined;
+export type HeroDoubleInsert = {
+  left: HeroSingleInsert | undefined;
+  right: HeroSingleInsert | undefined;
 };
 
-export type HeroMainAddInsert = {
-  singleAdd: HeroSingleAddInsert | undefined;
+export type HeroMainInsert = {
+  single: HeroSingleInsert | undefined;
+  tag: string | undefined;
+  description: string | undefined;
 };
 
 export type HeroFeaturedProductsInsert = {
   productIds: number[] | undefined;
-  title: string | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+  exploreLink: string | undefined;
+};
+
+export type HeroFeaturedProductsTagInsert = {
+  tag: string | undefined;
+  headline: string | undefined;
   exploreText: string | undefined;
   exploreLink: string | undefined;
 };

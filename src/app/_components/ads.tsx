@@ -9,51 +9,49 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
     <div>
       {entities?.map((e, i) => {
         switch (e.type) {
-          case "HERO_TYPE_SINGLE_ADD":
+          case "HERO_TYPE_SINGLE":
             return (
-              <div key={e.singleAdd?.media?.id} className="h-[600px]">
+              <div key={e.single?.media?.id} className="h-[600px]">
                 <Image
-                  src={e.singleAdd?.media?.media?.fullSize?.mediaUrl || ""}
+                  src={e.single?.media?.media?.fullSize?.mediaUrl || ""}
                   alt="ad hero image"
                   aspectRatio={calculateAspectRatio(
-                    e.singleAdd?.media?.media?.fullSize?.width,
-                    e.singleAdd?.media?.media?.fullSize?.height,
+                    e.single?.media?.media?.fullSize?.width,
+                    e.single?.media?.media?.fullSize?.height,
                   )}
                   // blurHash={media.media?.blurhash}
                 />
               </div>
             );
-          case "HERO_TYPE_DOUBLE_ADD":
+          case "HERO_TYPE_DOUBLE":
             return (
               <div
-                key={e.doubleAdd?.left?.media?.id}
+                key={e.double?.left?.media?.id}
                 className="grid grid-cols-2 gap-3"
               >
                 <div className="relative col-span-1 h-[600px]">
                   <Image
-                    src={
-                      e.doubleAdd?.left?.media?.media?.fullSize?.mediaUrl || ""
-                    }
+                    src={e.double?.left?.media?.media?.fullSize?.mediaUrl || ""}
                     alt="ad hero image"
                     aspectRatio={calculateAspectRatio(
-                      e.doubleAdd?.left?.media?.media?.fullSize?.width,
-                      e.doubleAdd?.left?.media?.media?.fullSize?.height,
+                      e.double?.left?.media?.media?.fullSize?.width,
+                      e.double?.left?.media?.media?.fullSize?.height,
                     )}
                     // blurHash={media.media?.blurhash}
                   />
                 </div>
                 <div
-                  key={e.doubleAdd?.right?.media?.id}
+                  key={e.double?.right?.media?.id}
                   className="relative col-span-1 h-[600px]"
                 >
                   <Image
                     src={
-                      e.doubleAdd?.right?.media?.media?.fullSize?.mediaUrl || ""
+                      e.double?.right?.media?.media?.fullSize?.mediaUrl || ""
                     }
                     alt="ad hero image"
                     aspectRatio={calculateAspectRatio(
-                      e.doubleAdd?.right?.media?.media?.fullSize?.width,
-                      e.doubleAdd?.right?.media?.media?.fullSize?.height,
+                      e.double?.right?.media?.media?.fullSize?.width,
+                      e.double?.right?.media?.media?.fullSize?.height,
                     )}
                   />
                 </div>
