@@ -33,9 +33,9 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             return (
               <div
                 key={e.double?.left?.media?.id}
-                className="flex h-screen w-full flex-col lg:flex-row"
+                className="relative flex h-screen w-full flex-col lg:flex-row"
               >
-                <div className="relative z-0 h-full w-full">
+                <div className="relative h-full w-full">
                   <Image
                     src={e.double?.left?.media?.media?.fullSize?.mediaUrl || ""}
                     alt="ad hero image"
@@ -46,7 +46,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     fit="cover"
                     // blurHash={media.media?.blurhash}
                   />
-                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-6">
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text variant="uppercase" className="text-white">
                       {e.double?.left?.headline}
                     </Text>
@@ -63,7 +63,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 </div>
                 <div
                   key={e.double?.right?.media?.id}
-                  className="relative z-0 h-full w-full"
+                  className="relative h-full w-full"
                 >
                   <Image
                     src={
@@ -76,7 +76,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     )}
                     fit="cover"
                   />
-                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-6">
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text variant="uppercase" className="text-white">
                       {e.double?.right?.headline}
                     </Text>
@@ -91,6 +91,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Button>
                   </div>
                 </div>
+                <div className="absolute inset-0 z-[1] h-screen bg-black opacity-40"></div>
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
@@ -107,7 +108,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Link>
                   </Button>
                 </div>
-                <div className="flex gap-10 overflow-x-scroll">
+                <div className="no-scroll-bar flex gap-10 overflow-x-scroll">
                   {e.featuredProducts?.products?.map((p) => (
                     <ProductItem className="w-[282px]" key={p.id} product={p} />
                   ))}
