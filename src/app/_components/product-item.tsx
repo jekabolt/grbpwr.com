@@ -28,7 +28,7 @@ export function ProductItem({
     <div className={cn("relative", className)}>
       <Button asChild>
         <Link href={product?.slug || ""}>
-          <div className="relative h-80">
+          <div className={cn("relative h-80", className)}>
             <Image
               src={
                 product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
