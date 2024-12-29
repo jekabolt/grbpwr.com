@@ -29,24 +29,35 @@ export const currencySymbols: Record<string, string> = {
   USD: "$", // United States Dollar
 };
 
-export default function CurrencyPopover() {
+interface Props {
+  align?: "start" | "end";
+  title?: string;
+}
+
+export default function CurrencyPopover({ align = "end", title }: Props) {
   const { rates, selectedCurrency, setSelectedCurrency } = useDataContext();
 
   if (!rates?.currencies) return null;
 
   return (
     <GenericPopover
+      title={title}
       openElement={
         <Button size="sm" variant="simple">
           {`Currency: ${currencySymbols[selectedCurrency]}`}
         </Button>
       }
       contentProps={{
-        sideOffset: 16,
-        align: "end",
+        sideOffset: title ? -25 : 16,
+        align: align,
       }}
     >
-      <div className="min-w-80 space-y-2 pl-4">
+      <div
+        className={cn("space-y-2 pl-4", {
+          "min-w-80": !title,
+          "w-full": title,
+        })}
+      >
         {Object.entries(rates.currencies).map(([k, v]) => (
           <div
             className={cn("leading-none", {

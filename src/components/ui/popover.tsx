@@ -1,7 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
+
+import { cn } from "@/lib/utils";
 
 type Props = {
   children: React.ReactNode;
@@ -15,9 +17,12 @@ export default function GenericPopover({
   children,
   contentProps,
 }: Props) {
+  const [open, setOpen] = useState(false);
   return (
-    <Popover.Root>
-      <Popover.Trigger>{openElement}</Popover.Trigger>
+    <Popover.Root open={open} onOpenChange={setOpen}>
+      <Popover.Trigger className={title && open ? "invisible relative" : ""}>
+        {openElement}
+      </Popover.Trigger>
       <PopoverContent title={title} {...contentProps}>
         {children}
       </PopoverContent>
@@ -36,19 +41,21 @@ function PopoverContent({
   return (
     <Popover.Portal>
       <Popover.Content
-        side="top"
+        side="bottom"
         align="center"
-        className="z-50 bg-textColor px-2.5 py-6 text-bgColor"
+        className={cn("z-50 w-full bg-textColor px-2.5 py-6 text-bgColor", {
+          "border border-white pt-0": title,
+        })}
         {...contentProps}
       >
         {title && (
-          <div className="mb-4 flex justify-between">
-            <span className="block">{title}</span>
-            <Popover.Close aria-label="Close">
+          <Popover.Close className="mb-4 flex w-full justify-between">
+            <span>{title}</span>
+            <span aria-label="Close">
               {/* todo: change to icon */}
               {"["}X{"]"}
-            </Popover.Close>
-          </div>
+            </span>
+          </Popover.Close>
         )}
         {children}
       </Popover.Content>
