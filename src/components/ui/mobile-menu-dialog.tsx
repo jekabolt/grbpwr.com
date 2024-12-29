@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 import { GENDER_MAP } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";

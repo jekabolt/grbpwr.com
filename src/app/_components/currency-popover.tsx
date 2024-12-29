@@ -5,6 +5,8 @@ import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import GenericPopover from "@/components/ui/popover";
 
+import MobileCurrencyPopover from "./mobile-currency-popover";
+
 export const currencySymbols: Record<string, string> = {
   Bitcoin: "₿", // Bitcoin
   CHF: "Fr", // Swiss Franc
@@ -40,45 +42,52 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
   if (!rates?.currencies) return null;
 
   return (
-    <GenericPopover
-      title={title}
-      openElement={
-        <Button size="sm" variant="simple">
-          {`Currency: ${currencySymbols[selectedCurrency]}`}
-        </Button>
-      }
-      contentProps={{
-        sideOffset: title ? -25 : 16,
-        align: align,
-      }}
-    >
-      <div
-        className={cn("space-y-2 pl-4", {
-          "min-w-80": !title,
-          "w-full": title,
-        })}
-      >
-        {Object.entries(rates.currencies).map(([k, v]) => (
-          <div
-            className={cn("leading-none", {
-              "bg-bgColor  text-textColor": k === selectedCurrency,
-            })}
-            key={k}
-          >
-            <button
-              onClick={() => {
-                setSelectedCurrency(k);
-              }}
-              className="flex w-full"
-            >
-              <span className="block min-w-8 text-left">
-                {currencySymbols[k]}{" "}
-              </span>
-              {v.description}
-            </button>
-          </div>
-        ))}
+    <>
+      <div className="block lg:hidden">
+        <MobileCurrencyPopover title={title} />
       </div>
-    </GenericPopover>
+      <div className="hidden lg:block">
+        <GenericPopover
+          title={title}
+          openElement={
+            <Button size="sm" variant="simple" className="uppercase">
+              {`Currency: ${currencySymbols[selectedCurrency]}`}
+            </Button>
+          }
+          contentProps={{
+            sideOffset: title ? -25 : 16,
+            align: align,
+          }}
+        >
+          <div
+            className={cn("space-y-2", {
+              "min-w-80": !title,
+              "w-full": title,
+            })}
+          >
+            {Object.entries(rates.currencies).map(([k, v]) => (
+              <div
+                className={cn("leading-none", {
+                  "bg-bgColor  text-textColor": k === selectedCurrency,
+                })}
+                key={k}
+              >
+                <button
+                  onClick={() => {
+                    setSelectedCurrency(k);
+                  }}
+                  className="flex w-full"
+                >
+                  <span className="block min-w-8 text-left">
+                    {currencySymbols[k]}{" "}
+                  </span>
+                  {v.description}
+                </button>
+              </div>
+            ))}
+          </div>
+        </GenericPopover>
+      </div>
+    </>
   );
 }
