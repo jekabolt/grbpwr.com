@@ -3,6 +3,10 @@
 import React from "react";
 import * as Popover from "@radix-ui/react-popover";
 
+import { cn } from "@/lib/utils";
+
+import { Text } from "./text";
+
 type Props = {
   children: React.ReactNode;
   openElement: React.ReactNode;
@@ -36,21 +40,28 @@ function PopoverContent({
   return (
     <Popover.Portal>
       <Popover.Content
-        side="top"
+        side="bottom"
         align="center"
-        className="z-50 bg-textColor px-2.5 py-6 text-bgColor"
+        className={cn(
+          "relative z-50 w-full bg-textColor px-2.5 py-6 text-bgColor",
+          {
+            "max-h-[50vh] overflow-y-scroll border border-white p-2": title,
+          },
+        )}
         {...contentProps}
       >
         {title && (
-          <div className="mb-4 flex justify-between">
-            <span className="block">{title}</span>
-            <Popover.Close aria-label="Close">
+          <Popover.Close className="fixed left-0 top-0 flex w-full justify-between border-l border-r border-t border-white bg-black p-2.5">
+            <Text variant="uppercase" component="span" className="text-white">
+              {title}
+            </Text>
+            <span aria-label="Close">
               {/* todo: change to icon */}
               {"["}X{"]"}
-            </Popover.Close>
-          </div>
+            </span>
+          </Popover.Close>
         )}
-        {children}
+        <div className="mt-10">{children}</div>
       </Popover.Content>
     </Popover.Portal>
   );

@@ -1,12 +1,15 @@
 import Link from "next/link";
-import { FOOTER_LINKS as links, FOOTER_YEAR as year } from "@/constants";
+import { FOOTER_LINKS as links } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/icons/logo";
+import { Text } from "@/components/ui/text";
 
-// import FooterForm from "@/components/forms/";
 import CurrencyPopover from "./currency-popover";
+import { FooterNav } from "./footer-nav";
+import NewslatterForm from "./newslatter-form";
 
 // todo: sync with BE
 const currencyNameMap = {
@@ -24,6 +27,8 @@ const currencyNameMap = {
   "]": "united states dollar",
   "@": "united states dollar",
 };
+
+const currentYear = () => new Date().getFullYear();
 
 export function Footer({
   className,
@@ -46,36 +51,49 @@ export function Footer({
     }
   }
 
-  const currentCurrency = "eth";
-
   return (
     <footer
       className={cn(
-        "grid grid-cols-1 gap-14 p-2 text-textColor lg:grid-cols-2 lg:gap-10",
+        "flex h-full w-full flex-col gap-16 bg-black md:h-screen md:justify-between",
         className,
       )}
     >
-      <div className="col-span-1 text-7xl lg:order-last">
-        footer form
-        {/* {!hideForm && <FooterForm formSubmitClick={formSubmitClick} />} */}
+      <div className="flex w-full flex-col items-start justify-between gap-16 md:flex-row">
+        <div className="w-2/3 p-2 md:w-1/3 md:p-6">
+          <Logo />
+        </div>
+        <div className="flex h-full w-full flex-col gap-24 pt-6 md:w-1/2">
+          <div className="flex w-full flex-col justify-between gap-10 md:flex-row">
+            <div className="flex w-full flex-row gap-6 md:flex-col">
+              <div className="space-y-6">
+                <Text variant="inactive">press</Text>
+                <Text className="text-white">work@grbpwr.com</Text>
+              </div>
+              <div className="space-y-6">
+                <Text variant="inactive">help</Text>
+                <Text className="text-white">client@grbpwr.com</Text>
+              </div>
+            </div>
+            <div className="w-full space-y-10">
+              <FooterNav className="flex-col gap-6  uppercase text-white" />
+              <div className="w-full">
+                <CurrencyPopover align="start" title="Currency:" />
+              </div>
+            </div>
+          </div>
+          <NewslatterForm footer={true} />
+        </div>
       </div>
-
-      <div className="col-span-1 flex h-full flex-col gap-4 text-xs lg:flex-row-reverse lg:justify-between">
-        <div className="flex space-x-5">
+      <div className="flex w-full justify-between">
+        <Text variant="inactive" className="uppercase">
+          {`grbpwr ${currentYear()}©`}
+        </Text>
+        <div className="flex w-1/2 justify-end justify-between space-x-5 text-white">
           {links.map((link) => (
             <Button asChild key={link.text}>
               <Link href={link.href}>{link.text}</Link>
             </Button>
           ))}
-        </div>
-
-        <div className="flex justify-between gap-4 lg:flex-row-reverse">
-          <div className="flex items-start gap-6 lg:gap-10">
-            <div>grbpwr {year}©</div>
-            <Button asChild>
-              <Link href="privacy-policy">privacy policy</Link>
-            </Button>
-          </div>
         </div>
       </div>
     </footer>

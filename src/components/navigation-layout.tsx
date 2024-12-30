@@ -9,10 +9,10 @@ export default function NavigationLayout({
   hideForm?: boolean;
 }>) {
   return (
-    <div className="relative min-h-screen space-y-2 bg-bgColor p-2 pb-14 lg:pb-0">
+    <div className="relative min-h-screen bg-bgColor">
       <Header />
-      <div className="w-full space-y-20 px-2 md:px-0 lg:w-full">{children}</div>
-      <Footer className="mt-24" hideForm={hideForm} />
+      <div className="w-full space-y-20 md:px-0">{children}</div>
+      <Footer hideForm={hideForm} className="p-2 pb-14 md:pb-0" />
     </div>
   );
 }
