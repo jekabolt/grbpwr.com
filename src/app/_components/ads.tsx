@@ -5,6 +5,7 @@ import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
 import { calculateAspectRatio } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { EmptyHero } from "@/components/ui/empty-hero";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
@@ -15,20 +16,20 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
     <div className="space-y-20">
       {entities?.map((e, i) => {
         switch (e.type) {
-          case "HERO_TYPE_SINGLE":
-            return (
-              <div key={e.single?.media?.id} className="h-[600px]">
-                <Image
-                  src={e.single?.media?.media?.fullSize?.mediaUrl || ""}
-                  alt="ad hero image"
-                  aspectRatio={calculateAspectRatio(
-                    e.single?.media?.media?.fullSize?.width,
-                    e.single?.media?.media?.fullSize?.height,
-                  )}
-                  // blurHash={media.media?.blurhash}
-                />
-              </div>
-            );
+          // case "HERO_TYPE_SINGLE":
+          //   return (
+          //     <div key={e.single?.media?.id} className="h-[600px]">
+          //       <Image
+          //         src={e.single?.media?.media?.fullSize?.mediaUrl || ""}
+          //         alt="ad hero image"
+          //         aspectRatio={calculateAspectRatio(
+          //           e.single?.media?.media?.fullSize?.width,
+          //           e.single?.media?.media?.fullSize?.height,
+          //         )}
+          //         // blurHash={media.media?.blurhash}
+          //       />
+          //     </div>
+          //   );
           case "HERO_TYPE_DOUBLE":
             return (
               <div
@@ -116,7 +117,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
               </div>
             );
           default:
-            return null;
+            return <EmptyHero />;
         }
       })}
     </div>

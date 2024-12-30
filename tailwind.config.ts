@@ -7,6 +7,7 @@ const config = {
         textColor: "var(--text)",
         textInactiveColor: "var(--inactive)",
         bgColor: "var(--background)",
+        bgBlack: "var(--background-black)",
         highlightColor: "var(--highlight)",
         errorColor: "var(--error)",
         buttonTextColor: "var(--button-text)",
