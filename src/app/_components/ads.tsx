@@ -5,7 +5,6 @@ import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
 import { calculateAspectRatio } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { EmptyHero } from "@/components/ui/empty-hero";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
@@ -117,7 +116,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
               </div>
             );
           default:
-            return <EmptyHero />;
+            return null;
         }
       })}
     </div>
