@@ -1,13 +1,15 @@
 "use client";
 
+import { findCategoryName } from "@/lib/categories-map";
 import { useDataContext } from "@/components/DataContext";
 import GenericPopover from "@/components/ui/popover";
+import { Text } from "@/components/ui/text";
 
 import FilterOptionButtons from "./FilterOptionButtons";
 import useFilterQueryParams from "./useFilterQueryParams";
 
 function Trigger({ defaultValue }: { defaultValue: string }) {
-  return <div>{defaultValue}</div>;
+  return <Text variant="uppercase">{defaultValue}</Text>;
 }
 
 export default function Category() {
@@ -30,7 +32,8 @@ export default function Category() {
       title="categories"
       openElement={
         <Trigger
-          defaultValue={`${defaultCategory || "all categories"} / ${defaultGender || "all genders"}`}
+          // defaultValue={`${findCategoryName(defaultCategory) || "all categories"} / ${defaultGender || "all genders"}`}
+          defaultValue={`${findCategoryName(defaultCategory) || "all categories"}`}
         />
       }
     >

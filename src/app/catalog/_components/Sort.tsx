@@ -2,15 +2,16 @@
 
 import { useDataContext } from "@/components/DataContext";
 import GenericPopover from "@/components/ui/popover";
+import { Text } from "@/components/ui/text";
 
 import FilterOptionButtons from "./FilterOptionButtons";
 import useFilterQueryParams from "./useFilterQueryParams";
 
 function Trigger({ defaultValue }: { defaultValue: string }) {
   return (
-    <div>
-      sort_by <span className="underline">{defaultValue}</span>
-    </div>
+    <Text variant="uppercase">
+      sort by + <span className="underline">{defaultValue}</span>
+    </Text>
   );
 }
 
@@ -21,18 +22,20 @@ export default function Sort() {
   return (
     <GenericPopover
       contentProps={{
-        side: "bottom",
+        sideOffset: -25,
         align: "end",
       }}
-      title="order_by"
+      title="sort by"
       openElement={<Trigger defaultValue={defaultValue || ""} />}
     >
-      <FilterOptionButtons
-        defaultValue={defaultValue || ""}
-        handleFilterChange={handleFilterChange}
-        values={dictionary?.sortFactors || []}
-        defaultOptionText="none"
-      />
+      <div className="w-[251px]">
+        <FilterOptionButtons
+          defaultValue={defaultValue || ""}
+          handleFilterChange={handleFilterChange}
+          values={dictionary?.sortFactors || []}
+          defaultOptionText="none"
+        />
+      </div>
     </GenericPopover>
   );
 }

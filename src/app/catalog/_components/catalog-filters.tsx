@@ -1,20 +1,17 @@
 "use client";
 
 import Category from "./Category";
-import Order from "./Order";
 import Size from "./Size";
 import Sort from "./Sort";
 
 export default function Filters() {
   return (
-    <div>
-      <div className="flex w-full justify-between pb-8 pt-4">
-        <Category />
-        <div className="flex gap-8 lg:gap-24">
-          <Order />
-          <Sort />
-          <Size sizeId={1} />
-        </div>
+    <div className="flex flex-col items-start gap-6 pb-3 lg:flex-row lg:justify-between lg:pb-8">
+      <Category />
+      <div className="flex w-auto gap-24">
+        {/* <Order /> */}
+        <Sort />
+        <Size />
       </div>
     </div>
   );
