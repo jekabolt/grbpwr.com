@@ -1,23 +1,28 @@
 "use client";
 
+import { SORT_MAP } from "@/constants";
+
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import GenericPopover from "@/components/ui/popover";
 import { Text } from "@/components/ui/text";
 
-import FilterOptionButtons from "./FilterOptionButtons";
 import useFilterQueryParams from "./useFilterQueryParams";
 
-function Trigger({ defaultValue }: { defaultValue: string }) {
-  return (
-    <Text variant="uppercase">
-      sort by + <span className="underline">{defaultValue}</span>
-    </Text>
-  );
+function Trigger() {
+  return <Text variant="uppercase">sort by +</Text>;
 }
 
 export default function Sort() {
   const { dictionary } = useDataContext();
-  const { defaultValue, handleFilterChange } = useFilterQueryParams("sort");
+  const { defaultValue: sortValue, handleFilterChange: handleSortChange } =
+    useFilterQueryParams("sort");
+  const { defaultValue: orderValue, handleFilterChange: handleOrderChange } =
+    useFilterQueryParams("order");
+
+  const handleCombinedChange = (sortFactor: string, orderFactor: string) => {
+    handleSortChange(sortFactor, { order: orderFactor });
+  };
 
   return (
     <GenericPopover
@@ -26,15 +31,25 @@ export default function Sort() {
         align: "end",
       }}
       title="sort by"
-      openElement={<Trigger defaultValue={defaultValue || ""} />}
+      openElement={<Trigger />}
     >
-      <div className="w-[251px]">
-        <FilterOptionButtons
-          defaultValue={defaultValue || ""}
-          handleFilterChange={handleFilterChange}
-          values={dictionary?.sortFactors || []}
-          defaultOptionText="none"
-        />
+      <div>
+        {Object.entries(SORT_MAP).map(([sortKey, sortData]) => (
+          <div key={sortKey} className="mb-4">
+            {sortData.orderFactors.map((orderFactor) => (
+              <button
+                key={`${sortKey}-${orderFactor.id}`}
+                onClick={() => handleCombinedChange(sortKey, orderFactor.id)}
+                className={cn("block", {
+                  underline:
+                    sortValue === sortKey && orderValue === orderFactor.id,
+                })}
+              >
+                {`${sortData.label} ${orderFactor.name}`}
+              </button>
+            ))}
+          </div>
+        ))}
       </div>
     </GenericPopover>
   );
