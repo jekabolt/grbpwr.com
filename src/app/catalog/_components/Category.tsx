@@ -32,7 +32,6 @@ export default function Category() {
       title="categories"
       openElement={
         <Trigger
-          // defaultValue={`${findCategoryName(defaultCategory) || "all categories"} / ${defaultGender || "all genders"}`}
           defaultValue={`${findCategoryName(defaultCategory) || "all categories"}`}
         />
       }
