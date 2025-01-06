@@ -44,7 +44,7 @@ export default function FilterOptionButtons({
           })}
           key={factor.id}
         >
-          {factor.name}
+          {factor.name?.toLowerCase()}
         </button>
       ))}
     </>

@@ -1,44 +1,71 @@
 "use client";
 
+import { SORT_MAP } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
-import { useDataContext } from "@/components/DataContext";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
-import FilterOptionButtons from "./FilterOptionButtons";
 import useFilterQueryParams from "./useFilterQueryParams";
 
 export function MobileSort() {
-  const { dictionary } = useDataContext();
-  const { defaultValue, handleFilterChange } = useFilterQueryParams("sort");
+  const { defaultValue: sortValue, handleFilterChange: handleSortChange } =
+    useFilterQueryParams("sort");
+  const { defaultValue: orderValue } = useFilterQueryParams("order");
+  const { defaultValue: saleValue } = useFilterQueryParams("sale");
+
+  const handleCombinedChange = (
+    sortFactor: string,
+    orderFactor: string,
+    sale?: boolean,
+  ) => {
+    handleSortChange(sortFactor, {
+      order: orderFactor,
+      sale: sale ? "true" : "",
+    });
+  };
 
   return (
-    <DialogPrimitives.Root>
+    <DialogPrimitives.Root modal={false}>
       <DialogPrimitives.Trigger asChild>
         <Button className="uppercase">sort by +</Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed bottom-0 left-0 z-20 bg-black" />
-        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-20 flex h-[30vh] w-screen flex-col bg-black p-2.5">
+        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-20 flex h-auto w-screen flex-col bg-black p-2 text-white">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="relative mb-4 flex items-center justify-between p-2">
+          <div className="relative mb-4 flex items-center justify-between">
             <Text variant="uppercase">sort by</Text>
             <DialogPrimitives.Close asChild>
               <Button className="bg-black text-textColor">[X]</Button>
             </DialogPrimitives.Close>
           </div>
-          <div className="relative grow overflow-y-auto">
-            <div className="space-y-2 text-white">
-              <FilterOptionButtons
-                defaultValue={defaultValue || ""}
-                handleFilterChange={handleFilterChange}
-                values={dictionary?.sortFactors || []}
-                defaultOptionText="none"
-              />
-            </div>
+          <div className="space-y-2 py-5">
+            {Object.entries(SORT_MAP).flatMap(([sortKey, sortData]) =>
+              sortData.orderFactors.map((orderFactor, id) => (
+                <button
+                  key={`${sortKey}-${id}`}
+                  onClick={() =>
+                    handleCombinedChange(
+                      sortKey,
+                      orderFactor.factor,
+                      orderFactor.sale,
+                    )
+                  }
+                  className={cn("block", {
+                    underline:
+                      sortValue === sortKey &&
+                      orderValue === orderFactor.factor &&
+                      (!orderFactor.sale ? !saleValue : saleValue === "true"),
+                  })}
+                >
+                  {`${orderFactor.sale ? "sale: " : sortData.label ? `${sortData.label}: ` : ""}${orderFactor.name}`}
+                </button>
+              )),
+            )}
           </div>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>

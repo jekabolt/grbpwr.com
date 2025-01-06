@@ -38,33 +38,29 @@ export default function Sort() {
       title="sort by"
       openElement={<Trigger />}
     >
-      <div>
-        {Object.entries(SORT_MAP).map(([sortKey, sortData]) => (
-          <>
-            <div key={sortKey}>
-              {sortData.orderFactors.map((orderFactor, index) => (
-                <button
-                  key={`${sortKey}-${orderFactor.factor}-${index}`}
-                  onClick={() =>
-                    handleCombinedChange(
-                      sortKey,
-                      orderFactor.factor,
-                      orderFactor.sale,
-                    )
-                  }
-                  className={cn("block", {
-                    underline:
-                      sortValue === sortKey &&
-                      orderValue === orderFactor.factor &&
-                      (!orderFactor.sale ? !saleValue : saleValue === "true"),
-                  })}
-                >
-                  {`${orderFactor.sale ? "sale: " : sortData.label ? `${sortData.label}: ` : ""}${orderFactor.name}`}
-                </button>
-              ))}
-            </div>
-          </>
-        ))}
+      <div className="mr-16 space-y-2">
+        {Object.entries(SORT_MAP).flatMap(([sortKey, sortData]) =>
+          sortData.orderFactors.map((orderFactor, id) => (
+            <button
+              key={`${sortKey}-${id}`}
+              onClick={() =>
+                handleCombinedChange(
+                  sortKey,
+                  orderFactor.factor,
+                  orderFactor.sale,
+                )
+              }
+              className={cn("block", {
+                underline:
+                  sortValue === sortKey &&
+                  orderValue === orderFactor.factor &&
+                  (!orderFactor.sale ? !saleValue : saleValue === "true"),
+              })}
+            >
+              {`${orderFactor.sale ? "sale: " : sortData.label ? `${sortData.label}: ` : ""}${orderFactor.name}`}
+            </button>
+          )),
+        )}
       </div>
     </GenericPopover>
   );
