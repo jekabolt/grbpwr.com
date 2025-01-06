@@ -46,7 +46,7 @@ export function MobileSort() {
           <div className="space-y-2 py-5">
             {Object.entries(SORT_MAP).flatMap(([sortKey, sortData]) =>
               sortData.orderFactors.map((orderFactor, id) => (
-                <button
+                <Button
                   key={`${sortKey}-${id}`}
                   onClick={() =>
                     handleCombinedChange(
@@ -63,7 +63,7 @@ export function MobileSort() {
                   })}
                 >
                   {`${orderFactor.sale ? "sale: " : sortData.label ? `${sortData.label}: ` : ""}${orderFactor.name}`}
-                </button>
+                </Button>
               )),
             )}
           </div>

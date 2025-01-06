@@ -18,10 +18,6 @@ export default function Category() {
     defaultValue: defaultCategory,
     handleFilterChange: handleCategoryChange,
   } = useFilterQueryParams("category");
-  const {
-    defaultValue: defaultGender,
-    handleFilterChange: handleGenderChange,
-  } = useFilterQueryParams("gender");
 
   return (
     <GenericPopover
@@ -42,16 +38,6 @@ export default function Category() {
           defaultValue={defaultCategory || ""}
           handleFilterChange={handleCategoryChange}
           values={dictionary?.categories || []}
-        />
-      </div>
-
-      <div className="mb-8">
-        <div className="mb-4">gender</div>
-        <FilterOptionButtons
-          defaultValue={defaultGender || ""}
-          handleFilterChange={handleGenderChange}
-          values={dictionary?.genders || []}
-          defaultOptionText="all"
         />
       </div>
     </GenericPopover>

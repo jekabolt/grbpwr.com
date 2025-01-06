@@ -3,6 +3,7 @@
 import { SORT_MAP } from "@/constants";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import GenericPopover from "@/components/ui/popover";
 import { Text } from "@/components/ui/text";
 
@@ -41,7 +42,7 @@ export default function Sort() {
       <div className="mr-16 space-y-2">
         {Object.entries(SORT_MAP).flatMap(([sortKey, sortData]) =>
           sortData.orderFactors.map((orderFactor, id) => (
-            <button
+            <Button
               key={`${sortKey}-${id}`}
               onClick={() =>
                 handleCombinedChange(
@@ -58,7 +59,7 @@ export default function Sort() {
               })}
             >
               {`${orderFactor.sale ? "sale: " : sortData.label ? `${sortData.label}: ` : ""}${orderFactor.name}`}
-            </button>
+            </Button>
           )),
         )}
       </div>

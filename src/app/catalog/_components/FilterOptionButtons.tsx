@@ -9,6 +9,7 @@ import {
 } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export default function FilterOptionButtons({
   handleFilterChange,
@@ -29,15 +30,15 @@ export default function FilterOptionButtons({
   return (
     <>
       {defaultOptionText && (
-        <button
+        <Button
           onClick={() => handleFilterChange()}
           className={cn("block", { underline: !defaultValue })}
         >
           {defaultOptionText}
-        </button>
+        </Button>
       )}
       {values.map((factor) => (
-        <button
+        <Button
           onClick={() => handleFilterChange(factor.id + "")}
           className={cn("block", {
             underline: factor.id + "" === defaultValue,
@@ -45,7 +46,7 @@ export default function FilterOptionButtons({
           key={factor.id}
         >
           {factor.name?.toLowerCase()}
-        </button>
+        </Button>
       ))}
     </>
   );

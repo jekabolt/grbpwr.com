@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import GenericPopover from "@/components/ui/popover";
+import { Text } from "@/components/ui/text";
 
 import MobileCurrencyPopover from "./mobile-currency-popover";
 
@@ -72,17 +73,17 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
                 })}
                 key={k}
               >
-                <button
+                <Button
                   onClick={() => {
                     setSelectedCurrency(k);
                   }}
                   className="flex w-full"
                 >
-                  <span className="block min-w-8 text-left">
-                    {currencySymbols[k]}{" "}
-                  </span>
+                  <Text className="block min-w-8 text-left text-white">
+                    {currencySymbols[k]}
+                  </Text>
                   {v.description}
-                </button>
+                </Button>
               </div>
             ))}
           </div>

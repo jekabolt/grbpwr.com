@@ -9,7 +9,6 @@ export default function Filters() {
     <div className="flex flex-col items-start gap-6 pb-3 lg:flex-row lg:justify-between lg:pb-8">
       <Category />
       <div className="flex w-auto gap-24">
-        {/* <Order /> */}
         <Sort />
         <Size />
       </div>

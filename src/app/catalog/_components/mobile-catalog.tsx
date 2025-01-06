@@ -19,7 +19,6 @@ export function MobileCatalog({
         <Category />
       </div>
       <div className="sticky top-0 z-50 flex w-full justify-between bg-bgColor py-3 lg:w-auto lg:gap-24">
-        {/* <Order /> */}
         <MobileSort />
         <MobileSize />
       </div>
