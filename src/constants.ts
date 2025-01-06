@@ -44,21 +44,29 @@ export const GENDER_MAP: Record<string, common_GenderEnum> = {
 };
 
 type OrderFactorOption = {
-  id: common_OrderFactor;
+  factor: common_OrderFactor;
   name: string;
+  sale?: boolean;
 }
 
 type SortFactorConfig = {
-  label: string;
+  label?: string;
   orderFactors: OrderFactorOption[];
 }
 
 export const SORT_MAP: Partial<Record<common_SortFactor, SortFactorConfig>> = {
+  SORT_FACTOR_CREATED_AT: {
+    orderFactors: [
+      { factor: 'ORDER_FACTOR_DESC', name: 'latest arrivals' }
+    ]
+  },
   SORT_FACTOR_PRICE: {
     label: 'price',
     orderFactors: [
-      { id: 'ORDER_FACTOR_ASC', name: 'low to high' },
-      { id: 'ORDER_FACTOR_DESC', name: 'high to low' },
+      { factor: 'ORDER_FACTOR_ASC', name: 'low to high' },
+      { factor: 'ORDER_FACTOR_DESC', name: 'high to low' },
+      { factor: 'ORDER_FACTOR_ASC', name: 'low to high', sale: true },
+      { factor: 'ORDER_FACTOR_DESC', name: 'high to low', sale: true }
     ]
   },
 };

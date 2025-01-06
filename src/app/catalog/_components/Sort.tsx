@@ -3,7 +3,6 @@
 import { SORT_MAP } from "@/constants";
 
 import { cn } from "@/lib/utils";
-import { useDataContext } from "@/components/DataContext";
 import GenericPopover from "@/components/ui/popover";
 import { Text } from "@/components/ui/text";
 
@@ -14,14 +13,20 @@ function Trigger() {
 }
 
 export default function Sort() {
-  const { dictionary } = useDataContext();
   const { defaultValue: sortValue, handleFilterChange: handleSortChange } =
     useFilterQueryParams("sort");
-  const { defaultValue: orderValue, handleFilterChange: handleOrderChange } =
-    useFilterQueryParams("order");
+  const { defaultValue: orderValue } = useFilterQueryParams("order");
+  const { defaultValue: saleValue } = useFilterQueryParams("sale");
 
-  const handleCombinedChange = (sortFactor: string, orderFactor: string) => {
-    handleSortChange(sortFactor, { order: orderFactor });
+  const handleCombinedChange = (
+    sortFactor: string,
+    orderFactor: string,
+    sale?: boolean,
+  ) => {
+    handleSortChange(sortFactor, {
+      order: orderFactor,
+      sale: sale ? "true" : "",
+    });
   };
 
   return (
@@ -35,20 +40,30 @@ export default function Sort() {
     >
       <div>
         {Object.entries(SORT_MAP).map(([sortKey, sortData]) => (
-          <div key={sortKey} className="mb-4">
-            {sortData.orderFactors.map((orderFactor) => (
-              <button
-                key={`${sortKey}-${orderFactor.id}`}
-                onClick={() => handleCombinedChange(sortKey, orderFactor.id)}
-                className={cn("block", {
-                  underline:
-                    sortValue === sortKey && orderValue === orderFactor.id,
-                })}
-              >
-                {`${sortData.label} ${orderFactor.name}`}
-              </button>
-            ))}
-          </div>
+          <>
+            <div key={sortKey}>
+              {sortData.orderFactors.map((orderFactor, index) => (
+                <button
+                  key={`${sortKey}-${orderFactor.factor}-${index}`}
+                  onClick={() =>
+                    handleCombinedChange(
+                      sortKey,
+                      orderFactor.factor,
+                      orderFactor.sale,
+                    )
+                  }
+                  className={cn("block", {
+                    underline:
+                      sortValue === sortKey &&
+                      orderValue === orderFactor.factor &&
+                      (!orderFactor.sale ? !saleValue : saleValue === "true"),
+                  })}
+                >
+                  {`${orderFactor.sale ? "sale: " : sortData.label ? `${sortData.label}: ` : ""}${orderFactor.name}`}
+                </button>
+              ))}
+            </div>
+          </>
         ))}
       </div>
     </GenericPopover>
