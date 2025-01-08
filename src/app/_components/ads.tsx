@@ -12,7 +12,7 @@ import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   return (
-    <div className="space-y-20">
+    <div>
       {entities?.map((e, i) => {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
@@ -96,8 +96,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
             return (
-              // <ProductsGrid key={i} products={e.featuredProducts?.products} />
-              <div className="space-y-10">
+              <div className="space-y-10 px-2 py-20">
                 <div className="flex flex-col gap-2 md:flex-row">
                   <Text variant="uppercase">
                     {e.featuredProducts?.headline}
@@ -108,9 +107,13 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Link>
                   </Button>
                 </div>
-                <div className="no-scroll-bar flex gap-10 overflow-x-scroll">
+                <div className="no-scroll-bar mx-auto flex max-w-full gap-10 overflow-x-scroll">
                   {e.featuredProducts?.products?.map((p) => (
-                    <ProductItem className="w-[282px]" key={p.id} product={p} />
+                    <ProductItem
+                      className="w-[282px] lg:h-[420px]"
+                      key={p.id}
+                      product={p}
+                    />
                   ))}
                 </div>
               </div>

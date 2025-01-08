@@ -26,9 +26,12 @@ export function ProductItem({
 
   return (
     <div className={cn("relative", className)}>
-      <Button asChild>
-        <Link href={product?.slug || ""}>
-          <div className={cn("relative h-80", className)}>
+      <Button asChild className="h-full">
+        <Link
+          href={product?.slug || ""}
+          className={cn("flex h-full  w-full flex-col", className)}
+        >
+          <div className="relative h-full flex-grow">
             <Image
               src={
                 product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
