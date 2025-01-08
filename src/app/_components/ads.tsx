@@ -12,7 +12,7 @@ import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   return (
-    <div className="space-y-20">
+    <div>
       {entities?.map((e, i) => {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
