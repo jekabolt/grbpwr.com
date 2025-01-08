@@ -37,6 +37,10 @@ interface Props {
   title?: string;
 }
 
+function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
+  return <Text variant="uppercase">{`currency ${defaultValue}`}</Text>;
+}
+
 export default function CurrencyPopover({ align = "end", title }: Props) {
   const { rates, selectedCurrency, setSelectedCurrency } = useDataContext();
 
@@ -51,9 +55,7 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
         <GenericPopover
           title={title}
           openElement={
-            <Button size="sm" variant="simple" className="uppercase">
-              {`Currency: ${currencySymbols[selectedCurrency]}`}
-            </Button>
+            <Trigger defaultValue={currencySymbols[selectedCurrency]} />
           }
           contentProps={{
             sideOffset: title ? -25 : 16,

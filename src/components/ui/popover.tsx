@@ -21,7 +21,7 @@ export default function GenericPopover({
 }: Props) {
   return (
     <Popover.Root>
-      <Popover.Trigger asChild>{openElement}</Popover.Trigger>
+      <Popover.Trigger>{openElement}</Popover.Trigger>
       <PopoverContent title={title} {...contentProps}>
         {children}
       </PopoverContent>
