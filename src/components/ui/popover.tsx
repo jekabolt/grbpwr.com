@@ -56,7 +56,6 @@ function PopoverContent({
               {title}
             </Text>
             <span aria-label="Close">
-              {/* todo: change to icon */}
               {"["}X{"]"}
             </span>
           </Popover.Close>
