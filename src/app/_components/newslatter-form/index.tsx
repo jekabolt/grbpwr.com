@@ -21,24 +21,11 @@ export default function NewslatterForm({ footer }: Props) {
 
   return (
     <form action={handleSubmit}>
-      <Text
-        variant="uppercase"
-        className={cn("mb-6", {
-          "text-white": footer,
-        })}
-      >
+      <Text variant="uppercase" className="mb-6">
         newsletter
       </Text>
-      {/* // make a label */}
       <label htmlFor="newsletter" className="mb-3 block">
-        <Text
-          size="small"
-          className={cn({
-            "text-white": footer,
-          })}
-        >
-          {footer ? "e-mail adress" : "email"}
-        </Text>
+        <Text size="small">{footer ? "e-mail adress" : "email"}</Text>
       </label>
       <div
         className={cn("flex items-center gap-4", {
@@ -51,10 +38,6 @@ export default function NewslatterForm({ footer }: Props) {
           required
           placeholder="email"
           name="email"
-          className={cn({
-            "border-b border-white bg-black text-white focus:border-b focus:border-white focus:outline-none":
-              footer,
-          })}
         />
         <Button
           variant={footer ? "main" : "simple"}

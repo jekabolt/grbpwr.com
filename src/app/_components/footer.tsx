@@ -54,7 +54,7 @@ export function Footer({
   return (
     <footer
       className={cn(
-        "flex h-full w-full flex-col gap-16 bg-black md:h-screen md:justify-between",
+        "blackTheme flex h-full w-full flex-col gap-16 bg-bgColor bg-black text-textColor md:h-screen md:justify-between",
         className,
       )}
     >
@@ -67,15 +67,15 @@ export function Footer({
             <div className="flex w-full flex-row gap-6 md:flex-col">
               <div className="space-y-6">
                 <Text variant="inactive">press</Text>
-                <Text className="text-white">work@grbpwr.com</Text>
+                <Text>work@grbpwr.com</Text>
               </div>
               <div className="space-y-6">
                 <Text variant="inactive">help</Text>
-                <Text className="text-white">client@grbpwr.com</Text>
+                <Text>client@grbpwr.com</Text>
               </div>
             </div>
             <div className="w-full space-y-10">
-              <FooterNav className="flex-col gap-6  uppercase text-white" />
+              <FooterNav className="flex-col gap-6 uppercase" />
               <div className="w-full">
                 <CurrencyPopover align="start" title="Currency:" />
               </div>
@@ -88,7 +88,7 @@ export function Footer({
         <Text variant="inactive" className="uppercase">
           {`grbpwr ${currentYear()}©`}
         </Text>
-        <div className="flex w-1/2 justify-end justify-between space-x-5 text-white">
+        <div className="flex w-1/2 justify-end justify-between space-x-5">
           {links.map((link) => (
             <Button asChild key={link.text}>
               <Link href={link.href}>{link.text}</Link>

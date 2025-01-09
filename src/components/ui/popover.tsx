@@ -51,8 +51,8 @@ function PopoverContent({
         {...contentProps}
       >
         {title && (
-          <Popover.Close className="fixed left-0 top-0 flex w-full justify-between border-l border-r border-t border-white bg-black p-2.5">
-            <Text variant="uppercase" component="span" className="text-white">
+          <Popover.Close className="blackTheme fixed left-0 top-0 flex w-full justify-between border-white p-2.5 text-textColor">
+            <Text variant="uppercase" component="span">
               {title}
             </Text>
             <span aria-label="Close">

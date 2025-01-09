@@ -36,7 +36,7 @@ export default function CurrencyPopover({ title }: Props) {
           <div className="relative mb-4 flex items-center justify-between p-2">
             <Text variant="uppercase">{title}</Text>
             <DialogPrimitives.Close asChild>
-              <Button className="bg-black text-textColor">[X]</Button>
+              <Button>[X]</Button>
             </DialogPrimitives.Close>
           </div>
           <div className="relative grow overflow-y-auto">
@@ -50,7 +50,7 @@ export default function CurrencyPopover({ title }: Props) {
                 >
                   <Button
                     onClick={() => setSelectedCurrency(k)}
-                    className="flex w-full p-2 text-white"
+                    className="flex w-full p-2"
                   >
                     <Text component="span" className="block min-w-8 text-left">
                       {currencySymbols[k]}

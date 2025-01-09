@@ -33,14 +33,14 @@ export function MobileSort() {
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed bottom-0 left-0 z-20 bg-black" />
-        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-20 flex h-auto w-screen flex-col bg-black p-2 text-white">
+        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-20 flex h-auto w-screen flex-col bg-black p-2 text-textColor">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
           <div className="relative mb-4 flex items-center justify-between">
             <Text variant="uppercase">sort by</Text>
             <DialogPrimitives.Close asChild>
-              <Button className="bg-black text-textColor">[X]</Button>
+              <Button>[X]</Button>
             </DialogPrimitives.Close>
           </div>
           <div className="space-y-2 py-5">
