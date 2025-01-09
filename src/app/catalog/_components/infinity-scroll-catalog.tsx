@@ -13,9 +13,11 @@ import { getProductsPagedQueryParams } from "@/app/catalog/_components/utils";
 export function InfinityScrollCatalog({
   firstPageItems,
   total,
+  setAllLoaded,
 }: {
   firstPageItems: common_Product[];
   total: number;
+  setAllLoaded?: (loaded: boolean) => void;
 }) {
   const searchParams = useSearchParams();
   const [items, setItems] = useState<common_Product[]>(firstPageItems);
@@ -30,6 +32,7 @@ export function InfinityScrollCatalog({
     hasMoreRef.current = total >= CATALOG_LIMIT;
     pageRef.current = 2;
     setIsLoading(false);
+    setAllLoaded?.(total < items.length);
   }, [firstPageItems, total]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,6 +58,7 @@ export function InfinityScrollCatalog({
       // To-DO we don't have count of all products on response, so last request could has 16 so we will make additional request that makes no sense - fix
       if (!response.products || response.products.length < CATALOG_LIMIT) {
         hasMoreRef.current = false;
+        setAllLoaded?.(true);
       }
     } catch (error) {
       // TO-DO show some sooner here that error happened ?

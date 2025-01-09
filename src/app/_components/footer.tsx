@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { FOOTER_LINKS as links } from "@/constants";
 
-import { serviceClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/icons/logo";
@@ -37,19 +36,7 @@ export function Footer({
   className?: string;
   hideForm?: boolean;
 }) {
-  async function formSubmitClick(data: FormData): Promise<void> {
-    "use server";
-
-    try {
-      const payload: { email: string; name: string } = {
-        email: data.get("email") as string,
-        name: "no field for name",
-      };
-      await serviceClient.SubscribeNewsletter(payload);
-    } catch (error) {
-      throw error;
-    }
-  }
+  if (hideForm) return null;
 
   return (
     <footer
