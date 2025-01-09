@@ -28,13 +28,13 @@ export default async function CatalogPage(props: CatalogPageProps) {
 
   return (
     <NavigationLayout>
-      <div className="block md:hidden">
+      <div className="block lg:hidden">
         <MobileCatalog
           firstPageItems={response.products || []}
           total={response.total || 0}
         />
       </div>
-      <div className="hidden px-20 pt-10 lg:block">
+      <div className="hidden space-y-10 px-7 py-20 lg:block">
         <Filters />
         <InfinityScrollCatalog
           total={response.total || 0}
