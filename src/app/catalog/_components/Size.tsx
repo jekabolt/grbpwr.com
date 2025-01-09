@@ -9,7 +9,7 @@ import { Text } from "@/components/ui/text";
 import FilterOptionButtons from "./FilterOptionButtons";
 import useFilterQueryParams from "./useFilterQueryParams";
 
-function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
+function Trigger() {
   return <Text variant="uppercase">size +</Text>;
 }
 
@@ -28,7 +28,7 @@ export default function Size() {
         align: "end",
       }}
       title="size"
-      openElement={<Trigger defaultValue={defaultValue || ""} />}
+      openElement={<Trigger />}
     >
       <div className="grid grid-flow-col grid-rows-2 gap-x-10 gap-y-6 p-6 leading-none">
         <FilterOptionButtons
