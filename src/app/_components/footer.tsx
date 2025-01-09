@@ -46,7 +46,7 @@ export function Footer({
       )}
     >
       <div className="flex w-full flex-col items-start justify-between gap-16 md:flex-row">
-        <div className="w-2/3 p-2 md:w-1/3 md:p-6">
+        <div className="w-2/3 px-2 pt-16 md:w-1/3 md:p-6">
           <Logo />
         </div>
         <div className="flex h-full w-full flex-col gap-24 pt-6 md:w-1/2">

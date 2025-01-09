@@ -19,9 +19,9 @@ export function MainAds({ main }: { main?: common_HeroMain }) {
           // blurHash={media.media?.blurhash}
         />
       </div>
-      <div className="absolute inset-0 z-10 h-screen bg-black opacity-40"></div>
-      <div className="absolute inset-0 flex h-screen items-center">
-        <div className="flex flex-col items-start gap-6 p-2 md:flex-row md:justify-between ">
+      <div className="z-5 absolute inset-0 h-screen bg-black opacity-40"></div>
+      <div className="absolute inset-0  z-10 flex h-screen items-center">
+        <div className="flex w-full flex-col items-start gap-6 p-2 md:flex-row md:justify-between ">
           <Text variant="uppercase" className="text-white">
             {main.tag}
           </Text>

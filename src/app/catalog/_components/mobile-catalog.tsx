@@ -9,12 +9,14 @@ import { MobileSort } from "./mobile-sort";
 export function MobileCatalog({
   firstPageItems,
   total,
+  setAllLoaded,
 }: {
   firstPageItems: common_Product[];
   total: number;
+  setAllLoaded: (loaded: boolean) => void;
 }) {
   return (
-    <div className="flex flex-col space-y-5 p-2">
+    <div className="flex flex-col space-y-5 px-2.5 pb-10 pt-2">
       <div className="flex justify-start py-4">
         <Category />
       </div>
@@ -22,7 +24,11 @@ export function MobileCatalog({
         <MobileSort />
         <MobileSize />
       </div>
-      <InfinityScrollCatalog total={total} firstPageItems={firstPageItems} />
+      <InfinityScrollCatalog
+        total={total}
+        firstPageItems={firstPageItems}
+        setAllLoaded={setAllLoaded}
+      />
     </div>
   );
 }

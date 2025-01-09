@@ -50,6 +50,7 @@ export default function CatalogPage(props: CatalogPageProps) {
         <MobileCatalog
           firstPageItems={catalogData.products || []}
           total={catalogData.total || 0}
+          setAllLoaded={(loaded) => setHideFooter(!loaded)}
         />
       </div>
       <div className="hidden space-y-10 px-7 py-20 lg:block">

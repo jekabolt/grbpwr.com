@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
@@ -11,22 +12,53 @@ import { Text } from "@/components/ui/text";
 import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const scrollMiddle = (container.scrollWidth - container.clientWidth) / 2;
+      container.scrollLeft = scrollMiddle;
+    }
+  }, []);
+
   return (
     <div>
       {entities?.map((e, i) => {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
             return (
-              <div key={e.single?.media?.id} className="h-screen w-full">
-                <Image
-                  src={e.single?.media?.media?.fullSize?.mediaUrl || ""}
-                  alt="ad hero image"
-                  aspectRatio={calculateAspectRatio(
-                    e.single?.media?.media?.fullSize?.width,
-                    e.single?.media?.media?.fullSize?.height,
-                  )}
-                  // blurHash={media.media?.blurhash}
-                />
+              <div className="relative h-screen w-full">
+                <div
+                  key={e.single?.media?.id}
+                  className="relative h-full w-full"
+                >
+                  <Image
+                    src={e.single?.media?.media?.fullSize?.mediaUrl || ""}
+                    alt="ad hero image"
+                    aspectRatio={calculateAspectRatio(
+                      e.single?.media?.media?.fullSize?.width,
+                      e.single?.media?.media?.fullSize?.height,
+                    )}
+                    fit="cover"
+                    // blurHash={media.media?.blurhash}
+                  />
+                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-6">
+                    <Text variant="uppercase" className="text-white">
+                      {e.single?.headline}
+                    </Text>
+                    <Button
+                      variant="underline"
+                      className="uppercase text-white"
+                      asChild
+                    >
+                      <Link href={e.single?.exploreLink || ""}>
+                        {e.single?.exploreText}
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+                <div className="z-5 absolute inset-0 h-screen bg-black opacity-40"></div>
               </div>
             );
           case "HERO_TYPE_DOUBLE":
@@ -46,7 +78,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     fit="cover"
                     // blurHash={media.media?.blurhash}
                   />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center space-y-6">
+                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-6">
                     <Text variant="uppercase" className="text-white">
                       {e.double?.left?.headline}
                     </Text>
@@ -76,7 +108,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     )}
                     fit="cover"
                   />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center space-y-6">
+                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-6">
                     <Text variant="uppercase" className="text-white">
                       {e.double?.right?.headline}
                     </Text>
@@ -91,7 +123,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Button>
                   </div>
                 </div>
-                <div className="absolute inset-0 z-10 h-screen bg-black opacity-40"></div>
+                <div className="z-5 absolute inset-0 h-screen bg-black opacity-40"></div>
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
@@ -107,10 +139,13 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Link>
                   </Button>
                 </div>
-                <div className="no-scroll-bar mx-auto flex max-w-full gap-10 overflow-x-scroll">
+                <div
+                  ref={scrollContainerRef}
+                  className="no-scroll-bar mx-auto flex h-80 max-w-full items-center gap-2.5 overflow-x-scroll"
+                >
                   {e.featuredProducts?.products?.map((p) => (
                     <ProductItem
-                      className="h-80 w-[282px] lg:h-[420px]"
+                      className="h-full w-[210px] lg:h-[420px] lg:w-[282px]"
                       key={p.id}
                       product={p}
                     />

@@ -34,9 +34,9 @@ export function ProductItem({
       <Button asChild className="h-full">
         <Link
           href={product?.slug || ""}
-          className={cn("flex h-full  w-full flex-col", className)}
+          className={cn("flex h-full w-full flex-col", className)}
         >
-          <div className="relative h-full flex-grow">
+          <div className="relative h-80 h-full border-2 border-red-500">
             <Image
               src={
                 product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||

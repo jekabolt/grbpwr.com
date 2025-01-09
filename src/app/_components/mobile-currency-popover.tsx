@@ -23,13 +23,13 @@ export default function CurrencyPopover({ title }: Props) {
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button size="sm" variant="simple" className="uppercase">
+        <Button size="sm" className="uppercase">
           {`Currency: ${currencySymbols[selectedCurrency]}`}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-black" />
-        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-20 flex h-screen w-screen flex-col p-2.5">
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20" />
+        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-20 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
