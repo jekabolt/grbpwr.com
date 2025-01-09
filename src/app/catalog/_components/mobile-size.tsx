@@ -1,0 +1,50 @@
+"use client";
+
+import { common_SizeEnum } from "@/api/proto-http/frontend";
+import * as DialogPrimitives from "@radix-ui/react-dialog";
+
+import { useDataContext } from "@/components/DataContext";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+
+import FilterOptionButtons from "./FilterOptionButtons";
+import useFilterQueryParams from "./useFilterQueryParams";
+
+export function MobileSize() {
+  const { dictionary } = useDataContext();
+  const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
+  const sizes = dictionary?.sizes?.map((size) => ({
+    ...size,
+    name: size.name?.replace("SIZE_ENUM_", "") as common_SizeEnum,
+  }));
+
+  return (
+    <DialogPrimitives.Root modal={false}>
+      <DialogPrimitives.Trigger asChild>
+        <Button className="uppercase">size +</Button>
+      </DialogPrimitives.Trigger>
+      <DialogPrimitives.Portal>
+        <DialogPrimitives.Overlay className="fixed bottom-0 left-0 z-20 bg-black" />
+        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-20 flex h-auto w-screen flex-col bg-black p-2 text-white">
+          <DialogPrimitives.Title className="sr-only">
+            grbpwr mobile menu
+          </DialogPrimitives.Title>
+          <div className="relative mb-4 flex items-center justify-between">
+            <Text variant="uppercase">size</Text>
+            <DialogPrimitives.Close asChild>
+              <Button className="bg-black text-textColor">[X]</Button>
+            </DialogPrimitives.Close>
+          </div>
+
+          <div className="grid grid-flow-col grid-rows-2 gap-x-16 gap-y-6 p-4 leading-none">
+            <FilterOptionButtons
+              defaultValue={defaultValue || ""}
+              handleFilterChange={handleFilterChange}
+              values={sizes || []}
+            />
+          </div>
+        </DialogPrimitives.Content>
+      </DialogPrimitives.Portal>
+    </DialogPrimitives.Root>
+  );
+}

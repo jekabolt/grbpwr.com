@@ -5,6 +5,9 @@ import { CURRENCY_MAP } from "@/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
+import { Text } from "@/components/ui/text";
+
+const emptyPreorder = "0001-01-01T00:00:00Z";
 
 export function ProductItem({
   product,
@@ -40,25 +43,23 @@ export function ProductItem({
               // blurHash={product.productDisplay?.thumbnail?.media?.blurhash}
             />
           </div>
-          <div className="flex w-full gap-3">
+          <div className="flex w-full flex-col gap-2 text-sm">
             {/* todo: change to css variable */}
-            <div className="flex grow flex-col text-xs font-medium text-highlightColor underline">
-              <span>{product.productDisplay?.productBody?.brand}</span>
-              <span>{product.productDisplay?.productBody?.name}</span>
-            </div>
-            <div className="flex w-24 flex-col text-right text-sm font-medium text-textColor">
-              {product.productDisplay?.productBody?.preorder && (
-                <span className="opacity-50">preorder</span>
-              )}
-              <span className={isSaleApplied ? "line-through opacity-50" : ""}>
-                {CURRENCY_MAP.eth}{" "}
-                {product.productDisplay?.productBody?.price?.value}
-              </span>
+            <Text variant="undrleineWithColors" className="leading-none">
+              {`${product.productDisplay?.productBody?.brand} ${product.productDisplay?.productBody?.name}`}
+            </Text>
+            <div className="flex gap-1">
+              <Text
+                variant={isSaleApplied ? "strileTroughInactive" : "default"}
+              >
+                {`${CURRENCY_MAP.eth} ${product.productDisplay?.productBody?.price?.value}`}
+              </Text>
               {isSaleApplied && (
-                <span className="text">
-                  {CURRENCY_MAP.eth} {priceWithSale}
-                </span>
+                <Text>{`${CURRENCY_MAP.eth} ${priceWithSale}`}</Text>
               )}
+              {product.productDisplay?.productBody?.preorder &&
+                product.productDisplay?.productBody?.preorder !==
+                  emptyPreorder && <Text variant="inactive">preorder</Text>}
             </div>
           </div>
         </Link>
