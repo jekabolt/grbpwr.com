@@ -12,12 +12,12 @@ import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   return (
-    <div className="space-y-20">
+    <div>
       {entities?.map((e, i) => {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
             return (
-              <div key={e.single?.media?.id} className="h-[600px]">
+              <div key={e.single?.media?.id} className="h-screen w-full">
                 <Image
                   src={e.single?.media?.media?.fullSize?.mediaUrl || ""}
                   alt="ad hero image"
@@ -33,7 +33,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             return (
               <div
                 key={e.double?.left?.media?.id}
-                className="relative flex h-screen w-full flex-col lg:flex-row"
+                className="flex h-screen w-full flex-col lg:flex-row"
               >
                 <div className="relative h-full w-full">
                   <Image
@@ -96,7 +96,6 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
             return (
-              // <ProductsGrid key={i} products={e.featuredProducts?.products} />
               <div className="space-y-10">
                 <div className="flex flex-col gap-2 md:flex-row">
                   <Text variant="uppercase">

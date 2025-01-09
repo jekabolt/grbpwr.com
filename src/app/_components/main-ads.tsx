@@ -9,8 +9,8 @@ export function MainAds({ main }: { main?: common_HeroMain }) {
   if (!main) return null;
 
   return (
-    <div className="h-[calc(100vh-16px)] w-full lg:h-[calc(100vh-56px)]">
-      <div className="absolute inset-0 z-0 h-screen">
+    <div className="h-screen w-full">
+      <div className="h-full">
         <Image
           src={main.single?.media?.media?.fullSize?.mediaUrl!}
           alt="main hero image"
