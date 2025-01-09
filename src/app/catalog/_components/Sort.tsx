@@ -1,6 +1,6 @@
 "use client";
 
-import { SORT_MAP } from "@/constants";
+import { OrderFactorOption, SORT_MAP, SortFactorConfig } from "@/constants";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -13,22 +13,20 @@ function Trigger() {
   return <Text variant="uppercase">sort by +</Text>;
 }
 
+const getButtonText = (
+  sortData: SortFactorConfig,
+  orderFactor: OrderFactorOption,
+): string => {
+  const saleFactor = orderFactor.sale;
+  const label = sortData.label ? `${sortData.label}: ` : "";
+  return `${saleFactor ? "sale: " : label}${orderFactor.name}`;
+};
+
 export default function Sort() {
   const { defaultValue: sortValue, handleFilterChange: handleSortChange } =
     useFilterQueryParams("sort");
   const { defaultValue: orderValue } = useFilterQueryParams("order");
   const { defaultValue: saleValue } = useFilterQueryParams("sale");
-
-  const handleCombinedChange = (
-    sortFactor: string,
-    orderFactor: string,
-    sale?: boolean,
-  ) => {
-    handleSortChange(sortFactor, {
-      order: orderFactor,
-      sale: sale ? "true" : "",
-    });
-  };
 
   return (
     <GenericPopover
@@ -45,11 +43,10 @@ export default function Sort() {
             <Button
               key={`${sortKey}-${id}`}
               onClick={() =>
-                handleCombinedChange(
-                  sortKey,
-                  orderFactor.factor,
-                  orderFactor.sale,
-                )
+                handleSortChange(sortKey, {
+                  order: orderFactor.factor,
+                  sale: orderFactor.sale ? "true" : "",
+                })
               }
               className={cn("block", {
                 underline:
@@ -58,7 +55,7 @@ export default function Sort() {
                   (!orderFactor.sale ? !saleValue : saleValue === "true"),
               })}
             >
-              {`${orderFactor.sale ? "sale: " : sortData.label ? `${sortData.label}: ` : ""}${orderFactor.name}`}
+              {getButtonText(sortData, orderFactor)}
             </Button>
           )),
         )}

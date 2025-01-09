@@ -43,13 +43,13 @@ export const GENDER_MAP: Record<string, common_GenderEnum> = {
   ukn: "GENDER_ENUM_UNKNOWN",
 };
 
-type OrderFactorOption = {
+export type OrderFactorOption = {
   factor: common_OrderFactor;
   name: string;
   sale?: boolean;
 }
 
-type SortFactorConfig = {
+export type SortFactorConfig = {
   label?: string;
   orderFactors: OrderFactorOption[];
 }
