@@ -29,9 +29,12 @@ export function ProductItem({
 
   return (
     <div className={cn("relative", className)}>
-      <Button asChild>
-        <Link href={product?.slug || ""}>
-          <div className={cn("relative h-80", className)}>
+      <Button asChild className="h-full">
+        <Link
+          href={product?.slug || ""}
+          className={cn("flex h-full  w-full flex-col", className)}
+        >
+          <div className="relative h-full flex-grow">
             <Image
               src={
                 product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
@@ -43,12 +46,14 @@ export function ProductItem({
               // blurHash={product.productDisplay?.thumbnail?.media?.blurhash}
             />
           </div>
-          <div className="flex w-full flex-col gap-2 text-sm">
-            {/* todo: change to css variable */}
-            <Text variant="undrleineWithColors" className="leading-none">
-              {`${product.productDisplay?.productBody?.brand} ${product.productDisplay?.productBody?.name}`}
+          <div className="flex w-full flex-col gap-2 pt-2 text-sm">
+            <Text
+              variant="undrleineWithColors"
+              className="overflow-hidden text-ellipsis leading-none"
+            >
+              {product.productDisplay?.productBody?.name}
             </Text>
-            <div className="flex gap-1">
+            <div className="flex gap-1 leading-none">
               <Text
                 variant={isSaleApplied ? "strileTroughInactive" : "default"}
               >

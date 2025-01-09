@@ -14,7 +14,7 @@ export function MobileCatalog({
   total: number;
 }) {
   return (
-    <div className="flex flex-col space-y-5 px-2">
+    <div className="flex flex-col space-y-5 p-2">
       <div className="flex justify-start py-4">
         <Category />
       </div>
