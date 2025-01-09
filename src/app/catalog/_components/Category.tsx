@@ -1,6 +1,6 @@
 "use client";
 
-import { findCategoryName } from "@/lib/categories-map";
+import { getCategoryName } from "@/lib/categories-map";
 import { useDataContext } from "@/components/DataContext";
 import GenericPopover from "@/components/ui/popover";
 import { Text } from "@/components/ui/text";
@@ -28,7 +28,7 @@ export default function Category() {
       title="categories"
       openElement={
         <Trigger
-          defaultValue={`${findCategoryName(defaultCategory) || "all categories"}`}
+          defaultValue={`${getCategoryName(defaultCategory) || "all categories"}`}
         />
       }
     >

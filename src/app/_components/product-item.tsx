@@ -27,6 +27,8 @@ export function ProductItem({
         ))) /
     100;
 
+  const preorder = product.productDisplay?.productBody?.preorder;
+
   return (
     <div className={cn("relative", className)}>
       <Button asChild className="h-full">
@@ -62,9 +64,9 @@ export function ProductItem({
               {isSaleApplied && (
                 <Text>{`${CURRENCY_MAP.eth} ${priceWithSale}`}</Text>
               )}
-              {product.productDisplay?.productBody?.preorder &&
-                product.productDisplay?.productBody?.preorder !==
-                  emptyPreorder && <Text variant="inactive">preorder</Text>}
+              {preorder !== emptyPreorder && (
+                <Text variant="inactive">preorder</Text>
+              )}
             </div>
           </div>
         </Link>

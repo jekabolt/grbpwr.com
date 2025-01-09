@@ -188,6 +188,6 @@ export function groupCategories(categoriesEnums: string[]) {
   return grouped;
 }
 
-export function findCategoryName(value: string | undefined) {
+export function getCategoryName(value: string | undefined) {
   return CATEGORIES.find((category) => category.id === value)?.label;
 }
