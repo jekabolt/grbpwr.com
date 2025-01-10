@@ -30,22 +30,21 @@ export function ProductItem({
   const preorder = product.productDisplay?.productBody?.preorder;
 
   return (
-    <div className={cn("relative", className)}>
-      <Button asChild className="h-full">
+    <div className={cn("relative h-full", className)}>
+      <Button asChild className="h-full ">
         <Link
           href={product?.slug || ""}
           className={cn("flex h-full w-full flex-col", className)}
         >
-          <div className="relative h-80 h-full border-2 border-red-500">
+          <div className="relative h-full">
             <Image
               src={
                 product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
                 ""
               }
               alt={product.productDisplay?.productBody?.name || ""}
-              aspectRatio="4/3" // take from BE values
+              aspectRatio="4/3"
               fit="cover"
-              // blurHash={product.productDisplay?.thumbnail?.media?.blurhash}
             />
           </div>
           <div className="flex w-full flex-col gap-2 pt-2 text-sm">

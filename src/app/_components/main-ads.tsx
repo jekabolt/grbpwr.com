@@ -16,11 +16,10 @@ export function MainAds({ main }: { main?: common_HeroMain }) {
           alt="main hero image"
           aspectRatio="4/3"
           fit="cover"
-          // blurHash={media.media?.blurhash}
         />
       </div>
-      <div className="z-5 absolute inset-0 h-screen bg-black opacity-40"></div>
-      <div className="absolute inset-0  z-10 flex h-screen items-center">
+      <div className="bg-overlay absolute inset-0 z-10 h-screen"></div>
+      <div className="absolute inset-0  z-20 flex h-screen items-center">
         <div className="flex w-full flex-col items-start gap-6 p-2 md:flex-row md:justify-between ">
           <Text variant="uppercase" className="text-white">
             {main.tag}
