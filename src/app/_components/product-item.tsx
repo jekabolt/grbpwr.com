@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { common_Product } from "@/api/proto-http/frontend";
 import { CURRENCY_MAP } from "@/constants";
 
-import { cn } from "@/lib/utils";
+import { calculateAspectRatio, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
@@ -40,7 +40,10 @@ export function ProductItem({
                 ""
               }
               alt={product.productDisplay?.productBody?.name || ""}
-              aspectRatio="4/3"
+              aspectRatio={calculateAspectRatio(
+                product.productDisplay?.thumbnail?.media?.thumbnail?.width,
+                product.productDisplay?.thumbnail?.media?.thumbnail?.height,
+              )}
               fit="contain"
             />
           </div>
