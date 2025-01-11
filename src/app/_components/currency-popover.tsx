@@ -65,6 +65,7 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
             <Trigger defaultValue={currencySymbols[selectedCurrency]} />
           }
           className="border border-white"
+          variant="currency"
           contentProps={{
             sideOffset: title ? -25 : 16,
             align: align,

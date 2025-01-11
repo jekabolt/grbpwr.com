@@ -28,8 +28,8 @@ export default function CurrencyPopover({ title }: Props) {
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20" />
-        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-20 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor">
+        <DialogPrimitives.Overlay className="fixed inset-0" />
+        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>

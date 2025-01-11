@@ -24,8 +24,8 @@ export function MobileSize() {
         <Button className="uppercase">size +</Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed bottom-0 left-0 z-20 bg-black" />
-        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-20 flex h-auto w-screen flex-col bg-black p-2 text-textColor">
+        <DialogPrimitives.Overlay className="fixed bottom-0 left-0 z-40 bg-black" />
+        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-40 flex h-auto w-screen flex-col bg-black p-2 text-textColor">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
