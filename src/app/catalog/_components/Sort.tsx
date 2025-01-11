@@ -1,8 +1,8 @@
 "use client";
 
-import { OrderFactorOption, SORT_MAP, SortFactorConfig } from "@/constants";
+import { SORT_MAP } from "@/constants";
 
-import { cn } from "@/lib/utils";
+import { cn, getButtonText } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import GenericPopover from "@/components/ui/popover";
 import { Text } from "@/components/ui/text";
@@ -12,15 +12,6 @@ import useFilterQueryParams from "./useFilterQueryParams";
 function Trigger() {
   return <Text variant="uppercase">sort by +</Text>;
 }
-
-const getButtonText = (
-  sortData: SortFactorConfig,
-  orderFactor: OrderFactorOption,
-): string => {
-  const saleFactor = orderFactor.sale;
-  const label = sortData.label ? `${sortData.label}: ` : "";
-  return `${saleFactor ? "sale: " : label}${orderFactor.name}`;
-};
 
 export default function Sort() {
   const { defaultValue: sortValue, handleFilterChange: handleSortChange } =

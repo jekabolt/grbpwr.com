@@ -3,26 +3,15 @@ import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 
+import { formSubmitClick } from "./todo-schema";
+
 interface Props {
   footer?: boolean;
 }
 
-// async function formSubmitClick(data: FormData): Promise<void> {
-//   "use server";
-//   try {
-//     const payload: { email: string; name: string } = {
-//       email: data.get("email") as string,
-//       name: "no field for name",
-//     };
-//     await serviceClient.SubscribeNewsletter(payload);
-//   } catch (error) {
-//     throw error;
-//   }
-// }
-
-export default function NewslatterForm({ footer }: Props) {
+export default async function NewslatterForm({ footer }: Props) {
   return (
-    <form>
+    <form action={formSubmitClick}>
       <Text variant="uppercase" className="mb-6">
         newsletter
       </Text>

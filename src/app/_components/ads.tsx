@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Link from "next/link";
 import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
@@ -12,16 +11,6 @@ import { Text } from "@/components/ui/text";
 import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      const scrollMiddle = (container.scrollWidth - container.clientWidth) / 2;
-      container.scrollLeft = scrollMiddle;
-    }
-  }, []);
-
   return (
     <div>
       {entities?.map((e, i) => {
@@ -127,7 +116,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
           case "HERO_TYPE_FEATURED_PRODUCTS":
             return (
               <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2">
-                <div className="flex gap-3 px-2 lg:px-0">
+                <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProducts?.headline}
                   </Text>
@@ -138,12 +127,9 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                   </Button>
                 </div>
 
-                <div
-                  ref={scrollContainerRef}
-                  className="no-scroll-bar mx-auto flex max-w-full items-center gap-2.5 overflow-x-scroll"
-                >
+                <div className="no-scroll-bar flex w-full items-center gap-2.5 overflow-x-scroll">
                   {e.featuredProducts?.products?.map((p) => (
-                    <ProductItem className="h-96 w-72" key={p.id} product={p} />
+                    <ProductItem className="w-72" key={p.id} product={p} />
                   ))}
                 </div>
               </div>
@@ -151,7 +137,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
             return (
               <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2">
-                <div className="flex gap-3 px-2 lg:px-0">
+                <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProductsTag?.products?.headline}
                   </Text>
@@ -161,12 +147,9 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Link>
                   </Button>
                 </div>
-                <div
-                  ref={scrollContainerRef}
-                  className="no-scroll-bar mx-auto flex max-w-full items-center gap-2.5 overflow-x-scroll"
-                >
+                <div className="no-scroll-bar flex w-full items-center gap-2.5 overflow-x-scroll">
                   {e.featuredProductsTag?.products?.products?.map((p) => (
-                    <ProductItem className="h-96 w-72" key={p.id} product={p} />
+                    <ProductItem className="w-72" key={p.id} product={p} />
                   ))}
                 </div>
               </div>

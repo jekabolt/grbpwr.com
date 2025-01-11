@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
@@ -21,44 +18,27 @@ interface CatalogPageProps {
   }>;
 }
 
-export default function CatalogPage(props: CatalogPageProps) {
-  const [hideFooter, setHideFooter] = useState(true);
-  const [catalogData, setCatalogData] = useState<{
-    products: any[];
-    total: number;
-  }>({ products: [], total: 0 });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await serviceClient.GetProductsPaged({
-        limit: CATALOG_LIMIT,
-        offset: 0,
-        ...getProductsPagedQueryParams(await props.searchParams),
-      });
-      setCatalogData({
-        products: response.products || [],
-        total: response.total || 0,
-      });
-    };
-
-    fetchData();
-  }, [props.searchParams]);
+export default async function CatalogPage(props: CatalogPageProps) {
+  const searchParams = await props.searchParams;
+  const response = await serviceClient.GetProductsPaged({
+    limit: CATALOG_LIMIT,
+    offset: 0,
+    ...getProductsPagedQueryParams(searchParams),
+  });
 
   return (
-    <NavigationLayout hideForm={hideFooter}>
+    <NavigationLayout>
       <div className="block lg:hidden">
         <MobileCatalog
-          firstPageItems={catalogData.products || []}
-          total={catalogData.total || 0}
-          setAllLoaded={(loaded) => setHideFooter(!loaded)}
+          firstPageItems={response.products || []}
+          total={response.total || 0}
         />
       </div>
       <div className="hidden space-y-10 px-7 py-20 lg:block">
         <Filters />
         <InfinityScrollCatalog
-          total={catalogData.total || 0}
-          firstPageItems={catalogData.products || []}
-          setAllLoaded={(loaded) => setHideFooter(!loaded)}
+          total={response.total || 0}
+          firstPageItems={response.products || []}
         />
       </div>
     </NavigationLayout>

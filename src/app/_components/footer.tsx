@@ -36,8 +36,6 @@ export function Footer({
   className?: string;
   hideForm?: boolean;
 }) {
-  if (hideForm) return null;
-
   return (
     <footer
       className={cn(

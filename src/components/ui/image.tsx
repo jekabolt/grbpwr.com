@@ -35,7 +35,7 @@ export default function ImageComponent({
         fill
         src={src}
         alt={alt}
-        className="w-full"
+        className="h-full w-full"
         sizes={sizes}
         style={{
           objectFit: fit,

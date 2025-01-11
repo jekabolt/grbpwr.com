@@ -1,3 +1,4 @@
+import { OrderFactorOption, SortFactorConfig } from "@/constants";
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -14,3 +15,12 @@ export function calculateAspectRatio(
   }
   return `${width}/${height}`;
 }
+
+export const getButtonText = (
+  sortData: SortFactorConfig,
+  orderFactor: OrderFactorOption,
+): string => {
+  const saleFactor = orderFactor.sale;
+  const label = sortData.label ? `${sortData.label}: ` : "";
+  return `${saleFactor ? "sale: " : label}${orderFactor.name}`;
+};

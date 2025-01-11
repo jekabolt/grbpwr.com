@@ -3,7 +3,7 @@
 import { SORT_MAP } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
-import { cn } from "@/lib/utils";
+import { cn, getButtonText } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
@@ -62,7 +62,7 @@ export function MobileSort() {
                       (!orderFactor.sale ? !saleValue : saleValue === "true"),
                   })}
                 >
-                  {`${orderFactor.sale ? "sale: " : sortData.label ? `${sortData.label}: ` : ""}${orderFactor.name}`}
+                  {getButtonText(sortData, orderFactor)}
                 </Button>
               )),
             )}
