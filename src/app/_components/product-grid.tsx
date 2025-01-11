@@ -10,10 +10,10 @@ export default function ProductsGridSection({
   if (!products) return null;
 
   return (
-    <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:gap-x-4 lg:gap-y-16 2xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-3 lg:gap-y-16 2xl:grid-cols-6">
       {products.map((v) => (
-        <div className="col-span-1 h-80 lg:h-[555px]" key={v.id}>
-          <ProductItem className="mx-auto flex h-full flex-col" product={v} />
+        <div className="col-span-1 border-2 border-red-500" key={v.id}>
+          <ProductItem className="mx-auto" product={v} />
         </div>
       ))}
     </div>

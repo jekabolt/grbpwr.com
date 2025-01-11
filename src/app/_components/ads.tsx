@@ -148,6 +148,29 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 </div>
               </div>
             );
+          case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
+            return (
+              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2">
+                <div className="flex gap-3 px-2 lg:px-0">
+                  <Text variant="uppercase">
+                    {e.featuredProductsTag?.products?.headline}
+                  </Text>
+                  <Button variant="underline" className="uppercase" asChild>
+                    <Link href={`/catalog?tag=${e.featuredProductsTag?.tag}`}>
+                      {e.featuredProductsTag?.products?.exploreText}
+                    </Link>
+                  </Button>
+                </div>
+                <div
+                  ref={scrollContainerRef}
+                  className="no-scroll-bar mx-auto flex max-w-full items-center gap-2.5 overflow-x-scroll"
+                >
+                  {e.featuredProductsTag?.products?.products?.map((p) => (
+                    <ProductItem className="h-96 w-72" key={p.id} product={p} />
+                  ))}
+                </div>
+              </div>
+            );
           default:
             return null;
         }

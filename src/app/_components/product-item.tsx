@@ -30,13 +30,10 @@ export function ProductItem({
   const preorder = product.productDisplay?.productBody?.preorder;
 
   return (
-    <div className={cn("relative h-full", className)}>
-      <Button asChild className="h-full ">
-        <Link
-          href={product?.slug || ""}
-          className={cn("flex h-full w-full flex-col", className)}
-        >
-          <div className="relative h-full">
+    <div className={cn("relative", className)}>
+      <Button asChild>
+        <Link href={product?.slug || ""}>
+          <div className="relative">
             <Image
               src={
                 product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
@@ -44,7 +41,7 @@ export function ProductItem({
               }
               alt={product.productDisplay?.productBody?.name || ""}
               aspectRatio="4/3"
-              fit="cover"
+              fit="contain"
             />
           </div>
           <div className="flex w-full flex-col gap-2 pt-2 text-sm">
