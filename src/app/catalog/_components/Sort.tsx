@@ -30,25 +30,32 @@ export default function Sort() {
     >
       <div className="mr-16 space-y-2">
         {Object.entries(SORT_MAP).flatMap(([sortKey, sortData]) =>
-          sortData.orderFactors.map((orderFactor, id) => (
-            <Button
-              key={`${sortKey}-${id}`}
-              onClick={() =>
-                handleSortChange(sortKey, {
-                  order: orderFactor.factor,
-                  sale: orderFactor.sale ? "true" : "",
-                })
-              }
-              className={cn("block", {
-                underline:
-                  sortValue === sortKey &&
-                  orderValue === orderFactor.factor &&
-                  (!orderFactor.sale ? !saleValue : saleValue === "true"),
-              })}
-            >
-              {getButtonText(sortData, orderFactor)}
-            </Button>
-          )),
+          sortData.orderFactors.map((orderFactor, id) => {
+            const isSortValuesMatch = sortValue === sortKey;
+            const isOrderValuesMatch = orderValue === orderFactor.factor;
+            const isSaleValuesMatch = orderFactor.sale
+              ? saleValue === "true"
+              : !saleValue;
+            return (
+              <Button
+                key={`${sortKey}-${id}`}
+                onClick={() =>
+                  handleSortChange(sortKey, {
+                    order: orderFactor.factor,
+                    sale: orderFactor.sale ? "true" : "",
+                  })
+                }
+                className={cn("block", {
+                  underline:
+                    isSortValuesMatch &&
+                    isOrderValuesMatch &&
+                    isSaleValuesMatch,
+                })}
+              >
+                {getButtonText(sortData, orderFactor)}
+              </Button>
+            );
+          }),
         )}
       </div>
     </GenericPopover>

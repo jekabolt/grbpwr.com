@@ -31,7 +31,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     )}
                     fit="cover"
                   />
-                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-6">
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text variant="uppercase" className="text-white">
                       {e.single?.headline}
                     </Text>
@@ -46,7 +46,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Button>
                   </div>
                 </div>
-                <div className="z-5 absolute inset-0 h-screen bg-black opacity-40"></div>
+                <div className="absolute inset-0 z-10 h-screen bg-black opacity-40"></div>
               </div>
             );
           case "HERO_TYPE_DOUBLE":

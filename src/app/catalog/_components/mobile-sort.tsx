@@ -15,17 +15,6 @@ export function MobileSort() {
   const { defaultValue: orderValue } = useFilterQueryParams("order");
   const { defaultValue: saleValue } = useFilterQueryParams("sale");
 
-  const handleCombinedChange = (
-    sortFactor: string,
-    orderFactor: string,
-    sale?: boolean,
-  ) => {
-    handleSortChange(sortFactor, {
-      order: orderFactor,
-      sale: sale ? "true" : "",
-    });
-  };
-
   return (
     <DialogPrimitives.Root modal={false}>
       <DialogPrimitives.Trigger asChild>
@@ -45,26 +34,32 @@ export function MobileSort() {
           </div>
           <div className="space-y-2 py-5">
             {Object.entries(SORT_MAP).flatMap(([sortKey, sortData]) =>
-              sortData.orderFactors.map((orderFactor, id) => (
-                <Button
-                  key={`${sortKey}-${id}`}
-                  onClick={() =>
-                    handleCombinedChange(
-                      sortKey,
-                      orderFactor.factor,
-                      orderFactor.sale,
-                    )
-                  }
-                  className={cn("block", {
-                    underline:
-                      sortValue === sortKey &&
-                      orderValue === orderFactor.factor &&
-                      (!orderFactor.sale ? !saleValue : saleValue === "true"),
-                  })}
-                >
-                  {getButtonText(sortData, orderFactor)}
-                </Button>
-              )),
+              sortData.orderFactors.map((orderFactor, id) => {
+                const isSortValuesMatch = sortValue === sortKey;
+                const isOrderValuesMatch = orderValue === orderFactor.factor;
+                const isSaleValuesMatch = orderFactor.sale
+                  ? saleValue === "true"
+                  : !saleValue;
+                return (
+                  <Button
+                    key={`${sortKey}-${id}`}
+                    onClick={() =>
+                      handleSortChange(sortKey, {
+                        order: orderFactor.factor,
+                        sale: orderFactor.sale ? "true" : "",
+                      })
+                    }
+                    className={cn("block", {
+                      underline:
+                        isSortValuesMatch &&
+                        isOrderValuesMatch &&
+                        isSaleValuesMatch,
+                    })}
+                  >
+                    {getButtonText(sortData, orderFactor)}
+                  </Button>
+                );
+              }),
             )}
           </div>
         </DialogPrimitives.Content>

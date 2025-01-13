@@ -13,10 +13,15 @@ import useFilterQueryParams from "./useFilterQueryParams";
 export function MobileSize() {
   const { dictionary } = useDataContext();
   const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
-  const sizes = dictionary?.sizes?.map((size) => ({
-    ...size,
-    name: size.name?.replace("SIZE_ENUM_", "") as common_SizeEnum,
-  }));
+  const sordedSizes = dictionary?.sizes?.sort((a, b) => {
+    return (a.id || 0) - (b.id || 0);
+  });
+  const sizeNames = sordedSizes?.map((size) => {
+    return {
+      ...size,
+      name: size.name?.replace("SIZE_ENUM_", "") as common_SizeEnum,
+    };
+  });
 
   return (
     <DialogPrimitives.Root modal={false}>
@@ -36,11 +41,11 @@ export function MobileSize() {
             </DialogPrimitives.Close>
           </div>
 
-          <div className="grid grid-flow-col grid-rows-2 gap-x-16 gap-y-6 p-4 leading-none">
+          <div className="grid grid-cols-4 gap-x-16 gap-y-6 p-4 leading-none">
             <FilterOptionButtons
               defaultValue={defaultValue || ""}
               handleFilterChange={handleFilterChange}
-              values={sizes || []}
+              values={sizeNames || []}
             />
           </div>
         </DialogPrimitives.Content>
