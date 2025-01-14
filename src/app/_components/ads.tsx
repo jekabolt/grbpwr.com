@@ -12,21 +12,41 @@ import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   return (
-    <div className="space-y-20">
+    <div>
       {entities?.map((e, i) => {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
             return (
-              <div key={e.single?.media?.id} className="h-[600px]">
-                <Image
-                  src={e.single?.media?.media?.fullSize?.mediaUrl || ""}
-                  alt="ad hero image"
-                  aspectRatio={calculateAspectRatio(
-                    e.single?.media?.media?.fullSize?.width,
-                    e.single?.media?.media?.fullSize?.height,
-                  )}
-                  // blurHash={media.media?.blurhash}
-                />
+              <div className="relative h-screen w-full">
+                <div
+                  key={e.single?.media?.id}
+                  className="relative h-full w-full"
+                >
+                  <Image
+                    src={e.single?.media?.media?.fullSize?.mediaUrl || ""}
+                    alt="ad hero image"
+                    aspectRatio={calculateAspectRatio(
+                      e.single?.media?.media?.fullSize?.width,
+                      e.single?.media?.media?.fullSize?.height,
+                    )}
+                    fit="cover"
+                  />
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
+                    <Text variant="uppercase" className="text-white">
+                      {e.single?.headline}
+                    </Text>
+                    <Button
+                      variant="underline"
+                      className="uppercase text-white"
+                      asChild
+                    >
+                      <Link href={e.single?.exploreLink || ""}>
+                        {e.single?.exploreText}
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+                <div className="absolute inset-0 z-10 h-screen bg-black opacity-40"></div>
               </div>
             );
           case "HERO_TYPE_DOUBLE":
@@ -44,7 +64,6 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                       e.double?.left?.media?.media?.fullSize?.height,
                     )}
                     fit="cover"
-                    // blurHash={media.media?.blurhash}
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text variant="uppercase" className="text-white">
@@ -91,14 +110,13 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Button>
                   </div>
                 </div>
-                <div className="absolute inset-0 z-[1] h-screen bg-black opacity-40"></div>
+                <div className="bg-overlay absolute inset-0 z-10 h-screen"></div>
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
             return (
-              // <ProductsGrid key={i} products={e.featuredProducts?.products} />
-              <div className="space-y-10">
-                <div className="flex flex-col gap-2 md:flex-row">
+              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2">
+                <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProducts?.headline}
                   </Text>
@@ -108,9 +126,30 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Link>
                   </Button>
                 </div>
-                <div className="no-scroll-bar flex gap-10 overflow-x-scroll">
+
+                <div className="no-scroll-bar flex w-full items-center gap-2.5 overflow-x-scroll">
                   {e.featuredProducts?.products?.map((p) => (
-                    <ProductItem className="w-[282px]" key={p.id} product={p} />
+                    <ProductItem className="w-72" key={p.id} product={p} />
+                  ))}
+                </div>
+              </div>
+            );
+          case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
+            return (
+              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2">
+                <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
+                  <Text variant="uppercase">
+                    {e.featuredProductsTag?.products?.headline}
+                  </Text>
+                  <Button variant="underline" className="uppercase" asChild>
+                    <Link href={`/catalog?tag=${e.featuredProductsTag?.tag}`}>
+                      {e.featuredProductsTag?.products?.exploreText}
+                    </Link>
+                  </Button>
+                </div>
+                <div className="no-scroll-bar flex w-full items-center gap-2.5 overflow-x-scroll">
+                  {e.featuredProductsTag?.products?.products?.map((p) => (
+                    <ProductItem className="w-72" key={p.id} product={p} />
                   ))}
                 </div>
               </div>

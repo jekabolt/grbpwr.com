@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { FOOTER_LINKS as links } from "@/constants";
 
-import { serviceClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/icons/logo";
@@ -37,29 +36,15 @@ export function Footer({
   className?: string;
   hideForm?: boolean;
 }) {
-  async function formSubmitClick(data: FormData): Promise<void> {
-    "use server";
-
-    try {
-      const payload: { email: string; name: string } = {
-        email: data.get("email") as string,
-        name: "no field for name",
-      };
-      await serviceClient.SubscribeNewsletter(payload);
-    } catch (error) {
-      throw error;
-    }
-  }
-
   return (
     <footer
       className={cn(
-        "flex h-full w-full flex-col gap-16 bg-black md:h-screen md:justify-between",
+        "blackTheme flex h-full w-full flex-col gap-16 bg-bgColor bg-black text-textColor md:h-screen md:justify-between",
         className,
       )}
     >
       <div className="flex w-full flex-col items-start justify-between gap-16 md:flex-row">
-        <div className="w-2/3 p-2 md:w-1/3 md:p-6">
+        <div className="w-2/3 px-2 pt-16 md:w-1/3 md:p-6">
           <Logo />
         </div>
         <div className="flex h-full w-full flex-col gap-24 pt-6 md:w-1/2">
@@ -67,15 +52,15 @@ export function Footer({
             <div className="flex w-full flex-row gap-6 md:flex-col">
               <div className="space-y-6">
                 <Text variant="inactive">press</Text>
-                <Text className="text-white">work@grbpwr.com</Text>
+                <Text>work@grbpwr.com</Text>
               </div>
               <div className="space-y-6">
                 <Text variant="inactive">help</Text>
-                <Text className="text-white">client@grbpwr.com</Text>
+                <Text>client@grbpwr.com</Text>
               </div>
             </div>
             <div className="w-full space-y-10">
-              <FooterNav className="flex-col gap-6  uppercase text-white" />
+              <FooterNav className="flex-col gap-6 uppercase" />
               <div className="w-full">
                 <CurrencyPopover align="start" title="Currency:" />
               </div>
@@ -88,7 +73,7 @@ export function Footer({
         <Text variant="inactive" className="uppercase">
           {`grbpwr ${currentYear()}©`}
         </Text>
-        <div className="flex w-1/2 justify-end justify-between space-x-5 text-white">
+        <div className="flex w-1/2 justify-end justify-between space-x-5">
           {links.map((link) => (
             <Button asChild key={link.text}>
               <Link href={link.href}>{link.text}</Link>

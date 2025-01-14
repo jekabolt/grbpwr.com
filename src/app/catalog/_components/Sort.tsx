@@ -1,38 +1,63 @@
 "use client";
 
-import { useDataContext } from "@/components/DataContext";
-import GenericPopover from "@/components/ui/popover";
+import { SORT_MAP } from "@/constants";
 
-import FilterOptionButtons from "./FilterOptionButtons";
+import { cn, getButtonText } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import GenericPopover from "@/components/ui/popover";
+import { Text } from "@/components/ui/text";
+
 import useFilterQueryParams from "./useFilterQueryParams";
 
-function Trigger({ defaultValue }: { defaultValue: string }) {
-  return (
-    <div>
-      sort_by <span className="underline">{defaultValue}</span>
-    </div>
-  );
+function Trigger() {
+  return <Text variant="uppercase">sort by +</Text>;
 }
 
 export default function Sort() {
-  const { dictionary } = useDataContext();
-  const { defaultValue, handleFilterChange } = useFilterQueryParams("sort");
+  const { defaultValue: sortValue, handleFilterChange: handleSortChange } =
+    useFilterQueryParams("sort");
+  const { defaultValue: orderValue } = useFilterQueryParams("order");
+  const { defaultValue: saleValue } = useFilterQueryParams("sale");
 
   return (
     <GenericPopover
       contentProps={{
-        side: "bottom",
+        sideOffset: -25,
         align: "end",
       }}
-      title="order_by"
-      openElement={<Trigger defaultValue={defaultValue || ""} />}
+      title="sort by"
+      openElement={<Trigger />}
     >
-      <FilterOptionButtons
-        defaultValue={defaultValue || ""}
-        handleFilterChange={handleFilterChange}
-        values={dictionary?.sortFactors || []}
-        defaultOptionText="none"
-      />
+      <div className="mr-16 space-y-2">
+        {Object.entries(SORT_MAP).flatMap(([sortKey, sortData]) =>
+          sortData.orderFactors.map((orderFactor, id) => {
+            const isSortValuesMatch = sortValue === sortKey;
+            const isOrderValuesMatch = orderValue === orderFactor.factor;
+            const isSaleValuesMatch = orderFactor.sale
+              ? saleValue === "true"
+              : !saleValue;
+            return (
+              <Button
+                key={`${sortKey}-${id}`}
+                onClick={() =>
+                  handleSortChange(sortKey, {
+                    order: orderFactor.factor,
+                    sale: orderFactor.sale ? "true" : "",
+                  })
+                }
+                className={cn("block", {
+                  underline:
+                    isSortValuesMatch &&
+                    isOrderValuesMatch &&
+                    isSaleValuesMatch,
+                })}
+              >
+                {getButtonText(sortData, orderFactor)}
+              </Button>
+            );
+          }),
+        )}
+      </div>
     </GenericPopover>
   );
 }

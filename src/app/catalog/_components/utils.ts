@@ -10,12 +10,16 @@ export function getProductsPagedQueryParams({
   category,
   gender,
   size,
+  sale,
+  tag,
 }: {
   sort?: string | null;
   order?: string | null;
   category?: string | null;
   gender?: string | null;
   size?: string | null;
+  sale?: string | null;
+  tag?: string | null;
 }): Pick<
   GetProductsPagedRequest,
   "sortFactors" | "orderFactor" | "filterConditions"
@@ -32,10 +36,10 @@ export function getProductsPagedQueryParams({
       sizesIds: size ? [parseInt(size)] : undefined,
       from: undefined,
       to: undefined,
-      onSale: undefined,
+      onSale: sale ? sale === "true" : undefined,
       color: undefined,
       preorder: undefined,
-      byTag: undefined,
+      byTag: tag ? tag : undefined,
       gender: undefined,
     },
   };

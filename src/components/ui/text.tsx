@@ -1,13 +1,15 @@
 import { cva, VariantProps } from "class-variance-authority";
 
-const textVariants = cva("text-textColor", {
+const textVariants = cva("", {
   variants: {
     variant: {
       default: ["text-textColor"],
       uppercase: ["text-textColor", "uppercase"],
       underlined: ["underline", "text-textColor"],
       strikethrough: ["line-through", "text-textColor"],
+      strileTroughInactive: ["line-through", "text-textInactiveColor"],
       inactive: ["text-textInactiveColor"],
+      undrleineWithColors: ["underline", "text-highlightColor"],
     },
     size: {
       default: ["text-textBaseSize"],

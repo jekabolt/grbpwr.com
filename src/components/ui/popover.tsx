@@ -12,17 +12,27 @@ type Props = {
   openElement: React.ReactNode;
   title?: string;
   contentProps?: Popover.PopoverContentProps;
+  className?: string;
+  variant?: "default" | "currency";
 };
+
 export default function GenericPopover({
   openElement,
   title,
   children,
   contentProps,
+  className,
+  variant = "default",
 }: Props) {
   return (
     <Popover.Root>
       <Popover.Trigger>{openElement}</Popover.Trigger>
-      <PopoverContent title={title} {...contentProps}>
+      <PopoverContent
+        className={className}
+        title={title}
+        variant={variant}
+        {...contentProps}
+      >
         {children}
       </PopoverContent>
     </Popover.Root>
@@ -32,10 +42,14 @@ export default function GenericPopover({
 function PopoverContent({
   children,
   title,
+  className,
+  variant = "default",
   ...contentProps
 }: {
   children: React.ReactNode;
   title?: string;
+  className?: string;
+  variant?: "default" | "currency";
 }) {
   return (
     <Popover.Portal>
@@ -43,20 +57,28 @@ function PopoverContent({
         side="bottom"
         align="center"
         className={cn(
-          "relative z-50 w-full bg-textColor px-2.5 py-6 text-bgColor",
+          "blackTheme relative z-50 w-full bg-bgColor px-2 py-6 text-textColor",
           {
-            "max-h-[50vh] overflow-y-scroll border border-white p-2": title,
+            "max-h-[50vh] overflow-y-scroll p-2": title,
           },
+          className,
         )}
         {...contentProps}
       >
         {title && (
-          <Popover.Close className="fixed left-0 top-0 flex w-full justify-between border-l border-r border-t border-white bg-black p-2.5">
-            <Text variant="uppercase" component="span" className="text-white">
+          <Popover.Close
+            className={cn(
+              "blackTheme fixed left-0 top-0 flex w-full justify-between bg-bgColor p-2 text-textColor",
+              {
+                "border-l border-r border-t border-white":
+                  variant === "currency",
+              },
+            )}
+          >
+            <Text variant="uppercase" component="span">
               {title}
             </Text>
             <span aria-label="Close">
-              {/* todo: change to icon */}
               {"["}X{"]"}
             </span>
           </Popover.Close>

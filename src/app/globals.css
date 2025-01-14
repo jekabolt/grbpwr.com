@@ -14,6 +14,7 @@
     /* components-specific colors */
     --button-text: #fff;
     --visited-link: #501089;
+    --overlay: rgba(0, 0, 0, 0.4);
 
     /* TEXT */
     --text-giant: 200px;

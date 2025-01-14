@@ -23,17 +23,20 @@ export default function CurrencyPopover({ title }: Props) {
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button size="sm" variant="simple" className="uppercase">
+        <Button size="sm" className="uppercase">
           {`Currency: ${currencySymbols[selectedCurrency]}`}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-black" />
-        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-20 flex h-screen w-screen flex-col p-2.5">
+        <DialogPrimitives.Overlay className="fixed inset-0" />
+        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor">
+          <DialogPrimitives.Title className="sr-only">
+            grbpwr mobile menu
+          </DialogPrimitives.Title>
           <div className="relative mb-4 flex items-center justify-between p-2">
             <Text variant="uppercase">{title}</Text>
             <DialogPrimitives.Close asChild>
-              <Button className="bg-black text-textColor">[X]</Button>
+              <Button>[X]</Button>
             </DialogPrimitives.Close>
           </div>
           <div className="relative grow overflow-y-auto">
@@ -45,15 +48,15 @@ export default function CurrencyPopover({ title }: Props) {
                   })}
                   key={k}
                 >
-                  <button
+                  <Button
                     onClick={() => setSelectedCurrency(k)}
-                    className="flex w-full p-2 text-white"
+                    className="flex w-full p-2"
                   >
-                    <span className="block min-w-8 text-left">
-                      {currencySymbols[k]}{" "}
-                    </span>
+                    <Text component="span" className="block min-w-8 text-left">
+                      {currencySymbols[k]}
+                    </Text>
                     {v.description}
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>

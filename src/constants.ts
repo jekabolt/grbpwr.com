@@ -1,6 +1,8 @@
 import type {
   common_GenderEnum,
+  common_OrderFactor,
   common_SizeEnum,
+  common_SortFactor,
 } from "./api/proto-http/frontend";
 
 export const FOOTER_YEAR = new Date().getFullYear();
@@ -40,3 +42,32 @@ export const GENDER_MAP: Record<string, common_GenderEnum> = {
   unisex: "GENDER_ENUM_UNISEX",
   ukn: "GENDER_ENUM_UNKNOWN",
 };
+
+export type OrderFactorOption = {
+  factor: common_OrderFactor;
+  name: string;
+  sale?: boolean;
+}
+
+export type SortFactorConfig = {
+  label?: string;
+  orderFactors: OrderFactorOption[];
+}
+
+export const SORT_MAP: Partial<Record<common_SortFactor, SortFactorConfig>> = {
+  SORT_FACTOR_CREATED_AT: {
+    orderFactors: [
+      { factor: 'ORDER_FACTOR_DESC', name: 'latest arrivals' }
+    ]
+  },
+  SORT_FACTOR_PRICE: {
+    label: 'price',
+    orderFactors: [
+      { factor: 'ORDER_FACTOR_ASC', name: 'low to high' },
+      { factor: 'ORDER_FACTOR_DESC', name: 'high to low' },
+      { factor: 'ORDER_FACTOR_ASC', name: 'low to high', sale: true },
+      { factor: 'ORDER_FACTOR_DESC', name: 'high to low', sale: true }
+    ]
+  },
+};
+

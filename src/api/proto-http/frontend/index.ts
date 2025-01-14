@@ -22,6 +22,7 @@ export type common_HeroEntity = {
   main: common_HeroMain | undefined;
   featuredProducts: common_HeroFeaturedProducts | undefined;
   featuredProductsTag: common_HeroFeaturedProductsTag | undefined;
+  featuredArchive: common_HeroFeaturedArchive | undefined;
 };
 
 export type common_HeroType =
@@ -30,7 +31,8 @@ export type common_HeroType =
   | "HERO_TYPE_DOUBLE"
   | "HERO_TYPE_MAIN"
   | "HERO_TYPE_FEATURED_PRODUCTS"
-  | "HERO_TYPE_FEATURED_PRODUCTS_TAG";
+  | "HERO_TYPE_FEATURED_PRODUCTS_TAG"
+  | "HERO_TYPE_FEATURED_ARCHIVE";
 export type common_HeroSingle = {
   media: common_MediaFull | undefined;
   headline: string | undefined;
@@ -183,6 +185,47 @@ export type common_GenderEnum =
 export type common_HeroFeaturedProductsTag = {
   tag: string | undefined;
   products: common_HeroFeaturedProducts | undefined;
+};
+
+export type common_HeroFeaturedArchive = {
+  archive: common_ArchiveFull | undefined;
+  tag: string | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+};
+
+// ArchiveFull represents a full archive with items.
+export type common_ArchiveFull = {
+  archive: common_Archive | undefined;
+  items: common_ArchiveItemFull[] | undefined;
+};
+
+// Archive represents an archive entity.
+export type common_Archive = {
+  id: number | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
+  archiveBody: common_ArchiveBody | undefined;
+};
+
+// ArchiveBody represents the insertable fields of an archive.
+export type common_ArchiveBody = {
+  heading: string | undefined;
+  text: string | undefined;
+};
+
+// ArchiveItemFull represents an item within an archive.
+export type common_ArchiveItemFull = {
+  id: number | undefined;
+  archiveId: number | undefined;
+  archiveItem: common_ArchiveItem | undefined;
+};
+
+// ArchiveItem represents the insertable fields of an archive item.
+export type common_ArchiveItem = {
+  media: common_MediaFull | undefined;
+  url: string | undefined;
+  name: string | undefined;
 };
 
 export type common_Dictionary = {
@@ -612,40 +655,6 @@ export type GetArchivesPagedRequest = {
 
 export type GetArchivesPagedResponse = {
   archives: common_ArchiveFull[] | undefined;
-};
-
-// ArchiveFull represents a full archive with items.
-export type common_ArchiveFull = {
-  archive: common_Archive | undefined;
-  items: common_ArchiveItemFull[] | undefined;
-};
-
-// Archive represents an archive entity.
-export type common_Archive = {
-  id: number | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  updatedAt: wellKnownTimestamp | undefined;
-  archiveBody: common_ArchiveBody | undefined;
-};
-
-// ArchiveBody represents the insertable fields of an archive.
-export type common_ArchiveBody = {
-  heading: string | undefined;
-  text: string | undefined;
-};
-
-// ArchiveItemFull represents an item within an archive.
-export type common_ArchiveItemFull = {
-  id: number | undefined;
-  archiveId: number | undefined;
-  archiveItem: common_ArchiveItem | undefined;
-};
-
-// ArchiveItem represents the insertable fields of an archive item.
-export type common_ArchiveItem = {
-  media: common_MediaFull | undefined;
-  url: string | undefined;
-  name: string | undefined;
 };
 
 export type GetArchiveByIdRequest = {

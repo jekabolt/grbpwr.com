@@ -1,13 +1,15 @@
 "use client";
 
+import { getCategoryName } from "@/lib/categories-map";
 import { useDataContext } from "@/components/DataContext";
 import GenericPopover from "@/components/ui/popover";
+import { Text } from "@/components/ui/text";
 
 import FilterOptionButtons from "./FilterOptionButtons";
 import useFilterQueryParams from "./useFilterQueryParams";
 
 function Trigger({ defaultValue }: { defaultValue: string }) {
-  return <div>{defaultValue}</div>;
+  return <Text variant="uppercase">{defaultValue}</Text>;
 }
 
 export default function Category() {
@@ -16,10 +18,6 @@ export default function Category() {
     defaultValue: defaultCategory,
     handleFilterChange: handleCategoryChange,
   } = useFilterQueryParams("category");
-  const {
-    defaultValue: defaultGender,
-    handleFilterChange: handleGenderChange,
-  } = useFilterQueryParams("gender");
 
   return (
     <GenericPopover
@@ -30,7 +28,7 @@ export default function Category() {
       title="categories"
       openElement={
         <Trigger
-          defaultValue={`${defaultCategory || "all categories"} / ${defaultGender || "all genders"}`}
+          defaultValue={`${getCategoryName(defaultCategory) || "all categories"}`}
         />
       }
     >
@@ -40,16 +38,6 @@ export default function Category() {
           defaultValue={defaultCategory || ""}
           handleFilterChange={handleCategoryChange}
           values={dictionary?.categories || []}
-        />
-      </div>
-
-      <div className="mb-8">
-        <div className="mb-4">gender</div>
-        <FilterOptionButtons
-          defaultValue={defaultGender || ""}
-          handleFilterChange={handleGenderChange}
-          values={dictionary?.genders || []}
-          defaultOptionText="all"
         />
       </div>
     </GenericPopover>

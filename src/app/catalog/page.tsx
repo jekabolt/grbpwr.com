@@ -2,6 +2,7 @@ import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import NavigationLayout from "@/components/navigation-layout";
+import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
 import Filters from "./_components/catalog-filters";
 import { InfinityScrollCatalog } from "./_components/infinity-scroll-catalog";
@@ -27,7 +28,13 @@ export default async function CatalogPage(props: CatalogPageProps) {
 
   return (
     <NavigationLayout>
-      <div>
+      <div className="block lg:hidden">
+        <MobileCatalog
+          firstPageItems={response.products || []}
+          total={response.total || 0}
+        />
+      </div>
+      <div className="hidden space-y-10 px-7 py-20 lg:block">
         <Filters />
         <InfinityScrollCatalog
           total={response.total || 0}

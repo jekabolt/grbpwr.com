@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import GenericPopover from "@/components/ui/popover";
+import { Text } from "@/components/ui/text";
 
 import MobileCurrencyPopover from "./mobile-currency-popover";
 
@@ -36,6 +37,17 @@ interface Props {
   title?: string;
 }
 
+function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
+  return (
+    <Text variant="uppercase">
+      currency{" "}
+      <Text component="span" variant="inactive">
+        {defaultValue}
+      </Text>
+    </Text>
+  );
+}
+
 export default function CurrencyPopover({ align = "end", title }: Props) {
   const { rates, selectedCurrency, setSelectedCurrency } = useDataContext();
 
@@ -50,10 +62,10 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
         <GenericPopover
           title={title}
           openElement={
-            <Button size="sm" variant="simple" className="uppercase">
-              {`Currency: ${currencySymbols[selectedCurrency]}`}
-            </Button>
+            <Trigger defaultValue={currencySymbols[selectedCurrency]} />
           }
+          className="border border-white"
+          variant="currency"
           contentProps={{
             sideOffset: title ? -25 : 16,
             align: align,
@@ -68,21 +80,21 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
             {Object.entries(rates.currencies).map(([k, v]) => (
               <div
                 className={cn("leading-none", {
-                  "bg-bgColor  text-textColor": k === selectedCurrency,
+                  "bg-bgColor text-textColor": k === selectedCurrency,
                 })}
                 key={k}
               >
-                <button
+                <Button
                   onClick={() => {
                     setSelectedCurrency(k);
                   }}
                   className="flex w-full"
                 >
-                  <span className="block min-w-8 text-left">
-                    {currencySymbols[k]}{" "}
-                  </span>
+                  <Text className="block min-w-8 text-left">
+                    {currencySymbols[k]}
+                  </Text>
                   {v.description}
-                </button>
+                </Button>
               </div>
             ))}
           </div>

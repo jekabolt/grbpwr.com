@@ -539,7 +539,8 @@ export type HeroType =
   | "HERO_TYPE_DOUBLE"
   | "HERO_TYPE_MAIN"
   | "HERO_TYPE_FEATURED_PRODUCTS"
-  | "HERO_TYPE_FEATURED_PRODUCTS_TAG";
+  | "HERO_TYPE_FEATURED_PRODUCTS_TAG"
+  | "HERO_TYPE_FEATURED_ARCHIVE";
 export type HeroFull = {
   entities: HeroEntity[] | undefined;
 };
@@ -551,6 +552,7 @@ export type HeroEntity = {
   main: HeroMain | undefined;
   featuredProducts: HeroFeaturedProducts | undefined;
   featuredProductsTag: HeroFeaturedProductsTag | undefined;
+  featuredArchive: HeroFeaturedArchive | undefined;
 };
 
 export type HeroSingle = {
@@ -583,6 +585,13 @@ export type HeroFeaturedProductsTag = {
   products: HeroFeaturedProducts | undefined;
 };
 
+export type HeroFeaturedArchive = {
+  archive: ArchiveFull | undefined;
+  tag: string | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+};
+
 export type HeroFullInsert = {
   entities: HeroEntityInsert[] | undefined;
 };
@@ -594,6 +603,7 @@ export type HeroEntityInsert = {
   main: HeroMainInsert | undefined;
   featuredProducts: HeroFeaturedProductsInsert | undefined;
   featuredProductsTag: HeroFeaturedProductsTagInsert | undefined;
+  featuredArchive: HeroFeaturedArchiveInsert | undefined;
 };
 
 export type HeroSingleInsert = {
@@ -626,6 +636,13 @@ export type HeroFeaturedProductsTagInsert = {
   headline: string | undefined;
   exploreText: string | undefined;
   exploreLink: string | undefined;
+};
+
+export type HeroFeaturedArchiveInsert = {
+  archiveId: number | undefined;
+  tag: string | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
 };
 
 // Subscriber represents the subscriber table
