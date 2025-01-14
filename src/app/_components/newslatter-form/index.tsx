@@ -9,7 +9,7 @@ interface Props {
   footer?: boolean;
 }
 
-export default async function NewslatterForm({ footer }: Props) {
+export default function NewslatterForm({ footer }: Props) {
   return (
     <form action={formSubmitClick}>
       <Text variant="uppercase" className="mb-6">
