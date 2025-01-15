@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
@@ -11,6 +12,45 @@ import { Text } from "@/components/ui/text";
 import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
+  const productsRef = useRef<HTMLDivElement>(null);
+  const productsTagRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scrollToSecondItem = () => {
+      if (window.innerWidth < 1024) {
+        const productsContainer = productsRef.current;
+        if (productsContainer && productsContainer.children.length > 1) {
+          const secondItem = productsContainer.children[1] as HTMLElement;
+          const scrollOffset = secondItem.offsetWidth + 50;
+          productsContainer.scrollTo({
+            left: scrollOffset,
+            behavior: "smooth",
+          });
+        }
+
+        const productsTagContainer = productsTagRef.current;
+        if (productsTagContainer && productsTagContainer.children.length > 1) {
+          const secondItem = productsTagContainer.children[1] as HTMLElement;
+          const scrollOffset = secondItem.offsetWidth + 50;
+          productsTagContainer.scrollTo({
+            left: scrollOffset,
+            behavior: "smooth",
+          });
+        }
+      }
+    };
+    setTimeout(scrollToSecondItem, 100);
+
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setTimeout(scrollToSecondItem, 100);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div>
       {entities?.map((e, i) => {
@@ -127,9 +167,16 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                   </Button>
                 </div>
 
-                <div className="no-scroll-bar flex w-full items-center gap-2.5 overflow-x-scroll">
+                <div
+                  ref={productsRef}
+                  className="no-scroll-bar flex w-full items-center gap-2 overflow-x-scroll"
+                >
                   {e.featuredProducts?.products?.map((p) => (
-                    <ProductItem className="w-72" key={p.id} product={p} />
+                    <ProductItem
+                      className="w-40 lg:w-72"
+                      key={p.id}
+                      product={p}
+                    />
                   ))}
                 </div>
               </div>
@@ -147,9 +194,16 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Link>
                   </Button>
                 </div>
-                <div className="no-scroll-bar flex w-full items-center gap-2.5 overflow-x-scroll">
+                <div
+                  ref={productsTagRef}
+                  className="no-scroll-bar flex w-full items-center gap-2.5 overflow-x-scroll"
+                >
                   {e.featuredProductsTag?.products?.products?.map((p) => (
-                    <ProductItem className="w-72" key={p.id} product={p} />
+                    <ProductItem
+                      className="w-40 lg:w-72"
+                      key={p.id}
+                      product={p}
+                    />
                   ))}
                 </div>
               </div>
