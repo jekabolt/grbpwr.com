@@ -35,7 +35,7 @@ export default function Size() {
       title="size"
       openElement={<Trigger />}
     >
-      <div className="grid grid-cols-4 gap-x-10 gap-y-6 px-2 py-6 leading-none">
+      <div className="grid grid-cols-4 gap-x-2 gap-y-6 px-2 py-6">
         <FilterOptionButtons
           defaultValue={defaultValue || ""}
           handleFilterChange={handleFilterChange}

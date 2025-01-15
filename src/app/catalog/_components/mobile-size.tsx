@@ -41,7 +41,7 @@ export function MobileSize() {
             </DialogPrimitives.Close>
           </div>
 
-          <div className="grid grid-cols-4 gap-x-16 gap-y-6 p-4 leading-none">
+          <div className="grid grid-cols-4 gap-x-2 gap-y-6 py-6">
             <FilterOptionButtons
               defaultValue={defaultValue || ""}
               handleFilterChange={handleFilterChange}
