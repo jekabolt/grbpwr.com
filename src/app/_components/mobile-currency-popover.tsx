@@ -52,10 +52,7 @@ export default function CurrencyPopover({ title }: Props) {
                     onClick={() => setSelectedCurrency(k)}
                     className="flex w-full p-2"
                   >
-                    <Text
-                      component="span"
-                      className="block min-w-8 text-left text-inherit"
-                    >
+                    <Text variant="inherit" className="block min-w-8 text-left">
                       {currencySymbols[k]}
                     </Text>
                     {v.description}
