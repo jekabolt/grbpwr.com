@@ -1,6 +1,6 @@
 import { cva, VariantProps } from "class-variance-authority";
 
-const textVariants = cva("", {
+const textVariants = cva("text-textColor", {
   variants: {
     variant: {
       default: ["text-textColor"],

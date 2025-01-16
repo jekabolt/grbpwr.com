@@ -29,7 +29,7 @@ export default function CurrencyPopover({ title }: Props) {
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0" />
-        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor">
+        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-30 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
@@ -44,7 +44,7 @@ export default function CurrencyPopover({ title }: Props) {
               {Object.entries(rates.currencies).map(([k, v]) => (
                 <div
                   className={cn("leading-none", {
-                    "bg-bgColor text-textColor": k === selectedCurrency,
+                    "bg-textColor text-bgColor": k === selectedCurrency,
                   })}
                   key={k}
                 >
@@ -52,7 +52,10 @@ export default function CurrencyPopover({ title }: Props) {
                     onClick={() => setSelectedCurrency(k)}
                     className="flex w-full p-2"
                   >
-                    <Text component="span" className="block min-w-8 text-left">
+                    <Text
+                      component="span"
+                      className="block min-w-8 text-left text-inherit"
+                    >
                       {currencySymbols[k]}
                     </Text>
                     {v.description}

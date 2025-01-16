@@ -18,7 +18,7 @@ export function MobileCatalog({
       <div className="flex justify-start py-4">
         <Category />
       </div>
-      <div className="sticky top-0 z-50 flex w-full justify-between bg-bgColor py-3">
+      <div className="sticky top-0 z-20 flex w-full justify-between bg-bgColor py-3">
         <MobileSort />
         <MobileSize />
       </div>
