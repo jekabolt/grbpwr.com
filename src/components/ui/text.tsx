@@ -1,9 +1,10 @@
 import { cva, VariantProps } from "class-variance-authority";
 
-const textVariants = cva("text-textColor", {
+const textVariants = cva("", {
   variants: {
     variant: {
       default: ["text-textColor"],
+      inherit: ["text-inherit"],
       uppercase: ["text-textColor", "uppercase"],
       underlined: ["underline", "text-textColor"],
       strikethrough: ["line-through", "text-textColor"],

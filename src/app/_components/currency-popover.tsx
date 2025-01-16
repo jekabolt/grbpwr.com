@@ -90,7 +90,7 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
                   }}
                   className="flex w-full"
                 >
-                  <Text className="block min-w-8 text-left text-inherit">
+                  <Text variant="inherit" className="block min-w-8 text-left">
                     {currencySymbols[k]}
                   </Text>
                   {v.description}
