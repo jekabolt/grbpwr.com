@@ -66,7 +66,7 @@ export function Footer({
               </div>
             </div>
           </div>
-          <NewslatterForm footer={true} />
+          <NewslatterForm />
         </div>
       </div>
       <div className="flex w-full justify-between">

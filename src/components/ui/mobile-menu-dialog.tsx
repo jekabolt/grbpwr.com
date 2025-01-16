@@ -8,7 +8,7 @@ import NewslatterForm from "@/app/_components/newslatter-form";
 
 import { useDataContext } from "../DataContext";
 import { Button } from "./button";
-import { Logo } from "./logo";
+import { Logo } from "./icons/logo";
 import { Text } from "./text";
 
 export function MobileMenuDialog({
@@ -24,26 +24,28 @@ export function MobileMenuDialog({
         <Button variant={"simple"}>menu</Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-textColor" />
-        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-20 flex h-screen w-screen flex-col p-2 pb-10">
+        <DialogPrimitives.Overlay className="fixed inset-0 z-30 bg-textColor" />
+        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-30 flex h-screen w-screen flex-col bg-bgColor px-2 pb-10 pt-5 text-textColor">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="relative mb-16 flex items-center justify-between gap-2 text-textColor">
+          <div className="relative mb-16 flex items-start justify-between gap-2 text-textColor">
             {activeCategory ? (
               <>
                 <Button onClick={() => setActiveCategory(undefined)}>
-                  <Text variant="uppercase">{"<"}</Text>
+                  <Text>{"<"}</Text>
                 </Button>
                 <Text variant="uppercase" className="basis-0">
                   {activeCategory}
                 </Text>
               </>
             ) : (
-              <Logo className="inline-block" />
+              <div className="inline-block aspect-square size-8">
+                <Logo />
+              </div>
             )}
             <DialogPrimitives.Close asChild>
-              <Button variant={"simple"}>[X]</Button>
+              <Button className="leading-none">[X]</Button>
             </DialogPrimitives.Close>
           </div>
           <Menu
@@ -102,7 +104,7 @@ function Menu({
               </Button>
               <Text variant="uppercase">{">"}</Text>
             </div>
-            <CurrencyPopover />
+            <CurrencyPopover align="start" title="Currency:" />
           </div>
 
           <NewslatterForm />
@@ -112,27 +114,27 @@ function Menu({
           {Object.entries(categoriesGroups).map(([key, category]) => (
             <div
               key={key}
-              className="grid w-full grid-cols-2 gap-2 space-y-4 border-b border-dashed border-textColor pb-6"
+              className="grid w-full grid-cols-2 gap-2 border-b border-dashed border-textColor pb-6"
             >
-              <Text variant="uppercase">{category.title}</Text>
-              <div className="space-y-2">
+              <Text variant="uppercase" className="text-xl">
+                {category.title}
+              </Text>
+              <div className="space-y-4">
                 <DialogPrimitives.Close asChild>
                   <Button variant="simpleReverse" asChild>
                     <Link href="/catalog">view all</Link>
                   </Button>
                 </DialogPrimitives.Close>
                 {category.items.map((item) => (
-                  <div key={item.id}>
-                    <DialogPrimitives.Close asChild>
-                      <Button variant="simpleReverse" asChild>
-                        <Link
-                          href={`${item.href}&gender=${GENDER_MAP[activeCategory]}`}
-                        >
-                          {item.label.toLowerCase()}
-                        </Link>
-                      </Button>
-                    </DialogPrimitives.Close>
-                  </div>
+                  <DialogPrimitives.Close key={item.id} asChild>
+                    <Button variant="simpleReverse" asChild>
+                      <Link
+                        href={`${item.href}&gender=${GENDER_MAP[activeCategory]}`}
+                      >
+                        {item.label.toLowerCase()}
+                      </Link>
+                    </Button>
+                  </DialogPrimitives.Close>
                 ))}
               </div>
             </div>
