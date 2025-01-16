@@ -80,7 +80,7 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
             {Object.entries(rates.currencies).map(([k, v]) => (
               <div
                 className={cn("leading-none", {
-                  "bg-bgColor text-textColor": k === selectedCurrency,
+                  "bg-textColor text-bgColor": k === selectedCurrency,
                 })}
                 key={k}
               >
@@ -90,7 +90,7 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
                   }}
                   className="flex w-full"
                 >
-                  <Text className="block min-w-8 text-left">
+                  <Text className="block min-w-8 text-left text-inherit">
                     {currencySymbols[k]}
                   </Text>
                   {v.description}
