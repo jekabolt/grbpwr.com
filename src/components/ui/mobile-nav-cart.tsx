@@ -20,11 +20,11 @@ export function MobileNavCart() {
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-textColor" />
-        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-20 flex h-screen w-screen flex-col p-2.5 ">
+        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-30 flex h-screen w-screen flex-col p-2 pt-5 ">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="relative mb-[64px] flex items-center justify-between">
+          <div className="relative mb-16 flex items-center justify-between">
             <Text variant="uppercase">
               shopping Cart [{itemsQuantity?.toString().padStart(2, "0")}]
             </Text>
@@ -37,7 +37,7 @@ export function MobileNavCart() {
             <CartProductsList />
           </div>
 
-          <div className="mt-auto space-y-6 border-t border-dashed border-textInactiveColor pt-4">
+          <div className="mt-auto space-y-6">
             <CartTotalPrice />
             <DialogPrimitives.Close asChild>
               <Button
