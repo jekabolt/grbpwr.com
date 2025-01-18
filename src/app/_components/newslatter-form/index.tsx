@@ -25,7 +25,7 @@ export default function NewslatterForm() {
           variant="main"
           size="lg"
           type="submit"
-          className="bg-inherit uppercase text-textColor"
+          className="bg-textColor uppercase text-bgColor"
         >
           subscribe
         </Button>
