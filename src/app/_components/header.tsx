@@ -21,7 +21,7 @@ export function Header() {
 
       <div className="flex grow basis-0 items-center justify-end">
         <CartPopup>
-          <div className="relative max-h-[500px] space-y-6 overflow-y-scroll">
+          <div className="relative max-h-[500px] overflow-y-scroll">
             <CartProductsList />
           </div>
           <CartTotalPrice />

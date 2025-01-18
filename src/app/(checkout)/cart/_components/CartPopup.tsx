@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useClickAway } from "@uidotdev/usehooks";
 
@@ -13,6 +13,20 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   const products = useCart((state) => state.products);
   const itemsQuantity = Object.keys(products).length;
   const [open, setOpenStatus] = useState(false);
+
+  useEffect(() => {
+    const handleEscClick = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpenStatus(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscClick);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscClick);
+    };
+  }, []);
 
   const ref = useClickAway<HTMLDivElement>(() => {
     setOpenStatus(false);
@@ -36,13 +50,13 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
               },
             )}
           >
-            <div className="flex justify-between text-textColor">
+            {/* <div className="flex justify-between text-textColor">
               <div className="flex gap-2">
                 <div>SHOPPING CART</div>
                 <span>[{itemsQuantity?.toString().padStart(2, "0")}]</span>
               </div>
               <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
-            </div>
+            </div> */}
             {children}
             <Button asChild variant="main" size="lg" className="block w-full">
               <Link href="/checkout">GO TO CHECKOUT</Link>
