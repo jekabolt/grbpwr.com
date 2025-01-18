@@ -1,6 +1,7 @@
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
+import { useDataContext } from "@/components/DataContext";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
@@ -8,6 +9,7 @@ import CartItemSize from "./CartItemSize";
 import ProductRemoveButton from "./ProductRemoveButton";
 
 export default function ItemRow({ product, hideQuantityButtons }: Props) {
+  const { selectedCurrency } = useDataContext();
   if (!product) return null;
 
   return (
@@ -40,7 +42,9 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
             size={product.orderItem?.sizeId + "" || ""}
           />
         )}
-        <p>BTC {product.productPrice}</p>
+        <p>
+          {selectedCurrency} {product.productPrice}
+        </p>
       </div>
     </div>
   );

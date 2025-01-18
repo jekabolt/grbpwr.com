@@ -38,7 +38,10 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
         <MobileNavCart />
       </div>
       <div className="group relative hidden lg:block" ref={ref}>
-        <Button onClick={() => setOpenStatus((v) => !v)} variant="main">
+        <Button
+          onClick={() => setOpenStatus((v) => !v)}
+          variant={open ? "simpleReverse" : "simple"}
+        >
           cart {itemsQuantity ? `[${itemsQuantity}]` : ""}
         </Button>
         <div className="blackTheme">
@@ -50,13 +53,6 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
               },
             )}
           >
-            {/* <div className="flex justify-between text-textColor">
-              <div className="flex gap-2">
-                <div>SHOPPING CART</div>
-                <span>[{itemsQuantity?.toString().padStart(2, "0")}]</span>
-              </div>
-              <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
-            </div> */}
             {children}
             <Button asChild variant="main" size="lg" className="block w-full">
               <Link href="/checkout">GO TO CHECKOUT</Link>
