@@ -16,34 +16,30 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   const productsTagRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const scrollToSecondItem = () => {
+    const scrollToFirstItem = () => {
       if (window.innerWidth < 1024) {
         const productsContainer = productsRef.current;
-        if (productsContainer && productsContainer.children.length > 1) {
-          const secondItem = productsContainer.children[1] as HTMLElement;
-          const scrollOffset = secondItem.offsetWidth + 50;
+        if (productsContainer && productsContainer.children.length > 0) {
           productsContainer.scrollTo({
-            left: scrollOffset,
+            left: 50,
             behavior: "smooth",
           });
         }
 
         const productsTagContainer = productsTagRef.current;
-        if (productsTagContainer && productsTagContainer.children.length > 1) {
-          const secondItem = productsTagContainer.children[1] as HTMLElement;
-          const scrollOffset = secondItem.offsetWidth + 50;
+        if (productsTagContainer && productsTagContainer.children.length > 0) {
           productsTagContainer.scrollTo({
-            left: scrollOffset,
+            left: 50,
             behavior: "smooth",
           });
         }
       }
     };
-    setTimeout(scrollToSecondItem, 100);
+    setTimeout(scrollToFirstItem, 100);
 
     const handleResize = () => {
       if (window.innerWidth < 1024) {
-        setTimeout(scrollToSecondItem, 100);
+        setTimeout(scrollToFirstItem, 100);
       }
     };
 
