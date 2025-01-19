@@ -11,7 +11,7 @@ export default function NewslatterForm() {
         newsletter
       </Text>
       <label htmlFor="newsletter" className="mb-3 block">
-        <Text size="small">e-mail adress</Text>
+        <Text size="small">e-mail address</Text>
       </label>
       <div className="flex flex-col items-start gap-6">
         <Input
