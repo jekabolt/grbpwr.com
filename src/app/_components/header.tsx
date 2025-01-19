@@ -5,7 +5,6 @@ import Link from "next/link";
 import CartPopup from "../(checkout)/cart/_components/CartPopup";
 import CartProductsList from "../(checkout)/cart/_components/CartProductsList";
 import CartTotalPrice from "../(checkout)/cart/_components/CartTotalPrice";
-import CurrencyPopover from "./currency-popover";
 import { HeaderLeftNav } from "./header-left-nav";
 
 export function Header() {
@@ -15,18 +14,14 @@ export function Header() {
 
       <Link
         href="/"
-        className="flex-none text-center text-bgColor hover:animate-ping"
+        className="flex-none text-center uppercase  text-bgColor hover:animate-ping lg:normal-case"
       >
         grbpwr
       </Link>
 
-      <div className="flex grow basis-0 items-center justify-end gap-x-5">
-        <div className="hidden lg:block">
-          <CurrencyPopover />
-        </div>
-
+      <div className="flex grow basis-0 items-center justify-end">
         <CartPopup>
-          <div className="relative max-h-[500px] space-y-6 overflow-y-scroll">
+          <div className="relative max-h-[500px] overflow-y-scroll">
             <CartProductsList />
           </div>
           <CartTotalPrice />

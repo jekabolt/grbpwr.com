@@ -1,4 +1,5 @@
 import {
+  common_GenderEnum,
   common_OrderFactor,
   common_SortFactor,
   GetProductsPagedRequest,
@@ -25,8 +26,6 @@ export function getProductsPagedQueryParams({
   "sortFactors" | "orderFactor" | "filterConditions"
 > {
   // todo: validate params before make a request
-  // todo: add gender
-
   return {
     sortFactors: sort ? [sort as common_SortFactor] : undefined,
     orderFactor: order ? (order as common_OrderFactor) : undefined,
@@ -40,7 +39,7 @@ export function getProductsPagedQueryParams({
       color: undefined,
       preorder: undefined,
       byTag: tag ? tag : undefined,
-      gender: undefined,
+      gender: gender ? (gender as common_GenderEnum) : undefined,
     },
   };
 }

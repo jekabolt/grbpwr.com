@@ -1,28 +1,19 @@
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 
 import { formSubmitClick } from "./todo-schema";
 
-interface Props {
-  footer?: boolean;
-}
-
-export default function NewslatterForm({ footer }: Props) {
+export default function NewslatterForm() {
   return (
     <form action={formSubmitClick}>
       <Text variant="uppercase" className="mb-6">
         newsletter
       </Text>
       <label htmlFor="newsletter" className="mb-3 block">
-        <Text size="small">{footer ? "e-mail adress" : "email"}</Text>
+        <Text size="small">e-mail address</Text>
       </label>
-      <div
-        className={cn("flex items-center gap-4", {
-          "flex-col items-start gap-6": footer,
-        })}
-      >
+      <div className="flex flex-col items-start gap-6">
         <Input
           id="newsletter"
           type="email"
@@ -31,12 +22,10 @@ export default function NewslatterForm({ footer }: Props) {
           name="email"
         />
         <Button
-          variant={footer ? "main" : "simple"}
-          size={footer ? "lg" : "sm"}
+          variant="main"
+          size="lg"
           type="submit"
-          className={cn({
-            "border border-white uppercase": footer,
-          })}
+          className="bg-textColor uppercase text-bgColor"
         >
           subscribe
         </Button>

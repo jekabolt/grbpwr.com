@@ -40,7 +40,7 @@ interface Props {
 function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
   return (
     <Text variant="uppercase">
-      currency{" "}
+      currency:{" "}
       <Text component="span" variant="inactive">
         {defaultValue}
       </Text>

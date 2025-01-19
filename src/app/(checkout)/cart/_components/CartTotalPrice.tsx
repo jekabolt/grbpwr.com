@@ -9,10 +9,10 @@ export default function CartTotalPrice() {
   const { subTotalPrice } = useCart((state) => state);
 
   return (
-    <div className="flex justify-between lg:flex-col lg:space-y-6">
+    <div className="flex items-center justify-between border-t border-dashed border-textInactiveColor pt-3">
       <Text variant="uppercase">subtotal:</Text>
-      <Text variant="uppercase">
-        {subTotalPrice} {selectedCurrency}
+      <Text variant="uppercase" size="small">
+        {selectedCurrency} {subTotalPrice}
       </Text>
     </div>
   );
