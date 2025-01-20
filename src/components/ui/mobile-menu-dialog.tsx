@@ -5,6 +5,7 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { groupCategories } from "@/lib/categories-map";
 import CurrencyPopover from "@/app/_components/currency-popover";
 import NewslatterForm from "@/app/_components/newslatter-form";
+import useFilterQueryParams from "@/app/catalog/_components/useFilterQueryParams";
 
 import { useDataContext } from "../DataContext";
 import { Button } from "./button";
@@ -66,10 +67,29 @@ function Menu({
   setActiveCategory: (category: "men" | "women" | undefined) => void;
 }) {
   const { dictionary } = useDataContext();
-
+  const { defaultValue: category } = useFilterQueryParams("category");
+  const { defaultValue: currentGender } = useFilterQueryParams("gender");
   const categoriesGroups = groupCategories(
     dictionary?.categories?.map((v) => v.name as string) || [],
   );
+
+  const selectedCategories = category?.split(",") || [];
+  const genderCategories =
+    currentGender === GENDER_MAP[activeCategory!] ? selectedCategories : [];
+  const isSelectedCategory = (id: string) => genderCategories.includes(id);
+
+  const getViewAllHref = (items: { id: string }[]) => {
+    const groupCategoryIds = items.map((item) => item.id);
+    return `/catalog?category=${encodeURIComponent(groupCategoryIds.join(","))}&gender=${GENDER_MAP[activeCategory!]}`;
+  };
+
+  const getNewHref = (id: string) => {
+    const newCategories = isSelectedCategory(id)
+      ? genderCategories.filter((v) => v !== id)
+      : [...genderCategories, id];
+
+    return `/catalog?category=${encodeURIComponent(newCategories.join(","))}&gender=${GENDER_MAP[activeCategory!]}`;
+  };
 
   return (
     <div className="flex h-full grow flex-col justify-between overflow-y-auto bg-bgColor p-2">
@@ -122,15 +142,18 @@ function Menu({
               <div className="space-y-4">
                 <DialogPrimitives.Close asChild>
                   <Button variant="simpleReverse" asChild>
-                    <Link href="/catalog">view all</Link>
+                    <Link href={getViewAllHref(category.items)}>view all</Link>
                   </Button>
                 </DialogPrimitives.Close>
                 {category.items.map((item) => (
                   <DialogPrimitives.Close key={item.id} asChild>
-                    <Button variant="simpleReverse" asChild>
-                      <Link
-                        href={`${item.href}&gender=${GENDER_MAP[activeCategory]}`}
-                      >
+                    <Button
+                      variant={
+                        isSelectedCategory(item.id) ? "simple" : "simpleReverse"
+                      }
+                      asChild
+                    >
+                      <Link href={getNewHref(item.id)}>
                         {item.label.toLowerCase()}
                       </Link>
                     </Button>
