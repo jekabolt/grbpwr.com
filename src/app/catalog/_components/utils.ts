@@ -30,7 +30,7 @@ export function getProductsPagedQueryParams({
     sortFactors: sort ? [sort as common_SortFactor] : undefined,
     orderFactor: order ? (order as common_OrderFactor) : undefined,
     filterConditions: {
-      categoryIds: category ? [parseInt(category)] : undefined,
+      categoryIds: category ? category.split(",").map(id => parseInt(id)) : undefined,
       //   genderIds: gender ? [parseInt(gender)] : undefined,
       sizesIds: size ? [parseInt(size)] : undefined,
       from: undefined,

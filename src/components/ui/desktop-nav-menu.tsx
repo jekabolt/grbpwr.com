@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { GENDER_MAP } from "@/constants";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import { groupCategories } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
+import useFilterQueryParams from "@/app/catalog/_components/useFilterQueryParams";
 
 import { Button } from "./button";
 import { Text } from "./text";
@@ -37,6 +37,7 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
                   className="w-40"
                   key={key}
                   title={category.title}
+                  gender={GENDER_MAP["men"]}
                   links={category.items.map((item) => ({
                     title: item.label.toLowerCase(),
                     href: `${item.href}&${men}`,
@@ -64,6 +65,7 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
                   className="w-40"
                   key={key}
                   title={category.title}
+                  gender={GENDER_MAP["women"]}
                   links={category.items.map((item) => ({
                     title: item.label.toLowerCase(),
                     href: `${item.href}&${women}`,
@@ -96,17 +98,36 @@ function LinksGroup({
   className,
   title,
   links,
+  gender,
 }: {
   groupIndex: number;
   className?: string;
   title: string;
+  gender: string;
   links: {
     title: string;
     href: string;
     id: string;
   }[];
 }) {
-  const category = useSearchParams().get("category");
+  const { defaultValue: category } = useFilterQueryParams("category");
+  const { defaultValue: currentGender } = useFilterQueryParams("gender");
+  const selectedCategories = category?.split(",") || [];
+  const genderCategories = currentGender === gender ? selectedCategories : [];
+  const isSelectedCategory = (id: string) => genderCategories.includes(id);
+
+  const getViewAllHref = () => {
+    const groupCategoryIds = links.map((link) => link.id);
+    return `/catalog?category=${encodeURIComponent(groupCategoryIds.join(","))}&gender=${gender}`;
+  };
+
+  const getNewHref = (id: string) => {
+    const newCategories = isSelectedCategory(id)
+      ? genderCategories.filter((v) => v !== id)
+      : [...genderCategories, id];
+
+    return `/catalog?category=${encodeURIComponent(newCategories.join(","))}&gender=${gender}`;
+  };
 
   return (
     <div className={cn("space-y-4", className)}>
@@ -116,16 +137,18 @@ function LinksGroup({
       <div className="space-y-2">
         <div className="w-full">
           <Button variant="simpleReverse" asChild>
-            <NavigationMenu.Link href="/catalog">view all</NavigationMenu.Link>
+            <NavigationMenu.Link href={getViewAllHref()}>
+              view all
+            </NavigationMenu.Link>
           </Button>
         </div>
         {links.map((link) => (
           <div className="w-full" key={link.href}>
             <Button
-              variant={category === link.id ? "simple" : "simpleReverse"}
+              variant={isSelectedCategory(link.id) ? "simple" : "simpleReverse"}
               asChild
             >
-              <NavigationMenu.Link href={link.href}>
+              <NavigationMenu.Link href={getNewHref(link.id)}>
                 {link.title}
               </NavigationMenu.Link>
             </Button>
