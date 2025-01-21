@@ -1,4 +1,5 @@
 import type { common_OrderItem } from "@/api/proto-http/frontend";
+import { currencySymbols } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
@@ -42,7 +43,8 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
             />
           )}
           <Text>
-            {selectedCurrency} {convertPrice(product.productPrice || "")}
+            {currencySymbols[selectedCurrency]}{" "}
+            {convertPrice(product.productPrice || "")}
           </Text>
         </div>
       </div>

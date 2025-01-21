@@ -11,7 +11,6 @@ export interface CurrencyActions {
     setRates: (rates: { [key: string]: common_CurrencyRate }) => void;
     setBaseCurrency: (currency: string) => void;
     convertPrice: (amount: string) => string;
-    getCurrencySymbols: () => string;
 }
 
-export type CurrencyStore = CurrencyState & CurrencyActions;
+export type CurrencyStore = CurrencyState & CurrencyActions

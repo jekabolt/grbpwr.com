@@ -27,8 +27,9 @@ function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
 }
 
 export default function CurrencyPopover({ align = "end", title }: Props) {
-  const { selectedCurrency, rates, setSelectedCurrency, getCurrencySymbols } =
-    useCurrency((state) => state);
+  const { selectedCurrency, rates, setSelectedCurrency } = useCurrency(
+    (state) => state,
+  );
 
   return (
     <>
@@ -38,7 +39,9 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
       <div className="hidden lg:block">
         <GenericPopover
           title={title}
-          openElement={<Trigger defaultValue={getCurrencySymbols()} />}
+          openElement={
+            <Trigger defaultValue={currencySymbols[selectedCurrency]} />
+          }
           className="border border-white"
           variant="currency"
           contentProps={{

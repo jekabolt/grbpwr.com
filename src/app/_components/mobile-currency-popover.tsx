@@ -5,7 +5,6 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
-import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
@@ -14,18 +13,15 @@ interface Props {
 }
 
 export default function CurrencyPopover({ title }: Props) {
-  const { rates } = useDataContext();
-  const { selectedCurrency, setSelectedCurrency } = useCurrency(
+  const { selectedCurrency, rates, setSelectedCurrency } = useCurrency(
     (state) => state,
   );
-
-  if (!rates?.currencies) return null;
 
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
         <Button size="sm" className="uppercase">
-          {`Currency: ${selectedCurrency}`}
+          {`Currency: ${currencySymbols[selectedCurrency]}`}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
@@ -42,24 +38,28 @@ export default function CurrencyPopover({ title }: Props) {
           </div>
           <div className="relative grow overflow-y-auto">
             <div className="space-y-2">
-              {Object.entries(rates.currencies).map(([k, v]) => (
-                <div
-                  className={cn("leading-none", {
-                    "bg-textColor text-bgColor": k === selectedCurrency,
-                  })}
-                  key={k}
-                >
-                  <Button
-                    onClick={() => setSelectedCurrency(k)}
-                    className="flex w-full p-2"
+              {rates &&
+                Object.entries(rates).map(([k, v]) => (
+                  <div
+                    className={cn("leading-none", {
+                      "bg-textColor text-bgColor": k === selectedCurrency,
+                    })}
+                    key={k}
                   >
-                    <Text variant="inherit" className="block min-w-8 text-left">
-                      {currencySymbols[k]}
-                    </Text>
-                    {v.description}
-                  </Button>
-                </div>
-              ))}
+                    <Button
+                      onClick={() => setSelectedCurrency(k)}
+                      className="flex w-full p-2"
+                    >
+                      <Text
+                        variant="inherit"
+                        className="block min-w-8 text-left"
+                      >
+                        {currencySymbols[k]}
+                      </Text>
+                      {v.description}
+                    </Button>
+                  </div>
+                ))}
             </div>
           </div>
         </DialogPrimitives.Content>

@@ -1,14 +1,13 @@
 import { persist } from "zustand/middleware";
 
 import { common_CurrencyRate } from "@/api/proto-http/frontend";
-import { currencySymbols } from "@/constants";
 import { createStore } from "zustand";
 import { CurrencyState, CurrencyStore } from "./store-types";
 
 export const defaultInitState: CurrencyState = {
-    selectedCurrency: "",
+    selectedCurrency: "EUR",
     rates: undefined,
-    baseCurrency: "",
+    baseCurrency: "EUR",
 };
 
 export const createCurrencyStore = (initState: CurrencyState = defaultInitState) => {
@@ -41,10 +40,6 @@ export const createCurrencyStore = (initState: CurrencyState = defaultInitState)
                     const baseAmount = parseFloat(amount);
                     const rate = parseFloat(targetRate.rate.value);
                     return (baseAmount * rate).toFixed(2);
-                },
-                getCurrencySymbols: () => {
-                    const { selectedCurrency } = get();
-                    return currencySymbols[selectedCurrency] || selectedCurrency;
                 },
             }),
             {

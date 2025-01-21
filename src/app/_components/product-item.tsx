@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { common_Product } from "@/api/proto-http/frontend";
+import { currencySymbols } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { calculateAspectRatio, cn } from "@/lib/utils";
@@ -62,10 +63,10 @@ export function ProductItem({
               <Text
                 variant={isSaleApplied ? "strileTroughInactive" : "default"}
               >
-                {`${selectedCurrency} ${convertPrice(product.productDisplay?.productBody?.price?.value || "")}`}
+                {`${currencySymbols[selectedCurrency]} ${convertPrice(product.productDisplay?.productBody?.price?.value || "")}`}
               </Text>
               {isSaleApplied && (
-                <Text>{`${selectedCurrency} ${convertPrice(priceWithSale.toString())}`}</Text>
+                <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>
               )}
               {preorder !== emptyPreorder && (
                 <Text variant="inactive">preorder</Text>
