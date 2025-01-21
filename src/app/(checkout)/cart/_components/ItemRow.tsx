@@ -1,7 +1,7 @@
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
-import { useDataContext } from "@/components/DataContext";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
@@ -9,7 +9,7 @@ import CartItemSize from "./CartItemSize";
 import ProductRemoveButton from "./ProductRemoveButton";
 
 export default function ItemRow({ product, hideQuantityButtons }: Props) {
-  const { getCurrencySymbol, convertPrice } = useDataContext();
+  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   if (!product) return null;
 
   return (
@@ -42,7 +42,7 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
             />
           )}
           <Text>
-            {getCurrencySymbol()} {convertPrice(product.productPrice)}
+            {selectedCurrency} {convertPrice(product.productPrice || "")}
           </Text>
         </div>
       </div>

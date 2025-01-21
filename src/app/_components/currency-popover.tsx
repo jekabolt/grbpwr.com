@@ -2,8 +2,8 @@
 
 import { currencySymbols } from "@/constants";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
-import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import GenericPopover from "@/components/ui/popover";
 import { Text } from "@/components/ui/text";
@@ -27,10 +27,8 @@ function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
 }
 
 export default function CurrencyPopover({ align = "end", title }: Props) {
-  const { rates, selectedCurrency, setSelectedCurrency, getCurrencySymbol } =
-    useDataContext();
-
-  if (!rates?.currencies) return null;
+  const { selectedCurrency, rates, setSelectedCurrency, getCurrencySymbols } =
+    useCurrency((state) => state);
 
   return (
     <>
@@ -40,7 +38,7 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
       <div className="hidden lg:block">
         <GenericPopover
           title={title}
-          openElement={<Trigger defaultValue={getCurrencySymbol()} />}
+          openElement={<Trigger defaultValue={getCurrencySymbols()} />}
           className="border border-white"
           variant="currency"
           contentProps={{
@@ -54,26 +52,27 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
               "w-full": title,
             })}
           >
-            {Object.entries(rates.currencies).map(([k, v]) => (
-              <div
-                className={cn("leading-none", {
-                  "bg-textColor text-bgColor": k === selectedCurrency,
-                })}
-                key={k}
-              >
-                <Button
-                  onClick={() => {
-                    setSelectedCurrency(k);
-                  }}
-                  className="flex w-full"
+            {rates &&
+              Object.entries(rates).map(([k, v]) => (
+                <div
+                  className={cn("leading-none", {
+                    "bg-textColor text-bgColor": k === selectedCurrency,
+                  })}
+                  key={k}
                 >
-                  <Text variant="inherit" className="block min-w-8 text-left">
-                    {currencySymbols[k]}
-                  </Text>
-                  {v.description}
-                </Button>
-              </div>
-            ))}
+                  <Button
+                    onClick={() => {
+                      setSelectedCurrency(k);
+                    }}
+                    className="flex w-full"
+                  >
+                    <Text variant="inherit" className="block min-w-8 text-left">
+                      {currencySymbols[k]}
+                    </Text>
+                    {v.description}
+                  </Button>
+                </div>
+              ))}
           </div>
         </GenericPopover>
       </div>

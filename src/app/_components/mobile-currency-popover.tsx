@@ -3,6 +3,7 @@
 import { currencySymbols } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
@@ -13,8 +14,10 @@ interface Props {
 }
 
 export default function CurrencyPopover({ title }: Props) {
-  const { rates, selectedCurrency, setSelectedCurrency, getCurrencySymbol } =
-    useDataContext();
+  const { rates } = useDataContext();
+  const { selectedCurrency, setSelectedCurrency } = useCurrency(
+    (state) => state,
+  );
 
   if (!rates?.currencies) return null;
 
@@ -22,7 +25,7 @@ export default function CurrencyPopover({ title }: Props) {
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
         <Button size="sm" className="uppercase">
-          {`Currency: ${getCurrencySymbol()}`}
+          {`Currency: ${selectedCurrency}`}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>

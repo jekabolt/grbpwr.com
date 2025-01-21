@@ -1,12 +1,13 @@
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { UseFormReturn } from "react-hook-form";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useDataContext } from "@/components/DataContext";
 import { Text } from "@/components/ui/text";
 
 export function PriceSummary({ order, form }: PriceSummaryProps) {
-  const { dictionary, convertPrice } = useDataContext();
-
+  const { dictionary } = useDataContext();
+  const { convertPrice } = useCurrency((state) => state);
   if (!order) return null;
 
   const promoPercentageOff = parseInt(order.promo?.discount?.value || "0");
@@ -21,7 +22,7 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
       <div className="space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>subtotal:</Text>
-          <div>{convertPrice(order?.subtotal?.value)}</div>
+          <div>{convertPrice(order?.subtotal?.value || "")}</div>
         </div>
         {(selectedShipmentCarrierPrice || promoFreeShipping) && (
           <div className="flex justify-between">
@@ -43,7 +44,7 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
         <div className="pt-5">
           <div className="flex justify-between border-t border-dashed border-textInactiveColor pt-3">
             <Text variant={"uppercase"}>grand total:</Text>
-            <div>{convertPrice(order.totalSale?.value)} </div>
+            <div>{convertPrice(order.totalSale?.value || "")} </div>
           </div>
         </div>
       </div>

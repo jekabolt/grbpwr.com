@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { common_Product } from "@/api/proto-http/frontend";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { calculateAspectRatio, cn } from "@/lib/utils";
-import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
@@ -16,7 +16,7 @@ export function ProductItem({
   product: common_Product;
   className: string;
 }) {
-  const { getCurrencySymbol, convertPrice } = useDataContext();
+  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const isSaleApplied =
     product.productDisplay?.productBody?.salePercentage?.value !== "0";
 
@@ -62,10 +62,10 @@ export function ProductItem({
               <Text
                 variant={isSaleApplied ? "strileTroughInactive" : "default"}
               >
-                {`${getCurrencySymbol()} ${convertPrice(product.productDisplay?.productBody?.price?.value)}`}
+                {`${selectedCurrency} ${convertPrice(product.productDisplay?.productBody?.price?.value || "")}`}
               </Text>
               {isSaleApplied && (
-                <Text>{`${getCurrencySymbol()} ${convertPrice(priceWithSale.toString())}`}</Text>
+                <Text>{`${selectedCurrency} ${convertPrice(priceWithSale.toString())}`}</Text>
               )}
               {preorder !== emptyPreorder && (
                 <Text variant="inactive">preorder</Text>
