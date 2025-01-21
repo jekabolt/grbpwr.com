@@ -39,12 +39,18 @@ function convertCurrency(
   rates: { [key: string]: common_CurrencyRate } | undefined,
   targetCurrency: string,
 ): string {
-  if (!amount || !rates || !rates[targetCurrency]?.rate?.value) {
+  if (!amount || !rates || !targetCurrency) {
     return amount || "0";
   }
 
+  const targetRate = rates[targetCurrency];
+
+  if (!targetRate?.rate?.value) {
+    return amount;
+  }
+
   const baseAmount = parseFloat(amount);
-  const rate = parseFloat(rates[targetCurrency].rate.value);
+  const rate = parseFloat(targetRate.rate.value);
   const convertedAmount = baseAmount * rate;
 
   return convertedAmount.toFixed(2);
