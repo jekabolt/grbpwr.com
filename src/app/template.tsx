@@ -12,10 +12,7 @@ export default async function Template({
 
   return (
     <CartStoreProvider>
-      <CurrencyStoreProvider
-        baseCurrency={heroData.dictionary?.baseCurrency || ""}
-        rates={heroData.rates?.currencies || {}}
-      >
+      <CurrencyStoreProvider rates={heroData.rates?.currencies || {}}>
         <DataContextProvider {...heroData}>{children}</DataContextProvider>
       </CurrencyStoreProvider>
     </CartStoreProvider>

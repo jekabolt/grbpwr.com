@@ -14,13 +14,11 @@ const CurrencyStoreContext = createContext<CurrencyStoreApi | undefined>(
 );
 
 interface CurrencyStoreProviderProps {
-  baseCurrency: string;
   rates: { [key: string]: common_CurrencyRate } | undefined;
 }
 
 export function CurrencyStoreProvider({
   children,
-  baseCurrency,
   rates,
 }: CurrencyStoreProviderProps & { children: ReactNode }) {
   const storeRef = useRef<CurrencyStoreApi | null>(null);
@@ -28,7 +26,6 @@ export function CurrencyStoreProvider({
   if (!storeRef.current) {
     storeRef.current = createCurrencyStore({
       ...defaultInitState,
-      selectedCurrency: baseCurrency,
       rates: rates || {},
     });
   }

@@ -6,7 +6,6 @@ import { CurrencyState, CurrencyStore } from "./store-types";
 export const defaultInitState: CurrencyState = {
     selectedCurrency: "EUR",
     rates: undefined,
-    baseCurrency: "EUR",
 };
 
 export const createCurrencyStore = (initState: CurrencyState = defaultInitState) => {
