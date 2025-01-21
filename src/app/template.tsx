@@ -1,5 +1,6 @@
 import { serviceClient } from "@/lib/api";
 import { CartStoreProvider } from "@/lib/stores/cart/store-provider";
+import { CurrencyStoreProvider } from "@/lib/stores/currency/store-provider";
 import { DataContextProvider } from "@/components/DataContext";
 
 export default async function Template({
@@ -11,7 +12,9 @@ export default async function Template({
 
   return (
     <CartStoreProvider>
-      <DataContextProvider {...heroData}>{children}</DataContextProvider>
+      <CurrencyStoreProvider rates={heroData.rates?.currencies || {}}>
+        <DataContextProvider {...heroData}>{children}</DataContextProvider>
+      </CurrencyStoreProvider>
     </CartStoreProvider>
   );
 }

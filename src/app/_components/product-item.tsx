@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { common_Product } from "@/api/proto-http/frontend";
-import { CURRENCY_MAP } from "@/constants";
+import { currencySymbols } from "@/constants";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
@@ -16,6 +17,7 @@ export function ProductItem({
   product: common_Product;
   className: string;
 }) {
+  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const isSaleApplied =
     product.productDisplay?.productBody?.salePercentage?.value !== "0";
 
@@ -61,10 +63,10 @@ export function ProductItem({
               <Text
                 variant={isSaleApplied ? "strileTroughInactive" : "default"}
               >
-                {`${CURRENCY_MAP.eth} ${product.productDisplay?.productBody?.price?.value}`}
+                {`${currencySymbols[selectedCurrency]} ${convertPrice(product.productDisplay?.productBody?.price?.value || "")}`}
               </Text>
               {isSaleApplied && (
-                <Text>{`${CURRENCY_MAP.eth} ${priceWithSale}`}</Text>
+                <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>
               )}
               {preorder !== emptyPreorder && (
                 <Text variant="inactive">preorder</Text>
