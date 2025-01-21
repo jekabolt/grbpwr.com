@@ -1,6 +1,5 @@
 import { persist } from "zustand/middleware";
 
-import { common_CurrencyRate } from "@/api/proto-http/frontend";
 import { createStore } from "zustand";
 import { CurrencyState, CurrencyStore } from "./store-types";
 
@@ -17,12 +16,6 @@ export const createCurrencyStore = (initState: CurrencyState = defaultInitState)
                 ...initState,
                 setSelectedCurrency: (currency: string) => {
                     set({ selectedCurrency: currency });
-                },
-                setRates: (rates: { [key: string]: common_CurrencyRate }) => {
-                    set({ rates });
-                },
-                setBaseCurrency: (currency: string) => {
-                    set({ baseCurrency: currency });
                 },
                 convertPrice: (amount: string) => {
                     const { rates, selectedCurrency } = get();

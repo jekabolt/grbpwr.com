@@ -8,8 +8,6 @@ export interface CurrencyState {
 
 export interface CurrencyActions {
     setSelectedCurrency: (currency: string) => void;
-    setRates: (rates: { [key: string]: common_CurrencyRate }) => void;
-    setBaseCurrency: (currency: string) => void;
     convertPrice: (amount: string) => string;
 }
 
