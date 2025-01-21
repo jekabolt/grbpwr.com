@@ -5,7 +5,7 @@ import { useDataContext } from "@/components/DataContext";
 import { Text } from "@/components/ui/text";
 
 export function PriceSummary({ order, form }: PriceSummaryProps) {
-  const { dictionary } = useDataContext();
+  const { dictionary, convertPrice } = useDataContext();
 
   if (!order) return null;
 
@@ -21,7 +21,7 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
       <div className="space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>subtotal:</Text>
-          <div>{order?.subtotal?.value}</div>
+          <div>{convertPrice(order?.subtotal?.value)}</div>
         </div>
         {(selectedShipmentCarrierPrice || promoFreeShipping) && (
           <div className="flex justify-between">
@@ -43,7 +43,7 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
         <div className="pt-5">
           <div className="flex justify-between border-t border-dashed border-textInactiveColor pt-3">
             <Text variant={"uppercase"}>grand total:</Text>
-            <div>{order.totalSale?.value} </div>
+            <div>{convertPrice(order.totalSale?.value)} </div>
           </div>
         </div>
       </div>

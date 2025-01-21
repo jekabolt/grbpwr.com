@@ -1,5 +1,6 @@
 "use client";
 
+import { currencySymbols } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { cn } from "@/lib/utils";
@@ -7,16 +8,13 @@ import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
-import { currencySymbols } from "./currency-popover";
-
-// ... keep currencySymbols object as is ...
-
 interface Props {
   title?: string;
 }
 
 export default function CurrencyPopover({ title }: Props) {
-  const { rates, selectedCurrency, setSelectedCurrency } = useDataContext();
+  const { rates, selectedCurrency, setSelectedCurrency, getCurrencySymbol } =
+    useDataContext();
 
   if (!rates?.currencies) return null;
 
@@ -24,7 +22,7 @@ export default function CurrencyPopover({ title }: Props) {
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
         <Button size="sm" className="uppercase">
-          {`Currency: ${currencySymbols[selectedCurrency]}`}
+          {`Currency: ${getCurrencySymbol()}`}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>

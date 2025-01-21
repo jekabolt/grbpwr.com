@@ -9,7 +9,7 @@ import CartItemSize from "./CartItemSize";
 import ProductRemoveButton from "./ProductRemoveButton";
 
 export default function ItemRow({ product, hideQuantityButtons }: Props) {
-  const { selectedCurrency } = useDataContext();
+  const { getCurrencySymbol, convertPrice } = useDataContext();
   if (!product) return null;
 
   return (
@@ -42,7 +42,7 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
             />
           )}
           <Text>
-            {selectedCurrency} {product.productPrice}
+            {getCurrencySymbol()} {convertPrice(product.productPrice)}
           </Text>
         </div>
       </div>

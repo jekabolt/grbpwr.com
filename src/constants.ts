@@ -43,6 +43,30 @@ export const GENDER_MAP: Record<string, common_GenderEnum> = {
   ukn: "GENDER_ENUM_UNKNOWN",
 };
 
+export const currencySymbols: Record<string, string> = {
+  Bitcoin: "₿", // Bitcoin
+  CHF: "Fr", // Swiss Franc
+  CNY: "¥", // Chinese Yuan
+  CZK: "Kč", // Czech Republic Koruna
+  DKK: "kr", // Danish Krone
+  EUR: "€", // Euro
+  Ethereum: "Ξ", // Ethereum
+  GBP: "£", // British Pound Sterling
+  GEL: "₾", // Georgian Lari
+  HKD: "$", // Hong Kong Dollar
+  HUF: "Ft", // Hungarian Forint
+  ILS: "₪", // Israeli New Sheqel
+  JPY: "¥", // Japanese Yen
+  NOK: "kr", // Norwegian Krone
+  PLN: "zł", // Polish Zloty
+  RUB: "₽", // Russian Ruble
+  SEK: "kr", // Swedish Krona
+  SGD: "$", // Singapore Dollar
+  TRY: "₺", // Turkish Lira
+  UAH: "₴", // Ukrainian Hryvnia
+  USD: "$", // United States Dollar
+};
+
 export type OrderFactorOption = {
   factor: common_OrderFactor;
   name: string;
