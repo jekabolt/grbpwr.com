@@ -39,7 +39,7 @@ export function Footer({
   return (
     <footer
       className={cn(
-        "blackTheme flex h-full w-full flex-col gap-16 bg-bgColor bg-black text-textColor md:h-screen md:justify-between",
+        "blackTheme flex h-full w-full flex-col gap-16 bg-bgColor text-textColor md:h-screen md:justify-between",
         className,
       )}
     >

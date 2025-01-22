@@ -1,10 +1,9 @@
-import { Footer } from "@/app/_components/footer";
+import { MiniFooter } from "@/app/_components/mini-footer";
 
 import { Header } from "../app/_components/header";
 
-export default function NavigationLayout({
+export default function AdditionalNavigationLayout({
   children,
-  hideForm,
 }: Readonly<{
   children: React.ReactNode;
   hideForm?: boolean;
@@ -13,7 +12,7 @@ export default function NavigationLayout({
     <div className="relative min-h-screen bg-bgColor">
       <Header />
       <div className="w-full md:px-0">{children}</div>
-      <Footer hideForm={hideForm} className="p-2 pb-14 md:pb-0" />
+      <MiniFooter />
     </div>
   );
 }

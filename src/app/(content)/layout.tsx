@@ -1,4 +1,4 @@
-import { Header } from "../_components/header";
+import AdditionalNavigationLayout from "@/components/additional-navigation-layout";
 
 export default function Layout({
   children,
@@ -6,11 +6,10 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      <Header />
+    <AdditionalNavigationLayout>
       <div className="px-4 text-sm md:text-base lg:px-32 lg:py-10 lg:text-lg">
         {children}
       </div>
-    </div>
+    </AdditionalNavigationLayout>
   );
 }

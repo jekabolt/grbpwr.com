@@ -21,6 +21,9 @@ export function FooterNav({ className }: { className?: string }) {
       <Button asChild>
         <Link href="/terms-and-conditions">terms and conditions</Link>
       </Button>
+      <Button asChild>
+        <Link href="/customer-support">customer support</Link>
+      </Button>
     </nav>
   );
 }
