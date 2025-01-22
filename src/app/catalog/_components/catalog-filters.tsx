@@ -6,9 +6,11 @@ import Sort from "./Sort";
 
 export default function Filters() {
   return (
-    <div className="flex flex-row items-start justify-between">
-      <Category />
-      <div className="flex w-auto gap-24">
+    <div className="flex items-start justify-between">
+      <div className="flex-1">
+        <Category />
+      </div>
+      <div className="flex shrink-0 gap-24">
         <Sort />
         <Size />
       </div>

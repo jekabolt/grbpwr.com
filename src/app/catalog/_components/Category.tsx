@@ -39,7 +39,7 @@ export default function Category() {
   }
 
   return (
-    <Text variant="uppercase">
+    <Text variant="uppercase" size="small">
       {selectedCategories
         ? selectedCategoryIds.map((id) => getCategoryName(id)).join(", ")
         : "all categories"}
