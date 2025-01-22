@@ -75,7 +75,7 @@ export function Footer({
         </Text>
         <div className="flex w-1/2 justify-end justify-between space-x-5">
           {links.map((link) => (
-            <Button asChild key={link.text}>
+            <Button asChild key={link.text} className="uppercase">
               <Link href={link.href}>{link.text}</Link>
             </Button>
           ))}
