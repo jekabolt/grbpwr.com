@@ -16,7 +16,10 @@ export function MiniFooter() {
           <Logo />
         </div>
         <div className="grid gap-y-16 lg:grid-cols-3 lg:gap-x-36 lg:gap-y-6">
-          <FooterNav className="col-span-3 grid gap-y-6 uppercase lg:grid-cols-3 lg:gap-x-36" />
+          <FooterNav
+            isMini
+            className="col-span-3 grid gap-y-6 uppercase lg:grid-cols-3 lg:gap-x-36"
+          />
           <div className="lg:col-start-3">
             <CurrencyPopover align="start" title="Currency:" />
           </div>
