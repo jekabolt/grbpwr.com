@@ -20,8 +20,11 @@ export default function CurrencyPopover({ title }: Props) {
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button size="sm" className="uppercase">
-          {`Currency: ${currencySymbols[selectedCurrency]}`}
+        <Button size="sm" className="uppercase ">
+          currency:{" "}
+          <Text component="span" variant="inactive">
+            {currencySymbols[selectedCurrency]} / {selectedCurrency}
+          </Text>
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>

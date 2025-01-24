@@ -40,7 +40,9 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
         <GenericPopover
           title={title}
           openElement={
-            <Trigger defaultValue={currencySymbols[selectedCurrency]} />
+            <Trigger
+              defaultValue={`${currencySymbols[selectedCurrency]} / ${selectedCurrency}`}
+            />
           }
           className="border border-white"
           variant="currency"

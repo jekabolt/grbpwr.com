@@ -43,18 +43,18 @@ export function Footer({
         className,
       )}
     >
-      <div className="flex w-full flex-col items-start justify-between gap-16 md:flex-row">
-        <div className="w-2/3 px-2 pt-16 md:w-1/3 md:p-6">
+      <div className="flex w-full flex-col items-start justify-between gap-20 md:flex-row">
+        <div className="inline-block aspect-square w-52 md:w-96 md:pl-4">
           <Logo />
         </div>
-        <div className="flex h-full w-full flex-col gap-24 pt-6 md:w-1/2">
-          <div className="flex w-full flex-col justify-between gap-10 md:flex-row">
-            <div className="flex w-full flex-row gap-6 md:flex-col">
-              <div className="space-y-6">
+        <div className="flex h-full w-full flex-col gap-24 md:w-1/2 md:gap-36">
+          <div className="flex w-full flex-col justify-between gap-16 md:flex-row">
+            <div className="flex w-full flex-row justify-between gap-6 md:flex-col md:justify-start">
+              <div className="space-y-3 md:space-y-6">
                 <Text variant="inactive">press</Text>
                 <Text>work@grbpwr.com</Text>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-3 md:space-y-6">
                 <Text variant="inactive">help</Text>
                 <Text>client@grbpwr.com</Text>
               </div>
@@ -69,11 +69,14 @@ export function Footer({
           <NewslatterForm />
         </div>
       </div>
-      <div className="flex w-full justify-between">
-        <Text variant="inactive" className="uppercase">
+      <div className="flex w-full flex-col justify-between gap-16 md:flex-row">
+        <Text
+          variant="inactive"
+          className="order-last uppercase md:order-first"
+        >
           {`grbpwr ${currentYear()}©`}
         </Text>
-        <div className="flex w-1/2 justify-end justify-between space-x-5">
+        <div className="order-first flex w-full justify-between md:order-last md:w-1/2">
           {links.map((link) => (
             <Button asChild key={link.text} className="uppercase">
               <Link href={link.href}>{link.text}</Link>
