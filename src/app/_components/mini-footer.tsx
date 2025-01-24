@@ -4,11 +4,12 @@ import { Logo } from "@/components/ui/icons/logo";
 import CurrencyPopover from "./currency-popover";
 import { FooterNav } from "./footer-nav";
 
-export function MiniFooter() {
+export function MiniFooter({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
         "blackTheme w-full bg-bgColor p-2.5 pb-28 text-textColor lg:py-10 lg:pl-10 lg:pr-2",
+        className,
       )}
     >
       <div className="flex w-full flex-col gap-16 lg:flex-row lg:justify-between">
