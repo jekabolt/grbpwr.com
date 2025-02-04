@@ -13,7 +13,7 @@ export default function NavigationLayout({
     <div className="relative min-h-screen bg-bgColor">
       <Header />
       <div className="w-full md:px-0">{children}</div>
-      <Footer hideForm={hideForm} className="px-2.5 pb-28 pt-16 md:py-7" />
+      <Footer hideForm={hideForm} />
     </div>
   );
 }

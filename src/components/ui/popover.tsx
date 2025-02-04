@@ -57,9 +57,9 @@ function PopoverContent({
         side="bottom"
         align="center"
         className={cn(
-          "blackTheme relative z-50 w-full bg-bgColor px-2 py-6 text-textColor",
+          "relative z-50 w-full bg-bgColor px-2 py-6",
           {
-            "max-h-[50vh] overflow-y-scroll p-2": title,
+            "no-scroll-bar max-h-[50vh] overflow-y-scroll p-2": title,
           },
           className,
         )}
@@ -68,9 +68,9 @@ function PopoverContent({
         {title && (
           <Popover.Close
             className={cn(
-              "blackTheme fixed left-0 top-0 flex w-full justify-between bg-bgColor p-2 text-textColor",
+              "fixed left-0 top-0 flex w-full justify-between bg-bgColor p-2",
               {
-                "border-l border-r border-t border-white":
+                "border-inactive border-l border-r border-t":
                   variant === "currency",
               },
             )}
@@ -78,9 +78,6 @@ function PopoverContent({
             <Text variant="uppercase" component="span">
               {title}
             </Text>
-            <span aria-label="Close">
-              {"["}X{"]"}
-            </span>
           </Popover.Close>
         )}
         <div className="mt-10">{children}</div>
