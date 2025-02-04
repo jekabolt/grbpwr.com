@@ -14,13 +14,13 @@ export function MobileNavCart() {
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button variant="main">
+        <Button variant="simpleReverse">
           cart {itemsQuantity ? `[${itemsQuantity}]` : ""}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-textColor" />
-        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-30 flex h-screen w-screen flex-col p-2 pt-5 ">
+        <DialogPrimitives.Content className="fixed left-0 top-0 z-30 flex h-screen w-screen flex-col p-2 pt-5 ">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>

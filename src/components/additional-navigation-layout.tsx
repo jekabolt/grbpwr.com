@@ -4,15 +4,16 @@ import { Header } from "../app/_components/header";
 
 export default function AdditionalNavigationLayout({
   children,
+  blackTheme,
 }: Readonly<{
   children: React.ReactNode;
-  hideForm?: boolean;
+  blackTheme?: boolean;
 }>) {
   return (
     <div className="relative min-h-screen bg-bgColor">
       <Header />
       <div className="w-full md:px-0">{children}</div>
-      <MiniFooter />
+      <MiniFooter blackTheme={blackTheme} />
     </div>
   );
 }

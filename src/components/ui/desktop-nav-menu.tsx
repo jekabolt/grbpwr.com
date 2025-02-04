@@ -23,13 +23,11 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
       <NavigationMenu.List className="flex list-none gap-1">
         <NavigationMenu.Item>
           <NavigationMenu.Trigger
-            className={cn(
-              "bg-textColor px-2 text-bgColor data-[state=open]:bg-bgColor data-[state=open]:text-textColor",
-            )}
+            className={cn("px-2 data-[state=open]:underline")}
           >
             <Link href={`/catalog?${men}`}>men</Link>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="blackTheme absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
+          <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
             <div className="flex gap-x-7">
               {Object.entries(categoriesGroups).map(([key, category], i) => (
                 <LinksGroup
@@ -50,13 +48,11 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
 
         <NavigationMenu.Item>
           <NavigationMenu.Trigger
-            className={cn(
-              "bg-textColor px-2 text-bgColor data-[state=open]:bg-bgColor data-[state=open]:text-textColor",
-            )}
+            className={cn("px-2 data-[state=open]:underline")}
           >
             <Link href={`/catalog?${women}`}>women</Link>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="blackTheme absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
+          <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
             <div className="flex gap-x-7">
               {Object.entries(categoriesGroups).map(([key, category], i) => (
                 <LinksGroup
@@ -76,7 +72,7 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
-          <Button variant="simple" asChild>
+          <Button variant="simpleReverse" asChild>
             <NavigationMenu.Link href="/archive" className="px-2">
               archive
             </NavigationMenu.Link>

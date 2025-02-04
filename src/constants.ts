@@ -49,7 +49,7 @@ export const currencySymbols: Record<string, string> = {
   CZK: "Kč", // Czech Republic Koruna
   DKK: "kr", // Danish Krone
   EUR: "€", // Euro
-  Ethereum: "Ξ", // Ethereum
+  Ethereum: "⟠", // Ethereum
   GBP: "£", // British Pound Sterling
   GEL: "₾", // Georgian Lari
   HKD: "$", // Hong Kong Dollar
