@@ -40,33 +40,11 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
       <div className="relative hidden lg:block" ref={ref}>
         <Button
           onClick={() => setOpenStatus((v) => !v)}
-          className="group flex items-center"
+          variant={open ? "underline" : "default"}
+          size="sm"
+          className="underline-offset-2 hover:underline"
         >
-          <span
-            className={cn(
-              "items-center border-b-2 border-transparent leading-none transition-all duration-200 group-hover:border-current",
-              { "border-current": open },
-            )}
-          >
-            cart{" "}
-            <span
-              className={cn(
-                "transition-opacity duration-200 group-hover:opacity-0",
-                { "opacity-0": open },
-              )}
-            >
-              [
-            </span>
-            <span>{itemsQuantity ? itemsQuantity : ""}</span>
-            <span
-              className={cn(
-                "transition-opacity duration-200 group-hover:opacity-0",
-                { "opacity-0": open },
-              )}
-            >
-              ]
-            </span>
-          </span>
+          cart {itemsQuantity ? itemsQuantity : ""}
         </Button>
         <div>
           <div

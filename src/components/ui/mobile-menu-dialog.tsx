@@ -21,7 +21,9 @@ export function MobileMenuDialog({
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button variant={"simpleReverse"}>menu</Button>
+        <Button size="sm" variant={"simpleReverse"}>
+          menu
+        </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-30 bg-textColor" />

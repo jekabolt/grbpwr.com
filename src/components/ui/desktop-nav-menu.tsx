@@ -19,13 +19,17 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
   );
 
   return (
-    <NavigationMenu.Root className={cn("flex-none", className)}>
-      <NavigationMenu.List className="flex list-none gap-1">
+    <NavigationMenu.Root className={cn("", className)}>
+      <NavigationMenu.List className="flex items-center gap-1">
         <NavigationMenu.Item>
           <NavigationMenu.Trigger
-            className={cn("px-2 data-[state=open]:underline")}
+            className={cn(
+              "flex items-center px-2 text-textSmallSize data-[state=open]:underline",
+            )}
           >
-            <Link href={`/catalog?${men}`}>men</Link>
+            <Link href={`/catalog?${men}`} className="flex items-center">
+              men
+            </Link>
           </NavigationMenu.Trigger>
           <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
             <div className="flex gap-x-7">
@@ -48,9 +52,13 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
 
         <NavigationMenu.Item>
           <NavigationMenu.Trigger
-            className={cn("px-2 data-[state=open]:underline")}
+            className={cn(
+              "flex items-center px-2 text-textSmallSize data-[state=open]:underline",
+            )}
           >
-            <Link href={`/catalog?${women}`}>women</Link>
+            <Link href={`/catalog?${women}`} className="flex items-center">
+              women
+            </Link>
           </NavigationMenu.Trigger>
           <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
             <div className="flex gap-x-7">
@@ -75,7 +83,7 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
           <Button asChild>
             <NavigationMenu.Link
               href="/archive"
-              className="px-2 underline-offset-2 hover:underline"
+              className="flex items-center px-2 text-textSmallSize underline-offset-2 hover:underline"
             >
               archive
             </NavigationMenu.Link>

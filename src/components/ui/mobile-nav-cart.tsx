@@ -14,8 +14,8 @@ export function MobileNavCart() {
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button variant="simpleReverse">
-          cart {itemsQuantity ? `[${itemsQuantity}]` : ""}
+        <Button size="sm" variant="simpleReverse">
+          cart {itemsQuantity ? itemsQuantity : ""}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>

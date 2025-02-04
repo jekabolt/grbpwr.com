@@ -19,44 +19,8 @@
     /* TEXT */
     --text-giant: 200px;
     --text-giant-small: 110px;
-    --text-base: @apply text-base;
-    --text-small: @apply text-xs;
-  }
-
-  .blueTheme {
-    --text: #fff;
-    --inactive: #cccccc;
-    --background: #311eee;
-    --highlight: #fff;
-    --error: #ff0000;
-    --text-select: #75fb4c;
-    /* components-specific colors */
-    --button-text: #000;
-    --visited-link: #b3edff;
-
-    /* TEXT */
-    --text-giant: 200px;
-    --text-giant-small: 110px;
-    --text-base: @apply text-base;
-    --text-small: @apply text-xs;
-  }
-
-  .blueTheme {
-    --text: #fff;
-    --inactive: #cccccc;
-    --background: #311eee;
-    --highlight: #fff;
-    --error: #ff0000;
-    --text-select: #75fb4c;
-    /* components-specific colors */
-    --button-text: #000;
-    --visited-link: #b3edff;
-
-    /* TEXT */
-    --text-giant: 200px;
-    --text-giant-small: 110px;
-    --text-base: @apply text-base;
-    --text-small: @apply text-xs;
+    --text-base: 16px;
+    --text-small: 12px;
   }
 
   .blackTheme {
@@ -73,8 +37,8 @@
     /* TEXT */
     --text-giant: 200px;
     --text-giant-small: 110px;
-    --text-base: @apply text-base;
-    --text-small: @apply text-xs;
+    --text-base: 16px;
+    --text-small: 12px;
   }
 
   /* * {
