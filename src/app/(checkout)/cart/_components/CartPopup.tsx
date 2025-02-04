@@ -37,18 +37,35 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
       <div className="block lg:hidden">
         <MobileNavCart />
       </div>
-      <div className="group relative hidden lg:block" ref={ref}>
+      <div className="relative hidden lg:block" ref={ref}>
         <Button
           onClick={() => setOpenStatus((v) => !v)}
-          variant={open ? "underline" : "simpleReverse"}
-          className="group underline-offset-2 hover:underline"
+          className="group flex items-center"
         >
-          cart{" "}
-          <span className={cn("group-hover:hidden", { hidden: open })}>
-            {itemsQuantity ? `[${itemsQuantity}]` : ""}
-          </span>
-          <span className={cn("hidden group-hover:inline", { inline: open })}>
-            {itemsQuantity ? itemsQuantity : ""}
+          <span
+            className={cn(
+              "items-center border-b-2 border-transparent leading-none transition-all duration-200 group-hover:border-current",
+              { "border-current": open },
+            )}
+          >
+            cart{" "}
+            <span
+              className={cn(
+                "transition-opacity duration-200 group-hover:opacity-0",
+                { "opacity-0": open },
+              )}
+            >
+              [
+            </span>
+            <span>{itemsQuantity ? itemsQuantity : ""}</span>
+            <span
+              className={cn(
+                "transition-opacity duration-200 group-hover:opacity-0",
+                { "opacity-0": open },
+              )}
+            >
+              ]
+            </span>
           </span>
         </Button>
         <div>

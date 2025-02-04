@@ -19,7 +19,7 @@ export function MobileNavCart() {
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-textColor" />
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-bgColor" />
         <DialogPrimitives.Content className="fixed left-0 top-0 z-30 flex h-screen w-screen flex-col p-2 pt-5 ">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
@@ -29,7 +29,7 @@ export function MobileNavCart() {
               shopping Cart [{itemsQuantity?.toString().padStart(2, "0")}]
             </Text>
             <DialogPrimitives.Close asChild>
-              <Button className="bg-black text-textColor">[X]</Button>
+              <Button>[X]</Button>
             </DialogPrimitives.Close>
           </div>
 

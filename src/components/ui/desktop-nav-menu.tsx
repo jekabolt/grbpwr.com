@@ -72,8 +72,11 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
-          <Button variant="simpleReverse" asChild>
-            <NavigationMenu.Link href="/archive" className="px-2">
+          <Button asChild>
+            <NavigationMenu.Link
+              href="/archive"
+              className="px-2 underline-offset-2 hover:underline"
+            >
               archive
             </NavigationMenu.Link>
           </Button>
