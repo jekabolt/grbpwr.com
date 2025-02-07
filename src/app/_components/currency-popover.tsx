@@ -12,7 +12,7 @@ import MobileCurrencyPopover from "./mobile-currency-popover";
 
 interface Props {
   align?: "start" | "end";
-  blackTheme?: boolean;
+  theme?: "light" | "dark";
   title?: string;
 }
 
@@ -30,7 +30,7 @@ function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
 export default function CurrencyPopover({
   align = "end",
   title,
-  blackTheme = false,
+  theme = "light",
 }: Props) {
   const { selectedCurrency, rates, setSelectedCurrency } = useCurrency(
     (state) => state,
@@ -39,7 +39,7 @@ export default function CurrencyPopover({
   return (
     <>
       <div className="block lg:hidden">
-        <MobileCurrencyPopover title={title} blackTheme={blackTheme} />
+        <MobileCurrencyPopover title={title} theme={theme} />
       </div>
       <div className="hidden lg:block">
         <GenericPopover
@@ -50,7 +50,7 @@ export default function CurrencyPopover({
             />
           }
           className={cn("border-inactive border", {
-            "blackTheme bg-bgColor text-textColor": blackTheme,
+            "blackTheme bg-bgColor text-textColor": theme === "dark",
           })}
           variant="currency"
           contentProps={{

@@ -14,7 +14,7 @@ export default async function Page() {
 
   return (
     <div className="blackTheme bg-bgColor text-textColor">
-      <AdditionalNavigationLayout blackTheme>
+      <AdditionalNavigationLayout theme="dark">
         <div className="flex flex-col gap-14">
           {nonEmptyArchives?.map((a, i) => (
             <div key={a.archive?.id || i} className="text-textColor">

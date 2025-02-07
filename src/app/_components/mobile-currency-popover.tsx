@@ -10,10 +10,10 @@ import { Text } from "@/components/ui/text";
 
 interface Props {
   title?: string;
-  blackTheme?: boolean;
+  theme?: "light" | "dark";
 }
 
-export default function CurrencyPopover({ title, blackTheme }: Props) {
+export default function CurrencyPopover({ title, theme }: Props) {
   const { selectedCurrency, rates, setSelectedCurrency } = useCurrency(
     (state) => state,
   );
@@ -21,7 +21,7 @@ export default function CurrencyPopover({ title, blackTheme }: Props) {
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button size="sm" className="uppercase ">
+        <Button className="uppercase ">
           currency:{" "}
           <Text component="span" variant="inactive">
             {currencySymbols[selectedCurrency]} / {selectedCurrency}
@@ -34,7 +34,7 @@ export default function CurrencyPopover({ title, blackTheme }: Props) {
           className={cn(
             "fixed left-0 top-0 z-30 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor",
             {
-              blackTheme: blackTheme,
+              "blackTheme bg-bgColor text-textColor": theme === "dark",
             },
           )}
         >

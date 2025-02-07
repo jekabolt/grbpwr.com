@@ -7,10 +7,10 @@ import { FooterNav } from "./footer-nav";
 
 export function MiniFooter({
   className,
-  blackTheme,
+  theme = "light",
 }: {
   className?: string;
-  blackTheme?: boolean;
+  theme?: "light" | "dark";
 }) {
   return (
     <footer
@@ -18,7 +18,7 @@ export function MiniFooter({
     >
       <div className="flex w-full flex-col gap-16 lg:flex-row lg:justify-between">
         <div className="inline-block aspect-square size-28">
-          {blackTheme ? <Logo /> : <WhiteLogo />}
+          {theme === "dark" ? <Logo /> : <WhiteLogo />}
         </div>
         <div className="grid gap-y-16 lg:grid-cols-3 lg:gap-x-36 lg:gap-y-6">
           <FooterNav
@@ -26,11 +26,7 @@ export function MiniFooter({
             className="col-span-3 grid gap-y-6 uppercase lg:grid-cols-3 lg:gap-x-36"
           />
           <div className="leading-none lg:col-start-3">
-            <CurrencyPopover
-              align="start"
-              title="Currency:"
-              blackTheme={blackTheme}
-            />
+            <CurrencyPopover align="start" title="Currency:" theme={theme} />
           </div>
         </div>
       </div>

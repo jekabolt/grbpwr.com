@@ -39,7 +39,7 @@ export function Footer({
   return (
     <footer
       className={cn(
-        "flex h-full w-full flex-col gap-16 px-2.5 pb-40 pt-10 md:h-screen md:justify-between md:px-7 md:py-10",
+        "flex w-full flex-col gap-16 px-2.5 pb-40 pt-10 md:gap-44 md:px-7 md:py-10",
         className,
       )}
     >
