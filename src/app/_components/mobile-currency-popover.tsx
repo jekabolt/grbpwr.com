@@ -10,9 +10,10 @@ import { Text } from "@/components/ui/text";
 
 interface Props {
   title?: string;
+  theme?: "light" | "dark";
 }
 
-export default function CurrencyPopover({ title }: Props) {
+export default function CurrencyPopover({ title, theme }: Props) {
   const { selectedCurrency, rates, setSelectedCurrency } = useCurrency(
     (state) => state,
   );
@@ -20,13 +21,23 @@ export default function CurrencyPopover({ title }: Props) {
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button size="sm" className="uppercase">
-          {`Currency: ${currencySymbols[selectedCurrency]}`}
+        <Button className="uppercase ">
+          currency:{" "}
+          <Text component="span" variant="inactive">
+            {currencySymbols[selectedCurrency]} / {selectedCurrency}
+          </Text>
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0" />
-        <DialogPrimitives.Content className="blackTheme fixed left-0 top-0 z-30 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor">
+        <DialogPrimitives.Content
+          className={cn(
+            "fixed left-0 top-0 z-30 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor",
+            {
+              "blackTheme bg-bgColor text-textColor": theme === "dark",
+            },
+          )}
+        >
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
@@ -40,23 +51,19 @@ export default function CurrencyPopover({ title }: Props) {
             <div className="space-y-2">
               {rates &&
                 Object.entries(rates).map(([k, v]) => (
-                  <div
-                    className={cn("leading-none", {
-                      "bg-textColor text-bgColor": k === selectedCurrency,
-                    })}
-                    key={k}
-                  >
+                  <div key={k}>
                     <Button
                       onClick={() => setSelectedCurrency(k)}
-                      className="flex w-full p-2"
+                      className={cn("flex w-full p-2 leading-none", {
+                        "underline underline-offset-2": k === selectedCurrency,
+                      })}
                     >
                       <Text
                         variant="inherit"
                         className="block min-w-8 text-left"
                       >
-                        {currencySymbols[k]}
+                        {currencySymbols[k]} {v.description}
                       </Text>
-                      {v.description}
                     </Button>
                   </div>
                 ))}

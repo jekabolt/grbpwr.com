@@ -8,11 +8,10 @@ import type {
 export const FOOTER_YEAR = new Date().getFullYear();
 
 export const FOOTER_LINKS: { text: string; href: string }[] = [
-  { text: "ig", href: "https://www.instagram.com/grb.pwr/" },
   { text: "x", href: "https://www.x.com/grbpwr/" },
-  { text: "tg", href: "https://www.t.me/grbpwr/" },
-  { text: "gh", href: "https://www.github.com/grbpwr/" },
-  { text: "p", href: "https://www.pinterest.com/grbpwr/" },
+  { text: "github", href: "https://www.github.com/grbpwr/" },
+  { text: "instagram", href: "https://www.instagram.com/grb.pwr/" },
+  { text: "telegram", href: "https://www.t.me/grbpwr/" },
 ];
 
 export const CATALOG_LIMIT = 16;
@@ -50,7 +49,7 @@ export const currencySymbols: Record<string, string> = {
   CZK: "Kč", // Czech Republic Koruna
   DKK: "kr", // Danish Krone
   EUR: "€", // Euro
-  Ethereum: "Ξ", // Ethereum
+  Ethereum: "⟠", // Ethereum
   GBP: "£", // British Pound Sterling
   GEL: "₾", // Georgian Lari
   HKD: "$", // Hong Kong Dollar

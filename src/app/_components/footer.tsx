@@ -3,7 +3,7 @@ import { FOOTER_LINKS as links } from "@/constants";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/ui/icons/logo";
+import { WhiteLogo } from "@/components/ui/icons/white-logo";
 import { Text } from "@/components/ui/text";
 
 import CurrencyPopover from "./currency-popover";
@@ -39,27 +39,27 @@ export function Footer({
   return (
     <footer
       className={cn(
-        "blackTheme flex h-full w-full flex-col gap-16 bg-bgColor bg-black text-textColor md:h-screen md:justify-between",
+        "flex w-full flex-col gap-16 px-2.5 pb-40 pt-10 md:gap-44 md:px-7 md:py-10",
         className,
       )}
     >
       <div className="flex w-full flex-col items-start justify-between gap-16 md:flex-row">
-        <div className="w-2/3 px-2 pt-16 md:w-1/3 md:p-6">
-          <Logo />
+        <div className="inline-block aspect-square w-16 md:w-96">
+          <WhiteLogo />
         </div>
-        <div className="flex h-full w-full flex-col gap-24 pt-6 md:w-1/2">
-          <div className="flex w-full flex-col justify-between gap-10 md:flex-row">
-            <div className="flex w-full flex-row gap-6 md:flex-col">
-              <div className="space-y-6">
+        <div className="flex h-full w-full flex-col gap-32 md:w-1/2 md:gap-44">
+          <div className="flex w-full flex-col justify-between gap-16 md:flex-row">
+            <div className="order-last flex w-full flex-col gap-6 md:order-none">
+              <div className="space-y-3 md:space-y-6">
                 <Text variant="inactive">press</Text>
                 <Text>work@grbpwr.com</Text>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-3 md:space-y-6">
                 <Text variant="inactive">help</Text>
                 <Text>client@grbpwr.com</Text>
               </div>
             </div>
-            <div className="w-full space-y-10">
+            <div className="order-first w-full space-y-16 md:order-none">
               <FooterNav className="flex-col gap-6 uppercase" />
               <div className="w-full">
                 <CurrencyPopover align="start" title="Currency:" />
@@ -69,13 +69,13 @@ export function Footer({
           <NewslatterForm />
         </div>
       </div>
-      <div className="flex w-full justify-between">
-        <Text variant="inactive" className="uppercase">
+      <div className="flex w-full flex-col justify-between gap-16 md:flex-row">
+        <Text className="order-last uppercase md:order-first">
           {`grbpwr ${currentYear()}©`}
         </Text>
-        <div className="flex w-1/2 justify-end justify-between space-x-5">
+        <div className="order-first flex w-full justify-between md:order-last md:w-1/2">
           {links.map((link) => (
-            <Button asChild key={link.text}>
+            <Button asChild key={link.text} className="uppercase">
               <Link href={link.href}>{link.text}</Link>
             </Button>
           ))}

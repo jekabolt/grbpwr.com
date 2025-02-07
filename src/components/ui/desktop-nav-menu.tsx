@@ -19,17 +19,19 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
   );
 
   return (
-    <NavigationMenu.Root className={cn("flex-none", className)}>
-      <NavigationMenu.List className="flex list-none gap-1">
+    <NavigationMenu.Root className={cn("", className)}>
+      <NavigationMenu.List className="flex items-center gap-1">
         <NavigationMenu.Item>
           <NavigationMenu.Trigger
             className={cn(
-              "bg-textColor px-2 text-bgColor data-[state=open]:bg-bgColor data-[state=open]:text-textColor",
+              "flex items-center px-2 text-textSmallSize data-[state=open]:underline",
             )}
           >
-            <Link href={`/catalog?${men}`}>men</Link>
+            <Link href={`/catalog?${men}`} className="flex items-center">
+              men
+            </Link>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="blackTheme absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
+          <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
             <div className="flex gap-x-7">
               {Object.entries(categoriesGroups).map(([key, category], i) => (
                 <LinksGroup
@@ -51,12 +53,14 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
         <NavigationMenu.Item>
           <NavigationMenu.Trigger
             className={cn(
-              "bg-textColor px-2 text-bgColor data-[state=open]:bg-bgColor data-[state=open]:text-textColor",
+              "flex items-center px-2 text-textSmallSize data-[state=open]:underline",
             )}
           >
-            <Link href={`/catalog?${women}`}>women</Link>
+            <Link href={`/catalog?${women}`} className="flex items-center">
+              women
+            </Link>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="blackTheme absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
+          <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
             <div className="flex gap-x-7">
               {Object.entries(categoriesGroups).map(([key, category], i) => (
                 <LinksGroup
@@ -76,8 +80,11 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
-          <Button variant="simple" asChild>
-            <NavigationMenu.Link href="/archive" className="px-2">
+          <Button asChild>
+            <NavigationMenu.Link
+              href="/archive"
+              className="flex items-center px-2 text-textSmallSize underline-offset-2 hover:underline"
+            >
               archive
             </NavigationMenu.Link>
           </Button>

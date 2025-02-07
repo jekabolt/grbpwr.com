@@ -52,7 +52,7 @@ export function ProductItem({
               fit="contain"
             />
           </div>
-          <div className="flex w-full flex-col gap-2 pt-2 text-sm">
+          <div className="flex w-full flex-col gap-2 pt-2">
             <Text
               variant="undrleineWithColors"
               className="overflow-hidden text-ellipsis leading-none"

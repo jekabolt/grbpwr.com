@@ -12,6 +12,7 @@ import MobileCurrencyPopover from "./mobile-currency-popover";
 
 interface Props {
   align?: "start" | "end";
+  theme?: "light" | "dark";
   title?: string;
 }
 
@@ -26,7 +27,11 @@ function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
   );
 }
 
-export default function CurrencyPopover({ align = "end", title }: Props) {
+export default function CurrencyPopover({
+  align = "end",
+  title,
+  theme = "light",
+}: Props) {
   const { selectedCurrency, rates, setSelectedCurrency } = useCurrency(
     (state) => state,
   );
@@ -34,15 +39,19 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
   return (
     <>
       <div className="block lg:hidden">
-        <MobileCurrencyPopover title={title} />
+        <MobileCurrencyPopover title={title} theme={theme} />
       </div>
       <div className="hidden lg:block">
         <GenericPopover
           title={title}
           openElement={
-            <Trigger defaultValue={currencySymbols[selectedCurrency]} />
+            <Trigger
+              defaultValue={`${currencySymbols[selectedCurrency]} / ${selectedCurrency}`}
+            />
           }
-          className="border border-white"
+          className={cn("border-inactive border", {
+            "blackTheme bg-bgColor text-textColor": theme === "dark",
+          })}
           variant="currency"
           contentProps={{
             sideOffset: title ? -25 : 16,
@@ -57,22 +66,18 @@ export default function CurrencyPopover({ align = "end", title }: Props) {
           >
             {rates &&
               Object.entries(rates).map(([k, v]) => (
-                <div
-                  className={cn("leading-none", {
-                    "bg-textColor text-bgColor": k === selectedCurrency,
-                  })}
-                  key={k}
-                >
+                <div key={k}>
                   <Button
                     onClick={() => {
                       setSelectedCurrency(k);
                     }}
-                    className="flex w-full"
+                    className={cn("flex w-full lowercase", {
+                      "underline underline-offset-2": k === selectedCurrency,
+                    })}
                   >
                     <Text variant="inherit" className="block min-w-8 text-left">
-                      {currencySymbols[k]}
+                      {currencySymbols[k]} {v.description}
                     </Text>
-                    {v.description}
                   </Button>
                 </div>
               ))}

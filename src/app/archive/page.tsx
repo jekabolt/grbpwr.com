@@ -1,9 +1,7 @@
 import { serviceClient } from "@/lib/api";
+import AdditionalNavigationLayout from "@/components/additional-navigation-layout";
 import { FullscreenImagesCarousel } from "@/components/images-carousel";
 import { ArchiveMediaItem } from "@/components/images-carousel/ArchiveMediaItem";
-import NavigationLayout from "@/components/navigation-layout";
-
-import { InfinityScrollCatalog } from "../catalog/_components/infinity-scroll-catalog";
 
 export default async function Page() {
   const { archives } = await serviceClient.GetArchivesPaged({
@@ -15,14 +13,13 @@ export default async function Page() {
   const nonEmptyArchives = archives?.filter((v) => v.archive) || [];
 
   return (
-    <div className="blueTheme">
-      <NavigationLayout>
+    <div className="blackTheme bg-bgColor text-textColor">
+      <AdditionalNavigationLayout theme="dark">
         <div className="flex flex-col gap-14">
           {nonEmptyArchives?.map((a, i) => (
             <div key={a.archive?.id || i} className="text-textColor">
               <div className="flex gap-3 overflow-x-scroll">
                 {/* todo: fix images. make sure all the images have known size + add scroll when there are more images  */}
-
                 {a.items && (
                   <FullscreenImagesCarousel
                     mediaList={a.items.map((x) => x.archiveItem?.media!)}
@@ -41,7 +38,7 @@ export default async function Page() {
             </div>
           ))}
         </div>
-      </NavigationLayout>
+      </AdditionalNavigationLayout>
     </div>
   );
 }

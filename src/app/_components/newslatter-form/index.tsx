@@ -7,13 +7,10 @@ import { formSubmitClick } from "./todo-schema";
 export default function NewslatterForm() {
   return (
     <form action={formSubmitClick}>
-      <Text variant="uppercase" className="mb-6">
+      <Text variant="uppercase" className="mb-7">
         newsletter
       </Text>
-      <label htmlFor="newsletter" className="mb-3 block">
-        <Text size="small">e-mail address</Text>
-      </label>
-      <div className="flex flex-col items-start gap-6">
+      <div className="flex flex-col items-start gap-6 lg:flex-row lg:items-end">
         <Input
           id="newsletter"
           type="email"
@@ -25,7 +22,7 @@ export default function NewslatterForm() {
           variant="main"
           size="lg"
           type="submit"
-          className="bg-textColor uppercase text-bgColor"
+          className="!bg-bgColor uppercase text-textColor"
         >
           subscribe
         </Button>
