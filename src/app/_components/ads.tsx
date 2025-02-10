@@ -16,6 +16,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   const productsRef = useRef<HTMLDivElement>(null);
   const productsTagRef = useRef<HTMLDivElement>(null);
   const archiveRef = useRef<HTMLDivElement>(null);
+  const hasScrolledRef = useRef<Set<HTMLDivElement>>(new Set());
 
   useEffect(() => {
     const scrollContainers = [
@@ -29,17 +30,23 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
 
       scrollContainers.forEach(({ ref, scrollAmount, mobileOnly }) => {
         const container = ref.current;
-        if (container?.children.length && (!mobileOnly || isMobile)) {
+        if (
+          container?.children.length &&
+          (!mobileOnly || isMobile) &&
+          !hasScrolledRef.current.has(container)
+        ) {
           container.scrollTo({
             left: scrollAmount,
             behavior: "smooth",
           });
+          hasScrolledRef.current.add(container);
         }
       });
     };
 
     const handleResize = () => {
       if (window.innerWidth < 1024) {
+        hasScrolledRef.current.clear();
         setTimeout(scrollToFirstItem, 100);
       }
     };
