@@ -16,8 +16,18 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   const productsRef = useRef<HTMLDivElement>(null);
   const productsTagRef = useRef<HTMLDivElement>(null);
   const archiveRef = useRef<HTMLDivElement>(null);
-  const hasScrolledRef = useRef<Set<HTMLDivElement>>(new Set());
+
+  // This keeps track of containers that have been auto-scrolled
+  const hasScrolledRef = useRef(new Set<HTMLDivElement>());
+  // This keeps track of containers that the user has manually scrolled
+  const userScrolledRef = useRef(new Set<HTMLDivElement>());
   const isInitialMountRef = useRef(true);
+
+  // Handle user scroll events on a container.
+  const handleUserScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const container = event.currentTarget;
+    userScrolledRef.current.add(container);
+  };
 
   useEffect(() => {
     if (!isInitialMountRef.current) {
@@ -36,10 +46,13 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
 
       scrollContainers.forEach(({ ref, scrollAmount, mobileOnly }) => {
         const container = ref.current;
+        // Only auto-scroll if the container has children, meets the screen check,
+        // hasn't been auto scrolled already, and hasn't been manually scrolled.
         if (
           container?.children.length &&
           (!mobileOnly || isMobile) &&
-          !hasScrolledRef.current.has(container)
+          !hasScrolledRef.current.has(container) &&
+          !userScrolledRef.current.has(container)
         ) {
           container.scrollTo({
             left: scrollAmount,
@@ -52,7 +65,14 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
 
     const handleResize = () => {
       if (window.innerWidth < 1024) {
-        hasScrolledRef.current.clear();
+        // For any container that the user hasn't scrolled manually,
+        // clear the auto-scroll flag so that we might auto-scroll them again.
+        scrollContainers.forEach(({ ref }) => {
+          const container = ref.current;
+          if (container && !userScrolledRef.current.has(container)) {
+            hasScrolledRef.current.delete(container);
+          }
+        });
         setTimeout(scrollToFirstItem, 100);
       }
     };
@@ -68,7 +88,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
             return (
-              <div className="relative h-screen w-full">
+              <div className="relative h-screen w-full" key={i}>
                 <div
                   key={e.single?.mediaLandscape?.id}
                   className="relative h-full w-full"
@@ -105,7 +125,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
           case "HERO_TYPE_DOUBLE":
             return (
               <div
-                key={e.double?.left?.mediaLandscape?.id}
+                key={i}
                 className="relative flex h-screen w-full flex-col lg:flex-row"
               >
                 <div className="relative h-full w-full">
@@ -172,7 +192,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
             return (
-              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2">
+              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2" key={i}>
                 <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProducts?.headline}
@@ -186,6 +206,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
 
                 <div
                   ref={productsRef}
+                  onScroll={handleUserScroll}
                   className="no-scroll-bar flex w-full items-center gap-2 overflow-x-scroll"
                 >
                   {e.featuredProducts?.products?.map((p) => (
@@ -200,7 +221,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
             return (
-              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2">
+              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2" key={i}>
                 <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProductsTag?.products?.headline}
@@ -213,6 +234,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 </div>
                 <div
                   ref={productsTagRef}
+                  onScroll={handleUserScroll}
                   className="no-scroll-bar flex w-full items-center gap-2.5 overflow-x-scroll"
                 >
                   {e.featuredProductsTag?.products?.products?.map((p) => (
@@ -227,7 +249,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_ARCHIVE":
             return (
-              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2">
+              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2" key={i}>
                 <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">{e.featuredArchive?.headline}</Text>
                   <Button variant="underline" className="uppercase" asChild>
@@ -238,6 +260,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 </div>
                 <div
                   ref={archiveRef}
+                  onScroll={handleUserScroll}
                   className="no-scroll-bar flex w-full items-center overflow-x-scroll"
                 >
                   <ArchiveItem
