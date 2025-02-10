@@ -9,11 +9,13 @@ import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
+import { ArchiveItem } from "./archive-item";
 import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   const productsRef = useRef<HTMLDivElement>(null);
   const productsTagRef = useRef<HTMLDivElement>(null);
+  const archiveRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const scrollToFirstItem = () => {
@@ -34,7 +36,16 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
           });
         }
       }
+
+      const archiveContainer = archiveRef.current;
+      if (archiveContainer && archiveContainer.children.length > 0) {
+        archiveContainer.scrollTo({
+          left: 200,
+          behavior: "smooth",
+        });
+      }
     };
+
     setTimeout(scrollToFirstItem, 100);
 
     const handleResize = () => {
@@ -55,15 +66,17 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             return (
               <div className="relative h-screen w-full">
                 <div
-                  key={e.single?.media?.id}
+                  key={e.single?.mediaLandscape?.id}
                   className="relative h-full w-full"
                 >
                   <Image
-                    src={e.single?.media?.media?.fullSize?.mediaUrl || ""}
+                    src={
+                      e.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""
+                    }
                     alt="ad hero image"
                     aspectRatio={calculateAspectRatio(
-                      e.single?.media?.media?.fullSize?.width,
-                      e.single?.media?.media?.fullSize?.height,
+                      e.single?.mediaLandscape?.media?.fullSize?.width,
+                      e.single?.mediaLandscape?.media?.fullSize?.height,
                     )}
                     fit="cover"
                   />
@@ -88,16 +101,19 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
           case "HERO_TYPE_DOUBLE":
             return (
               <div
-                key={e.double?.left?.media?.id}
+                key={e.double?.left?.mediaLandscape?.id}
                 className="relative flex h-screen w-full flex-col lg:flex-row"
               >
                 <div className="relative h-full w-full">
                   <Image
-                    src={e.double?.left?.media?.media?.fullSize?.mediaUrl || ""}
+                    src={
+                      e.double?.left?.mediaLandscape?.media?.fullSize
+                        ?.mediaUrl || ""
+                    }
                     alt="ad hero image"
                     aspectRatio={calculateAspectRatio(
-                      e.double?.left?.media?.media?.fullSize?.width,
-                      e.double?.left?.media?.media?.fullSize?.height,
+                      e.double?.left?.mediaLandscape?.media?.fullSize?.width,
+                      e.double?.left?.mediaLandscape?.media?.fullSize?.height,
                     )}
                     fit="cover"
                   />
@@ -117,17 +133,18 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                   </div>
                 </div>
                 <div
-                  key={e.double?.right?.media?.id}
+                  key={e.double?.right?.mediaLandscape?.id}
                   className="relative h-full w-full"
                 >
                   <Image
                     src={
-                      e.double?.right?.media?.media?.fullSize?.mediaUrl || ""
+                      e.double?.right?.mediaLandscape?.media?.fullSize
+                        ?.mediaUrl || ""
                     }
                     alt="ad hero image"
                     aspectRatio={calculateAspectRatio(
-                      e.double?.right?.media?.media?.fullSize?.width,
-                      e.double?.right?.media?.media?.fullSize?.height,
+                      e.double?.right?.mediaLandscape?.media?.fullSize?.width,
+                      e.double?.right?.mediaLandscape?.media?.fullSize?.height,
                     )}
                     fit="cover"
                   />
@@ -146,7 +163,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Button>
                   </div>
                 </div>
-                <div className="bg-overlay absolute inset-0 z-10 h-screen"></div>
+                <div className="absolute inset-0 z-10 h-screen bg-overlay"></div>
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
@@ -201,6 +218,28 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                       product={p}
                     />
                   ))}
+                </div>
+              </div>
+            );
+          case "HERO_TYPE_FEATURED_ARCHIVE":
+            return (
+              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2">
+                <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
+                  <Text variant="uppercase">{e.featuredArchive?.headline}</Text>
+                  <Button variant="underline" className="uppercase" asChild>
+                    <Link href={`/archive/${e.featuredArchive?.tag}`}>
+                      {e.featuredArchive?.exploreText}
+                    </Link>
+                  </Button>
+                </div>
+                <div
+                  ref={archiveRef}
+                  className="no-scroll-bar flex w-full items-center overflow-x-scroll"
+                >
+                  <ArchiveItem
+                    archive={e.featuredArchive?.archive}
+                    className="w-80 lg:w-96"
+                  />
                 </div>
               </div>
             );

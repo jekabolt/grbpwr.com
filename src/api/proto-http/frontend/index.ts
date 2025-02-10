@@ -13,6 +13,7 @@ export type GetHeroResponse = {
 
 export type common_HeroFull = {
   entities: common_HeroEntity[] | undefined;
+  navFeatured: common_NavFeatured | undefined;
 };
 
 export type common_HeroEntity = {
@@ -34,7 +35,8 @@ export type common_HeroType =
   | "HERO_TYPE_FEATURED_PRODUCTS_TAG"
   | "HERO_TYPE_FEATURED_ARCHIVE";
 export type common_HeroSingle = {
-  media: common_MediaFull | undefined;
+  mediaPortrait: common_MediaFull | undefined;
+  mediaLandscape: common_MediaFull | undefined;
   headline: string | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
@@ -115,7 +117,11 @@ export type common_ProductBody = {
   countryOfOrigin: string | undefined;
   price: googletype_Decimal | undefined;
   salePercentage: googletype_Decimal | undefined;
-  categoryId: number | undefined;
+  topCategoryId: number | undefined;
+  subCategoryId: number | undefined;
+  typeId: number | undefined;
+  modelWearsHeightCm: number | undefined;
+  modelWearsSizeId: number | undefined;
   description: string | undefined;
   careInstructions: string | undefined;
   composition: string | undefined;
@@ -194,38 +200,28 @@ export type common_HeroFeaturedArchive = {
   exploreText: string | undefined;
 };
 
-// ArchiveFull represents a full archive with items.
 export type common_ArchiveFull = {
-  archive: common_Archive | undefined;
-  items: common_ArchiveItemFull[] | undefined;
-};
-
-// Archive represents an archive entity.
-export type common_Archive = {
   id: number | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  updatedAt: wellKnownTimestamp | undefined;
-  archiveBody: common_ArchiveBody | undefined;
-};
-
-// ArchiveBody represents the insertable fields of an archive.
-export type common_ArchiveBody = {
   heading: string | undefined;
-  text: string | undefined;
+  description: string | undefined;
+  tag: string | undefined;
+  slug: string | undefined;
+  nextSlug: string | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  video: common_MediaFull | undefined;
+  media: common_MediaFull[] | undefined;
 };
 
-// ArchiveItemFull represents an item within an archive.
-export type common_ArchiveItemFull = {
-  id: number | undefined;
-  archiveId: number | undefined;
-  archiveItem: common_ArchiveItem | undefined;
+export type common_NavFeatured = {
+  men: common_NavFeaturedEntity | undefined;
+  women: common_NavFeaturedEntity | undefined;
 };
 
-// ArchiveItem represents the insertable fields of an archive item.
-export type common_ArchiveItem = {
+export type common_NavFeaturedEntity = {
   media: common_MediaFull | undefined;
-  url: string | undefined;
-  name: string | undefined;
+  exploreText: string | undefined;
+  featuredTag: string | undefined;
+  featuredArchiveId: string | undefined;
 };
 
 export type common_Dictionary = {
@@ -245,50 +241,20 @@ export type common_Dictionary = {
   composition: { [key: string]: string } | undefined;
 };
 
+// Category represents a hierarchical category structure
 export type common_Category = {
   id: number | undefined;
-  name: common_CategoryEnum | undefined;
+  name: string | undefined;
+  levelId: number | undefined;
+  level: string | undefined;
+  parentId: number | undefined;
 };
 
-export type common_CategoryEnum =
-  | "CATEGORY_ENUM_UNKNOWN"
-  | "CATEGORY_ENUM_T_SHIRT"
-  | "CATEGORY_ENUM_JEANS"
-  | "CATEGORY_ENUM_DRESS"
-  | "CATEGORY_ENUM_JACKET"
-  | "CATEGORY_ENUM_SWEATER"
-  | "CATEGORY_ENUM_PANT"
-  | "CATEGORY_ENUM_SKIRT"
-  | "CATEGORY_ENUM_SHORT"
-  | "CATEGORY_ENUM_BLAZER"
-  | "CATEGORY_ENUM_COAT"
-  | "CATEGORY_ENUM_SOCKS"
-  | "CATEGORY_ENUM_UNDERWEAR"
-  | "CATEGORY_ENUM_BRA"
-  | "CATEGORY_ENUM_HAT"
-  | "CATEGORY_ENUM_SCARF"
-  | "CATEGORY_ENUM_GLOVES"
-  | "CATEGORY_ENUM_SHOES"
-  | "CATEGORY_ENUM_BELT"
-  | "CATEGORY_ENUM_BAG"
-  | "CATEGORY_ENUM_OTHER";
 export type common_MeasurementName = {
   id: number | undefined;
-  name: common_MeasurementNameEnum | undefined;
+  name: string | undefined;
 };
 
-export type common_MeasurementNameEnum =
-  | "MEASUREMENT_NAME_ENUM_UNKNOWN"
-  | "MEASUREMENT_NAME_ENUM_WAIST"
-  | "MEASUREMENT_NAME_ENUM_INSEAM"
-  | "MEASUREMENT_NAME_ENUM_LENGTH"
-  | "MEASUREMENT_NAME_ENUM_RISE"
-  | "MEASUREMENT_NAME_ENUM_HIPS"
-  | "MEASUREMENT_NAME_ENUM_SHOULDERS"
-  | "MEASUREMENT_NAME_ENUM_BUST"
-  | "MEASUREMENT_NAME_ENUM_SLEEVE"
-  | "MEASUREMENT_NAME_ENUM_WIDTH"
-  | "MEASUREMENT_NAME_ENUM_HEIGHT";
 export type common_OrderStatus = {
   id: number | undefined;
   name: common_OrderStatusEnum | undefined;
@@ -332,19 +298,9 @@ export type common_ShipmentCarrierInsert = {
 
 export type common_Size = {
   id: number | undefined;
-  name: common_SizeEnum | undefined;
+  name: string | undefined;
 };
 
-export type common_SizeEnum =
-  | "SIZE_ENUM_UNKNOWN"
-  | "SIZE_ENUM_XXS"
-  | "SIZE_ENUM_XS"
-  | "SIZE_ENUM_S"
-  | "SIZE_ENUM_M"
-  | "SIZE_ENUM_L"
-  | "SIZE_ENUM_XL"
-  | "SIZE_ENUM_XXL"
-  | "SIZE_ENUM_OS";
 export type common_Genders = {
   id: common_GenderEnum | undefined;
   name: string | undefined;
@@ -437,9 +393,11 @@ export type common_FilterConditions = {
   from: string | undefined;
   to: string | undefined;
   onSale: boolean | undefined;
-  gender: common_GenderEnum | undefined;
+  gender: common_GenderEnum[] | undefined;
   color: string | undefined;
-  categoryIds: number[] | undefined;
+  topCategoryIds: number[] | undefined;
+  subCategoryIds: number[] | undefined;
+  typeIds: number[] | undefined;
   sizesIds: number[] | undefined;
   preorder: boolean | undefined;
   byTag: string | undefined;
@@ -547,7 +505,9 @@ export type common_OrderItem = {
   productBrand: string | undefined;
   slug: string | undefined;
   color: string | undefined;
-  categoryId: number | undefined;
+  topCategoryId: number | undefined;
+  subCategoryId: number | undefined;
+  typeId: number | undefined;
   sku: string | undefined;
   orderItem: common_OrderItemInsert | undefined;
 };
@@ -655,13 +615,16 @@ export type GetArchivesPagedRequest = {
 
 export type GetArchivesPagedResponse = {
   archives: common_ArchiveFull[] | undefined;
+  total: number | undefined;
 };
 
-export type GetArchiveByIdRequest = {
+export type GetArchiveRequest = {
+  heading: string | undefined;
+  tag: string | undefined;
   id: number | undefined;
 };
 
-export type GetArchiveByIdResponse = {
+export type GetArchiveResponse = {
   archive: common_ArchiveFull | undefined;
 };
 
@@ -688,8 +651,8 @@ export interface FrontendService {
   UnsubscribeNewsletter(request: UnsubscribeNewsletterRequest): Promise<UnsubscribeNewsletterResponse>;
   // GetArchivesPaged retrieves paged archives.
   GetArchivesPaged(request: GetArchivesPagedRequest): Promise<GetArchivesPagedResponse>;
-  // GetArchiveById retrieves an archive by its ID.
-  GetArchiveById(request: GetArchiveByIdRequest): Promise<GetArchiveByIdResponse>;
+  // GetArchive retrieves an archive by its heading, tag and id.
+  GetArchive(request: GetArchiveRequest): Promise<GetArchiveResponse>;
 }
 
 type RequestType = {
@@ -778,14 +741,26 @@ export function createFrontendServiceClient(
         queryParams.push(`filterConditions.onSale=${encodeURIComponent(request.filterConditions.onSale.toString())}`)
       }
       if (request.filterConditions?.gender) {
-        queryParams.push(`filterConditions.gender=${encodeURIComponent(request.filterConditions.gender.toString())}`)
+        request.filterConditions.gender.forEach((x) => {
+          queryParams.push(`filterConditions.gender=${encodeURIComponent(x.toString())}`)
+        })
       }
       if (request.filterConditions?.color) {
         queryParams.push(`filterConditions.color=${encodeURIComponent(request.filterConditions.color.toString())}`)
       }
-      if (request.filterConditions?.categoryIds) {
-        request.filterConditions.categoryIds.forEach((x) => {
-          queryParams.push(`filterConditions.categoryIds=${encodeURIComponent(x.toString())}`)
+      if (request.filterConditions?.topCategoryIds) {
+        request.filterConditions.topCategoryIds.forEach((x) => {
+          queryParams.push(`filterConditions.topCategoryIds=${encodeURIComponent(x.toString())}`)
+        })
+      }
+      if (request.filterConditions?.subCategoryIds) {
+        request.filterConditions.subCategoryIds.forEach((x) => {
+          queryParams.push(`filterConditions.subCategoryIds=${encodeURIComponent(x.toString())}`)
+        })
+      }
+      if (request.filterConditions?.typeIds) {
+        request.filterConditions.typeIds.forEach((x) => {
+          queryParams.push(`filterConditions.typeIds=${encodeURIComponent(x.toString())}`)
         })
       }
       if (request.filterConditions?.sizesIds) {
@@ -989,11 +964,17 @@ export function createFrontendServiceClient(
         method: "GetArchivesPaged",
       }) as Promise<GetArchivesPagedResponse>;
     },
-    GetArchiveById(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    GetArchive(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.heading) {
+        throw new Error("missing required field request.heading");
+      }
+      if (!request.tag) {
+        throw new Error("missing required field request.tag");
+      }
       if (!request.id) {
         throw new Error("missing required field request.id");
       }
-      const path = `api/frontend/archive/${request.id}`; // eslint-disable-line quotes
+      const path = `api/frontend/archive/${request.heading}/${request.tag}/${request.id}`; // eslint-disable-line quotes
       const body = null;
       const queryParams: string[] = [];
       let uri = path;
@@ -1006,8 +987,8 @@ export function createFrontendServiceClient(
         body,
       }, {
         service: "FrontendService",
-        method: "GetArchiveById",
-      }) as Promise<GetArchiveByIdResponse>;
+        method: "GetArchive",
+      }) as Promise<GetArchiveResponse>;
     },
   };
 }
