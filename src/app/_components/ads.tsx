@@ -18,35 +18,25 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   const archiveRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const scrollContainers = [
+      { ref: productsRef, scrollAmount: 50, mobileOnly: true },
+      { ref: productsTagRef, scrollAmount: 50, mobileOnly: true },
+      { ref: archiveRef, scrollAmount: 200, mobileOnly: false },
+    ];
+
     const scrollToFirstItem = () => {
-      if (window.innerWidth < 1024) {
-        const productsContainer = productsRef.current;
-        if (productsContainer && productsContainer.children.length > 0) {
-          productsContainer.scrollTo({
-            left: 50,
+      const isMobile = window.innerWidth < 1024;
+
+      scrollContainers.forEach(({ ref, scrollAmount, mobileOnly }) => {
+        const container = ref.current;
+        if (container?.children.length && (!mobileOnly || isMobile)) {
+          container.scrollTo({
+            left: scrollAmount,
             behavior: "smooth",
           });
         }
-
-        const productsTagContainer = productsTagRef.current;
-        if (productsTagContainer && productsTagContainer.children.length > 0) {
-          productsTagContainer.scrollTo({
-            left: 50,
-            behavior: "smooth",
-          });
-        }
-      }
-
-      const archiveContainer = archiveRef.current;
-      if (archiveContainer && archiveContainer.children.length > 0) {
-        archiveContainer.scrollTo({
-          left: 200,
-          behavior: "smooth",
-        });
-      }
+      });
     };
-
-    setTimeout(scrollToFirstItem, 100);
 
     const handleResize = () => {
       if (window.innerWidth < 1024) {
@@ -54,6 +44,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
       }
     };
 
+    setTimeout(scrollToFirstItem, 100);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
