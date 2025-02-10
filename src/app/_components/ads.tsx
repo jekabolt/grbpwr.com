@@ -17,8 +17,14 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   const productsTagRef = useRef<HTMLDivElement>(null);
   const archiveRef = useRef<HTMLDivElement>(null);
   const hasScrolledRef = useRef<Set<HTMLDivElement>>(new Set());
+  const isInitialMountRef = useRef(true);
 
   useEffect(() => {
+    if (!isInitialMountRef.current) {
+      return;
+    }
+    isInitialMountRef.current = false;
+
     const scrollContainers = [
       { ref: productsRef, scrollAmount: 50, mobileOnly: true },
       { ref: productsTagRef, scrollAmount: 50, mobileOnly: true },
