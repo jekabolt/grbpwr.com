@@ -16,25 +16,15 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   const productsRef = useRef<HTMLDivElement>(null);
   const productsTagRef = useRef<HTMLDivElement>(null);
   const archiveRef = useRef<HTMLDivElement>(null);
-
-  // This keeps track of containers that have been auto-scrolled
   const hasScrolledRef = useRef(new Set<HTMLDivElement>());
-  // This keeps track of containers that the user has manually scrolled
   const userScrolledRef = useRef(new Set<HTMLDivElement>());
-  const isInitialMountRef = useRef(true);
 
-  // Handle user scroll events on a container.
   const handleUserScroll = (event: React.UIEvent<HTMLDivElement>) => {
     const container = event.currentTarget;
     userScrolledRef.current.add(container);
   };
 
   useEffect(() => {
-    if (!isInitialMountRef.current) {
-      return;
-    }
-    isInitialMountRef.current = false;
-
     const scrollContainers = [
       { ref: productsRef, scrollAmount: 50, mobileOnly: true },
       { ref: productsTagRef, scrollAmount: 50, mobileOnly: true },
@@ -46,8 +36,6 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
 
       scrollContainers.forEach(({ ref, scrollAmount, mobileOnly }) => {
         const container = ref.current;
-        // Only auto-scroll if the container has children, meets the screen check,
-        // hasn't been auto scrolled already, and hasn't been manually scrolled.
         if (
           container?.children.length &&
           (!mobileOnly || isMobile) &&
@@ -65,8 +53,6 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
 
     const handleResize = () => {
       if (window.innerWidth < 1024) {
-        // For any container that the user hasn't scrolled manually,
-        // clear the auto-scroll flag so that we might auto-scroll them again.
         scrollContainers.forEach(({ ref }) => {
           const container = ref.current;
           if (container && !userScrolledRef.current.has(container)) {
