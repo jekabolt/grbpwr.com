@@ -1,7 +1,5 @@
 "use client";
 
-import { common_SizeEnum } from "@/api/proto-http/frontend";
-
 import { useDataContext } from "@/components/DataContext";
 import GenericPopover from "@/components/ui/popover";
 import { Text } from "@/components/ui/text";
@@ -22,7 +20,7 @@ export default function Size() {
   const sizeNames = sordedSizes?.map((size) => {
     return {
       ...size,
-      name: size.name?.replace("SIZE_ENUM_", "") as common_SizeEnum,
+      name: size.name || "",
     };
   });
 

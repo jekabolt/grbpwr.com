@@ -4,9 +4,8 @@ import { useState } from "react";
 import {
   common_GenderEnum,
   common_ProductSize,
-  common_SizeEnum,
 } from "@/api/proto-http/frontend";
-import { SIZE_NAME_MAP } from "@/constants";
+// import { SIZE_NAME_MAP } from "@/constants";
 import { useLockBodyScroll } from "@uidotdev/usehooks";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -42,8 +41,7 @@ export default function MeasurementsModalContent({
   const { dictionary } = useDataContext();
   const sizeNames = sizes?.map((s) => ({
     id: s.sizeId as number,
-    name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)
-      ?.name as common_SizeEnum,
+    name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
   }));
 
   const handleAddToCart = async () => {
@@ -71,7 +69,7 @@ export default function MeasurementsModalContent({
               className={`uppercase ${selectedSize === id ? "bg-black text-white" : ""}`}
               onClick={() => setSelectedSize(id)}
             >
-              {SIZE_NAME_MAP[name]}
+              {dictionary?.sizes?.find((dictS) => dictS.id === id)?.name || ""}
             </Button>
           ))}
         </div>

@@ -68,7 +68,7 @@ export function ProductInfo({ className, product }: Props) {
         productId={product?.product?.id || 0}
         sizes={product?.sizes || []}
         categoryId={
-          product?.product?.productDisplay?.productBody?.categoryId || 0
+          product?.product?.productDisplay?.productBody?.topCategoryId || 0
         }
         gender={product.product?.productDisplay?.productBody?.targetGender}
       />

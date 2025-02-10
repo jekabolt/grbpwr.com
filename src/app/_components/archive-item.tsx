@@ -18,7 +18,7 @@ export function ArchiveItem({
       <Button asChild>
         <Link className={cn("flex h-full w-full")} href={archive?.slug || ""}>
           {archive?.media?.map((m, id) => (
-            <div className={cn("group relative", className)}>
+            <div key={m.id} className={cn("group relative", className)}>
               <Image
                 src={m.media?.fullSize?.mediaUrl || ""}
                 alt="archive media"

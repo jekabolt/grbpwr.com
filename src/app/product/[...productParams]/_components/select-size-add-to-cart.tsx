@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import type {
-  common_ProductSize,
-  common_SizeEnum,
-} from "@/api/proto-http/frontend";
-import { SIZE_NAME_MAP } from "@/constants";
+import type { common_ProductSize } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
+// import { SIZE_NAME_MAP } from "@/constants";
+
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 
@@ -19,8 +17,7 @@ export function AddToCartForm({ sizes, id, className }: Props) {
 
   const sizeNames = sizes.map((s) => ({
     id: s.sizeId as number,
-    name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)
-      ?.name as common_SizeEnum,
+    name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
   }));
 
   const productQuanityInCart = products.find(
@@ -48,7 +45,7 @@ export function AddToCartForm({ sizes, id, className }: Props) {
             key={id}
             onClick={() => setActiveSizeId(id)}
           >
-            {SIZE_NAME_MAP[name]}
+            {dictionary?.sizes?.find((dictS) => dictS.id === id)?.name || ""}
           </Button>
         ))}
       </div>
