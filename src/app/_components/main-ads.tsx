@@ -11,7 +11,7 @@ export function MainAds({ main }: { main?: common_HeroMain }) {
 
   return (
     <div className="h-screen w-full">
-      <div className="h-full">
+      <div className="hidden h-full lg:block">
         <Image
           src={main.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""}
           aspectRatio={calculateAspectRatio(
@@ -22,8 +22,19 @@ export function MainAds({ main }: { main?: common_HeroMain }) {
           fit="cover"
         />
       </div>
+      <div className="block h-full lg:hidden">
+        <Image
+          src={main.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""}
+          aspectRatio={calculateAspectRatio(
+            main.single?.mediaPortrait?.media?.fullSize?.width,
+            main.single?.mediaPortrait?.media?.fullSize?.height,
+          )}
+          alt="main hero image"
+          fit="cover"
+        />
+      </div>
       <div className="absolute inset-0 z-10 h-screen bg-overlay"></div>
-      <div className="absolute inset-0  z-20 flex h-screen items-center">
+      <div className="absolute inset-x-0 top-32 z-20 flex h-screen items-center lg:top-20">
         <div className="flex w-full flex-col items-start gap-6 p-2 md:flex-row md:justify-between ">
           <Text variant="uppercase" className="text-white">
             {main.tag}
