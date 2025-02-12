@@ -5,8 +5,6 @@ import type { common_ProductSize } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
-// import { SIZE_NAME_MAP } from "@/constants";
-
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 

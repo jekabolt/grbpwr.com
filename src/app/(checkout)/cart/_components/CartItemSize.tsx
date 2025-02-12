@@ -1,6 +1,5 @@
 "use client";
 
-// import { SIZE_NAME_MAP } from "@/constants";
 import { useDataContext } from "@/components/DataContext";
 import { Text } from "@/components/ui/text";
 

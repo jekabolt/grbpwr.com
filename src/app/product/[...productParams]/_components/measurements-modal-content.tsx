@@ -5,7 +5,6 @@ import {
   common_GenderEnum,
   common_ProductSize,
 } from "@/api/proto-http/frontend";
-// import { SIZE_NAME_MAP } from "@/constants";
 import { useLockBodyScroll } from "@uidotdev/usehooks";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
