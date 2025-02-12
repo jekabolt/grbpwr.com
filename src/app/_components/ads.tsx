@@ -28,7 +28,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
     const scrollContainers = [
       { ref: productsRef, scrollAmount: 50, mobileOnly: true },
       { ref: productsTagRef, scrollAmount: 50, mobileOnly: true },
-      { ref: archiveRef, scrollAmount: 200, mobileOnly: false },
+      { ref: archiveRef, scrollAmount: 250, mobileOnly: false },
     ];
 
     const scrollToFirstItem = () => {
