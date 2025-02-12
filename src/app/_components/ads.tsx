@@ -191,7 +191,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
             return (
-              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2" key={i}>
+              <div className="space-y-12 pb-16 pt-6 lg:py-28 lg:pl-2" key={i}>
                 <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProducts?.headline}
@@ -220,7 +220,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
             return (
-              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2" key={i}>
+              <div className="space-y-12 pb-16 pt-6 lg:py-28 lg:pl-2" key={i}>
                 <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProductsTag?.products?.headline}
@@ -248,7 +248,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_ARCHIVE":
             return (
-              <div className="space-y-10 pt-16 lg:py-32" key={i}>
+              <div className="space-y-12 pt-16 lg:py-32" key={i}>
                 <div className="flex flex-col gap-3 px-2 lg:flex-row">
                   <Text variant="uppercase">{e.featuredArchive?.headline}</Text>
                   <Button variant="underline" className="uppercase" asChild>
