@@ -36,50 +36,24 @@ export type MediaInfo = {
   height: number | undefined;
 };
 
-// ArchiveFull represents a full archive with items.
 export type ArchiveFull = {
-  archive: Archive | undefined;
-  items: ArchiveItemFull[] | undefined;
-};
-
-// Archive represents an archive entity.
-export type Archive = {
   id: number | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  updatedAt: wellKnownTimestamp | undefined;
-  archiveBody: ArchiveBody | undefined;
-};
-
-// ArchiveBody represents the insertable fields of an archive.
-export type ArchiveBody = {
   heading: string | undefined;
-  text: string | undefined;
+  description: string | undefined;
+  tag: string | undefined;
+  slug: string | undefined;
+  nextSlug: string | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  video: MediaFull | undefined;
+  media: MediaFull[] | undefined;
 };
 
-// ArchiveItemFull represents an item within an archive.
-export type ArchiveItemFull = {
-  id: number | undefined;
-  archiveId: number | undefined;
-  archiveItem: ArchiveItem | undefined;
-};
-
-// ArchiveItem represents the insertable fields of an archive item.
-export type ArchiveItem = {
-  media: MediaFull | undefined;
-  url: string | undefined;
-  name: string | undefined;
-};
-
-// ArchiveNew represents a new archive with items for insertion.
-export type ArchiveNew = {
-  archive: ArchiveBody | undefined;
-  itemsInsert: ArchiveItemInsert[] | undefined;
-};
-
-export type ArchiveItemInsert = {
-  mediaId: number | undefined;
-  url: string | undefined;
-  name: string | undefined;
+export type ArchiveInsert = {
+  heading: string | undefined;
+  description: string | undefined;
+  tag: string | undefined;
+  mediaIds: number[] | undefined;
+  videoId: number | undefined;
 };
 
 export type Address = {
@@ -108,68 +82,28 @@ export type BuyerInsert = {
   receivePromoEmails: boolean | undefined;
 };
 
-export type CategoryEnum =
-  | "CATEGORY_ENUM_UNKNOWN"
-  | "CATEGORY_ENUM_T_SHIRT"
-  | "CATEGORY_ENUM_JEANS"
-  | "CATEGORY_ENUM_DRESS"
-  | "CATEGORY_ENUM_JACKET"
-  | "CATEGORY_ENUM_SWEATER"
-  | "CATEGORY_ENUM_PANT"
-  | "CATEGORY_ENUM_SKIRT"
-  | "CATEGORY_ENUM_SHORT"
-  | "CATEGORY_ENUM_BLAZER"
-  | "CATEGORY_ENUM_COAT"
-  | "CATEGORY_ENUM_SOCKS"
-  | "CATEGORY_ENUM_UNDERWEAR"
-  | "CATEGORY_ENUM_BRA"
-  | "CATEGORY_ENUM_HAT"
-  | "CATEGORY_ENUM_SCARF"
-  | "CATEGORY_ENUM_GLOVES"
-  | "CATEGORY_ENUM_SHOES"
-  | "CATEGORY_ENUM_BELT"
-  | "CATEGORY_ENUM_BAG"
-  | "CATEGORY_ENUM_OTHER";
-export type SizeEnum =
-  | "SIZE_ENUM_UNKNOWN"
-  | "SIZE_ENUM_XXS"
-  | "SIZE_ENUM_XS"
-  | "SIZE_ENUM_S"
-  | "SIZE_ENUM_M"
-  | "SIZE_ENUM_L"
-  | "SIZE_ENUM_XL"
-  | "SIZE_ENUM_XXL"
-  | "SIZE_ENUM_OS";
-export type MeasurementNameEnum =
-  | "MEASUREMENT_NAME_ENUM_UNKNOWN"
-  | "MEASUREMENT_NAME_ENUM_WAIST"
-  | "MEASUREMENT_NAME_ENUM_INSEAM"
-  | "MEASUREMENT_NAME_ENUM_LENGTH"
-  | "MEASUREMENT_NAME_ENUM_RISE"
-  | "MEASUREMENT_NAME_ENUM_HIPS"
-  | "MEASUREMENT_NAME_ENUM_SHOULDERS"
-  | "MEASUREMENT_NAME_ENUM_BUST"
-  | "MEASUREMENT_NAME_ENUM_SLEEVE"
-  | "MEASUREMENT_NAME_ENUM_WIDTH"
-  | "MEASUREMENT_NAME_ENUM_HEIGHT";
 export type GenderEnum =
   | "GENDER_ENUM_UNKNOWN"
   | "GENDER_ENUM_MALE"
   | "GENDER_ENUM_FEMALE"
   | "GENDER_ENUM_UNISEX";
+// Category represents a hierarchical category structure
 export type Category = {
   id: number | undefined;
-  name: CategoryEnum | undefined;
+  name: string | undefined;
+  levelId: number | undefined;
+  level: string | undefined;
+  parentId: number | undefined;
 };
 
 export type Size = {
   id: number | undefined;
-  name: SizeEnum | undefined;
+  name: string | undefined;
 };
 
 export type MeasurementName = {
   id: number | undefined;
-  name: MeasurementNameEnum | undefined;
+  name: string | undefined;
 };
 
 export type ProductNew = {
@@ -194,7 +128,11 @@ export type ProductBody = {
   countryOfOrigin: string | undefined;
   price: googletype_Decimal | undefined;
   salePercentage: googletype_Decimal | undefined;
-  categoryId: number | undefined;
+  topCategoryId: number | undefined;
+  subCategoryId: number | undefined;
+  typeId: number | undefined;
+  modelWearsHeightCm: number | undefined;
+  modelWearsSizeId: number | undefined;
   description: string | undefined;
   careInstructions: string | undefined;
   composition: string | undefined;
@@ -342,9 +280,11 @@ export type FilterConditions = {
   from: string | undefined;
   to: string | undefined;
   onSale: boolean | undefined;
-  gender: GenderEnum | undefined;
+  gender: GenderEnum[] | undefined;
   color: string | undefined;
-  categoryIds: number[] | undefined;
+  topCategoryIds: number[] | undefined;
+  subCategoryIds: number[] | undefined;
+  typeIds: number[] | undefined;
   sizesIds: number[] | undefined;
   preorder: boolean | undefined;
   byTag: string | undefined;
@@ -480,7 +420,9 @@ export type OrderItem = {
   productBrand: string | undefined;
   slug: string | undefined;
   color: string | undefined;
-  categoryId: number | undefined;
+  topCategoryId: number | undefined;
+  subCategoryId: number | undefined;
+  typeId: number | undefined;
   sku: string | undefined;
   orderItem: OrderItemInsert | undefined;
 };
@@ -543,6 +485,7 @@ export type HeroType =
   | "HERO_TYPE_FEATURED_ARCHIVE";
 export type HeroFull = {
   entities: HeroEntity[] | undefined;
+  navFeatured: NavFeatured | undefined;
 };
 
 export type HeroEntity = {
@@ -556,7 +499,8 @@ export type HeroEntity = {
 };
 
 export type HeroSingle = {
-  media: MediaFull | undefined;
+  mediaPortrait: MediaFull | undefined;
+  mediaLandscape: MediaFull | undefined;
   headline: string | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
@@ -592,8 +536,33 @@ export type HeroFeaturedArchive = {
   exploreText: string | undefined;
 };
 
+export type NavFeatured = {
+  men: NavFeaturedEntity | undefined;
+  women: NavFeaturedEntity | undefined;
+};
+
+export type NavFeaturedEntity = {
+  media: MediaFull | undefined;
+  exploreText: string | undefined;
+  featuredTag: string | undefined;
+  featuredArchiveId: string | undefined;
+};
+
+export type NavFeaturedInsert = {
+  men: NavFeaturedEntityInsert | undefined;
+  women: NavFeaturedEntityInsert | undefined;
+};
+
+export type NavFeaturedEntityInsert = {
+  mediaId: number | undefined;
+  exploreText: string | undefined;
+  featuredTag: string | undefined;
+  featuredArchiveId: number | undefined;
+};
+
 export type HeroFullInsert = {
   entities: HeroEntityInsert[] | undefined;
+  navFeatured: NavFeaturedInsert | undefined;
 };
 
 export type HeroEntityInsert = {
@@ -607,7 +576,8 @@ export type HeroEntityInsert = {
 };
 
 export type HeroSingleInsert = {
-  mediaId: number | undefined;
+  mediaPortraitId: number | undefined;
+  mediaLandscapeId: number | undefined;
   headline: string | undefined;
   exploreLink: string | undefined;
   exploreText: string | undefined;
@@ -635,7 +605,6 @@ export type HeroFeaturedProductsTagInsert = {
   tag: string | undefined;
   headline: string | undefined;
   exploreText: string | undefined;
-  exploreLink: string | undefined;
 };
 
 export type HeroFeaturedArchiveInsert = {

@@ -1,8 +1,7 @@
 import type {
   common_GenderEnum,
   common_OrderFactor,
-  common_SizeEnum,
-  common_SortFactor,
+  common_SortFactor
 } from "./api/proto-http/frontend";
 
 export const FOOTER_YEAR = new Date().getFullYear();
@@ -22,18 +21,6 @@ export const CURRENCY_MAP = {
 export const MAX_LIMIT = 9999999;
 
 export const GRBPWR_CART = "grbpwr-cart";
-
-export const SIZE_NAME_MAP: Record<common_SizeEnum, string> = {
-  SIZE_ENUM_UNKNOWN: "ukn💩",
-  SIZE_ENUM_XXS: "xxs",
-  SIZE_ENUM_XS: "xs",
-  SIZE_ENUM_S: "s",
-  SIZE_ENUM_M: "m",
-  SIZE_ENUM_L: "l",
-  SIZE_ENUM_XL: "xl",
-  SIZE_ENUM_XXL: "xxl",
-  SIZE_ENUM_OS: "os",
-};
 
 export const GENDER_MAP: Record<string, common_GenderEnum> = {
   men: "GENDER_ENUM_MALE",

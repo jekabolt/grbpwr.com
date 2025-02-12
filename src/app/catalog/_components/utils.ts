@@ -30,7 +30,9 @@ export function getProductsPagedQueryParams({
     sortFactors: sort ? [sort as common_SortFactor] : undefined,
     orderFactor: order ? (order as common_OrderFactor) : undefined,
     filterConditions: {
-      categoryIds: category ? [parseInt(category)] : undefined,
+      topCategoryIds: category ? [parseInt(category)] : undefined,
+      subCategoryIds: undefined,
+      typeIds: undefined,
       //   genderIds: gender ? [parseInt(gender)] : undefined,
       sizesIds: size ? [parseInt(size)] : undefined,
       from: undefined,
@@ -39,7 +41,7 @@ export function getProductsPagedQueryParams({
       color: undefined,
       preorder: undefined,
       byTag: tag ? tag : undefined,
-      gender: gender ? (gender as common_GenderEnum) : undefined,
+      gender: gender ? [gender as common_GenderEnum] : undefined,
     },
   };
 }
