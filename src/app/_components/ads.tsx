@@ -74,23 +74,36 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
             return (
-              <div className="relative h-screen w-full" key={i}>
-                <div
-                  key={e.single?.mediaLandscape?.id}
-                  className="relative h-full w-full"
-                >
-                  <Image
-                    src={
-                      e.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""
-                    }
-                    alt="ad hero image"
-                    aspectRatio={calculateAspectRatio(
-                      e.single?.mediaLandscape?.media?.fullSize?.width,
-                      e.single?.mediaLandscape?.media?.fullSize?.height,
-                    )}
-                    fit="cover"
-                  />
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
+              <div className="relative h-full w-full" key={i}>
+                <div className="relative h-full w-full">
+                  <div className="hidden lg:block">
+                    <Image
+                      src={
+                        e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
+                        ""
+                      }
+                      alt="ad hero image"
+                      aspectRatio={calculateAspectRatio(
+                        e.single?.mediaLandscape?.media?.fullSize?.width,
+                        e.single?.mediaLandscape?.media?.fullSize?.height,
+                      )}
+                      fit="contain"
+                    />
+                  </div>
+                  <div className="block lg:hidden">
+                    <Image
+                      src={
+                        e.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""
+                      }
+                      alt="ad hero image"
+                      aspectRatio={calculateAspectRatio(
+                        e.single?.mediaPortrait?.media?.fullSize?.width,
+                        e.single?.mediaPortrait?.media?.fullSize?.height,
+                      )}
+                      fit="contain"
+                    />
+                  </div>
+                  <div className="absolute inset-0 z-20 flex items-center justify-center gap-6">
                     <Text variant="uppercase" className="text-white">
                       {e.single?.headline}
                     </Text>
@@ -105,14 +118,14 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Button>
                   </div>
                 </div>
-                <div className="absolute inset-0 z-10 h-screen bg-black opacity-40"></div>
+                <div className="absolute inset-0 z-10 h-full bg-overlay"></div>
               </div>
             );
           case "HERO_TYPE_DOUBLE":
             return (
               <div
                 key={i}
-                className="relative flex h-screen w-full flex-col lg:flex-row"
+                className="relative flex h-full w-full flex-col lg:flex-row"
               >
                 <div className="relative h-full w-full">
                   <Image
@@ -125,7 +138,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                       e.double?.left?.mediaLandscape?.media?.fullSize?.width,
                       e.double?.left?.mediaLandscape?.media?.fullSize?.height,
                     )}
-                    fit="cover"
+                    fit="contain"
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text variant="uppercase" className="text-white">
@@ -156,7 +169,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                       e.double?.right?.mediaLandscape?.media?.fullSize?.width,
                       e.double?.right?.mediaLandscape?.media?.fullSize?.height,
                     )}
-                    fit="cover"
+                    fit="contain"
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text variant="uppercase" className="text-white">
@@ -173,7 +186,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Button>
                   </div>
                 </div>
-                <div className="absolute inset-0 z-10 h-screen bg-overlay"></div>
+                <div className="absolute inset-0 z-10 h-full bg-overlay"></div>
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
@@ -235,8 +248,8 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_ARCHIVE":
             return (
-              <div className="space-y-10 pb-16 pt-6 lg:py-20 lg:pl-2" key={i}>
-                <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
+              <div className="space-y-10 pt-16 lg:py-32" key={i}>
+                <div className="flex flex-col gap-3 px-2 lg:flex-row">
                   <Text variant="uppercase">{e.featuredArchive?.headline}</Text>
                   <Button variant="underline" className="uppercase" asChild>
                     <Link href={`/archive/${e.featuredArchive?.tag}`}>
