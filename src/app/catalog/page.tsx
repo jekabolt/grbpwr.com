@@ -1,7 +1,7 @@
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
-import NavigationLayout from "@/components/navigation-layout";
+import FlexibleLayout from "@/components/flexible-layout";
 import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
 import Filters from "./_components/catalog-filters";
@@ -27,7 +27,7 @@ export default async function CatalogPage(props: CatalogPageProps) {
   });
 
   return (
-    <NavigationLayout>
+    <FlexibleLayout headerType="catalog" footerType="regular">
       <div className="block lg:hidden">
         <MobileCatalog
           firstPageItems={response.products || []}
@@ -41,6 +41,6 @@ export default async function CatalogPage(props: CatalogPageProps) {
           firstPageItems={response.products || []}
         />
       </div>
-    </NavigationLayout>
+    </FlexibleLayout>
   );
 }
