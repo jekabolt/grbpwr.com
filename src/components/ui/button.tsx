@@ -51,7 +51,7 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
     size: {
       sm: ["text-textSmallSize"],
       default: ["text-textBaseSize"],
-      lg: ["py-2.5", "px-16", "text-textBaseSize"],
+      lg: ["py-2.5", "px-4", "text-textBaseSize"],
       giant: [
         "py-10",
         "px-16",
