@@ -206,7 +206,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 <div
                   ref={productsRef}
                   onScroll={handleUserScroll}
-                  className="no-scroll-bar flex w-full items-center gap-2 overflow-x-scroll"
+                  className="no-scroll-bar flex w-full gap-2 overflow-x-scroll"
                 >
                   {e.featuredProducts?.products?.map((p) => (
                     <ProductItem

@@ -60,6 +60,8 @@
 
 @layer utilities {
   .no-scroll-bar {
+    scrollbar-width: none;
+
     &::-webkit-scrollbar {
       @apply hidden;
     }
