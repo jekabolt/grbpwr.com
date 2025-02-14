@@ -22,6 +22,7 @@ export default function InputField({
   label,
   description,
   type = "text",
+  srLabel,
   ...props
 }: Props) {
   const { control, trigger } = useFormContext();
@@ -36,7 +37,7 @@ export default function InputField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className={srLabel ? "sr-only" : ""}>{label}</FormLabel>
           <FormControl>
             <Input
               type={type}

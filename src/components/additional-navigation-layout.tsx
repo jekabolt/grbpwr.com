@@ -12,7 +12,7 @@ export default function AdditionalNavigationLayout({
   return (
     <div className="relative min-h-screen bg-bgColor">
       <Header />
-      <div className="w-full md:px-0">{children}</div>
+      <div className="w-full pt-16 md:px-0">{children}</div>
       <MiniFooter theme={theme} />
     </div>
   );
