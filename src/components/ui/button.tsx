@@ -31,6 +31,24 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
         "leading-4",
         "text-center",
       ],
+      secondary: [
+        "border",
+        "border-textColor",
+        "text-textBaseSize",
+        "text-textColor",
+        "hover:bg-textColor",
+        "hover:text-bgColor",
+        "disabled:bg-textInactiveColor",
+        "focus:outline-none",
+        "focus:ring-2",
+        "focus:ring-offset-2",
+        "focus:ring-textColor",
+        "disabled:bg-textInactiveColor",
+        "disabled:text-bgColor",
+        "disabled:border-textInactiveColor",
+        "leading-4",
+        "text-center",
+      ],
       underline: [
         "text-textColor",
         "underline",
@@ -51,7 +69,7 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
     size: {
       sm: ["text-textSmallSize"],
       default: ["text-textBaseSize"],
-      lg: ["py-2.5", "px-16", "text-textBaseSize"],
+      lg: ["py-2.5", "px-4", "text-textBaseSize"],
       giant: [
         "py-10",
         "px-16",

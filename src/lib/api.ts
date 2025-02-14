@@ -44,6 +44,8 @@ const requestHandler = async (
     },
   );
 
+  console.log("response", response);
+
   return await response.json();
 };
 
