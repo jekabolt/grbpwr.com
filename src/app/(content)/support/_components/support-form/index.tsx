@@ -6,8 +6,8 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
-import { CopyIcon } from "@/components/ui/icons/copy-icon";
 
+import { ReasonInput } from "./reason-input";
 import { defaultValues, SupportData, supportSchema } from "./schema";
 
 export function SupportForm() {
@@ -16,44 +16,84 @@ export function SupportForm() {
     defaultValues,
   });
 
+  const reasonSelected = form.watch("reason");
+  const isFormValid = form.formState.isValid;
+
   const handleCopyForm = () => {
     const values = form.getValues();
-    const data = `full name: ${values.name}\norder #: ${values.orderNumber}\ntracking #: ${values.trackingNumber}\nrequest: ${values.request}`;
+    const data = `email: ${values.email}
+                    first name: ${values.firstName}
+                    last name: ${values.lastName}
+                    order ref: ${values.orderRef}
+                    tracking ID: ${values.trackingId || "N/A"}
+                    reason: ${values.reason}
+                    ${
+                      values.reason === "OTHER"
+                        ? `other reason: ${values.otherReason || "N/A"}`
+                        : ""
+                    }`;
     navigator.clipboard.writeText(data);
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleCopyForm)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleCopyForm)} className="space-y-6">
         <InputField
-          label="full name:"
-          name="name"
-          placeholder="enter your name"
+          srLabel
+          label="email:"
+          name="email"
+          placeholder="email"
           control={form.control}
         />
-        <InputField
-          label="order #:"
-          name="orderNumber"
-          placeholder="enter your order number"
-          control={form.control}
-        />
-        <InputField
-          label="tracking #:"
-          name="trackingNumber"
-          placeholder="enter your tracking number"
-          control={form.control}
-        />
-        <InputField
-          label="your request:"
-          name="request"
-          placeholder="enter your request"
-          control={form.control}
-        />
-        <Button
-          variant="underline"
-          className="flex items-center gap-3 uppercase"
-        >
-          copy form <CopyIcon />
+        <div className="grid grid-cols-2 gap-2.5">
+          <InputField
+            srLabel
+            label="first name:"
+            name="firstName"
+            placeholder="first name"
+            control={form.control}
+          />
+          <InputField
+            srLabel
+            label="last name:"
+            name="lastName"
+            placeholder="last name"
+            control={form.control}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-2.5">
+          <InputField
+            srLabel
+            label="order reference:"
+            name="orderRef"
+            placeholder="order ref"
+            control={form.control}
+          />
+          <InputField
+            srLabel
+            label="tracking id"
+            name="trackingId"
+            placeholder="tracking id"
+            control={form.control}
+          />
+        </div>
+
+        <div className="py-4">
+          <ReasonInput reasonSelected={reasonSelected} control={form.control} />
+        </div>
+
+        {reasonSelected === "OTHER" && (
+          <InputField
+            srLabel
+            label="other reason:"
+            name="otherReason"
+            placeholder="enter other reason"
+            control={form.control}
+          />
+        )}
+
+        <Button type="submit" variant="main" size="lg" disabled={!isFormValid}>
+          COPY FORM
         </Button>
       </form>
     </Form>

@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
+import { CommunicationButtons } from "./_components/communication-buttons";
 import { SupportForm } from "./_components/support-form";
 
 export default function SupportPage() {
@@ -13,7 +13,7 @@ export default function SupportPage() {
         <Text variant="uppercase" component="h2" className="mb-6">
           1/2 fill out the form
         </Text>
-        <div className="lg:pl-9">
+        <div className="max-w-xl lg:pl-9">
           <SupportForm />
         </div>
       </div>
@@ -23,14 +23,7 @@ export default function SupportPage() {
             2/2 send us your completed form via
           </Text>
           <div className="lg:pl-9">
-            <div className="flex gap-4 ">
-              <Button variant="main" size="lg">
-                TELEGRAM BOT
-              </Button>
-              <Button variant="main" size="lg">
-                COPY EMAIL
-              </Button>
-            </div>
+            <CommunicationButtons />
           </div>
         </div>
       </div>
