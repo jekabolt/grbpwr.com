@@ -22,9 +22,6 @@ export const createLastViewedStore = (
           ].slice(0, 5);
           set({ products: updatedProducts });
         },
-        clearLastViewed: () => {
-          set(defaultInitState);
-        },
       }),
       {
         name: "last-viewed-storage",

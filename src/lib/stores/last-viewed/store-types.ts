@@ -6,7 +6,6 @@ export interface LastViewedState {
 
 export interface LastViewedActions {
   addProduct: (product: common_Product) => void;
-  clearLastViewed: () => void;
 }
 
 export type LastViewedStore = LastViewedState & LastViewedActions;
