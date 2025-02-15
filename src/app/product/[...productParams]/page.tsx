@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { MAX_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
-import NavigationLayout from "@/components/navigation-layout";
+import FlexibleLayout from "@/components/flexible-layout";
 
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
@@ -49,7 +49,7 @@ export default async function ProductPage(props: ProductPageProps) {
   const productMedia = [...(product?.media || [])];
 
   return (
-    <div>
+    <FlexibleLayout headerType="catalog" footerType="mini">
       <ProductImagesCarousel
         productMedia={productMedia}
         className="w-full lg:h-screen"
@@ -60,6 +60,6 @@ export default async function ProductPage(props: ProductPageProps) {
           className="p-2.5 lg:absolute lg:bottom-[130px] lg:right-32 lg:p-0"
         />
       )}
-    </div>
+    </FlexibleLayout>
   );
 }

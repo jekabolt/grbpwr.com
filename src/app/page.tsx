@@ -1,5 +1,5 @@
 import { serviceClient } from "@/lib/api";
-import NavigationLayout from "@/components/navigation-layout";
+import FlexibleLayout from "@/components/flexible-layout";
 import { EmptyHero } from "@/components/ui/empty-hero";
 import { Ads } from "@/app/_components/ads";
 
@@ -11,10 +11,10 @@ export default async function Page() {
 
   return (
     <>
-      <NavigationLayout>
+      <FlexibleLayout headerType="catalog" footerType="regular">
         <MainAds main={hero?.entities?.[0]?.main} />
         <Ads entities={hero?.entities || []} />
-      </NavigationLayout>
+      </FlexibleLayout>
     </>
   );
 }

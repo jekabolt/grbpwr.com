@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
-import LogoLayout from "@/components/logo-layout";
+import FlexibleLayout from "@/components/flexible-layout";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
@@ -19,15 +19,12 @@ export default function CartPage() {
   const products = useCart((state) => state.products);
   const itemsQuantity = Object.keys(products).length;
   return (
-    <LogoLayout>
-      <div className="relative flex h-screen flex-col gap-10 sm:flex-row">
-        <Button
-          variant="underlineWithColors"
-          className="hidden sm:block"
-          asChild
-        >
-          <Link href="/">menu</Link>
-        </Button>
+    <FlexibleLayout
+      headerType="flexible"
+      footerType="mini"
+      headerProps={{ right: "close" }}
+    >
+      <div className="relative flex h-full flex-col gap-10 py-24 sm:flex-row lg:px-32">
         <div className="w-full sm:w-1/2">
           <div className="w-full space-y-10">
             <div className="flex gap-3">
@@ -55,14 +52,7 @@ export default function CartPage() {
             </Button>
           </div>
         </div>
-        <Button
-          variant="underlineWithColors"
-          className="hidden sm:block"
-          asChild
-        >
-          <Link href="/catalog">catalog</Link>
-        </Button>
       </div>
-    </LogoLayout>
+    </FlexibleLayout>
   );
 }
