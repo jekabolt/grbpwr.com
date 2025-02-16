@@ -4,6 +4,7 @@ import { MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import FlexibleLayout from "@/components/flexible-layout";
 
+import { LastViewedProducts } from "./_components/last-viewed-products";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
@@ -60,6 +61,7 @@ export default async function ProductPage(props: ProductPageProps) {
           className="p-2.5 lg:absolute lg:bottom-[130px] lg:right-32 lg:p-0"
         />
       )}
+      {product?.product && <LastViewedProducts product={product.product} />}
     </FlexibleLayout>
   );
 }
