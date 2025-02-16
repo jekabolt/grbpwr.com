@@ -49,7 +49,7 @@ function DesktopSlide({ media }: { media: common_MediaFull }) {
           media?.media?.fullSize?.width,
           media?.media?.fullSize?.height,
         )}
-        fit="cover"
+        fit="contain"
       />
     </div>
   );

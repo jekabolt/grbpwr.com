@@ -50,17 +50,19 @@ export default async function ProductPage(props: ProductPageProps) {
   const productMedia = [...(product?.media || [])];
 
   return (
-    <FlexibleLayout headerType="catalog" footerType="mini">
-      <ProductImagesCarousel
-        productMedia={productMedia}
-        className="w-full lg:h-screen"
-      />
-      {product && (
-        <ProductInfo
-          product={product}
-          className="p-2.5 lg:absolute lg:bottom-[130px] lg:right-32 lg:p-0"
+    <FlexibleLayout headerType="catalog" footerType="mini" className="pt-16">
+      <div className="relative">
+        <ProductImagesCarousel
+          productMedia={productMedia}
+          className="relative w-full lg:h-screen"
         />
-      )}
+        {product && (
+          <ProductInfo
+            product={product}
+            className="p-2.5 lg:absolute lg:bottom-[130px] lg:right-32 lg:p-0"
+          />
+        )}
+      </div>
       {product?.product && <LastViewedProducts product={product.product} />}
     </FlexibleLayout>
   );
