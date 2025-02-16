@@ -20,6 +20,7 @@ export default function PromoCode({
   validateItems,
   freeShipmentCarrierId,
 }: Props) {
+  const [isApplied, setIsApplied] = useState(false);
   const [promoLoading, setPromoLoading] = useState(false);
   const { setValue } = useFormContext();
 
@@ -31,31 +32,37 @@ export default function PromoCode({
     if (!promoCode) return;
     setPromoLoading(true);
 
-    const response = await validateItems();
+    try {
+      const response = await validateItems();
 
-    if (response?.promo?.freeShipping) {
-      setValue("shipmentCarrierId", freeShipmentCarrierId + "");
+      if (response?.promo?.freeShipping) {
+        setValue("shipmentCarrierId", freeShipmentCarrierId + "");
+      }
+
+      setIsApplied(true);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setPromoLoading(false);
     }
-
-    setPromoLoading(false);
   }
 
   return (
-    <div className="relative">
+    <div className="relative flex items-center justify-between border border-textInactiveColor px-4 py-1.5">
       <InputField
         control={form.control}
         loading={loading}
-        placeholder="promo code"
+        placeholder="ENTER PROMO CODE"
         name="promoCode"
+        className="w-full grow border-none text-textBaseSize leading-4"
       />
       <Button
         type="input"
-        variant="underline"
+        className="flex-none"
         onClick={handleApplyPromoClick}
-        disabled={promoLoading || loading || !promoCode}
-        className="absolute right-0 top-2"
+        disabled={isApplied || promoLoading || loading || !promoCode}
       >
-        apply
+        {isApplied ? "APPLIED" : "APPLY"}
       </Button>
     </div>
   );

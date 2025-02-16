@@ -37,7 +37,9 @@ export default function InputField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className={srLabel ? "sr-only" : ""}>{label}</FormLabel>
+          {label && (
+            <FormLabel className={srLabel ? "sr-only" : ""}>{label}</FormLabel>
+          )}
           <FormControl>
             <Input
               type={type}
