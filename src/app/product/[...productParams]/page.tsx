@@ -4,7 +4,7 @@ import { MAX_LIMIT } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import FlexibleLayout from "@/components/flexible-layout";
 
-import LastViewedProducts from "./_components/last-viewed-products";
+import { LastViewedProducts } from "./_components/last-viewed-products";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
