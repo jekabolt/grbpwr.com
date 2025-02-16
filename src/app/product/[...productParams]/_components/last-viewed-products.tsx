@@ -5,18 +5,21 @@ import { common_Product } from "@/api/proto-http/frontend";
 
 import { useLastViewed } from "@/lib/stores/last-viewed/store-provider.";
 import { ProductItem } from "@/app/_components/product-item";
+import { Text } from "@/components/ui/text";
 
 interface LastViewedProductsProps {
   product: common_Product;
 }
 
-const LastViewedProducts: React.FC<LastViewedProductsProps> = ({ product }) => {
+export function LastViewedProducts({ product }: LastViewedProductsProps) {
   const addLastViewedProduct = useLastViewed((state) => state.addProduct);
   const lastViewedProducts = useLastViewed((state) => state.products);
 
   useEffect(() => {
-    if (product) {
-      addLastViewedProduct(product);
+    return () => {
+      if (product) {
+        addLastViewedProduct(product);
+      }
     }
   }, [product, addLastViewedProduct]);
 
@@ -26,7 +29,7 @@ const LastViewedProducts: React.FC<LastViewedProductsProps> = ({ product }) => {
 
   return (
     <div>
-      <h2>RECENTLY VIEWED</h2>
+      <Text component="h2" variant="uppercase">recently viewed</Text>
       <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16 2xl:grid-cols-4">
         {filteredProducts.map((product) => (
           <div key={product.id}>
@@ -37,5 +40,3 @@ const LastViewedProducts: React.FC<LastViewedProductsProps> = ({ product }) => {
     </div>
   );
 };
-
-export default LastViewedProducts;
