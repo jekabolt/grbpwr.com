@@ -2,6 +2,7 @@ import Link from "next/link";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { cn } from "@/lib/utils";
 import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList";
 import CartTotalPrice from "@/app/(checkout)/cart/_components/CartTotalPrice";
 
@@ -19,37 +20,54 @@ export function MobileNavCart() {
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-bgColor" />
-        <DialogPrimitives.Content className="fixed left-0 top-0 z-30 flex h-screen w-screen flex-col p-2 pt-5 ">
+        <DialogPrimitives.Overlay className="fixed inset-0 z-10 bg-overlay" />
+        <DialogPrimitives.Content
+          className={cn(
+            "fixed left-0 z-30 flex w-screen flex-col bg-bgColor p-2.5",
+            {
+              "top-0 h-screen pt-5": itemsQuantity > 0,
+              "bottom-0": itemsQuantity === 0,
+            },
+          )}
+        >
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="relative mb-16 flex items-center justify-between">
+          <div
+            className={cn("relative mb-16 flex items-center justify-between", {
+              "mb-10": itemsQuantity === 0,
+            })}
+          >
             <Text variant="uppercase">
-              shopping Cart [{itemsQuantity?.toString().padStart(2, "0")}]
+              {`shopping cart ${itemsQuantity ? `[${itemsQuantity?.toString().padStart(2, "0")}]` : ""}`}
             </Text>
             <DialogPrimitives.Close asChild>
               <Button>[X]</Button>
             </DialogPrimitives.Close>
           </div>
 
-          <div className="relative grow overflow-y-auto">
-            <CartProductsList />
-          </div>
-
-          <div className="mt-auto space-y-6">
-            <CartTotalPrice />
-            <DialogPrimitives.Close asChild>
-              <Button
-                asChild
-                variant="main"
-                size="lg"
-                className="w-full uppercase"
-              >
-                <Link href="/checkout">go to checkout</Link>
-              </Button>
-            </DialogPrimitives.Close>
-          </div>
+          {itemsQuantity > 0 ? (
+            <>
+              <div className="relative grow overflow-y-auto">
+                <CartProductsList />
+              </div>
+              <div className="mt-auto space-y-6">
+                <CartTotalPrice />
+                <DialogPrimitives.Close asChild>
+                  <Button
+                    asChild
+                    variant="main"
+                    size="lg"
+                    className="w-full uppercase"
+                  >
+                    <Link href="/checkout">proceed to checkout</Link>
+                  </Button>
+                </DialogPrimitives.Close>
+              </div>
+            </>
+          ) : (
+            <Text variant="uppercase">empty</Text>
+          )}
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
