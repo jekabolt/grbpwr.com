@@ -14,9 +14,7 @@ import { Text } from "@/components/ui/text";
 export default function CartPopup({ children }: { children: React.ReactNode }) {
   const products = useCart((state) => state.products);
   const itemsQuantity = Object.keys(products).length;
-  const cartCount = itemsQuantity
-    ? itemsQuantity.toString().padStart(2, "0")
-    : "";
+  const cartCount = itemsQuantity.toString().padStart(2, "0");
   const [open, setOpenStatus] = useState(false);
 
   const ref = useClickAway<HTMLDivElement>(() => {
@@ -51,8 +49,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
         >
           <div className="flex h-full flex-col gap-y-6">
             <div className="flex items-center justify-between">
-              <Text variant="uppercase">{`shopping cart [${cartCount}]`}</Text>
-
+              <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
               <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
             </div>
             {itemsQuantity > 0 ? (

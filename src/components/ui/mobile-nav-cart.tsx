@@ -12,6 +12,8 @@ import { Text } from "./text";
 export function MobileNavCart() {
   const products = useCart((state) => state.products);
   const itemsQuantity = Object.keys(products).length;
+  const cartCount = itemsQuantity.toString().padStart(2, "0");
+
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
@@ -38,9 +40,7 @@ export function MobileNavCart() {
               "mb-10": itemsQuantity === 0,
             })}
           >
-            <Text variant="uppercase">
-              {`shopping cart ${itemsQuantity ? `[${itemsQuantity?.toString().padStart(2, "0")}]` : ""}`}
-            </Text>
+            <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
             <DialogPrimitives.Close asChild>
               <Button>[X]</Button>
             </DialogPrimitives.Close>
