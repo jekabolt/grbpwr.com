@@ -509,6 +509,7 @@ export type common_OrderItem = {
   subCategoryId: number | undefined;
   typeId: number | undefined;
   sku: string | undefined;
+  preorder: wellKnownTimestamp | undefined;
   orderItem: common_OrderItemInsert | undefined;
 };
 

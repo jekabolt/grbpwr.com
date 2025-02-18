@@ -424,6 +424,7 @@ export type OrderItem = {
   subCategoryId: number | undefined;
   typeId: number | undefined;
   sku: string | undefined;
+  preorder: wellKnownTimestamp | undefined;
   orderItem: OrderItemInsert | undefined;
 };
 
