@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useClickAway } from "@uidotdev/usehooks";
 
@@ -8,30 +8,16 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
+import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 export default function CartPopup({ children }: { children: React.ReactNode }) {
   const products = useCart((state) => state.products);
   const itemsQuantity = Object.keys(products).length;
+  const cartCount = itemsQuantity
+    ? itemsQuantity.toString().padStart(2, "0")
+    : "";
   const [open, setOpenStatus] = useState(false);
-
-  useEffect(() => {
-    const handleEscClick = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpenStatus(false);
-      }
-    };
-
-    if (itemsQuantity > 0) {
-      document.body.style.overflow = open ? "hidden" : "auto";
-      document.addEventListener("keydown", handleEscClick);
-
-      return () => {
-        document.removeEventListener("keydown", handleEscClick);
-        document.body.style.overflow = "auto";
-      };
-    }
-  }, [open, itemsQuantity]);
 
   const ref = useClickAway<HTMLDivElement>(() => {
     setOpenStatus(false);
@@ -39,9 +25,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      {open && itemsQuantity > 0 && (
-        <div className="fixed inset-0 z-10 h-screen bg-overlay"></div>
-      )}
+      {open && itemsQuantity > 0 && <Overlay cover="screen" />}
       <div className="block lg:hidden">
         <MobileNavCart />
       </div>
@@ -67,11 +51,9 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
         >
           <div className="flex h-full flex-col gap-y-6">
             <div className="flex items-center justify-between">
-              <Text variant="uppercase">
-                {`shopping Cart ${itemsQuantity ? `[${itemsQuantity?.toString().padStart(2, "0")}]` : ""}`}
-              </Text>
+              <Text variant="uppercase">{`shopping cart [${cartCount}]`}</Text>
 
-              <Button onClick={() => setOpenStatus(false)}>[X]</Button>
+              <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
             </div>
             {itemsQuantity > 0 ? (
               <>

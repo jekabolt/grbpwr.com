@@ -9,19 +9,26 @@ import { Text } from "@/components/ui/text";
 import CartItemSize from "./CartItemSize";
 import ProductRemoveButton from "./ProductRemoveButton";
 
-const isValidDate = (date: string) => {
-  const d = new Date(date);
-  return d instanceof Date && !isNaN(d.getTime()) && d.getFullYear() > 2000;
-};
+function isValidDate(date: string): boolean {
+  if (!date) return false;
+
+  const parsedDate = new Date(date);
+  const isValid = !isNaN(parsedDate.getTime());
+  const isAfterYear2000 = parsedDate.getFullYear() > 2000;
+
+  return isValid && isAfterYear2000;
+}
 
 export default function ItemRow({ product, hideQuantityButtons }: Props) {
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
-  const isValidPreorderDate = product?.preorder
-    ? isValidDate(product?.preorder)
-    : false;
-  const preorderDate = isValidPreorderDate
-    ? new Date(product?.preorder || "").toLocaleDateString().replace(/\//g, ".")
-    : null;
+
+  function renderPreorderDate() {
+    if (!product?.preorder || !isValidDate(product.preorder)) return null;
+
+    const date = new Date(product.preorder);
+
+    return `ship by ${date.toLocaleDateString().replace(/\//g, ".")}`;
+  }
 
   if (!product) return null;
 
@@ -43,7 +50,7 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
             <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
           </div>
           <Text variant="inactive" className="whitespace-nowrap">
-            {preorderDate ? `ship by ${preorderDate}` : ""}
+            {renderPreorderDate()}
           </Text>
         </div>
         <div

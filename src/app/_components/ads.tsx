@@ -7,6 +7,7 @@ import type { common_HeroEntity } from "@/api/proto-http/frontend";
 import { calculateAspectRatio } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
+import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 import { ArchiveItem } from "./archive-item";
@@ -118,7 +119,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Button>
                   </div>
                 </div>
-                <div className="absolute inset-0 z-10 h-full bg-overlay"></div>
+                <Overlay cover="container" />
               </div>
             );
           case "HERO_TYPE_DOUBLE":
@@ -186,7 +187,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Button>
                   </div>
                 </div>
-                <div className="absolute inset-0 z-10 h-full bg-overlay"></div>
+                <Overlay cover="container" />
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
