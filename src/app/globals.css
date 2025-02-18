@@ -19,8 +19,7 @@
     /* TEXT */
     --text-giant: 200px;
     --text-giant-small: 110px;
-    --text-base: 16px;
-    --text-small: 12px;
+    --text-base: 12px;
   }
 
   .blackTheme {
@@ -37,8 +36,7 @@
     /* TEXT */
     --text-giant: 200px;
     --text-giant-small: 110px;
-    --text-base: 16px;
-    --text-small: 12px;
+    --text-base: 12px;
   }
 
   /* * {

@@ -12,13 +12,12 @@ const config = {
         buttonTextColor: "var(--button-text)",
         visitedLinkColor: "var(--visited-link)",
         acidColor: "var(--text-select)",
-        overlay: "var(--overlay)"
+        overlay: "var(--overlay)",
       },
       fontSize: {
         textGiantSize: "var(--text-giant)",
         textGiantSmallSize: "var(--text-giant-small)",
         textBaseSize: "var(--text-base)",
-        textSmallSize: "var(--text-small)",
       },
     },
   },
