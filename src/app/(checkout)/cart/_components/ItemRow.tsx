@@ -8,29 +8,14 @@ import { Text } from "@/components/ui/text";
 
 import CartItemSize from "./CartItemSize";
 import ProductRemoveButton from "./ProductRemoveButton";
-
-function isValidDate(date: string): boolean {
-  if (!date) return false;
-
-  const parsedDate = new Date(date);
-  const isValid = !isNaN(parsedDate.getTime());
-  const isAfterYear2000 = parsedDate.getFullYear() > 2000;
-
-  return isValid && isAfterYear2000;
-}
+import { getPreorderDate } from "./utils";
 
 export default function ItemRow({ product, hideQuantityButtons }: Props) {
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
 
-  function renderPreorderDate() {
-    if (!product?.preorder || !isValidDate(product.preorder)) return null;
-
-    const date = new Date(product.preorder);
-
-    return `ship by ${date.toLocaleDateString().replace(/\//g, ".")}`;
-  }
-
   if (!product) return null;
+
+  const preorderDate = getPreorderDate(product);
 
   return (
     <div className="flex gap-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0 ">
@@ -49,9 +34,11 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
             <Text>{product.color}</Text>
             <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
           </div>
-          <Text variant="inactive" className="whitespace-nowrap">
-            {renderPreorderDate()}
-          </Text>
+          {preorderDate && (
+            <Text variant="inactive" className="whitespace-nowrap">
+              {preorderDate}
+            </Text>
+          )}
         </div>
         <div
           className={cn(
