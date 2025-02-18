@@ -21,7 +21,7 @@ const textVariants = cva("", {
         "lg:leading-tight",
         "whitespace-nowrap",
       ],
-      small: ["text-textSmallSize"],
+      small: ["text-textBaseSize"],
     },
   },
   defaultVariants: {

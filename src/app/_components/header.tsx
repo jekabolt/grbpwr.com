@@ -12,7 +12,7 @@ export function Header() {
     <header className="text fixed bottom-2 left-2 right-2 z-30 flex h-12 items-center justify-between bg-bgColor p-3 py-2 text-textColor lg:top-2 lg:mx-2 lg:px-5 lg:py-3">
       <HeaderLeftNav />
 
-      <Link href="/" className="flex-none text-center text-textSmallSize">
+      <Link href="/" className="flex-none text-center text-textBaseSize">
         grbpwr
       </Link>
 

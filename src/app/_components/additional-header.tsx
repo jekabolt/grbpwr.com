@@ -18,7 +18,7 @@ export function AdditionalHeader({
       <Button asChild size="sm">
         <Link href={`/${link}`}>{left}</Link>
       </Button>
-      <div className="flex-none text-center text-textSmallSize">{center}</div>
+      <div className="flex-none text-center text-textBaseSize">{center}</div>
       <Button asChild size="sm" className="hidden lg:block">
         <Link href="/">{right}</Link>
       </Button>

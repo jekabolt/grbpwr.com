@@ -24,7 +24,7 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
         <NavigationMenu.Item>
           <NavigationMenu.Trigger
             className={cn(
-              "flex items-center px-2 text-textSmallSize data-[state=open]:underline",
+              "flex items-center px-2 text-textBaseSize data-[state=open]:underline",
             )}
           >
             <Link href={`/catalog?${men}`} className="flex items-center">
@@ -53,7 +53,7 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
         <NavigationMenu.Item>
           <NavigationMenu.Trigger
             className={cn(
-              "flex items-center px-2 text-textSmallSize data-[state=open]:underline",
+              "flex items-center px-2 text-textBaseSize data-[state=open]:underline",
             )}
           >
             <Link href={`/catalog?${women}`} className="flex items-center">
@@ -83,7 +83,7 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
           <Button asChild>
             <NavigationMenu.Link
               href="/archive"
-              className="flex items-center px-2 text-textSmallSize underline-offset-2 hover:underline"
+              className="flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline"
             >
               archive
             </NavigationMenu.Link>
