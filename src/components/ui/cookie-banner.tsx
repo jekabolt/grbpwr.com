@@ -7,6 +7,7 @@ import { Text } from "@/components/ui/text";
 import { CookieContent } from "@/app/(content)/privacy-policy/cookie-content";
 
 import { Button } from "./button";
+import { MobileCookieModal } from "./mobile-cookie-modal";
 
 export const defaultCookiePreferences = {
   functional: true,
@@ -48,8 +49,11 @@ export function CookieBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="border-inactive-500 fixed inset-x-2 top-2 z-30 border bg-bgColor lg:bottom-2 lg:left-auto lg:top-auto lg:w-96">
-      <div className="space-y-6 p-2.5">
+    <div className="border-textInactiveColor-500 fixed inset-x-2 top-2 z-30 border bg-bgColor lg:bottom-2 lg:left-auto lg:top-auto lg:w-96">
+      <div className="block lg:hidden">
+        <MobileCookieModal />
+      </div>
+      <div className="hidden space-y-6 p-2.5 lg:block">
         <Text className="tracking-wider">
           we use to enhance the functionality of the website.you can disable
           cookies in your browser settings.
@@ -83,7 +87,7 @@ export function CookieBanner() {
             <Text variant="uppercase">cookie preferences</Text>
             <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
           </div>
-          <div className="no-scroll-bar h-full overflow-y-scroll">
+          <div className="no-scroll-bar border-textInactiveColor-500 h-full overflow-y-scroll border-b">
             <CookieContent
               preferences={preferences}
               onPreferenceChange={handlePreferenceChange}
