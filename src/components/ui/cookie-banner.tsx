@@ -8,7 +8,7 @@ import { CookieContent } from "@/app/(content)/privacy-policy/cookie-content";
 
 import { Button } from "./button";
 
-const defaultCookiePreferences = {
+export const defaultCookiePreferences = {
   functional: true,
   statistical: true,
   advertising_social_media: true,

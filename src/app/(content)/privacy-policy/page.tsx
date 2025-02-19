@@ -111,7 +111,7 @@ export default function Component() {
         by law.
       </Text>
       <CareComposition className="mb-10 space-y-6" />
-      <CookieContent />
+      <CookieContent autoSave={true} />
     </TextWrapper>
   );
 }

@@ -1,3 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+import { defaultCookiePreferences } from "@/components/ui/cookie-banner";
 import { Text } from "@/components/ui/text";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
 
@@ -11,12 +16,44 @@ interface CookiePreferences {
 interface Props {
   preferences?: CookiePreferences;
   onPreferenceChange?: (key: string, value: boolean) => void;
+  autoSave?: boolean;
 }
 
 export function CookieContent({
-  preferences,
-  onPreferenceChange = () => {},
+  preferences: externalPreferences,
+  onPreferenceChange,
+  autoSave = false,
 }: Props) {
+  const [internalPreferences, setInternalPreferences] = useState(
+    defaultCookiePreferences,
+  );
+
+  useEffect(() => {
+    if (autoSave) {
+      const savedConsent = localStorage.getItem("cookieConsent");
+      if (savedConsent) {
+        setInternalPreferences(JSON.parse(savedConsent));
+      }
+    }
+  }, [autoSave]);
+
+  const handlePreferenceChange = (key: string, value: boolean) => {
+    if (autoSave) {
+      const newPreferences = {
+        ...internalPreferences,
+        [key]: value,
+      };
+      setInternalPreferences(newPreferences);
+      localStorage.setItem("cookieConsent", JSON.stringify(newPreferences));
+    } else if (onPreferenceChange) {
+      onPreferenceChange(key, value);
+    }
+  };
+  // Use either internal or external preferences based on autoSave
+  const activePreferences = autoSave
+    ? internalPreferences
+    : externalPreferences;
+
   return (
     <div className="space-y-4">
       <Text className="lowercase">
@@ -39,9 +76,9 @@ export function CookieContent({
 
       <ToggleSwitch
         label="statistical analysis cookies"
-        checked={preferences?.statistical}
-        onCheckedChange={(checked: boolean) =>
-          onPreferenceChange("statistical", checked)
+        checked={activePreferences?.statistical}
+        onCheckedChange={(checked) =>
+          handlePreferenceChange("statistical", checked)
         }
       />
 
@@ -54,9 +91,9 @@ export function CookieContent({
 
       <ToggleSwitch
         label="advertising and social media cookies"
-        checked={preferences?.advertising_social_media}
-        onCheckedChange={(checked: boolean) =>
-          onPreferenceChange("advertising_social_media", checked)
+        checked={activePreferences?.advertising_social_media}
+        onCheckedChange={(checked) =>
+          handlePreferenceChange("advertising_social_media", checked)
         }
       />
 
@@ -72,9 +109,9 @@ export function CookieContent({
 
       <ToggleSwitch
         label="cookies to personalize the grbpwr experience"
-        checked={preferences?.experience}
-        onCheckedChange={(checked: boolean) =>
-          onPreferenceChange("experience", checked)
+        checked={activePreferences?.experience}
+        onCheckedChange={(checked) =>
+          handlePreferenceChange("experience", checked)
         }
       />
 
