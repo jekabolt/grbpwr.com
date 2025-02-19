@@ -49,7 +49,7 @@ export function CookieContent({
       onPreferenceChange(key, value);
     }
   };
-  // Use either internal or external preferences based on autoSave
+
   const activePreferences = autoSave
     ? internalPreferences
     : externalPreferences;
