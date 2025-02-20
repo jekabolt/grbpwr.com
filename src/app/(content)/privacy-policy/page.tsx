@@ -2,10 +2,11 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import CareComposition from "@/components/ui/care-composition";
-import { CookieBanner } from "@/components/ui/cookie-banner";
 import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";
 import TextWrapper from "@/components/ui/text-wrapper";
+
+import { CookieContent } from "./cookie-content";
 
 const links = [
   { href: "facebook", label: "facebook" },
@@ -110,7 +111,7 @@ export default function Component() {
         by law.
       </Text>
       <CareComposition className="mb-10 space-y-6" />
-      <CookieBanner isPrivacyPage={true} />
+      <CookieContent autoSave={true} />
     </TextWrapper>
   );
 }

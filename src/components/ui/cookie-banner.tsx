@@ -4,86 +4,114 @@ import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
+import { CookieContent } from "@/app/(content)/privacy-policy/cookie-content";
 
 import { Button } from "./button";
-import CareComposition from "./care-composition";
-import RadioGroupComponent from "./radio-group";
+import { MobileCookieModal } from "./mobile-cookie-modal";
 
-const cookieOptions = [
-  { label: "accept all", value: "accept" },
-  { label: "deny all", value: "deny" },
-];
+export const defaultCookiePreferences = {
+  functional: true,
+  statistical: true,
+  advertising_social_media: true,
+  experience: true,
+};
 
-interface Props {
-  isPrivacyPage?: boolean;
-}
-
-export function CookieBanner({ isPrivacyPage = false }: Props) {
+export function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
-  const [consent, setConsent] = useState<"accept" | "deny" | null>(null);
+  const [open, setOpenStatus] = useState(false);
+  const [preferences, setPreferences] = useState(defaultCookiePreferences);
 
   useEffect(() => {
     const savedConsent = localStorage.getItem("cookieConsent");
-    if (savedConsent) {
-      setConsent(savedConsent === "true" ? "accept" : "deny");
-    }
-    if (!savedConsent || isPrivacyPage) {
+    if (!savedConsent) {
       setIsVisible(true);
     }
-  }, [isPrivacyPage]);
+  }, []);
 
-  if (!isVisible && !isPrivacyPage) return null;
-
-  const handleConsent = (value: string) => {
-    setConsent(value as "accept" | "deny");
-  };
-
-  const handleSubmit = () => {
-    if (!consent) return;
-    localStorage.setItem(
-      "cookieConsent",
-      consent === "accept" ? "true" : "false",
-    );
+  const handleSaveCookies = () => {
+    localStorage.setItem("cookieConsent", JSON.stringify(preferences));
     setIsVisible(false);
   };
 
+  const handlePreferenceChange = (key: string, value: boolean) => {
+    setPreferences((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleSavePreferences = () => {
+    localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    setIsVisible(false);
+    setOpenStatus(false);
+  };
+
+  if (!isVisible) return null;
+
   return (
-    <div
-      className={cn({
-        "fixed bottom-0 left-0 right-0 z-50 space-y-6 bg-white p-4":
-          !isPrivacyPage,
-        "space-y-6": isPrivacyPage,
-      })}
-    >
-      <div>
-        <Text variant="uppercase">
-          {isPrivacyPage
-            ? "7. managing your data preferences"
-            : "managing your data preferences"}
-        </Text>
+    <div className="border-textInactiveColor-500 fixed inset-x-2 top-2 z-30 border bg-bgColor lg:bottom-2 lg:left-auto lg:top-auto lg:w-96">
+      <div className="block lg:hidden">
+        <MobileCookieModal />
       </div>
-      <div>
-        <Text>
-          you can manage your preferences regarding your data trough our website
+      <div className="hidden space-y-6 p-2.5 lg:block">
+        <Text className="tracking-wider">
+          we use to enhance the functionality of the website.you can disable
+          cookies in your browser settings.
+          <Button
+            variant="underline"
+            className="inline"
+            onClick={() => setOpenStatus((v) => !v)}
+          >
+            cookie preferences
+          </Button>
         </Text>
-      </div>
-      {isPrivacyPage && <CareComposition className="space-y-6" />}
-      <RadioGroupComponent
-        name="cookieConsent"
-        items={cookieOptions}
-        onValueChange={handleConsent}
-        value={consent ?? undefined}
-        className="grid max-w-xs grid-cols-2"
-      />
-      <div>
         <Button
-          variant="main"
+          variant="secondary"
           size="lg"
           className="uppercase"
-          onClick={handleSubmit}
+          onClick={handleSaveCookies}
         >
-          submit
+          accept
         </Button>
+      </div>
+      <div
+        className={cn(
+          "fixed inset-y-2 right-2 z-30 hidden w-[459px] border border-black bg-bgColor p-2.5",
+          {
+            block: open,
+          },
+        )}
+      >
+        <div className="flex h-full flex-col gap-y-6">
+          <div className="flex items-center justify-between">
+            <Text variant="uppercase">cookie preferences</Text>
+            <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
+          </div>
+          <div className="no-scroll-bar border-textInactiveColor-500 h-full overflow-y-scroll border-b">
+            <CookieContent
+              preferences={preferences}
+              onPreferenceChange={handlePreferenceChange}
+            />
+          </div>
+          <div className="flex gap-x-6">
+            <Button
+              variant="main"
+              onClick={handleSaveCookies}
+              size="lg"
+              className="w-1/2 uppercase"
+            >
+              accept all cookies
+            </Button>
+            <Button
+              variant="simpleReverse"
+              onClick={handleSavePreferences}
+              size="lg"
+              className="uppercase"
+            >
+              save preferences
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
