@@ -6,7 +6,7 @@ import useEmblaCarousel from "embla-carousel-react";
 
 import { calculateAspectRatio } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "@/components/ui/icons/arrow-right";
+import { Arrow } from "@/components/ui/icons/arrow";
 import ImageComponent from "@/components/ui/image";
 
 export function ProductImagesCarousel({ productMedia }: Props) {
@@ -45,10 +45,7 @@ export function ProductImagesCarousel({ productMedia }: Props) {
   }, [scrollNext, scrollPrev]);
 
   return (
-    <div
-      className="hidden w-full overflow-x-auto border border-blue-500 lg:block"
-      ref={emblaRef}
-    >
+    <div className="w-full overflow-x-auto" ref={emblaRef}>
       <div className="flex h-full">
         {mediaForCarousel.map((m, index) => (
           <div key={`${m.id}-${index}`} className="flex-[0_0_660px]">
@@ -68,13 +65,13 @@ export function ProductImagesCarousel({ productMedia }: Props) {
         className="absolute left-32 top-0 h-full w-4 rotate-180"
         onClick={scrollPrev}
       >
-        <ArrowRight />
+        <Arrow />
       </Button>
       <Button
         className="absolute right-32 top-0 h-full w-4"
         onClick={scrollNext}
       >
-        <ArrowRight />
+        <Arrow />
       </Button>
     </div>
   );

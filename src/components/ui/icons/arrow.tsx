@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export function ArrowRight(props: SVGProps<SVGSVGElement>) {
+export function Arrow(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="6"
