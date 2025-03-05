@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -10,45 +10,50 @@ import { Arrow } from "@/components/ui/icons/arrow";
 import ImageComponent from "@/components/ui/image";
 
 export function ProductImagesCarousel({ productMedia }: Props) {
+  const oneMedia = productMedia.length === 1;
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: productMedia.length > 1,
-    align: "end",
+    align: oneMedia ? "start" : "end",
     containScroll: false,
+    startIndex: oneMedia ? 0 : 2,
   });
 
   const mediaForCarousel =
-    productMedia.length === 2
+    productMedia.length <= 3 && productMedia.length > 1
       ? [...productMedia, ...productMedia]
       : productMedia;
 
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
+  const scrollNext = () => {
+    emblaApi?.scrollNext();
+  };
 
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
+  const scrollPrev = () => {
+    emblaApi?.scrollPrev();
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "ArrowRight") {
+      scrollNext();
+    } else if (event.key === "ArrowLeft") {
+      scrollPrev();
+    }
+  };
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowRight") {
-        scrollNext();
-      } else if (event.key === "ArrowLeft") {
-        scrollPrev();
-      }
-    };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [scrollNext, scrollPrev]);
+  }, [handleKeyDown]);
 
   return (
-    <div className="w-full overflow-x-auto" ref={emblaRef}>
+    <div
+      className="no-scroll-bar h-[800px] w-full overflow-x-auto"
+      ref={emblaRef}
+    >
       <div className="flex h-full">
         {mediaForCarousel.map((m, index) => (
-          <div key={`${m.id}-${index}`} className="flex-[0_0_660px]">
+          <div key={`${m.id}-${index}`} className="flex-[0_0_45%]">
             <ImageComponent
               src={m?.media?.fullSize?.mediaUrl!}
               alt="Product image"
@@ -61,18 +66,22 @@ export function ProductImagesCarousel({ productMedia }: Props) {
           </div>
         ))}
       </div>
-      <Button
-        className="absolute left-32 top-0 h-full w-4 rotate-180"
-        onClick={scrollPrev}
-      >
-        <Arrow />
-      </Button>
-      <Button
-        className="absolute right-32 top-0 h-full w-4"
-        onClick={scrollNext}
-      >
-        <Arrow />
-      </Button>
+      {!oneMedia && (
+        <>
+          <Button
+            className="absolute left-32 top-0 h-full w-4 rotate-180"
+            onClick={scrollPrev}
+          >
+            <Arrow />
+          </Button>
+          <Button
+            className="absolute right-32 top-0 h-full w-4"
+            onClick={scrollNext}
+          >
+            <Arrow />
+          </Button>
+        </>
+      )}
     </div>
   );
 }
