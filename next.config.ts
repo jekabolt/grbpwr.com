@@ -1,6 +1,11 @@
 import type { NextConfig } from "next/types";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    reactCompiler: {
+      compilationMode: 'annotation'
+    }
+  },
   images: {
     remotePatterns: [
       {
