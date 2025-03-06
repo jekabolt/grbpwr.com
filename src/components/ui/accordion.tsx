@@ -45,11 +45,11 @@ AccordionTrigger.displayName = "AccordionTrigger";
 export const AccordionContent = forwardRef<any, any>(
   ({ children, className, ...props }, forwardedRef) => (
     <AccordionPrimitives.Content
-      className={cn("overflow-hidden", className)}
+      className="overflow-hidden"
       {...props}
       ref={forwardedRef}
     >
-      <div className="">{children}</div>
+      <div className={cn("", className)}>{children}</div>
     </AccordionPrimitives.Content>
   ),
 );

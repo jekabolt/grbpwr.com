@@ -52,11 +52,11 @@ export default async function ProductPage(props: ProductPageProps) {
 
   return (
     <FlexibleLayout headerType="catalog" footerType="mini">
-      <div className="relative border border-blue-500 lg:h-screen">
+      <div className="relative lg:h-screen">
         <div className="block lg:hidden">
           <MobileImageCarousel media={productMedia} />
         </div>
-        <div className="hidden h-full w-full lg:block lg:pt-12">
+        <div className="hidden h-full w-full pt-12 lg:block">
           <ProductImagesCarousel productMedia={productMedia} />
         </div>
         {product && (
