@@ -51,12 +51,12 @@ export default async function ProductPage(props: ProductPageProps) {
   const productMedia = [...(product?.media || [])];
 
   return (
-    <FlexibleLayout headerType="catalog" footerType="mini" className="lg:pt-16">
-      <div className="relative border border-red-500">
+    <FlexibleLayout headerType="catalog" footerType="mini">
+      <div className="relative border border-blue-500 lg:h-screen">
         <div className="block lg:hidden">
           <MobileImageCarousel media={productMedia} />
         </div>
-        <div className="hidden lg:block">
+        <div className="hidden h-full w-full lg:block lg:pt-12">
           <ProductImagesCarousel productMedia={productMedia} />
         </div>
         {product && (
