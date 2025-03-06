@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { CARE_INSTRUCTIONS_MAP } from "@/constants";
 
-import { getFullComposition } from "@/lib/utils";
+import { cn, getFullComposition } from "@/lib/utils";
 import {
   AccordionContent,
   AccordionItem,
@@ -16,8 +17,7 @@ import MeasurementsModal from "./measurements-modal";
 import { AddToCartForm } from "./select-size-add-to-cart";
 
 export function ProductInfo({ product }: Props) {
-  const baseCurrencyPrice =
-    product?.product?.productDisplay?.productBody?.price?.value;
+  const [openItem, setOpenItem] = useState<string | undefined>(undefined);
   const care = product.product?.productDisplay?.productBody?.careInstructions;
   const composition = product.product?.productDisplay?.productBody?.composition;
   const fullComposition = getFullComposition(composition);
@@ -29,14 +29,27 @@ export function ProductInfo({ product }: Props) {
     );
 
   return (
-    <div className="border-inactive bottom-2.5 right-2.5 grid grid-cols-2 gap-x-5 border bg-bgColor p-2.5 lg:absolute lg:w-2/5">
+    <div className="border-inactive bottom-2.5 right-2.5 grid h-[245px] grid-cols-2 gap-x-5 border bg-bgColor p-2.5 lg:absolute lg:w-[600px]">
       <div className="grid gap-10">
-        <Text variant="uppercase">
+        <Text variant="uppercase" className={openItem ? "hidden" : ""}>
           {product?.product?.productDisplay?.productBody?.name}
         </Text>
         <div className="space-y-5">
-          <AccordionRoot type="single" collapsible className="space-y-5">
-            <AccordionItem value="item-1">
+          <AccordionRoot
+            type="single"
+            collapsible
+            className={cn("space-y-5", {
+              "space-y-0": openItem,
+            })}
+            value={openItem}
+            onValueChange={setOpenItem}
+          >
+            <AccordionItem
+              value="item-1"
+              className={cn("block space-y-10", {
+                hidden: openItem && openItem !== "item-1",
+              })}
+            >
               <AccordionTrigger>
                 <Text variant="uppercase">description</Text>
               </AccordionTrigger>
@@ -46,7 +59,12 @@ export function ProductInfo({ product }: Props) {
                 </Text>
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-2">
+            <AccordionItem
+              value="item-2"
+              className={cn("block space-y-10", {
+                hidden: openItem && openItem !== "item-2",
+              })}
+            >
               <AccordionTrigger>
                 <Text variant="uppercase">composition</Text>
               </AccordionTrigger>
@@ -58,7 +76,12 @@ export function ProductInfo({ product }: Props) {
                 ))}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-3">
+            <AccordionItem
+              value="item-3"
+              className={cn("block space-y-10", {
+                hidden: openItem && openItem !== "item-3",
+              })}
+            >
               <AccordionTrigger>
                 <Text variant="uppercase">care</Text>
               </AccordionTrigger>
@@ -71,19 +94,24 @@ export function ProductInfo({ product }: Props) {
               </AccordionContent>
             </AccordionItem>
           </AccordionRoot>
-          <MeasurementsModal
-            productId={product?.product?.id || 0}
-            sizes={product?.sizes || []}
-            categoryId={
-              product?.product?.productDisplay?.productBody?.topCategoryId || 0
-            }
-            gender={product.product?.productDisplay?.productBody?.targetGender}
-          />
+          <div className={openItem ? "hidden" : ""}>
+            <MeasurementsModal
+              productId={product?.product?.id || 0}
+              sizes={product?.sizes || []}
+              categoryId={
+                product?.product?.productDisplay?.productBody?.topCategoryId ||
+                0
+              }
+              gender={
+                product.product?.productDisplay?.productBody?.targetGender
+              }
+            />
+          </div>
         </div>
       </div>
       <AddToCartForm
-        // className="order-1 flex w-full flex-col items-center justify-between gap-y-6 lg:order-none lg:flex-row lg:gap-x-20"
         sizes={product?.sizes || []}
+        product={product}
         id={product?.product?.id || 0}
       />
     </div>

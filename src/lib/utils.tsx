@@ -46,3 +46,13 @@ export function getFullComposition(composition: string | undefined): string[] {
     return `${materialName}: ${value}%`;
   });
 }
+
+export function calculatePriceWithSale(
+  price: string | undefined,
+  salePercentage: string | undefined,
+): number {
+  const basePrice = parseFloat(price || "0");
+  const discount = parseInt(salePercentage || "0");
+
+  return (basePrice * (100 - discount)) / 100;
+}
