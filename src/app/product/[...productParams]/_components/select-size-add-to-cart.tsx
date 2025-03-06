@@ -34,7 +34,7 @@ export function AddToCartForm({ sizes, id, className }: Props) {
 
   return (
     <div className={cn(className)}>
-      <div className="flex w-full grow justify-between">
+      <div className="">
         {sizeNames.map(({ name, id }) => (
           <Button
             className={cn("p-1", {

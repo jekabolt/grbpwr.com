@@ -35,7 +35,13 @@ export default function MeasurementsModal({
   // }
 
   return (
-    <Modal openElement={<Button variant="underline">measurements</Button>}>
+    <Modal
+      openElement={
+        <Button variant="underline" className="uppercase">
+          sizes guide
+        </Button>
+      }
+    >
       <MeasurementsModalContent
         id={productId}
         sizes={sizes}
