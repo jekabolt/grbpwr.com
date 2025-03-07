@@ -16,5 +16,9 @@ export function getPreorderDate(product: common_OrderItem | common_ProductFull):
 
   const date = new Date(preorderDate);
 
-  return `ship by ${date.toLocaleDateString().replace(/\//g, ".")}`;
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `ship by ${day}.${month}.${year}`;
 }

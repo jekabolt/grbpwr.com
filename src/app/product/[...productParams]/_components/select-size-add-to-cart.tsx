@@ -130,7 +130,7 @@ export function AddToCartForm({
           onClick={handleAddToCart}
         >
           <Text component="span" variant="inherit">
-            add
+            {preorder ? "preorder" : "add"}
           </Text>
           {isSaleApplied ? (
             <Text variant="inactive">
