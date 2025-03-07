@@ -9,7 +9,7 @@ export const AccordionItem = forwardRef<any, any>(
   ({ children, className, ...props }, forwardedRef) => (
     <AccordionPrimitives.Item
       className={cn(
-        "mt-px w-full overflow-hidden first:mt-0 focus-within:relative focus-within:z-10",
+        "w-full overflow-hidden first:mt-0 focus-within:relative focus-within:z-10",
         className,
       )}
       {...props}

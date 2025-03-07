@@ -21,12 +21,19 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { getPreorderDate } from "@/app/(checkout)/cart/_components/utils";
 
-export function AddToCartForm({ sizes, id, className, product }: Props) {
+export function AddToCartForm({
+  sizes,
+  id,
+  className,
+  product,
+  onSizeAccordionStateChange,
+}: Props) {
   const { dictionary } = useDataContext();
   const { increaseQuantity, products } = useCart((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
+  const [pendingAddToCart, setPendingAddToCart] = useState(false);
 
   const productBody = product.product?.productDisplay?.productBody;
   const price = productBody?.price?.value || "0";
@@ -42,6 +49,10 @@ export function AddToCartForm({ sizes, id, className, product }: Props) {
     name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
   }));
 
+  const activeSizeName = activeSizeId
+    ? sizeNames.find((size) => size.id === activeSizeId)?.name
+    : "";
+
   const productQuantityInCart =
     products.find((p) => p.id === id && p.size === activeSizeId?.toString())
       ?.quantity || 0;
@@ -50,8 +61,30 @@ export function AddToCartForm({ sizes, id, className, product }: Props) {
   const isMaxQuantity = productQuantityInCart >= maxOrderItems;
 
   const handleAddToCart = async () => {
-    if (!activeSizeId || isMaxQuantity) return;
-    await increaseQuantity(id, activeSizeId.toString(), 1);
+    if (isMaxQuantity) return;
+    if (!activeSizeId) {
+      setOpenItem("size");
+      setPendingAddToCart(true);
+      return;
+    }
+    await increaseQuantity(id, activeSizeId?.toString() || "", 1);
+  };
+
+  const onAccordionChange = (value: string | undefined) => {
+    setOpenItem(value);
+    onSizeAccordionStateChange?.(value === "size");
+  };
+
+  const handleSizeSelect = (sizeId: number) => {
+    setActiveSizeId(sizeId);
+
+    if (pendingAddToCart) {
+      setPendingAddToCart(false);
+      setTimeout(() => {
+        increaseQuantity(id, sizeId.toString(), 1);
+        setOpenItem(undefined);
+      }, 0);
+    }
   };
 
   return (
@@ -60,25 +93,23 @@ export function AddToCartForm({ sizes, id, className, product }: Props) {
         type="single"
         collapsible
         value={openItem}
-        onValueChange={setOpenItem}
-        className="h-full"
+        onValueChange={onAccordionChange}
+        className={cn("h-full", className)}
       >
-        <AccordionItem value="size" className="relative h-full">
-          <AccordionTrigger className="border-inactive border-b-2">
-            <Text variant="uppercase">size</Text>
+        <AccordionItem value="size" className="flex h-full flex-col gap-y-5">
+          <AccordionTrigger className="border-inactive border-b">
+            <Text variant="uppercase">
+              {activeSizeId ? activeSizeName : "size"}
+            </Text>
           </AccordionTrigger>
-          <AccordionContent
-            className={cn("grid grid-cols-4 gap-2", {
-              "absolute inset-x-0 bottom-0": openItem,
-            })}
-          >
+          <AccordionContent className={cn("grid grid-cols-4 gap-2", {})}>
             {sizeNames.map(({ name, id: sizeId }) => (
               <Button
-                className={cn("uppercase", {
-                  "border-b-2 border-black": activeSizeId === sizeId,
+                className={cn("uppercase hover:border-b hover:border-black", {
+                  "border-b border-black": activeSizeId === sizeId,
                 })}
                 key={sizeId}
-                onClick={() => setActiveSizeId(sizeId)}
+                onClick={() => handleSizeSelect(sizeId)}
               >
                 {name}
               </Button>
@@ -97,14 +128,9 @@ export function AddToCartForm({ sizes, id, className, product }: Props) {
           variant="main"
           size="lg"
           onClick={handleAddToCart}
-          disabled={!activeSizeId || isMaxQuantity}
         >
           <Text component="span" variant="inherit">
-            {!activeSizeId
-              ? "select size"
-              : isMaxQuantity
-                ? `max ${maxOrderItems}`
-                : "add"}
+            add
           </Text>
           {isSaleApplied ? (
             <Text variant="inactive">
@@ -127,4 +153,5 @@ interface Props {
   sizes: common_ProductSize[];
   product: common_ProductFull;
   className?: string;
+  onSizeAccordionStateChange?: (isOpen: boolean) => void;
 }
