@@ -34,6 +34,7 @@ export function AddToCartForm({
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
   const [pendingAddToCart, setPendingAddToCart] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const productBody = product.product?.productDisplay?.productBody;
   const price = productBody?.price?.value || "0";
@@ -67,23 +68,33 @@ export function AddToCartForm({
       setPendingAddToCart(true);
       return;
     }
-    await increaseQuantity(id, activeSizeId?.toString() || "", 1);
+
+    setIsLoading(true);
+    try {
+      await increaseQuantity(id, activeSizeId?.toString() || "", 1);
+    } finally {
+      setIsLoading(false);
+      setOpenItem(undefined);
+    }
   };
 
   const onAccordionChange = (value: string | undefined) => {
     setOpenItem(value);
-    onSizeAccordionStateChange?.(value === "size");
+    onSizeAccordionStateChange(value === "size");
   };
 
-  const handleSizeSelect = (sizeId: number) => {
+  const handleSizeSelect = async (sizeId: number) => {
     setActiveSizeId(sizeId);
+    setOpenItem("");
 
     if (pendingAddToCart) {
       setPendingAddToCart(false);
-      setTimeout(() => {
-        increaseQuantity(id, sizeId.toString(), 1);
-        setOpenItem(undefined);
-      }, 0);
+      setIsLoading(true);
+      try {
+        await increaseQuantity(id, sizeId.toString(), 1);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -94,7 +105,6 @@ export function AddToCartForm({
         collapsible
         value={openItem}
         onValueChange={onAccordionChange}
-        className={cn("h-full", className)}
       >
         <AccordionItem value="size" className="flex h-full flex-col gap-y-5">
           <AccordionTrigger className="border-inactive border-b">
@@ -103,13 +113,13 @@ export function AddToCartForm({
             </Text>
           </AccordionTrigger>
           <AccordionContent className={cn("grid grid-cols-4 gap-2", {})}>
-            {sizeNames.map(({ name, id: sizeId }) => (
+            {sizeNames.map(({ name, id }) => (
               <Button
                 className={cn("uppercase hover:border-b hover:border-black", {
-                  "border-b border-black": activeSizeId === sizeId,
+                  "border-b border-black": activeSizeId === id,
                 })}
-                key={sizeId}
-                onClick={() => handleSizeSelect(sizeId)}
+                key={id}
+                onClick={() => handleSizeSelect(id)}
               >
                 {name}
               </Button>
@@ -124,10 +134,11 @@ export function AddToCartForm({
       >
         {preorder && <Text variant="uppercaseWithColors">{preorder}</Text>}
         <Button
-          className="flex items-center justify-between uppercase"
-          variant="main"
+          className="flex items-center justify-between bg-textColor uppercase text-bgColor"
           size="lg"
           onClick={handleAddToCart}
+          loading={isLoading}
+          disabled={isMaxQuantity}
         >
           <Text component="span" variant="inherit">
             {preorder ? "preorder" : "add"}
@@ -153,5 +164,5 @@ interface Props {
   sizes: common_ProductSize[];
   product: common_ProductFull;
   className?: string;
-  onSizeAccordionStateChange?: (isOpen: boolean) => void;
+  onSizeAccordionStateChange: (isOpen: boolean) => void;
 }
