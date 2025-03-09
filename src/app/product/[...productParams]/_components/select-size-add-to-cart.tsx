@@ -64,14 +64,14 @@ export function AddToCartForm({
   const handleAddToCart = async () => {
     if (isMaxQuantity) return;
     if (!activeSizeId) {
-      setOpenItem("size");
+      onAccordionChange("size");
       setPendingAddToCart(true);
       return;
     }
 
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 300));
       await increaseQuantity(id, activeSizeId?.toString() || "", 1);
     } finally {
       setIsLoading(false);
@@ -86,7 +86,7 @@ export function AddToCartForm({
 
   const handleSizeSelect = async (sizeId: number) => {
     setActiveSizeId(sizeId);
-    setOpenItem("");
+    onAccordionChange("");
 
     if (pendingAddToCart) {
       setPendingAddToCart(false);

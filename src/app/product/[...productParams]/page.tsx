@@ -59,12 +59,7 @@ export default async function ProductPage(props: ProductPageProps) {
         <div className="hidden h-full w-full pt-12 lg:block">
           <ProductImagesCarousel productMedia={productMedia} />
         </div>
-        {product && (
-          <ProductInfo
-            product={product}
-            // className="p-2.5 lg:absolute lg:bottom-[130px] lg:right-32"
-          />
-        )}
+        {product && <ProductInfo product={product} />}
       </div>
       {product?.product && <LastViewedProducts product={product.product} />}
     </FlexibleLayout>
