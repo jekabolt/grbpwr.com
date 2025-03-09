@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { CARE_INSTRUCTIONS_MAP } from "@/constants";
 
-import { cn } from "@/lib/utils";
+import { cn, getFullComposition } from "@/lib/utils";
 import {
   AccordionContent,
   AccordionItem,
@@ -14,74 +16,118 @@ import { Text } from "@/components/ui/text";
 import MeasurementsModal from "./measurements-modal";
 import { AddToCartForm } from "./select-size-add-to-cart";
 
-export function ProductInfo({ className, product }: Props) {
-  const baseCurrencyPrice =
-    product?.product?.productDisplay?.productBody?.price?.value;
+export function ProductInfo({ product }: Props) {
+  const [openItem, setOpenItem] = useState<string | undefined>(undefined);
+  const [isSizeAccordionOpen, setIsSizeAccordionOpen] = useState(false);
+  const care = product.product?.productDisplay?.productBody?.careInstructions;
+  const composition = product.product?.productDisplay?.productBody?.composition;
+  const fullComposition = getFullComposition(composition);
+
+  const fullCare = care
+    ?.split(",")
+    .map(
+      (instruction) => CARE_INSTRUCTIONS_MAP[instruction.trim()] || instruction,
+    );
+
+  const handleSizeAccordionChange = (isOpen: boolean) => {
+    setIsSizeAccordionOpen(isOpen);
+  };
 
   return (
-    <div
-      className={cn(
-        "relative flex h-auto flex-col gap-y-6 bg-bgColor lg:w-[600px]",
-        className,
-      )}
-    >
-      <div className="order-first flex items-center justify-between gap-x-20">
-        <Text variant="uppercase" component="h1">
-          {product?.product?.productDisplay?.productBody?.name}
-        </Text>
-        <Text>
-          {"[CUR]"} {baseCurrencyPrice}
-        </Text>
+    <div className="border-inactive relative bottom-2.5 right-2.5 grid h-[245px] grid-cols-2 gap-x-5 border bg-bgColor p-2.5 lg:absolute lg:w-[600px]">
+      <div className="space-y-5">
+        <div
+          className={cn("grid gap-10 transition-opacity duration-200", {
+            "pointer-events-none opacity-30": isSizeAccordionOpen,
+          })}
+        >
+          <Text variant="uppercase" className={openItem ? "hidden" : ""}>
+            {product?.product?.productDisplay?.productBody?.name}
+          </Text>
+          <div className="space-y-5">
+            <AccordionRoot
+              type="single"
+              collapsible
+              className={cn("space-y-5", {
+                "space-y-0": openItem,
+              })}
+              value={openItem}
+              onValueChange={setOpenItem}
+              disabled={isSizeAccordionOpen}
+            >
+              <AccordionItem
+                value="item-1"
+                className={cn("block space-y-10", {
+                  hidden: openItem && openItem !== "item-1",
+                })}
+              >
+                <AccordionTrigger>
+                  <Text variant="uppercase">description</Text>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <Text className="lowercase">
+                    {product.product?.productDisplay?.productBody?.description}
+                  </Text>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem
+                value="item-2"
+                className={cn("block space-y-10", {
+                  hidden: openItem && openItem !== "item-2",
+                })}
+              >
+                <AccordionTrigger>
+                  <Text variant="uppercase">composition</Text>
+                </AccordionTrigger>
+                <AccordionContent>
+                  {fullComposition.map((item, index) => (
+                    <Text key={index} className="lowercase">
+                      {item}
+                    </Text>
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem
+                value="item-3"
+                className={cn("block space-y-10", {
+                  hidden: openItem && openItem !== "item-3",
+                })}
+              >
+                <AccordionTrigger>
+                  <Text variant="uppercase">care</Text>
+                </AccordionTrigger>
+                <AccordionContent>
+                  {fullCare?.map((instruction, index) => (
+                    <Text key={index} className="lowercase">
+                      {instruction ? `- ${instruction}` : ""}
+                    </Text>
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
+            </AccordionRoot>
+          </div>
+        </div>
+        <div className={openItem ? "hidden" : ""}>
+          <MeasurementsModal
+            productId={product?.product?.id || 0}
+            sizes={product?.sizes || []}
+            categoryId={
+              product?.product?.productDisplay?.productBody?.topCategoryId || 0
+            }
+            gender={product.product?.productDisplay?.productBody?.targetGender}
+          />
+        </div>
       </div>
-      <Text className="order-last lg:order-none">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed at
-        doloribus, iste ad itaque rem dicta laudantium iure nisi nulla deserunt,
-        vel, vero quibusdam inventore cumque quis libero? Consequatur, in.
-      </Text>
-      <AccordionRoot
-        type="single"
-        collapsible
-        className="order-last w-40 space-y-6 lg:order-none"
-      >
-        <AccordionItem value="item-1" className="space-y-4">
-          <AccordionTrigger>
-            <Text variant="uppercase">composition</Text>
-          </AccordionTrigger>
-          <AccordionContent>
-            Lorem ipsum is placeholder text commonly used in the graphic, print,
-            and publishing industries for previewing layouts and visual mockups.
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="item-2" className="space-y-4">
-          <AccordionTrigger>
-            <Text variant="uppercase">care</Text>
-          </AccordionTrigger>
-          <AccordionContent>
-            Lorem ipsum is placeholder text commonly used in the graphic, print,
-            and publishing industries for previewing layouts and visual mockups.
-          </AccordionContent>
-        </AccordionItem>
-      </AccordionRoot>
-
-      <MeasurementsModal
-        productId={product?.product?.id || 0}
-        sizes={product?.sizes || []}
-        categoryId={
-          product?.product?.productDisplay?.productBody?.topCategoryId || 0
-        }
-        gender={product.product?.productDisplay?.productBody?.targetGender}
-      />
       <AddToCartForm
-        className="order-1 flex w-full flex-col items-center justify-between gap-y-6 lg:order-none lg:flex-row lg:gap-x-20"
         sizes={product?.sizes || []}
+        product={product}
         id={product?.product?.id || 0}
+        onSizeAccordionStateChange={handleSizeAccordionChange}
       />
     </div>
   );
 }
 
 type Props = {
-  className?: string;
   product: common_ProductFull;
 };

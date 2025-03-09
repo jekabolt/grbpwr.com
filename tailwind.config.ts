@@ -19,6 +19,12 @@ const config = {
         textGiantSmallSize: "var(--text-giant-small)",
         textBaseSize: "var(--text-base)",
       },
+      keyframes: {
+        loading: {
+          '0%': { transform: 'scaleX(0)' },
+          '100%': { transform: 'scaleX(1)' }
+        },
+      }
     },
   },
   plugins: [require("@tailwindcss/typography")],

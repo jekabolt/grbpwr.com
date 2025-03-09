@@ -1,6 +1,8 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 
+import { Loader } from "./loader";
+
 export const buttonVariants = cva("disabled:cursor-not-allowed block", {
   variants: {
     variant: {
@@ -66,6 +68,10 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
         "visited:text-visitedLinkColor",
       ],
     },
+    isLoading: {
+      true: ["relative overflow-hidden"],
+      false: [],
+    },
     size: {
       sm: ["text-textBaseSize"],
       default: ["text-textBaseSize"],
@@ -81,6 +87,7 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
   defaultVariants: {
     variant: "default",
     size: "default",
+    isLoading: false,
   },
 });
 
@@ -95,7 +102,7 @@ interface Props extends VariantProps<typeof buttonVariants> {
 export function Button({
   asChild,
   children,
-  loading,
+  loading = false,
   size,
   variant,
   className,
@@ -108,11 +115,12 @@ export function Button({
       {...props}
       className={buttonVariants({
         variant,
+        isLoading: loading,
         size,
         className,
       })}
     >
-      {children}
+      {loading ? <Loader /> : children}
     </Component>
   );
 }
