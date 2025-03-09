@@ -71,10 +71,11 @@ export function AddToCartForm({
 
     setIsLoading(true);
     try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       await increaseQuantity(id, activeSizeId?.toString() || "", 1);
     } finally {
       setIsLoading(false);
-      setOpenItem(undefined);
+      setOpenItem("");
     }
   };
 
@@ -134,7 +135,12 @@ export function AddToCartForm({
       >
         {preorder && <Text variant="uppercaseWithColors">{preorder}</Text>}
         <Button
-          className="flex items-center justify-between bg-textColor uppercase text-bgColor"
+          className={cn(
+            "flex items-center justify-between bg-textColor uppercase text-bgColor",
+            {
+              "justify-center": isLoading,
+            },
+          )}
           size="lg"
           onClick={handleAddToCart}
           loading={isLoading}
