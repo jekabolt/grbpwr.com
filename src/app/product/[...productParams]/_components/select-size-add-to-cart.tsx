@@ -5,11 +5,9 @@ import type {
   common_ProductFull,
   common_ProductSize,
 } from "@/api/proto-http/frontend";
-import { currencySymbols } from "@/constants";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
-import { calculatePriceWithSale, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import {
   AccordionContent,
@@ -21,6 +19,16 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { getPreorderDate } from "@/app/(checkout)/cart/_components/utils";
 
+import { PriceDisplay } from "./price-display";
+
+interface Props {
+  id: number;
+  sizes: common_ProductSize[];
+  product: common_ProductFull;
+  className?: string;
+  onSizeAccordionStateChange: (isOpen: boolean) => void;
+}
+
 export function AddToCartForm({
   sizes,
   id,
@@ -30,19 +38,12 @@ export function AddToCartForm({
 }: Props) {
   const { dictionary } = useDataContext();
   const { increaseQuantity, products } = useCart((state) => state);
-  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
   const [pendingAddToCart, setPendingAddToCart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const productBody = product.product?.productDisplay?.productBody;
-  const price = productBody?.price?.value || "0";
-  const salePercentage = productBody?.salePercentage?.value || "0";
-  const isSaleApplied = salePercentage !== "0";
-
-  const currencyPrice = `${currencySymbols[selectedCurrency]} ${convertPrice(price)}`;
-  const priceWithSale = calculatePriceWithSale(price, salePercentage);
   const preorder = getPreorderDate(product);
 
   const sizeNames = sizes.map((s) => ({
@@ -113,7 +114,7 @@ export function AddToCartForm({
               {activeSizeId ? activeSizeName : "size"}
             </Text>
           </AccordionTrigger>
-          <AccordionContent className={cn("grid grid-cols-4 gap-2", {})}>
+          <AccordionContent className="grid grid-cols-4 gap-2">
             {sizeNames.map(({ name, id }) => (
               <Button
                 className={cn("uppercase hover:border-b hover:border-black", {
@@ -149,26 +150,9 @@ export function AddToCartForm({
           <Text component="span" variant="inherit">
             {preorder ? "preorder" : "add"}
           </Text>
-          {isSaleApplied ? (
-            <Text variant="inactive">
-              {`${currencyPrice} - ${salePercentage}%`} ={" "}
-              <Text variant={"inherit"} component="span">
-                {`${currencySymbols[selectedCurrency]} ${priceWithSale}`}
-              </Text>
-            </Text>
-          ) : (
-            <Text variant="inherit">{currencyPrice}</Text>
-          )}
+          <PriceDisplay productBody={productBody} />
         </Button>
       </div>
     </div>
   );
-}
-
-interface Props {
-  id: number;
-  sizes: common_ProductSize[];
-  product: common_ProductFull;
-  className?: string;
-  onSizeAccordionStateChange: (isOpen: boolean) => void;
 }
