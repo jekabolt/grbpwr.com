@@ -9,7 +9,7 @@ export const AccordionItem = forwardRef<any, any>(
   ({ children, className, ...props }, forwardedRef) => (
     <AccordionPrimitives.Item
       className={cn(
-        "mt-px w-full overflow-hidden first:mt-0 focus-within:relative focus-within:z-10",
+        "w-full overflow-hidden first:mt-0 focus-within:relative focus-within:z-10",
         className,
       )}
       {...props}
@@ -45,11 +45,11 @@ AccordionTrigger.displayName = "AccordionTrigger";
 export const AccordionContent = forwardRef<any, any>(
   ({ children, className, ...props }, forwardedRef) => (
     <AccordionPrimitives.Content
-      className={cn("overflow-hidden", className)}
+      className="overflow-hidden"
       {...props}
       ref={forwardedRef}
     >
-      <div className="">{children}</div>
+      <div className={cn("", className)}>{children}</div>
     </AccordionPrimitives.Content>
   ),
 );

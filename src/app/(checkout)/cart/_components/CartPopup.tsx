@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { useClickAway } from "@uidotdev/usehooks";
 
@@ -12,25 +11,24 @@ import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 export default function CartPopup({ children }: { children: React.ReactNode }) {
-  const products = useCart((state) => state.products);
+  const { products, isOpen, closeCart, toggleCart } = useCart((state) => state);
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
-  const [open, setOpenStatus] = useState(false);
 
   const ref = useClickAway<HTMLDivElement>(() => {
-    setOpenStatus(false);
+    closeCart();
   });
 
   return (
     <>
-      {open && itemsQuantity > 0 && <Overlay cover="screen" />}
+      {isOpen && itemsQuantity > 0 && <Overlay cover="screen" />}
       <div className="block lg:hidden">
         <MobileNavCart />
       </div>
       <div className="hidden lg:block" ref={ref}>
         <Button
-          onClick={() => setOpenStatus((v) => !v)}
-          variant={open ? "underline" : "default"}
+          onClick={toggleCart}
+          variant={isOpen ? "underline" : "default"}
           size="sm"
           className="underline-offset-2 hover:underline"
         >
@@ -41,7 +39,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
           className={cn(
             "right-0 top-0 z-30 hidden w-[500px] bg-bgColor p-2.5",
             {
-              block: open,
+              block: isOpen,
               "fixed h-screen": itemsQuantity > 0,
               "absolute w-72": itemsQuantity === 0,
             },
@@ -50,7 +48,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
           <div className="flex h-full flex-col gap-y-6">
             <div className="flex items-center justify-between">
               <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
-              <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
+              <Button onClick={closeCart}>[X]</Button>
             </div>
             {itemsQuantity > 0 ? (
               <>

@@ -10,6 +10,7 @@ export const defaultInitState: CartState = {
   totalItems: 0,
   totalPrice: 0,
   subTotalPrice: 0,
+  isOpen: false,
 };
 
 export const createCartStore = (initState: CartState = defaultInitState) => {
@@ -17,26 +18,32 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
     persist(
       (set, get) => ({
         ...initState,
+
+        openCart: () => set({ isOpen: true }),
+
+        closeCart: () => set({ isOpen: false }),
+
+        toggleCart: () => {
+          const { isOpen } = get();
+          set({ isOpen: !isOpen });
+        },
+
         increaseQuantity: async (
           productId: number,
           size: string,
           quantity: number = 1,
         ) => {
           const { products } = get();
-          const existingProduct = products.find(
-            (p) => p.id === productId && p.size === size,
-          );
 
-          let updatedProducts;
-          if (existingProduct) {
-            updatedProducts = products.map((p) =>
-              p.id === productId && p.size === size
-                ? { ...p, quantity: p.quantity + quantity }
-                : p,
-            );
-          } else {
-            updatedProducts = [...products, { id: productId, size, quantity }];
-          }
+          const newItems = Array(quantity)
+            .fill(null)
+            .map(() => ({ id: productId, size, quantity }));
+
+          const currentQuantity = products.filter(
+            p => p.id === productId && p.size === size
+          ).length;
+
+          const updatedProducts = [...products, ...newItems];
 
           try {
             const response = await serviceClient.ValidateOrderItemsInsert({
@@ -49,29 +56,28 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
               promoCode: undefined,
             });
 
-            const validatedProducts = updatedProducts.map((product) => {
-              const validatedItem = response.validItems?.find(
-                (item) =>
+            const validatedItem = response.validItems?.find(
+              (item) =>
+                item.orderItem?.productId === productId &&
+                item.orderItem?.sizeId === Number(size)
+            );
+
+            const maxAllowedQuantity = validatedItem?.orderItem?.quantity || 0;
+
+            if (currentQuantity + quantity > maxAllowedQuantity) return;
+
+            const validatedProducts = updatedProducts.map(product => ({
+              ...product,
+              productData: response.validItems?.find(
+                item =>
                   item.orderItem?.productId === product.id &&
-                  item.orderItem?.sizeId === Number(product.size),
-              );
-
-              const newQuantity =
-                validatedItem?.orderItem?.quantity || product.quantity;
-
-              return {
-                ...product,
-                quantity: newQuantity,
-                productData: validatedItem,
-              };
-            });
+                  item.orderItem?.sizeId === Number(product.size)
+              )
+            }));
 
             set({
               products: validatedProducts,
-              totalItems: validatedProducts.reduce(
-                (sum, p) => sum + p.quantity,
-                0,
-              ),
+              totalItems: validatedProducts.length,
               totalPrice: Number(response.totalSale?.value || 0),
               subTotalPrice: Number(response.subtotal?.value || 0),
             });
@@ -82,13 +88,15 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
         decreaseQuantity: async (productId: number, size: string) => {
           const { products } = get();
-          const updatedProducts = products
-            .map((p) =>
-              p.id === productId && p.size === size
-                ? { ...p, quantity: p.quantity - 1 }
-                : p,
-            )
-            .filter((p) => p.quantity > 0);
+          const productIndex = products.findIndex(
+            p => p.id === productId && p.size === size
+          );
+          if (productIndex === -1) return;
+
+          const updatedProducts = [
+            ...products.slice(0, productIndex),
+            ...products.slice(productIndex + 1)
+          ];
 
           if (updatedProducts.length === 0) {
             set(defaultInitState);
@@ -99,36 +107,25 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             const response = await serviceClient.ValidateOrderItemsInsert({
               items: updatedProducts.map((p) => ({
                 productId: p.id,
-                quantity: p.quantity,
+                quantity: 1,
                 sizeId: Number(p.size),
               })),
               shipmentCarrierId: undefined,
               promoCode: undefined,
             });
 
-            const validatedProducts = updatedProducts.map((product) => {
-              const validatedItem = response.validItems?.find(
-                (item) =>
+            const validatedProducts = updatedProducts.map(product => ({
+              ...product,
+              productData: response.validItems?.find(
+                item =>
                   item.orderItem?.productId === product.id &&
-                  item.orderItem?.sizeId === Number(product.size),
-              );
-
-              const newQuantity =
-                validatedItem?.orderItem?.quantity || product.quantity;
-
-              return {
-                ...product,
-                quantity: newQuantity,
-                productData: validatedItem,
-              };
-            });
+                  item.orderItem?.sizeId === Number(product.size)
+              )
+            }));
 
             set({
               products: validatedProducts,
-              totalItems: validatedProducts.reduce(
-                (sum, p) => sum + p.quantity,
-                0,
-              ),
+              totalItems: validatedProducts.length,
               totalPrice: Number(response.totalSale?.value || 0),
               subTotalPrice: Number(response.subtotal?.value || 0),
             });
@@ -139,12 +136,21 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
         removeProduct: (productId: number, size: string) => {
           const { products } = get();
-          const updatedProducts = products.filter(
-            (p) => !(p.id === productId && p.size === size),
+
+          const productIndex = products.findIndex(
+            p => p.id === productId && p.size === size
           );
+
+          if (productIndex === -1) return;
+
+          const updatedProducts = [
+            ...products.slice(0, productIndex),
+            ...products.slice(productIndex + 1)
+          ];
+
           set({
             products: updatedProducts,
-            totalItems: updatedProducts.reduce((sum, p) => sum + p.quantity, 0),
+            totalItems: updatedProducts.length,
           });
         },
 
@@ -160,6 +166,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           totalItems: state.totalItems,
           totalPrice: state.totalPrice,
           subTotalPrice: state.subTotalPrice,
+          isOpen: state.isOpen,
         }),
       },
     ),
