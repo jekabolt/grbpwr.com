@@ -12,7 +12,7 @@ interface Props {
 export function useHandlers({ id, onSizeAccordionStateChange }: Props) {
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const { isMaxQuantity } = useDisabled({ id, activeSizeId });
-  const { increaseQuantity } = useCart((state) => state);
+  const { increaseQuantity, openCart } = useCart((state) => state);
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
   const [pendingAddToCart, setPendingAddToCart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,8 +28,8 @@ export function useHandlers({ id, onSizeAccordionStateChange }: Props) {
 
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
       await increaseQuantity(id, activeSizeId?.toString() || "", 1);
+      openCart();
     } finally {
       setIsLoading(false);
       setOpenItem("");
@@ -50,6 +50,7 @@ export function useHandlers({ id, onSizeAccordionStateChange }: Props) {
       setIsLoading(true);
       try {
         await increaseQuantity(id, sizeId.toString(), 1);
+        openCart();
       } finally {
         setIsLoading(false);
       }

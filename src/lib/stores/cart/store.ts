@@ -10,6 +10,7 @@ export const defaultInitState: CartState = {
   totalItems: 0,
   totalPrice: 0,
   subTotalPrice: 0,
+  isOpen: false,
 };
 
 export const createCartStore = (initState: CartState = defaultInitState) => {
@@ -17,6 +18,16 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
     persist(
       (set, get) => ({
         ...initState,
+
+        openCart: () => set({ isOpen: true }),
+
+        closeCart: () => set({ isOpen: false }),
+
+        toggleCart: () => {
+          const { isOpen } = get();
+          set({ isOpen: !isOpen });
+        },
+
         increaseQuantity: async (
           productId: number,
           size: string,
@@ -155,6 +166,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           totalItems: state.totalItems,
           totalPrice: state.totalPrice,
           subTotalPrice: state.subTotalPrice,
+          isOpen: state.isOpen,
         }),
       },
     ),
