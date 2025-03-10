@@ -14,7 +14,7 @@ import {
 import { Text } from "@/components/ui/text";
 
 import MeasurementsModal from "./measurements-modal";
-import { AddToCartForm } from "./select-size-add-to-cart";
+import { AddToCartForm } from "./select-size-add-to-cart/index";
 
 export function ProductInfo({ product }: Props) {
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
@@ -119,7 +119,6 @@ export function ProductInfo({ product }: Props) {
         </div>
       </div>
       <AddToCartForm
-        sizes={product?.sizes || []}
         product={product}
         id={product?.product?.id || 0}
         onSizeAccordionStateChange={handleSizeAccordionChange}
