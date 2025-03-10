@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
 import { useData } from "./useData";
+import { useDisabled } from "./useDisabled";
 import { useHandlers } from "./useHandlers";
 
 export function AddToCartForm({
@@ -48,6 +49,10 @@ export function AddToCartForm({
     activeSizeId,
   });
 
+  const { outOfStock } = useDisabled({ id, activeSizeId, product });
+
+  console.log(outOfStock);
+
   useEffect(() => {
     if (isOneSize && sizeNames) {
       handleSizeSelect(sizeNames[0].id);
@@ -74,11 +79,13 @@ export function AddToCartForm({
             <AccordionContent className="grid grid-cols-4 gap-2">
               {sizeNames?.map(({ name, id }) => (
                 <Button
-                  className={cn("uppercase hover:border-b hover:border-black", {
+                  className={cn("uppercase", {
                     "border-b border-black": activeSizeId === id,
+                    "hover:border-b hover:border-black": !outOfStock[id],
                   })}
                   key={id}
                   onClick={() => handleSizeSelect(id)}
+                  disabled={outOfStock[id]}
                 >
                   {name}
                 </Button>
