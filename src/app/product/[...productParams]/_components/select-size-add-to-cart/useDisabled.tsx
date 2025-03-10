@@ -5,7 +5,7 @@ import { useDataContext } from "@/components/DataContext";
 
 type Props = {
   id: number;
-  product: common_ProductFull;
+  product?: common_ProductFull;
   activeSizeId: number | undefined;
 };
 
@@ -21,12 +21,6 @@ export function useDisabled({ id, activeSizeId, product }: Props) {
   const maxOrderItems = dictionary?.maxOrderItems || 3;
   const isMaxQuantity = productQuantityInCart >= maxOrderItems;
 
-  const activeSize = product?.sizes?.find(
-    (size) => size.sizeId === activeSizeId,
-  );
-  const activeOutOfStock = activeSize?.quantity?.value === "0";
-
-  // Create a map of sizeId to outOfStock status
   const outOfStock =
     product?.sizes?.reduce(
       (acc, size) => {
