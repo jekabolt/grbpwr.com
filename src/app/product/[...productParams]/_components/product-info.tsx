@@ -4,13 +4,8 @@ import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { CARE_INSTRUCTIONS_MAP } from "@/constants";
 
-import { cn, getFullComposition } from "@/lib/utils";
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionRoot,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { getFullComposition } from "@/lib/utils";
+import Modal from "@/components/ui/modal";
 import { Text } from "@/components/ui/text";
 
 import MeasurementsModal from "./measurements-modal";
@@ -22,6 +17,12 @@ export function ProductInfo({ product }: Props) {
   const care = product.product?.productDisplay?.productBody?.careInstructions;
   const composition = product.product?.productDisplay?.productBody?.composition;
   const fullComposition = getFullComposition(composition);
+  const description = product.product?.productDisplay?.productBody?.description;
+  const modelHeight =
+    product.product?.productDisplay?.productBody?.modelWearsHeightCm;
+  const modelSize =
+    product.product?.productDisplay?.productBody?.modelWearsSizeId;
+  const modelWear = `model is ${modelHeight}cm and wears size ${modelSize}`;
 
   const fullCare = care
     ?.split(",")
@@ -34,95 +35,59 @@ export function ProductInfo({ product }: Props) {
   };
 
   return (
-    <div className="border-inactive relative bottom-2.5 right-2.5 grid h-[245px] grid-cols-2 gap-x-5 border bg-bgColor p-2.5 lg:absolute lg:w-[600px]">
-      <div className="space-y-5">
-        <div
-          className={cn("grid gap-10 transition-opacity duration-200", {
-            "pointer-events-none opacity-30": isSizeAccordionOpen,
-          })}
-        >
+    <div className="border-inactive relative bottom-2.5 right-2.5 h-[245px] border bg-bgColor p-2.5 lg:absolute lg:w-[600px]">
+      <div className="relative grid h-full grid-cols-2 gap-x-5">
+        <div className={"flex flex-col justify-between"}>
           <Text variant="uppercase" className={openItem ? "hidden" : ""}>
             {product?.product?.productDisplay?.productBody?.name}
           </Text>
           <div className="space-y-5">
-            <AccordionRoot
-              type="single"
-              collapsible
-              className={cn("space-y-5", {
-                "space-y-0": openItem,
-              })}
-              value={openItem}
-              onValueChange={setOpenItem}
-              disabled={isSizeAccordionOpen}
-            >
-              <AccordionItem
-                value="item-1"
-                className={cn("block space-y-10", {
-                  hidden: openItem && openItem !== "item-1",
-                })}
-              >
-                <AccordionTrigger>
-                  <Text variant="uppercase">description</Text>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <Text className="lowercase">
-                    {product.product?.productDisplay?.productBody?.description}
+            <Modal openElement="description" customCursor>
+              <div className="cursor-custom-x grid gap-1">
+                {description?.split("\n").map((p, i) => (
+                  <Text className="lowercase" key={i}>
+                    {p}
                   </Text>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem
-                value="item-2"
-                className={cn("block space-y-10", {
-                  hidden: openItem && openItem !== "item-2",
-                })}
-              >
-                <AccordionTrigger>
-                  <Text variant="uppercase">composition</Text>
-                </AccordionTrigger>
-                <AccordionContent>
-                  {fullComposition.map((item, index) => (
-                    <Text key={index} className="lowercase">
-                      {item}
-                    </Text>
-                  ))}
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem
-                value="item-3"
-                className={cn("block space-y-10", {
-                  hidden: openItem && openItem !== "item-3",
-                })}
-              >
-                <AccordionTrigger>
-                  <Text variant="uppercase">care</Text>
-                </AccordionTrigger>
-                <AccordionContent>
-                  {fullCare?.map((instruction, index) => (
-                    <Text key={index} className="lowercase">
-                      {instruction ? `- ${instruction}` : ""}
-                    </Text>
-                  ))}
-                </AccordionContent>
-              </AccordionItem>
-            </AccordionRoot>
+                ))}
+                <Text>{modelWear}</Text>
+              </div>
+            </Modal>
+
+            <Modal openElement="composition" title="composition" customCursor>
+              <div className="grid gap-1">
+                {fullComposition?.map((c, i) => (
+                  <Text key={i}>{c ? c : ""}</Text>
+                ))}
+              </div>
+            </Modal>
+
+            <Modal openElement="care" title="care" customCursor>
+              <div className="grid gap-1">
+                {fullCare?.map((c, i) => (
+                  <Text key={i}>{c ? `- ${c}` : ""}</Text>
+                ))}
+              </div>
+            </Modal>
+
+            <MeasurementsModal
+              productId={product?.product?.id || 0}
+              sizes={product?.sizes || []}
+              categoryId={
+                product?.product?.productDisplay?.productBody?.topCategoryId ||
+                0
+              }
+              gender={
+                product.product?.productDisplay?.productBody?.targetGender
+              }
+            />
           </div>
         </div>
-        <div className={openItem ? "hidden" : ""}>
-          <MeasurementsModal
-            productId={product?.product?.id || 0}
-            sizes={product?.sizes || []}
-            categoryId={
-              product?.product?.productDisplay?.productBody?.topCategoryId || 0
-            }
-            gender={product.product?.productDisplay?.productBody?.targetGender}
-          />
-        </div>
+        <AddToCartForm
+          product={product}
+          id={product?.product?.id || 0}
+          onSizeAccordionStateChange={handleSizeAccordionChange}
+        />
       </div>
-      <AddToCartForm
-        product={product}
-        id={product?.product?.id || 0}
-        onSizeAccordionStateChange={handleSizeAccordionChange}
-      />
     </div>
   );
 }
@@ -130,3 +95,7 @@ export function ProductInfo({ product }: Props) {
 type Props = {
   product: common_ProductFull;
 };
+
+// className={cn("grid gap-10 transition-opacity duration-200", {
+//   "pointer-events-none opacity-30": isSizeAccordionOpen,
+// })}

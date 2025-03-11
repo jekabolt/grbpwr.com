@@ -3,7 +3,6 @@ import {
   common_ProductSize,
 } from "@/api/proto-http/frontend";
 
-import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 
 import MeasurementsModalContent from "./measurements-modal-content";
@@ -35,13 +34,7 @@ export default function MeasurementsModal({
   // }
 
   return (
-    <Modal
-      openElement={
-        <Button variant="underline" className="uppercase">
-          sizes guide
-        </Button>
-      }
-    >
+    <Modal openElement="size guide">
       <MeasurementsModalContent
         id={productId}
         sizes={sizes}

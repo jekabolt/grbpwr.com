@@ -21,10 +21,10 @@ const config = {
       },
       keyframes: {
         loading: {
-          '0%': { transform: 'scaleX(0)' },
-          '100%': { transform: 'scaleX(1)' }
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(0%)" },
         },
-      }
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],
