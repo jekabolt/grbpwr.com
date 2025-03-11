@@ -1,8 +1,8 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
-import { currencySymbols } from "@/constants";
+import { CARE_INSTRUCTIONS_MAP, currencySymbols } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
-import { calculatePriceWithSale } from "@/lib/utils";
+import { calculatePriceWithSale, getFullComposition } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { getPreorderDate } from "@/app/(checkout)/cart/_components/utils";
 
@@ -11,14 +11,16 @@ export function useData({
   activeSizeId,
 }: {
   product: common_ProductFull;
-  activeSizeId: number | undefined;
+  activeSizeId?: number | undefined;
 }) {
   const { dictionary } = useDataContext();
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
-  const sizes = product.sizes;
   const productBody = product.product?.productDisplay?.productBody;
+  const name = productBody?.name;
   const preorder = getPreorderDate(product);
+  const color = productBody?.color;
 
+  const sizes = product.sizes;
   const sizeNames = sizes?.map((s) => ({
     id: s.sizeId as number,
     name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
@@ -57,6 +59,24 @@ export function useData({
   const priceMinusSale = `${price} - ${salePercentage}% = `;
   const priceWithSale = `${currency} ${calculatePriceWithSale(productBody?.price?.value || "0", salePercentage)}`;
 
+  const description = productBody?.description;
+  const productComposition = productBody?.composition;
+  const productCare = productBody?.careInstructions;
+  const composition = getFullComposition(productComposition);
+  const care = productCare
+    ?.split(",")
+    .map((c) => CARE_INSTRUCTIONS_MAP[c.trim()]);
+
+  const modelWearSizeId = productBody?.modelWearsSizeId;
+  const modelWearSize = dictionary?.sizes?.find(
+    (s) => s.id === modelWearSizeId,
+  )?.name;
+  const modelWearHeight = productBody?.modelWearsHeightCm;
+  const modelWearText =
+    modelWearSize && modelWearHeight
+      ? `model is ${modelWearHeight}cm and wears size ${modelWearSize}`
+      : "";
+
   return {
     triggerText,
     sizeNames,
@@ -67,5 +87,11 @@ export function useData({
     priceWithSale,
     isOneSize,
     sizeQuantity,
+    description,
+    composition,
+    care,
+    modelWearText,
+    color,
+    name,
   };
 }

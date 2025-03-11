@@ -6,6 +6,7 @@ import FlexibleLayout from "@/components/flexible-layout";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileImageCarousel } from "./_components/mobile-image-carousel";
+import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
@@ -59,7 +60,12 @@ export default async function ProductPage(props: ProductPageProps) {
         <div className="hidden h-full w-full pt-12 lg:block">
           <ProductImagesCarousel productMedia={productMedia} />
         </div>
-        {product && <ProductInfo product={product} />}
+        <div className="hidden lg:block">
+          {product && <ProductInfo product={product} />}
+        </div>
+        <div className="block lg:hidden">
+          {product && <MobileProductInfo product={product} />}
+        </div>
       </div>
       {product?.product && <LastViewedProducts product={product.product} />}
     </FlexibleLayout>

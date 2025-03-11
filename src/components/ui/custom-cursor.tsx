@@ -24,7 +24,6 @@ const CustomCursor = () => {
         pointerEvents: "none",
         zIndex: 9999,
         transform: "translate(-50%, -50%)",
-        fontFamily: '"InterFace", system-ui, sans-serif',
         fontSize: "var(--text-base)",
         color: "var(--text)",
       }}
