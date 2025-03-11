@@ -70,7 +70,7 @@ export function AddToCartForm({
           onValueChange={onAccordionChange}
         >
           <AccordionItem value="size" className="flex h-full flex-col gap-y-5">
-            <AccordionTrigger className="border-inactive border-b">
+            <AccordionTrigger className="lg:border-inactive lg:border-b">
               <Text variant="uppercase" className="flex items-center">
                 {triggerText}
               </Text>
@@ -95,7 +95,7 @@ export function AddToCartForm({
                     {name}
                   </Text>
                   {sizeQuantity[id] <= 5 && sizeQuantity[id] > 0 && (
-                    <Text className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
+                    <Text className="absolute inset-0 flex hidden items-center justify-center opacity-0 transition-opacity group-hover:opacity-100 lg:block">
                       {`${sizeQuantity[id]} left`}
                     </Text>
                   )}
@@ -107,14 +107,17 @@ export function AddToCartForm({
       )}
       <div
         className={cn("grid gap-3", {
-          hidden: openItem,
+          "block lg:hidden": openItem,
         })}
       >
         {preorder && <Text variant="uppercaseWithColors">{preorder}</Text>}
         <Button
-          className={cn("blackTheme flex justify-between uppercase", {
-            "justify-center": isLoading,
-          })}
+          className={cn(
+            "blackTheme fixed inset-x-2.5 bottom-2.5 z-30 flex justify-between uppercase lg:relative lg:z-10",
+            {
+              "justify-center": isLoading,
+            },
+          )}
           variant="simpleReverse"
           size="lg"
           onClick={handleAddToCart}
@@ -139,5 +142,5 @@ interface Props {
   id: number;
   product: common_ProductFull;
   className?: string;
-  onSizeAccordionStateChange: (isOpen: boolean) => void;
+  onSizeAccordionStateChange?: (isOpen: boolean) => void;
 }

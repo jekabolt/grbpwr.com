@@ -8,15 +8,34 @@ export default function FlexibleLayout({
   children,
   headerType,
   headerProps,
+  mobileHeaderType,
   footerType,
   theme,
   className,
 }: Props) {
   return (
     <div className={cn("relative min-h-screen bg-bgColor", className)}>
-      {headerType === "flexible" && <AdditionalHeader {...headerProps} />}
-      {headerType === "catalog" && <Header />}
+      {/* Mobile header */}
+      {mobileHeaderType === "flexible" && (
+        <div className="block lg:hidden">
+          <AdditionalHeader {...headerProps} />
+        </div>
+      )}
+
+      {/* Desktop header */}
+      {headerType === "flexible" && (
+        <div className="hidden lg:block">
+          <AdditionalHeader {...headerProps} />
+        </div>
+      )}
+      {headerType === "catalog" && (
+        <div className={mobileHeaderType ? "hidden lg:block" : ""}>
+          <Header />
+        </div>
+      )}
+
       <div className="w-full space-y-32">{children}</div>
+
       {footerType === "mini" && <MiniFooter theme={theme} />}
       {footerType === "regular" && <Footer />}
     </div>
@@ -26,6 +45,7 @@ export default function FlexibleLayout({
 type Props = {
   children: React.ReactNode;
   headerType?: "catalog" | "flexible";
+  mobileHeaderType?: "flexible";
   headerProps?: {
     left?: string;
     center?: string;

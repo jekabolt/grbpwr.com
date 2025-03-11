@@ -6,7 +6,7 @@ import { useDisabled } from "./useDisabled";
 
 interface Props {
   id: number;
-  onSizeAccordionStateChange: (isOpen: boolean) => void;
+  onSizeAccordionStateChange?: (isOpen: boolean) => void | undefined;
 }
 
 export function useHandlers({ id, onSizeAccordionStateChange }: Props) {
@@ -38,7 +38,7 @@ export function useHandlers({ id, onSizeAccordionStateChange }: Props) {
 
   const onAccordionChange = (value: string | undefined) => {
     setOpenItem(value);
-    onSizeAccordionStateChange(value === "size");
+    onSizeAccordionStateChange?.(value === "size");
   };
 
   const handleSizeSelect = async (sizeId: number) => {
