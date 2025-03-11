@@ -23,11 +23,23 @@ export function useData({
     id: s.sizeId as number,
     name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
   }));
+
+  const sizeQuantity =
+    product.sizes?.reduce(
+      (acc, size) => {
+        acc[size.sizeId as number] = Number(size.quantity?.value || "0");
+        return acc;
+      },
+      {} as Record<number, number>,
+    ) || {};
+
   const activeSizeName = activeSizeId
     ? sizeNames?.find((size) => size.id === activeSizeId)?.name
     : "";
+
   const isOneSize =
     sizeNames?.length === 1 && sizeNames[0].name.toLowerCase() === "os";
+
   const categoryId = productBody?.topCategoryId;
   const category = dictionary?.categories?.find(
     (c) => c.id === categoryId,
@@ -54,5 +66,6 @@ export function useData({
     priceMinusSale,
     priceWithSale,
     isOneSize,
+    sizeQuantity,
   };
 }

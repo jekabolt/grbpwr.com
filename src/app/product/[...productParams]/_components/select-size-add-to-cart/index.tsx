@@ -44,14 +44,13 @@ export function AddToCartForm({
     priceMinusSale,
     priceWithSale,
     isOneSize,
+    sizeQuantity,
   } = useData({
     product,
     activeSizeId,
   });
 
   const { outOfStock } = useDisabled({ id, activeSizeId, product });
-
-  console.log(outOfStock);
 
   useEffect(() => {
     if (isOneSize && sizeNames) {
@@ -79,7 +78,7 @@ export function AddToCartForm({
             <AccordionContent className="grid grid-cols-4 gap-2">
               {sizeNames?.map(({ name, id }) => (
                 <Button
-                  className={cn("uppercase", {
+                  className={cn("group relative uppercase", {
                     "border-b border-black": activeSizeId === id,
                     "hover:border-b hover:border-black": !outOfStock[id],
                   })}
@@ -87,7 +86,19 @@ export function AddToCartForm({
                   onClick={() => handleSizeSelect(id)}
                   disabled={outOfStock[id]}
                 >
-                  {name}
+                  <Text
+                    className={cn("transition-opacity", {
+                      "group-hover:opacity-0":
+                        sizeQuantity[id] <= 5 && sizeQuantity[id] != 0,
+                    })}
+                  >
+                    {name}
+                  </Text>
+                  {sizeQuantity[id] <= 5 && sizeQuantity[id] > 0 && (
+                    <Text className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
+                      {`${sizeQuantity[id]} left`}
+                    </Text>
+                  )}
                 </Button>
               ))}
             </AccordionContent>
