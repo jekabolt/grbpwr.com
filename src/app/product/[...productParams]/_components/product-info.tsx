@@ -12,10 +12,18 @@ import { AddToCartForm } from "./select-size-add-to-cart/index";
 import { useData } from "./select-size-add-to-cart/useData";
 
 export function ProductInfo({ product }: { product: common_ProductFull }) {
-  const { description, composition, care, modelWearText, color, name } =
-    useData({
-      product,
-    });
+  const {
+    description,
+    composition,
+    care,
+    modelWearText,
+    color,
+    name,
+    productCare,
+    productComposition,
+  } = useData({
+    product,
+  });
 
   const [isSizeAccordionOpen, setIsSizeAccordionOpen] = useState(false);
 
@@ -52,22 +60,30 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 </div>
               </Modal>
 
-              <Modal openElement="composition" title="composition" customCursor>
-                <div className="grid gap-1">
-                  {composition
-                    ?.slice(0, 8)
-                    .map((c, i) => <Text key={i}>{c ? c : ""}</Text>)}
-                  <Text className="mt-3 lowercase">{`color: ${color}`}</Text>
-                </div>
-              </Modal>
+              {productComposition && (
+                <Modal
+                  openElement="composition"
+                  title="composition"
+                  customCursor
+                >
+                  <div className="grid gap-1">
+                    {composition
+                      ?.slice(0, 8)
+                      .map((c, i) => <Text key={i}>{c ? c : ""}</Text>)}
+                    <Text className="mt-3 lowercase">{`color: ${color}`}</Text>
+                  </div>
+                </Modal>
+              )}
 
-              <Modal openElement="care" title="care" customCursor>
-                <div className="grid gap-1">
-                  {care?.map((c, i) => (
-                    <Text key={i}>{c ? `- ${c}` : ""}</Text>
-                  ))}
-                </div>
-              </Modal>
+              {productCare && (
+                <Modal openElement="care" title="care" customCursor>
+                  <div className="grid gap-1">
+                    {care?.map((c, i) => (
+                      <Text key={i}>{c ? `- ${c}` : ""}</Text>
+                    ))}
+                  </div>
+                </Modal>
+              )}
             </div>
             <MeasurementsModal
               productId={product?.product?.id || 0}
