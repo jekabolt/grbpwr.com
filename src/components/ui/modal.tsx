@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -20,6 +20,7 @@ export default function Modal({
   customCursor?: boolean;
 }) {
   const [isModalOpen, setModalOpen] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   return (
     <div>
@@ -32,6 +33,8 @@ export default function Modal({
       </Button>
       {isModalOpen && (
         <div
+          ref={modalRef}
+          onClick={() => setModalOpen(!isModalOpen)}
           className={cn(
             "absolute inset-0 z-50 flex h-full w-full flex-col gap-2 bg-bgColor",
             {
@@ -39,7 +42,7 @@ export default function Modal({
             },
           )}
         >
-          {customCursor && <CustomCursor />}
+          {customCursor && <CustomCursor containerRef={modalRef} />}
           <div className="flex items-center justify-between">
             <Text variant="uppercase">{title}</Text>
             <Button
@@ -51,9 +54,7 @@ export default function Modal({
               [x]
             </Button>
           </div>
-          <div onClick={() => setModalOpen(!isModalOpen)} className="h-full">
-            {children}
-          </div>
+          <div className="h-full">{children}</div>
         </div>
       )}
     </div>

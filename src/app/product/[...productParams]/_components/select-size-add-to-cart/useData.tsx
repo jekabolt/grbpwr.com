@@ -88,6 +88,8 @@ export function useData({
     isOneSize,
     sizeQuantity,
     description,
+    productComposition,
+    productCare,
     composition,
     care,
     modelWearText,

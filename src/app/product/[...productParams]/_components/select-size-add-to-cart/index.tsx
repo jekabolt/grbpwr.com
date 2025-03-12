@@ -107,13 +107,13 @@ export function AddToCartForm({
       )}
       <div
         className={cn("grid gap-3", {
-          "block lg:hidden": openItem,
+          "lg:hidden": openItem,
         })}
       >
         {preorder && <Text variant="uppercaseWithColors">{preorder}</Text>}
         <Button
           className={cn(
-            "blackTheme fixed inset-x-2.5 bottom-2.5 z-30 flex justify-between uppercase lg:relative lg:z-10",
+            "blackTheme fixed inset-x-2.5 bottom-2.5 z-30 flex justify-between uppercase lg:relative lg:inset-x-0 lg:bottom-0 lg:z-10",
             {
               "justify-center": isLoading,
             },

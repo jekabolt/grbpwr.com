@@ -19,10 +19,18 @@ export function MobileProductInfo({
 }: {
   product: common_ProductFull;
 }) {
-  const { name, description, modelWearText, composition, color, care } =
-    useData({
-      product,
-    });
+  const {
+    name,
+    description,
+    modelWearText,
+    composition,
+    color,
+    care,
+    productComposition,
+    productCare,
+  } = useData({
+    product,
+  });
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
 
   return (
@@ -51,31 +59,35 @@ export function MobileProductInfo({
             <Text className="mt-3 lowercase">{modelWearText}</Text>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionTrigger>
-            <Text variant="uppercase">composition</Text>
-          </AccordionTrigger>
-          <AccordionContent className="grid gap-1">
-            {composition?.map((c, i) => (
-              <Text className="lowercase" key={i}>
-                {c}
-              </Text>
-            ))}
-            <Text className="mt-3 lowercase">{`color: ${color}`}</Text>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-3">
-          <AccordionTrigger>
-            <Text variant="uppercase">care</Text>
-          </AccordionTrigger>
-          <AccordionContent className="grid gap-1">
-            {care?.map((c, i) => (
-              <Text className="lowercase" key={i}>
-                {c ? `- ${c}` : ""}
-              </Text>
-            ))}
-          </AccordionContent>
-        </AccordionItem>
+        {productComposition && (
+          <AccordionItem value="item-2">
+            <AccordionTrigger>
+              <Text variant="uppercase">composition</Text>
+            </AccordionTrigger>
+            <AccordionContent className="grid gap-1">
+              {composition?.map((c, i) => (
+                <Text className="lowercase" key={i}>
+                  {c}
+                </Text>
+              ))}
+              <Text className="mt-3 lowercase">{`color: ${color}`}</Text>
+            </AccordionContent>
+          </AccordionItem>
+        )}
+        {productCare && (
+          <AccordionItem value="item-3">
+            <AccordionTrigger>
+              <Text variant="uppercase">care</Text>
+            </AccordionTrigger>
+            <AccordionContent className="grid gap-1">
+              {care?.map((c, i) => (
+                <Text className="lowercase" key={i}>
+                  {c ? `- ${c}` : ""}
+                </Text>
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        )}
       </AccordionRoot>
     </div>
   );

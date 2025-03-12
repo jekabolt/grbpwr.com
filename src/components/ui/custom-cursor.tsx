@@ -1,11 +1,26 @@
 import { useEffect, useState } from "react";
 
-const CustomCursor = () => {
+const CustomCursor = ({
+  containerRef,
+}: {
+  containerRef: React.RefObject<HTMLDivElement | null>;
+}) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const updateCursorPosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const isInside =
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom;
+
+        setIsVisible(isInside);
+        setPosition({ x: e.clientX, y: e.clientY });
+      }
     };
 
     window.addEventListener("mousemove", updateCursorPosition);
@@ -13,7 +28,9 @@ const CustomCursor = () => {
     return () => {
       window.removeEventListener("mousemove", updateCursorPosition);
     };
-  }, []);
+  }, [containerRef]);
+
+  if (!isVisible) return null;
 
   return (
     <div
