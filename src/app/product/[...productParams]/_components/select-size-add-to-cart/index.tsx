@@ -55,73 +55,76 @@ export function AddToCartForm({
 
   return (
     <div className={cn("flex flex-col justify-between", className)}>
-      <div className="block lg:hidden">
-        <MobileSelectSize
-          product={product}
-          activeSizeId={activeSizeId}
-          triggerRef={triggerDialodRef}
-          handleSizeSelect={handleSizeSelect}
-        />
-      </div>
-      <div className="hidden lg:block">
-        {isOneSize ? (
-          <Text variant="uppercase">one size</Text>
-        ) : (
-          <AccordionRoot
-            type="single"
-            collapsible
-            value={openItem}
-            onValueChange={onAccordionChange}
-          >
-            <AccordionItem
-              value="size"
-              className="flex h-full flex-col gap-y-5"
+      {isOneSize ? (
+        <Text variant="uppercase">one size</Text>
+      ) : (
+        <>
+          <div className="block lg:hidden">
+            <MobileSelectSize
+              product={product}
+              activeSizeId={activeSizeId}
+              triggerRef={triggerDialodRef}
+              handleSizeSelect={handleSizeSelect}
+            />
+          </div>
+          <div className="hidden lg:block">
+            <AccordionRoot
+              type="single"
+              collapsible
+              value={openItem}
+              onValueChange={onAccordionChange}
             >
-              <AccordionTrigger className="border-inactive border-b">
-                <Text variant="uppercase" className="flex items-center">
-                  {triggerText}
-                </Text>
-              </AccordionTrigger>
-              <AccordionContent className="grid grid-cols-4 gap-2">
-                {sizeNames?.map(({ name, id }) => (
-                  <Button
-                    className={cn("group relative uppercase", {
-                      "border-b border-black": activeSizeId === id,
-                      "hover:border-b hover:border-black": !outOfStock[id],
-                    })}
-                    key={id}
-                    onClick={() => handleSizeSelect(id)}
-                    disabled={outOfStock[id]}
-                  >
-                    <Text
-                      className={cn(
-                        "transition-opacity group-hover:opacity-0",
-                        {
-                          "group-hover:opacity-100": sizeQuantity[id] >= 5,
-                        },
-                      )}
+              <AccordionItem
+                value="size"
+                className="flex h-full flex-col gap-y-5"
+              >
+                <AccordionTrigger useMinus className="border-inactive border-b">
+                  <Text variant="uppercase" className="flex items-center">
+                    {triggerText}
+                  </Text>
+                </AccordionTrigger>
+                <AccordionContent className="grid grid-cols-4 gap-2">
+                  {sizeNames?.map(({ name, id }) => (
+                    <Button
+                      className={cn("group relative uppercase", {
+                        "border-b border-black": activeSizeId === id,
+                        "hover:border-b hover:border-black": !outOfStock[id],
+                      })}
+                      key={id}
+                      onClick={() => handleSizeSelect(id)}
+                      disabled={outOfStock[id]}
                     >
-                      {name}
-                    </Text>
-                    <Text
-                      className={cn(
-                        "absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100",
-                        {
-                          "group-hover:opacity-0": sizeQuantity[id] >= 5,
-                        },
-                      )}
-                    >
-                      {sizeQuantity[id] <= 5
-                        ? `${sizeQuantity[id]} left`
-                        : name}
-                    </Text>
-                  </Button>
-                ))}
-              </AccordionContent>
-            </AccordionItem>
-          </AccordionRoot>
-        )}
-      </div>
+                      <Text
+                        className={cn(
+                          "transition-opacity group-hover:opacity-0",
+                          {
+                            "group-hover:opacity-100": sizeQuantity[id] >= 5,
+                          },
+                        )}
+                      >
+                        {name}
+                      </Text>
+                      <Text
+                        className={cn(
+                          "absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100",
+                          {
+                            "group-hover:opacity-0": sizeQuantity[id] >= 5,
+                          },
+                        )}
+                      >
+                        {sizeQuantity[id] <= 5
+                          ? `${sizeQuantity[id]} left`
+                          : name}
+                      </Text>
+                    </Button>
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
+            </AccordionRoot>
+          </div>
+        </>
+      )}
+
       <div
         className={cn("grid gap-3", {
           "lg:hidden": openItem,

@@ -47,7 +47,7 @@ export function MobileProductInfo({
         className="space-y-6"
       >
         <AccordionItem value="item-1" className="space-y-5">
-          <AccordionTrigger>
+          <AccordionTrigger useMinus>
             <Text variant="uppercase">description</Text>
           </AccordionTrigger>
           <AccordionContent className="space-y-2">
@@ -61,7 +61,7 @@ export function MobileProductInfo({
         </AccordionItem>
         {productComposition && (
           <AccordionItem value="item-2" className="space-y-5">
-            <AccordionTrigger>
+            <AccordionTrigger useMinus>
               <Text variant="uppercase">composition</Text>
             </AccordionTrigger>
             <AccordionContent className="grid gap-1">
@@ -76,7 +76,7 @@ export function MobileProductInfo({
         )}
         {productCare && (
           <AccordionItem value="item-3" className="space-y-5">
-            <AccordionTrigger>
+            <AccordionTrigger useMinus>
               <Text variant="uppercase">care</Text>
             </AccordionTrigger>
             <AccordionContent className="grid gap-1">

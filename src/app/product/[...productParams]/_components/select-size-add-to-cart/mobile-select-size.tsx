@@ -27,7 +27,7 @@ export function MobileSelectSize({
       <DialogPrimitives.Trigger asChild>
         <Button
           ref={triggerRef}
-          className="border-textInaciveColor w-full border-b pb-10 text-left uppercase"
+          className="border-textInaciveColor w-full border-b text-left uppercase"
         >
           {triggerText}
         </Button>

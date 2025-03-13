@@ -4,6 +4,7 @@ import { forwardRef } from "react";
 import * as AccordionPrimitives from "@radix-ui/react-accordion";
 
 import { cn } from "@/lib/utils";
+import { Text } from "@/components/ui/text";
 
 export const AccordionItem = forwardRef<any, any>(
   ({ children, className, ...props }, forwardedRef) => (
@@ -22,7 +23,7 @@ export const AccordionItem = forwardRef<any, any>(
 AccordionItem.displayName = "AccordionItem";
 
 export const AccordionTrigger = forwardRef<any, any>(
-  ({ children, className, ...props }, forwardedRef) => (
+  ({ children, className, useMinus = false, ...props }, forwardedRef) => (
     <AccordionPrimitives.Header className="flex">
       <AccordionPrimitives.Trigger
         className={cn(
@@ -33,9 +34,26 @@ export const AccordionTrigger = forwardRef<any, any>(
         ref={forwardedRef}
       >
         {children}
-        <span className="transition-transform duration-150 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-45">
-          +
-        </span>
+        {useMinus ? (
+          <Text className="transition-opacity duration-150 ease-[cubic-bezier(0.87,_0,_0.13,_1)]">
+            <Text
+              component="span"
+              className="block group-data-[state=closed]:hidden"
+            >
+              -
+            </Text>
+            <Text
+              component="span"
+              className="hidden group-data-[state=closed]:block"
+            >
+              +
+            </Text>
+          </Text>
+        ) : (
+          <Text className="transition-transform duration-150 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-45">
+            +
+          </Text>
+        )}
       </AccordionPrimitives.Trigger>
     </AccordionPrimitives.Header>
   ),
