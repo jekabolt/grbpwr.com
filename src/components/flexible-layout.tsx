@@ -3,6 +3,7 @@ import { AdditionalHeader } from "@/app/_components/additional-header";
 import { Footer } from "@/app/_components/footer";
 import { Header } from "@/app/_components/header";
 import { MiniFooter } from "@/app/_components/mini-footer";
+import { MobileProductInfoHeader } from "@/app/_components/mobile-product-info-header";
 
 export default function FlexibleLayout({
   children,
@@ -15,14 +16,11 @@ export default function FlexibleLayout({
 }: Props) {
   return (
     <div className={cn("relative min-h-screen bg-bgColor", className)}>
-      {/* Mobile header */}
       {mobileHeaderType === "flexible" && (
         <div className="block lg:hidden">
-          <AdditionalHeader {...headerProps} />
+          <MobileProductInfoHeader />
         </div>
       )}
-
-      {/* Desktop header */}
       {headerType === "flexible" && (
         <div className="hidden lg:block">
           <AdditionalHeader {...headerProps} />

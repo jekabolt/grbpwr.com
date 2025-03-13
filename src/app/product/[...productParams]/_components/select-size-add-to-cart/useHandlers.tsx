@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 
@@ -16,12 +16,20 @@ export function useHandlers({ id, onSizeAccordionStateChange }: Props) {
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
   const [pendingAddToCart, setPendingAddToCart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const triggerDialodRef = useRef<HTMLButtonElement>(null);
 
   const handleAddToCart = async () => {
     if (isMaxQuantity) return;
 
     if (!activeSizeId) {
       onAccordionChange("size");
+      if (window.innerWidth < 1024 && triggerDialodRef?.current) {
+        triggerDialodRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        triggerDialodRef.current.click();
+      }
       setPendingAddToCart(true);
       return;
     }
@@ -61,6 +69,7 @@ export function useHandlers({ id, onSizeAccordionStateChange }: Props) {
     activeSizeId,
     openItem,
     isLoading,
+    triggerDialodRef,
     handleAddToCart,
     handleSizeSelect,
     onAccordionChange,

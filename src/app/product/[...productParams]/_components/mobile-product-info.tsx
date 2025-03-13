@@ -34,7 +34,7 @@ export function MobileProductInfo({
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
 
   return (
-    <div className="grid gap-10">
+    <div className="grid gap-10 px-2.5">
       <Text variant="uppercase">{name}</Text>
 
       <AddToCartForm id={product.product?.id || 0} product={product} />
@@ -46,7 +46,7 @@ export function MobileProductInfo({
         onValueChange={setOpenItem}
         className="space-y-6"
       >
-        <AccordionItem value="item-1">
+        <AccordionItem value="item-1" className="space-y-5">
           <AccordionTrigger>
             <Text variant="uppercase">description</Text>
           </AccordionTrigger>
@@ -60,7 +60,7 @@ export function MobileProductInfo({
           </AccordionContent>
         </AccordionItem>
         {productComposition && (
-          <AccordionItem value="item-2">
+          <AccordionItem value="item-2" className="space-y-5">
             <AccordionTrigger>
               <Text variant="uppercase">composition</Text>
             </AccordionTrigger>
@@ -75,7 +75,7 @@ export function MobileProductInfo({
           </AccordionItem>
         )}
         {productCare && (
-          <AccordionItem value="item-3">
+          <AccordionItem value="item-3" className="space-y-5">
             <AccordionTrigger>
               <Text variant="uppercase">care</Text>
             </AccordionTrigger>

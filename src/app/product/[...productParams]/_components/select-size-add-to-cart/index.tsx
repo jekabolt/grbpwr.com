@@ -13,6 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
+import { AddToCart } from "./add-to-cart";
+import { MobileSelectSize } from "./mobile-select-size";
 import { useData } from "./useData";
 import { useDisabled } from "./useDisabled";
 import { useHandlers } from "./useHandlers";
@@ -27,6 +29,7 @@ export function AddToCartForm({
     activeSizeId,
     openItem,
     isLoading,
+    triggerDialodRef,
     handleAddToCart,
     handleSizeSelect,
     onAccordionChange,
@@ -35,20 +38,12 @@ export function AddToCartForm({
     onSizeAccordionStateChange,
   });
 
-  const {
-    triggerText,
-    preorder,
-    sizeNames,
-    isSaleApplied,
-    price,
-    priceMinusSale,
-    priceWithSale,
-    isOneSize,
-    sizeQuantity,
-  } = useData({
-    product,
-    activeSizeId,
-  });
+  const { triggerText, preorder, sizeNames, isOneSize, sizeQuantity } = useData(
+    {
+      product,
+      activeSizeId,
+    },
+  );
 
   const { outOfStock } = useDisabled({ id, activeSizeId, product });
 
@@ -60,79 +55,85 @@ export function AddToCartForm({
 
   return (
     <div className={cn("flex flex-col justify-between", className)}>
-      {isOneSize ? (
-        <Text variant="uppercase">one size</Text>
-      ) : (
-        <AccordionRoot
-          type="single"
-          collapsible
-          value={openItem}
-          onValueChange={onAccordionChange}
-        >
-          <AccordionItem value="size" className="flex h-full flex-col gap-y-5">
-            <AccordionTrigger className="lg:border-inactive lg:border-b">
-              <Text variant="uppercase" className="flex items-center">
-                {triggerText}
-              </Text>
-            </AccordionTrigger>
-            <AccordionContent className="grid grid-cols-4 gap-2">
-              {sizeNames?.map(({ name, id }) => (
-                <Button
-                  className={cn("group relative uppercase", {
-                    "border-b border-black": activeSizeId === id,
-                    "hover:border-b hover:border-black": !outOfStock[id],
-                  })}
-                  key={id}
-                  onClick={() => handleSizeSelect(id)}
-                  disabled={outOfStock[id]}
-                >
-                  <Text
-                    className={cn("transition-opacity", {
-                      "group-hover:opacity-0":
-                        sizeQuantity[id] <= 5 && sizeQuantity[id] != 0,
+      <div className="block lg:hidden">
+        <MobileSelectSize
+          product={product}
+          activeSizeId={activeSizeId}
+          triggerRef={triggerDialodRef}
+          handleSizeSelect={handleSizeSelect}
+        />
+      </div>
+      <div className="hidden lg:block">
+        {isOneSize ? (
+          <Text variant="uppercase">one size</Text>
+        ) : (
+          <AccordionRoot
+            type="single"
+            collapsible
+            value={openItem}
+            onValueChange={onAccordionChange}
+          >
+            <AccordionItem
+              value="size"
+              className="flex h-full flex-col gap-y-5"
+            >
+              <AccordionTrigger className="border-inactive border-b">
+                <Text variant="uppercase" className="flex items-center">
+                  {triggerText}
+                </Text>
+              </AccordionTrigger>
+              <AccordionContent className="grid grid-cols-4 gap-2">
+                {sizeNames?.map(({ name, id }) => (
+                  <Button
+                    className={cn("group relative uppercase", {
+                      "border-b border-black": activeSizeId === id,
+                      "hover:border-b hover:border-black": !outOfStock[id],
                     })}
+                    key={id}
+                    onClick={() => handleSizeSelect(id)}
+                    disabled={outOfStock[id]}
                   >
-                    {name}
-                  </Text>
-                  {sizeQuantity[id] <= 5 && sizeQuantity[id] > 0 && (
-                    <Text className="absolute inset-0 flex hidden items-center justify-center opacity-0 transition-opacity group-hover:opacity-100 lg:block">
-                      {`${sizeQuantity[id]} left`}
+                    <Text
+                      className={cn(
+                        "transition-opacity group-hover:opacity-0",
+                        {
+                          "group-hover:opacity-100": sizeQuantity[id] >= 5,
+                        },
+                      )}
+                    >
+                      {name}
                     </Text>
-                  )}
-                </Button>
-              ))}
-            </AccordionContent>
-          </AccordionItem>
-        </AccordionRoot>
-      )}
+                    <Text
+                      className={cn(
+                        "absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100",
+                        {
+                          "group-hover:opacity-0": sizeQuantity[id] >= 5,
+                        },
+                      )}
+                    >
+                      {sizeQuantity[id] <= 5
+                        ? `${sizeQuantity[id]} left`
+                        : name}
+                    </Text>
+                  </Button>
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          </AccordionRoot>
+        )}
+      </div>
       <div
         className={cn("grid gap-3", {
           "lg:hidden": openItem,
         })}
       >
         {preorder && <Text variant="uppercaseWithColors">{preorder}</Text>}
-        <Button
-          className={cn(
-            "blackTheme fixed inset-x-2.5 bottom-2.5 z-30 flex justify-between uppercase lg:relative lg:inset-x-0 lg:bottom-0 lg:z-10",
-            {
-              "justify-center": isLoading,
-            },
-          )}
-          variant="simpleReverse"
-          size="lg"
-          onClick={handleAddToCart}
-          loading={isLoading}
-        >
-          <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
-          {isSaleApplied ? (
-            <Text variant="inactive">
-              {priceMinusSale}
-              <Text component="span">{priceWithSale}</Text>
-            </Text>
-          ) : (
-            <Text variant="inherit">{price}</Text>
-          )}
-        </Button>
+        <AddToCart
+          product={product}
+          isLoading={isLoading}
+          handleAddToCart={handleAddToCart}
+          className="fixed inset-x-2.5 bottom-2.5 z-30 lg:relative lg:inset-x-0 lg:bottom-0 lg:z-10"
+        />
       </div>
     </div>
   );

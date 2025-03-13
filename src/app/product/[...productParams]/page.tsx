@@ -67,7 +67,7 @@ export default async function ProductPage(props: ProductPageProps) {
         <div className="hidden lg:block">
           {product && <ProductInfo product={product} />}
         </div>
-        <div className="block px-2.5 lg:hidden">
+        <div className="block lg:hidden">
           {product && <MobileProductInfo product={product} />}
         </div>
       </div>
