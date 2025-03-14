@@ -135,7 +135,7 @@ export function AddToCartForm({
           product={product}
           isLoading={isLoading}
           handleAddToCart={handleAddToCart}
-          className="fixed inset-x-2.5 bottom-2.5 z-30 lg:relative lg:inset-x-0 lg:bottom-0 lg:z-10"
+          className="fixed inset-x-2.5 bottom-2.5 z-10 lg:relative lg:inset-x-0 lg:bottom-0 lg:z-10"
         />
       </div>
     </div>

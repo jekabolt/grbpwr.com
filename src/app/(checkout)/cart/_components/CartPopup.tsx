@@ -15,17 +15,22 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
 
+  console.log(isOpen);
+
   const ref = useClickAway<HTMLDivElement>(() => {
-    closeCart();
+    const isMobile = window.innerWidth < 1024;
+    if (!isMobile) {
+      closeCart();
+    }
   });
 
   return (
-    <>
+    <div className="relative">
       {isOpen && itemsQuantity > 0 && <Overlay cover="screen" />}
       <div className="block lg:hidden">
         <MobileNavCart />
       </div>
-      <div className="hidden lg:block" ref={ref}>
+      <div className="hidden lg:block">
         <Button
           onClick={toggleCart}
           variant={isOpen ? "underline" : "default"}
@@ -35,39 +40,38 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
           cart {itemsQuantity ? itemsQuantity : ""}
         </Button>
 
-        <div
-          className={cn(
-            "right-0 top-0 z-30 hidden w-[500px] bg-bgColor p-2.5",
-            {
-              block: isOpen,
+        {isOpen && (
+          <div
+            ref={ref}
+            className={cn("right-0 top-0 z-30 w-[500px] bg-bgColor p-2.5", {
               "fixed h-screen": itemsQuantity > 0,
               "absolute w-72": itemsQuantity === 0,
-            },
-          )}
-        >
-          <div className="flex h-full flex-col gap-y-6">
-            <div className="flex items-center justify-between">
-              <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
-              <Button onClick={closeCart}>[X]</Button>
+            })}
+          >
+            <div className="flex h-full flex-col gap-y-6">
+              <div className="flex items-center justify-between">
+                <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
+                <Button onClick={closeCart}>[X]</Button>
+              </div>
+              {itemsQuantity > 0 ? (
+                <>
+                  {children}
+                  <Button
+                    asChild
+                    variant="main"
+                    size="lg"
+                    className="block w-full uppercase"
+                  >
+                    <Link href="/checkout">proceed to checkout</Link>
+                  </Button>
+                </>
+              ) : (
+                <Text variant="uppercase">empty</Text>
+              )}
             </div>
-            {itemsQuantity > 0 ? (
-              <>
-                {children}
-                <Button
-                  asChild
-                  variant="main"
-                  size="lg"
-                  className="block w-full uppercase"
-                >
-                  <Link href="/checkout">proceed to checkout</Link>
-                </Button>
-              </>
-            ) : (
-              <Text variant="uppercase">empty</Text>
-            )}
           </div>
-        </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }

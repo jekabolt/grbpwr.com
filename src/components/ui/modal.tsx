@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -22,6 +22,21 @@ export default function Modal({
   const [isModalOpen, setModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setModalOpen(false);
+      }
+    };
+
+    if (isModalOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isModalOpen]);
+
   return (
     <div>
       <Button
@@ -36,14 +51,14 @@ export default function Modal({
           ref={modalRef}
           onClick={() => setModalOpen(!isModalOpen)}
           className={cn(
-            "absolute inset-0 z-50 flex h-full w-full flex-col gap-2 bg-bgColor",
+            "absolute inset-0 z-50 flex h-full w-full flex-col gap-5 bg-bgColor",
             {
               "cursor-none": customCursor,
             },
           )}
         >
           {customCursor && <CustomCursor containerRef={modalRef} />}
-          <div className="flex items-center justify-between">
+          <div className="justify-betwee flex items-center">
             <Text variant="uppercase">{title}</Text>
             <Button
               className={cn("", {

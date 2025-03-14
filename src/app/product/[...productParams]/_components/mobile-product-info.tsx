@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import { Text } from "@/components/ui/text";
 
+import MeasurementsModal from "./measurements-modal";
 import { AddToCartForm } from "./select-size-add-to-cart/index";
 import { useData } from "./select-size-add-to-cart/useData";
 
@@ -38,6 +39,15 @@ export function MobileProductInfo({
       <Text variant="uppercase">{name}</Text>
 
       <AddToCartForm id={product.product?.id || 0} product={product} />
+
+      <MeasurementsModal
+        productId={product?.product?.id || 0}
+        sizes={product?.sizes || []}
+        categoryId={
+          product?.product?.productDisplay?.productBody?.topCategoryId || 0
+        }
+        gender={product.product?.productDisplay?.productBody?.targetGender}
+      />
 
       <AccordionRoot
         collapsible

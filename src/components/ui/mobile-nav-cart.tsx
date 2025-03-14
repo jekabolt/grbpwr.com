@@ -10,17 +10,18 @@ import { Button } from "./button";
 import { Text } from "./text";
 
 export function MobileNavCart() {
-  const products = useCart((state) => state.products);
+  const { products, isOpen, closeCart, openCart } = useCart((state) => state);
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const open = isMobile && isOpen;
+
   return (
-    <DialogPrimitives.Root>
-      <DialogPrimitives.Trigger asChild>
-        <Button size="sm" variant="simpleReverse">
-          cart {itemsQuantity ? itemsQuantity : ""}
-        </Button>
-      </DialogPrimitives.Trigger>
+    <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
+      <Button onClick={openCart} size="sm" variant="simpleReverse">
+        cart {itemsQuantity ? itemsQuantity : ""}
+      </Button>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-10 bg-overlay" />
         <DialogPrimitives.Content
