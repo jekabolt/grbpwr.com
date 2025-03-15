@@ -6,6 +6,14 @@ import { calculatePriceWithSale, getFullComposition } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { getPreorderDate } from "@/app/(checkout)/cart/_components/utils";
 
+const lowStockTextMap: Record<number, string> = {
+  1: "only one left",
+  2: "only two left",
+  3: "only three left",
+  4: "only four left",
+  5: "only five left",
+};
+
 export function useData({
   product,
   activeSizeId,
@@ -39,6 +47,12 @@ export function useData({
     ? sizeNames?.find((size) => size.id === activeSizeId)?.name
     : "";
 
+  const activeSizeQuantity = activeSizeId ? sizeQuantity[activeSizeId] : 0;
+  const lowStockText =
+    activeSizeId && activeSizeQuantity <= 5 && activeSizeQuantity > 0
+      ? lowStockTextMap[activeSizeQuantity]
+      : "";
+
   const isOneSize =
     sizeNames?.length === 1 && sizeNames[0].name.toLowerCase() === "os";
 
@@ -50,7 +64,9 @@ export function useData({
   const isShoes = category?.toLowerCase().includes("shoes");
   const noSizeText = isShoes ? "select size (eu)" : "select size";
   const sizeText = isShoes ? `${activeSizeName} (eu)` : activeSizeName;
-  const triggerText = activeSizeName ? sizeText : noSizeText;
+  const triggerText = activeSizeName
+    ? `${sizeText} ${lowStockText}`
+    : noSizeText;
 
   const salePercentage = productBody?.salePercentage?.value || "0";
   const isSaleApplied = salePercentage !== "0";
