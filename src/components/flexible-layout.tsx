@@ -13,6 +13,7 @@ export default function FlexibleLayout({
   footerType,
   theme,
   className,
+  transparent,
 }: Props) {
   return (
     <div className={cn("relative min-h-screen bg-bgColor", className)}>
@@ -28,7 +29,7 @@ export default function FlexibleLayout({
       )}
       {headerType === "catalog" && (
         <div className={mobileHeaderType ? "hidden lg:block" : ""}>
-          <Header />
+          <Header transparent={transparent} />
         </div>
       )}
 
@@ -43,6 +44,7 @@ export default function FlexibleLayout({
 type Props = {
   children: React.ReactNode;
   headerType?: "catalog" | "flexible";
+  transparent?: boolean;
   mobileHeaderType?: "flexible";
   headerProps?: {
     left?: string;

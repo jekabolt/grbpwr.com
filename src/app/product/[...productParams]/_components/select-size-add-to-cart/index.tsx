@@ -135,7 +135,7 @@ export function AddToCartForm({
         })}
       >
         {preorder && <Text variant="uppercaseWithColors">{preorder}</Text>}
-        <div className="fixed inset-x-2.5 bottom-2.5 z-10 lg:relative lg:inset-x-0 lg:bottom-0">
+        <div className="fixed inset-x-2.5 bottom-4 z-10 lg:relative lg:inset-x-0 lg:bottom-0">
           <Button
             className={cn("blackTheme flex w-full justify-between uppercase", {
               "justify-center": isLoading,

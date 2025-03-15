@@ -6,11 +6,9 @@ import CartPopup from "../(checkout)/cart/_components/CartPopup";
 import CartProductsList from "../(checkout)/cart/_components/CartProductsList";
 import CartTotalPrice from "../(checkout)/cart/_components/CartTotalPrice";
 
-// fixed postion for header + transparent bgColor
-
 export function MobileProductInfoHeader() {
   return (
-    <header className="flex justify-between px-2.5 pt-5">
+    <header className="fixed inset-x-2.5 top-5 z-10 flex justify-between">
       <Button asChild>
         <Link href="/catalog">{`<`}</Link>
       </Button>
