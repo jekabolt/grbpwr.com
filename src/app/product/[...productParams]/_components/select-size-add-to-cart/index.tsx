@@ -13,7 +13,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
-import { AddToCart } from "./add-to-cart";
 import { MobileSelectSize } from "./mobile-select-size";
 import { useData } from "./useData";
 import { useDisabled } from "./useDisabled";
@@ -38,12 +37,17 @@ export function AddToCartForm({
     onSizeAccordionStateChange,
   });
 
-  const { triggerText, preorder, sizeNames, isOneSize, sizeQuantity } = useData(
-    {
-      product,
-      activeSizeId,
-    },
-  );
+  const {
+    triggerText,
+    preorder,
+    sizeNames,
+    isOneSize,
+    sizeQuantity,
+    isSaleApplied,
+    price,
+    priceMinusSale,
+    priceWithSale,
+  } = useData({ product, activeSizeId });
 
   const { outOfStock } = useDisabled({ id, activeSizeId, product });
 
@@ -131,12 +135,27 @@ export function AddToCartForm({
         })}
       >
         {preorder && <Text variant="uppercaseWithColors">{preorder}</Text>}
-        <AddToCart
-          product={product}
-          isLoading={isLoading}
-          handleAddToCart={handleAddToCart}
-          className="fixed inset-x-2.5 bottom-2.5 z-10 lg:relative lg:inset-x-0 lg:bottom-0 lg:z-10"
-        />
+        <div className="fixed inset-x-2.5 bottom-2.5 z-10 lg:relative lg:inset-x-0 lg:bottom-0">
+          <Button
+            className={cn("blackTheme flex w-full justify-between uppercase", {
+              "justify-center": isLoading,
+            })}
+            variant="simpleReverse"
+            size="lg"
+            onClick={handleAddToCart}
+            loading={isLoading}
+          >
+            <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
+            {isSaleApplied ? (
+              <Text variant="inactive">
+                {priceMinusSale}
+                <Text component="span">{priceWithSale}</Text>
+              </Text>
+            ) : (
+              <Text variant="inherit">{price}</Text>
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   );
