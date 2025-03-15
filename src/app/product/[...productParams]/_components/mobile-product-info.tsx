@@ -35,7 +35,7 @@ export function MobileProductInfo({
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
 
   return (
-    <div className="grid gap-10 px-2.5">
+    <div className="grid gap-10 px-3 pt-2.5">
       <Text variant="uppercase">{name}</Text>
 
       <AddToCartForm id={product.product?.id || 0} product={product} />
