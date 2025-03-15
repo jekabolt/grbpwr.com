@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useClickAway } from "@uidotdev/usehooks";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
@@ -14,15 +13,6 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   const { products, isOpen, closeCart, toggleCart } = useCart((state) => state);
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
-
-  console.log(isOpen);
-
-  const ref = useClickAway<HTMLDivElement>(() => {
-    const isMobile = window.innerWidth < 1024;
-    if (!isMobile) {
-      closeCart();
-    }
-  });
 
   return (
     <div className="relative">
@@ -42,7 +32,6 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
 
         {isOpen && (
           <div
-            ref={ref}
             className={cn("right-0 top-0 z-30 w-[500px] bg-bgColor p-2.5", {
               "fixed h-screen": itemsQuantity > 0,
               "absolute w-72": itemsQuantity === 0,
