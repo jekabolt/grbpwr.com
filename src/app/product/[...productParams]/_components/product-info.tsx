@@ -68,7 +68,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 >
                   <div className="grid gap-1">
                     {composition
-                      ?.slice(0, 8)
+                      ?.slice(0, 7)
                       .map((c, i) => <Text key={i}>{c ? c : ""}</Text>)}
                     <Text className="mt-3 lowercase">{`color: ${color}`}</Text>
                   </div>
