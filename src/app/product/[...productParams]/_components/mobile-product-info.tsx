@@ -9,9 +9,10 @@ import {
   AccordionRoot,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Modal from "@/components/ui/modal";
 import { Text } from "@/components/ui/text";
 
-import MeasurementsModal from "./measurements-modal";
+import { MeasurementsModalContent } from "./measurements-modal-content";
 import { AddToCartForm } from "./select-size-add-to-cart/index";
 import { useData } from "./select-size-add-to-cart/useData";
 
@@ -29,6 +30,10 @@ export function MobileProductInfo({
     care,
     productComposition,
     productCare,
+    productId,
+    sizes,
+    categoryId,
+    gender,
   } = useData({
     product,
   });
@@ -40,14 +45,14 @@ export function MobileProductInfo({
 
       <AddToCartForm id={product.product?.id || 0} product={product} />
 
-      <MeasurementsModal
-        productId={product?.product?.id || 0}
-        sizes={product?.sizes || []}
-        categoryId={
-          product?.product?.productDisplay?.productBody?.topCategoryId || 0
-        }
-        gender={product.product?.productDisplay?.productBody?.targetGender}
-      />
+      <Modal openElement="size guide">
+        <MeasurementsModalContent
+          id={productId}
+          sizes={sizes}
+          categoryId={categoryId}
+          gender={gender}
+        />
+      </Modal>
 
       <AccordionRoot
         collapsible

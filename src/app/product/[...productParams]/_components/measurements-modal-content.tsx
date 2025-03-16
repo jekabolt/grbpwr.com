@@ -19,7 +19,7 @@ const unitOptions = [
   { label: "inches", value: "inches" },
 ];
 
-export default function MeasurementsModalContent({
+export function MeasurementsModalContent({
   // handleAddToCartClick,
   id,
   sizes,
@@ -55,7 +55,7 @@ export default function MeasurementsModalContent({
   useLockBodyScroll();
 
   return (
-    <div className="h-auto w-auto  bg-bgColor">
+    <div className="h-auto w-auto bg-bgColor">
       <div className="bottom-[-10px] left-[-500px] flex h-[614px] w-full items-center justify-center bg-bgColor sm:w-[500px] lg:absolute">
         <CategoryThumbnail categoryId={categoryId} gender={gender} size={400} />
       </div>
@@ -96,7 +96,7 @@ export default function MeasurementsModalContent({
             </tr>
           </tbody>
         </table>
-        <div className="flex w-full justify-end ">
+        <div className="flex w-full justify-end">
           <Button
             variant="main"
             size="lg"

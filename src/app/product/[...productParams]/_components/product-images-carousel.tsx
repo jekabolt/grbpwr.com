@@ -14,7 +14,7 @@ export function ProductImagesCarousel({ productMedia }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: productMedia.length > 1,
     align: oneMedia ? "start" : "end",
-    containScroll: false,
+    containScroll: "trimSnaps",
     startIndex: oneMedia ? 0 : 2,
   });
 
@@ -41,13 +41,48 @@ export function ProductImagesCarousel({ productMedia }: Props) {
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
+
+    let accumulatedDeltaX = 0;
+    const scrollThreshold = 200;
+
+    const handleWheel = (event: WheelEvent) => {
+      if (emblaApi) {
+        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+          event.preventDefault();
+
+          accumulatedDeltaX += event.deltaX;
+
+          if (accumulatedDeltaX > scrollThreshold) {
+            emblaApi.scrollNext();
+            accumulatedDeltaX = 0;
+          } else if (accumulatedDeltaX < -scrollThreshold) {
+            emblaApi.scrollPrev();
+            accumulatedDeltaX = 0;
+          }
+        }
+      }
+    };
+
+    if (emblaApi) {
+      const rootNode = emblaApi.rootNode();
+      rootNode.style.overflowX = "auto";
+      rootNode.addEventListener("wheel", handleWheel, { passive: false });
+    }
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      if (emblaApi) {
+        const rootNode = emblaApi.rootNode();
+        rootNode.removeEventListener("wheel", handleWheel);
+      }
     };
-  }, [handleKeyDown]);
+  }, [handleKeyDown, emblaApi]);
 
   return (
-    <div className="no-scroll-bar h-full w-full overflow-x-auto" ref={emblaRef}>
+    <div
+      className="no-scroll-bar h-full w-full touch-pan-x overflow-x-auto"
+      ref={emblaRef}
+    >
       <div className="flex h-full">
         {mediaForCarousel.map((m, index) => (
           <div key={`${m.id}-${index}`} className="flex-[0_0_45%]">

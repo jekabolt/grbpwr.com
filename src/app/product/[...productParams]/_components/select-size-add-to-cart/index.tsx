@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { HoverText } from "@/components/ui/hover-text";
 import { Text } from "@/components/ui/text";
 
 import { MobileSelectSize } from "./mobile-select-size";
@@ -90,7 +91,7 @@ export function AddToCartForm({
                 <AccordionContent className="grid grid-cols-4 gap-2">
                   {sizeNames?.map(({ name, id }) => (
                     <Button
-                      className={cn("group relative uppercase", {
+                      className={cn({
                         "border-b border-black": activeSizeId === id,
                         "hover:border-b hover:border-black": !outOfStock[id],
                       })}
@@ -98,28 +99,11 @@ export function AddToCartForm({
                       onClick={() => handleSizeSelect(id)}
                       disabled={outOfStock[id]}
                     >
-                      <Text
-                        className={cn(
-                          "transition-opacity group-hover:opacity-0",
-                          {
-                            "group-hover:opacity-100": sizeQuantity[id] >= 5,
-                          },
-                        )}
-                      >
-                        {name}
-                      </Text>
-                      <Text
-                        className={cn(
-                          "absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100",
-                          {
-                            "group-hover:opacity-0": sizeQuantity[id] >= 5,
-                          },
-                        )}
-                      >
-                        {sizeQuantity[id] <= 5
-                          ? `${sizeQuantity[id]} left`
-                          : name}
-                      </Text>
+                      <HoverText
+                        defaultText={name}
+                        hoveredText={`${sizeQuantity[id]} left`}
+                        hoverTextCondition={sizeQuantity[id] > 5}
+                      />
                     </Button>
                   ))}
                 </AccordionContent>

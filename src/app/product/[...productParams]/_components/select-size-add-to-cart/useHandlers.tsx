@@ -10,9 +10,9 @@ interface Props {
 }
 
 export function useHandlers({ id, onSizeAccordionStateChange }: Props) {
+  const { increaseQuantity, openCart } = useCart((state) => state);
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const { isMaxQuantity } = useDisabled({ id, activeSizeId });
-  const { increaseQuantity, openCart } = useCart((state) => state);
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
   const [pendingAddToCart, setPendingAddToCart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

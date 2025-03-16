@@ -6,6 +6,8 @@ import { calculatePriceWithSale, getFullComposition } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { getPreorderDate } from "@/app/(checkout)/cart/_components/utils";
 
+const LOW_STOCK = 5;
+
 const lowStockTextMap: Record<number, string> = {
   1: "only one left",
   2: "only two left",
@@ -13,6 +15,25 @@ const lowStockTextMap: Record<number, string> = {
   4: "only four left",
   5: "only five left",
 };
+
+function getSizeText(
+  isShoes: boolean | undefined,
+  sizeName: string,
+  lowStockText: string,
+) {
+  const formattedSizeName = isShoes ? `${sizeName} (eu)` : sizeName;
+  return `${formattedSizeName} ${lowStockText}`.trim();
+}
+
+function getNoSizeText(isShoes: boolean | undefined): string {
+  return isShoes ? "select size (eu)" : "select size";
+}
+
+function getModelText(height?: number | undefined, sizeName?: string): string {
+  return sizeName && height
+    ? `model is ${height}cm and wears size ${sizeName}`
+    : "";
+}
 
 export function useData({
   product,
@@ -23,12 +44,19 @@ export function useData({
 }) {
   const { dictionary } = useDataContext();
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+
+  const productId = product.product?.id || 0;
   const productBody = product.product?.productDisplay?.productBody;
   const name = productBody?.name;
   const preorder = getPreorderDate(product);
   const color = productBody?.color;
-
+  const description = productBody?.description;
+  const productComposition = productBody?.composition;
+  const productCare = productBody?.careInstructions;
   const sizes = product.sizes;
+  const categoryId = productBody?.topCategoryId;
+  const gender = productBody?.targetGender;
+
   const sizeNames = sizes?.map((s) => ({
     id: s.sizeId as number,
     name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
@@ -49,24 +77,21 @@ export function useData({
 
   const activeSizeQuantity = activeSizeId ? sizeQuantity[activeSizeId] : 0;
   const lowStockText =
-    activeSizeId && activeSizeQuantity <= 5 && activeSizeQuantity > 0
+    activeSizeId && activeSizeQuantity <= LOW_STOCK && activeSizeQuantity > 0
       ? lowStockTextMap[activeSizeQuantity]
       : "";
 
   const isOneSize =
     sizeNames?.length === 1 && sizeNames[0].name.toLowerCase() === "os";
 
-  const categoryId = productBody?.topCategoryId;
   const category = dictionary?.categories?.find(
     (c) => c.id === categoryId,
   )?.name;
 
   const isShoes = category?.toLowerCase().includes("shoes");
-  const noSizeText = isShoes ? "select size (eu)" : "select size";
-  const sizeText = isShoes ? `${activeSizeName} (eu)` : activeSizeName;
   const triggerText = activeSizeName
-    ? `${sizeText} ${lowStockText}`
-    : noSizeText;
+    ? getSizeText(isShoes, activeSizeName, lowStockText)
+    : getNoSizeText(isShoes);
 
   const salePercentage = productBody?.salePercentage?.value || "0";
   const isSaleApplied = salePercentage !== "0";
@@ -75,9 +100,6 @@ export function useData({
   const priceMinusSale = `${price} - ${salePercentage}% = `;
   const priceWithSale = `${currency} ${calculatePriceWithSale(productBody?.price?.value || "0", salePercentage)}`;
 
-  const description = productBody?.description;
-  const productComposition = productBody?.composition;
-  const productCare = productBody?.careInstructions;
   const composition = getFullComposition(productComposition);
   const care = productCare
     ?.split(",")
@@ -88,10 +110,7 @@ export function useData({
     (s) => s.id === modelWearSizeId,
   )?.name;
   const modelWearHeight = productBody?.modelWearsHeightCm;
-  const modelWearText =
-    modelWearSize && modelWearHeight
-      ? `model is ${modelWearHeight}cm and wears size ${modelWearSize}`
-      : "";
+  const modelWearText = getModelText(modelWearHeight, modelWearSize);
 
   return {
     triggerText,
@@ -111,5 +130,9 @@ export function useData({
     modelWearText,
     color,
     name,
+    productId,
+    sizes,
+    categoryId,
+    gender,
   };
 }

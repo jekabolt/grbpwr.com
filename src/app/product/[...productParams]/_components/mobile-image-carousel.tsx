@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
 
 export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
+  const [emblaRef] = useEmblaCarousel({
     loop: true,
     align: "center",
     containScroll: false,

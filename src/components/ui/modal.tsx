@@ -13,12 +13,15 @@ export default function Modal({
   children,
   openElement,
   customCursor = false,
+  shouldRender = true,
 }: {
   title?: string;
   children: React.ReactNode;
   openElement: string;
   customCursor?: boolean;
+  shouldRender?: boolean;
 }) {
+  if (!shouldRender) return null;
   const [isModalOpen, setModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
