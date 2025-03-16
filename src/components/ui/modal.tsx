@@ -21,7 +21,6 @@ export default function Modal({
   customCursor?: boolean;
   shouldRender?: boolean;
 }) {
-  if (!shouldRender) return null;
   const [isModalOpen, setModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -40,6 +39,7 @@ export default function Modal({
     };
   }, [isModalOpen]);
 
+  if (!shouldRender) return null;
   return (
     <div>
       <Button

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -23,21 +23,24 @@ export function ProductImagesCarousel({ productMedia }: Props) {
       ? [...productMedia, ...productMedia]
       : productMedia;
 
-  const scrollNext = () => {
+  const scrollNext = useCallback(() => {
     emblaApi?.scrollNext();
-  };
+  }, [emblaApi]);
 
-  const scrollPrev = () => {
+  const scrollPrev = useCallback(() => {
     emblaApi?.scrollPrev();
-  };
+  }, [emblaApi]);
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "ArrowRight") {
-      scrollNext();
-    } else if (event.key === "ArrowLeft") {
-      scrollPrev();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "ArrowRight") {
+        scrollNext();
+      } else if (event.key === "ArrowLeft") {
+        scrollPrev();
+      }
+    },
+    [scrollNext, scrollPrev],
+  );
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
