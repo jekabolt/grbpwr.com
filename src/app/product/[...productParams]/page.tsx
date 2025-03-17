@@ -6,6 +6,7 @@ import FlexibleLayout from "@/components/flexible-layout";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileImageCarousel } from "./_components/mobile-image-carousel";
+import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
@@ -51,20 +52,25 @@ export default async function ProductPage(props: ProductPageProps) {
   const productMedia = [...(product?.media || [])];
 
   return (
-    <FlexibleLayout headerType="catalog" footerType="mini" className="lg:pt-16">
-      <div className="relative">
+    <FlexibleLayout
+      mobileHeaderType="flexible"
+      headerType="catalog"
+      footerType="mini"
+      transparent
+    >
+      <div className="relative lg:h-screen">
         <div className="block lg:hidden">
           <MobileImageCarousel media={productMedia} />
         </div>
-        <div className="hidden lg:block">
+        <div className="hidden h-full w-full pt-12 lg:block">
           <ProductImagesCarousel productMedia={productMedia} />
         </div>
-        {product && (
-          <ProductInfo
-            product={product}
-            className="p-2.5 lg:absolute lg:bottom-[130px] lg:right-32 lg:p-0"
-          />
-        )}
+        <div className="hidden lg:block">
+          {product && <ProductInfo product={product} />}
+        </div>
+        <div className="block lg:hidden">
+          {product && <MobileProductInfo product={product} />}
+        </div>
       </div>
       {product?.product && <LastViewedProducts product={product.product} />}
     </FlexibleLayout>

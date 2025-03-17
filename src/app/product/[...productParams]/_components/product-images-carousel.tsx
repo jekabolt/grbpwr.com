@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -14,7 +14,7 @@ export function ProductImagesCarousel({ productMedia }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: productMedia.length > 1,
     align: oneMedia ? "start" : "end",
-    containScroll: false,
+    containScroll: "trimSnaps",
     startIndex: oneMedia ? 0 : 2,
   });
 
@@ -23,24 +23,28 @@ export function ProductImagesCarousel({ productMedia }: Props) {
       ? [...productMedia, ...productMedia]
       : productMedia;
 
-  const scrollNext = () => {
+  const scrollNext = useCallback(() => {
     emblaApi?.scrollNext();
-  };
+  }, [emblaApi]);
 
-  const scrollPrev = () => {
+  const scrollPrev = useCallback(() => {
     emblaApi?.scrollPrev();
-  };
+  }, [emblaApi]);
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "ArrowRight") {
-      scrollNext();
-    } else if (event.key === "ArrowLeft") {
-      scrollPrev();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "ArrowRight") {
+        scrollNext();
+      } else if (event.key === "ArrowLeft") {
+        scrollPrev();
+      }
+    },
+    [scrollNext, scrollPrev],
+  );
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
@@ -48,7 +52,7 @@ export function ProductImagesCarousel({ productMedia }: Props) {
 
   return (
     <div
-      className="no-scroll-bar h-[800px] w-full overflow-x-auto"
+      className="no-scroll-bar h-full w-full touch-pan-x overflow-x-auto"
       ref={emblaRef}
     >
       <div className="flex h-full">

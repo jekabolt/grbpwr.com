@@ -1,33 +1,81 @@
 "use client";
 
-import { useState } from "react";
-import { Slot } from "@radix-ui/react-slot";
+import { useEffect, useRef, useState } from "react";
+
+import { cn } from "@/lib/utils";
+
+import { Button } from "./button";
+import CustomCursor from "./custom-cursor";
+import { Text } from "./text";
+
+interface ModalProps {
+  title?: string;
+  children: React.ReactNode;
+  openElement: string;
+  customCursor?: boolean;
+  shouldRender?: boolean;
+}
 
 export default function Modal({
+  title,
   children,
   openElement,
-}: {
-  children: React.ReactNode;
-  openElement: React.ReactNode;
-}) {
+  customCursor = false,
+  shouldRender = true,
+}: ModalProps) {
   const [isModalOpen, setModalOpen] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setModalOpen(false);
+      }
+    };
+
+    if (isModalOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isModalOpen]);
+
+  if (!shouldRender) return null;
+
+  const toggleModal = () => setModalOpen(!isModalOpen);
 
   return (
     <div>
-      <div onClick={openModal}>{openElement}</div>
+      <Button variant="underline" className="uppercase" onClick={toggleModal}>
+        {openElement}
+      </Button>
       {isModalOpen && (
-        <div className="absolute left-0 top-0 z-50 h-full w-full ">
-          <button
-            onClick={closeModal}
-            className="absolute right-0 top-0 cursor-pointer"
-          >
-            [X]
-          </button>
-          {/* @ts-ignore */}
-          <Slot setModalOpen={setModalOpen}>{children}</Slot>
+        <div
+          ref={modalRef}
+          onClick={toggleModal}
+          className={cn(
+            "absolute inset-0 z-50 flex h-full w-full flex-col gap-5 bg-bgColor",
+            {
+              "cursor-none": customCursor,
+            },
+          )}
+        >
+          {customCursor && <CustomCursor containerRef={modalRef} />}
+          {title && (
+            <div className="flex items-center justify-between">
+              <Text variant="uppercase">{title}</Text>
+              <Button
+                className={cn("", {
+                  hidden: customCursor,
+                })}
+                onClick={toggleModal}
+              >
+                [x]
+              </Button>
+            </div>
+          )}
+          <div className="h-full">{children}</div>
         </div>
       )}
     </div>
