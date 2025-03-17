@@ -26,10 +26,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
     return {
       title: title.toUpperCase(),
-      description: "jnjn",
+      description: description,
       openGraph: {
         title: title.toUpperCase(),
-        description: "jnjn",
+        description: description,
         siteName: title,
         images: [
           {
