@@ -7,29 +7,20 @@ import { Ads } from "@/app/_components/ads";
 
 import { MainAds } from "./_components/main-ads";
 
-export async function generateMetadata(): Promise<Metadata> {
-  try {
-    const { hero } = await serviceClient.GetHero({});
+export function generateMetadata(): Metadata {
+  const title = "grbpwr";
+  const description =
+    "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.";
 
-    const title = "grbpwr";
-    const description =
-      "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.";
-
-    return {
+  return {
+    title: title.toUpperCase(),
+    description: description,
+    openGraph: {
       title: title.toUpperCase(),
       description: description,
-      openGraph: {
-        title: title.toUpperCase(),
-        description: description,
-        siteName: title,
-      },
-    };
-  } catch (error) {
-    return {
-      title: "My Page Title",
-      description: "My Page Description",
-    };
-  }
+      siteName: title,
+    },
+  };
 }
 
 export default async function Page() {
