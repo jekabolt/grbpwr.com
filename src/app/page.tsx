@@ -26,12 +26,18 @@ export async function generateMetadata(): Promise<Metadata> {
 
     return {
       title: title.toUpperCase(),
-      description: description,
+      description: "jnjn",
       openGraph: {
-        siteName: title,
-        images: imageUrl,
         title: title.toUpperCase(),
-        description: description,
+        description: "jnjn",
+        siteName: title,
+        images: [
+          {
+            url: imageUrl || "",
+            width: 1200,
+            height: 630,
+          },
+        ],
       },
     };
   } catch (error) {
