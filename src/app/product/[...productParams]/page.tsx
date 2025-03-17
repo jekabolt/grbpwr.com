@@ -23,7 +23,6 @@ export async function generateMetadata(
   const params = await props.params;
   const { productParams } = params;
 
-  // If params are invalid, return default metadata
   if (productParams.length !== 4) {
     return {
       title: "grbpwr",
@@ -49,7 +48,8 @@ export async function generateMetadata(
     }
 
     const productBody = product.product.productDisplay.productBody;
-    const productTitle = productBody.name || "";
+    const productBrand = productBody.brand;
+    const productName = productBody.name || "";
     const productDescription = productBody.description || "";
     const productColor = productBody.color || "";
     const thumbnailUrl =
@@ -57,20 +57,13 @@ export async function generateMetadata(
       "";
 
     return {
-      title: productTitle,
-      description: `${productDescription}\nSupplier color: ${productColor}`,
+      title: `${productBrand}: ${productName}`.toUpperCase(),
+      description: "product information",
       openGraph: {
-        title: productTitle,
-        description: `${productDescription}\nSupplier color: ${productColor}`,
-        images: [
-          {
-            url: thumbnailUrl,
-            width: 300,
-            height: 300,
-            alt: productTitle,
-          },
-        ],
         siteName: "grbpwr",
+        images: thumbnailUrl,
+        title: productName,
+        description: `${productDescription}\nSupplier color: ${productColor}`,
       },
     };
   } catch (error) {
