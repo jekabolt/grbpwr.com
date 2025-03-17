@@ -28,6 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
         description:
           "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
         images: imageUrl,
+        siteName: "GRBPWR",
       },
     };
   } catch (error) {
