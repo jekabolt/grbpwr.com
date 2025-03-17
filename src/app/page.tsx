@@ -10,6 +10,11 @@ import { MainAds } from "./_components/main-ads";
 export async function generateMetadata(): Promise<Metadata> {
   try {
     const { hero } = await serviceClient.GetHero({});
+
+    const title = "grbpwr";
+    const description =
+      "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.";
+
     const imageUrl =
       hero?.entities?.[0]?.main?.single?.mediaLandscape?.media?.fullSize
         ?.mediaUrl ||
@@ -20,15 +25,13 @@ export async function generateMetadata(): Promise<Metadata> {
         ?.mediaUrl;
 
     return {
-      title: "GRBPWR",
-      description:
-        "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
+      title: title.toUpperCase(),
+      description: description,
       openGraph: {
-        title: "GRBPWR",
-        description:
-          "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
+        siteName: title,
         images: imageUrl,
-        siteName: "GRBPWR",
+        title: title.toUpperCase(),
+        description: description,
       },
     };
   } catch (error) {
