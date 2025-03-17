@@ -62,14 +62,15 @@ export async function generateMetadata(
       openGraph: {
         title: productTitle,
         description: `${productDescription}\nSupplier color: ${productColor}`,
-        images: thumbnailUrl ? [thumbnailUrl] : [],
+        images: [
+          {
+            url: thumbnailUrl,
+            width: 300,
+            height: 300,
+            alt: productTitle,
+          },
+        ],
         siteName: "grbpwr",
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: productTitle,
-        description: `${productDescription}\nSupplier color: ${productColor}`,
-        images: thumbnailUrl ? [thumbnailUrl] : [],
       },
     };
   } catch (error) {
