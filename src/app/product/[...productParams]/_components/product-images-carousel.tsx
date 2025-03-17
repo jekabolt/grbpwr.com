@@ -45,41 +45,10 @@ export function ProductImagesCarousel({ productMedia }: Props) {
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
 
-    let accumulatedDeltaX = 0;
-    const scrollThreshold = 150;
-
-    const handleWheel = (event: WheelEvent) => {
-      if (emblaApi) {
-        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
-          event.preventDefault();
-
-          accumulatedDeltaX += event.deltaX;
-
-          if (accumulatedDeltaX > scrollThreshold) {
-            emblaApi.scrollNext();
-            accumulatedDeltaX = 0;
-          } else if (accumulatedDeltaX < -scrollThreshold) {
-            emblaApi.scrollPrev();
-            accumulatedDeltaX = 0;
-          }
-        }
-      }
-    };
-
-    if (emblaApi) {
-      const rootNode = emblaApi.rootNode();
-      rootNode.style.overflowX = "auto";
-      rootNode.addEventListener("wheel", handleWheel, { passive: false });
-    }
-
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      if (emblaApi) {
-        const rootNode = emblaApi.rootNode();
-        rootNode.removeEventListener("wheel", handleWheel);
-      }
     };
-  }, [handleKeyDown, emblaApi]);
+  }, [handleKeyDown]);
 
   return (
     <div
