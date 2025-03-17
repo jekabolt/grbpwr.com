@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
 import { MAX_LIMIT } from "@/constants";
 
@@ -14,6 +15,69 @@ interface ProductPageProps {
   params: Promise<{
     productParams: string[];
   }>;
+}
+
+export async function generateMetadata(
+  props: ProductPageProps,
+): Promise<Metadata> {
+  const params = await props.params;
+  const { productParams } = params;
+
+  // If params are invalid, return default metadata
+  if (productParams.length !== 4) {
+    return {
+      title: "grbpwr",
+      description: "Product not found",
+    };
+  }
+
+  const [gender, brand, name, id] = productParams;
+
+  try {
+    const { product } = await serviceClient.GetProduct({
+      gender,
+      brand,
+      name,
+      id: parseInt(id),
+    });
+
+    if (!product?.product?.productDisplay?.productBody) {
+      return {
+        title: "grbpwr",
+        description: "Product not found",
+      };
+    }
+
+    const productBody = product.product.productDisplay.productBody;
+    const productTitle = productBody.name || "";
+    const productDescription = productBody.description || "";
+    const productColor = productBody.color || "";
+    const thumbnailUrl =
+      product.product.productDisplay.thumbnail?.media?.thumbnail?.mediaUrl ||
+      "";
+
+    return {
+      title: productTitle,
+      description: `${productDescription}\nSupplier color: ${productColor}`,
+      openGraph: {
+        title: productTitle,
+        description: `${productDescription}\nSupplier color: ${productColor}`,
+        images: thumbnailUrl ? [thumbnailUrl] : [],
+        siteName: "grbpwr",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: productTitle,
+        description: `${productDescription}\nSupplier color: ${productColor}`,
+        images: thumbnailUrl ? [thumbnailUrl] : [],
+      },
+    };
+  } catch (error) {
+    return {
+      title: "grbpwr",
+      description: "Product not found",
+    };
+  }
 }
 
 export async function generateStaticParams() {
