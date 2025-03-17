@@ -23,13 +23,6 @@ export async function generateMetadata(
   const params = await props.params;
   const { productParams } = params;
 
-  if (productParams.length !== 4) {
-    return {
-      title: "grbpwr",
-      description: "Product not found",
-    };
-  }
-
   const [gender, brand, name, id] = productParams;
 
   try {
@@ -40,20 +33,13 @@ export async function generateMetadata(
       id: parseInt(id),
     });
 
-    if (!product?.product?.productDisplay?.productBody) {
-      return {
-        title: "grbpwr",
-        description: "Product not found",
-      };
-    }
-
-    const productBody = product.product.productDisplay.productBody;
-    const productBrand = productBody.brand;
-    const productName = productBody.name || "";
-    const productDescription = productBody.description || "";
-    const productColor = productBody.color || "";
+    const productBody = product?.product?.productDisplay?.productBody;
+    const productBrand = productBody?.brand;
+    const productName = productBody?.name || "";
+    const productDescription = productBody?.description || "";
+    const productColor = productBody?.color || "";
     const thumbnailUrl =
-      product.product.productDisplay.thumbnail?.media?.thumbnail?.mediaUrl ||
+      product?.product?.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
       "";
 
     return {
