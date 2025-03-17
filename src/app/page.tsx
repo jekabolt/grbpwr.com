@@ -15,15 +15,6 @@ export async function generateMetadata(): Promise<Metadata> {
     const description =
       "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.";
 
-    const imageUrl =
-      hero?.entities?.[0]?.main?.single?.mediaLandscape?.media?.fullSize
-        ?.mediaUrl ||
-      hero?.entities?.[0]?.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
-      hero?.entities?.[0]?.double?.left?.mediaLandscape?.media?.fullSize
-        ?.mediaUrl ||
-      hero?.entities?.[0]?.double?.right?.mediaLandscape?.media?.fullSize
-        ?.mediaUrl;
-
     return {
       title: title.toUpperCase(),
       description: description,
@@ -31,13 +22,6 @@ export async function generateMetadata(): Promise<Metadata> {
         title: title.toUpperCase(),
         description: description,
         siteName: title,
-        images: [
-          {
-            url: imageUrl || "",
-            width: 1200,
-            height: 630,
-          },
-        ],
       },
     };
   } catch (error) {
