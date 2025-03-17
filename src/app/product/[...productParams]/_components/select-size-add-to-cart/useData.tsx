@@ -9,20 +9,16 @@ import { getPreorderDate } from "@/app/(checkout)/cart/_components/utils";
 const LOW_STOCK = 5;
 
 const lowStockTextMap: Record<number, string> = {
-  1: "only one left",
-  2: "only two left",
-  3: "only three left",
-  4: "only four left",
-  5: "only five left",
+  1: "(only one left)",
+  2: "(only two left)",
+  3: "(only three left)",
+  4: "(only four left)",
+  5: "(only five left)",
 };
 
-function getSizeText(
-  isShoes: boolean | undefined,
-  sizeName: string,
-  lowStockText: string,
-) {
+function getSizeText(isShoes: boolean | undefined, sizeName: string) {
   const formattedSizeName = isShoes ? `${sizeName} (eu)` : sizeName;
-  return `${formattedSizeName} ${lowStockText}`.trim();
+  return formattedSizeName;
 }
 
 function getNoSizeText(isShoes: boolean | undefined): string {
@@ -90,7 +86,7 @@ export function useData({
 
   const isShoes = category?.toLowerCase().includes("shoes");
   const triggerText = activeSizeName
-    ? getSizeText(isShoes, activeSizeName, lowStockText)
+    ? getSizeText(isShoes, activeSizeName)
     : getNoSizeText(isShoes);
 
   const salePercentage = productBody?.salePercentage?.value || "0";
@@ -134,5 +130,6 @@ export function useData({
     sizes,
     categoryId,
     gender,
+    lowStockText,
   };
 }

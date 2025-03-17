@@ -35,7 +35,7 @@ export const AccordionTrigger = forwardRef<any, any>(
       >
         {children}
         {useMinus ? (
-          <Text className="transition-opacity duration-150 ease-[cubic-bezier(0.87,_0,_0.13,_1)]">
+          <Text className="font-normal transition-opacity duration-150 ease-[cubic-bezier(0.87,_0,_0.13,_1)]">
             <Text
               component="span"
               className="block group-data-[state=closed]:hidden"

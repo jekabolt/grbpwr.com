@@ -48,6 +48,7 @@ export function AddToCartForm({
     price,
     priceMinusSale,
     priceWithSale,
+    lowStockText,
   } = useData({ product, activeSizeId });
 
   const { outOfStock } = useDisabled({ id, activeSizeId, product });
@@ -83,9 +84,20 @@ export function AddToCartForm({
                 value="size"
                 className="flex h-full flex-col gap-y-5"
               >
-                <AccordionTrigger useMinus className="border-inactive border-b">
-                  <Text variant="uppercase" className="flex items-center">
+                <AccordionTrigger
+                  useMinus
+                  className="border-inactive border-b pb-2.5"
+                >
+                  <Text variant="uppercase">
                     {triggerText}
+                    <Text
+                      component="span"
+                      variant="uppercase"
+                      className="text-textInactiveColor"
+                    >
+                      {" "}
+                      {lowStockText}
+                    </Text>
                   </Text>
                 </AccordionTrigger>
                 <AccordionContent className="grid grid-cols-4 gap-2">
@@ -114,32 +126,41 @@ export function AddToCartForm({
       )}
 
       <div
-        className={cn("grid gap-3", {
-          "lg:hidden": openItem,
-        })}
+        className={cn(
+          "fixed inset-x-0 bottom-0 z-10 grid gap-3 px-2.5 pb-5 pt-2.5 lg:relative lg:inset-x-0 lg:bottom-0 lg:p-0",
+          {
+            "lg:hidden": openItem,
+            "bg-bgColor": preorder,
+          },
+        )}
       >
-        {preorder && <Text variant="uppercaseWithColors">{preorder}</Text>}
-        <div className="fixed inset-x-2.5 bottom-4 z-10 lg:relative lg:inset-x-0 lg:bottom-0">
-          <Button
-            className={cn("blackTheme flex w-full justify-between uppercase", {
-              "justify-center": isLoading,
-            })}
-            variant="simpleReverse"
-            size="lg"
-            onClick={handleAddToCart}
-            loading={isLoading}
+        {preorder && (
+          <Text
+            variant="inactive"
+            className="text-center uppercase lg:text-left"
           >
-            <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
-            {isSaleApplied ? (
-              <Text variant="inactive">
-                {priceMinusSale}
-                <Text component="span">{priceWithSale}</Text>
-              </Text>
-            ) : (
-              <Text variant="inherit">{price}</Text>
-            )}
-          </Button>
-        </div>
+            {preorder}
+          </Text>
+        )}
+        <Button
+          className={cn("blackTheme flex w-full justify-between uppercase", {
+            "justify-center": isLoading,
+          })}
+          variant="simpleReverse"
+          size="lg"
+          onClick={handleAddToCart}
+          loading={isLoading}
+        >
+          <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
+          {isSaleApplied ? (
+            <Text variant="inactive">
+              {priceMinusSale}
+              <Text component="span">{priceWithSale}</Text>
+            </Text>
+          ) : (
+            <Text variant="inherit">{price}</Text>
+          )}
+        </Button>
       </div>
     </div>
   );

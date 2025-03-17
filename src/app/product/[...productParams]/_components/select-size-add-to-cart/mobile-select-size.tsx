@@ -21,16 +21,29 @@ export function MobileSelectSize({
   triggerRef: React.RefObject<HTMLButtonElement | null>;
   handleSizeSelect: (sizeId: number) => void;
 }) {
-  const { triggerText, sizeNames } = useData({ product, activeSizeId });
+  const { triggerText, sizeNames, lowStockText } = useData({
+    product,
+    activeSizeId,
+  });
 
   return (
     <DialogPrimitives.Root modal={false}>
       <DialogPrimitives.Trigger asChild>
         <Button
           ref={triggerRef}
-          className="border-textInaciveColor w-full border-b pb-1 text-left uppercase"
+          className="border-textInaciveColor w-full border-b pb-2.5 text-left uppercase"
         >
-          {triggerText}
+          <Text component="span">
+            {triggerText}
+            <Text
+              component="span"
+              variant="uppercase"
+              className="text-textInactiveColor"
+            >
+              {" "}
+              {lowStockText}
+            </Text>
+          </Text>
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>

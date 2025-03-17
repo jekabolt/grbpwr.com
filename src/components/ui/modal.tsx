@@ -8,19 +8,21 @@ import { Button } from "./button";
 import CustomCursor from "./custom-cursor";
 import { Text } from "./text";
 
+interface ModalProps {
+  title?: string;
+  children: React.ReactNode;
+  openElement: string;
+  customCursor?: boolean;
+  shouldRender?: boolean;
+}
+
 export default function Modal({
   title,
   children,
   openElement,
   customCursor = false,
   shouldRender = true,
-}: {
-  title?: string;
-  children: React.ReactNode;
-  openElement: string;
-  customCursor?: boolean;
-  shouldRender?: boolean;
-}) {
+}: ModalProps) {
   const [isModalOpen, setModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -40,19 +42,18 @@ export default function Modal({
   }, [isModalOpen]);
 
   if (!shouldRender) return null;
+
+  const toggleModal = () => setModalOpen(!isModalOpen);
+
   return (
     <div>
-      <Button
-        variant="underline"
-        className="uppercase"
-        onClick={() => setModalOpen(!isModalOpen)}
-      >
+      <Button variant="underline" className="uppercase" onClick={toggleModal}>
         {openElement}
       </Button>
       {isModalOpen && (
         <div
           ref={modalRef}
-          onClick={() => setModalOpen(!isModalOpen)}
+          onClick={toggleModal}
           className={cn(
             "absolute inset-0 z-50 flex h-full w-full flex-col gap-5 bg-bgColor",
             {
@@ -61,17 +62,19 @@ export default function Modal({
           )}
         >
           {customCursor && <CustomCursor containerRef={modalRef} />}
-          <div className="justify-betwee flex items-center">
-            <Text variant="uppercase">{title}</Text>
-            <Button
-              className={cn("", {
-                hidden: customCursor,
-              })}
-              onClick={() => setModalOpen(!isModalOpen)}
-            >
-              [x]
-            </Button>
-          </div>
+          {title && (
+            <div className="flex items-center justify-between">
+              <Text variant="uppercase">{title}</Text>
+              <Button
+                className={cn("", {
+                  hidden: customCursor,
+                })}
+                onClick={toggleModal}
+              >
+                [x]
+              </Button>
+            </div>
+          )}
           <div className="h-full">{children}</div>
         </div>
       )}

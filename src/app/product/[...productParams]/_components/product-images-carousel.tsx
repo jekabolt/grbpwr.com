@@ -46,7 +46,7 @@ export function ProductImagesCarousel({ productMedia }: Props) {
     window.addEventListener("keydown", handleKeyDown);
 
     let accumulatedDeltaX = 0;
-    const scrollThreshold = 200;
+    const scrollThreshold = 150;
 
     const handleWheel = (event: WheelEvent) => {
       if (emblaApi) {
