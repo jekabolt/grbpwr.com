@@ -28,12 +28,12 @@ export function MobileNavCart() {
         cart {itemsQuantity ? itemsQuantity : ""}
       </Button>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-10 bg-overlay" />
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay" />
         <DialogPrimitives.Content
           className={cn(
-            "fixed left-0 z-30 flex w-screen flex-col bg-bgColor p-2.5",
+            "fixed left-0 z-30 w-screen border border-red-500 bg-bgColor p-2.5",
             {
-              "pb-safe top-0 h-screen pt-5": itemsQuantity > 0,
+              "inset-y-0 py-5": itemsQuantity > 0,
               "bottom-0": itemsQuantity === 0,
             },
           )}
@@ -41,39 +41,39 @@ export function MobileNavCart() {
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div
-            className={cn("relative mb-16 flex items-center justify-between", {
-              "mb-10": itemsQuantity === 0,
-            })}
-          >
-            <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
-            <DialogPrimitives.Close asChild>
-              <Button>[X]</Button>
-            </DialogPrimitives.Close>
-          </div>
+          <div className="flex h-full flex-col justify-between border border-blue-500">
+            <div
+              className={cn("relative flex items-center justify-between", {
+                "mb-10": itemsQuantity === 0,
+              })}
+            >
+              <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
+              <DialogPrimitives.Close asChild>
+                <Button>[X]</Button>
+              </DialogPrimitives.Close>
+            </div>
 
-          {itemsQuantity > 0 ? (
-            <>
-              <div className="relative grow overflow-y-auto">
+            {itemsQuantity > 0 ? (
+              <>
                 <CartProductsList />
-              </div>
-              <div className="mt-auto space-y-6">
-                <CartTotalPrice />
-                <DialogPrimitives.Close asChild>
-                  <Button
-                    asChild
-                    variant="main"
-                    size="lg"
-                    className="w-full uppercase"
-                  >
-                    <Link href="/checkout">proceed to checkout</Link>
-                  </Button>
-                </DialogPrimitives.Close>
-              </div>
-            </>
-          ) : (
-            <Text variant="uppercase">empty</Text>
-          )}
+                <div className="mt-auto space-y-6">
+                  <CartTotalPrice />
+                  <DialogPrimitives.Close asChild>
+                    <Button
+                      asChild
+                      variant="main"
+                      size="lg"
+                      className="w-full uppercase"
+                    >
+                      <Link href="/checkout">proceed to checkout</Link>
+                    </Button>
+                  </DialogPrimitives.Close>
+                </div>
+              </>
+            ) : (
+              <Text variant="uppercase">empty</Text>
+            )}
+          </div>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
