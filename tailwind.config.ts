@@ -25,6 +25,9 @@ const config = {
           "100%": { transform: "translateX(0%)" },
         },
       },
+      padding: {
+        safe: "env(safe-area-inset-bottom)",
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],

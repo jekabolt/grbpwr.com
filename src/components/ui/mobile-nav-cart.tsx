@@ -33,7 +33,7 @@ export function MobileNavCart() {
           className={cn(
             "fixed left-0 z-30 flex w-screen flex-col bg-bgColor p-2.5",
             {
-              "top-0 h-screen pt-5": itemsQuantity > 0,
+              "pb-safe top-0 h-screen pt-5": itemsQuantity > 0,
               "bottom-0": itemsQuantity === 0,
             },
           )}
