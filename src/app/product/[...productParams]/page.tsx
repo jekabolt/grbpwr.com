@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
 import { MAX_LIMIT } from "@/constants";
 
@@ -15,49 +14,6 @@ interface ProductPageProps {
   params: Promise<{
     productParams: string[];
   }>;
-}
-
-export async function generateMetadata(
-  props: ProductPageProps,
-): Promise<Metadata> {
-  const params = await props.params;
-  const { productParams } = params;
-
-  const [gender, brand, name, id] = productParams;
-
-  try {
-    const { product } = await serviceClient.GetProduct({
-      gender,
-      brand,
-      name,
-      id: parseInt(id),
-    });
-
-    const productBody = product?.product?.productDisplay?.productBody;
-    const productBrand = productBody?.brand;
-    const productName = productBody?.name || "";
-    const productDescription = productBody?.description || "";
-    const productColor = productBody?.color || "";
-    const thumbnailUrl =
-      product?.product?.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
-      "";
-
-    return {
-      title: `${productBrand}: ${productName}`.toUpperCase(),
-      description: "product information",
-      openGraph: {
-        siteName: "grbpwr",
-        images: thumbnailUrl,
-        title: productName,
-        description: `${productDescription}\nSupplier color: ${productColor}`,
-      },
-    };
-  } catch (error) {
-    return {
-      title: "grbpwr",
-      description: "Product not found",
-    };
-  }
 }
 
 export async function generateStaticParams() {

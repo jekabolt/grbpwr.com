@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 
 import { serviceClient } from "@/lib/api";
 import FlexibleLayout from "@/components/flexible-layout";
@@ -7,18 +7,30 @@ import { Ads } from "@/app/_components/ads";
 
 import { MainAds } from "./_components/main-ads";
 
-export function generateMetadata(): Metadata {
-  const title = "grbpwr";
-  const description =
-    "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.";
+export async function generateMetadata(): Promise<Metadata> {
+  const { hero } = await serviceClient.GetHero({});
+  const mainImage =
+    hero?.entities?.[0]?.main?.single?.mediaLandscape?.media?.fullSize
+      ?.mediaUrl ||
+    hero?.entities?.[0].single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
+    "";
 
   return {
-    title: title.toUpperCase(),
-    description: description,
+    title: "GRBPWR",
+    description:
+      "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
     openGraph: {
-      title: title.toUpperCase(),
-      description: description,
-      siteName: title,
+      title: "GRBPWR",
+      description:
+        "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
+      images: [
+        {
+          url: mainImage,
+          width: 1200,
+          height: 630,
+          alt: "GRBPWR",
+        },
+      ],
     },
   };
 }
