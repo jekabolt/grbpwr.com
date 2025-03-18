@@ -20,6 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
     openGraph: {
+      type: "website",
       title: "GRBPWR",
       description:
         "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
