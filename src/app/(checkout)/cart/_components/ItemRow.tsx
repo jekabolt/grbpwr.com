@@ -12,27 +12,32 @@ import { getPreorderDate } from "./utils";
 
 export default function ItemRow({ product, hideQuantityButtons }: Props) {
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const isSaleApplied = parseInt(product?.productSalePercentage || "0");
+  const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${convertPrice(product?.productPrice || "")}`;
+  const priceWithSale = `${currencySymbols[selectedCurrency]} ${convertPrice(product?.productPriceWithSale || "")}`;
 
   if (!product) return null;
 
   const preorderDate = getPreorderDate(product);
 
   return (
-    <div className="flex gap-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0 ">
-      <div className="w-[90px]">
-        <Image
-          src={product.thumbnail || ""}
-          alt="product"
-          fit="contain"
-          aspectRatio="3/4"
-        />
+    <div className="flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
+      <div className="min-w-[90px]">
+        <Image src={product.thumbnail || ""} alt="product" aspectRatio="3/4" />
       </div>
-      <div className="flex grow justify-between">
-        <div className="flex flex-col gap-y-3">
-          <Text variant="uppercase">{product.productName}</Text>
-          <div>
-            <Text>{product.color}</Text>
-            <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+      <div className="flex w-full justify-between">
+        <div className="flex w-full flex-col justify-between">
+          <div className="space-y-3">
+            <Text
+              className="line-clamp-1 overflow-hidden text-ellipsis"
+              variant="uppercase"
+            >
+              {product.productName}
+            </Text>
+            <div>
+              <Text>{product.color}</Text>
+              <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+            </div>
           </div>
           {preorderDate && (
             <Text variant="inactive" className="whitespace-nowrap">
@@ -42,7 +47,10 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
         </div>
         <div
           className={cn(
-            "flex w-1/2 grow flex-col items-end justify-between gap-3",
+            "flex w-full flex-col items-end justify-between gap-3",
+            {
+              "justify-end": hideQuantityButtons,
+            },
           )}
         >
           {!hideQuantityButtons && (
@@ -51,10 +59,16 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
               size={product.orderItem?.sizeId + "" || ""}
             />
           )}
-          <Text>
-            {currencySymbols[selectedCurrency]}{" "}
-            {convertPrice(product.productPrice || "")}
-          </Text>
+          <div className="flex items-center">
+            {isSaleApplied ? (
+              <div className="flex items-center gap-x-2">
+                <Text variant="strileTroughInactive">{priceWithoutSale}</Text>
+                <Text>{priceWithSale}</Text>
+              </div>
+            ) : (
+              <Text>{priceWithoutSale}</Text>
+            )}
+          </div>
         </div>
       </div>
     </div>
