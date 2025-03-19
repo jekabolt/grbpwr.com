@@ -35,12 +35,15 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
               {product.productName}
             </Text>
             <div>
-              <Text>{product.color}</Text>
+              <Text variant="uppercase">{product.color}</Text>
               <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
             </div>
           </div>
           {preorderDate && (
-            <Text variant="inactive" className="whitespace-nowrap">
+            <Text
+              variant="uppercase"
+              className="whitespace-nowrap text-textInactiveColor"
+            >
               {preorderDate}
             </Text>
           )}

@@ -12,7 +12,7 @@ export default function CartItemSize({ sizeId }: { sizeId: string }) {
   if (!sizeName) return null;
 
   return (
-    <Text className="lowercase">
+    <Text variant="uppercase">
       {dictionary?.sizes?.find((dictS) => dictS.id === Number(sizeId))?.name ||
         ""}
     </Text>
