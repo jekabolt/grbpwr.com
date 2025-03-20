@@ -11,6 +11,7 @@ export const defaultInitState: CartState = {
   totalPrice: 0,
   subTotalPrice: 0,
   isOpen: false,
+  productToRemove: null,
 };
 
 export const createCartStore = (initState: CartState = defaultInitState) => {
@@ -27,6 +28,8 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           const { isOpen } = get();
           set({ isOpen: !isOpen });
         },
+
+        setProductToRemove: (product) => set({ productToRemove: product }),
 
         increaseQuantity: async (
           productId: number,
@@ -86,56 +89,21 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           }
         },
 
-        decreaseQuantity: async (productId: number, size: string) => {
+        removeProduct: (productId: number, size: string, index?: number) => {
           const { products } = get();
-          const productIndex = products.findIndex(
-            p => p.id === productId && p.size === size
-          );
-          if (productIndex === -1) return;
 
-          const updatedProducts = [
-            ...products.slice(0, productIndex),
-            ...products.slice(productIndex + 1)
-          ];
-
-          if (updatedProducts.length === 0) {
-            set(defaultInitState);
-            return;
-          }
-
-          try {
-            const response = await serviceClient.ValidateOrderItemsInsert({
-              items: updatedProducts.map((p) => ({
-                productId: p.id,
-                quantity: 1,
-                sizeId: Number(p.size),
-              })),
-              shipmentCarrierId: undefined,
-              promoCode: undefined,
-            });
-
-            const validatedProducts = updatedProducts.map(product => ({
-              ...product,
-              productData: response.validItems?.find(
-                item =>
-                  item.orderItem?.productId === product.id &&
-                  item.orderItem?.sizeId === Number(product.size)
-              )
-            }));
+          if (index !== undefined) {
+            const updatedProducts = [
+              ...products.slice(0, index),
+              ...products.slice(index + 1)
+            ];
 
             set({
-              products: validatedProducts,
-              totalItems: validatedProducts.length,
-              totalPrice: Number(response.totalSale?.value || 0),
-              subTotalPrice: Number(response.subtotal?.value || 0),
+              products: updatedProducts,
+              totalItems: updatedProducts.length,
             });
-          } catch (error) {
-            console.error("decreaseQuantity failed 💩:", error);
+            return;
           }
-        },
-
-        removeProduct: (productId: number, size: string) => {
-          const { products } = get();
 
           const productIndex = products.findIndex(
             p => p.id === productId && p.size === size

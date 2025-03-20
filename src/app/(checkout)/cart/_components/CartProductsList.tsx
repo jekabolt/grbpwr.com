@@ -18,6 +18,7 @@ export default function CartProductsList({
         <ItemRow
           key={p?.id + "" + p?.orderId + i}
           product={p}
+          index={i}
           hideQuantityButtons={hideQuantityButtons}
         />
       ))}
