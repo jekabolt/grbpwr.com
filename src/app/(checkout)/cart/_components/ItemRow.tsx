@@ -10,7 +10,11 @@ import CartItemSize from "./CartItemSize";
 import ProductRemoveButton from "./ProductRemoveButton";
 import { getPreorderDate } from "./utils";
 
-export default function ItemRow({ product, hideQuantityButtons }: Props) {
+export default function ItemRow({
+  product,
+  hideQuantityButtons,
+  index,
+}: Props) {
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
   const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${convertPrice(product?.productPrice || "")}`;
@@ -21,7 +25,7 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
   const preorderDate = getPreorderDate(product);
 
   return (
-    <div className="flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
+    <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
       <div className="min-w-[90px]">
         <Image
           src={product.thumbnail || ""}
@@ -65,6 +69,7 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
             <ProductRemoveButton
               id={product.orderItem?.productId || 0}
               size={product.orderItem?.sizeId + "" || ""}
+              index={index}
             />
           )}
           <div className="flex items-center">
@@ -86,4 +91,5 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
 type Props = {
   product?: common_OrderItem;
   hideQuantityButtons?: boolean;
+  index?: number;
 };
