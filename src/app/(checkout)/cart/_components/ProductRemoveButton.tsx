@@ -37,7 +37,7 @@ export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
       <Button
         onClick={handleRemove}
         variant="underline"
-        className={cn({ "z-20": isRemoveConfirmed })}
+        className={cn("uppercase", { "z-20": isRemoveConfirmed })}
       >
         remove
       </Button>
