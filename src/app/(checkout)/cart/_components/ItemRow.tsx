@@ -23,7 +23,12 @@ export default function ItemRow({ product, hideQuantityButtons }: Props) {
   return (
     <div className="flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
       <div className="min-w-[90px]">
-        <Image src={product.thumbnail || ""} alt="product" aspectRatio="3/4" />
+        <Image
+          src={product.thumbnail || ""}
+          alt="product"
+          fit="contain"
+          aspectRatio="3/4"
+        />
       </div>
       <div className="flex w-full justify-between">
         <div className="flex w-full flex-col justify-between">
