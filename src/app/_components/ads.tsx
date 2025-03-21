@@ -207,7 +207,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 <div
                   ref={productsRef}
                   onScroll={handleUserScroll}
-                  className="no-scroll-bar flex w-full gap-2 overflow-x-scroll"
+                  className="flex w-full gap-2 overflow-x-scroll"
                 >
                   {e.featuredProducts?.products?.map((p) => (
                     <ProductItem
@@ -235,7 +235,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 <div
                   ref={productsTagRef}
                   onScroll={handleUserScroll}
-                  className="no-scroll-bar flex w-full items-center gap-2.5 overflow-x-scroll"
+                  className="flex w-full items-center gap-2.5 overflow-x-scroll"
                 >
                   {e.featuredProductsTag?.products?.products?.map((p) => (
                     <ProductItem
@@ -261,7 +261,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 <div
                   ref={archiveRef}
                   onScroll={handleUserScroll}
-                  className="no-scroll-bar flex w-full items-center overflow-x-scroll"
+                  className="flex w-full items-center overflow-x-scroll"
                 >
                   <ArchiveItem
                     archive={e.featuredArchive?.archive}

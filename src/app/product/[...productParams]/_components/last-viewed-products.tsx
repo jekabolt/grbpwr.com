@@ -28,14 +28,14 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
     .slice(0, 4);
 
   return (
-    <div>
-      <Text className="mb-6" component="h2" variant="uppercase">
+    <div className="space-y-16 border border-red-500 pb-16 lg:space-y-12 lg:px-2.5 lg:pb-28">
+      <Text variant="uppercase" className="px-2.5 lg:px-0">
         recently viewed
       </Text>
-      <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16 2xl:grid-cols-4">
+      <div className="flex items-center gap-2 overflow-x-scroll lg:gap-7">
         {filteredProducts.map((product) => (
-          <div key={product.id}>
-            <ProductItem className="mx-auto" product={product} />
+          <div key={product.id} className="w-full">
+            <ProductItem className="w-40 lg:w-full" product={product} />
           </div>
         ))}
       </div>

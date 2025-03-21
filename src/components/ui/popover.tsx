@@ -59,7 +59,7 @@ function PopoverContent({
         className={cn(
           "relative z-50 w-full bg-bgColor px-2 py-6",
           {
-            "no-scroll-bar max-h-[50vh] overflow-y-scroll p-2": title,
+            "max-h-[50vh] overflow-y-scroll p-2": title,
           },
           className,
         )}

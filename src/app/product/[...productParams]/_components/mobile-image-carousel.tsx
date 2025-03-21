@@ -37,7 +37,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-30 bg-black/50" />
-        <DialogPrimitives.Content className="no-scroll-bar fixed inset-0 z-30 flex flex-col overflow-y-auto bg-white">
+        <DialogPrimitives.Content className="fixed inset-0 z-30 flex flex-col overflow-y-auto bg-white">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
