@@ -49,6 +49,10 @@
     font-variation-settings: "slnt" 0;
   } */
 
+  * {
+    @apply no-scroll-bar;
+  }
+
   body {
     ::selection {
       @apply bg-acidColor text-bgColor;

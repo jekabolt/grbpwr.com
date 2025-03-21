@@ -92,7 +92,7 @@ export function CookieBanner() {
             <Text variant="uppercase">cookie preferences</Text>
             <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
           </div>
-          <div className="no-scroll-bar border-textInactiveColor-500 h-full overflow-y-scroll border-b">
+          <div className="border-textInactiveColor-500 h-full overflow-y-scroll border-b">
             <CookieContent
               preferences={preferences}
               onPreferenceChange={handlePreferenceChange}

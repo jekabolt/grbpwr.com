@@ -51,10 +51,7 @@ export function ProductImagesCarousel({ productMedia }: Props) {
   }, [handleKeyDown]);
 
   return (
-    <div
-      className="no-scroll-bar h-full w-full touch-pan-x overflow-x-auto"
-      ref={emblaRef}
-    >
+    <div className="h-full w-full touch-pan-x overflow-x-auto" ref={emblaRef}>
       <div className="flex h-full">
         {mediaForCarousel.map((m, index) => (
           <div key={`${m.id}-${index}`} className="flex-[0_0_45%]">
