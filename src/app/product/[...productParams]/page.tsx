@@ -65,7 +65,7 @@ export default async function ProductPage(props: ProductPageProps) {
         <div className="hidden h-full w-full pt-12 lg:block">
           <ProductImagesCarousel productMedia={productMedia} />
         </div>
-        <div className="hidden border border-blue-500 lg:block">
+        <div className="hidden lg:block">
           {product && <ProductInfo product={product} />}
         </div>
         <div className="block lg:hidden">
