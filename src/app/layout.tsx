@@ -8,12 +8,6 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "grbpwr.com title",
   description: "grbpwr.com desc",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
 };
 
 type Props = {
