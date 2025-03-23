@@ -59,7 +59,7 @@ export function MobileCookieModal({
             </DialogPrimitives.Close>
           </div>
 
-          <div className="no-scroll-bar border-textInactiveColor-500 overflow-y-auto border-b border-solid px-5">
+          <div className="border-textInactiveColor-500 overflow-y-auto border-b border-solid px-5">
             <CookieContent
               preferences={preferences}
               onPreferenceChange={handlePreferenceChange}

@@ -14,7 +14,7 @@ export function MobileProductInfoHeader() {
       </Button>
       <div className="flex grow basis-0 items-center justify-end">
         <CartPopup>
-          <div className="no-scroll-bar h-full overflow-y-scroll">
+          <div className="h-full overflow-y-scroll">
             <CartProductsList />
           </div>
           <CartTotalPrice />

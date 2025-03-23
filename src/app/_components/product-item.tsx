@@ -13,9 +13,11 @@ const emptyPreorder = "0001-01-01T00:00:00Z";
 export function ProductItem({
   product,
   className,
+  isInfoVisible = true,
 }: {
   product: common_Product;
   className: string;
+  isInfoVisible?: boolean;
 }) {
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const isSaleApplied =
@@ -52,7 +54,11 @@ export function ProductItem({
               fit="contain"
             />
           </div>
-          <div className="flex w-full flex-col gap-2 pt-2">
+          <div
+            className={cn("flex w-full flex-col gap-2 pt-2", {
+              hidden: !isInfoVisible,
+            })}
+          >
             <Text
               variant="undrleineWithColors"
               className="overflow-hidden text-ellipsis leading-none"
