@@ -42,7 +42,7 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
         {filteredProducts.map((product, index) => (
           <div
             key={product.id}
-            className={cn("lg:w-50 group relative w-52", {
+            className={cn("group relative w-32 lg:w-52", {
               "hidden lg:block": index === 3,
             })}
           >
@@ -51,11 +51,9 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
               product={product}
               isInfoVisible={false}
             />
-            <Overlay
-              cover="container"
-              color="light"
-              className="opacity-0 transition-opacity group-hover:opacity-100"
-            />
+            <div className="pointer-events-none opacity-0 transition-opacity group-hover:opacity-100">
+              <Overlay cover="container" color="light" />
+            </div>
           </div>
         ))}
       </div>
