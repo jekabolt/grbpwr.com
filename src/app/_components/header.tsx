@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -10,16 +11,19 @@ import CartTotalPrice from "../(checkout)/cart/_components/CartTotalPrice";
 import { HeaderLeftNav } from "./header-left-nav";
 
 export function Header({ transparent }: { transparent?: boolean }) {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   return (
     <header
       className={cn(
-        "text fixed bottom-2 left-2 right-2 z-30 flex h-12 items-center justify-between bg-bgColor p-3 py-2 text-textColor lg:top-2 lg:mx-2 lg:px-5 lg:py-3",
+        "fixed bottom-2 left-2 right-2 z-30 flex h-12 items-center justify-between bg-bgColor p-3 py-2 text-textColor lg:top-2 lg:px-5 lg:py-3",
         {
+          "border-x border-t border-textInactiveColor": isNavOpen,
           "bg-transparent": transparent,
         },
       )}
     >
-      <HeaderLeftNav />
+      <HeaderLeftNav isNavOpen={isNavOpen} onNavOpenChange={setIsNavOpen} />
 
       <Link href="/" className="flex-none text-center text-textBaseSize">
         grbpwr

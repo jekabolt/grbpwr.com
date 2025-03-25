@@ -69,7 +69,6 @@ function Menu({
 }) {
   const { dictionary } = useDataContext();
 
-  // Process the categories from dictionary
   const processedCategories = dictionary?.categories
     ? processCategories(dictionary.categories)
     : [];
