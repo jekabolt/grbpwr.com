@@ -14,7 +14,6 @@ import { useDataContext } from "@/components/DataContext";
 import Image from "@/components/ui/image";
 
 import { Button } from "./button";
-import { Text } from "./text";
 
 export function DesktopNavigationMenu({
   isNavOpen,
@@ -142,6 +141,12 @@ function LinksGroup({
   const { leftSideCategoryLinks, rightSideCategoryLinks } =
     filterNAvigationLinks(links);
 
+  const heroNav = hero?.navFeatured?.[gender];
+  const isTagLink = heroNav?.featuredTag;
+  const newIn = `/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT`;
+  const tagLink = `/catalog?tag=${heroNav?.featuredTag}`;
+  const archiveLink = `/archive?id=${heroNav?.featuredArchiveId}`;
+
   return (
     <div className="flex w-full justify-between px-7 py-10">
       <div className={cn("flex gap-24", className)}>
@@ -162,9 +167,9 @@ function LinksGroup({
           </div>
         </div>
         <div className="space-y-4">
-          <Text variant="uppercase" className="hover:underline">
-            new in
-          </Text>
+          <Button className="uppercase hover:underline" asChild>
+            <NavigationMenu.Link href={newIn}>new in</NavigationMenu.Link>
+          </Button>
           <div className="space-y-4">
             {rightSideCategoryLinks.map((link) => (
               <div className="w-full" key={link.href}>
@@ -178,18 +183,19 @@ function LinksGroup({
           </div>
         </div>
       </div>
-      <div className="space-y-2 border border-blue-500">
-        <div className="w-40 border border-green-500">
+      <div className="space-y-2">
+        <div className="w-40">
           <Image
-            src={
-              hero?.navFeatured?.[gender]?.media?.media?.thumbnail?.mediaUrl ||
-              ""
-            }
+            src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
             alt="hero"
             aspectRatio="1/1"
           />
         </div>
-        <Button>{hero?.navFeatured?.[gender]?.exploreText}</Button>
+        <Button asChild>
+          <Link href={isTagLink ? tagLink : archiveLink}>
+            {heroNav?.exploreText}
+          </Link>
+        </Button>
       </div>
     </div>
   );
