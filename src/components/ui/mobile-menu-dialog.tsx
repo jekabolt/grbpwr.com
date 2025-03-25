@@ -2,7 +2,7 @@ import Link from "next/link";
 import { GENDER_MAP } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
-import { groupCategories } from "@/lib/categories-map";
+import { processCategories } from "@/lib/categories-map";
 import CurrencyPopover from "@/app/_components/currency-popover";
 import NewslatterForm from "@/app/_components/newslatter-form";
 
@@ -69,9 +69,10 @@ function Menu({
 }) {
   const { dictionary } = useDataContext();
 
-  const categoriesGroups = groupCategories(
-    dictionary?.categories?.map((v) => v.name as string) || [],
-  );
+  // Process the categories from dictionary
+  const processedCategories = dictionary?.categories
+    ? processCategories(dictionary.categories)
+    : [];
 
   return (
     <div className="flex h-full grow flex-col justify-between overflow-y-auto bg-bgColor p-2">
@@ -113,27 +114,31 @@ function Menu({
         </>
       ) : (
         <div className="grow space-y-6">
-          {Object.entries(categoriesGroups).map(([key, category]) => (
+          {processedCategories.map((topCategory) => (
             <div
-              key={key}
+              key={topCategory.id}
               className="grid w-full grid-cols-2 gap-2 border-b border-dashed border-textColor pb-6"
             >
               <Text variant="uppercase" className="text-xl">
-                {category.title}
+                {topCategory.name}
               </Text>
               <div className="space-y-4">
                 <DialogPrimitives.Close asChild>
                   <Button variant="simpleReverse" asChild>
-                    <Link href="/catalog">view all</Link>
+                    <Link
+                      href={`/catalog?topCategoryIds=${topCategory.id}&gender=${GENDER_MAP[activeCategory]}`}
+                    >
+                      view all {topCategory.name.toLowerCase()}
+                    </Link>
                   </Button>
                 </DialogPrimitives.Close>
-                {category.items.map((item) => (
-                  <DialogPrimitives.Close key={item.id} asChild>
+                {topCategory.subCategories.map((subCategory) => (
+                  <DialogPrimitives.Close key={subCategory.id} asChild>
                     <Button variant="simpleReverse" asChild>
                       <Link
-                        href={`${item.href}&gender=${GENDER_MAP[activeCategory]}`}
+                        href={`/catalog?topCategoryIds=${topCategory.id}&subCategoryIds=${subCategory.id}&gender=${GENDER_MAP[activeCategory]}`}
                       >
-                        {item.label.toLowerCase()}
+                        {subCategory.name.toLowerCase()}
                       </Link>
                     </Button>
                   </DialogPrimitives.Close>

@@ -7,6 +7,7 @@ import { MainAds } from "./_components/main-ads";
 
 export default async function Page() {
   const { hero } = await serviceClient.GetHero({});
+
   if (!hero?.entities?.length) return <EmptyHero />;
 
   return (

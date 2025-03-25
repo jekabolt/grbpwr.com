@@ -1,22 +1,33 @@
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { GENDER_MAP } from "@/constants";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
-import { groupCategories } from "@/lib/categories-map";
+import {
+  CATEGORY_TITLE_MAP,
+  filterNAvigationLinks,
+  processCategories,
+} from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
+import Image from "@/components/ui/image";
 
 import { Button } from "./button";
 import { Text } from "./text";
 
 export function DesktopNavigationMenu({ className }: { className?: string }) {
+  const { hero } = useDataContext();
   const { dictionary } = useDataContext();
   const men = `gender=${GENDER_MAP["men"]}`;
   const women = `gender=${GENDER_MAP["women"]}`;
-  const categoriesGroups = groupCategories(
-    dictionary?.categories?.map((v) => v.name as string) || [],
-  );
+  const processedCategories = dictionary?.categories
+    ? processCategories(dictionary.categories).filter(
+        (category) => category.name.toLowerCase() !== "objects",
+      )
+    : [];
+
+  const objectsCategoryId =
+    dictionary?.categories?.find((cat) => cat.name?.toLowerCase() === "objects")
+      ?.id || "";
 
   return (
     <NavigationMenu.Root className={cn("", className)}>
@@ -31,21 +42,28 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
               men
             </Link>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
-            <div className="flex gap-x-7">
-              {Object.entries(categoriesGroups).map(([key, category], i) => (
-                <LinksGroup
-                  groupIndex={i}
-                  className="w-40"
-                  key={key}
-                  title={category.title}
-                  links={category.items.map((item) => ({
-                    title: item.label.toLowerCase(),
-                    href: `${item.href}&${men}`,
-                    id: item.id,
-                  }))}
-                />
-              ))}
+          <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor text-textColor">
+            <div className="flex justify-between border border-red-500">
+              <LinksGroup
+                links={processedCategories.map((item) => ({
+                  href: `${item.href}&${men}`,
+                  title: item.name,
+                  id: item.id.toString(),
+                }))}
+              />
+
+              <div className="reladive border border-blue-500">
+                <div className="w-32 border border-green-500">
+                  <Image
+                    src={
+                      hero?.navFeatured?.men?.media?.media?.thumbnail
+                        ?.mediaUrl || ""
+                    }
+                    alt="hero"
+                    aspectRatio="1/1"
+                  />
+                </div>
+              </div>
             </div>
           </NavigationMenu.Content>
         </NavigationMenu.Item>
@@ -60,23 +78,26 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
               women
             </Link>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor p-5 text-textColor">
-            <div className="flex gap-x-7">
-              {Object.entries(categoriesGroups).map(([key, category], i) => (
-                <LinksGroup
-                  groupIndex={i}
-                  className="w-40"
-                  key={key}
-                  title={category.title}
-                  links={category.items.map((item) => ({
-                    title: item.label.toLowerCase(),
-                    href: `${item.href}&${women}`,
-                    id: item.id,
-                  }))}
-                />
-              ))}
-            </div>
+          <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor text-textColor">
+            <LinksGroup
+              links={processedCategories.map((item) => ({
+                href: `${item.href}&${women}`,
+                title: item.name,
+                id: item.id.toString(),
+              }))}
+            />
           </NavigationMenu.Content>
+        </NavigationMenu.Item>
+
+        <NavigationMenu.Item>
+          <Button asChild>
+            <NavigationMenu.Link
+              href={`/catalog?topCategoryIds=${objectsCategoryId}`}
+              className="flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline"
+            >
+              objects
+            </NavigationMenu.Link>
+          </Button>
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
@@ -99,45 +120,50 @@ export function DesktopNavigationMenu({ className }: { className?: string }) {
 }
 
 function LinksGroup({
-  groupIndex,
   className,
-  title,
   links,
 }: {
-  groupIndex: number;
   className?: string;
-  title: string;
   links: {
     title: string;
     href: string;
     id: string;
   }[];
 }) {
-  const category = useSearchParams().get("category");
+  const { leftSideCategoryLinks, rightSideCategoryLinks } =
+    filterNAvigationLinks(links);
 
   return (
-    <div className={cn("space-y-4", className)}>
-      <Text variant="uppercase" className="text-xl">
-        {title}
-      </Text>
-      <div className="space-y-2">
-        <div className="w-full">
-          <Button variant="simpleReverse" asChild>
-            <NavigationMenu.Link href="/catalog">view all</NavigationMenu.Link>
-          </Button>
+    <div className={cn("flex gap-24 px-7 pt-10", className)}>
+      <div className="space-y-4">
+        <Button className="uppercase hover:underline" asChild>
+          <Link href="/catalog">garments</Link>
+        </Button>
+        <div className="space-y-4">
+          {leftSideCategoryLinks.map((link) => (
+            <div className="w-full" key={link.href}>
+              <Button className="hover:underline" asChild>
+                <NavigationMenu.Link href={link.href}>
+                  {CATEGORY_TITLE_MAP[link.title] || link.title}
+                </NavigationMenu.Link>
+              </Button>
+            </div>
+          ))}
         </div>
-        {links.map((link) => (
-          <div className="w-full" key={link.href}>
-            <Button
-              variant={category === link.id ? "simple" : "simpleReverse"}
-              asChild
-            >
-              <NavigationMenu.Link href={link.href}>
-                {link.title}
-              </NavigationMenu.Link>
-            </Button>
-          </div>
-        ))}
+      </div>
+      <div className="space-y-4">
+        <Text variant="uppercase">new in</Text>
+        <div className="space-y-4">
+          {rightSideCategoryLinks.map((link) => (
+            <div className="w-full" key={link.href}>
+              <Button className="uppercase hover:underline" asChild>
+                <NavigationMenu.Link href={link.href}>
+                  {link.title}
+                </NavigationMenu.Link>
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
