@@ -166,7 +166,7 @@ function Menu({
                   <Link
                     href={`${link.href}&gender=${GENDER_MAP[activeCategory]}`}
                   >
-                    {link.title}
+                    {CATEGORY_TITLE_MAP[link.title] || link.title}
                   </Link>
                 </Button>
               </div>
@@ -179,7 +179,7 @@ function Menu({
                   <Link
                     href={`${link.href}&gender=${GENDER_MAP[activeCategory]}`}
                   >
-                    {CATEGORY_TITLE_MAP[link.title] || link.title}
+                    {link.title}
                   </Link>
                 </Button>
               </div>
