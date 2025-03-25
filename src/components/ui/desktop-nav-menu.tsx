@@ -47,11 +47,7 @@ export function DesktopNavigationMenu({
     >
       <NavigationMenu.List className="flex items-center gap-1">
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger
-            className={cn(
-              "flex items-center px-2 text-textBaseSize data-[state=open]:underline",
-            )}
-          >
+          <NavigationMenu.Trigger className="flex items-center px-2 text-textBaseSize data-[state=open]:underline">
             <Link href={`/catalog?${men}`} className="flex items-center">
               men
             </Link>
@@ -69,11 +65,7 @@ export function DesktopNavigationMenu({
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger
-            className={cn(
-              "flex items-center px-2 text-textBaseSize data-[state=open]:underline",
-            )}
-          >
+          <NavigationMenu.Trigger className="flex items-center px-2 text-textBaseSize data-[state=open]:underline">
             <Link href={`/catalog?${women}`} className="flex items-center">
               women
             </Link>

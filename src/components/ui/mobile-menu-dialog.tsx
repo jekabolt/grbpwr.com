@@ -2,13 +2,19 @@ import Link from "next/link";
 import { GENDER_MAP } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
-import { processCategories } from "@/lib/categories-map";
+import {
+  CATEGORY_TITLE_MAP,
+  filterNAvigationLinks,
+  processCategories,
+} from "@/lib/categories-map";
+import { calculateAspectRatio } from "@/lib/utils";
 import CurrencyPopover from "@/app/_components/currency-popover";
 import NewslatterForm from "@/app/_components/newslatter-form";
 
 import { useDataContext } from "../DataContext";
 import { Button } from "./button";
-import { Logo } from "./icons/logo";
+import { WhiteLogo } from "./icons/white-logo";
+import Image from "./image";
 import { Text } from "./text";
 
 export function MobileMenuDialog({
@@ -27,28 +33,31 @@ export function MobileMenuDialog({
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-30 bg-textColor" />
-        <DialogPrimitives.Content className="fixed left-0 top-0 z-30 flex h-screen w-screen flex-col bg-bgColor px-2 pb-10 pt-5 text-textColor">
+        <DialogPrimitives.Content className="fixed left-0 top-0 z-30 flex h-screen w-screen flex-col bg-bgColor px-2.5 py-5 text-textColor">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="relative mb-16 flex items-start justify-between gap-2 text-textColor">
+          <div className="mb-16">
             {activeCategory ? (
-              <>
+              <div className="flex items-center justify-between">
                 <Button onClick={() => setActiveCategory(undefined)}>
                   <Text>{"<"}</Text>
                 </Button>
                 <Text variant="uppercase" className="basis-0">
                   {activeCategory}
                 </Text>
-              </>
-            ) : (
-              <div className="inline-block aspect-square size-8">
-                <Logo />
+                <Button className="leading-none">[X]</Button>
               </div>
+            ) : (
+              <DialogPrimitives.Close asChild>
+                <div className="flex w-full items-center justify-between">
+                  <div className="aspect-square size-7">
+                    <WhiteLogo />
+                  </div>
+                  <Button className="leading-none">[X]</Button>
+                </div>
+              </DialogPrimitives.Close>
             )}
-            <DialogPrimitives.Close asChild>
-              <Button className="leading-none">[X]</Button>
-            </DialogPrimitives.Close>
           </div>
           <Menu
             activeCategory={activeCategory}
@@ -67,18 +76,39 @@ function Menu({
   activeCategory: "men" | "women" | undefined;
   setActiveCategory: (category: "men" | "women" | undefined) => void;
 }) {
+  const { hero } = useDataContext();
   const { dictionary } = useDataContext();
+  const heroNav = activeCategory
+    ? hero?.navFeatured?.[activeCategory]
+    : undefined;
+  const isTagLink = heroNav?.featuredTag;
+  const newIn = `/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT`;
+  const tagLink = `/catalog?tag=${heroNav?.featuredTag}`;
+  const archiveLink = `/archive?id=${heroNav?.featuredArchiveId}`;
 
   const processedCategories = dictionary?.categories
     ? processCategories(dictionary.categories)
     : [];
 
+  const objectsCategoryId =
+    dictionary?.categories?.find((cat) => cat.name?.toLowerCase() === "objects")
+      ?.id || "";
+
+  const categoryLinks = processedCategories.map((category) => ({
+    title: category.name,
+    href: category.href,
+    id: category.id.toString(),
+  }));
+
+  const { leftSideCategoryLinks, rightSideCategoryLinks } =
+    filterNAvigationLinks(categoryLinks);
+
   return (
-    <div className="flex h-full grow flex-col justify-between overflow-y-auto bg-bgColor p-2">
+    <div className="flex h-full flex-col justify-between overflow-y-auto">
       {activeCategory === undefined ? (
         <>
-          <div className="space-y-6">
-            <div className="space-y-6 border-b border-dashed border-textColor pb-6">
+          <div className="space-y-10">
+            <div className="space-y-5">
               <Button
                 onClick={() => setActiveCategory("men")}
                 className="w-full"
@@ -97,54 +127,81 @@ function Menu({
                   <Text variant="uppercase">{">"}</Text>
                 </div>
               </Button>
+
+              <div className="flex flex-col items-start gap-5">
+                <DialogPrimitives.Close>
+                  <Button asChild>
+                    <Link href={`/catalog?topCategoryIds=${objectsCategoryId}`}>
+                      <Text variant="uppercase">objects</Text>
+                    </Link>
+                  </Button>
+                </DialogPrimitives.Close>
+                <DialogPrimitives.Close>
+                  <Button asChild>
+                    <Link href="/archive">
+                      <Text variant="uppercase">archive</Text>
+                    </Link>
+                  </Button>
+                </DialogPrimitives.Close>
+              </div>
             </div>
-            <div className="mt-6 flex items-center justify-between">
-              <Button asChild>
-                <Link href="/archive">
-                  <Text variant="uppercase">archive</Text>
-                </Link>
-              </Button>
-              <Text variant="uppercase">{">"}</Text>
-            </div>
+
             <CurrencyPopover align="start" title="Currency:" />
           </div>
 
           <NewslatterForm />
         </>
       ) : (
-        <div className="grow space-y-6">
-          {processedCategories.map((topCategory) => (
-            <div
-              key={topCategory.id}
-              className="grid w-full grid-cols-2 gap-2 border-b border-dashed border-textColor pb-6"
-            >
-              <Text variant="uppercase" className="text-xl">
-                {topCategory.name}
-              </Text>
-              <div className="space-y-4">
-                <DialogPrimitives.Close asChild>
-                  <Button variant="simpleReverse" asChild>
-                    <Link
-                      href={`/catalog?topCategoryIds=${topCategory.id}&gender=${GENDER_MAP[activeCategory]}`}
-                    >
-                      view all {topCategory.name.toLowerCase()}
-                    </Link>
-                  </Button>
-                </DialogPrimitives.Close>
-                {topCategory.subCategories.map((subCategory) => (
-                  <DialogPrimitives.Close key={subCategory.id} asChild>
-                    <Button variant="simpleReverse" asChild>
-                      <Link
-                        href={`/catalog?topCategoryIds=${topCategory.id}&subCategoryIds=${subCategory.id}&gender=${GENDER_MAP[activeCategory]}`}
-                      >
-                        {subCategory.name.toLowerCase()}
-                      </Link>
-                    </Button>
-                  </DialogPrimitives.Close>
-                ))}
+        <div className="grow space-y-10">
+          <Button asChild className="uppercase">
+            <Link href={newIn}>new in</Link>
+          </Button>
+          <div className="space-y-5">
+            <Button asChild className="uppercase">
+              <Link href="/catalog">garments</Link>
+            </Button>
+            {leftSideCategoryLinks.map((link) => (
+              <div key={link.id}>
+                <Button asChild>
+                  <Link
+                    href={`${link.href}&gender=${GENDER_MAP[activeCategory]}`}
+                  >
+                    {link.title}
+                  </Link>
+                </Button>
               </div>
+            ))}
+          </div>
+          <div className="space-y-5">
+            {rightSideCategoryLinks.map((link) => (
+              <div key={link.id}>
+                <Button asChild className="uppercase">
+                  <Link
+                    href={`${link.href}&gender=${GENDER_MAP[activeCategory]}`}
+                  >
+                    {CATEGORY_TITLE_MAP[link.title] || link.title}
+                  </Link>
+                </Button>
+              </div>
+            ))}
+          </div>
+          <div className="space-y-2">
+            <div className="w-full">
+              <Image
+                src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
+                alt="mobile hero nav"
+                aspectRatio={calculateAspectRatio(
+                  heroNav?.media?.media?.thumbnail?.width,
+                  heroNav?.media?.media?.thumbnail?.height,
+                )}
+              />
             </div>
-          ))}
+            <Button asChild>
+              <Link href={isTagLink ? tagLink : archiveLink}>
+                {heroNav?.exploreText}
+              </Link>
+            </Button>
+          </div>
         </div>
       )}
     </div>
