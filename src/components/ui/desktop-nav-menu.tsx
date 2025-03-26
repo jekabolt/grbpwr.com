@@ -9,11 +9,12 @@ import {
   filterNAvigationLinks,
   processCategories,
 } from "@/lib/categories-map";
-import { cn } from "@/lib/utils";
+import { calculateAspectRatio, cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
-import Image from "@/components/ui/image";
 
 import { Button } from "./button";
+import Image from "./image";
+import { Text } from "./text";
 
 export function DesktopNavigationMenu({
   isNavOpen,
@@ -175,17 +176,20 @@ function LinksGroup({
           </div>
         </div>
       </div>
-      <div className="space-y-2">
-        <div className="w-40">
-          <Image
-            src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
-            alt="hero"
-            aspectRatio="1/1"
-          />
-        </div>
+      <div className="w-40">
         <Button asChild>
-          <Link href={isTagLink ? tagLink : archiveLink}>
-            {heroNav?.exploreText}
+          <Link href={isTagLink ? tagLink : archiveLink} className="space-y-2">
+            <div className="w-full">
+              <Image
+                src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
+                alt="hero"
+                aspectRatio={calculateAspectRatio(
+                  heroNav?.media?.media?.thumbnail?.width,
+                  heroNav?.media?.media?.thumbnail?.height,
+                )}
+              />
+            </div>
+            <Text>{heroNav?.exploreText}</Text>
           </Link>
         </Button>
       </div>

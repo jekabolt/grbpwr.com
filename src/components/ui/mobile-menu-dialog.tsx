@@ -37,32 +37,34 @@ export function MobileMenuDialog({
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="mb-16">
-            {activeCategory ? (
-              <div className="flex items-center justify-between">
-                <Button onClick={() => setActiveCategory(undefined)}>
-                  <Text>{"<"}</Text>
-                </Button>
-                <Text variant="uppercase" className="basis-0">
-                  {activeCategory}
-                </Text>
-                <Button className="leading-none">[X]</Button>
-              </div>
-            ) : (
-              <DialogPrimitives.Close asChild>
-                <div className="flex w-full items-center justify-between">
-                  <div className="aspect-square size-7">
-                    <WhiteLogo />
-                  </div>
+          <div className="flex h-full flex-col">
+            <div className="mb-16">
+              {activeCategory ? (
+                <div className="flex items-center justify-between">
+                  <Button onClick={() => setActiveCategory(undefined)}>
+                    <Text>{"<"}</Text>
+                  </Button>
+                  <Text variant="uppercase" className="basis-0">
+                    {activeCategory}
+                  </Text>
                   <Button className="leading-none">[X]</Button>
                 </div>
-              </DialogPrimitives.Close>
-            )}
+              ) : (
+                <DialogPrimitives.Close asChild>
+                  <div className="flex w-full items-center justify-between">
+                    <div className="aspect-square size-7">
+                      <WhiteLogo />
+                    </div>
+                    <Button className="leading-none">[X]</Button>
+                  </div>
+                </DialogPrimitives.Close>
+              )}
+            </div>
+            <Menu
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+            />
           </div>
-          <Menu
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-          />
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
@@ -185,20 +187,23 @@ function Menu({
               </div>
             ))}
           </div>
-          <div className="space-y-2">
-            <div className="w-full">
-              <Image
-                src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
-                alt="mobile hero nav"
-                aspectRatio={calculateAspectRatio(
-                  heroNav?.media?.media?.thumbnail?.width,
-                  heroNav?.media?.media?.thumbnail?.height,
-                )}
-              />
-            </div>
+          <div className="w-full">
             <Button asChild>
-              <Link href={isTagLink ? tagLink : archiveLink}>
-                {heroNav?.exploreText}
+              <Link
+                href={isTagLink ? tagLink : archiveLink}
+                className="space-y-2"
+              >
+                <div className="w-full">
+                  <Image
+                    src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
+                    alt="mobile hero nav"
+                    aspectRatio={calculateAspectRatio(
+                      heroNav?.media?.media?.thumbnail?.width,
+                      heroNav?.media?.media?.thumbnail?.height,
+                    )}
+                  />
+                </div>
+                <Text>{heroNav?.exploreText}</Text>
               </Link>
             </Button>
           </div>
