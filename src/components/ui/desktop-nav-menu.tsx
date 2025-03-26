@@ -118,7 +118,6 @@ export function DesktopNavigationMenu({
 }
 
 function LinksGroup({
-  className,
   links,
   gender,
 }: {
@@ -146,7 +145,7 @@ function LinksGroup({
 
   return (
     <div className="flex w-full justify-between px-7 py-10">
-      <div className={cn("flex gap-24", className)}>
+      <div className="flex gap-24">
         <div className="space-y-4">
           <Button className="uppercase hover:underline" asChild>
             <Link href="/catalog">garments</Link>

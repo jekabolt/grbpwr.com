@@ -20,8 +20,8 @@ export function MobileNavCart() {
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
       <Button
-        onClick={openCart}
         size="sm"
+        onClick={openCart}
         variant="simpleReverse"
         className="bg-transparent"
       >
