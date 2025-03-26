@@ -16,7 +16,7 @@ export function Header({ transparent }: { transparent?: boolean }) {
   return (
     <header
       className={cn(
-        "fixed bottom-2 left-2 right-2 z-30 flex h-12 items-center justify-between border border-textInactiveColor bg-bgColor p-3 py-2 text-textColor lg:top-2 lg:border-0 lg:px-5 lg:py-3",
+        "fixed bottom-2 left-2 right-2 z-30 flex h-12 items-center justify-between border border-textInactiveColor bg-bgColor p-3 py-2 text-textColor lg:top-2 lg:mx-2 lg:border-0 lg:px-5 lg:py-3",
         {
           "lg:border-x lg:border-t lg:border-textInactiveColor": isNavOpen,
           "bg-transparent": transparent,

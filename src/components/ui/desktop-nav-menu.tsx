@@ -107,7 +107,7 @@ export function DesktopNavigationMenu({
       </NavigationMenu.List>
 
       <div
-        className={cn("fixed inset-x-2 top-14 flex justify-center", {
+        className={cn("fixed inset-x-2 top-14 mx-2 flex justify-center", {
           "border-x border-b border-textInactiveColor": isNavOpen,
         })}
       >
