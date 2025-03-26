@@ -97,6 +97,11 @@ export function ActiveCategoryMenuDialog({
   const { leftSideCategoryLinks, rightSideCategoryLinks } =
     filterNavigationLinks(categoryLinks);
 
+  const filteredLeftSideCategories =
+    activeCategory === "men"
+      ? leftSideCategoryLinks.filter((c) => c.title.toLowerCase() !== "dresses")
+      : leftSideCategoryLinks;
+
   return (
     <div className="flex h-full flex-col gap-10 overflow-y-auto">
       <DialogPrimitives.Close asChild>
@@ -110,7 +115,7 @@ export function ActiveCategoryMenuDialog({
             <Link href="/catalog">garments</Link>
           </Button>
         </DialogPrimitives.Close>
-        {leftSideCategoryLinks.map((link) => (
+        {filteredLeftSideCategories.map((link) => (
           <DialogPrimitives.Close asChild key={link.id}>
             <Button asChild>
               <Link

@@ -133,6 +133,10 @@ function LinksGroup({
   const { hero } = useDataContext();
   const { leftSideCategoryLinks, rightSideCategoryLinks } =
     filterNavigationLinks(links);
+  const filteredLeftSideCategoryLinks =
+    gender === "men"
+      ? leftSideCategoryLinks.filter((c) => c.title.toLowerCase() !== "dresses")
+      : leftSideCategoryLinks;
 
   const heroNav = hero?.navFeatured?.[gender];
   const isTagLink = heroNav?.featuredTag;
@@ -148,7 +152,7 @@ function LinksGroup({
             <Link href="/catalog">garments</Link>
           </Button>
           <div className="space-y-4">
-            {leftSideCategoryLinks.map((link) => (
+            {filteredLeftSideCategoryLinks.map((link) => (
               <div className="w-full" key={link.href}>
                 <Button className="hover:underline" asChild>
                   <NavigationMenu.Link href={link.href}>
