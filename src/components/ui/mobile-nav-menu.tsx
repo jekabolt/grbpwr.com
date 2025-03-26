@@ -17,10 +17,6 @@ export function MobileNavMenu() {
   >();
 
   return (
-    // <MobileMenuDialog
-    //   activeCategory={activeCategory}
-    //   setActiveCategory={setActiveCategory}
-    // />
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
         <Button size="sm" variant="simpleReverse">
