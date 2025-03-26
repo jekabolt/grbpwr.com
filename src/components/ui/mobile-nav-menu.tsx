@@ -5,7 +5,10 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { Button } from "./button";
 import { WhiteLogo } from "./icons/white-logo";
-import { DefaultMobileMenuDialog } from "./mobile-menu-dialog";
+import {
+  ActiveCategoryMenuDialog,
+  DefaultMobileMenuDialog,
+} from "./mobile-menu-dialog";
 import { Text } from "./text";
 
 export function MobileNavMenu() {
@@ -29,10 +32,10 @@ export function MobileNavMenu() {
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="flex h-full flex-col border border-red-500">
-            <div className="mb-14 border border-green-500">
+          <div className="flex h-full flex-col">
+            <div className="mb-14">
               {activeCategory ? (
-                <div className="flex items-center justify-between border border-blue-500">
+                <div className="flex items-center justify-between">
                   <Button onClick={() => setActiveCategory(undefined)}>
                     {"<"}
                   </Button>
@@ -42,7 +45,7 @@ export function MobileNavMenu() {
                   </DialogPrimitives.Close>
                 </div>
               ) : (
-                <div className="flex items-center justify-between border border-purple-500">
+                <div className="flex items-center justify-between">
                   <DialogPrimitives.Close className="aspect-square size-7">
                     <WhiteLogo />
                   </DialogPrimitives.Close>
@@ -55,7 +58,7 @@ export function MobileNavMenu() {
             {activeCategory === undefined ? (
               <DefaultMobileMenuDialog setActiveCategory={setActiveCategory} />
             ) : (
-              <div></div>
+              <ActiveCategoryMenuDialog activeCategory={activeCategory} />
             )}
           </div>
         </DialogPrimitives.Content>

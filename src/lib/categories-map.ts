@@ -98,7 +98,7 @@ export const processCategories = (
   });
 };
 
-export function filterNAvigationLinks(
+export function filterNavigationLinks(
   links: { title: string; href: string; id: string }[],
 ) {
   const leftSideCategoryLinks = links.filter((link) =>

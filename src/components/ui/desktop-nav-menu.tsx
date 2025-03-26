@@ -6,7 +6,7 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import {
   CATEGORY_TITLE_MAP,
-  filterNAvigationLinks,
+  filterNavigationLinks,
   processCategories,
 } from "@/lib/categories-map";
 import { calculateAspectRatio, cn } from "@/lib/utils";
@@ -132,7 +132,7 @@ function LinksGroup({
 }) {
   const { hero } = useDataContext();
   const { leftSideCategoryLinks, rightSideCategoryLinks } =
-    filterNAvigationLinks(links);
+    filterNavigationLinks(links);
 
   const heroNav = hero?.navFeatured?.[gender];
   const isTagLink = heroNav?.featuredTag;
