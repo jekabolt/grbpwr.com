@@ -20,6 +20,7 @@ export function Header({ transparent }: { transparent?: boolean }) {
         {
           "lg:border-x lg:border-t lg:border-textInactiveColor": isNavOpen,
           "bg-transparent": transparent,
+          "bg-bgColor": transparent && isNavOpen,
         },
       )}
     >
