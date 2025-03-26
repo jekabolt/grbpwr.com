@@ -15,9 +15,6 @@ export function MobileCatalog({
 }) {
   return (
     <div className="flex flex-col space-y-5 px-2.5 pb-10 pt-2">
-      {/* <div className="flex justify-start py-4">
-        <Category />
-      </div> */}
       <div className="sticky top-0 z-20 flex w-full justify-between bg-bgColor py-3">
         <MobileSort />
         <MobileSize />
