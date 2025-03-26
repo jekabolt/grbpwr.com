@@ -142,6 +142,7 @@ function LinksGroup({
   const newIn = `/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT`;
   const tagLink = `/catalog?tag=${heroNav?.featuredTag}`;
   const archiveLink = `/archive?id=${heroNav?.featuredArchiveId}`;
+  const activeHeroNavLink = isTagLink ? tagLink : archiveLink;
 
   return (
     <div className="flex w-full justify-between px-7 py-10">
@@ -181,7 +182,7 @@ function LinksGroup({
       </div>
       <div className="w-40">
         <Button asChild>
-          <Link href={isTagLink ? tagLink : archiveLink} className="space-y-2">
+          <Link href={activeHeroNavLink} className="space-y-2">
             <div className="w-full">
               <Image
                 src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
