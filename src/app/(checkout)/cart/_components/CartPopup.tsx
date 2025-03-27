@@ -31,11 +31,11 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   }, [isOpen]);
 
   return (
-    <div className="relative">
+    <div className="relative w-full lg:w-auto">
       {isOpen && itemsQuantity > 0 && (
         <Overlay cover="screen" onClick={closeCart} />
       )}
-      <div className="block lg:hidden">
+      <div className="block w-full lg:hidden">
         <MobileNavCart />
       </div>
       <div className="hidden lg:block">

@@ -43,7 +43,7 @@ export function InfinityScrollCatalog({
         offset: (pageRef.current - 1) * CATALOG_LIMIT,
         ...getProductsPagedQueryParams({
           gender: searchParams.get("gender"),
-          category: searchParams.get("category"),
+          topCategoryIds: searchParams.get("topCategoryIds"),
           size: searchParams.get("size"),
           sort: searchParams.get("sort"),
           order: searchParams.get("order"),

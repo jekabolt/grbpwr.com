@@ -8,11 +8,11 @@ import CartTotalPrice from "../(checkout)/cart/_components/CartTotalPrice";
 
 export function MobileProductInfoHeader() {
   return (
-    <header className="fixed inset-x-2.5 top-5 z-10 flex justify-between">
-      <Button asChild>
+    <header className="fixed inset-x-2.5 top-5 z-10 flex items-center justify-between">
+      <Button size="lg" asChild className="w-1/3 border border-red-500">
         <Link href="/catalog">{`<`}</Link>
       </Button>
-      <div className="flex grow basis-0 items-center justify-end">
+      <div className="flex w-1/3 items-center justify-end border border-blue-500">
         <CartPopup>
           <div className="h-full overflow-y-scroll">
             <CartProductsList />

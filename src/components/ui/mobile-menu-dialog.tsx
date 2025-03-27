@@ -2,147 +2,161 @@ import Link from "next/link";
 import { GENDER_MAP } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
-import { groupCategories } from "@/lib/categories-map";
-import CurrencyPopover from "@/app/_components/currency-popover";
+import {
+  CATEGORY_TITLE_MAP,
+  filterNavigationLinks,
+  processCategories,
+} from "@/lib/categories-map";
+import { calculateAspectRatio } from "@/lib/utils";
+import CurrencyPopover from "@/app/_components/mobile-currency-popover";
 import NewslatterForm from "@/app/_components/newslatter-form";
 
 import { useDataContext } from "../DataContext";
 import { Button } from "./button";
-import { Logo } from "./icons/logo";
+import Image from "./image";
 import { Text } from "./text";
 
-export function MobileMenuDialog({
-  activeCategory,
-  setActiveCategory,
-}: {
-  activeCategory: "men" | "women" | undefined;
+interface DefaultMenuProps {
   setActiveCategory: (category: "men" | "women" | undefined) => void;
-}) {
+}
+
+export function DefaultMobileMenuDialog({
+  setActiveCategory,
+}: DefaultMenuProps) {
+  const { dictionary } = useDataContext();
+  const objectsCategoryId =
+    dictionary?.categories?.find((c) => c.name?.toLowerCase() === "objects")
+      ?.id || "";
+
   return (
-    <DialogPrimitives.Root>
-      <DialogPrimitives.Trigger asChild>
-        <Button size="sm" variant={"simpleReverse"}>
-          menu
-        </Button>
-      </DialogPrimitives.Trigger>
-      <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-30 bg-textColor" />
-        <DialogPrimitives.Content className="fixed left-0 top-0 z-30 flex h-screen w-screen flex-col bg-bgColor px-2 pb-10 pt-5 text-textColor">
-          <DialogPrimitives.Title className="sr-only">
-            grbpwr mobile menu
-          </DialogPrimitives.Title>
-          <div className="relative mb-16 flex items-start justify-between gap-2 text-textColor">
-            {activeCategory ? (
-              <>
-                <Button onClick={() => setActiveCategory(undefined)}>
-                  <Text>{"<"}</Text>
-                </Button>
-                <Text variant="uppercase" className="basis-0">
-                  {activeCategory}
-                </Text>
-              </>
-            ) : (
-              <div className="inline-block aspect-square size-8">
-                <Logo />
-              </div>
-            )}
-            <DialogPrimitives.Close asChild>
-              <Button className="leading-none">[X]</Button>
-            </DialogPrimitives.Close>
-          </div>
-          <Menu
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-          />
-        </DialogPrimitives.Content>
-      </DialogPrimitives.Portal>
-    </DialogPrimitives.Root>
+    <div className="flex h-full flex-col justify-between">
+      <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-5">
+          <Button
+            className="flex items-center justify-between"
+            onClick={() => setActiveCategory("men")}
+          >
+            <Text variant="uppercase">men</Text>
+            <Text variant="uppercase">{">"}</Text>
+          </Button>
+          <Button
+            className="flex items-center justify-between"
+            onClick={() => setActiveCategory("women")}
+          >
+            <Text variant="uppercase">women</Text>
+            <Text variant="uppercase">{">"}</Text>
+          </Button>
+          <DialogPrimitives.Close asChild>
+            <Button asChild className="uppercase">
+              <Link href={`/catalog?topCategoryIds=${objectsCategoryId}`}>
+                objects
+              </Link>
+            </Button>
+          </DialogPrimitives.Close>
+          <DialogPrimitives.Close asChild>
+            <Button asChild className="uppercase">
+              <Link href="/archive">archive</Link>
+            </Button>
+          </DialogPrimitives.Close>
+        </div>
+        <div className="self-start">
+          <CurrencyPopover title="currency:" />
+        </div>
+      </div>
+      <NewslatterForm />
+    </div>
   );
 }
 
-function Menu({
-  activeCategory,
-  setActiveCategory,
-}: {
+interface ActiveCategoryMenuProps {
   activeCategory: "men" | "women" | undefined;
-  setActiveCategory: (category: "men" | "women" | undefined) => void;
-}) {
-  const { dictionary } = useDataContext();
+}
 
-  const categoriesGroups = groupCategories(
-    dictionary?.categories?.map((v) => v.name as string) || [],
-  );
+export function ActiveCategoryMenuDialog({
+  activeCategory,
+}: ActiveCategoryMenuProps) {
+  const { dictionary } = useDataContext();
+  const { hero } = useDataContext();
+  const heroNav = activeCategory
+    ? hero?.navFeatured?.[activeCategory]
+    : undefined;
+
+  const newIn = `/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT`;
+  const isTagLinkExist = heroNav?.featuredTag;
+  const tagLink = `/catalog?tag=${heroNav?.featuredTag}`;
+  const archiveLink = `/archive?id=${heroNav?.featuredArchiveId}`;
+  const activeHeroNavLink = isTagLinkExist ? tagLink : archiveLink;
+
+  const categories = processCategories(dictionary?.categories || []);
+  const categoryLinks = categories.map((category) => ({
+    title: category.name,
+    href: category.href,
+    id: category.id.toString(),
+  }));
+
+  const { leftSideCategoryLinks, rightSideCategoryLinks } =
+    filterNavigationLinks(categoryLinks);
+
+  const filteredLeftSideCategories =
+    activeCategory === "men"
+      ? leftSideCategoryLinks.filter((c) => c.title.toLowerCase() !== "dresses")
+      : leftSideCategoryLinks;
 
   return (
-    <div className="flex h-full grow flex-col justify-between overflow-y-auto bg-bgColor p-2">
-      {activeCategory === undefined ? (
-        <>
-          <div className="space-y-6">
-            <div className="space-y-6 border-b border-dashed border-textColor pb-6">
-              <Button
-                onClick={() => setActiveCategory("men")}
-                className="w-full"
+    <div className="flex h-full flex-col gap-10 overflow-y-auto">
+      <DialogPrimitives.Close asChild>
+        <Button asChild className="uppercase">
+          <Link href={newIn}>new in</Link>
+        </Button>
+      </DialogPrimitives.Close>
+      <div className="flex flex-col gap-5">
+        <DialogPrimitives.Close asChild>
+          <Button asChild className="uppercase">
+            <Link href="/catalog">garments</Link>
+          </Button>
+        </DialogPrimitives.Close>
+        {filteredLeftSideCategories.map((link) => (
+          <DialogPrimitives.Close asChild key={link.id}>
+            <Button asChild>
+              <Link
+                href={`${link.href}&gender=${GENDER_MAP[activeCategory || ""]}`}
               >
-                <div className="flex items-center justify-between">
-                  <Text variant="uppercase">men</Text>
-                  <Text variant="uppercase">{">"}</Text>
-                </div>
-              </Button>
-              <Button
-                onClick={() => setActiveCategory("women")}
-                className="w-full"
+                {CATEGORY_TITLE_MAP[link.title] || link.title}
+              </Link>
+            </Button>
+          </DialogPrimitives.Close>
+        ))}
+      </div>
+      <div className="flex flex-col gap-5">
+        {rightSideCategoryLinks.map((link) => (
+          <DialogPrimitives.Close asChild key={link.id}>
+            <Button asChild className="uppercase">
+              <Link
+                href={`${link.href}&gender=${GENDER_MAP[activeCategory || ""]}`}
               >
-                <div className="flex items-center justify-between">
-                  <Text variant="uppercase">women</Text>
-                  <Text variant="uppercase">{">"}</Text>
-                </div>
-              </Button>
+                {link.title}
+              </Link>
+            </Button>
+          </DialogPrimitives.Close>
+        ))}
+      </div>
+      <div className="w-full">
+        <Button asChild>
+          <Link href={activeHeroNavLink} className="space-y-2">
+            <div className="w-full">
+              <Image
+                src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
+                alt="mobile hero nav"
+                aspectRatio={calculateAspectRatio(
+                  heroNav?.media?.media?.thumbnail?.width,
+                  heroNav?.media?.media?.thumbnail?.height,
+                )}
+              />
             </div>
-            <div className="mt-6 flex items-center justify-between">
-              <Button asChild>
-                <Link href="/archive">
-                  <Text variant="uppercase">archive</Text>
-                </Link>
-              </Button>
-              <Text variant="uppercase">{">"}</Text>
-            </div>
-            <CurrencyPopover align="start" title="Currency:" />
-          </div>
-
-          <NewslatterForm />
-        </>
-      ) : (
-        <div className="grow space-y-6">
-          {Object.entries(categoriesGroups).map(([key, category]) => (
-            <div
-              key={key}
-              className="grid w-full grid-cols-2 gap-2 border-b border-dashed border-textColor pb-6"
-            >
-              <Text variant="uppercase" className="text-xl">
-                {category.title}
-              </Text>
-              <div className="space-y-4">
-                <DialogPrimitives.Close asChild>
-                  <Button variant="simpleReverse" asChild>
-                    <Link href="/catalog">view all</Link>
-                  </Button>
-                </DialogPrimitives.Close>
-                {category.items.map((item) => (
-                  <DialogPrimitives.Close key={item.id} asChild>
-                    <Button variant="simpleReverse" asChild>
-                      <Link
-                        href={`${item.href}&gender=${GENDER_MAP[activeCategory]}`}
-                      >
-                        {item.label.toLowerCase()}
-                      </Link>
-                    </Button>
-                  </DialogPrimitives.Close>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+            <Text>{heroNav?.exploreText}</Text>
+          </Link>
+        </Button>
+      </div>
     </div>
   );
 }

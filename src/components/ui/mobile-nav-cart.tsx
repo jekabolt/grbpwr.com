@@ -21,9 +21,9 @@ export function MobileNavCart() {
     <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
       <Button
         onClick={openCart}
-        size="sm"
+        size="lg"
         variant="simpleReverse"
-        className="bg-transparent"
+        className="w-full border border-red-500 bg-transparent"
       >
         cart {itemsQuantity ? itemsQuantity : ""}
       </Button>
