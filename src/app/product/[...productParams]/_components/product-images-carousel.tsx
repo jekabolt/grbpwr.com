@@ -3,6 +3,7 @@
 import { useCallback, useEffect } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import useEmblaCarousel from "embla-carousel-react";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 import { calculateAspectRatio } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -11,12 +12,15 @@ import ImageComponent from "@/components/ui/image";
 
 export function ProductImagesCarousel({ productMedia }: Props) {
   const oneMedia = productMedia.length === 1;
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: productMedia.length > 1,
-    align: oneMedia ? "start" : "end",
-    containScroll: "trimSnaps",
-    startIndex: oneMedia ? 0 : 2,
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: productMedia.length > 1,
+      align: oneMedia ? "start" : "end",
+      containScroll: "trimSnaps",
+      startIndex: oneMedia ? 0 : 2,
+    },
+    [WheelGesturesPlugin()],
+  );
 
   const mediaForCarousel =
     productMedia.length <= 3 && productMedia.length > 1
