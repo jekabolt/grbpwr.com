@@ -15,6 +15,10 @@ interface CatalogPageProps {
     order?: string;
     sort?: string;
     size?: string;
+    topCategoryIds?: string;
+    subCategoryIds?: string;
+    sale?: string;
+    tag?: string;
   }>;
 }
 
@@ -34,7 +38,7 @@ export default async function CatalogPage(props: CatalogPageProps) {
           total={response.total || 0}
         />
       </div>
-      <div className="hidden space-y-10 px-7 py-20 lg:block">
+      <div className="hidden space-y-10 px-7 pt-24 lg:block">
         <Filters />
         <InfinityScrollCatalog
           total={response.total || 0}

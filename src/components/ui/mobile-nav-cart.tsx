@@ -23,7 +23,7 @@ export function MobileNavCart() {
         onClick={openCart}
         size="lg"
         variant="simpleReverse"
-        className="w-full border border-red-500 bg-transparent"
+        className="w-full bg-transparent"
       >
         cart {itemsQuantity ? itemsQuantity : ""}
       </Button>

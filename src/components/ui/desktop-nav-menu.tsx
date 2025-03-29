@@ -122,7 +122,6 @@ function LinksGroup({
   gender,
 }: {
   gender: "men" | "women";
-  className?: string;
   links: {
     title: string;
     href: string;
