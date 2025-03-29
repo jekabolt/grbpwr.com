@@ -29,6 +29,13 @@ export const GENDER_MAP: Record<string, common_GenderEnum> = {
   ukn: "GENDER_ENUM_UNKNOWN",
 };
 
+export const GENDER_MAP_REVERSE: Record<common_GenderEnum, string> = {
+  "GENDER_ENUM_MALE": "men",
+  "GENDER_ENUM_FEMALE": "women",
+  "GENDER_ENUM_UNISEX": "unisex",
+  "GENDER_ENUM_UNKNOWN": "ukn",
+};
+
 export const currencySymbols: Record<string, string> = {
   Bitcoin: "₿", // Bitcoin
   CHF: "Fr", // Swiss Franc

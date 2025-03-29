@@ -16,6 +16,7 @@ export function getProductsPagedQueryParams({
   sort,
   order,
   topCategoryIds,
+  subCategoryIds,
   gender,
   size,
   sale,
@@ -24,6 +25,7 @@ export function getProductsPagedQueryParams({
   sort?: string | null;
   order?: string | null;
   topCategoryIds?: string | null;
+  subCategoryIds?: string | null;
   gender?: string | null;
   size?: string | null;
   sale?: string | null;
@@ -38,7 +40,7 @@ export function getProductsPagedQueryParams({
     orderFactor: order ? (order as common_OrderFactor) : undefined,
     filterConditions: {
       topCategoryIds: topCategoryIds ? [parseInt(topCategoryIds)] : undefined,
-      subCategoryIds: undefined,
+      subCategoryIds: subCategoryIds ? [parseInt(subCategoryIds)] : undefined,
       typeIds: undefined,
       sizesIds: size ? [parseInt(size)] : undefined,
       from: undefined,
