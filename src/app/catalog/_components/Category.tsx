@@ -2,7 +2,6 @@ import { common_GenderEnum } from "@/api/proto-http/frontend";
 import { GENDER_MAP_REVERSE } from "@/constants";
 
 import {
-  CATEGORY_DESCRIPTIONS,
   getSubCategoriesForTopCategory,
   getTopCategoryName,
 } from "@/lib/categories-map";
@@ -35,23 +34,33 @@ export default function Category() {
       ? subCategories.filter((c) => c.name.toLowerCase() !== "swimwear_w")
       : subCategories.filter((c) => c.name.toLowerCase() !== "swimwear_m");
 
-  if (!topCategory) {
-    return null;
-  }
   return (
-    <div className="space-y-6">
+    <div>
       <div className="flex gap-2">
         <div className="flex items-center gap-2">
-          <Text variant="uppercase">{activeTopCategory}</Text>
+          <Button
+            onClick={() => handleSubCategoryChange(undefined)}
+            className="uppercase hover:underline"
+          >
+            {activeTopCategory}
+          </Button>
           <Text>/</Text>
         </div>
         <div className="flex gap-2">
           {filteredSubCategories.map((subCategoryItem, index) => (
             <div className="flex items-center gap-1" key={subCategoryItem.id}>
               <Button
+                variant={
+                  subCategory === subCategoryItem.id.toString()
+                    ? "underline"
+                    : "default"
+                }
                 className="uppercase hover:underline"
                 onClick={() =>
                   handleSubCategoryChange(subCategoryItem.id.toString())
+                }
+                disabled={
+                  subCategory && subCategory !== subCategoryItem.id.toString()
                 }
               >
                 {subCategoryItem.name.replace("_", " ")}
@@ -61,9 +70,6 @@ export default function Category() {
           ))}
         </div>
       </div>
-      <Text className="w-2/3 lowercase">
-        {CATEGORY_DESCRIPTIONS[activeTopCategory ?? ""]}
-      </Text>
     </div>
   );
 }

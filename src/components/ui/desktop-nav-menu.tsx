@@ -154,9 +154,9 @@ function LinksGroup({
             {filteredLeftSideCategoryLinks.map((link) => (
               <div className="w-full" key={link.href}>
                 <Button className="hover:underline" asChild>
-                  <NavigationMenu.Link href={link.href}>
+                  <Link href={link.href}>
                     {CATEGORY_TITLE_MAP[link.title] || link.title}
-                  </NavigationMenu.Link>
+                  </Link>
                 </Button>
               </div>
             ))}

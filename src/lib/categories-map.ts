@@ -20,6 +20,17 @@ export const CATEGORY_TITLE_MAP: Record<string, string> = {
   "loungewear_sleepwear": "loungewear",
 } as const;
 
+export const CATEGORIES_ORDER: Record<string, number> = {
+  outerwear: 0,
+  tops: 1,
+  bottoms: 2,
+  dresses: 3,
+  loungewear_sleepwear: 4,
+  accessories: 5,
+  shoes: 6,
+  bags: 7,
+  objects: 8,
+}
 export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   outerwear: "Utilitarian, dark forms. Outerwear crafted from leather, fleece, softshell and hardshell materials. This page features bombers, blazers, trenches, peacoats, parkas & duffle coats. Designed to resist rain, block wind, and protect against snow.",
   tops: "Layered essentials, adaptive forms. Tops crafted from linen, mesh, cotton, and lightweight knits. Includes shirts, t-shirts, tanks, sweaters, hoodies, & sweatshirts — in cropped, graphic, zipped, or classic cuts. Made to breathe, move and adapt.",

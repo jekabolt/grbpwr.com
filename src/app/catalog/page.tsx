@@ -6,6 +6,7 @@ import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
 import Filters from "./_components/catalog-filters";
 import { InfinityScrollCatalog } from "./_components/infinity-scroll-catalog";
+import { NextCategoryButton } from "./_components/next-category-button";
 import { getProductsPagedQueryParams } from "./_components/utils";
 
 interface CatalogPageProps {
@@ -44,6 +45,10 @@ export default async function CatalogPage(props: CatalogPageProps) {
           total={response.total || 0}
           firstPageItems={response.products || []}
         />
+
+        <div className="flex justify-center">
+          <NextCategoryButton />
+        </div>
       </div>
     </FlexibleLayout>
   );
