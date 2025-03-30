@@ -30,14 +30,20 @@ export function NextCategoryButton() {
     ? CATEGORIES_ORDER[currentCategoryName]
     : 0;
 
-  const nextCategoryName = Object.entries(CATEGORIES_ORDER)
-    .filter(([name, order]) => {
-      if (isMen && name.toLowerCase() === "dresses") {
-        return false;
-      }
-      return order > currentOrder;
-    })
-    .sort(([, orderA], [, orderB]) => orderA - orderB)[0]?.[0];
+  const availableCategories = Object.entries(CATEGORIES_ORDER)
+    .filter(([name]) =>
+      isMen && name.toLowerCase() === "dresses" ? false : true,
+    )
+    .sort(([, orderA], [, orderB]) => orderA - orderB);
+
+  const nextCategories = availableCategories.filter(
+    ([, order]) => order > currentOrder,
+  );
+
+  const nextCategoryEntry =
+    nextCategories.length > 0 ? nextCategories[0] : availableCategories[0];
+
+  const nextCategoryName = nextCategoryEntry?.[0];
 
   const nextCategory = processedCategories.find(
     (cat) => cat.name.toLowerCase() === nextCategoryName,
