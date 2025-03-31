@@ -45,7 +45,6 @@ export default async function CatalogPage(props: CatalogPageProps) {
           total={response.total || 0}
           firstPageItems={response.products || []}
         />
-
         <div className="flex justify-center">
           <NextCategoryButton />
         </div>

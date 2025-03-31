@@ -7,7 +7,7 @@ export function Skeleton({
   return (
     <div
       className={cn(
-        "animate-pulse rounded-md bg-gray-200/60 dark:bg-gray-700/60",
+        "animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] bg-textInactiveColor opacity-10",
         className,
       )}
       {...props}

@@ -7,6 +7,7 @@ import { CATALOG_LIMIT } from "@/constants";
 import { useInView } from "react-intersection-observer";
 
 import { serviceClient } from "@/lib/api";
+import { Skeleton } from "@/components/ui/skeleton";
 import ProductsGrid from "@/app/_components/product-grid";
 import { getProductsPagedQueryParams } from "@/app/catalog/_components/utils";
 
@@ -71,13 +72,28 @@ export function InfinityScrollCatalog({
   }, [inView, loadMoreData]);
 
   return (
-    <div>
+    <div className="space-y-4">
       <ProductsGrid products={items} />
-      {hasMoreRef.current && (
-        <div ref={ref} className="text-center text-xl">
-          Loading...
-        </div>
-      )}
+      <>
+        {isLoading && (
+          <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16 2xl:grid-cols-6">
+            {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
+              <ProductSkeleton key={index} />
+            ))}
+          </div>
+        )}
+        <div ref={ref} />
+      </>
+    </div>
+  );
+}
+
+function ProductSkeleton() {
+  return (
+    <div className="flex flex-col gap-2">
+      <Skeleton className="aspect-[3/4] w-full" />
+      <Skeleton className="h-4 w-2/3" />
+      <Skeleton className="h-4 w-1/3" />
     </div>
   );
 }
