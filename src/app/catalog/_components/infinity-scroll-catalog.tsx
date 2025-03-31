@@ -74,16 +74,14 @@ export function InfinityScrollCatalog({
   return (
     <div className="space-y-4">
       <ProductsGrid products={items} />
-      <>
-        {isLoading && (
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16 2xl:grid-cols-6">
-            {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
-              <ProductSkeleton key={index} />
-            ))}
-          </div>
-        )}
-        <div ref={ref} />
-      </>
+      {isLoading && (
+        <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16 2xl:grid-cols-6">
+          {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
+            <ProductSkeleton key={index} />
+          ))}
+        </div>
+      )}
+      {hasMoreRef.current && <div ref={ref} />}
     </div>
   );
 }
@@ -92,8 +90,8 @@ function ProductSkeleton() {
   return (
     <div className="flex flex-col gap-2">
       <Skeleton className="aspect-[3/4] w-full" />
-      <Skeleton className="h-4 w-2/3" />
-      <Skeleton className="h-4 w-1/3" />
+      <Skeleton variant="highlight" className="h-3 w-2/3" />
+      <Skeleton className="h-3 w-1/3" />
     </div>
   );
 }
