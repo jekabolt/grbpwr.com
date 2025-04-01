@@ -1,4 +1,4 @@
-import { common_Category } from "@/api/proto-http/frontend";
+import { common_Category, common_GenderEnum } from "@/api/proto-http/frontend";
 
 export const LEFT_SIDE_CATEGORIES = [
   "outerwear",
@@ -36,8 +36,8 @@ export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   tops: "Layered essentials, adaptive forms. Tops crafted from linen, mesh, cotton, and lightweight knits. Includes shirts, t-shirts, tanks, sweaters, hoodies, & sweatshirts — in cropped, graphic, zipped, or classic cuts. Made to breathe, move and adapt.",
   bottoms: "Defined lines, functional shapes. Bottoms crafted from denim, leather, and technical cotton blends. Includes trousers, cargos, joggers, shorts, and skirts — in cropped, pleated, wrap, or drop-crotch styles. Designed for utility, comfort and motion.",
   dresses: "Fluid forms, minimal structure. Dresses crafted from mesh, cotton, and flowing blends. Created to combine and evolve.",
-  loungewear: "Rest & rhythm. Loungewear and sleepwear in cotton, mesh, lace, and waffle textures. Includes boxers, briefs, bralettes, and robes — classic, relaxed, belted, or wrapped. Adaptive, for comfort and motion.",
-  sleepwear: "Rest & rhythm. Loungewear and sleepwear in cotton, mesh, lace, and waffle textures. Includes boxers, briefs, bralettes, and robes — classic, relaxed, belted, or wrapped. Adaptive, for comfort and motion.",
+  loungewear_men: "Rest & rhythm for men. Loungewear and sleepwear in cotton, mesh, lace, and waffle textures. Includes boxers, briefs, bralettes, and robes — classic, relaxed, belted, or wrapped. Adaptive, for comfort and motion.",
+  loungewear_women: "Rest & rhythm for women. Loungewear and sleepwear in cotton, mesh, lace, and waffle textures. Includes boxers, briefs, bralettes, and robes — classic, relaxed, belted, or wrapped. Adaptive, for comfort and motion.",
   accessories: "Not ornaments, function in form. Accessories include jewelry. Gloves, hats, socks, belts, and scarves crafted in leather, silk, cashmere, and cotton. Made to layer and finish.",
   shoes: "Form follows function. Footwear includes boots, heels, flats, sneakers, sandals, slippers, and loafers — from ankle to tall, high-top to low, flat to heeled. Designed for stability.",
   bags: "Carriers of form and function. Backpacks, shoulder bags, totes, and handle styles. Built to hold, organize, and adapt across context and time.",
@@ -52,11 +52,6 @@ interface ProcessedCategory {
     id: number;
     name: string;
     href: string;
-    types: {
-      id: number;
-      name: string;
-      href: string;
-    }[];
   }[];
 }
 
@@ -73,10 +68,6 @@ export const processCategories = (
     );
 
     if (subCategories.length === 0) {
-      const directTypes = categories.filter(
-        (cat) => cat.level === "type" && cat.parentId === topCat.id!,
-      );
-
       return {
         id: topCat.id!,
         name: topCat.name!,
@@ -86,32 +77,16 @@ export const processCategories = (
             id: topCat.id!,
             name: topCat.name!,
             href: `/catalog?category=${topCat.id}`,
-            types: directTypes.map((type) => ({
-              id: type.id!,
-              name: type.name!,
-              href: `/catalog?category=${type.id}`,
-            })),
           },
         ],
       };
     }
 
-    const processedSubCategories = subCategories.map((subCat) => {
-      const types = categories.filter(
-        (cat) => cat.level === "type" && cat.parentId === subCat.id!,
-      );
-
-      return {
-        id: subCat.id!,
-        name: subCat.name!,
-        href: `/catalog?category=${subCat.id}`,
-        types: types.map((type) => ({
-          id: type.id!,
-          name: type.name!,
-          href: `/catalog?category=${type.id}`,
-        })),
-      };
-    });
+    const processedSubCategories = subCategories.map((subCat) => ({
+      id: subCat.id!,
+      name: subCat.name!,
+      href: `/catalog?category=${subCat.id}`,
+    }));
 
     return {
       id: topCat.id!,
@@ -141,23 +116,22 @@ export function getTopCategoryName(
   return topCategory.name;
 }
 
-export function getProcessedSubCategories(
-  processedCategories: ProcessedCategory[],
-  topCategoryId: number
-): ProcessedCategory["subCategories"] {
-  const topCategory = processedCategories.find(cat => cat.id === topCategoryId);
-  return topCategory?.subCategories || [];
-}
-
-
 export function getSubCategoriesForTopCategory(
   categories: common_Category[],
   topCategoryId: number
 ): ProcessedCategory["subCategories"] {
   const processed = processCategories(categories);
-  return getProcessedSubCategories(processed, topCategoryId);
+  const topCategory = processed.find(cat => cat.id === topCategoryId);
+  return topCategory?.subCategories || [];
 }
 
+export function getCategoryDescription(category: string, gender?: common_GenderEnum): string {
+  if (category.toLowerCase() === "loungewear" && gender) {
+    const genderKey = gender === "GENDER_ENUM_MALE" ? "loungewear_men" : "loungewear_women";
+    return CATEGORY_DESCRIPTIONS[genderKey] || "";
+  }
+  return CATEGORY_DESCRIPTIONS[category.toLowerCase()] || "";
+}
 
 export function filterNavigationLinks(
   links: { title: string; href: string; id: string }[],

@@ -39,6 +39,7 @@ export function InfinityScrollCatalog({
     setIsLoading(true);
 
     try {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
       const response = await serviceClient.GetProductsPaged({
         limit: CATALOG_LIMIT,
         offset: (pageRef.current - 1) * CATALOG_LIMIT,

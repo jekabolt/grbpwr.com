@@ -5,8 +5,7 @@ import FlexibleLayout from "@/components/flexible-layout";
 import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
 import { HeroArchive } from "../_components/hero-archive";
-import Filters from "./_components/catalog-filters";
-import { InfinityScrollCatalog } from "./_components/infinity-scroll-catalog";
+import Catalog from "./_components/catalog";
 import { NextCategoryButton } from "./_components/next-category-button";
 import { getProductsPagedQueryParams } from "./_components/utils";
 
@@ -41,9 +40,8 @@ export default async function CatalogPage(props: CatalogPageProps) {
           total={response.total || 0}
         />
       </div>
-      <div className="hidden px-7 pt-24 lg:block">
-        <Filters />
-        <InfinityScrollCatalog
+      <div className="hidden lg:block">
+        <Catalog
           total={response.total || 0}
           firstPageItems={response.products || []}
         />

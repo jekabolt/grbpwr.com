@@ -5,6 +5,7 @@ import {
   getSubCategoriesForTopCategory,
   getTopCategoryName,
 } from "@/lib/categories-map";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -55,12 +56,13 @@ export default function Category() {
                     ? "underline"
                     : "default"
                 }
-                className="uppercase hover:underline"
+                className={cn("uppercase hover:underline", {
+                  "text-textInactiveColor":
+                    subCategory &&
+                    subCategory !== subCategoryItem.id.toString(),
+                })}
                 onClick={() =>
                   handleSubCategoryChange(subCategoryItem.id.toString())
-                }
-                disabled={
-                  subCategory && subCategory !== subCategoryItem.id.toString()
                 }
               >
                 {subCategoryItem.name.replace("_", " ")}

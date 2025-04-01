@@ -46,9 +46,9 @@ export function DesktopNavigationMenu({
         onNavOpenChange(!!value);
       }}
     >
-      <NavigationMenu.List className="flex items-center gap-1">
+      <NavigationMenu.List className="flex items-center gap-4">
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger className="flex items-center px-2 text-textBaseSize data-[state=open]:underline">
+          <NavigationMenu.Trigger className="flex items-center text-textBaseSize data-[state=open]:underline">
             <Link href={`/catalog?${men}`} className="flex items-center">
               men
             </Link>
@@ -66,7 +66,7 @@ export function DesktopNavigationMenu({
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger className="flex items-center px-2 text-textBaseSize data-[state=open]:underline">
+          <NavigationMenu.Trigger className="flex items-center text-textBaseSize data-[state=open]:underline">
             <Link href={`/catalog?${women}`} className="flex items-center">
               women
             </Link>
@@ -87,7 +87,7 @@ export function DesktopNavigationMenu({
           <Button asChild>
             <NavigationMenu.Link
               href={`/catalog?topCategoryIds=${objectsCategoryId}`}
-              className="flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline"
+              className="flex items-center text-textBaseSize underline-offset-2 hover:underline"
             >
               objects
             </NavigationMenu.Link>
@@ -98,7 +98,7 @@ export function DesktopNavigationMenu({
           <Button asChild>
             <NavigationMenu.Link
               href="/archive"
-              className="flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline"
+              className="flex items-center text-textBaseSize underline-offset-2 hover:underline"
             >
               archive
             </NavigationMenu.Link>
@@ -107,7 +107,7 @@ export function DesktopNavigationMenu({
       </NavigationMenu.List>
 
       <div
-        className={cn("fixed inset-x-2 top-12 mx-2 flex justify-center", {
+        className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
           "border-x border-b border-textInactiveColor": isNavOpen,
         })}
       >
@@ -148,7 +148,7 @@ function LinksGroup({
       <div className="flex gap-24">
         <div className="space-y-4">
           <Button className="uppercase hover:underline" asChild>
-            <Link href="/catalog">garments</Link>
+            <Link href={`/catalog?gender=${GENDER_MAP[gender]}`}>all</Link>
           </Button>
           <div className="space-y-4">
             {filteredLeftSideCategoryLinks.map((link) => (
