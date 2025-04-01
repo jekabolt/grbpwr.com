@@ -1,87 +1,112 @@
 "use client";
 
+import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionRoot,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import Modal from "@/components/ui/modal";
 import { Text } from "@/components/ui/text";
 
-import MeasurementsModal from "./measurements-modal";
-import { AddToCartForm } from "./select-size-add-to-cart";
+import { MeasurementsModalContent } from "./measurements-modal-content";
+import { AddToCartForm } from "./select-size-add-to-cart/index";
+import { useData } from "./select-size-add-to-cart/useData";
 
-export function ProductInfo({ className, product }: Props) {
-  const baseCurrencyPrice =
-    product?.product?.productDisplay?.productBody?.price?.value;
+export function ProductInfo({ product }: { product: common_ProductFull }) {
+  const {
+    description,
+    composition,
+    care,
+    modelWearText,
+    color,
+    name,
+    productCare,
+    productComposition,
+    productId,
+    sizes,
+    categoryId,
+    gender,
+  } = useData({
+    product,
+  });
+
+  const [isSizeAccordionOpen, setIsSizeAccordionOpen] = useState(false);
+
+  const handleSizeAccordionChange = (isOpen: boolean) => {
+    setIsSizeAccordionOpen(isOpen);
+  };
 
   return (
-    <div
-      className={cn(
-        "relative flex h-auto flex-col gap-y-6 bg-bgColor lg:w-[600px]",
-        className,
-      )}
-    >
-      <div className="order-first flex items-center justify-between gap-x-20">
-        <Text variant="uppercase" component="h1">
-          {product?.product?.productDisplay?.productBody?.name}
-        </Text>
-        <Text>
-          {"[CUR]"} {baseCurrencyPrice}
-        </Text>
+    <div className="border-inactive absolute bottom-2.5 right-2.5 h-[245px] w-[600px] border bg-bgColor p-2.5">
+      <div className="relative grid h-full grid-cols-2 gap-x-5">
+        <div className={"flex flex-col justify-between"}>
+          <Text
+            variant="uppercase"
+            className={cn("", {
+              "pointer-events-none opacity-30": isSizeAccordionOpen,
+            })}
+          >
+            {name}
+          </Text>
+          <div className="space-y-5">
+            <div
+              className={cn("space-y-5", {
+                "pointer-events-none opacity-30": isSizeAccordionOpen,
+              })}
+            >
+              <Modal openElement="description" customCursor>
+                <div className="cursor-custom-x grid gap-1">
+                  {description?.split("\n").map((d, i) => (
+                    <Text className="lowercase" key={i}>
+                      {d}
+                    </Text>
+                  ))}
+                  <Text className="mt-3 lowercase">{modelWearText}</Text>
+                </div>
+              </Modal>
+
+              <Modal
+                shouldRender={!!productComposition}
+                openElement="composition"
+                title="composition"
+                customCursor
+              >
+                <div className="grid gap-1">
+                  {composition
+                    ?.slice(0, 7)
+                    .map((c, i) => <Text key={i}>{c ? c : ""}</Text>)}
+                  <Text className="mt-3 lowercase">{`color: ${color}`}</Text>
+                </div>
+              </Modal>
+
+              <Modal
+                shouldRender={!!productCare}
+                openElement="care"
+                title="care"
+                customCursor
+              >
+                <div className="grid gap-1">
+                  {care?.map((c, i) => (
+                    <Text key={i}>{c ? `- ${c}` : ""}</Text>
+                  ))}
+                </div>
+              </Modal>
+            </div>
+            <Modal openElement="size guide">
+              <MeasurementsModalContent
+                id={productId}
+                sizes={sizes}
+                categoryId={categoryId}
+                gender={gender}
+              />
+            </Modal>
+          </div>
+        </div>
+        <AddToCartForm
+          product={product}
+          id={productId}
+          onSizeAccordionStateChange={handleSizeAccordionChange}
+        />
       </div>
-      <Text className="order-last lg:order-none">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed at
-        doloribus, iste ad itaque rem dicta laudantium iure nisi nulla deserunt,
-        vel, vero quibusdam inventore cumque quis libero? Consequatur, in.
-      </Text>
-      <AccordionRoot
-        type="single"
-        collapsible
-        className="order-last w-40 space-y-6 lg:order-none"
-      >
-        <AccordionItem value="item-1" className="space-y-4">
-          <AccordionTrigger>
-            <Text variant="uppercase">composition</Text>
-          </AccordionTrigger>
-          <AccordionContent>
-            Lorem ipsum is placeholder text commonly used in the graphic, print,
-            and publishing industries for previewing layouts and visual mockups.
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="item-2" className="space-y-4">
-          <AccordionTrigger>
-            <Text variant="uppercase">care</Text>
-          </AccordionTrigger>
-          <AccordionContent>
-            Lorem ipsum is placeholder text commonly used in the graphic, print,
-            and publishing industries for previewing layouts and visual mockups.
-          </AccordionContent>
-        </AccordionItem>
-      </AccordionRoot>
-
-      <MeasurementsModal
-        productId={product?.product?.id || 0}
-        sizes={product?.sizes || []}
-        categoryId={
-          product?.product?.productDisplay?.productBody?.topCategoryId || 0
-        }
-        gender={product.product?.productDisplay?.productBody?.targetGender}
-      />
-      <AddToCartForm
-        className="order-1 flex w-full flex-col items-center justify-between gap-y-6 lg:order-none lg:flex-row lg:gap-x-20"
-        sizes={product?.sizes || []}
-        id={product?.product?.id || 0}
-      />
     </div>
   );
 }
-
-type Props = {
-  className?: string;
-  product: common_ProductFull;
-};

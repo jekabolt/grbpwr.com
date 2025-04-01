@@ -1,10 +1,20 @@
-import { common_Product } from "@/api/proto-http/frontend";
+"use client";
 
-import Category from "@/app/catalog/_components/Category";
+import { common_GenderEnum, common_Product } from "@/api/proto-http/frontend";
+
+import {
+  getCategoryDescription,
+  getTopCategoryName,
+} from "@/lib/categories-map";
+import { useDataContext } from "@/components/DataContext";
+import { Text } from "@/components/ui/text";
 import { InfinityScrollCatalog } from "@/app/catalog/_components/infinity-scroll-catalog";
 
+import Category from "./Category";
+import { EmptyCatalog } from "./empty-catalog";
 import { MobileSize } from "./mobile-size";
 import { MobileSort } from "./mobile-sort";
+import useFilterQueryParams from "./useFilterQueryParams";
 
 export function MobileCatalog({
   firstPageItems,
@@ -13,16 +23,42 @@ export function MobileCatalog({
   firstPageItems: common_Product[];
   total: number;
 }) {
+  const { dictionary } = useDataContext();
+  const { defaultValue: gender } = useFilterQueryParams("gender");
+  const { defaultValue: topCategory } = useFilterQueryParams("topCategoryIds");
+  const activeTopCategory = getTopCategoryName(
+    dictionary?.categories || [],
+    parseInt(topCategory || "0"),
+  );
+  const categoryDescription = getCategoryDescription(
+    activeTopCategory || "",
+    gender as common_GenderEnum,
+  );
+
   return (
     <div className="flex flex-col space-y-5 px-2.5 pb-10 pt-2">
-      <div className="flex justify-start py-4">
-        <Category />
+      <div className="sticky top-5 z-20 space-y-5">
+        <div className="w-full overflow-x-auto">
+          <Category />
+        </div>
+        <div className="flex w-full justify-between py-3">
+          <MobileSort />
+          <MobileSize />
+        </div>
       </div>
-      <div className="sticky top-0 z-20 flex w-full justify-between bg-bgColor py-3">
-        <MobileSort />
-        <MobileSize />
-      </div>
-      <InfinityScrollCatalog total={total} firstPageItems={firstPageItems} />
+      {total > 0 ? (
+        <div>
+          <Text className="w-full lowercase">{categoryDescription}</Text>
+          <InfinityScrollCatalog
+            firstPageItems={firstPageItems}
+            total={total}
+          />
+        </div>
+      ) : (
+        <div className="h-screen w-full">
+          <EmptyCatalog />
+        </div>
+      )}
     </div>
   );
 }

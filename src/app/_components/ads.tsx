@@ -10,13 +10,12 @@ import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
-import { ArchiveItem } from "./archive-item";
+import { HeroArchive } from "./hero-archive";
 import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   const productsRef = useRef<HTMLDivElement>(null);
   const productsTagRef = useRef<HTMLDivElement>(null);
-  const archiveRef = useRef<HTMLDivElement>(null);
   const hasScrolledRef = useRef(new Set<HTMLDivElement>());
   const userScrolledRef = useRef(new Set<HTMLDivElement>());
 
@@ -29,7 +28,6 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
     const scrollContainers = [
       { ref: productsRef, scrollAmount: 50, mobileOnly: true },
       { ref: productsTagRef, scrollAmount: 50, mobileOnly: true },
-      { ref: archiveRef, scrollAmount: 250, mobileOnly: false },
     ];
 
     const scrollToFirstItem = () => {
@@ -207,7 +205,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 <div
                   ref={productsRef}
                   onScroll={handleUserScroll}
-                  className="no-scroll-bar flex w-full gap-2 overflow-x-scroll"
+                  className="flex w-full gap-2 overflow-x-scroll"
                 >
                   {e.featuredProducts?.products?.map((p) => (
                     <ProductItem
@@ -235,7 +233,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 <div
                   ref={productsTagRef}
                   onScroll={handleUserScroll}
-                  className="no-scroll-bar flex w-full items-center gap-2.5 overflow-x-scroll"
+                  className="flex w-full items-center gap-2.5 overflow-x-scroll"
                 >
                   {e.featuredProductsTag?.products?.products?.map((p) => (
                     <ProductItem
@@ -249,26 +247,11 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_ARCHIVE":
             return (
-              <div className="space-y-12 pt-16 lg:py-32" key={i}>
-                <div className="flex flex-col gap-3 px-2 lg:flex-row">
-                  <Text variant="uppercase">{e.featuredArchive?.headline}</Text>
-                  <Button variant="underline" className="uppercase" asChild>
-                    <Link href={`/archive/${e.featuredArchive?.tag}`}>
-                      {e.featuredArchive?.exploreText}
-                    </Link>
-                  </Button>
-                </div>
-                <div
-                  ref={archiveRef}
-                  onScroll={handleUserScroll}
-                  className="no-scroll-bar flex w-full items-center overflow-x-scroll"
-                >
-                  <ArchiveItem
-                    archive={e.featuredArchive?.archive}
-                    className="w-80 lg:w-96"
-                  />
-                </div>
-              </div>
+              <HeroArchive
+                entity={e}
+                key={i}
+                className="space-y-12 pt-16 lg:py-32"
+              />
             );
           default:
             return null;

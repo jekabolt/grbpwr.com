@@ -10,7 +10,7 @@
     --background: #fff;
     --highlight: #311eee;
     --error: #ff0000;
-    --text-select: #75fb4c;
+    --text-select: #311eee;
     /* components-specific colors */
     --button-text: #fff;
     --visited-link: #501089;
@@ -28,7 +28,7 @@
     --background: #000;
     --highlight: #535353;
     --error: #ff0000;
-    --text-select: #75fb4c;
+    --text-select: #311eee;
     /* components-specific colors */
     --button-text: #fff;
     --visited-link: #501089;
@@ -48,6 +48,10 @@
     font-optical-sizing: auto;
     font-variation-settings: "slnt" 0;
   } */
+
+  * {
+    @apply no-scroll-bar;
+  }
 
   body {
     ::selection {

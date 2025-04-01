@@ -1,13 +1,20 @@
 import { cn } from "@/lib/utils";
 
 export function Skeleton({
+  variant = "default",
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLDivElement> & {
+  variant?: "default" | "highlight";
+}) {
   return (
     <div
       className={cn(
-        "animate-pulse rounded-md bg-gray-200/60 dark:bg-gray-700/60",
+        "animate-[pulse_2s_cubic-bezier(0,0,0.2,1)_infinite] opacity-5",
+        {
+          "bg-highlightColor": variant === "highlight",
+          "bg-textInactiveColor": variant === "default",
+        },
         className,
       )}
       {...props}

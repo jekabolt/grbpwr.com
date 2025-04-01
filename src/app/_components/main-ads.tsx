@@ -36,7 +36,7 @@ export function MainAds({ main }: { main?: common_HeroMain }) {
       </div>
       <Overlay cover="container" />
       <div className="absolute inset-x-0 top-32 z-20 flex h-screen items-center lg:top-20">
-        <div className="flex w-full flex-col items-start gap-6 p-2 md:flex-row md:justify-between ">
+        <div className="flex w-full flex-col items-start gap-6 p-2 md:flex-row md:justify-between">
           <Text variant="uppercase" className="text-white">
             {main.tag}
           </Text>

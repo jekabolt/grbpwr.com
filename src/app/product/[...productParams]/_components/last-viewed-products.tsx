@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { common_Product } from "@/api/proto-http/frontend";
 
 import { useLastViewed } from "@/lib/stores/last-viewed/store-provider.";
+import { cn } from "@/lib/utils";
+import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 import { ProductItem } from "@/app/_components/product-item";
 
@@ -12,30 +14,46 @@ interface LastViewedProductsProps {
 }
 
 export function LastViewedProducts({ product }: LastViewedProductsProps) {
-  const addLastViewedProduct = useLastViewed((state) => state.addProduct);
-  const lastViewedProducts = useLastViewed((state) => state.products);
+  const { products, addProduct } = useLastViewed((state) => state);
+
+  const filteredProducts = products
+    .filter((viewedProduct) => viewedProduct.id !== product.id)
+    .slice(0, 4);
 
   useEffect(() => {
     return () => {
       if (product) {
-        addLastViewedProduct(product);
+        addProduct(product);
       }
     };
-  }, [product, addLastViewedProduct]);
+  }, [product, addProduct]);
 
-  const filteredProducts = lastViewedProducts
-    .filter((viewedProduct) => viewedProduct.id !== product.id)
-    .slice(0, 4);
+  if (filteredProducts.length === 0) {
+    return null;
+  }
 
   return (
-    <div>
-      <Text className="mb-6" component="h2" variant="uppercase">
+    <div className="space-y-16 pb-16 lg:space-y-12 lg:px-2.5 lg:pb-28">
+      <Text variant="uppercase" className="px-2.5 lg:px-0">
         recently viewed
       </Text>
-      <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16 2xl:grid-cols-4">
-        {filteredProducts.map((product) => (
-          <div key={product.id}>
-            <ProductItem className="mx-auto" product={product} />
+
+      <div className="flex justify-center gap-2 lg:gap-7">
+        {filteredProducts.map((product, index) => (
+          <div
+            key={product.id}
+            className={cn("group relative w-32 lg:w-52", {
+              "hidden lg:block": index === 3,
+            })}
+          >
+            <ProductItem
+              className="w-full"
+              product={product}
+              isInfoVisible={false}
+            />
+            <div className="pointer-events-none opacity-0 transition-opacity group-hover:opacity-100">
+              <Overlay cover="container" color="light" />
+            </div>
           </div>
         ))}
       </div>

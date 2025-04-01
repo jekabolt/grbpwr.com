@@ -1,6 +1,8 @@
 import { serviceClient } from "@/lib/api";
 import FlexibleLayout from "@/components/flexible-layout";
 
+import { Galery } from "./_components/galery";
+
 export default async function Page() {
   const { archives } = await serviceClient.GetArchivesPaged({
     limit: 10,
@@ -10,8 +12,25 @@ export default async function Page() {
 
   return (
     <div className="blackTheme bg-bgColor text-textColor">
-      <FlexibleLayout headerType="catalog" footerType="mini" theme="dark">
-        <div>arrchive</div>
+      <FlexibleLayout
+        mobileHeaderType="flexible"
+        headerProps={{
+          left: "grbpwr archive",
+        }}
+        mobileHeaderProps={{
+          className: "bottom-0",
+        }}
+        footerType="mini"
+        theme="dark"
+        className="pt-16"
+      >
+        <Galery archives={archives || []} />
+        {/* 
+        <VerticalCarousel>
+          {archives.map((archive) => (
+            <div key={archive.id}>{archive.name}</div>
+          ))}
+        </VerticalCarousel> */}
       </FlexibleLayout>
     </div>
   );

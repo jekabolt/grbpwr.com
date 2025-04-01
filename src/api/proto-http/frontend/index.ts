@@ -237,6 +237,8 @@ export type common_Dictionary = {
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
+  bigMenu: boolean | undefined;
+  topCategories: common_TopCategoryCount[] | undefined;
 };
 
 // Category represents a hierarchical category structure
@@ -324,6 +326,12 @@ export type common_SortFactor =
   | "SORT_FACTOR_UPDATED_AT"
   | "SORT_FACTOR_NAME"
   | "SORT_FACTOR_PRICE";
+export type common_TopCategoryCount = {
+  categoryId: number | undefined;
+  categoryName: string | undefined;
+  count: number | undefined;
+};
+
 // CurrencyMap represents a map of currency codes to their rates.
 export type common_CurrencyMap = {
   currencies: { [key: string]: common_CurrencyRate } | undefined;

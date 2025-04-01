@@ -51,7 +51,12 @@ export function CookieBanner() {
   return (
     <div className="border-textInactiveColor-500 fixed inset-x-2 top-2 z-30 border bg-bgColor lg:bottom-2 lg:left-auto lg:top-auto lg:w-96">
       <div className="block lg:hidden">
-        <MobileCookieModal />
+        <MobileCookieModal
+          isVisible={isVisible}
+          preferences={preferences}
+          handleSaveCookies={handleSaveCookies}
+          handlePreferenceChange={handlePreferenceChange}
+        />
       </div>
       <div className="hidden space-y-6 p-2.5 lg:block">
         <Text className="tracking-wider">
@@ -87,7 +92,7 @@ export function CookieBanner() {
             <Text variant="uppercase">cookie preferences</Text>
             <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
           </div>
-          <div className="no-scroll-bar border-textInactiveColor-500 h-full overflow-y-scroll border-b">
+          <div className="border-textInactiveColor-500 h-full overflow-y-scroll border-b">
             <CookieContent
               preferences={preferences}
               onPreferenceChange={handlePreferenceChange}

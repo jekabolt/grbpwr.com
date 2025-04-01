@@ -14,6 +14,8 @@ export interface CartState {
   totalItems: number;
   totalPrice: number;
   subTotalPrice: number;
+  isOpen: boolean;
+  productToRemove: { id: number; size: string; index: number } | null;
 }
 
 export interface CartActions {
@@ -22,9 +24,12 @@ export interface CartActions {
     size: string,
     quantity?: number,
   ) => Promise<void>;
-  removeProduct: (productId: number, size: string) => void;
-  decreaseQuantity: (productId: number, size: string) => Promise<void>;
+  removeProduct: (productId: number, size: string, index?: number) => void;
   clearCart: () => void;
+  openCart: () => void;
+  closeCart: () => void;
+  toggleCart: () => void;
+  setProductToRemove: (product: { id: number; size: string; index: number } | null) => void;
 }
 
 export type CartStore = CartState & CartActions;

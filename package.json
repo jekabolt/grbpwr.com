@@ -30,6 +30,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "2.1.0",
     "embla-carousel-react": "^8.5.1",
+    "embla-carousel-wheel-gestures": "^8.0.1",
     "next": "15.0.1",
     "qrcode": "^1.5.3",
     "react": "0.0.0-experimental-443b7ff2-20250303",
@@ -54,7 +55,7 @@
     "postcss": "^8.4.47",
     "postcss-nesting": "^12.1.5",
     "prettier": "3.2.5",
-    "prettier-plugin-tailwindcss": "0.5.12",
+    "prettier-plugin-tailwindcss": "0.6.11",
     "tailwind-merge": "^2.3.0",
     "tailwindcss": "3.4.14",
     "typescript": "5.4.3"

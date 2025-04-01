@@ -1,4 +1,8 @@
-import { OrderFactorOption, SortFactorConfig } from "@/constants";
+import {
+  COMPOSITION_MAP,
+  OrderFactorOption,
+  SortFactorConfig,
+} from "@/constants";
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -24,3 +28,31 @@ export const getButtonText = (
   const label = sortData.label ? `${sortData.label}: ` : "";
   return `${saleFactor ? "sale: " : label}${orderFactor.name}`;
 };
+
+export function getFullComposition(composition: string | undefined): string[] {
+  if (!composition) return [];
+
+  const compositionObj = composition.split(",").reduce(
+    (obj, item) => {
+      const [key, value] = item.trim().split(":");
+      obj[key] = value;
+      return obj;
+    },
+    {} as Record<string, string>,
+  );
+
+  return Object.entries(compositionObj).map(([key, value]) => {
+    const materialName = COMPOSITION_MAP[key] || key;
+    return `${materialName}: ${value}%`;
+  });
+}
+
+export function calculatePriceWithSale(
+  price: string | undefined,
+  salePercentage: string | undefined,
+): number {
+  const basePrice = parseFloat(price || "0");
+  const discount = parseInt(salePercentage || "0");
+
+  return (basePrice * (100 - discount)) / 100;
+}

@@ -1,193 +1,167 @@
-const CATEGORIES = [
-  {
-    id: "1",
-    name: "CATEGORY_ENUM_T_SHIRT",
-    label: "T-Shirts",
-    href: "/catalog?category=1",
-    group: "clothing",
-  },
-  {
-    id: "2",
-    name: "CATEGORY_ENUM_JEANS",
-    label: "Jeans",
-    href: "/catalog?category=2",
-    group: "clothing",
-  },
-  {
-    id: "3",
-    name: "CATEGORY_ENUM_DRESS",
-    label: "Dresses",
-    href: "/catalog?category=3",
-    group: "clothing",
-  },
-  {
-    id: "4",
-    name: "CATEGORY_ENUM_JACKET",
-    label: "Jackets",
-    href: "/catalog?category=4",
-    group: "clothing",
-  },
-  {
-    id: "5",
-    name: "CATEGORY_ENUM_SWEATER",
-    label: "Sweaters",
-    href: "/catalog?category=5",
-    group: "clothing",
-  },
-  {
-    id: "6",
-    name: "CATEGORY_ENUM_PANT",
-    label: "Pants",
-    href: "/catalog?category=6",
-    group: "clothing",
-  },
-  {
-    id: "7",
-    name: "CATEGORY_ENUM_SKIRT",
-    label: "Skirts",
-    href: "/catalog?category=7",
-    group: "clothing",
-  },
-  {
-    id: "8",
-    name: "CATEGORY_ENUM_SHORT",
-    label: "Shorts",
-    href: "/catalog?category=8",
-    group: "clothing",
-  },
-  {
-    id: "9",
-    name: "CATEGORY_ENUM_BLAZER",
-    label: "Blazers",
-    href: "/catalog?category=9",
-    group: "clothing",
-  },
-  {
-    id: "10",
-    name: "CATEGORY_ENUM_COAT",
-    label: "Coats",
-    href: "/catalog?category=10",
-    group: "clothing",
-  },
-  {
-    id: "11",
-    name: "CATEGORY_ENUM_SOCKS",
-    label: "Socks",
-    href: "/catalog?category=11",
-    group: "clothing",
-  },
-  {
-    id: "12",
-    name: "CATEGORY_ENUM_UNDERWEAR",
-    label: "Underwear",
-    href: "/catalog?category=12",
-    group: "clothing",
-  },
-  {
-    id: "13",
-    name: "CATEGORY_ENUM_BRA",
-    label: "Bras",
-    href: "/catalog?category=13",
-    group: "clothing",
-  },
-  {
-    id: "14",
-    name: "CATEGORY_ENUM_HAT",
-    label: "Hats",
-    href: "/catalog?category=14",
-    group: "accessories",
-  },
-  {
-    id: "15",
-    name: "CATEGORY_ENUM_SCARF",
-    label: "Scarves",
-    href: "/catalog?category=15",
-    group: "accessories",
-  },
-  {
-    id: "16",
-    name: "CATEGORY_ENUM_GLOVES",
-    label: "Gloves",
-    href: "/catalog?category=16",
-    group: "accessories",
-  },
-  {
-    id: "18",
-    name: "CATEGORY_ENUM_BELT",
-    label: "Belts",
-    href: "/catalog?category=17",
-    group: "accessories",
-  },
-  {
-    id: "20",
-    name: "CATEGORY_ENUM_BAG",
-    label: "Bags",
-    href: "/catalog?category=18",
-    group: "accessories",
-  },
-  {
-    id: "17",
-    name: "CATEGORY_ENUM_SHOES",
-    label: "Shoes",
-    href: "/catalog?category=19",
-    group: "shoes",
-  },
-  {
-    id: "19",
-    name: "CATEGORY_ENUM_OTHER",
-    label: "Other",
-    href: "/catalog?category=19",
-    group: "other",
-  },
-] as const;
+import { common_Category, common_GenderEnum } from "@/api/proto-http/frontend";
 
-export const CATEGORY_GROUPS = {
-  clothing: {
-    title: "clothing",
-    order: 1,
-  },
-  accessories: {
-    title: "accessories",
-    order: 2,
-  },
-  shoes: {
-    title: "shoes",
-    order: 3,
-  },
-  other: {
-    title: "other",
-    order: 4,
-  },
-} as const;
-
-export type CategoryGroup = keyof typeof CATEGORY_GROUPS;
-
-export function groupCategories(categoriesEnums: string[]) {
-  const categories = CATEGORIES.filter((category) =>
-    categoriesEnums.includes(category.name),
-  );
-
-  const grouped = Object.entries(CATEGORY_GROUPS)
-    .sort(([, a], [, b]) => a.order - b.order)
-    .reduce(
-      (acc, [groupKey, groupData]) => {
-        return {
-          ...acc,
-          [groupKey]: {
-            title: groupData.title,
-            items: categories.filter((category) => category.group === groupKey),
-          },
-        };
-      },
-      {} as Record<
-        CategoryGroup,
-        { title: string; items: (typeof CATEGORIES)[number][] }
-      >,
-    );
-
-  return grouped;
+export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
+  outerwear: "Utilitarian, dark forms. Outerwear crafted from leather, fleece, softshell and hardshell materials. This page features bombers, blazers, trenches, peacoats, parkas & duffle coats. Designed to resist rain, block wind, and protect against snow.",
+  tops: "Layered essentials, adaptive forms. Tops crafted from linen, mesh, cotton, and lightweight knits. Includes shirts, t-shirts, tanks, sweaters, hoodies, & sweatshirts — in cropped, graphic, zipped, or classic cuts. Made to breathe, move and adapt.",
+  bottoms: "Defined lines, functional shapes. Bottoms crafted from denim, leather, and technical cotton blends. Includes trousers, cargos, joggers, shorts, and skirts — in cropped, pleated, wrap, or drop-crotch styles. Designed for utility, comfort and motion.",
+  dresses: "Fluid forms, minimal structure. Dresses crafted from mesh, cotton, and flowing blends. Created to combine and evolve.",
+  loungewear_men: "Rest & rhythm for men. Loungewear and sleepwear in cotton, mesh, lace, and waffle textures. Includes boxers, briefs, bralettes, and robes — classic, relaxed, belted, or wrapped. Adaptive, for comfort and motion.",
+  loungewear_women: "Rest & rhythm for women. Loungewear and sleepwear in cotton, mesh, lace, and waffle textures. Includes boxers, briefs, bralettes, and robes — classic, relaxed, belted, or wrapped. Adaptive, for comfort and motion.",
+  accessories: "Not ornaments, function in form. Accessories include jewelry. Gloves, hats, socks, belts, and scarves crafted in leather, silk, cashmere, and cotton. Made to layer and finish.",
+  shoes: "Form follows function. Footwear includes boots, heels, flats, sneakers, sandals, slippers, and loafers — from ankle to tall, high-top to low, flat to heeled. Designed for stability.",
+  bags: "Carriers of form and function. Backpacks, shoulder bags, totes, and handle styles. Built to hold, organize, and adapt across context and time.",
+  objects: "Created to be observed."
 }
 
-export function getCategoryName(value: string | undefined) {
-  return CATEGORIES.find((category) => category.id === value)?.label;
+export const CATEGORIES_ORDER: Record<string, number> = {
+  outerwear: 0,
+  tops: 1,
+  bottoms: 2,
+  dresses: 3,
+  loungewear: 4,
+  accessories: 5,
+  shoes: 6,
+  bags: 7,
+}
+
+export const LEFT_SIDE_CATEGORIES = [
+  "outerwear",
+  "tops",
+  "bottoms",
+  "dresses",
+  "loungewear",
+] as const;
+
+export const RIGHT_SIDE_CATEGORIES = ["bags", "shoes", "accessories"] as const;
+
+export const RIGHT_SIDE_CATEGORIES_ORDER: Record<string, number> = {
+  bags: 0,
+  shoes: 1,
+  accessories: 2,
+} as const;
+
+export const CATEGORY_TITLE_MAP: Record<string, string> = {
+  "loungewear_sleepwear": "loungewear",
+} as const;
+
+
+interface ProcessedCategory {
+  id: number;
+  name: string;
+  href: string;
+  subCategories: {
+    id: number;
+    name: string;
+    href: string;
+  }[];
+}
+
+export const processCategories = (
+  categories: common_Category[],
+): ProcessedCategory[] => {
+  const topCategories = categories.filter(
+    (cat) => cat.level === "top_category",
+  );
+
+  return topCategories.map((topCat) => {
+    const subCategories = categories.filter(
+      (cat) => cat.level === "sub_category" && cat.parentId === topCat.id!,
+    );
+
+    const displayName =
+      topCat.name && CATEGORY_TITLE_MAP[topCat.name.toLowerCase()]
+        ? CATEGORY_TITLE_MAP[topCat.name.toLowerCase()]
+        : topCat.name!;
+
+    if (subCategories.length === 0) {
+      return {
+        id: topCat.id!,
+        name: displayName,
+        href: `/catalog?topCategoryIds=${topCat.id}`,
+        subCategories: [
+          {
+            id: topCat.id!,
+            name: displayName,
+            href: `/catalog?category=${topCat.id}`,
+          },
+        ],
+      };
+    }
+
+    const processedSubCategories = subCategories.map((subCat) => ({
+      id: subCat.id!,
+      name: subCat.name!,
+      href: `/catalog?category=${subCat.id}`,
+    }));
+
+    return {
+      id: topCat.id!,
+      name: displayName,
+      href: `/catalog?topCategoryIds=${topCat.id}`,
+      subCategories: processedSubCategories,
+    };
+  });
+};
+
+export function getTopCategoryName(
+  categories: common_Category[],
+  topCategoryId: number
+): string | null {
+  const topCategory = categories.find(
+    (cat) => cat.level === "top_category" && cat.id === topCategoryId
+  );
+
+  if (!topCategory || !topCategory.name) {
+    return null;
+  }
+
+  if (CATEGORY_TITLE_MAP[topCategory.name.toLowerCase()]) {
+    return CATEGORY_TITLE_MAP[topCategory.name.toLowerCase()];
+  }
+
+  return topCategory.name;
+}
+
+export function getSubCategoriesForTopCategory(
+  categories: common_Category[],
+  topCategoryId: number
+): ProcessedCategory["subCategories"] {
+  const processed = processCategories(categories);
+  const topCategory = processed.find(cat => cat.id === topCategoryId);
+  return topCategory?.subCategories || [];
+}
+
+export function getCategoryDescription(category: string, gender?: common_GenderEnum): string {
+  if (category.toLowerCase() === "loungewear" && gender) {
+    const genderKey = gender === "GENDER_ENUM_MALE" ? "loungewear_men" : "loungewear_women";
+    return CATEGORY_DESCRIPTIONS[genderKey] || "";
+  }
+  return CATEGORY_DESCRIPTIONS[category.toLowerCase()] || "";
+}
+
+export function filterNavigationLinks(
+  links: { title: string; href: string; id: string }[],
+) {
+  const leftSideCategoryLinks = links.filter((link) =>
+    LEFT_SIDE_CATEGORIES.includes(
+      link.title.toLowerCase() as (typeof LEFT_SIDE_CATEGORIES)[number],
+    ),
+  );
+
+  const rightSideCategoryLinks = links
+    .filter((link) =>
+      RIGHT_SIDE_CATEGORIES.includes(
+        link.title.toLowerCase() as (typeof RIGHT_SIDE_CATEGORIES)[number],
+      ),
+    )
+    .sort(
+      (a, b) =>
+        RIGHT_SIDE_CATEGORIES_ORDER[a.title.toLowerCase()] -
+        RIGHT_SIDE_CATEGORIES_ORDER[b.title.toLowerCase()],
+    );
+
+  return {
+    leftSideCategoryLinks,
+    rightSideCategoryLinks,
+  };
 }

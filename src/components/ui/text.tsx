@@ -11,6 +11,7 @@ const textVariants = cva("", {
       strileTroughInactive: ["line-through", "text-textInactiveColor"],
       inactive: ["text-textInactiveColor"],
       undrleineWithColors: ["underline", "text-highlightColor"],
+      uppercaseWithColors: ["uppercase", "text-highlightColor"],
     },
     size: {
       default: ["text-textBaseSize"],

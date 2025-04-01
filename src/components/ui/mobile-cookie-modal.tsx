@@ -1,42 +1,35 @@
-import { useEffect, useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { Text } from "@/components/ui/text";
 import { CookieContent } from "@/app/(content)/privacy-policy/cookie-content";
 
 import { Button } from "./button";
-import { defaultCookiePreferences } from "./cookie-banner";
 
-export function MobileCookieModal() {
-  const [preferences, setPreferences] = useState(defaultCookiePreferences);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const cookieConsent = localStorage.getItem("cookieConsent");
-    if (!cookieConsent) {
-      setIsVisible(true);
-    }
-  }, []);
-
-  const handleSaveCookies = () => {
-    localStorage.setItem("cookieConsent", JSON.stringify(preferences));
-    setIsVisible(false);
+interface Props {
+  isVisible: boolean;
+  preferences: {
+    functional: boolean;
+    statistical: boolean;
+    advertising_social_media: boolean;
+    experience: boolean;
   };
+  handleSaveCookies: () => void;
+  handlePreferenceChange: (key: string, value: boolean) => void;
+}
 
-  const handlePreferenceChange = (key: string, value: boolean) => {
-    setPreferences((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
+export function MobileCookieModal({
+  isVisible,
+  preferences,
+  handleSaveCookies,
+  handlePreferenceChange,
+}: Props) {
   if (!isVisible) return null;
 
   return (
     <DialogPrimitives.Root>
       <div className="flex flex-col items-start gap-6 p-2.5">
         <Text className="tracking-wider">
-          We use cookies to enhance the functionality of the website.You can
+          we use cookies to enhance the functionality of the website.You can
           disable cookies in your browser settings.
           <DialogPrimitives.Trigger asChild>
             <Button variant="underline" className="inline">
@@ -66,7 +59,7 @@ export function MobileCookieModal() {
             </DialogPrimitives.Close>
           </div>
 
-          <div className="no-scroll-bar border-textInactiveColor-500 overflow-y-auto border-b border-solid px-5">
+          <div className="border-textInactiveColor-500 overflow-y-auto border-b border-solid px-5">
             <CookieContent
               preferences={preferences}
               onPreferenceChange={handlePreferenceChange}
