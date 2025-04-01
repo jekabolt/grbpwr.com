@@ -17,6 +17,7 @@ function Trigger() {
 
 export default function Size() {
   const { dictionary } = useDataContext();
+  const { defaultValue: category } = useFilterQueryParams("topCategoryIds");
   const { defaultValue: gender } = useFilterQueryParams("gender");
   const { defaultValue: size, handleFilterChange } =
     useFilterQueryParams("size");
@@ -38,6 +39,7 @@ export default function Size() {
     if (sizeId) {
       try {
         const searchParams = {
+          topCategoryIds: category,
           gender,
           size: sizeId,
         };
@@ -71,6 +73,7 @@ export default function Size() {
           defaultValue={selectedSize}
           handleFilterChange={handleSizeClick}
           values={sizeNames || []}
+          topCategoryId={category}
         />
       </div>
       <div className="fixed inset-x-2.5 bottom-0 flex justify-between gap-2 bg-bgColor">
@@ -88,7 +91,7 @@ export default function Size() {
           variant="main"
           onClick={() => handleFilterChange(selectedSize)}
         >
-          show {selectedSize && total > 0 ? `${total} items` : ""}
+          show {selectedSize && total > 0 ? `[${total}]` : ""}
         </Button>
       </div>
     </GenericPopover>

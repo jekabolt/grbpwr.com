@@ -4,11 +4,7 @@ import Link from "next/link";
 import { GENDER_MAP } from "@/constants";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
-import {
-  CATEGORY_TITLE_MAP,
-  filterNavigationLinks,
-  processCategories,
-} from "@/lib/categories-map";
+import { filterNavigationLinks, processCategories } from "@/lib/categories-map";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 
@@ -154,9 +150,7 @@ function LinksGroup({
             {filteredLeftSideCategoryLinks.map((link) => (
               <div className="w-full" key={link.href}>
                 <Button className="hover:underline" asChild>
-                  <Link href={link.href}>
-                    {CATEGORY_TITLE_MAP[link.title] || link.title}
-                  </Link>
+                  <Link href={link.href}>{link.title}</Link>
                 </Button>
               </div>
             ))}

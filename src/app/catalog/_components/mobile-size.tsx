@@ -12,6 +12,8 @@ import useFilterQueryParams from "./useFilterQueryParams";
 export function MobileSize() {
   const { dictionary } = useDataContext();
   const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
+  const { defaultValue: topCategory } = useFilterQueryParams("topCategoryIds");
+
   const sordedSizes = dictionary?.sizes?.sort((a, b) => {
     return (a.id || 0) - (b.id || 0);
   });
@@ -45,6 +47,7 @@ export function MobileSize() {
               defaultValue={defaultValue || ""}
               handleFilterChange={handleFilterChange}
               values={sizeNames || []}
+              topCategoryId={topCategory}
             />
           </div>
         </DialogPrimitives.Content>
