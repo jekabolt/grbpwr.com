@@ -112,7 +112,7 @@ export function VerticalCarousel({ archives }: CarouselProps) {
                   !isHighlighted ? "lg:w-96" : ""
                 }`}
               >
-                <Link href={archive.slug || ""}>
+                <Link href={`/archive/${archive.id}`}>
                   <ImageComponent
                     src={archive.media?.[0].media?.fullSize?.mediaUrl || ""}
                     alt={archive.heading + " " + index}
