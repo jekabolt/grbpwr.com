@@ -112,7 +112,9 @@ export function ActiveCategoryMenuDialog({
       <div className="flex flex-col gap-5">
         <DialogPrimitives.Close asChild>
           <Button asChild className="uppercase">
-            <Link href="/catalog">garments</Link>
+            <Link href={`/catalog?gender=${GENDER_MAP[activeCategory || ""]}`}>
+              all
+            </Link>
           </Button>
         </DialogPrimitives.Close>
         {filteredLeftSideCategories.map((link) => (
