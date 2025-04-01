@@ -20,7 +20,7 @@ export default function FilterOptionButtons({
         <Button
           onClick={() => handleFilterChange(factor.id + "")}
           className={cn(
-            "block border border-transparent px-5 hover:border-textColor",
+            "block border-b border-transparent px-5 uppercase hover:border-textColor",
             {
               "border-textColor": factor.id + "" === defaultValue,
             },
