@@ -10,6 +10,7 @@ export default function FlexibleLayout({
   headerType,
   headerProps,
   mobileHeaderType,
+  // mobileHeaderProps,
   footerType,
   theme,
   className,
@@ -51,6 +52,9 @@ type Props = {
     center?: string;
     right?: string;
     link?: string;
+  };
+  mobileHeaderProps?: {
+    className?: string;
   };
   footerType?: "mini" | "regular";
   theme?: "light" | "dark";
