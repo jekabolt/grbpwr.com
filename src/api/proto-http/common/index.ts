@@ -314,6 +314,7 @@ export type PaymentInsert = {
   payee: string | undefined;
   clientSecret: string | undefined;
   isTransactionDone: boolean | undefined;
+  expiredAt: wellKnownTimestamp | undefined;
 };
 
 // PaymentMethod represents the payment_method table
@@ -446,8 +447,6 @@ export type Dictionary = {
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
-  careInstructions: { [key: string]: string } | undefined;
-  composition: { [key: string]: string } | undefined;
 };
 
 export type Genders = {

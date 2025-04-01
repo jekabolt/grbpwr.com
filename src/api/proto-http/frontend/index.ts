@@ -237,8 +237,6 @@ export type common_Dictionary = {
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
-  careInstructions: { [key: string]: string } | undefined;
-  composition: { [key: string]: string } | undefined;
 };
 
 // Category represents a hierarchical category structure
@@ -449,7 +447,6 @@ export type common_BuyerInsert = {
 export type SubmitOrderResponse = {
   orderUuid: string | undefined;
   orderStatus: common_OrderStatusEnum | undefined;
-  expiredAt: wellKnownTimestamp | undefined;
   payment: common_PaymentInsert | undefined;
 };
 
@@ -462,6 +459,7 @@ export type common_PaymentInsert = {
   payee: string | undefined;
   clientSecret: string | undefined;
   isTransactionDone: boolean | undefined;
+  expiredAt: wellKnownTimestamp | undefined;
 };
 
 export type GetOrderByUUIDRequest = {

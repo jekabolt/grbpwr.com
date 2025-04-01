@@ -14,7 +14,6 @@ import { Text } from "@/components/ui/text";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
-import { MobileProductsCarousel } from "./mobile-products-carousel";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
 import { PriceSummary } from "./price-summary";
@@ -126,6 +125,7 @@ export default function NewOrderForm() {
 
         const paymentType = newOrderResponse.order?.payment?.paymentMethod;
         switch (paymentType) {
+          case "PAYMENT_METHOD_NAME_ENUM_USDT_TRON":
           case "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA":
             router.push(`/payment/${newOrderResponse.order?.orderUuid}/crypto`);
             break;
