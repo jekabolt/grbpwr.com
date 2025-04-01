@@ -16,6 +16,7 @@ export function getProductsPagedQueryParams({
   sort,
   order,
   topCategoryIds,
+  subCategoryIds,
   gender,
   size,
   sale,
@@ -24,6 +25,7 @@ export function getProductsPagedQueryParams({
   sort?: string | null;
   order?: string | null;
   topCategoryIds?: string | null;
+  subCategoryIds?: string | null;
   gender?: string | null;
   size?: string | null;
   sale?: string | null;
@@ -32,13 +34,19 @@ export function getProductsPagedQueryParams({
   GetProductsPagedRequest,
   "sortFactors" | "orderFactor" | "filterConditions"
 > {
+
+  const genderEnums = gender ? [
+    gender as common_GenderEnum,
+    ...(gender === 'GENDER_ENUM_MALE' || gender === 'GENDER_ENUM_FEMALE' ? ['GENDER_ENUM_UNISEX' as common_GenderEnum] : [])
+  ] : undefined;
+
   // todo: validate params before make a request
   return {
     sortFactors: sort ? [sort as common_SortFactor] : undefined,
     orderFactor: order ? (order as common_OrderFactor) : undefined,
     filterConditions: {
       topCategoryIds: topCategoryIds ? [parseInt(topCategoryIds)] : undefined,
-      subCategoryIds: undefined,
+      subCategoryIds: subCategoryIds ? [parseInt(subCategoryIds)] : undefined,
       typeIds: undefined,
       sizesIds: size ? [parseInt(size)] : undefined,
       from: undefined,
@@ -47,7 +55,7 @@ export function getProductsPagedQueryParams({
       color: undefined,
       preorder: undefined,
       byTag: tag ? tag : undefined,
-      gender: gender ? [gender as common_GenderEnum] : undefined,
+      gender: genderEnums,
     },
   };
 }

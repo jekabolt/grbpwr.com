@@ -21,7 +21,7 @@ export function ArchiveItem({
             <div key={m.id} className={cn("group relative", className)}>
               <Image
                 src={m.media?.fullSize?.mediaUrl || ""}
-                alt="archive media"
+                alt="archive item"
                 aspectRatio={calculateAspectRatio(
                   m.media?.fullSize?.width,
                   m.media?.fullSize?.height,

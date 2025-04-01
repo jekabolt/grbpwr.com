@@ -314,6 +314,7 @@ export type PaymentInsert = {
   payee: string | undefined;
   clientSecret: string | undefined;
   isTransactionDone: boolean | undefined;
+  expiredAt: wellKnownTimestamp | undefined;
 };
 
 // PaymentMethod represents the payment_method table
@@ -446,8 +447,8 @@ export type Dictionary = {
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
-  careInstructions: { [key: string]: string } | undefined;
-  composition: { [key: string]: string } | undefined;
+  bigMenu: boolean | undefined;
+  topCategories: TopCategoryCount[] | undefined;
 };
 
 export type Genders = {
@@ -463,6 +464,12 @@ export type OrderFactors = {
 export type SortFactors = {
   id: SortFactor | undefined;
   name: string | undefined;
+};
+
+export type TopCategoryCount = {
+  categoryId: number | undefined;
+  categoryName: string | undefined;
+  count: number | undefined;
 };
 
 // CurrencyRate represents the rate of a currency with a description.

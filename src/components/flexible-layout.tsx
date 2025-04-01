@@ -34,7 +34,7 @@ export default function FlexibleLayout({
         </div>
       )}
 
-      <div className="w-full space-y-32">{children}</div>
+      <div className="w-full">{children}</div>
 
       {footerType === "mini" && <MiniFooter theme={theme} />}
       {footerType === "regular" && <Footer />}

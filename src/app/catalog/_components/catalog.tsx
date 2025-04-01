@@ -8,20 +8,20 @@ import {
 } from "@/lib/categories-map";
 import { useDataContext } from "@/components/DataContext";
 import { Text } from "@/components/ui/text";
-import { InfinityScrollCatalog } from "@/app/catalog/_components/infinity-scroll-catalog";
 
 import Category from "./Category";
 import { EmptyCatalog } from "./empty-catalog";
-import { MobileSize } from "./mobile-size";
-import { MobileSort } from "./mobile-sort";
+import { InfinityScrollCatalog } from "./infinity-scroll-catalog";
+import Size from "./Size";
+import Sort from "./Sort";
 import useFilterQueryParams from "./useFilterQueryParams";
 
-export function MobileCatalog({
-  firstPageItems,
+export default function Catalog({
   total,
+  firstPageItems,
 }: {
-  firstPageItems: common_Product[];
   total: number;
+  firstPageItems: common_Product[];
 }) {
   const { dictionary } = useDataContext();
   const { defaultValue: gender } = useFilterQueryParams("gender");
@@ -36,19 +36,17 @@ export function MobileCatalog({
   );
 
   return (
-    <div className="flex flex-col space-y-5 px-2.5 pb-10 pt-2">
-      <div className="sticky top-5 z-20 space-y-5">
-        <div className="w-full overflow-x-auto">
-          <Category />
-        </div>
-        <div className="flex w-full justify-between py-3">
-          <MobileSort />
-          <MobileSize />
+    <div className="flex flex-col gap-6 px-7 pt-24">
+      <div className="sticky top-20 z-10 flex items-start justify-between">
+        <Category />
+        <div className="flex w-auto gap-24">
+          <Sort />
+          <Size />
         </div>
       </div>
       {total > 0 ? (
         <div>
-          <Text className="w-full lowercase">{categoryDescription}</Text>
+          <Text className="w-2/3 lowercase">{categoryDescription}</Text>
           <InfinityScrollCatalog
             firstPageItems={firstPageItems}
             total={total}
