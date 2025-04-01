@@ -22,7 +22,6 @@ export const CATEGORIES_ORDER: Record<string, number> = {
   accessories: 5,
   shoes: 6,
   bags: 7,
-  objects: 8,
 }
 
 export const LEFT_SIDE_CATEGORIES = [

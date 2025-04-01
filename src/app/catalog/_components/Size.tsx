@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import GenericPopover from "@/components/ui/popover";
@@ -18,11 +19,20 @@ function Trigger() {
 export default function Size() {
   const { dictionary } = useDataContext();
   const { defaultValue: category } = useFilterQueryParams("topCategoryIds");
+  const { defaultValue: subCategory } = useFilterQueryParams("subCategoryIds");
   const { defaultValue: gender } = useFilterQueryParams("gender");
   const { defaultValue: size, handleFilterChange } =
     useFilterQueryParams("size");
   const [total, setTotal] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string>(size || "");
+
+  useEffect(() => {
+    if (!size) {
+      setSelectedSize("");
+      setTotal(0);
+    }
+  }, [size]);
+
   const sortedSizes = dictionary?.sizes?.sort((a, b) => {
     return (a.id || 0) - (b.id || 0);
   });
@@ -40,6 +50,7 @@ export default function Size() {
       try {
         const searchParams = {
           topCategoryIds: category,
+          subCategoryIds: subCategory,
           gender,
           size: sizeId,
         };
@@ -68,7 +79,11 @@ export default function Size() {
       title="size"
       openElement={<Trigger />}
     >
-      <div className="mb-10 grid h-full grid-cols-4 gap-x-2 gap-y-6 px-2 py-6">
+      <div
+        className={cn("grid h-full grid-cols-4 gap-x-2 gap-y-6 px-2 py-6", {
+          "mb-10": selectedSize,
+        })}
+      >
         <FilterOptionButtons
           defaultValue={selectedSize}
           handleFilterChange={handleSizeClick}
@@ -76,24 +91,26 @@ export default function Size() {
           topCategoryId={category}
         />
       </div>
-      <div className="fixed inset-x-2.5 bottom-0 flex justify-between gap-2 bg-bgColor">
-        <Button
-          className="w-full uppercase"
-          size="lg"
-          variant="main"
-          onClick={() => handleFilterChange(undefined)}
-        >
-          clear all
-        </Button>
-        <Button
-          className="w-full uppercase"
-          size="lg"
-          variant="main"
-          onClick={() => handleFilterChange(selectedSize)}
-        >
-          show {selectedSize && total > 0 ? `[${total}]` : ""}
-        </Button>
-      </div>
+      {selectedSize && (
+        <div className="fixed inset-x-2.5 bottom-0 flex justify-between gap-2 bg-bgColor">
+          <Button
+            className="w-full uppercase"
+            size="lg"
+            variant="main"
+            onClick={() => handleFilterChange(undefined)}
+          >
+            clear all
+          </Button>
+          <Button
+            className="w-full uppercase"
+            size="lg"
+            variant="main"
+            onClick={() => handleFilterChange(selectedSize)}
+          >
+            show {selectedSize && total > 0 ? `[${total}]` : ""}
+          </Button>
+        </div>
+      )}
     </GenericPopover>
   );
 }

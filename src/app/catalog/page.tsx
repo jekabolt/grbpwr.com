@@ -1,6 +1,7 @@
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
+import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
@@ -33,7 +34,7 @@ export default async function CatalogPage(props: CatalogPageProps) {
   });
 
   return (
-    <FlexibleLayout headerType="catalog" footerType="regular" transparent>
+    <FlexibleLayout headerType="catalog" footerType="regular">
       <div className="block lg:hidden">
         <MobileCatalog
           firstPageItems={response.products || []}
@@ -46,18 +47,26 @@ export default async function CatalogPage(props: CatalogPageProps) {
           firstPageItems={response.products || []}
         />
       </div>
-      <div className="flex justify-center pb-5 pt-16">
-        <NextCategoryButton />
+      <div
+        className={cn("block", {
+          hidden: !response.total,
+        })}
+      >
+        <div className="flex justify-center pb-5 pt-16">
+          <NextCategoryButton />
+        </div>
+        <div>
+          {hero?.entities
+            ?.filter((e) => e.type === "HERO_TYPE_FEATURED_ARCHIVE")
+            .map((e, i) => (
+              <HeroArchive
+                entity={e}
+                key={i}
+                className="space-y-12 pb-40 pt-14 lg:py-32"
+              />
+            ))}
+        </div>
       </div>
-      {hero?.entities
-        ?.filter((e) => e.type === "HERO_TYPE_FEATURED_ARCHIVE")
-        .map((e, i) => (
-          <HeroArchive
-            entity={e}
-            key={i}
-            className="space-y-12 pb-40 pt-14 lg:py-32"
-          />
-        ))}
     </FlexibleLayout>
   );
 }

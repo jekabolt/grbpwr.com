@@ -4,7 +4,6 @@ import { GENDER_MAP_REVERSE } from "@/constants";
 import {
   getSubCategoriesForTopCategory,
   getTopCategoryName,
-  processCategories,
 } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
@@ -60,7 +59,7 @@ export default function Category() {
                       ? "underline"
                       : "default"
                   }
-                  className={cn("uppercase hover:underline", {
+                  className={cn("whitespace-nowrap uppercase hover:underline", {
                     "text-textInactiveColor":
                       subCategory &&
                       subCategory !== subCategoryItem.id.toString(),
@@ -71,7 +70,7 @@ export default function Category() {
                 >
                   {subCategoryItem.name.replace("_", " ")}
                 </Button>
-                {index < subCategories.length - 1 && <Text>/</Text>}
+                {index < filteredSubCategories.length - 1 && <Text>/</Text>}
               </div>
             ))}
           </div>
@@ -83,21 +82,25 @@ export default function Category() {
 
 function AllCategories() {
   const { dictionary } = useDataContext();
-  const { defaultValue, handleFilterChange } =
-    useFilterQueryParams("topCategoryIds");
+  const { handleFilterChange } = useFilterQueryParams("topCategoryIds");
   const categories = dictionary?.categories || [];
-  const allTopCategories = processCategories(categories);
-  // TODO: do not display objects here
+  const topCategories = dictionary?.topCategories
+    ?.filter((c) => c.categoryName !== "objects")
+    .sort((a, b) => (a.categoryId || 0) - (b.categoryId || 0));
+
   return (
-    <div className="flex gap-2">
-      {allTopCategories.map((c) => (
-        <Button
-          key={c.id}
-          onClick={() => handleFilterChange(c.id.toString())}
-          className="uppercase hover:underline"
-        >
-          {c.name} /
-        </Button>
+    <div className="flex items-center gap-2">
+      {topCategories?.map((c, i) => (
+        <div className="flex items-center gap-2" key={c.categoryId}>
+          <Button
+            onClick={() => handleFilterChange(c.categoryId?.toString() || "")}
+            className="uppercase hover:underline"
+            disabled={c.count === 0}
+          >
+            {getTopCategoryName(categories, c.categoryId || 0)}
+          </Button>
+          {i < topCategories.length - 1 && <Text>/</Text>}
+        </div>
       ))}
     </div>
   );

@@ -237,8 +237,8 @@ export type common_Dictionary = {
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
-  careInstructions: { [key: string]: string } | undefined;
-  composition: { [key: string]: string } | undefined;
+  bigMenu: boolean | undefined;
+  topCategories: common_TopCategoryCount[] | undefined;
 };
 
 // Category represents a hierarchical category structure
@@ -326,6 +326,12 @@ export type common_SortFactor =
   | "SORT_FACTOR_UPDATED_AT"
   | "SORT_FACTOR_NAME"
   | "SORT_FACTOR_PRICE";
+export type common_TopCategoryCount = {
+  categoryId: number | undefined;
+  categoryName: string | undefined;
+  count: number | undefined;
+};
+
 // CurrencyMap represents a map of currency codes to their rates.
 export type common_CurrencyMap = {
   currencies: { [key: string]: common_CurrencyRate } | undefined;
@@ -449,7 +455,6 @@ export type common_BuyerInsert = {
 export type SubmitOrderResponse = {
   orderUuid: string | undefined;
   orderStatus: common_OrderStatusEnum | undefined;
-  expiredAt: wellKnownTimestamp | undefined;
   payment: common_PaymentInsert | undefined;
 };
 
@@ -462,6 +467,7 @@ export type common_PaymentInsert = {
   payee: string | undefined;
   clientSecret: string | undefined;
   isTransactionDone: boolean | undefined;
+  expiredAt: wellKnownTimestamp | undefined;
 };
 
 export type GetOrderByUUIDRequest = {

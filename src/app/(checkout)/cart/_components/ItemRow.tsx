@@ -28,7 +28,7 @@ export default function ItemRow({
     <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
       <div className="min-w-[90px]">
         <Image
-          src={product.thumbnail ?? null}
+          src={product.thumbnail || ""}
           alt="product"
           fit="contain"
           aspectRatio="3/4"

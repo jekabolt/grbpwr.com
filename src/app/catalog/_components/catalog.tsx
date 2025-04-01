@@ -10,6 +10,7 @@ import { useDataContext } from "@/components/DataContext";
 import { Text } from "@/components/ui/text";
 
 import Category from "./Category";
+import { EmptyCatalog } from "./empty-catalog";
 import { InfinityScrollCatalog } from "./infinity-scroll-catalog";
 import Size from "./Size";
 import Sort from "./Sort";
@@ -34,7 +35,6 @@ export default function Catalog({
     gender as common_GenderEnum,
   );
 
-  console.log(gender);
   return (
     <div className="flex flex-col gap-6 px-7 pt-24">
       <div className="sticky top-20 z-10 flex items-start justify-between">
@@ -44,8 +44,19 @@ export default function Catalog({
           <Size />
         </div>
       </div>
-      <Text className="w-2/3 lowercase">{categoryDescription}</Text>
-      <InfinityScrollCatalog firstPageItems={firstPageItems} total={total} />
+      {total > 0 ? (
+        <div>
+          <Text className="w-2/3 lowercase">{categoryDescription}</Text>
+          <InfinityScrollCatalog
+            firstPageItems={firstPageItems}
+            total={total}
+          />
+        </div>
+      ) : (
+        <div className="h-screen w-full">
+          <EmptyCatalog />
+        </div>
+      )}
     </div>
   );
 }
