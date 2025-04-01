@@ -17,7 +17,7 @@ export function HorizontalGrid({
       <div className="flex flex-wrap gap-x-2 gap-y-6 lg:gap-x-4 lg:gap-y-10">
         {archives.map((archive, index) => (
           <Link
-            href={archive.slug || ""}
+            href={`/archive/${archive.id}`}
             key={archive.id}
             className="block space-y-2"
           >
