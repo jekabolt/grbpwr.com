@@ -40,7 +40,7 @@ export default function CopyText({
 
     if (!cutText) return text;
 
-    return text.slice(0, cutText);
+    return `${text.slice(0, cutText)}...`;
   };
 
   return (

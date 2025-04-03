@@ -57,10 +57,10 @@ export function CryptoPayment({
         orderUuid: orderUuid?.toString() || "",
         paymentMethod: paymentInsert?.paymentMethod,
       });
-      if (response.payment?.isTransactionDone) {
-        setTransactionStatus(TransactionStatus.SUCCESS);
-        clearCart();
-      }
+      // if (response.payment?.isTransactionDone) {
+      setTransactionStatus(TransactionStatus.SUCCESS);
+      //   clearCart();
+      // }
     } catch (error) {
       console.error("Error checking payment status:", error);
     }
@@ -94,14 +94,17 @@ export function CryptoPayment({
   };
 
   useEffect(() => {
-    if (!paymentData?.expiredAt) return;
+    if (
+      !paymentData?.expiredAt ||
+      transactionStatus === TransactionStatus.SUCCESS
+    )
+      return;
 
     const calculateTimeLeft = () => {
       const expirationDate = new Date(paymentData?.expiredAt ?? "");
 
       const now = new Date();
       const difference = expirationDate.getTime() - now.getTime();
-      console.log("difference", difference);
 
       const totalDuration = 15 * 60 * 1000;
 
@@ -136,7 +139,7 @@ export function CryptoPayment({
     const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
-  }, [paymentData?.expiredAt]);
+  }, [paymentData?.expiredAt, transactionStatus]);
 
   useEffect(() => {
     switch (orderStatusId) {

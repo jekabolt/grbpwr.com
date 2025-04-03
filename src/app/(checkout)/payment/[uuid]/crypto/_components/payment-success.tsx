@@ -18,7 +18,7 @@ export function PaymentSuccess({
   originalAmount,
 }: Props) {
   return (
-    <div className="flex flex-col items-center justify-center gap-10">
+    <div className="flex w-full flex-col items-center justify-center gap-10 lg:w-auto">
       <WhiteLogo className="aspect-square w-28" />
       <div className="space-y-4 text-center">
         <div className="flex items-center justify-center gap-2">
@@ -37,7 +37,12 @@ export function PaymentSuccess({
         <Text variant="uppercase">order reference:</Text>
         <CopyText text={orderUuid || ""} variant="underlined" cutText={4} />
       </div>
-      <Button variant="main" size="lg" asChild className="w-full uppercase">
+      <Button
+        variant="main"
+        size="lg"
+        asChild
+        className="w-full uppercase lg:w-auto"
+      >
         <Link href={`/order/${orderUuid}`}>order info</Link>
       </Button>
     </div>
