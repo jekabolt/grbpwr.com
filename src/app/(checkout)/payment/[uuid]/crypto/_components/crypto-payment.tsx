@@ -49,6 +49,7 @@ export function CryptoPayment({
     paymentInsert?.transactionAmountPaymentCurrency?.value || "",
   );
   const clearCart = useCart((cart) => cart.clearCart);
+  const [paymentData, setPaymentData] = useState(paymentInsert);
 
   const checkPaymentStatus = async () => {
     try {
@@ -78,22 +79,29 @@ export function CryptoPayment({
 
   const renewPayment = async () => {
     try {
-      const orderResponse = await serviceClient.GetOrderByUUID({
+      const response = await serviceClient.GetOrderInvoice({
         orderUuid: orderUuid?.toString() || "",
+        paymentMethod: paymentInsert?.paymentMethod,
       });
-      orderResponse && setTransactionStatus(TransactionStatus.PENDING);
+      if (response.payment) {
+        setPaymentData(response.payment);
+        setTransactionStatus(TransactionStatus.PENDING);
+        setProgressPercentage(0);
+      }
     } catch (error) {
       console.error("Error renewing payment:", error);
     }
   };
 
   useEffect(() => {
-    if (!paymentInsert?.expiredAt) return;
+    if (!paymentData?.expiredAt) return;
 
     const calculateTimeLeft = () => {
-      const expirationDate = new Date(paymentInsert?.expiredAt ?? "");
+      const expirationDate = new Date(paymentData?.expiredAt ?? "");
+
       const now = new Date();
       const difference = expirationDate.getTime() - now.getTime();
+      console.log("difference", difference);
 
       const totalDuration = 15 * 60 * 1000;
 
@@ -128,7 +136,7 @@ export function CryptoPayment({
     const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
-  }, [paymentInsert?.expiredAt]);
+  }, [paymentData?.expiredAt]);
 
   useEffect(() => {
     switch (orderStatusId) {
@@ -157,7 +165,7 @@ export function CryptoPayment({
           case TransactionStatus.PENDING:
             return (
               <PaymentPending
-                paymentInsert={paymentInsert}
+                paymentInsert={paymentData}
                 orderUuid={orderUuid || ""}
                 qrBase64Code={qrBase64Code}
                 timeLeft={timeLeft}
@@ -167,23 +175,23 @@ export function CryptoPayment({
                 cancelPayment={cancelPayment}
               />
             );
-          case TransactionStatus.SUCCESS:
-            return (
-              <PaymentSuccess
-                orderUuid={orderUuid || ""}
-                formattedAmount={formattedAmount}
-              />
-            );
           case TransactionStatus.EXPIRED:
             return (
               <PaymentExpired
-                paymentInsert={paymentInsert}
+                paymentInsert={paymentData}
                 orderUuid={orderUuid || ""}
                 timeLeft={timeLeft}
                 progressPercentage={progressPercentage}
                 formattedAmount={formattedAmount}
                 renewPayment={renewPayment}
                 checkPaymentStatus={checkPaymentStatus}
+              />
+            );
+          case TransactionStatus.SUCCESS:
+            return (
+              <PaymentSuccess
+                orderUuid={orderUuid || ""}
+                formattedAmount={formattedAmount}
               />
             );
           default:
