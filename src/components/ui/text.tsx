@@ -47,11 +47,16 @@ export function Text({
   ...props
 }: Props) {
   const Component = component;
+  // Extract variant classes
+  const variantClasses = textVariants({ variant, size });
+
+  // Combine classes, ensuring className comes last to override variant text colors
+  const combinedClasses = className
+    ? `${variantClasses} ${className}`
+    : variantClasses;
+
   return (
-    <Component
-      {...props}
-      className={textVariants({ variant, size, className })}
-    >
+    <Component {...props} className={combinedClasses}>
       {children}
     </Component>
   );

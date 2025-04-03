@@ -2,8 +2,9 @@ import { notFound, redirect } from "next/navigation";
 import QRCode from "qrcode";
 
 import { serviceClient } from "@/lib/api";
+import FlexibleLayout from "@/components/flexible-layout";
 
-import { QrCode } from "../../[uuid]/crypto/_components/qr-code";
+import { CryptoPayment } from "./_components/crypto-payment";
 
 interface Props {
   params: Promise<{
@@ -16,25 +17,19 @@ export default async function Page(props: Props) {
   const { uuid } = params;
 
   let orderResponse;
+
   try {
     orderResponse = await serviceClient.GetOrderByUUID({ orderUuid: uuid });
   } catch (error) {
-    notFound();
-    // add error handling
+    console.error("Error fetching order:", error);
   }
 
-  console.log("orderResponse", orderResponse.order?.order?.orderStatusId);
-  const paymentInsert = orderResponse.order?.payment?.paymentInsert;
+  const paymentInsert = orderResponse?.order?.payment?.paymentInsert;
 
   if (paymentInsert?.paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA") {
     notFound();
   }
 
-  // const euroAmount =
-  //   order?.payment?.paymentInsert?.transactionAmount?.value || "";
-  // const cryptoAmount =
-  //   order?.payment?.paymentInsert?.transactionAmountPaymentCurrency?.value ||
-  //   "";
   const payeeAddress = paymentInsert?.payee || "";
   const qrBase64Code = await QRCode.toDataURL(payeeAddress);
 
@@ -43,13 +38,18 @@ export default async function Page(props: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-5xl">
-      <QrCode
-        paymentInsert={paymentInsert}
-        qrBase64Code={qrBase64Code}
-        orderUuid={orderResponse.order?.order?.uuid}
-        orderStatusId={orderResponse.order?.order?.orderStatusId}
-      />
-    </div>
+    <FlexibleLayout
+      headerType="flexible"
+      headerProps={{ left: "< back", link: "checkout", hidden: true }}
+    >
+      <div className="flex h-screen w-full items-start justify-center">
+        <CryptoPayment
+          paymentInsert={paymentInsert}
+          qrBase64Code={qrBase64Code}
+          orderUuid={orderResponse?.order?.order?.uuid}
+          orderStatusId={orderResponse?.order?.order?.orderStatusId}
+        />
+      </div>
+    </FlexibleLayout>
   );
 }
