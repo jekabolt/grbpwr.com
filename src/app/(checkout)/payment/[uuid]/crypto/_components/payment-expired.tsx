@@ -10,6 +10,7 @@ interface ExpiredProps extends Props {
   timeLeft: string;
   progressPercentage: number;
   formattedAmount: string;
+  originalAmount: string;
   renewPayment: () => void;
   checkPaymentStatus: () => void;
 }
@@ -20,6 +21,7 @@ export function PaymentExpired({
   timeLeft,
   progressPercentage,
   formattedAmount,
+  originalAmount,
   renewPayment,
   checkPaymentStatus,
 }: ExpiredProps) {
@@ -32,7 +34,7 @@ export function PaymentExpired({
         <Text variant="uppercase">order has been expired</Text>
         <div className="space-y-2">
           <div className="flex items-center justify-center gap-2">
-            <CopyText text={formattedAmount} />
+            <CopyText text={originalAmount} displayText={formattedAmount} />
             <Text variant="uppercase">usdt</Text>
           </div>
           <Text variant="inactive">

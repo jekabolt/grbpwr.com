@@ -10,12 +10,14 @@ import { CopyIcon } from "./icons/copy-icon";
 
 interface Props {
   text: string;
+  displayText?: string;
   cutText?: number;
   variant?: "inactive" | "underlined" | "default";
 }
 
 export default function CopyText({
   text,
+  displayText,
   cutText,
   variant = "default",
 }: Props) {
@@ -32,6 +34,15 @@ export default function CopyText({
       console.error("failed to copy text", e);
     }
   };
+
+  const getDisplayText = () => {
+    if (displayText) return displayText;
+
+    if (!cutText) return text;
+
+    return text.slice(0, cutText);
+  };
+
   return (
     <div className="flex h-4 items-center gap-1">
       <Text
@@ -40,9 +51,7 @@ export default function CopyText({
         onClick={handleCopy}
         className="cursor-pointer"
       >
-        {cutText && text.length > cutText
-          ? `${text.slice(0, cutText)}...`
-          : text}
+        {getDisplayText()}
       </Text>
       <Button size="sm" onClick={handleCopy} asChild>
         {isCopied ? (

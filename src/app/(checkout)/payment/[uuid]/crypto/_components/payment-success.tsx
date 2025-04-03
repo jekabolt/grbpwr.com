@@ -9,9 +9,14 @@ import { Text } from "@/components/ui/text";
 interface Props {
   orderUuid: string;
   formattedAmount: string;
+  originalAmount: string;
 }
 
-export function PaymentSuccess({ orderUuid, formattedAmount }: Props) {
+export function PaymentSuccess({
+  orderUuid,
+  formattedAmount,
+  originalAmount,
+}: Props) {
   return (
     <div className="flex flex-col items-center justify-center gap-10">
       <WhiteLogo className="aspect-square w-28" />
@@ -22,7 +27,10 @@ export function PaymentSuccess({ orderUuid, formattedAmount }: Props) {
         </div>
         <div className="space-y-2">
           <Text>we have received payment amount of</Text>
-          <Text>{formattedAmount} USDT</Text>
+          <div className="flex items-center justify-center gap-2">
+            <CopyText text={originalAmount} displayText={formattedAmount} />
+            <Text variant="uppercase">usdt</Text>
+          </div>
         </div>
       </div>
       <div className="flex items-center gap-2">

@@ -45,9 +45,9 @@ export function CryptoPayment({
   );
   const [timeLeft, setTimeLeft] = useState("");
   const [progressPercentage, setProgressPercentage] = useState(0);
-  const formattedAmount = formatNumber(
-    paymentInsert?.transactionAmountPaymentCurrency?.value || "",
-  );
+  const originalAmount =
+    paymentInsert?.transactionAmountPaymentCurrency?.value || "";
+  const formattedAmount = formatNumber(originalAmount);
   const clearCart = useCart((cart) => cart.clearCart);
   const [paymentData, setPaymentData] = useState(paymentInsert);
 
@@ -170,6 +170,7 @@ export function CryptoPayment({
                 qrBase64Code={qrBase64Code}
                 timeLeft={timeLeft}
                 formattedAmount={formattedAmount}
+                originalAmount={originalAmount}
                 progressPercentage={progressPercentage}
                 checkPaymentStatus={checkPaymentStatus}
                 cancelPayment={cancelPayment}
@@ -183,6 +184,7 @@ export function CryptoPayment({
                 timeLeft={timeLeft}
                 progressPercentage={progressPercentage}
                 formattedAmount={formattedAmount}
+                originalAmount={originalAmount}
                 renewPayment={renewPayment}
                 checkPaymentStatus={checkPaymentStatus}
               />
@@ -192,6 +194,7 @@ export function CryptoPayment({
               <PaymentSuccess
                 orderUuid={orderUuid || ""}
                 formattedAmount={formattedAmount}
+                originalAmount={originalAmount}
               />
             );
           default:

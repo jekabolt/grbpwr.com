@@ -11,6 +11,7 @@ interface SuccessProps extends Props {
   timeLeft: string;
   progressPercentage: number;
   formattedAmount: string;
+  originalAmount: string;
   checkPaymentStatus: () => void;
   cancelPayment: () => void;
 }
@@ -22,6 +23,7 @@ export function PaymentPending({
   timeLeft,
   progressPercentage,
   formattedAmount,
+  originalAmount,
   checkPaymentStatus,
   cancelPayment,
 }: SuccessProps) {
@@ -33,7 +35,7 @@ export function PaymentPending({
         <Text variant="uppercase">currency usdt</Text>
         <div className="space-y-2 text-center">
           <div className="flex items-center justify-center gap-2">
-            <CopyText text={formattedAmount} />
+            <CopyText text={originalAmount} displayText={formattedAmount} />
             <Text>USDT</Text>
           </div>
           <div>
@@ -78,7 +80,7 @@ export function PaymentPending({
             <div className="space-y-2 text-center">
               <Text>send exact amount in one payment:</Text>
               <div className="flex items-center justify-center gap-2">
-                <CopyText text={formattedAmount} />
+                <CopyText text={originalAmount} displayText={formattedAmount} />
                 <Text variant="uppercase">usdt</Text>
               </div>
             </div>
