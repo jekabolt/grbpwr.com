@@ -92,17 +92,15 @@ export function Measurements({
           />
         </div>
 
-        <div className="flex w-full justify-end">
-          <Button
-            variant="main"
-            size="lg"
-            disabled={!selectedSize}
-            className="w-full uppercase sm:w-1/2"
-            onClick={handleAddToCart}
-          >
-            add to cart
-          </Button>
-        </div>
+        <Button
+          variant="main"
+          size="lg"
+          disabled={!selectedSize}
+          className="w-full uppercase"
+          onClick={handleAddToCart}
+        >
+          add to cart
+        </Button>
       </div>
     </div>
   );

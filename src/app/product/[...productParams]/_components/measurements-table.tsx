@@ -37,7 +37,7 @@ export function MeasurementsTable({
 
   if (type === "clothing") {
     if (!selectedSize) {
-      return <div>mock table</div>;
+      return <div>mock table when no size selected</div>;
     }
 
     return measurementsForSelectedSize.map((m, index) => (
@@ -49,6 +49,14 @@ export function MeasurementsTable({
         <Text>{m.value}</Text>
       </div>
     ));
+  }
+
+  if (type === "shoe") {
+    return <div>MeasurementsTable</div>;
+  }
+
+  if (type === "ring") {
+    return <div>MeasurementsTable</div>;
   }
 
   return <div>MeasurementsTable</div>;
