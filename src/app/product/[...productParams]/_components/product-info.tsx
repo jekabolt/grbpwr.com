@@ -25,6 +25,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     sizes,
     categoryId,
     gender,
+    measurements,
   } = useData({
     product,
   });
@@ -97,13 +98,14 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
               }}
               openElement="size guide"
               title="size guide"
-              className="fixed inset-[initial] bottom-0 top-0 h-screen w-[600px] lg:bottom-2.5 lg:right-2.5 lg:top-2.5 lg:h-[calc(100vh-20px)]"
+              className="fixed inset-[initial] bottom-0 top-0 h-screen w-[600px] p-2.5 lg:bottom-2.5 lg:right-2.5 lg:top-2.5 lg:h-[calc(100vh-20px)]"
             >
               <Measurements
                 id={productId}
                 sizes={sizes}
                 categoryId={categoryId}
                 gender={gender}
+                measurements={measurements}
               />
             </Modal>
           </div>

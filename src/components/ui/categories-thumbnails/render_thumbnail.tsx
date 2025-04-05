@@ -14,7 +14,6 @@ interface CategoryThumbnailProps {
 export function CategoryThumbnail({
   categoryId,
   className,
-  size = 400,
   gender,
 }: CategoryThumbnailProps) {
   const IconComponent = getIconByCategoryId(categoryId, gender);
@@ -25,7 +24,7 @@ export function CategoryThumbnail({
 
   return (
     <div className={cn("flex items-center justify-center", className)}>
-      <IconComponent width={size} height={size} />
+      <IconComponent className="h-full p-3 lg:p-5" />
     </div>
   );
 }

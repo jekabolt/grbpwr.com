@@ -49,7 +49,6 @@ export default function Modal({
   if (!shouldRender) return null;
 
   const toggleModal = () => {
-    console.log("toggle");
     setModalOpen(!isModalOpen);
   };
 

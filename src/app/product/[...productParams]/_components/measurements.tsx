@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   common_GenderEnum,
+  common_ProductMeasurement,
   common_ProductSize,
 } from "@/api/proto-http/frontend";
 
@@ -10,29 +11,26 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
-import { Overlay } from "@/components/ui/overlay";
-import RadioGroupComponent from "@/components/ui/radio-group";
 import { Text } from "@/components/ui/text";
 
-const unitOptions = [
-  { label: "cm", value: "cm" },
-  { label: "inches", value: "inches" },
-];
+import { MeasurementsTable, Unit } from "./measurements-table";
 
 export function Measurements({
   id,
   sizes,
+  measurements,
   categoryId,
   gender,
 }: {
   id: number | undefined;
   sizes: common_ProductSize[] | undefined;
+  measurements: common_ProductMeasurement[];
   categoryId: number | undefined;
   gender: common_GenderEnum | undefined;
 }) {
   const { increaseQuantity } = useCart((state) => state);
   const [selectedSize, setSelectedSize] = useState<number | undefined>();
-  const [unit, setUnit] = useState("cm");
+  const [unit, setUnit] = useState(Unit.CM);
   const { dictionary } = useDataContext();
   const sizeNames = sizes?.map((s) => ({
     id: s.sizeId as number,
@@ -46,44 +44,54 @@ export function Measurements({
   };
 
   return (
-    <div className="bg-bgColor p-2.5">
-      <div className="flex h-[300px] w-full items-center justify-center bg-bgColor lg:h-[600px]">
-        <CategoryThumbnail categoryId={categoryId} gender={gender} size={400} />
-      </div>
-      <div className="flex gap-12">
-        {sizeNames?.map(({ name, id }) => (
+    <div className="bg-bgColor">
+      <CategoryThumbnail
+        categoryId={categoryId}
+        gender={gender}
+        className="h-[300px] lg:h-[400px]"
+      />
+      <div className="space-y-6">
+        <div className="flex items-center justify-center gap-x-2">
           <Button
-            key={id}
-            className={`uppercase ${selectedSize === id ? "bg-black text-white" : ""}`}
-            onClick={() => setSelectedSize(id)}
+            variant={unit === Unit.CM ? "underline" : undefined}
+            onClick={() => setUnit(Unit.CM)}
           >
-            {dictionary?.sizes?.find((dictS) => dictS.id === id)?.name || ""}
+            CM
           </Button>
-        ))}
+          <Text>/</Text>
+          <Button
+            variant={unit === Unit.INCHES ? "underline" : undefined}
+            onClick={() => setUnit(Unit.INCHES)}
+          >
+            INCHES
+          </Button>
+        </div>
 
-        <RadioGroupComponent
-          name="unit"
-          items={unitOptions}
-          value={unit}
-          onValueChange={setUnit}
-        />
+        <div className="flex items-center justify-center gap-x-4">
+          {sizeNames?.map(({ id }) => (
+            <Button
+              key={id}
+              onClick={() => setSelectedSize(id)}
+              variant={selectedSize === id ? "underline" : undefined}
+              className="p-2"
+            >
+              <Text variant="uppercase">
+                {dictionary?.sizes?.find((dictS) => dictS.id === id)?.name ||
+                  ""}
+              </Text>
+            </Button>
+          ))}
+        </div>
 
-        <table>
-          <tbody>
-            <tr>
-              <td>lenth</td>
-              <td>76 cm</td>
-            </tr>
-            <tr>
-              <td>chest</td>
-              <td>43 cm</td>
-            </tr>
-            <tr>
-              <td>shoulders</td>
-              <td>34 cm</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="w-full">
+          <MeasurementsTable
+            type="clothing"
+            selectedSize={selectedSize}
+            measurements={measurements}
+            unit={unit}
+          />
+        </div>
+
         <div className="flex w-full justify-end">
           <Button
             variant="main"
