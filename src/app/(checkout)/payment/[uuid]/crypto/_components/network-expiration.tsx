@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
 import { CountdownCircle } from "./coundown-circle";
@@ -22,7 +21,7 @@ export function NetworkExpiration({
         <Text variant="uppercase">tron (trc-20)</Text>
       </div>
       <div className="flex items-center justify-between">
-        <Text className={cn({ "text-red-600": isTimeExpired })}>
+        <Text variant={isTimeExpired ? "error" : "default"}>
           expiration time
         </Text>
         <div className="flex items-center gap-2">
@@ -30,12 +29,7 @@ export function NetworkExpiration({
             timeLeft={timeLeft}
             progressPercentage={progressPercentage}
           />
-          <Text
-            variant="inherit"
-            className={cn("text-textColor", {
-              "text-red-600": isLessThan10Min,
-            })}
-          >
+          <Text variant={isLessThan10Min ? "error" : "default"}>
             {timeLeft}
           </Text>
         </div>

@@ -11,6 +11,7 @@ interface ExpiredProps extends Props {
   progressPercentage: number;
   formattedAmount: string;
   originalAmount: string;
+  isLoading: boolean;
   renewPayment: () => void;
   checkPaymentStatus: () => void;
 }
@@ -22,6 +23,7 @@ export function PaymentExpired({
   progressPercentage,
   formattedAmount,
   originalAmount,
+  isLoading,
   renewPayment,
   checkPaymentStatus,
 }: ExpiredProps) {
@@ -57,6 +59,7 @@ export function PaymentExpired({
             size="lg"
             variant="main"
             className="w-full uppercase lg:w-auto"
+            disabled={isLoading}
           >
             renew payment
           </Button>
@@ -65,6 +68,7 @@ export function PaymentExpired({
             size="lg"
             variant="main"
             className="w-full uppercase lg:w-auto"
+            disabled={isLoading}
           >
             check payment
           </Button>

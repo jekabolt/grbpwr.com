@@ -12,6 +12,7 @@ const textVariants = cva("", {
       inactive: ["text-textInactiveColor"],
       undrleineWithColors: ["underline", "text-highlightColor"],
       uppercaseWithColors: ["uppercase", "text-highlightColor"],
+      error: ["text-errorColor"],
     },
     size: {
       default: ["text-textBaseSize"],
@@ -47,16 +48,12 @@ export function Text({
   ...props
 }: Props) {
   const Component = component;
-  // Extract variant classes
-  const variantClasses = textVariants({ variant, size });
-
-  // Combine classes, ensuring className comes last to override variant text colors
-  const combinedClasses = className
-    ? `${variantClasses} ${className}`
-    : variantClasses;
 
   return (
-    <Component {...props} className={combinedClasses}>
+    <Component
+      {...props}
+      className={textVariants({ variant, size, className })}
+    >
       {children}
     </Component>
   );

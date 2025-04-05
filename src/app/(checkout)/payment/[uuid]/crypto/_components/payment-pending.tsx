@@ -12,6 +12,7 @@ interface SuccessProps extends Props {
   progressPercentage: number;
   formattedAmount: string;
   originalAmount: string;
+  isLoading: boolean;
   checkPaymentStatus: () => void;
   cancelPayment: () => void;
 }
@@ -24,6 +25,7 @@ export function PaymentPending({
   progressPercentage,
   formattedAmount,
   originalAmount,
+  isLoading,
   checkPaymentStatus,
   cancelPayment,
 }: SuccessProps) {
@@ -52,7 +54,6 @@ export function PaymentPending({
       />
       <div className="flex flex-col items-center justify-center">
         <div className="flex items-center justify-center">
-          {/* there is order id as well, so can be replaced instead of uuid */}
           <Text variant="uppercase">order reference:</Text>
           <div className="flex gap-1">
             <CopyText text={orderUuid || ""} cutText={4} variant="underlined" />
@@ -93,6 +94,7 @@ export function PaymentPending({
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               checkPaymentStatus();
             }}
+            disabled={isLoading}
             size="lg"
             variant="main"
             className="w-full uppercase lg:w-auto"
@@ -103,6 +105,7 @@ export function PaymentPending({
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               cancelPayment();
             }}
+            disabled={isLoading}
             size="lg"
             variant="default"
             className="w-full uppercase lg:w-auto"
