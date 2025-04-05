@@ -13,6 +13,7 @@ export default async function Page() {
   return (
     <div className="blackTheme bg-bgColor text-textColor">
       <FlexibleLayout
+        headerType="flexible"
         mobileHeaderType="flexible"
         headerProps={{
           left: "grbpwr archive",
@@ -25,7 +26,7 @@ export default async function Page() {
         className="pt-16"
       >
         <Galery archives={archives || []} />
-        {/* 
+        {/*
         <VerticalCarousel>
           {archives.map((archive) => (
             <div key={archive.id}>{archive.name}</div>
