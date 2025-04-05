@@ -7,14 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
-import { useCart } from "@/lib/stores/cart/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
-import { MobileProductsCarousel } from "./mobile-products-carousel";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
 import { PriceSummary } from "./price-summary";
@@ -91,7 +89,6 @@ async function submitNewOrder(newOrderData: common_OrderNew) {
 export default function NewOrderForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  const clearCart = useCart((cart) => cart.clearCart);
 
   const defaultValues = {
     ...defaultData,
@@ -122,10 +119,10 @@ export default function NewOrderForm() {
       console.log("submit order finish");
 
       if (newOrderResponse.ok) {
-        clearCart();
-
+        // Cart will be cleared after successful payment confirmation
         const paymentType = newOrderResponse.order?.payment?.paymentMethod;
         switch (paymentType) {
+          case "PAYMENT_METHOD_NAME_ENUM_USDT_TRON":
           case "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA":
             router.push(`/payment/${newOrderResponse.order?.orderUuid}/crypto`);
             break;

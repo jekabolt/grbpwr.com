@@ -24,7 +24,7 @@ export default function FlexibleLayout({
         </div>
       )}
       {headerType === "flexible" && (
-        <div className="hidden lg:block">
+        <div className="block">
           <AdditionalHeader {...headerProps} />
         </div>
       )}
@@ -52,6 +52,7 @@ type Props = {
     center?: string;
     right?: string;
     link?: string;
+    hidden?: boolean;
   };
   mobileHeaderProps?: {
     className?: string;
