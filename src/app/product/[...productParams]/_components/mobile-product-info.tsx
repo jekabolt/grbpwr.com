@@ -45,7 +45,14 @@ export function MobileProductInfo({
 
       <AddToCartForm id={product.product?.id || 0} product={product} />
 
-      <Modal openElement="size guide">
+      <Modal
+        overlayProps={{
+          cover: "screen",
+        }}
+        openElement="size guide"
+        title="size guide"
+        className="bottom-0 top-0 h-screen w-full p-2"
+      >
         <Measurements
           id={productId}
           sizes={sizes}
