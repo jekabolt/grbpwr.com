@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import Modal from "@/components/ui/modal";
 import { Text } from "@/components/ui/text";
 
-import { MeasurementsModalContent } from "./measurements-modal-content";
+import { Measurements } from "./measurements";
 import { AddToCartForm } from "./select-size-add-to-cart/index";
 import { useData } from "./select-size-add-to-cart/useData";
 
@@ -25,6 +25,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     sizes,
     categoryId,
     gender,
+    measurements,
   } = useData({
     product,
   });
@@ -37,8 +38,8 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
 
   return (
     <div className="border-inactive absolute bottom-2.5 right-2.5 h-[245px] w-[600px] border bg-bgColor p-2.5">
-      <div className="relative grid h-full grid-cols-2 gap-x-5">
-        <div className={"flex flex-col justify-between"}>
+      <div className="grid h-full grid-cols-2 gap-x-5">
+        <div className="flex flex-col justify-between">
           <Text
             variant="uppercase"
             className={cn("", {
@@ -91,12 +92,20 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 </div>
               </Modal>
             </div>
-            <Modal openElement="size guide">
-              <MeasurementsModalContent
+            <Modal
+              overlayProps={{
+                cover: "screen",
+              }}
+              openElement="size guide"
+              title="size guide"
+              className="fixed inset-[initial] bottom-0 top-0 h-screen w-[600px] p-2.5 lg:bottom-2.5 lg:right-2.5 lg:top-2.5 lg:h-[calc(100vh-20px)]"
+            >
+              <Measurements
                 id={productId}
                 sizes={sizes}
                 categoryId={categoryId}
                 gender={gender}
+                measurements={measurements}
               />
             </Modal>
           </div>

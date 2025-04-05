@@ -12,7 +12,7 @@ import {
 import Modal from "@/components/ui/modal";
 import { Text } from "@/components/ui/text";
 
-import { MeasurementsModalContent } from "./measurements-modal-content";
+import { Measurements } from "./measurements";
 import { AddToCartForm } from "./select-size-add-to-cart/index";
 import { useData } from "./select-size-add-to-cart/useData";
 
@@ -34,6 +34,7 @@ export function MobileProductInfo({
     sizes,
     categoryId,
     gender,
+    measurements,
   } = useData({
     product,
   });
@@ -45,12 +46,20 @@ export function MobileProductInfo({
 
       <AddToCartForm id={product.product?.id || 0} product={product} />
 
-      <Modal openElement="size guide">
-        <MeasurementsModalContent
+      <Modal
+        overlayProps={{
+          cover: "screen",
+        }}
+        openElement="size guide"
+        title="size guide"
+        className="bottom-0 top-0 h-screen w-full p-2"
+      >
+        <Measurements
           id={productId}
           sizes={sizes}
           categoryId={categoryId}
           gender={gender}
+          measurements={measurements}
         />
       </Modal>
 

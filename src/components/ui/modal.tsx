@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 import { Button } from "./button";
 import CustomCursor from "./custom-cursor";
+import { Overlay } from "./overlay";
 import { Text } from "./text";
 
 interface ModalProps {
@@ -14,6 +15,8 @@ interface ModalProps {
   openElement: string;
   customCursor?: boolean;
   shouldRender?: boolean;
+  className?: string;
+  overlayProps?: any;
 }
 
 export default function Modal({
@@ -22,6 +25,8 @@ export default function Modal({
   openElement,
   customCursor = false,
   shouldRender = true,
+  overlayProps,
+  className,
 }: ModalProps) {
   const [isModalOpen, setModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -43,25 +48,33 @@ export default function Modal({
 
   if (!shouldRender) return null;
 
-  const toggleModal = () => setModalOpen(!isModalOpen);
+  const toggleModal = () => {
+    setModalOpen(!isModalOpen);
+  };
 
   return (
     <div>
+      {overlayProps && isModalOpen && <Overlay {...overlayProps} />}
       <Button variant="underline" className="uppercase" onClick={toggleModal}>
         {openElement}
       </Button>
       {isModalOpen && (
         <div
           ref={modalRef}
-          onClick={toggleModal}
           className={cn(
             "absolute inset-0 z-50 flex h-full w-full flex-col gap-5 bg-bgColor",
+            className,
             {
               "cursor-none": customCursor,
             },
           )}
+          {...(customCursor && {
+            onClick: toggleModal,
+          })}
         >
-          {customCursor && <CustomCursor containerRef={modalRef} />}
+          {customCursor && (
+            <CustomCursor containerRef={modalRef} onClose={toggleModal} />
+          )}
           {title && (
             <div className="flex items-center justify-between">
               <Text variant="uppercase">{title}</Text>

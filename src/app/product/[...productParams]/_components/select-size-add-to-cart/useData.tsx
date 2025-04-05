@@ -131,5 +131,6 @@ export function useData({
     categoryId,
     gender,
     lowStockText,
+    measurements: product.measurements || [],
   };
 }
