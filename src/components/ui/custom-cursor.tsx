@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 
 const CustomCursor = ({
+  onClose,
   containerRef,
 }: {
+  onClose: () => void;
   containerRef: React.RefObject<HTMLDivElement | null>;
 }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -44,6 +46,7 @@ const CustomCursor = ({
         fontSize: "var(--text-base)",
         color: "var(--text)",
       }}
+      onClick={onClose}
     >
       [x]
     </div>

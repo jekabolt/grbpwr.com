@@ -46,65 +46,54 @@ export function Measurements({
   };
 
   return (
-    <div className="bg-bgColor">
-      <Overlay cover="screen" />
-      <div className="fixed bottom-0 top-0 z-50 h-full w-full lg:bottom-2.5 lg:top-2.5 lg:h-[calc(100vh-20px)] lg:w-[600px]">
-        <div className="flex h-[300px] w-full items-center justify-center bg-bgColor lg:h-full">
-          <CategoryThumbnail
-            categoryId={categoryId}
-            gender={gender}
-            size={400}
-          />
-        </div>
-        <div className="grid gap-10">
-          <Text variant="uppercase">size guide</Text>
-          <div className="flex gap-12">
-            {sizeNames?.map(({ name, id }) => (
-              <Button
-                key={id}
-                className={`uppercase ${selectedSize === id ? "bg-black text-white" : ""}`}
-                onClick={() => setSelectedSize(id)}
-              >
-                {dictionary?.sizes?.find((dictS) => dictS.id === id)?.name ||
-                  ""}
-              </Button>
-            ))}
-          </div>
+    <div className="bg-bgColor p-2.5">
+      <div className="flex h-[300px] w-full items-center justify-center bg-bgColor lg:h-[600px]">
+        <CategoryThumbnail categoryId={categoryId} gender={gender} size={400} />
+      </div>
+      <div className="flex gap-12">
+        {sizeNames?.map(({ name, id }) => (
+          <Button
+            key={id}
+            className={`uppercase ${selectedSize === id ? "bg-black text-white" : ""}`}
+            onClick={() => setSelectedSize(id)}
+          >
+            {dictionary?.sizes?.find((dictS) => dictS.id === id)?.name || ""}
+          </Button>
+        ))}
 
-          <RadioGroupComponent
-            name="unit"
-            items={unitOptions}
-            value={unit}
-            onValueChange={setUnit}
-          />
+        <RadioGroupComponent
+          name="unit"
+          items={unitOptions}
+          value={unit}
+          onValueChange={setUnit}
+        />
 
-          <table>
-            <tbody>
-              <tr>
-                <td>lenth</td>
-                <td>76 cm</td>
-              </tr>
-              <tr>
-                <td>chest</td>
-                <td>43 cm</td>
-              </tr>
-              <tr>
-                <td>shoulders</td>
-                <td>34 cm</td>
-              </tr>
-            </tbody>
-          </table>
-          <div className="flex w-full justify-end">
-            <Button
-              variant="main"
-              size="lg"
-              disabled={!selectedSize}
-              className="w-full uppercase sm:w-1/2"
-              onClick={handleAddToCart}
-            >
-              add to cart
-            </Button>
-          </div>
+        <table>
+          <tbody>
+            <tr>
+              <td>lenth</td>
+              <td>76 cm</td>
+            </tr>
+            <tr>
+              <td>chest</td>
+              <td>43 cm</td>
+            </tr>
+            <tr>
+              <td>shoulders</td>
+              <td>34 cm</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="flex w-full justify-end">
+          <Button
+            variant="main"
+            size="lg"
+            disabled={!selectedSize}
+            className="w-full uppercase sm:w-1/2"
+            onClick={handleAddToCart}
+          >
+            add to cart
+          </Button>
         </div>
       </div>
     </div>

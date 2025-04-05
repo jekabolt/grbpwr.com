@@ -91,7 +91,14 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 </div>
               </Modal>
             </div>
-            <Modal openElement="size guide">
+            <Modal
+              overlayProps={{
+                cover: "screen",
+              }}
+              openElement="size guide"
+              title="size guide"
+              className="fixed inset-[initial] bottom-0 top-0 h-screen w-[600px] lg:bottom-2.5 lg:right-2.5 lg:top-2.5 lg:h-[calc(100vh-20px)]"
+            >
               <Measurements
                 id={productId}
                 sizes={sizes}
