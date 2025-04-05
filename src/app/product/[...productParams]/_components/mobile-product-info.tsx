@@ -12,7 +12,7 @@ import {
 import Modal from "@/components/ui/modal";
 import { Text } from "@/components/ui/text";
 
-import { MeasurementsModalContent } from "./measurements-modal-content";
+import { Measurements } from "./measurements";
 import { AddToCartForm } from "./select-size-add-to-cart/index";
 import { useData } from "./select-size-add-to-cart/useData";
 
@@ -46,7 +46,7 @@ export function MobileProductInfo({
       <AddToCartForm id={product.product?.id || 0} product={product} />
 
       <Modal openElement="size guide">
-        <MeasurementsModalContent
+        <Measurements
           id={productId}
           sizes={sizes}
           categoryId={categoryId}

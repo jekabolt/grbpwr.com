@@ -44,7 +44,7 @@ const requestHandler = async (
     },
   );
 
-  console.log("response", response);
+  console.log("[BE] response: ", response.status, response.statusText);
 
   return await response.json();
 };
