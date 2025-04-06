@@ -3,8 +3,6 @@
 import { useState } from "react";
 import type { common_ArchiveFull } from "@/api/proto-http/frontend";
 
-import { Button } from "@/components/ui/button";
-
 import { HorizontalGrid } from "./horizontal-grid";
 import { VerticalCarousel } from "./vertical-carousel";
 
@@ -18,16 +16,18 @@ export function Galery({ archives }: { archives: common_ArchiveFull[] }) {
   };
 
   return (
-    <div className="w-full">
-      <div className="mb-6 flex justify-center gap-4">
-        <Button onClick={handleChangeView}>change view</Button>
-      </div>
+    <div className="h-screen w-full border border-red-500 pt-32">
+      <div className="h-full">
+        {/* <div className="absolute right-0 top-0">
+          <Button onClick={handleChangeView}>change view</Button>
+        </div> */}
 
-      {viewMode === "horizontal" ? (
-        <HorizontalGrid archives={archives} />
-      ) : (
-        <VerticalCarousel archives={archives} />
-      )}
+        {viewMode === "horizontal" ? (
+          <HorizontalGrid archives={archives} />
+        ) : (
+          <VerticalCarousel archives={archives} />
+        )}
+      </div>
     </div>
   );
 }

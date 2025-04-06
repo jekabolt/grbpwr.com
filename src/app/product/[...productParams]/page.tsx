@@ -54,7 +54,7 @@ export default async function ProductPage(props: ProductPageProps) {
   return (
     <FlexibleLayout
       mobileHeaderType="flexible"
-      headerType="catalog"
+      headerProps={{ left: "<", link: "catalog" }}
       footerType="mini"
       transparent
     >

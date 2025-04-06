@@ -11,28 +11,21 @@ export default async function Page() {
   });
 
   return (
-    <div className="blackTheme bg-bgColor text-textColor">
-      <FlexibleLayout
-        headerType="flexible"
-        mobileHeaderType="flexible"
-        headerProps={{
-          left: "grbpwr archive",
-        }}
-        mobileHeaderProps={{
-          className: "bottom-0",
-        }}
-        footerType="mini"
-        theme="dark"
-        className="pt-16"
-      >
-        <Galery archives={archives || []} />
-        {/*
+    <FlexibleLayout
+      headerType="flexible"
+      headerProps={{
+        left: "grbpwr archive",
+      }}
+      footerType="mini"
+      theme="dark"
+    >
+      <Galery archives={archives || []} />
+      {/*
         <VerticalCarousel>
           {archives.map((archive) => (
             <div key={archive.id}>{archive.name}</div>
           ))}
         </VerticalCarousel> */}
-      </FlexibleLayout>
-    </div>
+    </FlexibleLayout>
   );
 }

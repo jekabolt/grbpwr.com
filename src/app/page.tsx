@@ -12,7 +12,7 @@ export default async function Page() {
 
   return (
     <>
-      <FlexibleLayout headerType="catalog" footerType="regular">
+      <FlexibleLayout>
         <MainAds main={hero?.entities?.[0]?.main} />
         <Ads entities={hero?.entities || []} />
       </FlexibleLayout>

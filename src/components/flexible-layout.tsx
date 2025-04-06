@@ -7,27 +7,31 @@ import { MobileProductInfoHeader } from "@/app/_components/mobile-product-info-h
 
 export default function FlexibleLayout({
   children,
-  headerType,
+  headerType = "catalog",
   headerProps,
   mobileHeaderType,
   // mobileHeaderProps,
-  footerType,
-  theme,
+  footerType = "regular",
+  theme = "light",
   className,
   transparent,
 }: Props) {
   return (
-    <div className={cn("relative min-h-screen bg-bgColor", className)}>
+    <div
+      className={cn(
+        "text-color relative min-h-screen bg-bgColor",
+        {
+          blackTheme: theme === "dark",
+        },
+        className,
+      )}
+    >
       {mobileHeaderType === "flexible" && (
         <div className="block lg:hidden">
-          <MobileProductInfoHeader />
+          <MobileProductInfoHeader {...headerProps} />
         </div>
       )}
-      {headerType === "flexible" && (
-        <div className="hidden lg:block">
-          <AdditionalHeader {...headerProps} />
-        </div>
-      )}
+      {headerType === "flexible" && <AdditionalHeader {...headerProps} />}
       {headerType === "catalog" && (
         <div className={mobileHeaderType ? "hidden lg:block" : ""}>
           <Header transparent={transparent} />
@@ -47,12 +51,7 @@ type Props = {
   headerType?: "catalog" | "flexible";
   transparent?: boolean;
   mobileHeaderType?: "flexible";
-  headerProps?: {
-    left?: string;
-    center?: string;
-    right?: string;
-    link?: string;
-  };
+  headerProps?: HeaderProps;
   mobileHeaderProps?: {
     className?: string;
   };
@@ -60,3 +59,10 @@ type Props = {
   theme?: "light" | "dark";
   className?: string;
 };
+
+export interface HeaderProps {
+  left?: string;
+  center?: string;
+  right?: string;
+  link?: string;
+}

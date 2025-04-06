@@ -24,7 +24,7 @@ export function FooterNav({
     : navItems;
 
   return (
-    <nav className={cn("flex", className)}>
+    <nav className={cn("flex bg-bgColor text-textColor", className)}>
       {displayedItems.map((item) => (
         <Button
           key={item.href}
