@@ -1,4 +1,3 @@
-
 /**
  * Форматирует 9-ти значное число/строку: 
  * если число 9-ти значное, то добавляет точку после 3-го символа
@@ -44,5 +43,41 @@ function formatDecimal(numStr: string): string {
         return `${intPart}.${decPart.replace(/0+$/, '')}`;
     } else {
         return `${intPart}.${decPart.slice(0, 2).padEnd(2, '0')}`;
+    }
+}
+
+export function calculateTimeLeft(
+    expirationDateStr: string | undefined,
+    totalDurationMs: number = 15 * 60 * 1000,
+    initialFillPercentage: number = 15
+) {
+    if (!expirationDateStr) {
+        return { timeLeft: "00:00:00", progressPercentage: 100 };
+    }
+
+    const expirationDate = new Date(expirationDateStr);
+    const now = new Date();
+    const timeDifference = expirationDate.getTime() - now.getTime();
+
+    const calculatedPercentage = Math.min(
+        100,
+        Math.max(
+            initialFillPercentage,
+            initialFillPercentage + (100 - initialFillPercentage) * (1 - timeDifference / totalDurationMs),
+        ),
+    );
+
+    if (timeDifference > 0) {
+        const hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+        const seconds = Math.floor((timeDifference / 1000) % 60);
+
+        const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+            .toString()
+            .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
+        return { timeLeft: formattedTime, progressPercentage: calculatedPercentage };
+    } else {
+        return { timeLeft: "00:00:00", progressPercentage: 100 };
     }
 }

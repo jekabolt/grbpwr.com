@@ -33,17 +33,19 @@ export const usePaymentActions = ({
     );
     const [paymentData, setPaymentData] = useState(paymentInsert);
     const [isLoading, setIsLoading] = useState(false);
-    const { timeLeft, progressPercentage, timerStatus, resetTimer } =
+    const { timeLeft, progressPercentage, resetTimer } =
         usePaymentTimer({
             paymentData,
             currentStatus: transactionStatus,
         });
 
+    const isExpired = progressPercentage === 100;
+
     useEffect(() => {
-        if (timerStatus) {
-            setTransactionStatus(timerStatus);
+        if (isExpired) {
+            setTransactionStatus(TransactionStatus.EXPIRED);
         }
-    }, [timerStatus]);
+    }, [isExpired]);
 
     const checkPaymentStatus = async () => {
         if (isLoading) return;

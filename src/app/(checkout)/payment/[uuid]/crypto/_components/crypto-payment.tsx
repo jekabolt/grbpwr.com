@@ -8,21 +8,14 @@ import { Button } from "@/components/ui/button";
 import { PaymentExpired } from "./payment-expired";
 import { PaymentPending } from "./payment-pending";
 import { PaymentSuccess } from "./payment-success";
-import { usePaymentActions } from "./usePaymentActions";
-import { formatNumber } from "./utility";
+import { TransactionStatus, usePaymentActions } from "./usePaymentActions";
+import { formatNumber } from "./utils";
 
 export interface Props {
   paymentInsert?: common_PaymentInsert;
   qrBase64Code?: string;
   orderUuid?: string;
   orderStatusId?: number;
-}
-
-enum TransactionStatus {
-  PENDING = "PENDING",
-  SUCCESS = "SUCCESS",
-  EXPIRED = "EXPIRED",
-  CANCELLED = "CANCELLED",
 }
 
 export function CryptoPayment({
@@ -53,47 +46,50 @@ export function CryptoPayment({
   return (
     <div className="mt-16 flex w-full flex-col items-center justify-start gap-12 px-2.5 leading-none lg:w-auto lg:p-0">
       {(() => {
-        switch (transactionStatus) {
-          case TransactionStatus.PENDING:
-            return (
-              <PaymentPending
-                paymentInsert={paymentData}
-                orderUuid={orderUuid || ""}
-                qrBase64Code={qrBase64Code}
-                timeLeft={timeLeft}
-                formattedAmount={formattedAmount}
-                originalAmount={originalAmount}
-                progressPercentage={progressPercentage}
-                isLoading={isLoading}
-                checkPaymentStatus={checkPaymentStatus}
-                cancelPayment={cancelPayment}
-              />
-            );
-          case TransactionStatus.EXPIRED:
-            return (
-              <PaymentExpired
-                paymentInsert={paymentData}
-                orderUuid={orderUuid || ""}
-                timeLeft={timeLeft}
-                progressPercentage={progressPercentage}
-                formattedAmount={formattedAmount}
-                originalAmount={originalAmount}
-                isLoading={isLoading}
-                renewPayment={renewPayment}
-                checkPaymentStatus={checkPaymentStatus}
-              />
-            );
-          case TransactionStatus.SUCCESS:
-            return (
-              <PaymentSuccess
-                orderUuid={orderUuid || ""}
-                formattedAmount={formattedAmount}
-                originalAmount={originalAmount}
-              />
-            );
-          default:
-            return null;
+        if (transactionStatus === TransactionStatus.PENDING) {
+          return (
+            <PaymentPending
+              paymentInsert={paymentData}
+              orderUuid={orderUuid || ""}
+              qrBase64Code={qrBase64Code}
+              timeLeft={timeLeft}
+              formattedAmount={formattedAmount}
+              originalAmount={originalAmount}
+              progressPercentage={progressPercentage}
+              isLoading={isLoading}
+              checkPaymentStatus={checkPaymentStatus}
+              cancelPayment={cancelPayment}
+            />
+          );
         }
+
+        if (transactionStatus === TransactionStatus.EXPIRED) {
+          return (
+            <PaymentExpired
+              paymentInsert={paymentData}
+              orderUuid={orderUuid || ""}
+              timeLeft={timeLeft}
+              progressPercentage={progressPercentage}
+              formattedAmount={formattedAmount}
+              originalAmount={originalAmount}
+              isLoading={isLoading}
+              renewPayment={renewPayment}
+              checkPaymentStatus={checkPaymentStatus}
+            />
+          );
+        }
+
+        if (transactionStatus === TransactionStatus.SUCCESS) {
+          return (
+            <PaymentSuccess
+              orderUuid={orderUuid || ""}
+              formattedAmount={formattedAmount}
+              originalAmount={originalAmount}
+            />
+          );
+        }
+
+        return null;
       })()}
       <Button asChild className="text-textInactiveColor">
         <Link href="/support">contact support</Link>
