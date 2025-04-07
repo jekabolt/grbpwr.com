@@ -12,6 +12,7 @@ const textVariants = cva("", {
       inactive: ["text-textInactiveColor"],
       undrleineWithColors: ["underline", "text-highlightColor"],
       uppercaseWithColors: ["uppercase", "text-highlightColor"],
+      error: ["text-errorColor"],
     },
     size: {
       default: ["text-textBaseSize"],
@@ -47,6 +48,7 @@ export function Text({
   ...props
 }: Props) {
   const Component = component;
+
   return (
     <Component
       {...props}
