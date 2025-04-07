@@ -87,7 +87,7 @@ export function InfinityScrollCatalog({
   );
 }
 
-function ProductSkeleton() {
+export function ProductSkeleton() {
   return (
     <div className="flex flex-col gap-2">
       <Skeleton className="aspect-[3/4] w-full" />

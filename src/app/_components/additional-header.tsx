@@ -11,7 +11,7 @@ export function AdditionalHeader({ left, center, right, link }: HeaderProps) {
       </Button>
       <div className="flex-none text-center text-textBaseSize">{center}</div>
       <Button asChild size="sm" className="hidden lg:block">
-        <Link href={right ? `/${right}` : "/"}>{right || "[x]"}</Link>
+        <Link href="/">{right || "[x]"}</Link>
       </Button>
     </header>
   );

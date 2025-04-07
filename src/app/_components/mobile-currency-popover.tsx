@@ -21,7 +21,7 @@ export default function CurrencyPopover({ title, theme }: Props) {
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button className="uppercase ">
+        <Button className="bg-bgColor uppercase text-textColor">
           currency:{" "}
           <Text component="span" variant="inactive">
             {currencySymbols[selectedCurrency]} / {selectedCurrency}

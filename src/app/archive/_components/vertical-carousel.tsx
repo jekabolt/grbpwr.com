@@ -85,7 +85,7 @@ export function VerticalCarousel({ archives }: CarouselProps) {
 
   return (
     <div
-      className="no-scrollbar w-full overflow-y-auto scroll-smooth"
+      className="h-full w-full overflow-y-auto scroll-smooth pt-20"
       ref={containerRef}
     >
       {archives.map((archive, index) => {

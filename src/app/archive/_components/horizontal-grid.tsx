@@ -2,19 +2,23 @@
 
 import Link from "next/link";
 import type { common_ArchiveFull } from "@/api/proto-http/frontend";
+import { ARCHIVE_LIMIT } from "@/constants";
 
 import { calculateAspectRatio } from "@/lib/utils";
 import ImageComponent from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
+import { ProductSkeleton } from "@/app/catalog/_components/infinity-scroll-catalog";
 
 export function HorizontalGrid({
   archives,
+  isLoading,
 }: {
   archives: common_ArchiveFull[];
+  isLoading: boolean;
 }) {
   return (
-    <div className="w-full overflow-x-auto">
-      <div className="flex flex-wrap gap-x-2 gap-y-6 lg:gap-x-4 lg:gap-y-10">
+    <div className="w-full overflow-x-auto pt-20">
+      <div className="grid grid-cols-3 gap-x-2 gap-y-6 lg:grid-cols-8 lg:gap-x-4 lg:gap-y-10">
         {archives.map((archive, index) => (
           <Link
             href={`/archive/${archive.id}`}
@@ -34,6 +38,10 @@ export function HorizontalGrid({
             <Text>{archive.heading}</Text>
           </Link>
         ))}
+        {isLoading &&
+          Array.from({ length: ARCHIVE_LIMIT }).map((_, index) => (
+            <ProductSkeleton key={`skeleton-${index}`} />
+          ))}
       </div>
     </div>
   );

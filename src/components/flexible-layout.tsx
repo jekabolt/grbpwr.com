@@ -1,7 +1,10 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { AdditionalHeader } from "@/app/_components/additional-header";
 import { Footer } from "@/app/_components/footer";
 import { Header } from "@/app/_components/header";
+import { HeaderArchive } from "@/app/_components/header-archive";
 import { MiniFooter } from "@/app/_components/mini-footer";
 import { MobileProductInfoHeader } from "@/app/_components/mobile-product-info-header";
 
@@ -31,6 +34,7 @@ export default function FlexibleLayout({
           <MobileProductInfoHeader {...headerProps} />
         </div>
       )}
+      {headerType === "archive" && <HeaderArchive {...headerProps} />}
       {headerType === "flexible" && <AdditionalHeader {...headerProps} />}
       {headerType === "catalog" && (
         <div className={mobileHeaderType ? "hidden lg:block" : ""}>
@@ -48,7 +52,7 @@ export default function FlexibleLayout({
 
 type Props = {
   children: React.ReactNode;
-  headerType?: "catalog" | "flexible";
+  headerType?: "catalog" | "flexible" | "archive";
   transparent?: boolean;
   mobileHeaderType?: "flexible";
   headerProps?: HeaderProps;
@@ -65,4 +69,5 @@ export interface HeaderProps {
   center?: string;
   right?: string;
   link?: string;
+  onClick?: () => void;
 }
