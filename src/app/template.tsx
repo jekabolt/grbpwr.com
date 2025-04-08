@@ -1,3 +1,5 @@
+import { QueryWrapper } from "@/providers/query-wrapper";
+
 import { serviceClient } from "@/lib/api";
 import { CartStoreProvider } from "@/lib/stores/cart/store-provider";
 import { CurrencyStoreProvider } from "@/lib/stores/currency/store-provider";
@@ -12,12 +14,14 @@ export default async function Template({
   const heroData = await serviceClient.GetHero({});
 
   return (
-    <CartStoreProvider>
-      <LastViewedStoreProvider>
-        <CurrencyStoreProvider rates={heroData.rates?.currencies || {}}>
-          <DataContextProvider {...heroData}>{children}</DataContextProvider>
-        </CurrencyStoreProvider>
-      </LastViewedStoreProvider>
-    </CartStoreProvider>
+    <QueryWrapper>
+      <CartStoreProvider>
+        <LastViewedStoreProvider>
+          <CurrencyStoreProvider rates={heroData.rates?.currencies || {}}>
+            <DataContextProvider {...heroData}>{children}</DataContextProvider>
+          </CurrencyStoreProvider>
+        </LastViewedStoreProvider>
+      </CartStoreProvider>
+    </QueryWrapper>
   );
 }
