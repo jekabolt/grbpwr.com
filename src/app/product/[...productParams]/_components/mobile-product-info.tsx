@@ -49,7 +49,7 @@ export function MobileProductInfo({
         }}
         openElement="size guide"
         title="size guide"
-        className="bottom-0 top-0 z-50 h-screen w-full p-2"
+        className="bottom-0 top-0 h-screen w-full p-2"
       >
         <Measurements id={productId} product={product} />
       </Modal>
