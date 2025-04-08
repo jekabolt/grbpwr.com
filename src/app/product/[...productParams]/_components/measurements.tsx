@@ -108,17 +108,3 @@ export function Measurements({
     </div>
   );
 }
-
-// const { increaseQuantity } = useCart((state) => state);
-// const [selectedSize, setSelectedSize] = useState<number | undefined>();
-// const { dictionary } = useDataContext();
-// const sizeNames = sizes?.map((s) => ({
-//   id: s.sizeId as number,
-//   name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
-// }));
-
-// const handleAddToCart = async () => {
-//   if (!selectedSize) return;
-
-//   await increaseQuantity(id!, selectedSize?.toString() || "", 1);
-// };
