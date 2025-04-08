@@ -1,47 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  common_GenderEnum,
-  common_ProductMeasurement,
-  common_ProductSize,
-} from "@/api/proto-http/frontend";
+import { useState } from "react";
+import { common_ProductFull } from "@/api/proto-http/frontend";
 
-import { useCart } from "@/lib/stores/cart/store-provider";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
 import { Text } from "@/components/ui/text";
 
 import { MeasurementsTable, Unit } from "./measurements-table";
+import { useData } from "./select-size-add-to-cart/useData";
+import { useHandlers } from "./select-size-add-to-cart/useHandlers";
 
 export function Measurements({
   id,
-  sizes,
-  measurements,
-  categoryId,
-  gender,
+  product,
 }: {
-  id: number | undefined;
-  sizes: common_ProductSize[] | undefined;
-  measurements: common_ProductMeasurement[];
-  categoryId: number | undefined;
-  gender: common_GenderEnum | undefined;
+  id: number;
+  product: common_ProductFull;
 }) {
-  const { increaseQuantity } = useCart((state) => state);
-  const [selectedSize, setSelectedSize] = useState<number | undefined>();
-  const [unit, setUnit] = useState(Unit.CM);
   const { dictionary } = useDataContext();
+  const { activeSizeId, isLoading, handleAddToCart, handleSizeSelect } =
+    useHandlers({
+      id,
+    });
+
+  const { sizes, measurements, categoryId, gender } = useData({
+    product,
+  });
+
+  const [unit, setUnit] = useState(Unit.CM);
   const sizeNames = sizes?.map((s) => ({
     id: s.sizeId as number,
     name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
   }));
-
-  const handleAddToCart = async () => {
-    if (!selectedSize) return;
-
-    await increaseQuantity(id!, selectedSize?.toString() || "", 1);
-  };
 
   return (
     <div className="bg-bgColor">
@@ -71,8 +64,8 @@ export function Measurements({
           {sizeNames?.map(({ id }) => (
             <Button
               key={id}
-              onClick={() => setSelectedSize(id)}
-              variant={selectedSize === id ? "underline" : undefined}
+              onClick={() => handleSizeSelect(id || 0)}
+              variant={activeSizeId === id ? "underline" : undefined}
               className="p-2"
             >
               <Text variant="uppercase">
@@ -86,18 +79,20 @@ export function Measurements({
         <div className="w-full">
           <MeasurementsTable
             type="clothing"
-            selectedSize={selectedSize}
+            selectedSize={activeSizeId}
             measurements={measurements}
             unit={unit}
           />
         </div>
 
         <Button
-          variant="main"
+          className={cn("blackTheme flex w-full justify-between uppercase", {
+            "justify-center": isLoading,
+          })}
+          variant="simpleReverse"
           size="lg"
-          disabled={!selectedSize}
-          className="w-full uppercase"
           onClick={handleAddToCart}
+          loading={isLoading}
         >
           add to cart
         </Button>
@@ -105,3 +100,17 @@ export function Measurements({
     </div>
   );
 }
+
+// const { increaseQuantity } = useCart((state) => state);
+// const [selectedSize, setSelectedSize] = useState<number | undefined>();
+// const { dictionary } = useDataContext();
+// const sizeNames = sizes?.map((s) => ({
+//   id: s.sizeId as number,
+//   name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
+// }));
+
+// const handleAddToCart = async () => {
+//   if (!selectedSize) return;
+
+//   await increaseQuantity(id!, selectedSize?.toString() || "", 1);
+// };

@@ -16,19 +16,19 @@ export function useHandlers({ id, onSizeAccordionStateChange }: Props) {
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
   const [pendingAddToCart, setPendingAddToCart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const triggerDialodRef = useRef<HTMLButtonElement>(null);
+  const triggerDialogRef = useRef<HTMLButtonElement>(null);
 
   const handleAddToCart = async () => {
     if (isMaxQuantity) return;
 
     if (!activeSizeId) {
       onAccordionChange("size");
-      if (window.innerWidth < 1024 && triggerDialodRef?.current) {
-        triggerDialodRef.current.scrollIntoView({
+      if (window.innerWidth < 1024 && triggerDialogRef?.current) {
+        triggerDialogRef.current.scrollIntoView({
           behavior: "smooth",
           block: "center",
         });
-        triggerDialodRef.current.click();
+        triggerDialogRef.current.click();
       }
       setPendingAddToCart(true);
       return;
@@ -69,7 +69,7 @@ export function useHandlers({ id, onSizeAccordionStateChange }: Props) {
     activeSizeId,
     openItem,
     isLoading,
-    triggerDialodRef,
+    triggerDialogRef,
     handleAddToCart,
     handleSizeSelect,
     onAccordionChange,

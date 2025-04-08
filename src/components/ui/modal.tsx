@@ -62,7 +62,7 @@ export default function Modal({
         <div
           ref={modalRef}
           className={cn(
-            "absolute inset-0 z-50 flex h-full w-full flex-col gap-5 bg-bgColor",
+            "absolute inset-0 flex h-full w-full flex-col gap-5 bg-bgColor",
             className,
             {
               "cursor-none": customCursor,

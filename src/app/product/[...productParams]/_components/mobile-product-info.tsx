@@ -31,10 +31,6 @@ export function MobileProductInfo({
     productComposition,
     productCare,
     productId,
-    sizes,
-    categoryId,
-    gender,
-    measurements,
   } = useData({
     product,
   });
@@ -49,18 +45,13 @@ export function MobileProductInfo({
       <Modal
         overlayProps={{
           cover: "screen",
+          zIndex: "50",
         }}
         openElement="size guide"
         title="size guide"
-        className="bottom-0 top-0 h-screen w-full p-2"
+        className="bottom-0 top-0 z-50 h-screen w-full p-2"
       >
-        <Measurements
-          id={productId}
-          sizes={sizes}
-          categoryId={categoryId}
-          gender={gender}
-          measurements={measurements}
-        />
+        <Measurements id={productId} product={product} />
       </Modal>
 
       <AccordionRoot

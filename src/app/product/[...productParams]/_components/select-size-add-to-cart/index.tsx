@@ -29,7 +29,7 @@ export function AddToCartForm({
     activeSizeId,
     openItem,
     isLoading,
-    triggerDialodRef,
+    triggerDialogRef,
     handleAddToCart,
     handleSizeSelect,
     onAccordionChange,
@@ -69,7 +69,7 @@ export function AddToCartForm({
             <MobileSelectSize
               product={product}
               activeSizeId={activeSizeId}
-              triggerRef={triggerDialodRef}
+              triggerRef={triggerDialogRef}
               handleSizeSelect={handleSizeSelect}
             />
           </div>
