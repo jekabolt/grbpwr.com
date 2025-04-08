@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import type { common_ArchiveFull } from "@/api/proto-http/frontend";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { QueryFunctionContext, useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
 import { Button } from "@/components/ui/button";
 
-import { loadMoreArchiveData } from "./archive";
 import { HorizontalGrid } from "./horizontal-grid";
 import { VerticalCarousel } from "./vertical-carousel";
 
@@ -21,9 +20,14 @@ type ArchivePage = {
 export function Galery({
   archives,
   total,
+  loadMoreArchiveData,
 }: {
   archives: common_ArchiveFull[];
   total: number;
+  loadMoreArchiveData: ({ pageParam }: QueryFunctionContext) => Promise<{
+    archives: common_ArchiveFull[];
+    total: number;
+  }>;
 }) {
   const [viewMode, setViewMode] = useState<ViewMode>("horizontal");
   const { ref, inView } = useInView();
@@ -31,7 +35,7 @@ export function Galery({
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery<ArchivePage>({
       queryKey: ["archives"],
-      queryFn: ({ pageParam }) => loadMoreArchiveData(pageParam as number),
+      queryFn: loadMoreArchiveData,
       initialPageParam: 0,
       getNextPageParam: (lastPage: ArchivePage, allPages: ArchivePage[]) => {
         const totalFetched = allPages.reduce(
