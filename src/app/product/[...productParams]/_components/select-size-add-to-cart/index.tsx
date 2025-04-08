@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { HoverText } from "@/components/ui/hover-text";
 import { Text } from "@/components/ui/text";
 
+import { CommonLoadingBtn } from "../common-loading-btn";
 import { MobileSelectSize } from "./mobile-select-size";
 import { useData } from "./useData";
 import { useDisabled } from "./useDisabled";
@@ -142,7 +143,7 @@ export function AddToCartForm({
             {preorder}
           </Text>
         )}
-        <Button
+        {/* <Button
           className={cn("blackTheme flex w-full justify-between uppercase", {
             "justify-center": isLoading,
           })}
@@ -160,7 +161,16 @@ export function AddToCartForm({
           ) : (
             <Text variant="inherit">{price}</Text>
           )}
-        </Button>
+        </Button> */}
+        <CommonLoadingBtn
+          isLoading={isLoading}
+          preorder={preorder || ""}
+          isSaleApplied={isSaleApplied}
+          priceMinusSale={priceMinusSale}
+          priceWithSale={priceWithSale}
+          price={price}
+          handleAddToCart={handleAddToCart}
+        />
       </div>
     </div>
   );

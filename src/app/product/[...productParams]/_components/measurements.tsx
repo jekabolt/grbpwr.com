@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
-import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/DataContext";
 import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
 import { Text } from "@/components/ui/text";
 
+import { CommonLoadingBtn } from "./common-loading-btn";
 import { MeasurementsTable, Unit } from "./measurements-table";
 import { useData } from "./select-size-add-to-cart/useData";
 import { useHandlers } from "./select-size-add-to-cart/useHandlers";
@@ -26,7 +26,17 @@ export function Measurements({
       id,
     });
 
-  const { sizes, measurements, categoryId, gender } = useData({
+  const {
+    sizes,
+    measurements,
+    categoryId,
+    gender,
+    preorder,
+    isSaleApplied,
+    priceMinusSale,
+    priceWithSale,
+    price,
+  } = useData({
     product,
   });
 
@@ -85,17 +95,15 @@ export function Measurements({
           />
         </div>
 
-        <Button
-          className={cn("blackTheme flex w-full justify-between uppercase", {
-            "justify-center": isLoading,
-          })}
-          variant="simpleReverse"
-          size="lg"
-          onClick={handleAddToCart}
-          loading={isLoading}
-        >
-          add to cart
-        </Button>
+        <CommonLoadingBtn
+          isLoading={isLoading}
+          preorder={preorder || ""}
+          isSaleApplied={isSaleApplied}
+          priceMinusSale={priceMinusSale}
+          priceWithSale={priceWithSale}
+          price={price}
+          handleAddToCart={handleAddToCart}
+        />
       </div>
     </div>
   );
