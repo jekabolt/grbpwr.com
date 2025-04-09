@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   common_GenderEnum,
   common_ProductMeasurement,
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
 import { Text } from "@/components/ui/text";
 
+import { LoadingButton } from "./loading-button";
 import { MeasurementsTable, Unit } from "./measurements-table";
 
 export function Measurements({
@@ -38,9 +39,15 @@ export function Measurements({
   }));
 
   const handleAddToCart = async () => {
-    if (!selectedSize) return;
+    if (!selectedSize) return false;
 
-    await increaseQuantity(id!, selectedSize?.toString() || "", 1);
+    try {
+      await increaseQuantity(id!, selectedSize?.toString() || "", 1);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
   return (
@@ -92,15 +99,13 @@ export function Measurements({
           />
         </div>
 
-        <Button
-          variant="main"
+        <LoadingButton
+          variant="simpleReverse"
           size="lg"
-          disabled={!selectedSize}
-          className="w-full uppercase"
-          onClick={handleAddToCart}
+          onAction={() => handleAddToCart()}
         >
           add to cart
-        </Button>
+        </LoadingButton>
       </div>
     </div>
   );
