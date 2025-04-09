@@ -1,11 +1,14 @@
+import { ARCHIVE_LIMIT } from "@/constants";
+
 import { serviceClient } from "@/lib/api";
 import FlexibleLayout from "@/components/flexible-layout";
 
+import { loadMoreArchiveData } from "./_components/archive";
 import { Galery } from "./_components/galery";
 
 export default async function Page() {
-  const { archives } = await serviceClient.GetArchivesPaged({
-    limit: 10,
+  const { archives, total } = await serviceClient.GetArchivesPaged({
+    limit: ARCHIVE_LIMIT,
     offset: 0,
     orderFactor: "ORDER_FACTOR_UNKNOWN",
   });
@@ -24,7 +27,11 @@ export default async function Page() {
         theme="dark"
         className="pt-16"
       >
-        <Galery archives={archives || []} />
+        <Galery
+          archives={archives || []}
+          total={total || 0}
+          loadMoreArchiveData={loadMoreArchiveData}
+        />
         {/* 
         <VerticalCarousel>
           {archives.map((archive) => (
