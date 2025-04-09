@@ -1,4 +1,4 @@
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";

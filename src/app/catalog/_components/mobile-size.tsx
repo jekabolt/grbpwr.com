@@ -6,7 +6,7 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { serviceClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 

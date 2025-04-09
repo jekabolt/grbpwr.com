@@ -3,7 +3,7 @@ import { CARE_INSTRUCTIONS_MAP, currencySymbols } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { calculatePriceWithSale, getFullComposition } from "@/lib/utils";
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { getPreorderDate } from "@/app/(checkout)/cart/_components/utils";
 
 const LOW_STOCK = 5;

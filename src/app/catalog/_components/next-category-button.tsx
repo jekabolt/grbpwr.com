@@ -8,7 +8,7 @@ import {
   CATEGORY_TITLE_MAP,
   processCategories,
 } from "@/lib/categories-map";
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 
 import useFilterQueryParams from "./useFilterQueryParams";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";

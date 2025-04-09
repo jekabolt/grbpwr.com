@@ -2,7 +2,7 @@ import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend
 import { UseFormReturn } from "react-hook-form";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 export function PriceSummary({ order, form }: PriceSummaryProps) {

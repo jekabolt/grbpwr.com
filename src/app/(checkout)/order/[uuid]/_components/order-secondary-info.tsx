@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { AccordionContent } from "@radix-ui/react-accordion";
 
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import {
   AccordionItem,
   AccordionRoot,
