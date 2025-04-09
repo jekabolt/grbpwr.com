@@ -1,19 +1,30 @@
-// "use client";
+"use client";
 
-// import { createContext, ReactNode, useContext } from "react";
-// import type { GetHeroResponse } from "@/api/proto-http/frontend";
+import { createContext, ReactNode, useContext } from "react";
+import type {
+  GetArchivesPagedRequest,
+  GetArchivesPagedResponse,
+} from "@/api/proto-http/frontend";
 
-// const ServerActionsContext = createContext<GetHeroResponse>({});
+type ServerActionsContextType = {
+  GetArchivesPaged: (
+    request: GetArchivesPagedRequest,
+  ) => Promise<GetArchivesPagedResponse>;
+};
 
-// export function ServerActionsContextProvider({
-//   children,
-//   ...props
-// }: GetHeroResponse & { children: ReactNode }) {
-//   return (
-//     <ServerActionsContext.Provider value={props}>
-//       {children}
-//     </ServerActionsContext.Provider>
-//   );
-// }
+const ServerActionsContext = createContext<ServerActionsContextType>({
+  GetArchivesPaged: () => Promise.resolve({ archives: [], total: 0 }),
+});
 
-// export const useServerActionsContext = () => useContext(ServerActionsContext);
+export function ServerActionsContextProvider({
+  children,
+  ...props
+}: ServerActionsContextType & { children: ReactNode }) {
+  return (
+    <ServerActionsContext.Provider value={props}>
+      {children}
+    </ServerActionsContext.Provider>
+  );
+}
+
+export const useServerActionsContext = () => useContext(ServerActionsContext);
