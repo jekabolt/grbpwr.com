@@ -13,7 +13,7 @@ export function HorizontalGrid({
   archives: common_ArchiveFull[];
 }) {
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="h-full w-full overflow-x-auto">
       <div className="flex flex-wrap gap-x-2 gap-y-6 lg:gap-x-4 lg:gap-y-10">
         {archives.map((archive, index) => (
           <Link
