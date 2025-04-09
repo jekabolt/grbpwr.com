@@ -1,6 +1,6 @@
 "use client";
 
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 export default function CartItemSize({ sizeId }: { sizeId: string }) {

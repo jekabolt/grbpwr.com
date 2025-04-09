@@ -6,7 +6,7 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import { filterNavigationLinks, processCategories } from "@/lib/categories-map";
 import { calculateAspectRatio, cn } from "@/lib/utils";
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 
 import { Button } from "./button";
 import Image from "./image";

@@ -6,7 +6,7 @@ import {
   getCategoryDescription,
   getTopCategoryName,
 } from "@/lib/categories-map";
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 import { InfinityScrollCatalog } from "@/app/catalog/_components/infinity-scroll-catalog";
 

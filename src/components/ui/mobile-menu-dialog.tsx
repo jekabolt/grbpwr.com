@@ -11,7 +11,7 @@ import { calculateAspectRatio } from "@/lib/utils";
 import CurrencyPopover from "@/app/_components/mobile-currency-popover";
 import NewslatterForm from "@/app/_components/newslatter-form";
 
-import { useDataContext } from "../DataContext";
+import { useDataContext } from "../contexts/DataContext";
 import { Button } from "./button";
 import Image from "./image";
 import { Text } from "./text";

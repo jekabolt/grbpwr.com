@@ -8,7 +8,7 @@ import {
 } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
 import { Text } from "@/components/ui/text";

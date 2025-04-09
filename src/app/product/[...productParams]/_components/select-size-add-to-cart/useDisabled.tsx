@@ -1,7 +1,7 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 
 type Props = {
   id: number;

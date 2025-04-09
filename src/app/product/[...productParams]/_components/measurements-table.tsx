@@ -2,7 +2,7 @@
 
 import type { common_ProductMeasurement } from "@/api/proto-http/frontend";
 
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 export enum Unit {

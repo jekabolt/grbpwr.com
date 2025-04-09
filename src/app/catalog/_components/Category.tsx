@@ -6,7 +6,7 @@ import {
   getTopCategoryName,
 } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
-import { useDataContext } from "@/components/DataContext";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
