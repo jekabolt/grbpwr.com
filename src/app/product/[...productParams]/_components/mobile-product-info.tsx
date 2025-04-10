@@ -35,6 +35,11 @@ export function MobileProductInfo({
     categoryId,
     gender,
     measurements,
+    preorder,
+    isSaleApplied,
+    priceMinusSale,
+    priceWithSale,
+    price,
   } = useData({
     product,
   });
@@ -60,6 +65,11 @@ export function MobileProductInfo({
           categoryId={categoryId}
           gender={gender}
           measurements={measurements}
+          preorder={preorder || ""}
+          isSaleApplied={isSaleApplied}
+          priceMinusSale={priceMinusSale}
+          priceWithSale={priceWithSale}
+          price={price}
         />
       </Modal>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   common_GenderEnum,
   common_ProductMeasurement,
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
 import { Text } from "@/components/ui/text";
 
+import { LoadingButton } from "./loading-button";
 import { MeasurementsTable, Unit } from "./measurements-table";
 
 export function Measurements({
@@ -21,12 +22,22 @@ export function Measurements({
   measurements,
   categoryId,
   gender,
+  preorder,
+  isSaleApplied,
+  priceMinusSale,
+  priceWithSale,
+  price,
 }: {
   id: number | undefined;
   sizes: common_ProductSize[] | undefined;
   measurements: common_ProductMeasurement[];
   categoryId: number | undefined;
   gender: common_GenderEnum | undefined;
+  preorder: string;
+  isSaleApplied: boolean;
+  priceMinusSale: string;
+  priceWithSale: string;
+  price: string;
 }) {
   const { increaseQuantity } = useCart((state) => state);
   const [selectedSize, setSelectedSize] = useState<number | undefined>();
@@ -38,9 +49,15 @@ export function Measurements({
   }));
 
   const handleAddToCart = async () => {
-    if (!selectedSize) return;
+    if (!selectedSize) return false;
 
-    await increaseQuantity(id!, selectedSize?.toString() || "", 1);
+    try {
+      await increaseQuantity(id!, selectedSize?.toString() || "", 1);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
   return (
@@ -92,15 +109,21 @@ export function Measurements({
           />
         </div>
 
-        <Button
-          variant="main"
+        <LoadingButton
+          variant="simpleReverse"
           size="lg"
-          disabled={!selectedSize}
-          className="w-full uppercase"
-          onClick={handleAddToCart}
+          onAction={() => handleAddToCart()}
         >
-          add to cart
-        </Button>
+          <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
+          {isSaleApplied ? (
+            <Text variant="inactive">
+              {priceMinusSale}
+              <Text component="span">{priceWithSale}</Text>
+            </Text>
+          ) : (
+            <Text variant="inherit">{price}</Text>
+          )}
+        </LoadingButton>
       </div>
     </div>
   );
