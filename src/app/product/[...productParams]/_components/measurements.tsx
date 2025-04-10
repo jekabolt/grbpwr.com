@@ -22,12 +22,22 @@ export function Measurements({
   measurements,
   categoryId,
   gender,
+  preorder,
+  isSaleApplied,
+  priceMinusSale,
+  priceWithSale,
+  price,
 }: {
   id: number | undefined;
   sizes: common_ProductSize[] | undefined;
   measurements: common_ProductMeasurement[];
   categoryId: number | undefined;
   gender: common_GenderEnum | undefined;
+  preorder: string;
+  isSaleApplied: boolean;
+  priceMinusSale: string;
+  priceWithSale: string;
+  price: string;
 }) {
   const { increaseQuantity } = useCart((state) => state);
   const [selectedSize, setSelectedSize] = useState<number | undefined>();
@@ -104,7 +114,15 @@ export function Measurements({
           size="lg"
           onAction={() => handleAddToCart()}
         >
-          add to cart
+          <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
+          {isSaleApplied ? (
+            <Text variant="inactive">
+              {priceMinusSale}
+              <Text component="span">{priceWithSale}</Text>
+            </Text>
+          ) : (
+            <Text variant="inherit">{price}</Text>
+          )}
         </LoadingButton>
       </div>
     </div>

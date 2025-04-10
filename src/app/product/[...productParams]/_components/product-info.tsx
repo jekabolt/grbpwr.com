@@ -26,6 +26,11 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     categoryId,
     gender,
     measurements,
+    price,
+    preorder,
+    isSaleApplied,
+    priceMinusSale,
+    priceWithSale,
   } = useData({
     product,
   });
@@ -106,6 +111,11 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 categoryId={categoryId}
                 gender={gender}
                 measurements={measurements}
+                preorder={preorder || ""}
+                isSaleApplied={isSaleApplied}
+                priceMinusSale={priceMinusSale}
+                priceWithSale={priceWithSale}
+                price={price}
               />
             </Modal>
           </div>
