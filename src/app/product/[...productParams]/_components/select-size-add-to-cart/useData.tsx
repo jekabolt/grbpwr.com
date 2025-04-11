@@ -51,6 +51,7 @@ export function useData({
   const productCare = productBody?.careInstructions;
   const sizes = product.sizes;
   const categoryId = productBody?.topCategoryId;
+  const typeId = productBody?.typeId;
   const gender = productBody?.targetGender;
 
   const sizeNames = sizes?.map((s) => ({
@@ -129,6 +130,7 @@ export function useData({
     productId,
     sizes,
     categoryId,
+    typeId,
     gender,
     lowStockText,
     measurements: product.measurements || [],

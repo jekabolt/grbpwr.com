@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   common_GenderEnum,
   common_ProductMeasurement,
@@ -8,6 +8,7 @@ import {
 } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
@@ -21,11 +22,13 @@ export function Measurements({
   measurements,
   categoryId,
   gender,
+  typeId,
 }: {
   id: number | undefined;
   sizes: common_ProductSize[] | undefined;
   measurements: common_ProductMeasurement[];
   categoryId: number | undefined;
+  typeId: number | undefined;
   gender: common_GenderEnum | undefined;
 }) {
   const { increaseQuantity } = useCart((state) => state);
@@ -37,21 +40,49 @@ export function Measurements({
     name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
   }));
 
+  const categoryName = dictionary?.categories
+    ?.find((c) => c.id === categoryId)
+    ?.name?.toLowerCase();
+  const typeName = dictionary?.categories
+    ?.find((c) => c.id === typeId)
+    ?.name?.toLowerCase();
+
+  const getMeasurementType = (): "clothing" | "ring" | "shoe" => {
+    if (typeName === "rings") return "ring";
+    if (categoryName === "shoes") return "shoe";
+    return "clothing";
+  };
+
+  const measurementType = getMeasurementType();
+
+  const isRing = measurementType === "ring";
+  const isShoe = measurementType === "shoe";
+
   const handleAddToCart = async () => {
     if (!selectedSize) return;
 
     await increaseQuantity(id!, selectedSize?.toString() || "", 1);
   };
 
+  const handleSelectSize = (sizeId: number) => {
+    setSelectedSize(sizeId);
+  };
+
   return (
-    <div className="bg-bgColor">
+    <div className="flex h-full flex-col bg-bgColor">
       <CategoryThumbnail
         categoryId={categoryId}
         gender={gender}
-        className="h-[300px] lg:h-[400px]"
+        className={cn("h-[300px] lg:h-[400px]", {
+          hidden: isRing || isShoe,
+        })}
       />
-      <div className="space-y-6">
-        <div className="flex items-center justify-center gap-x-2">
+      <div className="flex flex-col space-y-6">
+        <div
+          className={cn("flex items-center justify-center gap-x-2", {
+            hidden: isRing || isShoe,
+          })}
+        >
           <Button
             variant={unit === Unit.CM ? "underline" : undefined}
             onClick={() => setUnit(Unit.CM)}
@@ -67,11 +98,15 @@ export function Measurements({
           </Button>
         </div>
 
-        <div className="flex items-center justify-center gap-x-4">
+        <div
+          className={cn("flex items-center justify-center gap-x-4", {
+            hidden: isRing || isShoe,
+          })}
+        >
           {sizeNames?.map(({ id }) => (
             <Button
               key={id}
-              onClick={() => setSelectedSize(id)}
+              onClick={() => handleSelectSize(id)}
               variant={selectedSize === id ? "underline" : undefined}
               className="p-2"
             >
@@ -83,12 +118,14 @@ export function Measurements({
           ))}
         </div>
 
-        <div className="w-full">
+        <div className="flex-grow overflow-hidden">
           <MeasurementsTable
-            type="clothing"
+            type={measurementType}
+            sizes={sizes || []}
             selectedSize={selectedSize}
             measurements={measurements}
             unit={unit}
+            handleSelectSize={handleSelectSize}
           />
         </div>
 
