@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { RING_SIZE_CONVERSION, SHOES_SIZE_CONVERSION } from "@/constants";
 
+import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
 type SizeConversionType = "shoe" | "ring";
@@ -22,40 +24,73 @@ export function SizesTable({
   conversionType,
   handleSelectSize,
 }: SizesTableProps) {
+  const [hoveredColumn, setHoveredColumn] = useState<number | null>(null);
   const sizeData = formatSizeData(availableSizeData, conversionType);
   const hideCM = conversionType === "ring";
+
   const headerCells = hideCM ? ["EU", "US", "UK"] : ["EU", "US", "UK", "CM"];
 
   return (
     <div className="h-full w-full overflow-auto">
-      <table className="group w-full border-collapse">
+      <table className="w-full border-collapse">
+        <colgroup>
+          {headerCells.map((_, id) => (
+            <col
+              key={id}
+              className={cn("", {
+                "border border-highlightColor": hoveredColumn === id,
+              })}
+            />
+          ))}
+        </colgroup>
         <thead>
           <tr className="sticky top-0 bg-white">
-            {headerCells.map((cell) => (
-              <th className="p-2 text-center font-normal" key={cell}>
+            {headerCells.map((cell, id) => (
+              <th
+                className="p-2 text-center"
+                key={id}
+                onMouseEnter={() => setHoveredColumn(id)}
+                onMouseLeave={() => setHoveredColumn(null)}
+              >
                 <Text variant="uppercase">{cell}</Text>
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {sizeData.map((row) => (
+          {sizeData.map((row, id) => (
             <tr
-              key={row?.id}
+              key={`${row?.id}-${id}`}
               className="cursor-pointer even:bg-textInactiveColor hover:bg-highlightColor"
               onClick={() => handleSelectSize(row?.id || 0)}
             >
-              <td className="p-2 text-center">
+              <td
+                className="p-2 text-center"
+                onMouseEnter={() => setHoveredColumn(0)}
+                onMouseLeave={() => setHoveredColumn(null)}
+              >
                 <Text>{row?.eu}</Text>
               </td>
-              <td className="p-2 text-center">
+              <td
+                className="p-2 text-center"
+                onMouseEnter={() => setHoveredColumn(1)}
+                onMouseLeave={() => setHoveredColumn(null)}
+              >
                 <Text>{row?.us}</Text>
               </td>
-              <td className="p-2 text-center">
+              <td
+                className="p-2 text-center"
+                onMouseEnter={() => setHoveredColumn(2)}
+                onMouseLeave={() => setHoveredColumn(null)}
+              >
                 <Text>{row?.uk}</Text>
               </td>
               {!hideCM && (
-                <td className="p-2 text-center">
+                <td
+                  className="p-2 text-center"
+                  onMouseEnter={() => setHoveredColumn(3)}
+                  onMouseLeave={() => setHoveredColumn(null)}
+                >
                   <Text>{row?.cm}</Text>
                 </td>
               )}
