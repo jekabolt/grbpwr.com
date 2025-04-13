@@ -6,6 +6,8 @@ import { calculatePriceWithSale, getFullComposition } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { getPreorderDate } from "@/app/(checkout)/cart/_components/utils";
 
+export type MeasurementType = "clothing" | "ring" | "shoe";
+
 const LOW_STOCK = 5;
 
 const lowStockTextMap: Record<number, string> = {
@@ -109,6 +111,18 @@ export function useData({
   const modelWearHeight = productBody?.modelWearsHeightCm;
   const modelWearText = getModelText(modelWearHeight, modelWearSize);
 
+  const getMeasurementType = (): MeasurementType => {
+    const type = dictionary?.categories
+      ?.find((c) => c.id === typeId)
+      ?.name?.toLowerCase();
+    if (type === "rings") return "ring";
+    if (category?.toLowerCase() === "shoes") return "shoe";
+
+    return "clothing";
+  };
+
+  const measurementType = getMeasurementType();
+
   return {
     triggerText,
     sizeNames,
@@ -130,9 +144,9 @@ export function useData({
     productId,
     sizes,
     categoryId,
-    typeId,
     gender,
     lowStockText,
     measurements: product.measurements || [],
+    measurementType,
   };
 }

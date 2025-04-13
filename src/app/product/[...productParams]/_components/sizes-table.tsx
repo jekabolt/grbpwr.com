@@ -1,57 +1,45 @@
 "use client";
 
-import { useState } from "react";
-import { RING_SIZE_CONVERSION, SHOES_SIZE_CONVERSION } from "@/constants";
+import type { common_ProductSize } from "@/api/proto-http/frontend";
 
-import { cn } from "@/lib/utils";
+import { formatSizeData } from "@/lib/utils";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
-type SizeConversionType = "shoe" | "ring";
-
-type SizeData = {
-  id: number;
-  name: string;
-};
-
 type SizesTableProps = {
-  availableSizeData: SizeData[];
-  conversionType: SizeConversionType;
+  sizes: common_ProductSize[];
+  type: "shoe" | "ring";
   handleSelectSize: (sizeId: number) => void;
 };
 
-export function SizesTable({
-  availableSizeData,
-  conversionType,
-  handleSelectSize,
-}: SizesTableProps) {
-  const [hoveredColumn, setHoveredColumn] = useState<number | null>(null);
-  const sizeData = formatSizeData(availableSizeData, conversionType);
-  const hideCM = conversionType === "ring";
+type HeaderCell = "eu" | "us" | "uk" | "cm";
 
-  const headerCells = hideCM ? ["EU", "US", "UK"] : ["EU", "US", "UK", "CM"];
+export function SizesTable({ sizes, type, handleSelectSize }: SizesTableProps) {
+  const { dictionary } = useDataContext();
+
+  const filteredSizes = sizes
+    .filter((size) => size.id !== undefined)
+    .map((size) => ({
+      id: size.sizeId as number,
+      name:
+        dictionary?.sizes?.find((dictS) => dictS.id === size.sizeId)?.name ||
+        "",
+    }));
+
+  const sizeData = formatSizeData(filteredSizes, type);
+  const hideCM = type === "ring";
+
+  const headerCells: HeaderCell[] = hideCM
+    ? ["eu", "us", "uk"]
+    : ["eu", "us", "uk", "cm"];
 
   return (
     <div className="h-full w-full overflow-auto">
       <table className="w-full border-collapse">
-        <colgroup>
-          {headerCells.map((_, id) => (
-            <col
-              key={id}
-              className={cn("", {
-                "border border-highlightColor": hoveredColumn === id,
-              })}
-            />
-          ))}
-        </colgroup>
         <thead>
-          <tr className="sticky top-0 bg-white">
+          <tr className="sticky top-0 bg-bgColor">
             {headerCells.map((cell, id) => (
-              <th
-                className="p-2 text-center"
-                key={id}
-                onMouseEnter={() => setHoveredColumn(id)}
-                onMouseLeave={() => setHoveredColumn(null)}
-              >
+              <th className="p-2 text-center" key={id}>
                 <Text variant="uppercase">{cell}</Text>
               </th>
             ))}
@@ -61,71 +49,18 @@ export function SizesTable({
           {sizeData.map((row, id) => (
             <tr
               key={`${row?.id}-${id}`}
-              className="cursor-pointer even:bg-textInactiveColor hover:bg-highlightColor"
+              className="cursor-pointer odd:bg-textInactiveColor hover:bg-highlightColor"
               onClick={() => handleSelectSize(row?.id || 0)}
             >
-              <td
-                className="p-2 text-center"
-                onMouseEnter={() => setHoveredColumn(0)}
-                onMouseLeave={() => setHoveredColumn(null)}
-              >
-                <Text>{row?.eu}</Text>
-              </td>
-              <td
-                className="p-2 text-center"
-                onMouseEnter={() => setHoveredColumn(1)}
-                onMouseLeave={() => setHoveredColumn(null)}
-              >
-                <Text>{row?.us}</Text>
-              </td>
-              <td
-                className="p-2 text-center"
-                onMouseEnter={() => setHoveredColumn(2)}
-                onMouseLeave={() => setHoveredColumn(null)}
-              >
-                <Text>{row?.uk}</Text>
-              </td>
-              {!hideCM && (
-                <td
-                  className="p-2 text-center"
-                  onMouseEnter={() => setHoveredColumn(3)}
-                  onMouseLeave={() => setHoveredColumn(null)}
-                >
-                  <Text>{row?.cm}</Text>
+              {headerCells.map((cell, id) => (
+                <td key={id} className="p-2 text-center">
+                  <Text>{row?.[cell]}</Text>
                 </td>
-              )}
+              ))}
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  );
-}
-
-function formatSizeData(
-  availableSizeData: SizeData[],
-  conversionType: SizeConversionType,
-) {
-  const conversionTable =
-    conversionType === "shoe" ? SHOES_SIZE_CONVERSION : RING_SIZE_CONVERSION;
-
-  const formattedData = availableSizeData.map((sizeData) => {
-    const conversionData = Object.values(conversionTable).find(
-      (data) => data.EU === sizeData.name,
-    );
-
-    if (!conversionData) return null;
-
-    return {
-      id: sizeData.id,
-      eu: conversionData.EU,
-      us: conversionData.US,
-      uk: conversionData.UK,
-      cm: conversionData.CM,
-    };
-  });
-
-  return formattedData.sort(
-    (a, b) => parseFloat(a?.eu || "") - parseFloat(b?.eu || ""),
   );
 }

@@ -35,7 +35,7 @@ export function MobileProductInfo({
     categoryId,
     gender,
     measurements,
-    typeId,
+    measurementType,
   } = useData({
     product,
   });
@@ -61,7 +61,7 @@ export function MobileProductInfo({
           categoryId={categoryId}
           gender={gender}
           measurements={measurements}
-          typeId={typeId}
+          type={measurementType}
         />
       </Modal>
 

@@ -1,6 +1,8 @@
 import {
   COMPOSITION_MAP,
   OrderFactorOption,
+  RING_SIZE_CONVERSION,
+  SHOES_SIZE_CONVERSION,
   SortFactorConfig,
 } from "@/constants";
 import clsx, { ClassValue } from "clsx";
@@ -55,4 +57,32 @@ export function calculatePriceWithSale(
   const discount = parseInt(salePercentage || "0");
 
   return (basePrice * (100 - discount)) / 100;
+}
+
+export function formatSizeData(
+  availableSizeData: { id: number; name: string }[],
+  type: "shoe" | "ring",
+) {
+  const conversionTable =
+    type === "shoe" ? SHOES_SIZE_CONVERSION : RING_SIZE_CONVERSION;
+
+  const formattedData = availableSizeData.map((sizeData) => {
+    const conversionData = Object.values(conversionTable).find(
+      (data) => data.EU === sizeData.name,
+    );
+
+    if (!conversionData) return null;
+
+    return {
+      id: sizeData.id,
+      eu: conversionData.EU,
+      us: conversionData.US,
+      uk: conversionData.UK,
+      cm: conversionData.CM,
+    };
+  });
+
+  return formattedData.sort(
+    (a, b) => parseFloat(a?.eu || "") - parseFloat(b?.eu || ""),
+  );
 }

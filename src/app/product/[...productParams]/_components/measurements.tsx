@@ -15,6 +15,7 @@ import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_
 import { Text } from "@/components/ui/text";
 
 import { MeasurementsTable, Unit } from "./measurements-table";
+import { MeasurementType } from "./select-size-add-to-cart/useData";
 
 export function Measurements({
   id,
@@ -22,41 +23,25 @@ export function Measurements({
   measurements,
   categoryId,
   gender,
-  typeId,
+  type,
 }: {
   id: number | undefined;
   sizes: common_ProductSize[] | undefined;
   measurements: common_ProductMeasurement[];
   categoryId: number | undefined;
-  typeId: number | undefined;
   gender: common_GenderEnum | undefined;
+  type: MeasurementType;
 }) {
   const { increaseQuantity } = useCart((state) => state);
   const [selectedSize, setSelectedSize] = useState<number | undefined>();
   const [unit, setUnit] = useState(Unit.CM);
+  const isRing = type === "ring";
+  const isShoe = type === "shoe";
   const { dictionary } = useDataContext();
   const sizeNames = sizes?.map((s) => ({
     id: s.sizeId as number,
     name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
   }));
-
-  const categoryName = dictionary?.categories
-    ?.find((c) => c.id === categoryId)
-    ?.name?.toLowerCase();
-  const typeName = dictionary?.categories
-    ?.find((c) => c.id === typeId)
-    ?.name?.toLowerCase();
-
-  const getMeasurementType = (): "clothing" | "ring" | "shoe" => {
-    if (typeName === "rings") return "ring";
-    if (categoryName === "shoes") return "shoe";
-    return "clothing";
-  };
-
-  const measurementType = getMeasurementType();
-
-  const isRing = measurementType === "ring";
-  const isShoe = measurementType === "shoe";
 
   const handleAddToCart = async () => {
     if (!selectedSize) return;
@@ -120,7 +105,7 @@ export function Measurements({
 
         <div className="flex-grow overflow-hidden">
           <MeasurementsTable
-            type={measurementType}
+            type={type}
             sizes={sizes || []}
             selectedSize={selectedSize}
             measurements={measurements}

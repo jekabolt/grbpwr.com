@@ -8,6 +8,7 @@ import type {
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
+import { MeasurementType } from "./select-size-add-to-cart/useData";
 import { SizesTable } from "./sizes-table";
 
 export enum Unit {
@@ -59,21 +60,11 @@ export function MeasurementsTable({
   }
 
   if (type === "shoe" || type === "ring") {
-    const availableSizeData = sizes
-      .filter((size) => size.id !== undefined)
-      .map((size) => {
-        return {
-          id: size.sizeId as number,
-          name:
-            dictionary?.sizes?.find((dictS) => dictS.id === size.sizeId)
-              ?.name || "",
-        };
-      });
     return (
       <div className="h-[calc(100vh-200px)] w-full">
         <SizesTable
-          availableSizeData={availableSizeData}
-          conversionType={type}
+          sizes={sizes}
+          type={type}
           handleSelectSize={handleSelectSize}
         />
       </div>
@@ -94,7 +85,7 @@ function getUnit(value: string, unit: Unit) {
 type Props = {
   selectedSize?: number;
   unit: Unit;
-  type: "shoe" | "clothing" | "ring";
+  type: MeasurementType;
   measurements: common_ProductMeasurement[];
   sizes: common_ProductSize[];
   handleSelectSize: (sizeId: number) => void;
