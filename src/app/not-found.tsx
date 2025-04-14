@@ -6,6 +6,8 @@ import { Header } from "@/app/_components/header";
 
 import "./globals.css";
 
+export const dynamic = "force-static";
+
 export default function NotFoundPage() {
   return (
     <div className="relative">
