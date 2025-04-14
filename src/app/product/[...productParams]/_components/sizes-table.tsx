@@ -17,16 +17,7 @@ type HeaderCell = "eu" | "us" | "uk" | "cm";
 export function SizesTable({ sizes, type, handleSelectSize }: SizesTableProps) {
   const { dictionary } = useDataContext();
 
-  const filteredSizes = sizes
-    .filter((size) => size.id !== undefined)
-    .map((size) => ({
-      id: size.sizeId as number,
-      name:
-        dictionary?.sizes?.find((dictS) => dictS.id === size.sizeId)?.name ||
-        "",
-    }));
-
-  const sizeData = formatSizeData(filteredSizes, type);
+  const sizeData = formatSizeData(sizes, type, dictionary?.sizes || []);
   const hideCM = type === "ring";
 
   const headerCells: HeaderCell[] = hideCM
