@@ -28,21 +28,17 @@ export default async function Page(props: Props) {
   const archive = archiveResponse.archive as common_ArchiveFull;
 
   return (
-    <div className="blackTheme bg-bgColor text-textColor">
-      <FlexibleLayout
-        mobileHeaderType="flexible"
-        headerProps={{
-          left: "grbpwr archive",
-        }}
-        mobileHeaderProps={{
-          className: "bottom-0",
-        }}
-        footerType="mini"
-        theme="dark"
-        className="pt-16"
-      >
-        <PageComponent archive={archive} />
-      </FlexibleLayout>
-    </div>
+    <FlexibleLayout
+      headerType="archive"
+      headerProps={{
+        left: "grbpwr.com",
+        center: "archive",
+      }}
+      footerType="mini"
+      theme="dark"
+      className="pt-16"
+    >
+      <PageComponent archive={archive} />
+    </FlexibleLayout>
   );
 }
