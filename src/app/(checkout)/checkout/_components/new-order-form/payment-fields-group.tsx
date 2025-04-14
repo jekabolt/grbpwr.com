@@ -17,7 +17,7 @@ type Props = {
   loading: boolean;
 };
 
-export default function ShippingFieldsGroup({ loading }: Props) {
+export default function PaymentFieldsGroup({ loading }: Props) {
   const { dictionary } = useDataContext();
   const { watch } = useFormContext();
 
@@ -40,6 +40,7 @@ export default function ShippingFieldsGroup({ loading }: Props) {
       stage="3/3"
       title="payment method"
       disabled={isGroupDisabled}
+      groupName="payment"
     >
       <RadioGroupField
         loading={loading}
