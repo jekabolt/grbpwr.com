@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Header } from "@/app/_components/header";
 
+export const dynamic = "force-static";
+
 export default function Unsubscribe() {
   return (
     <div className="relative">
