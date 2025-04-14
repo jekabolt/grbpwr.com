@@ -26,6 +26,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     categoryId,
     gender,
     measurements,
+    measurementType,
   } = useData({
     product,
   });
@@ -106,6 +107,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 categoryId={categoryId}
                 gender={gender}
                 measurements={measurements}
+                type={measurementType}
               />
             </Modal>
           </div>

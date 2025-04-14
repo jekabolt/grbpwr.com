@@ -1,9 +1,15 @@
 "use client";
 
-import type { common_ProductMeasurement } from "@/api/proto-http/frontend";
+import type {
+  common_ProductMeasurement,
+  common_ProductSize,
+} from "@/api/proto-http/frontend";
 
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
+
+import { MeasurementType } from "./select-size-add-to-cart/useData";
+import { SizesTable } from "./sizes-table";
 
 export enum Unit {
   CM = "CM",
@@ -15,6 +21,8 @@ export function MeasurementsTable({
   type,
   measurements,
   unit,
+  sizes,
+  handleSelectSize,
 }: Props) {
   const { dictionary } = useDataContext();
 
@@ -51,12 +59,16 @@ export function MeasurementsTable({
     ));
   }
 
-  if (type === "shoe") {
-    return <div>MeasurementsTable</div>;
-  }
-
-  if (type === "ring") {
-    return <div>MeasurementsTable</div>;
+  if (type === "shoe" || type === "ring") {
+    return (
+      <div className="h-[calc(100vh-200px)] w-full">
+        <SizesTable
+          sizes={sizes}
+          type={type}
+          handleSelectSize={handleSelectSize}
+        />
+      </div>
+    );
   }
 
   return <div>MeasurementsTable</div>;
@@ -73,6 +85,8 @@ function getUnit(value: string, unit: Unit) {
 type Props = {
   selectedSize?: number;
   unit: Unit;
-  type: "shoe" | "clothing" | "ring";
+  type: MeasurementType;
   measurements: common_ProductMeasurement[];
+  sizes: common_ProductSize[];
+  handleSelectSize: (sizeId: number) => void;
 };
