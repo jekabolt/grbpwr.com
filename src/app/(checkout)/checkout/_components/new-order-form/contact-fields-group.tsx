@@ -3,7 +3,7 @@ import InputField from "@/components/ui/form/fields/input-field";
 
 import FieldsGroupContainer from "./fields-group-container";
 
-export default function Component({
+export default function ContactFieldsGroup({
   loading,
   isOpen,
   onToggle,

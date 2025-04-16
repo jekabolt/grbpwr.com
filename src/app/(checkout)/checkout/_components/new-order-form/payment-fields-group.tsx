@@ -45,6 +45,10 @@ export default function PaymentFieldsGroup({
     <FieldsGroupContainer
       stage="3/3"
       title="payment method"
+<<<<<<< HEAD
+=======
+      disabled={isGroupDisabled}
+>>>>>>> 34e6b3b (wip)
       isOpen={isOpen}
       onToggle={onToggle}
     >

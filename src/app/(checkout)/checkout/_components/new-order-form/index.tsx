@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { common_OrderNew } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFormState, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 
 import ContactFieldsGroup from "./contact-fields-group";
-import { CONTACT_GROUP_FIELDS, SHIPPING_GROUP_FIELDS } from "./hooks/constants";
+import { useAutoGroupOpen } from "./hooks/useAutoGroupProgression";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
@@ -111,37 +111,7 @@ export default function NewOrderForm() {
   });
 
   const { order, validateItems } = useValidatedOrder(form);
-  const { errors } = useFormState({ control: form.control });
-
-  const formValues = useWatch({ control: form.control });
-
-  const isGroupFilled = (groupFields: string[]) => {
-    return groupFields.every(
-      (field) =>
-        formValues[field as keyof typeof formValues] &&
-        !errors[field as keyof typeof errors],
-    );
-  };
-
-  const openNextGroup = () => {
-    if (
-      openFieldsGroup === "contact" &&
-      isGroupFilled(CONTACT_GROUP_FIELDS) &&
-      formValues.termsOfService
-    ) {
-      setOpenFieldsGroup("shipping");
-    } else if (
-      openFieldsGroup === "shipping" &&
-      isGroupFilled(SHIPPING_GROUP_FIELDS)
-    ) {
-      setOpenFieldsGroup("payment");
-    }
-  };
-
-  // Watch for changes in form values and errors
-  useEffect(() => {
-    openNextGroup();
-  }, [formValues, errors]);
+  const { openGroups, handleGroupToggle } = useAutoGroupOpen(form);
 
   const onSubmit = async (data: CheckoutData) => {
     const response = await validateItems();
@@ -188,19 +158,19 @@ export default function NewOrderForm() {
           <div className="space-y-10 lg:space-y-16">
             <ContactFieldsGroup
               loading={loading}
-              isOpen={openFieldsGroup === "contact"}
-              onToggle={() => setOpenFieldsGroup("contact")}
+              isOpen={openGroups === "contact"}
+              onToggle={() => handleGroupToggle("contact")}
             />
             <ShippingFieldsGroup
               loading={loading}
-              isOpen={openFieldsGroup === "shipping"}
-              onToggle={() => setOpenFieldsGroup("shipping")}
               validateItems={validateItems}
+              isOpen={openGroups === "shipping"}
+              onToggle={() => handleGroupToggle("shipping")}
             />
             <PaymentFieldsGroup
               loading={loading}
-              isOpen={openFieldsGroup === "payment"}
-              onToggle={() => setOpenFieldsGroup("payment")}
+              isOpen={openGroups === "payment"}
+              onToggle={() => handleGroupToggle("payment")}
             />
           </div>
           <div className="space-y-8">

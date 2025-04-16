@@ -1,5 +1,7 @@
+import { CheckoutData } from "../schema";
+
 // 1st
-export const CONTACT_GROUP_FIELDS = ["email", "phone"];
+export const CONTACT_GROUP_FIELDS = ["email", "phone", "subscribe", "termsOfService"];
 
 // 2nd
 export const SHIPPING_GROUP_FIELDS = [
@@ -21,3 +23,12 @@ export const PAYMENT_GROUP_FIELDS = [
   "billingAddressIsSameAsAddress",
   "billingAddress",
 ];
+
+
+export type OpenGroups = "contact" | "shipping" | "payment";
+
+export const GROUP_FIELDS: Record<OpenGroups, Array<keyof CheckoutData>> = {
+  contact: CONTACT_GROUP_FIELDS as Array<keyof CheckoutData>,
+  shipping: SHIPPING_GROUP_FIELDS as Array<keyof CheckoutData>,
+  payment: [], // Payment group doesn't have fields to check
+};
