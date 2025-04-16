@@ -1,40 +1,27 @@
 "use client";
 
-import { useContext, useEffect } from "react";
+import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
-import { FieldsGroupContext } from "./field-group-context";
-
 export default function FieldsGroupContainer({
   stage,
   title,
-  groupName,
   children,
   defaultOpenState = false,
   disabled = false,
 }: {
   stage: string;
   title: string;
-  groupName: string;
   children: React.ReactNode;
   defaultOpenState?: boolean;
   disabled?: boolean;
 }) {
-  const { groupContextName, setGroupContextName } =
-    useContext(FieldsGroupContext);
-
-  useEffect(() => {
-    if (defaultOpenState && !groupContextName) {
-      setGroupContextName(groupName);
-    }
-  }, []);
-
-  const isOpen = groupName === groupContextName;
+  const [isOpen, setIsOpen] = useState(defaultOpenState);
 
   function handleToggle() {
-    setGroupContextName(isOpen ? null : groupName);
+    setIsOpen((v) => !v);
   }
 
   return (

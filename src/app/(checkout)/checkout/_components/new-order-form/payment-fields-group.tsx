@@ -40,7 +40,6 @@ export default function PaymentFieldsGroup({ loading }: Props) {
       stage="3/3"
       title="payment method"
       disabled={isGroupDisabled}
-      groupName="payment"
     >
       <RadioGroupField
         loading={loading}

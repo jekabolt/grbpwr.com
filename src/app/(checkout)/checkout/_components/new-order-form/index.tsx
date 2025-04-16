@@ -12,7 +12,6 @@ import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 
 import ContactFieldsGroup from "./contact-fields-group";
-import { FieldsGroupProvider } from "./field-group-context";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
@@ -149,14 +148,12 @@ export default function NewOrderForm() {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-14 lg:grid-cols-2 lg:gap-28">
           <div className="space-y-10 lg:space-y-16">
-            <FieldsGroupProvider>
-              <ContactFieldsGroup loading={loading} />
-              <ShippingFieldsGroup
-                loading={loading}
-                validateItems={validateItems}
-              />
-              <PaymentFieldsGroup loading={loading} />
-            </FieldsGroupProvider>
+            <ContactFieldsGroup loading={loading} />
+            <ShippingFieldsGroup
+              loading={loading}
+              validateItems={validateItems}
+            />
+            <PaymentFieldsGroup loading={loading} />
           </div>
           <div className="space-y-8">
             <Text variant="uppercase">Order summary</Text>

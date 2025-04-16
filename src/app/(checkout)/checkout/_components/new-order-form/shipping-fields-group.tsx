@@ -27,7 +27,6 @@ export default function ShippingFieldsGroup({ loading, validateItems }: Props) {
       stage="2/3"
       title="shipping address/delivery method"
       disabled={isGroupDisabled}
-      groupName="shipping"
     >
       <AddressFields loading={loading} disabled={isGroupDisabled} />
       <div>

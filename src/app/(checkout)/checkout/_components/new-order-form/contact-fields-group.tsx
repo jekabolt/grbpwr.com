@@ -5,12 +5,7 @@ import FieldsGroupContainer from "./fields-group-container";
 
 export default function Component({ loading }: { loading: boolean }) {
   return (
-    <FieldsGroupContainer
-      stage="1/3"
-      title="contact"
-      defaultOpenState
-      groupName="contact"
-    >
+    <FieldsGroupContainer stage="1/3" title="contact" defaultOpenState>
       <InputField
         loading={loading}
         name="email"
