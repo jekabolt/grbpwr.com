@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
@@ -9,19 +7,19 @@ export default function FieldsGroupContainer({
   stage,
   title,
   children,
-  defaultOpenState = false,
+  isOpen = false,
   disabled = false,
+  onToggle,
 }: {
   stage: string;
   title: string;
   children: React.ReactNode;
-  defaultOpenState?: boolean;
+  isOpen: boolean;
   disabled?: boolean;
+  onToggle: () => void;
 }) {
-  const [isOpen, setIsOpen] = useState(defaultOpenState);
-
   function handleToggle() {
-    setIsOpen((v) => !v);
+    onToggle();
   }
 
   return (

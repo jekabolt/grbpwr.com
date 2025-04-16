@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useForm, useFormContext, useFormState } from "react-hook-form";
+import { useFormContext, useFormState } from "react-hook-form";
 
-import { useDataContext } from "@/components/contexts/DataContext";
 
 import {
   CONTACT_GROUP_FIELDS,
@@ -13,24 +12,53 @@ import {
 
 export function useDisabledGroup({ fields }: { fields: string[] }) {
   const [isGroupDisabled, setIsGroupDisabled] = useState(false);
-  const { errors, dirtyFields, touchedFields } = useFormState();
+  const formContext = useFormContext();
+  const { errors } = useFormState({ control: formContext.control });
 
-  // console.log(touchedFields);
+  // Get form values
+  const formValues = formContext.watch();
 
-  // useEffect(() => {
-  //   const isAllFieldsTouched = fields.every((field) => touchedFields[field]);
-  //   const noErrorsInTheGroup = fields.every((field) => !errors[field]);
+  useEffect(() => {
+    // Check if fields in the previous group are completed
+    // For shipping fields, check if contact fields are completed
+    // For payment fields, check if shipping fields are completed
 
-  //   const enableGroup = isAllFieldsTouched && noErrorsInTheGroup;
+    // Determine which fields to check based on the current group
+    let fieldsToCheck = [];
 
-  //   console.log(isAllFieldsTouched, noErrorsInTheGroup);
+    if (fields === SHIPPING_GROUP_FIELDS) {
+      fieldsToCheck = CONTACT_GROUP_FIELDS;
 
-  //   console.log(enableGroup);
+      // Also check if terms are accepted
+      const termsAccepted = formValues.termsOfService;
+      const allContactFieldsValid = fieldsToCheck.every(field =>
+        formValues[field as keyof typeof formValues] &&
+        !errors[field as keyof typeof errors]
+      );
 
-  //   if (enableGroup) {
-  //     setIsGroupDisabled(false);
-  //   }
-  // }, [errors, touchedFields, fields, dirtyFields]);
+      setIsGroupDisabled(!(allContactFieldsValid && termsAccepted));
+    }
+    else if (fields === PAYMENT_GROUP_FIELDS) {
+      fieldsToCheck = SHIPPING_GROUP_FIELDS;
+      const requiredShippingFields = [
+        "firstName",
+        "lastName",
+        "country",
+        "city",
+        "address",
+        "postalCode",
+        "shipmentCarrierId",
+      ];
+
+      const allShippingFieldsValid = requiredShippingFields.every(field =>
+        formValues[field as keyof typeof formValues] &&
+        !errors[field as keyof typeof errors]
+      );
+
+      setIsGroupDisabled(!allShippingFieldsValid);
+    }
+
+  }, [fields, formValues, errors]);
 
   return {
     isGroupDisabled,

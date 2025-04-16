@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { common_OrderNew } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState, useWatch } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 
 import ContactFieldsGroup from "./contact-fields-group";
+import { CONTACT_GROUP_FIELDS, SHIPPING_GROUP_FIELDS } from "./hooks/constants";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
@@ -20,6 +21,8 @@ import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
 import { mapFormFieldToOrderDataFormat } from "./utils";
+
+type GroupName = "contact" | "shipping" | "payment";
 
 async function submitNewOrder(newOrderData: common_OrderNew) {
   console.log("order data: ", {
@@ -90,6 +93,10 @@ export default function NewOrderForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
+  const [openFieldsGroup, setOpenFieldsGroup] = useState<GroupName | null>(
+    "contact",
+  );
+
   const defaultValues = {
     ...defaultData,
     // promoCustomConditions: {
@@ -104,6 +111,37 @@ export default function NewOrderForm() {
   });
 
   const { order, validateItems } = useValidatedOrder(form);
+  const { errors } = useFormState({ control: form.control });
+
+  const formValues = useWatch({ control: form.control });
+
+  const isGroupFilled = (groupFields: string[]) => {
+    return groupFields.every(
+      (field) =>
+        formValues[field as keyof typeof formValues] &&
+        !errors[field as keyof typeof errors],
+    );
+  };
+
+  const openNextGroup = () => {
+    if (
+      openFieldsGroup === "contact" &&
+      isGroupFilled(CONTACT_GROUP_FIELDS) &&
+      formValues.termsOfService
+    ) {
+      setOpenFieldsGroup("shipping");
+    } else if (
+      openFieldsGroup === "shipping" &&
+      isGroupFilled(SHIPPING_GROUP_FIELDS)
+    ) {
+      setOpenFieldsGroup("payment");
+    }
+  };
+
+  // Watch for changes in form values and errors
+  useEffect(() => {
+    openNextGroup();
+  }, [formValues, errors]);
 
   const onSubmit = async (data: CheckoutData) => {
     const response = await validateItems();
@@ -148,12 +186,22 @@ export default function NewOrderForm() {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-14 lg:grid-cols-2 lg:gap-28">
           <div className="space-y-10 lg:space-y-16">
-            <ContactFieldsGroup loading={loading} />
+            <ContactFieldsGroup
+              loading={loading}
+              isOpen={openFieldsGroup === "contact"}
+              onToggle={() => setOpenFieldsGroup("contact")}
+            />
             <ShippingFieldsGroup
               loading={loading}
+              isOpen={openFieldsGroup === "shipping"}
+              onToggle={() => setOpenFieldsGroup("shipping")}
               validateItems={validateItems}
             />
-            <PaymentFieldsGroup loading={loading} />
+            <PaymentFieldsGroup
+              loading={loading}
+              isOpen={openFieldsGroup === "payment"}
+              onToggle={() => setOpenFieldsGroup("payment")}
+            />
           </div>
           <div className="space-y-8">
             <Text variant="uppercase">Order summary</Text>

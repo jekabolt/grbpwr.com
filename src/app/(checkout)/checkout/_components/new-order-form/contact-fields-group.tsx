@@ -3,9 +3,22 @@ import InputField from "@/components/ui/form/fields/input-field";
 
 import FieldsGroupContainer from "./fields-group-container";
 
-export default function Component({ loading }: { loading: boolean }) {
+export default function Component({
+  loading,
+  isOpen,
+  onToggle,
+}: {
+  loading: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
   return (
-    <FieldsGroupContainer stage="1/3" title="contact" defaultOpenState>
+    <FieldsGroupContainer
+      stage="1/3"
+      title="contact"
+      isOpen={isOpen}
+      onToggle={onToggle}
+    >
       <InputField
         loading={loading}
         name="email"
