@@ -9,20 +9,26 @@ import { Text } from "@/components/ui/text";
 
 import { paymentMethodNamesMap } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
-import { SHIPPING_GROUP_FIELDS } from "./hooks/constants";
+import { PAYMENT_GROUP_FIELDS } from "./hooks/constants";
 import { useDisabledGroup } from "./hooks/useFormDisabledGroup";
 import { AddressFields } from "./shipping-fields-group";
 
 type Props = {
   loading: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
 };
 
-export default function ShippingFieldsGroup({ loading }: Props) {
+export default function PaymentFieldsGroup({
+  loading,
+  isOpen,
+  onToggle,
+}: Props) {
   const { dictionary } = useDataContext();
   const { watch } = useFormContext();
 
   const { isGroupDisabled } = useDisabledGroup({
-    fields: SHIPPING_GROUP_FIELDS,
+    fields: PAYMENT_GROUP_FIELDS,
   });
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
@@ -40,12 +46,13 @@ export default function ShippingFieldsGroup({ loading }: Props) {
       stage="3/3"
       title="payment method"
       disabled={isGroupDisabled}
+      isOpen={isOpen}
+      onToggle={onToggle}
     >
       <RadioGroupField
         loading={loading}
         name="paymentMethod"
         items={paymentMethodsItems as any}
-        disabled={isGroupDisabled}
       />
 
       {/* оплата картой делается на отдельной странице */}

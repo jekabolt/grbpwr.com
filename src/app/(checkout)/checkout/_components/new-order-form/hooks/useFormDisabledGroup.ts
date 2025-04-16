@@ -1,15 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useForm, useFormContext, useFormState } from "react-hook-form";
-
-import { useDataContext } from "@/components/contexts/DataContext";
-
-import {
-  CONTACT_GROUP_FIELDS,
-  PAYMENT_GROUP_FIELDS,
-  SHIPPING_GROUP_FIELDS,
-} from "./constants";
+import { useState } from "react";
+import { useFormState } from "react-hook-form";
 
 export function useDisabledGroup({ fields }: { fields: string[] }) {
   const [isGroupDisabled, setIsGroupDisabled] = useState(false);

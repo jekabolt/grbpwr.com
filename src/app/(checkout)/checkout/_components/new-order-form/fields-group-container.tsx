@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
@@ -9,19 +9,26 @@ export default function FieldsGroupContainer({
   stage,
   title,
   children,
-  defaultOpenState = false,
+  isOpen = false,
   disabled = false,
+  onToggle,
 }: {
   stage: string;
   title: string;
   children: React.ReactNode;
-  defaultOpenState?: boolean;
+  isOpen?: boolean;
   disabled?: boolean;
+  onToggle?: () => void;
 }) {
-  const [isOpen, setIsOpen] = useState(defaultOpenState);
+  const [localIsOpen, setLocalIsOpen] = useState(isOpen);
+
+  useEffect(() => {
+    setLocalIsOpen(isOpen);
+  }, [isOpen]);
 
   function handleToggle() {
-    setIsOpen((v) => !v);
+    setLocalIsOpen((v) => !v);
+    onToggle?.();
   }
 
   return (
@@ -40,12 +47,14 @@ export default function FieldsGroupContainer({
         </div>
 
         <div
-          className={cn("-rotate-90 text-textColor", { "rotate-90": isOpen })}
+          className={cn("-rotate-90 text-textColor", {
+            "rotate-90": localIsOpen,
+          })}
         >
           {">"}
         </div>
       </div>
-      {isOpen && <div className="space-y-8">{children}</div>}
+      {localIsOpen && <div className="space-y-8">{children}</div>}
     </div>
   );
 }

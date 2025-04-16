@@ -12,6 +12,7 @@ import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 
 import ContactFieldsGroup from "./contact-fields-group";
+import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
@@ -20,6 +21,8 @@ import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
 import { mapFormFieldToOrderDataFormat } from "./utils";
+
+type GroupName = "contact" | "shipping" | "payment";
 
 async function submitNewOrder(newOrderData: common_OrderNew) {
   console.log("order data: ", {
@@ -90,6 +93,10 @@ export default function NewOrderForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
+  const [openFieldsGroup, setOpenFieldsGroup] = useState<GroupName | null>(
+    "contact",
+  );
+
   const defaultValues = {
     ...defaultData,
     // promoCustomConditions: {
@@ -104,6 +111,7 @@ export default function NewOrderForm() {
   });
 
   const { order, validateItems } = useValidatedOrder(form);
+  const { openGroups, handleGroupToggle } = useAutoGroupOpen(form);
 
   const onSubmit = async (data: CheckoutData) => {
     const response = await validateItems();
@@ -148,12 +156,22 @@ export default function NewOrderForm() {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-14 lg:grid-cols-2 lg:gap-28">
           <div className="space-y-10 lg:space-y-16">
-            <ContactFieldsGroup loading={loading} />
+            <ContactFieldsGroup
+              loading={loading}
+              isOpen={openGroups === "contact"}
+              onToggle={() => handleGroupToggle("contact")}
+            />
             <ShippingFieldsGroup
               loading={loading}
               validateItems={validateItems}
+              isOpen={openGroups === "shipping"}
+              onToggle={() => handleGroupToggle("shipping")}
             />
-            <PaymentFieldsGroup loading={loading} />
+            <PaymentFieldsGroup
+              loading={loading}
+              isOpen={openGroups === "payment"}
+              onToggle={() => handleGroupToggle("payment")}
+            />
           </div>
           <div className="space-y-8">
             <Text variant="uppercase">Order summary</Text>
