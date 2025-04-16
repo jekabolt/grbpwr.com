@@ -12,7 +12,7 @@ import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 
 import ContactFieldsGroup from "./contact-fields-group";
-import { useAutoGroupOpen } from "./hooks/useAutoGroupProgression";
+import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
