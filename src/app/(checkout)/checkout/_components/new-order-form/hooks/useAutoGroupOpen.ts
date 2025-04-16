@@ -38,4 +38,4 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
         openGroups,
         handleGroupToggle,
     };
-} 
+}
