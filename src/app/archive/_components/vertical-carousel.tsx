@@ -71,7 +71,8 @@ export function VerticalCarousel({ archives }: CarouselProps) {
       if (highlightedElement) {
         const container = containerRef.current;
         const containerHeight = container.clientHeight;
-        const topOffset = containerHeight / 2;
+        const elementHeight = highlightedElement.offsetHeight;
+        const topOffset = (containerHeight - elementHeight) / 2;
         const elementTop = highlightedElement.offsetTop;
         const scrollPosition = elementTop - topOffset;
 
@@ -85,7 +86,7 @@ export function VerticalCarousel({ archives }: CarouselProps) {
 
   return (
     <div
-      className="no-scrollbar w-full overflow-y-auto scroll-smooth"
+      className="relative h-screen overflow-auto scroll-smooth"
       ref={containerRef}
     >
       {archives.map((archive, index) => {
@@ -95,7 +96,7 @@ export function VerticalCarousel({ archives }: CarouselProps) {
           <div
             key={index}
             data-archive-id={archive.id}
-            className={`archive-item relative px-2 py-4 transition-transform duration-300 ease-in-out ${
+            className={`archive-item relative px-14 transition-transform duration-300 ease-in-out lg:px-7 ${
               isHighlighted ? "scale-100" : "scale-95 opacity-30"
             }`}
             onClick={() =>
