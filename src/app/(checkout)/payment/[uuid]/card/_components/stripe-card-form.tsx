@@ -36,6 +36,7 @@ export function StripeCardForm({ clientSecret, uuid }: Props) {
     // Use confirmPayment instead of confirmCardPayment
     const { error } = await stripe.confirmPayment({
       clientSecret,
+      elements,
       confirmParams: {
         return_url: `${window.location.origin}/order/${uuid}`,
       },
@@ -50,6 +51,7 @@ export function StripeCardForm({ clientSecret, uuid }: Props) {
     } else {
       // Payment succeeded
       console.log("Payment successful");
+
       window.location.href = `${window.location.origin}/order/${uuid}`;
     }
   };
