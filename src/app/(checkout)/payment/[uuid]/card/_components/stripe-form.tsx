@@ -29,7 +29,7 @@ export function StripeForm({ clientSecret, uuid, amount }: Props) {
         currency: baseCurrency,
         appearance,
         paymentMethodCreation: "manual",
-        paymentMethodTypes: ["card"],
+        paymentMethodTypes: ["card", "bancontact", "ideal"],
       }}
     >
       <StripeCardForm clientSecret={clientSecret} uuid={uuid} />

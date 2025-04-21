@@ -25,7 +25,6 @@ export function StripeCardForm({ clientSecret, uuid }: Props) {
     setIsProcessing(true);
     setErrorMessage(undefined);
 
-    // Get the PaymentElement instance
     const { error: submitError } = await elements.submit();
     if (submitError) {
       setErrorMessage(submitError.message);
@@ -33,14 +32,12 @@ export function StripeCardForm({ clientSecret, uuid }: Props) {
       return;
     }
 
-    // Use confirmPayment instead of confirmCardPayment
     const { error } = await stripe.confirmPayment({
       clientSecret,
       elements,
       confirmParams: {
         return_url: `${window.location.origin}/order/${uuid}`,
       },
-      redirect: "if_required",
     });
 
     setIsProcessing(false);
@@ -49,16 +46,25 @@ export function StripeCardForm({ clientSecret, uuid }: Props) {
       console.error("Error confirming payment:", error.message);
       setErrorMessage(error.message);
     } else {
-      // Payment succeeded
       console.log("Payment successful");
-
-      window.location.href = `${window.location.origin}/order/${uuid}`;
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-10">
-      <PaymentElement />
+      {clientSecret && (
+        <PaymentElement
+          options={{
+            fields: {
+              billingDetails: {
+                address: {
+                  country: "never",
+                },
+              },
+            },
+          }}
+        />
+      )}
 
       {errorMessage && <div className="text-red-500">{errorMessage}</div>}
 
