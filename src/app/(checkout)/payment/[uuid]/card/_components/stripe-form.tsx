@@ -11,7 +11,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
 
-export function StripeForm({ clientSecret, uuid, amount }: Props) {
+export function StripeForm({ clientSecret, uuid, amount, country }: Props) {
   const { dictionary } = useDataContext();
   const baseCurrency = dictionary?.baseCurrency?.toLowerCase();
 
@@ -32,7 +32,11 @@ export function StripeForm({ clientSecret, uuid, amount }: Props) {
         paymentMethodTypes: ["card", "bancontact", "ideal"],
       }}
     >
-      <StripeCardForm clientSecret={clientSecret} uuid={uuid} />
+      <StripeCardForm
+        clientSecret={clientSecret}
+        uuid={uuid}
+        country={country}
+      />
     </Elements>
   );
 }
@@ -41,4 +45,5 @@ interface Props {
   clientSecret: string;
   uuid: string;
   amount: string;
+  country: string;
 }

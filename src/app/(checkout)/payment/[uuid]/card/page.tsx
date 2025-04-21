@@ -16,6 +16,9 @@ export default async function Page(props: Props) {
   const orderResponse = await serviceClient.GetOrderByUUID({ orderUuid: uuid });
   const order = orderResponse.order;
   const amount = order?.order?.totalPrice?.value || "0";
+  const country = order?.billing?.addressInsert?.country;
+
+  console.log(country);
 
   if (
     order?.payment?.paymentInsert?.paymentMethod !==
@@ -31,7 +34,12 @@ export default async function Page(props: Props) {
           <Logo />
         </div>
         <div className="h-full w-1/2">
-          <StripeForm clientSecret={clientSecret} uuid={uuid} amount={amount} />
+          <StripeForm
+            clientSecret={clientSecret}
+            uuid={uuid}
+            amount={amount}
+            country={country || ""}
+          />
         </div>
       </div>
     </div>
