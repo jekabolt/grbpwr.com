@@ -1,17 +1,16 @@
 "use client";
 
-import {
-  PaymentElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
-import { StripePaymentElementOptions } from "@stripe/stripe-js";
+import { useState } from "react";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { StripeCardElementOptions } from "@stripe/stripe-js";
 
 import { Button } from "@/components/ui/button";
 
 export function StripeCardForm({ clientSecret, uuid }: Props) {
   const stripe = useStripe();
   const elements = useElements();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,44 +19,75 @@ export function StripeCardForm({ clientSecret, uuid }: Props) {
       return;
     }
 
-    const { error: submitError } = await elements.submit();
+    setIsProcessing(true);
+    setErrorMessage(undefined);
 
-    if (submitError) {
-      console.error("Error submitting payment element:", submitError.message);
+    const cardElement = elements.getElement(CardElement);
+
+    if (!cardElement) {
+      setIsProcessing(false);
       return;
     }
 
-    const { error } = await stripe.confirmPayment({
-      elements,
+    const { error, paymentIntent } = await stripe.confirmCardPayment(
       clientSecret,
-      confirmParams: {
-        return_url: `${window.location.origin}/order/${uuid}`,
+      {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: "Customer Name",
+            email: "customer@example.com",
+          },
+        },
       },
-    });
+    );
+
+    setIsProcessing(false);
 
     if (error) {
       console.error("Error confirming payment:", error.message);
-    } else {
-      // The payment UI automatically closes with a success animation.
-      // Your customer is redirected to your `return_url`.
+      setErrorMessage(error.message);
+    } else if (paymentIntent && paymentIntent.status === "succeeded") {
       console.log("Payment successful");
+      // Navigate to success page
+      window.location.href = `${window.location.origin}/order/${uuid}`;
     }
   };
 
-  const paymentElementOptions: StripePaymentElementOptions = {
-    layout: "auto",
+  const cardElementOptions: StripeCardElementOptions = {
+    style: {
+      base: {
+        color: "#32325d",
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#aab7c4",
+        },
+      },
+      invalid: {
+        color: "#fa755a",
+        iconColor: "#fa755a",
+      },
+    },
+    hidePostalCode: true,
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-10">
-      <PaymentElement options={paymentElementOptions} />
+      <div className="rounded-md border p-4">
+        <CardElement options={cardElementOptions} />
+      </div>
+
+      {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+
       <Button
         variant="main"
         size="lg"
         className="w-full uppercase"
-        disabled={!stripe}
+        disabled={!stripe || isProcessing}
       >
-        pay
+        {isProcessing ? "Processing..." : "pay"}
       </Button>
     </form>
   );

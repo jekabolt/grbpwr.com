@@ -26,11 +26,7 @@ export function StripeForm({ clientSecret, uuid, amount }: Props) {
     <Elements
       stripe={stripePromise}
       options={{
-        mode: "payment",
-        amount: Number(amount),
-        currency: baseCurrency,
-        appearance,
-        paymentMethodCreation: "manual",
+        clientSecret,
       }}
     >
       <StripeCardForm clientSecret={clientSecret} uuid={uuid} />
