@@ -9,7 +9,7 @@ import { StripePaymentElementOptions } from "@stripe/stripe-js";
 
 import { Button } from "@/components/ui/button";
 
-export function StripeCardForm({ clientSecret }: Props) {
+export function StripeCardForm({ clientSecret, uuid }: Props) {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -31,14 +31,7 @@ export function StripeCardForm({ clientSecret }: Props) {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: "http://www.localhost:3000/",
-        payment_method_data: {
-          billing_details: {
-            address: {
-              country: "DE",
-            },
-          },
-        },
+        return_url: `${window.location.origin}/order/${uuid}`,
       },
     });
 
@@ -79,6 +72,5 @@ export function StripeCardForm({ clientSecret }: Props) {
 
 interface Props {
   clientSecret: string;
-  // TODO: add in redirect url
-  // uuid: string;
+  uuid?: string;
 }

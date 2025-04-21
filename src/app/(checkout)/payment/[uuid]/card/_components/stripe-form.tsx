@@ -32,7 +32,7 @@ export function StripeForm({ clientSecret, uuid, amount }: Props) {
         appearance,
       }}
     >
-      <StripeCardForm clientSecret={clientSecret} />
+      <StripeCardForm clientSecret={clientSecret} uuid={uuid} />
     </Elements>
   );
 }
