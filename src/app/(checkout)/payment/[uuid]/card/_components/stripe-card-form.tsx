@@ -46,13 +46,6 @@ export function StripeCardForm({ clientSecret, uuid }: Props) {
 
   const paymentElementOptions: StripePaymentElementOptions = {
     layout: "auto",
-    fields: {
-      billingDetails: {
-        address: {
-          country: "never",
-        },
-      },
-    },
   };
 
   return (
