@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { StripeCardElementOptions } from "@stripe/stripe-js";
+import {
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
 
 import { Button } from "@/components/ui/button";
 
@@ -22,62 +25,38 @@ export function StripeCardForm({ clientSecret, uuid }: Props) {
     setIsProcessing(true);
     setErrorMessage(undefined);
 
-    const cardElement = elements.getElement(CardElement);
-
-    if (!cardElement) {
+    // Get the PaymentElement instance
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      setErrorMessage(submitError.message);
       setIsProcessing(false);
       return;
     }
 
-    const { error, paymentIntent } = await stripe.confirmCardPayment(
+    // Use confirmPayment instead of confirmCardPayment
+    const { error } = await stripe.confirmPayment({
       clientSecret,
-      {
-        payment_method: {
-          card: cardElement,
-          billing_details: {
-            name: "Customer Name",
-            email: "customer@example.com",
-          },
-        },
+      confirmParams: {
+        return_url: `${window.location.origin}/order/${uuid}`,
       },
-    );
+      redirect: "if_required",
+    });
 
     setIsProcessing(false);
 
     if (error) {
       console.error("Error confirming payment:", error.message);
       setErrorMessage(error.message);
-    } else if (paymentIntent && paymentIntent.status === "succeeded") {
+    } else {
+      // Payment succeeded
       console.log("Payment successful");
-      // Navigate to success page
       window.location.href = `${window.location.origin}/order/${uuid}`;
     }
   };
 
-  const cardElementOptions: StripeCardElementOptions = {
-    style: {
-      base: {
-        color: "#32325d",
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        "::placeholder": {
-          color: "#aab7c4",
-        },
-      },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a",
-      },
-    },
-    hidePostalCode: true,
-  };
-
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-10">
-      <div className="rounded-md border p-4">
-        <CardElement options={cardElementOptions} />
-      </div>
+      <PaymentElement />
 
       {errorMessage && <div className="text-red-500">{errorMessage}</div>}
 

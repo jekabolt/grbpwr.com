@@ -15,8 +15,6 @@ export function StripeForm({ clientSecret, uuid, amount }: Props) {
   const { dictionary } = useDataContext();
   const baseCurrency = dictionary?.baseCurrency?.toLowerCase();
 
-  console.log(baseCurrency);
-
   const appearance: Appearance = {
     theme: "stripe",
     labels: "floating",
@@ -26,7 +24,12 @@ export function StripeForm({ clientSecret, uuid, amount }: Props) {
     <Elements
       stripe={stripePromise}
       options={{
-        clientSecret,
+        mode: "payment",
+        amount: Number(amount),
+        currency: baseCurrency,
+        appearance,
+        paymentMethodCreation: "manual",
+        paymentMethodTypes: ["card"],
       }}
     >
       <StripeCardForm clientSecret={clientSecret} uuid={uuid} />
