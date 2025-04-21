@@ -50,7 +50,7 @@ export function StripeCardForm({ clientSecret, uuid }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-10">
-      {clientSecret && <PaymentElement options={paymentElementOptions} />}
+      <PaymentElement options={paymentElementOptions} />
       <Button
         variant="main"
         size="lg"
