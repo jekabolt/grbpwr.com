@@ -12,23 +12,21 @@ import { Button } from "@/components/ui/button";
 export function StripeCardForm({ clientSecret, uuid, country }: Props) {
   const stripe = useStripe();
   const elements = useElements();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setIsLoading(true);
 
     if (!stripe || !elements) {
       return;
     }
 
-    setIsProcessing(true);
-    setErrorMessage(undefined);
-
     const { error: submitError } = await elements.submit();
+
     if (submitError) {
-      setErrorMessage(submitError.message);
-      setIsProcessing(false);
+      setIsLoading(false);
       return;
     }
 
@@ -47,41 +45,44 @@ export function StripeCardForm({ clientSecret, uuid, country }: Props) {
       },
     });
 
-    setIsProcessing(false);
+    setIsLoading(false);
 
     if (error) {
       console.error("Error confirming payment:", error.message);
-      setErrorMessage(error.message);
     } else {
       console.log("Payment successful");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full space-y-10">
-      {clientSecret && (
-        <PaymentElement
-          options={{
-            fields: {
-              billingDetails: {
-                address: {
-                  country: "never",
+    <form
+      onSubmit={handleSubmit}
+      className="flex w-full flex-col justify-between gap-2.5"
+    >
+      <div className="min-h-72">
+        {clientSecret && (
+          <PaymentElement
+            options={{
+              layout: "tabs",
+              fields: {
+                billingDetails: {
+                  address: {
+                    country: "never",
+                  },
                 },
               },
-            },
-          }}
-        />
-      )}
-
-      {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+            }}
+          />
+        )}
+      </div>
 
       <Button
         variant="main"
         size="lg"
         className="w-full uppercase"
-        disabled={!stripe || isProcessing}
+        disabled={!stripe || isLoading}
       >
-        {isProcessing ? "Processing..." : "pay"}
+        pay
       </Button>
     </form>
   );

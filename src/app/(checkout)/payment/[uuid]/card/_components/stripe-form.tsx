@@ -1,7 +1,7 @@
 "use client";
 
 import { Elements } from "@stripe/react-stripe-js";
-import { Appearance, loadStripe } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 import { useDataContext } from "@/components/contexts/DataContext";
 
@@ -15,11 +15,6 @@ export function StripeForm({ clientSecret, uuid, amount, country }: Props) {
   const { dictionary } = useDataContext();
   const baseCurrency = dictionary?.baseCurrency?.toLowerCase();
 
-  const appearance: Appearance = {
-    theme: "stripe",
-    labels: "floating",
-  };
-
   return (
     <Elements
       stripe={stripePromise}
@@ -27,7 +22,10 @@ export function StripeForm({ clientSecret, uuid, amount, country }: Props) {
         mode: "payment",
         amount: Number(amount),
         currency: baseCurrency,
-        appearance,
+        appearance: {
+          theme: "stripe",
+          labels: "floating",
+        },
         paymentMethodCreation: "manual",
         paymentMethodTypes: ["card", "klarna", "paypal"],
       }}
