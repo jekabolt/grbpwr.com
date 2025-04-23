@@ -8,14 +8,6 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "grbpwr.com title",
   description: "grbpwr.com desc",
-  openGraph: {
-    title: "grbpwr.com title",
-    description:
-      "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
-    type: "website",
-    url: "https://grbpwr.com",
-    siteName: "grbpwr.com",
-  },
 };
 
 type Props = {

@@ -15,7 +15,22 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     openGraph: {
-      images: [heroImage],
+      title: "grbpwr.com title",
+      description:
+        "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
+      type: "website",
+      url: "https://grbpwr.com",
+      siteName: "grbpwr.com",
+      images: heroImage
+        ? [
+            {
+              url: heroImage,
+              width: 1200,
+              height: 630,
+              alt: "GRBPWR",
+            },
+          ]
+        : undefined,
     },
   };
 }
