@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
 import { MAX_LIMIT } from "@/constants";
 
@@ -9,6 +10,43 @@ import { MobileImageCarousel } from "./_components/mobile-image-carousel";
 import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { productParams: string[] };
+}): Promise<Metadata> {
+  const { productParams } = params;
+  const [gender, brand, name, id] = productParams;
+
+  const { product } = await serviceClient.GetProduct({
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
+  });
+
+  const productMedia = [...(product?.media || [])];
+
+  return {
+    openGraph: {
+      title: product?.product?.productDisplay?.productBody?.name,
+      description: `${product?.product?.productDisplay?.productBody?.description}\n${product?.product?.productDisplay?.productBody?.color}`,
+      type: "website",
+      siteName: "grbpwr.com",
+      images: productMedia
+        ? [
+            {
+              url: productMedia[0].media?.thumbnail?.mediaUrl || "",
+              width: 200,
+              height: 200,
+              alt: "GRBPWR",
+            },
+          ]
+        : undefined,
+    },
+  };
+}
 
 interface ProductPageProps {
   params: Promise<{

@@ -15,11 +15,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     openGraph: {
-      title: "grbpwr.com title",
+      title: "GRBPWR",
       description:
         "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
       type: "website",
-      url: "https://grbpwr.com",
+      // url: "https://grbpwr.com",
       siteName: "grbpwr.com",
       images: heroImage
         ? [
