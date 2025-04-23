@@ -6,8 +6,13 @@ import { CookieBanner } from "@/components/ui/cookie-banner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "grbpwr.com title",
-  description: "grbpwr.com desc",
+  title: "grbpwr.com",
+  description:
+    "GRBPWR latest ready-to-wear menswear, womenswear, and accessories",
+  openGraph: {
+    images:
+      "https://cdn.rickowens.eu/products/192775/product/RL01E5716_PCVS_09_01.jpg",
+  },
 };
 
 type Props = {

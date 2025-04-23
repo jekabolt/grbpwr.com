@@ -11,13 +11,15 @@ import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
-export async function generateMetadata({
-  params,
-}: {
+interface ProductPageProps {
   params: Promise<{
     productParams: string[];
   }>;
-}): Promise<Metadata> {
+}
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
   const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
@@ -31,6 +33,7 @@ export async function generateMetadata({
   const productMedia = [...(product?.media || [])];
 
   return {
+    title: `grbpwr.com - ${product?.product?.productDisplay?.productBody?.name?.toUpperCase()}`,
     openGraph: {
       title: product?.product?.productDisplay?.productBody?.name,
       description: `${product?.product?.productDisplay?.productBody?.description} ${product?.product?.productDisplay?.productBody?.color}`,
@@ -39,21 +42,13 @@ export async function generateMetadata({
       images: productMedia
         ? [
             {
-              url: productMedia[0].media?.thumbnail?.mediaUrl || "",
-              width: 200,
-              height: 200,
-              alt: "GRBPWR",
+              url: productMedia[0].media?.compressed?.mediaUrl || "",
+              alt: "product image",
             },
           ]
         : undefined,
     },
   };
-}
-
-interface ProductPageProps {
-  params: Promise<{
-    productParams: string[];
-  }>;
 }
 
 export async function generateStaticParams() {

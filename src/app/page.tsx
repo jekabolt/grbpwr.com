@@ -10,24 +10,19 @@ import { MainAds } from "./_components/main-ads";
 export async function generateMetadata(): Promise<Metadata> {
   const { hero } = await serviceClient.GetHero({});
   const heroImage =
-    hero?.entities?.[0]?.main?.single?.mediaLandscape?.media?.fullSize
+    hero?.entities?.[0]?.main?.single?.mediaLandscape?.media?.thumbnail
       ?.mediaUrl || "";
 
   return {
     openGraph: {
-      title: "GRBPWR",
-      description:
-        "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
+      title: "grbpwr.com",
       type: "website",
-      // url: "https://grbpwr.com",
       siteName: "grbpwr.com",
       images: heroImage
         ? [
             {
               url: heroImage,
-              width: 1200,
-              height: 630,
-              alt: "GRBPWR",
+              alt: "main hero image",
             },
           ]
         : undefined,
