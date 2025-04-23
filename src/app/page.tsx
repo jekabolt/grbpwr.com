@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { hero } = await serviceClient.GetHero({});
   const heroImage =
     hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.thumbnail
-      ?.mediaUrl || "";
+      ?.mediaUrl;
 
   return generateCommonMetadata({
     ogParams: {
