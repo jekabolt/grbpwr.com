@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: "grbpwr.com",
+    // TODO:uppercase
     description:
       "GRBPWR latest ready-to-wear menswear, womenswear, and accessories",
     type: "website",

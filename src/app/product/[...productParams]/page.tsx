@@ -43,6 +43,8 @@ export async function generateMetadata({
         ? [
             {
               url: productMedia[0].media?.compressed?.mediaUrl || "",
+              width: 60,
+              height: 60,
               alt: "product image",
             },
           ]
