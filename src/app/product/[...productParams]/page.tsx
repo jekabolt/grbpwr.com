@@ -14,9 +14,11 @@ import { ProductInfo } from "./_components/product-info";
 export async function generateMetadata({
   params,
 }: {
-  params: { productParams: string[] };
+  params: Promise<{
+    productParams: string[];
+  }>;
 }): Promise<Metadata> {
-  const { productParams } = params;
+  const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
   const { product } = await serviceClient.GetProduct({
@@ -31,7 +33,7 @@ export async function generateMetadata({
   return {
     openGraph: {
       title: product?.product?.productDisplay?.productBody?.name,
-      description: `${product?.product?.productDisplay?.productBody?.description}\n${product?.product?.productDisplay?.productBody?.color}`,
+      description: `${product?.product?.productDisplay?.productBody?.description} ${product?.product?.productDisplay?.productBody?.color}`,
       type: "website",
       siteName: "grbpwr.com",
       images: productMedia
