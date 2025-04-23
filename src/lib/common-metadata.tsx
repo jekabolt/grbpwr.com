@@ -58,7 +58,7 @@ export function generateCommonMetadata({
       ...ogParams,
     }),
     twitter: {
-      card: "app",
+      card: "player",
       title,
       description: description.toUpperCase(),
       images: [ogParams.imageUrl || logo.src],
