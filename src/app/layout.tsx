@@ -6,11 +6,12 @@ import { CookieBanner } from "@/components/ui/cookie-banner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "grbpwr", // Change from "grbpwr.com title" to just "grbpwr"
-  description: "grbpwr", // Change from "grbpwr.com desc" to just "grbpwr"
+  title: "grbpwr.com title",
+  description: "grbpwr.com desc",
   openGraph: {
-    title: "grbpwr",
-    siteName: "grbpwr",
+    title: "GRBPWR",
+    description:
+      "Discover the latest ready-to-wear GRBPWR menswear, womenswear, and accessories at the GRBPWR online store. Worldwide express shipping.",
   },
 };
 
