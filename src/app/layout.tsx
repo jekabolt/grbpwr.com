@@ -1,34 +1,11 @@
-import type { Metadata } from "next";
 import { FeatureMono } from "@/fonts";
 
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import { CookieBanner } from "@/components/ui/cookie-banner";
-
-import logo from "../../public/grbpwr-logo.webp";
 
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: "grbpwr.com",
-    template: "%s - grbpwr.com",
-  },
-  description: "grbpwr.com",
-
-  openGraph: {
-    title: "grbpwr.com",
-    description:
-      "latest ready-to-wear menswear, womenswear, and accessories".toUpperCase(),
-    type: "website",
-    siteName: "grbpwr.com",
-    images: [
-      {
-        url: logo.src,
-        width: 40,
-        height: 40,
-      },
-    ],
-  },
-};
+export const metadata = generateCommonMetadata();
 
 type Props = {
   children: React.ReactNode;

@@ -3,6 +3,7 @@ import { notFound } from "next/dist/client/components/not-found";
 import { MAX_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
@@ -31,26 +32,25 @@ export async function generateMetadata({
   });
 
   const productMedia = [...(product?.media || [])];
+  const productName = product?.product?.productDisplay?.productBody?.name;
+  const productDescription =
+    product?.product?.productDisplay?.productBody?.description;
+  const productColor = product?.product?.productDisplay?.productBody?.color;
+  const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
 
-  return {
-    title: product?.product?.productDisplay?.productBody?.name?.toUpperCase(),
-    openGraph: {
-      title: product?.product?.productDisplay?.productBody?.name,
-      description: `${product?.product?.productDisplay?.productBody?.description} ${product?.product?.productDisplay?.productBody?.color}`,
-      type: "website",
-      siteName: "grbpwr.com",
-      images: productMedia
-        ? [
-            {
-              url: productMedia[0].media?.compressed?.mediaUrl || "",
-              width: 20,
-              height: 20,
-              alt: "product image",
-            },
-          ]
-        : undefined,
-    },
-  };
+  return generateCommonMetadata({
+    title: productName?.toUpperCase(),
+    description: `${productDescription || ""} ${productColor || ""}`.trim(),
+    ...(productImageUrl
+      ? {
+          ogParams: {
+            imageUrl: productImageUrl,
+            imageAlt:
+              `${productName || "Product"} - ${productColor || ""}`.trim(),
+          },
+        }
+      : {}),
+  });
 }
 
 export async function generateStaticParams() {

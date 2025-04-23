@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
 import { serviceClient } from "@/lib/api";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
 import PageComponent from "./_components/page-component";
@@ -24,23 +25,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const archive = archiveResponse.archive as common_ArchiveFull;
 
-  return {
+  const thumbnailUrl = archive.media?.[0].media?.thumbnail?.mediaUrl;
+
+  return generateCommonMetadata({
     title: archive.heading,
-    openGraph: {
-      title: archive.heading,
-      description: archive.description,
-      type: "website",
-      siteName: "grbpwr.com",
-      images: [
-        {
-          url: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
-          width: 20,
-          height: 20,
-          alt: "archive image",
-        },
-      ],
-    },
-  };
+    description: archive.description || "Archive item",
+    ...(thumbnailUrl
+      ? {
+          ogParams: {
+            imageUrl: thumbnailUrl,
+          },
+        }
+      : {}),
+  });
 }
 
 export default async function Page(props: Props) {
