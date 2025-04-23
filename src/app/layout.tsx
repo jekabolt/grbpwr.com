@@ -3,6 +3,8 @@ import { FeatureMono } from "@/fonts";
 
 import { CookieBanner } from "@/components/ui/cookie-banner";
 
+import logo from "../../public/grbpwr-logo.webp";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,9 +22,9 @@ export const metadata: Metadata = {
     siteName: "grbpwr.com",
     images: [
       {
-        url: "https://cdn.rickowens.eu/products/192775/product/RL01E5716_PCVS_09_01.jpg?1739878889",
-        width: 600,
-        height: 600,
+        url: logo.src,
+        width: 40,
+        height: 40,
       },
     ],
   },
