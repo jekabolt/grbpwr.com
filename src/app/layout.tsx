@@ -8,6 +8,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "grbpwr.com title",
   description: "grbpwr.com desc",
+  openGraph: {
+    title: "grbpwr.com title",
+    siteName: "grbpwr.com",
+  },
 };
 
 type Props = {
