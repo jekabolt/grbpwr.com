@@ -5,17 +5,20 @@ import FlexibleLayout from "@/components/flexible-layout";
 import { EmptyHero } from "@/components/ui/empty-hero";
 import { Ads } from "@/app/_components/ads";
 
+import logo from "../../public/grbpwr-logo.webp";
 import { MainAds } from "./_components/main-ads";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { hero } = await serviceClient.GetHero({});
   const heroImage =
-    hero?.entities?.[0]?.main?.single?.mediaLandscape?.media?.thumbnail
+    hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.thumbnail
       ?.mediaUrl || "";
 
   return {
     openGraph: {
       title: "grbpwr.com",
+      description:
+        "latest ready-to-wear menswear, womenswear, and accessories".toUpperCase(),
       type: "website",
       siteName: "grbpwr.com",
       images: heroImage
@@ -23,9 +26,11 @@ export async function generateMetadata(): Promise<Metadata> {
             {
               url: heroImage,
               alt: "main hero image",
+              width: 40,
+              height: 40,
             },
           ]
-        : undefined,
+        : [{ url: logo.src, alt: "grbpwr logo", width: 40, height: 40 }],
     },
   };
 }

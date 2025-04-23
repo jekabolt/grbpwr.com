@@ -27,6 +27,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: archive.heading,
     openGraph: {
+      title: archive.heading,
+      description: archive.description,
+      type: "website",
+      siteName: "grbpwr.com",
       images: [
         {
           url: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
