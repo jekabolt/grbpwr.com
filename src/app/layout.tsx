@@ -6,12 +6,25 @@ import { CookieBanner } from "@/components/ui/cookie-banner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "grbpwr.com",
-  description:
-    "GRBPWR latest ready-to-wear menswear, womenswear, and accessories",
+  title: {
+    default: "grbpwr.com",
+    template: "%s - grbpwr.com",
+  },
+  description: "grbpwr.com",
+
   openGraph: {
-    images:
-      "https://cdn.rickowens.eu/products/192775/product/RL01E5716_PCVS_09_01.jpg",
+    title: "grbpwr.com",
+    description:
+      "GRBPWR latest ready-to-wear menswear, womenswear, and accessories",
+    type: "website",
+    siteName: "grbpwr.com",
+    images: [
+      {
+        url: "https://cdn.rickowens.eu/products/192775/product/RL01E5716_PCVS_09_01.jpg?1739878889",
+        width: 600,
+        height: 600,
+      },
+    ],
   },
 };
 

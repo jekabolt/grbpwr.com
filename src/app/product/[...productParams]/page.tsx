@@ -33,7 +33,7 @@ export async function generateMetadata({
   const productMedia = [...(product?.media || [])];
 
   return {
-    title: `grbpwr.com - ${product?.product?.productDisplay?.productBody?.name?.toUpperCase()}`,
+    title: product?.product?.productDisplay?.productBody?.name?.toUpperCase(),
     openGraph: {
       title: product?.product?.productDisplay?.productBody?.name,
       description: `${product?.product?.productDisplay?.productBody?.description} ${product?.product?.productDisplay?.productBody?.color}`,
