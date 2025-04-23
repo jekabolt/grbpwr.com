@@ -32,21 +32,20 @@ export async function generateMetadata({
   });
 
   const productMedia = [...(product?.media || [])];
-  const productName = product?.product?.productDisplay?.productBody?.name;
-  const productDescription =
+  const title = product?.product?.productDisplay?.productBody?.name;
+  const description =
     product?.product?.productDisplay?.productBody?.description;
-  const productColor = product?.product?.productDisplay?.productBody?.color;
+  const color = product?.product?.productDisplay?.productBody?.color;
   const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
 
   return generateCommonMetadata({
-    title: productName?.toUpperCase(),
-    description: `${productDescription || ""} ${productColor || ""}`.trim(),
+    title: title?.toUpperCase(),
+    description: `${description || ""} ${color || ""}`,
     ...(productImageUrl
       ? {
           ogParams: {
             imageUrl: productImageUrl,
-            imageAlt:
-              `${productName || "Product"} - ${productColor || ""}`.trim(),
+            imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
           },
         }
       : {}),
