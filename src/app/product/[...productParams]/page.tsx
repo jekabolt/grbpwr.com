@@ -40,15 +40,11 @@ export async function generateMetadata({
 
   return generateCommonMetadata({
     title: title?.toUpperCase(),
-    description: `${description || ""} ${color || ""}`,
-    ...(productImageUrl
-      ? {
-          ogParams: {
-            imageUrl: productImageUrl,
-            imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
-          },
-        }
-      : {}),
+    description: `${description}'\n'${color}`,
+    ogParams: {
+      imageUrl: productImageUrl,
+      imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
+    },
   });
 }
 

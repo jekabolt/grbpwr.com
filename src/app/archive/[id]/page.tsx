@@ -25,18 +25,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const archive = archiveResponse.archive as common_ArchiveFull;
 
-  const thumbnailUrl = archive.media?.[0].media?.thumbnail?.mediaUrl;
-
   return generateCommonMetadata({
-    title: archive.heading,
-    description: archive.description || "Archive item",
-    ...(thumbnailUrl
-      ? {
-          ogParams: {
-            imageUrl: thumbnailUrl,
-          },
-        }
-      : {}),
+    title: archive.heading || "",
+    description: archive.description || "",
+    ogParams: {
+      imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
+      imageAlt: archive.heading || "",
+    },
   });
 }
 

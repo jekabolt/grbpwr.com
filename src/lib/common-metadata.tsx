@@ -38,7 +38,6 @@ export function generateOpenGraph({
 
 export function generateCommonMetadata({
   title = "grbpwr.com",
-  templateTitle = "%s - grbpwr.com",
   description = "latest ready-to-wear menswear, womenswear, and accessories",
   ogParams = {},
 }: {
@@ -50,7 +49,7 @@ export function generateCommonMetadata({
   return {
     title: {
       default: title,
-      template: templateTitle,
+      template: "%s - grbpwr.com",
     },
     description,
     openGraph: generateOpenGraph({
@@ -59,7 +58,7 @@ export function generateCommonMetadata({
       ...ogParams,
     }),
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title,
       description: description.toUpperCase(),
       images: [ogParams.imageUrl || logo.src],
