@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
@@ -11,6 +12,32 @@ type Props = {
     id: string;
   }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+
+  const archiveResponse = await serviceClient.GetArchive({
+    id: parseInt(id),
+    heading: "1",
+    tag: "1",
+  });
+
+  const archive = archiveResponse.archive as common_ArchiveFull;
+
+  return {
+    title: archive.heading,
+    openGraph: {
+      images: [
+        {
+          url: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
+          width: 20,
+          height: 20,
+          alt: "archive image",
+        },
+      ],
+    },
+  };
+}
 
 export default async function Page(props: Props) {
   const params = await props.params;

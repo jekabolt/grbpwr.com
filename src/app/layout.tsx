@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: "grbpwr.com",
     // TODO:uppercase
     description:
-      "GRBPWR latest ready-to-wear menswear, womenswear, and accessories",
+      "latest ready-to-wear menswear, womenswear, and accessories".toUpperCase(),
     type: "website",
     siteName: "grbpwr.com",
     images: [

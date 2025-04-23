@@ -1,8 +1,17 @@
+import { Metadata } from "next";
 import { ARCHIVE_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 
 import { ArchiveLayout } from "./_components/archive-layout";
+
+export const metadata: Metadata = {
+  title: "archive",
+  openGraph: {
+    title: "archive",
+    description: "discover archive and updates".toUpperCase(),
+  },
+};
 
 export default async function Page() {
   const { archives, total } = await serviceClient.GetArchivesPaged({
