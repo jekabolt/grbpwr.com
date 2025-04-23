@@ -6,11 +6,11 @@ import { CookieBanner } from "@/components/ui/cookie-banner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "grbpwr.com title",
-  description: "grbpwr.com desc",
+  title: "grbpwr", // Change from "grbpwr.com title" to just "grbpwr"
+  description: "grbpwr", // Change from "grbpwr.com desc" to just "grbpwr"
   openGraph: {
-    title: "grbpwr.com title",
-    siteName: "grbpwr.com",
+    title: "grbpwr",
+    siteName: "grbpwr",
   },
 };
 
