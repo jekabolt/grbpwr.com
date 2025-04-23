@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const archive = archiveResponse.archive as common_ArchiveFull;
 
   return generateCommonMetadata({
-    title: archive.heading || "",
-    description: archive.description || "",
+    title: archive.heading || "heading",
+    description: archive.description || "description",
     ogParams: {
       imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
       imageAlt: archive.heading || "",
