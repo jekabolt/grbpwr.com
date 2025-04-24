@@ -1,8 +1,14 @@
 import { ARCHIVE_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 
 import { ArchiveLayout } from "./_components/archive-layout";
+
+export const metadata = generateCommonMetadata({
+  title: "archive".toUpperCase(),
+  description: "discover archive and updates",
+});
 
 export default async function Page() {
   const { archives, total } = await serviceClient.GetArchivesPaged({
