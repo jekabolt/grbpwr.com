@@ -5,9 +5,15 @@ import { Text } from "@/components/ui/text";
 
 import "./globals.css";
 
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
 export const dynamic = "force-static";
+
+export const metadata = generateCommonMetadata({
+  title: "page not found".toUpperCase(),
+  description: "page not found",
+});
 
 export default function NotFoundPage() {
   return (

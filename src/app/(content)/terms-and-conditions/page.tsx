@@ -1,9 +1,14 @@
 import Link from "next/link";
 
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import { Button } from "@/components/ui/button";
 import CareComposition from "@/components/ui/care-composition";
 import { Text } from "@/components/ui/text";
 import TextWrapper from "@/components/ui/text-wrapper";
+
+export const metadata = generateCommonMetadata({
+  title: "terms and conditions".toUpperCase(),
+});
 
 export default function Component() {
   return (

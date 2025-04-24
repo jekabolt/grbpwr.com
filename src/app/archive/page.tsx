@@ -6,7 +6,7 @@ import { generateCommonMetadata } from "@/lib/common-metadata";
 import { ArchiveLayout } from "./_components/archive-layout";
 
 export const metadata = generateCommonMetadata({
-  title: "archive",
+  title: "archive".toUpperCase(),
   description: "discover archive and updates",
 });
 

@@ -1,7 +1,12 @@
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import CareComposition from "@/components/ui/care-composition";
 import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";
 import TextWrapper from "@/components/ui/text-wrapper";
+
+export const metadata = generateCommonMetadata({
+  title: "shipping".toUpperCase(),
+});
 
 export default function Component() {
   return (
