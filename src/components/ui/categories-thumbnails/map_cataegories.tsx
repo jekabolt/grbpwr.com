@@ -31,11 +31,11 @@ export const CATEGORY_ICONS_MAP: Record<
   3: DressIcon, //done
   4: JacketIcon, //done
   5: SweaterIcon, //done
-  6: ShortIcon,
+  6: OtherIcon,
   7: SkirtIcon, //done
-  8: ShortIcon,
+  8: ShortIcon, //done
   9: JacketIcon,
-  10: CoatIcon,
+  10: CoatIcon, //done
   // no socks thumbnail
   11: OtherIcon,
   13: BraIcon,
