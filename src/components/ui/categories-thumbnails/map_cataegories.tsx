@@ -31,7 +31,7 @@ export const CATEGORY_ICONS_MAP: Record<
   3: DressIcon,
   4: JacketIcon,
   5: SweaterIcon,
-  6: JacketIcon,
+  6: SweaterIcon,
   7: SkirtIcon,
   8: ShortIcon,
   9: JacketIcon,
