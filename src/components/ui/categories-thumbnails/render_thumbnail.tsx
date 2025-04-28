@@ -9,12 +9,14 @@ interface CategoryThumbnailProps {
   gender: common_GenderEnum | undefined;
   className?: string;
   size?: number;
+  lengthInfo?: string;
 }
 
 export function CategoryThumbnail({
   categoryId,
   className,
   gender,
+  lengthInfo = "56",
 }: CategoryThumbnailProps) {
   const IconComponent = getIconByCategoryId(categoryId, gender);
 
@@ -23,8 +25,11 @@ export function CategoryThumbnail({
   }
 
   return (
-    <div className={cn("flex items-center justify-center", className)}>
-      <IconComponent className="h-full p-3 lg:p-5" />
+    <div className={cn("flex w-full items-center justify-center", className)}>
+      <IconComponent
+        className="h-full w-full border border-blue-500 p-3 lg:p-5"
+        lengthInfo={lengthInfo}
+      />
     </div>
   );
 }

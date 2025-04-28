@@ -1,3 +1,4 @@
+import { SVGProps } from "react";
 import { common_GenderEnum } from "@/api/proto-http/frontend";
 
 import { BagIcon } from "@/components/ui/icons/bag";
@@ -16,9 +17,14 @@ import { TShirtIcon } from "@/components/ui/icons/t-shirt";
 import { UnderwearFIcon } from "@/components/ui/icons/underwear-f";
 import { UnderwearMIcon } from "@/components/ui/icons/underwear-m";
 
+// Extended SVG props interface that includes lengthInfo
+interface IconProps extends SVGProps<SVGSVGElement> {
+  lengthInfo?: string;
+}
+
 export const CATEGORY_ICONS_MAP: Record<
   number,
-  React.ComponentType<React.SVGProps<SVGSVGElement>>
+  React.ComponentType<IconProps>
 > = {
   1: TShirtIcon,
   2: PantsIcon,
@@ -59,5 +65,8 @@ export function getIconByCategoryId(
     }
     return UnderwearMIcon;
   }
+
+  console.log(categoryId);
+
   return CATEGORY_ICONS_MAP[categoryId] || OtherIcon;
 }

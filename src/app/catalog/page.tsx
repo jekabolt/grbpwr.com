@@ -37,7 +37,7 @@ export async function generateMetadata(
 
   const genderTitle = GENDER_MAP_REVERSE[gender as common_GenderEnum];
   return generateCommonMetadata({
-    title: genderTitle.toUpperCase() || "catalog".toUpperCase(),
+    title: gender ? genderTitle.toUpperCase() : "catalog".toUpperCase(),
   });
 }
 

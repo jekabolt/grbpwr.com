@@ -1,15 +1,19 @@
 import { SVGProps } from "react";
 
+import { HorizontaltLine } from "./guide-lines/horizontal-line";
+import { VerticalLine } from "./guide-lines/vertical-line";
+
 export function PantsIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1294"
-      height="2047"
-      viewBox="0 0 1294 2047"
+      height="2647"
+      viewBox="0 -400 1294 2647"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
+      <HorizontaltLine info="103" xStart={190} xEnd={1124} y={-120} />
       <path
         d="M657.469 7.71973H1125.55V2039.38H706.609V566.8H657.469"
         stroke="black"
@@ -63,6 +67,28 @@ export function PantsIcon(props: SVGProps<SVGSVGElement>) {
         stroke="black"
         strokeWidth="6"
         strokeMiterlimit="10"
+      />
+      <VerticalLine
+        lengthInfo="65 inseam"
+        x={655}
+        yStart={570}
+        yEnd={2047}
+        textY={1023}
+        rectXOffset={125}
+      />
+      <VerticalLine
+        lengthInfo="65 length"
+        x={1300}
+        yStart={20}
+        yEnd={2047}
+        textY={1023}
+      />
+      <HorizontaltLine
+        info="25"
+        xStart={190}
+        xEnd={600}
+        y={2150}
+        rectYOffset={60}
       />
     </svg>
   );
