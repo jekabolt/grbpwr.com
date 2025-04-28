@@ -1,15 +1,19 @@
 import { SVGProps } from "react";
 
+import { HorizontaltLine } from "./guide-lines/horizontal-line";
+import { VerticalLine } from "./guide-lines/vertical-line";
+
 export function JacketIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1472"
-      height="1340"
-      viewBox="0 0 1472 1340"
+      height="1540"
+      viewBox="0 -200 1472 1540"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
+      <HorizontaltLine info="shoulders" y={-120} xStart={328} xEnd={1145} />
       <g clip-path="url(#clip0_943_4535)">
         <path
           d="M735.52 182.17L735.18 182.74L734.84 182.17L735.18 181.86L735.52 182.17Z"
@@ -83,7 +87,24 @@ export function JacketIcon(props: SVGProps<SVGSVGElement>) {
           strokeWidth="6"
           strokeMiterlimit="10"
         />
+        <HorizontaltLine info="bust" y={500} xStart={328} xEnd={1145} />
+        <HorizontaltLine info="waist" y={1000} xStart={328} xEnd={1145} />
+        <VerticalLine
+          lengthInfo="length"
+          x={930}
+          yStart={15}
+          yEnd={1330}
+          rectXOffset={125}
+        />
       </g>
+      <VerticalLine
+        lengthInfo="sleeve"
+        view="diagonal"
+        x={1300}
+        xEnd={1650}
+        yStart={150}
+        yEnd={1100}
+      />
       <defs>
         <clipPath id="clip0_943_4535">
           <rect width="1471.85" height="1339.02" fill="white" />
