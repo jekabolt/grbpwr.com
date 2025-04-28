@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-import { HorizontaltLine } from "./guide-lines/horizontal-line";
+import { HorizontalLine } from "./guide-lines/horizontal-line";
 import { VerticalLine } from "./guide-lines/vertical-line";
 
 export function SkirtIcon(props: SVGProps<SVGSVGElement>) {
@@ -13,7 +13,7 @@ export function SkirtIcon(props: SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <HorizontaltLine info="waist" y={300} xStart={180} xEnd={1110} />
+      <HorizontalLine info="waist" y={300} xStart={180} xEnd={1110} />
       <g clip-path="url(#clip0_943_4449)">
         <path
           d="M646.591 430H1114.67V1616.52H597.941"
@@ -87,7 +87,7 @@ export function SkirtIcon(props: SVGProps<SVGSVGElement>) {
           strokeWidth="6"
           strokeMiterlimit="10"
         />
-        <HorizontaltLine info="hips" y={800} xStart={180} xEnd={1110} />
+        <HorizontalLine info="hips" y={800} xStart={180} xEnd={1110} />
         <VerticalLine lengthInfo="length" x={930} yStart={440} yEnd={1610} />
       </g>
       <defs>

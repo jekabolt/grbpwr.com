@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-import { HorizontaltLine } from "./guide-lines/horizontal-line";
+import { HorizontalLine } from "./guide-lines/horizontal-line";
 import { VerticalLine } from "./guide-lines/vertical-line";
 
 export function CoatIcon(props: SVGProps<SVGSVGElement>) {
@@ -13,7 +13,7 @@ export function CoatIcon(props: SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <HorizontaltLine info="shoulders" y={-120} xStart={335} xEnd={1140} />
+      <HorizontalLine info="shoulders" y={-120} xStart={335} xEnd={1140} />
       <g clipPath="url(#clip0_943_4492)">
         <path
           d="M735.52 182.169L735.18 182.739L734.84 182.169L735.18 181.859L735.52 182.169Z"
@@ -105,8 +105,8 @@ export function CoatIcon(props: SVGProps<SVGSVGElement>) {
           strokeWidth="6"
           strokeMiterlimit="10"
         />
-        <HorizontaltLine info="chest" y={600} xStart={335} xEnd={1140} />
-        <HorizontaltLine info="waist" y={1000} xStart={335} xEnd={1140} />
+        <HorizontalLine info="chest" y={600} xStart={335} xEnd={1140} />
+        <HorizontalLine info="waist" y={1000} xStart={335} xEnd={1140} />
         <VerticalLine
           lengthInfo="length"
           x={1000}

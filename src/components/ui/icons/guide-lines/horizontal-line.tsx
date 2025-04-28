@@ -1,4 +1,4 @@
-export function HorizontaltLine({
+export function HorizontalLine({
   info = "70",
   xStart = 156,
   xEnd = 966,

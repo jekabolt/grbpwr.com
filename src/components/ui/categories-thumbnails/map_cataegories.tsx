@@ -31,24 +31,24 @@ export const CATEGORY_ICONS_MAP: Record<
   3: DressIcon, //done
   4: JacketIcon, //done
   5: SweaterIcon, //done
-  6: OtherIcon,
+  6: BagIcon,
   7: SkirtIcon, //done
   8: ShortIcon, //done
   9: JacketIcon,
   10: CoatIcon, //done
   // no socks thumbnail
-  11: OtherIcon,
-  13: BraIcon,
+  11: OtherIcon, //done
+  13: BraIcon, //done
   // no hat thumbnail
-  14: OtherIcon,
-  15: ScarfIcon,
+  14: OtherIcon, //done
+  15: ScarfIcon, //done
   // no gloves thumbnail
-  16: OtherIcon,
+  16: OtherIcon, //done
   // no shoes thumbnail
-  17: OtherIcon,
-  18: BeltIcon,
-  19: BagIcon,
-  20: OtherIcon,
+  17: OtherIcon, //done
+  18: BeltIcon, //done
+  19: BagIcon, //done
+  20: OtherIcon, //done
 } as const;
 
 export function getIconByCategoryId(
@@ -56,7 +56,7 @@ export function getIconByCategoryId(
   gender: common_GenderEnum | undefined,
 ) {
   if (!categoryId) return OtherIcon;
-  if (categoryId === 12) {
+  if (categoryId === 5) {
     if (gender === "GENDER_ENUM_FEMALE") {
       return UnderwearFIcon;
     }

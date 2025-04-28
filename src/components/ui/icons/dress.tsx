@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-import { HorizontaltLine } from "./guide-lines/horizontal-line";
+import { HorizontalLine } from "./guide-lines/horizontal-line";
 import { VerticalLine } from "./guide-lines/vertical-line";
 
 export function DressIcon(props: SVGProps<SVGSVGElement>) {
@@ -51,7 +51,7 @@ export function DressIcon(props: SVGProps<SVGSVGElement>) {
           yEnd={1980}
           rectYOffset={100}
         />
-        <HorizontaltLine info="100" y={600} xStart={330} xEnd={1140} />
+        <HorizontalLine info="100" y={600} xStart={330} xEnd={1140} />
       </g>
       <VerticalLine
         lengthInfo="65"

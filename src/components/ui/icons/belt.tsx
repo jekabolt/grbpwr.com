@@ -1,16 +1,20 @@
 import { SVGProps } from "react";
 
+import { HorizontalLine } from "./guide-lines/horizontal-line";
+
 export function BeltIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="290"
-      height="2052"
-      viewBox="0 0 290 2052"
+      width="790"
+      height="1552"
+      viewBox="0 200 290 1552"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g clip-path="url(#clip0_943_4572)">
+      <HorizontalLine info="width to last" y={570} xStart={-850} xEnd={1000} />
+      <HorizontalLine info="width to first" y={770} xStart={-850} xEnd={650} />
+      <g transform="rotate(-90 145 1026)">
         <path
           d="M238 234H53V472H238V234Z"
           stroke="black"
@@ -78,11 +82,7 @@ export function BeltIcon(props: SVGProps<SVGSVGElement>) {
           strokeMiterlimit="10"
         />
       </g>
-      <defs>
-        <clipPath id="clip0_943_4572">
-          <rect width="290" height="2052" fill="white" />
-        </clipPath>
-      </defs>
+      <HorizontalLine info="width" y={1270} xStart={-850} xEnd={1150} />
     </svg>
   );
 }

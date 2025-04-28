@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-import { HorizontaltLine } from "./guide-lines/horizontal-line";
+import { HorizontalLine } from "./guide-lines/horizontal-line";
 import { SleeveLine } from "./guide-lines/sleeve-line";
 import { VerticalLine } from "./guide-lines/vertical-line";
 
@@ -27,7 +27,7 @@ export function TShirtIcon({
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <HorizontaltLine info="103" y={-120} />
+      <HorizontalLine info="103" y={-120} />
       <g clipPath="url(#clip0_1334_5631)">
         <path
           d="M149.34 120.76L364.12 3H758.36L971.34 121.17"
@@ -92,7 +92,7 @@ export function TShirtIcon({
           strokeMiterlimit="10"
           strokeLinecap="round"
         />
-        <HorizontaltLine info="12" />
+        <HorizontalLine info="12" />
         <VerticalLine lengthInfo={lengthInfo} />
         <SleeveLine sleeveInfo={sleeveInfo} />
       </g>
