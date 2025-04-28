@@ -13,7 +13,7 @@ import Catalog from "./_components/catalog";
 import { NextCategoryButton } from "./_components/next-category-button";
 import { getProductsPagedQueryParams } from "./_components/utils";
 
-// TODO: in metadata title display `${filtered gender} grbpwr.com`
+// TODO: remove changes when task will be done
 
 interface CatalogPageProps {
   searchParams: Promise<{

@@ -3,8 +3,11 @@ export function VerticalLine({
   x = 763,
   yStart = 15,
   yEnd = 1216,
-  textY = 611,
+  textY,
   rectXOffset = 0,
+  rectYOffset = 0,
+  view = "vertical",
+  xEnd,
 }: {
   lengthInfo: string;
   x?: number;
@@ -12,11 +15,24 @@ export function VerticalLine({
   yEnd?: number;
   textY?: number;
   rectXOffset?: number;
+  rectYOffset?: number;
+  view?: "vertical" | "diagonal";
+  xEnd?: number;
 }) {
+  // For diagonal lines, if xEnd isn't specified, create a default diagonal
+  const endX = view === "diagonal" ? xEnd ?? x + (yEnd - yStart) : x;
+
+  // Calculate the center point of the line
+  const centerX = view === "diagonal" ? (x + endX) / 2 : x;
+  const centerY = (yStart + yEnd) / 2;
+
+  // Use provided textY or calculate from center
+  const finalTextY = textY ?? centerY;
+
   return (
     <>
       <path
-        d={`M${x} ${yStart}L${x} ${yEnd}`}
+        d={`M${x} ${yStart}L${endX} ${yEnd}`}
         stroke="#311EEE"
         strokeWidth="5"
         fill="none"
@@ -26,7 +42,7 @@ export function VerticalLine({
       <rect
         width="254"
         height="124"
-        transform={`translate(${x - 127 + rectXOffset} ${textY - 62})`}
+        transform={`translate(${centerX - 127 + rectXOffset} ${finalTextY - 62 + rectYOffset})`}
         fill="#311EEE"
       />
       <text
@@ -34,8 +50,8 @@ export function VerticalLine({
         textAnchor="middle"
         dominantBaseline="middle"
         fontSize="40"
-        x={x + rectXOffset}
-        y={textY}
+        x={centerX + rectXOffset}
+        y={finalTextY + rectYOffset}
       >
         {lengthInfo}
       </text>

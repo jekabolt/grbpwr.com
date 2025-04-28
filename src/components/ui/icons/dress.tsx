@@ -1,11 +1,14 @@
 import { SVGProps } from "react";
 
+import { HorizontaltLine } from "./guide-lines/horizontal-line";
+import { VerticalLine } from "./guide-lines/vertical-line";
+
 export function DressIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="1472"
+      width="1672"
       height="1988"
-      viewBox="0 0 1472 1988"
+      viewBox="-100 0 1672 1988"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
@@ -41,7 +44,23 @@ export function DressIcon(props: SVGProps<SVGSVGElement>) {
           strokeWidth="6"
           strokeMiterlimit="10"
         />
+        <VerticalLine
+          lengthInfo="103"
+          x={935}
+          yStart={9}
+          yEnd={1980}
+          rectYOffset={100}
+        />
+        <HorizontaltLine info="100" y={600} xStart={330} xEnd={1140} />
       </g>
+      <VerticalLine
+        lengthInfo="65"
+        x={1300}
+        yStart={100}
+        yEnd={1100}
+        view="diagonal"
+        xEnd={1630}
+      />
       <defs>
         <clipPath id="clip0_943_4555">
           <rect width="1471.76" height="1988" fill="white" />
