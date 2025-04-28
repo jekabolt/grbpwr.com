@@ -26,13 +26,13 @@ export const CATEGORY_ICONS_MAP: Record<
   number,
   React.ComponentType<IconProps>
 > = {
-  1: TShirtIcon,
-  2: PantsIcon,
-  3: DressIcon,
-  4: JacketIcon,
-  5: SweaterIcon,
-  6: SweaterIcon,
-  7: SkirtIcon,
+  1: TShirtIcon, //done
+  2: PantsIcon, //done
+  3: DressIcon, //done
+  4: JacketIcon, //done
+  5: SweaterIcon, //done
+  6: ShortIcon,
+  7: SkirtIcon, //done
   8: ShortIcon,
   9: JacketIcon,
   10: CoatIcon,
