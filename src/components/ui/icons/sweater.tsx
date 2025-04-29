@@ -10,14 +10,14 @@ export function SweaterIcon(props: React.SVGProps<SVGSVGElement>) {
       {...props}
     >
       <HorizontalLine
-        measurementType="sholders"
+        measurementType="shoulders"
         info="100"
         y={40}
         xStart={145}
         xEnd={396}
       />
       <HorizontalLine
-        measurementType="sholders"
+        measurementType="chest"
         info="100"
         y={200}
         xStart={145}

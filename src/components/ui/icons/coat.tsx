@@ -12,7 +12,7 @@ export function CoatIcon(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <HorizontalLine
-        measurementType="sholders"
+        measurementType="shoulders"
         info="103"
         xStart={168}
         xEnd={367}

@@ -12,7 +12,7 @@ export function TankIcon({ ...props }: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <HorizontalLine
-        measurementType="sholders"
+        measurementType="shoulders"
         info="100"
         y={50}
         xStart={162}

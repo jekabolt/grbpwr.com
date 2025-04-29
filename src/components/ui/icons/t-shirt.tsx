@@ -12,7 +12,7 @@ export function TShirtIcon({ ...props }: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <HorizontalLine
-        measurementType="sholders"
+        measurementType="shoulders"
         info="100"
         y={30}
         xStart={131}

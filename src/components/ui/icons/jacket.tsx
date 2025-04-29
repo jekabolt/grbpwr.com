@@ -12,7 +12,7 @@ export function JacketIcon(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <HorizontalLine
-        measurementType="sholders"
+        measurementType="shoulders"
         info="103"
         xStart={95}
         xEnd={335}

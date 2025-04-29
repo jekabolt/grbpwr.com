@@ -13,8 +13,10 @@ import { UnderwearFIcon } from "@/components/ui/icons/underwear-f";
 import { UnderwearMIcon } from "@/components/ui/icons/underwear-m";
 
 import { BraIcon } from "../icons/bra";
+import { GlovesIcon } from "../icons/gloves";
 import { PantsIcon } from "../icons/pants";
 import { TankIcon } from "../icons/tank";
+import { VestIcon } from "../icons/vest";
 
 export const MAIN_CATEGORIES = {
   OUTERWEAR: 1,
@@ -40,6 +42,7 @@ export const CATEGORY_MAP: Record<number, CategoryConfig> = {
     defaultIcon: JacketIcon,
     subcategories: {
       coats: CoatIcon,
+      vests: VestIcon,
     },
   },
   [MAIN_CATEGORIES.TOPS]: {
@@ -73,6 +76,7 @@ export const CATEGORY_MAP: Record<number, CategoryConfig> = {
     defaultIcon: OtherIcon,
     subcategories: {
       belts: BeltIcon,
+      gloves: GlovesIcon,
     },
   },
   [MAIN_CATEGORIES.SHOES]: {

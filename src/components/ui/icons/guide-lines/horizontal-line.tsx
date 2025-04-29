@@ -15,7 +15,7 @@ export function HorizontalLine({
     | "waist"
     | "width"
     | "chest"
-    | "sholders"
+    | "shoulders"
     | "hips"
     | "bust"
     | "leg open"
