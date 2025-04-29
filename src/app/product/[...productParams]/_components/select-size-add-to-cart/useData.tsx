@@ -53,6 +53,7 @@ export function useData({
   const productCare = productBody?.careInstructions;
   const sizes = product.sizes;
   const categoryId = productBody?.topCategoryId;
+  const subCategoryId = productBody?.subCategoryId;
   const typeId = productBody?.typeId;
   const gender = productBody?.targetGender;
 
@@ -86,6 +87,10 @@ export function useData({
   const category = dictionary?.categories?.find(
     (c) => c.id === categoryId,
   )?.name;
+
+  const subCategory = dictionary?.categories?.find(
+    (c) => c.id === subCategoryId,
+  );
 
   const isShoes = category?.toLowerCase().includes("shoes");
   const triggerText = activeSizeName
@@ -144,6 +149,7 @@ export function useData({
     productId,
     sizes,
     categoryId,
+    subCategory,
     gender,
     lowStockText,
     measurements: product.measurements || [],

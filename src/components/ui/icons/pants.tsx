@@ -6,90 +6,55 @@ import { VerticalLine } from "./guide-lines/vertical-line";
 export function PantsIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="1294"
-      height="2647"
-      viewBox="0 -400 1294 2647"
       fill="none"
+      viewBox="0 -50 212 557"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <HorizontalLine info="103" xStart={190} xEnd={1124} y={-120} />
-      <path
-        d="M657.469 7.71973H1125.55V2039.38H706.609V566.8H657.469"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M657.959 7.72973L189.879 7.71973V2039.38H608.819V566.8H657.959"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M190.328 68.2793L1124.56 68.3393"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M608.82 643.09V7.72949"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M383.249 68.2793L382.969 149.839L255.879 304.209H189.879"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M607.777 320.7H706.557V66.7695"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M189.879 2003.15H608.819"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M707.598 2003.15H1119.59"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M932.457 68.2793L932.737 149.839L1059.83 304.209H1125.83"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <VerticalLine
-        lengthInfo="65 inseam"
-        x={655}
-        yStart={570}
-        yEnd={2047}
-        textY={1023}
-        rectXOffset={125}
-      />
-      <VerticalLine
-        lengthInfo="65 length"
-        x={1300}
-        yStart={20}
-        yEnd={2047}
-        textY={1023}
-      />
-      <HorizontalLine
-        info="25"
-        xStart={190}
-        xEnd={600}
-        y={2150}
-        rectYOffset={60}
-      />
+      <g
+        clipPath="url(#a)"
+        stroke="#000"
+        stroke-miterlimit="10"
+        stroke-width="2"
+      >
+        <path d="m105.94 0.67383h105.38v455.65h-94.317v-330.26h-11.063" />
+        <path d="m106.06 0.67383h-105.38v455.65h94.317v-330.26h11.063" />
+        <path d="m94.992 143.17v-142.5" />
+        <path d="m44.21 0.57227-0.063 18.294-28.612 34.622h-14.859" />
+        <path d="m94.758 70.867h22.236l2e-3 -70.141" />
+        <path d="m0.67578 448.2h94.317" />
+        <path d="m117.23 448.2h92.753" />
+        <path d="m167.86 0.57227 0.061 18.294 28.612 34.622h14.859" />
+      </g>
+      <g>
+        <HorizontalLine
+          measurementType="waist"
+          info="103"
+          xStart={2}
+          xEnd={210}
+          y={-20}
+        />
+        <HorizontalLine
+          measurementType="leg open"
+          info="65"
+          xStart={2}
+          xEnd={95}
+          y={480}
+        />
+        <VerticalLine lengthInfo="40" x={270} yStart={5} yEnd={455} />
+        <VerticalLine
+          lengthInfo="65"
+          x={105.94}
+          yStart={127}
+          yEnd={455.65}
+          rectXOffset={35}
+        />
+      </g>
+      <defs>
+        <clipPath id="a">
+          <rect width="212" height="557" fill="#fff" />
+        </clipPath>
+      </defs>
     </svg>
   );
 }

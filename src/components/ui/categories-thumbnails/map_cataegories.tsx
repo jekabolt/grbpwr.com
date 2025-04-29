@@ -1,15 +1,10 @@
-import { SVGProps } from "react";
-import { common_GenderEnum } from "@/api/proto-http/frontend";
+import { common_Category, common_GenderEnum } from "@/api/proto-http/frontend";
 
-import { BagIcon } from "@/components/ui/icons/bag";
 import { BeltIcon } from "@/components/ui/icons/belt";
-import { BraIcon } from "@/components/ui/icons/bra";
 import { CoatIcon } from "@/components/ui/icons/coat";
 import { DressIcon } from "@/components/ui/icons/dress";
 import { JacketIcon } from "@/components/ui/icons/jacket";
 import { OtherIcon } from "@/components/ui/icons/other";
-import { PantsIcon } from "@/components/ui/icons/pants";
-import { ScarfIcon } from "@/components/ui/icons/scarf";
 import { ShortIcon } from "@/components/ui/icons/shorts";
 import { SkirtIcon } from "@/components/ui/icons/skirt";
 import { SweaterIcon } from "@/components/ui/icons/sweater";
@@ -17,56 +12,106 @@ import { TShirtIcon } from "@/components/ui/icons/t-shirt";
 import { UnderwearFIcon } from "@/components/ui/icons/underwear-f";
 import { UnderwearMIcon } from "@/components/ui/icons/underwear-m";
 
-// Extended SVG props interface that includes lengthInfo
-interface IconProps extends SVGProps<SVGSVGElement> {
-  lengthInfo?: string;
+import { BraIcon } from "../icons/bra";
+import { PantsIcon } from "../icons/pants";
+import { TankIcon } from "../icons/tank";
+
+export const MAIN_CATEGORIES = {
+  OUTERWEAR: 1,
+  TOPS: 2,
+  BOTTOMS: 3,
+  DRESSES: 4,
+  UNDERWEAR: 5,
+  ACCESSORIES: 6,
+  SHOES: 7,
+  BAGS: 8,
+  OBJECTS: 9,
+};
+
+type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
+
+interface CategoryConfig {
+  defaultIcon: IconComponent;
+  subcategories: Record<string, IconComponent>;
 }
 
-export const CATEGORY_ICONS_MAP: Record<
-  number,
-  React.ComponentType<IconProps>
-> = {
-  1: TShirtIcon, //done
-  2: PantsIcon, //done
-  3: DressIcon, //done
-  4: JacketIcon, //done
-  5: SweaterIcon, //done
-  6: BagIcon,
-  7: SkirtIcon, //done
-  8: ShortIcon, //done
-  9: JacketIcon,
-  10: CoatIcon, //done
-  // no socks thumbnail
-  11: OtherIcon, //done
-  13: BraIcon, //done
-  // no hat thumbnail
-  14: OtherIcon, //done
-  15: ScarfIcon, //done
-  // no gloves thumbnail
-  16: OtherIcon, //done
-  // no shoes thumbnail
-  17: OtherIcon, //done
-  18: BeltIcon, //done
-  19: BagIcon, //done
-  20: OtherIcon, //done
-} as const;
+export const CATEGORY_MAP: Record<number, CategoryConfig> = {
+  [MAIN_CATEGORIES.OUTERWEAR]: {
+    defaultIcon: JacketIcon,
+    subcategories: {
+      coats: CoatIcon,
+    },
+  },
+  [MAIN_CATEGORIES.TOPS]: {
+    defaultIcon: TShirtIcon,
+    subcategories: {
+      tanks: TankIcon,
+      sweaters_knits: SweaterIcon,
+      shirts: TShirtIcon,
+      hoodies_sweatshirts: SweaterIcon,
+    },
+  },
+  [MAIN_CATEGORIES.BOTTOMS]: {
+    defaultIcon: PantsIcon,
+    subcategories: {
+      pants: PantsIcon,
+      shorts: ShortIcon,
+      skirt: SkirtIcon,
+    },
+  },
+  [MAIN_CATEGORIES.UNDERWEAR]: {
+    defaultIcon: BraIcon,
+    subcategories: {
+      bralettes: BraIcon,
+    },
+  },
+  [MAIN_CATEGORIES.DRESSES]: {
+    defaultIcon: DressIcon,
+    subcategories: {},
+  },
+  [MAIN_CATEGORIES.ACCESSORIES]: {
+    defaultIcon: OtherIcon,
+    subcategories: {
+      belts: BeltIcon,
+    },
+  },
+  [MAIN_CATEGORIES.SHOES]: {
+    defaultIcon: OtherIcon,
+    subcategories: {},
+  },
+  [MAIN_CATEGORIES.BAGS]: {
+    defaultIcon: OtherIcon,
+    subcategories: {},
+  },
+  [MAIN_CATEGORIES.OBJECTS]: {
+    defaultIcon: OtherIcon,
+    subcategories: {},
+  },
+};
 
 export function getIconByCategoryId(
   categoryId: number | undefined,
   gender: common_GenderEnum | undefined,
-) {
+  subCategory?: common_Category,
+): IconComponent {
   if (!categoryId) return OtherIcon;
-  if (categoryId === 5) {
-    if (gender === "GENDER_ENUM_FEMALE") {
-      return UnderwearFIcon;
+
+  const category = CATEGORY_MAP[categoryId] || {
+    defaultIcon: OtherIcon,
+    subcategories: {},
+  };
+
+  if (subCategory?.name) {
+    const subCategoryName = subCategory.name.toLowerCase();
+    if (subCategoryName in category.subcategories) {
+      return category.subcategories[subCategoryName];
     }
-    if (gender === "GENDER_ENUM_MALE") {
-      return UnderwearMIcon;
-    }
-    return UnderwearMIcon;
   }
 
-  console.log(categoryId);
+  // Only fall back to gender-based underwear icons if no specific subcategory is found
+  if (categoryId === MAIN_CATEGORIES.UNDERWEAR) {
+    return gender === "GENDER_ENUM_FEMALE" ? UnderwearFIcon : UnderwearMIcon;
+  }
 
-  return CATEGORY_ICONS_MAP[categoryId] || OtherIcon;
+  return category.defaultIcon;
 }

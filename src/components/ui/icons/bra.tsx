@@ -5,32 +5,23 @@ import { HorizontalLine } from "./guide-lines/horizontal-line";
 export function BraIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="1205"
-      height="1492"
-      viewBox="0 -150 1205 1492"
       fill="none"
+      viewBox="0 0 541 541"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path
-        d="M573.82 1038.3L208.82 526.6V3H159.55V520.65L3.17969 834.81L68.5197 1088.28H553.56H1136.18L1201.51 834.81L1045.15 520.65V3H995.88V526.6L630.88 1038.3H553.56"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
+      <g stroke="#000" stroke-miterlimit="10" stroke-width="2">
+        <path d="m259.82 447.07-130.28-182.87v-187.12h-17.586v185l-55.814 112.27 23.322 90.585h381.09l23.319-90.585-55.81-112.27v-185h-17.587v187.12l-130.28 182.87h-27.598" />
+        <path d="m260.11 447.07h-184.96" />
+        <path d="m280.31 447.07h184.96" />
+      </g>
+      <HorizontalLine
+        measurementType="chest"
+        info="100"
+        y={500}
+        xStart={85}
+        xEnd={455}
       />
-      <path
-        d="M574.649 1038.3H56.4688"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M631.238 1038.3H1149.42"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <HorizontalLine info="width" xStart={70} xEnd={1135} y={1200} />
     </svg>
   );
 }

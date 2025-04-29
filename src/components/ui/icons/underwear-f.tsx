@@ -5,44 +5,25 @@ import { HorizontalLine } from "./guide-lines/horizontal-line";
 export function UnderwearFIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="1294"
-      height="1547"
-      viewBox="0 200 1294 1547"
       fill="none"
+      viewBox="0 0 541 541"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <HorizontalLine info="width" y={550} xStart={70} xEnd={1240} />
-      <path
-        d="M732.95 1327.2H581.75"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
+      <HorizontalLine
+        measurementType="waist"
+        info="103"
+        y={120}
+        xStart={40}
+        xEnd={500}
       />
-      <path
-        d="M62 776.4V717H1254.05V776.4L734.3 1328.55H580.4L62 776.4Z"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M580.4 1328.55L488.6 1036.95L337.4 880.35L62 776.4"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M488.598 1036.95L337.398 880.35"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
-      <path
-        d="M732.949 1328.55L824.749 1036.95L975.949 880.35L1253.82 775.28"
-        stroke="black"
-        strokeWidth="6"
-        strokeMiterlimit="10"
-      />
+      <g stroke="#000" stroke-miterlimit="10" stroke-width="2">
+        <path d="m299.33 387.34h-58.181" />
+        <path d="m41.156 176.85v-22.701h458.69v22.701l-200 211.01h-59.22l-199.48-211.01z" />
+        <path d="m240.63 387.85-35.323-111.44-58.181-59.845-105.97-39.725" />
+        <path d="m205.31 276.42-58.181-59.846" />
+        <path d="m299.33 387.85 35.324-111.44 58.18-59.846 106.92-40.153" />
+      </g>
     </svg>
   );
 }

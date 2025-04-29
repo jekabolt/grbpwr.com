@@ -1,106 +1,57 @@
 import { SVGProps } from "react";
 
 import { HorizontalLine } from "./guide-lines/horizontal-line";
-import { SleeveLine } from "./guide-lines/sleeve-line";
 import { VerticalLine } from "./guide-lines/vertical-line";
 
-interface TShirtIconProps extends SVGProps<SVGSVGElement> {
-  lengthInfo?: string;
-  waistInfo?: string;
-  sleeveInfo?: string;
-  widthInfo?: string;
-}
-
-export function TShirtIcon({
-  lengthInfo = "56",
-  waistInfo = "70",
-  sleeveInfo = "25",
-  widthInfo = "50",
-  ...props
-}: TShirtIconProps) {
+export function TShirtIcon({ ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="2000"
-      height="1425"
-      viewBox="-400 -200 2000 1425"
       fill="none"
+      viewBox="0 0 541 541"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <HorizontalLine info="103" y={-120} />
-      <g clipPath="url(#clip0_1334_5631)">
+      <HorizontalLine
+        measurementType="sholders"
+        info="100"
+        y={30}
+        xStart={131}
+        xEnd={409}
+      />
+      <HorizontalLine
+        measurementType="chest"
+        info="100"
+        y={200}
+        xStart={131}
+        xEnd={409}
+      />
+      <VerticalLine lengthInfo="100" x={350} yStart={85} yEnd={460} />
+      <VerticalLine
+        lengthInfo="100"
+        view="diagonal"
+        x={450}
+        xEnd={500}
+        yStart={100}
+        yEnd={270}
+      />
+      <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
+        <path d="m129.9 104.39 73.119-39.394h134.22l72.507 39.531" />
+        <path d="M409.736 256.393V478H129.895V255.375" />
+        <path d="m129.9 104.53v150.84" />
+        <path d="m409.74 104.53v152.92" />
+        <path d="m203.75 65 22.292 24.967h88.574l22.293-24.967" />
+        <path d="m352.52 73.993-28.729 30.538h-106.24l-29.395-31.209" />
+        <path d="m409.74 465.52h-279.84" />
         <path
-          d="M149.34 120.76L364.12 3H758.36L971.34 121.17"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M971.34 569.24V1222H149.34V566.24"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M149.34 120.76V566.24"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M971.34 121.17V569.24"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M364.461 3L430.461 75H692.701L758.701 3"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M806.34 28L720.87 119H404.79L317.34 26"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M971.34 1184H149.34"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M971.34 697L1116.66 657.57L971.34 121.17"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
+          d="m409.74 300.11 48.894-13.392-48.894-182.18"
           strokeLinecap="round"
         />
         <path
-          d="M149 697L3.67969 657.57L149 121"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
+          d="m129.89 300.11-48.894-13.388 48.894-182.19"
           strokeLinecap="round"
         />
-        <path
-          d="M399 38L724 38"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-          strokeLinecap="round"
-        />
-        <HorizontalLine info="12" />
-        <VerticalLine lengthInfo={lengthInfo} />
-        <SleeveLine sleeveInfo={sleeveInfo} />
+        <path d="m215.2 76.443h110.27" strokeLinecap="round" />
       </g>
-      <defs>
-        <clipPath id="clip0_1334_5631">
-          <rect x="-400" y="-100" width="2000" height="1425" fill="white" />
-        </clipPath>
-      </defs>
     </svg>
   );
 }

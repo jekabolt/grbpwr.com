@@ -10,7 +10,7 @@ export function VerticalLine({
   xEnd,
   yOffset = 0,
 }: {
-  lengthInfo: string;
+  lengthInfo: string; //TODO: change name
   x?: number;
   yStart?: number;
   yEnd?: number;
@@ -21,18 +21,14 @@ export function VerticalLine({
   xEnd?: number;
   yOffset?: number;
 }) {
-  // For diagonal lines, if xEnd isn't specified, create a default diagonal
   const endX = view === "diagonal" ? xEnd ?? x + (yEnd - yStart) : x;
 
-  // Apply yOffset to start and end y positions
   const adjustedYStart = yStart + yOffset;
   const adjustedYEnd = yEnd + yOffset;
 
-  // Calculate the center point of the line
   const centerX = view === "diagonal" ? (x + endX) / 2 : x;
   const centerY = (adjustedYStart + adjustedYEnd) / 2;
 
-  // Use provided textY or calculate from center
   const finalTextY = textY ?? centerY;
 
   return (
@@ -40,26 +36,36 @@ export function VerticalLine({
       <path
         d={`M${x} ${adjustedYStart}L${endX} ${adjustedYEnd}`}
         stroke="#311EEE"
-        strokeWidth="5"
+        strokeWidth="1"
         fill="none"
         markerStart="url(#arrowStart)"
         markerEnd="url(#arrowEnd)"
       />
       <rect
-        width="254"
-        height="124"
-        transform={`translate(${centerX - 127 + rectXOffset} ${finalTextY - 62 + rectYOffset})`}
+        width="70"
+        height="36"
+        transform={`translate(${centerX - 35 + rectXOffset} ${finalTextY - 18 + rectYOffset})`}
         fill="#311EEE"
       />
       <text
         fill="white"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="40"
+        fontSize="10"
         x={centerX + rectXOffset}
-        y={finalTextY + rectYOffset}
+        y={finalTextY + rectYOffset - 8}
       >
-        {lengthInfo}
+        inseam
+      </text>
+      <text
+        fill="white"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontSize="10"
+        x={centerX + rectXOffset}
+        y={finalTextY + rectYOffset + 8}
+      >
+        {lengthInfo} cm
       </text>
 
       <defs>

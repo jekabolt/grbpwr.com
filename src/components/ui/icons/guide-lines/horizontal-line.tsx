@@ -4,14 +4,26 @@ export function HorizontalLine({
   xEnd = 966,
   y = 894,
   rectYOffset = 0,
+  measurementType = "width",
 }: {
   info: string;
   xStart?: number;
   xEnd?: number;
   y?: number;
   rectYOffset?: number;
+  measurementType:
+    | "waist"
+    | "width"
+    | "chest"
+    | "sholders"
+    | "hips"
+    | "bust"
+    | "leg open"
+    | "bottom width"
+    | "width to last"
+    | "width to first"
+    | "length";
 }) {
-  // Calculate the center of the rectangle
   const rectCenterX = (xStart + xEnd) / 2;
   const rectCenterY = y + rectYOffset;
 
@@ -20,26 +32,37 @@ export function HorizontalLine({
       <path
         d={`M${xStart} ${y}L${xEnd} ${y}`}
         stroke="#311EEE"
-        strokeWidth="5"
+        strokeWidth="1"
         fill="none"
         markerStart="url(#arrowStartHorizontal)"
         markerEnd="url(#arrowEndHorizontal)"
       />
       <rect
-        width="254"
-        height="124"
-        transform={`translate(${rectCenterX - 127} ${y - 62 + rectYOffset})`}
+        width="90"
+        height="36"
+        transform={`translate(${rectCenterX - 45} ${y - 18})`}
+        style={{ zIndex: 1000 }}
         fill="#311EEE"
       />
       <text
         fill="white"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="30"
+        fontSize="10"
         x={rectCenterX}
-        y={rectCenterY}
+        y={rectCenterY - 8}
       >
-        {info}
+        {measurementType}
+      </text>
+      <text
+        fill="white"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontSize="10"
+        x={rectCenterX}
+        y={rectCenterY + 8}
+      >
+        {info} cm
       </text>
       <defs>
         <marker
