@@ -6,7 +6,7 @@ import { getIconByCategoryId } from "./map_cataegories";
 
 interface CategoryThumbnailProps {
   categoryId: number | undefined;
-  subCategory: common_Category | undefined;
+  subCategory?: common_Category | undefined;
   gender: common_GenderEnum | undefined;
   className?: string;
 }
