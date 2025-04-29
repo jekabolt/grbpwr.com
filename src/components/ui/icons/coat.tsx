@@ -19,7 +19,7 @@ export function CoatIcon(props: SVGProps<SVGSVGElement>) {
         y={0}
       />
       <VerticalLine
-        lengthInfo="40"
+        info="40"
         view="diagonal"
         x={408}
         xEnd={480}
@@ -60,18 +60,8 @@ export function CoatIcon(props: SVGProps<SVGSVGElement>) {
           xEnd={367}
           y={170}
         />
-        <VerticalLine lengthInfo="40" x={320} yStart={60} yEnd={500} />
+        <VerticalLine info="40" x={320} yStart={60} yEnd={500} />
       </g>
-      <defs>
-        <clipPath id="a">
-          <rect
-            transform="translate(97 24)"
-            width="347"
-            height="493"
-            fill="#fff"
-          />
-        </clipPath>
-      </defs>
     </svg>
   );
 }

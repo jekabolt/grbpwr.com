@@ -57,7 +57,7 @@ export function Measurements({
   };
 
   return (
-    <div className="flex h-full flex-col border-2 border-red-500 bg-bgColor">
+    <div className="flex h-full flex-col bg-bgColor">
       <CategoryThumbnail
         categoryId={categoryId}
         subCategory={subCategory}

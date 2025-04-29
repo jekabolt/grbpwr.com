@@ -25,7 +25,7 @@ export function TankIcon({ ...props }: SVGProps<SVGSVGElement>) {
         xStart={162}
         xEnd={378}
       />
-      <VerticalLine lengthInfo="100" x={460} yStart={95} yEnd={455} />
+      <VerticalLine info="100" x={460} yStart={95} yEnd={455} />
       <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
         <path d="m210.66 87.902 19.87 21.676h78.949l19.869-21.676" />
         <path d="m196.48 94.826 0.494 0.5268 25.831 27.471h95.161l25.43-27.074 0.301-0.3221" />

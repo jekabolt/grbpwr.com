@@ -13,7 +13,7 @@ export function OtherIcon(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <VerticalLine
-        lengthInfo="length"
+        info="length"
         view="diagonal"
         x={-30}
         xEnd={550}
@@ -22,7 +22,7 @@ export function OtherIcon(props: SVGProps<SVGSVGElement>) {
         yOffset={1200}
       />
       <VerticalLine
-        lengthInfo="width"
+        info="width"
         view="diagonal"
         x={1320}
         xEnd={760}
@@ -30,7 +30,7 @@ export function OtherIcon(props: SVGProps<SVGSVGElement>) {
         yEnd={410}
         yOffset={1200}
       />
-      <VerticalLine lengthInfo="height" x={1460} yStart={400} yEnd={1100} />
+      <VerticalLine info="height" x={1460} yStart={400} yEnd={1100} />
       <path
         d="M1302.04 378.46L652.52 3.45996L3 378.46V1128.46L652.52 1503.46L1302.04 1128.46V378.46Z"
         stroke="black"

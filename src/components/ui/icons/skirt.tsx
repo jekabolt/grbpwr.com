@@ -39,7 +39,7 @@ export function SkirtIcon(props: SVGProps<SVGSVGElement>) {
         xStart={100}
         xEnd={440}
       />
-      <VerticalLine lengthInfo="212" x={375} yStart={80} yEnd={510} />
+      <VerticalLine info="212" x={375} yStart={80} yEnd={510} />
       <HorizontalLine
         measurementType="bottom width"
         info="103"

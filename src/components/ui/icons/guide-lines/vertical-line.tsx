@@ -1,5 +1,5 @@
 export function VerticalLine({
-  lengthInfo = "65",
+  info = "65",
   x = 763,
   yStart = 15,
   yEnd = 1216,
@@ -9,8 +9,9 @@ export function VerticalLine({
   view = "vertical",
   xEnd,
   yOffset = 0,
+  measurementType = "length",
 }: {
-  lengthInfo: string; //TODO: change name
+  info: string;
   x?: number;
   yStart?: number;
   yEnd?: number;
@@ -20,6 +21,7 @@ export function VerticalLine({
   view?: "vertical" | "diagonal";
   xEnd?: number;
   yOffset?: number;
+  measurementType?: "length" | "width" | "sleeve";
 }) {
   const endX = view === "diagonal" ? xEnd ?? x + (yEnd - yStart) : x;
 
@@ -55,7 +57,7 @@ export function VerticalLine({
         x={centerX + rectXOffset}
         y={finalTextY + rectYOffset - 8}
       >
-        inseam
+        {view === "diagonal" ? (measurementType = "sleeve") : measurementType}
       </text>
       <text
         fill="white"
@@ -65,7 +67,7 @@ export function VerticalLine({
         x={centerX + rectXOffset}
         y={finalTextY + rectYOffset + 8}
       >
-        {lengthInfo} cm
+        {info} cm
       </text>
 
       <defs>

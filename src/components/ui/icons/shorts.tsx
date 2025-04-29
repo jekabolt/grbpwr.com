@@ -36,8 +36,8 @@ export function ShortIcon(props: SVGProps<SVGSVGElement>) {
           xStart={82}
           xEnd={458}
         />
-        <VerticalLine lengthInfo="212" x={270} yStart={310} yEnd={515} />
-        <VerticalLine lengthInfo="212" x={375} yStart={80} yEnd={510} />
+        <VerticalLine info="212" x={270} yStart={310} yEnd={515} />
+        <VerticalLine info="212" x={375} yStart={80} yEnd={510} />
       </g>
     </svg>
   );

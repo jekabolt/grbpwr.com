@@ -23,9 +23,9 @@ export function SweaterIcon(props: React.SVGProps<SVGSVGElement>) {
         xStart={145}
         xEnd={396}
       />
-      <VerticalLine lengthInfo="100" x={350} yStart={90} yEnd={450} />
+      <VerticalLine info="100" x={350} yStart={90} yEnd={450} />
       <VerticalLine
-        lengthInfo="100"
+        info="100"
         view="diagonal"
         x={450}
         xEnd={540}

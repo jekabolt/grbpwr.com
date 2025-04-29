@@ -33,7 +33,8 @@ export function BeltIcon(props: SVGProps<SVGSVGElement>) {
         xEnd={415}
       />
       <VerticalLine
-        lengthInfo="100"
+        measurementType="width"
+        info="100"
         x={425}
         yStart={0}
         yEnd={60}

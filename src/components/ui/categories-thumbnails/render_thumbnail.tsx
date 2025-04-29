@@ -30,7 +30,7 @@ export function CategoryThumbnail({
         className,
       )}
     >
-      <IconComponent className="h-full w-full border border-blue-500" />
+      <IconComponent className="h-full w-full" />
     </div>
   );
 }

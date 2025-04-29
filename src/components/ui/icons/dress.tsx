@@ -12,7 +12,7 @@ export function DressIcon(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <VerticalLine
-        lengthInfo="100"
+        info="100"
         view="diagonal"
         x={420}
         xEnd={485}

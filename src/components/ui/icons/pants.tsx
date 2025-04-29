@@ -11,12 +11,7 @@ export function PantsIcon(props: SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g
-        clipPath="url(#a)"
-        stroke="#000"
-        stroke-miterlimit="10"
-        stroke-width="2"
-      >
+      <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
         <path d="m105.94 0.67383h105.38v455.65h-94.317v-330.26h-11.063" />
         <path d="m106.06 0.67383h-105.38v455.65h94.317v-330.26h11.063" />
         <path d="m94.992 143.17v-142.5" />
@@ -41,20 +36,15 @@ export function PantsIcon(props: SVGProps<SVGSVGElement>) {
           xEnd={95}
           y={480}
         />
-        <VerticalLine lengthInfo="40" x={270} yStart={5} yEnd={455} />
+        <VerticalLine info="40" x={270} yStart={5} yEnd={455} />
         <VerticalLine
-          lengthInfo="65"
+          info="65"
           x={105.94}
           yStart={127}
           yEnd={455.65}
           rectXOffset={35}
         />
       </g>
-      <defs>
-        <clipPath id="a">
-          <rect width="212" height="557" fill="#fff" />
-        </clipPath>
-      </defs>
     </svg>
   );
 }
