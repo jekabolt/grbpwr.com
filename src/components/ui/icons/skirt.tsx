@@ -1,23 +1,42 @@
 import { SVGProps } from "react";
 
-import { HorizontalLine } from "./guide-lines/horizontal-line";
-import { VerticalLine } from "./guide-lines/vertical-line";
+import {
+  MeasurementLine,
+  SvgWrapper,
+} from "../categories-thumbnails/svg-wrapper";
 
+const skirtLines: MeasurementLine[] = [
+  {
+    type: "horizontal",
+    name: "waist",
+    y: 50,
+    xStart: 100,
+    xEnd: 440,
+  },
+  {
+    type: "horizontal",
+    name: "hips",
+    y: 200,
+    xStart: 100,
+    xEnd: 440,
+  },
+  {
+    type: "horizontal",
+    name: "bottom width",
+    y: 540,
+    xStart: 100,
+    xEnd: 440,
+  },
+  {
+    type: "vertical",
+    x: 375,
+    yStart: 80,
+    yEnd: 510,
+  },
+];
 export function SkirtIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      fill="none"
-      viewBox="160 15 212 557"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <HorizontalLine
-        measurementType="waist"
-        info="103"
-        y={50}
-        xStart={100}
-        xEnd={440}
-      />
+    <SvgWrapper lines={skirtLines} originalViewBox="160 15 212 557" {...props}>
       <g clipPath="url(#a)" stroke="#000" strokeMiterlimit="10" strokeWidth="2">
         <path d="m270.01 77.109h172.88v438.78h-190.85" />
         <path d="m270.19 77.109h-172.88v438.78h163.29v-210.89" />
@@ -31,22 +50,6 @@ export function SkirtIcon(props: SVGProps<SVGSVGElement>) {
         <path d="m274.27 223.98h-8.125v8.949h8.125v-8.949z" />
         <path d="m274.27 269.69h-8.125v8.95h8.125v-8.95z" />
       </g>
-
-      <HorizontalLine
-        measurementType="hips"
-        info="103"
-        y={200}
-        xStart={100}
-        xEnd={440}
-      />
-      <VerticalLine info="212" x={375} yStart={80} yEnd={510} />
-      <HorizontalLine
-        measurementType="bottom width"
-        info="103"
-        y={540}
-        xStart={100}
-        xEnd={440}
-      />
-    </svg>
+    </SvgWrapper>
   );
 }

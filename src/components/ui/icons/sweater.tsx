@@ -1,37 +1,42 @@
-import { HorizontalLine } from "./guide-lines/horizontal-line";
-import { VerticalLine } from "./guide-lines/vertical-line";
+import {
+  MeasurementLine,
+  SvgWrapper,
+} from "../categories-thumbnails/svg-wrapper";
 
+const sweaterLines: MeasurementLine[] = [
+  {
+    type: "horizontal",
+    name: "shoulders",
+    y: 40,
+    xStart: 145,
+    xEnd: 396,
+  },
+  {
+    type: "horizontal",
+    name: "chest",
+    y: 200,
+    xStart: 145,
+    xEnd: 396,
+  },
+  {
+    type: "vertical",
+    name: "length",
+    x: 350,
+    yStart: 90,
+    yEnd: 450,
+  },
+  {
+    type: "vertical",
+    view: "diagonal",
+    x: 450,
+    xEnd: 540,
+    yStart: 100,
+    yEnd: 410,
+  },
+];
 export function SweaterIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      fill="none"
-      viewBox="0 0 541 541"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <HorizontalLine
-        measurementType="shoulders"
-        info="100"
-        y={40}
-        xStart={145}
-        xEnd={396}
-      />
-      <HorizontalLine
-        measurementType="chest"
-        info="100"
-        y={200}
-        xStart={145}
-        xEnd={396}
-      />
-      <VerticalLine info="100" x={350} yStart={90} yEnd={450} />
-      <VerticalLine
-        info="100"
-        view="diagonal"
-        x={450}
-        xEnd={540}
-        yStart={100}
-        yEnd={410}
-      />
+    <SvgWrapper lines={sweaterLines} originalViewBox="160 0 212 541" {...props}>
       <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
         <path d="m143.2 109.49 66.62-36.565h122l66.062 36.663" />
         <path d="m397.73 368.59v99.485h-254.37v-100.41" />
@@ -50,6 +55,6 @@ export function SweaterIcon(props: React.SVGProps<SVGSVGElement>) {
         />
         <path d="m220.6 83.75h101.81" strokeLinecap="round" />
       </g>
-    </svg>
+    </SvgWrapper>
   );
 }

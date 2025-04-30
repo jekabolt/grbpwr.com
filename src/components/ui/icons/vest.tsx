@@ -1,24 +1,43 @@
 import { SVGProps } from "react";
 
-import { HorizontalLine } from "./guide-lines/horizontal-line";
-import { VerticalLine } from "./guide-lines/vertical-line";
+import {
+  MeasurementLine,
+  SvgWrapper,
+} from "../categories-thumbnails/svg-wrapper";
+
+const vestLines: MeasurementLine[] = [
+  {
+    type: "horizontal",
+    name: "shoulders",
+    y: 10,
+    xStart: 15,
+    xEnd: 235,
+  },
+  {
+    type: "vertical",
+    x: 300,
+    yStart: 40,
+    yEnd: 400,
+  },
+  {
+    type: "horizontal",
+    name: "chest",
+    y: 150,
+    xStart: 15,
+    xEnd: 235,
+  },
+  {
+    type: "horizontal",
+    name: "waist",
+    y: 300,
+    xStart: 2,
+    xEnd: 248,
+  },
+];
 
 export function VestIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      fill="none"
-      viewBox="0 -40 251 510"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <HorizontalLine
-        info="100"
-        measurementType="shoulders"
-        y={10}
-        xStart={15}
-        xEnd={235}
-      />
-      <VerticalLine info="100" x={300} yStart={40} yEnd={400} />
+    <SvgWrapper lines={vestLines} originalViewBox="20 -50 212 541" {...props}>
       <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
         <path
           d="m125.12 374.01v-0.039l0.075-202.67 75.264-137.28 35.224 18.569"
@@ -31,20 +50,6 @@ export function VestIcon(props: SVGProps<SVGSVGElement>) {
         <path d="m141.6 300.99h-6.623v7.286h6.623v-7.286z" />
         <path d="m50.527 33.115 149.32 0.6021" strokeLinecap="round" />
       </g>
-      <HorizontalLine
-        info="100"
-        measurementType="chest"
-        y={150}
-        xStart={15}
-        xEnd={235}
-      />
-      <HorizontalLine
-        info="100"
-        measurementType="waist"
-        y={300}
-        xStart={2}
-        xEnd={248}
-      />
-    </svg>
+    </SvgWrapper>
   );
 }

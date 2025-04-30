@@ -14,13 +14,13 @@ const STANDARD_VIEWBOX = "0 0 600 800";
 
 export type MeasurementLine = {
   type: "horizontal" | "vertical";
-  name:
+  view?: "diagonal" | "vertical";
+  name?:
     | "waist"
     | "width"
     | "chest"
     | "shoulders"
     | "hips"
-    | "bust"
     | "leg open"
     | "bottom width"
     | "width to last"
@@ -82,7 +82,7 @@ export function SvgWrapper({
           line.type === "horizontal" ? (
             <HorizontalLine
               key={`${line.name}-${index}`}
-              measurementType={line.name}
+              measurementType={line.name || ""}
               info={"100"}
               y={line.y || 0}
               xStart={line.xStart || 0}
@@ -93,8 +93,10 @@ export function SvgWrapper({
               key={`${line.name}-${index}`}
               info={"100"}
               x={line.x || 0}
+              xEnd={line.xEnd || 0}
               yStart={line.yStart || 0}
               yEnd={line.yEnd || 0}
+              view={line.view}
             />
           ),
         )}

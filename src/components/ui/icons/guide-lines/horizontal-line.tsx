@@ -11,18 +11,7 @@ export function HorizontalLine({
   xEnd?: number;
   y?: number;
   rectYOffset?: number;
-  measurementType:
-    | "waist"
-    | "width"
-    | "chest"
-    | "shoulders"
-    | "hips"
-    | "bust"
-    | "leg open"
-    | "bottom width"
-    | "width to last"
-    | "width to first"
-    | "length";
+  measurementType: string;
 }) {
   const rectCenterX = (xStart + xEnd) / 2;
   const rectCenterY = y + rectYOffset;

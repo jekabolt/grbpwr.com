@@ -3,7 +3,6 @@ import { common_Category, common_GenderEnum } from "@/api/proto-http/frontend";
 import { BeltIcon } from "@/components/ui/icons/belt";
 import { CoatIcon } from "@/components/ui/icons/coat";
 import { DressIcon } from "@/components/ui/icons/dress";
-import { JacketIcon } from "@/components/ui/icons/jacket";
 import { OtherIcon } from "@/components/ui/icons/other";
 import { ShortIcon } from "@/components/ui/icons/shorts";
 import { SkirtIcon } from "@/components/ui/icons/skirt";
@@ -14,6 +13,7 @@ import { UnderwearMIcon } from "@/components/ui/icons/underwear-m";
 
 import { BraIcon } from "../icons/bra";
 import { GlovesIcon } from "../icons/gloves";
+import { JacketIcon } from "../icons/jacket";
 import { PantsIcon } from "../icons/pants";
 import { TankIcon } from "../icons/tank";
 import { VestIcon } from "../icons/vest";
@@ -59,7 +59,7 @@ export const CATEGORY_MAP: Record<number, CategoryConfig> = {
     subcategories: {
       pants: PantsIcon,
       shorts: ShortIcon,
-      skirt: SkirtIcon,
+      skirts: SkirtIcon,
     },
   },
   [MAIN_CATEGORIES.UNDERWEAR]: {

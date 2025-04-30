@@ -1,38 +1,38 @@
 import { SVGProps } from "react";
 
-import { HorizontalLine } from "./guide-lines/horizontal-line";
-import { VerticalLine } from "./guide-lines/vertical-line";
+import {
+  MeasurementLine,
+  SvgWrapper,
+} from "../categories-thumbnails/svg-wrapper";
+
+const dressLines: MeasurementLine[] = [
+  {
+    type: "vertical",
+    view: "diagonal",
+    x: 420,
+    xEnd: 485,
+    yStart: 65,
+    yEnd: 290,
+  },
+  {
+    type: "horizontal",
+    name: "chest",
+    y: 160,
+    xStart: 170,
+    xEnd: 372,
+  },
+  {
+    type: "horizontal",
+    name: "bottom width",
+    y: 540,
+    xStart: 170,
+    xEnd: 372,
+  },
+];
 
 export function DressIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      fill="none"
-      viewBox="0 -50 541 641"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <VerticalLine
-        info="100"
-        view="diagonal"
-        x={420}
-        xEnd={485}
-        yStart={65}
-        yEnd={290}
-      />
-      <HorizontalLine
-        measurementType="chest"
-        info="100"
-        y={160}
-        xStart={170}
-        xEnd={372}
-      />
-      <HorizontalLine
-        measurementType="bottom width"
-        info="100"
-        y={540}
-        xStart={170}
-        xEnd={372}
-      />
+    <SvgWrapper lines={dressLines} originalViewBox="160 -50 212 641" {...props}>
       <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
         <path d="m168.64 53.331 53.506-29.331h98.063l53.058 29.413" />
         <path d="m373.19 266.33v250.67h-204.46v-251.42" />
@@ -49,6 +49,6 @@ export function DressIcon(props: SVGProps<SVGSVGElement>) {
           strokeLinecap="round"
         />
       </g>
-    </svg>
+    </SvgWrapper>
   );
 }
