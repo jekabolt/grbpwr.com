@@ -69,29 +69,6 @@ export function VerticalLine({
       >
         {info} cm
       </text>
-
-      <defs>
-        <marker
-          id="arrowStart"
-          markerWidth="10"
-          markerHeight="10"
-          refX="0"
-          refY="5"
-          orient="auto"
-        >
-          <path d="M5,0 L0,5 L5,10" stroke="#311EEE" />
-        </marker>
-        <marker
-          id="arrowEnd"
-          markerWidth="10"
-          markerHeight="10"
-          refX="5"
-          refY="5"
-          orient="auto"
-        >
-          <path d="M0,0 L5,5 L0,10" stroke="#311EEE" />
-        </marker>
-      </defs>
     </>
   );
 }

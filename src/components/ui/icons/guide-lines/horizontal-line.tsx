@@ -64,28 +64,6 @@ export function HorizontalLine({
       >
         {info} cm
       </text>
-      <defs>
-        <marker
-          id="arrowStartHorizontal"
-          markerWidth="10"
-          markerHeight="10"
-          refX="0"
-          refY="5"
-          orient="auto"
-        >
-          <path d="M5,0 L0,5 L5,10" stroke="#311EEE" />
-        </marker>
-        <marker
-          id="arrowEndHorizontal"
-          markerWidth="10"
-          markerHeight="10"
-          refX="5"
-          refY="5"
-          orient="auto"
-        >
-          <path d="M0,0 L5,5 L0,10" stroke="#311EEE" />
-        </marker>
-      </defs>
     </>
   );
 }
