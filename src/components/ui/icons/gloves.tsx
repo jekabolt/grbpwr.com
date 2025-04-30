@@ -15,6 +15,7 @@ const glovesLines: MeasurementLine[] = [
   },
   {
     type: "vertical",
+    name: "length",
     x: 230,
     yStart: 30,
     yEnd: 340,

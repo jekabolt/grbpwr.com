@@ -22,6 +22,7 @@ const tankLines: MeasurementLine[] = [
   },
   {
     type: "vertical",
+    name: "length",
     x: 460,
     yStart: 95,
     yEnd: 455,

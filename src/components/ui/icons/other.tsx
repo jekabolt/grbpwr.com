@@ -8,6 +8,7 @@ import {
 const otherLines: MeasurementLine[] = [
   {
     type: "vertical",
+    name: "height",
     x: 480,
     yStart: 170,
     yEnd: 365,
@@ -15,6 +16,7 @@ const otherLines: MeasurementLine[] = [
   {
     type: "vertical",
     view: "diagonal",
+    name: "length",
     x: 95,
     xEnd: 230,
     yStart: 420,
@@ -23,6 +25,7 @@ const otherLines: MeasurementLine[] = [
   {
     type: "vertical",
     view: "diagonal",
+    name: "width",
     x: 445,
     xEnd: 300,
     yStart: 420,

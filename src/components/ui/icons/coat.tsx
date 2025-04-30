@@ -16,6 +16,7 @@ const coatLines: MeasurementLine[] = [
   {
     type: "vertical",
     view: "diagonal",
+    name: "sleeve",
     x: 408,
     xEnd: 480,
     yStart: 70,
@@ -30,6 +31,7 @@ const coatLines: MeasurementLine[] = [
   },
   {
     type: "vertical",
+    name: "length",
     x: 320,
     yStart: 60,
     yEnd: 500,

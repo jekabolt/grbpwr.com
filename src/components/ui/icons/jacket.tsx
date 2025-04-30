@@ -22,7 +22,7 @@ const jacketLines: MeasurementLine[] = [
   },
   {
     type: "vertical",
-    name: "bottom width",
+    name: "length",
     x: 280,
     yStart: 40,
     yEnd: 380,
@@ -30,6 +30,7 @@ const jacketLines: MeasurementLine[] = [
   {
     type: "vertical",
     view: "diagonal",
+    name: "sleeve",
     x: 388,
     xEnd: 470,
     yStart: 50,

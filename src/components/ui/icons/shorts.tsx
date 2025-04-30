@@ -20,10 +20,9 @@ const shortsLines: MeasurementLine[] = [
     xStart: 82,
     xEnd: 458,
   },
-  // TODO: inseam instead of length
   {
     type: "vertical",
-    name: "length",
+    name: "inseam",
     x: 270,
     yStart: 310,
     yEnd: 515,

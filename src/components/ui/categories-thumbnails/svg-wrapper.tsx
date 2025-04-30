@@ -25,7 +25,10 @@ export type MeasurementLine = {
     | "bottom width"
     | "width to last"
     | "width to first"
-    | "length";
+    | "length"
+    | "inseam"
+    | "sleeve"
+    | "height";
   y?: number;
   x?: number;
   xStart?: number;
@@ -91,6 +94,7 @@ export function SvgWrapper({
           ) : (
             <VerticalLine
               key={`${line.name}-${index}`}
+              measurementType={line.name || ""}
               info={"100"}
               x={line.x || 0}
               xEnd={line.xEnd || 0}

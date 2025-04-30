@@ -15,6 +15,7 @@ const vestLines: MeasurementLine[] = [
   },
   {
     type: "vertical",
+    name: "length",
     x: 300,
     yStart: 40,
     yEnd: 400,

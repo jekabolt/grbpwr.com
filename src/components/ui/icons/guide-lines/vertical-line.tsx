@@ -21,7 +21,7 @@ export function VerticalLine({
   view?: "vertical" | "diagonal";
   xEnd?: number;
   yOffset?: number;
-  measurementType?: "length" | "width" | "sleeve";
+  measurementType?: string;
 }) {
   const endX = view === "diagonal" ? xEnd ?? x + (yEnd - yStart) : x;
 
@@ -57,7 +57,7 @@ export function VerticalLine({
         x={centerX + rectXOffset}
         y={finalTextY + rectYOffset - 8}
       >
-        {view === "diagonal" ? (measurementType = "sleeve") : measurementType}
+        {measurementType}
       </text>
       <text
         fill="white"

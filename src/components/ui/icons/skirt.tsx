@@ -29,6 +29,7 @@ const skirtLines: MeasurementLine[] = [
   },
   {
     type: "vertical",
+    name: "length",
     x: 375,
     yStart: 80,
     yEnd: 510,

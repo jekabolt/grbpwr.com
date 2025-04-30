@@ -29,6 +29,7 @@ const tshirtLines: MeasurementLine[] = [
   },
   {
     type: "vertical",
+    name: "sleeve",
     view: "diagonal",
     x: 450,
     xEnd: 500,

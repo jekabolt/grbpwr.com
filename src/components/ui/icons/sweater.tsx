@@ -28,6 +28,7 @@ const sweaterLines: MeasurementLine[] = [
   {
     type: "vertical",
     view: "diagonal",
+    name: "sleeve",
     x: 450,
     xEnd: 540,
     yStart: 100,

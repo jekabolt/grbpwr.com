@@ -5,6 +5,8 @@ import {
   SvgWrapper,
 } from "../categories-thumbnails/svg-wrapper";
 
+// TODO: add inseam
+
 const pantsLines: MeasurementLine[] = [
   {
     type: "horizontal",
@@ -29,6 +31,7 @@ const pantsLines: MeasurementLine[] = [
   },
   {
     type: "vertical",
+    name: "inseam",
     x: 105.94,
     yStart: 127,
     yEnd: 455.65,

@@ -9,6 +9,7 @@ const dressLines: MeasurementLine[] = [
   {
     type: "vertical",
     view: "diagonal",
+    name: "sleeve",
     x: 420,
     xEnd: 485,
     yStart: 65,
