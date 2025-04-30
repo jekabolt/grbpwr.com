@@ -12,6 +12,22 @@ const STANDARD_SIZE = {
 
 const STANDARD_VIEWBOX = "0 0 600 800";
 
+const MEASUREMENT_NAME_TO_ID: Record<string, string> = {
+  waist: "1",
+  inseam: "2",
+  length: "3",
+  hips: "5",
+  shoulders: "6",
+  chest: "7",
+  sleeve: "8",
+  width: "9",
+  height: "10",
+  "leg open": "11",
+  "bottom width": "13",
+  "width to last": "16",
+  "width to first": "15",
+};
+
 export type MeasurementLine = {
   type: "horizontal" | "vertical";
   view?: "diagonal" | "vertical";
@@ -42,6 +58,7 @@ interface MeasurementSvgProps extends SVGProps<SVGSVGElement> {
   lines: MeasurementLine[];
   originalViewBox?: string;
   children: React.ReactNode;
+  selectedSize?: number;
 }
 
 export function SvgWrapper({
@@ -49,6 +66,7 @@ export function SvgWrapper({
   lines,
   originalViewBox,
   children,
+  selectedSize,
   ...props
 }: MeasurementSvgProps) {
   const normalizeTransform = (originalViewBox: string) => {
@@ -72,6 +90,24 @@ export function SvgWrapper({
     return `translate(${translateX}, ${translateY}) scale(${scale})`;
   };
 
+  const getMeasurementValue = (measurementName: string) => {
+    const measurementId = MEASUREMENT_NAME_TO_ID[measurementName];
+    if (!measurementId) return "0";
+
+    const measurement = measurements.find(
+      (m) =>
+        m.measurementNameId?.toString() === measurementId &&
+        m.productSizeId === selectedSize,
+    );
+    return measurement?.measurementValue?.value || "0";
+  };
+
+  const filteredLines = lines.filter((line) => {
+    if (!line.name) return true;
+    const value = getMeasurementValue(line.name);
+    return value !== "0";
+  });
+
   return (
     <svg
       fill="none"
@@ -81,12 +117,12 @@ export function SvgWrapper({
     >
       <g transform={normalizeTransform(originalViewBox || STANDARD_VIEWBOX)}>
         {children}
-        {lines.map((line, index) =>
+        {filteredLines.map((line, index) =>
           line.type === "horizontal" ? (
             <HorizontalLine
               key={`${line.name}-${index}`}
               measurementType={line.name || ""}
-              info={"100"}
+              info={getMeasurementValue(line.name || "")}
               y={line.y || 0}
               xStart={line.xStart || 0}
               xEnd={line.xEnd || 0}
@@ -95,7 +131,7 @@ export function SvgWrapper({
             <VerticalLine
               key={`${line.name}-${index}`}
               measurementType={line.name || ""}
-              info={"100"}
+              info={getMeasurementValue(line.name || "")}
               x={line.x || 0}
               xEnd={line.xEnd || 0}
               yStart={line.yStart || 0}

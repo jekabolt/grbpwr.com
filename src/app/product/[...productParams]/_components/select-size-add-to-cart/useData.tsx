@@ -6,7 +6,7 @@ import { calculatePriceWithSale, getFullComposition } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { getPreorderDate } from "@/app/(checkout)/cart/_components/utils";
 
-export type MeasurementType = "clothing" | "ring" | "shoe";
+export type MeasurementType = "clothing" | "ring" | "shoe" | "blazer";
 
 const LOW_STOCK = 5;
 

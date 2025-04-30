@@ -1,4 +1,5 @@
 import { SVGProps } from "react";
+import { common_ProductMeasurement } from "@/api/proto-http/frontend";
 
 import {
   MeasurementLine,
@@ -22,7 +23,7 @@ const tshirtLines: MeasurementLine[] = [
   },
   {
     type: "vertical",
-    name: "bottom width",
+    name: "length",
     x: 350,
     yStart: 85,
     yEnd: 460,
@@ -38,9 +39,18 @@ const tshirtLines: MeasurementLine[] = [
   },
 ];
 
-export function TShirtIcon({ ...props }: SVGProps<SVGSVGElement>) {
+interface TShirtIconProps extends SVGProps<SVGSVGElement> {
+  measurements?: common_ProductMeasurement[];
+}
+
+export function TShirtIcon({ measurements, ...props }: TShirtIconProps) {
   return (
-    <SvgWrapper lines={tshirtLines} originalViewBox="160 0 212 541" {...props}>
+    <SvgWrapper
+      lines={tshirtLines}
+      originalViewBox="160 0 212 541"
+      measurements={measurements}
+      {...props}
+    >
       <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
         <path d="m129.9 104.39 73.119-39.394h134.22l72.507 39.531" />
         <path d="M409.736 256.393V478H129.895V255.375" />

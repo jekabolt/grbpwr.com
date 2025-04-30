@@ -10,7 +10,9 @@ import { SweaterIcon } from "@/components/ui/icons/sweater";
 import { TShirtIcon } from "@/components/ui/icons/t-shirt";
 import { UnderwearFIcon } from "@/components/ui/icons/underwear-f";
 import { UnderwearMIcon } from "@/components/ui/icons/underwear-m";
+import { MeasurementType } from "@/app/product/[...productParams]/_components/select-size-add-to-cart/useData";
 
+import { BlazerIcon } from "../icons/blazer";
 import { BraIcon } from "../icons/bra";
 import { GlovesIcon } from "../icons/gloves";
 import { JacketIcon } from "../icons/jacket";
@@ -49,6 +51,7 @@ export const CATEGORY_MAP: Record<number, CategoryConfig> = {
     defaultIcon: TShirtIcon,
     subcategories: {
       tanks: TankIcon,
+      crop: TankIcon,
       sweaters_knits: SweaterIcon,
       shirts: TShirtIcon,
       hoodies_sweatshirts: SweaterIcon,
@@ -96,6 +99,7 @@ export const CATEGORY_MAP: Record<number, CategoryConfig> = {
 export function getIconByCategoryId(
   categoryId: number | undefined,
   gender: common_GenderEnum | undefined,
+  type: MeasurementType,
   subCategory?: common_Category,
 ): IconComponent {
   if (!categoryId) return OtherIcon;
@@ -107,12 +111,14 @@ export function getIconByCategoryId(
 
   if (subCategory?.name) {
     const subCategoryName = subCategory.name.toLowerCase();
+    if (subCategoryName === "jackets" && type === "blazer") {
+      return BlazerIcon;
+    }
     if (subCategoryName in category.subcategories) {
       return category.subcategories[subCategoryName];
     }
   }
 
-  // Only fall back to gender-based underwear icons if no specific subcategory is found
   if (categoryId === MAIN_CATEGORIES.UNDERWEAR) {
     return gender === "GENDER_ENUM_FEMALE" ? UnderwearFIcon : UnderwearMIcon;
   }

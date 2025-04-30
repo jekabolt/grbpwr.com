@@ -61,7 +61,10 @@ export function Measurements({
       <CategoryThumbnail
         categoryId={categoryId}
         subCategory={subCategory}
+        type={type}
         gender={gender}
+        measurements={measurements}
+        selectedSize={selectedSize}
         className={cn("h-[450px]", {
           hidden: isRing || isShoe,
         })}
