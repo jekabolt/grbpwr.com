@@ -48,7 +48,7 @@ export function HorizontalLine({
         fill="white"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="10"
+        fontSize="15"
         x={rectCenterX}
         y={rectCenterY - 8}
       >
@@ -58,7 +58,7 @@ export function HorizontalLine({
         fill="white"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="10"
+        fontSize="15"
         x={rectCenterX}
         y={rectCenterY + 8}
       >

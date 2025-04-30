@@ -53,7 +53,7 @@ export function VerticalLine({
         fill="white"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="10"
+        fontSize="15"
         x={centerX + rectXOffset}
         y={finalTextY + rectYOffset - 8}
       >
@@ -63,7 +63,7 @@ export function VerticalLine({
         fill="white"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="10"
+        fontSize="15"
         x={centerX + rectXOffset}
         y={finalTextY + rectYOffset + 8}
       >

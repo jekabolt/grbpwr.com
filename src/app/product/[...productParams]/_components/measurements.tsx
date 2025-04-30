@@ -80,10 +80,10 @@ export function Measurements({
           </Button>
           <Text>/</Text>
           <Button
-            variant={unit === Unit.INCHES ? "underline" : undefined}
-            onClick={() => setUnit(Unit.INCHES)}
+            variant={unit === Unit.IN ? "underline" : undefined}
+            onClick={() => setUnit(Unit.IN)}
           >
-            INCHES
+            IN
           </Button>
         </div>
 

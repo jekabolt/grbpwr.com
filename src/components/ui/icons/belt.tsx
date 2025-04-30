@@ -1,45 +1,48 @@
 import { SVGProps } from "react";
 
-import { HorizontalLine } from "./guide-lines/horizontal-line";
-import { VerticalLine } from "./guide-lines/vertical-line";
+import {
+  MeasurementLine,
+  SvgWrapper,
+} from "../categories-thumbnails/svg-wrapper";
+
+const beltMeasurements: MeasurementLine[] = [
+  {
+    type: "horizontal",
+    name: "width to last",
+    y: -70,
+    xStart: 5,
+    xEnd: 375,
+  },
+  {
+    type: "horizontal",
+    name: "width to first",
+    y: -20,
+    xStart: 5,
+    xEnd: 310,
+  },
+  {
+    type: "horizontal",
+    name: "length",
+    y: 90,
+    xStart: 5,
+    xEnd: 415,
+  },
+  {
+    type: "vertical",
+    name: "width",
+    x: 465,
+    yStart: 0,
+    yEnd: 60,
+  },
+];
 
 export function BeltIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      fill="none"
-      viewBox="-50 -250 541 541"
-      xmlns="http://www.w3.org/2000/svg"
+    <SvgWrapper
+      lines={beltMeasurements}
+      originalViewBox="100 -250 241 541"
       {...props}
     >
-      <HorizontalLine
-        measurementType="width to last"
-        info="100"
-        y={-70}
-        xStart={5}
-        xEnd={375}
-      />
-      <HorizontalLine
-        measurementType="width to first"
-        info="100"
-        y={-20}
-        xStart={5}
-        xEnd={310}
-      />
-      <HorizontalLine
-        measurementType="length"
-        info="100"
-        y={90}
-        xStart={5}
-        xEnd={415}
-      />
-      <VerticalLine
-        measurementType="width"
-        info="100"
-        x={425}
-        yStart={0}
-        yEnd={60}
-        rectXOffset={35}
-      />
       <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
         <path d="m47.781 10.579v37.638h48.598v-37.638h-48.598z" />
         <path d="m106.18 10.579h298.12l14.089 6.1706v25.5l-14.089 5.9672h-298.12v-37.638z" />
@@ -53,6 +56,6 @@ export function BeltIcon(props: SVGProps<SVGSVGElement>) {
         <path d="m340.91 27.262v4.4759h4.942v-4.4759h-4.942z" />
         <path d="m306.81 27.262v4.4759h4.942v-4.4759h-4.942z" />
       </g>
-    </svg>
+    </SvgWrapper>
   );
 }
