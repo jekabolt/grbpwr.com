@@ -13,8 +13,6 @@ import Catalog from "./_components/catalog";
 import { NextCategoryButton } from "./_components/next-category-button";
 import { getProductsPagedQueryParams } from "./_components/utils";
 
-// TODO: remove changes when task will be done
-
 interface CatalogPageProps {
   searchParams: Promise<{
     category?: string;
@@ -37,7 +35,7 @@ export async function generateMetadata(
 
   const genderTitle = GENDER_MAP_REVERSE[gender as common_GenderEnum];
   return generateCommonMetadata({
-    title: gender ? genderTitle.toUpperCase() : "catalog".toUpperCase(),
+    title: genderTitle.toUpperCase() || "catalog".toUpperCase(),
   });
 }
 

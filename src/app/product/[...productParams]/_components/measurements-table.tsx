@@ -13,7 +13,7 @@ import { SizesTable } from "./sizes-table";
 
 export enum Unit {
   CM = "CM",
-  IN = "IN",
+  INCHES = "INCHES",
 }
 
 export function MeasurementsTable({
