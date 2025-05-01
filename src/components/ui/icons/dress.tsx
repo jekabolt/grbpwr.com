@@ -33,7 +33,7 @@ const dressLines: MeasurementLine[] = [
 
 export function DressIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <SvgWrapper lines={dressLines} originalViewBox="160 -50 212 641" {...props}>
+    <SvgWrapper lines={dressLines} originalViewBox="160 0 212 541" {...props}>
       <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
         <path d="m168.64 53.331 53.506-29.331h98.063l53.058 29.413" />
         <path d="m373.19 266.33v250.67h-204.46v-251.42" />

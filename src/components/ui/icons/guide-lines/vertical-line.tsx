@@ -1,97 +1,87 @@
-import { useEffect, useRef, useState } from "react";
+import { FC } from "react";
 
-export function VerticalLine({
-  info = "65",
-  x = 763,
-  yStart = 15,
-  yEnd = 1216,
+import { Text } from "../../text";
+
+type Position = {
+  x: number;
+  yStart: number;
+  yEnd: number;
+  xEnd?: number;
+  yOffset?: number;
+  textY?: number;
+  rectXOffset?: number;
+  rectYOffset?: number;
+};
+
+type LabelProps = {
+  info: string;
+  measurementType: string;
+  x: number;
+  y?: number;
+  xOffset?: number;
+  yOffset?: number;
+};
+
+const MeasurementLabel: FC<LabelProps> = ({
+  info,
+  measurementType,
+  x,
+  y = 0,
+  xOffset = 0,
+  yOffset = 0,
+}) => (
+  <g transform={`translate(${x + xOffset} ${y + yOffset})`}>
+    <foreignObject x="-100" y="-20" width="200" height="45">
+      <div className="m-auto flex w-fit flex-col items-center bg-highlightColor px-2 text-bgColor">
+        <Text variant="inherit">{measurementType}</Text>
+        <Text variant="inherit">{info} cm</Text>
+      </div>
+    </foreignObject>
+  </g>
+);
+
+export const VerticalLine: FC<
+  Position & LabelProps & { view?: "vertical" | "diagonal" }
+> = ({
+  info,
+  x,
+  yStart,
+  yEnd,
   textY,
   rectXOffset = 0,
   rectYOffset = 0,
   view = "vertical",
   xEnd,
   yOffset = 0,
-  measurementType = "length",
-}: {
-  info: string;
-  x?: number;
-  yStart?: number;
-  yEnd?: number;
-  textY?: number;
-  rectXOffset?: number;
-  rectYOffset?: number;
-  view?: "vertical" | "diagonal";
-  xEnd?: number;
-  yOffset?: number;
-  measurementType?: string;
-}) {
+  measurementType,
+}) => {
   const endX = view === "diagonal" ? xEnd ?? x + (yEnd - yStart) : x;
+  const adjustedY = {
+    start: yStart + yOffset,
+    end: yEnd + yOffset,
+  };
 
-  const adjustedYStart = yStart + yOffset;
-  const adjustedYEnd = yEnd + yOffset;
-
-  const centerX = view === "diagonal" ? (x + endX) / 2 : x;
-  const centerY = (adjustedYStart + adjustedYEnd) / 2;
-
-  const finalTextY = textY ?? centerY;
-
-  const typeTextRef = useRef<SVGTextElement>(null);
-  const infoTextRef = useRef<SVGTextElement>(null);
-  const [rectDimensions, setRectDimensions] = useState({
-    width: 75,
-    height: 19,
-  });
-
-  useEffect(() => {
-    if (typeTextRef.current && infoTextRef.current) {
-      const typeBox = typeTextRef.current.getBBox();
-      const infoBox = infoTextRef.current.getBBox();
-
-      const width = Math.max(typeBox.width, infoBox.width) + 20;
-      const height = typeBox.height + infoBox.height + 16;
-
-      setRectDimensions({ width, height });
-    }
-  }, [measurementType, info]);
+  const center = {
+    x: view === "diagonal" ? (x + endX) / 2 : x,
+    y: textY ?? (adjustedY.start + adjustedY.end) / 2,
+  };
 
   return (
     <>
       <path
-        d={`M${x} ${adjustedYStart}L${endX} ${adjustedYEnd}`}
+        d={`M${x} ${adjustedY.start}L${endX} ${adjustedY.end}`}
         stroke="#311EEE"
         strokeWidth="1"
         fill="none"
-        markerStart="url(#arrowStart)"
-        markerEnd="url(#arrowEnd)"
       />
-      <rect
-        width={rectDimensions.width}
-        height={rectDimensions.height}
-        transform={`translate(${centerX - rectDimensions.width / 2 + rectXOffset} ${finalTextY - rectDimensions.height / 2 + rectYOffset})`}
-        fill="#311EEE"
+      <MeasurementLabel
+        info={info}
+        measurementType={measurementType}
+        x={center.x}
+        y={center.y}
+        xOffset={rectXOffset}
+        yOffset={rectYOffset}
       />
-      <text
-        ref={typeTextRef}
-        fill="white"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fontSize="12"
-        x={centerX + rectXOffset}
-        y={finalTextY + rectYOffset - 8}
-      >
-        {measurementType}
-      </text>
-      <text
-        ref={infoTextRef}
-        fill="white"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fontSize="12"
-        x={centerX + rectXOffset}
-        y={finalTextY + rectYOffset + 8}
-      >
-        {info} cm
-      </text>
     </>
   );
-}
+};

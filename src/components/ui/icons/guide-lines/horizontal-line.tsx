@@ -1,40 +1,53 @@
-import { useEffect, useRef, useState } from "react";
+import { FC } from "react";
 
-export function HorizontalLine({
-  info = "70",
-  xStart = 156,
-  xEnd = 966,
-  y = 894,
-  rectYOffset = 0,
-  measurementType = "width",
-}: {
-  info: string;
-  xStart?: number;
-  xEnd?: number;
-  y?: number;
+import { Text } from "../../text";
+
+type Position = {
+  xStart: number;
+  xEnd: number;
+  y: number;
   rectYOffset?: number;
+};
+
+type LabelProps = {
+  info: string;
   measurementType: string;
-}) {
-  const rectCenterX = (xStart + xEnd) / 2;
-  const rectCenterY = y + rectYOffset;
-  const typeTextRef = useRef<SVGTextElement>(null);
-  const infoTextRef = useRef<SVGTextElement>(null);
-  const [rectDimensions, setRectDimensions] = useState({
-    width: 75,
-    height: 19,
-  });
+  x?: number;
+  y: number;
+  xOffset?: number;
+  yOffset?: number;
+};
 
-  useEffect(() => {
-    if (typeTextRef.current && infoTextRef.current) {
-      const typeBox = typeTextRef.current.getBBox();
-      const infoBox = infoTextRef.current.getBBox();
+const MeasurementLabel: FC<LabelProps> = ({
+  info,
+  measurementType,
+  x = 0,
+  y,
+  xOffset = 0,
+  yOffset = 0,
+}) => (
+  <g transform={`translate(${x + xOffset} ${y + yOffset})`}>
+    <foreignObject x="-100" y="-20" width="200" height="45">
+      <div className="m-auto flex w-fit flex-col items-center bg-highlightColor px-2 text-bgColor">
+        <Text variant="inherit">{measurementType}</Text>
+        <Text variant="inherit">{info} cm</Text>
+      </div>
+    </foreignObject>
+  </g>
+);
 
-      const width = Math.max(typeBox.width, infoBox.width) + 20;
-      const height = typeBox.height + infoBox.height + 16;
-
-      setRectDimensions({ width, height });
-    }
-  }, [measurementType, info]);
+export const HorizontalLine: FC<Position & LabelProps> = ({
+  info,
+  xStart,
+  xEnd,
+  y,
+  rectYOffset = 0,
+  measurementType,
+}) => {
+  const center = {
+    x: (xStart + xEnd) / 2,
+    y: y + rectYOffset,
+  };
 
   return (
     <>
@@ -46,34 +59,12 @@ export function HorizontalLine({
         markerStart="url(#arrowStartHorizontal)"
         markerEnd="url(#arrowEndHorizontal)"
       />
-      <rect
-        width={rectDimensions.width}
-        height={rectDimensions.height}
-        transform={`translate(${rectCenterX - rectDimensions.width / 2} ${y - rectDimensions.height / 2})`}
-        fill="#311EEE"
+      <MeasurementLabel
+        info={info}
+        measurementType={measurementType}
+        x={center.x}
+        y={center.y}
       />
-      <text
-        ref={typeTextRef}
-        fill="white"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fontSize="12"
-        x={rectCenterX}
-        y={rectCenterY - 8}
-      >
-        {measurementType}
-      </text>
-      <text
-        ref={infoTextRef}
-        fill="white"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fontSize="12"
-        x={rectCenterX}
-        y={rectCenterY + 8}
-      >
-        {info} cm
-      </text>
     </>
   );
-}
+};

@@ -165,5 +165,3 @@ export function filterNavigationLinks(
     rightSideCategoryLinks,
   };
 }
-
-

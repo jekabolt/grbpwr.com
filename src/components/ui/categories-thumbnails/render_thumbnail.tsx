@@ -6,7 +6,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 
-import { getIconByCategoryId } from "./map_cataegories";
+import { getIconByCategoryId } from "./map_categories";
 
 interface CategoryThumbnailProps {
   categoryId: number | undefined;
@@ -34,13 +34,15 @@ export function CategoryThumbnail({
 }: CategoryThumbnailProps) {
   const { dictionary } = useDataContext();
 
+  const category = dictionary?.categories?.find((c) => c.id === categoryId);
+
   const subCategory = dictionary?.categories?.find(
     (c) => c.id === subCategoryId,
   );
   const type = dictionary?.categories?.find((t) => t.id === typeId);
 
   const IconComponent = getIconByCategoryId(
-    categoryId,
+    category,
     gender,
     subCategory,
     type,
