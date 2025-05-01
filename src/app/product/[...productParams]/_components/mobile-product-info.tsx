@@ -33,7 +33,8 @@ export function MobileProductInfo({
     productId,
     sizes,
     categoryId,
-    subCategory,
+    subCategoryId,
+    typeId,
     gender,
     measurements,
     measurementType,
@@ -60,7 +61,8 @@ export function MobileProductInfo({
           id={productId}
           sizes={sizes}
           categoryId={categoryId}
-          subCategory={subCategory}
+          subCategoryId={subCategoryId}
+          typeId={typeId}
           gender={gender}
           measurements={measurements}
           type={measurementType}

@@ -24,7 +24,8 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     productId,
     sizes,
     categoryId,
-    subCategory,
+    subCategoryId,
+    typeId,
     gender,
     measurements,
     measurementType,
@@ -106,7 +107,8 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 id={productId}
                 sizes={sizes}
                 categoryId={categoryId}
-                subCategory={subCategory}
+                subCategoryId={subCategoryId}
+                typeId={typeId}
                 gender={gender}
                 measurements={measurements}
                 type={measurementType}

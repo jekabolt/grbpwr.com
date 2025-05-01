@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  common_Category,
   common_GenderEnum,
   common_ProductMeasurement,
   common_ProductSize,
@@ -23,7 +22,8 @@ export function Measurements({
   sizes,
   measurements,
   categoryId,
-  subCategory,
+  subCategoryId,
+  typeId,
   gender,
   type,
 }: {
@@ -31,7 +31,8 @@ export function Measurements({
   sizes: common_ProductSize[] | undefined;
   measurements: common_ProductMeasurement[];
   categoryId: number | undefined;
-  subCategory: common_Category | undefined;
+  subCategoryId: number | undefined;
+  typeId: number | undefined;
   gender: common_GenderEnum | undefined;
   type: MeasurementType;
 }) {
@@ -60,12 +61,12 @@ export function Measurements({
     <div className="flex h-full flex-col bg-bgColor">
       <CategoryThumbnail
         categoryId={categoryId}
-        subCategory={subCategory}
-        type={type}
+        subCategoryId={subCategoryId}
+        typeId={typeId}
         gender={gender}
         measurements={measurements}
         selectedSize={selectedSize}
-        className={cn("h-[450px]", {
+        className={cn("h-[300px] lg:h-[400px]", {
           hidden: isRing || isShoe,
         })}
       />

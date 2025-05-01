@@ -40,7 +40,7 @@ const coatLines: MeasurementLine[] = [
 
 export function CoatIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <SvgWrapper lines={coatLines} originalViewBox="150 -40 212 597" {...props}>
+    <SvgWrapper lines={coatLines} originalViewBox="160 -20 212 527" {...props}>
       <g clipPath="url(#a)" stroke="#000" strokeMiterlimit="10" strokeWidth="2">
         <path d="m266.98 68.681-0.084 0.1396-0.083-0.1396 0.083-0.0758 0.084 0.0758z" />
         <path d="m301.16 37.809-34.267 30.796-33.875-30.446 68.142-0.3507z" />

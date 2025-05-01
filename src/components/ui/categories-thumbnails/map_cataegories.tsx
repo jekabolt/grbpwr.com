@@ -10,7 +10,6 @@ import { SweaterIcon } from "@/components/ui/icons/sweater";
 import { TShirtIcon } from "@/components/ui/icons/t-shirt";
 import { UnderwearFIcon } from "@/components/ui/icons/underwear-f";
 import { UnderwearMIcon } from "@/components/ui/icons/underwear-m";
-import { MeasurementType } from "@/app/product/[...productParams]/_components/select-size-add-to-cart/useData";
 
 import { BlazerIcon } from "../icons/blazer";
 import { BraIcon } from "../icons/bra";
@@ -20,108 +19,81 @@ import { PantsIcon } from "../icons/pants";
 import { TankIcon } from "../icons/tank";
 import { VestIcon } from "../icons/vest";
 
-export const MAIN_CATEGORIES = {
-  OUTERWEAR: 1,
-  TOPS: 2,
-  BOTTOMS: 3,
-  DRESSES: 4,
-  UNDERWEAR: 5,
-  ACCESSORIES: 6,
-  SHOES: 7,
-  BAGS: 8,
-  OBJECTS: 9,
-};
+enum MainCategories {
+  OUTERWEAR = 1,
+  TOPS = 2,
+  BOTTOMS = 3,
+  DRESSES = 4,
+  UNDERWEAR = 5,
+  ACCESSORIES = 6,
+  SHOES = 7,
+  BAGS = 8,
+  OBJECTS = 9,
+}
 
 type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
-interface CategoryConfig {
-  defaultIcon: IconComponent;
-  subcategories: Record<string, IconComponent>;
-}
+const SPECIAL_CASES = {
+  "jackets:blazer": BlazerIcon,
+} as const;
 
-export const CATEGORY_MAP: Record<number, CategoryConfig> = {
-  [MAIN_CATEGORIES.OUTERWEAR]: {
-    defaultIcon: JacketIcon,
-    subcategories: {
-      coats: CoatIcon,
-      vests: VestIcon,
-    },
-  },
-  [MAIN_CATEGORIES.TOPS]: {
-    defaultIcon: TShirtIcon,
-    subcategories: {
-      tanks: TankIcon,
-      crop: TankIcon,
-      sweaters_knits: SweaterIcon,
-      shirts: TShirtIcon,
-      hoodies_sweatshirts: SweaterIcon,
-    },
-  },
-  [MAIN_CATEGORIES.BOTTOMS]: {
-    defaultIcon: PantsIcon,
-    subcategories: {
-      pants: PantsIcon,
-      shorts: ShortIcon,
-      skirts: SkirtIcon,
-    },
-  },
-  [MAIN_CATEGORIES.UNDERWEAR]: {
-    defaultIcon: BraIcon,
-    subcategories: {
-      bralettes: BraIcon,
-    },
-  },
-  [MAIN_CATEGORIES.DRESSES]: {
-    defaultIcon: DressIcon,
-    subcategories: {},
-  },
-  [MAIN_CATEGORIES.ACCESSORIES]: {
-    defaultIcon: OtherIcon,
-    subcategories: {
-      belts: BeltIcon,
-      gloves: GlovesIcon,
-    },
-  },
-  [MAIN_CATEGORIES.SHOES]: {
-    defaultIcon: OtherIcon,
-    subcategories: {},
-  },
-  [MAIN_CATEGORIES.BAGS]: {
-    defaultIcon: OtherIcon,
-    subcategories: {},
-  },
-  [MAIN_CATEGORIES.OBJECTS]: {
-    defaultIcon: OtherIcon,
-    subcategories: {},
-  },
+const CATEGORY_MAP: Record<MainCategories, IconComponent> = {
+  [MainCategories.OUTERWEAR]: JacketIcon,
+  [MainCategories.TOPS]: TShirtIcon,
+  [MainCategories.BOTTOMS]: PantsIcon,
+  [MainCategories.DRESSES]: DressIcon,
+  [MainCategories.UNDERWEAR]: UnderwearMIcon,
+  [MainCategories.ACCESSORIES]: OtherIcon,
+  [MainCategories.SHOES]: OtherIcon,
+  [MainCategories.BAGS]: OtherIcon,
+  [MainCategories.OBJECTS]: OtherIcon,
+};
+
+const SUBCATEGORY_MAP: Record<string, IconComponent> = {
+  coats: CoatIcon,
+  vests: VestIcon,
+  tanks: TankIcon,
+  crop: TankIcon,
+  sweaters_knits: SweaterIcon,
+  shirts: TShirtIcon,
+  hoodies_sweatshirts: SweaterIcon,
+  pants: PantsIcon,
+  shorts: ShortIcon,
+  skirts: SkirtIcon,
+  bralettes: BraIcon,
+  belts: BeltIcon,
+  gloves: GlovesIcon,
 };
 
 export function getIconByCategoryId(
-  categoryId: number | undefined,
+  categoryId: MainCategories | undefined,
   gender: common_GenderEnum | undefined,
-  type: MeasurementType,
   subCategory?: common_Category,
+  type?: common_Category,
 ): IconComponent {
-  if (!categoryId) return OtherIcon;
+  if (!categoryId || !(categoryId in CATEGORY_MAP)) return OtherIcon;
 
-  const category = CATEGORY_MAP[categoryId] || {
-    defaultIcon: OtherIcon,
-    subcategories: {},
-  };
+  const subCategoryName = subCategory?.name?.toLowerCase();
+  const typeName = type?.name?.toLowerCase();
 
-  if (subCategory?.name) {
-    const subCategoryName = subCategory.name.toLowerCase();
-    if (subCategoryName === "jackets" && type === "blazer") {
-      return BlazerIcon;
-    }
-    if (subCategoryName in category.subcategories) {
-      return category.subcategories[subCategoryName];
-    }
+  if (subCategoryName && typeName) {
+    const specialCase =
+      SPECIAL_CASES[
+        `${subCategoryName}:${typeName}` as keyof typeof SPECIAL_CASES
+      ];
+    if (specialCase) return specialCase;
   }
 
-  if (categoryId === MAIN_CATEGORIES.UNDERWEAR) {
-    return gender === "GENDER_ENUM_FEMALE" ? UnderwearFIcon : UnderwearMIcon;
+  if (subCategoryName && subCategoryName in SUBCATEGORY_MAP) {
+    return SUBCATEGORY_MAP[subCategoryName];
   }
 
-  return category.defaultIcon;
+  if (
+    categoryId === MainCategories.UNDERWEAR &&
+    gender === "GENDER_ENUM_FEMALE"
+  ) {
+    return UnderwearFIcon;
+  }
+
+  return CATEGORY_MAP[categoryId];
 }

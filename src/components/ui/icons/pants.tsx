@@ -5,8 +5,6 @@ import {
   SvgWrapper,
 } from "../categories-thumbnails/svg-wrapper";
 
-// TODO: add inseam
-
 const pantsLines: MeasurementLine[] = [
   {
     type: "horizontal",
@@ -17,7 +15,7 @@ const pantsLines: MeasurementLine[] = [
   },
   {
     type: "horizontal",
-    name: "leg open",
+    name: "leg-opening",
     xStart: 2,
     xEnd: 95,
     y: 480,
@@ -35,7 +33,6 @@ const pantsLines: MeasurementLine[] = [
     x: 105.94,
     yStart: 127,
     yEnd: 455.65,
-    // rectXOffset: 35,
   },
 ];
 export function PantsIcon(props: SVGProps<SVGSVGElement>) {

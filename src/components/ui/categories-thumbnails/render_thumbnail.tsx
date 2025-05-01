@@ -1,22 +1,21 @@
 import {
-  common_Category,
   common_GenderEnum,
   common_ProductMeasurement,
 } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
-import { MeasurementType } from "@/app/product/[...productParams]/_components/select-size-add-to-cart/useData";
+import { useDataContext } from "@/components/contexts/DataContext";
 
 import { getIconByCategoryId } from "./map_cataegories";
 
 interface CategoryThumbnailProps {
   categoryId: number | undefined;
-  subCategory?: common_Category | undefined;
+  subCategoryId: number | undefined;
+  typeId: number | undefined;
   gender: common_GenderEnum | undefined;
   measurements: common_ProductMeasurement[];
   className?: string;
   selectedSize?: number;
-  type: MeasurementType;
 }
 
 type IconComponentProps = React.SVGProps<SVGSVGElement> & {
@@ -26,18 +25,25 @@ type IconComponentProps = React.SVGProps<SVGSVGElement> & {
 
 export function CategoryThumbnail({
   categoryId,
-  subCategory,
-  type,
+  subCategoryId,
+  typeId,
   measurements,
   className,
   gender,
   selectedSize,
 }: CategoryThumbnailProps) {
+  const { dictionary } = useDataContext();
+
+  const subCategory = dictionary?.categories?.find(
+    (c) => c.id === subCategoryId,
+  );
+  const type = dictionary?.categories?.find((t) => t.id === typeId);
+
   const IconComponent = getIconByCategoryId(
     categoryId,
     gender,
-    type,
     subCategory,
+    type,
   ) as React.ComponentType<IconComponentProps>;
 
   if (!IconComponent) {

@@ -22,7 +22,7 @@ const skirtLines: MeasurementLine[] = [
   },
   {
     type: "horizontal",
-    name: "bottom width",
+    name: "bottom-width",
     y: 540,
     xStart: 100,
     xEnd: 440,

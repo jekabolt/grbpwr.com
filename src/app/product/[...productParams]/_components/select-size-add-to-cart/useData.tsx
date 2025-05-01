@@ -88,10 +88,6 @@ export function useData({
     (c) => c.id === categoryId,
   )?.name;
 
-  const subCategory = dictionary?.categories?.find(
-    (c) => c.id === subCategoryId,
-  );
-
   const isShoes = category?.toLowerCase().includes("shoes");
   const triggerText = activeSizeName
     ? getSizeText(isShoes, activeSizeName)
@@ -149,7 +145,8 @@ export function useData({
     productId,
     sizes,
     categoryId,
-    subCategory,
+    subCategoryId,
+    typeId,
     gender,
     lowStockText,
     measurements: product.measurements || [],

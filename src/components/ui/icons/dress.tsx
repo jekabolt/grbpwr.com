@@ -24,7 +24,7 @@ const dressLines: MeasurementLine[] = [
   },
   {
     type: "horizontal",
-    name: "bottom width",
+    name: "bottom-width",
     y: 540,
     xStart: 170,
     xEnd: 372,

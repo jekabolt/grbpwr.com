@@ -8,14 +8,14 @@ import {
 const beltMeasurements: MeasurementLine[] = [
   {
     type: "horizontal",
-    name: "width to last",
+    name: "end-fit-length",
     y: -70,
     xStart: 5,
     xEnd: 375,
   },
   {
     type: "horizontal",
-    name: "width to first",
+    name: "start-fit-length",
     y: -20,
     xStart: 5,
     xEnd: 310,
@@ -40,7 +40,7 @@ export function BeltIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <SvgWrapper
       lines={beltMeasurements}
-      originalViewBox="100 -250 241 541"
+      originalViewBox="100 -220 212 441"
       {...props}
     >
       <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
