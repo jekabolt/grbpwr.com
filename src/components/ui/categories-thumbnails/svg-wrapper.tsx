@@ -62,7 +62,7 @@ const normalizeSVGContainer = (originalViewBox: string) => {
   return `translate(${offsetX - origX * scale}, ${offsetY - origY * scale}) scale(${scale})`;
 };
 
-const getMeasurementValue = (
+const useMeasurementValue = (
   measurements: common_ProductMeasurement[],
   selectedSize?: number,
 ) => {
@@ -93,7 +93,7 @@ export function SvgWrapper({
   selectedSize,
   ...props
 }: MeasurementSvgProps) {
-  const measurementValue = getMeasurementValue(measurements, selectedSize);
+  const measurementValue = useMeasurementValue(measurements, selectedSize);
   const transform = normalizeSVGContainer(originalViewBox);
 
   const filteredLines = lines.filter(
