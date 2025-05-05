@@ -46,7 +46,7 @@ export async function generateMetadata({
   });
 }
 
-export const revalidate = false;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   return [];
