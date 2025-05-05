@@ -21,7 +21,7 @@ const fetchParams: Object = {
   },
   GetProduct: {
     next: {
-      revalidate: 15,
+      revalidate: 3600,
     },
   },
   GetArchivesPaged: {
