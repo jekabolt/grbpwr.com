@@ -1,7 +1,6 @@
 import { GLOBAL_CACHE_TAG, PRODUCT_CACHE_TAG } from "@/constants";
 import { revalidatePath, revalidateTag } from "next/cache";
 
-
 export async function POST(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
