@@ -35,30 +35,14 @@ const fetchParams: Object = {
 
 const requestHandler = async (
   { path, method, body }: RequestHandlerParams,
-  { method: serviceMethod, params }: ProtoMetaParams,
+  { method: serviceMethod }: ProtoMetaParams,
 ) => {
-  // For product requests, add a specific tag for the product ID
-  let options: Object = { ...fetchParams[serviceMethod] as Object };
-
-  if (serviceMethod === 'GetProduct' && params?.id) {
-    const productTags = [...((options?.next as any)?.tags || [])];
-    productTags.push(`product-${params.id}`);
-
-    options = {
-      ...options,
-      next: {
-        ...(options.next as Object),
-        tags: productTags,
-      }
-    };
-  }
-
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`,
     {
       method,
       body,
-      ...options,
+      ...(fetchParams[serviceMethod] as Object),
     },
   );
 
@@ -66,5 +50,6 @@ const requestHandler = async (
 
   return await response.json();
 };
+
 
 export const serviceClient = createFrontendServiceClient(requestHandler);
