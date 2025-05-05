@@ -21,9 +21,9 @@ const fetchParams: Object = {
   },
   GetProduct: {
     cache: "force-cache",
-    // next: {
-    //   revalidate: 15,
-    // },
+    next: {
+      revalidate: 3600,
+    },
   },
   GetArchivesPaged: {
     next: {
