@@ -16,6 +16,9 @@ interface ProductPageProps {
   }>;
 }
 
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
@@ -45,8 +48,6 @@ export async function generateMetadata({
     },
   });
 }
-
-export const revalidate = 3600;
 
 export async function generateStaticParams() {
   return [];
