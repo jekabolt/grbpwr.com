@@ -11,15 +11,15 @@ import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
 interface ProductPageProps {
-  params: Promise<{
+  params: {
     productParams: string[];
-  }>;
+  };
 }
 
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const { productParams } = await params;
+  const { productParams } = params;
   const [gender, brand, name, id] = productParams;
 
   const { product } = await serviceClient.GetProduct({
@@ -50,8 +50,7 @@ export async function generateStaticParams() {
   return [];
 }
 
-export default async function ProductPage(props: ProductPageProps) {
-  const params = await props.params;
+export default async function ProductPage({ params }: ProductPageProps) {
   const { productParams } = params;
 
   if (productParams.length !== 4) {
