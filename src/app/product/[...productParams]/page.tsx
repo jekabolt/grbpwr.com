@@ -16,8 +16,11 @@ interface ProductPageProps {
   }>;
 }
 
-export const dynamic = "force-static";
 export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return [];
+}
 
 export async function generateMetadata({
   params,
@@ -47,10 +50,6 @@ export async function generateMetadata({
       imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
     },
   });
-}
-
-export async function generateStaticParams() {
-  return [];
 }
 
 export default async function ProductPage(props: ProductPageProps) {
