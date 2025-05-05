@@ -32,10 +32,8 @@ export async function POST(request: Request) {
         console.log("full_slug", data.full_slug);
         console.log("correctSlug", correctSlug);
 
-        // Revalidate product cache tag for all product-related content
         revalidateTag(PRODUCT_CACHE_TAG);
 
-        // Always revalidate the specific path
         revalidatePath(correctSlug);
 
         if (correctSlug.startsWith("/components/") && process.env.VERCEL_REDEPLOY_HOOK_URL) {
