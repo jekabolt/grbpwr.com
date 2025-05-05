@@ -21,15 +21,13 @@ const fetchParams: Object = {
     cache: "no-store",
   },
   GetProduct: {
-    cache: "default",
     next: {
+      cache: 'force-cache',
       tags: [PRODUCT_CACHE_VERSION_TAG],
     },
   },
   GetArchivesPaged: {
-    next: {
-      revalidate: 15,
-    },
+    next: { revalidate: 15 },
   },
 };
 
