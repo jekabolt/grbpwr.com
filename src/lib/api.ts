@@ -23,8 +23,7 @@ const fetchParams: Object = {
   },
   GetProduct: {
     next: {
-      tags: [PRODUCT_CACHE_TAG],
-      revalidate: 15
+      tags: [PRODUCT_CACHE_TAG]
     }
   },
   GetArchivesPaged: {
@@ -38,7 +37,6 @@ const requestHandler = async (
   { path, method, body }: RequestHandlerParams,
   { method: serviceMethod }: ProtoMetaParams,
 ) => {
-  // Add cache headers in the response
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`,
     {
@@ -49,12 +47,6 @@ const requestHandler = async (
   );
 
   console.log("[BE] response: ", response.status, response.statusText);
-
-  // Log cache status for debugging
-  const cacheStatus = response.headers.get('x-vercel-cache');
-  if (cacheStatus) {
-    console.log("[Cache Status]:", cacheStatus, "for", serviceMethod);
-  }
 
   return await response.json();
 };
