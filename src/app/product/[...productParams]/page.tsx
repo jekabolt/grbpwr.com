@@ -5,7 +5,6 @@ import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
-import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileImageCarousel } from "./_components/mobile-image-carousel";
 import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
@@ -91,7 +90,7 @@ export default async function ProductPage(props: ProductPageProps) {
           {product && <MobileProductInfo product={product} />}
         </div>
       </div>
-      {product?.product && <LastViewedProducts product={product.product} />}
+      {/* {product?.product && <LastViewedProducts product={product.product} />} */}
     </FlexibleLayout>
   );
 }
