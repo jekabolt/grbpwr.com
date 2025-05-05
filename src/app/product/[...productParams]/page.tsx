@@ -17,9 +17,9 @@ interface ProductPageProps {
   }>;
 }
 
-export async function generateMetadata({
+export const generateMetadata = async ({
   params,
-}: ProductPageProps): Promise<Metadata> {
+}: ProductPageProps): Promise<Metadata> => {
   const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
@@ -45,7 +45,7 @@ export async function generateMetadata({
       imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
     },
   });
-}
+};
 
 export async function generateStaticParams() {
   return [];
