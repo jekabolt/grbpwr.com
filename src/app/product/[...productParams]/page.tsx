@@ -10,16 +10,23 @@ import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
+// Map gender enum values to string values for URLs
+const genderEnumToString: Record<string, string> = {
+  GENDER_ENUM_MALE: "men",
+  GENDER_ENUM_FEMALE: "women",
+  GENDER_ENUM_UNISEX: "unisex",
+};
+
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     productParams: string[];
-  };
+  }>;
 }
 
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const { productParams } = params;
+  const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
   const { product } = await serviceClient.GetProduct({
@@ -47,10 +54,49 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  return [];
+  try {
+    // Fetch all products with a high limit to get as many as possible in one request
+    const { products } = await serviceClient.GetProductsPaged({
+      limit: 1000, // Use a high limit to get as many products as possible
+      offset: 0,
+      sortFactors: undefined,
+      orderFactor: undefined,
+      filterConditions: undefined,
+    });
+
+    if (!products || products.length === 0) {
+      return [];
+    }
+
+    // Map products to their URL parameters
+    return products
+      .map((product) => {
+        const genderEnumString =
+          product?.productDisplay?.productBody?.targetGender?.toString() || "";
+        const gender = genderEnumToString[genderEnumString] || "";
+        const brand = product?.productDisplay?.productBody?.brand || "";
+        const name = product?.slug || "";
+        const id = product?.id?.toString() || "";
+
+        return {
+          productParams: [gender, brand, name, id],
+        };
+      })
+      .filter(
+        (params) =>
+          params.productParams[0] &&
+          params.productParams[1] &&
+          params.productParams[2] &&
+          params.productParams[3],
+      );
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage(props: ProductPageProps) {
+  const params = await props.params;
   const { productParams } = params;
 
   if (productParams.length !== 4) {
