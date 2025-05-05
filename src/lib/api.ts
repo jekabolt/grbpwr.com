@@ -1,4 +1,5 @@
 import { createFrontendServiceClient } from "@/api/proto-http/frontend";
+import { PRODUCT_CACHE_VERSION_TAG } from "@/constants/cacheTags";
 
 type Object = {
   [key: string]: unknown;
@@ -20,9 +21,9 @@ const fetchParams: Object = {
     cache: "no-store",
   },
   GetProduct: {
-    cache: "force-cache",
+    cache: "default",
     next: {
-      revalidate: 3600,
+      tags: [PRODUCT_CACHE_VERSION_TAG],
     },
   },
   GetArchivesPaged: {

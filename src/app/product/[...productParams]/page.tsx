@@ -16,8 +16,6 @@ interface ProductPageProps {
   }>;
 }
 
-export const revalidate = 3600;
-
 export async function generateStaticParams() {
   return [];
 }
