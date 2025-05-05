@@ -57,7 +57,7 @@ export async function generateStaticParams() {
   try {
     // Fetch all products with a high limit to get as many as possible in one request
     const { products } = await serviceClient.GetProductsPaged({
-      limit: 1000, // Use a high limit to get as many products as possible
+      limit: 10, // Use a high limit to get as many products as possible
       offset: 0,
       sortFactors: undefined,
       orderFactor: undefined,
