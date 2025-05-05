@@ -11,8 +11,6 @@ import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
-export const dynamic = "force-static";
-
 interface ProductPageProps {
   params: Promise<{
     productParams: string[];
@@ -50,9 +48,6 @@ export const generateMetadata = async ({
 };
 
 export async function generateStaticParams() {
-  // Return empty array to make product pages on-demand static generation
-  // These pages will be cached at runtime after the first visit
-  // And invalidated when the PRODUCT_CACHE_TAG is revalidated
   return [];
 }
 
