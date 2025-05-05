@@ -1,4 +1,5 @@
 import { createFrontendServiceClient } from "@/api/proto-http/frontend";
+import { PRODUCT_CACHE_TAG } from "@/constants";
 
 type Object = {
   [key: string]: unknown;
@@ -13,6 +14,7 @@ interface RequestHandlerParams {
 interface ProtoMetaParams {
   service: string;
   method: string;
+  params?: any;
 }
 
 const fetchParams: Object = {
@@ -21,8 +23,8 @@ const fetchParams: Object = {
   },
   GetProduct: {
     next: {
-      revalidate: 15,
-    },
+      tags: [PRODUCT_CACHE_TAG]
+    }
   },
   GetArchivesPaged: {
     next: {
@@ -33,14 +35,30 @@ const fetchParams: Object = {
 
 const requestHandler = async (
   { path, method, body }: RequestHandlerParams,
-  { method: serviceMethod }: ProtoMetaParams,
+  { method: serviceMethod, params }: ProtoMetaParams,
 ) => {
+  // For product requests, add a specific tag for the product ID
+  let options: Object = { ...fetchParams[serviceMethod] as Object };
+
+  if (serviceMethod === 'GetProduct' && params?.id) {
+    const productTags = [...((options?.next as any)?.tags || [])];
+    productTags.push(`product-${params.id}`);
+
+    options = {
+      ...options,
+      next: {
+        ...(options.next as Object),
+        tags: productTags,
+      }
+    };
+  }
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`,
     {
       method,
       body,
-      ...(fetchParams[serviceMethod] as Object),
+      ...options,
     },
   );
 
