@@ -1,5 +1,5 @@
 import { createFrontendServiceClient } from "@/api/proto-http/frontend";
-import { GLOBAL_CACHE_TAG, PRODUCT_CACHE_TAG } from "@/constants";
+import { PRODUCT_CACHE_TAG } from "@/constants";
 
 type Object = {
   [key: string]: unknown;
@@ -24,7 +24,7 @@ const fetchParams: Object = {
   GetProduct: {
     next: {
       tags: [PRODUCT_CACHE_TAG],
-      revalidate: 3600 // 1 hour cache lifetime
+      revalidate: 15
     }
   },
   GetArchivesPaged: {
@@ -32,20 +32,6 @@ const fetchParams: Object = {
       revalidate: 15,
     },
   },
-  // Add appropriate caching for other endpoints
-  GetProducts: {
-    next: {
-      tags: [PRODUCT_CACHE_TAG],
-      revalidate: 3600
-    }
-  },
-  // Global content should use the global cache tag
-  GetGlobalContent: {
-    next: {
-      tags: [GLOBAL_CACHE_TAG],
-      revalidate: 3600
-    }
-  }
 };
 
 const requestHandler = async (
