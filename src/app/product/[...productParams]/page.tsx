@@ -46,6 +46,8 @@ export async function generateMetadata({
   });
 }
 
+export const revalidate = false;
+
 export async function generateStaticParams() {
   return [];
 }
