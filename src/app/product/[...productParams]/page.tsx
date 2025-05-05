@@ -26,11 +26,7 @@ export async function generateStaticParams() {
     filterConditions: undefined,
   });
 
-  return (
-    response.products?.map((product) => ({
-      slug: product.slug?.replace("product/", "").split("/") || [],
-    })) || []
-  );
+  return [{ productParams: ["male", "grbpwr", "grbpwrcoat", "1746028621"] }];
 }
 
 export async function generateMetadata({
