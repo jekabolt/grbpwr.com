@@ -1,6 +1,8 @@
+import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
 
 import { serviceClient } from "@/lib/api";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
@@ -15,35 +17,35 @@ interface ProductPageProps {
   }>;
 }
 
-// export const generateMetadata = async ({
-//   params,
-// }: ProductPageProps): Promise<Metadata> => {
-//   const { productParams } = await params;
-//   const [gender, brand, name, id] = productParams;
+export const generateMetadata = async ({
+  params,
+}: ProductPageProps): Promise<Metadata> => {
+  const { productParams } = await params;
+  const [gender, brand, name, id] = productParams;
 
-//   const { product } = await serviceClient.GetProduct({
-//     gender,
-//     brand,
-//     name,
-//     id: parseInt(id),
-//   });
+  const { product } = await serviceClient.GetProduct({
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
+  });
 
-//   const productMedia = [...(product?.media || [])];
-//   const title = product?.product?.productDisplay?.productBody?.name;
-//   const description =
-//     product?.product?.productDisplay?.productBody?.description;
-//   const color = product?.product?.productDisplay?.productBody?.color;
-//   const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
+  const productMedia = [...(product?.media || [])];
+  const title = product?.product?.productDisplay?.productBody?.name;
+  const description =
+    product?.product?.productDisplay?.productBody?.description;
+  const color = product?.product?.productDisplay?.productBody?.color;
+  const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
 
-//   return generateCommonMetadata({
-//     title: title?.toUpperCase(),
-//     description: `${description}'\n'${color}`,
-//     ogParams: {
-//       imageUrl: productImageUrl,
-//       imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
-//     },
-//   });
-// };
+  return generateCommonMetadata({
+    title: title?.toUpperCase(),
+    description: `${description}'\n'${color}`,
+    ogParams: {
+      imageUrl: productImageUrl,
+      imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
+    },
+  });
+};
 
 export async function generateStaticParams() {
   return [];
