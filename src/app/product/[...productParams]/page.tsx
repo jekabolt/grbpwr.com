@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
+import { MAX_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -17,7 +18,19 @@ interface ProductPageProps {
 }
 
 export async function generateStaticParams() {
-  return [];
+  const response = await serviceClient.GetProductsPaged({
+    limit: MAX_LIMIT,
+    offset: 0,
+    sortFactors: undefined,
+    orderFactor: undefined,
+    filterConditions: undefined,
+  });
+
+  return (
+    response.products?.map((product) => ({
+      slug: product.slug?.replace("product/", "").split("/") || [],
+    })) || []
+  );
 }
 
 export async function generateMetadata({

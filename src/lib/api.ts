@@ -21,8 +21,8 @@ const fetchParams: Object = {
     cache: "no-store",
   },
   GetProduct: {
+    cache: "force-cache",
     next: {
-      cache: 'force-cache',
       tags: [PRODUCT_CACHE_VERSION_TAG],
     },
   },
