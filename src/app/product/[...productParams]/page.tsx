@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { unstable_cache } from "next/cache";
 import { notFound } from "next/dist/client/components/not-found";
 
 import { serviceClient } from "@/lib/api";
@@ -12,27 +11,26 @@ import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
-// Create a cached version of product fetch using unstable_cache
-const getProductCached = unstable_cache(
-  async (gender: string, brand: string, name: string, id: string) => {
-    console.log(
-      `[Cached API] Fetching product: ${gender}/${brand}/${name}/${id}`,
-    );
-    return serviceClient.GetProduct({
-      gender,
-      brand,
-      name,
-      id: parseInt(id),
-    });
-  },
-  // Key generator for the cache
-  ["product-data"],
-  // Options
-  {
-    revalidate: 3600,
-    tags: ["product"],
-  },
-);
+// This ensures proper caching in Next.js 15
+export const fetchCache = "force-cache";
+// Set revalidation period
+export const revalidate = 3600; // Revalidate every hour
+
+async function getProduct(
+  gender: string,
+  brand: string,
+  name: string,
+  id: string,
+) {
+  console.log(`[API] Fetching product: ${gender}/${brand}/${name}/${id}`);
+
+  return serviceClient.GetProduct({
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
+  });
+}
 
 interface ProductPageProps {
   params: Promise<{
@@ -52,8 +50,8 @@ export async function generateMetadata({
   const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
-  // Use cached fetch
-  const { product } = await getProductCached(gender, brand, name, id);
+  // Fetch product data
+  const { product } = await getProduct(gender, brand, name, id);
 
   const productMedia = [...(product?.media || [])];
   const title = product?.product?.productDisplay?.productBody?.name;
@@ -86,8 +84,8 @@ export default async function ProductPage(props: ProductPageProps) {
     `[ProductPage] Rendering product: ${gender}/${brand}/${name}/${id}`,
   );
 
-  // Use the cached fetch function here too
-  const { product } = await getProductCached(gender, brand, name, id);
+  // Fetch product data
+  const { product } = await getProduct(gender, brand, name, id);
 
   const productMedia = [...(product?.media || [])];
 
