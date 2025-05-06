@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { MAX_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -45,7 +46,37 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  return [];
+  try {
+    // Fetch all products that should be statically generated
+    const { products = [] } = (await serviceClient.GetProductsPaged({
+      limit: MAX_LIMIT,
+      offset: 0,
+      sortFactors: undefined,
+      orderFactor: undefined,
+      filterConditions: undefined,
+    })) || { products: [] };
+
+    // Transform the product data into path params and filter out any with undefined values
+    return products
+      .filter(
+        (product) =>
+          product.productDisplay?.productBody?.targetGender &&
+          product.productDisplay?.productBody?.brand &&
+          product.productDisplay?.productBody?.name &&
+          product.id,
+      )
+      .map((product) => ({
+        productParams: [
+          product.productDisplay?.productBody?.targetGender || "",
+          product.productDisplay?.productBody?.brand || "",
+          product.productDisplay?.productBody?.name || "",
+          product.id?.toString() || "",
+        ],
+      }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
 }
 
 export default async function ProductPage(props: ProductPageProps) {
