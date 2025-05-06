@@ -69,7 +69,6 @@ export default async function ProductPage(props: ProductPageProps) {
 
   return (
     <>
-      //{" "}
       {/* <FlexibleLayout
       //   mobileHeaderType="flexible"
       //   headerType="catalog"
