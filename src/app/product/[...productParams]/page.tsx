@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
-import { MAX_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -18,15 +17,10 @@ interface ProductPageProps {
 }
 
 export async function generateStaticParams() {
-  const response = await serviceClient.GetProductsPaged({
-    limit: MAX_LIMIT,
-    offset: 0,
-    sortFactors: undefined,
-    orderFactor: undefined,
-    filterConditions: undefined,
-  });
-
-  return [{ productParams: ["male", "grbpwr", "grbpwrcoat", "1746028621"] }];
+  // Return an empty array to enable on-demand ISR
+  // Pages will be statically generated on first visit
+  // and cached according to the revalidate setting (15 seconds)
+  return [];
 }
 
 export async function generateMetadata({

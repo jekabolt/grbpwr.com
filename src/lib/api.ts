@@ -1,5 +1,4 @@
 import { createFrontendServiceClient } from "@/api/proto-http/frontend";
-import { PRODUCT_CACHE_VERSION_TAG } from "@/constants/cacheTags";
 
 type Object = {
   [key: string]: unknown;
@@ -21,9 +20,8 @@ const fetchParams: Object = {
     cache: "no-store",
   },
   GetProduct: {
-    cache: "force-cache",
     next: {
-      tags: [PRODUCT_CACHE_VERSION_TAG],
+      revalidate: 3600,
     },
   },
   GetArchivesPaged: {
@@ -35,6 +33,9 @@ const requestHandler = async (
   { path, method, body }: RequestHandlerParams,
   { method: serviceMethod }: ProtoMetaParams,
 ) => {
+  console.log(`[API] Calling service method: ${serviceMethod}`);
+  console.log(`[API] Using fetchParams:`, fetchParams[serviceMethod] || "none");
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`,
     {

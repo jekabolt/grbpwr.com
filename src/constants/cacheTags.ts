@@ -1,1 +1,0 @@
-export const PRODUCT_CACHE_VERSION_TAG = 'product-v1'; 
