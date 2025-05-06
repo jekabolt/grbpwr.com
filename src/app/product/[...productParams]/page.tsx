@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { MAX_LIMIT } from "@/constants";
+import { notFound } from "next/navigation";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -48,31 +48,16 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const response = await serviceClient.GetProductsPaged({
-    limit: MAX_LIMIT,
-    offset: 0,
-    sortFactors: undefined,
-    orderFactor: undefined,
-    filterConditions: undefined,
-  });
-
-  return response.products?.map((product) => ({
-    productParams: [
-      product.productDisplay?.productBody?.targetGender,
-      product.productDisplay?.productBody?.brand,
-      product.productDisplay?.productBody?.name,
-      product.id?.toString(),
-    ],
-  }));
+  return [];
 }
 
 export default async function ProductPage(props: ProductPageProps) {
   const params = await props.params;
   const { productParams } = params;
 
-  // if (productParams.length !== 4) {
-  //   return notFound();
-  // }
+  if (productParams.length !== 4) {
+    return notFound();
+  }
 
   const [gender, brand, name, id] = productParams;
 
