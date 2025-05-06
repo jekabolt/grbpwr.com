@@ -21,6 +21,12 @@ const fetchParams: Object = {
   },
   GetProduct: {
     cache: "force-cache",
+    next: {
+      revalidate: 3600
+    },
+    headers: {
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600'
+    }
   },
   GetArchivesPaged: {
     next: { revalidate: 15 },

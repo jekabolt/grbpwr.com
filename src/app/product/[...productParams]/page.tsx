@@ -11,10 +11,8 @@ import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
-// This ensures proper caching in Next.js 15
-export const fetchCache = "force-cache";
-// Set revalidation period
-export const revalidate = 3600; // Revalidate every hour
+// Configure ISR (Incremental Static Regeneration)
+export const revalidate = 3600; // 1 hour
 
 async function getProduct(
   gender: string,
