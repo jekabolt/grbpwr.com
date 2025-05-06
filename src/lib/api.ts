@@ -20,13 +20,7 @@ const fetchParams: Object = {
     cache: "no-store",
   },
   GetProduct: {
-    cache: "force-cache",
-    next: {
-      revalidate: 3600
-    },
-    headers: {
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600'
-    }
+    next: { revalidate: 15 },
   },
   GetArchivesPaged: {
     next: { revalidate: 15 },
@@ -37,9 +31,6 @@ const requestHandler = async (
   { path, method, body }: RequestHandlerParams,
   { method: serviceMethod }: ProtoMetaParams,
 ) => {
-  console.log(`[API] Calling service method: ${serviceMethod}`);
-  console.log(`[API] Using fetchParams:`, fetchParams[serviceMethod] || "none");
-
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`,
     {

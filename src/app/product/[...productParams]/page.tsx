@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { notFound } from "next/dist/client/components/not-found";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -11,25 +10,6 @@ import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
-// Configure ISR (Incremental Static Regeneration)
-export const revalidate = 3600; // 1 hour
-
-async function getProduct(
-  gender: string,
-  brand: string,
-  name: string,
-  id: string,
-) {
-  console.log(`[API] Fetching product: ${gender}/${brand}/${name}/${id}`);
-
-  return serviceClient.GetProduct({
-    gender,
-    brand,
-    name,
-    id: parseInt(id),
-  });
-}
-
 interface ProductPageProps {
   params: Promise<{
     productParams: string[];
@@ -37,8 +17,6 @@ interface ProductPageProps {
 }
 
 export async function generateStaticParams() {
-  // Return an empty array to enable on-demand ISR
-  // Pages will be statically generated on first visit
   return [];
 }
 
@@ -48,8 +26,12 @@ export async function generateMetadata({
   const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
-  // Fetch product data
-  const { product } = await getProduct(gender, brand, name, id);
+  const { product } = await serviceClient.GetProduct({
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
+  });
 
   const productMedia = [...(product?.media || [])];
   const title = product?.product?.productDisplay?.productBody?.name;
@@ -72,18 +54,18 @@ export default async function ProductPage(props: ProductPageProps) {
   const params = await props.params;
   const { productParams } = params;
 
-  if (productParams.length !== 4) {
-    return notFound();
-  }
+  // if (productParams.length !== 4) {
+  //   return notFound();
+  // }
 
   const [gender, brand, name, id] = productParams;
 
-  console.log(
-    `[ProductPage] Rendering product: ${gender}/${brand}/${name}/${id}`,
-  );
-
-  // Fetch product data
-  const { product } = await getProduct(gender, brand, name, id);
+  const { product } = await serviceClient.GetProduct({
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
+  });
 
   const productMedia = [...(product?.media || [])];
 
