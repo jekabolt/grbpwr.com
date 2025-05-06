@@ -15,6 +15,10 @@ interface ProductPageProps {
   }>;
 }
 
+// Set this page as static to improve caching
+export const dynamic = "force-static";
+export const revalidate = false;
+
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
@@ -45,6 +49,7 @@ export async function generateMetadata({
   });
 }
 
+// Ensure this generates all possible static paths at build time
 export async function generateStaticParams() {
   try {
     // Fetch all products that should be statically generated
@@ -88,6 +93,9 @@ export default async function ProductPage(props: ProductPageProps) {
   // }
 
   const [gender, brand, name, id] = productParams;
+
+  // Add a comment to help debug cache issues
+  console.log(`Fetching product data for: ${gender}/${brand}/${name}/${id}`);
 
   const { product } = await serviceClient.GetProduct({
     gender,
