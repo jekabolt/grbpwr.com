@@ -1,5 +1,5 @@
-import { cache } from "react";
 import { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import { notFound } from "next/dist/client/components/not-found";
 
 import { serviceClient } from "@/lib/api";
@@ -18,16 +18,25 @@ interface ProductPageProps {
   }>;
 }
 
-const getProductData = cache(
-  async (gender: string, brand: string, name: string, id: string) => {
-    return serviceClient.GetProduct({
-      gender,
-      brand,
-      name,
-      id: parseInt(id),
-    });
-  },
-);
+const getProductData = (
+  gender: string,
+  brand: string,
+  name: string,
+  id: string,
+) => {
+  return unstable_cache(
+    async () => {
+      return serviceClient.GetProduct({
+        gender,
+        brand,
+        name,
+        id: parseInt(id),
+      });
+    },
+    ["product", gender, brand, name, id],
+    { revalidate: 3600, tags: ["products"] },
+  )();
+};
 
 export async function generateMetadata({
   params,
