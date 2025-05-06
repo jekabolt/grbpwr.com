@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
 
@@ -17,9 +18,16 @@ interface ProductPageProps {
   }>;
 }
 
-export async function generateStaticParams() {
-  return [];
-}
+const getProductData = cache(
+  async (gender: string, brand: string, name: string, id: string) => {
+    return serviceClient.GetProduct({
+      gender,
+      brand,
+      name,
+      id: parseInt(id),
+    });
+  },
+);
 
 export async function generateMetadata({
   params,
@@ -27,12 +35,7 @@ export async function generateMetadata({
   const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
-  const { product } = await serviceClient.GetProduct({
-    gender,
-    brand,
-    name,
-    id: parseInt(id),
-  });
+  const { product } = await getProductData(gender, brand, name, id);
 
   const productMedia = [...(product?.media || [])];
   const title = product?.product?.productDisplay?.productBody?.name;
@@ -51,6 +54,10 @@ export async function generateMetadata({
   });
 }
 
+export async function generateStaticParams() {
+  return [];
+}
+
 export default async function ProductPage(props: ProductPageProps) {
   const params = await props.params;
   const { productParams } = params;
@@ -61,16 +68,7 @@ export default async function ProductPage(props: ProductPageProps) {
 
   const [gender, brand, name, id] = productParams;
 
-  console.log(
-    `[ProductPage] Rendering product: ${gender}/${brand}/${name}/${id}`,
-  );
-
-  const { product } = await serviceClient.GetProduct({
-    gender,
-    brand,
-    name,
-    id: parseInt(id),
-  });
+  const { product } = await getProductData(gender, brand, name, id);
 
   const productMedia = [...(product?.media || [])];
 
