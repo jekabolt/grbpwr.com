@@ -1,11 +1,8 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import FlexibleLayout from "@/components/flexible-layout";
 
-import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileImageCarousel } from "./_components/mobile-image-carousel";
 import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
@@ -55,9 +52,9 @@ export default async function ProductPage(props: ProductPageProps) {
   const params = await props.params;
   const { productParams } = params;
 
-  if (productParams.length !== 4) {
-    return notFound();
-  }
+  // if (productParams.length !== 4) {
+  //   return notFound();
+  // }
 
   const [gender, brand, name, id] = productParams;
 
@@ -71,12 +68,14 @@ export default async function ProductPage(props: ProductPageProps) {
   const productMedia = [...(product?.media || [])];
 
   return (
-    <FlexibleLayout
-      mobileHeaderType="flexible"
-      headerType="catalog"
-      footerType="mini"
-      transparent
-    >
+    <>
+      //{" "}
+      {/* <FlexibleLayout
+      //   mobileHeaderType="flexible"
+      //   headerType="catalog"
+      //   footerType="mini"
+      //   transparent
+      > */}
       <div className="relative lg:h-screen">
         <div className="block lg:hidden">
           <MobileImageCarousel media={productMedia} />
@@ -91,7 +90,8 @@ export default async function ProductPage(props: ProductPageProps) {
           {product && <MobileProductInfo product={product} />}
         </div>
       </div>
-      {product?.product && <LastViewedProducts product={product.product} />}
-    </FlexibleLayout>
+      {/* {product?.product && <LastViewedProducts product={product.product} />} */}
+      {/* </FlexibleLayout> */}
+    </>
   );
 }
