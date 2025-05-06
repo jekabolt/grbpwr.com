@@ -1,7 +1,6 @@
 import { Metadata } from "next";
-import { MAX_LIMIT } from "@/constants";
 
-import { serviceClient } from "@/lib/api";
+import { getProduct } from "@/lib/cached-data";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 
 import { MobileImageCarousel } from "./_components/mobile-image-carousel";
@@ -15,9 +14,9 @@ interface ProductPageProps {
   }>;
 }
 
-// Set this page as static to improve caching
-export const dynamic = "force-static";
-export const revalidate = false;
+// Set revalidation time - pages will be cached but revalidated after this time (in seconds)
+// Using a long duration like 1 week, adjust as needed for your use case
+export const revalidate = 604800; // 7 days
 
 export async function generateMetadata({
   params,
@@ -25,12 +24,7 @@ export async function generateMetadata({
   const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
-  const { product } = await serviceClient.GetProduct({
-    gender,
-    brand,
-    name,
-    id: parseInt(id),
-  });
+  const product = await getProduct(gender, brand, name, parseInt(id));
 
   const productMedia = [...(product?.media || [])];
   const title = product?.product?.productDisplay?.productBody?.name;
@@ -49,19 +43,24 @@ export async function generateMetadata({
   });
 }
 
-// Ensure this generates all possible static paths at build time
+// Return empty array to enable on-demand ISR
+// Instead of pre-generating all paths at build time, pages will be generated and cached on first visit
 export async function generateStaticParams() {
+  // Return empty array - don't pre-generate any pages at build time
+  return [];
+
+  /* Original implementation - kept for reference
   try {
     // Fetch all products that should be statically generated
-    const { products = [] } = (await serviceClient.GetProductsPaged({
-      limit: MAX_LIMIT,
-      offset: 0,
-      sortFactors: undefined,
-      orderFactor: undefined,
-      filterConditions: undefined,
-    })) || { products: [] };
+    const { products = [] } = await getProductsPaged(
+      MAX_LIMIT,
+      0,
+      undefined,
+      undefined,
+      undefined
+    ) || { products: [] };
 
-    // Transform the product data into path params and filter out any with undefined values
+    // Transform the product data into path params
     return products
       .filter(
         (product) =>
@@ -82,6 +81,7 @@ export async function generateStaticParams() {
     console.error("Error generating static params:", error);
     return [];
   }
+  */
 }
 
 export default async function ProductPage(props: ProductPageProps) {
@@ -94,15 +94,8 @@ export default async function ProductPage(props: ProductPageProps) {
 
   const [gender, brand, name, id] = productParams;
 
-  // Add a comment to help debug cache issues
-  console.log(`Fetching product data for: ${gender}/${brand}/${name}/${id}`);
-
-  const { product } = await serviceClient.GetProduct({
-    gender,
-    brand,
-    name,
-    id: parseInt(id),
-  });
+  // Use the cached function instead of direct service client call
+  const product = await getProduct(gender, brand, name, parseInt(id));
 
   const productMedia = [...(product?.media || [])];
 
