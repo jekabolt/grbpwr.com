@@ -1,4 +1,3 @@
-import { cache } from "react";
 import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
 
@@ -6,6 +5,7 @@ import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
+import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileImageCarousel } from "./_components/mobile-image-carousel";
 import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
@@ -17,25 +17,7 @@ interface ProductPageProps {
   }>;
 }
 
-// Create a cached version of the product fetch
-const getProduct = cache(
-  async (gender: string, brand: string, name: string, id: string) => {
-    console.log(
-      `[API Cache] Fetching product: ${gender}/${brand}/${name}/${id}`,
-    );
-    return serviceClient.GetProduct({
-      gender,
-      brand,
-      name,
-      id: parseInt(id),
-    });
-  },
-);
-
 export async function generateStaticParams() {
-  // Return an empty array to enable on-demand ISR
-  // Pages will be statically generated on first visit
-  // and cached according to the revalidate setting (3600 seconds)
   return [];
 }
 
@@ -45,7 +27,12 @@ export async function generateMetadata({
   const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
-  const { product } = await getProduct(gender, brand, name, id);
+  const { product } = await serviceClient.GetProduct({
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
+  });
 
   const productMedia = [...(product?.media || [])];
   const title = product?.product?.productDisplay?.productBody?.name;
@@ -73,12 +60,18 @@ export default async function ProductPage(props: ProductPageProps) {
   }
 
   const [gender, brand, name, id] = productParams;
+
   console.log(
     `[ProductPage] Rendering product: ${gender}/${brand}/${name}/${id}`,
   );
 
-  // Use the cached fetch function
-  const { product } = await getProduct(gender, brand, name, id);
+  const { product } = await serviceClient.GetProduct({
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
+  });
+
   const productMedia = [...(product?.media || [])];
 
   return (
@@ -102,7 +95,7 @@ export default async function ProductPage(props: ProductPageProps) {
           {product && <MobileProductInfo product={product} />}
         </div>
       </div>
-      {/* {product?.product && <LastViewedProducts product={product.product} />} */}
+      {product?.product && <LastViewedProducts product={product.product} />}
     </FlexibleLayout>
   );
 }
