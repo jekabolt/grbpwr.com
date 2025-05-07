@@ -24,14 +24,18 @@ const getProductData = (
   name: string,
   id: string,
 ) => {
+  console.log(`Cache key: product-${gender}-${brand}-${name}-${id}`);
   return unstable_cache(
     async () => {
-      return serviceClient.GetProduct({
+      const startTime = Date.now();
+      const result = await serviceClient.GetProduct({
         gender,
         brand,
         name,
         id: parseInt(id),
       });
+      console.log(`Fetch time: ${Date.now() - startTime}ms`);
+      return result;
     },
     ["product", gender, brand, name, id],
     { revalidate: 3600, tags: ["products"] },
@@ -62,6 +66,8 @@ export async function generateMetadata({
     },
   });
 }
+
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   return [];
