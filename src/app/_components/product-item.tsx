@@ -38,7 +38,6 @@ export function ProductItem({
       <Button asChild>
         <Link
           href={product?.slug || ""}
-          prefetch
           className={cn("flex h-full w-full flex-col", className)}
         >
           <div className="relative">
