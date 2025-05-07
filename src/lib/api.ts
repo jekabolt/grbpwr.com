@@ -27,6 +27,7 @@ const fetchParams: Object = {
     },
   },
   GetArchivesPaged: {
+    cache: "force-cache",
     next: { revalidate: 15 },
   },
 };
