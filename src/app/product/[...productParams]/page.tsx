@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { unstable_cache } from "next/cache";
 import { notFound } from "next/dist/client/components/not-found";
 
 import { serviceClient } from "@/lib/api";
@@ -22,22 +21,24 @@ const getProductData = (
   name: string,
   id: string,
 ) => {
-  console.log(`Cache key: product-${gender}-${brand}-${name}-${id}`);
-  return unstable_cache(
-    async () => {
-      const startTime = Date.now();
-      const result = await serviceClient.GetProduct({
-        gender,
-        brand,
-        name,
-        id: parseInt(id),
-      });
-      console.log(`Fetch time: ${Date.now() - startTime}ms`);
-      return result;
-    },
-    ["product", gender, brand, name, id],
-    { revalidate: 3600, tags: ["products"] },
-  )();
+  // Add timestamp to force a new fetch on each visit
+  const timestamp = Date.now();
+  console.log(
+    `Cache key: product-${gender}-${brand}-${name}-${id}-${timestamp}`,
+  );
+
+  // Direct fetch without caching
+  return async () => {
+    const startTime = Date.now();
+    const result = await serviceClient.GetProduct({
+      gender,
+      brand,
+      name,
+      id: parseInt(id),
+    });
+    console.log(`Fetch time: ${Date.now() - startTime}ms`);
+    return result;
+  };
 };
 
 export async function generateMetadata({
@@ -46,7 +47,7 @@ export async function generateMetadata({
   const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
-  const { product } = await getProductData(gender, brand, name, id);
+  const { product } = await getProductData(gender, brand, name, id)();
 
   const productMedia = [...(product?.media || [])];
   const title = product?.product?.productDisplay?.productBody?.name;
@@ -65,8 +66,6 @@ export async function generateMetadata({
   });
 }
 
-export const revalidate = 3600;
-
 export async function generateStaticParams() {
   return [];
 }
@@ -81,7 +80,7 @@ export default async function ProductPage(props: ProductPageProps) {
 
   const [gender, brand, name, id] = productParams;
 
-  const { product } = await getProductData(gender, brand, name, id);
+  const { product } = await getProductData(gender, brand, name, id)();
 
   const productMedia = [...(product?.media || [])];
 

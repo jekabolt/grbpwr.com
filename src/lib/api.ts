@@ -21,10 +21,10 @@ const fetchParams: Object = {
   },
   GetProduct: {
     cache: "force-cache",
-    next: {
-      revalidate: 3600,
-      tags: ["products"],
-    },
+    // next: {
+    //   revalidate: 3600,
+    //   tags: ["products"],
+    // },
   },
   GetArchivesPaged: {
     cache: "force-cache",
