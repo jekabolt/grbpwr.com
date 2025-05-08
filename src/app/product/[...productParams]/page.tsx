@@ -1,7 +1,7 @@
 // app/product/[...productParams]/page.tsx
 
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound } from "next/dist/client/components/not-found";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -21,30 +21,18 @@ interface ProductPageProps {
   }>;
 }
 
-const getProductData = async (
-  gender: string,
-  brand: string,
-  name: string,
-  id: string,
-) => {
-  const startTime = Date.now();
-  const result = await serviceClient.GetProduct({
-    gender,
-    brand,
-    name,
-    id: parseInt(id),
-  });
-  console.log(`Fetch time: ${Date.now() - startTime}ms`);
-  return result;
-};
-
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
-  const { product } = await getProductData(gender, brand, name, id);
+  const { product } = await serviceClient.GetProduct({
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
+  });
 
   const productMedia = [...(product?.media || [])];
   const title = product?.product?.productDisplay?.productBody?.name;
@@ -71,7 +59,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const [gender, brand, name, id] = productParams;
-  const { product } = await getProductData(gender, brand, name, id);
+
+  const { product } = await serviceClient.GetProduct({
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
+  });
+
   const productMedia = [...(product?.media || [])];
 
   return (
