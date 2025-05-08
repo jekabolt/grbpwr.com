@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const secret = searchParams.get("secret");
 
     if (secret !== process.env.WEBHOOK_REVALIDATE_SECRET) {
-        return NextResponse.json({ error: "Invalid or missing secret" }, { status: 401 });
+        return NextResponse.json({ error: "Invalid or missing secret " + process.env.WEBHOOK_REVALIDATE_SECRET + ' kek' }, { status: 401 });
     }
 
     const data = await req.json();
