@@ -14,7 +14,7 @@ import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
 export const dynamic = "force-static";
-export const revalidate = 3600;
+export const revalidate = 15;
 
 interface ProductPageProps {
   params: {
