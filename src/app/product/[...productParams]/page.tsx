@@ -17,9 +17,9 @@ export const dynamic = "force-static";
 export const revalidate = 15;
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     productParams: string[];
-  };
+  }>;
 }
 
 const getProductData = async (
@@ -42,7 +42,7 @@ const getProductData = async (
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const { productParams } = params;
+  const { productParams } = await params;
   const [gender, brand, name, id] = productParams;
 
   const { product } = await getProductData(gender, brand, name, id);
@@ -69,7 +69,7 @@ export async function generateStaticParams() {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { productParams } = params;
+  const { productParams } = await params;
 
   if (productParams.length !== 4) {
     return notFound();
