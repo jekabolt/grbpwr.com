@@ -23,7 +23,7 @@ const fetchParams: Object = {
   GetProduct: {
     cache: "force-cache",
     next: {
-      revalidate: 900,
+      revalidate: 60,
       tags: [PRODUCTS_CACHE_TAG],
     },
   },
