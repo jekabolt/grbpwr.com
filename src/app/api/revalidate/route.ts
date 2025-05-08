@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const secret = searchParams.get("secret");
 
     if (secret !== process.env.WEBHOOK_REVALIDATE_SECRET) {
-        return NextResponse.json({ error: "Invalid or missing secret " + process.env.WEBHOOK_REVALIDATE_SECRET + ' kek' }, { status: 401 });
+        return NextResponse.json({ error: "Invalid or missing secret " }, { status: 401 });
     }
 
     const data = await req.json();
@@ -19,13 +19,11 @@ export async function POST(req: NextRequest) {
     try {
         let path = "";
         if (data.product) {
-            const { gender, brand, name, id } = data.product;
-            path = `/product/${gender}/${brand}/${name}/${id}`;
-            console.log("Revalidating product path:", path);
+            const { id } = data.product;
+            path = `/product/${id}`;
             await revalidatePath(path);
         }
 
-        console.log("Revalidating tags:", PRODUCTS_CACHE_TAG, CACHE_VERSION_TAG);
         await revalidateTag(PRODUCTS_CACHE_TAG);
         await revalidateTag(CACHE_VERSION_TAG);
 
@@ -36,7 +34,6 @@ export async function POST(req: NextRequest) {
             now: Date.now()
         });
     } catch (err) {
-        console.error("Revalidation error:", err);
         return NextResponse.json({ error: "Failed to revalidate" }, { status: 500 });
     }
 }
