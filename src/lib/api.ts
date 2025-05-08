@@ -1,5 +1,5 @@
 import { createFrontendServiceClient } from "@/api/proto-http/frontend";
-import { PRODUCTS_CACHE_TAG } from "@/constants";
+import { ARCHIVES_CACHE_TAG, HERO_CACHE_TAG, PRODUCTS_CACHE_TAG } from "@/constants";
 
 type Object = {
   [key: string]: unknown;
@@ -18,18 +18,27 @@ interface ProtoMetaParams {
 
 const fetchParams: Object = {
   GetHero: {
-    cache: "no-store",
+    cache: "force-cache",
+    next: {
+      revalidate: 900,
+      tags: [HERO_CACHE_TAG],
+    },
   },
   GetProduct: {
     cache: "force-cache",
     next: {
-      revalidate: 60,
+      revalidate: 900,
       tags: [PRODUCTS_CACHE_TAG],
     },
   },
-  GetArchivesPaged: {
-    next: { revalidate: 15 },
+  GetArchive: {
+    cache: "force-cache",
+    next: {
+      revalidate: 900,
+      tags: [ARCHIVES_CACHE_TAG],
+    },
   },
+
 };
 
 const requestHandler = async (

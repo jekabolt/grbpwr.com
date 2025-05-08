@@ -5,7 +5,8 @@ import type {
 } from "./api/proto-http/frontend";
 
 export const PRODUCTS_CACHE_TAG = "products";
-export const CACHE_VERSION_TAG = "cache-version";
+export const ARCHIVES_CACHE_TAG = "archives";
+export const HERO_CACHE_TAG = "hero";
 
 export const FOOTER_YEAR = new Date().getFullYear();
 
