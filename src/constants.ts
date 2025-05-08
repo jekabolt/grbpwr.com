@@ -4,6 +4,9 @@ import type {
   common_SortFactor
 } from "./api/proto-http/frontend";
 
+export const PRODUCTS_CACHE_TAG = "products";
+export const CACHE_VERSION_TAG = "cache-version";
+
 export const FOOTER_YEAR = new Date().getFullYear();
 
 export const FOOTER_LINKS: { text: string; href: string }[] = [

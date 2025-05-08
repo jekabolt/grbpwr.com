@@ -14,7 +14,6 @@ import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
 export const dynamic = "force-static";
-export const revalidate = 15;
 
 interface ProductPageProps {
   params: Promise<{
@@ -62,10 +61,6 @@ export async function generateMetadata({
       imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
     },
   });
-}
-
-export async function generateStaticParams() {
-  return [];
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
