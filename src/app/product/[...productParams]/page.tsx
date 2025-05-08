@@ -4,9 +4,7 @@ import { notFound } from "next/dist/client/components/not-found";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import FlexibleLayout from "@/components/flexible-layout";
 
-import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileImageCarousel } from "./_components/mobile-image-carousel";
 import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
@@ -88,27 +86,27 @@ export default async function ProductPage(props: ProductPageProps) {
   const productMedia = [...(product?.media || [])];
 
   return (
-    <FlexibleLayout
-      mobileHeaderType="flexible"
-      headerType="catalog"
-      footerType="mini"
-      transparent
-    >
-      <div className="relative lg:h-screen">
-        <div className="block lg:hidden">
-          <MobileImageCarousel media={productMedia} />
-        </div>
-        <div className="hidden h-full w-full pt-12 lg:block">
-          <ProductImagesCarousel productMedia={productMedia} />
-        </div>
-        <div className="hidden lg:block">
-          {product && <ProductInfo product={product} />}
-        </div>
-        <div className="block lg:hidden">
-          {product && <MobileProductInfo product={product} />}
-        </div>
+    // <FlexibleLayout
+    //   mobileHeaderType="flexible"
+    //   headerType="catalog"
+    //   footerType="mini"
+    //   transparent
+    // >
+    <div className="relative lg:h-screen">
+      <div className="block lg:hidden">
+        <MobileImageCarousel media={productMedia} />
       </div>
-      {product?.product && <LastViewedProducts product={product.product} />}
-    </FlexibleLayout>
+      <div className="hidden h-full w-full pt-12 lg:block">
+        <ProductImagesCarousel productMedia={productMedia} />
+      </div>
+      <div className="hidden lg:block">
+        {product && <ProductInfo product={product} />}
+      </div>
+      <div className="block lg:hidden">
+        {product && <MobileProductInfo product={product} />}
+      </div>
+    </div>
+    // {product?.product && <LastViewedProducts product={product.product} />}
+    // </FlexibleLayout>
   );
 }
