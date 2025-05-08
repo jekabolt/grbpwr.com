@@ -2,6 +2,7 @@
 
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { MAX_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -13,12 +14,49 @@ import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
-export const dynamic = "force-static";
-
 interface ProductPageProps {
   params: Promise<{
     productParams: string[];
   }>;
+}
+
+// For static site generation, we need to provide the paths
+// that should be generated at build time
+// You need to implement or modify your API to provide a list of all products
+// This is a placeholder implementation - replace with actual data source
+export async function generateStaticParams() {
+  try {
+    const response = await serviceClient.GetProductsPaged({
+      limit: MAX_LIMIT,
+      offset: 0,
+      sortFactors: undefined,
+      orderFactor: undefined,
+      filterConditions: undefined,
+    });
+
+    if (!response.products || response.products.length === 0) {
+      console.log("No products found for static generation");
+      return [];
+    }
+
+    console.log(
+      `Generating static params for ${response.products.length} products`,
+    );
+
+    return response.products.map((product) => {
+      const gender = product.productDisplay?.productBody?.targetGender;
+      const brand = product.productDisplay?.productBody?.brand;
+      const name = product.productDisplay?.productBody?.name;
+      const id = product.id?.toString() || "0";
+
+      return {
+        productParams: [gender, brand, name, id],
+      };
+    });
+  } catch (error) {
+    console.error("Error generating static params for products:", error);
+    return [];
+  }
 }
 
 const getProductData = async (
