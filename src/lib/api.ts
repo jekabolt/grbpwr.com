@@ -18,21 +18,18 @@ interface ProtoMetaParams {
 
 const fetchParams: Object = {
   GetHero: {
-    cache: "force-cache",
     next: {
       revalidate: 900,
       tags: [HERO_CACHE_TAG],
     },
   },
   GetProduct: {
-    cache: "force-cache",
     next: {
       revalidate: 900,
       tags: [PRODUCTS_CACHE_TAG],
     },
   },
   GetArchive: {
-    cache: "force-cache",
     next: {
       revalidate: 900,
       tags: [ARCHIVES_CACHE_TAG],
