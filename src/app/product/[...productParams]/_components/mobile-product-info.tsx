@@ -37,6 +37,11 @@ export function MobileProductInfo({
     typeId,
     gender,
     measurements,
+    preorder,
+    isSaleApplied,
+    priceMinusSale,
+    priceWithSale,
+    price,
     measurementType,
   } = useData({
     product,
@@ -65,6 +70,11 @@ export function MobileProductInfo({
           typeId={typeId}
           gender={gender}
           measurements={measurements}
+          preorder={preorder || ""}
+          isSaleApplied={isSaleApplied}
+          priceMinusSale={priceMinusSale}
+          priceWithSale={priceWithSale}
+          price={price}
           type={measurementType}
         />
       </Modal>

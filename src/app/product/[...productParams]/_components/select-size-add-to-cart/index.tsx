@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import type { common_ProductFull } from "@/api/proto-http/frontend";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import {
   AccordionContent,
@@ -14,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { HoverText } from "@/components/ui/hover-text";
 import { Text } from "@/components/ui/text";
 
+import { LoadingButton } from "../loading-button";
 import { MobileSelectSize } from "./mobile-select-size";
 import { useData } from "./useData";
 import { useDisabled } from "./useDisabled";
@@ -25,6 +27,7 @@ export function AddToCartForm({
   product,
   onSizeAccordionStateChange,
 }: Props) {
+  const { openCart } = useCart((state) => state);
   const {
     activeSizeId,
     openItem,
@@ -142,14 +145,11 @@ export function AddToCartForm({
             {preorder}
           </Text>
         )}
-        <Button
-          className={cn("blackTheme flex w-full justify-between uppercase", {
-            "justify-center": isLoading,
-          })}
+        <LoadingButton
           variant="simpleReverse"
           size="lg"
-          onClick={handleAddToCart}
-          loading={isLoading}
+          onAction={handleAddToCart}
+          isLoadingExternal={isLoading}
         >
           <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
           {isSaleApplied ? (
@@ -160,7 +160,7 @@ export function AddToCartForm({
           ) : (
             <Text variant="inherit">{price}</Text>
           )}
-        </Button>
+        </LoadingButton>
       </div>
     </div>
   );

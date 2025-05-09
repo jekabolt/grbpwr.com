@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
 import { Text } from "@/components/ui/text";
 
+import { LoadingButton } from "./loading-button";
 import { MeasurementsTable, Unit } from "./measurements-table";
 import { MeasurementType } from "./select-size-add-to-cart/useData";
 
@@ -25,6 +26,11 @@ export function Measurements({
   subCategoryId,
   typeId,
   gender,
+  preorder,
+  isSaleApplied,
+  priceMinusSale,
+  priceWithSale,
+  price,
   type,
 }: {
   id: number | undefined;
@@ -34,6 +40,11 @@ export function Measurements({
   subCategoryId: number | undefined;
   typeId: number | undefined;
   gender: common_GenderEnum | undefined;
+  preorder: string;
+  isSaleApplied: boolean;
+  priceMinusSale: string;
+  priceWithSale: string;
+  price: string;
   type: MeasurementType;
 }) {
   const { increaseQuantity } = useCart((state) => state);
@@ -48,9 +59,15 @@ export function Measurements({
   }));
 
   const handleAddToCart = async () => {
-    if (!selectedSize) return;
+    if (!selectedSize) return false;
 
-    await increaseQuantity(id!, selectedSize?.toString() || "", 1);
+    try {
+      await increaseQuantity(id!, selectedSize?.toString() || "", 1);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
   const handleSelectSize = (sizeId: number) => {
@@ -122,15 +139,21 @@ export function Measurements({
           />
         </div>
 
-        <Button
-          variant="main"
+        <LoadingButton
+          variant="simpleReverse"
           size="lg"
-          disabled={!selectedSize}
-          className="w-full uppercase"
-          onClick={handleAddToCart}
+          onAction={() => handleAddToCart()}
         >
-          add to cart
-        </Button>
+          <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
+          {isSaleApplied ? (
+            <Text variant="inactive">
+              {priceMinusSale}
+              <Text component="span">{priceWithSale}</Text>
+            </Text>
+          ) : (
+            <Text variant="inherit">{price}</Text>
+          )}
+        </LoadingButton>
       </div>
     </div>
   );
