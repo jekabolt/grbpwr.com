@@ -630,5 +630,25 @@ export type Subscriber = {
   receivePromoEmails: boolean | undefined;
 };
 
+export type SupportTicketInsert = {
+  topic: string | undefined;
+  subject: string | undefined;
+  civility: string | undefined;
+  email: string | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined;
+  orderReference: string | undefined;
+  notes: string | undefined;
+};
+
+export type SupportTicket = {
+  id: number | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
+  status: boolean | undefined;
+  resolvedAt: wellKnownTimestamp | undefined;
+  supportTicketInsert: SupportTicketInsert | undefined;
+};
+
 
 // @@protoc_insertion_point(typescript-http-eof)

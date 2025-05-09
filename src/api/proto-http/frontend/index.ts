@@ -635,6 +635,24 @@ export type GetArchiveResponse = {
   archive: common_ArchiveFull | undefined;
 };
 
+export type SubmitSupportTicketRequest = {
+  ticket: common_SupportTicketInsert | undefined;
+};
+
+export type common_SupportTicketInsert = {
+  topic: string | undefined;
+  subject: string | undefined;
+  civility: string | undefined;
+  email: string | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined;
+  orderReference: string | undefined;
+  notes: string | undefined;
+};
+
+export type SubmitSupportTicketResponse = {
+};
+
 export interface FrontendService {
   // Get hero information
   GetHero(request: GetHeroRequest): Promise<GetHeroResponse>;
@@ -660,6 +678,8 @@ export interface FrontendService {
   GetArchivesPaged(request: GetArchivesPagedRequest): Promise<GetArchivesPagedResponse>;
   // GetArchive retrieves an archive by its heading, tag and id.
   GetArchive(request: GetArchiveRequest): Promise<GetArchiveResponse>;
+  // Submit a support ticket
+  SubmitSupportTicket(request: SubmitSupportTicketRequest): Promise<SubmitSupportTicketResponse>;
 }
 
 type RequestType = {
@@ -996,6 +1016,23 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "GetArchive",
       }) as Promise<GetArchiveResponse>;
+    },
+    SubmitSupportTicket(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      const path = `api/frontend/support/ticket`; // eslint-disable-line quotes
+      const body = JSON.stringify(request);
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return handler({
+        path: uri,
+        method: "POST",
+        body,
+      }, {
+        service: "FrontendService",
+        method: "SubmitSupportTicket",
+      }) as Promise<SubmitSupportTicketResponse>;
     },
   };
 }

@@ -1,3 +1,5 @@
+// app/product/[...productParams]/page.tsx
+
 import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
 
@@ -11,14 +13,12 @@ import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
+export const dynamic = "force-static";
+
 interface ProductPageProps {
   params: Promise<{
     productParams: string[];
   }>;
-}
-
-export async function generateStaticParams() {
-  return [];
 }
 
 export async function generateMetadata({
@@ -51,19 +51,14 @@ export async function generateMetadata({
   });
 }
 
-export default async function ProductPage(props: ProductPageProps) {
-  const params = await props.params;
-  const { productParams } = params;
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { productParams } = await params;
 
   if (productParams.length !== 4) {
     return notFound();
   }
 
   const [gender, brand, name, id] = productParams;
-
-  console.log(
-    `[ProductPage] Rendering product: ${gender}/${brand}/${name}/${id}`,
-  );
 
   const { product } = await serviceClient.GetProduct({
     gender,

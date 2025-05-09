@@ -8,6 +8,8 @@ import { Ads } from "@/app/_components/ads";
 
 import { MainAds } from "./_components/main-ads";
 
+export const dynamic = "force-static";
+
 export async function generateMetadata(): Promise<Metadata> {
   const { hero } = await serviceClient.GetHero({});
   const heroImage =
