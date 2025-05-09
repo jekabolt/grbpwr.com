@@ -22,6 +22,8 @@ export function Measurements({
   sizes,
   measurements,
   categoryId,
+  subCategoryId,
+  typeId,
   gender,
   type,
 }: {
@@ -29,6 +31,8 @@ export function Measurements({
   sizes: common_ProductSize[] | undefined;
   measurements: common_ProductMeasurement[];
   categoryId: number | undefined;
+  subCategoryId: number | undefined;
+  typeId: number | undefined;
   gender: common_GenderEnum | undefined;
   type: MeasurementType;
 }) {
@@ -57,7 +61,11 @@ export function Measurements({
     <div className="flex h-full flex-col bg-bgColor">
       <CategoryThumbnail
         categoryId={categoryId}
+        subCategoryId={subCategoryId}
+        typeId={typeId}
         gender={gender}
+        measurements={measurements}
+        selectedSize={selectedSize}
         className={cn("h-[300px] lg:h-[400px]", {
           hidden: isRing || isShoe,
         })}

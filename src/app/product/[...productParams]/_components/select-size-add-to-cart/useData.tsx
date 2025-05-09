@@ -53,6 +53,7 @@ export function useData({
   const productCare = productBody?.careInstructions;
   const sizes = product.sizes;
   const categoryId = productBody?.topCategoryId;
+  const subCategoryId = productBody?.subCategoryId;
   const typeId = productBody?.typeId;
   const gender = productBody?.targetGender;
 
@@ -144,6 +145,8 @@ export function useData({
     productId,
     sizes,
     categoryId,
+    subCategoryId,
+    typeId,
     gender,
     lowStockText,
     measurements: product.measurements || [],

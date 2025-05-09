@@ -1,56 +1,61 @@
+import {
+  MeasurementLine,
+  SvgWrapper,
+} from "../categories-thumbnails/svg-wrapper";
+
+const sweaterLines: MeasurementLine[] = [
+  {
+    type: "horizontal",
+    name: "shoulders",
+    y: 40,
+    xStart: 145,
+    xEnd: 396,
+  },
+  {
+    type: "horizontal",
+    name: "chest",
+    y: 200,
+    xStart: 145,
+    xEnd: 396,
+  },
+  {
+    type: "vertical",
+    name: "length",
+    x: 350,
+    yStart: 90,
+    yEnd: 450,
+  },
+  {
+    type: "vertical",
+    view: "diagonal",
+    name: "sleeve",
+    x: 450,
+    xEnd: 540,
+    yStart: 100,
+    yEnd: 410,
+  },
+];
 export function SweaterIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      width="1472"
-      height="1284"
-      viewBox="0 0 1472 1284"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <g clip-path="url(#clip0_943_4548)">
+    <SvgWrapper lines={sweaterLines} originalViewBox="160 0 212 541" {...props}>
+      <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
+        <path d="m143.2 109.49 66.62-36.565h122l66.062 36.663" />
+        <path d="m397.73 368.59v99.485h-254.37v-100.41" />
+        <path d="m143.2 109.49 0.155 263.73" />
+        <path d="m397.88 109.59-0.154 264.56" />
+        <path d="m210.23 72.928 20.425 22.262h81.151l20.007-21.643" />
+        <path d="m397.73 455.4h-254.37" />
+        <path d="m346.36 81.895-25.83 26.899h-97.816l-27.151-28.136" />
         <path
-          d="M3.62891 1172.51L326.379 120.76L541.159 3H935.399L1148.38 121.25L1468.13 1172.51L1245.39 1277.25L1148.38 959.24V1281H326.379V956.24L226.369 1277.25L3.62891 1172.51Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
+          d="m397.88 332.83 30.608 113.39 56.142-15.076-86.747-321.55"
+          strokeLinecap="round"
         />
         <path
-          d="M326.379 120.76V974.24"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
+          d="m143.2 332.83-30.606 113.39-56.141-15.076 86.744-321.65"
+          strokeLinecap="round"
         />
-        <path
-          d="M1148.38 121.25V977.24"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M542.488 3L608.488 75H870.728L935.378 5"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M1148.38 1240H326.379"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M982.378 32L898.908 119H582.818L495.078 28"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
+        <path d="m220.6 83.75h101.81" strokeLinecap="round" />
       </g>
-      <defs>
-        <clipPath id="clip0_943_4548">
-          <rect width="1471.76" height="1284" fill="white" />
-        </clipPath>
-      </defs>
-    </svg>
+    </SvgWrapper>
   );
 }
