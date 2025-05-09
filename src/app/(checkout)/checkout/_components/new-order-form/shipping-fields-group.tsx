@@ -13,10 +13,17 @@ import { useDisabledGroup } from "./hooks/useFormDisabledGroup";
 
 type Props = {
   loading: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
   validateItems: (shipmentCarrierId: string) => Promise<any>;
 };
 
-export default function ShippingFieldsGroup({ loading, validateItems }: Props) {
+export default function ShippingFieldsGroup({
+  loading,
+  isOpen,
+  onToggle,
+  validateItems,
+}: Props) {
   const { dictionary } = useDataContext();
   const { isGroupDisabled } = useDisabledGroup({
     fields: CONTACT_GROUP_FIELDS,
@@ -27,6 +34,8 @@ export default function ShippingFieldsGroup({ loading, validateItems }: Props) {
       stage="2/3"
       title="shipping address/delivery method"
       disabled={isGroupDisabled}
+      isOpen={isOpen}
+      onToggle={onToggle}
     >
       <AddressFields loading={loading} disabled={isGroupDisabled} />
       <div>
