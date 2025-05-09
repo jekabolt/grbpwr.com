@@ -1,14 +1,11 @@
-import type { Metadata } from "next";
 import { FeatureMono } from "@/fonts";
 
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "grbpwr.com title",
-  description: "grbpwr.com desc",
-};
+export const metadata = generateCommonMetadata();
 
 type Props = {
   children: React.ReactNode;

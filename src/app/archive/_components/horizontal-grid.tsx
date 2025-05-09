@@ -13,15 +13,15 @@ export function HorizontalGrid({
   archives: common_ArchiveFull[];
 }) {
   return (
-    <div className="h-full w-full overflow-x-auto">
-      <div className="flex flex-wrap gap-x-2 gap-y-6 lg:gap-x-4 lg:gap-y-10">
+    <div className="h-full px-2.5 pb-2.5 lg:px-7">
+      <div className="grid grid-cols-3 gap-x-2 gap-y-6 lg:grid-cols-8 lg:gap-x-4 lg:gap-y-10">
         {archives.map((archive, index) => (
           <Link
             href={`/archive/${archive.id}`}
             key={archive.id}
-            className="block space-y-2"
+            className="group block space-y-2"
           >
-            <div className="relative h-36 lg:h-56">
+            <div className="relative">
               <ImageComponent
                 alt={archive.heading + " " + index}
                 src={archive.media?.[0].media?.fullSize?.mediaUrl || ""}
@@ -31,7 +31,9 @@ export function HorizontalGrid({
                 )}
               />
             </div>
-            <Text>{archive.heading}</Text>
+            <Text variant="inactive" className="group-hover:text-textColor">
+              {archive.heading}
+            </Text>
           </Link>
         ))}
       </div>

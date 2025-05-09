@@ -1,3 +1,4 @@
+import { GetArchivesPagedRequest } from "@/api/proto-http/frontend";
 import { QueryWrapper } from "@/providers/query-wrapper";
 
 import { serviceClient } from "@/lib/api";
@@ -18,7 +19,10 @@ export default async function Template({
     <QueryWrapper>
       <ServerActionsContextProvider
         // all requests on the client should be made using server actions accessible from the context
-        GetArchivesPaged={serviceClient.GetArchivesPaged}
+        GetArchivesPaged={async (request: GetArchivesPagedRequest) => {
+          "use server";
+          return serviceClient.GetArchivesPaged(request);
+        }}
       >
         <CartStoreProvider>
           <LastViewedStoreProvider>

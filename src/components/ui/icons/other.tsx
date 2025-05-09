@@ -1,46 +1,46 @@
 import { SVGProps } from "react";
 
+import {
+  MeasurementLine,
+  SvgWrapper,
+} from "../categories-thumbnails/svg-wrapper";
+
+const otherLines: MeasurementLine[] = [
+  {
+    type: "vertical",
+    name: "height",
+    x: 480,
+    yStart: 170,
+    yEnd: 365,
+  },
+  {
+    type: "vertical",
+    view: "diagonal",
+    name: "length",
+    x: 95,
+    xEnd: 230,
+    yStart: 420,
+    yEnd: 500,
+  },
+  {
+    type: "vertical",
+    view: "diagonal",
+    name: "width",
+    x: 445,
+    xEnd: 300,
+    yStart: 420,
+    yEnd: 500,
+  },
+];
 export function OtherIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      width="1306"
-      height="1507"
-      viewBox="0 0 1306 1507"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <g clip-path="url(#clip0_943_4530)">
-        <path
-          d="M1302.04 378.46L652.52 3.45996L3 378.46V1128.46L652.52 1503.46L1302.04 1128.46V378.46Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M651.77 1503.45V753.45"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M1302.77 378.45L651.77 753.45"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M2.26953 378.45L651.77 753.45"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
+    <SvgWrapper lines={otherLines} originalViewBox="160 0 212 541" {...props}>
+      <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
+        <path d="M436 175L270.5 79L105 175V367L270.5 463L436 367V175Z" />
+        <path d="m270.31 463.11v-192.61" />
+        <path d="m436.42 174.19-166.11 96.305" />
+        <path d="m104.58 174.19 165.73 96.305" />
       </g>
-      <defs>
-        <clipPath id="clip0_943_4530">
-          <rect width="1305.04" height="1506.93" fill="white" />
-        </clipPath>
-      </defs>
-    </svg>
+    </SvgWrapper>
   );
 }

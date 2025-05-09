@@ -1,6 +1,9 @@
-import { CATALOG_LIMIT } from "@/constants";
+import { Metadata } from "next";
+import { common_GenderEnum } from "@/api/proto-http/frontend";
+import { CATALOG_LIMIT, GENDER_MAP_REVERSE } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
@@ -22,6 +25,18 @@ interface CatalogPageProps {
     sale?: string;
     tag?: string;
   }>;
+}
+
+export async function generateMetadata(
+  props: CatalogPageProps,
+): Promise<Metadata> {
+  const params = await props.searchParams;
+  const { gender } = params;
+
+  const genderTitle = GENDER_MAP_REVERSE[gender as common_GenderEnum];
+  return generateCommonMetadata({
+    title: gender ? genderTitle.toUpperCase() : "catalog".toUpperCase(),
+  });
 }
 
 export default async function CatalogPage(props: CatalogPageProps) {

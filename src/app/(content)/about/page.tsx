@@ -1,8 +1,13 @@
 import Link from "next/link";
 
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";
+
+export const metadata = generateCommonMetadata({
+  title: "about".toUpperCase(),
+});
 
 export default function Component() {
   return (

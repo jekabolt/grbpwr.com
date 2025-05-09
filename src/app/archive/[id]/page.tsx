@@ -1,7 +1,9 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
 import { serviceClient } from "@/lib/api";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
 import PageComponent from "./_components/page-component";
@@ -11,6 +13,29 @@ type Props = {
     id: string;
   }>;
 };
+
+export const dynamic = "force-static";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+
+  const archiveResponse = await serviceClient.GetArchive({
+    id: parseInt(id),
+    heading: "1",
+    tag: "1",
+  });
+
+  const archive = archiveResponse.archive as common_ArchiveFull;
+
+  return generateCommonMetadata({
+    title: archive.heading?.toUpperCase() || "heading".toUpperCase(),
+    description: archive.description || "description",
+    ogParams: {
+      imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
+      imageAlt: archive.heading || "",
+    },
+  });
+}
 
 export default async function Page(props: Props) {
   const params = await props.params;
@@ -28,21 +53,17 @@ export default async function Page(props: Props) {
   const archive = archiveResponse.archive as common_ArchiveFull;
 
   return (
-    <div className="blackTheme bg-bgColor text-textColor">
-      <FlexibleLayout
-        mobileHeaderType="flexible"
-        headerProps={{
-          left: "grbpwr archive",
-        }}
-        mobileHeaderProps={{
-          className: "bottom-0",
-        }}
-        footerType="mini"
-        theme="dark"
-        className="pt-16"
-      >
-        <PageComponent archive={archive} />
-      </FlexibleLayout>
-    </div>
+    <FlexibleLayout
+      headerType="archive"
+      headerProps={{
+        left: "grbpwr.com",
+        center: "archive",
+      }}
+      footerType="mini"
+      theme="dark"
+      className="pt-16"
+    >
+      <PageComponent archive={archive} />
+    </FlexibleLayout>
   );
 }

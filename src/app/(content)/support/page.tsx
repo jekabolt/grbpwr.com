@@ -1,7 +1,12 @@
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import { Text } from "@/components/ui/text";
 
 import { CommunicationButtons } from "./_components/communication-buttons";
 import { SupportForm } from "./_components/support-form";
+
+export const metadata = generateCommonMetadata({
+  title: "support".toUpperCase(),
+});
 
 export default function SupportPage() {
   return (

@@ -3,21 +3,38 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
+import { useDataContext } from "@/components/contexts/DataContext";
+
 import { StripeCardForm } from "./stripe-card-form";
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!);
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+);
 
-export function StripeForm({ clientSecret, uuid }: Props) {
+export function StripeForm({ clientSecret, uuid, amount, country }: Props) {
+  const { dictionary } = useDataContext();
+  const baseCurrency = dictionary?.baseCurrency?.toLowerCase();
+
   return (
     <Elements
       stripe={stripePromise}
       options={{
-        clientSecret,
+        mode: "payment",
+        amount: Number(amount),
+        currency: baseCurrency,
+        appearance: {
+          theme: "stripe",
+          labels: "floating",
+        },
+        paymentMethodCreation: "manual",
+        paymentMethodTypes: ["card", "klarna", "paypal"],
       }}
     >
-      <StripeCardForm clientSecret={clientSecret} uuid={uuid} />
+      <StripeCardForm
+        clientSecret={clientSecret}
+        uuid={uuid}
+        country={country}
+      />
     </Elements>
   );
 }
@@ -25,4 +42,6 @@ export function StripeForm({ clientSecret, uuid }: Props) {
 interface Props {
   clientSecret: string;
   uuid: string;
+  amount: string;
+  country: string;
 }

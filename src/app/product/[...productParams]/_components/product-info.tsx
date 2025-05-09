@@ -24,6 +24,8 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     productId,
     sizes,
     categoryId,
+    subCategoryId,
+    typeId,
     gender,
     measurements,
     price,
@@ -31,6 +33,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     isSaleApplied,
     priceMinusSale,
     priceWithSale,
+    measurementType,
   } = useData({
     product,
   });
@@ -109,6 +112,8 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 id={productId}
                 sizes={sizes}
                 categoryId={categoryId}
+                subCategoryId={subCategoryId}
+                typeId={typeId}
                 gender={gender}
                 measurements={measurements}
                 preorder={preorder || ""}
@@ -116,6 +121,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 priceMinusSale={priceMinusSale}
                 priceWithSale={priceWithSale}
                 price={price}
+                type={measurementType}
               />
             </Modal>
           </div>

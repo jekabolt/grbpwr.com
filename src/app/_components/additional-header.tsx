@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+import { HeaderProps } from "@/components/flexible-layout";
 import { Button } from "@/components/ui/button";
 
 export function AdditionalHeader({
@@ -9,13 +10,7 @@ export function AdditionalHeader({
   right,
   link,
   hidden = false,
-}: {
-  left?: string;
-  link?: string;
-  center?: string;
-  right?: string;
-  hidden?: boolean;
-}) {
+}: HeaderProps) {
   return (
     <header className="text fixed left-2 right-2 top-2 z-30 flex h-12 items-center justify-between bg-bgColor p-3 py-2 text-textColor lg:mx-2 lg:px-5 lg:py-3">
       <Button asChild size="sm">

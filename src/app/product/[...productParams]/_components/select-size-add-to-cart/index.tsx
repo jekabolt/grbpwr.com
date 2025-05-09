@@ -106,9 +106,9 @@ export function AddToCartForm({
                 <AccordionContent className="grid grid-cols-4 gap-2">
                   {sizeNames?.map(({ name, id }) => (
                     <Button
-                      className={cn({
-                        "border-b border-black": activeSizeId === id,
-                        "hover:border-b hover:border-black": !outOfStock[id],
+                      className={cn("border-b border-transparent", {
+                        "border-textColor": activeSizeId === id,
+                        "hover:border-textColor": !outOfStock[id],
                       })}
                       key={id}
                       onClick={() => handleSizeSelect(id)}

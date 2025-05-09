@@ -1,6 +1,12 @@
+import type {
+  common_ProductSize,
+  common_Size,
+} from "@/api/proto-http/frontend";
 import {
   COMPOSITION_MAP,
   OrderFactorOption,
+  RING_SIZE_CONVERSION,
+  SHOES_SIZE_CONVERSION,
   SortFactorConfig,
 } from "@/constants";
 import clsx, { ClassValue } from "clsx";
@@ -55,4 +61,31 @@ export function calculatePriceWithSale(
   const discount = parseInt(salePercentage || "0");
 
   return (basePrice * (100 - discount)) / 100;
+}
+
+export function formatSizeData(
+  sizes: common_ProductSize[],
+  type: "shoe" | "ring",
+  dictionary: common_Size[],
+) {
+  const tableType =
+    type === "shoe" ? SHOES_SIZE_CONVERSION : RING_SIZE_CONVERSION;
+
+  return sizes
+    .filter((size) => size.id !== undefined)
+    .map((size) => {
+      const name = dictionary.find((item) => item.id === size.sizeId)?.name;
+      const tableData = tableType[name as keyof typeof tableType];
+
+      if (!tableData) return undefined;
+
+      return {
+        id: size.sizeId,
+        eu: tableData.EU,
+        us: tableData.US,
+        uk: tableData.UK,
+        cm: tableData.CM,
+      };
+    })
+    .sort((a, b) => parseFloat(a?.eu || "") - parseFloat(b?.eu || ""));
 }

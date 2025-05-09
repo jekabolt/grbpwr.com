@@ -1,112 +1,72 @@
 import { SVGProps } from "react";
 
+import {
+  MeasurementLine,
+  SvgWrapper,
+} from "../categories-thumbnails/svg-wrapper";
+
+const coatLines: MeasurementLine[] = [
+  {
+    type: "horizontal",
+    name: "shoulders",
+    y: 0,
+    xStart: 168,
+    xEnd: 367,
+  },
+  {
+    type: "vertical",
+    view: "diagonal",
+    name: "sleeve",
+    x: 408,
+    xEnd: 480,
+    yStart: 70,
+    yEnd: 303,
+  },
+  {
+    type: "horizontal",
+    name: "chest",
+    y: 170,
+    xStart: 168,
+    xEnd: 367,
+  },
+  {
+    type: "vertical",
+    name: "length",
+    x: 320,
+    yStart: 60,
+    yEnd: 500,
+  },
+];
+
 export function CoatIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      width="1472"
-      height="2011"
-      viewBox="0 0 1472 2011"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <g clip-path="url(#clip0_943_4492)">
+    <SvgWrapper lines={coatLines} originalViewBox="160 -20 212 527" {...props}>
+      <g clipPath="url(#a)" stroke="#000" strokeMiterlimit="10" strokeWidth="2">
+        <path d="m266.98 68.681-0.084 0.1396-0.083-0.1396 0.083-0.0758 0.084 0.0758z" />
+        <path d="m301.16 37.809-34.267 30.796-33.875-30.446 68.142-0.3507z" />
+        <path d="m166.5 67.074 40.023-21.876-0.872 1.4569 48.44 43.536 12.798-21.37 12.799 21.37 48.44-43.536-1.243-2.075 41.499 22.653" />
+        <path d="m368.39 272.77v243.5h-201.88v-244.23" />
+        <path d="m166.5 67.074v209.37" />
+        <path d="m368.39 67.234v209.95" />
+        <path d="m368.39 506.21h-201.88" />
+        <path d="m314.6 24.74-0.02 1.0056-13.346 11.994h-68.685l-13.505-12.136 0.017-0.8634h95.539z" />
+        <path d="m328.13 46.655-48.44 43.536-12.798-21.37 0.083-0.1398-0.083-0.0761 34.266-30.796 0.076-0.0687 13.346-11.994 0.668-0.6009 11.639 19.435 1.243 2.075z" />
+        <path d="m266.98 68.681-0.084 0.1396-0.083-0.1396 0.083-0.0758 0.084 0.0758z" />
+        <path d="m266.9 69.871 0.061 436.34" />
+        <path d="m266.81 68.68 0.083 0.1398-12.798 21.37-48.44-43.536 0.872-1.4569 12.01-20.053 0.508 0.4587 13.506 12.136 0.467 0.4194 33.875 30.446-0.083 0.0761z" />
+        <path d="m266.98 68.681-0.084 0.1396-0.083-0.1396 0.083-0.0758 0.084 0.0758z" />
+        <path d="m284.28 140.7h-5.403v5.936h5.403v-5.936z" />
+        <path d="m284.28 197.6h-5.403v5.936h5.403v-5.936z" />
+        <path d="m284.28 254.51h-5.403v5.935h5.403v-5.935z" />
         <path
-          d="M735.52 182.169L735.18 182.739L734.84 182.169L735.18 181.859L735.52 182.169Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
+          d="m368.39 351.69 0.245-107.43 23.797 89.851 44.559-11.96-68.601-254.91"
+          strokeLinecap="round"
         />
         <path
-          d="M874.7 56.2998L735.18 181.86L597.25 57.7298L874.7 56.2998Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M1468.18 1155.53L1245.44 1260.27L1148.43 1014.26V2007.02H326.43V1011.26L226.42 1260.27L3.67969 1155.53L326.43 175.779L489.39 86.4292L485.84 92.3692L683.07 269.869L735.18 182.739L787.29 269.869L984.52 92.3692L979.46 83.9092L1148.43 176.269L1468.18 1155.53Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M326.43 175.779V1029.26"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M1148.43 176.27V1032.26"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M1148.43 1966.02H326.43"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M929.429 3.01953L929.349 7.11953L875.009 56.0195H595.349L540.359 6.53953L540.429 3.01953H929.429Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M984.52 92.3699L787.29 269.87L735.18 182.74L735.52 182.17L735.18 181.86L874.7 56.2999L875.01 56.0199L929.35 7.11992L932.07 4.66992L979.46 83.9099L984.52 92.3699Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M735.52 182.169L735.18 182.739L734.84 182.169L735.18 181.859L735.52 182.169Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M735.18 187.02L735.43 1966.02"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M734.84 182.17L735.18 182.74L683.07 269.87L485.84 92.3699L489.39 86.4299L538.29 4.66992L540.36 6.53992L595.35 56.0199L597.25 57.7299L735.18 181.86L734.84 182.17Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M735.52 182.169L735.18 182.739L734.84 182.169L735.18 181.859L735.52 182.169Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M805.988 475.81H783.988V500.01H805.988V475.81Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M805.988 707.81H783.988V732.01H805.988V707.81Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
-        />
-        <path
-          d="M805.988 939.81H783.988V964.01H805.988V939.81Z"
-          stroke="black"
-          strokeWidth="6"
-          strokeMiterlimit="10"
+          d="m166.5 351.44-0.245-107.43-23.797 89.85-44.557-11.959 68.599-254.83"
+          strokeLinecap="round"
         />
       </g>
-      <defs>
-        <clipPath id="clip0_943_4492">
-          <rect width="1471.85" height="2010.02" fill="white" />
-        </clipPath>
-      </defs>
-    </svg>
+    </SvgWrapper>
   );
 }

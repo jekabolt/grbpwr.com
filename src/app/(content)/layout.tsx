@@ -1,5 +1,7 @@
 import FlexibleLayout from "@/components/flexible-layout";
 
+export const dynamic = "force-static";
+
 export default function Layout({
   children,
 }: Readonly<{

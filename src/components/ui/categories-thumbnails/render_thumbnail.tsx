@@ -1,30 +1,69 @@
-import { common_GenderEnum } from "@/api/proto-http/frontend";
+import {
+  common_GenderEnum,
+  common_ProductMeasurement,
+} from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
+import { useDataContext } from "@/components/contexts/DataContext";
 
-import { getIconByCategoryId } from "./map_cataegories";
+import { getIconByCategoryId } from "./map_categories";
 
 interface CategoryThumbnailProps {
   categoryId: number | undefined;
+  subCategoryId: number | undefined;
+  typeId: number | undefined;
   gender: common_GenderEnum | undefined;
+  measurements: common_ProductMeasurement[];
   className?: string;
-  size?: number;
+  selectedSize?: number;
 }
+
+type IconComponentProps = React.SVGProps<SVGSVGElement> & {
+  measurements?: common_ProductMeasurement[];
+  selectedSize?: number;
+};
 
 export function CategoryThumbnail({
   categoryId,
+  subCategoryId,
+  typeId,
+  measurements,
   className,
   gender,
+  selectedSize,
 }: CategoryThumbnailProps) {
-  const IconComponent = getIconByCategoryId(categoryId, gender);
+  const { dictionary } = useDataContext();
+
+  const category = dictionary?.categories?.find((c) => c.id === categoryId);
+
+  const subCategory = dictionary?.categories?.find(
+    (c) => c.id === subCategoryId,
+  );
+  const type = dictionary?.categories?.find((t) => t.id === typeId);
+
+  const IconComponent = getIconByCategoryId(
+    category,
+    gender,
+    subCategory,
+    type,
+  ) as React.ComponentType<IconComponentProps>;
 
   if (!IconComponent) {
     return null;
   }
 
   return (
-    <div className={cn("flex items-center justify-center", className)}>
-      <IconComponent className="h-full p-3 lg:p-5" />
+    <div
+      className={cn(
+        "flex aspect-square w-full items-center justify-center",
+        className,
+      )}
+    >
+      <IconComponent
+        className="h-full w-full"
+        measurements={measurements}
+        selectedSize={selectedSize}
+      />
     </div>
   );
 }

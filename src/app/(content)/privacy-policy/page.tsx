@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import { Button } from "@/components/ui/button";
 import CareComposition from "@/components/ui/care-composition";
 import CopyText from "@/components/ui/copy-text";
@@ -14,6 +15,10 @@ const links = [
   { href: "bing", label: "bing" },
   { href: "daa", label: "daa" },
 ];
+
+export const metadata = generateCommonMetadata({
+  title: "privacy policy".toUpperCase(),
+});
 
 export default function Component() {
   return (

@@ -1,61 +1,89 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
-  CardCvcElement,
-  CardElement,
-  CardExpiryElement,
-  CardNumberElement,
+  PaymentElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
 
-export function StripeCardForm({ clientSecret, uuid }: Props) {
-  const router = useRouter();
+import { Button } from "@/components/ui/button";
+
+export function StripeCardForm({ clientSecret, uuid, country }: Props) {
   const stripe = useStripe();
   const elements = useElements();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (event: any) => {
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setIsLoading(true);
 
     if (!stripe || !elements) {
-      // Stripe.js hasn't yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
 
-    const { error, paymentIntent } = await stripe.confirmCardPayment(
+    const { error: submitError } = await elements.submit();
+
+    if (submitError) {
+      setIsLoading(false);
+      return;
+    }
+
+    const { error } = await stripe.confirmPayment({
       clientSecret,
-      {
-        payment_method: {
-          card: elements.getElement(CardElement) as any,
+      elements,
+      confirmParams: {
+        return_url: `${window.location.origin}/order/${uuid}`,
+        payment_method_data: {
           billing_details: {
-            name: "Customer Name",
-            email: "customer@example.com",
+            address: {
+              country: country,
+            },
           },
         },
       },
-    );
+    });
 
-    console.log(`stripe response:-0--0`);
-    console.log({ error, paymentIntent });
+    setIsLoading(false);
 
-    if (paymentIntent?.status === "succeeded") {
+    if (error) {
+      console.error("Error confirming payment:", error.message);
+    } else {
       console.log("Payment successful");
-
-      router.push(`/order/${uuid}`);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <CardElement
-        onChange={handleSubmit}
-        className="w-96 border-2 border-black"
-      />
-      <button disabled={!stripe}>Submit stripe pay</button>
+    <form
+      onSubmit={handleSubmit}
+      className="flex w-full flex-col justify-between gap-2.5"
+    >
+      <div className="min-h-72">
+        {clientSecret && (
+          <PaymentElement
+            options={{
+              layout: "tabs",
+              fields: {
+                billingDetails: {
+                  address: {
+                    country: "never",
+                  },
+                },
+              },
+            }}
+          />
+        )}
+      </div>
+
+      <Button
+        variant="main"
+        size="lg"
+        className="w-full uppercase"
+        disabled={!stripe || isLoading}
+      >
+        pay
+      </Button>
     </form>
   );
 }
@@ -63,4 +91,5 @@ export function StripeCardForm({ clientSecret, uuid }: Props) {
 interface Props {
   clientSecret: string;
   uuid: string;
+  country: string;
 }
