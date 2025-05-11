@@ -22,11 +22,11 @@ export async function POST(request: Request) {
 
     console.log("Revalidation request:", JSON.stringify(data));
 
-    if (data.product) {
-        const { id } = data.product;
-        const path = `/product/${id}`;
+    if (Array.isArray(data.products) && data.products.length > 0) {
         revalidateTag(PRODUCTS_CACHE_TAG);
-        revalidatePath(path);
+        for (const id of data.products) {
+            revalidatePath(`/product/${id}`);
+        }
     }
 
     if (data.archive) {
