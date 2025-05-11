@@ -1,12 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import type { common_ArchiveFull } from "@/api/proto-http/frontend";
 
-import { calculateAspectRatio } from "@/lib/utils";
-import ImageComponent from "@/components/ui/image";
-import { Text } from "@/components/ui/text";
+import { FullSizeItem } from "./full-size-item";
 
 interface CarouselProps {
   archives: common_ArchiveFull[];
@@ -103,7 +100,7 @@ export function VerticalCarousel({ archives }: CarouselProps) {
               isHighlighted && setSelectedArchive(archive.id || null)
             }
           >
-            <div className="flex w-full flex-col items-center justify-between gap-4 lg:flex-row">
+            {/* <div className="flex w-full flex-col items-center justify-between gap-4 lg:flex-row">
               <Text className="w-60 text-center lg:text-left">
                 {archive.heading}
               </Text>
@@ -128,7 +125,13 @@ export function VerticalCarousel({ archives }: CarouselProps) {
               <Text className="w-60 text-center lg:text-right">
                 {archive.tag}
               </Text>
-            </div>
+            </div> */}
+            <FullSizeItem
+              archive={archive}
+              className={`w-full transition-all duration-300 ease-in-out lg:w-[34rem] ${
+                !isHighlighted ? "lg:w-96" : ""
+              }`}
+            />
           </div>
         );
       })}
