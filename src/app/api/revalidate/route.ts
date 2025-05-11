@@ -29,16 +29,14 @@ export async function POST(request: Request) {
         }
     }
 
-    if (data.archive) {
-        const { id } = data.archive;
-        const path = `/archive/${id}`;
-        revalidateTag(ARCHIVES_CACHE_TAG);
-        revalidatePath(path);
-    }
-
-    if (data.hero && data.hero.changed) {
+    if (data.hero === true) {
         revalidateTag(HERO_CACHE_TAG);
         revalidatePath("/");
+    }
+
+    if (typeof data.archive === "number") {
+        revalidateTag(ARCHIVES_CACHE_TAG);
+        revalidatePath(`/archive/${data.archive}`);
     }
 
     return Response.json({
