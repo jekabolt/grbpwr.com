@@ -8,11 +8,12 @@ export interface InputProps {
   [k: string]: any;
 }
 
-function Input({ type = "text", className, name, ...props }: InputProps) {
+function Input({ type = "text", className, name, ref, ...props }: InputProps) {
   return (
     <input
       id={name}
       type={type}
+      ref={ref}
       name={name}
       className={cn(
         "w-full border-b border-textColor bg-bgColor text-lg placeholder:text-textInactiveColor placeholder-shown:border-textInactiveColor focus:border-textColor focus:outline-none",
