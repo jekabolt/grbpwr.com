@@ -13,7 +13,6 @@ function Input({ type = "text", className, name, ref, ...props }: InputProps) {
       id={name}
       type={type}
       ref={ref}
-      name={name}
       className={cn(
         "w-full border-b border-textColor bg-bgColor text-lg placeholder:text-textInactiveColor placeholder-shown:border-textInactiveColor focus:border-textColor focus:outline-none",
         className,
