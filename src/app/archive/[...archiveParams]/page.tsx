@@ -1,7 +1,9 @@
+import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
 import { serviceClient } from "@/lib/api";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
 import { FullSizeItem } from "../_components/full-size-item";
@@ -13,14 +15,39 @@ interface ArchivePageParams {
   }>;
 }
 
-let nextArchive: common_ArchiveFull | undefined;
+export async function generateMetadata({
+  params,
+}: ArchivePageParams): Promise<Metadata> {
+  const { archiveParams } = await params;
+
+  const [heading, tag, id] = archiveParams;
+
+  const archiveResponse = await serviceClient.GetArchive({
+    heading,
+    tag,
+    id: parseInt(id),
+  });
+
+  const archive = archiveResponse.archive as common_ArchiveFull;
+
+  return generateCommonMetadata({
+    title: archive.heading?.toUpperCase() || "heading".toUpperCase(),
+    description: archive.description || "description",
+    ogParams: {
+      imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
+      imageAlt: archive.heading || "",
+    },
+  });
+}
 
 export const dynamic = "force-static";
 
 export default async function Page({ params }: ArchivePageParams) {
   const { archiveParams } = await params;
 
-  if (archiveParams.length === 0) {
+  let nextArchive: common_ArchiveFull | undefined;
+
+  if (archiveParams.length !== 3) {
     notFound();
   }
 
@@ -34,9 +61,6 @@ export default async function Page({ params }: ArchivePageParams) {
   if (archive?.nextSlug) {
     const parts = archive.nextSlug.split("/");
     const nextParams = parts.slice(2);
-
-    console.log(archive?.nextSlug);
-    console.log(nextParams);
 
     const [nextHeading, nextTag, nextId] = nextParams;
 
@@ -60,37 +84,13 @@ export default async function Page({ params }: ArchivePageParams) {
       theme="dark"
       className="pt-16"
     >
-      <div className="px-14 lg:px-7">
-        <PageComponent archive={archive} />
-        <div className="my-16">
-          <FullSizeItem
-            archive={nextArchive}
-            link="next"
-            className="w-full lg:w-96"
-          />
-        </div>
-      </div>
+      <PageComponent archive={archive} />
+
+      <FullSizeItem
+        archive={nextArchive}
+        link="next"
+        className="w-full lg:w-96"
+      />
     </FlexibleLayout>
   );
 }
-
-// export async function generateMetadata({ params }: Props): Promise<Metadata> {
-//   const { id } = await params;
-
-//   const archiveResponse = await serviceClient.GetArchive({
-//     id: parseInt(id),
-//     heading: "1",
-//     tag: "1",
-//   });
-
-//   const archive = archiveResponse.archive as common_ArchiveFull;
-
-//   return generateCommonMetadata({
-//     title: archive.heading?.toUpperCase() || "heading".toUpperCase(),
-//     description: archive.description || "description",
-//     ogParams: {
-//       imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
-//       imageAlt: archive.heading || "",
-//     },
-//   });
-// }
