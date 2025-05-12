@@ -4,7 +4,6 @@ export interface InputProps {
   type?: "email" | "number" | "tel" | "text";
   className?: string;
   name: string;
-  placeholder?: string;
   [k: string]: any;
 }
 
