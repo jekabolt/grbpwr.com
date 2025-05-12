@@ -57,7 +57,7 @@ export function SelectTrigger({
 }) {
   return (
     <Select.Trigger
-      className="inline-flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor px-4 text-lg text-textColor focus:outline-none focus:ring-0 data-[placeholder]:border-b-textInactiveColor data-[placeholder]:text-textColor"
+      className="inline-flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor px-4 text-lg text-textColor focus:outline-none focus:ring-0 data-[placeholder]:border-textInactiveColor data-[placeholder]:text-textColor"
       aria-label={placeholder}
     >
       <Select.Value placeholder={placeholder} />
