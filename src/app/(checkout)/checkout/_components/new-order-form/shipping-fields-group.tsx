@@ -74,6 +74,7 @@ export function AddressFields({
         <div className="col-span-1">
           <InputField
             loading={loading}
+            variant="secondary"
             name={prefix ? `${prefix}.firstName` : "firstName"}
             label="first name:"
             placeholder="James"
@@ -83,6 +84,7 @@ export function AddressFields({
         <div className="col-span-1">
           <InputField
             loading={loading}
+            variant="secondary"
             name={prefix ? `${prefix}.lastName` : "lastName"}
             label="last name:"
             placeholder="Bond"
@@ -92,6 +94,7 @@ export function AddressFields({
       </div>
       <SelectField
         loading={loading}
+        variant="secondary"
         name={prefix ? `${prefix}.country` : "country"}
         label="country/region:"
         items={countries}
@@ -115,6 +118,7 @@ export function AddressFields({
 
       <InputField
         loading={loading}
+        variant="secondary"
         name={prefix ? `${prefix}.city` : "city"}
         label="city:"
         placeholder="London"
@@ -122,6 +126,7 @@ export function AddressFields({
       />
       <InputField
         loading={loading}
+        variant="secondary"
         name={prefix ? `${prefix}.address` : "address"}
         label="street and house number:"
         placeholder="sjyrniesu 10"
@@ -129,6 +134,7 @@ export function AddressFields({
       />
       <InputField
         loading={loading}
+        variant="secondary"
         name={prefix ? `${prefix}.additionalAddress` : "additionalAddress"}
         label="additional address:"
         placeholder=""
@@ -136,6 +142,7 @@ export function AddressFields({
       />
       <InputField
         loading={loading}
+        variant="secondary"
         name={prefix ? `${prefix}.company` : "company"}
         label="company:"
         placeholder="Channel"
@@ -143,6 +150,7 @@ export function AddressFields({
       />
       <InputField
         loading={loading}
+        variant="secondary"
         name={prefix ? `${prefix}.postalCode` : "postalCode"}
         label="postal code:"
         placeholder="37892"

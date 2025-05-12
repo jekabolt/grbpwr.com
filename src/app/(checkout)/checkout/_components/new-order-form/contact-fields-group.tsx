@@ -21,6 +21,7 @@ export default function ContactFieldsGroup({
     >
       <InputField
         loading={loading}
+        variant="secondary"
         name="email"
         label="email address:"
         type="email"
@@ -28,6 +29,7 @@ export default function ContactFieldsGroup({
       />
       <InputField
         loading={loading}
+        variant="secondary"
         type="number"
         name="phone"
         label="phone number:"
