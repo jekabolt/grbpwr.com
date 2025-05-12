@@ -7,11 +7,10 @@ import { Text } from "@/components/ui/text";
 
 interface Props {
   className?: string;
-  link?: "catalog" | "next";
   archive: common_ArchiveFull | undefined;
 }
 
-export function FullSizeItem({ className, archive, link = "catalog" }: Props) {
+export function FullSizeItem({ className, archive }: Props) {
   return (
     <div className="flex h-full w-full flex-col items-center justify-between gap-4 lg:flex-row">
       <Text className="w-60 text-center lg:text-left">{archive?.heading}</Text>

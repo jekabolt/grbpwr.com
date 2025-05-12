@@ -86,11 +86,7 @@ export default async function Page({ params }: ArchivePageParams) {
     >
       <PageComponent archive={archive} />
 
-      <FullSizeItem
-        archive={nextArchive}
-        link="next"
-        className="w-full lg:w-96"
-      />
+      <FullSizeItem archive={nextArchive} className="w-full lg:w-96" />
     </FlexibleLayout>
   );
 }
