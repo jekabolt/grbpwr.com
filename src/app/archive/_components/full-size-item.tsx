@@ -7,7 +7,7 @@ import { Text } from "@/components/ui/text";
 
 interface Props {
   className?: string;
-  archive: common_ArchiveFull | undefined;
+  archive?: common_ArchiveFull;
 }
 
 export function FullSizeItem({ className, archive }: Props) {
