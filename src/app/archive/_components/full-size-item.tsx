@@ -14,7 +14,6 @@ export function FullSizeItem({ className, archive }: Props) {
   return (
     <div className="flex h-full w-full flex-col items-center justify-between gap-4 lg:flex-row">
       <Text className="w-60 text-center lg:text-left">{archive?.heading}</Text>
-
       <div className={className}>
         <Link href={archive?.slug || ""}>
           <ImageComponent
@@ -27,7 +26,6 @@ export function FullSizeItem({ className, archive }: Props) {
           />
         </Link>
       </div>
-
       <Text className="w-60 text-center lg:text-right">{archive?.tag}</Text>
     </div>
   );

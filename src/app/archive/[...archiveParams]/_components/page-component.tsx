@@ -9,7 +9,7 @@ import { Text } from "@/components/ui/text";
 export default function PageComponent({
   archive,
 }: {
-  archive: common_ArchiveFull | undefined;
+  archive?: common_ArchiveFull;
 }) {
   return (
     <div className="min-h-screen bg-black p-4 text-white">
