@@ -19,7 +19,7 @@ export const FOOTER_LINKS: { text: string; href: string }[] = [
 
 export const CATALOG_LIMIT = 16;
 
-export const ARCHIVE_LIMIT = 10;
+export const ARCHIVE_LIMIT = 48;
 
 export const CURRENCY_MAP = {
   eth: "eth",
