@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import type { common_ArchiveFull } from "@/api/proto-http/frontend";
 
-import { calculateAspectRatio } from "@/lib/utils";
-import ImageComponent from "@/components/ui/image";
-import { Text } from "@/components/ui/text";
+import { cn } from "@/lib/utils";
+
+import { FullSizeItem } from "./full-size-item";
 
 interface CarouselProps {
   archives: common_ArchiveFull[];
@@ -96,39 +95,26 @@ export function VerticalCarousel({ archives }: CarouselProps) {
           <div
             key={index}
             data-archive-id={archive.id}
-            className={`archive-item relative px-14 transition-transform duration-300 ease-in-out lg:px-7 ${
-              isHighlighted ? "scale-100" : "scale-95 opacity-30"
-            }`}
+            className={cn(
+              "archive-item relative px-14 transition-transform duration-300 ease-in-out lg:px-7",
+              {
+                "scale-100": isHighlighted,
+                "scale-95 opacity-30": !isHighlighted,
+              },
+            )}
             onClick={() =>
               isHighlighted && setSelectedArchive(archive.id || null)
             }
           >
-            <div className="flex w-full flex-col items-center justify-between gap-4 lg:flex-row">
-              <Text className="w-60 text-center lg:text-left">
-                {archive.heading}
-              </Text>
-
-              <div
-                className={`w-full transition-all duration-300 ease-in-out lg:w-[34rem] ${
-                  !isHighlighted ? "lg:w-96" : ""
-                }`}
-              >
-                <Link href={`/archive/${archive.id}`}>
-                  <ImageComponent
-                    src={archive.media?.[0].media?.fullSize?.mediaUrl || ""}
-                    alt={archive.heading + " " + index}
-                    aspectRatio={calculateAspectRatio(
-                      archive.media?.[0].media?.fullSize?.width,
-                      archive.media?.[0].media?.fullSize?.height,
-                    )}
-                  />
-                </Link>
-              </div>
-
-              <Text className="w-60 text-center lg:text-right">
-                {archive.tag}
-              </Text>
-            </div>
+            <FullSizeItem
+              archive={archive}
+              className={cn(
+                "w-full transition-all duration-300 ease-in-out lg:w-[34rem]",
+                {
+                  "lg:w-96": !isHighlighted,
+                },
+              )}
+            />
           </div>
         );
       })}
