@@ -57,7 +57,7 @@ export function SelectTrigger({
 }) {
   return (
     <Select.Trigger
-      className="inline-flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor px-4 text-lg text-textColor data-[placeholder]:text-textColor"
+      className="inline-flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor px-4 text-textBaseSize focus:outline-none focus:ring-0 data-[placeholder]:border-textInactiveColor data-[placeholder]:text-textColor"
       aria-label={placeholder}
     >
       <Select.Value placeholder={placeholder} />
@@ -69,9 +69,8 @@ export function SelectTrigger({
 export function SelectContent({ children }: { children: React.ReactNode }) {
   return (
     <Select.Portal>
-      {/* todo: fix width to be 100% of the container, same as trigger */}
       <Select.Content
-        className="w-[500px] overflow-hidden bg-white shadow-md" // todo: fix bg-white to be bg-bgColor
+        className="w-full overflow-hidden bg-bgColor shadow-md"
         position="popper"
       >
         <Select.ScrollUpButton className="flex h-6 cursor-default items-center justify-center bg-bgColor text-textColor">
