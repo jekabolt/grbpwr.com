@@ -6,6 +6,7 @@ import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
 
+import AddressAutocomplete from "./address-autocomplete";
 import { countries } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 import { CONTACT_GROUP_FIELDS } from "./hooks/constants";
@@ -90,6 +91,13 @@ export function AddressFields({
           />
         </div>
       </div>
+
+      <AddressAutocomplete
+        loading={loading}
+        disabled={disabled}
+        prefix={prefix}
+      />
+
       <SelectField
         loading={loading}
         name={prefix ? `${prefix}.country` : "country"}
@@ -120,13 +128,7 @@ export function AddressFields({
         placeholder="London"
         disabled={disabled}
       />
-      <InputField
-        loading={loading}
-        name={prefix ? `${prefix}.address` : "address"}
-        label="street and house number:"
-        placeholder="sjyrniesu 10"
-        disabled={disabled}
-      />
+
       <InputField
         loading={loading}
         name={prefix ? `${prefix}.additionalAddress` : "additionalAddress"}
