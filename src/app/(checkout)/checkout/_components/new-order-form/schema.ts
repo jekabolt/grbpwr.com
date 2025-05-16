@@ -9,6 +9,7 @@ const addressFields = {
   address: z.string().min(10),
   additionalAddress: z.string().optional(),
   company: z.string().optional(),
+  phone: z.string().min(5),
   postalCode: z.string().min(2),
 };
 
@@ -21,7 +22,6 @@ const addressFields = {
 
 const baseCheckoutSchema = z.object({
   email: z.string().email(),
-  phone: z.string().min(5),
   subscribe: z.boolean().optional(),
   termsOfService: z.boolean().refine(Boolean, {
     message: "You must accept the terms & conditions",

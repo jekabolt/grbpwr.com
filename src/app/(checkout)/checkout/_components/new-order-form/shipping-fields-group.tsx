@@ -6,6 +6,7 @@ import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
 
+import AddressAutocomplete from "./address-autocomplete";
 import { countries } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 import { CONTACT_GROUP_FIELDS } from "./hooks/constants";
@@ -77,7 +78,6 @@ export function AddressFields({
             variant="secondary"
             name={prefix ? `${prefix}.firstName` : "firstName"}
             label="first name:"
-            placeholder="James"
             disabled={disabled}
           />
         </div>
@@ -87,11 +87,17 @@ export function AddressFields({
             variant="secondary"
             name={prefix ? `${prefix}.lastName` : "lastName"}
             label="last name:"
-            placeholder="Bond"
             disabled={disabled}
           />
         </div>
       </div>
+
+      <AddressAutocomplete
+        loading={loading}
+        disabled={disabled}
+        prefix={prefix}
+      />
+
       <SelectField
         loading={loading}
         variant="secondary"
@@ -121,23 +127,14 @@ export function AddressFields({
         variant="secondary"
         name={prefix ? `${prefix}.city` : "city"}
         label="city:"
-        placeholder="London"
         disabled={disabled}
       />
-      <InputField
-        loading={loading}
-        variant="secondary"
-        name={prefix ? `${prefix}.address` : "address"}
-        label="street and house number:"
-        placeholder="sjyrniesu 10"
-        disabled={disabled}
-      />
+
       <InputField
         loading={loading}
         variant="secondary"
         name={prefix ? `${prefix}.additionalAddress` : "additionalAddress"}
         label="additional address:"
-        placeholder=""
         disabled={disabled}
       />
       <InputField
@@ -145,15 +142,40 @@ export function AddressFields({
         variant="secondary"
         name={prefix ? `${prefix}.company` : "company"}
         label="company:"
-        placeholder="Channel"
         disabled={disabled}
       />
+      <div className="flex gap-2">
+        <div className="w-10">
+          <SelectField
+            loading={loading}
+            variant="secondary"
+            name={prefix ? `${prefix}.phoneCode` : "phoneCode"}
+            label=""
+            items={[
+              { label: `+375`, value: "+375" },
+              { label: `+376`, value: "+376" },
+              { label: `+377`, value: "+377" },
+            ]}
+            disabled={disabled}
+          />
+        </div>
+
+        <div className="flex-1">
+          <InputField
+            loading={loading}
+            variant="secondary"
+            type="number"
+            name={prefix ? `${prefix}.phone` : "phone"}
+            label="phone number:"
+            disabled={disabled}
+          />
+        </div>
+      </div>
       <InputField
         loading={loading}
         variant="secondary"
         name={prefix ? `${prefix}.postalCode` : "postalCode"}
         label="postal code:"
-        placeholder="37892"
         disabled={disabled}
       />
     </>

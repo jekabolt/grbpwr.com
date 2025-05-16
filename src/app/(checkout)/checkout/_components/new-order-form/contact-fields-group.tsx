@@ -25,24 +25,15 @@ export default function ContactFieldsGroup({
         name="email"
         label="email address:"
         type="email"
-        placeholder="james.bond@example.com"
-      />
-      <InputField
-        loading={loading}
-        variant="secondary"
-        type="number"
-        name="phone"
-        label="phone number:"
-        placeholder="James Bond"
       />
       <div className="space-y-2">
         <CheckboxField
           name="subscribe"
-          label="email me with news and offers to our newsletter"
+          label="i read privacy policy information and i accept to register to your newsletter"
         />
         <CheckboxField
           name="termsOfService"
-          label="i accept the privacy policy and terms & conditions"
+          label="by proceeding with purchase you are agreeing to accept terms and conditions and privacy information notice"
         />
       </div>
     </FieldsGroupContainer>
