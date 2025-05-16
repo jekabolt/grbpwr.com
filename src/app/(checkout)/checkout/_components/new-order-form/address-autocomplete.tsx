@@ -120,7 +120,7 @@ export default function AddressAutocomplete({
           loading={loading}
           name={prefix ? `${prefix}.address` : "address"}
           label="street and house number:"
-          placeholder="sjyrniesu 10"
+          placeholder=" "
           disabled={disabled}
         />
       </Autocomplete>
