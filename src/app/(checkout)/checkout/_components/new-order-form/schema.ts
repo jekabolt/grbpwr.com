@@ -1,16 +1,17 @@
 import { z } from "zod";
+import { errorMessages } from "./error-messages";
 
 const addressFields = {
-  firstName: z.string().min(2),
-  lastName: z.string().min(2),
-  country: z.string().min(2),
+  firstName: z.string().min(2, errorMessages.firstName.min),
+  lastName: z.string().min(2, errorMessages.lastName.min),
+  country: z.string().min(2, errorMessages.country.min),
   state: z.string().optional(),
-  city: z.string().min(2),
-  address: z.string().min(10),
-  additionalAddress: z.string().optional(),
+  city: z.string().min(2, errorMessages.city.min),
+  address: z.string().min(10, errorMessages.address.min),
+  additionalAddress: z.string().min(10, errorMessages.address.min).optional(),
   company: z.string().optional(),
-  phone: z.string().min(5),
-  postalCode: z.string().min(2),
+  phone: z.string().min(5, errorMessages.phone.min),
+  postalCode: z.string().min(2, errorMessages.postalCode.min),
 };
 
 // const creditCardFields = {
@@ -21,10 +22,10 @@ const addressFields = {
 // };
 
 const baseCheckoutSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email(errorMessages.email.invalid),
   subscribe: z.boolean().optional(),
   termsOfService: z.boolean().refine(Boolean, {
-    message: "You must accept the terms & conditions",
+    message: "you must accept the terms & conditions",
   }),
   ...addressFields,
   shipmentCarrierId: z.string().min(1),
