@@ -6,15 +6,19 @@ import { cn } from "@/lib/utils";
 export default function SelectComponent({
   name,
   items,
+  className,
   ...props
 }: {
   name: string;
   items: { value: string; label: string }[];
+  className?: string;
   [k: string]: any;
 }) {
   return (
     <Select.Root {...props}>
-      <SelectTrigger placeholder={props.placeholder}>arrow down</SelectTrigger>
+      <SelectTrigger placeholder={props.placeholder} className={className}>
+        {">"}
+      </SelectTrigger>
       <SelectContent>
         {items.map((item) => (
           <SelectItem key={item.value} value={item.value}>
@@ -51,13 +55,18 @@ SelectItem.displayName = Select.Item.displayName;
 export function SelectTrigger({
   children,
   placeholder,
+  className,
 }: {
   children: React.ReactNode;
   placeholder: string;
+  className?: string;
 }) {
   return (
     <Select.Trigger
-      className="inline-flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor px-4 text-textBaseSize focus:outline-none focus:ring-0 data-[placeholder]:border-textInactiveColor data-[placeholder]:text-textColor"
+      className={cn(
+        "inline-flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor px-4 text-textBaseSize focus:outline-none focus:ring-0 data-[placeholder]:border-textInactiveColor data-[placeholder]:text-textColor",
+        className,
+      )}
       aria-label={placeholder}
     >
       <Select.Value placeholder={placeholder} />
