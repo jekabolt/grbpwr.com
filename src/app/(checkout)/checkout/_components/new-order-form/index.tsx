@@ -187,7 +187,12 @@ export default function NewOrderForm() {
               />
               <PriceSummary form={form} order={order} />
             </div>
-            <Button variant={"main"} size={"lg"} className="w-full">
+            <Button
+              variant={"main"}
+              size={"lg"}
+              className="w-full"
+              disabled={!form.formState.isValid || loading}
+            >
               pay
             </Button>
           </div>
