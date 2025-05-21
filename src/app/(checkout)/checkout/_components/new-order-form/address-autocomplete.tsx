@@ -6,6 +6,8 @@ import { useFormContext } from "react-hook-form";
 
 import InputField from "@/components/ui/form/fields/input-field";
 
+// change api key to process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!
+
 type AddressComponents = {
   streetNumber: string;
   route: string;
