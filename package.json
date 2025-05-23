@@ -11,7 +11,6 @@
     "gen": "cd proto && git pull origin main && cd .. && make proto"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "^1.16.8",
     "@hookform/resolvers": "^3.6.0",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-checkbox": "^1.1.2",
@@ -32,7 +31,6 @@
     "babel-plugin-react-compiler": "19.0.0-beta-40c6c23-20250301",
     "class-variance-authority": "^0.7.0",
     "clsx": "2.1.0",
-    "country-state-city": "^3.2.1",
     "embla-carousel-react": "^8.5.1",
     "embla-carousel-wheel-gestures": "^8.0.1",
     "next": "15.0.1",

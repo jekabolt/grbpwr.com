@@ -1,7 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
+
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
+import { PhoneField } from "@/components/ui/form/fields/phone-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
@@ -69,6 +73,36 @@ export function AddressFields({
   prefix?: string;
   disabled?: boolean;
 }) {
+  const { watch, setValue } = useFormContext();
+  const countryFieldName = prefix ? `${prefix}.country` : "country";
+  const phoneFieldName = prefix ? `${prefix}.phone` : "phone";
+
+  const selectedCountry = watch(countryFieldName);
+
+  const phoneCodeMap = countries.reduce(
+    (acc, c) => {
+      if (!acc[c.phoneCode]) acc[c.phoneCode] = [];
+      acc[c.phoneCode].push(c.label);
+      return acc;
+    },
+    {} as Record<string, string[]>,
+  );
+
+  useEffect(() => {
+    if (!selectedCountry) return;
+    const found = countries.find((c) => c.value === selectedCountry);
+    if (found) {
+      setValue(phoneFieldName, found.phoneCode);
+    }
+  }, [selectedCountry, setValue, phoneFieldName]);
+
+  const phoneCodeItems = Object.entries(phoneCodeMap).map(
+    ([code, country]) => ({
+      label: `+${code} - ${country}`,
+      value: code,
+    }),
+  );
+
   return (
     <>
       <div className="grid grid-cols-2 gap-6">
@@ -101,7 +135,7 @@ export function AddressFields({
       <SelectField
         loading={loading}
         variant="secondary"
-        name={prefix ? `${prefix}.country` : "country"}
+        name={countryFieldName}
         label="country/region:"
         items={countries}
         disabled={disabled}
@@ -144,33 +178,15 @@ export function AddressFields({
         label="company:"
         disabled={disabled}
       />
-      <div className="flex gap-2">
-        <div className="w-10">
-          <SelectField
-            loading={loading}
-            variant="secondary"
-            name={prefix ? `${prefix}.phoneCode` : "phoneCode"}
-            label=""
-            items={[
-              { label: `+375`, value: "+375" },
-              { label: `+376`, value: "+376" },
-              { label: `+377`, value: "+377" },
-            ]}
-            disabled={disabled}
-          />
-        </div>
 
-        <div className="flex-1">
-          <InputField
-            loading={loading}
-            variant="secondary"
-            type="number"
-            name={prefix ? `${prefix}.phone` : "phone"}
-            label="phone number:"
-            disabled={disabled}
-          />
-        </div>
-      </div>
+      <PhoneField
+        loading={loading}
+        variant="secondary"
+        name={phoneFieldName}
+        label="phone number:"
+        disabled={disabled}
+        items={phoneCodeItems}
+      />
       <InputField
         loading={loading}
         variant="secondary"
