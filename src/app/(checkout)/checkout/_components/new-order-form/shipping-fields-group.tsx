@@ -96,10 +96,12 @@ export function AddressFields({
     }
   }, [selectedCountry, setValue, phoneFieldName]);
 
-  const phoneCodeItems = Object.entries(phoneCodeMap).map(([code]) => ({
-    label: `+${code}`,
-    value: code,
-  }));
+  const phoneCodeItems = Object.entries(phoneCodeMap).map(
+    ([code, country]) => ({
+      label: `+${code} - ${country}`,
+      value: code,
+    }),
+  );
 
   return (
     <>

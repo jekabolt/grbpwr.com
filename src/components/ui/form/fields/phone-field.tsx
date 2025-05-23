@@ -63,6 +63,9 @@ export function PhoneField({ name, label, items, ...props }: Props) {
                   disabled={props.disabled}
                   variant="secondary"
                   className="w-20"
+                  renderValue={(selectedValue) =>
+                    selectedValue ? `+${selectedValue}` : ""
+                  }
                 />
                 <Input
                   name={name + "_number"}

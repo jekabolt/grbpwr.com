@@ -7,16 +7,27 @@ export default function SelectComponent({
   name,
   items,
   className,
+  renderValue,
   ...props
 }: {
   name: string;
   items: { value: string; label: string }[];
   className?: string;
+  renderValue?: (
+    selectedValue: string,
+    selectedItem: { label: string; value: string } | undefined,
+  ) => React.ReactNode;
   [k: string]: any;
 }) {
   return (
     <Select.Root {...props}>
-      <SelectTrigger placeholder={props.placeholder} className={className}>
+      <SelectTrigger
+        placeholder={props.placeholder}
+        className={className}
+        renderValue={renderValue}
+        value={props.value}
+        items={items}
+      >
         {">"}
       </SelectTrigger>
       <SelectContent>
@@ -56,11 +67,26 @@ export function SelectTrigger({
   children,
   placeholder,
   className,
+  renderValue,
+  value,
+  items,
 }: {
   children: React.ReactNode;
   placeholder: string;
   className?: string;
+  renderValue?: (
+    selectedValue: string,
+    selectedItem: { label: string; value: string } | undefined,
+  ) => React.ReactNode;
+  value?: string;
+  items?: { label: string; value: string }[];
 }) {
+  let displayValue = null;
+  if (renderValue && value && items) {
+    const selectedItem = items.find((item) => item.value === value);
+    displayValue = renderValue(value, selectedItem);
+  }
+
   return (
     <Select.Trigger
       className={cn(
@@ -69,7 +95,7 @@ export function SelectTrigger({
       )}
       aria-label={placeholder}
     >
-      <Select.Value placeholder={placeholder} />
+      {displayValue ?? <Select.Value placeholder={placeholder} />}
       <Select.Icon className="text-textColor">{children}</Select.Icon>
     </Select.Trigger>
   );
