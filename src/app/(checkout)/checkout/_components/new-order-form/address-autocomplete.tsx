@@ -24,7 +24,7 @@ function extractAddressComponents(addressComponents: any[]): AddressComponents {
       else if (types.includes("route")) acc.route = component.long_name;
       else if (types.includes("locality")) acc.city = component.long_name;
       else if (types.includes("administrative_area_level_1"))
-        acc.state = component.long_name;
+        acc.state = component.short_name;
       else if (types.includes("country")) acc.country = component.short_name;
       else if (types.includes("postal_code"))
         acc.postalCode = component.long_name;
@@ -109,6 +109,7 @@ export default function AddressAutocomplete({
           if (!autocomplete) return;
 
           const place = autocomplete.getPlace();
+          console.log("Google Place object:", place);
           const components = extractAddressComponents(
             place.address_components || [],
           );
