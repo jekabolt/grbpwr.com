@@ -109,7 +109,6 @@ export default function AddressAutocomplete({
           if (!autocomplete) return;
 
           const place = autocomplete.getPlace();
-          console.log("Google Place object:", place);
           const components = extractAddressComponents(
             place.address_components || [],
           );
