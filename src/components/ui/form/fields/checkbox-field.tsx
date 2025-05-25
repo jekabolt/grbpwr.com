@@ -39,7 +39,7 @@ export default function CheckboxField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <div className="flex items-center gap-x-2">
+          <div className="flex items-start gap-x-4">
             <FormControl>
               <Checkbox
                 {...field}

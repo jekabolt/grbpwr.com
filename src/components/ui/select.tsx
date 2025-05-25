@@ -2,6 +2,7 @@ import React from "react";
 import * as Select from "@radix-ui/react-select";
 
 import { cn } from "@/lib/utils";
+import { Text } from "@/components/ui/text";
 
 export default function SelectComponent({
   name,
@@ -46,17 +47,15 @@ export function SelectItem({ children, className, ref, ...props }: any) {
   return (
     <Select.Item
       className={cn(
-        "relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[35px] text-[13px] leading-none text-textColor data-[disabled]:pointer-events-none data-[highlighted]:bg-textColor data-[highlighted]:text-textColor data-[disabled]:opacity-30 data-[highlighted]:outline-none",
+        "relative flex h-6 select-none items-center px-2.5 leading-none data-[disabled]:pointer-events-none data-[highlighted]:bg-[rgba(0,0,0,0.08)] data-[highlighted]:text-textColor data-[disabled]:opacity-30 data-[highlighted]:outline-none",
         className,
       )}
       {...props}
       ref={ref}
     >
-      <Select.ItemText>{children}</Select.ItemText>
-      <Select.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
-        {/* <CheckIcon /> */}
-        check icon
-      </Select.ItemIndicator>
+      <Select.ItemText>
+        <Text variant="uppercase">{children}</Text>
+      </Select.ItemText>
     </Select.Item>
   );
 }
@@ -90,7 +89,7 @@ export function SelectTrigger({
   return (
     <Select.Trigger
       className={cn(
-        "inline-flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor px-4 text-textBaseSize focus:outline-none focus:ring-0 data-[placeholder]:border-textInactiveColor data-[placeholder]:text-textColor",
+        "inline-flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor text-textBaseSize focus:outline-none focus:ring-0 data-[placeholder]:border-textInactiveColor data-[placeholder]:text-textColor",
         className,
       )}
       aria-label={placeholder}
@@ -108,15 +107,9 @@ export function SelectContent({ children }: { children: React.ReactNode }) {
         className="w-full overflow-hidden bg-bgColor shadow-md"
         position="popper"
       >
-        <Select.ScrollUpButton className="flex h-6 cursor-default items-center justify-center bg-bgColor text-textColor">
-          arrow up
-        </Select.ScrollUpButton>
-        <Select.Viewport className="max-h-[300px] bg-bgColor p-[5px]">
+        <Select.Viewport className="max-h-[300px] bg-bgColor">
           {children}
         </Select.Viewport>
-        <Select.ScrollDownButton className="flex h-6 cursor-default items-center justify-center bg-bgColor text-textColor">
-          arrow down
-        </Select.ScrollDownButton>
       </Select.Content>
     </Select.Portal>
   );

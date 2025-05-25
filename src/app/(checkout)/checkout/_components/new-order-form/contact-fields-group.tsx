@@ -26,14 +26,14 @@ export default function ContactFieldsGroup({
         label="email address:"
         type="email"
       />
-      <div className="space-y-2">
+      <div className="space-y-4">
         <CheckboxField
           name="subscribe"
-          label="i read privacy policy information and i accept to register to your newsletter"
+          label="I ACCEPT TO REGISTER TO NEWSLETTER"
         />
         <CheckboxField
           name="termsOfService"
-          label="by proceeding with purchase you are agreeing to accept terms and conditions and privacy information notice"
+          label="*BY PROCEEDING WITH PURCHASE YOU IM AGREEING TO ACCEPT TERMS AND CONDITIONS AND PRIVACY INFORMATION NOTICE"
         />
       </div>
     </FieldsGroupContainer>
