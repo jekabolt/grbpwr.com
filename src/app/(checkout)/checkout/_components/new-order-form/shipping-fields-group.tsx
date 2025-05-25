@@ -1,8 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import { useFormContext } from "react-hook-form";
-
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
 import { PhoneField } from "@/components/ui/form/fields/phone-field";
@@ -14,6 +11,7 @@ import AddressAutocomplete from "./address-autocomplete";
 import { countries } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 import { CONTACT_GROUP_FIELDS } from "./hooks/constants";
+import { useAddressFields } from "./hooks/useAddressFields";
 import { useDisabledGroup } from "./hooks/useFormDisabledGroup";
 
 type Props = {
@@ -73,35 +71,7 @@ export function AddressFields({
   prefix?: string;
   disabled?: boolean;
 }) {
-  const { watch, setValue } = useFormContext();
-  const countryFieldName = prefix ? `${prefix}.country` : "country";
-  const phoneFieldName = prefix ? `${prefix}.phone` : "phone";
-
-  const selectedCountry = watch(countryFieldName);
-
-  const phoneCodeMap = countries.reduce(
-    (acc, c) => {
-      if (!acc[c.phoneCode]) acc[c.phoneCode] = [];
-      acc[c.phoneCode].push(c.label);
-      return acc;
-    },
-    {} as Record<string, string[]>,
-  );
-
-  useEffect(() => {
-    if (!selectedCountry) return;
-    const found = countries.find((c) => c.value === selectedCountry);
-    if (found) {
-      setValue(phoneFieldName, found.phoneCode);
-    }
-  }, [selectedCountry, setValue, phoneFieldName]);
-
-  const phoneCodeItems = Object.entries(phoneCodeMap).map(
-    ([code, country]) => ({
-      label: `+${code} - ${country}`,
-      value: code,
-    }),
-  );
+  const { phoneCodeItems, stateItems } = useAddressFields(prefix);
 
   return (
     <>
@@ -135,26 +105,20 @@ export function AddressFields({
       <SelectField
         loading={loading}
         variant="secondary"
-        name={countryFieldName}
+        name={prefix ? `${prefix}.country` : "country"}
         label="country/region:"
         items={countries}
         disabled={disabled}
       />
-
-      <SelectField
-        loading={loading}
-        name={prefix ? `${prefix}.state` : "state"}
-        label="state:"
-        items={[
-          { label: "Sweden", value: "sweden" },
-          { label: "Norway", value: "norway" },
-          { label: "Denmark", value: "denmark" },
-          { label: "Finland", value: "finland" },
-          { label: "Iceland", value: "iceland" },
-          { label: "Ireland", value: "ireland" },
-        ]}
-        disabled={disabled}
-      />
+      {stateItems.length > 0 && (
+        <SelectField
+          loading={loading}
+          name={prefix ? `${prefix}.state` : "state"}
+          label="state:"
+          items={stateItems}
+          disabled={disabled}
+        />
+      )}
 
       <InputField
         loading={loading}
@@ -182,7 +146,7 @@ export function AddressFields({
       <PhoneField
         loading={loading}
         variant="secondary"
-        name={phoneFieldName}
+        name={prefix ? `${prefix}.phone` : "phone"}
         label="phone number:"
         disabled={disabled}
         items={phoneCodeItems}
