@@ -8,8 +8,20 @@ const addressFields = {
   state: z.string().optional(),
   city: z.string().min(2, errorMessages.city.min).regex(errorMessages.city.regex.restriction, errorMessages.city.regex.message).trim(),
   address: z.string().min(10, errorMessages.address.min).max(40, errorMessages.address.max).regex(errorMessages.address.regex.restriction, errorMessages.address.regex.message).trim(),
-  additionalAddress: z.string().min(10, errorMessages.address.min).max(40, errorMessages.address.max).regex(errorMessages.address.regex.restriction, errorMessages.address.regex.message).trim().optional(),
-  company: z.string().min(1, errorMessages.company.min).max(40, errorMessages.company.max).regex(errorMessages.company.regex.restriction, errorMessages.company.regex.message).trim().optional(),
+  additionalAddress: z.union([
+    z.string()
+      .min(10, errorMessages.address.min)
+      .max(40, errorMessages.address.max)
+      .regex(errorMessages.address.regex.restriction, errorMessages.address.regex.message),
+    z.literal(''),
+  ]).optional(),
+  company: z.union([
+    z.string()
+      .min(1, errorMessages.company.min)
+      .max(40, errorMessages.company.max)
+      .regex(errorMessages.company.regex.restriction, errorMessages.company.regex.message),
+    z.literal(''),
+  ]).optional(),
   phone: z.string().min(5, errorMessages.phone.min).max(15, errorMessages.phone.max).trim(),
   postalCode: z.string().min(2, errorMessages.postalCode.min).max(12, errorMessages.postalCode.max).regex(errorMessages.postalCode.regex.restriction, errorMessages.postalCode.regex.message).trim(),
 };
