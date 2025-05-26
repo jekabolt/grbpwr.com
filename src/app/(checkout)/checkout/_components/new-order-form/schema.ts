@@ -2,16 +2,16 @@ import { z } from "zod";
 import { errorMessages } from "./error-messages";
 
 const addressFields = {
-  firstName: z.string().min(2, errorMessages.firstName.min),
-  lastName: z.string().min(2, errorMessages.lastName.min),
+  firstName: z.string().min(1, errorMessages.firstName.min).max(40, errorMessages.firstName.max).regex(errorMessages.firstName.regex.restriction, errorMessages.firstName.regex.message),
+  lastName: z.string().min(1, errorMessages.lastName.min).max(40, errorMessages.lastName.max).regex(errorMessages.lastName.regex.restriction, errorMessages.lastName.regex.message),
   country: z.string().min(2, errorMessages.country.min),
   state: z.string().optional(),
-  city: z.string().min(2, errorMessages.city.min),
-  address: z.string().min(10, errorMessages.address.min),
-  additionalAddress: z.string().min(10, errorMessages.address.min).optional(),
-  company: z.string().optional(),
-  phone: z.string().min(5, errorMessages.phone.min),
-  postalCode: z.string().min(2, errorMessages.postalCode.min),
+  city: z.string().min(2, errorMessages.city.min).regex(errorMessages.city.regex.restriction, errorMessages.city.regex.message),
+  address: z.string().min(10, errorMessages.address.min).max(40, errorMessages.address.max).regex(errorMessages.address.regex.restriction, errorMessages.address.regex.message),
+  additionalAddress: z.string().min(10, errorMessages.address.min).max(40, errorMessages.address.max).regex(errorMessages.address.regex.restriction, errorMessages.address.regex.message).optional(),
+  company: z.string().min(1, errorMessages.company.min).max(40, errorMessages.company.max).optional(),
+  phone: z.string().min(5, errorMessages.phone.min).max(15, errorMessages.phone.max),
+  postalCode: z.string().min(2, errorMessages.postalCode.min).max(12, errorMessages.postalCode.max).regex(errorMessages.postalCode.regex.restriction, errorMessages.postalCode.regex.message),
 };
 
 // const creditCardFields = {
@@ -22,7 +22,7 @@ const addressFields = {
 // };
 
 const baseCheckoutSchema = z.object({
-  email: z.string().email(errorMessages.email.invalid),
+  email: z.string().max(40, errorMessages.email.max).email(errorMessages.email.invalid),
   subscribe: z.boolean().optional(),
   termsOfService: z.boolean().refine(Boolean, {
     message: "you must accept the terms & conditions",
