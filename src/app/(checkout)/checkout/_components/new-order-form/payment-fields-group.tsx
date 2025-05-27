@@ -32,14 +32,22 @@ export default function PaymentFieldsGroup({
   });
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
+  const paymentMethod = watch("paymentMethod");
 
-  const paymentMethodsItems = dictionary?.paymentMethods
-    ?.filter((v) => v.allowed)
-    .map((v) => ({
-      label:
-        paymentMethodNamesMap[v.name as keyof typeof paymentMethodNamesMap],
-      value: v.name,
-    }));
+  const allowedMethods =
+    dictionary?.paymentMethods?.filter((v) => v.allowed) || [];
+
+  const selectedMethod = allowedMethods.find((v) => v.name === paymentMethod);
+  const selectedPaymentMethod = selectedMethod
+    ? paymentMethodNamesMap[
+        selectedMethod.name as keyof typeof paymentMethodNamesMap
+      ]
+    : undefined;
+
+  const paymentMethodsItems = allowedMethods.map((v) => ({
+    label: paymentMethodNamesMap[v.name as keyof typeof paymentMethodNamesMap],
+    value: v.name,
+  }));
 
   return (
     <FieldsGroupContainer
@@ -48,6 +56,7 @@ export default function PaymentFieldsGroup({
       disabled={isGroupDisabled}
       isOpen={isOpen}
       onToggle={onToggle}
+      summary={selectedPaymentMethod && <Text>{selectedPaymentMethod}</Text>}
     >
       <RadioGroupField
         loading={loading}
