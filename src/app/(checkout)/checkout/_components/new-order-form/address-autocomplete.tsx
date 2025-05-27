@@ -6,6 +6,8 @@ import { useFormContext } from "react-hook-form";
 
 import InputField from "@/components/ui/form/fields/input-field";
 
+import { countryStatesMap } from "./constants";
+
 type AddressComponents = {
   streetNumber: string;
   route: string;
@@ -53,7 +55,6 @@ function updateFormValues(
   const fields = {
     address,
     city: components.city,
-    state: components.state,
     country: components.country,
     postalCode: components.postalCode,
   };
@@ -62,6 +63,15 @@ function updateFormValues(
     const fieldName = prefix ? `${prefix}.${key}` : key;
     setValue(fieldName, value);
   });
+
+  const stateFieldName = prefix ? `${prefix}.state` : "state";
+  const hasStates =
+    components.country && components.country in countryStatesMap;
+  if (hasStates) {
+    setValue(stateFieldName, components.state);
+  } else {
+    setValue(stateFieldName, "");
+  }
 }
 
 type Props = {

@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { countries, countryStatesMap } from "../constants";
 
 export function useAddressFields(prefix?: string) {
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, getValues } = useFormContext();
   const countryFieldName = prefix ? `${prefix}.country` : "country";
   const phoneFieldName = prefix ? `${prefix}.phone` : "phone";
 
@@ -34,9 +34,12 @@ export function useAddressFields(prefix?: string) {
     if (!selectedCountry) return;
     const found = countries.find((c) => c.value === selectedCountry);
     if (found) {
-      setValue(phoneFieldName, found.phoneCode);
+      const currentPhone = getValues(phoneFieldName) || "";
+      if (!currentPhone || !/^\d/.test(currentPhone)) {
+        setValue(phoneFieldName, found.phoneCode);
+      }
     }
-  }, [selectedCountry, setValue, phoneFieldName]);
+  }, [selectedCountry, setValue, phoneFieldName, getValues]);
 
   return {
     phoneCodeItems,

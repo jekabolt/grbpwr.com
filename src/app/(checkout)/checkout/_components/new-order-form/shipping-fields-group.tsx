@@ -1,5 +1,8 @@
 "use client";
 
+import { common_Dictionary } from "@/api/proto-http/frontend";
+import { useFormContext } from "react-hook-form";
+
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
 import { PhoneField } from "@/components/ui/form/fields/phone-field";
@@ -39,6 +42,7 @@ export default function ShippingFieldsGroup({
       disabled={isGroupDisabled}
       isOpen={isOpen}
       onToggle={onToggle}
+      summary={<Summary dictionary={dictionary} />}
     >
       <AddressFields loading={loading} disabled={isGroupDisabled} />
       <div>
@@ -159,5 +163,60 @@ export function AddressFields({
         disabled={disabled}
       />
     </>
+  );
+}
+
+function Summary({ dictionary }: { dictionary?: common_Dictionary }) {
+  const { watch } = useFormContext();
+  const {
+    firstName,
+    lastName,
+    company,
+    address,
+    additionalAddress,
+    city,
+    state,
+    country,
+    postalCode,
+    phone,
+    shipmentCarrierId,
+  } = watch();
+
+  const name = [firstName, lastName].filter(Boolean).join(" ");
+  const phoneOrCompany = [phone && `+${phone}`, company]
+    .filter(Boolean)
+    .join(" ");
+  const addressLine = [address, additionalAddress].filter(Boolean).join(" ");
+  const countryInfo = [
+    city,
+    state,
+    countries.find((c) => c.value === country)?.label,
+    postalCode,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const shipmentCarrier = dictionary?.shipmentCarriers?.find(
+    (c) => c.id?.toString() === shipmentCarrierId,
+  )?.shipmentCarrier?.carrier;
+
+  if (
+    !name &&
+    !phoneOrCompany &&
+    !addressLine &&
+    !shipmentCarrier &&
+    !countryInfo
+  )
+    return null;
+
+  return (
+    <div>
+      {name && <Text>{name}</Text>}
+      {phoneOrCompany && <Text>{phoneOrCompany}</Text>}
+      {addressLine && <Text>{addressLine}</Text>}
+      {countryInfo && <Text>{countryInfo}</Text>}
+      {shipmentCarrier && (
+        <Text variant="uppercase">shipping: {shipmentCarrier}</Text>
+      )}
+    </div>
   );
 }

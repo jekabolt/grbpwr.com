@@ -20,6 +20,10 @@ export function PhoneField({ name, label, items, ...props }: Props) {
   function splitValue(value: string) {
     if (!value) return { code: "", number: "" };
 
+    if (items.length === 0) {
+      return { code: "", number: value };
+    }
+
     const found = items.find((item) => value.startsWith(item.value));
     if (found) {
       return {
@@ -27,7 +31,7 @@ export function PhoneField({ name, label, items, ...props }: Props) {
         number: value.slice(found.value.length),
       };
     }
-    return { code: "", number: "" };
+    return { code: "", number: value };
   }
 
   function onBlur() {
@@ -46,8 +50,8 @@ export function PhoneField({ name, label, items, ...props }: Props) {
         };
 
         const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          const digitsOnlly = e.target.value.replace(/\D/g, "");
-          field.onChange(code + digitsOnlly);
+          const digitsOnly = e.target.value.replace(/\D/g, "");
+          field.onChange(code + digitsOnly);
         };
 
         return (

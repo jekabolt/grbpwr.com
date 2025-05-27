@@ -9,12 +9,14 @@ export default function FieldsGroupContainer({
   stage,
   title,
   children,
+  summary,
   isOpen = false,
   disabled = false,
   onToggle,
 }: {
   stage: string;
   title: string;
+  summary?: React.ReactNode;
   children: React.ReactNode;
   isOpen?: boolean;
   disabled?: boolean;
@@ -54,7 +56,10 @@ export default function FieldsGroupContainer({
           {">"}
         </div>
       </div>
-      {localIsOpen && <div className="space-y-8">{children}</div>}
+      <div className={cn("space-y-8", { hidden: !localIsOpen })}>
+        {children}
+      </div>
+      {!localIsOpen && <div className="space-y-8">{summary}</div>}
     </div>
   );
 }
