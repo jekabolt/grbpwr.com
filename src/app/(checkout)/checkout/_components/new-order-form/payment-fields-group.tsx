@@ -9,27 +9,23 @@ import { Text } from "@/components/ui/text";
 
 import { paymentMethodNamesMap } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
-import { PAYMENT_GROUP_FIELDS } from "./hooks/constants";
-import { useDisabledGroup } from "./hooks/useFormDisabledGroup";
 import { AddressFields } from "./shipping-fields-group";
 
 type Props = {
   loading: boolean;
   isOpen: boolean;
   onToggle: () => void;
+  disabled?: boolean;
 };
 
 export default function PaymentFieldsGroup({
   loading,
   isOpen,
   onToggle,
+  disabled = false,
 }: Props) {
   const { dictionary } = useDataContext();
   const { watch } = useFormContext();
-
-  const { isGroupDisabled } = useDisabledGroup({
-    fields: PAYMENT_GROUP_FIELDS,
-  });
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
@@ -53,8 +49,8 @@ export default function PaymentFieldsGroup({
     <FieldsGroupContainer
       stage="3/3"
       title="payment method"
-      disabled={isGroupDisabled}
       isOpen={isOpen}
+      disabled={disabled}
       onToggle={onToggle}
       summary={selectedPaymentMethod && <Text>{selectedPaymentMethod}</Text>}
     >
@@ -62,6 +58,7 @@ export default function PaymentFieldsGroup({
         loading={loading}
         name="paymentMethod"
         items={paymentMethodsItems as any}
+        disabled={disabled}
       />
 
       {/* оплата картой делается на отдельной странице */}
@@ -117,12 +114,16 @@ export default function PaymentFieldsGroup({
         <CheckboxField
           name="billingAddressIsSameAsAddress"
           label="same as shipping address"
-          disabled={isGroupDisabled}
+          disabled={disabled}
         />
       </div>
 
       {!billingAddressIsSameAsAddress && (
-        <AddressFields prefix="billingAddress" loading={loading} />
+        <AddressFields
+          prefix="billingAddress"
+          loading={loading}
+          disabled={disabled}
+        />
       )}
     </FieldsGroupContainer>
   );

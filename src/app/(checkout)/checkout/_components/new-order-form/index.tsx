@@ -93,10 +93,6 @@ export default function NewOrderForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const [openFieldsGroup, setOpenFieldsGroup] = useState<GroupName | null>(
-    "contact",
-  );
-
   const defaultValues = {
     ...defaultData,
     // promoCustomConditions: {
@@ -111,7 +107,8 @@ export default function NewOrderForm() {
   });
 
   const { order, validateItems } = useValidatedOrder(form);
-  const { openGroups, handleGroupToggle } = useAutoGroupOpen(form);
+  const { openGroups, handleGroupToggle, isGroupDisabled } =
+    useAutoGroupOpen(form);
 
   const onSubmit = async (data: CheckoutData) => {
     const response = await validateItems();
@@ -160,17 +157,20 @@ export default function NewOrderForm() {
               loading={loading}
               isOpen={openGroups === "contact"}
               onToggle={() => handleGroupToggle("contact")}
+              disabled={isGroupDisabled("contact")}
             />
             <ShippingFieldsGroup
               loading={loading}
               validateItems={validateItems}
               isOpen={openGroups === "shipping"}
               onToggle={() => handleGroupToggle("shipping")}
+              disabled={isGroupDisabled("shipping")}
             />
             <PaymentFieldsGroup
               loading={loading}
               isOpen={openGroups === "payment"}
               onToggle={() => handleGroupToggle("payment")}
+              disabled={isGroupDisabled("payment")}
             />
           </div>
           <div className="space-y-8">

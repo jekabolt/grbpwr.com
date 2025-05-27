@@ -48,6 +48,7 @@ const baseCheckoutSchema = z.object({
 
   rememberMe: z.boolean().optional(),
   paymentMethod: z.union([
+    z.literal(""),
     z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
     z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
     z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
@@ -75,7 +76,7 @@ export const defaultData: z.infer<typeof checkoutSchema> = {
   subscribe: false,
   billingAddressIsSameAsAddress: true,
   billingAddress: undefined,
-  paymentMethod: "PAYMENT_METHOD_NAME_ENUM_CARD_TEST",
+  paymentMethod: "",
   // creditCard: {
   //   number: "4242424242424242",
   //   fullName: "wdwd wdwd",

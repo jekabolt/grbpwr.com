@@ -13,15 +13,14 @@ import { Text } from "@/components/ui/text";
 import AddressAutocomplete from "./address-autocomplete";
 import { countries } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
-import { CONTACT_GROUP_FIELDS } from "./hooks/constants";
 import { useAddressFields } from "./hooks/useAddressFields";
-import { useDisabledGroup } from "./hooks/useFormDisabledGroup";
 
 type Props = {
   loading: boolean;
   isOpen: boolean;
   onToggle: () => void;
   validateItems: (shipmentCarrierId: string) => Promise<any>;
+  disabled?: boolean;
 };
 
 export default function ShippingFieldsGroup({
@@ -29,22 +28,20 @@ export default function ShippingFieldsGroup({
   isOpen,
   onToggle,
   validateItems,
+  disabled = false,
 }: Props) {
   const { dictionary } = useDataContext();
-  const { isGroupDisabled } = useDisabledGroup({
-    fields: CONTACT_GROUP_FIELDS,
-  });
 
   return (
     <FieldsGroupContainer
       stage="2/3"
       title="shipping address/delivery method"
-      disabled={isGroupDisabled}
+      disabled={disabled}
       isOpen={isOpen}
       onToggle={onToggle}
       summary={<Summary dictionary={dictionary} />}
     >
-      <AddressFields loading={loading} disabled={isGroupDisabled} />
+      <AddressFields loading={loading} disabled={disabled} />
       <div>
         <div className="space-y-4">
           <Text variant="uppercase">shipping method</Text>
@@ -53,6 +50,7 @@ export default function ShippingFieldsGroup({
             loading={loading}
             name="shipmentCarrierId"
             onChange={validateItems}
+            disabled={disabled}
             // label="shippingMethod"
             // @ts-ignore
             items={dictionary?.shipmentCarriers?.map((c) => ({

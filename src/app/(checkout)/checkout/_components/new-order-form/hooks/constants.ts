@@ -1,20 +1,18 @@
 import { CheckoutData } from "../schema";
 
 // 1st
-export const CONTACT_GROUP_FIELDS = ["email", "phone", "subscribe", "termsOfService"];
+export const CONTACT_GROUP_FIELDS = ["email", "termsOfService"];
 
 // 2nd
 export const SHIPPING_GROUP_FIELDS = [
   "firstName",
   "lastName",
   "country",
-  "state",
   "city",
   "address",
-  "additionalAddress",
-  "company",
   "postalCode",
   "shipmentCarrierId",
+  "phone"
 ];
 
 // 4th
