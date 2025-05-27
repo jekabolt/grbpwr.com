@@ -13,11 +13,9 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
             const fieldState = form.getFieldState(field);
             const value = form.getValues(field);
 
-            // Check if field has a value and is not in error state
             const hasValue = value !== "" && value !== undefined && value !== null;
             const isValid = !fieldState.error;
 
-            // Special handling for boolean fields
             if (typeof value === "boolean") {
                 return field === "termsOfService" ? value === true : isValid;
             }
@@ -29,7 +27,7 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
     const isGroupDisabled = (group: OpenGroups) => {
         switch (group) {
             case "contact":
-                return false; // Contact is always enabled
+                return false;
             case "shipping":
                 return !isGroupComplete("contact");
             case "payment":
@@ -43,7 +41,6 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
         const subscription = form.watch((_, { name }) => {
             if (!name) return;
 
-            // Only auto-advance if current group is complete
             if (openGroups === "contact" && isGroupComplete("contact")) {
                 setOpenGroups("shipping");
             } else if (openGroups === "shipping" && isGroupComplete("shipping")) {
@@ -55,7 +52,7 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
     }, [form, openGroups, isGroupComplete]);
 
     const handleGroupToggle = (group: OpenGroups) => {
-        // Don't allow opening disabled groups
+
         if (isGroupDisabled(group)) return;
         setOpenGroups(group);
     };
