@@ -52,7 +52,6 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
     }, [form, openGroups, isGroupComplete]);
 
     const handleGroupToggle = (group: OpenGroups) => {
-
         if (isGroupDisabled(group)) return;
         setOpenGroups(group);
     };
