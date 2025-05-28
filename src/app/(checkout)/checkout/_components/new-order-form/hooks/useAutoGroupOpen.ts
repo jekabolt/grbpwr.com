@@ -28,7 +28,6 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
         return groupOrder.slice(0, id).some((g) => !isGroupComplete(g));
     }
 
-
     useEffect(() => {
         const subscription = form.watch(() => {
             const id = groupOrder.indexOf(openGroup);
@@ -55,5 +54,4 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
         isGroupComplete,
         isGroupDisabled
     }
-
 } 
