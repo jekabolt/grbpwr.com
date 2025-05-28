@@ -89,7 +89,7 @@ export function SelectTrigger({
   return (
     <Select.Trigger
       className={cn(
-        "inline-flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor text-textBaseSize focus:outline-none focus:ring-0 data-[placeholder]:border-textInactiveColor data-[placeholder]:text-textColor",
+        "inline-flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor text-textBaseSize focus:outline-none focus:ring-0",
         className,
       )}
       aria-label={placeholder}
