@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { CheckoutData } from "../schema";
