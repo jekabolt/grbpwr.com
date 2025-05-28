@@ -47,19 +47,20 @@ const baseCheckoutSchema = z.object({
   billingAddress: z.object(addressFields).optional(),
 
   rememberMe: z.boolean().optional(),
-  paymentMethod: z.union([
-    z.literal(""),
-    z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
-    z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
-    z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
-    z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
-    z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
-  ]),
+  paymentMethod: z
+    .union([
+      z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
+      z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
+      z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
+      z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
+      z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
+    ])
 });
 
 export const checkoutSchema = baseCheckoutSchema;
 
-export const defaultData: z.infer<typeof checkoutSchema> = {
+export const defaultData: Omit<z.infer<typeof checkoutSchema>, "paymentMethod"> &
+{ paymentMethod: z.infer<typeof checkoutSchema>["paymentMethod"] | undefined } = {
   email: "",
   phone: "",
   termsOfService: false,
@@ -76,7 +77,7 @@ export const defaultData: z.infer<typeof checkoutSchema> = {
   subscribe: false,
   billingAddressIsSameAsAddress: true,
   billingAddress: undefined,
-  paymentMethod: "",
+  paymentMethod: undefined,
   // creditCard: {
   //   number: "4242424242424242",
   //   fullName: "wdwd wdwd",
