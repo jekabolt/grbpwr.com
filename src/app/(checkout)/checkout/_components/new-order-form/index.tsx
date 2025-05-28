@@ -107,7 +107,7 @@ export default function NewOrderForm() {
   });
 
   const { order, validateItems } = useValidatedOrder(form);
-  const { openGroups, handleGroupToggle, isGroupDisabled } =
+  const { openGroup, handleGroupToggle, isGroupDisabled } =
     useAutoGroupOpen(form);
 
   const onSubmit = async (data: CheckoutData) => {
@@ -155,20 +155,20 @@ export default function NewOrderForm() {
           <div className="space-y-10 lg:space-y-16">
             <ContactFieldsGroup
               loading={loading}
-              isOpen={openGroups === "contact"}
+              isOpen={openGroup === "contact"}
               onToggle={() => handleGroupToggle("contact")}
               disabled={isGroupDisabled("contact")}
             />
             <ShippingFieldsGroup
               loading={loading}
               validateItems={validateItems}
-              isOpen={openGroups === "shipping"}
+              isOpen={openGroup === "shipping"}
               onToggle={() => handleGroupToggle("shipping")}
               disabled={isGroupDisabled("shipping")}
             />
             <PaymentFieldsGroup
               loading={loading}
-              isOpen={openGroups === "payment"}
+              isOpen={openGroup === "payment"}
               onToggle={() => handleGroupToggle("payment")}
               disabled={isGroupDisabled("payment")}
             />

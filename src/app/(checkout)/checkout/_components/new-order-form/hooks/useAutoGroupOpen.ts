@@ -1,59 +1,59 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { CheckoutData } from "../schema";
 import { GROUP_FIELDS, OpenGroups } from "./constants";
 
+const groupOrder: OpenGroups[] = ["contact", "shipping", "payment"];
+
 export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
-    const [openGroups, setOpenGroups] = useState<OpenGroups>("contact");
+    const [openGroup, setOpenGroup] = useState<OpenGroups>("contact");
+    const prevComplete = useRef<Record<OpenGroups, boolean>>({
+        contact: false,
+        shipping: false,
+        payment: false,
+    });
 
-    const isGroupComplete = (group: OpenGroups) => {
+    function isGroupComplete(group: OpenGroups) {
         return GROUP_FIELDS[group].every((field) => {
-            const fieldState = form.getFieldState(field);
+            const { error } = form.getFieldState(field);
             const value = form.getValues(field);
-
-            const hasValue = value !== "" && value !== undefined && value !== null;
-            const isValid = !fieldState.error;
-
-            if (typeof value === "boolean") {
-                return field === "termsOfService" ? value === true : isValid;
-            }
-
-            return hasValue && isValid;
-        });
+            if (typeof value === 'boolean') return field === 'termsOfService' ? value === true : !error;
+            return value !== '' && value !== undefined && !error;
+        })
     };
 
     function isGroupDisabled(group: OpenGroups) {
-        if (group === "contact") return false;
-        if (group === "shipping") return !isGroupComplete("contact");
-        if (group === "payment") return !isGroupComplete("contact") || !isGroupComplete("shipping");
-        return false;
+        const id = groupOrder.indexOf(group);
+        if (id === 0) return false;
+        return groupOrder.slice(0, id).some((g) => !isGroupComplete(g));
     }
 
+
     useEffect(() => {
-        const subscription = form.watch((_, { name }) => {
-            if (!name) return;
-
-            if (openGroups === "contact" && isGroupComplete("contact")) {
-                setOpenGroups("shipping");
-            } else if (openGroups === "shipping" && isGroupComplete("shipping")) {
-                setOpenGroups("payment");
+        const subscription = form.watch(() => {
+            const id = groupOrder.indexOf(openGroup);
+            if (id === -1 || id === groupOrder.length - 1) return;
+            const current = groupOrder[id];
+            const next = groupOrder[id + 1];
+            if (!prevComplete.current[current] && isGroupComplete(current)) {
+                setOpenGroup(next);
             }
-        });
+            groupOrder.forEach((g) => {
+                prevComplete.current[g] = isGroupComplete(g);
+            });
+        })
+        return () => subscription.unsubscribe()
+    }, [form, openGroup]);
 
-        return () => subscription.unsubscribe();
-    }, [form, openGroups, isGroupComplete]);
-
-    const handleGroupToggle = (group: OpenGroups) => {
-        if (isGroupDisabled(group)) return;
-        setOpenGroups(group);
-    };
+    function handleGroupToggle(group: OpenGroups) {
+        if (!isGroupComplete(group)) setOpenGroup(group)
+    }
 
     return {
-        openGroups,
+        openGroup,
         handleGroupToggle,
         isGroupComplete,
-        isGroupDisabled,
-    };
-}
+        isGroupDisabled
+    }
+
+} 
