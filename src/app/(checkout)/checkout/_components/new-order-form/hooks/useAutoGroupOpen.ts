@@ -24,18 +24,12 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
         });
     };
 
-    const isGroupDisabled = (group: OpenGroups) => {
-        switch (group) {
-            case "contact":
-                return false;
-            case "shipping":
-                return !isGroupComplete("contact");
-            case "payment":
-                return !isGroupComplete("contact") || !isGroupComplete("shipping");
-            default:
-                return false;
-        }
-    };
+    function isGroupDisabled(group: OpenGroups) {
+        if (group === "contact") return false;
+        if (group === "shipping") return !isGroupComplete("contact");
+        if (group === "payment") return !isGroupComplete("contact") || !isGroupComplete("shipping");
+        return false;
+    }
 
     useEffect(() => {
         const subscription = form.watch((_, { name }) => {
