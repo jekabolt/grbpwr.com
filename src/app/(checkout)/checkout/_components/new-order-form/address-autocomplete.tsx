@@ -118,12 +118,9 @@ export default function AddressAutocomplete({
         onPlaceChanged={() => {
           const autocomplete = autocompleteRef.current;
           if (!autocomplete) return;
-
           const place = autocomplete.getPlace();
           if (!place || !place.address_components) return;
-
           const components = extractAddressComponents(place.address_components);
-
           updateFormValues(components, prefix, setValue);
         }}
       >
