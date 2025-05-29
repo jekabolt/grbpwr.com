@@ -22,29 +22,29 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
       <div className="space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>subtotal:</Text>
-          <div>{convertPrice(order?.subtotal?.value || "")}</div>
+          <Text>{convertPrice(order?.subtotal?.value || "")}</Text>
         </div>
         {(selectedShipmentCarrierPrice || promoFreeShipping) && (
           <div className="flex justify-between">
             <Text variant={"uppercase"}>shipping:</Text>
-            <div>
+            <Text>
               {promoFreeShipping
                 ? "free by promo"
                 : selectedShipmentCarrierPrice}
-            </div>
+            </Text>
           </div>
         )}
         {!!promoPercentageOff && (
           <div className="flex justify-between">
             <Text variant={"uppercase"}>promo discount:</Text>
-            <div>{`${promoPercentageOff}%`}</div>
+            <Text>{`${promoPercentageOff}%`}</Text>
           </div>
         )}
 
         <div className="pt-5">
-          <div className="flex justify-between border-t border-dashed border-textInactiveColor pt-3">
+          <div className="flex justify-between border-t border-textInactiveColor pt-3">
             <Text variant={"uppercase"}>grand total:</Text>
-            <div>{convertPrice(order.totalSale?.value || "")} </div>
+            <Text>{convertPrice(order.totalSale?.value || "")}</Text>
           </div>
         </div>
       </div>
