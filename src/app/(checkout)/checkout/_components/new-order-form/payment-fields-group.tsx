@@ -63,7 +63,7 @@ export default function PaymentFieldsGroup({
         disabled={disabled}
       />
 
-      {/* оплата картой делается на отдельной странице */}
+      {/*оплата картой делается на отдельной странице*/}
 
       {/* {(paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD" ||
               paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") && (
