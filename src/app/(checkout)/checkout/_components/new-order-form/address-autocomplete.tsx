@@ -120,9 +120,9 @@ export default function AddressAutocomplete({
           if (!autocomplete) return;
 
           const place = autocomplete.getPlace();
-          const components = extractAddressComponents(
-            place.address_components || [],
-          );
+          if (!place || !place.address_components) return;
+
+          const components = extractAddressComponents(place.address_components);
 
           updateFormValues(components, prefix, setValue);
         }}
