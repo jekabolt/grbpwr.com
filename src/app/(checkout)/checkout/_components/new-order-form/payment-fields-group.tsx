@@ -5,6 +5,7 @@ import { useFormContext } from "react-hook-form";
 import { useDataContext } from "@/components/contexts/DataContext";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
+import { Tron } from "@/components/ui/icons/tron";
 import { Text } from "@/components/ui/text";
 
 import { paymentMethodNamesMap } from "./constants";
@@ -43,6 +44,7 @@ export default function PaymentFieldsGroup({
   const paymentMethodsItems = allowedMethods.map((v) => ({
     label: paymentMethodNamesMap[v.name as keyof typeof paymentMethodNamesMap],
     value: v.name,
+    icon: v.name === "PAYMENT_METHOD_NAME_ENUM_USDT_TRON" && <Tron />,
   }));
 
   return (
