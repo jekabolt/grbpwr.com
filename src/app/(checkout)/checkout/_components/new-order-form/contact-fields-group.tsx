@@ -10,10 +10,12 @@ export default function ContactFieldsGroup({
   loading,
   isOpen,
   onToggle,
+  disabled = false,
 }: {
   loading: boolean;
   isOpen: boolean;
   onToggle: () => void;
+  disabled?: boolean;
 }) {
   const { watch } = useFormContext();
   const email = watch("email");
@@ -24,6 +26,7 @@ export default function ContactFieldsGroup({
       title="contact"
       isOpen={isOpen}
       onToggle={onToggle}
+      disabled={disabled}
       summary={email && <Text>{email}</Text>}
     >
       <InputField
@@ -32,15 +35,18 @@ export default function ContactFieldsGroup({
         name="email"
         label="email address:"
         type="email"
+        disabled={disabled}
       />
       <div className="space-y-4">
         <CheckboxField
           name="subscribe"
           label="I ACCEPT TO REGISTER TO NEWSLETTER"
+          disabled={disabled}
         />
         <CheckboxField
           name="termsOfService"
           label="*BY PROCEEDING WITH PURCHASE YOU IM AGREEING TO ACCEPT TERMS AND CONDITIONS AND PRIVACY INFORMATION NOTICE"
+          disabled={disabled}
         />
       </div>
     </FieldsGroupContainer>

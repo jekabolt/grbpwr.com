@@ -29,6 +29,7 @@ export default function FieldsGroupContainer({
   }, [isOpen]);
 
   function handleToggle() {
+    if (disabled) return;
     setLocalIsOpen((v) => !v);
     onToggle?.();
   }
@@ -36,7 +37,9 @@ export default function FieldsGroupContainer({
   return (
     <div className="space-y-8">
       <div
-        className="flex cursor-pointer items-center justify-between"
+        className={cn("flex cursor-pointer items-center justify-between", {
+          "opacity-50": disabled,
+        })}
         onClick={handleToggle}
       >
         <div className="flex gap-x-6">
