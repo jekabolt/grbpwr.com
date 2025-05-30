@@ -48,7 +48,9 @@ export function Measurements({
   type: MeasurementType;
 }) {
   const { increaseQuantity } = useCart((state) => state);
-  const [selectedSize, setSelectedSize] = useState<number | undefined>();
+  const [selectedSize, setSelectedSize] = useState<number | undefined>(
+    sizes && sizes.length > 0 ? sizes[0].sizeId : undefined,
+  );
   const [unit, setUnit] = useState(Unit.CM);
   const isRing = type === "ring";
   const isShoe = type === "shoe";
