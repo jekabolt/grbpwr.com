@@ -9,10 +9,9 @@ import {
   AccordionRoot,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Modal from "@/components/ui/modal";
+import { MobileMeasurements } from "@/components/ui/mobile-measurements";
 import { Text } from "@/components/ui/text";
 
-import { Measurements } from "./measurements";
 import { AddToCartForm } from "./select-size-add-to-cart/index";
 import { useData } from "./select-size-add-to-cart/useData";
 
@@ -54,30 +53,30 @@ export function MobileProductInfo({
 
       <AddToCartForm id={product.product?.id || 0} product={product} />
 
-      <Modal
+      {/* <Modal
         overlayProps={{
           cover: "screen",
         }}
         openElement="size guide"
         title="size guide"
-        className="fixed bottom-0 top-0 h-screen w-full overflow-hidden border border-red-500 p-2"
-      >
-        <Measurements
-          id={productId}
-          sizes={sizes}
-          categoryId={categoryId}
-          subCategoryId={subCategoryId}
-          typeId={typeId}
-          gender={gender}
-          measurements={measurements}
-          preorder={preorder || ""}
-          isSaleApplied={isSaleApplied}
-          priceMinusSale={priceMinusSale}
-          priceWithSale={priceWithSale}
-          price={price}
-          type={measurementType}
-        />
-      </Modal>
+        className="bottom-0 top-0 h-screen w-full overflow-hidden border border-red-500 p-2"
+      > */}
+      <MobileMeasurements
+        id={productId}
+        sizes={sizes}
+        categoryId={categoryId}
+        subCategoryId={subCategoryId}
+        typeId={typeId}
+        gender={gender}
+        measurements={measurements}
+        preorder={preorder || ""}
+        isSaleApplied={isSaleApplied}
+        priceMinusSale={priceMinusSale}
+        priceWithSale={priceWithSale}
+        price={price}
+        type={measurementType}
+      />
+      {/* </Modal> */}
 
       <AccordionRoot
         collapsible
