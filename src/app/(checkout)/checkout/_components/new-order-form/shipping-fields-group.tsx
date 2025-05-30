@@ -8,6 +8,7 @@ import InputField from "@/components/ui/form/fields/input-field";
 import { PhoneField } from "@/components/ui/form/fields/phone-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";
+import { Dhl } from "@/components/ui/icons/dhl";
 import { Text } from "@/components/ui/text";
 
 import AddressAutocomplete from "./address-autocomplete";
@@ -56,6 +57,12 @@ export default function ShippingFieldsGroup({
             items={dictionary?.shipmentCarriers?.map((c) => ({
               label: c.shipmentCarrier?.carrier || "",
               value: c.id + "" || "",
+              icon: c.shipmentCarrier?.carrier?.toLowerCase() === "dhl" && (
+                <div className="flex items-center justify-between gap-x-2">
+                  <Dhl className="h-6" />
+                  <Text>{`${c.shipmentCarrier?.price?.value} ${dictionary.baseCurrency}`}</Text>
+                </div>
+              ),
             }))}
           />
         </div>
