@@ -44,10 +44,6 @@ export function MeasurementsTable({
     }));
 
   if (type === "clothing") {
-    if (!selectedSize) {
-      return <div>mock table when no size selected</div>;
-    }
-
     return measurementsForSelectedSize.map((m, index) => (
       <div
         key={index}
@@ -70,8 +66,6 @@ export function MeasurementsTable({
       </div>
     );
   }
-
-  return <div>MeasurementsTable</div>;
 }
 
 function getUnit(value: string, unit: Unit) {
