@@ -50,17 +50,7 @@ export function MobileProductInfo({
   return (
     <div className="grid gap-10 px-3 pt-2.5">
       <Text variant="uppercase">{name}</Text>
-
       <AddToCartForm id={product.product?.id || 0} product={product} />
-
-      {/* <Modal
-        overlayProps={{
-          cover: "screen",
-        }}
-        openElement="size guide"
-        title="size guide"
-        className="bottom-0 top-0 h-screen w-full overflow-hidden border border-red-500 p-2"
-      > */}
       <MobileMeasurements
         id={productId}
         sizes={sizes}
@@ -76,8 +66,6 @@ export function MobileProductInfo({
         price={price}
         type={measurementType}
       />
-      {/* </Modal> */}
-
       <AccordionRoot
         collapsible
         type="single"
