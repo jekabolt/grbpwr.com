@@ -49,7 +49,7 @@ export function DesktopNavigationMenu({
               men
             </Link>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor text-textColor">
+          <NavigationMenu.Content className="absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
             <LinksGroup
               gender="men"
               links={processedCategories.map((item) => ({
@@ -67,7 +67,7 @@ export function DesktopNavigationMenu({
               women
             </Link>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="absolute left-0 top-0 w-full bg-bgColor text-textColor">
+          <NavigationMenu.Content className="absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
             <LinksGroup
               gender="women"
               links={processedCategories.map((item) => ({
