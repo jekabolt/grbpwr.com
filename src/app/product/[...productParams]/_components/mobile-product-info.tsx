@@ -60,7 +60,7 @@ export function MobileProductInfo({
         }}
         openElement="size guide"
         title="size guide"
-        className="bottom-0 top-0 h-screen w-full p-2"
+        className="fixed bottom-0 top-0 h-screen w-full overflow-hidden border border-red-500 p-2"
       >
         <Measurements
           id={productId}
