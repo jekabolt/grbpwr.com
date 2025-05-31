@@ -24,6 +24,7 @@ const textVariants = cva("", {
         "whitespace-nowrap",
       ],
       small: ["text-textBaseSize"],
+      measurement: ["text-[15px]"],
     },
   },
   defaultVariants: {
