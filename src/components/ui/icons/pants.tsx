@@ -11,14 +11,14 @@ const pantsLines: MeasurementLine[] = [
     name: "waist",
     xStart: 2,
     xEnd: 210,
-    y: -20,
+    y: -30,
   },
   {
     type: "horizontal",
     name: "leg-opening",
     xStart: 2,
     xEnd: 95,
-    y: 480,
+    y: 490,
   },
   {
     type: "vertical",

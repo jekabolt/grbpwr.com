@@ -27,10 +27,14 @@ const MeasurementLabel: FC<LabelProps> = ({
   yOffset = 0,
 }) => (
   <g transform={`translate(${x + xOffset} ${y + yOffset})`}>
-    <foreignObject x="-100" y="-20" width="200" height="45">
-      <div className="m-auto flex w-fit flex-col items-center bg-highlightColor px-2 text-bgColor">
-        <Text variant="inherit">{measurementType}</Text>
-        <Text variant="inherit">{info} cm</Text>
+    <foreignObject x="-120" y="-20" width="240" height="60">
+      <div className="m-auto flex w-fit flex-col items-center bg-highlightColor px-1 text-bgColor">
+        <Text variant="inherit" size="measurement" className="uppercase">
+          {measurementType}
+        </Text>
+        <Text variant="inherit" size="measurement" className="uppercase">
+          {info} cm
+        </Text>
       </div>
     </foreignObject>
   </g>
