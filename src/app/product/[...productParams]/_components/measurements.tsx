@@ -85,7 +85,7 @@ export function Measurements({
         gender={gender}
         measurements={measurements}
         selectedSize={selectedSize}
-        className={cn("h-[300px] lg:h-[400px]", {
+        className={cn("h-[550px] lg:h-[450px]", {
           hidden: isRing || isShoe,
         })}
       />
