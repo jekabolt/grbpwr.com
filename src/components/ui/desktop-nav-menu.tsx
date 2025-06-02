@@ -15,9 +15,11 @@ import { Text } from "./text";
 export function DesktopNavigationMenu({
   isNavOpen,
   className,
+  isBigMenuEnabled,
   onNavOpenChange,
 }: {
   isNavOpen: boolean;
+  isBigMenuEnabled?: boolean;
   className?: string;
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
@@ -49,16 +51,18 @@ export function DesktopNavigationMenu({
               men
             </Link>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
-            <LinksGroup
-              gender="men"
-              links={processedCategories.map((item) => ({
-                href: `${item.href}&${men}`,
-                title: item.name,
-                id: item.id.toString(),
-              }))}
-            />
-          </NavigationMenu.Content>
+          {isBigMenuEnabled && (
+            <NavigationMenu.Content className="absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
+              <LinksGroup
+                gender="men"
+                links={processedCategories.map((item) => ({
+                  href: `${item.href}&${men}`,
+                  title: item.name,
+                  id: item.id.toString(),
+                }))}
+              />
+            </NavigationMenu.Content>
+          )}
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
@@ -67,16 +71,18 @@ export function DesktopNavigationMenu({
               women
             </Link>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content className="absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
-            <LinksGroup
-              gender="women"
-              links={processedCategories.map((item) => ({
-                href: `${item.href}&${women}`,
-                title: item.name,
-                id: item.id.toString(),
-              }))}
-            />
-          </NavigationMenu.Content>
+          {isBigMenuEnabled && (
+            <NavigationMenu.Content className="absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
+              <LinksGroup
+                gender="women"
+                links={processedCategories.map((item) => ({
+                  href: `${item.href}&${women}`,
+                  title: item.name,
+                  id: item.id.toString(),
+                }))}
+              />
+            </NavigationMenu.Content>
+          )}
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
@@ -105,6 +111,7 @@ export function DesktopNavigationMenu({
       <div
         className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
           "border-x border-b border-textInactiveColor": isNavOpen,
+          "border-none": !isBigMenuEnabled,
         })}
       >
         <NavigationMenu.Viewport className="h-[var(--radix-navigation-menu-viewport-height)] w-full" />

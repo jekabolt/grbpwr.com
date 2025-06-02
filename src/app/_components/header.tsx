@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 
 import CartPopup from "../(checkout)/cart/_components/CartPopup";
@@ -12,7 +13,9 @@ import CartTotalPrice from "../(checkout)/cart/_components/CartTotalPrice";
 import { HeaderLeftNav } from "./header-left-nav";
 
 export function Header({ transparent }: { transparent?: boolean }) {
+  const { dictionary } = useDataContext();
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const isBigMenuEnabled = dictionary?.bigMenu;
 
   return (
     <header
@@ -22,10 +25,15 @@ export function Header({ transparent }: { transparent?: boolean }) {
           "lg:border-x lg:border-t lg:border-textInactiveColor": isNavOpen,
           "bg-transparent": transparent,
           "bg-bgColor": transparent && isNavOpen,
+          "border-none": !isBigMenuEnabled,
         },
       )}
     >
-      <HeaderLeftNav isNavOpen={isNavOpen} onNavOpenChange={setIsNavOpen} />
+      <HeaderLeftNav
+        isNavOpen={isNavOpen}
+        onNavOpenChange={setIsNavOpen}
+        isBigMenuEnabled={isBigMenuEnabled}
+      />
 
       <Button asChild size="lg" className="w-1/3 text-center lg:w-auto">
         <Link href="/">grbpwr</Link>
