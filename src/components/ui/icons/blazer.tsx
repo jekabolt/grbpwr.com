@@ -9,7 +9,7 @@ const blazerLines: MeasurementLine[] = [
   {
     type: "horizontal",
     name: "shoulders",
-    y: -20,
+    y: -30,
     xStart: 95,
     xEnd: 335,
   },
