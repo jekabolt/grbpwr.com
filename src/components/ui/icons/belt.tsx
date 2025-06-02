@@ -40,7 +40,7 @@ export function BeltIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <SvgWrapper
       lines={beltMeasurements}
-      originalViewBox="100 -220 212 441"
+      originalViewBox="50 -270 312 541"
       {...props}
     >
       <g stroke="#000" strokeMiterlimit="10" strokeWidth="2">
