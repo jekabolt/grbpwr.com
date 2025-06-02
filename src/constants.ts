@@ -254,6 +254,25 @@ export const RING_SIZE_CONVERSION: Record<string, Record<string, string>> = {
 }
 
 
+export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
+  waist: "Measured waist flat across garment",
+  chest: "Measured chest flat across garment, from under-arm to under-arm",
+  shoulders:
+    "Measured horizontally across garment, from shoulder-seam to shoulder-seam",
+  hips: "Measured hip flat across garment",
+  "leg-opening": "Measure the bottom hem opening.",
+  "bottom-width": "Measured bottom width flat across garment",
+  "end-fit-length": "Length from end fit point.",
+  "start-fit-length": "Length from start fit point.",
+  length: "Measured from center-back neck down to bottom of garment",
+  inseam: "Measured from crotch down to bottom along inseam (inside leg)",
+  sleeve: "Measured from center back neck, including shoulder to bottom of hem",
+  height: "Full height of the garment.",
+  width: "Width at the specified point",
+
+}
+
+
 
 
 
