@@ -82,7 +82,7 @@ export function Measurements({
   return (
     <div className="flex h-full flex-col bg-bgColor">
       {hoveredMeasurement && MEASUREMENT_DESCRIPTIONS[hoveredMeasurement] && (
-        <Text className="absolute left-0 top-0 z-10 w-full bg-highlightColor p-2.5 lowercase text-white">
+        <Text className="absolute left-0 top-0 z-10 w-full bg-highlightColor p-2.5 lowercase text-bgColor">
           {MEASUREMENT_DESCRIPTIONS[hoveredMeasurement]}
         </Text>
       )}

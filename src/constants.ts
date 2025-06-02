@@ -269,7 +269,6 @@ export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
   sleeve: "Measured from center back neck, including shoulder to bottom of hem",
   height: "Full height of the garment.",
   width: "Width at the specified point",
-
 }
 
 
