@@ -1,6 +1,9 @@
-import { CATALOG_LIMIT } from "@/constants";
+import { Metadata } from "next";
+import { common_GenderEnum } from "@/api/proto-http/frontend";
+import { CATALOG_LIMIT, GENDER_MAP_REVERSE } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
@@ -11,7 +14,7 @@ import { NextCategoryButton } from "./_components/next-category-button";
 import { getProductsPagedQueryParams } from "./_components/utils";
 
 interface CatalogPageProps {
-  searchParams: Promise<{
+  params: Promise<{
     category?: string;
     gender?: string;
     order?: string;
@@ -26,28 +29,22 @@ interface CatalogPageProps {
 
 export const dynamic = "force-static";
 
-// export async function generateMetadata(
-//   props: CatalogPageProps,
-// ): Promise<Metadata> {
-//   const params = await props.searchParams;
-//   const response = await serviceClient.GetProductsPaged({
-//     limit: CATALOG_LIMIT,
-//     offset: 0,
-//     ...getProductsPagedQueryParams(params),
-//   });
+export async function generateMetadata(
+  props: CatalogPageProps,
+): Promise<Metadata> {
+  const params = await props.params;
+  const { gender } = params;
 
-//   const gender =
-//     response.products?.[0].productDisplay?.productBody?.targetGender;
+  const genderTitle = GENDER_MAP_REVERSE[gender as common_GenderEnum];
 
-//   const genderTitle = GENDER_MAP_REVERSE[gender as common_GenderEnum];
-//   return generateCommonMetadata({
-//     title: gender ? genderTitle.toUpperCase() : "catalog".toUpperCase(),
-//   });
-// }
+  return generateCommonMetadata({
+    title: gender ? genderTitle.toUpperCase() : "catalog".toUpperCase(),
+  });
+}
 
 export default async function CatalogPage(props: CatalogPageProps) {
   const { hero } = await serviceClient.GetHero({});
-  const searchParams = await props.searchParams;
+  const searchParams = await props.params;
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
