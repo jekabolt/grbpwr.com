@@ -1,9 +1,6 @@
-import { Metadata } from "next";
-import { common_GenderEnum } from "@/api/proto-http/frontend";
-import { CATALOG_LIMIT, GENDER_MAP_REVERSE } from "@/constants";
+import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
-import { generateCommonMetadata } from "@/lib/common-metadata";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
@@ -11,7 +8,7 @@ import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 import { HeroArchive } from "../_components/hero-archive";
 import Catalog from "./_components/catalog";
 import { NextCategoryButton } from "./_components/next-category-button";
-import { getProductsPagedQueryParams } from "./_components/utils";
+import { getStaticProductsPagedQueryParams } from "./_components/utils";
 
 interface CatalogPageProps {
   searchParams: Promise<{
@@ -27,27 +24,37 @@ interface CatalogPageProps {
   }>;
 }
 
-export const dynamic = "force-static";
-
-export async function generateMetadata(
-  props: CatalogPageProps,
-): Promise<Metadata> {
-  const params = await props.searchParams;
-  const { gender } = params;
-
-  const genderTitle = GENDER_MAP_REVERSE[gender as common_GenderEnum];
-  return generateCommonMetadata({
-    title: gender ? genderTitle.toUpperCase() : "catalog".toUpperCase(),
-  });
+export async function generateStaticParams() {
+  return [
+    {},
+    { gender: "GENDER_ENUM_MALE" },
+    { gender: "GENDER_ENUM_FEMALE" },
+    { gender: "GENDER_ENUM_UNISEX" },
+  ];
 }
+
+// export async function generateMetadata(
+//   props: CatalogPageProps,
+// ): Promise<Metadata> {
+//   const params = await props.searchParams;
+//   const { gender } = params;
+
+//   const genderTitle = GENDER_MAP_REVERSE[gender as common_GenderEnum];
+//   return generateCommonMetadata({
+//     title: gender ? genderTitle.toUpperCase() : "catalog".toUpperCase(),
+//   });
+// }
+
+export const dynamic = "force-static";
 
 export default async function CatalogPage(props: CatalogPageProps) {
   const { hero } = await serviceClient.GetHero({});
-  const searchParams = await props.searchParams;
+
+  // Use static params for SSG, searchParams handled client-side
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
-    ...getProductsPagedQueryParams(searchParams),
+    ...getStaticProductsPagedQueryParams(),
   });
 
   return (

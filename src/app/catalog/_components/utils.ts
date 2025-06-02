@@ -11,6 +11,29 @@ const genderMap = {
   unisex: 'GENDER_ENUM_UNISEX'
 } as const;
 
+// Static version for initial page load
+export function getStaticProductsPagedQueryParams(): Pick<
+  GetProductsPagedRequest,
+  "sortFactors" | "orderFactor" | "filterConditions"
+> {
+  return {
+    sortFactors: undefined,
+    orderFactor: undefined,
+    filterConditions: {
+      topCategoryIds: undefined,
+      subCategoryIds: undefined,
+      typeIds: undefined,
+      sizesIds: undefined,
+      from: undefined,
+      to: undefined,
+      onSale: undefined,
+      color: undefined,
+      preorder: undefined,
+      byTag: undefined,
+      gender: undefined,
+    },
+  };
+}
 
 export function getProductsPagedQueryParams({
   sort,
