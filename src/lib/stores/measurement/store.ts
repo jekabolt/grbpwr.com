@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { MeasurementStore } from "./store-types";
 
-
 export const useMeasurementStore = create<MeasurementStore>((set) => ({
     hoveredMeasurement: null,
     setHoveredMeasurement: (measurement) =>
