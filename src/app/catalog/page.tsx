@@ -8,7 +8,7 @@ import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 import { HeroArchive } from "../_components/hero-archive";
 import Catalog from "./_components/catalog";
 import { NextCategoryButton } from "./_components/next-category-button";
-import { getStaticProductsPagedQueryParams } from "./_components/utils";
+import { getProductsPagedQueryParams } from "./_components/utils";
 
 interface CatalogPageProps {
   searchParams: Promise<{
@@ -24,20 +24,20 @@ interface CatalogPageProps {
   }>;
 }
 
-export async function generateStaticParams() {
-  return [
-    {},
-    { gender: "GENDER_ENUM_MALE" },
-    { gender: "GENDER_ENUM_FEMALE" },
-    { gender: "GENDER_ENUM_UNISEX" },
-  ];
-}
+export const dynamic = "force-static";
 
 // export async function generateMetadata(
 //   props: CatalogPageProps,
 // ): Promise<Metadata> {
 //   const params = await props.searchParams;
-//   const { gender } = params;
+//   const response = await serviceClient.GetProductsPaged({
+//     limit: CATALOG_LIMIT,
+//     offset: 0,
+//     ...getProductsPagedQueryParams(params),
+//   });
+
+//   const gender =
+//     response.products?.[0].productDisplay?.productBody?.targetGender;
 
 //   const genderTitle = GENDER_MAP_REVERSE[gender as common_GenderEnum];
 //   return generateCommonMetadata({
@@ -45,16 +45,13 @@ export async function generateStaticParams() {
 //   });
 // }
 
-export const dynamic = "force-static";
-
 export default async function CatalogPage(props: CatalogPageProps) {
   const { hero } = await serviceClient.GetHero({});
-
-  // Use static params for SSG, searchParams handled client-side
+  const searchParams = await props.searchParams;
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
-    ...getStaticProductsPagedQueryParams(),
+    ...getProductsPagedQueryParams(searchParams),
   });
 
   return (
