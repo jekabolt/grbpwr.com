@@ -24,7 +24,6 @@ export async function POST(request: Request) {
 
     if (Array.isArray(data.products) && data.products.length > 0) {
         revalidateTag(PRODUCTS_CACHE_TAG);
-        revalidatePath("/catalog");
         for (const id of data.products) {
             revalidatePath(`/product/${id}`);
         }

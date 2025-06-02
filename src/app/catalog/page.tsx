@@ -13,7 +13,7 @@ import { NextCategoryButton } from "./_components/next-category-button";
 import { getProductsPagedQueryParams } from "./_components/utils";
 
 interface CatalogPageProps {
-  params: Promise<{
+  searchParams: Promise<{
     category?: string;
     gender?: string;
     order?: string;
@@ -36,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function CatalogPage(props: CatalogPageProps) {
   const { hero } = await serviceClient.GetHero({});
-  const searchParams = await props.params;
+  const searchParams = await props.searchParams;
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
