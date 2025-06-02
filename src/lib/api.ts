@@ -27,11 +27,11 @@ const fetchParams: Object = {
       tags: [PRODUCTS_CACHE_TAG],
     },
   },
-  GetProductsPaged: {
-    next: {
-      tags: [PRODUCTS_CACHE_TAG],
-    },
-  },
+  // GetProductsPaged: {
+  //   next: {
+  //     tags: [PRODUCTS_CACHE_TAG],
+  //   },
+  // },
   GetArchive: {
     next: {
       tags: [ARCHIVES_CACHE_TAG],
