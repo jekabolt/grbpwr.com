@@ -7,8 +7,8 @@ import { HorizontalLine } from "../icons/guide-lines/horizontal-line";
 import { VerticalLine } from "../icons/guide-lines/vertical-line";
 
 const SVG_CONFIG = {
-  size: { width: 800, height: 1100, padding: 50 },
-  viewBox: "0 0 800 1100",
+  size: { width: 800, height: 1000, padding: 100 },
+  viewBox: "0 0 800 1000",
 } as const;
 
 export type MeasurementType =

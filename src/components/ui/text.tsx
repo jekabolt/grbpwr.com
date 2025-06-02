@@ -3,11 +3,11 @@ import { cva, VariantProps } from "class-variance-authority";
 const textVariants = cva("", {
   variants: {
     variant: {
-      default: ["text-textColor"],
+      default: ["text-textBaseSize"],
       inherit: ["text-inherit"],
-      uppercase: ["text-textColor", "uppercase"],
-      underlined: ["underline", "text-textColor"],
-      strikethrough: ["line-through", "text-textColor"],
+      uppercase: ["uppercase"],
+      underlined: ["underline"],
+      strikethrough: ["line-through"],
       strileTroughInactive: ["line-through", "text-textInactiveColor"],
       inactive: ["text-textInactiveColor"],
       undrleineWithColors: ["underline", "text-highlightColor"],

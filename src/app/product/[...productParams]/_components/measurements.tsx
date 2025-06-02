@@ -6,8 +6,10 @@ import {
   common_ProductMeasurement,
   common_ProductSize,
 } from "@/api/proto-http/frontend";
+import { MEASUREMENT_DESCRIPTIONS } from "@/constants";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useMeasurementStore } from "@/lib/stores/measurement/store";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
@@ -48,6 +50,7 @@ export function Measurements({
   type: MeasurementType;
 }) {
   const { increaseQuantity } = useCart((state) => state);
+  const { hoveredMeasurement } = useMeasurementStore();
   const [selectedSize, setSelectedSize] = useState<number | undefined>(
     sizes && sizes.length > 0 ? sizes[0].sizeId : undefined,
   );
@@ -78,6 +81,11 @@ export function Measurements({
 
   return (
     <div className="flex h-full flex-col bg-bgColor">
+      {hoveredMeasurement && MEASUREMENT_DESCRIPTIONS[hoveredMeasurement] && (
+        <Text className="absolute left-0 top-0 z-10 w-full bg-highlightColor p-2.5 lowercase text-bgColor">
+          {MEASUREMENT_DESCRIPTIONS[hoveredMeasurement]}
+        </Text>
+      )}
       <CategoryThumbnail
         categoryId={categoryId}
         subCategoryId={subCategoryId}
@@ -85,7 +93,7 @@ export function Measurements({
         gender={gender}
         measurements={measurements}
         selectedSize={selectedSize}
-        className={cn("h-[550px] lg:h-[450px]", {
+        className={cn("h-[450px] lg:h-[450px]", {
           hidden: isRing || isShoe,
         })}
       />
