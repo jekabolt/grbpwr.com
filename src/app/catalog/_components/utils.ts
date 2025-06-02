@@ -5,13 +5,6 @@ import {
   GetProductsPagedRequest
 } from "@/api/proto-http/frontend";
 
-const genderMap = {
-  men: 'GENDER_ENUM_MALE',
-  women: 'GENDER_ENUM_FEMALE',
-  unisex: 'GENDER_ENUM_UNISEX'
-} as const;
-
-
 export function getProductsPagedQueryParams({
   sort,
   order,

@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import { common_GenderEnum } from "@/api/proto-http/frontend";
-import { CATALOG_LIMIT, GENDER_MAP_REVERSE } from "@/constants";
+import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -27,15 +26,11 @@ interface CatalogPageProps {
   }>;
 }
 
-export async function generateMetadata(
-  props: CatalogPageProps,
-): Promise<Metadata> {
-  const params = await props.searchParams;
-  const { gender } = params;
+export const dynamic = "force-static";
 
-  const genderTitle = GENDER_MAP_REVERSE[gender as common_GenderEnum];
+export async function generateMetadata(): Promise<Metadata> {
   return generateCommonMetadata({
-    title: gender ? genderTitle.toUpperCase() : "catalog".toUpperCase(),
+    title: "catalog".toUpperCase(),
   });
 }
 
