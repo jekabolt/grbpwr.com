@@ -247,11 +247,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
             );
           case "HERO_TYPE_FEATURED_ARCHIVE":
             return (
-              <HeroArchive
-                entity={e}
-                key={i}
-                className="space-y-12 pt-16 lg:py-32"
-              />
+              <HeroArchive entity={e} key={i} className="pt-16 lg:py-32" />
             );
           default:
             return null;

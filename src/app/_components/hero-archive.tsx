@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { common_HeroEntity } from "@/api/proto-http/frontend";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
@@ -67,9 +68,13 @@ export function HeroArchive({
       <div
         ref={archiveRef}
         onScroll={handleUserScroll}
-        className="flex w-full items-center overflow-x-scroll"
+        className={cn("flex w-full items-center overflow-x-scroll", {
+          "lg:justify-center":
+            archive?.archive?.media?.length &&
+            archive?.archive?.media?.length <= 4,
+        })}
       >
-        <ArchiveItem archive={archive?.archive} className="w-80 lg:w-96" />
+        <ArchiveItem archive={archive?.archive} className="w-80" />
       </div>
     </div>
   );
