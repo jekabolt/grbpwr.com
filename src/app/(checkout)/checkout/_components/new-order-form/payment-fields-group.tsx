@@ -57,6 +57,7 @@ export default function PaymentFieldsGroup({
       summary={selectedPaymentMethod && <Text>{selectedPaymentMethod}</Text>}
     >
       <RadioGroupField
+        view="card"
         loading={loading}
         name="paymentMethod"
         items={paymentMethodsItems as any}

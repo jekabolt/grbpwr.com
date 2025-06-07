@@ -13,6 +13,7 @@ export interface RadioGroupsProps {
     icon?: React.ReactNode;
   }[];
   // todo: add disabled
+  view?: "card" | "default";
   disabled?: boolean;
   [k: string]: any;
 }
@@ -21,29 +22,32 @@ export default function RadioGroupComponent({
   name,
   items,
   icon,
+  view = "default",
   ...props
 }: RadioGroupsProps) {
   return (
     <RadioGroup.Root
       name={name}
-      className={cn("grid w-full grid-cols-2 gap-3", {
-        "grid-cols-3": items.length === 3,
-      })}
+      className={cn(
+        "flex w-full items-center gap-3 overflow-x-scroll lg:grid lg:grid-cols-2",
+        {
+          "grid-cols-3": view === "card" && items.length === 3,
+        },
+      )}
       aria-label="shipping method"
       {...props}
     >
       {items.map(({ value, label, icon }) => (
         <Label
           key={value}
-          className={cn(
-            "h-28 w-full cursor-pointer border border-textInactiveColor p-3",
-            {
-              "border-textColor": value === props.value,
-            },
-          )}
+          className={cn("flex w-full cursor-pointer gap-3", {
+            "h-28 min-w-36 border border-textInactiveColor p-3":
+              view === "card",
+            "border border-textColor": value === props.value,
+          })}
           htmlFor={`${value}-r`}
         >
-          <div className="0 flex h-full flex-col justify-between">
+          <div className="flex h-full flex-col justify-between">
             <div className="flex items-center gap-x-2">
               <RadioGroup.Item
                 className="h-3 w-3 cursor-pointer rounded-full border border-textColor"

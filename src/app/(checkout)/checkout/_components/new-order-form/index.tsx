@@ -151,7 +151,7 @@ export default function NewOrderForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-14 lg:grid-cols-2 lg:gap-28">
+        <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
           <div className="space-y-10 lg:space-y-16">
             <ContactFieldsGroup
               loading={loading}
