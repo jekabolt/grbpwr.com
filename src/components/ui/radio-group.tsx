@@ -21,48 +21,57 @@ export interface RadioGroupsProps {
 export default function RadioGroupComponent({
   name,
   items,
-  icon,
   view = "default",
   ...props
 }: RadioGroupsProps) {
+  const isCardView = view === "card";
+  const hasThreeItems = items.length === 3;
+  const hasManyItems = items.length > 2;
+
   return (
     <RadioGroup.Root
       name={name}
-      className={cn(
-        "flex w-full items-center gap-3 overflow-x-scroll lg:grid lg:grid-cols-2",
-        {
-          "grid-cols-3": view === "card" && items.length === 3,
-        },
-      )}
+      className="relative w-full overflow-x-hidden"
       aria-label="shipping method"
       {...props}
     >
-      {items.map(({ value, label, icon }) => (
-        <Label
-          key={value}
-          className={cn("flex w-full cursor-pointer gap-3", {
-            "h-28 min-w-36 border border-textInactiveColor p-3":
-              view === "card",
-            "border border-textColor": value === props.value,
-          })}
-          htmlFor={`${value}-r`}
-        >
-          <div className="flex h-full flex-col justify-between">
-            <div className="flex items-center gap-x-2">
-              <RadioGroup.Item
-                className="h-3 w-3 cursor-pointer rounded-full border border-textColor"
-                value={value}
-                id={`${value}-r`}
-              >
-                <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-2 after:w-2 after:rounded-full after:bg-textColor after:content-['']" />
-              </RadioGroup.Item>
-
-              <Text component="span">{label}</Text>
-            </div>
-            {icon && <div>{icon}</div>}
-          </div>
-        </Label>
-      ))}
+      <div
+        className={cn(
+          "flex items-center gap-3 overflow-x-scroll lg:grid lg:grid-cols-2",
+          {
+            "lg:grid-cols-3": isCardView && hasThreeItems,
+          },
+        )}
+      >
+        {items.map(({ value, label, icon }) => {
+          return (
+            <Label
+              key={value}
+              className={cn("flex w-full cursor-pointer gap-3", {
+                "h-28 border border-textInactiveColor p-3": isCardView,
+                "w-40 min-w-40 flex-shrink-0 lg:w-full":
+                  isCardView && hasManyItems,
+                "border-textColor": value === props.value && isCardView,
+              })}
+              htmlFor={`${value}-r`}
+            >
+              <div className="flex h-full flex-col justify-between">
+                <div className="flex items-start gap-x-2">
+                  <RadioGroup.Item
+                    className="h-3 w-3 cursor-pointer rounded-full border border-textColor"
+                    value={value}
+                    id={`${value}-r`}
+                  >
+                    <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-2 after:w-2 after:rounded-full after:bg-textColor after:content-['']" />
+                  </RadioGroup.Item>
+                  <Text className="leading-none">{label}</Text>
+                </div>
+                {icon && <div>{icon}</div>}
+              </div>
+            </Label>
+          );
+        })}
+      </div>
     </RadioGroup.Root>
   );
 }

@@ -48,6 +48,7 @@ export default function ShippingFieldsGroup({
           <Text variant="uppercase">shipping method</Text>
 
           <RadioGroupField
+            view="card"
             loading={loading}
             name="shipmentCarrierId"
             onChange={validateItems}
