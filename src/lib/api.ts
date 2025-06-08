@@ -37,7 +37,11 @@ const fetchParams: Object = {
       tags: [ARCHIVES_CACHE_TAG],
     },
   },
-
+  GetArchivesPaged: {
+    next: {
+      tags: [ARCHIVES_CACHE_TAG],
+    },
+  },
 };
 
 const requestHandler = async (
