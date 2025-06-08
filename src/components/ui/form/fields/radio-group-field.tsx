@@ -19,6 +19,7 @@ export default function RadioGroupField({
   loading,
   name,
   description,
+  view,
   onChange,
   ...props
 }: Props) {
@@ -32,6 +33,7 @@ export default function RadioGroupField({
         <FormItem>
           <FormControl>
             <RadioGroup
+              view={view}
               disabled={loading}
               {...field}
               onValueChange={(v: string) => {

@@ -14,6 +14,7 @@ import AddressAutocomplete from "./address-autocomplete";
 import { countries } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 import { useAddressFields } from "./hooks/useAddressFields";
+import { createShipmentCarrierIcon } from "./utils";
 
 type Props = {
   loading: boolean;
@@ -47,6 +48,7 @@ export default function ShippingFieldsGroup({
           <Text variant="uppercase">shipping method</Text>
 
           <RadioGroupField
+            view="card"
             loading={loading}
             name="shipmentCarrierId"
             onChange={validateItems}
@@ -56,6 +58,11 @@ export default function ShippingFieldsGroup({
             items={dictionary?.shipmentCarriers?.map((c) => ({
               label: c.shipmentCarrier?.carrier || "",
               value: c.id + "" || "",
+              icon: createShipmentCarrierIcon(
+                c.shipmentCarrier?.carrier || "",
+                Number(c.shipmentCarrier?.price?.value) || 0,
+                dictionary.baseCurrency || "",
+              ),
             }))}
           />
         </div>

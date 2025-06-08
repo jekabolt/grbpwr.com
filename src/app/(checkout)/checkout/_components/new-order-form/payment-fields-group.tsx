@@ -5,11 +5,16 @@ import { useFormContext } from "react-hook-form";
 import { useDataContext } from "@/components/contexts/DataContext";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
+import { Tron } from "@/components/ui/icons/tron";
 import { Text } from "@/components/ui/text";
 
 import { paymentMethodNamesMap } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 import { AddressFields } from "./shipping-fields-group";
+
+export const paymentMethodIcons: Record<string, React.ReactNode> = {
+  PAYMENT_METHOD_NAME_ENUM_USDT_TRON: <Tron />,
+};
 
 type Props = {
   loading: boolean;
@@ -43,6 +48,7 @@ export default function PaymentFieldsGroup({
   const paymentMethodsItems = allowedMethods.map((v) => ({
     label: paymentMethodNamesMap[v.name as keyof typeof paymentMethodNamesMap],
     value: v.name,
+    icon: v.name ? paymentMethodIcons[v.name] || null : null,
   }));
 
   return (
@@ -55,13 +61,14 @@ export default function PaymentFieldsGroup({
       summary={selectedPaymentMethod && <Text>{selectedPaymentMethod}</Text>}
     >
       <RadioGroupField
+        view="card"
         loading={loading}
         name="paymentMethod"
         items={paymentMethodsItems as any}
         disabled={disabled}
       />
 
-      {/* оплата картой делается на отдельной странице */}
+      {/*оплата картой делается на отдельной странице*/}
 
       {/* {(paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD" ||
               paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") && (

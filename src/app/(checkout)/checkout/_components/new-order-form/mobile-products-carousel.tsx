@@ -5,11 +5,11 @@ import Image from "@/components/ui/image";
 export function MobileProductsCarousel({ validatedProducts }: Props) {
   return (
     <div className="flex gap-1 overflow-scroll">
-      {validatedProducts?.map((product) => (
-        <div className="h-20" key={product.id}>
+      {validatedProducts?.map((p, i) => (
+        <div className="h-20" key={p?.id + "" + p?.orderId + i}>
           <Image
-            src={product.thumbnail || ""}
-            alt={product.thumbnail || ""}
+            src={p?.thumbnail || ""}
+            alt={p?.thumbnail || ""}
             aspectRatio="3/4"
             fit="contain"
           />

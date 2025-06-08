@@ -5,6 +5,9 @@ import {
   common_OrderNew,
 } from "@/api/proto-http/frontend";
 
+import { Dhl } from "@/components/ui/icons/dhl";
+import { Text } from "@/components/ui/text";
+
 import { CheckoutData } from "./schema";
 
 export function mapFormFieldToOrderDataFormat(
@@ -58,3 +61,23 @@ export function mapFormFieldToOrderDataFormat(
 
   return newOrderData;
 }
+
+export const createShipmentCarrierIcon = (
+  carrier: string,
+  price: number,
+  currency: string,
+): React.ReactNode => {
+  const carrierName = carrier.toLowerCase();
+
+  switch (carrierName) {
+    case "dhl":
+      return (
+        <div className="flex items-center justify-between gap-x-2">
+          <Dhl className="h-6" />
+          <Text>{`${price} ${currency}`}</Text>
+        </div>
+      );
+    default:
+      return null;
+  }
+};

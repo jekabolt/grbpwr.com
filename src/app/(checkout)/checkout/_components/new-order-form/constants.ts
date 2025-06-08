@@ -199,13 +199,14 @@ export const countries = [
 ];
 
 export const paymentMethodNamesMap = {
-  PAYMENT_METHOD_NAME_ENUM_CARD: "Credit/Debit Card",
-  PAYMENT_METHOD_NAME_ENUM_CARD_TEST: "Credit/Debit Card (Test)",
+  PAYMENT_METHOD_NAME_ENUM_CARD: "card",
+  PAYMENT_METHOD_NAME_ENUM_CARD_TEST: "card (Test)",
   PAYMENT_METHOD_NAME_ENUM_ETH: "Ethereum (ETH)",
   PAYMENT_METHOD_NAME_ENUM_ETH_TEST: "Ethereum (ETH) Test",
-  PAYMENT_METHOD_NAME_ENUM_USDT_TRON: "USDT on TRON",
-  PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA: "USDT on TRON (Test)",
+  PAYMENT_METHOD_NAME_ENUM_USDT_TRON: "tron usdt",
+  PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA: "tron usdt (Test)",
 };
+
 
 
 export const usStates = [
