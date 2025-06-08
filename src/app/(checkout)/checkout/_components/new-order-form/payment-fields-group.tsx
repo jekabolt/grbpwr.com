@@ -12,6 +12,10 @@ import { paymentMethodNamesMap } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 import { AddressFields } from "./shipping-fields-group";
 
+export const paymentMethodIcons: Record<string, React.ReactNode> = {
+  PAYMENT_METHOD_NAME_ENUM_USDT_TRON: <Tron />,
+};
+
 type Props = {
   loading: boolean;
   isOpen: boolean;
@@ -44,7 +48,7 @@ export default function PaymentFieldsGroup({
   const paymentMethodsItems = allowedMethods.map((v) => ({
     label: paymentMethodNamesMap[v.name as keyof typeof paymentMethodNamesMap],
     value: v.name,
-    icon: v.name === "PAYMENT_METHOD_NAME_ENUM_USDT_TRON" && <Tron />,
+    icon: v.name ? paymentMethodIcons[v.name] || null : null,
   }));
 
   return (

@@ -58,11 +58,10 @@ export default function ShippingFieldsGroup({
             items={dictionary?.shipmentCarriers?.map((c) => ({
               label: c.shipmentCarrier?.carrier || "",
               value: c.id + "" || "",
-              icon: c.shipmentCarrier?.carrier?.toLowerCase() === "dhl" && (
-                <div className="flex items-center justify-between gap-x-2">
-                  <Dhl className="h-6" />
-                  <Text>{`${c.shipmentCarrier?.price?.value} ${dictionary.baseCurrency}`}</Text>
-                </div>
+              icon: createShipmentCarrierIcon(
+                c.shipmentCarrier?.carrier || "",
+                Number(c.shipmentCarrier?.price?.value) || 0,
+                dictionary.baseCurrency || "",
               ),
             }))}
           />
@@ -226,3 +225,23 @@ function Summary({ dictionary }: { dictionary?: common_Dictionary }) {
     </div>
   );
 }
+
+const createShipmentCarrierIcon = (
+  carrier: string,
+  price: number,
+  currency: string,
+): React.ReactNode => {
+  const carrierName = carrier.toLowerCase();
+
+  switch (carrierName) {
+    case "dhl":
+      return (
+        <div className="flex items-center justify-between gap-x-2">
+          <Dhl className="h-6" />
+          <Text>{`${price} ${currency}`}</Text>
+        </div>
+      );
+    default:
+      return null;
+  }
+};
