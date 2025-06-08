@@ -22,8 +22,6 @@ import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
 import { mapFormFieldToOrderDataFormat } from "./utils";
 
-type GroupName = "contact" | "shipping" | "payment";
-
 async function submitNewOrder(newOrderData: common_OrderNew) {
   console.log("order data: ", {
     order: newOrderData,
