@@ -8,13 +8,13 @@ import InputField from "@/components/ui/form/fields/input-field";
 import { PhoneField } from "@/components/ui/form/fields/phone-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";
-import { Dhl } from "@/components/ui/icons/dhl";
 import { Text } from "@/components/ui/text";
 
 import AddressAutocomplete from "./address-autocomplete";
 import { countries } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 import { useAddressFields } from "./hooks/useAddressFields";
+import { createShipmentCarrierIcon } from "./utils";
 
 type Props = {
   loading: boolean;
@@ -225,23 +225,3 @@ function Summary({ dictionary }: { dictionary?: common_Dictionary }) {
     </div>
   );
 }
-
-const createShipmentCarrierIcon = (
-  carrier: string,
-  price: number,
-  currency: string,
-): React.ReactNode => {
-  const carrierName = carrier.toLowerCase();
-
-  switch (carrierName) {
-    case "dhl":
-      return (
-        <div className="flex items-center justify-between gap-x-2">
-          <Dhl className="h-6" />
-          <Text>{`${price} ${currency}`}</Text>
-        </div>
-      );
-    default:
-      return null;
-  }
-};
