@@ -64,6 +64,8 @@ export default function PageComponent({
               className="h-full w-full object-cover"
               poster={archive?.video.media?.thumbnail?.mediaUrl}
               autoPlay
+              playsInline
+              controls={false}
               muted
               loop
               preload="metadata"
