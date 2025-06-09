@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
+import { FOOTER_YEAR } from "@/constants";
 
 import { calculateAspectRatio } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -23,21 +24,40 @@ export default function PageComponent({
     }
   };
 
-  console.log(archive?.video?.media?.thumbnail?.mediaUrl);
-
-  console.log(archive?.media);
   return (
-    <div className="min-h-screen bg-black p-4 text-white">
-      {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
-        <Text variant="uppercase" className="text-sm">
+    <div className="space-y-2 text-textColor lg:min-h-screen lg:space-y-10">
+      <div className="flex flex-col gap-x-4 lg:flex-row lg:items-start lg:justify-between">
+        <Text className="order-1 mb-2.5 lg:mb-0 lg:w-80" variant="uppercase">
           {archive?.heading || ""}
         </Text>
-        <Text className="text-sm">{archive?.tag || ""}</Text>
+        {archive?.description && (
+          <Text className="order-3 mb-12 mt-7 w-full lg:order-2 lg:m-0 lg:max-w-[800px]">
+            {archive?.description}
+          </Text>
+        )}
+        <Text
+          className="order-2 lg:order-3 lg:w-80 lg:text-right"
+          variant="uppercase"
+        >{`${archive?.tag || ""} / ${FOOTER_YEAR}`}</Text>
       </div>
-      {/* Video Section */}
+      {archive?.media &&
+        archive?.media.length > 0 &&
+        !archive?.video?.media?.fullSize?.mediaUrl && (
+          <div className="relative h-full w-full lg:h-screen">
+            {archive?.media[0].media?.fullSize && (
+              <ImageComponent
+                src={archive?.media[0].media?.fullSize?.mediaUrl || ""}
+                alt={archive?.heading || "Featured archive image"}
+                aspectRatio={calculateAspectRatio(
+                  archive?.media[0].media?.fullSize?.width,
+                  archive?.media[0].media?.fullSize?.height,
+                )}
+              />
+            )}
+          </div>
+        )}
       {archive?.video && archive?.video?.media?.fullSize?.mediaUrl && (
-        <div className="mb-12 w-full">
+        <div className="w-full">
           <div className="relative aspect-video w-full overflow-hidden">
             <video
               src={archive?.video.media?.fullSize?.mediaUrl || ""}
@@ -51,26 +71,22 @@ export default function PageComponent({
             >
               Your browser does not support the video tag.
             </video>
-            {/* Sound Control Button */}
             <Button
               onClick={toggleSound}
               className="absolute bottom-2.5 right-2.5 uppercase text-white mix-blend-difference transition-all"
               aria-label={isMuted ? "unmute" : "mute"}
             >
-              {isMuted ? "sound off" : "sound on"}
+              {isMuted ? "sound on" : "sound off"}
             </Button>
           </div>
-          {archive?.description && (
-            <Text className="mt-4 text-sm opacity-80">
-              {archive?.description}
-            </Text>
-          )}
         </div>
       )}
-      {/* Image Grid */}
-      <div className="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-        {archive?.media?.slice(1).map((mediaItem, index) => (
-          <div key={index} className="relative aspect-[3/4]">
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:gap-4">
+        {(archive?.video?.media?.fullSize?.mediaUrl
+          ? archive?.media
+          : archive?.media?.slice(1)
+        )?.map((mediaItem, index) => (
+          <div key={index}>
             {mediaItem.media?.fullSize && (
               <ImageComponent
                 src={mediaItem.media?.fullSize?.mediaUrl || ""}
