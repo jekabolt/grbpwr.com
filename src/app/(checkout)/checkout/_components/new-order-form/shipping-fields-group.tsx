@@ -55,15 +55,17 @@ export default function ShippingFieldsGroup({
             disabled={disabled}
             // label="shippingMethod"
             // @ts-ignore
-            items={dictionary?.shipmentCarriers?.map((c) => ({
-              label: c.shipmentCarrier?.carrier || "",
-              value: c.id + "" || "",
-              icon: createShipmentCarrierIcon(
-                c.shipmentCarrier?.carrier || "",
-                Number(c.shipmentCarrier?.price?.value) || 0,
-                dictionary.baseCurrency || "",
-              ),
-            }))}
+            items={dictionary?.shipmentCarriers
+              ?.filter((c) => c.shipmentCarrier?.allowed)
+              ?.map((c) => ({
+                label: c.shipmentCarrier?.carrier || "",
+                value: c.id + "" || "",
+                icon: createShipmentCarrierIcon(
+                  c.shipmentCarrier?.carrier || "",
+                  Number(c.shipmentCarrier?.price?.value) || 0,
+                  dictionary.baseCurrency || "",
+                ),
+              }))}
           />
         </div>
       </div>
