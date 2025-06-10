@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import type { common_ProductFull } from "@/api/proto-http/frontend";
 
-import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import {
   AccordionContent,
@@ -27,7 +26,6 @@ export function AddToCartForm({
   product,
   onSizeAccordionStateChange,
 }: Props) {
-  const { openCart } = useCart((state) => state);
   const {
     activeSizeId,
     openItem,
