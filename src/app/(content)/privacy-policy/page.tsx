@@ -103,7 +103,7 @@ export default function Component() {
         transfer your personal data, or object to its processing. to exercise
         these rights, please contact us via email at&nbsp;
         <span className="inline-flex items-center">
-          <CopyText text="info@gibpwr.com" />
+          <CopyText text="info@gibpwr.com" mode="toaster" />
         </span>
         , or by phone or postal mail at our company address listed on our
         website.

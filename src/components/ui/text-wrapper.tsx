@@ -6,5 +6,5 @@ interface Props {
 }
 
 export default function TextWrapper({ children, className }: Props) {
-  return <div className={cn("prose-lg", className)}>{children}</div>;
+  return <div className={cn(className)}>{children}</div>;
 }

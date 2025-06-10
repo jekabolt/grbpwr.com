@@ -3,6 +3,7 @@ import { FOOTER_LINKS as links } from "@/constants";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import CopyText from "@/components/ui/copy-text";
 import { WhiteLogo } from "@/components/ui/icons/white-logo";
 import { Text } from "@/components/ui/text";
 
@@ -52,11 +53,11 @@ export function Footer({
             <div className="order-last flex w-full flex-col gap-6 md:order-none">
               <div className="space-y-3 md:space-y-6">
                 <Text variant="inactive">press</Text>
-                <Text>work@grbpwr.com</Text>
+                <CopyText text="work@grbpwr.com" mode="toaster" />
               </div>
               <div className="space-y-3 md:space-y-6">
                 <Text variant="inactive">help</Text>
-                <Text>client@grbpwr.com</Text>
+                <CopyText text="client@grbpwr.com" mode="toaster" />
               </div>
             </div>
             <div className="order-first w-full space-y-16 md:order-none">

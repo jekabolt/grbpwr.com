@@ -29,7 +29,7 @@ export default function Component() {
             If you are a customer or you got questions or problems please
             contact us via email&nbsp;
             <span className="inline-flex items-center">
-              <CopyText text="customercare@grbpwr.com" />
+              <CopyText text="customercare@grbpwr.com" mode="toaster" />
             </span>
           </Text>
         </div>
@@ -39,7 +39,7 @@ export default function Component() {
             If you are a designer, store or other business entity please contact
             us via email&nbsp;
             <span className="inline-flex items-center">
-              <CopyText text="work@grbpwr.com" />
+              <CopyText text="work@grbpwr.com" mode="toaster" />
             </span>
           </Text>
         </div>
