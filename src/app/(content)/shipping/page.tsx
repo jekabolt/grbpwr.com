@@ -60,7 +60,7 @@ export default function Component() {
         your order has not arrived within 7 days post-shipment, please contact
         us at&nbsp;
         <span className="inline-flex items-center">
-          <CopyText text="customercare@grbpwr.com" />
+          <CopyText text="customercare@grbpwr.com" mode="toaster" />
         </span>
         .
       </Text>
