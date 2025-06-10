@@ -32,7 +32,7 @@ export function Toaster({
           <Text className="text-bgColor">{isEmail && "e-mail copied"}</Text>
         </Toast.Title>
       </Toast.Root>
-      <Toast.Viewport className="fixed left-2.5 right-2.5 top-14 z-50" />
+      <Toast.Viewport className="fixed left-2.5 right-2.5 top-2.5 z-50 lg:top-14" />
     </Toast.Provider>
   );
 }
