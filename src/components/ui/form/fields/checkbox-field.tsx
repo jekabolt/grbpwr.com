@@ -14,7 +14,7 @@ import {
 
 type Props = {
   name: string;
-  label: string;
+  label: string | React.ReactNode;
   description?: string;
   loading?: boolean;
   disabled?: boolean;
