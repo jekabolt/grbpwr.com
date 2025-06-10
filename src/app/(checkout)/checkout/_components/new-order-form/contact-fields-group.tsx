@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useFormContext } from "react-hook-form";
 
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
@@ -45,7 +46,24 @@ export default function ContactFieldsGroup({
         />
         <CheckboxField
           name="termsOfService"
-          label="*BY PROCEEDING WITH PURCHASE YOU IM AGREEING TO ACCEPT TERMS AND CONDITIONS AND PRIVACY INFORMATION NOTICE"
+          label={
+            <>
+              *BY PROCEEDING WITH PURCHASE YOU IM AGREEING TO ACCEPT{" "}
+              <Link
+                href="/terms-and-conditions"
+                className="underline hover:no-underline"
+              >
+                TERMS AND CONDITIONS
+              </Link>{" "}
+              AND{" "}
+              <Link
+                href="/privacy-policy"
+                className="underline hover:no-underline"
+              >
+                PRIVACY INFORMATION NOTICE
+              </Link>
+            </>
+          }
           disabled={disabled}
         />
       </div>
