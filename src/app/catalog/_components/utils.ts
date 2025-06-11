@@ -7,12 +7,9 @@ import {
 import { GENDER_MAP } from "@/constants";
 
 function mapGenderToEnum(gender: string): common_GenderEnum | null {
-  // If it's already an enum value, return it
   if (gender.startsWith('GENDER_ENUM_')) {
     return gender as common_GenderEnum;
   }
-
-  // Otherwise, map from human-readable value (men/women/unisex)
   return GENDER_MAP[gender.toLowerCase()] || null;
 }
 

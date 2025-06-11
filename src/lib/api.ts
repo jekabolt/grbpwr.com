@@ -58,10 +58,7 @@ const requestHandler = async (
     },
   );
 
-  // Only log in development to avoid issues during static generation
-  if (process.env.NODE_ENV === 'development') {
-    console.log("[BE] response: ", response.status, response.statusText);
-  }
+  console.log("[BE] response: ", response.status, response.statusText);
 
   return await response.json();
 };
