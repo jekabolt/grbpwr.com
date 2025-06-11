@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -8,8 +9,8 @@ import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
 import { HeroArchive } from "../_components/hero-archive";
 import Catalog from "./_components/catalog";
-import CatalogWithClientFilters from "./_components/catalog-with-client-filters";
 import { NextCategoryButton } from "./_components/next-category-button";
+import { getProductsPagedQueryParams } from "./_components/utils";
 
 interface CatalogPageProps {
   searchParams: Promise<{
@@ -25,7 +26,9 @@ interface CatalogPageProps {
   }>;
 }
 
-export const dynamic = "force-static";
+// Use dynamic rendering to enable search params while maintaining revalidation
+export const dynamic = "auto";
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateCommonMetadata({
@@ -33,28 +36,17 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default async function CatalogPage() {
+export default async function CatalogPage(props: CatalogPageProps) {
   const { hero } = await serviceClient.GetHero({});
+  const searchParams = await props.searchParams;
 
-  // Get ALL products without any filtering for static generation
+  // Cache base catalog page, let filters work dynamically on client
+  const hasFilters = Object.keys(searchParams).length > 0;
+
   const response = await serviceClient.GetProductsPaged({
-    limit: 1000, // Increase limit to get more products for client-side filtering
+    limit: CATALOG_LIMIT,
     offset: 0,
-    sortFactors: [],
-    orderFactor: "ORDER_FACTOR_UNKNOWN",
-    filterConditions: {
-      from: undefined,
-      to: undefined,
-      onSale: undefined,
-      gender: undefined,
-      color: undefined,
-      topCategoryIds: undefined,
-      subCategoryIds: undefined,
-      typeIds: undefined,
-      sizesIds: undefined,
-      preorder: undefined,
-      byTag: undefined,
-    },
+    ...getProductsPagedQueryParams(hasFilters ? searchParams : {}),
   });
 
   return (
@@ -91,11 +83,6 @@ export default async function CatalogPage() {
             ))}
         </div>
       </div>
-      <CatalogWithClientFilters
-        initialProducts={response.products || []}
-        initialTotal={response.total || 0}
-        hero={hero}
-      />
     </FlexibleLayout>
   );
 }
