@@ -18,36 +18,29 @@ export function NextCategoryButton() {
   const { defaultValue: topCategoryId, handleFilterChange } =
     useFilterQueryParams("topCategoryIds");
   const { defaultValue: gender } = useFilterQueryParams("gender");
-
   const isMen = GENDER_MAP_REVERSE[gender as common_GenderEnum] === "men";
   const processedCategories = processCategories(dictionary?.categories || []);
 
-  const currentCategory = processedCategories.find(
-    (cat) => cat.id === parseInt(topCategoryId || "0"),
-  );
+  const currentCategory = processedCategories
+    .find((cat) => cat.id === parseInt(topCategoryId || "0"))
+    ?.name.toLowerCase();
+  const currentOrder = currentCategory ? CATEGORIES_ORDER[currentCategory] : 0;
 
-  // Get the original category name from dictionary to match CATEGORIES_ORDER keys
-  const originalCategory = dictionary?.categories?.find(
-    (cat) =>
-      cat.level === "top_category" && cat.id === parseInt(topCategoryId || "0"),
-  );
-  const currentCategoryName =
-    originalCategory?.name?.toLowerCase() ||
-    currentCategory?.name.toLowerCase();
-  const currentOrder = currentCategoryName
-    ? CATEGORIES_ORDER[currentCategoryName]
-    : 0;
   const availableCategories = Object.entries(CATEGORIES_ORDER)
     .filter(([name]) =>
       isMen && name.toLowerCase() === "dresses" ? false : true,
     )
     .sort(([, orderA], [, orderB]) => orderA - orderB);
+
   const nextCategories = availableCategories.filter(
     ([, order]) => order > currentOrder,
   );
+
   const nextCategoryEntry =
     nextCategories.length > 0 ? nextCategories[0] : availableCategories[0];
+
   const nextCategoryName = nextCategoryEntry?.[0];
+
   const nextCategory = processedCategories.find(
     (cat) => cat.name.toLowerCase() === nextCategoryName,
   );
@@ -63,8 +56,7 @@ export function NextCategoryButton() {
       className="uppercase"
       onClick={handleClick}
     >
-      Next:
-      {CATEGORY_TITLE_MAP[nextCategory?.name || ""] || nextCategory?.name}
+      Next:{CATEGORY_TITLE_MAP[nextCategory?.name || ""] || nextCategory?.name}
     </Button>
   );
 }

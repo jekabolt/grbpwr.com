@@ -69,8 +69,8 @@ export default async function CatalogParamsPage({
         </div>
         <div>
           {hero?.entities
-            ?.filter((e: any) => e.type === "HERO_TYPE_FEATURED_ARCHIVE")
-            .map((e: any, i: number) => (
+            ?.filter((e) => e.type === "HERO_TYPE_FEATURED_ARCHIVE")
+            .map((e, i) => (
               <HeroArchive
                 entity={e}
                 key={i}
