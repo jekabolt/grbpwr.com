@@ -6,6 +6,7 @@ import { serviceClient } from "@/lib/api";
 import {
   getTopCategoryIdByName,
   getTopCategoryName,
+  getTopCategoryNameForUrl,
 } from "@/lib/categories-map";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { cn } from "@/lib/utils";
@@ -33,7 +34,38 @@ interface CatalogParamsPageProps {
 }
 
 export async function generateStaticParams() {
-  return [];
+  try {
+    const { dictionary } = await serviceClient.GetHero({});
+    const categories = dictionary?.categories || [];
+    const topCategories = categories.filter((c) => c.level === "top_category");
+
+    const genders = ["men", "women"];
+    const params: { params: string[] }[] = [];
+
+    // Add root catalog page
+    params.push({ params: [] });
+
+    genders.forEach((gender) => {
+      // Add gender-only routes, e.g., /catalog/men
+      params.push({ params: [gender] });
+
+      // Add gender + category routes
+      topCategories.forEach((category) => {
+        const categoryUrlName = getTopCategoryNameForUrl(
+          categories,
+          category.id!,
+        );
+        if (categoryUrlName) {
+          params.push({ params: [gender, categoryUrlName] });
+        }
+      });
+    });
+
+    return params;
+  } catch (error) {
+    console.error("Failed to generate static params:", error);
+    return [];
+  }
 }
 
 export async function generateMetadata({
