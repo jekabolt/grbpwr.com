@@ -26,10 +26,6 @@ interface CatalogPageProps {
   }>;
 }
 
-// Use dynamic rendering to enable search params while maintaining revalidation
-export const dynamic = "auto";
-export const revalidate = 3600;
-
 export async function generateMetadata(): Promise<Metadata> {
   return generateCommonMetadata({
     title: "catalog".toUpperCase(),
@@ -39,14 +35,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function CatalogPage(props: CatalogPageProps) {
   const { hero } = await serviceClient.GetHero({});
   const searchParams = await props.searchParams;
-
-  // Cache base catalog page, let filters work dynamically on client
-  const hasFilters = Object.keys(searchParams).length > 0;
-
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
-    ...getProductsPagedQueryParams(hasFilters ? searchParams : {}),
+    ...getProductsPagedQueryParams(searchParams),
   });
 
   return (
