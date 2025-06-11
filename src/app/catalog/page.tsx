@@ -26,6 +26,9 @@ interface CatalogPageProps {
   }>;
 }
 
+// Use ISR for dynamic filtering with caching benefits
+export const dynamicParams = true; // Generate new static pages for new param combinations
+
 export async function generateStaticParams() {
   return []; // Generate pages on-demand with specific search params
 }
@@ -98,5 +101,3 @@ export default async function CatalogPage(props: CatalogPageProps) {
     );
   }
 }
-
-export const dynamic = "force-static";
