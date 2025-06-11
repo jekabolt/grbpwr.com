@@ -1,10 +1,5 @@
-import { notFound } from "next/navigation";
-
 import { serviceClient } from "@/lib/api";
-import {
-  getTopCategoryIdByName,
-  getTopCategoryNameForUrl,
-} from "@/lib/categories-map";
+import { getTopCategoryId } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
@@ -30,66 +25,15 @@ interface CatalogParamsPageProps {
   }>;
 }
 
-export async function generateStaticParams() {
-  try {
-    const { dictionary } = await serviceClient.GetHero({});
-    const categories = dictionary?.categories || [];
-    const topCategories = categories.filter((c) => c.level === "top_category");
-
-    const genders = ["men", "women"];
-    const params: { params: string[] }[] = [];
-
-    // Add root catalog page
-    params.push({ params: [] });
-
-    genders.forEach((gender) => {
-      // Add gender-only routes, e.g., /catalog/men
-      params.push({ params: [gender] });
-
-      // Add gender + category routes
-      topCategories.forEach((category) => {
-        const categoryUrlName = getTopCategoryNameForUrl(
-          categories,
-          category.id!,
-        );
-        if (categoryUrlName) {
-          params.push({ params: [gender, categoryUrlName] });
-        }
-      });
-    });
-
-    return params;
-  } catch (error) {
-    console.error("Failed to generate static params:", error);
-    return [];
-  }
-}
-
 export default async function CatalogParamsPage({
   params,
   searchParams,
 }: CatalogParamsPageProps) {
-  const { dictionary, hero } = await serviceClient.GetHero({});
-
+  const { hero, dictionary } = await serviceClient.GetHero({});
   const { params: routeParams } = await params;
-  const [gender, categoryName] = routeParams || [];
   const searchParamsResolved = await searchParams;
-  const validGenders = ["men", "women", "unisex"];
-  if (gender && !validGenders.includes(gender)) {
-    notFound();
-  }
-
-  let topCategoryId: string | undefined;
-  if (categoryName) {
-    const categoryId = getTopCategoryIdByName(
-      dictionary?.categories || [],
-      categoryName,
-    );
-    if (!categoryId) {
-      notFound();
-    }
-    topCategoryId = categoryId.toString();
-  }
+  const [gender, categoryName] = routeParams || [];
+  const categoryId = getTopCategoryId(dictionary, categoryName)?.toString();
 
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
@@ -97,7 +41,7 @@ export default async function CatalogParamsPage({
     ...getProductsPagedQueryParams({
       ...searchParamsResolved,
       gender,
-      topCategoryIds: topCategoryId,
+      topCategoryIds: categoryId,
     }),
   });
 

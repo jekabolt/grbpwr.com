@@ -1,4 +1,4 @@
-import { common_Category, common_GenderEnum } from "@/api/proto-http/frontend";
+import { common_Category, common_Dictionary, common_GenderEnum } from "@/api/proto-http/frontend";
 
 export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   outerwear: "Utilitarian, dark forms. Outerwear crafted from leather, fleece, softshell and hardshell materials. This page features bombers, blazers, trenches, peacoats, parkas & duffle coats. Designed to resist rain, block wind, and protect against snow.",
@@ -73,8 +73,6 @@ export const processCategories = (
         ? CATEGORY_TITLE_MAP[topCat.name.toLowerCase()]
         : topCat.name!;
 
-    // Get URL-friendly name for the category
-    const urlName = getTopCategoryNameForUrl(categories, topCat.id!);
 
     if (subCategories.length === 0) {
       return {
@@ -106,23 +104,22 @@ export const processCategories = (
   });
 };
 
-export function getTopCategoryName(
-  categories: common_Category[],
-  topCategoryId: number
-): string | null {
-  const topCategory = categories.find(
-    (cat) => cat.level === "top_category" && cat.id === topCategoryId
-  );
-
-  if (!topCategory || !topCategory.name) {
-    return null;
+export function getTopCategoryId(dictionary?: common_Dictionary, name?: string) {
+  if (!dictionary || !name) return null;
+  let topCategoryId = dictionary.topCategories?.find((c) => c.categoryName === name)?.categoryId;
+  if (!topCategoryId) {
+    const reverseMapping = Object.entries(CATEGORY_TITLE_MAP).find(([key, value]) => value === name);
+    if (reverseMapping) {
+      const actualCategoryName = reverseMapping[0];
+      topCategoryId = dictionary.topCategories?.find((c) => c.categoryName === actualCategoryName)?.categoryId;
+    }
   }
+  return topCategoryId || null;
+}
 
-  if (CATEGORY_TITLE_MAP[topCategory.name.toLowerCase()]) {
-    return CATEGORY_TITLE_MAP[topCategory.name.toLowerCase()];
-  }
-
-  return topCategory.name;
+export function getTopCategoryName(categories: common_Category[], topCategoryId: number) {
+  const topCategory = categories.find(cat => cat.level === "top_category" && cat.id === topCategoryId);
+  return topCategory?.name || null;
 }
 
 export function getSubCategoriesForTopCategory(
@@ -142,18 +139,6 @@ export function getCategoryDescription(category: string, gender?: common_GenderE
   return CATEGORY_DESCRIPTIONS[category.toLowerCase()] || "";
 }
 
-export function getTopCategoryIdByName(
-  categories: common_Category[],
-  categoryName: string
-): number | null {
-  const topCategory = categories.find(
-    (cat) => cat.level === "top_category" &&
-      (cat.name?.toLowerCase() === categoryName.toLowerCase() ||
-        CATEGORY_TITLE_MAP[cat.name?.toLowerCase() || ""] === categoryName.toLowerCase())
-  );
-
-  return topCategory?.id ?? null;
-}
 
 export function getTopCategoryNameForUrl(
   categories: common_Category[],
@@ -162,12 +147,9 @@ export function getTopCategoryNameForUrl(
   const topCategory = categories.find(
     (cat) => cat.level === "top_category" && cat.id === topCategoryId
   );
-
   if (!topCategory || !topCategory.name) {
     return null;
   }
-
-  // Use the mapped name if available, otherwise use the original name
   const mappedName = CATEGORY_TITLE_MAP[topCategory.name.toLowerCase()];
   return mappedName || topCategory.name.toLowerCase();
 }

@@ -20,13 +20,12 @@ export default function Category() {
     handleFilterChange: handleSubCategoryChange,
   } = useFilterQueryParams("subCategoryIds");
   const { dictionary } = useDataContext();
-  const categories = dictionary?.categories || [];
   const activeTopCategory = getTopCategoryName(
-    categories,
+    dictionary?.categories || [],
     parseInt(topCategory || "0"),
   );
   const subCategories = getSubCategoriesForTopCategory(
-    categories,
+    dictionary?.categories || [],
     parseInt(topCategory || "0"),
   );
 
