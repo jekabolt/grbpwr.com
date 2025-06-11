@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -9,8 +8,8 @@ import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
 import { HeroArchive } from "../_components/hero-archive";
 import Catalog from "./_components/catalog";
+import CatalogWithClientFilters from "./_components/catalog-with-client-filters";
 import { NextCategoryButton } from "./_components/next-category-button";
-import { getProductsPagedQueryParams } from "./_components/utils";
 
 interface CatalogPageProps {
   searchParams: Promise<{
@@ -26,7 +25,7 @@ interface CatalogPageProps {
   }>;
 }
 
-export const revalidate = 3600;
+export const dynamic = "force-static";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateCommonMetadata({
@@ -34,13 +33,28 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default async function CatalogPage(props: CatalogPageProps) {
+export default async function CatalogPage() {
   const { hero } = await serviceClient.GetHero({});
-  const searchParams = await props.searchParams;
+
+  // Get ALL products without any filtering for static generation
   const response = await serviceClient.GetProductsPaged({
-    limit: CATALOG_LIMIT,
+    limit: 1000, // Increase limit to get more products for client-side filtering
     offset: 0,
-    ...getProductsPagedQueryParams(searchParams),
+    sortFactors: [],
+    orderFactor: "ORDER_FACTOR_UNKNOWN",
+    filterConditions: {
+      from: undefined,
+      to: undefined,
+      onSale: undefined,
+      gender: undefined,
+      color: undefined,
+      topCategoryIds: undefined,
+      subCategoryIds: undefined,
+      typeIds: undefined,
+      sizesIds: undefined,
+      preorder: undefined,
+      byTag: undefined,
+    },
   });
 
   return (
@@ -77,6 +91,11 @@ export default async function CatalogPage(props: CatalogPageProps) {
             ))}
         </div>
       </div>
+      <CatalogWithClientFilters
+        initialProducts={response.products || []}
+        initialTotal={response.total || 0}
+        hero={hero}
+      />
     </FlexibleLayout>
   );
 }
