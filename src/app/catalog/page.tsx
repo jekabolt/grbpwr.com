@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
@@ -26,12 +27,26 @@ interface CatalogPageProps {
   }>;
 }
 
-// Use ISR for dynamic filtering with caching benefits
-export const dynamicParams = true; // Generate new static pages for new param combinations
+const getCachedProducts = unstable_cache(
+  async (params: any) =>
+    serviceClient.GetProductsPaged({
+      limit: CATALOG_LIMIT,
+      offset: 0,
+      ...params,
+    }),
+  ["catalog-products"],
+  {
+    tags: ["products"],
+  },
+);
 
-export async function generateStaticParams() {
-  return []; // Generate pages on-demand with specific search params
-}
+const getCachedHero = unstable_cache(
+  async () => serviceClient.GetHero({}),
+  ["catalog-hero"],
+  {
+    tags: ["hero"],
+  },
+);
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateCommonMetadata({
@@ -41,13 +56,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function CatalogPage(props: CatalogPageProps) {
   try {
-    const { hero } = await serviceClient.GetHero({});
+    const { hero } = await getCachedHero();
     const searchParams = await props.searchParams;
-    const response = await serviceClient.GetProductsPaged({
-      limit: CATALOG_LIMIT,
-      offset: 0,
-      ...getProductsPagedQueryParams(searchParams),
-    });
+    const response = await getCachedProducts(
+      getProductsPagedQueryParams(searchParams),
+    );
 
     return (
       <FlexibleLayout headerType="catalog" footerType="regular">
