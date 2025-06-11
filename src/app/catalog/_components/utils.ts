@@ -4,6 +4,17 @@ import {
   common_SortFactor,
   GetProductsPagedRequest
 } from "@/api/proto-http/frontend";
+import { GENDER_MAP } from "@/constants";
+
+function mapGenderToEnum(gender: string): common_GenderEnum | null {
+  // If it's already an enum value, return it
+  if (gender.startsWith('GENDER_ENUM_')) {
+    return gender as common_GenderEnum;
+  }
+
+  // Otherwise, map from human-readable value (men/women/unisex)
+  return GENDER_MAP[gender.toLowerCase()] || null;
+}
 
 export function getProductsPagedQueryParams({
   sort,
@@ -28,9 +39,10 @@ export function getProductsPagedQueryParams({
   "sortFactors" | "orderFactor" | "filterConditions"
 > {
 
-  const genderEnums = gender ? [
-    gender as common_GenderEnum,
-    ...(gender === 'GENDER_ENUM_MALE' || gender === 'GENDER_ENUM_FEMALE' ? ['GENDER_ENUM_UNISEX' as common_GenderEnum] : [])
+  const genderEnum = gender ? mapGenderToEnum(gender) : null;
+  const genderEnums = genderEnum ? [
+    genderEnum,
+    ...(genderEnum === 'GENDER_ENUM_MALE' || genderEnum === 'GENDER_ENUM_FEMALE' ? ['GENDER_ENUM_UNISEX' as common_GenderEnum] : [])
   ] : undefined;
 
   // todo: validate params before make a request

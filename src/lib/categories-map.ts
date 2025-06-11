@@ -73,6 +73,9 @@ export const processCategories = (
         ? CATEGORY_TITLE_MAP[topCat.name.toLowerCase()]
         : topCat.name!;
 
+    // Get URL-friendly name for the category
+    const urlName = getTopCategoryNameForUrl(categories, topCat.id!);
+
     if (subCategories.length === 0) {
       return {
         id: topCat.id!,
@@ -137,6 +140,36 @@ export function getCategoryDescription(category: string, gender?: common_GenderE
     return CATEGORY_DESCRIPTIONS[genderKey] || "";
   }
   return CATEGORY_DESCRIPTIONS[category.toLowerCase()] || "";
+}
+
+export function getTopCategoryIdByName(
+  categories: common_Category[],
+  categoryName: string
+): number | null {
+  const topCategory = categories.find(
+    (cat) => cat.level === "top_category" &&
+      (cat.name?.toLowerCase() === categoryName.toLowerCase() ||
+        CATEGORY_TITLE_MAP[cat.name?.toLowerCase() || ""] === categoryName.toLowerCase())
+  );
+
+  return topCategory?.id ?? null;
+}
+
+export function getTopCategoryNameForUrl(
+  categories: common_Category[],
+  topCategoryId: number
+): string | null {
+  const topCategory = categories.find(
+    (cat) => cat.level === "top_category" && cat.id === topCategoryId
+  );
+
+  if (!topCategory || !topCategory.name) {
+    return null;
+  }
+
+  // Use the mapped name if available, otherwise use the original name
+  const mappedName = CATEGORY_TITLE_MAP[topCategory.name.toLowerCase()];
+  return mappedName || topCategory.name.toLowerCase();
 }
 
 export function filterNavigationLinks(
