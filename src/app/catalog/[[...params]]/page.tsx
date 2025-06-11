@@ -1,14 +1,10 @@
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import {
   getTopCategoryIdByName,
-  getTopCategoryName,
   getTopCategoryNameForUrl,
 } from "@/lib/categories-map";
-import { generateCommonMetadata } from "@/lib/common-metadata";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
@@ -17,6 +13,7 @@ import Catalog from "../_components/catalog";
 import { NextCategoryButton } from "../_components/next-category-button";
 import { getProductsPagedQueryParams } from "../_components/utils";
 import { HeroArchive } from "../../_components/hero-archive";
+import { CATALOG_LIMIT } from "../../../constants";
 
 interface CatalogParamsPageProps {
   params: Promise<{
@@ -68,31 +65,6 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateMetadata({
-  params,
-}: CatalogParamsPageProps): Promise<Metadata> {
-  const { params: routeParams } = await params;
-  const [gender, categoryName] = routeParams || [];
-
-  const { dictionary } = await serviceClient.GetHero({});
-
-  const title = categoryName
-    ? `${gender} ${
-        getTopCategoryName(
-          dictionary?.categories || [],
-          getTopCategoryIdByName(dictionary?.categories || [], categoryName) ||
-            0,
-        ) || categoryName.replace("-", " ")
-      } catalog`.toUpperCase()
-    : gender
-      ? `${gender} catalog`.toUpperCase()
-      : "catalog".toUpperCase();
-
-  return generateCommonMetadata({
-    title,
-  });
-}
-
 export default async function CatalogParamsPage({
   params,
   searchParams,
@@ -102,8 +74,6 @@ export default async function CatalogParamsPage({
   const { params: routeParams } = await params;
   const [gender, categoryName] = routeParams || [];
   const searchParamsResolved = await searchParams;
-
-  // Validate gender parameter
   const validGenders = ["men", "women", "unisex"];
   if (gender && !validGenders.includes(gender)) {
     notFound();
