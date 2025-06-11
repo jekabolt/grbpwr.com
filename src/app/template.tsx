@@ -8,6 +8,8 @@ import { LastViewedStoreProvider } from "@/lib/stores/last-viewed/store-provider
 import { DataContextProvider } from "@/components/contexts/DataContext";
 import { ServerActionsContextProvider } from "@/components/contexts/ServerActionsContext";
 
+export const dynamic = "force-static";
+
 export default async function Template({
   children,
 }: {
