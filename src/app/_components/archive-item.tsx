@@ -16,7 +16,12 @@ export function ArchiveItem({
   return (
     <div className="relative">
       <Button asChild>
-        <Link className={cn("flex h-full w-full")} href={archive?.slug || ""}>
+        <Link
+          className={cn("flex h-full w-full", {
+            "lg:gap-10": archive?.media?.length && archive?.media?.length <= 4,
+          })}
+          href={archive?.slug || ""}
+        >
           {archive?.media?.map((m, id) => (
             <div key={m.id} className={cn("group relative", className)}>
               <Image
@@ -28,7 +33,7 @@ export function ArchiveItem({
                 )}
                 fit="contain"
               />
-              <Text className="absolute right-4 top-1/2 block -translate-y-1/2 md:hidden md:group-hover:block">
+              <Text className="absolute right-0 top-1/2 block text-bgColor mix-blend-difference md:hidden md:group-hover:block">
                 {id}
               </Text>
             </div>
