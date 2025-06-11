@@ -18,10 +18,10 @@ import { getProductsPagedQueryParams } from "../_components/utils";
 import { HeroArchive } from "../../_components/hero-archive";
 
 interface CatalogParamsPageProps {
-  params: {
+  params: Promise<{
     params: string[];
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     order?: string;
     sort?: string;
     size?: string;
@@ -29,7 +29,7 @@ interface CatalogParamsPageProps {
     typeIds?: string;
     sale?: string;
     tag?: string;
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -39,7 +39,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: CatalogParamsPageProps): Promise<Metadata> {
-  const { params: routeParams } = params;
+  const { params: routeParams } = await params;
   const [gender, categoryName] = routeParams || [];
 
   const { dictionary } = await serviceClient.GetHero({});
@@ -67,7 +67,9 @@ export default async function CatalogParamsPage({
 }: CatalogParamsPageProps) {
   const { dictionary, hero } = await serviceClient.GetHero({});
 
-  const [gender, categoryName] = params.params || [];
+  const { params: routeParams } = await params;
+  const [gender, categoryName] = routeParams || [];
+  const searchParamsResolved = await searchParams;
 
   // Validate gender parameter
   const validGenders = ["men", "women", "unisex"];
@@ -91,7 +93,7 @@ export default async function CatalogParamsPage({
     limit: CATALOG_LIMIT,
     offset: 0,
     ...getProductsPagedQueryParams({
-      ...searchParams,
+      ...searchParamsResolved,
       gender,
       topCategoryIds: topCategoryId,
     }),
