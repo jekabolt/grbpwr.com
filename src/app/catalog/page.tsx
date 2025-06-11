@@ -98,3 +98,5 @@ export default async function CatalogPage(props: CatalogPageProps) {
     );
   }
 }
+
+export const dynamic = "force-static";
