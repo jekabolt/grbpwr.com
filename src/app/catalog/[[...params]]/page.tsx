@@ -3,15 +3,14 @@ import { getTopCategoryId } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 
-import { ClientCatalogWrapper } from "../_components/client-catalog-wrapper";
+import Catalog from "../_components/catalog";
+import { MobileCatalog } from "../_components/mobile-catalog";
 import { NextCategoryButton } from "../_components/next-category-button";
 import { getProductsPagedQueryParams } from "../_components/utils";
 import { HeroArchive } from "../../_components/hero-archive";
 import { CATALOG_LIMIT } from "../../../constants";
 
-// Force this route to be dynamic but still cache responses
-export const dynamic = "force-dynamic";
-export const revalidate = 600; // Cache for 10 minutes
+// Force static generation despite client components
 
 interface CatalogParamsPageProps {
   params: Promise<{
@@ -27,6 +26,41 @@ interface CatalogParamsPageProps {
     tag?: string;
   }>;
 }
+
+export async function generateStaticParams() {
+  try {
+    const { dictionary } = await serviceClient.GetHero({});
+
+    // Generate static params for main category pages only
+    const staticParams = [
+      { params: [] }, // Root catalog
+      { params: ["male"] },
+      { params: ["female"] },
+      { params: ["unisex"] },
+    ];
+
+    // Add main categories
+    if (dictionary?.categories) {
+      for (const category of dictionary.categories) {
+        if (category.level === "1" && category.name) {
+          staticParams.push(
+            { params: ["men", category.name.toLowerCase()] },
+            { params: ["women", category.name.toLowerCase()] },
+            { params: ["unisex", category.name.toLowerCase()] },
+          );
+        }
+      }
+    }
+
+    return staticParams;
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [{ params: [] }];
+  }
+}
+
+// Allow dynamic params for filtered routes
+export const dynamicParams = true;
 
 export default async function CatalogParamsPage({
   params,
@@ -50,10 +84,18 @@ export default async function CatalogParamsPage({
 
   return (
     <FlexibleLayout headerType="catalog" footerType="regular">
-      <ClientCatalogWrapper
-        firstPageItems={response.products || []}
-        total={response.total || 0}
-      />
+      <div className="block lg:hidden">
+        <MobileCatalog
+          firstPageItems={response.products || []}
+          total={response.total || 0}
+        />
+      </div>
+      <div className="hidden lg:block">
+        <Catalog
+          total={response.total || 0}
+          firstPageItems={response.products || []}
+        />
+      </div>
       <div
         className={cn("block", {
           hidden: !response.total,
