@@ -34,12 +34,12 @@ export async function generateStaticParams() {
     // Generate static params for main category pages only
     const staticParams = [
       { params: [] }, // Root catalog
-      { params: ["male"] },
-      { params: ["female"] },
+      { params: ["men"] },
+      { params: ["women"] },
       { params: ["unisex"] },
     ];
 
-    // Add main categories
+    // Add main categories for each gender
     if (dictionary?.categories) {
       for (const category of dictionary.categories) {
         if (category.level === "1" && category.name) {
