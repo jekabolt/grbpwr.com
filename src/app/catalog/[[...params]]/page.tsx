@@ -3,7 +3,8 @@ import { getTopCategoryId } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 
-import { ClientCatalogWrapper } from "../_components/client-catalog-wrapper";
+import Catalog from "../_components/catalog";
+import { MobileCatalog } from "../_components/mobile-catalog";
 import { NextCategoryButton } from "../_components/next-category-button";
 import { getProductsPagedQueryParams } from "../_components/utils";
 import { HeroArchive } from "../../_components/hero-archive";
@@ -24,54 +25,7 @@ interface CatalogParamsPageProps {
   }>;
 }
 
-export async function generateStaticParams() {
-  try {
-    // Fetch dictionary to get actual categories
-    const { dictionary } = await serviceClient.GetHero({});
-
-    const staticPaths: { params: string[] | undefined }[] = [
-      // Base catalog route
-      { params: undefined },
-    ];
-
-    // Generate gender-only routes
-    const genders = ["male", "female", "unisex"];
-    genders.forEach((gender) => {
-      staticPaths.push({ params: [gender] });
-    });
-
-    // Generate gender + category combinations for top categories
-    if (dictionary?.categories) {
-      const topCategories = dictionary.categories
-        .filter((cat) => cat.levelId === 0) // Top-level categories only
-        .slice(0, 5); // Limit to prevent too many static routes
-
-      genders.forEach((gender) => {
-        topCategories.forEach((category) => {
-          if (category.name) {
-            staticPaths.push({
-              params: [gender, category.name.toLowerCase()],
-            });
-          }
-        });
-      });
-    }
-
-    return staticPaths;
-  } catch (error) {
-    console.error("Failed to generate static params:", error);
-    // Fallback to basic routes if API fails
-    return [
-      { params: undefined },
-      { params: ["male"] },
-      { params: ["female"] },
-      { params: ["unisex"] },
-    ];
-  }
-}
-
-// Allow non-pregenerated paths to be statically generated at runtime
-export const dynamicParams = true;
+export const dynamic = "force-static";
 
 export default async function CatalogParamsPage({
   params,
@@ -95,12 +49,18 @@ export default async function CatalogParamsPage({
 
   return (
     <FlexibleLayout headerType="catalog" footerType="regular">
-      <ClientCatalogWrapper
-        firstPageItems={response.products || []}
-        total={response.total || 0}
-        hero={hero}
-        dictionary={dictionary}
-      />
+      <div className="block lg:hidden">
+        <MobileCatalog
+          firstPageItems={response.products || []}
+          total={response.total || 0}
+        />
+      </div>
+      <div className="hidden lg:block">
+        <Catalog
+          total={response.total || 0}
+          firstPageItems={response.products || []}
+        />
+      </div>
       <div
         className={cn("block", {
           hidden: !response.total,
