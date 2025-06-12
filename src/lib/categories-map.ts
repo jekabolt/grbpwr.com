@@ -180,3 +180,17 @@ export function filterNavigationLinks(
     rightSideCategoryLinks,
   };
 }
+
+export function getSubCategoryId(
+  categories: common_Category[],
+  subCategoryName: string,
+): number | null {
+  // Normalize to make comparison case-insensitive and handle spaces/underscores
+  const normalize = (str: string) => str.toLowerCase().replace(/\s+/g, "_");
+  const target = normalize(subCategoryName);
+  const found = categories.find(
+    (cat) =>
+      cat.level === "sub_category" && cat.name && normalize(cat.name) === target,
+  );
+  return found?.id || null;
+}

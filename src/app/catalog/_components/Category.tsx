@@ -54,18 +54,15 @@ export default function Category() {
               <div className="flex items-center gap-1" key={subCategoryItem.id}>
                 <Button
                   variant={
-                    subCategory === subCategoryItem.id.toString()
+                    subCategory === subCategoryItem.name
                       ? "underline"
                       : "default"
                   }
                   className={cn("whitespace-nowrap uppercase hover:underline", {
                     "text-textInactiveColor":
-                      subCategory &&
-                      subCategory !== subCategoryItem.id.toString(),
+                      subCategory && subCategory !== subCategoryItem.name,
                   })}
-                  onClick={() =>
-                    handleSubCategoryChange(subCategoryItem.id.toString())
-                  }
+                  onClick={() => handleSubCategoryChange(subCategoryItem.name)}
                 >
                   {subCategoryItem.name.replace("_", " ")}
                 </Button>

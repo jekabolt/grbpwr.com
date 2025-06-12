@@ -25,21 +25,18 @@ interface CatalogParamsPageProps {
   }>;
 }
 
-export default async function CatalogParamsPage({
-  params,
-  searchParams,
-}: CatalogParamsPageProps) {
+export default async function CatalogParamsPage(props: CatalogParamsPageProps) {
   const { hero, dictionary } = await serviceClient.GetHero({});
-  const { params: routeParams } = await params;
-  const searchParamsResolved = await searchParams;
-  const [gender, categoryName] = routeParams || [];
+  const params = await props.params;
+  const searchParams = await props.searchParams;
+  const [gender, categoryName] = params?.params || [];
   const categoryId = getTopCategoryId(dictionary, categoryName)?.toString();
 
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
     ...getProductsPagedQueryParams({
-      ...searchParamsResolved,
+      ...searchParams,
       gender,
       topCategoryIds: categoryId,
     }),
