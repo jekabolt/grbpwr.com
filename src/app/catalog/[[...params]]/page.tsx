@@ -3,12 +3,15 @@ import { getTopCategoryId } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 
-import Catalog from "../_components/catalog";
-import { MobileCatalog } from "../_components/mobile-catalog";
+import { ClientCatalogWrapper } from "../_components/client-catalog-wrapper";
 import { NextCategoryButton } from "../_components/next-category-button";
 import { getProductsPagedQueryParams } from "../_components/utils";
 import { HeroArchive } from "../../_components/hero-archive";
 import { CATALOG_LIMIT } from "../../../constants";
+
+// Force this route to be dynamic but still cache responses
+export const dynamic = "force-dynamic";
+export const revalidate = 600; // Cache for 10 minutes
 
 interface CatalogParamsPageProps {
   params: Promise<{
@@ -24,8 +27,6 @@ interface CatalogParamsPageProps {
     tag?: string;
   }>;
 }
-
-export const dynamic = "force-static";
 
 export default async function CatalogParamsPage({
   params,
@@ -49,18 +50,10 @@ export default async function CatalogParamsPage({
 
   return (
     <FlexibleLayout headerType="catalog" footerType="regular">
-      <div className="block lg:hidden">
-        <MobileCatalog
-          firstPageItems={response.products || []}
-          total={response.total || 0}
-        />
-      </div>
-      <div className="hidden lg:block">
-        <Catalog
-          total={response.total || 0}
-          firstPageItems={response.products || []}
-        />
-      </div>
+      <ClientCatalogWrapper
+        firstPageItems={response.products || []}
+        total={response.total || 0}
+      />
       <div
         className={cn("block", {
           hidden: !response.total,
