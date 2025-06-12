@@ -1,46 +1,45 @@
-import { Metadata } from "next";
-import { CATALOG_LIMIT } from "@/constants";
-
 import { serviceClient } from "@/lib/api";
-import { generateCommonMetadata } from "@/lib/common-metadata";
+import { getTopCategoryId } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
-import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
-import { HeroArchive } from "../_components/hero-archive";
-import Catalog from "./_components/catalog";
-import { NextCategoryButton } from "./_components/next-category-button";
-import { getProductsPagedQueryParams } from "./_components/utils";
+import Catalog from "../_components/catalog";
+import { MobileCatalog } from "../_components/mobile-catalog";
+import { NextCategoryButton } from "../_components/next-category-button";
+import { getProductsPagedQueryParams } from "../_components/utils";
+import { HeroArchive } from "../../_components/hero-archive";
+import { CATALOG_LIMIT } from "../../../constants";
 
-interface CatalogPageProps {
+interface CatalogParamsPageProps {
+  params: Promise<{
+    params?: string[];
+  }>;
   searchParams: Promise<{
-    category?: string;
-    gender?: string;
     order?: string;
     sort?: string;
     size?: string;
-    topCategoryIds?: string;
     subCategoryIds?: string;
+    typeIds?: string;
     sale?: string;
     tag?: string;
   }>;
 }
 
-export const dynamic = "force-static";
-
-export async function generateMetadata(): Promise<Metadata> {
-  return generateCommonMetadata({
-    title: "catalog".toUpperCase(),
-  });
-}
-
-export default async function CatalogPage(props: CatalogPageProps) {
-  const { hero } = await serviceClient.GetHero({});
+export default async function CatalogParamsPage(props: CatalogParamsPageProps) {
+  const { hero, dictionary } = await serviceClient.GetHero({});
+  const params = await props.params;
   const searchParams = await props.searchParams;
+  const [gender, categoryName] = params?.params || [];
+  const categoryId = getTopCategoryId(dictionary, categoryName)?.toString();
+
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
-    ...getProductsPagedQueryParams(searchParams),
+    ...getProductsPagedQueryParams({
+      ...searchParams,
+      gender,
+      topCategoryIds: categoryId,
+    }),
   });
 
   return (

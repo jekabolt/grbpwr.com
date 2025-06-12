@@ -21,14 +21,10 @@ export function NextCategoryButton() {
   const isMen = GENDER_MAP_REVERSE[gender as common_GenderEnum] === "men";
   const processedCategories = processCategories(dictionary?.categories || []);
 
-  const currentCategory = processedCategories.find(
-    (cat) => cat.id === parseInt(topCategoryId || "0"),
-  );
-
-  const currentCategoryName = currentCategory?.name.toLowerCase();
-  const currentOrder = currentCategoryName
-    ? CATEGORIES_ORDER[currentCategoryName]
-    : 0;
+  const currentCategory = processedCategories
+    .find((cat) => cat.id === parseInt(topCategoryId || "0"))
+    ?.name.toLowerCase();
+  const currentOrder = currentCategory ? CATEGORIES_ORDER[currentCategory] : 0;
 
   const availableCategories = Object.entries(CATEGORIES_ORDER)
     .filter(([name]) =>
@@ -57,8 +53,8 @@ export function NextCategoryButton() {
     <Button
       variant="main"
       size="lg"
-      onClick={handleClick}
       className="uppercase"
+      onClick={handleClick}
     >
       Next:{CATEGORY_TITLE_MAP[nextCategory?.name || ""] || nextCategory?.name}
     </Button>

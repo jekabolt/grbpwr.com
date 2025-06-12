@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { GENDER_MAP } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import {
@@ -112,16 +111,14 @@ export function ActiveCategoryMenuDialog({
       <div className="flex flex-col gap-5">
         <DialogPrimitives.Close asChild>
           <Button asChild className="uppercase">
-            <Link href={`/catalog?gender=${GENDER_MAP[activeCategory || ""]}`}>
-              all
-            </Link>
+            <Link href={`/catalog/${activeCategory || ""}`}>all</Link>
           </Button>
         </DialogPrimitives.Close>
         {filteredLeftSideCategories.map((link) => (
           <DialogPrimitives.Close asChild key={link.id}>
             <Button asChild>
               <Link
-                href={`${link.href}&gender=${GENDER_MAP[activeCategory || ""]}`}
+                href={`/catalog/${activeCategory || ""}/${link.title.toLowerCase()}`}
               >
                 {CATEGORY_TITLE_MAP[link.title] || link.title}
               </Link>
@@ -134,7 +131,7 @@ export function ActiveCategoryMenuDialog({
           <DialogPrimitives.Close asChild key={link.id}>
             <Button asChild className="uppercase">
               <Link
-                href={`${link.href}&gender=${GENDER_MAP[activeCategory || ""]}`}
+                href={`/catalog/${activeCategory || ""}/${link.title.toLowerCase()}`}
               >
                 {link.title}
               </Link>
