@@ -2,9 +2,8 @@ import { serviceClient } from "@/lib/api";
 import { getTopCategoryId } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
-import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
-import Catalog from "../_components/catalog";
+import { ClientCatalogWrapper } from "../_components/client-catalog-wrapper";
 import { NextCategoryButton } from "../_components/next-category-button";
 import { getProductsPagedQueryParams } from "../_components/utils";
 import { HeroArchive } from "../../_components/hero-archive";
@@ -51,18 +50,12 @@ export default async function CatalogParamsPage({
 
   return (
     <FlexibleLayout headerType="catalog" footerType="regular">
-      <div className="block lg:hidden">
-        <MobileCatalog
-          firstPageItems={response.products || []}
-          total={response.total || 0}
-        />
-      </div>
-      <div className="hidden lg:block">
-        <Catalog
-          total={response.total || 0}
-          firstPageItems={response.products || []}
-        />
-      </div>
+      <ClientCatalogWrapper
+        firstPageItems={response.products || []}
+        total={response.total || 0}
+        hero={hero}
+        dictionary={dictionary}
+      />
       <div
         className={cn("block", {
           hidden: !response.total,
