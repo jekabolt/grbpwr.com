@@ -25,6 +25,10 @@ interface CatalogParamsPageProps {
   }>;
 }
 
+export async function generateStaticParams() {
+  return [];
+}
+
 export default async function CatalogParamsPage({
   params,
   searchParams,
