@@ -19,34 +19,7 @@ interface CatalogParamsPageProps {
 
 // Generate static params for base routes
 export async function generateStaticParams() {
-  const { dictionary } = await serviceClient.GetHero({});
-  const staticParams = [];
-
-  // Base gender routes
-  staticParams.push(
-    { params: ["men"] },
-    { params: ["women"] },
-    { params: ["unisex"] },
-  );
-
-  // Gender + category routes
-  if (dictionary?.categories) {
-    const topCategories = dictionary.categories.filter(
-      (cat) => cat.level === "top_category",
-    );
-    for (const category of topCategories) {
-      if (category.name) {
-        const categoryUrlName = category.name.toLowerCase();
-        staticParams.push(
-          { params: ["men", categoryUrlName] },
-          { params: ["women", categoryUrlName] },
-          { params: ["unisex", categoryUrlName] },
-        );
-      }
-    }
-  }
-
-  return staticParams;
+  return [];
 }
 
 export default async function CatalogParamsPage({
