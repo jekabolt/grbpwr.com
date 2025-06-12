@@ -25,8 +25,53 @@ interface CatalogParamsPageProps {
 }
 
 export async function generateStaticParams() {
-  return [];
+  try {
+    // Fetch dictionary to get actual categories
+    const { dictionary } = await serviceClient.GetHero({});
+
+    const staticPaths: { params: string[] | undefined }[] = [
+      // Base catalog route
+      { params: undefined },
+    ];
+
+    // Generate gender-only routes
+    const genders = ["male", "female", "unisex"];
+    genders.forEach((gender) => {
+      staticPaths.push({ params: [gender] });
+    });
+
+    // Generate gender + category combinations for top categories
+    if (dictionary?.categories) {
+      const topCategories = dictionary.categories
+        .filter((cat) => cat.levelId === 0) // Top-level categories only
+        .slice(0, 5); // Limit to prevent too many static routes
+
+      genders.forEach((gender) => {
+        topCategories.forEach((category) => {
+          if (category.name) {
+            staticPaths.push({
+              params: [gender, category.name.toLowerCase()],
+            });
+          }
+        });
+      });
+    }
+
+    return staticPaths;
+  } catch (error) {
+    console.error("Failed to generate static params:", error);
+    // Fallback to basic routes if API fails
+    return [
+      { params: undefined },
+      { params: ["male"] },
+      { params: ["female"] },
+      { params: ["unisex"] },
+    ];
+  }
 }
+
+// Allow non-pregenerated paths to be statically generated at runtime
+export const dynamicParams = true;
 
 export default async function CatalogParamsPage({
   params,
