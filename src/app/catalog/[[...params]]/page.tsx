@@ -10,11 +10,9 @@ import { getProductsPagedQueryParams } from "../_components/utils";
 import { HeroArchive } from "../../_components/hero-archive";
 import { CATALOG_LIMIT } from "../../../constants";
 
-// Force static generation despite client components
-
 interface CatalogParamsPageProps {
   params: Promise<{
-    params: string[];
+    params?: string[];
   }>;
   searchParams: Promise<{
     order?: string;
@@ -27,27 +25,27 @@ interface CatalogParamsPageProps {
   }>;
 }
 
+// Generate static params for base routes only
 export async function generateStaticParams() {
   try {
     const { dictionary } = await serviceClient.GetHero({});
+    const staticParams = [];
 
-    // Generate static params for main category pages only
-    const staticParams = [
-      { params: [] }, // Root catalog
-      { params: ["men"] },
-      { params: ["women"] },
-      { params: ["unisex"] },
-    ];
+    // Base catalog route
+    staticParams.push({ params: undefined });
 
-    // Add main categories for each gender
-    if (dictionary?.categories) {
-      for (const category of dictionary.categories) {
-        if (category.level === "1" && category.name) {
-          staticParams.push(
-            { params: ["men", category.name.toLowerCase()] },
-            { params: ["women", category.name.toLowerCase()] },
-            { params: ["unisex", category.name.toLowerCase()] },
-          );
+    // Gender routes
+    staticParams.push({ params: ["men"] });
+    staticParams.push({ params: ["women"] });
+    staticParams.push({ params: ["unisex"] });
+
+    // Add popular category combinations from dictionary
+    if (dictionary?.topCategories) {
+      for (const topCat of dictionary.topCategories) {
+        const categoryName = topCat.categoryName?.toLowerCase();
+        if (categoryName && categoryName !== "objects") {
+          staticParams.push({ params: ["men", categoryName] });
+          staticParams.push({ params: ["women", categoryName] });
         }
       }
     }
@@ -55,12 +53,16 @@ export async function generateStaticParams() {
     return staticParams;
   } catch (error) {
     console.error("Error generating static params:", error);
-    return [{ params: [] }];
+    // Fallback to basic routes
+    return [{ params: undefined }, { params: ["men"] }, { params: ["women"] }];
   }
 }
 
-// Allow dynamic params for filtered routes
+// Allow dynamic params for routes not in generateStaticParams
 export const dynamicParams = true;
+
+// Cache for 1 hour
+export const revalidate = 3600;
 
 export default async function CatalogParamsPage({
   params,
