@@ -7,7 +7,6 @@ import { CATALOG_LIMIT } from "@/constants";
 import { useInView } from "react-intersection-observer";
 
 import { serviceClient } from "@/lib/api";
-import { Skeleton } from "@/components/ui/skeleton";
 import ProductsGrid from "@/app/_components/product-grid";
 import { getProductsPagedQueryParams } from "@/app/catalog/_components/utils";
 
@@ -53,11 +52,11 @@ export function InfinityScrollCatalog({
       });
 
       pageRef.current += 1;
-      setItems((prevItems) => [...prevItems, ...(response.products || [])]);
-      // To-DO we don't have count of all products on response, so last request could has 16 so we will make additional request that makes no sense - fix
-      if (!response.products || response.products.length < CATALOG_LIMIT) {
-        hasMoreRef.current = false;
-      }
+      setItems((prevItems) => {
+        const newItems = [...prevItems, ...(response.products || [])];
+        hasMoreRef.current = newItems.length < total;
+        return newItems;
+      });
     } catch (error) {
       // TO-DO show some sooner here that error happened ?
       console.error("Failed to fetch data:", error);
@@ -73,26 +72,9 @@ export function InfinityScrollCatalog({
   }, [inView, loadMoreData]);
 
   return (
-    <div className="space-y-4">
-      <ProductsGrid products={items} />
-      {isLoading && (
-        <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16 2xl:grid-cols-6">
-          {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
-            <ProductSkeleton key={index} />
-          ))}
-        </div>
-      )}
+    <div>
+      <ProductsGrid products={items} isLoading={isLoading} total={total} />
       {hasMoreRef.current && <div ref={ref} />}
-    </div>
-  );
-}
-
-function ProductSkeleton() {
-  return (
-    <div className="flex flex-col gap-2">
-      <Skeleton className="aspect-[3/4] w-full" />
-      <Skeleton variant="highlight" className="h-3 w-2/3" />
-      <Skeleton className="h-3 w-1/3" />
     </div>
   );
 }
