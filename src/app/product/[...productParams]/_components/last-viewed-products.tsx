@@ -33,10 +33,8 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
   }
 
   return (
-    <div className="space-y-16 pb-16 lg:space-y-12 lg:px-2.5 lg:pb-28">
-      <Text variant="uppercase" className="px-2.5 lg:px-0">
-        recently viewed
-      </Text>
+    <div className="space-y-16 px-2.5 pb-16 pt-6 lg:space-y-12 lg:py-32">
+      <Text variant="uppercase">recently viewed</Text>
 
       <div className="flex justify-center gap-2 lg:gap-7">
         {filteredProducts.map((product, index) => (
