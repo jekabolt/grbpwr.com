@@ -14,6 +14,7 @@ interface Props {
   text: string;
   displayText?: string;
   cutText?: number;
+  variant?: "underlined" | "undrleineWithColors";
   mode?: "toaster" | "default";
 }
 
@@ -22,6 +23,7 @@ export default function CopyText({
   displayText,
   cutText,
   mode = "default",
+  variant = "undrleineWithColors",
 }: Props) {
   const [isCopied, setIsCopied] = useState(false);
 
@@ -50,7 +52,7 @@ export default function CopyText({
   const textElement = (
     <Text
       size="small"
-      variant="undrleineWithColors"
+      variant={variant}
       onClick={handleCopy}
       className={cn("text cursor-pointer", {
         "text-visitedLinkColor": mode === "toaster" && isCopied,
