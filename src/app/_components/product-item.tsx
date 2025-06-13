@@ -38,7 +38,7 @@ export function ProductItem({
       <Button asChild>
         <Link
           href={product?.slug || ""}
-          className={cn("flex h-full w-full flex-col", className)}
+          className={cn("group flex h-full w-full flex-col", className)}
         >
           <div className="relative">
             <Image
@@ -61,7 +61,7 @@ export function ProductItem({
           >
             <Text
               variant="undrleineWithColors"
-              className="overflow-hidden text-ellipsis leading-none"
+              className="overflow-hidden text-ellipsis leading-none group-[:visited]:text-visitedLinkColor"
             >
               {product.productDisplay?.productBody?.name}
             </Text>
