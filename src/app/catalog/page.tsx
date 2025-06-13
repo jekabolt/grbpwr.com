@@ -26,7 +26,7 @@ interface CatalogPageProps {
   }>;
 }
 
-export const dynamic = "force-static";
+// export const dynamic = "force-static";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateCommonMetadata({
