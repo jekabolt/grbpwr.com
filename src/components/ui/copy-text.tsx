@@ -14,7 +14,7 @@ interface Props {
   text: string;
   displayText?: string;
   cutText?: number;
-  variant?: "inactive" | "underlined" | "default";
+  variant?: "underlined" | "undrleineWithColors";
   mode?: "toaster" | "default";
 }
 
@@ -22,19 +22,19 @@ export default function CopyText({
   text,
   displayText,
   cutText,
-  variant = "default",
   mode = "default",
+  variant = "undrleineWithColors",
 }: Props) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text);
-      if (mode === "default") {
+      if (mode === "default" || mode === "toaster") {
         setIsCopied(true);
         setTimeout(() => {
           setIsCopied(false);
-        }, 1000);
+        }, 3000);
       }
     } catch (e) {
       console.error("failed to copy text", e);
@@ -44,9 +44,9 @@ export default function CopyText({
   const getDisplayText = () => {
     if (displayText) return displayText;
 
-    if (!cutText) return text;
+    if (cutText) return `${text.slice(0, cutText)}...`;
 
-    return `${text.slice(0, cutText)}...`;
+    return text;
   };
 
   const textElement = (
@@ -54,8 +54,8 @@ export default function CopyText({
       size="small"
       variant={variant}
       onClick={handleCopy}
-      className={cn("cursor-pointer", {
-        "text-highlightColor": mode === "toaster",
+      className={cn("text cursor-pointer", {
+        "text-visitedLinkColor": mode === "toaster" && isCopied,
       })}
     >
       {getDisplayText()}
