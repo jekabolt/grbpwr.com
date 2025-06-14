@@ -73,6 +73,8 @@ export default async function Page({ params }: ArchivePageParams) {
     nextArchive = nextArchivee;
   }
 
+  console.log(nextArchive);
+
   return (
     <FlexibleLayout
       headerType="archive"
@@ -82,11 +84,14 @@ export default async function Page({ params }: ArchivePageParams) {
       }}
       footerType="mini"
       theme="dark"
-      className="pt-16"
+      className="pt-5 lg:pt-16"
     >
-      <PageComponent archive={archive} />
-
-      <FullSizeItem archive={nextArchive} className="w-full lg:w-96" />
+      <div className="space-y-20 px-2.5 pb-20 lg:space-y-10 lg:px-7 lg:pb-12">
+        <PageComponent archive={archive} />
+        <div className="h-full lg:h-screen">
+          <FullSizeItem archive={nextArchive} className="w-60 lg:w-[34rem]" />
+        </div>
+      </div>
     </FlexibleLayout>
   );
 }
