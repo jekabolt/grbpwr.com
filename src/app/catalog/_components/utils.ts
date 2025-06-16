@@ -5,14 +5,21 @@ import {
   common_SortFactor,
   GetProductsPagedRequest
 } from "@/api/proto-http/frontend";
-import { GENDER_MAP } from "@/constants";
+import { GENDER_MAP, ORDER_MAP, SORT_MAP_URL } from "@/constants";
 
-function mapGenderToEnum(gender: string): common_GenderEnum | null {
-  if (gender.startsWith('GENDER_ENUM_')) {
-    return gender as common_GenderEnum;
-  }
-  return GENDER_MAP[gender.toLowerCase()] || null;
+type EnumType = common_SortFactor | common_OrderFactor | common_GenderEnum;
+type MapType = typeof SORT_MAP_URL | typeof ORDER_MAP | typeof GENDER_MAP;
+
+export function getUrlKey(urlKey: string | undefined, map: MapType): string {
+  if (!urlKey) return '';
+  return Object.entries(map).find(([key, value]) => value === urlKey)?.[0] || '';
 }
+
+export function getEnumFromUrl(urlKey: string | null | undefined, map: MapType): EnumType | undefined {
+  if (!urlKey) return undefined;
+  return map[urlKey.toLowerCase()];
+}
+
 
 export function getProductsPagedQueryParams(
   {
@@ -39,13 +46,6 @@ export function getProductsPagedQueryParams(
   GetProductsPagedRequest,
   "sortFactors" | "orderFactor" | "filterConditions"
 > {
-  const genderEnum = gender ? mapGenderToEnum(gender) : null;
-  const genderEnums = genderEnum ? [
-    genderEnum,
-    ...(genderEnum === 'GENDER_ENUM_MALE' || genderEnum === 'GENDER_ENUM_FEMALE' ? ['GENDER_ENUM_UNISEX' as common_GenderEnum] : [])
-  ] : undefined;
-
-  // translate size name -> id if needed
   let sizeId: number | undefined;
   if (size) {
     if (/^\d+$/.test(size)) {
@@ -58,10 +58,13 @@ export function getProductsPagedQueryParams(
     }
   }
 
-  // todo: validate params before making a request
+  const sortFactor = getEnumFromUrl(sort, SORT_MAP_URL) as common_SortFactor | undefined;
+  const orderFactor = getEnumFromUrl(order, ORDER_MAP) as common_OrderFactor | undefined;
+  const genderEnums = getEnumFromUrl(gender, GENDER_MAP) as common_GenderEnum | undefined;
+
   return {
-    sortFactors: sort ? [sort as common_SortFactor] : undefined,
-    orderFactor: order ? (order as common_OrderFactor) : undefined,
+    sortFactors: sortFactor ? [sortFactor] : undefined,
+    orderFactor: orderFactor,
     filterConditions: {
       topCategoryIds: topCategoryIds ? [parseInt(topCategoryIds)] : undefined,
       subCategoryIds: subCategoryIds ? [parseInt(subCategoryIds)] : undefined,
@@ -73,7 +76,7 @@ export function getProductsPagedQueryParams(
       color: undefined,
       preorder: undefined,
       byTag: tag ? tag : undefined,
-      gender: genderEnums,
+      gender: genderEnums ? [genderEnums] : undefined,
     },
   };
 }

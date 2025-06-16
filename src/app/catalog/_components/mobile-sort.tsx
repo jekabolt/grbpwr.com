@@ -1,6 +1,10 @@
 "use client";
 
-import { SORT_MAP } from "@/constants";
+import {
+  common_OrderFactor,
+  common_SortFactor,
+} from "@/api/proto-http/frontend";
+import { ORDER_MAP, SORT_MAP, SORT_MAP_URL } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { cn, getButtonText } from "@/lib/utils";
@@ -8,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
 import useFilterQueryParams from "./useFilterQueryParams";
+import { getUrlKey } from "./utils";
 
 export function MobileSort() {
   const { defaultValue: sortValue, handleFilterChange: handleSortChange } =
@@ -33,10 +38,17 @@ export function MobileSort() {
             </DialogPrimitives.Close>
           </div>
           <div className="space-y-2 py-5">
-            {Object.entries(SORT_MAP).flatMap(([sortKey, sortData]) =>
-              sortData.orderFactors.map((orderFactor, id) => {
-                const isSortValuesMatch = sortValue === sortKey;
-                const isOrderValuesMatch = orderValue === orderFactor.factor;
+            {Object.entries(SORT_MAP).flatMap(([sortKey, sortData]) => {
+              return sortData.orderFactors.map((orderFactor, id) => {
+                const isSortValuesMatch =
+                  sortValue ===
+                  getUrlKey(sortKey as common_SortFactor, SORT_MAP_URL);
+                const isOrderValuesMatch =
+                  orderValue ===
+                  getUrlKey(
+                    orderFactor.factor as common_OrderFactor,
+                    ORDER_MAP,
+                  );
                 const isSaleValuesMatch = orderFactor.sale
                   ? saleValue === "true"
                   : !saleValue;
@@ -44,10 +56,16 @@ export function MobileSort() {
                   <Button
                     key={`${sortKey}-${id}`}
                     onClick={() =>
-                      handleSortChange(sortKey, {
-                        order: orderFactor.factor,
-                        sale: orderFactor.sale ? "true" : "",
-                      })
+                      handleSortChange(
+                        getUrlKey(sortKey as common_SortFactor, SORT_MAP_URL),
+                        {
+                          order: getUrlKey(
+                            orderFactor.factor as common_OrderFactor,
+                            ORDER_MAP,
+                          ),
+                          sale: orderFactor.sale ? "true" : "",
+                        },
+                      )
                     }
                     className={cn("block", {
                       underline:
@@ -59,8 +77,8 @@ export function MobileSort() {
                     {getButtonText(sortData, orderFactor)}
                   </Button>
                 );
-              }),
-            )}
+              });
+            })}
           </div>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
