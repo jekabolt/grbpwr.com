@@ -77,12 +77,12 @@ export const processCategories = (
       return {
         id: topCat.id!,
         name: displayName,
-        href: `/catalog?topCategoryIds=${topCat.id}`,
+        href: `/catalog/${displayName.toLowerCase()}`,
         subCategories: [
           {
             id: topCat.id!,
             name: displayName,
-            href: `/catalog?category=${topCat.id}`,
+            href: `/catalog/${displayName.toLowerCase()}`,
           },
         ],
       };
@@ -91,17 +91,38 @@ export const processCategories = (
     const processedSubCategories = subCategories.map((subCat) => ({
       id: subCat.id!,
       name: subCat.name!,
-      href: `/catalog?category=${subCat.id}`,
+      href: `/catalog/${displayName.toLowerCase()}/${subCat.name!.toLowerCase()}`,
     }));
 
     return {
       id: topCat.id!,
       name: displayName,
-      href: `/catalog?topCategoryIds=${topCat.id}`,
+      href: `/catalog/${displayName.toLowerCase()}`,
       subCategories: processedSubCategories,
     };
   });
 };
+
+export function findCategoryByName(
+  categories: common_Category[],
+  name: string | undefined,
+  parentId?: number,
+): common_Category | undefined {
+  if (!name) return undefined;
+
+  const level = parentId ? "sub_category" : "top_category";
+
+  return categories.find((cat) => {
+    const nameMatch = cat.name?.toLowerCase() === name.toLowerCase();
+    const levelMatch = cat.level === level;
+
+    if (level === "sub_category") {
+      return nameMatch && levelMatch && cat.parentId === parentId;
+    }
+
+    return nameMatch && levelMatch;
+  });
+}
 
 export function getTopCategoryName(
   categories: common_Category[],
