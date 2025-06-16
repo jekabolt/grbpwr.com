@@ -14,9 +14,9 @@ import { NextCategoryButton } from "../_components/next-category-button";
 import { getProductsPagedQueryParams } from "../_components/utils";
 
 interface CatalogPageProps {
-  params?: {
+  params?: Promise<{
     params: string[];
-  };
+  }>;
   searchParams: Promise<{
     order?: string;
     sort?: string;
