@@ -21,17 +21,31 @@ export default function Size() {
   const { defaultValue: category } = useFilterQueryParams("topCategoryIds");
   const { defaultValue: subCategory } = useFilterQueryParams("subCategoryIds");
   const { defaultValue: gender } = useFilterQueryParams("gender");
-  const { defaultValue: size, handleFilterChange } =
+  const { defaultValue: sizeNameParam, handleFilterChange } =
     useFilterQueryParams("size");
   const [total, setTotal] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<string>(size || "");
+
+  // Convert size name from URL to id so that buttons know which one is active
+  const initialSizeId = dictionary?.sizes
+    ?.find((s) => s.name?.toLowerCase() === (sizeNameParam || "").toLowerCase())
+    ?.id?.toString();
+
+  const [selectedSizeId, setSelectedSizeId] = useState<string>(
+    initialSizeId || "",
+  );
 
   useEffect(() => {
-    if (!size) {
-      setSelectedSize("");
+    if (!sizeNameParam) {
+      setSelectedSizeId("");
       setTotal(0);
+    } else {
+      const newId = dictionary?.sizes
+        ?.find((s) => s.name?.toLowerCase() === sizeNameParam.toLowerCase())
+        ?.id?.toString();
+      if (newId) setSelectedSizeId(newId);
     }
-  }, [size]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sizeNameParam]);
 
   const sortedSizes = dictionary?.sizes?.sort((a, b) => {
     return (a.id || 0) - (b.id || 0);
@@ -44,7 +58,7 @@ export default function Size() {
   });
 
   const handleSizeClick = async (sizeId?: string) => {
-    setSelectedSize(sizeId || "");
+    setSelectedSizeId(sizeId || "");
 
     if (sizeId) {
       try {
@@ -81,17 +95,17 @@ export default function Size() {
     >
       <div
         className={cn("grid h-full grid-cols-4 gap-x-2 gap-y-6 px-2 py-6", {
-          "mb-10": selectedSize,
+          "mb-10": selectedSizeId,
         })}
       >
         <FilterOptionButtons
-          defaultValue={selectedSize}
+          defaultValue={selectedSizeId}
           handleFilterChange={handleSizeClick}
           values={sizeNames || []}
           topCategoryId={category}
         />
       </div>
-      {selectedSize && (
+      {selectedSizeId && (
         <div className="fixed inset-x-2.5 bottom-0 flex justify-between gap-2 bg-bgColor">
           <Button
             className="w-full uppercase"
@@ -105,9 +119,15 @@ export default function Size() {
             className="w-full uppercase"
             size="lg"
             variant="main"
-            onClick={() => handleFilterChange(selectedSize)}
+            onClick={() => {
+              const sizeName =
+                dictionary?.sizes?.find(
+                  (s) => (s.id || 0).toString() === selectedSizeId,
+                )?.name || "";
+              handleFilterChange(sizeName || undefined);
+            }}
           >
-            show {selectedSize && total > 0 ? `[${total}]` : ""}
+            show {selectedSizeId && total > 0 ? `[${total}]` : ""}
           </Button>
         </div>
       )}

@@ -53,12 +53,15 @@ export default async function CatalogPage(props: CatalogPageProps) {
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
-    ...getProductsPagedQueryParams({
-      ...searchParams,
-      gender,
-      topCategoryIds: !subCategory ? topCategory?.id?.toString() : undefined,
-      subCategoryIds: subCategory?.id?.toString(),
-    }),
+    ...getProductsPagedQueryParams(
+      {
+        ...searchParams,
+        gender,
+        topCategoryIds: !subCategory ? topCategory?.id?.toString() : undefined,
+        subCategoryIds: subCategory?.id?.toString(),
+      },
+      dictionary,
+    ),
   });
 
   return (

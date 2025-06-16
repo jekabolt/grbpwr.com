@@ -7,6 +7,7 @@ import { CATALOG_LIMIT } from "@/constants";
 import { useInView } from "react-intersection-observer";
 
 import { serviceClient } from "@/lib/api";
+import { useDataContext } from "@/components/contexts/DataContext";
 import ProductsGrid from "@/app/_components/product-grid";
 import { getProductsPagedQueryParams } from "@/app/catalog/_components/utils";
 
@@ -18,6 +19,7 @@ export function InfinityScrollCatalog({
   total: number;
 }) {
   const searchParams = useSearchParams();
+  const { dictionary } = useDataContext();
   const [items, setItems] = useState<common_Product[]>(firstPageItems);
   const [isLoading, setIsLoading] = useState(false);
   const { ref, inView } = useInView();
@@ -42,13 +44,16 @@ export function InfinityScrollCatalog({
       const response = await serviceClient.GetProductsPaged({
         limit: CATALOG_LIMIT,
         offset: (pageRef.current - 1) * CATALOG_LIMIT,
-        ...getProductsPagedQueryParams({
-          gender: searchParams.get("gender"),
-          topCategoryIds: searchParams.get("topCategoryIds"),
-          size: searchParams.get("size"),
-          sort: searchParams.get("sort"),
-          order: searchParams.get("order"),
-        }),
+        ...getProductsPagedQueryParams(
+          {
+            gender: searchParams.get("gender"),
+            topCategoryIds: searchParams.get("topCategoryIds"),
+            size: searchParams.get("size"),
+            sort: searchParams.get("sort"),
+            order: searchParams.get("order"),
+          },
+          dictionary,
+        ),
       });
 
       pageRef.current += 1;
