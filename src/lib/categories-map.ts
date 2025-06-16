@@ -186,3 +186,19 @@ export function filterNavigationLinks(
     rightSideCategoryLinks,
   };
 }
+
+export function resolveCategories(
+  categories: common_Category[] | undefined,
+  categoryName?: string,
+  subCategoryName?: string,
+) {
+  const safeCategories = categories || [];
+  const topCategory = findCategoryByName(safeCategories, categoryName);
+  const subCategory = findCategoryByName(
+    safeCategories,
+    subCategoryName,
+    topCategory?.id,
+  );
+
+  return { topCategory, subCategory } as const;
+}

@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useParams } from "next/navigation";
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
+import { resolveCategories } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
@@ -18,68 +20,50 @@ function Trigger() {
 
 export default function Size() {
   const { dictionary } = useDataContext();
-  const { defaultValue: category } = useFilterQueryParams("topCategoryIds");
-  const { defaultValue: subCategory } = useFilterQueryParams("subCategoryIds");
-  const { defaultValue: gender } = useFilterQueryParams("gender");
-  const { defaultValue: sizeNameParam, handleFilterChange } =
-    useFilterQueryParams("size");
+  const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
+  const sizes = dictionary?.sizes || [];
   const [total, setTotal] = useState(0);
-
-  // Convert size name from URL to id so that buttons know which one is active
-  const initialSizeId = dictionary?.sizes
-    ?.find((s) => s.name?.toLowerCase() === (sizeNameParam || "").toLowerCase())
-    ?.id?.toString();
-
-  const [selectedSizeId, setSelectedSizeId] = useState<string>(
-    initialSizeId || "",
+  const initSize = sizes?.find((s) => s.name === defaultValue)?.id?.toString();
+  const [selectedSize, setSelectedSize] = useState<string>(initSize || "");
+  const routeParams = useParams() as { params?: string[] };
+  const [gender, categoryName, subCategoryName] = routeParams?.params || [];
+  const { topCategory, subCategory } = resolveCategories(
+    dictionary?.categories,
+    categoryName,
+    subCategoryName,
   );
 
-  useEffect(() => {
-    if (!sizeNameParam) {
-      setSelectedSizeId("");
-      setTotal(0);
-    } else {
-      const newId = dictionary?.sizes
-        ?.find((s) => s.name?.toLowerCase() === sizeNameParam.toLowerCase())
-        ?.id?.toString();
-      if (newId) setSelectedSizeId(newId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sizeNameParam]);
+  const sizeOptions = sizes
+    ?.sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
+    ?.map((s) => ({ ...s, name: s.name ?? "" }));
 
-  const sortedSizes = dictionary?.sizes?.sort((a, b) => {
-    return (a.id || 0) - (b.id || 0);
-  });
-  const sizeNames = sortedSizes?.map((size) => {
-    return {
-      ...size,
-      name: size.name || "",
-    };
-  });
+  const getSizeNameById = (id?: string) =>
+    sizeOptions?.find((s) => String(s.id) === id)?.name.toLowerCase();
 
   const handleSizeClick = async (sizeId?: string) => {
-    setSelectedSizeId(sizeId || "");
+    setSelectedSize(sizeId ?? "");
 
-    if (sizeId) {
-      try {
-        const searchParams = {
-          topCategoryIds: category,
-          subCategoryIds: subCategory,
-          gender,
-          size: sizeId,
-        };
+    if (!sizeId) {
+      setTotal(0);
+      return;
+    }
 
-        const response = await serviceClient.GetProductsPaged({
-          limit: CATALOG_LIMIT,
-          offset: 0,
-          ...getProductsPagedQueryParams(searchParams),
-        });
-
-        setTotal(response.total || 0);
-      } catch (error) {
-        setTotal(0);
-      }
-    } else {
+    try {
+      const response = await serviceClient.GetProductsPaged({
+        limit: CATALOG_LIMIT,
+        offset: 0,
+        ...getProductsPagedQueryParams(
+          {
+            topCategoryIds: topCategory?.id?.toString(),
+            subCategoryIds: subCategory?.id?.toString(),
+            gender,
+            size: getSizeNameById(sizeId),
+          },
+          dictionary,
+        ),
+      });
+      setTotal(response.total ?? 0);
+    } catch {
       setTotal(0);
     }
   };
@@ -95,23 +79,26 @@ export default function Size() {
     >
       <div
         className={cn("grid h-full grid-cols-4 gap-x-2 gap-y-6 px-2 py-6", {
-          "mb-10": selectedSizeId,
+          "mb-10": selectedSize,
         })}
       >
         <FilterOptionButtons
-          defaultValue={selectedSizeId}
+          defaultValue={selectedSize}
           handleFilterChange={handleSizeClick}
-          values={sizeNames || []}
-          topCategoryId={category}
+          values={sizeOptions || []}
+          topCategoryId={topCategory?.id?.toString()}
         />
       </div>
-      {selectedSizeId && (
+      {selectedSize && (
         <div className="fixed inset-x-2.5 bottom-0 flex justify-between gap-2 bg-bgColor">
           <Button
             className="w-full uppercase"
             size="lg"
             variant="main"
-            onClick={() => handleFilterChange(undefined)}
+            onClick={() => {
+              handleSizeClick(undefined);
+              handleFilterChange(undefined);
+            }}
           >
             clear all
           </Button>
@@ -120,14 +107,11 @@ export default function Size() {
             size="lg"
             variant="main"
             onClick={() => {
-              const sizeName =
-                dictionary?.sizes?.find(
-                  (s) => (s.id || 0).toString() === selectedSizeId,
-                )?.name || "";
+              const sizeName = getSizeNameById(selectedSize);
               handleFilterChange(sizeName || undefined);
             }}
           >
-            show {selectedSizeId && total > 0 ? `[${total}]` : ""}
+            show {selectedSize && total > 0 ? `[${total}]` : ""}
           </Button>
         </div>
       )}

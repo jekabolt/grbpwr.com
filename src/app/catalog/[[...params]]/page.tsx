@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
-import { findCategoryByName } from "@/lib/categories-map";
+import { resolveCategories } from "@/lib/categories-map";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
@@ -39,15 +39,10 @@ export default async function CatalogPage(props: CatalogPageProps) {
   const params = await props.params;
   const [gender, categoryName, subCategoryName] = params?.params ?? [];
 
-  const topCategory = findCategoryByName(
-    dictionary?.categories || [],
+  const { topCategory, subCategory } = resolveCategories(
+    dictionary?.categories,
     categoryName,
-  );
-
-  const subCategory = findCategoryByName(
-    dictionary?.categories || [],
     subCategoryName,
-    topCategory?.id,
   );
 
   const response = await serviceClient.GetProductsPaged({

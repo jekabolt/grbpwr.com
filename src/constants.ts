@@ -235,6 +235,45 @@ export const SHOES_SIZE_CONVERSION: Record<string, Record<string, string>> = {
   "48": { "EU": "48", "US": "18", "UK": "15", "CM": "35.0" }
 }
 
+export const SIZE_MAP_URL: Record<string, string> = {
+  "os": "os",
+  "xxs": "xxs",
+  "xs": "xs",
+  "s": "s",
+  "m": "m",
+  "l": "l",
+  "xl": "xl",
+  "xxl": "xxl",
+  "xxxl": "xxxl",
+  "35": "35",
+  "35.5": "35.5",
+  "36": "36",
+  "36.5": "36.5",
+  "37": "37",
+  "37.5": "37.5",
+  "38": "38",
+  "38.5": "38.5",
+  "39": "39",
+  "39.5": "39.5",
+  "40": "40",
+  "40.5": "40.5",
+  "41": "41",
+  "41.5": "41.5",
+  "42": "42",
+  "42.5": "42.5",
+  "43": "43",
+  "43.5": "43.5",
+  "44": "44",
+  "44.5": "44.5",
+  "45": "45",
+  "45.5": "45.5",
+  "46": "46",
+  "46.5": "46.5",
+  "47": "47",
+  "47.5": "47.5",
+  "48": "48"
+};
+
 export const RING_SIZE_CONVERSION: Record<string, Record<string, string>> = {
   "35": { "EU": "35", "US": "6", "UK": "2" },
   "35.5": { "EU": "35.5", "US": "6.5", "UK": "2.5" },
@@ -264,7 +303,6 @@ export const RING_SIZE_CONVERSION: Record<string, Record<string, string>> = {
   "47.5": { "EU": "47.5", "US": "18.5", "UK": "14.5" },
   "48": { "EU": "48", "US": "19", "UK": "15" }
 }
-
 
 export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
   waist: "Measured waist flat across garment",

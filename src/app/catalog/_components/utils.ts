@@ -46,21 +46,10 @@ export function getProductsPagedQueryParams(
   GetProductsPagedRequest,
   "sortFactors" | "orderFactor" | "filterConditions"
 > {
-  let sizeId: number | undefined;
-  if (size) {
-    if (/^\d+$/.test(size)) {
-      sizeId = parseInt(size, 10);
-    } else {
-      const matched = dictionary?.sizes?.find(
-        (s) => (s.name || "").toLowerCase() === size.toLowerCase(),
-      );
-      sizeId = matched?.id ? matched.id : undefined;
-    }
-  }
-
   const sortFactor = getEnumFromUrl(sort, SORT_MAP_URL) as common_SortFactor | undefined;
   const orderFactor = getEnumFromUrl(order, ORDER_MAP) as common_OrderFactor | undefined;
   const genderEnums = getEnumFromUrl(gender, GENDER_MAP) as common_GenderEnum | undefined;
+  const sizeId = dictionary?.sizes?.find(s => s.name?.toLowerCase() === size?.toLowerCase())?.id;
 
   return {
     sortFactors: sortFactor ? [sortFactor] : undefined,
