@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
 
 import {
   getSubCategoriesForTopCategory,
@@ -12,18 +11,13 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
+import { useRouteParams } from "./useRouteParams";
+
 export default function Category() {
-  const params = useParams();
   const { dictionary } = useDataContext();
-
-  const pathParts = (params.params as string[]) || [];
-  const [gender, categoryName, subCategoryName] = pathParts;
-
+  const { gender, categoryName, subCategoryName, topCategory } =
+    useRouteParams();
   const categories = dictionary?.categories || [];
-
-  const topCategory = categories.find(
-    (c) => c.name?.toLowerCase() === categoryName,
-  );
 
   const subCategories = getSubCategoriesForTopCategory(
     categories,
@@ -82,10 +76,9 @@ export default function Category() {
 }
 
 function AllCategories() {
-  const params = useParams();
+  const { gender } = useRouteParams();
   const { dictionary } = useDataContext();
   const categories = dictionary?.categories || [];
-  const [gender] = (params.params as string[]) || [];
 
   const topCategories = dictionary?.topCategories
     ?.filter((c) => c.categoryName !== "objects")

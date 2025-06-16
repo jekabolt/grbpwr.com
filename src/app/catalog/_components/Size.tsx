@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useParams } from "next/navigation";
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
-import { resolveCategories } from "@/lib/categories-map";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
@@ -12,6 +10,7 @@ import { Text } from "@/components/ui/text";
 
 import FilterOptionButtons from "./FilterOptionButtons";
 import useFilterQueryParams from "./useFilterQueryParams";
+import { useRouteParams } from "./useRouteParams";
 import { getProductsPagedQueryParams } from "./utils";
 
 function Trigger() {
@@ -21,17 +20,11 @@ function Trigger() {
 export default function Size() {
   const { dictionary } = useDataContext();
   const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
+  const { gender, topCategory, subCategory } = useRouteParams();
   const sizes = dictionary?.sizes || [];
   const [total, setTotal] = useState(0);
   const initSize = sizes?.find((s) => s.name === defaultValue)?.id?.toString();
   const [selectedSize, setSelectedSize] = useState<string>(initSize || "");
-  const routeParams = useParams() as { params?: string[] };
-  const [gender, categoryName, subCategoryName] = routeParams?.params || [];
-  const { topCategory, subCategory } = resolveCategories(
-    dictionary?.categories,
-    categoryName,
-    subCategoryName,
-  );
 
   const sizeOptions = sizes
     ?.sort((a, b) => (a.id ?? 0) - (b.id ?? 0))

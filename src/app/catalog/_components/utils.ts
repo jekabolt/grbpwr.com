@@ -69,3 +69,12 @@ export function getProductsPagedQueryParams(
     },
   };
 }
+
+export function getRouteParams(params?: { params: string[] }) {
+  const [gender, categoryName, subCategoryName] = params?.params ?? [];
+  return {
+    gender,
+    categoryName,
+    subCategoryName,
+  };
+}
