@@ -11,10 +11,7 @@ import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
 import Catalog from "../_components/catalog";
 import { NextCategoryButton } from "../_components/next-category-button";
-import {
-  getProductsPagedQueryParams,
-  getRouteParams,
-} from "../_components/utils";
+import { getProductsPagedQueryParams } from "../_components/utils";
 
 interface CatalogPageProps {
   params?: Promise<{
@@ -40,8 +37,7 @@ export default async function CatalogPage(props: CatalogPageProps) {
   const { hero, dictionary } = await serviceClient.GetHero({});
   const searchParams = await props.searchParams;
   const params = await props.params;
-  const { gender, categoryName, subCategoryName } = getRouteParams(params);
-
+  const [gender, categoryName, subCategoryName] = params?.params || [];
   const { topCategory, subCategory } = resolveCategories(
     dictionary?.categories,
     categoryName,

@@ -12,14 +12,13 @@ type MapType = typeof SORT_MAP_URL | typeof ORDER_MAP | typeof GENDER_MAP;
 
 export function getUrlKey(urlKey: string | undefined, map: MapType): string {
   if (!urlKey) return '';
-  return Object.entries(map).find(([key, value]) => value === urlKey)?.[0] || '';
+  return Object.entries(map).find(([_, value]) => value === urlKey)?.[0] || '';
 }
 
 export function getEnumFromUrl(urlKey: string | null | undefined, map: MapType): EnumType | undefined {
   if (!urlKey) return undefined;
   return map[urlKey.toLowerCase()];
 }
-
 
 export function getProductsPagedQueryParams(
   {
@@ -67,14 +66,5 @@ export function getProductsPagedQueryParams(
       byTag: tag ? tag : undefined,
       gender: genderEnums ? [genderEnums] : undefined,
     },
-  };
-}
-
-export function getRouteParams(params?: { params: string[] }) {
-  const [gender, categoryName, subCategoryName] = params?.params ?? [];
-  return {
-    gender,
-    categoryName,
-    subCategoryName,
   };
 }
