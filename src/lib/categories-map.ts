@@ -68,10 +68,8 @@ export const processCategories = (
       (cat) => cat.level === "sub_category" && cat.parentId === topCat.id!,
     );
 
-    const displayName =
-      topCat.name && CATEGORY_TITLE_MAP[topCat.name.toLowerCase()]
-        ? CATEGORY_TITLE_MAP[topCat.name.toLowerCase()]
-        : topCat.name!;
+    const originalName = topCat.name?.toLowerCase() ?? "";
+    const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
 
     if (subCategories.length === 0) {
       return {
@@ -193,7 +191,17 @@ export function resolveCategories(
   subCategoryName?: string,
 ) {
   const safeCategories = categories || [];
-  const topCategory = findCategoryByName(safeCategories, categoryName);
+  let topCategory = findCategoryByName(safeCategories, categoryName);
+
+  // Fallback: try to resolve category using CATEGORY_TITLE_MAP aliases
+  if (!topCategory && categoryName) {
+    topCategory = safeCategories.find((cat) => {
+      const originalName = cat.name?.toLowerCase() ?? "";
+      const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
+      return displayName.toLowerCase() === categoryName.toLowerCase();
+    });
+  }
+
   const subCategory = findCategoryByName(
     safeCategories,
     subCategoryName,
