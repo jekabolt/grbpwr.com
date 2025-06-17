@@ -50,6 +50,7 @@ export function getProductsPagedQueryParams(
   const genderEnums = getEnumFromUrl(gender, GENDER_MAP) as common_GenderEnum | undefined;
   const sizeId = dictionary?.sizes?.find(s => s.name?.toLowerCase() === size?.toLowerCase())?.id;
 
+  // todo: validate params before make a request
   return {
     sortFactors: sortFactor ? [sortFactor] : undefined,
     orderFactor: orderFactor,
