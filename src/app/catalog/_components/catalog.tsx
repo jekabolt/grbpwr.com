@@ -14,7 +14,7 @@ import { EmptyCatalog } from "./empty-catalog";
 import { InfinityScrollCatalog } from "./infinity-scroll-catalog";
 import Size from "./Size";
 import Sort from "./Sort";
-import useFilterQueryParams from "./useFilterQueryParams";
+import { useRouteParams } from "./useRouteParams";
 
 export default function Catalog({
   total,
@@ -24,8 +24,7 @@ export default function Catalog({
   firstPageItems: common_Product[];
 }) {
   const { dictionary } = useDataContext();
-  const { defaultValue: gender } = useFilterQueryParams("gender");
-  const { defaultValue: topCategory } = useFilterQueryParams("topCategoryIds");
+  const { gender, topCategory } = useRouteParams();
   const activeTopCategory = getTopCategoryName(
     dictionary?.categories || [],
     parseInt(topCategory || "0"),

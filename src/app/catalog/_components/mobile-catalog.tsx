@@ -14,7 +14,7 @@ import Category from "./Category";
 import { EmptyCatalog } from "./empty-catalog";
 import { MobileSize } from "./mobile-size";
 import { MobileSort } from "./mobile-sort";
-import useFilterQueryParams from "./useFilterQueryParams";
+import { useRouteParams } from "./useRouteParams";
 
 export function MobileCatalog({
   firstPageItems,
@@ -24,8 +24,7 @@ export function MobileCatalog({
   total: number;
 }) {
   const { dictionary } = useDataContext();
-  const { defaultValue: gender } = useFilterQueryParams("gender");
-  const { defaultValue: topCategory } = useFilterQueryParams("topCategoryIds");
+  const { gender, topCategory } = useRouteParams();
   const activeTopCategory = getTopCategoryName(
     dictionary?.categories || [],
     parseInt(topCategory || "0"),
