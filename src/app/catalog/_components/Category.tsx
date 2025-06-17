@@ -1,5 +1,6 @@
-import { common_GenderEnum } from "@/api/proto-http/frontend";
-import { GENDER_MAP_REVERSE } from "@/constants";
+"use client";
+
+import Link from "next/link";
 
 import {
   getSubCategoriesForTopCategory,
@@ -10,65 +11,59 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
-import useFilterQueryParams from "./useFilterQueryParams";
+import { useRouteParams } from "./useRouteParams";
 
 export default function Category() {
-  const { defaultValue: topCategory } = useFilterQueryParams("topCategoryIds");
-  const { defaultValue: gender } = useFilterQueryParams("gender");
-  const {
-    defaultValue: subCategory,
-    handleFilterChange: handleSubCategoryChange,
-  } = useFilterQueryParams("subCategoryIds");
   const { dictionary } = useDataContext();
+  const { gender, categoryName, subCategoryName, topCategory } =
+    useRouteParams();
   const categories = dictionary?.categories || [];
-  const activeTopCategory = getTopCategoryName(
-    categories,
-    parseInt(topCategory || "0"),
-  );
+
   const subCategories = getSubCategoriesForTopCategory(
     categories,
-    parseInt(topCategory || "0"),
+    topCategory?.id || 0,
   );
 
   const filteredSubCategories =
-    GENDER_MAP_REVERSE[gender as common_GenderEnum] === "men"
+    gender === "men"
       ? subCategories.filter((c) => c.name.toLowerCase() !== "swimwear_w")
       : subCategories.filter((c) => c.name.toLowerCase() !== "swimwear_m");
 
   return (
     <div>
-      {!topCategory ? (
+      {!categoryName ? (
         <AllCategories />
       ) : (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-2">
-            <Button
-              onClick={() => handleSubCategoryChange(undefined)}
-              className="uppercase hover:underline"
-            >
-              {activeTopCategory}
+            <Button asChild className="uppercase hover:underline">
+              <Link href={`/catalog/${gender}/${categoryName}`}>
+                {categoryName}
+              </Link>
             </Button>
-            <Text>/</Text>
+            {!!subCategories.length && <Text>/</Text>}
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {filteredSubCategories.map((subCategoryItem, index) => (
               <div className="flex items-center gap-1" key={subCategoryItem.id}>
                 <Button
+                  asChild
                   variant={
-                    subCategory === subCategoryItem.id.toString()
+                    subCategoryName === subCategoryItem.name.toLowerCase()
                       ? "underline"
                       : "default"
                   }
                   className={cn("whitespace-nowrap uppercase hover:underline", {
                     "text-textInactiveColor":
-                      subCategory &&
-                      subCategory !== subCategoryItem.id.toString(),
+                      subCategoryName &&
+                      subCategoryName !== subCategoryItem.name.toLowerCase(),
                   })}
-                  onClick={() =>
-                    handleSubCategoryChange(subCategoryItem.id.toString())
-                  }
                 >
-                  {subCategoryItem.name.replace("_", " ")}
+                  <Link
+                    href={`/catalog/${gender}/${categoryName}/${subCategoryItem.name.toLowerCase()}`}
+                  >
+                    {subCategoryItem.name.replace(/_/g, " ")}
+                  </Link>
                 </Button>
                 {index < filteredSubCategories.length - 1 && <Text>/</Text>}
               </div>
@@ -81,27 +76,35 @@ export default function Category() {
 }
 
 function AllCategories() {
+  const { gender } = useRouteParams();
   const { dictionary } = useDataContext();
-  const { handleFilterChange } = useFilterQueryParams("topCategoryIds");
   const categories = dictionary?.categories || [];
+
   const topCategories = dictionary?.topCategories
     ?.filter((c) => c.categoryName !== "objects")
     .sort((a, b) => (a.categoryId || 0) - (b.categoryId || 0));
 
   return (
     <div className="flex items-center gap-2">
-      {topCategories?.map((c, i) => (
-        <div className="flex items-center gap-2" key={c.categoryId}>
-          <Button
-            onClick={() => handleFilterChange(c.categoryId?.toString() || "")}
-            className="uppercase hover:underline"
-            disabled={c.count === 0}
-          >
-            {getTopCategoryName(categories, c.categoryId || 0)}
-          </Button>
-          {i < topCategories.length - 1 && <Text>/</Text>}
-        </div>
-      ))}
+      {topCategories?.map((c, i) => {
+        const name = getTopCategoryName(categories, c.categoryId || 0);
+        if (!name) return null;
+
+        return (
+          <div className="flex items-center gap-2" key={c.categoryId}>
+            <Button
+              asChild
+              className="uppercase hover:underline"
+              disabled={c.count === 0}
+            >
+              <Link href={`/catalog/${gender}/${name.toLowerCase()}`}>
+                {name}
+              </Link>
+            </Button>
+            {i < topCategories.length - 1 && <Text>/</Text>}
+          </div>
+        );
+      })}
     </div>
   );
 }

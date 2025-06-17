@@ -42,6 +42,18 @@ export const GENDER_MAP_REVERSE: Record<common_GenderEnum, string> = {
   "GENDER_ENUM_UNKNOWN": "ukn",
 };
 
+export const ORDER_MAP: Record<string, common_OrderFactor> = {
+  asc: "ORDER_FACTOR_ASC",
+  desc: "ORDER_FACTOR_DESC",
+};
+
+export const SORT_MAP_URL: Record<string, common_SortFactor> = {
+  "created_at": "SORT_FACTOR_CREATED_AT",
+  "updated_at": "SORT_FACTOR_UPDATED_AT",
+  name: "SORT_FACTOR_NAME",
+  price: "SORT_FACTOR_PRICE",
+};
+
 export const currencySymbols: Record<string, string> = {
   Bitcoin: "₿", // Bitcoin
   CHF: "Fr", // Swiss Franc
@@ -252,7 +264,6 @@ export const RING_SIZE_CONVERSION: Record<string, Record<string, string>> = {
   "47.5": { "EU": "47.5", "US": "18.5", "UK": "14.5" },
   "48": { "EU": "48", "US": "19", "UK": "15" }
 }
-
 
 export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
   waist: "Measured waist flat across garment",

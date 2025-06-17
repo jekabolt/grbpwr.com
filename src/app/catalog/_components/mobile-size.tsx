@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CATALOG_LIMIT } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
@@ -12,57 +12,50 @@ import { Text } from "@/components/ui/text";
 
 import FilterOptionButtons from "./FilterOptionButtons";
 import useFilterQueryParams from "./useFilterQueryParams";
+import { useRouteParams } from "./useRouteParams";
 import { getProductsPagedQueryParams } from "./utils";
 
 export function MobileSize() {
   const { dictionary } = useDataContext();
-  const { defaultValue: category } = useFilterQueryParams("topCategoryIds");
-  const { defaultValue: gender } = useFilterQueryParams("gender");
-  const { defaultValue: size, handleFilterChange } =
-    useFilterQueryParams("size");
+  const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
+  const { gender, topCategory, subCategory } = useRouteParams();
+  const sizes = dictionary?.sizes || [];
   const [total, setTotal] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<string>(size || "");
-  const sortedSizes = dictionary?.sizes?.sort((a, b) => {
-    return (a.id || 0) - (b.id || 0);
-  });
-  const sizeNames = sortedSizes?.map((size) => {
-    return {
-      ...size,
-      name: size.name || "",
-    };
-  });
+  const initSize = sizes?.find((s) => s.name === defaultValue)?.id?.toString();
+  const [selectedSize, setSelectedSize] = useState<string>(initSize || "");
 
-  useEffect(() => {
-    if (!size) {
-      setSelectedSize("");
-      setTotal(0);
-    }
-  }, [size]);
+  const sizeOptions = sizes
+    ?.sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
+    ?.map((s) => ({ ...s, name: s.name ?? "" }));
+
+  const getSizeNameById = (id?: string) =>
+    sizeOptions?.find((s) => String(s.id) === id)?.name.toLowerCase();
 
   const handleSizeClick = async (sizeId?: string) => {
-    setSelectedSize(sizeId || "");
+    setSelectedSize(sizeId ?? "");
 
-    if (sizeId) {
-      try {
-        const searchParams = {
-          topCategoryIds: category,
-          gender,
-          size: sizeId,
-        };
-
-        const response = await serviceClient.GetProductsPaged({
-          limit: CATALOG_LIMIT,
-          offset: 0,
-          ...getProductsPagedQueryParams(searchParams),
-        });
-
-        setTotal(response.total || 0);
-      } catch (error) {
-        setTotal(0);
-      }
-    } else {
+    if (!sizeId) {
       setTotal(0);
-      setSelectedSize("");
+      return;
+    }
+
+    try {
+      const response = await serviceClient.GetProductsPaged({
+        limit: CATALOG_LIMIT,
+        offset: 0,
+        ...getProductsPagedQueryParams(
+          {
+            topCategoryIds: topCategory?.id?.toString(),
+            subCategoryIds: subCategory?.id?.toString(),
+            gender,
+            size: getSizeNameById(sizeId),
+          },
+          dictionary,
+        ),
+      });
+      setTotal(response.total ?? 0);
+    } catch {
+      setTotal(0);
     }
   };
 
@@ -92,8 +85,8 @@ export function MobileSize() {
             <FilterOptionButtons
               defaultValue={selectedSize || ""}
               handleFilterChange={handleSizeClick}
-              values={sizeNames || []}
-              topCategoryId={category}
+              values={sizeOptions || []}
+              topCategoryId={topCategory?.id?.toString()}
             />
           </div>
           {selectedSize && (
@@ -110,7 +103,13 @@ export function MobileSize() {
                 className="w-full uppercase"
                 size="lg"
                 variant="main"
-                onClick={() => handleFilterChange(selectedSize)}
+                onClick={() => {
+                  const sizeName =
+                    dictionary?.sizes?.find(
+                      (s) => (s.id || 0).toString() === selectedSize,
+                    )?.name || "";
+                  handleFilterChange(sizeName || undefined);
+                }}
               >
                 show {selectedSize && total > 0 ? `[${total}]` : ""}
               </Button>

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { GENDER_MAP } from "@/constants";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import { filterNavigationLinks, processCategories } from "@/lib/categories-map";
@@ -24,8 +23,8 @@ export function DesktopNavigationMenu({
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
   const { dictionary } = useDataContext();
-  const men = `gender=${GENDER_MAP["men"]}`;
-  const women = `gender=${GENDER_MAP["women"]}`;
+  const men = "/catalog/men";
+  const women = "/catalog/women";
 
   const processedCategories = dictionary?.categories
     ? processCategories(dictionary.categories).filter(
@@ -33,9 +32,10 @@ export function DesktopNavigationMenu({
       )
     : [];
 
-  const objectsCategoryId =
-    dictionary?.categories?.find((cat) => cat.name?.toLowerCase() === "objects")
-      ?.id || "";
+  const objectsCategoryName =
+    dictionary?.categories
+      ?.find((cat) => cat.name?.toLowerCase() === "objects")
+      ?.name?.toLowerCase() || "objects";
 
   return (
     <NavigationMenu.Root
@@ -47,7 +47,7 @@ export function DesktopNavigationMenu({
       <NavigationMenu.List className="flex items-center gap-4">
         <NavigationMenu.Item>
           <NavigationMenu.Trigger className="flex items-center text-textBaseSize data-[state=open]:underline">
-            <Link href={`/catalog?${men}`} className="flex items-center">
+            <Link href={men} className="flex items-center">
               men
             </Link>
           </NavigationMenu.Trigger>
@@ -56,7 +56,7 @@ export function DesktopNavigationMenu({
               <LinksGroup
                 gender="men"
                 links={processedCategories.map((item) => ({
-                  href: `${item.href}&${men}`,
+                  href: `/catalog/men/${item.name.toLowerCase()}`,
                   title: item.name,
                   id: item.id.toString(),
                 }))}
@@ -67,7 +67,7 @@ export function DesktopNavigationMenu({
 
         <NavigationMenu.Item>
           <NavigationMenu.Trigger className="flex items-center text-textBaseSize data-[state=open]:underline">
-            <Link href={`/catalog?${women}`} className="flex items-center">
+            <Link href={women} className="flex items-center">
               women
             </Link>
           </NavigationMenu.Trigger>
@@ -76,7 +76,7 @@ export function DesktopNavigationMenu({
               <LinksGroup
                 gender="women"
                 links={processedCategories.map((item) => ({
-                  href: `${item.href}&${women}`,
+                  href: `/catalog/women/${item.name.toLowerCase()}`,
                   title: item.name,
                   id: item.id.toString(),
                 }))}
@@ -88,7 +88,7 @@ export function DesktopNavigationMenu({
         <NavigationMenu.Item>
           <Button asChild>
             <NavigationMenu.Link
-              href={`/catalog?topCategoryIds=${objectsCategoryId}`}
+              href={`/catalog/${objectsCategoryName}`}
               className="flex items-center text-textBaseSize underline-offset-2 hover:underline"
             >
               objects
@@ -151,7 +151,7 @@ function LinksGroup({
       <div className="flex gap-24">
         <div className="space-y-4">
           <Button className="uppercase hover:underline" asChild>
-            <Link href={`/catalog?gender=${GENDER_MAP[gender]}`}>all</Link>
+            <Link href={`/catalog/${gender}`}>all</Link>
           </Button>
           <div className="space-y-4">
             {filteredLeftSideCategoryLinks.map((link) => (
@@ -169,9 +169,11 @@ function LinksGroup({
           </Button>
           <div className="space-y-4">
             {rightSideCategoryLinks.map((link) => (
-              <div className="w-full" key={link.href}>
+              <div className="w-full" key={link.id}>
                 <Button className="uppercase hover:underline" asChild>
-                  <NavigationMenu.Link href={link.href}>
+                  <NavigationMenu.Link
+                    href={`/catalog/${gender}/${link.title.toLowerCase()}`}
+                  >
                     {link.title}
                   </NavigationMenu.Link>
                 </Button>

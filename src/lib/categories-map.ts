@@ -68,21 +68,19 @@ export const processCategories = (
       (cat) => cat.level === "sub_category" && cat.parentId === topCat.id!,
     );
 
-    const displayName =
-      topCat.name && CATEGORY_TITLE_MAP[topCat.name.toLowerCase()]
-        ? CATEGORY_TITLE_MAP[topCat.name.toLowerCase()]
-        : topCat.name!;
+    const originalName = topCat.name?.toLowerCase() ?? "";
+    const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
 
     if (subCategories.length === 0) {
       return {
         id: topCat.id!,
         name: displayName,
-        href: `/catalog?topCategoryIds=${topCat.id}`,
+        href: `/catalog/${displayName.toLowerCase()}`,
         subCategories: [
           {
             id: topCat.id!,
             name: displayName,
-            href: `/catalog?category=${topCat.id}`,
+            href: `/catalog/${displayName.toLowerCase()}`,
           },
         ],
       };
@@ -91,17 +89,38 @@ export const processCategories = (
     const processedSubCategories = subCategories.map((subCat) => ({
       id: subCat.id!,
       name: subCat.name!,
-      href: `/catalog?category=${subCat.id}`,
+      href: `/catalog/${displayName.toLowerCase()}/${subCat.name!.toLowerCase()}`,
     }));
 
     return {
       id: topCat.id!,
       name: displayName,
-      href: `/catalog?topCategoryIds=${topCat.id}`,
+      href: `/catalog/${displayName.toLowerCase()}`,
       subCategories: processedSubCategories,
     };
   });
 };
+
+export function findCategoryByName(
+  categories: common_Category[],
+  name: string | undefined,
+  parentId?: number,
+): common_Category | undefined {
+  if (!name) return undefined;
+
+  const level = parentId ? "sub_category" : "top_category";
+
+  return categories.find((cat) => {
+    const nameMatch = cat.name?.toLowerCase() === name.toLowerCase();
+    const levelMatch = cat.level === level;
+
+    if (level === "sub_category") {
+      return nameMatch && levelMatch && cat.parentId === parentId;
+    }
+
+    return nameMatch && levelMatch;
+  });
+}
 
 export function getTopCategoryName(
   categories: common_Category[],
@@ -164,4 +183,30 @@ export function filterNavigationLinks(
     leftSideCategoryLinks,
     rightSideCategoryLinks,
   };
+}
+
+export function resolveCategories(
+  categories: common_Category[] | undefined,
+  categoryName?: string,
+  subCategoryName?: string,
+) {
+  const safeCategories = categories || [];
+  let topCategory = findCategoryByName(safeCategories, categoryName);
+
+  // Fallback: try to resolve category using CATEGORY_TITLE_MAP aliases
+  if (!topCategory && categoryName) {
+    topCategory = safeCategories.find((cat) => {
+      const originalName = cat.name?.toLowerCase() ?? "";
+      const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
+      return displayName.toLowerCase() === categoryName.toLowerCase();
+    });
+  }
+
+  const subCategory = findCategoryByName(
+    safeCategories,
+    subCategoryName,
+    topCategory?.id,
+  );
+
+  return { topCategory, subCategory } as const;
 }

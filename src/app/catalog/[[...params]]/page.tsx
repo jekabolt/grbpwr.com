@@ -2,31 +2,30 @@ import { Metadata } from "next";
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
+import { resolveCategories } from "@/lib/categories-map";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
+import { HeroArchive } from "@/app/_components/hero-archive";
 import { MobileCatalog } from "@/app/catalog/_components/mobile-catalog";
 
-import { HeroArchive } from "../_components/hero-archive";
-import Catalog from "./_components/catalog";
-import { NextCategoryButton } from "./_components/next-category-button";
-import { getProductsPagedQueryParams } from "./_components/utils";
+import Catalog from "../_components/catalog";
+import { NextCategoryButton } from "../_components/next-category-button";
+import { getProductsPagedQueryParams } from "../_components/utils";
 
 interface CatalogPageProps {
+  params?: Promise<{
+    params: string[];
+  }>;
   searchParams: Promise<{
-    category?: string;
-    gender?: string;
     order?: string;
     sort?: string;
     size?: string;
-    topCategoryIds?: string;
     subCategoryIds?: string;
     sale?: string;
     tag?: string;
   }>;
 }
-
-// export const dynamic = "force-static";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateCommonMetadata({
@@ -35,12 +34,28 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function CatalogPage(props: CatalogPageProps) {
-  const { hero } = await serviceClient.GetHero({});
+  const { hero, dictionary } = await serviceClient.GetHero({});
   const searchParams = await props.searchParams;
+  const params = await props.params;
+  const [gender, categoryName, subCategoryName] = params?.params || [];
+  const { topCategory, subCategory } = resolveCategories(
+    dictionary?.categories,
+    categoryName,
+    subCategoryName,
+  );
+
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
-    ...getProductsPagedQueryParams(searchParams),
+    ...getProductsPagedQueryParams(
+      {
+        ...searchParams,
+        gender,
+        topCategoryIds: !subCategory ? topCategory?.id?.toString() : undefined,
+        subCategoryIds: subCategory?.id?.toString(),
+      },
+      dictionary,
+    ),
   });
 
   return (
