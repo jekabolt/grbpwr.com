@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { common_ArchiveFull } from "@/api/proto-http/frontend";
+import type { common_ArchiveList } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
 
 import { FullSizeItem } from "./full-size-item";
 
 interface CarouselProps {
-  archives: common_ArchiveFull[];
+  archives: common_ArchiveList[];
 }
 
 export function VerticalCarousel({ archives }: CarouselProps) {

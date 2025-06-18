@@ -11,14 +11,18 @@ import { OrderPageSkeleton } from "./_components/order-page-skeleton";
 interface Props {
   params: Promise<{
     uuid: string;
+    email: string;
   }>;
 }
 
 export default async function OrderPage(props: Props) {
   const params = await props.params;
-  const { uuid } = params;
+  const { uuid, email } = params;
 
-  const orderPromise = serviceClient.GetOrderByUUID({ orderUuid: uuid });
+  const orderPromise = serviceClient.GetOrderByUUIDAndEmail({
+    orderUuid: uuid,
+    b64Email: email,
+  });
 
   return (
     <div className="flex min-h-screen flex-col justify-between gap-40 px-2 pb-10 pt-10 lg:px-16 lg:pt-20">

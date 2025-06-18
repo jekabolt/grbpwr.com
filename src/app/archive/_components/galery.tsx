@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import type {
-  common_ArchiveFull,
+  common_ArchiveList,
   GetArchivesPagedResponse,
 } from "@/api/proto-http/frontend";
 import { ARCHIVE_LIMIT } from "@/constants";
@@ -20,7 +20,7 @@ export function Galery({
   total,
   viewMode,
 }: {
-  archives: common_ArchiveFull[];
+  archives: common_ArchiveList[];
   total: number;
   viewMode: ViewMode;
 }) {

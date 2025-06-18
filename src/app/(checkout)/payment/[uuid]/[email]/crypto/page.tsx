@@ -8,18 +8,22 @@ import { CryptoPayment } from "./_components/crypto-payment";
 
 interface Props {
   params: Promise<{
+    email: string;
     uuid: string;
   }>;
 }
 
 export default async function Page(props: Props) {
   const params = await props.params;
-  const { uuid } = params;
+  const { uuid, email } = params;
 
   let orderResponse;
 
   try {
-    orderResponse = await serviceClient.GetOrderByUUID({ orderUuid: uuid });
+    orderResponse = await serviceClient.GetOrderByUUIDAndEmail({
+      orderUuid: uuid,
+      b64Email: email,
+    });
   } catch (error) {
     console.error("Error fetching order:", error);
   }

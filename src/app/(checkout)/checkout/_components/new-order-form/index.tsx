@@ -127,14 +127,16 @@ export default function NewOrderForm() {
         switch (paymentType) {
           case "PAYMENT_METHOD_NAME_ENUM_USDT_TRON":
           case "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA":
-            router.push(`/payment/${newOrderResponse.order?.orderUuid}/crypto`);
+            router.push(
+              `/payment/${newOrderResponse.order?.orderUuid}/${window.btoa(data.email)}/crypto`,
+            );
             break;
           case "PAYMENT_METHOD_NAME_ENUM_CARD_TEST":
             const clientSecret = newOrderResponse.order?.payment?.clientSecret;
 
             // case "PAYMENT_METHOD_NAME_ENUM_CARD":
             router.push(
-              `/payment/${newOrderResponse.order?.orderUuid}/card?clientSecret=${clientSecret}`,
+              `/payment/${newOrderResponse.order?.orderUuid}/${window.btoa(data.email)}/card?clientSecret=${clientSecret}`,
             );
             break;
         }
