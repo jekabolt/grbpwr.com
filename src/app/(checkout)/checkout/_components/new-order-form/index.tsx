@@ -118,7 +118,6 @@ export default function NewOrderForm() {
 
     try {
       console.log("submit order");
-      console.log(window.btoa(data.email));
       const newOrderResponse = await submitNewOrder(newOrderData);
       console.log("submit order finish");
 
