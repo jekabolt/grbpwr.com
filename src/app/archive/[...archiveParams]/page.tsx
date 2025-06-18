@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
-import { common_ArchiveFull } from "@/api/proto-http/frontend";
+import {
+  common_ArchiveFull,
+  common_ArchiveList,
+} from "@/api/proto-http/frontend";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -31,11 +34,12 @@ export async function generateMetadata({
   const archive = archiveResponse.archive as common_ArchiveFull;
 
   return generateCommonMetadata({
-    title: archive.heading?.toUpperCase() || "heading".toUpperCase(),
-    description: archive.description || "description",
+    title:
+      archive.archiveList?.heading?.toUpperCase() || "heading".toUpperCase(),
+    description: archive.archiveList?.description || "description",
     ogParams: {
       imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
-      imageAlt: archive.heading || "",
+      imageAlt: archive.archiveList?.heading || "",
     },
   });
 }
@@ -45,7 +49,7 @@ export const dynamic = "force-static";
 export default async function Page({ params }: ArchivePageParams) {
   const { archiveParams } = await params;
 
-  let nextArchive: common_ArchiveFull | undefined;
+  let nextArchive: common_ArchiveList | undefined;
 
   if (archiveParams.length !== 3) {
     notFound();
@@ -58,8 +62,8 @@ export default async function Page({ params }: ArchivePageParams) {
     id: parseInt(id),
   });
 
-  if (archive?.nextSlug) {
-    const parts = archive.nextSlug.split("/");
+  if (archive?.archiveList?.nextSlug) {
+    const parts = archive.archiveList?.nextSlug.split("/");
     const nextParams = parts.slice(2);
 
     const [nextHeading, nextTag, nextId] = nextParams;
@@ -70,7 +74,7 @@ export default async function Page({ params }: ArchivePageParams) {
       id: parseInt(nextId),
     });
 
-    nextArchive = nextArchivee;
+    nextArchive = nextArchivee?.archiveList;
   }
 
   return (

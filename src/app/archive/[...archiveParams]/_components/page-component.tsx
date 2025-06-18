@@ -16,9 +16,9 @@ export default function PageComponent({
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <Text variant="uppercase" className="text-sm">
-          {archive?.heading || ""}
+          {archive?.archiveList?.heading || ""}
         </Text>
-        <Text className="text-sm">{archive?.tag || ""}</Text>
+        <Text className="text-sm">{archive?.archiveList?.tag || ""}</Text>
       </div>
 
       {/* Main Media */}
@@ -27,7 +27,7 @@ export default function PageComponent({
           {archive?.media[0].media?.fullSize && (
             <ImageComponent
               src={archive?.media[0].media?.fullSize?.mediaUrl || ""}
-              alt={archive?.heading || "Featured archive image"}
+              alt={archive?.archiveList?.heading || "Featured archive image"}
               aspectRatio={calculateAspectRatio(
                 archive?.media[0].media?.fullSize?.width,
                 archive?.media[0].media?.fullSize?.height,
@@ -38,22 +38,22 @@ export default function PageComponent({
       )}
 
       {/* Video Section */}
-      {archive?.video && !!archive?.video.media?.fullSize?.mediaUrl && (
+      {archive?.media && !!archive.media[0].media?.fullSize?.mediaUrl && (
         <div className="mb-12 w-full">
           <div className="relative aspect-video w-full overflow-hidden">
             <video
-              src={archive?.video.media.fullSize?.mediaUrl || ""}
+              src={archive?.media[0].media?.fullSize?.mediaUrl || ""}
               controls
               className="h-full w-full object-cover"
-              poster={archive?.video.media.thumbnail?.mediaUrl}
+              poster={archive?.media[0].media?.thumbnail?.mediaUrl}
               preload="metadata"
             >
               Your browser does not support the video tag.
             </video>
           </div>
-          {archive?.description && (
+          {archive?.archiveList?.description && (
             <Text className="mt-4 text-sm opacity-80">
-              {archive?.description}
+              {archive?.archiveList?.description}
             </Text>
           )}
         </div>
@@ -66,7 +66,7 @@ export default function PageComponent({
             {mediaItem.media?.fullSize && (
               <ImageComponent
                 src={mediaItem.media?.fullSize?.mediaUrl || ""}
-                alt={`${archive?.heading || ""} image ${index + 1}`}
+                alt={`${archive?.archiveList?.heading || ""} image ${index + 1}`}
                 aspectRatio={calculateAspectRatio(
                   mediaItem.media?.fullSize?.width,
                   mediaItem.media?.fullSize?.height,

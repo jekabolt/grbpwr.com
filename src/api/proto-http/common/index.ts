@@ -36,7 +36,7 @@ export type MediaInfo = {
   height: number | undefined;
 };
 
-export type ArchiveFull = {
+export type ArchiveList = {
   id: number | undefined;
   heading: string | undefined;
   description: string | undefined;
@@ -44,7 +44,12 @@ export type ArchiveFull = {
   slug: string | undefined;
   nextSlug: string | undefined;
   createdAt: wellKnownTimestamp | undefined;
-  video: MediaFull | undefined;
+  thumbnail: MediaFull | undefined;
+};
+
+export type ArchiveFull = {
+  archiveList: ArchiveList | undefined;
+  mainMedia: MediaFull | undefined;
   media: MediaFull[] | undefined;
 };
 
@@ -53,7 +58,8 @@ export type ArchiveInsert = {
   description: string | undefined;
   tag: string | undefined;
   mediaIds: number[] | undefined;
-  videoId: number | undefined;
+  mainMediaId: number | undefined;
+  thumbnailId: number | undefined;
 };
 
 export type Address = {

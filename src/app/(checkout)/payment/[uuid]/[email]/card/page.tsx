@@ -6,14 +6,18 @@ import { Logo } from "@/components/ui/icons/logo";
 import { StripeForm } from "./_components/stripe-form";
 
 export default async function Page(props: Props) {
-  const uuid = (await props.params).uuid;
+  const params = await props.params;
+  const { uuid, email } = params;
   const clientSecret = (await props.searchParams).clientSecret;
 
   if (!clientSecret) {
     notFound();
   }
 
-  const orderResponse = await serviceClient.GetOrderByUUID({ orderUuid: uuid });
+  const orderResponse = await serviceClient.GetOrderByUUIDAndEmail({
+    orderUuid: uuid,
+    b64Email: email,
+  });
   const order = orderResponse.order;
   const amount = order?.order?.totalPrice?.value || "0";
   const country = order?.billing?.addressInsert?.country;
@@ -48,6 +52,7 @@ export default async function Page(props: Props) {
 
 interface Props {
   params: Promise<{
+    email: string;
     uuid: string;
   }>;
   searchParams: Promise<{

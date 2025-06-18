@@ -201,6 +201,12 @@ export type common_HeroFeaturedArchive = {
 };
 
 export type common_ArchiveFull = {
+  archiveList: common_ArchiveList | undefined;
+  mainMedia: common_MediaFull | undefined;
+  media: common_MediaFull[] | undefined;
+};
+
+export type common_ArchiveList = {
   id: number | undefined;
   heading: string | undefined;
   description: string | undefined;
@@ -208,8 +214,7 @@ export type common_ArchiveFull = {
   slug: string | undefined;
   nextSlug: string | undefined;
   createdAt: wellKnownTimestamp | undefined;
-  video: common_MediaFull | undefined;
-  media: common_MediaFull[] | undefined;
+  thumbnail: common_MediaFull | undefined;
 };
 
 export type common_NavFeatured = {
@@ -470,11 +475,12 @@ export type common_PaymentInsert = {
   expiredAt: wellKnownTimestamp | undefined;
 };
 
-export type GetOrderByUUIDRequest = {
+export type GetOrderByUUIDAndEmailRequest = {
   orderUuid: string | undefined;
+  b64Email: string | undefined;
 };
 
-export type GetOrderByUUIDResponse = {
+export type GetOrderByUUIDAndEmailResponse = {
   order: common_OrderFull | undefined;
 };
 
@@ -621,7 +627,7 @@ export type GetArchivesPagedRequest = {
 };
 
 export type GetArchivesPagedResponse = {
-  archives: common_ArchiveFull[] | undefined;
+  archives: common_ArchiveList[] | undefined;
   total: number | undefined;
 };
 
@@ -663,7 +669,7 @@ export interface FrontendService {
   // Submit an order
   SubmitOrder(request: SubmitOrderRequest): Promise<SubmitOrderResponse>;
   // Retrieves an order by its ID
-  GetOrderByUUID(request: GetOrderByUUIDRequest): Promise<GetOrderByUUIDResponse>;
+  GetOrderByUUIDAndEmail(request: GetOrderByUUIDAndEmailRequest): Promise<GetOrderByUUIDAndEmailResponse>;
   ValidateOrderItemsInsert(request: ValidateOrderItemsInsertRequest): Promise<ValidateOrderItemsInsertResponse>;
   ValidateOrderByUUID(request: ValidateOrderByUUIDRequest): Promise<ValidateOrderByUUIDResponse>;
   // Generate an invoice for the order or return the existing one
@@ -831,11 +837,14 @@ export function createFrontendServiceClient(
         method: "SubmitOrder",
       }) as Promise<SubmitOrderResponse>;
     },
-    GetOrderByUUID(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    GetOrderByUUIDAndEmail(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.orderUuid) {
         throw new Error("missing required field request.order_uuid");
       }
-      const path = `api/frontend/order/${request.orderUuid}`; // eslint-disable-line quotes
+      if (!request.b64Email) {
+        throw new Error("missing required field request.b64_email");
+      }
+      const path = `api/frontend/order/${request.orderUuid}/${request.b64Email}`; // eslint-disable-line quotes
       const body = null;
       const queryParams: string[] = [];
       let uri = path;
@@ -848,8 +857,8 @@ export function createFrontendServiceClient(
         body,
       }, {
         service: "FrontendService",
-        method: "GetOrderByUUID",
-      }) as Promise<GetOrderByUUIDResponse>;
+        method: "GetOrderByUUIDAndEmail",
+      }) as Promise<GetOrderByUUIDAndEmailResponse>;
     },
     ValidateOrderItemsInsert(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/orders/validate-items`; // eslint-disable-line quotes

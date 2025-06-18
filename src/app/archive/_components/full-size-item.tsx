@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { common_ArchiveFull } from "@/api/proto-http/frontend";
+import { common_ArchiveList } from "@/api/proto-http/frontend";
 
 import { calculateAspectRatio } from "@/lib/utils";
 import ImageComponent from "@/components/ui/image";
@@ -7,7 +7,7 @@ import { Text } from "@/components/ui/text";
 
 interface Props {
   className?: string;
-  archive?: common_ArchiveFull;
+  archive?: common_ArchiveList;
 }
 
 export function FullSizeItem({ className, archive }: Props) {
@@ -17,11 +17,11 @@ export function FullSizeItem({ className, archive }: Props) {
       <div className={className}>
         <Link href={archive?.slug || ""}>
           <ImageComponent
-            src={archive?.media?.[0].media?.fullSize?.mediaUrl || ""}
+            src={archive?.thumbnail?.media?.fullSize?.mediaUrl || ""}
             alt={archive?.heading || ""}
             aspectRatio={calculateAspectRatio(
-              archive?.media?.[0].media?.fullSize?.width,
-              archive?.media?.[0].media?.fullSize?.height,
+              archive?.thumbnail?.media?.fullSize?.width,
+              archive?.thumbnail?.media?.fullSize?.height,
             )}
           />
         </Link>
