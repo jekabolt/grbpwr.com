@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { CheckoutData } from "../schema";
+import { CheckoutData, checkoutSchema } from "../schema";
 import { GROUP_FIELDS, OpenGroups } from "./constants";
 
 const groupOrder: OpenGroups[] = ["contact", "shipping", "payment"];
@@ -16,12 +16,35 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
     });
 
     function isGroupComplete(group: OpenGroups) {
-        return GROUP_FIELDS[group].every((field) => {
-            const { error } = form.getFieldState(field);
+        const fields = GROUP_FIELDS[group];
+
+        return fields.every((field) => {
+            const { error, invalid, isDirty } = form.getFieldState(field);
             const value = form.getValues(field);
-            if (typeof value === 'boolean') return field === 'termsOfService' ? value === true : !error;
-            return value !== '' && value !== undefined && !error;
-        })
+
+            if (value === '' || value === undefined || value === null) {
+                return false;
+            }
+
+            if (typeof value === 'boolean') {
+                if (field === 'termsOfService') {
+                    return value === true && !error && !invalid;
+                }
+                return !error && !invalid;
+            }
+
+            if (field === 'email') {
+                if (!isDirty) return false;
+                try {
+                    checkoutSchema.shape.email.parse(value);
+                    return !error && !invalid;
+                } catch {
+                    return false;
+                }
+            }
+
+            return !error && !invalid;
+        });
     };
 
     function isGroupDisabled(group: OpenGroups) {
@@ -31,7 +54,10 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
     }
 
     useEffect(() => {
-        const subscription = form.watch(() => {
+        const subscription = form.watch((value, { name }) => {
+            if (name && ['email', 'termsOfService'].includes(name)) {
+                form.trigger(name);
+            }
             const id = groupOrder.indexOf(openGroup);
             if (id === -1 || id === groupOrder.length - 1) return;
             const current = groupOrder[id];
