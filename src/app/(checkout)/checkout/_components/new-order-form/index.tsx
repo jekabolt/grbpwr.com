@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { common_OrderNew } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
-import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
+import { useOrderPersistence } from "./hooks/useOrderPersistence";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
@@ -91,17 +91,9 @@ async function submitNewOrder(newOrderData: common_OrderNew) {
 export default function NewOrderForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  const {
-    formData,
-    hasPersistedData,
-    rehydrated,
-    updateFormData,
-    clearFormData,
-  } = useCheckoutStore((state) => state);
 
   const defaultValues = {
     ...defaultData,
-    ...formData,
     // promoCustomConditions: {
     //   totalSale: order?.totalSale,
     //   subtotal: order?.subtotal,
@@ -113,26 +105,8 @@ export default function NewOrderForm() {
     defaultValues,
   });
 
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      updateFormData(value as Partial<CheckoutData>);
-    });
-    return () => subscription.unsubscribe();
-  }, [form.watch, updateFormData]);
-
-  // Reset form with persisted data after store rehydration
-  useEffect(() => {
-    if (rehydrated && hasPersistedData && Object.keys(formData).length > 0) {
-      setTimeout(() => {
-        form.reset({
-          ...defaultData,
-          ...formData,
-        });
-      }, 0);
-    }
-  }, [rehydrated]);
-
   const { order, validateItems } = useValidatedOrder(form);
+  const { clearFormData } = useOrderPersistence(form);
   const { openGroup, handleGroupToggle, isGroupDisabled } =
     useAutoGroupOpen(form);
 
