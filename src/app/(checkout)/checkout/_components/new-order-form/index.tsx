@@ -13,6 +13,7 @@ import { Text } from "@/components/ui/text";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
+import { useOrderPersistence } from "./hooks/useOrderPersistence";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
@@ -105,6 +106,7 @@ export default function NewOrderForm() {
   });
 
   const { order, validateItems } = useValidatedOrder(form);
+  const { clearFormData } = useOrderPersistence(form);
   const { openGroup, handleGroupToggle, isGroupDisabled } =
     useAutoGroupOpen(form);
 
@@ -122,6 +124,7 @@ export default function NewOrderForm() {
       console.log("submit order finish");
 
       if (newOrderResponse.ok) {
+        clearFormData();
         // Cart will be cleared after successful payment confirmation
         const paymentType = newOrderResponse.order?.payment?.paymentMethod;
         switch (paymentType) {
@@ -141,7 +144,6 @@ export default function NewOrderForm() {
             break;
         }
       }
-
       console.log("finish and doesnt redirect");
     } catch (error) {
       console.error("Error submitting new order:", error);
