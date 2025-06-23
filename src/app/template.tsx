@@ -3,6 +3,7 @@ import { QueryWrapper } from "@/providers/query-wrapper";
 
 import { serviceClient } from "@/lib/api";
 import { CartStoreProvider } from "@/lib/stores/cart/store-provider";
+import { CheckoutStoreProvider } from "@/lib/stores/checkout/store-provider";
 import { CurrencyStoreProvider } from "@/lib/stores/currency/store-provider";
 import { LastViewedStoreProvider } from "@/lib/stores/last-viewed/store-provider.";
 import { DataContextProvider } from "@/components/contexts/DataContext";
@@ -25,13 +26,15 @@ export default async function Template({
         }}
       >
         <CartStoreProvider>
-          <LastViewedStoreProvider>
-            <CurrencyStoreProvider rates={heroData.rates?.currencies || {}}>
-              <DataContextProvider {...heroData}>
-                {children}
-              </DataContextProvider>
-            </CurrencyStoreProvider>
-          </LastViewedStoreProvider>
+          <CheckoutStoreProvider>
+            <LastViewedStoreProvider>
+              <CurrencyStoreProvider rates={heroData.rates?.currencies || {}}>
+                <DataContextProvider {...heroData}>
+                  {children}
+                </DataContextProvider>
+              </CurrencyStoreProvider>
+            </LastViewedStoreProvider>
+          </CheckoutStoreProvider>
         </CartStoreProvider>
       </ServerActionsContextProvider>
     </QueryWrapper>
