@@ -18,33 +18,29 @@ export default function FlexibleLayout({
 }: Props) {
   return (
     <div
-      className={cn(
-        "relative min-h-screen bg-bgColor",
-        {
-          blackTheme: theme === "dark",
-        },
-        className,
-      )}
+      className={cn("bg-bgColor", {
+        blackTheme: theme === "dark",
+      })}
     >
-      {mobileHeaderType === "flexible" && (
-        <div className="block lg:hidden">
-          <MobileProductInfoHeader />
-        </div>
-      )}
-      {headerType === "flexible" && (
-        <div className="block">
-          <AdditionalHeader {...headerProps} />
-        </div>
-      )}
-      {headerType === "catalog" && (
-        <div className={mobileHeaderType ? "hidden lg:block" : ""}>
-          <Header transparent={transparent} />
-        </div>
-      )}
-      {headerType === "archive" && <HeaderArchive {...headerProps} />}
-
-      <div className="w-full">{children}</div>
-
+      <div className={cn("relative min-h-screen", className)}>
+        {mobileHeaderType === "flexible" && (
+          <div className="block lg:hidden">
+            <MobileProductInfoHeader />
+          </div>
+        )}
+        {headerType === "flexible" && (
+          <div className="block">
+            <AdditionalHeader {...headerProps} />
+          </div>
+        )}
+        {headerType === "catalog" && (
+          <div className={mobileHeaderType ? "hidden lg:block" : ""}>
+            <Header transparent={transparent} />
+          </div>
+        )}
+        {headerType === "archive" && <HeaderArchive {...headerProps} />}
+        <div className="w-full">{children}</div>
+      </div>
       {footerType === "mini" && (
         <MiniFooter theme={theme} className="bg-bgColor text-textColor" />
       )}

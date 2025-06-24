@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Select from "@radix-ui/react-select";
 
 import { cn } from "@/lib/utils";
+import { Arrow } from "@/components/ui/icons/arrow";
 import { Text } from "@/components/ui/text";
 
 export default function SelectComponent({
@@ -20,16 +21,19 @@ export default function SelectComponent({
   ) => React.ReactNode;
   [k: string]: any;
 }) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Select.Root {...props}>
+    <Select.Root {...props} open={open} onOpenChange={setOpen}>
       <SelectTrigger
         placeholder={props.placeholder}
         className={className}
         renderValue={renderValue}
         value={props.value}
         items={items}
+        isOpen={open}
       >
-        {">"}
+        <Arrow />
       </SelectTrigger>
       <SelectContent>
         {items.map((item) => (
@@ -69,6 +73,7 @@ export function SelectTrigger({
   renderValue,
   value,
   items,
+  isOpen,
 }: {
   children: React.ReactNode;
   placeholder: string;
@@ -79,6 +84,7 @@ export function SelectTrigger({
   ) => React.ReactNode;
   value?: string;
   items?: { label: string; value: string }[];
+  isOpen?: boolean;
 }) {
   let displayValue = null;
   if (renderValue && value && items) {
@@ -95,7 +101,13 @@ export function SelectTrigger({
       aria-label={placeholder}
     >
       {displayValue ?? <Select.Value placeholder={placeholder} />}
-      <Select.Icon className="text-textColor">{children}</Select.Icon>
+      <Select.Icon
+        className={cn("rotate-180 text-textColor", {
+          "rotate-0": isOpen,
+        })}
+      >
+        {children}
+      </Select.Icon>
     </Select.Trigger>
   );
 }
