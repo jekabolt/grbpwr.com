@@ -14,9 +14,10 @@ export default async function CheckoutPage() {
         link: "cart",
       }}
     >
-      <div className="px-2.5 py-20 lg:h-screen lg:px-32 lg:py-24">
+      <div className="px-2.5 py-20 lg:relative lg:min-h-screen lg:px-32 lg:py-24">
         <NewOrderForm />
       </div>
     </FlexibleLayout>
   );
 }
+//  className="relative h-full px-2.5 py-20 pb-80 lg:px-32 lg:py-24"
