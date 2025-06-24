@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
+import { Arrow } from "@/components/ui/icons/arrow";
 import { Text } from "@/components/ui/text";
 
 export default function FieldsGroupContainer({
@@ -52,11 +53,11 @@ export default function FieldsGroupContainer({
         </div>
 
         <div
-          className={cn("-rotate-90 text-textColor", {
-            "rotate-90": localIsOpen,
+          className={cn("rotate-180 text-textColor", {
+            "rotate-0": localIsOpen,
           })}
         >
-          {">"}
+          <Arrow />
         </div>
       </div>
       <div className={cn("space-y-8", { hidden: !localIsOpen })}>

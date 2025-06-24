@@ -20,4 +20,3 @@ export default async function CheckoutPage() {
     </FlexibleLayout>
   );
 }
-//  className="relative h-full px-2.5 py-20 pb-80 lg:px-32 lg:py-24"
