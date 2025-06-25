@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { keyboardRestrictions } from "@/constants";
 import { Autocomplete, useLoadScript } from "@react-google-maps/api";
 import { useFormContext } from "react-hook-form";
 
@@ -130,6 +131,7 @@ export default function AddressAutocomplete({
           label="street and house number:"
           placeholder=" "
           disabled={disabled}
+          keyboardRestriction={keyboardRestrictions.addressField}
         />
       </Autocomplete>
     </div>

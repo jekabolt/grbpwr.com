@@ -58,7 +58,7 @@ export function PhoneField({ name, label, items, ...props }: Props) {
           <FormItem>
             <FormLabel>{label}</FormLabel>
             <FormControl>
-              <div className="flex items-center">
+              <div className="flex items-end">
                 <Select
                   name={name + "_code"}
                   value={code}
