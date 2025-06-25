@@ -27,7 +27,7 @@ export const errorMessages = {
         }
     },
     address: {
-        min: 'address must contain at least 10 characters',
+        min: 'address must contain at least 3 characters',
         max: 'address must contain at most 40 characters',
         regex: {
             restriction: /^(?!.*  )[\p{L}0-9 .'-]+$/u,
