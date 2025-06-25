@@ -10,7 +10,7 @@ const addressFields = {
   address: z.string().min(3, errorMessages.address.min).max(40, errorMessages.address.max).regex(errorMessages.address.regex.restriction, errorMessages.address.regex.message).trim(),
   additionalAddress: z.union([
     z.string()
-      .min(10, errorMessages.address.min)
+      .min(3, errorMessages.address.min)
       .max(40, errorMessages.address.max)
       .regex(errorMessages.address.regex.restriction, errorMessages.address.regex.message),
     z.literal(''),
