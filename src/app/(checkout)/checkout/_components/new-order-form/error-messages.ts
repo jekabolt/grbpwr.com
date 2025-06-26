@@ -3,16 +3,16 @@ export const errorMessages = {
         min: 'first name must contain at least 1 character',
         max: 'first name must contain at most 40 characters',
         regex: {
-            restriction: /^(?!.*  )[\p{L} .'-]+$/u,
-            message: 'only latin letters, spaces, hyphens, apostrophes, and periods are allowed; no consecutive spaces',
+            restriction: /^(?!.*  )(?=.*\p{L})[\p{L} .'-]+$/u,
+            message: 'must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed',
         }
     },
     lastName: {
         min: 'last name must contain at least 1 character',
         max: 'last name must contain at most 40 characters',
         regex: {
-            restriction: /^(?!.*  )[\p{L} .'-]+$/u,
-            message: 'only latin letters, spaces, hyphens, apostrophes, and periods are allowed; no consecutive spaces',
+            restriction: /^(?!.*  )(?=.*\p{L})[\p{L} .'-]+$/u,
+            message: 'must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed',
         }
     },
     phone: {
@@ -22,16 +22,16 @@ export const errorMessages = {
     city: {
         min: 'city must contain at least 2 characters',
         regex: {
-            restriction: /^(?!.*  )[\p{L} .'-]+$/u,
-            message: 'only latin letters, spaces, hyphens, apostrophes, and periods are allowed; no consecutive spaces',
+            restriction: /^(?!.*  )(?=.*\p{L})[\p{L} .'-]+$/u,
+            message: 'must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed',
         }
     },
     address: {
-        min: 'address must contain at least 10 characters',
+        min: 'address must contain at least 3 characters',
         max: 'address must contain at most 40 characters',
         regex: {
             restriction: /^(?!.*  )[\p{L}0-9 .'-]+$/u,
-            message: 'only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed; no consecutive spaces',
+            message: 'only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed',
         }
     },
     postalCode: {
@@ -39,7 +39,7 @@ export const errorMessages = {
         max: 'postal code must contain at most 12 characters',
         regex: {
             restriction: /^(?!.*  )[A-Za-z0-9 \- ]{2,12}$/,
-            message: 'postal code must contain only letters, numbers, spaces, or hyphens; no consecutive spaces'
+            message: 'postal code must contain only letters, numbers, spaces, or hyphens'
         }
     },
     country: {
@@ -50,7 +50,7 @@ export const errorMessages = {
         max: 'company must contain at most 40 characters',
         regex: {
             restriction: /^(?!.*  )[\p{L}0-9 .'-]+$/u,
-            message: 'only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed; no consecutive spaces',
+            message: 'only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed',
         }
     },
     email: {

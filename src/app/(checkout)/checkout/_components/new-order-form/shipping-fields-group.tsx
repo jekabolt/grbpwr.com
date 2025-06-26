@@ -1,6 +1,7 @@
 "use client";
 
 import { common_Dictionary } from "@/api/proto-http/frontend";
+import { keyboardRestrictions } from "@/constants";
 import { useFormContext } from "react-hook-form";
 
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -94,6 +95,7 @@ export function AddressFields({
             name={prefix ? `${prefix}.firstName` : "firstName"}
             label="first name:"
             disabled={disabled}
+            keyboardRestriction={keyboardRestrictions.nameFields}
           />
         </div>
         <div className="col-span-1">
@@ -103,6 +105,7 @@ export function AddressFields({
             name={prefix ? `${prefix}.lastName` : "lastName"}
             label="last name:"
             disabled={disabled}
+            keyboardRestriction={keyboardRestrictions.nameFields}
           />
         </div>
       </div>
@@ -137,6 +140,7 @@ export function AddressFields({
         name={prefix ? `${prefix}.city` : "city"}
         label="city:"
         disabled={disabled}
+        keyboardRestriction={keyboardRestrictions.nameFields}
       />
 
       <InputField
@@ -145,6 +149,7 @@ export function AddressFields({
         name={prefix ? `${prefix}.additionalAddress` : "additionalAddress"}
         label="additional address:"
         disabled={disabled}
+        keyboardRestriction={keyboardRestrictions.addressField}
       />
       <InputField
         loading={loading}
@@ -152,6 +157,7 @@ export function AddressFields({
         name={prefix ? `${prefix}.company` : "company"}
         label="company:"
         disabled={disabled}
+        keyboardRestriction={keyboardRestrictions.companyField}
       />
 
       <PhoneField
@@ -168,6 +174,7 @@ export function AddressFields({
         name={prefix ? `${prefix}.postalCode` : "postalCode"}
         label="postal code:"
         disabled={disabled}
+        keyboardRestriction={keyboardRestrictions.postalCodeField}
       />
     </>
   );

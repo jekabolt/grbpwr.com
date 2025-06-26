@@ -7,10 +7,10 @@ const addressFields = {
   country: z.string().min(2, errorMessages.country.min),
   state: z.string().optional(),
   city: z.string().min(2, errorMessages.city.min).regex(errorMessages.city.regex.restriction, errorMessages.city.regex.message).trim(),
-  address: z.string().min(10, errorMessages.address.min).max(40, errorMessages.address.max).regex(errorMessages.address.regex.restriction, errorMessages.address.regex.message).trim(),
+  address: z.string().min(3, errorMessages.address.min).max(40, errorMessages.address.max).regex(errorMessages.address.regex.restriction, errorMessages.address.regex.message).trim(),
   additionalAddress: z.union([
     z.string()
-      .min(10, errorMessages.address.min)
+      .min(3, errorMessages.address.min)
       .max(40, errorMessages.address.max)
       .regex(errorMessages.address.regex.restriction, errorMessages.address.regex.message),
     z.literal(''),

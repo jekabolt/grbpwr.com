@@ -282,5 +282,9 @@ export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
   width: "Width at the specified point",
 }
 
-
-
+export const keyboardRestrictions = {
+  nameFields: /[A-Za-z .'-]/,
+  addressField: /[A-Za-z0-9 .','-]/,
+  postalCodeField: /[A-Za-z0-9 \-]/,
+  companyField: /[A-Za-z0-9 .'-]/,
+};
