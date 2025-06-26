@@ -1,5 +1,6 @@
 'use client'
 
+import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 import { useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { CheckoutData, checkoutSchema } from "../schema";
@@ -9,6 +10,7 @@ const groupOrder: OpenGroups[] = ["contact", "shipping", "payment"];
 
 export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
     const [openGroup, setOpenGroup] = useState<OpenGroups>("contact");
+    const { rehydrated, hasPersistedData } = useCheckoutStore((state) => state);
     const prevComplete = useRef<Record<OpenGroups, boolean>>({
         contact: false,
         shipping: false,
@@ -19,31 +21,17 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
         const fields = GROUP_FIELDS[group];
 
         return fields.every((field) => {
-            const { error, invalid, isDirty } = form.getFieldState(field);
+            const { error, invalid } = form.getFieldState(field);
             const value = form.getValues(field);
-
-            if (value === '' || value === undefined || value === null) {
-                return false;
-            }
-
+            const hasError = error || invalid;
+            if (value === '' || value == null) return false;
             if (typeof value === 'boolean') {
-                if (field === 'termsOfService') {
-                    return value === true && !error && !invalid;
-                }
-                return !error && !invalid;
+                return field === 'termsOfService' ? value && !hasError : !hasError;
             }
-
             if (field === 'email') {
-                if (!isDirty) return false;
-                try {
-                    checkoutSchema.shape.email.parse(value);
-                    return !error && !invalid;
-                } catch {
-                    return false;
-                }
+                return checkoutSchema.shape.email.safeParse(value).success && !hasError;
             }
-
-            return !error && !invalid;
+            return !hasError;
         });
     };
 
@@ -52,6 +40,19 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
         if (id === 0) return false;
         return groupOrder.slice(0, id).some((g) => !isGroupComplete(g));
     }
+
+    useEffect(() => {
+        if (rehydrated && hasPersistedData) {
+            setTimeout(() => {
+                const firstIncompleteGroup = groupOrder.find(group => !isGroupComplete(group));
+                if (firstIncompleteGroup) {
+                    setOpenGroup(firstIncompleteGroup);
+                } else {
+                    setOpenGroup("payment");
+                }
+            }, 0);
+        }
+    }, [rehydrated, hasPersistedData]);
 
     useEffect(() => {
         const subscription = form.watch((value, { name }) => {
