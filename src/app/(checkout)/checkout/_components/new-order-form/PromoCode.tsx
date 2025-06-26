@@ -33,12 +33,17 @@ export default function PromoCode({
     setPromoLoading(true);
 
     try {
-      const response = await validateItems();
+      if (isApplied) {
+        setValue("promoCode", "");
+        setValue("shipmentCarrierId", "");
+        setIsApplied(false);
+        await validateItems();
+      }
 
+      const response = await validateItems();
       if (response?.promo?.freeShipping) {
         setValue("shipmentCarrierId", freeShipmentCarrierId + "");
       }
-
       setIsApplied(true);
     } catch (error) {
       console.error(error);
@@ -55,14 +60,15 @@ export default function PromoCode({
         placeholder="ENTER PROMO CODE"
         name="promoCode"
         className="w-full grow border-none text-textBaseSize leading-4"
+        readOnly={isApplied}
       />
       <Button
         type="input"
-        className="flex-none"
+        className="flex-none uppercase"
         onClick={handleApplyPromoClick}
-        disabled={isApplied || promoLoading || loading || !promoCode}
+        disabled={promoLoading || loading || !promoCode}
       >
-        {isApplied ? "APPLIED" : "APPLY"}
+        {isApplied ? "discard" : "apply"}
       </Button>
     </div>
   );
