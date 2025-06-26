@@ -28,5 +28,5 @@ export type OpenGroups = "contact" | "shipping" | "payment";
 export const GROUP_FIELDS: Record<OpenGroups, Array<keyof CheckoutData>> = {
   contact: CONTACT_GROUP_FIELDS as Array<keyof CheckoutData>,
   shipping: SHIPPING_GROUP_FIELDS as Array<keyof CheckoutData>,
-  payment: [],
+  payment: PAYMENT_GROUP_FIELDS as Array<keyof CheckoutData>,
 };
