@@ -15,7 +15,7 @@ import { HeaderLeftNav } from "./header-left-nav";
 export function Header({
   mode = "default",
 }: {
-  mode: "inverted" | "default" | "transparent";
+  mode?: "inverted" | "default" | "transparent";
 }) {
   const { dictionary } = useDataContext();
   const [isNavOpen, setIsNavOpen] = useState(false);
