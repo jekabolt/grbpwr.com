@@ -31,7 +31,7 @@ export default async function Page() {
 
   return (
     <>
-      <FlexibleLayout headerType="catalog" footerType="regular">
+      <FlexibleLayout headerType="catalog" footerType="regular" mode="inverted">
         <MainAds main={hero?.entities?.[0]?.main} />
         <Ads entities={hero?.entities || []} />
       </FlexibleLayout>

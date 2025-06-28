@@ -36,7 +36,7 @@ export default function Catalog({
 
   return (
     <div className="flex flex-col gap-6 px-7 pt-24">
-      <div className="sticky top-20 z-10 flex items-start justify-between">
+      <div className="sticky top-20 z-10 flex items-start justify-between text-bgColor mix-blend-exclusion">
         <Category />
         <div className="flex w-auto gap-24">
           <Sort />
