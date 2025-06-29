@@ -70,7 +70,12 @@ export function CookieBanner() {
             cookie preferences
           </Button>
         </Text>
-        <Button size="lg" className="uppercase" onClick={handleSaveCookies}>
+        <Button
+          variant="secondary"
+          size="lg"
+          className="uppercase"
+          onClick={handleSaveCookies}
+        >
           accept
         </Button>
       </div>

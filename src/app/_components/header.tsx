@@ -39,7 +39,8 @@ export function Header({
           "bg-bgColor text-textColor mix-blend-exclusion": mode === "inverted",
           "lg:bg-transparent lg:text-bgColor":
             mode === "inverted" && isScrolled && !isNavOpen,
-          "bg-transparent text-bgColor mix-blend-exclusion":
+          // (mode === "transparent" && isScrolled && !isNavOpen),
+          "bg-textColor text-bgColor mix-blend-hard-light lg:bg-transparent lg:mix-blend-exclusion":
             mode === "transparent",
           "bg-bgColor text-textColor mix-blend-normal":
             mode === "transparent" && isNavOpen,
