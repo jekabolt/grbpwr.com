@@ -34,10 +34,10 @@ export function Header({
   return (
     <header
       className={cn(
-        "fixed inset-x-2.5 bottom-2 z-30 flex h-12 items-center justify-between gap-1 border-textInactiveColor bg-bgColor py-2 text-textColor lg:top-2 lg:gap-0 lg:border lg:border-transparent lg:px-5 lg:py-3",
+        "fixed inset-x-2.5 bottom-2 z-30 flex h-12 items-center justify-between gap-1 border-textInactiveColor py-2 lg:top-2 lg:gap-0 lg:border lg:border-transparent lg:px-5 lg:py-3",
         {
-          "lg:mix-blend-exclusion": mode === "inverted",
-          "lg:bg-bgColor lg:bg-transparent lg:text-bgColor":
+          "bg-bgColor text-textColor mix-blend-exclusion": mode === "inverted",
+          "lg:bg-transparent lg:text-bgColor":
             mode === "inverted" && isScrolled && !isNavOpen,
           "bg-transparent text-bgColor mix-blend-exclusion":
             mode === "transparent",
@@ -45,7 +45,6 @@ export function Header({
             mode === "transparent" && isNavOpen,
           "lg:border-x lg:border-t lg:border-textInactiveColor": isNavOpen,
           "border-none": !isBigMenuEnabled,
-          invert: mode === "inverted",
         },
       )}
     >
