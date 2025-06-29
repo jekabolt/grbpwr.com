@@ -36,7 +36,7 @@ export function MobileCatalog({
 
   return (
     <div className="flex flex-col space-y-5 px-2.5 pb-10 pt-2">
-      <div className="sticky top-5 z-20 space-y-5">
+      <div className="sticky top-5 z-20 space-y-5 text-bgColor mix-blend-exclusion">
         <div className="w-full overflow-x-auto">
           <Category />
         </div>

@@ -14,7 +14,7 @@ export default function FlexibleLayout({
   footerType,
   theme,
   className,
-  transparent,
+  mode = "default",
 }: Props) {
   return (
     <div
@@ -35,7 +35,7 @@ export default function FlexibleLayout({
         )}
         {headerType === "catalog" && (
           <div className={mobileHeaderType ? "hidden lg:block" : ""}>
-            <Header transparent={transparent} />
+            <Header mode={mode} />
           </div>
         )}
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
@@ -52,7 +52,7 @@ export default function FlexibleLayout({
 type Props = {
   children: React.ReactNode;
   headerType?: "catalog" | "flexible" | "archive";
-  transparent?: boolean;
+  mode?: "inverted" | "default" | "transparent";
   mobileHeaderType?: "flexible";
   headerProps?: HeaderProps;
   footerType?: "mini" | "regular";

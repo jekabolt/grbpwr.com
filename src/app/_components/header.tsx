@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
@@ -12,20 +13,41 @@ import CartProductsList from "../(checkout)/cart/_components/CartProductsList";
 import CartTotalPrice from "../(checkout)/cart/_components/CartTotalPrice";
 import { HeaderLeftNav } from "./header-left-nav";
 
-export function Header({ transparent }: { transparent?: boolean }) {
+export function Header({
+  mode = "default",
+}: {
+  mode?: "inverted" | "default" | "transparent";
+}) {
   const { dictionary } = useDataContext();
+  const { isOpen } = useCart((state) => state);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header
       className={cn(
-        "fixed inset-x-2.5 bottom-2 z-30 flex h-12 items-center justify-between gap-1 border-textInactiveColor bg-bgColor py-2 text-textColor lg:top-2 lg:gap-0 lg:border lg:border-transparent lg:px-5 lg:py-3",
+        "fixed inset-x-2.5 bottom-2 z-30 flex h-12 items-center justify-between gap-1 border-textInactiveColor py-2 lg:top-2 lg:gap-0 lg:border lg:border-transparent lg:px-5 lg:py-3",
         {
+          "bg-bgColor text-textColor mix-blend-exclusion": mode === "inverted",
+          "lg:bg-transparent lg:text-bgColor":
+            mode === "inverted" && isScrolled && !isNavOpen,
+          "bg-textColor text-bgColor mix-blend-hard-light lg:bg-transparent lg:mix-blend-exclusion":
+            mode === "transparent",
+          "bg-bgColor text-textColor mix-blend-normal":
+            mode === "transparent" && isNavOpen,
           "lg:border-x lg:border-t lg:border-textInactiveColor": isNavOpen,
-          "bg-transparent": transparent,
-          "bg-bgColor": transparent && isNavOpen,
           "border-none": !isBigMenuEnabled,
+          "bg-transparent text-bgColor": mode === "inverted" && isOpen,
         },
       )}
     >
@@ -39,9 +61,9 @@ export function Header({ transparent }: { transparent?: boolean }) {
         <Link href="/">grbpwr</Link>
       </Button>
 
-      <div className="flex grow basis-0 items-center justify-end">
+      <div className="isolate flex grow basis-0 items-center justify-end mix-blend-normal">
         <CartPopup>
-          <div className="h-full overflow-y-scroll">
+          <div className="isolate h-full overflow-y-scroll mix-blend-normal">
             <CartProductsList />
           </div>
           <CartTotalPrice />

@@ -48,7 +48,7 @@ export default function ContactFieldsGroup({
           name="termsOfService"
           label={
             <>
-              *BY PROCEEDING WITH PURCHASE YOU IM AGREEING TO ACCEPT{" "}
+              *BY PROCEEDING WITH PURCHASE YOU AGREEING TO ACCEPT{" "}
               <Link
                 href="/terms-and-conditions"
                 className="underline hover:no-underline"

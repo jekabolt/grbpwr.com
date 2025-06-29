@@ -19,7 +19,7 @@ export function MobileNavMenu() {
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button size="lg" className="w-full" variant="simpleReverse">
+        <Button size="lg" className="w-full">
           menu
         </Button>
       </DialogPrimitives.Trigger>

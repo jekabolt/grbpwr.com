@@ -74,7 +74,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       mobileHeaderType="flexible"
       headerType="catalog"
       footerType="mini"
-      transparent
+      mode="transparent"
     >
       <div className="relative lg:h-screen">
         <div className="block lg:hidden">
