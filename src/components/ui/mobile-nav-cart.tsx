@@ -25,10 +25,13 @@ export function MobileNavCart() {
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay" />
         <DialogPrimitives.Content
-          className={cn("fixed left-0 z-30 w-screen bg-bgColor p-2.5", {
-            "inset-y-0 py-5": itemsQuantity > 0,
-            "bottom-0": itemsQuantity === 0,
-          })}
+          className={cn(
+            "fixed left-0 isolate z-30 w-screen bg-bgColor p-2.5 mix-blend-normal",
+            {
+              "inset-y-0 py-5": itemsQuantity > 0,
+              "bottom-0": itemsQuantity === 0,
+            },
+          )}
         >
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu

@@ -66,7 +66,7 @@ export function MobileSize() {
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed bottom-0 left-0 z-40 bg-black" />
-        <DialogPrimitives.Content className="fixed bottom-0 left-0 z-40 flex h-auto w-screen flex-col bg-textColor p-2 text-bgColor mix-blend-hard-light">
+        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-40 flex h-auto w-screen flex-col bg-bgColor p-2 text-textColor mix-blend-hard-light">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
@@ -90,11 +90,11 @@ export function MobileSize() {
             />
           </div>
           {selectedSize && (
-            <div className="fixed inset-x-2.5 bottom-0 flex justify-between gap-2 bg-bgColor">
+            <div className="fixed inset-x-2.5 bottom-2.5 flex justify-between gap-2">
               <Button
                 className="w-full uppercase"
                 size="lg"
-                variant="main"
+                variant="secondary"
                 onClick={() => handleFilterChange(undefined)}
               >
                 clear all
@@ -102,7 +102,7 @@ export function MobileSize() {
               <Button
                 className="w-full uppercase"
                 size="lg"
-                variant="main"
+                variant="secondary"
                 onClick={() => {
                   const sizeName =
                     dictionary?.sizes?.find(

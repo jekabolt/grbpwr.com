@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ export function Header({
   mode?: "inverted" | "default" | "transparent";
 }) {
   const { dictionary } = useDataContext();
+  const { isOpen } = useCart((state) => state);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,13 +41,13 @@ export function Header({
           "bg-bgColor text-textColor mix-blend-exclusion": mode === "inverted",
           "lg:bg-transparent lg:text-bgColor":
             mode === "inverted" && isScrolled && !isNavOpen,
-          // (mode === "transparent" && isScrolled && !isNavOpen),
           "bg-textColor text-bgColor mix-blend-hard-light lg:bg-transparent lg:mix-blend-exclusion":
             mode === "transparent",
           "bg-bgColor text-textColor mix-blend-normal":
             mode === "transparent" && isNavOpen,
           "lg:border-x lg:border-t lg:border-textInactiveColor": isNavOpen,
           "border-none": !isBigMenuEnabled,
+          "bg-transparent text-bgColor": mode === "inverted" && isOpen,
         },
       )}
     >
@@ -59,9 +61,9 @@ export function Header({
         <Link href="/">grbpwr</Link>
       </Button>
 
-      <div className="flex grow basis-0 items-center justify-end">
+      <div className="isolate flex grow basis-0 items-center justify-end mix-blend-normal">
         <CartPopup>
-          <div className="h-full overflow-y-scroll">
+          <div className="isolate h-full overflow-y-scroll mix-blend-normal">
             <CartProductsList />
           </div>
           <CartTotalPrice />
