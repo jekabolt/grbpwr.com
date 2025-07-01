@@ -7,10 +7,8 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
+import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
-import CartPopup from "../(checkout)/cart/_components/CartPopup";
-import CartProductsList from "../(checkout)/cart/_components/CartProductsList";
-import CartTotalPrice from "../(checkout)/cart/_components/CartTotalPrice";
 import { HeaderLeftNav } from "./header-left-nav";
 
 export function Header({
@@ -19,10 +17,12 @@ export function Header({
   mode?: "inverted" | "default" | "transparent";
 }) {
   const { dictionary } = useDataContext();
-  const { isOpen } = useCart((state) => state);
+  const { isOpen, toggleCart } = useCart((state) => state);
+  const { products } = useCart((state) => state);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
   const [isScrolled, setIsScrolled] = useState(false);
+  const itemsQuantity = Object.keys(products).length;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,13 +61,22 @@ export function Header({
         <Link href="/">grbpwr</Link>
       </Button>
 
-      <div className="isolate flex grow basis-0 items-center justify-end mix-blend-normal">
-        <CartPopup>
-          <div className="isolate h-full overflow-y-scroll mix-blend-normal">
-            <CartProductsList />
+      <div className="flex grow basis-0 items-center justify-end">
+        <div className="relative w-full lg:w-auto">
+          <div className="block w-full lg:hidden">
+            <MobileNavCart />
           </div>
-          <CartTotalPrice />
-        </CartPopup>
+          <div className="hidden lg:block">
+            <Button
+              onClick={toggleCart}
+              variant={isOpen ? "underline" : "default"}
+              size="sm"
+              className="underline-offset-2 hover:underline"
+            >
+              cart {itemsQuantity ? itemsQuantity : ""}
+            </Button>
+          </div>
+        </div>
       </div>
     </header>
   );

@@ -5,6 +5,9 @@ import { Header } from "@/app/_components/header";
 import { HeaderArchive } from "@/app/_components/header-archive";
 import { MiniFooter } from "@/app/_components/mini-footer";
 import { MobileProductInfoHeader } from "@/app/_components/mobile-product-info-header";
+import CartPopup from "@/app/(checkout)/cart/_components/CartPopup";
+import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList";
+import CartTotalPrice from "@/app/(checkout)/cart/_components/CartTotalPrice";
 
 export default function FlexibleLayout({
   children,
@@ -45,6 +48,15 @@ export default function FlexibleLayout({
         <MiniFooter theme={theme} className="bg-bgColor text-textColor" />
       )}
       {footerType === "regular" && <Footer />}
+
+      {headerType === "catalog" && (
+        <CartPopup>
+          <div className="isolate h-full overflow-y-scroll mix-blend-normal">
+            <CartProductsList />
+          </div>
+          <CartTotalPrice />
+        </CartPopup>
+      )}
     </div>
   );
 }

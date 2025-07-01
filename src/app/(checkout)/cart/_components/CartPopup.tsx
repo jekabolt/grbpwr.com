@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { createPortal } from "react-dom";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
@@ -31,49 +30,15 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
     };
   }, [isOpen]);
 
-  const cartContent = isOpen && (
-    <>
-      {itemsQuantity > 0 && <Overlay cover="screen" onClick={closeCart} />}
-      <div
-        className={cn(
-          "blackTheme right-0 top-0 z-50 w-[500px] bg-bgColor p-2.5 text-textColor",
-          {
-            "fixed h-screen": itemsQuantity > 0,
-            "absolute w-72": itemsQuantity === 0,
-          },
-        )}
-      >
-        <div className="flex h-full flex-col gap-y-6">
-          <div className="flex items-center justify-between">
-            <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
-            <Button onClick={closeCart}>[X]</Button>
-          </div>
-          {itemsQuantity > 0 ? (
-            <>
-              {children}
-              <Button
-                asChild
-                variant="secondary"
-                size="lg"
-                className="block w-full uppercase"
-              >
-                <Link href="/checkout">proceed to checkout</Link>
-              </Button>
-            </>
-          ) : (
-            <Text variant="uppercase">empty</Text>
-          )}
-        </div>
-      </div>
-    </>
-  );
-
   return (
-    <div className="relative w-full lg:w-auto">
+    <div className="w-full lg:w-auto">
+      {isOpen && itemsQuantity > 0 && (
+        <Overlay cover="screen" onClick={closeCart} />
+      )}
       <div className="block w-full lg:hidden">
         <MobileNavCart />
       </div>
-      <div className="isolate hidden lg:block">
+      <div className="hidden lg:block">
         <Button
           onClick={toggleCart}
           variant={isOpen ? "underline" : "default"}
@@ -83,9 +48,39 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
           cart {itemsQuantity ? itemsQuantity : ""}
         </Button>
 
-        {typeof window !== "undefined" && isOpen
-          ? createPortal(cartContent, document.body)
-          : null}
+        {isOpen && (
+          <div
+            className={cn(
+              "blackTheme fixed z-30 bg-bgColor p-2.5 text-textColor",
+              {
+                "right-0 top-0 h-screen w-[500px]": itemsQuantity > 0,
+                "right-2 top-2 w-72": itemsQuantity === 0,
+              },
+            )}
+          >
+            <div className="flex h-full flex-col gap-y-6">
+              <div className="flex items-center justify-between">
+                <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
+                <Button onClick={closeCart}>[X]</Button>
+              </div>
+              {itemsQuantity > 0 ? (
+                <>
+                  {children}
+                  <Button
+                    asChild
+                    variant="main"
+                    size="lg"
+                    className="block w-full uppercase"
+                  >
+                    <Link href="/checkout">proceed to checkout</Link>
+                  </Button>
+                </>
+              ) : (
+                <Text variant="uppercase">empty</Text>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
