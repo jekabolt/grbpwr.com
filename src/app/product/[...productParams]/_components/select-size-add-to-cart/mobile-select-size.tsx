@@ -51,7 +51,7 @@ export function MobileSelectSize({
         <DialogPrimitives.Title className="sr-only">
           grbpwr mobile menu
         </DialogPrimitives.Title>
-        <DialogPrimitives.Content className="fixed bottom-0 left-0 z-40 flex h-auto w-screen flex-col gap-10 bg-bgColor p-2.5 pb-10">
+        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-40 flex h-auto w-screen flex-col gap-10 bg-bgColor p-2.5 pb-10 text-textColor mix-blend-hard-light">
           <DialogPrimitives.Close asChild>
             <div className="flex items-center justify-between">
               <Text variant="uppercase">select size</Text>
@@ -64,7 +64,7 @@ export function MobileSelectSize({
                 <Button
                   key={id}
                   className={cn("", {
-                    "border-b border-black": activeSizeId === id,
+                    "border-b border-textColor": activeSizeId === id,
                   })}
                   onClick={() => handleSizeSelect(id)}
                 >
