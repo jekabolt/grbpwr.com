@@ -11,11 +11,7 @@ import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
 import { HeaderLeftNav } from "./header-left-nav";
 
-export function Header({
-  mode = "default",
-}: {
-  mode?: "default" | "transparent";
-}) {
+export function Header() {
   const { dictionary } = useDataContext();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
