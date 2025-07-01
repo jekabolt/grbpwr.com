@@ -17,11 +17,7 @@ export const metadata = generateCommonMetadata({
 
 export default function NotFoundPage() {
   return (
-    <FlexibleLayout
-      headerType="catalog"
-      footerType="regular"
-      mode="transparent"
-    >
+    <FlexibleLayout headerType="catalog" footerType="regular">
       <div className="flex h-screen flex-col items-center justify-center gap-6">
         <Text variant="uppercase" component="h1">
           page not found
