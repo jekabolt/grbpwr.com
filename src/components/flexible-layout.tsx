@@ -5,6 +5,9 @@ import { Header } from "@/app/_components/header";
 import { HeaderArchive } from "@/app/_components/header-archive";
 import { MiniFooter } from "@/app/_components/mini-footer";
 import { MobileProductInfoHeader } from "@/app/_components/mobile-product-info-header";
+import CartPopup from "@/app/(checkout)/cart/_components/CartPopup";
+import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList";
+import CartTotalPrice from "@/app/(checkout)/cart/_components/CartTotalPrice";
 
 export default function FlexibleLayout({
   children,
@@ -14,7 +17,6 @@ export default function FlexibleLayout({
   footerType,
   theme,
   className,
-  transparent,
 }: Props) {
   return (
     <div
@@ -35,7 +37,7 @@ export default function FlexibleLayout({
         )}
         {headerType === "catalog" && (
           <div className={mobileHeaderType ? "hidden lg:block" : ""}>
-            <Header transparent={transparent} />
+            <Header />
           </div>
         )}
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
@@ -45,6 +47,15 @@ export default function FlexibleLayout({
         <MiniFooter theme={theme} className="bg-bgColor text-textColor" />
       )}
       {footerType === "regular" && <Footer />}
+
+      {headerType === "catalog" && (
+        <CartPopup>
+          <div className="h-full overflow-y-scroll">
+            <CartProductsList />
+          </div>
+          <CartTotalPrice />
+        </CartPopup>
+      )}
     </div>
   );
 }
@@ -52,7 +63,6 @@ export default function FlexibleLayout({
 type Props = {
   children: React.ReactNode;
   headerType?: "catalog" | "flexible" | "archive";
-  transparent?: boolean;
   mobileHeaderType?: "flexible";
   headerProps?: HeaderProps;
   footerType?: "mini" | "regular";

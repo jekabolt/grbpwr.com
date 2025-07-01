@@ -19,21 +19,19 @@ export function MobileNavCart() {
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
-      <Button
-        onClick={openCart}
-        size="lg"
-        variant="simpleReverse"
-        className="w-full bg-transparent"
-      >
+      <Button onClick={openCart} size="lg" className="w-full bg-transparent">
         cart {itemsQuantity ? itemsQuantity : ""}
       </Button>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay" />
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay opacity-40" />
         <DialogPrimitives.Content
-          className={cn("fixed left-0 z-30 w-screen bg-bgColor p-2.5", {
-            "inset-y-0 py-5": itemsQuantity > 0,
-            "bottom-0": itemsQuantity === 0,
-          })}
+          className={cn(
+            "blackTheme fixed left-0 z-30 w-screen bg-bgColor p-2.5 text-textColor",
+            {
+              "inset-y-0 py-5": itemsQuantity > 0,
+              "bottom-0": itemsQuantity === 0,
+            },
+          )}
         >
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu

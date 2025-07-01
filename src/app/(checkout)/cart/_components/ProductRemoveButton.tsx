@@ -33,7 +33,7 @@ export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
 
   return (
     <>
-      {isRemoveConfirmed && <Overlay color="light" cover="container" />}
+      {isRemoveConfirmed && <Overlay color="dark" cover="container" />}
       <Button
         onClick={handleRemove}
         variant="underline"

@@ -49,7 +49,7 @@ export function CookieBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="border-textInactiveColor-500 fixed inset-x-2 top-2 z-30 border bg-bgColor lg:bottom-2 lg:left-auto lg:top-auto lg:w-96">
+    <div className="blackTheme fixed inset-x-2 top-2 z-30 bg-bgColor text-textColor mix-blend-hard-light lg:bottom-2 lg:left-auto lg:top-auto lg:w-96">
       <div className="block lg:hidden">
         <MobileCookieModal
           isVisible={isVisible}
@@ -59,7 +59,7 @@ export function CookieBanner() {
         />
       </div>
       <div className="hidden space-y-6 p-2.5 lg:block">
-        <Text className="tracking-wider">
+        <Text variant="inherit" className="tracking-wider">
           we use to enhance the functionality of the website.you can disable
           cookies in your browser settings.
           <Button
@@ -81,7 +81,7 @@ export function CookieBanner() {
       </div>
       <div
         className={cn(
-          "fixed inset-y-2 right-2 z-30 hidden w-[459px] border border-black bg-bgColor p-2.5",
+          "fixed inset-y-2 right-2 z-30 hidden w-[459px] bg-bgColor p-2.5",
           {
             block: open,
           },
@@ -92,7 +92,7 @@ export function CookieBanner() {
             <Text variant="uppercase">cookie preferences</Text>
             <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
           </div>
-          <div className="border-textInactiveColor-500 h-full overflow-y-scroll border-b">
+          <div className="h-full overflow-y-scroll border-b">
             <CookieContent
               preferences={preferences}
               onPreferenceChange={handlePreferenceChange}
