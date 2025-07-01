@@ -63,7 +63,7 @@ export function MobileSelectSize({
               <DialogPrimitives.Close asChild key={id}>
                 <Button
                   key={id}
-                  className={cn("", {
+                  className={cn("uppercase", {
                     "border-b border-textColor": activeSizeId === id,
                   })}
                   onClick={() => handleSizeSelect(id)}

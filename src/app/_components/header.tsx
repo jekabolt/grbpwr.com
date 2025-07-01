@@ -38,13 +38,14 @@ export function Header({
       className={cn(
         "fixed inset-x-2.5 bottom-2 z-30 flex h-12 items-center justify-between gap-1 border-textInactiveColor py-2 lg:top-2 lg:gap-0 lg:border lg:border-transparent lg:px-5 lg:py-3",
         {
-          "bg-bgColor text-textColor mix-blend-exclusion": mode === "inverted",
+          "bg-textColor text-bgColor mix-blend-hard-light lg:bg-bgColor lg:text-textColor lg:mix-blend-exclusion":
+            mode === "inverted",
           "lg:bg-transparent lg:text-bgColor":
             mode === "inverted" && isScrolled && !isNavOpen,
           "bg-textColor text-bgColor mix-blend-hard-light lg:bg-transparent lg:mix-blend-exclusion":
             mode === "transparent",
           "bg-bgColor text-textColor mix-blend-normal":
-            mode === "transparent" && isNavOpen,
+            mode === "transparent" && isNavOpen && isBigMenuEnabled,
           "lg:border-x lg:border-t lg:border-textInactiveColor": isNavOpen,
           "border-none": !isBigMenuEnabled,
           "bg-transparent text-bgColor": mode === "inverted" && isOpen,
