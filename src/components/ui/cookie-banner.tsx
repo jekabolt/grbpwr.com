@@ -49,7 +49,7 @@ export function CookieBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="blackTheme fixed inset-x-2 top-2 z-30 border bg-bgColor text-textColor mix-blend-hard-light lg:bottom-2 lg:left-auto lg:top-auto lg:w-96">
+    <div className="blackTheme fixed inset-x-2 top-2 z-30 bg-bgColor text-textColor mix-blend-hard-light lg:bottom-2 lg:left-auto lg:top-auto lg:w-96">
       <div className="block lg:hidden">
         <MobileCookieModal
           isVisible={isVisible}

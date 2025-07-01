@@ -22,13 +22,21 @@ export function Header({
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrollingUp, setIsScrollingUp] = useState(false);
   const itemsQuantity = Object.keys(products).length;
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
       const scrollTop = window.scrollY;
+      const scrollingUp = scrollTop < lastScrollY;
+
       setIsScrolled(scrollTop > 50);
+      setIsScrollingUp(scrollingUp);
+      lastScrollY = scrollTop;
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -38,10 +46,10 @@ export function Header({
       className={cn(
         "fixed inset-x-2.5 bottom-2 z-30 flex h-12 items-center justify-between gap-1 border-textInactiveColor py-2 lg:top-2 lg:gap-0 lg:border lg:border-transparent lg:px-5 lg:py-3",
         {
-          "bg-textColor text-bgColor mix-blend-hard-light lg:bg-bgColor lg:text-textColor lg:mix-blend-exclusion":
-            mode === "inverted",
-          "lg:bg-transparent lg:text-bgColor":
-            mode === "inverted" && isScrolled && !isNavOpen,
+          "bg-textColor text-white mix-blend-hard-light":
+            mode === "inverted" && (!isScrolled || isNavOpen || isScrollingUp),
+          "bg-textColor text-white lg:bg-transparent lg:text-bgColor lg:mix-blend-exclusion":
+            mode === "inverted" && isScrolled && !isNavOpen && !isScrollingUp,
           "bg-textColor text-bgColor mix-blend-hard-light lg:bg-transparent lg:mix-blend-exclusion":
             mode === "transparent",
           "bg-bgColor text-textColor mix-blend-normal":
