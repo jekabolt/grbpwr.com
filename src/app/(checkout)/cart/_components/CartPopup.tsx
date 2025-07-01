@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { Button } from "@/components/ui/button";
-import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
@@ -32,9 +31,6 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full lg:w-auto">
       {isOpen && <Overlay cover="screen" onClick={closeCart} />}
-      <div className="block w-full lg:hidden">
-        <MobileNavCart />
-      </div>
       <div className="hidden lg:block">
         {isOpen && (
           <div className="blackTheme fixed right-0 top-0 z-30 h-screen w-[500px] bg-bgColor p-2.5 text-textColor">

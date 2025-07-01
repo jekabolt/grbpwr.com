@@ -51,7 +51,7 @@ export default function FlexibleLayout({
 
       {headerType === "catalog" && (
         <CartPopup>
-          <div className="isolate h-full overflow-y-scroll mix-blend-normal">
+          <div className="h-full overflow-y-scroll">
             <CartProductsList />
           </div>
           <CartTotalPrice />
@@ -64,7 +64,7 @@ export default function FlexibleLayout({
 type Props = {
   children: React.ReactNode;
   headerType?: "catalog" | "flexible" | "archive";
-  mode?: "inverted" | "default" | "transparent";
+  mode?: "default" | "transparent";
   mobileHeaderType?: "flexible";
   headerProps?: HeaderProps;
   footerType?: "mini" | "regular";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -14,49 +14,28 @@ import { HeaderLeftNav } from "./header-left-nav";
 export function Header({
   mode = "default",
 }: {
-  mode?: "inverted" | "default" | "transparent";
+  mode?: "default" | "transparent";
 }) {
   const { dictionary } = useDataContext();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isScrollingUp, setIsScrollingUp] = useState(false);
   const itemsQuantity = Object.keys(products).length;
-
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const scrollingUp = scrollTop < lastScrollY;
-
-      setIsScrolled(scrollTop > 50);
-      setIsScrollingUp(scrollingUp);
-      lastScrollY = scrollTop;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <header
       className={cn(
         "fixed inset-x-2.5 bottom-2 z-30 flex h-12 items-center justify-between gap-1 border-textInactiveColor py-2 lg:top-2 lg:gap-0 lg:border lg:border-transparent lg:px-5 lg:py-3",
         {
-          "bg-textColor text-white mix-blend-hard-light":
-            mode === "inverted" && (!isScrolled || isNavOpen || isScrollingUp),
-          "bg-textColor text-white lg:bg-transparent lg:text-bgColor lg:mix-blend-exclusion":
-            mode === "inverted" && isScrolled && !isNavOpen && !isScrollingUp,
-          "bg-textColor text-bgColor mix-blend-hard-light lg:bg-transparent lg:mix-blend-exclusion":
-            mode === "transparent",
-          "bg-bgColor text-textColor mix-blend-normal":
+          "bg-transparent text-bgColor mix-blend-exclusion": !isNavOpen,
+          "bg-textColor text-bgColor lg:bg-transparent lg:mix-blend-exclusion":
+            mode === "transparent" && !isNavOpen,
+          "bg-textColor text-bgColor mix-blend-normal":
             mode === "transparent" && isNavOpen && isBigMenuEnabled,
-          "lg:border-x lg:border-t lg:border-textInactiveColor": isNavOpen,
+          "bg-textColor text-bgColor": isNavOpen,
           "border-none": !isBigMenuEnabled,
-          "bg-transparent text-bgColor": mode === "inverted" && isOpen,
+          "bg-transparent text-bgColor": isOpen,
         },
       )}
     >

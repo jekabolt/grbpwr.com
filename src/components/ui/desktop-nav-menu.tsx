@@ -52,7 +52,7 @@ export function DesktopNavigationMenu({
             </Link>
           </NavigationMenu.Trigger>
           {isBigMenuEnabled && (
-            <NavigationMenu.Content className="absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
+            <NavigationMenu.Content className="blackTheme absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
               <LinksGroup
                 gender="men"
                 links={processedCategories.map((item) => ({
@@ -72,7 +72,7 @@ export function DesktopNavigationMenu({
             </Link>
           </NavigationMenu.Trigger>
           {isBigMenuEnabled && (
-            <NavigationMenu.Content className="absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
+            <NavigationMenu.Content className="blackTheme absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
               <LinksGroup
                 gender="women"
                 links={processedCategories.map((item) => ({
@@ -110,7 +110,6 @@ export function DesktopNavigationMenu({
 
       <div
         className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
-          "border-x border-b border-textInactiveColor": isNavOpen,
           "border-none": !isBigMenuEnabled,
         })}
       >
