@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Link from "next/link";
 import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
-import { calculateAspectRatio } from "@/lib/utils";
+import { calculateAspectRatio, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -14,58 +13,22 @@ import { HeroArchive } from "./hero-archive";
 import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
-  const productsRef = useRef<HTMLDivElement>(null);
-  const productsTagRef = useRef<HTMLDivElement>(null);
-  const hasScrolledRef = useRef(new Set<HTMLDivElement>());
-  const userScrolledRef = useRef(new Set<HTMLDivElement>());
-
-  const handleUserScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const container = event.currentTarget;
-    userScrolledRef.current.add(container);
+  const autoScroll = (node: HTMLDivElement | null) => {
+    if (node && window.innerWidth < 1024) {
+      const hasOverflow = node.classList.contains("overflow-x-scroll");
+      if (hasOverflow) {
+        setTimeout(() => {
+          if (!node.dataset.userScrolled) {
+            node.scrollTo({ left: 50, behavior: "smooth" });
+          }
+        }, 100);
+      }
+    }
   };
 
-  useEffect(() => {
-    const scrollContainers = [
-      { ref: productsRef, scrollAmount: 50, mobileOnly: true },
-      { ref: productsTagRef, scrollAmount: 50, mobileOnly: true },
-    ];
-
-    const scrollToFirstItem = () => {
-      const isMobile = window.innerWidth < 1024;
-
-      scrollContainers.forEach(({ ref, scrollAmount, mobileOnly }) => {
-        const container = ref.current;
-        if (
-          container?.children.length &&
-          (!mobileOnly || isMobile) &&
-          !hasScrolledRef.current.has(container) &&
-          !userScrolledRef.current.has(container)
-        ) {
-          container.scrollTo({
-            left: scrollAmount,
-            behavior: "smooth",
-          });
-          hasScrolledRef.current.add(container);
-        }
-      });
-    };
-
-    const handleResize = () => {
-      if (window.innerWidth < 1024) {
-        scrollContainers.forEach(({ ref }) => {
-          const container = ref.current;
-          if (container && !userScrolledRef.current.has(container)) {
-            hasScrolledRef.current.delete(container);
-          }
-        });
-        setTimeout(scrollToFirstItem, 100);
-      }
-    };
-
-    setTimeout(scrollToFirstItem, 100);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    e.currentTarget.dataset.userScrolled = "true";
+  };
 
   return (
     <div>
@@ -189,6 +152,11 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
+            const featuredProductsCount =
+              e.featuredProducts?.products?.length || 0;
+            const enableScrollOnMobileFP = featuredProductsCount >= 3;
+            const enableScrollOnDesktopFP = featuredProductsCount > 4;
+
             return (
               <div className="space-y-12 pb-16 pt-6 lg:py-28 lg:pl-2" key={i}>
                 <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
@@ -203,13 +171,20 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 </div>
 
                 <div
-                  ref={productsRef}
-                  onScroll={handleUserScroll}
-                  className="flex w-full gap-2 overflow-x-scroll"
+                  ref={autoScroll}
+                  onScroll={handleScroll}
+                  className={cn(
+                    "flex w-full items-center justify-center gap-2.5",
+                    {
+                      "overflow-x-scroll": enableScrollOnMobileFP,
+                      "justify-start lg:overflow-x-scroll":
+                        enableScrollOnDesktopFP,
+                    },
+                  )}
                 >
-                  {e.featuredProducts?.products?.map((p) => (
+                  {e.featuredProducts?.products?.map((p, index) => (
                     <ProductItem
-                      className="w-40 lg:w-72"
+                      className="scroll-snap-start w-40 shrink-0 lg:w-72"
                       key={p.id}
                       product={p}
                     />
@@ -218,9 +193,12 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
+            const tagProductsCount =
+              e.featuredProductsTag?.products?.products?.length || 0;
+
             return (
-              <div className="space-y-12 pb-16 pt-6 lg:py-28 lg:pl-2" key={i}>
-                <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
+              <div className="space-y-6 py-6 lg:py-28 lg:pl-2" key={i}>
+                <div className="flex flex-row gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProductsTag?.products?.headline}
                   </Text>
@@ -231,13 +209,26 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                   </Button>
                 </div>
                 <div
-                  ref={productsTagRef}
-                  onScroll={handleUserScroll}
-                  className="flex w-full items-center gap-2.5 overflow-x-scroll"
+                  ref={autoScroll}
+                  onScroll={handleScroll}
+                  className={cn("flex w-full items-center gap-2.5", {
+                    "justify-center gap-7 lg:gap-40":
+                      tagProductsCount === 1 || tagProductsCount === 2,
+                    "justify-start overflow-x-scroll lg:justify-center lg:overflow-x-visible":
+                      tagProductsCount === 3 || tagProductsCount === 4,
+                    "justify-start overflow-x-scroll": tagProductsCount > 4,
+                  })}
                 >
                   {e.featuredProductsTag?.products?.products?.map((p) => (
                     <ProductItem
-                      className="w-40 lg:w-72"
+                      className={cn(
+                        "flex-basis mx-auto w-40 shrink-0 border border-red-500 lg:w-72",
+                        {
+                          "w-72 lg:w-[32rem]": tagProductsCount === 1,
+                          "lg:w-[32rem]": tagProductsCount === 2,
+                          "lg:w-[24rem]": tagProductsCount === 3,
+                        },
+                      )}
                       key={p.id}
                       product={p}
                     />
