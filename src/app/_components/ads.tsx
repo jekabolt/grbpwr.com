@@ -222,7 +222,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                   {e.featuredProductsTag?.products?.products?.map((p) => (
                     <ProductItem
                       className={cn(
-                        "flex-basis mx-auto w-40 shrink-0 border border-red-500 lg:w-72",
+                        "flex-basis mx-auto w-40 shrink-0 lg:w-72",
                         {
                           "w-72 lg:w-[32rem]": tagProductsCount === 1,
                           "lg:w-[32rem]": tagProductsCount === 2,
