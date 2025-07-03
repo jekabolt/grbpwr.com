@@ -172,7 +172,8 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                   className={cn("flex gap-2.5", {
                     "justify-center":
                       productsCount === 1 || productsCount === 2,
-                    "lg:justify-center": productsCount <= 4,
+                    "lg:justify-between": productsCount === 4,
+                    "lg:justify-center": productsCount === 3,
                     "lg:gap-10": productsCount === 2,
                   })}
                 >
@@ -214,7 +215,8 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                   className={cn("flex gap-2.5", {
                     "justify-center":
                       productsTagCount === 1 || productsTagCount === 2,
-                    "lg:justify-center": productsTagCount <= 4,
+                    "lg:justify-between": productsTagCount === 4,
+                    "lg:justify-center": productsTagCount === 3,
                     "lg:gap-10": productsTagCount === 2,
                   })}
                 >
