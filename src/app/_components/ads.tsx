@@ -13,16 +13,24 @@ import { Text } from "@/components/ui/text";
 import { HeroArchive } from "./hero-archive";
 import { ProductItem } from "./product-item";
 
-export function Ads({ entities }: { entities: common_HeroEntity[] }) {
-  // Remove the global carousel setup since we'll use it per section
-  // const [emblaRef, emblaApi] = useEmblaCarousel(
-  //   {
-  //     loop: true,
-  //     // dragFree: true,
-  //   },
-  //   [WheelGesturesPlugin()],
-  // );
+function getCarouselConfig(count: number) {
+  return {
+    loop: {
+      mobile: count >= 3,
+      desktop: count > 4,
+    },
+    disabled: {
+      mobile: count < 3,
+      desktop: count <= 4,
+    },
+    align: {
+      mobile: "center" as const,
+      desktop: "start" as const,
+    },
+  };
+}
 
+export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   return (
     <div className="pb-10">
       {entities?.map((e, i) => {
@@ -145,14 +153,11 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
-            const featuredProductsCount =
-              e.featuredProducts?.products?.length || 0;
-            const enableScrollOnMobileFP = featuredProductsCount >= 3;
-            const enableScrollOnDesktopFP = featuredProductsCount > 4;
-
+            const productsCount = e.featuredProducts?.products?.length || 0;
+            const productsCarouselConfig = getCarouselConfig(productsCount);
             return (
-              <div className="space-y-12 pb-16 pt-6 lg:py-28 lg:pl-2" key={i}>
-                <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
+              <div className="space-y-6 py-6 lg:pl-2" key={i}>
+                <div className="flex flex-row gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProducts?.headline}
                   </Text>
@@ -162,32 +167,36 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Link>
                   </Button>
                 </div>
-
-                <div
-                  // ref={autoScroll}
-                  // onScroll={handleScroll}
-                  className={cn(
-                    "flex w-full items-center justify-center gap-2.5",
-                    {
-                      "overflow-x-scroll": enableScrollOnMobileFP,
-                      "justify-start lg:overflow-x-scroll":
-                        enableScrollOnDesktopFP,
-                    },
-                  )}
+                <Carousel
+                  {...productsCarouselConfig}
+                  className={cn("flex gap-2.5", {
+                    "justify-center":
+                      productsCount === 1 || productsCount === 2,
+                    "lg:justify-center": productsCount <= 4,
+                    "lg:gap-10": productsCount === 2,
+                  })}
                 >
-                  {e.featuredProducts?.products?.map((p, index) => (
+                  {e.featuredProducts?.products?.map((p) => (
                     <ProductItem
-                      className="scroll-snap-start w-40 shrink-0 lg:w-72"
                       key={p.id}
+                      className={cn("flex-[0_0_45%] lg:flex-[0_0_25%]", {
+                        "w-72 lg:w-[32rem]": productsCount === 1,
+                        "lg:w-[32rem]": productsCount === 2,
+                        "flex-[0_0_50%] lg:w-[24rem]": productsCount === 3,
+                        "lg:w-80": productsCount === 4,
+                        "lg:w-96": productsCount > 5,
+                      })}
                       product={p}
                     />
                   ))}
-                </div>
+                </Carousel>
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
-            const tagProductsCount =
+            const productsTagCount =
               e.featuredProductsTag?.products?.products?.length || 0;
+            const productsTagCarouselConfig =
+              getCarouselConfig(productsTagCount);
             return (
               <div className="space-y-6 py-6 lg:pl-2" key={i}>
                 <div className="flex flex-row gap-3 px-2 lg:flex-row lg:px-0">
@@ -201,32 +210,23 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                   </Button>
                 </div>
                 <Carousel
-                  loop={{
-                    mobile: tagProductsCount >= 3,
-                    desktop: tagProductsCount > 4,
-                  }}
-                  disabled={{
-                    mobile: tagProductsCount < 3,
-                    desktop: tagProductsCount <= 4,
-                  }}
-                  align={{
-                    mobile: "center",
-                    desktop: "start",
-                  }}
+                  {...productsTagCarouselConfig}
                   className={cn("flex gap-2.5", {
-                    "lg:justify-center": tagProductsCount <= 4,
-                    "lg:gap-10": tagProductsCount === 2,
+                    "justify-center":
+                      productsTagCount === 1 || productsTagCount === 2,
+                    "lg:justify-center": productsTagCount <= 4,
+                    "lg:gap-10": productsTagCount === 2,
                   })}
                 >
                   {e.featuredProductsTag?.products?.products?.map((p) => (
                     <ProductItem
                       key={p.id}
                       className={cn("flex-[0_0_45%] lg:flex-[0_0_25%]", {
-                        "w-72 lg:w-[32rem]": tagProductsCount === 1,
-                        "lg:w-[32rem]": tagProductsCount === 2,
-                        "flex-[0_0_50%] lg:w-[24rem]": tagProductsCount === 3,
-                        "lg:w-80": tagProductsCount === 4,
-                        "lg:w-96": tagProductsCount > 5,
+                        "w-72 lg:w-[32rem]": productsTagCount === 1,
+                        "lg:w-[32rem]": productsTagCount === 2,
+                        "flex-[0_0_50%] lg:w-[24rem]": productsTagCount === 3,
+                        "lg:w-80": productsTagCount === 4,
+                        "lg:w-96": productsTagCount > 5,
                       })}
                       product={p}
                     />

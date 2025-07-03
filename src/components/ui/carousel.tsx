@@ -4,20 +4,40 @@ import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
+type ResponsiveValue<T> = T | { mobile: T; desktop: T };
+
 type CarouselProps = {
   className?: string;
   children: React.ReactNode;
-  loop?: boolean | { mobile: boolean; desktop: boolean };
-  disabled?: boolean | { mobile: boolean; desktop: boolean };
-  align?:
-    | "start"
-    | "center"
-    | "end"
-    | {
-        mobile: "start" | "center" | "end";
-        desktop: "start" | "center" | "end";
-      };
+  loop?: ResponsiveValue<boolean>;
+  disabled?: ResponsiveValue<boolean>;
+  align?: ResponsiveValue<"start" | "center" | "end">;
 };
+
+const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+};
+
+const resolveResponsive = <T,>(
+  value: ResponsiveValue<T>,
+  isDesktop: boolean,
+): T =>
+  value && typeof value === "object" && "mobile" in value && "desktop" in value
+    ? isDesktop
+      ? value.desktop
+      : value.mobile
+    : (value as T);
 
 export function Carousel({
   className,
@@ -26,52 +46,22 @@ export function Carousel({
   disabled = false,
   align = "start",
 }: CarouselProps) {
-  const isDesktop = useIsDesktop();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  const shouldDisable =
-    typeof disabled === "object"
-      ? isDesktop
-        ? disabled.desktop
-        : disabled.mobile
-      : disabled;
-
-  const shouldLoop =
-    typeof loop === "object" ? (isDesktop ? loop.desktop : loop.mobile) : loop;
-
-  const shouldAlign =
-    typeof align === "object"
-      ? isDesktop
-        ? align.desktop
-        : align.mobile
-      : align;
+  const isDisabled = resolveResponsive(disabled, isDesktop);
+  const shouldLoop = resolveResponsive(loop, isDesktop);
+  const alignValue = resolveResponsive(align, isDesktop);
 
   const [emblaRef] = useEmblaCarousel(
-    shouldDisable
+    isDisabled
       ? undefined
-      : {
-          loop: shouldLoop,
-          dragFree: true,
-          align: shouldAlign,
-        },
-    shouldDisable ? [] : [WheelGesturesPlugin()],
+      : { loop: shouldLoop, dragFree: true, align: alignValue },
+    isDisabled ? [] : [WheelGesturesPlugin()],
   );
 
   return (
-    <div className="overflow-hidden" ref={shouldDisable ? undefined : emblaRef}>
+    <div className="overflow-hidden" ref={isDisabled ? undefined : emblaRef}>
       <div className={className}>{children}</div>
     </div>
   );
-}
-
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const checkIsDesktop = () => setIsDesktop(window.innerWidth >= 1024);
-    checkIsDesktop();
-    window.addEventListener("resize", checkIsDesktop);
-    return () => window.removeEventListener("resize", checkIsDesktop);
-  }, []);
-
-  return isDesktop;
 }
