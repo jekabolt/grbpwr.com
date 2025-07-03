@@ -5,6 +5,7 @@ import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Carousel } from "@/components/ui/carousel";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
@@ -13,25 +14,17 @@ import { HeroArchive } from "./hero-archive";
 import { ProductItem } from "./product-item";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
-  const autoScroll = (node: HTMLDivElement | null) => {
-    if (node && window.innerWidth < 1024) {
-      const hasOverflow = node.classList.contains("overflow-x-scroll");
-      if (hasOverflow) {
-        setTimeout(() => {
-          if (!node.dataset.userScrolled) {
-            node.scrollTo({ left: 50, behavior: "smooth" });
-          }
-        }, 100);
-      }
-    }
-  };
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    e.currentTarget.dataset.userScrolled = "true";
-  };
+  // Remove the global carousel setup since we'll use it per section
+  // const [emblaRef, emblaApi] = useEmblaCarousel(
+  //   {
+  //     loop: true,
+  //     // dragFree: true,
+  //   },
+  //   [WheelGesturesPlugin()],
+  // );
 
   return (
-    <div>
+    <div className="pb-10">
       {entities?.map((e, i) => {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
@@ -171,8 +164,8 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 </div>
 
                 <div
-                  ref={autoScroll}
-                  onScroll={handleScroll}
+                  // ref={autoScroll}
+                  // onScroll={handleScroll}
                   className={cn(
                     "flex w-full items-center justify-center gap-2.5",
                     {
@@ -195,9 +188,8 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
             const tagProductsCount =
               e.featuredProductsTag?.products?.products?.length || 0;
-
             return (
-              <div className="space-y-6 py-6 lg:py-28 lg:pl-2" key={i}>
+              <div className="space-y-6 py-6 lg:pl-2" key={i}>
                 <div className="flex flex-row gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProductsTag?.products?.headline}
@@ -208,32 +200,38 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Link>
                   </Button>
                 </div>
-                <div
-                  ref={autoScroll}
-                  onScroll={handleScroll}
-                  className={cn("flex w-full items-center gap-2.5", {
-                    "justify-center gap-7 lg:gap-40":
-                      tagProductsCount === 1 || tagProductsCount === 2,
-                    "justify-start overflow-x-scroll lg:justify-center lg:overflow-x-visible":
-                      tagProductsCount === 3 || tagProductsCount === 4,
-                    "justify-start overflow-x-scroll": tagProductsCount > 4,
+                <Carousel
+                  loop={{
+                    mobile: tagProductsCount >= 3,
+                    desktop: tagProductsCount > 4,
+                  }}
+                  disabled={{
+                    mobile: tagProductsCount < 3,
+                    desktop: tagProductsCount <= 4,
+                  }}
+                  align={{
+                    mobile: "center",
+                    desktop: "start",
+                  }}
+                  className={cn("flex gap-2.5", {
+                    "lg:justify-center": tagProductsCount <= 4,
+                    "lg:gap-10": tagProductsCount === 2,
                   })}
                 >
                   {e.featuredProductsTag?.products?.products?.map((p) => (
                     <ProductItem
-                      className={cn(
-                        "flex-basis mx-auto w-40 shrink-0 lg:w-72",
-                        {
-                          "w-72 lg:w-[32rem]": tagProductsCount === 1,
-                          "lg:w-[32rem]": tagProductsCount === 2,
-                          "lg:w-[24rem]": tagProductsCount === 3,
-                        },
-                      )}
                       key={p.id}
+                      className={cn("flex-[0_0_45%] lg:flex-[0_0_25%]", {
+                        "w-72 lg:w-[32rem]": tagProductsCount === 1,
+                        "lg:w-[32rem]": tagProductsCount === 2,
+                        "flex-[0_0_50%] lg:w-[24rem]": tagProductsCount === 3,
+                        "lg:w-80": tagProductsCount === 4,
+                        "lg:w-96": tagProductsCount > 5,
+                      })}
                       product={p}
                     />
                   ))}
-                </div>
+                </Carousel>
               </div>
             );
           case "HERO_TYPE_FEATURED_ARCHIVE":
