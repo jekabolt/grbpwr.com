@@ -4,9 +4,25 @@ import { Text } from "@/components/ui/text";
 
 import { formSubmitClick } from "./todo-schema";
 
-export default function NewslatterForm() {
+export default function NewslatterForm({
+  view = "checkout",
+}: {
+  view?: "footer" | "checkout";
+}) {
   return (
     <form action={formSubmitClick}>
+      {view === "checkout" ? (
+        <CheckoutNewslatterForm />
+      ) : (
+        <FooterNewslatterForm />
+      )}
+    </form>
+  );
+}
+
+function CheckoutNewslatterForm() {
+  return (
+    <>
       <Text variant="uppercase" className="mb-7">
         newsletter
       </Text>
@@ -27,6 +43,26 @@ export default function NewslatterForm() {
           subscribe
         </Button>
       </div>
-    </form>
+    </>
+  );
+}
+
+function FooterNewslatterForm() {
+  return (
+    <div className="relative flex items-center justify-between border border-textColor px-4 py-3">
+      <Input
+        id="newsletter"
+        placeholder="MAILING LIST"
+        name="email"
+        type="email"
+        className="w-full grow border-none text-textBaseSize leading-4 placeholder:text-textColor"
+      />
+      <Button
+        className="flex-none uppercase text-textInactiveColor"
+        type="submit"
+      >
+        apply
+      </Button>
+    </div>
   );
 }
