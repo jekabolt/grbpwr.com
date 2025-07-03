@@ -49,15 +49,18 @@ function CheckoutNewslatterForm() {
 
 function FooterNewslatterForm() {
   return (
-    <div className="relative flex items-center justify-between border border-textInactiveColor px-4 py-3">
+    <div className="relative flex items-center justify-between border border-textColor px-4 py-3">
       <Input
         id="newsletter"
         placeholder="MAILING LIST"
         name="email"
         type="email"
-        className="w-full grow border-none text-textBaseSize leading-4"
+        className="w-full grow border-none text-textBaseSize leading-4 placeholder:text-textColor"
       />
-      <Button className="flex-none uppercase" type="submit">
+      <Button
+        className="flex-none uppercase text-textInactiveColor"
+        type="submit"
+      >
         apply
       </Button>
     </div>

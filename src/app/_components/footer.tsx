@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FOOTER_LINKS as links } from "@/constants";
 
@@ -8,24 +11,19 @@ import { Text } from "@/components/ui/text";
 import CurrencyPopover from "./currency-popover";
 import NewslatterForm from "./newslatter-form";
 
-// todo: sync with BE
-const currencyNameMap = {
-  t: "ethereum",
-  b: "bitcoin",
-  e: "euro",
-  "0": "united states dollar",
-  ":": "united states dollar",
-  $: "united states dollar",
-  "%": "united states dollar",
-  "&": "united states dollar",
-  "*": "united states dollar",
-  ")": "united states dollar",
-  "[": "united states dollar",
-  "]": "united states dollar",
-  "@": "united states dollar",
-};
+function LiveClock() {
+  const [timestamp, setTimestamp] = useState(Math.floor(Date.now() / 1000));
 
-const currentYear = () => new Date().getFullYear();
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimestamp(Math.floor(Date.now() / 1000));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return `${timestamp}`;
+}
 
 export function Footer({
   className,
@@ -35,7 +33,7 @@ export function Footer({
   hideForm?: boolean;
 }) {
   return (
-    <footer className="flex w-full flex-col space-y-20 px-2.5 pb-16 pt-8">
+    <footer className="flex w-full flex-col space-y-10 px-2.5 pb-16 pt-8">
       <div className="aspect-square w-full self-center">
         <WhiteLogo />
       </div>
@@ -58,6 +56,12 @@ export function Footer({
             <Link href={link.href}>{link.text}</Link>
           </Button>
         ))}
+      </div>
+      <div className="flex items-center justify-between">
+        <Text variant="uppercase">grbpwr</Text>
+        <Text>
+          <LiveClock />
+        </Text>
       </div>
     </footer>
   );
