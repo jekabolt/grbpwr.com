@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Link from "next/link";
 import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
-import { calculateAspectRatio } from "@/lib/utils";
+import { calculateAspectRatio, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Carousel } from "@/components/ui/carousel";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
@@ -13,62 +13,26 @@ import { Text } from "@/components/ui/text";
 import { HeroArchive } from "./hero-archive";
 import { ProductItem } from "./product-item";
 
-export function Ads({ entities }: { entities: common_HeroEntity[] }) {
-  const productsRef = useRef<HTMLDivElement>(null);
-  const productsTagRef = useRef<HTMLDivElement>(null);
-  const hasScrolledRef = useRef(new Set<HTMLDivElement>());
-  const userScrolledRef = useRef(new Set<HTMLDivElement>());
-
-  const handleUserScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const container = event.currentTarget;
-    userScrolledRef.current.add(container);
+function getCarouselConfig(count: number) {
+  return {
+    loop: {
+      mobile: count >= 3,
+      desktop: count > 4,
+    },
+    disabled: {
+      mobile: count < 3,
+      desktop: count <= 4,
+    },
+    align: {
+      mobile: "center" as const,
+      desktop: "start" as const,
+    },
   };
+}
 
-  useEffect(() => {
-    const scrollContainers = [
-      { ref: productsRef, scrollAmount: 50, mobileOnly: true },
-      { ref: productsTagRef, scrollAmount: 50, mobileOnly: true },
-    ];
-
-    const scrollToFirstItem = () => {
-      const isMobile = window.innerWidth < 1024;
-
-      scrollContainers.forEach(({ ref, scrollAmount, mobileOnly }) => {
-        const container = ref.current;
-        if (
-          container?.children.length &&
-          (!mobileOnly || isMobile) &&
-          !hasScrolledRef.current.has(container) &&
-          !userScrolledRef.current.has(container)
-        ) {
-          container.scrollTo({
-            left: scrollAmount,
-            behavior: "smooth",
-          });
-          hasScrolledRef.current.add(container);
-        }
-      });
-    };
-
-    const handleResize = () => {
-      if (window.innerWidth < 1024) {
-        scrollContainers.forEach(({ ref }) => {
-          const container = ref.current;
-          if (container && !userScrolledRef.current.has(container)) {
-            hasScrolledRef.current.delete(container);
-          }
-        });
-        setTimeout(scrollToFirstItem, 100);
-      }
-    };
-
-    setTimeout(scrollToFirstItem, 100);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
+export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   return (
-    <div>
+    <div className="pb-10">
       {entities?.map((e, i) => {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
@@ -189,9 +153,11 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
+            const productsCount = e.featuredProducts?.products?.length || 0;
+            const productsCarouselConfig = getCarouselConfig(productsCount);
             return (
-              <div className="space-y-12 pb-16 pt-6 lg:py-28 lg:pl-2" key={i}>
-                <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
+              <div className="space-y-6 py-6 lg:pl-2" key={i}>
+                <div className="flex flex-row gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProducts?.headline}
                   </Text>
@@ -201,26 +167,40 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Link>
                   </Button>
                 </div>
-
-                <div
-                  ref={productsRef}
-                  onScroll={handleUserScroll}
-                  className="flex w-full gap-2 overflow-x-scroll"
+                <Carousel
+                  {...productsCarouselConfig}
+                  className={cn("flex gap-2.5", {
+                    "justify-center":
+                      productsCount === 1 || productsCount === 2,
+                    "lg:justify-between": productsCount === 4,
+                    "lg:justify-center": productsCount === 3,
+                    "lg:gap-10": productsCount === 2,
+                  })}
                 >
                   {e.featuredProducts?.products?.map((p) => (
                     <ProductItem
-                      className="w-40 lg:w-72"
                       key={p.id}
+                      className={cn("flex-[0_0_45%] lg:flex-[0_0_25%]", {
+                        "w-72 lg:w-[32rem]": productsCount === 1,
+                        "lg:w-[32rem]": productsCount === 2,
+                        "flex-[0_0_50%] lg:w-[24rem]": productsCount === 3,
+                        "lg:w-80": productsCount === 4,
+                        "lg:w-96": productsCount > 5,
+                      })}
                       product={p}
                     />
                   ))}
-                </div>
+                </Carousel>
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
+            const productsTagCount =
+              e.featuredProductsTag?.products?.products?.length || 0;
+            const productsTagCarouselConfig =
+              getCarouselConfig(productsTagCount);
             return (
-              <div className="space-y-12 pb-16 pt-6 lg:py-28 lg:pl-2" key={i}>
-                <div className="flex flex-col gap-3 px-2 lg:flex-row lg:px-0">
+              <div className="space-y-6 py-6 lg:pl-2" key={i}>
+                <div className="flex flex-row gap-3 px-2 lg:flex-row lg:px-0">
                   <Text variant="uppercase">
                     {e.featuredProductsTag?.products?.headline}
                   </Text>
@@ -230,19 +210,30 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Link>
                   </Button>
                 </div>
-                <div
-                  ref={productsTagRef}
-                  onScroll={handleUserScroll}
-                  className="flex w-full items-center gap-2.5 overflow-x-scroll"
+                <Carousel
+                  {...productsTagCarouselConfig}
+                  className={cn("flex gap-2.5", {
+                    "justify-center":
+                      productsTagCount === 1 || productsTagCount === 2,
+                    "lg:justify-between": productsTagCount === 4,
+                    "lg:justify-center": productsTagCount === 3,
+                    "lg:gap-10": productsTagCount === 2,
+                  })}
                 >
                   {e.featuredProductsTag?.products?.products?.map((p) => (
                     <ProductItem
-                      className="w-40 lg:w-72"
                       key={p.id}
+                      className={cn("flex-[0_0_45%] lg:flex-[0_0_25%]", {
+                        "w-72 lg:w-[32rem]": productsTagCount === 1,
+                        "lg:w-[32rem]": productsTagCount === 2,
+                        "flex-[0_0_50%] lg:w-[24rem]": productsTagCount === 3,
+                        "lg:w-80": productsTagCount === 4,
+                        "lg:w-96": productsTagCount > 5,
+                      })}
                       product={p}
                     />
                   ))}
-                </div>
+                </Carousel>
               </div>
             );
           case "HERO_TYPE_FEATURED_ARCHIVE":
