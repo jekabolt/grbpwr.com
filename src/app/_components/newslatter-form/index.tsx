@@ -67,7 +67,7 @@ function FooterNewslatterForm() {
         </Button>
       </div>
       <CheckboxGlobal
-        name="letter"
+        name="newsLetter"
         label="i agree to recieve emails. read our privacy policy for more information."
       />
     </div>
