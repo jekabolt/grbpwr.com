@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import CheckboxGlobal from "@/components/ui/checkbox";
 import Input from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 
@@ -49,20 +50,26 @@ function CheckoutNewslatterForm() {
 
 function FooterNewslatterForm() {
   return (
-    <div className="relative flex items-center justify-between border border-textColor px-4 py-3">
-      <Input
-        id="newsletter"
-        placeholder="MAILING LIST"
-        name="email"
-        type="email"
-        className="w-full grow border-none text-textBaseSize leading-4 placeholder:text-textColor"
+    <div className="space-y-6">
+      <div className="relative flex items-center justify-between border border-textColor px-4 py-3">
+        <Input
+          id="newsletter"
+          placeholder="MAILING LIST"
+          name="email"
+          type="email"
+          className="w-full grow border-none text-textBaseSize leading-4 placeholder:text-textColor"
+        />
+        <Button
+          className="flex-none uppercase text-textInactiveColor"
+          type="submit"
+        >
+          apply
+        </Button>
+      </div>
+      <CheckboxGlobal
+        name="letter"
+        label="i agree to recieve emails. read our privacy policy for more information."
       />
-      <Button
-        className="flex-none uppercase text-textInactiveColor"
-        type="submit"
-      >
-        apply
-      </Button>
     </div>
   );
 }

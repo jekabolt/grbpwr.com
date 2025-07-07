@@ -26,7 +26,9 @@ export default function GenericPopover({
 }: Props) {
   return (
     <Popover.Root>
-      <Popover.Trigger>{openElement}</Popover.Trigger>
+      <Popover.Trigger className="flex items-center">
+        {openElement}
+      </Popover.Trigger>
       <PopoverContent
         className={className}
         title={title}
