@@ -8,13 +8,13 @@ export const PRODUCTS_CACHE_TAG = "products";
 export const ARCHIVES_CACHE_TAG = "archives";
 export const HERO_CACHE_TAG = "hero";
 
-export const FOOTER_YEAR = new Date().getFullYear();
+export const FOOTER_YEAR = Math.floor(Date.now() / 1000);
 
 export const FOOTER_LINKS: { text: string; href: string }[] = [
   { text: "x", href: "https://www.x.com/grbpwr/" },
-  { text: "github", href: "https://www.github.com/grbpwr/" },
-  { text: "instagram", href: "https://www.instagram.com/grb.pwr/" },
-  { text: "telegram", href: "https://www.t.me/grbpwr/" },
+  { text: "gh", href: "https://www.github.com/grbpwr/" },
+  { text: "ig", href: "https://www.instagram.com/grb.pwr/" },
+  { text: "tg", href: "https://www.t.me/grbpwr/" },
 ];
 
 export const CATALOG_LIMIT = 16;
