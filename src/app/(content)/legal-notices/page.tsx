@@ -56,13 +56,14 @@ export default function LegalNotices() {
       <div className="flex h-full justify-between lg:py-24">
         <div className="flex w-1/2 flex-col pl-40">
           <div className="space-y-10">
-            <Text>Legal Notices</Text>
+            <Text className="uppercase">Legal Notices</Text>
             <div className="space-y-4">
               {Object.entries(legalSections).map(([key, section]) => (
                 <Button
                   key={key}
                   variant={selectedSection === key ? "underline" : "default"}
                   onClick={() => setSelectedSection(key as LegalSection)}
+                  className="uppercase"
                 >
                   {section.title}
                 </Button>
