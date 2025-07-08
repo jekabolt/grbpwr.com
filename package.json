@@ -40,6 +40,7 @@
     "react-dom": "0.0.0-experimental-443b7ff2-20250303",
     "react-hook-form": "^7.52.0",
     "react-intersection-observer": "^9.13.0",
+    "react-markdown": "^10.1.0",
     "react-photo-view": "^1.2.4",
     "zod": "^3.23.8",
     "zustand": "^5.0.0"

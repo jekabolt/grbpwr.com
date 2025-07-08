@@ -7,7 +7,7 @@ import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";
 import TextWrapper from "@/components/ui/text-wrapper";
 
-import { CookieContent } from "./cookie-content";
+import { CookieContent } from "../legal-notices/_components/cookie-content";
 
 const links = [
   { href: "facebook", label: "facebook" },

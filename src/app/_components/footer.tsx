@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FOOTER_LINKS as links } from "@/constants";
+import { FOOTER_YEAR, FOOTER_LINKS as links } from "@/constants";
 
 import { Button } from "@/components/ui/button";
 import { WhiteLogo } from "@/components/ui/icons/white-logo";
@@ -15,7 +15,7 @@ function LiveClock() {
   const [timestamp, setTimestamp] = useState<number | null>(null);
 
   useEffect(() => {
-    setTimestamp(Math.floor(Date.now() / 1000));
+    setTimestamp(FOOTER_YEAR);
 
     const interval = setInterval(() => {
       setTimestamp(Math.floor(Date.now() / 1000));
@@ -43,7 +43,9 @@ export function Footer() {
               client service
             </Text>
             <Text className="uppercase text-highlightColor">order status</Text>
-            <Text className="uppercase text-highlightColor">legal notices</Text>
+            <Button asChild className="uppercase text-highlightColor">
+              <Link href="/legal-notices">legal notices</Link>
+            </Button>
             <div className="w-full lg:hidden">
               <CurrencyPopover align="start" title="Currency:" />
             </div>

@@ -11,7 +11,7 @@ import CartTotalPrice from "@/app/(checkout)/cart/_components/CartTotalPrice";
 
 export default function FlexibleLayout({
   children,
-  headerType,
+  headerType = "catalog",
   headerProps,
   mobileHeaderType,
   footerType,

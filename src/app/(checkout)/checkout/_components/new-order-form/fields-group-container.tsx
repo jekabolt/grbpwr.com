@@ -44,9 +44,11 @@ export default function FieldsGroupContainer({
         onClick={handleToggle}
       >
         <div className="flex gap-x-6">
-          <Text variant={disabled ? "inactive" : "uppercase"} className="w-8">
-            {stage}
-          </Text>
+          {stage && (
+            <Text variant={disabled ? "inactive" : "uppercase"} className="w-8">
+              {stage}
+            </Text>
+          )}
           <Text variant={disabled ? "inactive" : "uppercase"} component="h2">
             {title}
           </Text>
