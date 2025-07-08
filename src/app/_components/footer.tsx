@@ -12,9 +12,11 @@ import CurrencyPopover from "./currency-popover";
 import NewslatterForm from "./newslatter-form";
 
 function LiveClock() {
-  const [timestamp, setTimestamp] = useState(Math.floor(Date.now() / 1000));
+  const [timestamp, setTimestamp] = useState<number | null>(null);
 
   useEffect(() => {
+    setTimestamp(Math.floor(Date.now() / 1000));
+
     const interval = setInterval(() => {
       setTimestamp(Math.floor(Date.now() / 1000));
     }, 1000);
@@ -22,7 +24,7 @@ function LiveClock() {
     return () => clearInterval(interval);
   }, []);
 
-  return `${timestamp}`;
+  return timestamp ? `${timestamp}` : "";
 }
 
 export function Footer() {
