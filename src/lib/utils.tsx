@@ -89,3 +89,8 @@ export function formatSizeData(
     })
     .sort((a, b) => parseFloat(a?.eu || "") - parseFloat(b?.eu || ""));
 }
+
+export function validateEmail(email: string) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  return emailRegex.test(email);
+}
