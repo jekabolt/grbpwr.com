@@ -29,7 +29,7 @@ function LiveClock() {
 
 export function Footer() {
   return (
-    <footer className="flex w-full flex-col space-y-10 px-2.5 pb-16 pt-8 lg:py-2.5">
+    <footer className="flex w-full flex-col space-y-10 px-2.5 pb-16 pt-8 lg:pb-2.5">
       <div className="flex flex-col space-y-9 lg:flex-row">
         <div className="aspect-square w-full self-center lg:w-1/2 lg:border-r lg:border-textColor">
           <WhiteLogo className="mx-auto w-full lg:w-1/2" />
