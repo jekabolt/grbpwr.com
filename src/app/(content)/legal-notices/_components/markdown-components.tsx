@@ -7,8 +7,10 @@ export const CustomParagraph = ({ children }: any) => {
   return <div className="space-y-4">{children}</div>;
 };
 
-export const createCustomLink =
-  (onSectionChange?: (section: string) => void) => (props: any) => {
+export const createCustomLink = (
+  onSectionChange?: (section: string) => void,
+) => {
+  const CustomLink = (props: any) => {
     const { href, children } = props;
     if (href?.includes("section=cookies")) {
       return (
@@ -41,6 +43,10 @@ export const createCustomLink =
       </Button>
     );
   };
+
+  CustomLink.displayName = "CustomLink";
+  return CustomLink;
+};
 
 export const createMarkdownComponents = (
   onSectionChange?: (section: string) => void,

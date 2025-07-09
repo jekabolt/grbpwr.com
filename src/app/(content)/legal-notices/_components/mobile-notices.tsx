@@ -14,11 +14,32 @@ export function MobileNotices() {
     null,
   );
   const legalSectionsArray = Object.entries(legalSections);
+  const privacyContent = useMarkdownContent(legalSections.privacy.file || "");
+  const termsContent = useMarkdownContent(legalSections.terms.file || "");
+  const termsOfSaleContent = useMarkdownContent(
+    legalSections["terms-of-sale"].file || "",
+  );
+  const legalNoticeContent = useMarkdownContent(
+    legalSections["legal-notice"].file || "",
+  );
+  const returnExchangeContent = useMarkdownContent(
+    legalSections["return-exchange"].file || "",
+  );
+  const cookiesContent = useMarkdownContent(legalSections.cookies.file || "");
+
+  const contentData = {
+    privacy: privacyContent,
+    terms: termsContent,
+    "terms-of-sale": termsOfSaleContent,
+    "legal-notice": legalNoticeContent,
+    "return-exchange": returnExchangeContent,
+    cookies: cookiesContent,
+  };
 
   return (
     <div className="space-y-32 p-2.5">
       {legalSectionsArray.map(([key, section]) => {
-        const { content } = useMarkdownContent(section.file || "");
+        const { content } = contentData[key as LegalSection];
         return (
           <div key={key} className="space-y-4">
             <Text variant="uppercase" className="font-semibold">
