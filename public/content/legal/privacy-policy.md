@@ -23,9 +23,7 @@ If you share photos, videos, or other content featuring our products (whether by
 
 ## HOW TO CHANGE YOUR COOKIE PREFERENCES?
 
-<!-- TODO:add link -->
-
-To change your cookie preferences, click here.
+To change your cookie preferences, [click here](#section=cookies)
 
 ## WHEN AND HOW DO WE COLLECT YOUR PERSONAL INFORMATION?
 
@@ -43,10 +41,8 @@ However, it's important to understand that no system is entirely foolproof. You 
 
 ## CAN THE PRIVACY POLICY CHANGE?
 
-<!-- TODO: add copy email component -->
-
 Yes, we can update the privacy policy in accordance with legal and technological developments.
 
 We will notify you of significant changes to our privacy policy through email or a prominent notice on our website.
 
-For more information about our privacy practices, questions, or complaints, please contact us via support@grbpwr.com.
+For more information about our privacy practices, questions, or complaints, please contact us via [support@grbpwr.com](mailto:support@grbpwr.com).

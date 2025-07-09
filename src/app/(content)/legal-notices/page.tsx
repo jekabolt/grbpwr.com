@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import FlexibleLayout from "@/components/flexible-layout";
 import { Button } from "@/components/ui/button";
@@ -8,48 +9,24 @@ import { Text } from "@/components/ui/text";
 import { CookieContent } from "@/app/(content)/legal-notices/_components/cookie-content";
 
 import { CollapsibleSections } from "./_components/collapsible-sections";
+import { LegalSection, legalSections } from "./_components/constant";
 import { useMarkdownContent } from "./_components/use-markdown-content";
-
-type LegalSection =
-  | "privacy"
-  | "terms"
-  | "cookies"
-  | "return-exchange"
-  | "terms-of-sale"
-  | "legal-notice";
-
-const legalSections: Record<LegalSection, { title: string; file?: string }> = {
-  privacy: {
-    title: "Privacy Policy",
-    file: "/content/legal/privacy-policy.md",
-  },
-  terms: {
-    title: "Terms and Conditions of Use",
-    file: "/content/legal/terms-conditions.md",
-  },
-  "terms-of-sale": {
-    title: "Terms and Conditions of Sale",
-    file: "/content/legal/terms-of-sale.md",
-  },
-  "legal-notice": {
-    title: "Legal Notice",
-    file: "/content/legal/legal-notice.md",
-  },
-  "return-exchange": {
-    title: "Return and Exchange Policy",
-    file: "/content/legal/return-exchange.md",
-  },
-  cookies: {
-    title: "Cookie Settings",
-  },
-};
 
 export default function LegalNotices() {
   const [selectedSection, setSelectedSection] =
     useState<LegalSection>("privacy");
+  const searchParams = useSearchParams();
+
   const { content } = useMarkdownContent(
     legalSections[selectedSection].file || "",
   );
+
+  useEffect(() => {
+    const section = searchParams.get("section");
+    if (section && section in legalSections) {
+      setSelectedSection(section as LegalSection);
+    }
+  }, [searchParams]);
 
   return (
     <FlexibleLayout footerType="mini">
@@ -84,6 +61,9 @@ export default function LegalNotices() {
                 selectedSection === "terms-of-sale"
               }
               showDirectly={selectedSection === "legal-notice"}
+              onSectionChange={(section) =>
+                setSelectedSection(section as LegalSection)
+              }
             />
           )}
         </div>

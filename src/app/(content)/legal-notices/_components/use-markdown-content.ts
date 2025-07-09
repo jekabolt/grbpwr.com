@@ -18,11 +18,9 @@ export const useMarkdownContent = (filePath: string): MarkdownContentHook => {
 
             try {
                 const response = await fetch(filePath);
-
                 if (!response.ok) {
                     throw new Error(`Failed to fetch content: ${response.status}`);
                 }
-
                 const text = await response.text();
                 setContent(text);
             } catch (err) {

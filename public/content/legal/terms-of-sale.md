@@ -71,4 +71,4 @@ These Terms are governed by and interpreted in accordance with the laws of Engla
 
 ## CONTACT
 
-For assistance, please contact us via email at support@grbpwr.com or through the Aftersale Services section of our Website.
+For assistance, please contact us via email at [support@grbpwr.com](mailto:support@grbpwr.com) or through the Aftersale Services section of our Website.

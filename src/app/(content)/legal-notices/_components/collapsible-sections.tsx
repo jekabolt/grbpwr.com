@@ -3,17 +3,22 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
+import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 import FieldsGroupContainer from "@/app/(checkout)/checkout/_components/new-order-form/fields-group-container";
+
+import { createMarkdownComponents } from "./markdown-components";
 
 export function CollapsibleSections({
   content,
   skipFirstSectionNumber = false,
   showDirectly = false,
+  onSectionChange,
 }: {
   content: string;
   skipFirstSectionNumber?: boolean;
   showDirectly?: boolean;
+  onSectionChange?: (section: string) => void;
 }) {
   const [openSection, setOpenSection] = useState<number | null>(null);
 
@@ -24,17 +29,19 @@ export function CollapsibleSections({
     setOpenSection((prev) => (prev === index ? null : index));
   };
 
+  const markdownComponents = createMarkdownComponents(onSectionChange);
+
   if (showDirectly) {
     return (
       <Text
         component="span"
-        className="prose-headings:!text-foreground prose-p:!text-foreground prose-strong:!text-foreground prose-ul:!text-foreground prose-li:!text-foreground prose max-w-none"
+        className="prose-headings:text-foreground prose-p:text-foreground prose max-w-none"
         style={{
           "--tw-prose-bullets": "hsl(var(--foreground))",
           "--tw-prose-counters": "hsl(var(--foreground))",
         }}
       >
-        <ReactMarkdown>{content.replace(/\n/g, "  \n")}</ReactMarkdown>
+        <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
       </Text>
     );
   }
@@ -45,37 +52,41 @@ export function CollapsibleSections({
         {contentSections.map((section, index) => {
           const lines = section.split("\n");
           const heading = lines[0].replace("## ", "");
-          const sectionContent = lines
-            .slice(1)
-            .join("\n")
-            .replace(/\n/g, "  \n");
+          const sectionContent = lines.slice(1).join("\n");
 
           return (
-            <FieldsGroupContainer
+            <div
               key={index}
-              stage={
-                skipFirstSectionNumber && index === 0
-                  ? ""
-                  : String(skipFirstSectionNumber ? index : index + 1).padStart(
-                      2,
-                      "0",
-                    )
-              }
-              title={heading}
-              isOpen={openSection === index}
-              onToggle={() => toggleSection(index)}
+              className={cn("border-b border-textColor", {
+                "border-b-0": index === contentSections.length - 1,
+              })}
             >
-              <Text
-                component="span"
-                className="prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose max-w-none"
-                style={{
-                  "--tw-prose-bullets": "hsl(var(--foreground))",
-                  "--tw-prose-counters": "hsl(var(--foreground))",
-                }}
+              <FieldsGroupContainer
+                stage={
+                  skipFirstSectionNumber && index === 0
+                    ? ""
+                    : String(
+                        skipFirstSectionNumber ? index : index + 1,
+                      ).padStart(2, "0")
+                }
+                title={heading}
+                isOpen={openSection === index}
+                onToggle={() => toggleSection(index)}
               >
-                <ReactMarkdown>{sectionContent}</ReactMarkdown>
-              </Text>
-            </FieldsGroupContainer>
+                <Text
+                  component="span"
+                  className="prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose max-w-none"
+                  style={{
+                    "--tw-prose-bullets": "hsl(var(--foreground))",
+                    "--tw-prose-counters": "hsl(var(--foreground))",
+                  }}
+                >
+                  <ReactMarkdown components={markdownComponents}>
+                    {sectionContent}
+                  </ReactMarkdown>
+                </Text>
+              </FieldsGroupContainer>
+            </div>
           );
         })}
       </div>

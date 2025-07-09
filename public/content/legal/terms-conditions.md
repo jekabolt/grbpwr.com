@@ -1,4 +1,4 @@
-## TERMS OF USE OF THIS SITE
+## TERMS OF USE THIS SITE
 
 This website is owned and operated by GRBPWR, a company incorporated under the laws of the United Kingdom ("GRBPWR" or "we", "us", "our").
 
