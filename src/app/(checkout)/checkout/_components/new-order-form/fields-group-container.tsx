@@ -36,7 +36,7 @@ export default function FieldsGroupContainer({
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 lg:space-y-8">
       <div
         className={cn("flex cursor-pointer items-center justify-between", {
           "opacity-50": disabled,

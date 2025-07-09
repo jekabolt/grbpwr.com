@@ -9,19 +9,22 @@ import { CookieContent } from "@/app/(content)/legal-notices/_components/cookie-
 
 import { CollapsibleSections } from "./_components/collapsible-sections";
 import { LegalSection, legalSections } from "./_components/constant";
+import { MobileNotices } from "./_components/mobile-notices";
 import { useMarkdownContent } from "./_components/use-markdown-content";
 
 export default function LegalNotices() {
   const [selectedSection, setSelectedSection] =
     useState<LegalSection>("privacy");
-
   const { content } = useMarkdownContent(
     legalSections[selectedSection].file || "",
   );
 
   return (
     <FlexibleLayout footerType="mini">
-      <div className="flex h-full justify-between lg:py-24">
+      <div className="block lg:hidden">
+        <MobileNotices />
+      </div>
+      <div className="hidden h-full justify-between lg:flex lg:py-24">
         <div className="flex w-1/2 flex-col pl-40">
           <div className="space-y-10">
             <Text className="uppercase">Legal Notices</Text>
