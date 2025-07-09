@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 import FlexibleLayout from "@/components/flexible-layout";
 import { Button } from "@/components/ui/button";
@@ -15,18 +14,10 @@ import { useMarkdownContent } from "./_components/use-markdown-content";
 export default function LegalNotices() {
   const [selectedSection, setSelectedSection] =
     useState<LegalSection>("privacy");
-  const searchParams = useSearchParams();
 
   const { content } = useMarkdownContent(
     legalSections[selectedSection].file || "",
   );
-
-  useEffect(() => {
-    const section = searchParams.get("section");
-    if (section && section in legalSections) {
-      setSelectedSection(section as LegalSection);
-    }
-  }, [searchParams]);
 
   return (
     <FlexibleLayout footerType="mini">
