@@ -13,6 +13,8 @@ export default function FieldsGroupContainer({
   summary,
   isOpen = false,
   disabled = false,
+  clickableArea = "default",
+
   onToggle,
 }: {
   stage: string;
@@ -21,6 +23,7 @@ export default function FieldsGroupContainer({
   children: React.ReactNode;
   isOpen?: boolean;
   disabled?: boolean;
+  clickableArea?: "full" | "default";
   onToggle?: () => void;
 }) {
   const [localIsOpen, setLocalIsOpen] = useState(isOpen);
@@ -36,9 +39,14 @@ export default function FieldsGroupContainer({
   }
 
   return (
-    <div className="space-y-4 lg:space-y-8">
+    <div
+      className={cn("space-y-4 lg:space-y-8", {
+        "space-y-0 lg:space-y-0": clickableArea === "full",
+      })}
+    >
       <div
         className={cn("flex cursor-pointer items-center justify-between", {
+          "h-20": clickableArea === "full",
           "opacity-50": disabled,
         })}
         onClick={handleToggle}
@@ -62,7 +70,7 @@ export default function FieldsGroupContainer({
           <Arrow />
         </div>
       </div>
-      <div className={cn("space-y-8", { hidden: !localIsOpen })}>
+      <div className={cn("h-full space-y-8", { hidden: !localIsOpen })}>
         {children}
       </div>
       {!localIsOpen && <div className="space-y-8">{summary}</div>}

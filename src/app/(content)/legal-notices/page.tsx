@@ -9,7 +9,6 @@ import { CookieContent } from "@/app/(content)/legal-notices/_components/cookie-
 
 import { CollapsibleSections } from "./_components/collapsible-sections";
 import { LegalSection, legalSections } from "./_components/constant";
-import { MobileNotices } from "./_components/mobile-notices";
 import { useMarkdownContent } from "./_components/use-markdown-content";
 
 export default function LegalNotices() {
@@ -21,11 +20,8 @@ export default function LegalNotices() {
 
   return (
     <FlexibleLayout footerType="mini">
-      <div className="block lg:hidden">
-        <MobileNotices />
-      </div>
-      <div className="hidden h-full justify-between lg:flex lg:py-24">
-        <div className="flex w-1/2 flex-col pl-40">
+      <div className="flex h-full flex-col space-y-20 px-2.5 pb-20 pt-10 lg:flex-row lg:justify-between lg:py-24">
+        <div className="flex w-full flex-col lg:w-1/2 lg:pl-8 lg:pt-56">
           <div className="space-y-10">
             <Text className="uppercase">Legal Notices</Text>
             <div className="space-y-4">
@@ -42,8 +38,7 @@ export default function LegalNotices() {
             </div>
           </div>
         </div>
-
-        <div className="w-1/2 pr-40">
+        <div className="w-full lg:w-1/2 lg:pr-40">
           {selectedSection === "cookies" ? (
             <CookieContent autoSave={true} />
           ) : (

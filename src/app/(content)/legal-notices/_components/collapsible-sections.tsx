@@ -48,7 +48,7 @@ export function CollapsibleSections({
 
   return (
     <div>
-      <div className="space-y-8">
+      <div>
         {contentSections.map((section, index) => {
           const lines = section.split("\n");
           const heading = lines[0].replace("## ", "");
@@ -58,10 +58,11 @@ export function CollapsibleSections({
             <div
               key={index}
               className={cn("border-b border-textColor", {
-                "border-b-0": index === contentSections.length - 1,
+                "border-transparent": index === contentSections.length - 1,
               })}
             >
               <FieldsGroupContainer
+                key={index}
                 stage={
                   skipFirstSectionNumber && index === 0
                     ? ""
@@ -72,6 +73,7 @@ export function CollapsibleSections({
                 title={heading}
                 isOpen={openSection === index}
                 onToggle={() => toggleSection(index)}
+                clickableArea="full"
               >
                 <Text
                   component="span"
