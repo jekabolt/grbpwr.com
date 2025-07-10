@@ -16,6 +16,8 @@ export const useMarkdownContent = (filePath: string): MarkdownContentHook => {
         const loadContent = async () => {
             setLoading(true);
             setError(null);
+            setContent("");
+
             try {
                 const response = await fetch(filePath);
                 if (!response.ok) {
@@ -33,6 +35,9 @@ export const useMarkdownContent = (filePath: string): MarkdownContentHook => {
         };
         if (filePath) {
             loadContent();
+        } else {
+            setContent("");
+            setLoading(false);
         }
     }, [filePath]);
 
