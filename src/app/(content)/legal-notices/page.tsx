@@ -41,10 +41,6 @@ export default function LegalNotices() {
         <div className="w-full lg:w-1/2 lg:pr-40">
           {selectedSection === "cookies" ? (
             <CookieContent autoSave={true} />
-          ) : loading ? (
-            <div className="flex items-center justify-center p-8">
-              <Text>Loading...</Text>
-            </div>
           ) : (
             <CollapsibleSections
               key={selectedSection}
