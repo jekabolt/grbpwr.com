@@ -5,5 +5,5 @@ The Website is hosted by:
 ?????????
 
 You can contact us in the following ways:
-By email: support@grbpwr.com
+By email: [support@grbpwr.com](mailto:support@grbpwr.com)
 Via the Aftersale Services form on the Website

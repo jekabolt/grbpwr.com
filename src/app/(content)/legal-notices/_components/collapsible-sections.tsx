@@ -35,10 +35,12 @@ export function CollapsibleSections({
     return (
       <Text
         component="span"
-        className="prose-headings:text-foreground prose-p:text-foreground prose max-w-none"
+        className="prose max-w-none"
         style={{
-          "--tw-prose-bullets": "hsl(var(--foreground))",
-          "--tw-prose-counters": "hsl(var(--foreground))",
+          "--tw-prose-bullets": "hsl(var(--textColor))",
+          "--tw-prose-counters": "hsl(var(--textColor))",
+          "--tw-prose-headings": "hsl(var(--textColor))",
+          "--tw-prose-body": "hsl(var(--textColor))",
         }}
       >
         <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
@@ -77,10 +79,12 @@ export function CollapsibleSections({
               >
                 <Text
                   component="span"
-                  className="prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose max-w-none"
+                  className="prose max-w-none"
                   style={{
-                    "--tw-prose-bullets": "hsl(var(--foreground))",
-                    "--tw-prose-counters": "hsl(var(--foreground))",
+                    "--tw-prose-bullets": "hsl(var(--textColor))",
+                    "--tw-prose-counters": "hsl(var(--textColor))",
+                    "--tw-prose-headings": "hsl(var(--textColor))",
+                    "--tw-prose-body": "hsl(var(--textColor))",
                   }}
                 >
                   <ReactMarkdown components={markdownComponents}>
