@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";
 
 export const CustomParagraph = ({ children }: any) => {
-  return <div className="space-y-4">{children}</div>;
+  return <div className="mb-4 lg:mb-8">{children}</div>;
 };
 
 export const createCustomLink = (

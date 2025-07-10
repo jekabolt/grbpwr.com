@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { legalSections } from "./constant";
+
 export interface MarkdownContentHook {
     content: string;
     loading: boolean;
@@ -36,4 +38,22 @@ export const useMarkdownContent = (filePath: string): MarkdownContentHook => {
     }, [filePath]);
 
     return { content, loading, error };
-}; 
+};
+
+export function useAllLegalContent() {
+    const privacyContent = useMarkdownContent(legalSections.privacy.file || "");
+    const termsContent = useMarkdownContent(legalSections.terms.file || "");
+    const termsOfSaleContent = useMarkdownContent(legalSections["terms-of-sale"].file || "");
+    const legalNoticeContent = useMarkdownContent(legalSections["legal-notice"].file || "");
+    const returnExchangeContent = useMarkdownContent(legalSections["return-exchange"].file || "");
+    const cookiesContent = useMarkdownContent(legalSections.cookies.file || "");
+
+    return {
+        privacy: privacyContent,
+        terms: termsContent,
+        "terms-of-sale": termsOfSaleContent,
+        "legal-notice": legalNoticeContent,
+        "return-exchange": returnExchangeContent,
+        cookies: cookiesContent,
+    } as const;
+} 
