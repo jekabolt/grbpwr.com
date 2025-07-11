@@ -16,6 +16,7 @@ interface Props {
   cutText?: number;
   variant?: "underlined" | "undrleineWithColors";
   mode?: "toaster" | "default";
+  className?: string;
 }
 
 export default function CopyText({
@@ -24,6 +25,7 @@ export default function CopyText({
   cutText,
   mode = "default",
   variant = "undrleineWithColors",
+  className,
 }: Props) {
   const [isCopied, setIsCopied] = useState(false);
 
@@ -63,7 +65,7 @@ export default function CopyText({
   );
 
   return (
-    <div className="flex h-4 items-center gap-1">
+    <div className={cn("flex h-4 items-center gap-1", className)}>
       {mode === "toaster" ? (
         <Toaster title="email">{textElement}</Toaster>
       ) : (
