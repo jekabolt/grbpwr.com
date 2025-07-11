@@ -14,7 +14,7 @@ import { useMarkdownContent } from "./_components/use-markdown-content";
 export default function LegalNotices() {
   const [selectedSection, setSelectedSection] =
     useState<LegalSection>("privacy");
-  const { content, loading } = useMarkdownContent(
+  const { content } = useMarkdownContent(
     legalSections[selectedSection].file || "",
   );
 
