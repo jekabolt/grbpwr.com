@@ -29,8 +29,8 @@ export default function ClientServices() {
                 <Link href="/faq">frequently asked questions</Link>
               </Button>
               <Text>
-                you can use this area to consult the faq's, follow your order
-                and track your return.
+                you can use this area to consult the faq&apos;s, follow your
+                order and track your return.
               </Text>
             </div>
             <div className="space-y-8">
