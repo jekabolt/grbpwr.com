@@ -40,7 +40,7 @@ export function Footer() {
           </div>
           <div className="order-2 flex w-full flex-col space-y-9 lg:order-1 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
             <Text className="uppercase text-highlightColor">
-              client service
+              <Link href="/client-services">client service</Link>
             </Text>
             <Text className="uppercase text-highlightColor">order status</Text>
             <Button asChild className="uppercase text-highlightColor">
