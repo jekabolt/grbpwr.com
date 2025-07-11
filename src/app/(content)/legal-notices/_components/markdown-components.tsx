@@ -25,10 +25,11 @@ export const createCustomLink = (
     }
     if (href?.startsWith("mailto:")) {
       const email = href.replace("mailto:", "");
+      console.log("email", email);
       return (
         <CopyText
           text={email}
-          displayText={children}
+          displayText={email}
           variant="undrleineWithColors"
           mode="toaster"
           className="inline-flex cursor-pointer"
