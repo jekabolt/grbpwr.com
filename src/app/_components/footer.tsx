@@ -39,11 +39,13 @@ export function Footer() {
             <NewslatterForm view="footer" />
           </div>
           <div className="order-2 flex w-full flex-col space-y-9 lg:order-1 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
-            <Text className="uppercase text-highlightColor">
-              client service
-            </Text>
-            <Text className="uppercase text-highlightColor">order status</Text>
-            <Button asChild className="uppercase text-highlightColor">
+            <Button variant="underlineWithColors" asChild>
+              <Link href="/client-services">client service</Link>
+            </Button>
+            <Button variant="underlineWithColors" asChild>
+              <Link href="/order-status">order status</Link>
+            </Button>
+            <Button variant="underlineWithColors" asChild>
               <Link href="/legal-notices">legal notices</Link>
             </Button>
             <div className="w-full lg:hidden">

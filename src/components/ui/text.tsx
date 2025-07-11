@@ -12,6 +12,7 @@ const textVariants = cva("", {
       inactive: ["text-textInactiveColor"],
       undrleineWithColors: ["underline", "text-highlightColor"],
       uppercaseWithColors: ["uppercase", "text-highlightColor"],
+      color: ["text-highlightColor"],
       error: ["text-errorColor"],
     },
     size: {

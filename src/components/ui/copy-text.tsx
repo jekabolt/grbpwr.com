@@ -14,7 +14,7 @@ interface Props {
   text: string;
   displayText?: string;
   cutText?: number;
-  variant?: "underlined" | "undrleineWithColors";
+  variant?: "underlined" | "undrleineWithColors" | "color";
   mode?: "toaster" | "default";
   className?: string;
 }
