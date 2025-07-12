@@ -8,7 +8,7 @@ To place an order on our website, please follow the steps below.
 
 2. View product details
 
-   Each product has detailed descriptions and a size guide, in addition to photos. Please read these carefully before placing an order. If you have any questions, feel free to contact us using the Aftersale Services form and select "Product Information" as the topic.
+   Each product has detailed descriptions and a size guide, in addition to photos. Please read these carefully before placing an order. If you have any questions, feel free to contact us using the [Aftersale Services form](/aftersale-services) and select "Product Information" as the topic.
 
 3. Purchase
 
@@ -20,9 +20,7 @@ To place an order on our website, please follow the steps below.
 - Click "PAY" and enter the required payment details.
 - Once your order is confirmed, a receipt with your order number will be sent to the email address you provided.
 
-  <!-- order status page -->
-
-You can track your order status using your order reference and email here.
+You can track your order status using your order reference and email [here](/order-status).
 
 PAYMENT
 
@@ -34,9 +32,7 @@ DELIVERY
 
 The cost and delivery speed depend on the region selected.
 
-<!-- TODO:order-status -->
-
-Once your order is dispatched, you will receive a tracking number to track your order status. Orders are dispatched within three business days of being placed, unless they include pre-order items.
+Once your order is dispatched, you will receive a tracking number to [track your order status](/order-status). Orders are dispatched within three business days of being placed, unless they include pre-order items.
 
 Deliveries do not occur on weekends and public holidays.
 
@@ -44,19 +40,15 @@ You will receive an email notification once your order has been delivered.
 
 RETURN
 
-<!-- TODO:aftersale-services -->
-
-You can return your order within 14 days of receiving it. To make a return, please use the returns form included with your order and contact us using Aftersale Service form.
+You can return your order within 14 days of receiving it. To make a return, please use the returns form included with your order and contact us using [Aftersale Services](/aftersale-services) form.
 
 Items that are damaged or missing labels will not be accepted for return.
 
-If you would like to exchange an item for a different size, please use our Aftersale Services.
+If you would like to exchange an item for a different size, please use our [Aftersale Services](/aftersale-services)s.
 
 ## ORDER TRACKING & PRE-ORDER
 
-<!-- TODO:link -->
-
-Track your order on this page.
+Track your order on [this page](/order-status).
 
 ORDER STATUSES
 
@@ -80,7 +72,7 @@ The order was cancelled either by you through a return request, or by the sender
 
 Refunded
 Your return has been received and processed by our warehouse.
-For any questions about your order, including cancellation requests, please use our Aftersale Services or email support@grbpwr.com.
+For any questions about your order, including cancellation requests, please use our [Aftersale Services](/aftersale-services) or email [support@grbpwr.com](mailto:support@grbpwr.com).
 
 PRE-ORDER
 
@@ -91,21 +83,21 @@ What should I do if my order hasn’t been delivered on time?
 - Check the status of your order.
 - Make sure the delivery address is correct.
 - Contact the courier if you’re unable to collect your order on time.
-- If none of the above helps, please contact us using the Aftersale Services form.
+- If none of the above helps, please contact us using the [Aftersale Services](/aftersale-services) form.
 
 What should I do if my order is damaged?
 
-Take clear photos of the damage and сontact us.
+Take clear photos of the damage and [contact us](/contact-us).
 
 ## RETURN, EXCHANGE AND REFUND
 
 RETURN A PRODUCT
 
-To return an order, please use the returns form included in your package. If you have lost the form, contact us.
+To return an order, please use the returns form included in your package. If you have lost the form, [contact us](/contact-us).
 
 Items that are damaged or missing tags will not be accepted for return.
 
-If you would like to exchange an item for a different size, please get in touch with us.
+If you would like to exchange an item for a different size, please [get in touch with us](/contact-us).
 
 RETURN PERIOD
 
@@ -117,7 +109,7 @@ We cover the cost of returns.
 
 EXCHANGE REQUEST
 
-To exchange an item for a different size, please contact us.
+To exchange an item for a different size, please [contact us](/contact-us).
 
 REFUND
 
@@ -132,9 +124,7 @@ No, refunds can only be issued to the original payment method.
 
 REPAIR SERVICE
 
-<!-- TODO: aftersale link -->
-
-In case your item is damaged, please fill out the Aftersale Services form and select "REPAIR". Attach clear photos and a detailed description of the damage in the form. We will get back to you within three days to explain the next steps.
+In case your item is damaged, please fill out the [Aftersale Services](/aftersale-services) form and select "REPAIR". Attach clear photos and a detailed description of the damage in the form. We will get back to you within three days to explain the next steps.
 
 CARE INSTRUCTIONS
 

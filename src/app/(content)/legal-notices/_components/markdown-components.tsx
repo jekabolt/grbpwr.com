@@ -39,7 +39,7 @@ export const createCustomLink = (
     if (!href) return <span>{children}</span>;
 
     return (
-      <Button variant="underlineWithColors" asChild>
+      <Button variant="underlineWithColors" className="inline" asChild>
         <Link href={href}>{children}</Link>
       </Button>
     );
