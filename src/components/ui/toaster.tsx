@@ -24,7 +24,7 @@ export function Toaster({
         {children}
       </Button>
       <Toast.Root
-        className="flex h-8 items-center justify-center border border-black bg-highlightColor"
+        className="flex h-8 items-center justify-center bg-highlightColor"
         open={open}
         onOpenChange={setOpen}
       >
