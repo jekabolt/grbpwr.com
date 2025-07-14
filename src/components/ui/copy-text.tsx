@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
-import { Toaster } from "@/components/ui/toaster";
+import { EmailToaster } from "@/components/ui/toaster";
 
 import { Button } from "./button";
 import { CopyCheckIcon } from "./icons/copy-check-icon";
@@ -67,7 +67,7 @@ export default function CopyText({
   return (
     <div className={cn("flex h-4 items-center gap-1", className)}>
       {mode === "toaster" ? (
-        <Toaster title="email">{textElement}</Toaster>
+        <EmailToaster title="email">{textElement}</EmailToaster>
       ) : (
         <>
           {textElement}

@@ -39,7 +39,7 @@ export default function ClientServices() {
                 className="uppercase"
                 asChild
               >
-                <Link href="/after-sales-service">after sales service</Link>
+                <Link href="/aftersale-services">after sales service</Link>
               </Button>
               <Text>
                 contact us for any questions pertaining to our repair and
