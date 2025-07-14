@@ -27,50 +27,36 @@ export default function AftersaleForm() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const topicList = Object.keys(options);
   const selectedTopic = form.watch("topic");
   const subjectList = selectedTopic
     ? options[selectedTopic as keyof typeof options]
     : [];
 
   const formSteps = [
-    { step: "1/4", title: "topic", name: "topic", list: topicList },
-    {
-      step: "2/4",
-      title: "subject",
-      name: "subject",
-      list: subjectList,
-    },
-    {
-      step: "3/4",
-      title: "civility",
-      name: "civility",
-      list: civility,
-    },
+    { step: "1/4", title: "topic", name: "topic", list: Object.keys(options) },
+    { step: "2/4", title: "subject", name: "subject", list: subjectList },
+    { step: "3/4", title: "civility", name: "civility", list: civility },
   ] as const;
 
-  async function handleSubmit(data: AftersaleSchema) {
+  const handleSubmit = async (data: AftersaleSchema) => {
     try {
-      const response = await serviceClient.SubmitSupportTicket({
+      await serviceClient.SubmitSupportTicket({
         ticket: {
           ...data,
           orderReference: data.orderReference || "",
           notes: data.notes || "",
         },
       });
-      if (response) {
-        setOpen(true);
-        setTimeout(() => {
-          form.reset(defaultValues);
-          router.push("/success");
-        }, 2100);
-      }
-      console.log("form submitted");
+
+      setOpen(true);
+      setTimeout(() => {
+        form.reset(defaultValues);
+        router.push("/success");
+      }, 2100);
     } catch (error) {
-      console.log("form can't be submitted", form.formState.errors);
-      console.error(error);
+      console.error("Form submission failed:", error);
     }
-  }
+  };
 
   return (
     <>
@@ -87,47 +73,11 @@ export default function AftersaleForm() {
                 />
               </FormSection>
             ))}
+
             <FormSection step="4/4" title="fill out the form">
-              <div className="w-full space-y-6 lg:pl-14">
-                <InputField
-                  variant="secondary"
-                  name="email"
-                  label="EMAIL*"
-                  type="email"
-                />
-                <div className="flex w-full gap-3">
-                  <div className="w-full">
-                    <InputField
-                      variant="secondary"
-                      name="firstName"
-                      label="FIRST NAME*"
-                      keyboardRestriction={keyboardRestrictions.nameFields}
-                    />
-                  </div>
-                  <div className="w-full">
-                    <InputField
-                      variant="secondary"
-                      name="lastName"
-                      label="LAST NAME*"
-                      keyboardRestriction={keyboardRestrictions.nameFields}
-                    />
-                  </div>
-                </div>
-                <InputField
-                  variant="secondary"
-                  name="orderReference"
-                  label="ORDER REFERENCE"
-                />
-                <TextareaField
-                  variant="secondary"
-                  name="notes"
-                  placeholder="ENTER NOTES"
-                  showCharCount
-                  maxLength={1500}
-                  className="placeholder:text-textColor"
-                />
-              </div>
+              <PersonalInfoForm />
             </FormSection>
+
             <Button
               type="submit"
               variant="main"
@@ -140,6 +90,7 @@ export default function AftersaleForm() {
           </div>
         </form>
       </Form>
+
       <SubmissionToaster
         open={open}
         onOpenChange={setOpen}
@@ -147,5 +98,48 @@ export default function AftersaleForm() {
         message="form submitted successfully"
       />
     </>
+  );
+}
+
+function PersonalInfoForm() {
+  return (
+    <div className="w-full space-y-6 lg:pl-14">
+      <InputField
+        variant="secondary"
+        name="email"
+        label="EMAIL*"
+        type="email"
+      />
+
+      <div className="flex w-full gap-3">
+        <InputField
+          variant="secondary"
+          name="firstName"
+          label="FIRST NAME*"
+          keyboardRestriction={keyboardRestrictions.nameFields}
+        />
+        <InputField
+          variant="secondary"
+          name="lastName"
+          label="LAST NAME*"
+          keyboardRestriction={keyboardRestrictions.nameFields}
+        />
+      </div>
+
+      <InputField
+        variant="secondary"
+        name="orderReference"
+        label="ORDER REFERENCE"
+      />
+
+      <TextareaField
+        variant="secondary"
+        name="notes"
+        placeholder="ENTER NOTES"
+        showCharCount
+        maxLength={1500}
+        className="placeholder:text-textColor"
+      />
+    </div>
   );
 }
