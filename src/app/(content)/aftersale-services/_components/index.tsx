@@ -111,18 +111,22 @@ function PersonalInfoForm() {
         type="email"
       />
       <div className="flex w-full gap-3">
-        <InputField
-          variant="secondary"
-          name="firstName"
-          label="FIRST NAME*"
-          keyboardRestriction={keyboardRestrictions.nameFields}
-        />
-        <InputField
-          variant="secondary"
-          name="lastName"
-          label="LAST NAME*"
-          keyboardRestriction={keyboardRestrictions.nameFields}
-        />
+        <div className="w-full">
+          <InputField
+            variant="secondary"
+            name="firstName"
+            label="FIRST NAME*"
+            keyboardRestriction={keyboardRestrictions.nameFields}
+          />
+        </div>
+        <div className="w-full">
+          <InputField
+            variant="secondary"
+            name="lastName"
+            label="LAST NAME*"
+            keyboardRestriction={keyboardRestrictions.nameFields}
+          />
+        </div>
       </div>
       <InputField
         variant="secondary"
