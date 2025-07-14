@@ -35,6 +35,7 @@ export default function OrderStatusForm() {
 
   async function onSubmit(data: OrderStatusData) {
     setIsLoading(true);
+
     try {
       await serviceClient.GetOrderByUUIDAndEmail({
         b64Email: window.btoa(data.email),
