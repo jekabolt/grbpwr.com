@@ -47,7 +47,7 @@ export default function TextareaField({
             <FormLabel className={srLabel ? "sr-only" : ""}>{label}</FormLabel>
           )}
           <FormControl>
-            <div className="relative border border-textColor">
+            <div className="relative border border-textInactiveColor">
               <Textarea
                 disabled={loading}
                 {...field}
