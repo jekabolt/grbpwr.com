@@ -110,7 +110,6 @@ function PersonalInfoForm() {
         label="EMAIL*"
         type="email"
       />
-
       <div className="flex w-full gap-3">
         <InputField
           variant="secondary"
@@ -125,13 +124,11 @@ function PersonalInfoForm() {
           keyboardRestriction={keyboardRestrictions.nameFields}
         />
       </div>
-
       <InputField
         variant="secondary"
         name="orderReference"
         label="ORDER REFERENCE"
       />
-
       <TextareaField
         variant="secondary"
         name="notes"
