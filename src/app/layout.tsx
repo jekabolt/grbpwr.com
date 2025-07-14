@@ -2,6 +2,7 @@ import { FeatureMono } from "@/fonts";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { CookieBanner } from "@/components/ui/cookie-banner";
+import { ToastProvider } from "@/components/ui/toaster";
 
 import "./globals.css";
 
@@ -19,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={FeatureMono.className}>
-        <div className="lightTheme relative min-h-screen">{children}</div>
-        <CookieBanner />
+        <ToastProvider>
+          <div className="lightTheme relative min-h-screen">{children}</div>
+          <CookieBanner />
+        </ToastProvider>
       </body>
     </html>
   );
