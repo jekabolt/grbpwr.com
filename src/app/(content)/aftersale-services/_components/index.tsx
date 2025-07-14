@@ -79,7 +79,7 @@ export default function AftersaleForm() {
               <InputField
                 variant="secondary"
                 name="email"
-                label="email"
+                label="EMAIL*"
                 type="email"
               />
               <div className="flex w-full gap-3">
@@ -87,7 +87,7 @@ export default function AftersaleForm() {
                   <InputField
                     variant="secondary"
                     name="firstName"
-                    label="first name"
+                    label="FIRST NAME*"
                     keyboardRestriction={keyboardRestrictions.nameFields}
                   />
                 </div>
@@ -95,7 +95,7 @@ export default function AftersaleForm() {
                   <InputField
                     variant="secondary"
                     name="lastName"
-                    label="last name"
+                    label="LAST NAME*"
                     keyboardRestriction={keyboardRestrictions.nameFields}
                   />
                 </div>
@@ -103,7 +103,7 @@ export default function AftersaleForm() {
               <InputField
                 variant="secondary"
                 name="orderReference"
-                label="order reference"
+                label="ORDER REFERENCE"
               />
               <TextareaField
                 variant="secondary"
@@ -122,7 +122,7 @@ export default function AftersaleForm() {
             disabled={!form.formState.isValid}
             className="uppercase lg:ml-14"
           >
-            send form
+            send
           </Button>
         </div>
       </form>

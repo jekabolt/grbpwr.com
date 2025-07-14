@@ -35,10 +35,12 @@ export default function AftersaleSelector({
                 <Button
                   key={i}
                   type="button"
-                  variant={l === field.value ? "main" : "secondary"}
                   size="lg"
                   onClick={() => field.onChange(l)}
-                  className="uppercase"
+                  className={cn(
+                    "border border-textColor uppercase",
+                    l === field.value && "bg-textColor text-bgColor",
+                  )}
                 >
                   {l}
                 </Button>
