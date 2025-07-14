@@ -15,7 +15,7 @@ export default function FormSection({
         <Text>{step}</Text>
         <Text variant="uppercase">{title}</Text>
       </div>
-      {children}
+      <div className="w-full lg:pl-14">{children}</div>
     </div>
   );
 }

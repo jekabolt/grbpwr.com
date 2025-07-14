@@ -13,9 +13,9 @@ import InputField from "@/components/ui/form/fields/input-field";
 import TextareaField from "@/components/ui/form/fields/textarea-field";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
-import AftersaleSelector from "./aftersale-selector";
-import { civility, options } from "./constant";
-import FormSection from "./form-section";
+import AftersaleSelector from "../../_components/aftersale-selector";
+import { civility, options } from "../../_components/constant";
+import FormSection from "../../_components/form-section";
 import { aftersaleForm, AftersaleSchema, defaultValues } from "./schema";
 
 export default function AftersaleForm() {
@@ -69,7 +69,7 @@ export default function AftersaleForm() {
                   control={form.control}
                   name={name}
                   list={list}
-                  className="w-full lg:w-3/4 lg:pl-14"
+                  className="w-full lg:w-3/4"
                 />
               </FormSection>
             ))}
@@ -103,7 +103,7 @@ export default function AftersaleForm() {
 
 function PersonalInfoForm() {
   return (
-    <div className="w-full space-y-6 lg:pl-14">
+    <div className="w-full space-y-6">
       <InputField
         variant="secondary"
         name="email"

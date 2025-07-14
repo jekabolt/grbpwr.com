@@ -9,7 +9,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 
-import { AftersaleSchema } from "./schema";
+import { AftersaleSchema } from "../aftersale-services/_components/schema";
 
 export default function AftersaleSelector({
   control,

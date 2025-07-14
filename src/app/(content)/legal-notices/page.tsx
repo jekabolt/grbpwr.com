@@ -5,11 +5,11 @@ import { useState } from "react";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { CookieContent } from "@/app/(content)/legal-notices/_components/cookie-content";
+import { CookieContent } from "@/app/(content)/_components/cookie-content";
 
-import { CollapsibleSections } from "./_components/collapsible-sections";
-import { LegalSection, legalSections } from "./_components/constant";
-import { useMarkdownContent } from "./_components/use-markdown-content";
+import { CollapsibleSections } from "../_components/collapsible-sections";
+import { LegalSection, legalSections } from "../_components/constant";
+import { useMarkdownContent } from "../_components/use-markdown-content";
 
 export default function LegalNotices() {
   const [selectedSection, setSelectedSection] =

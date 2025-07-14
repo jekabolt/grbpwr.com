@@ -1,4 +1,5 @@
-import { errorMessages } from "@/app/(checkout)/checkout/_components/new-order-form/error-messages";
+
+import { errorMessages } from "@/constants";
 import { z } from "zod";
 
 export const aftersaleForm = z.object({

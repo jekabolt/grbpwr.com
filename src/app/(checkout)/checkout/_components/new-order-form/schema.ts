@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { errorMessages } from "./error-messages";
+
+import { errorMessages } from "@/constants";
 
 const addressFields = {
   firstName: z.string().min(1, errorMessages.firstName.min).max(40, errorMessages.firstName.max).regex(errorMessages.firstName.regex.restriction, errorMessages.firstName.regex.message).trim(),
