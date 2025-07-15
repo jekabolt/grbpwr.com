@@ -3,15 +3,14 @@
 import { use } from "react";
 import Link from "next/link";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
+import { currencySymbols } from "@/constants";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { OrderProducts } from "@/app/(checkout)/checkout/_components/new-order-form/order-products";
 
-import { OrderProductsList } from "./order-products-list";
-import {
-  DesktopOrderSecondaryInfo,
-  MobileOrderSecondaryInfo,
-} from "./order-secondary-info";
+import { OrderSecondaryInfo } from "./order-secondary-info";
 import { StatusBadge } from "./status-badge";
 
 export function OrderPageComponent({
@@ -20,103 +19,92 @@ export function OrderPageComponent({
   orderPromise: Promise<{ order: common_OrderFull | undefined }>;
 }) {
   const { order: orderData } = use(orderPromise);
+  const { selectedCurrency } = useCurrency((state) => state);
 
   if (!orderData) return null;
 
-  const { order, orderItems, shipment, promoCode, billing, shipping } =
-    orderData;
+  const currentCurrency = currencySymbols[selectedCurrency];
+
+  const {
+    order,
+    orderItems,
+    shipment,
+    promoCode,
+    billing,
+    shipping,
+    buyer,
+    payment,
+  } = orderData;
 
   return (
-    <div>
-      <div className="grid min-h-52 gap-6 border-dashed border-textInactiveColor py-10 md:grid-cols-4 lg:gap-10 lg:border-b">
-        <div className="space-y-4">
-          <Text variant="inactive">order id</Text>
-          <Text variant="default">{`#${order?.uuid}`}</Text>
+    <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-52">
+      <div className="w-full">
+        <div className="flex flex-col items-center justify-between gap-y-6 border-b border-textInactiveColor py-6 lg:flex-row">
+          <div className="flex w-full flex-row justify-between gap-4 lg:flex-col">
+            <Text variant="uppercase">order id</Text>
+            <Text>{`#${order?.uuid}`}</Text>
+          </div>
+          <div className="flex w-full flex-row justify-between gap-4 lg:flex-col">
+            <Text variant="uppercase">order date</Text>
+            {order?.placed && (
+              <Text>{new Date(order.placed).toLocaleDateString()}</Text>
+            )}
+          </div>
         </div>
-        <div className="space-y-4">
-          <Text variant="inactive">date</Text>
-          {order?.placed && (
-            <Text variant="default">
-              {new Date(order.placed).toLocaleDateString()}
-            </Text>
+        <div className="flex flex-col items-center justify-between gap-y-6 border-b border-textInactiveColor py-6 lg:flex-row">
+          <div className="flex w-full flex-row justify-between gap-4 lg:flex-col">
+            <Text variant="uppercase">status</Text>
+            {order?.orderStatusId && (
+              <StatusBadge statusId={order.orderStatusId} />
+            )}
+          </div>
+          {shipment && shipment.trackingCode && (
+            <div className="flex w-full flex-row gap-4 lg:flex-col">
+              <Text variant="uppercase">tracking number</Text>
+              <Button variant="underlineWithColors" size="default" asChild>
+                <Link href={"/some-page"}>{shipment.trackingCode}</Link>
+              </Button>
+            </div>
           )}
         </div>
-        <div className="space-y-4">
-          <Text variant="inactive">status</Text>
-          {order?.orderStatusId && (
-            <StatusBadge statusId={order.orderStatusId} />
-          )}
-        </div>
-        <div className="space-y-4">
-          <Text variant="inactive">tracking number</Text>
-          {shipment && shipment.trackingCode ? (
-            <Button variant="underlineWithColors" size="default" asChild>
-              <Link href={"/some-page"}>{shipment.trackingCode}</Link>
-            </Button>
-          ) : (
-            <Text variant="default">-</Text>
-          )}
-        </div>
+        <OrderSecondaryInfo
+          shipping={shipping}
+          billing={billing}
+          shipment={shipment}
+          buyer={buyer}
+          payment={payment}
+        />
       </div>
-
-      <DesktopOrderSecondaryInfo
-        shipping={shipping}
-        billing={billing}
-        shipment={shipment}
-      />
-
-      <OrderProductsList orderItems={orderItems || []} className="lg:hidden" />
-
-      <div className="grid grid-cols-1 gap-10 pt-10 lg:grid-cols-2 lg:gap-72 lg:pt-0">
-        <div className="lg:hidden">
-          <MobileOrderSecondaryInfo
-            shipping={shipping}
-            billing={billing}
-            shipment={shipment}
-          />
-        </div>
-
-        <div className="col-span-1 space-y-8">
-          <Text variant="inactive">order summary</Text>
-
+      <div className="w-full space-y-20">
+        <div className="space-y-8">
+          <Text variant="uppercase">order summary</Text>
           <div className="space-y-3">
             {promoCode?.promoCodeInsert?.code && (
               <div className="flex justify-between">
                 <Text variant="uppercase">discount code</Text>
-                <Text variant="default">
-                  {promoCode?.promoCodeInsert?.code}
-                </Text>
+                <Text>{promoCode?.promoCodeInsert?.code}</Text>
               </div>
             )}
             {promoCode?.promoCodeInsert?.code && (
               <div className="flex justify-between">
                 <Text variant="uppercase">promo discount</Text>
-                <Text variant="default">
-                  {promoCode?.promoCodeInsert?.discount?.value} %
-                </Text>
+                <Text>{promoCode?.promoCodeInsert?.discount?.value} %</Text>
               </div>
             )}
             {promoCode?.promoCodeInsert?.code && (
               <div className="flex justify-between">
                 <Text variant="uppercase">shipping:</Text>
-                <Text variant="default">
-                  {"[todo] "}
-                  {shipment?.cost?.value}
-                </Text>
+                <Text>{`${currentCurrency} ${shipment?.cost?.value}`}</Text>
               </div>
             )}
           </div>
 
-          <div className="flex justify-between border-t border-dashed border-textInactiveColor pt-3">
+          <div className="flex justify-between border-t border-textInactiveColor pt-3">
             <Text variant="uppercase">grand total:</Text>
-            <Text variant="default">{order?.totalPrice?.value}</Text>
+            <Text>{`${currentCurrency} ${order?.totalPrice?.value}`}</Text>
           </div>
         </div>
-
-        <OrderProductsList
-          orderItems={orderItems || []}
-          className="col-span-1 hidden lg:block"
-        />
+        <OrderProducts validatedProducts={orderItems || []} />
       </div>
     </div>
   );

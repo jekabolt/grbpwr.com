@@ -54,6 +54,15 @@ export const SORT_MAP_URL: Record<string, common_SortFactor> = {
   price: "SORT_FACTOR_PRICE",
 };
 
+export const paymentMethodNamesMap = {
+  PAYMENT_METHOD_NAME_ENUM_CARD: "card",
+  PAYMENT_METHOD_NAME_ENUM_CARD_TEST: "card (Test)",
+  PAYMENT_METHOD_NAME_ENUM_ETH: "Ethereum (ETH)",
+  PAYMENT_METHOD_NAME_ENUM_ETH_TEST: "Ethereum (ETH) Test",
+  PAYMENT_METHOD_NAME_ENUM_USDT_TRON: "tron usdt",
+  PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA: "tron usdt (Test)",
+};
+
 export const currencySymbols: Record<string, string> = {
   Bitcoin: "₿", // Bitcoin
   CHF: "Fr", // Swiss Franc

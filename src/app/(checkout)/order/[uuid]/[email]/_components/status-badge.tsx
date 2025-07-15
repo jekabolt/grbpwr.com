@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Text } from "@/components/ui/text";
 
 const getStatusInfo = (statusId: number) => {
   switch (statusId) {
@@ -25,7 +26,11 @@ const getStatusInfo = (statusId: number) => {
 };
 
 export function StatusBadge({ statusId }: { statusId: number }) {
-  const { text, color } = getStatusInfo(statusId);
+  const { text } = getStatusInfo(statusId);
 
-  return <span className={cn("inline-block p-2.5", color)}>{text}</span>;
+  return (
+    <Text variant="uppercase" className={cn("inline-block")}>
+      {text}
+    </Text>
+  );
 }

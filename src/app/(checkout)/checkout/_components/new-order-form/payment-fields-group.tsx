@@ -1,5 +1,6 @@
 "use client";
 
+import { paymentMethodNamesMap } from "@/constants";
 import { useFormContext } from "react-hook-form";
 
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -8,7 +9,6 @@ import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import { Tron } from "@/components/ui/icons/tron";
 import { Text } from "@/components/ui/text";
 
-import { paymentMethodNamesMap } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 import { AddressFields } from "./shipping-fields-group";
 

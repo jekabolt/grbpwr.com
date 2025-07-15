@@ -18,7 +18,7 @@ export default function FieldsGroupContainer({
 
   onToggle,
 }: {
-  stage: string;
+  stage?: string;
   title: string;
   summary?: React.ReactNode;
   children: React.ReactNode;
