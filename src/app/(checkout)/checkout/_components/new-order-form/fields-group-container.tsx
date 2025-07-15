@@ -44,6 +44,7 @@ export default function FieldsGroupContainer({
     <div
       className={cn("space-y-4 lg:space-y-8", {
         "space-y-0 lg:space-y-0": clickableArea === "full",
+        "space-y-4": mode === "non-collapsible",
       })}
     >
       <div
@@ -78,7 +79,7 @@ export default function FieldsGroupContainer({
       <div
         className={cn("h-full space-y-8", {
           hidden: mode === "collapsible" && !localIsOpen,
-          "ml-14": mode === "non-collapsible" && stage,
+          "lg:ml-14": mode === "non-collapsible" && stage,
         })}
       >
         {children}

@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { errorMessages } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { serviceClient } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -24,6 +24,7 @@ type OrderStatusData = z.infer<typeof orderStatusSchema>;
 
 export default function OrderStatusForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<OrderStatusData>({
     resolver: zodResolver(orderStatusSchema),
@@ -37,11 +38,7 @@ export default function OrderStatusForm() {
     setIsLoading(true);
 
     try {
-      await serviceClient.GetOrderByUUIDAndEmail({
-        b64Email: window.btoa(data.email),
-        orderUuid: data.orderUuid,
-      });
-      form.reset();
+      router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
     } catch (error) {
       console.error(error);
     } finally {
