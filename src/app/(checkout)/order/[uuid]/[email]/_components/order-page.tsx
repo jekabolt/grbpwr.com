@@ -81,30 +81,20 @@ export function OrderPageComponent({
           <div className="space-y-3">
             {promoCode?.promoCodeInsert?.code && (
               <div className="flex justify-between">
-                <Text variant="uppercase" className="w-full">
-                  discount code
-                </Text>
-                <Text className="w-full">
-                  {promoCode?.promoCodeInsert?.code}
-                </Text>
+                <Text variant="uppercase">discount code</Text>
+                <Text>{promoCode?.promoCodeInsert?.code}</Text>
               </div>
             )}
             {promoCode?.promoCodeInsert?.code && (
               <div className="flex justify-between">
-                <Text variant="uppercase" className="w-full">
-                  promo discount
-                </Text>
-                <Text className="w-full">
-                  {promoCode?.promoCodeInsert?.discount?.value} %
-                </Text>
+                <Text variant="uppercase">promo discount</Text>
+                <Text>{promoCode?.promoCodeInsert?.discount?.value} %</Text>
               </div>
             )}
             {promoCode?.promoCodeInsert?.code && (
               <div className="flex justify-between">
-                <Text variant="uppercase" className="w-full">
-                  shipping:
-                </Text>
-                <Text className="w-full">{`${currentCurrency} ${shipment?.cost?.value}`}</Text>
+                <Text variant="uppercase">shipping:</Text>
+                <Text>{`${currentCurrency} ${shipment?.cost?.value}`}</Text>
               </div>
             )}
           </div>
