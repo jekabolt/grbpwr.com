@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
-import { CookieContent } from "@/app/(content)/legal-notices/_components/cookie-content";
+import { CookieContent } from "@/app/(content)/_components/cookie-content";
 
 import { Button } from "./button";
 import { MobileCookieModal } from "./mobile-cookie-modal";

@@ -12,10 +12,10 @@ import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
 import TextareaField from "@/components/ui/form/fields/textarea-field";
 import { SubmissionToaster } from "@/components/ui/toaster";
+import FieldsGroupContainer from "@/app/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
-import AftersaleSelector from "./aftersale-selector";
-import { civility, options } from "./constant";
-import FormSection from "./form-section";
+import AftersaleSelector from "../../_components/aftersale-selector";
+import { civility, options } from "../../_components/constant";
 import { aftersaleForm, AftersaleSchema, defaultValues } from "./schema";
 
 export default function AftersaleForm() {
@@ -64,20 +64,27 @@ export default function AftersaleForm() {
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="mb-9 w-full space-y-9 lg:w-1/2">
             {formSteps.map(({ step, title, name, list }) => (
-              <FormSection key={name} step={step} title={title}>
+              <FieldsGroupContainer
+                key={name}
+                stage={step}
+                title={title}
+                mode="non-collapsible"
+              >
                 <AftersaleSelector
                   control={form.control}
                   name={name}
                   list={list}
-                  className="w-full lg:w-3/4 lg:pl-14"
+                  className="w-full lg:w-3/4"
                 />
-              </FormSection>
+              </FieldsGroupContainer>
             ))}
-
-            <FormSection step="4/4" title="fill out the form">
+            <FieldsGroupContainer
+              stage="4/4"
+              title="fill out the form"
+              mode="non-collapsible"
+            >
               <PersonalInfoForm />
-            </FormSection>
-
+            </FieldsGroupContainer>
             <Button
               type="submit"
               variant="main"
@@ -90,11 +97,9 @@ export default function AftersaleForm() {
           </div>
         </form>
       </Form>
-
       <SubmissionToaster
         open={open}
         onOpenChange={setOpen}
-        title="success"
         message="form submitted successfully"
       />
     </>
@@ -103,7 +108,7 @@ export default function AftersaleForm() {
 
 function PersonalInfoForm() {
   return (
-    <div className="w-full space-y-6 lg:pl-14">
+    <div className="w-full space-y-6">
       <InputField
         variant="secondary"
         name="email"

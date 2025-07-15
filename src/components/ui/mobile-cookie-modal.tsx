@@ -1,7 +1,7 @@
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { Text } from "@/components/ui/text";
-import { CookieContent } from "@/app/(content)/legal-notices/_components/cookie-content";
+import { CookieContent } from "@/app/(content)/_components/cookie-content";
 
 import { Button } from "./button";
 

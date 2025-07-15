@@ -9,7 +9,7 @@ import { Text } from "./text";
 // Global Toast Provider - add this to your app root
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
-    <Toast.Provider duration={2000}>
+    <Toast.Provider duration={4000}>
       {children}
       <Toast.Viewport className="not-prose fixed inset-x-2.5 top-2.5 z-50 lg:top-14" />
     </Toast.Provider>
@@ -49,15 +49,12 @@ export function EmailToaster({
 export function SubmissionToaster({
   open,
   onOpenChange,
-  title,
   message,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  title: "success";
   message?: string;
 }) {
-  const isSuccess = title === "success";
   return (
     <Toast.Root
       className="flex h-8 items-center justify-center bg-highlightColor"
@@ -65,7 +62,7 @@ export function SubmissionToaster({
       onOpenChange={onOpenChange}
     >
       <Toast.Title>
-        <Text className="text-bgColor">{isSuccess && message}</Text>
+        <Text className="text-center text-bgColor">{message}</Text>
       </Toast.Title>
     </Toast.Root>
   );
