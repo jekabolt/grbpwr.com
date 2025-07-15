@@ -7,9 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { serviceClient } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
+import { SubmissionToaster } from "@/components/ui/toaster";
 
 const orderStatusSchema = z.object({
   email: z
@@ -24,6 +26,7 @@ type OrderStatusData = z.infer<typeof orderStatusSchema>;
 
 export default function OrderStatusForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const form = useForm<OrderStatusData>({
@@ -33,12 +36,19 @@ export default function OrderStatusForm() {
       orderUuid: "",
     },
   });
-
   async function onSubmit(data: OrderStatusData) {
     setIsLoading(true);
-
     try {
-      router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
+      const response = await serviceClient.GetOrderByUUIDAndEmail({
+        orderUuid: data.orderUuid,
+        b64Email: window.btoa(data.email),
+      });
+
+      if (response.order) {
+        router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
+      } else {
+        setOpen(true);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -47,35 +57,43 @@ export default function OrderStatusForm() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <div className="w-full space-y-10 lg:w-1/2">
-          <div className="space-y-6">
-            <InputField
-              name="email"
-              type="email"
-              label="EMAIL*"
-              variant="secondary"
-              loading={isLoading}
-            />
-            <InputField
-              name="orderUuid"
-              label="ORDER REFERENCE*"
-              variant="secondary"
-              loading={isLoading}
-            />
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+          <div className="w-full space-y-10 lg:w-1/2">
+            <div className="space-y-6">
+              <InputField
+                name="email"
+                type="email"
+                label="EMAIL*"
+                variant="secondary"
+                loading={isLoading}
+              />
+              <InputField
+                name="orderUuid"
+                label="ORDER REFERENCE*"
+                variant="secondary"
+                loading={isLoading}
+              />
+            </div>
+            <Button
+              type="submit"
+              variant="main"
+              size="lg"
+              disabled={!form.formState.isValid || isLoading}
+              className="uppercase"
+            >
+              submit
+            </Button>
           </div>
-          <Button
-            type="submit"
-            variant="main"
-            size="lg"
-            disabled={!form.formState.isValid || isLoading}
-            className="uppercase"
-          >
-            submit
-          </Button>
-        </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+      <SubmissionToaster
+        open={open}
+        onOpenChange={setOpen}
+        title="submission"
+        message="order not found"
+      />
+    </>
   );
 }

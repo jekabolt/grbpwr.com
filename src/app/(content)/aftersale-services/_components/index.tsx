@@ -100,7 +100,7 @@ export default function AftersaleForm() {
       <SubmissionToaster
         open={open}
         onOpenChange={setOpen}
-        title="success"
+        title="submission"
         message="form submitted successfully"
       />
     </>
