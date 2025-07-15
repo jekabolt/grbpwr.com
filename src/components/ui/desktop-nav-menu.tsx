@@ -181,23 +181,25 @@ function LinksGroup({
           </div>
         </div>
       </div>
-      <div className="w-40">
-        <Button asChild>
-          <Link href={activeHeroNavLink} className="space-y-2">
-            <div className="w-full">
-              <Image
-                src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
-                alt="hero"
-                aspectRatio={calculateAspectRatio(
-                  heroNav?.media?.media?.thumbnail?.width,
-                  heroNav?.media?.media?.thumbnail?.height,
-                )}
-              />
-            </div>
-            <Text>{heroNav?.exploreText}</Text>
-          </Link>
-        </Button>
-      </div>
+      {heroNav?.media?.media?.thumbnail?.mediaUrl && (
+        <div className="w-40">
+          <Button asChild>
+            <Link href={activeHeroNavLink} className="space-y-2">
+              <div className="w-full">
+                <Image
+                  src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
+                  alt="hero"
+                  aspectRatio={calculateAspectRatio(
+                    heroNav?.media?.media?.thumbnail?.width,
+                    heroNav?.media?.media?.thumbnail?.height,
+                  )}
+                />
+              </div>
+              <Text>{heroNav?.exploreText}</Text>
+            </Link>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
