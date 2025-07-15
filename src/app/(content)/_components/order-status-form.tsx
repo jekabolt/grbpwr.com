@@ -91,7 +91,6 @@ export default function OrderStatusForm() {
       <SubmissionToaster
         open={open}
         onOpenChange={setOpen}
-        title="submission"
         message="order not found"
       />
     </>

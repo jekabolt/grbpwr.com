@@ -50,11 +50,9 @@ export function SubmissionToaster({
   open,
   onOpenChange,
   message,
-  title,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  title: "submission";
   message?: string;
 }) {
   return (
@@ -64,9 +62,7 @@ export function SubmissionToaster({
       onOpenChange={onOpenChange}
     >
       <Toast.Title>
-        <Text className="text-center text-bgColor">
-          {title === "submission" && message}
-        </Text>
+        <Text className="text-center text-bgColor">{message}</Text>
       </Toast.Title>
     </Toast.Root>
   );
