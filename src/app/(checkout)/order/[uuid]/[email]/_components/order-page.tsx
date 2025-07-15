@@ -19,10 +19,10 @@ export function OrderPageComponent({
   orderPromise: Promise<{ order: common_OrderFull | undefined }>;
 }) {
   const { order: orderData } = use(orderPromise);
+  const { selectedCurrency } = useCurrency((state) => state);
 
   if (!orderData) return null;
 
-  const { selectedCurrency } = useCurrency((state) => state);
   const currentCurrency = currencySymbols[selectedCurrency];
 
   const {
