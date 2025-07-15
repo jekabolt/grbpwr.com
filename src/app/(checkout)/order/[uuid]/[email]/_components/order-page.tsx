@@ -8,8 +8,8 @@ import { currencySymbols } from "@/constants";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { OrderProducts } from "@/app/(checkout)/checkout/_components/new-order-form/order-products";
 
-import { OrderProductsList } from "./order-products-list";
 import { OrderSecondaryInfo } from "./order-secondary-info";
 import { StatusBadge } from "./status-badge";
 
@@ -104,7 +104,7 @@ export function OrderPageComponent({
             <Text>{`${currentCurrency} ${order?.totalPrice?.value}`}</Text>
           </div>
         </div>
-        <OrderProductsList orderItems={orderItems || []} />
+        <OrderProducts validatedProducts={orderItems || []} />
       </div>
     </div>
   );
