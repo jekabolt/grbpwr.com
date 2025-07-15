@@ -1,20 +1,16 @@
-import Link from "next/link";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
-import { AccordionContent } from "@radix-ui/react-accordion";
+import { paymentMethodNamesMap } from "@/constants";
 
 import { useDataContext } from "@/components/contexts/DataContext";
-import {
-  AccordionItem,
-  AccordionRoot,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import FieldsGroupContainer from "@/app/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
-export function DesktopOrderSecondaryInfo({
+export function OrderSecondaryInfo({
   shipping,
-  shipment,
   billing,
+  shipment,
+  buyer,
+  payment,
 }: Props) {
   const { dictionary } = useDataContext();
 
@@ -23,32 +19,86 @@ export function DesktopOrderSecondaryInfo({
   )?.shipmentCarrier?.carrier;
 
   return (
-    <div className="mb-10 hidden min-h-52 gap-10 border-b border-dashed border-textInactiveColor py-10 md:grid-cols-4 lg:grid">
-      <div className="space-y-4">
-        <Text variant="inactive">shipping address</Text>
-        {shipping && (
-          <Text variant="default">
-            {`${shipping.addressInsert?.addressLineOne}, ${shipping.addressInsert?.city}`}
-          </Text>
-        )}
+    <>
+      <div className="hidden lg:block">
+        <DesktopOrderSecondaryInfo
+          shipping={shipping}
+          billing={billing}
+          buyer={buyer}
+          payment={payment}
+          shipmentCarrierName={shipmentCarrierName}
+        />
       </div>
-      <div className="space-y-4">
-        <Text variant="inactive">billing address</Text>
-        {billing && (
-          <Text variant="default">
-            {`${billing.addressInsert?.addressLineOne}, ${billing.addressInsert?.city}`}
-          </Text>
-        )}
+      <div className="block border-b border-textInactiveColor lg:hidden">
+        <MobileOrderSecondaryInfo
+          shipping={shipping}
+          billing={billing}
+          buyer={buyer}
+          payment={payment}
+          shipmentCarrierName={shipmentCarrierName}
+        />
       </div>
-      <div className="space-y-4">
-        <Text variant="inactive">shipping method</Text>
+    </>
+  );
+}
+
+export function DesktopOrderSecondaryInfo({
+  shipping,
+  billing,
+  buyer,
+  payment,
+  shipmentCarrierName,
+}: DesktopMobileProps) {
+  return (
+    <div className="w-full space-y-6">
+      <div className="flex flex-row items-center justify-between border-b border-textInactiveColor py-6">
+        <div className="flex w-full flex-col gap-4">
+          <Text variant="uppercase">shipping address</Text>
+          {shipping && (
+            <div>
+              <Text>
+                {`${buyer?.buyerInsert?.firstName} ${buyer?.buyerInsert?.lastName}`}
+              </Text>
+              <Text>{shipping.addressInsert?.addressLineOne}</Text>
+              {shipping.addressInsert?.addressLineTwo && (
+                <Text>{shipping.addressInsert?.addressLineTwo}</Text>
+              )}
+              <Text>{shipping.addressInsert?.city}</Text>
+              <Text>{shipping.addressInsert?.postalCode}</Text>
+            </div>
+          )}
+        </div>
+        <div className="flex w-full flex-col gap-4">
+          <Text variant="uppercase">billing address</Text>
+          {billing && (
+            <div>
+              <Text>
+                {`${buyer?.buyerInsert?.firstName} ${buyer?.buyerInsert?.lastName}`}
+              </Text>
+              <Text>{billing.addressInsert?.addressLineOne}</Text>
+              {billing.addressInsert?.addressLineTwo && (
+                <Text>{billing.addressInsert?.addressLineTwo}</Text>
+              )}
+              <Text>{billing.addressInsert?.city}</Text>
+              <Text>{billing.addressInsert?.postalCode}</Text>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col gap-4 border-b border-textInactiveColor pb-6">
+        <Text variant="uppercase">shipping method</Text>
         <Text variant="default">{shipmentCarrierName}</Text>
       </div>
-      <div className="space-y-4">
-        <Text variant="inactive">receipt</Text>
-        <Button variant="underlineWithColors" size="default" asChild>
-          <Link href={"/some-page"}>link</Link>
-        </Button>
+      <div className="flex flex-col gap-4">
+        <Text variant="uppercase">payment method</Text>
+        <Text className="lowercase">
+          {
+            paymentMethodNamesMap[
+              payment?.paymentInsert
+                ?.paymentMethod as keyof typeof paymentMethodNamesMap
+            ]
+          }
+        </Text>
       </div>
     </div>
   );
@@ -57,61 +107,83 @@ export function DesktopOrderSecondaryInfo({
 export function MobileOrderSecondaryInfo({
   shipping,
   billing,
-  shipment,
-}: Props) {
-  const { dictionary } = useDataContext();
-
-  const shipmentCarrierName = dictionary?.shipmentCarriers?.find(
-    (carrier) => carrier.id === shipment?.carrierId,
-  )?.shipmentCarrier?.carrier;
-
+  buyer,
+  payment,
+  shipmentCarrierName,
+}: DesktopMobileProps) {
   return (
-    <AccordionRoot type="single" collapsible className="space-y-6">
-      <AccordionItem value="item-1" className="space-y-4">
-        <AccordionTrigger>
-          <Text variant="inactive">shipping address</Text>
-        </AccordionTrigger>
-        <AccordionContent>
+    <FieldsGroupContainer title="delivery/payment info" clickableArea="full">
+      <div className="space-y-10">
+        <div className="flex w-full justify-between">
+          <Text variant="uppercase" className="w-full">
+            shipping address
+          </Text>
           {shipping && (
-            <Text variant="default">
-              {`${shipping.addressInsert?.addressLineOne}, ${shipping.addressInsert?.city}`}
-            </Text>
+            <div className="w-full">
+              <Text>
+                {`${buyer?.buyerInsert?.firstName} ${buyer?.buyerInsert?.lastName}`}
+              </Text>
+              <Text>{shipping.addressInsert?.addressLineOne}</Text>
+              {shipping.addressInsert?.addressLineTwo && (
+                <Text>{shipping.addressInsert?.addressLineTwo}</Text>
+              )}
+              <Text>{shipping.addressInsert?.city}</Text>
+              <Text>{shipping.addressInsert?.postalCode}</Text>
+            </div>
           )}
-        </AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem value="item-2" className="space-y-4">
-        <AccordionTrigger>
-          <Text variant="inactive">billing address</Text>
-        </AccordionTrigger>
-        <AccordionContent>
+        </div>
+        <div className="flex w-full justify-between">
+          <Text variant="uppercase" className="w-full">
+            billing address
+          </Text>
           {billing && (
-            <Text variant="default">
-              {`${billing.addressInsert?.addressLineOne}, ${billing.addressInsert?.city}`}
-            </Text>
+            <div className="w-full">
+              <Text>
+                {`${buyer?.buyerInsert?.firstName} ${buyer?.buyerInsert?.lastName}`}
+              </Text>
+              <Text>{billing.addressInsert?.addressLineOne}</Text>
+              {billing.addressInsert?.addressLineTwo && (
+                <Text>{billing.addressInsert?.addressLineTwo}</Text>
+              )}
+              <Text>{billing.addressInsert?.city}</Text>
+              <Text>{billing.addressInsert?.postalCode}</Text>
+            </div>
           )}
-        </AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem value="item-3" className="space-y-4">
-        <AccordionTrigger>
-          <Text variant="inactive">shipping method</Text>
-        </AccordionTrigger>
-        <AccordionContent>{shipmentCarrierName}</AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem value="item-4" className="space-y-4">
-        <AccordionTrigger>
-          <Text variant="inactive">receipt</Text>
-        </AccordionTrigger>
-        <AccordionContent>
-          <Button variant="underlineWithColors" size="default" asChild>
-            <Link href={"/some-page"}>link</Link>
-          </Button>
-        </AccordionContent>
-      </AccordionItem>
-    </AccordionRoot>
+        </div>
+        <div className="flex w-full justify-between">
+          <Text variant="uppercase" className="w-full">
+            shipping method
+          </Text>
+          <Text className="w-full">{shipmentCarrierName}</Text>
+        </div>
+        <div className="flex w-full justify-between pb-6">
+          <Text variant="uppercase" className="w-full">
+            payment method
+          </Text>
+          <Text className="w-full lowercase">
+            {
+              paymentMethodNamesMap[
+                payment?.paymentInsert
+                  ?.paymentMethod as keyof typeof paymentMethodNamesMap
+              ]
+            }
+          </Text>
+        </div>
+      </div>
+    </FieldsGroupContainer>
   );
 }
 
-type Props = Pick<common_OrderFull, "shipping" | "billing" | "shipment">;
+type Props = Pick<
+  common_OrderFull,
+  "shipping" | "billing" | "shipment" | "buyer" | "payment"
+> & {
+  shipmentCarrierName?: string;
+};
+
+type DesktopMobileProps = Pick<
+  common_OrderFull,
+  "shipping" | "billing" | "buyer" | "payment"
+> & {
+  shipmentCarrierName?: string;
+};
