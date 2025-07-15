@@ -1,7 +1,7 @@
 import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
+import FieldsGroupContainer from "@/app/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
-import FormSection from "../_components/form-section";
 import OrderStatusForm from "../_components/order-status-form";
 
 export default function OrderStatus() {
@@ -18,9 +18,13 @@ export default function OrderStatus() {
             folder.
           </Text>
         </div>
-        <FormSection step="1/1" title="check your order status">
+        <FieldsGroupContainer
+          stage="1/1"
+          title="check your order status"
+          mode="non-collapsible"
+        >
           <OrderStatusForm />
-        </FormSection>
+        </FieldsGroupContainer>
       </div>
     </FlexibleLayout>
   );

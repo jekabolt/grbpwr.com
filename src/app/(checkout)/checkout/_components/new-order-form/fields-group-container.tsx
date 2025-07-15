@@ -14,6 +14,7 @@ export default function FieldsGroupContainer({
   isOpen = false,
   disabled = false,
   clickableArea = "default",
+  mode = "collapsible",
 
   onToggle,
 }: {
@@ -24,6 +25,7 @@ export default function FieldsGroupContainer({
   isOpen?: boolean;
   disabled?: boolean;
   clickableArea?: "full" | "default";
+  mode?: "collapsible" | "non-collapsible";
   onToggle?: () => void;
 }) {
   const [localIsOpen, setLocalIsOpen] = useState(isOpen);
@@ -33,7 +35,7 @@ export default function FieldsGroupContainer({
   }, [isOpen]);
 
   function handleToggle() {
-    if (disabled) return;
+    if (disabled || mode === "non-collapsible") return;
     setLocalIsOpen((v) => !v);
     onToggle?.();
   }
@@ -45,11 +47,12 @@ export default function FieldsGroupContainer({
       })}
     >
       <div
-        className={cn("flex cursor-pointer items-center justify-between", {
+        className={cn("flex items-center justify-between", {
           "h-20": clickableArea === "full",
           "opacity-50": disabled,
+          "cursor-pointer": mode === "collapsible" && !disabled,
         })}
-        onClick={handleToggle}
+        onClick={mode === "collapsible" ? handleToggle : undefined}
       >
         <div className="flex gap-x-6">
           {stage && (
@@ -62,18 +65,27 @@ export default function FieldsGroupContainer({
           </Text>
         </div>
 
-        <div
-          className={cn("rotate-180 text-textColor", {
-            "rotate-0": localIsOpen,
-          })}
-        >
-          <Arrow />
-        </div>
+        {mode === "collapsible" && (
+          <div
+            className={cn("rotate-180 text-textColor", {
+              "rotate-0": localIsOpen,
+            })}
+          >
+            <Arrow />
+          </div>
+        )}
       </div>
-      <div className={cn("h-full space-y-8", { hidden: !localIsOpen })}>
+      <div
+        className={cn("h-full space-y-8", {
+          hidden: mode === "collapsible" && !localIsOpen,
+          "ml-14": mode === "non-collapsible" && stage,
+        })}
+      >
         {children}
       </div>
-      {!localIsOpen && <div className="space-y-8">{summary}</div>}
+      {mode === "collapsible" && !localIsOpen && (
+        <div className="space-y-8">{summary}</div>
+      )}
     </div>
   );
 }
