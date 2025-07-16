@@ -51,11 +51,7 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
         "leading-4",
         "text-center",
       ],
-      underline: [
-        "text-textColor",
-        "underline",
-        "disabled:text-textInactiveColor",
-      ],
+      underline: ["underline", "disabled:text-textInactiveColor"],
       underlineReverse: [
         "text-bgColor",
         "underline",
