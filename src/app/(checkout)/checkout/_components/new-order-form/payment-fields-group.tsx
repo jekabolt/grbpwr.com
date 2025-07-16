@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { paymentMethodNamesMap } from "@/constants";
 import { useFormContext } from "react-hook-form";
 
@@ -30,10 +31,18 @@ export default function PaymentFieldsGroup({
   disabled = false,
 }: Props) {
   const { dictionary } = useDataContext();
-  const { watch, setValue, clearErrors } = useFormContext();
+  const { watch, setValue, clearErrors, trigger } = useFormContext();
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
+
+  useEffect(() => {
+    if (billingAddressIsSameAsAddress) {
+      setValue("billingAddress", undefined);
+      clearErrors("billingAddress");
+      trigger();
+    }
+  }, [billingAddressIsSameAsAddress, setValue, clearErrors, trigger]);
 
   const allowedMethods =
     dictionary?.paymentMethods?.filter((v) => v.allowed) || [];
@@ -79,12 +88,6 @@ export default function PaymentFieldsGroup({
           name="billingAddressIsSameAsAddress"
           label="same as shipping address"
           disabled={disabled}
-          onChange={(checked: boolean) => {
-            if (checked) {
-              setValue("billingAddress", undefined);
-              clearErrors("billingAddress");
-            }
-          }}
         />
       </div>
 
