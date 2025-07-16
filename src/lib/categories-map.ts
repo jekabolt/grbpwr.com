@@ -193,7 +193,6 @@ export function resolveCategories(
   const safeCategories = categories || [];
   let topCategory = findCategoryByName(safeCategories, categoryName);
 
-  // Fallback: try to resolve category using CATEGORY_TITLE_MAP aliases
   if (!topCategory && categoryName) {
     topCategory = safeCategories.find((cat) => {
       const originalName = cat.name?.toLowerCase() ?? "";

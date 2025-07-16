@@ -26,7 +26,11 @@ export default function Category() {
 
   const filteredSubCategories =
     gender === "men"
-      ? subCategories.filter((c) => c.name.toLowerCase() !== "swimwear_w")
+      ? subCategories.filter(
+          (c) =>
+            c.name.toLowerCase() !== "swimwear_w" &&
+            c.name.toLowerCase() !== "dresses",
+        )
       : subCategories.filter((c) => c.name.toLowerCase() !== "swimwear_m");
 
   return (
