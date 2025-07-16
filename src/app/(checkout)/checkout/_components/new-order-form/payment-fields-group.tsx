@@ -30,42 +30,10 @@ export default function PaymentFieldsGroup({
   disabled = false,
 }: Props) {
   const { dictionary } = useDataContext();
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, clearErrors } = useFormContext();
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
-
-  const handleBillingCheckboxChange = (checked: boolean) => {
-    if (checked) {
-      const {
-        firstName,
-        lastName,
-        address,
-        additionalAddress,
-        city,
-        state,
-        country,
-        postalCode,
-        phone,
-        company,
-      } = watch();
-      const billingData = {
-        firstName,
-        lastName,
-        address,
-        additionalAddress,
-        city,
-        state,
-        country,
-        postalCode,
-        phone,
-        company,
-      };
-      Object.entries(billingData).forEach(([key, value]) =>
-        setValue(`billingAddress.${key}`, value),
-      );
-    }
-  };
 
   const allowedMethods =
     dictionary?.paymentMethods?.filter((v) => v.allowed) || [];
@@ -111,7 +79,12 @@ export default function PaymentFieldsGroup({
           name="billingAddressIsSameAsAddress"
           label="same as shipping address"
           disabled={disabled}
-          onChange={handleBillingCheckboxChange}
+          onChange={(checked: boolean) => {
+            if (checked) {
+              setValue("billingAddress", undefined);
+              clearErrors("billingAddress");
+            }
+          }}
         />
       </div>
 

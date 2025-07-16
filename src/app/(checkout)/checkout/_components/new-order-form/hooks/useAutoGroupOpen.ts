@@ -29,7 +29,7 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
                 return field === 'termsOfService' ? value && !hasError : !hasError;
             }
             if (field === 'email') {
-                return checkoutSchema.shape.email.safeParse(value).success && !hasError;
+                return checkoutSchema._def.schema.shape.email.safeParse(value).success && !hasError;
             }
             return !hasError;
         });
