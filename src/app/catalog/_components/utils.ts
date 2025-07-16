@@ -10,8 +10,8 @@ import { GENDER_MAP, ORDER_MAP, SORT_MAP_URL } from "@/constants";
 type EnumType = common_SortFactor | common_OrderFactor | common_GenderEnum;
 type MapType = typeof SORT_MAP_URL | typeof ORDER_MAP | typeof GENDER_MAP;
 
-export function getUrlKey(enumValue: EnumType, map: MapType): string | undefined {
-  return Object.keys(map).find(key => map[key] === enumValue);
+export function getUrlKey(enumValue: EnumType, map: MapType): string {
+  return Object.keys(map).find(key => map[key] === enumValue) || "";
 }
 
 export function parseRouteParams(params: string[] = []): {
