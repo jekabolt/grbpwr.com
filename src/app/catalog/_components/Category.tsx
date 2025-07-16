@@ -26,11 +26,7 @@ export default function Category() {
 
   const filteredSubCategories =
     gender === "men"
-      ? subCategories.filter(
-          (c) =>
-            c.name.toLowerCase() !== "swimwear_w" &&
-            c.name.toLowerCase() !== "dresses",
-        )
+      ? subCategories.filter((c) => c.name.toLowerCase() !== "dresses")
       : subCategories.filter((c) => c.name.toLowerCase() !== "swimwear_m");
 
   return (
@@ -86,6 +82,13 @@ function AllCategories() {
 
   const topCategories = dictionary?.topCategories
     ?.filter((c) => c.categoryName !== "objects")
+    ?.filter((c) => {
+      if (gender === "men") {
+        const categoryName = getTopCategoryName(categories, c.categoryId || 0);
+        return categoryName?.toLowerCase() !== "dresses";
+      }
+      return true;
+    })
     .sort((a, b) => (a.categoryId || 0) - (b.categoryId || 0));
 
   return (
