@@ -3,6 +3,7 @@
 import { useDataContext } from "@/components/contexts/DataContext";
 import { resolveCategories } from "@/lib/categories-map";
 import { useParams } from "next/navigation";
+import { parseRouteParams } from "./utils";
 
 interface RouteParams {
     gender: string;
@@ -15,8 +16,7 @@ interface RouteParams {
 export function useRouteParams(): RouteParams {
     const { dictionary } = useDataContext();
     const routeParams = useParams() as { params?: string[] };
-    const [gender, categoryName, subCategoryName] = routeParams?.params || [];
-
+    const { gender, categoryName, subCategoryName } = parseRouteParams(routeParams.params);
     const { topCategory, subCategory } = resolveCategories(
         dictionary?.categories,
         categoryName,
@@ -24,7 +24,7 @@ export function useRouteParams(): RouteParams {
     );
 
     return {
-        gender,
+        gender: gender || "",
         categoryName,
         subCategoryName,
         topCategory,

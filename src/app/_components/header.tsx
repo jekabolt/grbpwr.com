@@ -31,7 +31,6 @@ export function Header() {
       )}
     >
       <HeaderLeftNav
-        isNavOpen={isNavOpen}
         onNavOpenChange={setIsNavOpen}
         isBigMenuEnabled={isBigMenuEnabled}
       />
