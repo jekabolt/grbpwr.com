@@ -71,15 +71,14 @@ function PopoverContent({
           <Popover.Close
             className={cn(
               "fixed left-0 top-0 flex w-full justify-between bg-bgColor p-2",
+              "appearance-none border-0 outline-none focus:outline-none",
               {
                 "border-inactive border-l border-r border-t":
                   variant === "currency",
               },
             )}
           >
-            <Text variant="uppercase" component="span">
-              {title}
-            </Text>
+            <Text variant="uppercase">{title}</Text>
           </Popover.Close>
         )}
         <div className="mt-10">{children}</div>
