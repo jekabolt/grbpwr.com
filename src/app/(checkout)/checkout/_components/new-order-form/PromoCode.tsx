@@ -54,7 +54,7 @@ export default function PromoCode({
         loading={loading}
         placeholder="ENTER PROMO CODE"
         name="promoCode"
-        autocomplete="off"
+        autoComplete="off"
         className="w-full grow border-none text-textBaseSize leading-4"
       />
       <Button

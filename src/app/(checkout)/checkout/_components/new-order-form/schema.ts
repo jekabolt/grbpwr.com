@@ -49,22 +49,7 @@ const baseCheckoutSchema = z.object({
       z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
       z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
     ])
-}).refine((data) => {
-  if (!data.billingAddressIsSameAsAddress) {
-    return data.billingAddress &&
-      data.billingAddress.firstName &&
-      data.billingAddress.lastName &&
-      data.billingAddress.country &&
-      data.billingAddress.city &&
-      data.billingAddress.address &&
-      data.billingAddress.phone &&
-      data.billingAddress.postalCode;
-  }
-  return true;
-}, {
-  message: "Billing address is required when different from shipping address",
-  path: ["billingAddress"]
-});
+})
 
 export const checkoutSchema = baseCheckoutSchema;
 

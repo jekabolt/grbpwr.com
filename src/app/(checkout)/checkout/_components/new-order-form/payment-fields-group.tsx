@@ -31,18 +31,16 @@ export default function PaymentFieldsGroup({
   disabled = false,
 }: Props) {
   const { dictionary } = useDataContext();
-  const { watch, setValue, clearErrors, trigger } = useFormContext();
+  const { watch, unregister } = useFormContext();
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
 
   useEffect(() => {
     if (billingAddressIsSameAsAddress) {
-      setValue("billingAddress", undefined);
-      clearErrors("billingAddress");
-      trigger();
+      unregister("billingAddress");
     }
-  }, [billingAddressIsSameAsAddress, setValue, clearErrors, trigger]);
+  }, [billingAddressIsSameAsAddress, unregister]);
 
   const allowedMethods =
     dictionary?.paymentMethods?.filter((v) => v.allowed) || [];
