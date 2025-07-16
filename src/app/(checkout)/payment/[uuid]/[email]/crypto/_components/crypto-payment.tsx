@@ -39,9 +39,9 @@ export function CryptoPayment({
     orderStatusId,
   });
 
-  const originalAmount =
+  const rawAmount =
     paymentInsert?.transactionAmountPaymentCurrency?.value || "";
-  const formattedAmount = formatNumber(originalAmount);
+  const formattedAmount = formatNumber(rawAmount);
 
   return (
     <div className="mt-16 flex w-full flex-col items-center justify-start gap-12 px-2.5 leading-none lg:w-auto lg:p-0">
@@ -54,7 +54,7 @@ export function CryptoPayment({
               qrBase64Code={qrBase64Code}
               timeLeft={timeLeft}
               formattedAmount={formattedAmount}
-              originalAmount={originalAmount}
+              originalAmount={rawAmount}
               progressPercentage={progressPercentage}
               isLoading={isLoading}
               checkPaymentStatus={checkPaymentStatus}
@@ -71,7 +71,7 @@ export function CryptoPayment({
               timeLeft={timeLeft}
               progressPercentage={progressPercentage}
               formattedAmount={formattedAmount}
-              originalAmount={originalAmount}
+              originalAmount={rawAmount}
               isLoading={isLoading}
               renewPayment={renewPayment}
               checkPaymentStatus={checkPaymentStatus}
@@ -84,7 +84,7 @@ export function CryptoPayment({
             <PaymentSuccess
               orderUuid={orderUuid || ""}
               formattedAmount={formattedAmount}
-              originalAmount={originalAmount}
+              originalAmount={rawAmount}
             />
           );
         }

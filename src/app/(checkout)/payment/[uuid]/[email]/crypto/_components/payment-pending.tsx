@@ -31,6 +31,7 @@ export function PaymentPending({
 }: SuccessProps) {
   const { dictionary } = useDataContext();
   const baseCurrency = dictionary?.baseCurrency;
+
   return (
     <div className="w-full space-y-10 text-center lg:w-auto">
       <div className="space-y-4 text-center leading-none">

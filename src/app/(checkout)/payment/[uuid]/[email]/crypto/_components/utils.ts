@@ -13,6 +13,11 @@ export function formatNumber(input: number | string): string {
         return formatDecimal(withDecimal);
     }
 
+    if (/^\d{10,}$/.test(numStr)) {
+        const withDecimal = numStr.slice(0, 7) + '.' + numStr.slice(7, 9);
+        return formatDecimal(withDecimal);
+    }
+
     return formatDecimal(numStr);
 }
 
@@ -37,13 +42,13 @@ function formatDecimal(numStr: string): string {
         return intPart;
     }
 
-    const hasSignificantDigitsAfterPos2 = /[1-9]/.test(decPart.slice(2));
+    // const hasSignificantDigitsAfterPos2 = /[1-9]/.test(decPart.slice(2));
 
-    if (hasSignificantDigitsAfterPos2) {
-        return `${intPart}.${decPart.replace(/0+$/, '')}`;
-    } else {
-        return `${intPart}.${decPart.slice(0, 2).padEnd(2, '0')}`;
-    }
+    // if (hasSignificantDigitsAfterPos2) {
+    //     return `${intPart}.${decPart.replace(/0+$/, '')}`;
+    // } else {
+    return `${intPart}.${decPart.slice(0, 2).padEnd(2, '0')}`;
+    // }
 }
 
 export function calculateTimeLeft(
