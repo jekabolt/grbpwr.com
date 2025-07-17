@@ -34,7 +34,7 @@ export default function Category() {
       {!categoryName ? (
         <AllCategories />
       ) : (
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-2">
           <div className="flex items-center gap-2">
             <Button asChild className="uppercase hover:underline">
               <Link href={`/catalog/${gender}/${categoryName}`}>
@@ -43,7 +43,7 @@ export default function Category() {
             </Button>
             {!!subCategories.length && <Text>/</Text>}
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2">
             {filteredSubCategories.map((subCategoryItem, index) => (
               <div className="flex items-center gap-1" key={subCategoryItem.id}>
                 <Button
