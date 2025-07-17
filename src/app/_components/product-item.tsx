@@ -3,7 +3,7 @@ import type { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
-import { calculateAspectRatio, cn } from "@/lib/utils";
+import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
@@ -74,9 +74,10 @@ export function ProductItem({
               {isSaleApplied && (
                 <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>
               )}
-              {preorder !== emptyPreorder && (
-                <Text variant="inactive">preorder</Text>
-              )}
+              {preorder !== emptyPreorder &&
+                isDateTodayOrFuture(preorder || "") && (
+                  <Text variant="inactive">preorder</Text>
+                )}
             </div>
           </div>
         </Link>

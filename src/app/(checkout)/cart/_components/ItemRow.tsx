@@ -2,7 +2,7 @@ import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
-import { cn } from "@/lib/utils";
+import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
@@ -23,6 +23,7 @@ export default function ItemRow({
   if (!product) return null;
 
   const preorderDate = getPreorderDate(product);
+  const rawPreorderDate = product.preorder;
 
   return (
     <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
@@ -48,7 +49,7 @@ export default function ItemRow({
               <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
             </div>
           </div>
-          {preorderDate && (
+          {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
             <Text
               variant="uppercase"
               className="whitespace-nowrap text-textInactiveColor"

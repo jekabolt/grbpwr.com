@@ -47,6 +47,7 @@ export function useData({
   const productBody = product.product?.productDisplay?.productBody;
   const name = productBody?.name;
   const preorder = getPreorderDate(product);
+  const preorderRaw = productBody?.preorder;
   const color = productBody?.color;
   const description = productBody?.description;
   const productComposition = productBody?.composition;
@@ -151,5 +152,6 @@ export function useData({
     lowStockText,
     measurements: product.measurements || [],
     measurementType,
+    preorderRaw,
   };
 }

@@ -94,3 +94,13 @@ export function validateEmail(email: string) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   return emailRegex.test(email);
 }
+
+export function isDateTodayOrFuture(date: string): boolean {
+  const inputDate = new Date(date);
+  const today = new Date();
+
+  inputDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+  console.log(inputDate, today);
+  return inputDate >= today;
+}

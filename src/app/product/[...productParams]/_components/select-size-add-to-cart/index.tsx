@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import type { common_ProductFull } from "@/api/proto-http/frontend";
 
-import { cn } from "@/lib/utils";
+import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import {
   AccordionContent,
   AccordionItem,
@@ -42,6 +42,7 @@ export function AddToCartForm({
   const {
     triggerText,
     preorder,
+    preorderRaw,
     sizeNames,
     isOneSize,
     sizeQuantity,
@@ -135,7 +136,7 @@ export function AddToCartForm({
           },
         )}
       >
-        {preorder && (
+        {preorder && isDateTodayOrFuture(preorderRaw || "") && (
           <Text
             variant="inactive"
             className="text-center uppercase lg:text-left"
@@ -150,7 +151,11 @@ export function AddToCartForm({
           isLoadingExternal={isLoading}
           className="border border-textColor lg:border-none"
         >
-          <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
+          <Text variant="inherit">
+            {preorder && isDateTodayOrFuture(preorderRaw || "")
+              ? "preorder"
+              : "add"}
+          </Text>
           {isSaleApplied ? (
             <Text variant="inactive">
               {priceMinusSale}
