@@ -26,7 +26,7 @@ export default function Category() {
 
   const filteredSubCategories =
     gender === "men"
-      ? subCategories.filter((c) => c.name.toLowerCase() !== "swimwear_w")
+      ? subCategories.filter((c) => c.name.toLowerCase() !== "dresses")
       : subCategories.filter((c) => c.name.toLowerCase() !== "swimwear_m");
 
   return (
@@ -34,7 +34,7 @@ export default function Category() {
       {!categoryName ? (
         <AllCategories />
       ) : (
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-2">
           <div className="flex items-center gap-2">
             <Button asChild className="uppercase hover:underline">
               <Link href={`/catalog/${gender}/${categoryName}`}>
@@ -43,7 +43,7 @@ export default function Category() {
             </Button>
             {!!subCategories.length && <Text>/</Text>}
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2">
             {filteredSubCategories.map((subCategoryItem, index) => (
               <div className="flex items-center gap-1" key={subCategoryItem.id}>
                 <Button
@@ -82,6 +82,13 @@ function AllCategories() {
 
   const topCategories = dictionary?.topCategories
     ?.filter((c) => c.categoryName !== "objects")
+    ?.filter((c) => {
+      if (gender === "men") {
+        const categoryName = getTopCategoryName(categories, c.categoryId || 0);
+        return categoryName?.toLowerCase() !== "dresses";
+      }
+      return true;
+    })
     .sort((a, b) => (a.categoryId || 0) - (b.categoryId || 0));
 
   return (

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import { filterNavigationLinks, processCategories } from "@/lib/categories-map";
@@ -12,19 +13,22 @@ import Image from "./image";
 import { Text } from "./text";
 
 export function DesktopNavigationMenu({
-  isNavOpen,
   className,
   isBigMenuEnabled,
   onNavOpenChange,
 }: {
-  isNavOpen: boolean;
   isBigMenuEnabled?: boolean;
   className?: string;
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
   const { dictionary } = useDataContext();
+  const pathname = usePathname();
   const men = "/catalog/men";
   const women = "/catalog/women";
+
+  const isOnMenPage = pathname.startsWith(men);
+  const isOnWomenPage = pathname.startsWith(women);
+  const isOnObjectsPage = pathname.startsWith("/catalog/objects");
 
   const processedCategories = dictionary?.categories
     ? processCategories(dictionary.categories).filter(
@@ -46,7 +50,12 @@ export function DesktopNavigationMenu({
     >
       <NavigationMenu.List className="flex items-center gap-4">
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger className="flex items-center text-textBaseSize data-[state=open]:underline">
+          <NavigationMenu.Trigger
+            className={cn(
+              "flex items-center text-textBaseSize data-[state=open]:underline",
+              { underline: isOnMenPage },
+            )}
+          >
             <Link href={men} className="flex items-center">
               men
             </Link>
@@ -66,7 +75,12 @@ export function DesktopNavigationMenu({
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger className="flex items-center text-textBaseSize data-[state=open]:underline">
+          <NavigationMenu.Trigger
+            className={cn(
+              "flex items-center text-textBaseSize data-[state=open]:underline",
+              { underline: isOnWomenPage },
+            )}
+          >
             <Link href={women} className="flex items-center">
               women
             </Link>
@@ -88,8 +102,11 @@ export function DesktopNavigationMenu({
         <NavigationMenu.Item>
           <Button asChild>
             <NavigationMenu.Link
-              href={`/catalog/${objectsCategoryName}`}
-              className="flex items-center text-textBaseSize underline-offset-2 hover:underline"
+              href={`/catalog/objects`}
+              className={cn(
+                "flex items-center text-textBaseSize underline-offset-2 hover:underline",
+                { underline: isOnObjectsPage },
+              )}
             >
               objects
             </NavigationMenu.Link>
@@ -181,23 +198,25 @@ function LinksGroup({
           </div>
         </div>
       </div>
-      <div className="w-40">
-        <Button asChild>
-          <Link href={activeHeroNavLink} className="space-y-2">
-            <div className="w-full">
-              <Image
-                src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
-                alt="hero"
-                aspectRatio={calculateAspectRatio(
-                  heroNav?.media?.media?.thumbnail?.width,
-                  heroNav?.media?.media?.thumbnail?.height,
-                )}
-              />
-            </div>
-            <Text>{heroNav?.exploreText}</Text>
-          </Link>
-        </Button>
-      </div>
+      {heroNav?.media?.media?.thumbnail?.mediaUrl && (
+        <div className="w-40">
+          <Button asChild>
+            <Link href={activeHeroNavLink} className="space-y-2">
+              <div className="w-full">
+                <Image
+                  src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
+                  alt="hero"
+                  aspectRatio={calculateAspectRatio(
+                    heroNav?.media?.media?.thumbnail?.width,
+                    heroNav?.media?.media?.thumbnail?.height,
+                  )}
+                />
+              </div>
+              <Text>{heroNav?.exploreText}</Text>
+            </Link>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

@@ -11,6 +11,7 @@ import { Text } from "@/components/ui/text";
 import FilterOptionButtons from "./FilterOptionButtons";
 import useFilterQueryParams from "./useFilterQueryParams";
 import { useRouteParams } from "./useRouteParams";
+import { useSizeFiltering } from "./useSizeFiltering";
 import { getProductsPagedQueryParams } from "./utils";
 
 function Trigger() {
@@ -21,14 +22,12 @@ export default function Size() {
   const { dictionary } = useDataContext();
   const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
   const { gender, topCategory, subCategory } = useRouteParams();
-  const sizes = dictionary?.sizes || [];
+  const { sizeOptions } = useSizeFiltering();
   const [total, setTotal] = useState(0);
+
+  const sizes = dictionary?.sizes || [];
   const initSize = sizes?.find((s) => s.name === defaultValue)?.id?.toString();
   const [selectedSize, setSelectedSize] = useState<string>(initSize || "");
-
-  const sizeOptions = sizes
-    ?.sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
-    ?.map((s) => ({ ...s, name: s.name ?? "" }));
 
   const getSizeNameById = (id?: string) =>
     sizeOptions?.find((s) => String(s.id) === id)?.name.toLowerCase();

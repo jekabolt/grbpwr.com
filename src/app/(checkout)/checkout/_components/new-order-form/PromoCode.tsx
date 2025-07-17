@@ -22,9 +22,13 @@ export default function PromoCode({
 }: Props) {
   const [isApplied, setIsApplied] = useState(false);
   const [promoLoading, setPromoLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const { setValue } = useFormContext();
-
   const promoCode = form.watch("promoCode");
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
 
   async function handleApplyPromoClick(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -54,6 +58,9 @@ export default function PromoCode({
         loading={loading}
         placeholder="ENTER PROMO CODE"
         name="promoCode"
+        readOnly={!isFocused}
+        onFocus={handleFocus}
+        autoComplete="off"
         className="w-full grow border-none text-textBaseSize leading-4"
       />
       <Button

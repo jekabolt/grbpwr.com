@@ -39,9 +39,13 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
                 <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
                 <Button onClick={closeCart}>[X]</Button>
               </div>
-
-              {children}
-
+              {!itemsQuantity ? (
+                <div className="flex h-full items-center justify-center">
+                  <Text>nothing</Text>
+                </div>
+              ) : (
+                <>{children}</>
+              )}
               {itemsQuantity > 0 && (
                 <Button
                   asChild

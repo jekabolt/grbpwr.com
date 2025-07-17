@@ -32,12 +32,12 @@ export default async function Page(props: Props) {
   }
 
   return (
-    <div className="h-screen p-40">
-      <div className="flex h-full items-start justify-center gap-10">
+    <div className="h-screen px-2.5 py-10 lg:p-40">
+      <div className="flex h-full flex-col items-center justify-center gap-10 lg:flex-row">
         <div className="w-1/2 bg-textColor">
           <Logo />
         </div>
-        <div className="h-full w-1/2">
+        <div className="h-full w-full lg:w-1/2">
           <StripeForm
             clientSecret={clientSecret}
             uuid={uuid}

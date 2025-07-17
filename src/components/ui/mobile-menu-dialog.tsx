@@ -47,9 +47,7 @@ export function DefaultMobileMenuDialog({
           </Button>
           <DialogPrimitives.Close asChild>
             <Button asChild className="uppercase">
-              <Link href={`/catalog?topCategoryIds=${objectsCategoryId}`}>
-                objects
-              </Link>
+              <Link href="/catalog/objects">objects</Link>
             </Button>
           </DialogPrimitives.Close>
           <DialogPrimitives.Close asChild>
