@@ -31,6 +31,51 @@ interface CatalogPageProps {
   }>;
 }
 
+// Remove force-static to allow dynamic behavior with query params
+// export const dynamic = "force-static";
+
+export async function generateStaticParams() {
+  // Only generate static params for common filter combinations
+  // Route params (gender/category/subcategory) will be handled dynamically
+
+  const commonFilterCombinations = [
+    // Base catalog page
+    { params: [] },
+
+    // Sort variations
+    { params: [], searchParams: { sort: "created_at", order: "desc" } },
+    { params: [], searchParams: { sort: "price", order: "asc" } },
+    { params: [], searchParams: { sort: "price", order: "desc" } },
+    { params: [], searchParams: { sort: "name", order: "asc" } },
+
+    // Sale items
+    { params: [], searchParams: { sale: "true" } },
+    { params: [], searchParams: { sort: "price", order: "asc", sale: "true" } },
+    {
+      params: [],
+      searchParams: { sort: "price", order: "desc", sale: "true" },
+    },
+
+    // Common sizes
+    { params: [], searchParams: { size: "s" } },
+    { params: [], searchParams: { size: "m" } },
+    { params: [], searchParams: { size: "l" } },
+    { params: [], searchParams: { size: "xl" } },
+    { params: [], searchParams: { size: "os" } }, // one size
+
+    // Size + sort combinations
+    { params: [], searchParams: { size: "m", sort: "price", order: "asc" } },
+    { params: [], searchParams: { size: "l", sort: "price", order: "asc" } },
+
+    // Popular tags
+    { params: [], searchParams: { tag: "new" } },
+    { params: [], searchParams: { tag: "featured" } },
+    { params: [], searchParams: { tag: "bestseller" } },
+  ];
+
+  return commonFilterCombinations;
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   return generateCommonMetadata({
     title: "catalog".toUpperCase(),
