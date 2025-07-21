@@ -36,11 +36,6 @@ export function DesktopNavigationMenu({
       )
     : [];
 
-  const objectsCategoryName =
-    dictionary?.categories
-      ?.find((cat) => cat.name?.toLowerCase() === "objects")
-      ?.name?.toLowerCase() || "objects";
-
   return (
     <NavigationMenu.Root
       className={cn("w-full", className)}
