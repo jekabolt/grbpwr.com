@@ -27,23 +27,28 @@ export function InfinityScrollCatalog({
   const [isLoading, setIsLoading] = useState(false);
   const [currentTotal, setCurrentTotal] = useState(total);
   const { ref, inView } = useInView();
-
   const pageRef = useRef(2);
   const hasMoreRef = useRef(total >= CATALOG_LIMIT);
+  const isRefetchingRef = useRef(false);
 
-  // Reset to initial data when firstPageItems or total change
   useEffect(() => {
     setItems(firstPageItems);
     setCurrentTotal(total);
     hasMoreRef.current = total >= CATALOG_LIMIT;
     pageRef.current = 2;
     setIsLoading(false);
+    isRefetchingRef.current = false;
   }, [firstPageItems, total]);
 
-  // Refetch first page when search params change (for filtering)
   useEffect(() => {
-    const refetchFirstPage = async () => {
-      if (isLoading) return;
+    const searchParamsObj = Object.fromEntries(searchParams.entries());
+    const hasFilters = Object.keys(searchParamsObj).length > 0;
+
+    if (!hasFilters) return;
+    if (isRefetchingRef.current) return;
+
+    const refetchData = async () => {
+      isRefetchingRef.current = true;
       setIsLoading(true);
 
       try {
@@ -55,11 +60,7 @@ export function InfinityScrollCatalog({
               gender,
               topCategoryIds: topCategory?.id?.toString(),
               subCategoryIds: subCategory?.id?.toString(),
-              size: searchParams.get("size"),
-              sort: searchParams.get("sort"),
-              order: searchParams.get("order"),
-              sale: searchParams.get("sale"),
-              tag: searchParams.get("tag"),
+              ...searchParamsObj,
             },
             dictionary,
           ),
@@ -73,19 +74,12 @@ export function InfinityScrollCatalog({
         console.error("Failed to fetch filtered data:", error);
       } finally {
         setIsLoading(false);
+        isRefetchingRef.current = false;
       }
     };
 
-    // Only refetch if we have search params (indicating user filtering)
-    const hasFilters = Array.from(searchParams.entries()).some(
-      ([key, value]) =>
-        ["sort", "order", "size", "sale", "tag"].includes(key) && value,
-    );
-
-    if (hasFilters) {
-      refetchFirstPage();
-    }
-  }, [searchParams, dictionary, isLoading, gender, topCategory, subCategory]);
+    refetchData();
+  }, [searchParams, dictionary, gender, topCategory, subCategory]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const loadMoreData = async () => {
@@ -93,7 +87,7 @@ export function InfinityScrollCatalog({
     setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Reduced delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const response = await serviceClient.GetProductsPaged({
         limit: CATALOG_LIMIT,
         offset: (pageRef.current - 1) * CATALOG_LIMIT,
