@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { serviceClient } from "@/lib/api";
-import { Logo } from "@/components/ui/icons/logo";
+import { WhiteLogo } from "@/components/ui/icons/white-logo";
 
 import { StripeForm } from "./_components/stripe-form";
 
@@ -32,15 +32,16 @@ export default async function Page(props: Props) {
   }
 
   return (
-    <div className="h-screen px-2.5 py-10 lg:p-40">
-      <div className="flex h-full flex-col items-center justify-center gap-10 lg:flex-row">
-        <div className="w-1/2 bg-textColor">
-          <Logo />
+    <div className="px-2.5 py-10 lg:px-56 lg:pb-40 lg:pt-20">
+      <div className="flex h-full flex-col gap-10 lg:flex-row">
+        <div className="w-1/2 self-start">
+          <WhiteLogo />
         </div>
         <div className="h-full w-full lg:w-1/2">
           <StripeForm
             clientSecret={clientSecret}
             uuid={uuid}
+            email={email}
             amount={amount}
             country={country || ""}
           />

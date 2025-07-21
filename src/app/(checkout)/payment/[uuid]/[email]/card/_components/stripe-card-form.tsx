@@ -9,7 +9,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-export function StripeCardForm({ clientSecret, uuid, country }: Props) {
+export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +34,7 @@ export function StripeCardForm({ clientSecret, uuid, country }: Props) {
       clientSecret,
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/order/${uuid}`,
+        return_url: `${window.location.origin}/order/${uuid}/${email}`,
         payment_method_data: {
           billing_details: {
             address: {
@@ -43,6 +43,7 @@ export function StripeCardForm({ clientSecret, uuid, country }: Props) {
           },
         },
       },
+      redirect: "if_required",
     });
 
     setIsLoading(false);
@@ -50,7 +51,8 @@ export function StripeCardForm({ clientSecret, uuid, country }: Props) {
     if (error) {
       console.error("Error confirming payment:", error.message);
     } else {
-      console.log("Payment successful");
+      // Payment successful, redirect to order page
+      window.location.href = `/order/${uuid}/${email}`;
     }
   };
 
@@ -91,5 +93,6 @@ export function StripeCardForm({ clientSecret, uuid, country }: Props) {
 interface Props {
   clientSecret: string;
   uuid: string;
+  email: string;
   country: string;
 }
