@@ -53,8 +53,37 @@
     @apply no-scroll-bar;
   }
 
-  * {
-    touch-action: pan-y;
+  /* Prevent pinch zoom and other touch gestures */
+  html,
+  body {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overscroll-behavior: none;
+  }
+
+  /* Re-enable text selection for content areas */
+  p,
+  span,
+  div,
+  article,
+  section {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
+  /* Prevent zoom on form inputs */
+  input,
+  textarea,
+  select {
+    font-size: 12px;
+    touch-action: manipulation;
   }
 
   body {
