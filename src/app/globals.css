@@ -54,19 +54,10 @@
   }
 
   body {
-    touch-action: manipulation;
+    touch-action: pan-y;
 
     ::selection {
       @apply bg-acidColor text-bgColor;
-    }
-  }
-
-  /* Mobile-specific zoom prevention */
-  @media (hover: none) and (pointer: coarse) {
-    body {
-      -webkit-text-size-adjust: 100%;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
     }
   }
 }
