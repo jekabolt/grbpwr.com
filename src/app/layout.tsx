@@ -27,6 +27,34 @@ export default function RootLayout({
           <div className="lightTheme relative min-h-screen">{children}</div>
           <CookieBanner />
         </ToastProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Prevent pinch zoom using Safari gesture events
+              document.addEventListener("gesturestart", function (e) {
+                e.preventDefault();
+                document.body.style.zoom = 0.99;
+              });
+
+              document.addEventListener("gesturechange", function (e) {
+                e.preventDefault();
+                document.body.style.zoom = 0.99;
+              });
+              
+              document.addEventListener("gestureend", function (e) {
+                e.preventDefault();
+                document.body.style.zoom = 1;
+              });
+              
+              // Fallback for non-Safari browsers
+              document.addEventListener('touchstart', function(e) {
+                if (e.touches.length > 1) {
+                  e.preventDefault();
+                }
+              }, { passive: false });
+            `,
+          }}
+        />
       </body>
     </html>
   );

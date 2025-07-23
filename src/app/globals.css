@@ -55,6 +55,7 @@
 
   body {
     touch-action: pan-y;
+    /* Prevent pinch zoom while allowing vertical scroll */
 
     ::selection {
       @apply bg-acidColor text-bgColor;
