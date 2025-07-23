@@ -24,6 +24,28 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Safari zoom prevention
+              document.addEventListener('gesturestart', function (e) {
+                e.preventDefault();
+              });
+              document.addEventListener('gesturechange', function (e) {
+                e.preventDefault();
+              });
+              document.addEventListener('gestureend', function (e) {
+                e.preventDefault();
+              });
+            `,
+          }}
+        />
+      </head>
       <body className={FeatureMono.className}>
         <ToastProvider>
           <div className="lightTheme relative min-h-screen">{children}</div>
