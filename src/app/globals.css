@@ -54,12 +54,20 @@
   }
 
   body {
-    touch-action: pan-y;
-    /* Prevent pinch zoom while allowing vertical scroll */
-
     ::selection {
       @apply bg-acidColor text-bgColor;
     }
+  }
+
+  /* Prevent pinch to zoom */
+  * {
+    touch-action: manipulation;
+  }
+
+  html,
+  body {
+    touch-action: manipulation;
+    -webkit-touch-callout: none; /* Disable iOS callout */
   }
 }
 
