@@ -54,20 +54,10 @@
   }
 
   body {
+    touch-action: manipulation;
     ::selection {
       @apply bg-acidColor text-bgColor;
     }
-  }
-
-  /* Prevent pinch to zoom */
-  * {
-    touch-action: manipulation;
-  }
-
-  html,
-  body {
-    touch-action: manipulation;
-    -webkit-touch-callout: none; /* Disable iOS callout */
   }
 }
 
