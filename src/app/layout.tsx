@@ -32,16 +32,37 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Safari zoom prevention
-              document.addEventListener('gesturestart', function (e) {
-                e.preventDefault();
-              });
-              document.addEventListener('gesturechange', function (e) {
-                e.preventDefault();
-              });
-              document.addEventListener('gestureend', function (e) {
-                e.preventDefault();
-              });
+              // Mobile-only zoom prevention
+              function isMobileDevice() {
+                return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+              }
+              
+              // Only apply zoom prevention on mobile devices
+              if (isMobileDevice()) {
+                // Prevent pinch/multi-touch zoom (including during scroll)
+                document.addEventListener('touchstart', function (event) {
+                  if (event.touches.length > 1) {
+                    event.preventDefault();
+                  }
+                }, { passive: false });
+                
+                document.addEventListener('touchmove', function (event) {
+                  if (event.touches.length > 1) {
+                    event.preventDefault();
+                  }
+                }, { passive: false });
+                
+                // Safari gesture events (mobile Safari)
+                document.addEventListener('gesturestart', function (e) {
+                  e.preventDefault();
+                });
+                document.addEventListener('gesturechange', function (e) {
+                  e.preventDefault();
+                });
+                document.addEventListener('gestureend', function (e) {
+                  e.preventDefault();
+                });
+              }
             `,
           }}
         />

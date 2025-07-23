@@ -54,11 +54,11 @@
   }
 
   body {
-    touch-action: pan-x pan-y;
-    /* Safari-specific zoom prevention */
+    touch-action: manipulation;
+    /* Safari-specific zoom prevention
     -webkit-text-size-adjust: 100%;
     -webkit-touch-callout: none;
-    -webkit-user-select: none;
+    -webkit-user-select: none; */
 
     ::selection {
       @apply bg-acidColor text-bgColor;
