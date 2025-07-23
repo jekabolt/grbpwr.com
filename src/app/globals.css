@@ -53,40 +53,9 @@
     @apply no-scroll-bar;
   }
 
-  /* Prevent pinch zoom and other touch gestures */
-  html,
   body {
-    touch-action: manipulation;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    overscroll-behavior: none;
-  }
+    touch-action: pan-x pan-y;
 
-  /* Re-enable text selection for content areas */
-  p,
-  span,
-  div,
-  article,
-  section {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
-  }
-
-  /* Prevent zoom on form inputs */
-  input,
-  textarea,
-  select {
-    font-size: 12px;
-    touch-action: manipulation;
-  }
-
-  body {
     ::selection {
       @apply bg-acidColor text-bgColor;
     }

@@ -12,7 +12,9 @@ export const viewport = {
   width: "device-width",
   initialScale: 1.0,
   maximumScale: 1.0,
+  minimumScale: 1.0,
   userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -27,21 +29,6 @@ export default function RootLayout({
           <div className="lightTheme relative min-h-screen">{children}</div>
           <CookieBanner />
         </ToastProvider>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              document.addEventListener('gesturestart', function (e) {
-                e.preventDefault();
-              });
-              document.addEventListener('gesturechange', function (e) {
-                e.preventDefault();
-              });
-              document.addEventListener('touchmove', function (e) {
-                if (e.scale !== 1) { e.preventDefault(); }
-              }, { passive: false });
-            `,
-          }}
-        />
       </body>
     </html>
   );
