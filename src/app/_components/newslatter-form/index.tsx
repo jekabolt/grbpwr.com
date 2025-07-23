@@ -61,13 +61,13 @@ export default function NewslatterForm({
               />
             </div>
             <Button
-              variant="main"
+              variant="secondary"
               size="lg"
               type="submit"
               disabled={isLoading || !email}
-              className="!bg-bgColor uppercase text-textColor disabled:opacity-50"
+              className="uppercase"
             >
-              {isLoading ? "subscribing..." : "subscribe"}
+              subscribe
             </Button>
           </div>
         </>

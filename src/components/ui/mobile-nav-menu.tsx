@@ -4,7 +4,6 @@ import { useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { Button } from "./button";
-import { WhiteLogo } from "./icons/white-logo";
 import {
   ActiveCategoryMenuDialog,
   DefaultMobileMenuDialog,
@@ -24,7 +23,7 @@ export function MobileNavMenu() {
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Content className="fixed inset-0 z-30 bg-bgColor px-2.5 py-5">
+        <DialogPrimitives.Content className="fixed inset-0 z-40 bg-bgColor px-2.5 py-5">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
@@ -41,10 +40,7 @@ export function MobileNavMenu() {
                   </DialogPrimitives.Close>
                 </div>
               ) : (
-                <div className="flex items-center justify-between">
-                  <DialogPrimitives.Close className="aspect-square size-7">
-                    <WhiteLogo />
-                  </DialogPrimitives.Close>
+                <div className="flex items-center justify-end">
                   <DialogPrimitives.Close>
                     <Text>[x]</Text>
                   </DialogPrimitives.Close>

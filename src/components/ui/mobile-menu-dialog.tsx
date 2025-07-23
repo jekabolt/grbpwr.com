@@ -22,11 +22,6 @@ interface DefaultMenuProps {
 export function DefaultMobileMenuDialog({
   setActiveCategory,
 }: DefaultMenuProps) {
-  const { dictionary } = useDataContext();
-  const objectsCategoryId =
-    dictionary?.categories?.find((c) => c.name?.toLowerCase() === "objects")
-      ?.id || "";
-
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex flex-col gap-10">
@@ -114,7 +109,7 @@ export function ActiveCategoryMenuDialog({
         </DialogPrimitives.Close>
         {filteredLeftSideCategories.map((link) => (
           <DialogPrimitives.Close asChild key={link.id}>
-            <Button asChild>
+            <Button asChild className="uppercase">
               <Link
                 href={`/catalog/${activeCategory}/${link.title.toLowerCase()}`}
               >
