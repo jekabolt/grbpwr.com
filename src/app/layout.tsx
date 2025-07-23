@@ -32,35 +32,50 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Mobile-only zoom prevention
+              // Enhanced mobile detection
               function isMobileDevice() {
-                return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+                return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                       (typeof window.orientation !== "undefined") ||
+                       (window.innerWidth <= 768 && 'ontouchstart' in window);
               }
               
-              // Only apply zoom prevention on mobile devices
+              // Apply zoom prevention only on mobile
               if (isMobileDevice()) {
-                // Prevent pinch/multi-touch zoom (including during scroll)
+                let isScrolling = false;
+                
+                // Track scrolling state
+                document.addEventListener('scroll', function() {
+                  isScrolling = true;
+                  setTimeout(() => { isScrolling = false; }, 100);
+                }, { passive: true });
+                
+                // Aggressive multi-touch prevention
                 document.addEventListener('touchstart', function (event) {
                   if (event.touches.length > 1) {
                     event.preventDefault();
+                    event.stopPropagation();
                   }
-                }, { passive: false });
+                }, { passive: false, capture: true });
                 
                 document.addEventListener('touchmove', function (event) {
                   if (event.touches.length > 1) {
                     event.preventDefault();
+                    event.stopPropagation();
                   }
-                }, { passive: false });
+                }, { passive: false, capture: true });
                 
-                // Safari gesture events (mobile Safari)
-                document.addEventListener('gesturestart', function (e) {
-                  e.preventDefault();
-                });
-                document.addEventListener('gesturechange', function (e) {
-                  e.preventDefault();
-                });
-                document.addEventListener('gestureend', function (e) {
-                  e.preventDefault();
+                document.addEventListener('touchend', function (event) {
+                  if (event.touches.length > 0) {
+                    event.preventDefault();
+                  }
+                }, { passive: false, capture: true });
+                
+                // Safari gesture prevention
+                ['gesturestart', 'gesturechange', 'gestureend'].forEach(function(event) {
+                  document.addEventListener(event, function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }, { passive: false, capture: true });
                 });
               }
             `,
