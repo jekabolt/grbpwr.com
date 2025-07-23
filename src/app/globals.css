@@ -53,16 +53,14 @@
     @apply no-scroll-bar;
   }
 
-  body {
-    touch-action: pan-x pan-y;
+  * {
+    touch-action: pan-y;
+  }
 
+  body {
     ::selection {
       @apply bg-acidColor text-bgColor;
     }
-  }
-
-  html {
-    touch-action: manipulation;
   }
 }
 
