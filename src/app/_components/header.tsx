@@ -22,8 +22,9 @@ export function Header() {
   return (
     <header
       className={cn(
-        "blackTheme fixed inset-x-2.5 bottom-2 z-30 flex h-12 items-center justify-between gap-1 border-textInactiveColor bg-bgColor py-2 text-textColor lg:top-2 lg:z-50 lg:gap-0 lg:border lg:border-transparent lg:px-5 lg:py-3",
-
+        "fixed inset-x-2.5 bottom-2 z-30 h-12 py-2 lg:top-2 lg:z-50 lg:gap-0 lg:px-5 lg:py-3",
+        "flex items-center justify-between gap-1",
+        "blackTheme border border-textInactiveColor bg-textColor text-bgColor lg:border-transparent lg:bg-bgColor lg:text-textColor",
         {
           "bg-bgColor text-textColor mix-blend-hard-light": isNavOpen,
           "lg:bg-transparent lg:mix-blend-exclusion": !isNavOpen,
