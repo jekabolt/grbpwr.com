@@ -54,6 +54,7 @@
   }
 
   body {
+    touch-action: manipulation;
     ::selection {
       @apply bg-acidColor text-bgColor;
     }

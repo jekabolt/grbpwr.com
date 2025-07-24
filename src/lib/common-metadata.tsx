@@ -52,6 +52,12 @@ export function generateCommonMetadata({
       template: "%s - grbpwr.com",
     },
     description,
+    manifest: "/manifest.json",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: "GRBPWR",
+    },
     openGraph: generateOpenGraph({
       title,
       description: description.toUpperCase(),
