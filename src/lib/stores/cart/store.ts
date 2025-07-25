@@ -92,33 +92,49 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
         removeProduct: (productId: number, size: string, index?: number) => {
           const { products } = get();
 
+          let updatedProducts: typeof products;
+
           if (index !== undefined) {
-            const updatedProducts = [
+            updatedProducts = [
               ...products.slice(0, index),
               ...products.slice(index + 1)
             ];
+          } else {
+            const productIndex = products.findIndex(
+              p => p.id === productId && p.size === size
+            );
 
-            set({
-              products: updatedProducts,
-              totalItems: updatedProducts.length,
-            });
-            return;
+            if (productIndex === -1) return;
+
+            updatedProducts = [
+              ...products.slice(0, productIndex),
+              ...products.slice(productIndex + 1)
+            ];
           }
 
-          const productIndex = products.findIndex(
-            p => p.id === productId && p.size === size
-          );
+          let newSubTotal = 0;
+          let newTotal = 0;
 
-          if (productIndex === -1) return;
+          updatedProducts.forEach(product => {
+            if (product.productData) {
+              const priceWithSale = product.productData.productPriceWithSale;
+              const regularPrice = product.productData.productPrice;
 
-          const updatedProducts = [
-            ...products.slice(0, productIndex),
-            ...products.slice(productIndex + 1)
-          ];
+              if (priceWithSale) {
+                newTotal += parseFloat(priceWithSale);
+                newSubTotal += parseFloat(priceWithSale);
+              } else if (regularPrice) {
+                newTotal += parseFloat(regularPrice);
+                newSubTotal += parseFloat(regularPrice);
+              }
+            }
+          });
 
           set({
             products: updatedProducts,
             totalItems: updatedProducts.length,
+            totalPrice: newTotal,
+            subTotalPrice: newSubTotal,
           });
         },
 
