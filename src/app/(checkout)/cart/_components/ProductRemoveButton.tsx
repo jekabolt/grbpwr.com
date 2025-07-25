@@ -39,7 +39,7 @@ export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
         variant="underline"
         className={cn("uppercase", { "z-20": isRemoveConfirmed })}
       >
-        remove
+        {isRemoveConfirmed ? "sure" : "remove"}
       </Button>
     </>
   );
