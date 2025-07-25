@@ -129,7 +129,7 @@ export function AddToCartForm({
 
       <div
         className={cn(
-          "blackTheme fixed inset-x-0 bottom-0 z-10 grid gap-3 bg-bgColor px-2.5 pb-5 pt-2.5 text-textColor mix-blend-hard-light lg:relative lg:inset-x-0 lg:bottom-0 lg:bg-textColor lg:p-0 lg:text-bgColor lg:mix-blend-normal",
+          "blackTheme fixed inset-x-2.5 bottom-2.5 z-10 grid gap-3 mix-blend-hard-light lg:relative lg:inset-x-0 lg:bottom-0 lg:bg-textColor lg:p-0 lg:text-bgColor lg:mix-blend-normal",
           {
             "lg:hidden": openItem,
             "bg-bgColor": preorder,
