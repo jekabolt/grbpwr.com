@@ -36,6 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "catalog".toUpperCase(),
   });
 }
+export const dynamic = "force-static";
 
 export default async function CatalogPage(props: CatalogPageProps) {
   const { hero, dictionary } = await serviceClient.GetHero({});
