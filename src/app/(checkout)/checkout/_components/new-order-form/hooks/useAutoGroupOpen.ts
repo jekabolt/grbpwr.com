@@ -16,6 +16,7 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
         shipping: false,
         payment: false,
     });
+    const emailTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     function isGroupComplete(group: OpenGroups) {
         const fields = GROUP_FIELDS[group];
@@ -56,21 +57,38 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
 
     useEffect(() => {
         const subscription = form.watch((value, { name }) => {
-            if (name && ['email', 'termsOfService'].includes(name)) {
+            if (name && ['termsOfService'].includes(name)) {
                 form.trigger(name);
             }
-            const id = groupOrder.indexOf(openGroup);
-            if (id === -1 || id === groupOrder.length - 1) return;
-            const current = groupOrder[id];
-            const next = groupOrder[id + 1];
-            if (!prevComplete.current[current] && isGroupComplete(current)) {
-                setOpenGroup(next);
+
+            const handleAutoAdvance = () => {
+                const id = groupOrder.indexOf(openGroup);
+                if (id === -1 || id === groupOrder.length - 1) return;
+                const current = groupOrder[id];
+                const next = groupOrder[id + 1];
+                if (!prevComplete.current[current] && isGroupComplete(current)) {
+                    setOpenGroup(next);
+                }
+                groupOrder.forEach((g) => {
+                    prevComplete.current[g] = isGroupComplete(g);
+                });
+            };
+
+            if (name === 'email') {
+                if (emailTimeoutRef.current) {
+                    clearTimeout(emailTimeoutRef.current);
+                }
+                emailTimeoutRef.current = setTimeout(handleAutoAdvance, 1000);
+            } else {
+                handleAutoAdvance();
             }
-            groupOrder.forEach((g) => {
-                prevComplete.current[g] = isGroupComplete(g);
-            });
         })
-        return () => subscription.unsubscribe()
+        return () => {
+            subscription.unsubscribe();
+            if (emailTimeoutRef.current) {
+                clearTimeout(emailTimeoutRef.current);
+            }
+        }
     }, [form, openGroup]);
 
     function handleGroupToggle(group: OpenGroups) {
