@@ -18,10 +18,9 @@ export function MobileNavMenu({
   const [activeCategory, setActiveCategory] = useState<
     "men" | "women" | undefined
   >();
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <DialogPrimitives.Root open={isOpen} onOpenChange={setIsOpen}>
+    <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
         <Button size="lg" className="w-full text-left">
           menu
