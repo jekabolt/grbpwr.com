@@ -27,8 +27,9 @@ export function Header() {
         "blackTheme border border-textInactiveColor bg-textColor text-bgColor lg:border-transparent lg:bg-bgColor lg:text-textColor",
         {
           "bg-bgColor text-textColor mix-blend-hard-light": isNavOpen,
-          "lg:bg-transparent lg:mix-blend-exclusion": !isNavOpen,
-          "border-none": !isBigMenuEnabled,
+          "lg:bg-transparent lg:mix-blend-exclusion":
+            !isNavOpen || (isNavOpen && !isBigMenuEnabled),
+          "lg:border-none": !isBigMenuEnabled,
         },
       )}
     >
