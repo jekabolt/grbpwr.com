@@ -1,12 +1,12 @@
 import Link from "next/link";
-import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import {
-  CATEGORY_TITLE_MAP,
-  filterNavigationLinks,
-  processCategories,
-} from "@/lib/categories-map";
-import { calculateAspectRatio } from "@/lib/utils";
+  calculateAspectRatio,
+  createActiveCategoryMenuItems,
+  createMenuItems,
+  getCategoryDisplayName,
+  getHeroNavLink,
+} from "@/lib/utils";
 import CurrencyPopover from "@/app/_components/mobile-currency-popover";
 import NewslatterForm from "@/app/_components/newslatter-form";
 
@@ -15,41 +15,47 @@ import { Button } from "./button";
 import Image from "./image";
 import { Text } from "./text";
 
+type Gender = "men" | "women" | undefined;
+
 interface DefaultMenuProps {
-  setActiveCategory: (category: "men" | "women" | undefined) => void;
+  isBigMenuEnabled: boolean | undefined;
+  setActiveCategory: (category: Gender) => void;
+}
+
+interface ActiveCategoryMenuProps {
+  activeCategory: Gender;
 }
 
 export function DefaultMobileMenuDialog({
   setActiveCategory,
+  isBigMenuEnabled,
 }: DefaultMenuProps) {
+  const defaultMenuItems = createMenuItems(isBigMenuEnabled, setActiveCategory);
+
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex flex-col gap-10">
         <div className="flex flex-col gap-5">
-          <Button
-            className="flex items-center justify-between"
-            onClick={() => setActiveCategory("men")}
-          >
-            <Text variant="uppercase">men</Text>
-            <Text variant="uppercase">{">"}</Text>
-          </Button>
-          <Button
-            className="flex items-center justify-between"
-            onClick={() => setActiveCategory("women")}
-          >
-            <Text variant="uppercase">women</Text>
-            <Text variant="uppercase">{">"}</Text>
-          </Button>
-          <DialogPrimitives.Close asChild>
-            <Button asChild className="uppercase">
-              <Link href="/catalog/objects">objects</Link>
+          {defaultMenuItems.map((item) => (
+            <Button
+              key={item.label}
+              asChild={!isBigMenuEnabled}
+              className="flex items-center justify-between uppercase"
+              onClick={item.action}
+            >
+              {isBigMenuEnabled ? (
+                <>
+                  <Text>{item.label}</Text>
+                  {item.showArrow && <Text>{">"}</Text>}
+                </>
+              ) : (
+                <Link href={item.href}>
+                  <Text>{item.label}</Text>
+                  {item.showArrow && <Text>{">"}</Text>}
+                </Link>
+              )}
             </Button>
-          </DialogPrimitives.Close>
-          <DialogPrimitives.Close asChild>
-            <Button asChild className="uppercase">
-              <Link href="/archive">archive</Link>
-            </Button>
-          </DialogPrimitives.Close>
+          ))}
         </div>
         <div className="self-start">
           <CurrencyPopover title="currency:" />
@@ -60,95 +66,82 @@ export function DefaultMobileMenuDialog({
   );
 }
 
-interface ActiveCategoryMenuProps {
-  activeCategory: "men" | "women" | undefined;
-}
-
 export function ActiveCategoryMenuDialog({
   activeCategory,
 }: ActiveCategoryMenuProps) {
-  const { dictionary } = useDataContext();
-  const { hero } = useDataContext();
+  const { dictionary, hero } = useDataContext();
   const heroNav = activeCategory
     ? hero?.navFeatured?.[activeCategory]
     : undefined;
-
-  const newIn = `/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT`;
-  const isTagLinkExist = heroNav?.featuredTag;
-  const tagLink = `/catalog?tag=${heroNav?.featuredTag}`;
-  const archiveLink = `/archive?id=${heroNav?.featuredArchiveId}`;
-  const activeHeroNavLink = isTagLinkExist ? tagLink : archiveLink;
-
-  const categories = processCategories(dictionary?.categories || []);
-  const categoryLinks = categories.map((category) => ({
-    title: category.name,
-    href: category.href,
-    id: category.id.toString(),
-  }));
-
-  const { leftSideCategoryLinks, rightSideCategoryLinks } =
-    filterNavigationLinks(categoryLinks);
-
-  const filteredLeftSideCategories =
-    activeCategory === "men"
-      ? leftSideCategoryLinks.filter((c) => c.title.toLowerCase() !== "dresses")
-      : leftSideCategoryLinks;
+  const heroLink = getHeroNavLink(heroNav);
+  const { leftCategories, rightCategories } = createActiveCategoryMenuItems(
+    activeCategory,
+    dictionary,
+  );
 
   return (
     <div className="flex h-full flex-col gap-10 overflow-y-auto">
-      <DialogPrimitives.Close asChild>
+      <Button asChild className="uppercase">
+        <Link href="/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT">
+          new in
+        </Link>
+      </Button>
+      <div className="flex flex-col gap-5">
         <Button asChild className="uppercase">
-          <Link href={newIn}>new in</Link>
+          <Link href={`/catalog/${activeCategory}`}>all</Link>
         </Button>
-      </DialogPrimitives.Close>
+        {leftCategories.map((link) => (
+          <CategoryButton
+            key={link.id}
+            link={link}
+            activeCategory={activeCategory}
+          />
+        ))}
+      </div>
       <div className="flex flex-col gap-5">
-        <DialogPrimitives.Close asChild>
-          <Button asChild className="uppercase">
-            <Link href={`/catalog/${activeCategory}`}>all</Link>
+        {rightCategories.map((link) => (
+          <CategoryButton
+            key={link.id}
+            link={link}
+            activeCategory={activeCategory}
+          />
+        ))}
+      </div>
+      {heroNav?.media?.media?.thumbnail?.mediaUrl && (
+        <div className="w-full">
+          <Button asChild className="space-y-2">
+            <Link href={heroLink}>
+              <div className="w-full">
+                <Image
+                  src={heroNav.media.media.thumbnail.mediaUrl}
+                  alt="mobile hero nav"
+                  aspectRatio={calculateAspectRatio(
+                    heroNav.media.media.thumbnail.width,
+                    heroNav.media.media.thumbnail.height,
+                  )}
+                />
+              </div>
+              <Text>{heroNav.exploreText}</Text>
+            </Link>
           </Button>
-        </DialogPrimitives.Close>
-        {filteredLeftSideCategories.map((link) => (
-          <DialogPrimitives.Close asChild key={link.id}>
-            <Button asChild className="uppercase">
-              <Link
-                href={`/catalog/${activeCategory}/${link.title.toLowerCase()}`}
-              >
-                {CATEGORY_TITLE_MAP[link.title] || link.title}
-              </Link>
-            </Button>
-          </DialogPrimitives.Close>
-        ))}
-      </div>
-      <div className="flex flex-col gap-5">
-        {rightSideCategoryLinks.map((link) => (
-          <DialogPrimitives.Close asChild key={link.id}>
-            <Button asChild className="uppercase">
-              <Link
-                href={`/catalog/${activeCategory}/${link.title.toLowerCase()}`}
-              >
-                {link.title}
-              </Link>
-            </Button>
-          </DialogPrimitives.Close>
-        ))}
-      </div>
-      <div className="w-full">
-        <Button asChild>
-          <Link href={activeHeroNavLink} className="space-y-2">
-            <div className="w-full">
-              <Image
-                src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
-                alt="mobile hero nav"
-                aspectRatio={calculateAspectRatio(
-                  heroNav?.media?.media?.thumbnail?.width,
-                  heroNav?.media?.media?.thumbnail?.height,
-                )}
-              />
-            </div>
-            <Text>{heroNav?.exploreText}</Text>
-          </Link>
-        </Button>
-      </div>
+        </div>
+      )}
     </div>
+  );
+}
+
+function CategoryButton({
+  link,
+  activeCategory,
+}: {
+  activeCategory: Gender;
+  link: { title: string; id: string };
+}) {
+  return (
+    <Button key={link.id} asChild className="uppercase">
+      <Link href={`/catalog/${activeCategory}/${link.title.toLowerCase()}`}>
+        {getCategoryDisplayName(link.title)}
+      </Link>
+    </Button>
   );
 }

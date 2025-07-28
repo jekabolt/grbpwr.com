@@ -18,7 +18,7 @@ export function HeaderLeftNav({
       </div>
 
       <div className="block lg:hidden">
-        <MobileNavMenu />
+        <MobileNavMenu isBigMenuEnabled={isBigMenuEnabled} />
       </div>
     </div>
   );
