@@ -36,6 +36,13 @@ export default function PromoCode({
     if (!promoCode) return;
     setPromoLoading(true);
 
+    if (isApplied) {
+      setIsApplied(false);
+      setValue("promoCode", "");
+      setPromoLoading(false);
+      return;
+    }
+
     try {
       const response = await validateItems();
 
@@ -58,18 +65,18 @@ export default function PromoCode({
         loading={loading}
         placeholder="ENTER PROMO CODE"
         name="promoCode"
-        readOnly={!isFocused}
+        readOnly={!isFocused || isApplied}
         onFocus={handleFocus}
         autoComplete="off"
         className="w-full grow border-none text-textBaseSize leading-4"
       />
       <Button
         type="input"
-        className="flex-none"
+        className="flex-none uppercase"
         onClick={handleApplyPromoClick}
-        disabled={isApplied || promoLoading || loading || !promoCode}
+        disabled={promoLoading || loading || !promoCode}
       >
-        {isApplied ? "APPLIED" : "APPLY"}
+        {isApplied ? "discard" : "apply"}
       </Button>
     </div>
   );
