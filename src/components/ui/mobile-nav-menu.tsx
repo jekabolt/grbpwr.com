@@ -10,7 +10,11 @@ import {
 } from "./mobile-menu-dialog";
 import { Text } from "./text";
 
-export function MobileNavMenu() {
+export function MobileNavMenu({
+  isBigMenuEnabled,
+}: {
+  isBigMenuEnabled?: boolean;
+}) {
   const [activeCategory, setActiveCategory] = useState<
     "men" | "women" | undefined
   >();
@@ -34,7 +38,9 @@ export function MobileNavMenu() {
                   <Button onClick={() => setActiveCategory(undefined)}>
                     {"<"}
                   </Button>
-                  <Text variant="uppercase">{activeCategory}</Text>
+                  {isBigMenuEnabled && (
+                    <Text variant="uppercase">{activeCategory}</Text>
+                  )}
                   <DialogPrimitives.Close asChild>
                     <Button>[x]</Button>
                   </DialogPrimitives.Close>
@@ -47,8 +53,11 @@ export function MobileNavMenu() {
                 </div>
               )}
             </div>
-            {activeCategory === undefined ? (
-              <DefaultMobileMenuDialog setActiveCategory={setActiveCategory} />
+            {activeCategory === undefined || !isBigMenuEnabled ? (
+              <DefaultMobileMenuDialog
+                setActiveCategory={setActiveCategory}
+                isBigMenuEnabled={isBigMenuEnabled}
+              />
             ) : (
               <ActiveCategoryMenuDialog activeCategory={activeCategory} />
             )}

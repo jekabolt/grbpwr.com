@@ -12,6 +12,12 @@ import {
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+import {
+  CATEGORY_TITLE_MAP,
+  filterNavigationLinks,
+  processCategories,
+} from "./categories-map";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -103,4 +109,71 @@ export function isDateTodayOrFuture(date: string): boolean {
   today.setHours(0, 0, 0, 0);
   console.log(inputDate, today);
   return inputDate >= today;
+}
+
+export function createMenuItems(
+  isBigMenuEnabled: boolean | undefined,
+  setActiveCategory: (category: "men" | "women" | undefined) => void,
+): { label: string; showArrow: boolean; href: string; action?: () => void }[] {
+  return [
+    ...(["men", "women"] as const).map((gender) => ({
+      label: gender,
+      action: isBigMenuEnabled ? () => setActiveCategory(gender) : undefined,
+      showArrow: true,
+      href: `/catalog/${gender}`,
+    })),
+    {
+      label: "objects",
+      showArrow: false,
+      href: "/catalog/objects",
+    },
+    {
+      label: "archive",
+      showArrow: false,
+      href: "/archive",
+    },
+  ];
+}
+
+export function createActiveCategoryMenuItems(
+  activeCategory: "men" | "women" | undefined,
+  dictionary?: { categories?: any[] },
+) {
+  if (!activeCategory) return { leftCategories: [], rightCategories: [] };
+
+  const categories = processCategories(dictionary?.categories || []);
+  const categoryLinks = categories.map((category: any) => ({
+    title: category.name,
+    href: category.href,
+    id: category.id.toString(),
+  }));
+
+  const { leftSideCategoryLinks, rightSideCategoryLinks } =
+    filterNavigationLinks(categoryLinks);
+
+  const filteredLeftCategories =
+    activeCategory === "men"
+      ? leftSideCategoryLinks.filter(
+          (c: any) => c.title.toLowerCase() !== "dresses",
+        )
+      : leftSideCategoryLinks;
+
+  return {
+    leftCategories: filteredLeftCategories,
+    rightCategories: rightSideCategoryLinks,
+  };
+}
+
+export function getHeroNavLink(heroNav?: {
+  featuredTag?: string;
+  featuredArchiveId?: string;
+}) {
+  if (!heroNav) return "";
+  return heroNav.featuredTag
+    ? `/catalog?tag=${heroNav.featuredTag}`
+    : `/archive?id=${heroNav.featuredArchiveId}`;
+}
+
+export function getCategoryDisplayName(title: string) {
+  return CATEGORY_TITLE_MAP[title] || title;
 }
