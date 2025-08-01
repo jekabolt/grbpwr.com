@@ -10,6 +10,7 @@ type Props = {
   items: {
     label: string;
     value: string;
+    phoneCode?: string;
   }[];
   [k: string]: any;
 };
@@ -24,13 +25,17 @@ export function PhoneField({ name, label, items, ...props }: Props) {
       return { code: "", number: value };
     }
 
-    const found = items.find((item) => value.startsWith(item.value));
-    if (found) {
+    const foundByPhoneCode = items.find(
+      (item) => item.phoneCode && value.startsWith(item.phoneCode),
+    );
+
+    if (foundByPhoneCode) {
       return {
-        code: found.value,
-        number: value.slice(found.value.length),
+        code: foundByPhoneCode.value,
+        number: value.slice(foundByPhoneCode.phoneCode!.length),
       };
     }
+
     return { code: "", number: value };
   }
 
@@ -46,12 +51,23 @@ export function PhoneField({ name, label, items, ...props }: Props) {
         const { code, number } = splitValue(field.value || "");
 
         const handleCodeChange = (newCode: string) => {
-          field.onChange(newCode + number);
+          const selectedItem = items.find((item) => item.value === newCode);
+          const phoneCode = selectedItem?.phoneCode || newCode;
+          field.onChange(phoneCode + number);
         };
 
         const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const digitsOnly = e.target.value.replace(/\D/g, "");
-          field.onChange(code + digitsOnly);
+          const selectedItem = items.find((item) => item.value === code);
+          const phoneCode = selectedItem?.phoneCode || code;
+          field.onChange(phoneCode + digitsOnly);
+        };
+
+        const handleSelectChange = (value: string) => {
+          if (!value) return "";
+          const selectedItem = items.find((item) => item.value === value);
+          const phoneCode = selectedItem?.phoneCode || value;
+          return `+${phoneCode}`;
         };
 
         return (
@@ -59,18 +75,19 @@ export function PhoneField({ name, label, items, ...props }: Props) {
             <FormLabel>{label}</FormLabel>
             <FormControl>
               <div className="flex items-end">
-                <Select
-                  name={name + "_code"}
-                  value={code}
-                  onValueChange={handleCodeChange}
-                  items={items}
-                  disabled={props.disabled}
-                  variant="secondary"
-                  className="w-20"
-                  renderValue={(selectedValue) =>
-                    selectedValue ? `+${selectedValue}` : ""
-                  }
-                />
+                <div className="flex items-end">
+                  <Select
+                    name={name + "_code"}
+                    value={code}
+                    onValueChange={handleCodeChange}
+                    items={items}
+                    disabled={props.disabled}
+                    variant="secondary"
+                    className="flex-row-reverse"
+                    contentClassName="w-[370px] lg:w-[400px]"
+                    renderValue={handleSelectChange}
+                  />
+                </div>
                 <Input
                   name={name + "_number"}
                   type="tel"

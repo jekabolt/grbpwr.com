@@ -9,12 +9,14 @@ export default function SelectComponent({
   name,
   items,
   className,
+  contentClassName,
   renderValue,
   ...props
 }: {
   name: string;
   items: { value: string; label: string }[];
   className?: string;
+  contentClassName?: string;
   renderValue?: (
     selectedValue: string,
     selectedItem: { label: string; value: string } | undefined,
@@ -35,7 +37,7 @@ export default function SelectComponent({
       >
         <Arrow />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className={contentClassName}>
         {items.map((item) => (
           <SelectItem key={item.value} value={item.value}>
             {item.label}
@@ -112,11 +114,17 @@ export function SelectTrigger({
   );
 }
 
-export function SelectContent({ children }: { children: React.ReactNode }) {
+export function SelectContent({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <Select.Portal>
       <Select.Content
-        className="w-full overflow-hidden bg-bgColor shadow-md"
+        className={cn("w-full overflow-hidden bg-bgColor shadow-md", className)}
         position="popper"
       >
         <Select.Viewport className="max-h-[300px] bg-bgColor">
