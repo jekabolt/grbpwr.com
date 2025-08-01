@@ -14,21 +14,13 @@ export function useAddressFields(prefix?: string) {
   const stateItems =
     countryStatesMap[selectedCountry as keyof typeof countryStatesMap] || [];
 
-  const phoneCodeMap = countries.reduce(
-    (acc, c) => {
-      if (!acc[c.phoneCode]) acc[c.phoneCode] = [];
-      acc[c.phoneCode].push(c.label);
-      return acc;
-    },
-    {} as Record<string, string[]>,
-  );
-
-  const phoneCodeItems = Object.entries(phoneCodeMap).map(
-    ([code, country]) => ({
-      label: `+${code} - ${country}`,
-      value: code,
-    }),
-  );
+  const phoneCodeItems = countries
+    .map((country) => ({
+      label: `${country.label} +${country.phoneCode}`,
+      value: `${country.value}-${country.phoneCode}`,
+      phoneCode: country.phoneCode,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   useEffect(() => {
     if (!selectedCountry) return;
