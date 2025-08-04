@@ -12,7 +12,13 @@ export function AdditionalHeader({
   hidden = false,
 }: HeaderProps) {
   return (
-    <header className="text fixed left-2 right-2 top-2 z-30 flex h-12 items-center justify-between bg-bgColor p-3 py-2 text-textColor lg:mx-2 lg:px-5 lg:py-3">
+    <header
+      className={cn(
+        "fixed inset-x-2.5 bottom-2 z-30 h-12 py-2 lg:top-2 lg:gap-0 lg:px-5 lg:py-3",
+        "flex items-center justify-between gap-1",
+        "blackTheme bg-transparent text-textColor mix-blend-exclusion",
+      )}
+    >
       <Button asChild size="sm">
         <Link href={`/${link}`}>{left}</Link>
       </Button>

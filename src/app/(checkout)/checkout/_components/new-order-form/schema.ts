@@ -57,7 +57,7 @@ export const defaultData: Omit<z.infer<typeof checkoutSchema>, "paymentMethod"> 
 { paymentMethod: z.infer<typeof checkoutSchema>["paymentMethod"] | undefined } = {
   email: "",
   phone: "",
-  termsOfService: false,
+  termsOfService: true,
   firstName: "",
   lastName: "",
   country: "",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { common_OrderNew } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -107,8 +107,15 @@ export default function NewOrderForm() {
 
   const { order, validateItems } = useValidatedOrder(form);
   const { clearFormData } = useOrderPersistence(form);
-  const { openGroup, handleGroupToggle, isGroupDisabled } =
+  const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
+
+  useEffect(() => {
+    const subscription = form.watch((_, { name }) => {
+      handleFormChange(name);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, handleFormChange]);
 
   const onSubmit = async (data: CheckoutData) => {
     const response = await validateItems();
@@ -157,25 +164,25 @@ export default function NewOrderForm() {
           <div className="space-y-10 lg:space-y-16">
             <ContactFieldsGroup
               loading={loading}
-              isOpen={openGroup === "contact"}
+              isOpen={isGroupOpen("contact")}
               onToggle={() => handleGroupToggle("contact")}
               disabled={isGroupDisabled("contact")}
             />
             <ShippingFieldsGroup
               loading={loading}
               validateItems={validateItems}
-              isOpen={openGroup === "shipping"}
+              isOpen={isGroupOpen("shipping")}
               onToggle={() => handleGroupToggle("shipping")}
               disabled={isGroupDisabled("shipping")}
             />
             <PaymentFieldsGroup
               loading={loading}
-              isOpen={openGroup === "payment"}
+              isOpen={isGroupOpen("payment")}
               onToggle={() => handleGroupToggle("payment")}
               disabled={isGroupDisabled("payment")}
             />
           </div>
-          <div className="space-y-8">
+          <div className="space-y-8 lg:sticky lg:top-16 lg:self-start">
             <Text variant="uppercase">Order summary</Text>
 
             <OrderProducts validatedProducts={order?.validItems} />
@@ -195,7 +202,7 @@ export default function NewOrderForm() {
               className="w-full"
               disabled={!form.formState.isValid || loading}
             >
-              pay
+              PAY
             </Button>
           </div>
         </div>
