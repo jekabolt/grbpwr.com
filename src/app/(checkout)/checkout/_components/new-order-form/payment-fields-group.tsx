@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { paymentMethodNamesMap } from "@/constants";
 import { useFormContext } from "react-hook-form";
 
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
@@ -65,7 +66,17 @@ export default function PaymentFieldsGroup({
       isOpen={isOpen}
       disabled={disabled}
       onToggle={onToggle}
-      summary={selectedPaymentMethod && <Text>{selectedPaymentMethod}</Text>}
+      summary={
+        selectedPaymentMethod && (
+          <Text
+            className={cn("text-textColor", {
+              "text-textInactiveColor": disabled,
+            })}
+          >
+            {selectedPaymentMethod}
+          </Text>
+        )
+      }
     >
       <RadioGroupField
         view="card"

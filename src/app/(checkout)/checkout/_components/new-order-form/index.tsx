@@ -182,7 +182,7 @@ export default function NewOrderForm() {
               disabled={isGroupDisabled("payment")}
             />
           </div>
-          <div className="space-y-8">
+          <div className="space-y-8 lg:sticky lg:top-16 lg:self-start">
             <Text variant="uppercase">Order summary</Text>
 
             <OrderProducts validatedProducts={order?.validItems} />
@@ -202,7 +202,7 @@ export default function NewOrderForm() {
               className="w-full"
               disabled={!form.formState.isValid || loading}
             >
-              pay
+              PAY
             </Button>
           </div>
         </div>

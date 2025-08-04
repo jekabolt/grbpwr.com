@@ -3,7 +3,7 @@
 import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { CheckoutData, checkoutSchema } from "../schema";
+import { CheckoutData } from "../schema";
 import { GROUP_FIELDS, OpenGroups } from "./constants";
 
 const groupOrder: OpenGroups[] = ["contact", "shipping", "payment"];
@@ -81,38 +81,32 @@ export function useAutoGroupOpen(form: UseFormReturn<CheckoutData>) {
     }
 
     function handleFormChange(fieldName?: string) {
-        if (fieldName && fieldName !== 'termsOfService') {
-            const rootFieldName = fieldName.split('.')[0] as keyof CheckoutData;
-            if (rootFieldName in checkoutSchema.shape) {
-                form.trigger(rootFieldName);
-            }
+        if (fieldName) {
+            form.trigger(fieldName as keyof CheckoutData);
         }
 
-        if (fieldName === 'termsOfService') {
-            form.trigger(fieldName);
-        }
+        setTimeout(() => {
+            setOpenGroups(prev => {
+                const newSet = new Set(prev);
 
+                for (let i = 0; i < groupOrder.length - 1; i++) {
+                    const currentGroup = groupOrder[i];
+                    const nextGroup = groupOrder[i + 1];
 
-        setOpenGroups(prev => {
-            const newSet = new Set(prev);
-
-            for (let i = 0; i < groupOrder.length - 1; i++) {
-                const currentGroup = groupOrder[i];
-                const nextGroup = groupOrder[i + 1];
-
-                if (isGroupComplete(currentGroup) && !hasGroupValidationErrors(currentGroup) && !isGroupDisabled(nextGroup)) {
-                    newSet.add(nextGroup);
-                }
-
-                if (!isGroupComplete(currentGroup) || hasGroupValidationErrors(currentGroup)) {
-                    for (let j = i + 1; j < groupOrder.length; j++) {
-                        newSet.delete(groupOrder[j]);
+                    if (isGroupComplete(currentGroup) && !hasGroupValidationErrors(currentGroup) && !isGroupDisabled(nextGroup)) {
+                        newSet.add(nextGroup);
                     }
-                    break;
+
+                    if (!isGroupComplete(currentGroup) || hasGroupValidationErrors(currentGroup)) {
+                        for (let j = i + 1; j < groupOrder.length; j++) {
+                            newSet.delete(groupOrder[j]);
+                        }
+                        break;
+                    }
                 }
-            }
-            return newSet;
-        });
+                return newSet;
+            });
+        }, 0);
     }
 
     return {
@@ -139,10 +133,6 @@ function isGroupCompleteSync(group: OpenGroups, form: UseFormReturn<CheckoutData
 
         if (typeof value === 'boolean') {
             return field === 'termsOfService' ? value && !hasError : !hasError;
-        }
-
-        if (field === 'email') {
-            return checkoutSchema.shape.email.safeParse(value).success && !hasError;
         }
 
         return !hasError;
