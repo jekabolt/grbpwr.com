@@ -118,13 +118,14 @@ export default function NewOrderForm() {
   }, [form, handleFormChange]);
 
   const onSubmit = async (data: CheckoutData) => {
+    setLoading(true);
+
     const response = await validateItems();
 
     const newOrderData = mapFormFieldToOrderDataFormat(
       data,
       response?.validItems?.map((i) => i.orderItem!) || [],
     );
-
     try {
       console.log("submit order");
       const newOrderResponse = await submitNewOrder(newOrderData);
@@ -140,20 +141,21 @@ export default function NewOrderForm() {
             router.push(
               `/payment/${newOrderResponse.order?.orderUuid}/${window.btoa(data.email)}/crypto`,
             );
-            break;
+            return;
           case "PAYMENT_METHOD_NAME_ENUM_CARD_TEST":
             const clientSecret = newOrderResponse.order?.payment?.clientSecret;
-
             // case "PAYMENT_METHOD_NAME_ENUM_CARD":
             router.push(
               `/payment/${newOrderResponse.order?.orderUuid}/${window.btoa(data.email)}/card?clientSecret=${clientSecret}`,
             );
-            break;
+            return;
         }
       }
       console.log("finish and doesnt redirect");
+      setLoading(false);
     } catch (error) {
       console.error("Error submitting new order:", error);
+      setLoading(false);
     }
   };
 
@@ -197,12 +199,14 @@ export default function NewOrderForm() {
               <PriceSummary form={form} order={order} />
             </div>
             <Button
-              variant={"main"}
-              size={"lg"}
-              className="w-full"
+              variant="main"
+              size="lg"
+              className="w-full uppercase"
               disabled={!form.formState.isValid || loading}
+              loading={loading}
+              loadingType="order-processing"
             >
-              PAY
+              pay
             </Button>
           </div>
         </div>

@@ -14,7 +14,7 @@ export function AdditionalHeader({
   return (
     <header
       className={cn(
-        "fixed inset-x-2.5 bottom-2 z-30 h-12 py-2 lg:top-2 lg:gap-0 lg:px-5 lg:py-3",
+        "fixed inset-x-2.5 top-2 z-30 h-12 py-2 lg:gap-0 lg:px-5 lg:py-3",
         "flex items-center justify-between gap-1",
         "blackTheme bg-transparent text-textColor mix-blend-exclusion",
       )}
