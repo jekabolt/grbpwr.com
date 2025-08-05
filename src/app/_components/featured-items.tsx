@@ -36,18 +36,19 @@ export function FeaturedItems({
       ) : (
         <div
           className={cn(
-            "hidden h-full items-center gap-64 overflow-x-auto pl-2.5 lg:flex",
+            "hidden h-full items-center gap-64 overflow-x-auto py-16 pl-2.5 lg:flex",
             {
-              "justify-between overflow-x-hidden": itemsQuantity === 2,
+              "justify-between gap-0 overflow-x-hidden":
+                itemsQuantity === 2 || itemsQuantity === 3,
             },
           )}
         >
-          <div className="flex w-full flex-row gap-3 whitespace-nowrap">
-            <Text variant="uppercase">{data.headline}</Text>
-            <Button variant="underline" className="uppercase" asChild>
-              <Link href={data.exploreLink || ""}>{data.exploreText}</Link>
-            </Button>
-          </div>
+          <HeaderSection
+            data={data}
+            href={data.exploreLink || ""}
+            linkText={data.exploreText || ""}
+            className="flex w-full flex-row gap-3 whitespace-nowrap"
+          />
           <div
             className={cn("flex flex-row gap-12", {
               "gap-2.5": itemsQuantity === 2,
@@ -59,6 +60,7 @@ export function FeaturedItems({
                 className={cn("w-80", {
                   "w-72 lg:w-[32rem]": itemsQuantity === 1,
                   "w-[28rem]": itemsQuantity === 2,
+                  "w-72": itemsQuantity === 3,
                 })}
                 product={p}
               />
@@ -67,5 +69,26 @@ export function FeaturedItems({
         </div>
       )}
     </>
+  );
+}
+
+export function HeaderSection({
+  data,
+  href,
+  linkText,
+  className,
+}: {
+  data: FeaturedItemsData;
+  href: string;
+  linkText: string;
+  className?: string;
+}) {
+  return (
+    <div className={cn(className)}>
+      <Text variant="uppercase">{data.headline}</Text>
+      <Button variant="underline" className="uppercase" asChild>
+        <Link href={href}>{linkText}</Link>
+      </Button>
+    </div>
   );
 }

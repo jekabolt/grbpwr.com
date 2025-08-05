@@ -1,11 +1,7 @@
-import Link from "next/link";
-
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Carousel } from "@/components/ui/carousel";
-import { Text } from "@/components/ui/text";
 
-import { FeaturedItemsData } from "./featured-items";
+import { FeaturedItemsData, HeaderSection } from "./featured-items";
 import { ProductItem } from "./product-item";
 
 export function MobileFeaturedItems({
@@ -19,12 +15,13 @@ export function MobileFeaturedItems({
   const itemSlug = data.products?.[0]?.slug || "";
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 py-16">
       <div className="px-2.5">
         <HeaderSection
           data={data}
           href={isMultipleItems ? data.exploreLink || "" : itemSlug}
           linkText={isMultipleItems ? data.exploreText || "" : "buy now"}
+          className="flex flex-col gap-3"
         />
       </div>
       <Carousel
@@ -48,25 +45,6 @@ export function MobileFeaturedItems({
           />
         ))}
       </Carousel>
-    </div>
-  );
-}
-
-function HeaderSection({
-  data,
-  href,
-  linkText,
-}: {
-  data: FeaturedItemsData;
-  href: string;
-  linkText: string;
-}) {
-  return (
-    <div className="flex flex-col gap-3">
-      <Text variant="uppercase">{data.headline}</Text>
-      <Button variant="underline" className="uppercase" asChild>
-        <Link href={href}>{linkText}</Link>
-      </Button>
     </div>
   );
 }
