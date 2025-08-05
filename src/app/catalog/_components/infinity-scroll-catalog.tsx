@@ -11,6 +11,8 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import ProductsGrid from "@/app/_components/product-grid";
 import { getProductsPagedQueryParams } from "@/app/catalog/_components/utils";
 
+import { useRouteParams } from "./useRouteParams";
+
 export function InfinityScrollCatalog({
   firstPageItems,
   total,
@@ -20,19 +22,64 @@ export function InfinityScrollCatalog({
 }) {
   const searchParams = useSearchParams();
   const { dictionary } = useDataContext();
+  const { gender, topCategory, subCategory } = useRouteParams();
   const [items, setItems] = useState<common_Product[]>(firstPageItems);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentTotal, setCurrentTotal] = useState(total);
   const { ref, inView } = useInView();
-
   const pageRef = useRef(2);
   const hasMoreRef = useRef(total >= CATALOG_LIMIT);
+  const isRefetchingRef = useRef(false);
 
   useEffect(() => {
     setItems(firstPageItems);
+    setCurrentTotal(total);
     hasMoreRef.current = total >= CATALOG_LIMIT;
     pageRef.current = 2;
     setIsLoading(false);
+    isRefetchingRef.current = false;
   }, [firstPageItems, total]);
+
+  useEffect(() => {
+    const searchParamsObj = Object.fromEntries(searchParams.entries());
+    const hasFilters = Object.keys(searchParamsObj).length > 0;
+
+    if (!hasFilters) return;
+    if (isRefetchingRef.current) return;
+
+    const refetchData = async () => {
+      isRefetchingRef.current = true;
+      setIsLoading(true);
+
+      try {
+        const response = await serviceClient.GetProductsPaged({
+          limit: CATALOG_LIMIT,
+          offset: 0,
+          ...getProductsPagedQueryParams(
+            {
+              gender,
+              topCategoryIds: topCategory?.id?.toString(),
+              subCategoryIds: subCategory?.id?.toString(),
+              ...searchParamsObj,
+            },
+            dictionary,
+          ),
+        });
+
+        setItems(response.products || []);
+        setCurrentTotal(response.total || 0);
+        hasMoreRef.current = (response.total || 0) >= CATALOG_LIMIT;
+        pageRef.current = 2;
+      } catch (error) {
+        console.error("Failed to fetch filtered data:", error);
+      } finally {
+        setIsLoading(false);
+        isRefetchingRef.current = false;
+      }
+    };
+
+    refetchData();
+  }, [searchParams, dictionary, gender, topCategory, subCategory]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const loadMoreData = async () => {
@@ -40,17 +87,20 @@ export function InfinityScrollCatalog({
     setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const response = await serviceClient.GetProductsPaged({
         limit: CATALOG_LIMIT,
         offset: (pageRef.current - 1) * CATALOG_LIMIT,
         ...getProductsPagedQueryParams(
           {
-            gender: searchParams.get("gender"),
-            topCategoryIds: searchParams.get("topCategoryIds"),
+            gender,
+            topCategoryIds: topCategory?.id?.toString(),
+            subCategoryIds: subCategory?.id?.toString(),
             size: searchParams.get("size"),
             sort: searchParams.get("sort"),
             order: searchParams.get("order"),
+            sale: searchParams.get("sale"),
+            tag: searchParams.get("tag"),
           },
           dictionary,
         ),
@@ -59,11 +109,10 @@ export function InfinityScrollCatalog({
       pageRef.current += 1;
       setItems((prevItems) => {
         const newItems = [...prevItems, ...(response.products || [])];
-        hasMoreRef.current = newItems.length < total;
+        hasMoreRef.current = newItems.length < currentTotal;
         return newItems;
       });
     } catch (error) {
-      // TO-DO show some sooner here that error happened ?
       console.error("Failed to fetch data:", error);
     } finally {
       setIsLoading(false);
@@ -78,7 +127,11 @@ export function InfinityScrollCatalog({
 
   return (
     <div>
-      <ProductsGrid products={items} isLoading={isLoading} total={total} />
+      <ProductsGrid
+        products={items}
+        isLoading={isLoading}
+        total={currentTotal}
+      />
       {hasMoreRef.current && <div ref={ref} />}
     </div>
   );
