@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
 
 import { cn } from "@/lib/utils";
@@ -9,7 +9,7 @@ import { Text } from "./text";
 
 type Props = {
   children: React.ReactNode;
-  openElement: React.ReactNode;
+  openElement: React.ReactNode | ((isOpen: boolean) => React.ReactNode);
   title?: string;
   contentProps?: Popover.PopoverContentProps;
   className?: string;
@@ -24,10 +24,12 @@ export default function GenericPopover({
   className,
   variant = "default",
 }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Popover.Root>
+    <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger className="flex items-center">
-        {openElement}
+        {typeof openElement === "function" ? openElement(isOpen) : openElement}
       </Popover.Trigger>
       <PopoverContent
         className={className}
