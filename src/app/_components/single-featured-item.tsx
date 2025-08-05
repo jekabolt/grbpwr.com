@@ -28,16 +28,19 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
           ) > 0;
 
         return (
-          <div key={p.id} className="relative flex h-screen w-full justify-end">
-            <div className="absolute inset-x-2.5 top-1/2 z-40 flex -translate-y-1/2 text-bgColor mix-blend-difference">
-              <div className="flex w-1/2">
+          <div
+            key={p.id}
+            className="relative flex h-screen w-full justify-end py-16"
+          >
+            <div className="selection:bg-inverted absolute inset-x-2.5 top-1/2 z-40 flex -translate-y-1/2 text-bgColor mix-blend-exclusion selection:text-textColor">
+              <div className="flex w-1/2 selection:bg-acidColor">
                 <div className="flex w-full flex-row gap-3 whitespace-nowrap">
                   <Text variant="uppercase">{data.headline}</Text>
                 </div>
 
                 <Text
                   variant="undrleineWithColors"
-                  className="w-full overflow-hidden leading-none text-yellow-500 group-[:visited]:text-visitedLinkColor"
+                  className="text-inverted w-full overflow-hidden leading-none group-[:visited]:text-visitedLinkColor"
                 >
                   {p.productDisplay?.productBody?.name}
                 </Text>
