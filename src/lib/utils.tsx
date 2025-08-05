@@ -107,7 +107,6 @@ export function isDateTodayOrFuture(date: string): boolean {
 
   inputDate.setHours(0, 0, 0, 0);
   today.setHours(0, 0, 0, 0);
-  console.log(inputDate, today);
   return inputDate >= today;
 }
 

@@ -1,14 +1,12 @@
 import Link from "next/link";
 import type { common_Product } from "@/api/proto-http/frontend";
-import { currencySymbols } from "@/constants";
+import { currencySymbols, EMPTY_PREORDER } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
-
-const emptyPreorder = "0001-01-01T00:00:00Z";
 
 export function ProductItem({
   product,
@@ -74,7 +72,7 @@ export function ProductItem({
               {isSaleApplied && (
                 <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>
               )}
-              {preorder !== emptyPreorder &&
+              {preorder !== EMPTY_PREORDER &&
                 isDateTodayOrFuture(preorder || "") && (
                   <Text variant="inactive">preorder</Text>
                 )}

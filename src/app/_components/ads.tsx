@@ -10,6 +10,7 @@ import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
+import { FeaturedItems } from "./featured-items";
 import { HeroArchive } from "./hero-archive";
 import { ProductItem } from "./product-item";
 
@@ -153,45 +154,14 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
-            const productsCount = e.featuredProducts?.products?.length || 0;
-            const productsCarouselConfig = getCarouselConfig(productsCount);
+            const itemsQuantity = e.featuredProducts?.products?.length || 0;
+            const productsCarouselConfig = getCarouselConfig(itemsQuantity);
             return (
-              <div className="space-y-6 py-6 lg:pl-2" key={i}>
-                <div className="flex flex-row gap-3 px-2 lg:flex-row lg:px-0">
-                  <Text variant="uppercase">
-                    {e.featuredProducts?.headline}
-                  </Text>
-                  <Button variant="underline" className="uppercase" asChild>
-                    <Link href={e.featuredProducts?.exploreLink || ""}>
-                      {e.featuredProducts?.exploreText}
-                    </Link>
-                  </Button>
-                </div>
-                <Carousel
-                  {...productsCarouselConfig}
-                  className={cn("flex gap-2.5", {
-                    "justify-center":
-                      productsCount === 1 || productsCount === 2,
-                    "lg:justify-between": productsCount === 4,
-                    "lg:justify-center": productsCount === 3,
-                    "lg:gap-10": productsCount === 2,
-                  })}
-                >
-                  {e.featuredProducts?.products?.map((p) => (
-                    <ProductItem
-                      key={p.id}
-                      className={cn("flex-[0_0_45%] lg:flex-[0_0_25%]", {
-                        "w-72 lg:w-[32rem]": productsCount === 1,
-                        "lg:w-[32rem]": productsCount === 2,
-                        "flex-[0_0_50%] lg:w-[24rem]": productsCount === 3,
-                        "lg:w-80": productsCount === 4,
-                        "lg:w-96": productsCount > 5,
-                      })}
-                      product={p}
-                    />
-                  ))}
-                </Carousel>
-              </div>
+              <FeaturedItems
+                data={e.featuredProducts}
+                key={i}
+                itemsQuantity={itemsQuantity}
+              />
             );
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
             const productsTagCount =
