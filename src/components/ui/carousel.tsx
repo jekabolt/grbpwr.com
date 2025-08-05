@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Children, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
-type ResponsiveValue<T> = T | { mobile: T; desktop: T };
+type ResponsiveValue<T> = T | { mobile: T; desktop?: T };
 
 type CarouselProps = {
   className?: string;
@@ -12,6 +12,7 @@ type CarouselProps = {
   loop?: ResponsiveValue<boolean>;
   disabled?: ResponsiveValue<boolean>;
   align?: ResponsiveValue<"start" | "center" | "end">;
+  disableForItemCounts?: number[];
 };
 
 const useMediaQuery = (query: string) => {
@@ -33,9 +34,9 @@ const resolveResponsive = <T,>(
   value: ResponsiveValue<T>,
   isDesktop: boolean,
 ): T =>
-  value && typeof value === "object" && "mobile" in value && "desktop" in value
+  value && typeof value === "object" && "mobile" in value
     ? isDesktop
-      ? value.desktop
+      ? value.desktop ?? value.mobile
       : value.mobile
     : (value as T);
 
@@ -45,10 +46,16 @@ export function Carousel({
   loop = false,
   disabled = false,
   align = "start",
+  disableForItemCounts,
 }: CarouselProps) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  const isDisabled = resolveResponsive(disabled, isDesktop);
+  const childrenCount = Children.count(children);
+  const shouldDisableForItemCount =
+    disableForItemCounts?.includes(childrenCount) ?? false;
+
+  const isDisabled =
+    resolveResponsive(disabled, isDesktop) || shouldDisableForItemCount;
   const shouldLoop = resolveResponsive(loop, isDesktop);
   const alignValue = resolveResponsive(align, isDesktop);
 

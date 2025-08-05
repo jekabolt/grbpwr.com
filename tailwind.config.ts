@@ -12,6 +12,7 @@ const config = {
         buttonTextColor: "var(--button-text)",
         visitedLinkColor: "var(--visited-link)",
         acidColor: "var(--text-select)",
+        inverted: "var(--inverted)",
         overlay: "var(--overlay)",
       },
       fontSize: {

@@ -3,36 +3,18 @@
 import Link from "next/link";
 import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
-import { calculateAspectRatio, cn } from "@/lib/utils";
+import { calculateAspectRatio } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Carousel } from "@/components/ui/carousel";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
+import { FeaturedItems } from "./featured-items";
 import { HeroArchive } from "./hero-archive";
-import { ProductItem } from "./product-item";
-
-function getCarouselConfig(count: number) {
-  return {
-    loop: {
-      mobile: count >= 3,
-      desktop: count > 4,
-    },
-    disabled: {
-      mobile: count < 3,
-      desktop: count <= 4,
-    },
-    align: {
-      mobile: "center" as const,
-      desktop: "start" as const,
-    },
-  };
-}
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   return (
-    <div className="pb-10">
+    <div>
       {entities?.map((e, i) => {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
@@ -153,88 +135,23 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
-            const productsCount = e.featuredProducts?.products?.length || 0;
-            const productsCarouselConfig = getCarouselConfig(productsCount);
+            const itemsQuantity = e.featuredProducts?.products?.length || 0;
             return (
-              <div className="space-y-6 py-6 lg:pl-2" key={i}>
-                <div className="flex flex-row gap-3 px-2 lg:flex-row lg:px-0">
-                  <Text variant="uppercase">
-                    {e.featuredProducts?.headline}
-                  </Text>
-                  <Button variant="underline" className="uppercase" asChild>
-                    <Link href={e.featuredProducts?.exploreLink || ""}>
-                      {e.featuredProducts?.exploreText}
-                    </Link>
-                  </Button>
-                </div>
-                <Carousel
-                  {...productsCarouselConfig}
-                  className={cn("flex gap-2.5", {
-                    "justify-center":
-                      productsCount === 1 || productsCount === 2,
-                    "lg:justify-between": productsCount === 4,
-                    "lg:justify-center": productsCount === 3,
-                    "lg:gap-10": productsCount === 2,
-                  })}
-                >
-                  {e.featuredProducts?.products?.map((p) => (
-                    <ProductItem
-                      key={p.id}
-                      className={cn("flex-[0_0_45%] lg:flex-[0_0_25%]", {
-                        "w-72 lg:w-[32rem]": productsCount === 1,
-                        "lg:w-[32rem]": productsCount === 2,
-                        "flex-[0_0_50%] lg:w-[24rem]": productsCount === 3,
-                        "lg:w-80": productsCount === 4,
-                        "lg:w-96": productsCount > 5,
-                      })}
-                      product={p}
-                    />
-                  ))}
-                </Carousel>
-              </div>
+              <FeaturedItems
+                key={i}
+                data={e.featuredProducts}
+                itemsQuantity={itemsQuantity}
+              />
             );
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
             const productsTagCount =
               e.featuredProductsTag?.products?.products?.length || 0;
-            const productsTagCarouselConfig =
-              getCarouselConfig(productsTagCount);
             return (
-              <div className="space-y-6 py-6 lg:pl-2" key={i}>
-                <div className="flex flex-row gap-3 px-2 lg:flex-row lg:px-0">
-                  <Text variant="uppercase">
-                    {e.featuredProductsTag?.products?.headline}
-                  </Text>
-                  <Button variant="underline" className="uppercase" asChild>
-                    <Link href={`/catalog?tag=${e.featuredProductsTag?.tag}`}>
-                      {e.featuredProductsTag?.products?.exploreText}
-                    </Link>
-                  </Button>
-                </div>
-                <Carousel
-                  {...productsTagCarouselConfig}
-                  className={cn("flex gap-2.5", {
-                    "justify-center":
-                      productsTagCount === 1 || productsTagCount === 2,
-                    "lg:justify-between": productsTagCount === 4,
-                    "lg:justify-center": productsTagCount === 3,
-                    "lg:gap-10": productsTagCount === 2,
-                  })}
-                >
-                  {e.featuredProductsTag?.products?.products?.map((p) => (
-                    <ProductItem
-                      key={p.id}
-                      className={cn("flex-[0_0_45%] lg:flex-[0_0_25%]", {
-                        "w-72 lg:w-[32rem]": productsTagCount === 1,
-                        "lg:w-[32rem]": productsTagCount === 2,
-                        "flex-[0_0_50%] lg:w-[24rem]": productsTagCount === 3,
-                        "lg:w-80": productsTagCount === 4,
-                        "lg:w-96": productsTagCount > 5,
-                      })}
-                      product={p}
-                    />
-                  ))}
-                </Carousel>
-              </div>
+              <FeaturedItems
+                key={i}
+                data={e.featuredProductsTag?.products}
+                itemsQuantity={productsTagCount}
+              />
             );
           case "HERO_TYPE_FEATURED_ARCHIVE":
             return (

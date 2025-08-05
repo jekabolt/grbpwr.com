@@ -10,6 +10,8 @@ export const HERO_CACHE_TAG = "hero";
 
 export const FOOTER_YEAR = Math.floor(Date.now() / 1000);
 
+export const EMPTY_PREORDER = "0001-01-01T00:00:00Z";
+
 export const FOOTER_LINKS: { text: string; href: string }[] = [
   { text: "x", href: "https://www.x.com/grbpwr/" },
   { text: "gh", href: "https://www.github.com/grbpwr/" },
