@@ -6,7 +6,7 @@ import { Text } from "@/components/ui/text";
 
 export default function SuccessPage() {
   return (
-    <FlexibleLayout headerType="catalog" footerType="regular">
+    <FlexibleLayout headerType="catalog">
       <div className="flex h-screen flex-col items-center justify-center gap-6">
         <Text variant="uppercase" component="h1">
           thank you for reaching us

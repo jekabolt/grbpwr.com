@@ -7,7 +7,7 @@ import { Text } from "@/components/ui/text";
 
 export default function ClientServices() {
   return (
-    <FlexibleLayout footerType="mini">
+    <FlexibleLayout>
       <div className="h-full space-y-12 px-2.5 pt-8 lg:space-y-32 lg:px-28 lg:pt-32">
         <div className="space-y-8">
           <Text variant="uppercase">client service</Text>

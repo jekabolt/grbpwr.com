@@ -6,7 +6,6 @@ export default async function CheckoutPage() {
   return (
     <FlexibleLayout
       headerType="flexible"
-      footerType="mini"
       headerProps={{
         left: "< cart",
         center: "checkout",

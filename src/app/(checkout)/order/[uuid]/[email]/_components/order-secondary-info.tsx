@@ -112,7 +112,10 @@ export function MobileOrderSecondaryInfo({
   shipmentCarrierName,
 }: DesktopMobileProps) {
   return (
-    <FieldsGroupContainer title="delivery/payment info" clickableArea="full">
+    <FieldsGroupContainer
+      title="delivery/payment info"
+      styling={{ clickableArea: "full" }}
+    >
       <div className="space-y-10">
         <div className="flex w-full justify-between">
           <Text variant="uppercase" className="w-full">
