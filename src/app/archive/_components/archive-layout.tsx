@@ -31,7 +31,6 @@ export function ArchiveLayout({
         right: "change view",
         onClick: handleChangeView,
       }}
-      footerType="mini"
       theme="dark"
       className="pt-16"
     >

@@ -67,7 +67,7 @@ export default async function CatalogPage(props: CatalogPageProps) {
   });
 
   return (
-    <FlexibleLayout headerType="catalog" footerType="regular">
+    <FlexibleLayout headerType="catalog">
       <div className="block lg:hidden">
         <MobileCatalog
           firstPageItems={response.products || []}

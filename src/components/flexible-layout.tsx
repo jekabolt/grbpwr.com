@@ -41,7 +41,7 @@ export default function FlexibleLayout({
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
         <div className="w-full">{children}</div>
       </div>
-      <Footer />
+      <Footer theme={theme} />
       {headerType === "catalog" && (
         <CartPopup>
           <div className="h-full overflow-y-scroll">

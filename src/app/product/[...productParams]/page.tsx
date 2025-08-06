@@ -70,11 +70,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const productMedia = [...(product?.media || [])];
 
   return (
-    <FlexibleLayout
-      mobileHeaderType="flexible"
-      headerType="catalog"
-      footerType="mini"
-    >
+    <FlexibleLayout mobileHeaderType="flexible" headerType="catalog">
       <div className="relative lg:h-screen">
         <div className="block lg:hidden">
           <MobileImageCarousel media={productMedia} />

@@ -24,7 +24,7 @@ export default async function OrderPage(props: Props) {
   });
 
   return (
-    <FlexibleLayout footerType="mini">
+    <FlexibleLayout>
       <div className="space-y-10 px-2.5 pb-20 pt-10 lg:px-32 lg:pt-24">
         <Text variant="uppercase" component="h1">
           Order info

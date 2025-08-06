@@ -84,7 +84,6 @@ export default async function Page({ params }: ArchivePageParams) {
         left: "grbpwr.com",
         center: "archive",
       }}
-      footerType="mini"
       theme="dark"
       className="pt-16"
     >

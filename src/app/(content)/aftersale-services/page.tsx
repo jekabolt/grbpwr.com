@@ -5,7 +5,7 @@ import AftersaleForm from "./_components";
 
 export default function AftersaleServicesPage() {
   return (
-    <FlexibleLayout footerType="mini">
+    <FlexibleLayout>
       <div className="h-full space-y-12 px-2.5 pt-8 lg:space-y-16 lg:px-28 lg:pt-24">
         <Text variant="uppercase">aftersale Services</Text>
         <AftersaleForm />

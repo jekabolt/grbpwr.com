@@ -19,11 +19,7 @@ export default function CartPage() {
   const products = useCart((state) => state.products);
   const itemsQuantity = Object.keys(products).length;
   return (
-    <FlexibleLayout
-      headerType="flexible"
-      footerType="mini"
-      headerProps={{ right: "close" }}
-    >
+    <FlexibleLayout headerType="flexible" headerProps={{ right: "close" }}>
       <div className="relative flex h-full flex-col gap-10 py-24 sm:flex-row lg:px-32">
         <div className="w-full sm:w-1/2">
           <div className="w-full space-y-10">

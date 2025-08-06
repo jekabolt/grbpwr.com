@@ -6,7 +6,7 @@ import OrderStatusForm from "../_components/order-status-form";
 
 export default function OrderStatus() {
   return (
-    <FlexibleLayout footerType="mini">
+    <FlexibleLayout>
       <div className="h-full space-y-12 px-2.5 pt-8 lg:space-y-16 lg:px-28 lg:pt-24">
         <div className="space-y-9">
           <Text variant="uppercase">order status</Text>

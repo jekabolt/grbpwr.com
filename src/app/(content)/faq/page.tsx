@@ -9,7 +9,7 @@ import { useMarkdownContent } from "../_components/use-markdown-content";
 export default function FaqPage() {
   const { content } = useMarkdownContent("/content/faq/faq.md");
   return (
-    <FlexibleLayout footerType="mini">
+    <FlexibleLayout>
       <div className="h-full space-y-12 px-2.5 pt-8 lg:space-y-16 lg:px-28 lg:pt-24">
         <div className="flex flex-col justify-start gap-y-10 lg:w-1/2 lg:gap-y-20">
           <div className="space-y-8">
