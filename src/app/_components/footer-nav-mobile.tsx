@@ -30,6 +30,7 @@ export function FooterNavMobile() {
             clickableAreaClassName: "h-8",
             clickableArea: "full",
             childrenSpacing: "space-y-4 py-4",
+            sign: "plus-minus",
           }}
           onToggle={handleToggle}
         >

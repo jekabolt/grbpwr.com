@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Arrow } from "@/components/ui/icons/arrow";
+import { MinusIcon } from "@/components/ui/icons/minus";
+import { PlusIcon } from "@/components/ui/icons/plus";
 import { Text } from "@/components/ui/text";
 
 interface FieldsGroupContainerProps {
@@ -18,6 +20,7 @@ interface FieldsGroupContainerProps {
     clickableArea?: "full" | "default";
     clickableAreaClassName?: string;
     childrenSpacing?: string;
+    sign?: "arrow" | "plus-minus";
   };
   onToggle?: () => void;
 }
@@ -39,6 +42,7 @@ export default function FieldsGroupContainer({
     clickableArea = "default",
     clickableAreaClassName,
     childrenSpacing = "space-y-8",
+    sign = "arrow",
   } = styling;
 
   useEffect(() => {
@@ -81,13 +85,17 @@ export default function FieldsGroupContainer({
           </Text>
         </div>
 
-        {mode === "collapsible" && (
+        {mode === "collapsible" && sign === "arrow" ? (
           <div
             className={cn("rotate-180 text-textColor", {
               "rotate-0": localIsOpen,
             })}
           >
             <Arrow />
+          </div>
+        ) : (
+          <div className="text-textColor">
+            {localIsOpen ? <MinusIcon /> : <PlusIcon />}
           </div>
         )}
       </div>
