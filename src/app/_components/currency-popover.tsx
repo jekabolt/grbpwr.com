@@ -38,7 +38,7 @@ export default function CurrencyPopover({
 
   return (
     <>
-      <div className="block lg:hidden">
+      <div className="block w-full lg:hidden">
         <MobileCurrencyPopover title={title} theme={theme} />
       </div>
       <div className="hidden lg:block">

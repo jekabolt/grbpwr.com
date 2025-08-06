@@ -6,6 +6,22 @@ import { cn } from "@/lib/utils";
 import { Arrow } from "@/components/ui/icons/arrow";
 import { Text } from "@/components/ui/text";
 
+interface FieldsGroupContainerProps {
+  stage?: string;
+  title: string;
+  summary?: React.ReactNode;
+  children: React.ReactNode;
+  isOpen?: boolean;
+  disabled?: boolean;
+  mode?: "collapsible" | "non-collapsible";
+  styling?: {
+    clickableArea?: "full" | "default";
+    clickableAreaClassName?: string;
+    childrenSpacing?: string;
+  };
+  onToggle?: () => void;
+}
+
 export default function FieldsGroupContainer({
   stage,
   title,
@@ -13,22 +29,17 @@ export default function FieldsGroupContainer({
   summary,
   isOpen = false,
   disabled = false,
-  clickableArea = "default",
   mode = "collapsible",
-
+  styling = {},
   onToggle,
-}: {
-  stage?: string;
-  title: string;
-  summary?: React.ReactNode;
-  children: React.ReactNode;
-  isOpen?: boolean;
-  disabled?: boolean;
-  clickableArea?: "full" | "default";
-  mode?: "collapsible" | "non-collapsible";
-  onToggle?: () => void;
-}) {
+}: FieldsGroupContainerProps) {
   const [localIsOpen, setLocalIsOpen] = useState(isOpen);
+
+  const {
+    clickableArea = "default",
+    clickableAreaClassName,
+    childrenSpacing = "space-y-8",
+  } = styling;
 
   useEffect(() => {
     setLocalIsOpen(isOpen);
@@ -48,11 +59,15 @@ export default function FieldsGroupContainer({
       })}
     >
       <div
-        className={cn("flex items-center justify-between", {
-          "h-20": clickableArea === "full",
-          "opacity-50": disabled,
-          "cursor-pointer": mode === "collapsible" && !disabled,
-        })}
+        className={cn(
+          "flex items-center justify-between",
+          {
+            "h-20": clickableArea === "full" && !clickableAreaClassName,
+            "opacity-50": disabled,
+            "cursor-pointer": mode === "collapsible" && !disabled,
+          },
+          clickableArea === "full" ? clickableAreaClassName : undefined,
+        )}
         onClick={mode === "collapsible" ? handleToggle : undefined}
       >
         <div className="flex gap-x-6">
@@ -77,7 +92,7 @@ export default function FieldsGroupContainer({
         )}
       </div>
       <div
-        className={cn("h-full space-y-8", {
+        className={cn("h-full", childrenSpacing, {
           hidden: mode === "collapsible" && !localIsOpen,
           "lg:ml-14": mode === "non-collapsible" && stage,
         })}
