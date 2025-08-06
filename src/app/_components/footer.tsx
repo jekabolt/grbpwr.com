@@ -39,16 +39,18 @@ function LiveClock() {
 export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
   return (
     <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
-      <div className="flex flex-col gap-y-16 lg:flex-row lg:gap-x-20 lg:py-52">
-        <div className="flex w-full justify-center lg:justify-end">
-          {theme === "dark" ? (
-            <Logo className="aspect-square w-40" />
-          ) : (
-            <WhiteLogo className="aspect-square w-40" />
-          )}
-        </div>
-        <div className="flex w-full">
-          <NewslatterForm />
+      <div className="flex justify-center lg:py-52">
+        <div className="flex flex-col gap-y-16 lg:flex-row lg:gap-x-20">
+          <div className="flex w-full justify-center lg:justify-end">
+            {theme === "dark" ? (
+              <Logo className="aspect-square w-40" />
+            ) : (
+              <WhiteLogo className="aspect-square w-40" />
+            )}
+          </div>
+          <div className="flex w-full">
+            <NewslatterForm />
+          </div>
         </div>
       </div>
       <div className="flex w-full flex-col justify-between gap-x-20 lg:flex-row lg:px-7">

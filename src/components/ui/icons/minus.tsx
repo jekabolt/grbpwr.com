@@ -3,7 +3,7 @@ import { SVGProps } from "react";
 export function MinusIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="11"
+      width="9"
       height="2"
       viewBox="0 0 11 2"
       fill="none"

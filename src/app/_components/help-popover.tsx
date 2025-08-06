@@ -17,9 +17,7 @@ export default function HelpPopover() {
       openElement={(isOpen) => (
         <div className="flex items-center gap-x-2">
           <Text variant="uppercase">help</Text>
-          <Text className="leading-none">
-            {isOpen ? <MinusIcon /> : <PlusIcon />}
-          </Text>
+          <Text>{isOpen ? <MinusIcon /> : <PlusIcon />}</Text>
         </div>
       )}
     >
