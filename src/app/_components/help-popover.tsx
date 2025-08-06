@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";
 import { MinusIcon } from "@/components/ui/icons/minus";
@@ -7,13 +8,15 @@ import { PlusIcon } from "@/components/ui/icons/plus";
 import GenericPopover from "@/components/ui/popover";
 import { Text } from "@/components/ui/text";
 
-export default function HelpPopover() {
+export default function HelpPopover({ theme }: { theme: "light" | "dark" }) {
   return (
     <GenericPopover
       contentProps={{
         align: "start",
       }}
-      className="px-0"
+      className={cn("px-0", {
+        "blackTheme bg-bgColor text-textColor": theme === "dark",
+      })}
       openElement={(isOpen) => (
         <div className="flex items-center gap-x-2">
           <Text variant="uppercase">help</Text>

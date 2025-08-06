@@ -1,6 +1,6 @@
 "use client";
 
-import { currencySymbols } from "@/constants";
+import { currencySymbols, getDisplayCurrencyKey } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
@@ -26,7 +26,8 @@ export default function CurrencyPopover({ title, theme }: Props) {
             currency:
           </Text>
           <Text component="span" variant="inactive">
-            {currencySymbols[selectedCurrency]} / {selectedCurrency}
+            {currencySymbols[getDisplayCurrencyKey(selectedCurrency)]} /{" "}
+            {getDisplayCurrencyKey(selectedCurrency)}
           </Text>
         </Button>
       </DialogPrimitives.Trigger>
@@ -52,23 +53,27 @@ export default function CurrencyPopover({ title, theme }: Props) {
           <div className="relative grow overflow-y-auto">
             <div className="space-y-2">
               {rates &&
-                Object.entries(rates).map(([k, v]) => (
-                  <div key={k}>
-                    <Button
-                      onClick={() => setSelectedCurrency(k)}
-                      className={cn("flex w-full p-2 leading-none", {
-                        "underline underline-offset-2": k === selectedCurrency,
-                      })}
-                    >
-                      <Text
-                        variant="inherit"
-                        className="block min-w-8 text-left"
+                Object.entries(rates).map(([k, v]) => {
+                  const displayKey = getDisplayCurrencyKey(k);
+                  return (
+                    <div key={k}>
+                      <Button
+                        onClick={() => setSelectedCurrency(k)}
+                        className={cn("flex w-full p-2 leading-none", {
+                          "underline underline-offset-2":
+                            k === selectedCurrency,
+                        })}
                       >
-                        {currencySymbols[k]} {v.description}
-                      </Text>
-                    </Button>
-                  </div>
-                ))}
+                        <Text
+                          variant="inherit"
+                          className="block min-w-8 text-left"
+                        >
+                          {currencySymbols[displayKey]} {displayKey}
+                        </Text>
+                      </Button>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </DialogPrimitives.Content>

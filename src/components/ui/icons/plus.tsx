@@ -12,7 +12,7 @@ export function PlusIcon(props: SVGProps<SVGSVGElement>) {
     >
       <path
         d="M5.875 10H4.625V5.625H0.25V4.375H4.625V0H5.875V4.375H10.25V5.625H5.875V10Z"
-        fill="black"
+        fill="currentColor"
       />
     </svg>
   );

@@ -36,11 +36,11 @@ export default function NewslatterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <Text variant="uppercase" className="mb-7">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <Text variant="uppercase" className="leading-none">
         mailing list
       </Text>
-      <div className="flex w-full flex-col items-start gap-6">
+      <div className="flex w-full flex-col items-start gap-3">
         <Input
           id="newsletter"
           type="email"
@@ -61,11 +61,11 @@ export default function NewslatterForm() {
         />
       </div>
       <Button
-        variant="secondary"
+        variant="simple"
         size="lg"
         type="submit"
         disabled={isLoading || !email || !isChecked}
-        className="uppercase"
+        className="border uppercase disabled:border-textColor disabled:bg-bgColor disabled:text-textColor"
       >
         subscribe
       </Button>
