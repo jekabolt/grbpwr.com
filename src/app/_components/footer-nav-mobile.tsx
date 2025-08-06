@@ -29,11 +29,11 @@ export function FooterNavMobile() {
           styling={{
             clickableAreaClassName: "h-8",
             clickableArea: "full",
-            childrenSpacing: "space-y-4",
+            childrenSpacing: "space-y-4 py-4",
           }}
           onToggle={handleToggle}
         >
-          <CopyText text="client@grbpwr.com" />
+          <CopyText text="CLIENT@GRBPWR.COM" mode="toaster" />
           <Button asChild className="uppercase">
             <Link href="/aftersale-services">aftersales service</Link>
           </Button>
