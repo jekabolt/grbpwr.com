@@ -12,6 +12,7 @@ import { Text } from "@/components/ui/text";
 export default function NewslatterForm() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,6 +26,7 @@ export default function NewslatterForm() {
     try {
       await serviceClient.SubscribeNewsletter({ email });
       setEmail("");
+      setIsChecked(false);
       console.log("Successfully subscribed to newsletter");
     } catch (error) {
       console.error("Failed to subscribe to newsletter:", error);
@@ -54,13 +56,15 @@ export default function NewslatterForm() {
         <CheckboxGlobal
           name="newsLetter"
           label="i agree to recieve emails. read our privacy policy for more information."
+          checked={isChecked}
+          onCheckedChange={(checked: boolean) => setIsChecked(checked)}
         />
       </div>
       <Button
         variant="secondary"
         size="lg"
         type="submit"
-        disabled={isLoading || !email}
+        disabled={isLoading || !email || !isChecked}
         className="uppercase"
       >
         subscribe
