@@ -65,14 +65,24 @@ export const paymentMethodNamesMap = {
   PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA: "tron usdt (Test)",
 };
 
+export const currencyKeyMap: Record<string, string> = {
+  Bitcoin: "BTC",
+  Ethereum: "ETH",
+};
+
+// Helper function to get display currency key
+export const getDisplayCurrencyKey = (serverKey: string): string => {
+  return currencyKeyMap[serverKey] || serverKey;
+};
+
 export const currencySymbols: Record<string, string> = {
-  Bitcoin: "₿", // Bitcoin
+  BTC: "₿", // Bitcoin
   CHF: "Fr", // Swiss Franc
   CNY: "¥", // Chinese Yuan
   CZK: "Kč", // Czech Republic Koruna
   DKK: "kr", // Danish Krone
   EUR: "€", // Euro
-  Ethereum: "⟠", // Ethereum
+  ETH: "⟠", // Ethereum
   GBP: "£", // British Pound Sterling
   GEL: "₾", // Georgian Lari
   HKD: "$", // Hong Kong Dollar

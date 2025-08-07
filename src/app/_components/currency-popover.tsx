@@ -1,6 +1,6 @@
 "use client";
 
-import { currencySymbols } from "@/constants";
+import { currencySymbols, getDisplayCurrencyKey } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
@@ -18,9 +18,13 @@ interface Props {
 
 function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
   return (
-    <Text variant="uppercase">
+    <Text variant="uppercase" className="whitespace-nowrap">
       currency:{" "}
-      <Text component="span" variant="inactive">
+      <Text
+        component="span"
+        variant="inactive"
+        className="inline-block min-w-16 text-left"
+      >
         {defaultValue}
       </Text>
     </Text>
@@ -46,7 +50,7 @@ export default function CurrencyPopover({
           title={title}
           openElement={
             <Trigger
-              defaultValue={`${currencySymbols[selectedCurrency]} / ${selectedCurrency}`}
+              defaultValue={`${currencySymbols[getDisplayCurrencyKey(selectedCurrency)]} / ${getDisplayCurrencyKey(selectedCurrency)}`}
             />
           }
           className={cn("border-inactive border", {
@@ -65,22 +69,28 @@ export default function CurrencyPopover({
             })}
           >
             {rates &&
-              Object.entries(rates).map(([k, v]) => (
-                <div key={k}>
-                  <Button
-                    onClick={() => {
-                      setSelectedCurrency(k);
-                    }}
-                    className={cn("flex w-full lowercase", {
-                      "underline underline-offset-2": k === selectedCurrency,
-                    })}
-                  >
-                    <Text variant="inherit" className="block min-w-8 text-left">
-                      {currencySymbols[k]} {v.description}
-                    </Text>
-                  </Button>
-                </div>
-              ))}
+              Object.entries(rates).map(([k, v]) => {
+                const displayKey = getDisplayCurrencyKey(k);
+                return (
+                  <div key={k}>
+                    <Button
+                      onClick={() => {
+                        setSelectedCurrency(k);
+                      }}
+                      className={cn("flex w-full lowercase", {
+                        "underline underline-offset-2": k === selectedCurrency,
+                      })}
+                    >
+                      <Text
+                        variant="inherit"
+                        className="block min-w-8 text-left"
+                      >
+                        {currencySymbols[displayKey]} {v.description}
+                      </Text>
+                    </Button>
+                  </div>
+                );
+              })}
           </div>
         </GenericPopover>
       </div>

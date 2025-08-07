@@ -12,7 +12,7 @@ export default function CheckboxGlobal({
   [k: string]: unknown;
 }) {
   return (
-    <div className="flex items-start gap-x-4 lg:items-center">
+    <div className="flex items-start gap-x-4 leading-none">
       <Checkbox.Root
         className="flex h-3 w-3 flex-none appearance-none items-center justify-center border border-textColor"
         id={name}
@@ -26,7 +26,7 @@ export default function CheckboxGlobal({
           component="label"
           variant="uppercase"
           htmlFor={name}
-          className="cursor-pointer leading-none"
+          className="cursor-pointer"
         >
           {label}
         </Text>
