@@ -1,44 +1,22 @@
 "use client";
 
-import { Children, useEffect, useState } from "react";
+import { Children, useEffect, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
-type ResponsiveValue<T> = T | { mobile: T; desktop?: T };
+import { createScrollHandler } from "@/lib/carousel-utils";
 
 type CarouselProps = {
   className?: string;
   children: React.ReactNode;
-  loop?: ResponsiveValue<boolean>;
-  disabled?: ResponsiveValue<boolean>;
-  align?: ResponsiveValue<"start" | "center" | "end">;
+  loop?: boolean;
+  disabled?: boolean;
+  align?: "start" | "center" | "end";
   disableForItemCounts?: number[];
+  axis?: "x" | "y";
+  enablePageScroll?: boolean;
+  setSelectedIndex?: (index: number) => void;
 };
-
-const useMediaQuery = (query: string) => {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    setMatches(media.matches);
-
-    const listener = () => setMatches(media.matches);
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
-  }, [query]);
-
-  return matches;
-};
-
-const resolveResponsive = <T,>(
-  value: ResponsiveValue<T>,
-  isDesktop: boolean,
-): T =>
-  value && typeof value === "object" && "mobile" in value
-    ? isDesktop
-      ? value.desktop ?? value.mobile
-      : value.mobile
-    : (value as T);
 
 export function Carousel({
   className,
@@ -46,28 +24,82 @@ export function Carousel({
   loop = false,
   disabled = false,
   align = "start",
+  axis = "x",
   disableForItemCounts,
+  enablePageScroll = false,
+  setSelectedIndex,
 }: CarouselProps) {
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
-
+  const containerRef = useRef<HTMLDivElement>(null);
+  const bridgeTimeout = useRef<NodeJS.Timeout | null>(null);
+  const touchStart = useRef(0);
   const childrenCount = Children.count(children);
-  const shouldDisableForItemCount =
-    disableForItemCounts?.includes(childrenCount) ?? false;
+  const isDisabled = disabled || disableForItemCounts?.includes(childrenCount);
 
-  const isDisabled =
-    resolveResponsive(disabled, isDesktop) || shouldDisableForItemCount;
-  const shouldLoop = resolveResponsive(loop, isDesktop);
-  const alignValue = resolveResponsive(align, isDesktop);
-
-  const [emblaRef] = useEmblaCarousel(
-    isDisabled
-      ? undefined
-      : { loop: shouldLoop, dragFree: true, align: alignValue },
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    isDisabled ? undefined : { loop, dragFree: true, align, axis },
     isDisabled ? [] : [WheelGesturesPlugin()],
   );
 
+  const handleScroll = createScrollHandler(
+    emblaApi,
+    containerRef,
+    bridgeTimeout,
+  );
+
+  const handleWheel = (e: WheelEvent) => handleScroll(e, e.deltaY);
+
+  const handleTouchMove = (e: TouchEvent) => {
+    const deltaY = (e.touches[0]?.clientY ?? 0) - touchStart.current;
+    if (Math.abs(deltaY) > 10) handleScroll(e, deltaY);
+  };
+  const handleTouchStart = (e: TouchEvent) => {
+    touchStart.current = e.touches[0]?.clientY ?? 0;
+  };
+
+  const onSelect = () => {
+    if (!emblaApi || !setSelectedIndex) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  };
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!enablePageScroll || !containerRef.current) return;
+
+    const container = containerRef.current;
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    container.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    container.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
+
+    return () => {
+      container.removeEventListener("wheel", handleWheel);
+      container.removeEventListener("touchstart", handleTouchStart as any);
+      container.removeEventListener("touchmove", handleTouchMove as any);
+    };
+  }, [enablePageScroll, emblaApi]);
+
+  const combinedRef = (node: HTMLDivElement | null) => {
+    if (!disabled && emblaRef) emblaRef(node);
+    containerRef.current = node;
+  };
+
   return (
-    <div className="overflow-hidden" ref={isDisabled ? undefined : emblaRef}>
+    <div ref={combinedRef} className="overflow-hidden">
       <div className={className}>{children}</div>
     </div>
   );
