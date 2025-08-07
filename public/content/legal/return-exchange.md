@@ -13,9 +13,7 @@ Once your request is submitted, you’ll receive an email confirmation along wit
 
 - Carefully repackage the item(s) in their original condition, using the original packaging wherever possible.
 - Affix the return label over the original label and seal the parcel securely.
-- Arrange collection via the courier’s website or drop the parcel off at a designated drop-off point.
-  Alternatively, return your online purchase to any GRBPWR store within the United Kingdom (excluding concessions and department stores).
-  Returns must be sent back within 14 calendar days of submitting your return or exchange request.
+- Arrange collection via the courier's website or drop the parcel off at a designated drop-off point. Alternatively, return your online purchase to any GRBPWR store within the United Kingdom (excluding concessions and department stores). Returns must be sent back within 14 calendar days of submitting your return or exchange request.
 
 ## REFUNDS AND EXCHANGES
 

@@ -7,6 +7,22 @@ export const CustomParagraph = ({ children }: any) => {
   return <div className="mb-4 lg:mb-8">{children}</div>;
 };
 
+export const CustomList = ({ children, ...props }: any) => {
+  return (
+    <ul {...props} className="mb-4 lg:mb-8">
+      {children}
+    </ul>
+  );
+};
+
+export const CustomOrderedList = ({ children, ...props }: any) => {
+  return (
+    <ol {...props} className="mb-4 lg:mb-8">
+      {children}
+    </ol>
+  );
+};
+
 export const createCustomLink = (
   onSectionChange?: (section: string) => void,
 ) => {
@@ -53,5 +69,7 @@ export const createMarkdownComponents = (
   onSectionChange?: (section: string) => void,
 ) => ({
   p: CustomParagraph,
+  ul: CustomList,
+  ol: CustomOrderedList,
   a: createCustomLink(onSectionChange),
 });
