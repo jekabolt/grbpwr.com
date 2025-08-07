@@ -93,11 +93,11 @@ Take clear photos of the damage and [contact us](/contact-us).
 
 RETURN A PRODUCT
 
-To return an order, please use the returns form included in your package. If you have lost the form, [contact us](/contact-us).
+To return an order, please use the returns form included in your package. If you have lost the form, [contact us](/aftersale-services).
 
 Items that are damaged or missing tags will not be accepted for return.
 
-If you would like to exchange an item for a different size, please [get in touch with us](/contact-us).
+If you would like to exchange an item for a different size, please [get in touch with us](/aftersale-services).
 
 RETURN PERIOD
 
@@ -109,7 +109,7 @@ We cover the cost of returns.
 
 EXCHANGE REQUEST
 
-To exchange an item for a different size, please [contact us](/contact-us).
+To exchange an item for a different size, please [contact us](/aftersale-services).
 
 REFUND
 
