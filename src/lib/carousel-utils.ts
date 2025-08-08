@@ -29,7 +29,9 @@ export const createScrollHandler = (
         const inCarouselArea =
             event instanceof WheelEvent
                 ? event.clientY >= rect.top && event.clientY <= rect.bottom + 200
-                : true;
+                : event instanceof TouchEvent && event.touches[0]
+                    ? event.touches[0].clientY >= rect.top && event.touches[0].clientY <= rect.bottom + 200
+                    : true;
 
 
         if (scrollingUp && inCarouselArea && window.scrollY > 0 && rect.top < 0) {
