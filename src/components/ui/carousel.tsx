@@ -50,7 +50,22 @@ export function Carousel({
 
   const handleTouchMove = (e: TouchEvent) => {
     const deltaY = (e.touches[0]?.clientY ?? 0) - touchStart.current;
-    if (Math.abs(deltaY) > 10) handleScroll(e, deltaY);
+
+    // Only intercept touch if we're at carousel boundaries and trying to scroll beyond
+    if (emblaApi) {
+      const isAtStart = !emblaApi.canScrollPrev();
+      const isAtEnd = !emblaApi.canScrollNext();
+      const scrollingDown = deltaY > 0;
+      const scrollingUp = deltaY < 0;
+
+      // Only intercept if we're at a boundary and trying to scroll beyond
+      if ((scrollingDown && isAtEnd) || (scrollingUp && isAtStart)) {
+        if (Math.abs(deltaY) > 10) {
+          e.preventDefault();
+          handleScroll(e, deltaY);
+        }
+      }
+    }
   };
   const handleTouchStart = (e: TouchEvent) => {
     touchStart.current = e.touches[0]?.clientY ?? 0;

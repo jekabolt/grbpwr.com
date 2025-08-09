@@ -33,16 +33,20 @@ export const createScrollHandler = (
                     ? event.touches[0].clientY >= rect.top && event.touches[0].clientY <= rect.bottom + 200
                     : true;
 
+        // Only handle carousel navigation when at boundaries
+        if ((scrollingDown && isAtEnd) || (scrollingUp && isAtStart)) {
+            event.preventDefault();
+            scrollPage(scrollingDown ? "down" : "up");
+            return;
+        }
 
+        // Handle scroll to top when scrolling up in carousel area and page is scrolled down
         if (scrollingUp && inCarouselArea && window.scrollY > 0 && rect.top < 0) {
             event.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
 
-        if ((scrollingDown && isAtEnd) || (scrollingUp && isAtStart)) {
-            event.preventDefault();
-            scrollPage(scrollingDown ? "down" : "up");
-        }
+        // Don't prevent default for normal scrolling - let the page handle it
     };
 };

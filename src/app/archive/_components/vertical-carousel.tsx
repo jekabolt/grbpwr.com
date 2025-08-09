@@ -20,7 +20,7 @@ export function VerticalCarousel({ archives }: CarouselProps) {
       <Carousel
         axis="y"
         align="center"
-        className="flex h-screen flex-col gap-20 lg:gap-0"
+        className="flex h-screen w-full flex-col gap-20 lg:gap-0"
         enablePageScroll
         setSelectedIndex={setSelectedIndex}
       >
