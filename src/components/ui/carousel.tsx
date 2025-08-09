@@ -51,7 +51,6 @@ export function Carousel({
           dragFree: false,
           align,
           axis,
-          containScroll: "keepSnaps",
           skipSnaps: false,
         },
     isDisabled
@@ -280,11 +279,14 @@ export function Carousel({
   return (
     <div
       ref={emblaRef}
-      className={`h-screen overflow-hidden ${isVertical ? "touch-pan-x" : "touch-pan-y"}`}
+      className={`h-screen overflow-hidden`}
       style={{
         // Дополнительные стили для мобильных устройств
         WebkitOverflowScrolling: "touch",
         overscrollBehavior: isVertical ? "contain" : "auto",
+        // Разрешаем цепочку скролла к странице и правильное направление жестов
+
+        touchAction: isVertical ? "pan-y" : "pan-x",
       }}
     >
       <div
