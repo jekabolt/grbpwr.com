@@ -36,7 +36,14 @@ export function Carousel({
   const isDisabled = disabled || disableForItemCounts?.includes(childrenCount);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    isDisabled ? undefined : { loop, dragFree: true, align, axis },
+    isDisabled
+      ? undefined
+      : {
+          loop,
+          dragFree: true,
+          align,
+          axis,
+        },
     isDisabled ? [] : [WheelGesturesPlugin()],
   );
 
@@ -49,31 +56,53 @@ export function Carousel({
   const handleWheel = (e: WheelEvent) => handleScroll(e, e.deltaY);
 
   const handleTouchMove = (e: TouchEvent) => {
-    const deltaY = (e.touches[0]?.clientY ?? 0) - touchStart.current;
+    const currentY = e.touches[0]?.clientY ?? 0;
+    const deltaY = currentY - touchStart.current;
 
-    // Only intercept touch if we're at carousel boundaries and trying to scroll beyond
-    if (emblaApi) {
-      const isAtStart = !emblaApi.canScrollPrev();
-      const isAtEnd = !emblaApi.canScrollNext();
-      const scrollingDown = deltaY > 0;
-      const scrollingUp = deltaY < 0;
-
-      // Only intercept if we're at a boundary and trying to scroll beyond
-      if ((scrollingDown && isAtEnd) || (scrollingUp && isAtStart)) {
-        if (Math.abs(deltaY) > 10) {
-          e.preventDefault();
-          handleScroll(e, deltaY);
-        }
-      }
-    }
+    // Forward all touch moves to the scroll handler; it will decide when to intercept
+    handleScroll(e, deltaY);
   };
   const handleTouchStart = (e: TouchEvent) => {
+    console.log("Touch start detected");
     touchStart.current = e.touches[0]?.clientY ?? 0;
   };
 
   const onSelect = () => {
     if (!emblaApi || !setSelectedIndex) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
+
+    const currentIndex = emblaApi.selectedScrollSnap();
+    setSelectedIndex(currentIndex);
+
+    // Check if we're at boundaries
+    const isAtStart = !emblaApi.canScrollPrev();
+    const isAtEnd = !emblaApi.canScrollNext();
+
+    console.log("Carousel selected:", {
+      currentIndex,
+      isAtStart,
+      isAtEnd,
+      totalSlides: emblaApi.slideNodes().length,
+    });
+
+    // If at boundary, log that page scroll should be enabled
+    if (isAtStart || isAtEnd) {
+      console.log("At boundary - page scroll should be enabled");
+    }
+  };
+
+  const onDragEnd = () => {
+    if (!emblaApi) return;
+
+    // Check if we're at boundaries after drag ends
+    const isAtStart = !emblaApi.canScrollPrev();
+    const isAtEnd = !emblaApi.canScrollNext();
+
+    console.log("Drag ended:", { isAtStart, isAtEnd });
+
+    // If at boundary, allow page scroll
+    if (isAtStart || isAtEnd) {
+      console.log("At boundary, page scroll enabled");
+    }
   };
 
   useEffect(() => {
@@ -82,15 +111,19 @@ export function Carousel({
     onSelect();
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
+    emblaApi.on("settle", onDragEnd);
 
     return () => {
       emblaApi.off("select", onSelect);
       emblaApi.off("reInit", onSelect);
+      emblaApi.off("settle", onDragEnd);
     };
   }, [emblaApi]);
 
   useEffect(() => {
     if (!enablePageScroll || !containerRef.current) return;
+
+    console.log("Setting up touch event listeners");
 
     const container = containerRef.current;
     container.addEventListener("wheel", handleWheel, { passive: false });

@@ -24,8 +24,18 @@ export const createScrollHandler = (
         const rect = container.getBoundingClientRect();
         const scrollingUp = deltaY < 0;
         const scrollingDown = deltaY > 0;
-        const isAtStart = !emblaApi.canScrollPrev();
-        const isAtEnd = !emblaApi.canScrollNext();
+
+        // Use scrollProgress to detect true edges (more reliable during drag)
+        const progress = emblaApi.scrollProgress();
+        const NEAR_START = 0.01;
+        const NEAR_END = 0.99;
+        const isNearStart = progress <= NEAR_START;
+        const isNearEnd = progress >= NEAR_END;
+
+        // Fallback to canScrollPrev/Next as a safety
+        const isAtStart = isNearStart || !emblaApi.canScrollPrev();
+        const isAtEnd = isNearEnd || !emblaApi.canScrollNext();
+
         const inCarouselArea =
             event instanceof WheelEvent
                 ? event.clientY >= rect.top && event.clientY <= rect.bottom + 200
@@ -33,20 +43,20 @@ export const createScrollHandler = (
                     ? event.touches[0].clientY >= rect.top && event.touches[0].clientY <= rect.bottom + 200
                     : true;
 
-        // Only handle carousel navigation when at boundaries
+        // 1) When at boundaries, bridge to page scroll in the same direction
         if ((scrollingDown && isAtEnd) || (scrollingUp && isAtStart)) {
             event.preventDefault();
             scrollPage(scrollingDown ? "down" : "up");
             return;
         }
 
-        // Handle scroll to top when scrolling up in carousel area and page is scrolled down
+        // 2) If user scrolls up while carousel is pinned to top area and page has scroll, jump to page top
         if (scrollingUp && inCarouselArea && window.scrollY > 0 && rect.top < 0) {
             event.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
 
-        // Don't prevent default for normal scrolling - let the page handle it
+        // 3) Otherwise, let the browser handle normal scrolling
     };
 };
