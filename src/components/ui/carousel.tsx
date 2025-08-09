@@ -1,6 +1,6 @@
 "use client";
 
-import { Children, useCallback, useEffect, useRef, useState } from "react";
+import { Children, useCallback, useEffect, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
@@ -35,34 +35,18 @@ export function Carousel({
   const isVertical = axis === "y";
 
   const wheelListenerRef = useRef<((e: WheelEvent) => void) | null>(null);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-
-  // Определяем тип устройства
-  useEffect(() => {
-    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
-  }, []);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     isDisabled
       ? undefined
       : {
           loop,
-          dragFree: false,
+          dragFree: true,
           align,
           axis,
-          skipSnaps: false,
+          skipSnaps: true,
         },
-    isDisabled
-      ? []
-      : [
-          WheelGesturesPlugin(
-            isVertical
-              ? {
-                  forceWheelAxis: "y",
-                }
-              : {},
-          ),
-        ],
+    isDisabled ? [] : [WheelGesturesPlugin()],
   );
 
   const onSelect = useCallback(() => {
@@ -71,8 +55,7 @@ export function Carousel({
     setSelectedIndex(currentIndex);
   }, [emblaApi, setSelectedIndex]);
 
-  // Проверка границ карусели
-  const checkCarouselBounds = useCallback(() => {
+  const checkCarouselBounds = () => {
     if (!emblaApi) return { isAtEnd: false, isAtStart: false };
 
     const canScrollNext = emblaApi.canScrollNext();
@@ -83,80 +66,36 @@ export function Carousel({
     const isAtStart = !canScrollPrev && scrollProgress <= 0.01;
 
     return { isAtEnd, isAtStart };
-  }, [emblaApi]);
+  };
 
-  // Управление wheel событиями для десктопа
-  const handleWheel = useCallback(
-    (e: WheelEvent) => {
-      if (!emblaApi || !isVertical || !enablePageScroll || isTouchDevice)
-        return;
+  useEffect(() => {
+    if (!emblaApi || !isVertical || !enablePageScroll) return;
 
+    const viewport = emblaApi.rootNode();
+
+    const onWheel = (e: WheelEvent) => {
+      if (!emblaApi) return;
       const { isAtEnd, isAtStart } = checkCarouselBounds();
 
-      // Прокрутка вниз на последнем элементе
       if (e.deltaY > 0 && isAtEnd && !loop) {
         e.stopPropagation();
         return;
       }
-
-      // Прокрутка вверх на первом элементе
       if (e.deltaY < 0 && isAtStart && !loop) {
         e.stopPropagation();
         return;
       }
-
       e.preventDefault();
-    },
-    [
-      emblaApi,
-      isVertical,
-      enablePageScroll,
-      loop,
-      isTouchDevice,
-      checkCarouselBounds,
-    ],
-  );
-
-  // Установка обработчиков wheel событий для десктопа
-  useEffect(() => {
-    if (!emblaApi || !isVertical || !enablePageScroll || isTouchDevice) return;
-
-    const viewport = emblaApi.rootNode();
-
-    if (wheelListenerRef.current) {
-      viewport.removeEventListener("wheel", wheelListenerRef.current);
-    }
-
-    wheelListenerRef.current = handleWheel;
-    viewport.addEventListener("wheel", handleWheel, {
-      passive: false,
-      capture: true,
-    });
-
-    return () => {
-      if (wheelListenerRef.current) {
-        viewport.removeEventListener("wheel", wheelListenerRef.current, {
-          capture: true,
-        });
-      }
     };
-  }, [handleWheel, emblaApi, isVertical, enablePageScroll, isTouchDevice]);
 
-  // Установка обработчиков touch событий для мобильных устройств
-  // Установка обработчиков touch событий для мобильных устройств
-  useEffect(() => {
-    if (!emblaApi || !isVertical || !enablePageScroll || !isTouchDevice) return;
-
-    const viewport = emblaApi.rootNode();
     let touchStartY = 0;
-
     const onTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
     };
-
     const onTouchMove = (e: TouchEvent) => {
+      if (!emblaApi) return;
       const currentY = e.touches[0].clientY;
-      const deltaY = touchStartY - currentY; // >0: свайп вверх (страница вниз)
+      const deltaY = touchStartY - currentY;
 
       const canScrollNext = emblaApi.canScrollNext();
       const canScrollPrev = emblaApi.canScrollPrev();
@@ -164,7 +103,6 @@ export function Carousel({
       const swipeUp = deltaY > 0;
       const swipeDown = deltaY < 0;
 
-      // Если на границе — передаём скролл странице вручную
       if (swipeUp && !canScrollNext && !loop) {
         e.preventDefault();
         scrollPage("down");
@@ -175,15 +113,22 @@ export function Carousel({
         scrollPage("up");
         return;
       }
-
-      // Блокируем страницу только если карусель может скроллиться в направлении жеста
       if ((swipeUp && canScrollNext) || (swipeDown && canScrollPrev)) {
         e.preventDefault();
         return;
       }
-      // Иначе не мешаем — пусть страница скроллится
     };
 
+    if (wheelListenerRef.current) {
+      viewport.removeEventListener("wheel", wheelListenerRef.current);
+    }
+    wheelListenerRef.current = onWheel;
+
+    // attach
+    viewport.addEventListener("wheel", onWheel, {
+      passive: false,
+      capture: true,
+    });
     viewport.addEventListener("touchstart", onTouchStart, {
       passive: true,
       capture: true,
@@ -194,12 +139,17 @@ export function Carousel({
     });
 
     return () => {
+      if (wheelListenerRef.current) {
+        viewport.removeEventListener("wheel", wheelListenerRef.current, {
+          capture: true,
+        });
+      }
       viewport.removeEventListener("touchstart", onTouchStart, {
         capture: true,
       });
       viewport.removeEventListener("touchmove", onTouchMove, { capture: true });
     };
-  }, [emblaApi, isVertical, enablePageScroll, isTouchDevice, loop]);
+  }, [emblaApi, isVertical, enablePageScroll, loop, checkCarouselBounds]);
 
   useEffect(() => {
     if (!emblaApi) return;
