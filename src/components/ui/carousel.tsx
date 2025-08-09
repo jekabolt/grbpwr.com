@@ -1,10 +1,8 @@
 "use client";
 
-import { Children, useEffect, useRef } from "react";
+import { Children, useCallback, useEffect, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
-
-import { createScrollHandler } from "@/lib/carousel-utils";
 
 type CarouselProps = {
   className?: string;
@@ -15,6 +13,7 @@ type CarouselProps = {
   disableForItemCounts?: number[];
   axis?: "x" | "y";
   enablePageScroll?: boolean;
+  selectedIndex?: number;
   setSelectedIndex?: (index: number) => void;
 };
 
@@ -26,84 +25,103 @@ export function Carousel({
   align = "start",
   axis = "x",
   disableForItemCounts,
-  enablePageScroll = false,
   setSelectedIndex,
+  enablePageScroll = true,
 }: CarouselProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const bridgeTimeout = useRef<NodeJS.Timeout | null>(null);
-  const touchStart = useRef(0);
   const childrenCount = Children.count(children);
   const isDisabled = disabled || disableForItemCounts?.includes(childrenCount);
+  const isVertical = axis === "y";
+
+  const wheelListenerRef = useRef<((e: WheelEvent) => void) | null>(null);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     isDisabled
       ? undefined
       : {
           loop,
-          dragFree: true,
+          dragFree: false,
           align,
           axis,
+          containScroll: "keepSnaps",
+          skipSnaps: false,
         },
-    isDisabled ? [] : [WheelGesturesPlugin()],
+    isDisabled
+      ? []
+      : [
+          WheelGesturesPlugin(
+            isVertical
+              ? {
+                  forceWheelAxis: "y",
+                }
+              : {},
+          ),
+        ],
   );
 
-  const handleScroll = createScrollHandler(
-    emblaApi,
-    containerRef,
-    bridgeTimeout,
-  );
-
-  const handleWheel = (e: WheelEvent) => handleScroll(e, e.deltaY);
-
-  const handleTouchMove = (e: TouchEvent) => {
-    const currentY = e.touches[0]?.clientY ?? 0;
-    const deltaY = currentY - touchStart.current;
-
-    // Forward all touch moves to the scroll handler; it will decide when to intercept
-    handleScroll(e, deltaY);
-  };
-  const handleTouchStart = (e: TouchEvent) => {
-    console.log("Touch start detected");
-    touchStart.current = e.touches[0]?.clientY ?? 0;
-  };
-
-  const onSelect = () => {
+  const onSelect = useCallback(() => {
     if (!emblaApi || !setSelectedIndex) return;
-
     const currentIndex = emblaApi.selectedScrollSnap();
     setSelectedIndex(currentIndex);
+  }, [emblaApi, setSelectedIndex]);
 
-    // Check if we're at boundaries
-    const isAtStart = !emblaApi.canScrollPrev();
-    const isAtEnd = !emblaApi.canScrollNext();
+  // Управление прокруткой страницы с точной проверкой границ
+  const handleWheel = useCallback(
+    (e: WheelEvent) => {
+      if (!emblaApi || !isVertical || !enablePageScroll) return;
 
-    console.log("Carousel selected:", {
-      currentIndex,
-      isAtStart,
-      isAtEnd,
-      totalSlides: emblaApi.slideNodes().length,
+      const canScrollNext = emblaApi.canScrollNext();
+      const canScrollPrev = emblaApi.canScrollPrev();
+      const scrollProgress = emblaApi.scrollProgress();
+
+      // Более точная проверка: проверяем не только возможность прокрутки,
+      // но и текущую позицию
+      const isAtEnd = !canScrollNext && scrollProgress >= 0.99;
+      const isAtStart = !canScrollPrev && scrollProgress <= 0.01;
+
+      // Прокрутка вниз на последнем элементе
+      if (e.deltaY > 0 && isAtEnd && !loop) {
+        // Полностью отключаем обработку события каруселью
+        e.stopPropagation();
+        return; // Позволяем браузеру обработать прокрутку
+      }
+
+      // Прокрутка вверх на первом элементе
+      if (e.deltaY < 0 && isAtStart && !loop) {
+        e.stopPropagation();
+        return;
+      }
+
+      // Блокируем прокрутку страницы только если карусель может прокручиваться
+      e.preventDefault();
+    },
+    [emblaApi, isVertical, enablePageScroll, loop],
+  );
+
+  useEffect(() => {
+    if (!emblaApi || !isVertical || !enablePageScroll) return;
+
+    const viewport = emblaApi.rootNode();
+
+    // Удаляем предыдущий обработчик если он есть
+    if (wheelListenerRef.current) {
+      viewport.removeEventListener("wheel", wheelListenerRef.current);
+    }
+
+    // Добавляем новый обработчик с capture: true для перехвата события до карусели
+    wheelListenerRef.current = handleWheel;
+    viewport.addEventListener("wheel", handleWheel, {
+      passive: false,
+      capture: true,
     });
 
-    // If at boundary, log that page scroll should be enabled
-    if (isAtStart || isAtEnd) {
-      console.log("At boundary - page scroll should be enabled");
-    }
-  };
-
-  const onDragEnd = () => {
-    if (!emblaApi) return;
-
-    // Check if we're at boundaries after drag ends
-    const isAtStart = !emblaApi.canScrollPrev();
-    const isAtEnd = !emblaApi.canScrollNext();
-
-    console.log("Drag ended:", { isAtStart, isAtEnd });
-
-    // If at boundary, allow page scroll
-    if (isAtStart || isAtEnd) {
-      console.log("At boundary, page scroll enabled");
-    }
-  };
+    return () => {
+      if (wheelListenerRef.current) {
+        viewport.removeEventListener("wheel", wheelListenerRef.current, {
+          capture: true,
+        });
+      }
+    };
+  }, [handleWheel, emblaApi, isVertical, enablePageScroll]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -111,44 +129,28 @@ export function Carousel({
     onSelect();
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
-    emblaApi.on("settle", onDragEnd);
 
     return () => {
       emblaApi.off("select", onSelect);
       emblaApi.off("reInit", onSelect);
-      emblaApi.off("settle", onDragEnd);
     };
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!enablePageScroll || !containerRef.current) return;
-
-    console.log("Setting up touch event listeners");
-
-    const container = containerRef.current;
-    container.addEventListener("wheel", handleWheel, { passive: false });
-    container.addEventListener("touchstart", handleTouchStart, {
-      passive: true,
-    });
-    container.addEventListener("touchmove", handleTouchMove, {
-      passive: false,
-    });
-
-    return () => {
-      container.removeEventListener("wheel", handleWheel);
-      container.removeEventListener("touchstart", handleTouchStart as any);
-      container.removeEventListener("touchmove", handleTouchMove as any);
-    };
-  }, [enablePageScroll, emblaApi]);
-
-  const combinedRef = (node: HTMLDivElement | null) => {
-    if (!disabled && emblaRef) emblaRef(node);
-    containerRef.current = node;
-  };
+  }, [emblaApi, onSelect]);
 
   return (
-    <div ref={combinedRef} className="overflow-hidden">
-      <div className={className}>{children}</div>
+    <div
+      ref={emblaRef}
+      className={`h-screen overflow-hidden ${isVertical ? "touch-pan-x" : "touch-pan-y"}`}
+    >
+      <div
+        className={className}
+        style={{
+          display: "flex",
+          flexDirection: isVertical ? "column" : "row",
+          height: isVertical ? "100%" : "auto",
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

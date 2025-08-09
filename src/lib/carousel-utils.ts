@@ -22,19 +22,26 @@ export const createScrollHandler = (
 
         const container = containerRef.current;
         const rect = container.getBoundingClientRect();
-        const scrollingUp = deltaY < 0;
-        const scrollingDown = deltaY > 0;
 
-        // Use scrollProgress to detect true edges (more reliable during drag)
+        const isTouch = event instanceof TouchEvent;
+        // Wheel: positive => down. Touch: bottom->top (negative) => down per UX request
+        const scrollingDown = isTouch ? deltaY < 0 : deltaY > 0;
+        const scrollingUp = isTouch ? deltaY > 0 : deltaY < 0;
+
+        // Use both progress and snap index for reliable edge detection
         const progress = emblaApi.scrollProgress();
-        const NEAR_START = 0.01;
-        const NEAR_END = 0.99;
-        const isNearStart = progress <= NEAR_START;
-        const isNearEnd = progress >= NEAR_END;
+        const snapCount = emblaApi.scrollSnapList().length;
+        const selectedSnap = emblaApi.selectedScrollSnap();
+        const isFirstSnap = selectedSnap <= 0;
+        const isLastSnap = selectedSnap >= snapCount - 1;
 
-        // Fallback to canScrollPrev/Next as a safety
-        const isAtStart = isNearStart || !emblaApi.canScrollPrev();
-        const isAtEnd = isNearEnd || !emblaApi.canScrollNext();
+        const NEAR_START = 0.05;
+        const NEAR_END = 0.95;
+        const nearStartByProgress = progress <= NEAR_START;
+        const nearEndByProgress = progress >= NEAR_END;
+
+        const isAtStart = isFirstSnap || nearStartByProgress;
+        const isAtEnd = isLastSnap || nearEndByProgress || !emblaApi.canScrollNext();
 
         const inCarouselArea =
             event instanceof WheelEvent
