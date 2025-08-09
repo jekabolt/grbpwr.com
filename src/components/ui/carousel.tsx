@@ -4,6 +4,8 @@ import { Children, useCallback, useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
+import { scrollPage } from "@/lib/carousel-utils";
+
 type CarouselProps = {
   className?: string;
   children: React.ReactNode;
@@ -33,9 +35,6 @@ export function Carousel({
   const isVertical = axis === "y";
 
   const wheelListenerRef = useRef<((e: WheelEvent) => void) | null>(null);
-  const touchStartRef = useRef<{ y: number; x: number; time: number } | null>(
-    null,
-  );
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   // Определяем тип устройства
@@ -118,68 +117,6 @@ export function Carousel({
     ],
   );
 
-  // Обработка touch событий для мобильных устройств
-  const handleTouchStart = useCallback(
-    (e: TouchEvent) => {
-      if (!emblaApi || !isVertical || !enablePageScroll || !isTouchDevice)
-        return;
-
-      const touch = e.touches[0];
-      touchStartRef.current = {
-        y: touch.clientY,
-        x: touch.clientX,
-        time: Date.now(),
-      };
-    },
-    [emblaApi, isVertical, enablePageScroll, isTouchDevice],
-  );
-
-  const handleTouchMove = useCallback(
-    (e: TouchEvent) => {
-      if (
-        !emblaApi ||
-        !isVertical ||
-        !enablePageScroll ||
-        !isTouchDevice ||
-        !touchStartRef.current
-      )
-        return;
-
-      const touch = e.touches[0];
-      const deltaY = touchStartRef.current.y - touch.clientY;
-      const { isAtEnd, isAtStart } = checkCarouselBounds();
-
-      // Проверяем направление свайпа и позицию карусели
-      const isSwipeDown = deltaY < 0; // Свайп вниз (прокрутка вверх контента)
-      const isSwipeUp = deltaY > 0; // Свайп вверх (прокрутка вниз контента)
-
-      // Если свайпаем вверх на последнем элементе - разрешаем прокрутку страницы
-      if (isSwipeUp && isAtEnd && !loop) {
-        return; // Не блокируем событие
-      }
-
-      // Если свайпаем вниз на первом элементе - разрешаем прокрутку страницы
-      if (isSwipeDown && isAtStart && !loop) {
-        return; // Не блокируем событие
-      }
-
-      // В остальных случаях блокируем прокрутку страницы
-      e.preventDefault();
-    },
-    [
-      emblaApi,
-      isVertical,
-      enablePageScroll,
-      isTouchDevice,
-      loop,
-      checkCarouselBounds,
-    ],
-  );
-
-  const handleTouchEnd = useCallback(() => {
-    touchStartRef.current = null;
-  }, []);
-
   // Установка обработчиков wheel событий для десктопа
   useEffect(() => {
     if (!emblaApi || !isVertical || !enablePageScroll || isTouchDevice) return;
@@ -206,46 +143,47 @@ export function Carousel({
   }, [handleWheel, emblaApi, isVertical, enablePageScroll, isTouchDevice]);
 
   // Установка обработчиков touch событий для мобильных устройств
+  // Установка обработчиков touch событий для мобильных устройств
   useEffect(() => {
     if (!emblaApi || !isVertical || !enablePageScroll || !isTouchDevice) return;
 
     const viewport = emblaApi.rootNode();
     let touchStartY = 0;
-    let allowPageScroll = false;
 
     const onTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
-
-      // Проверяем границы сразу при начале касания
-      const canScrollNext = emblaApi.canScrollNext();
-      const canScrollPrev = emblaApi.canScrollPrev();
-      const scrollProgress = emblaApi.scrollProgress();
-
-      const isAtEnd = !canScrollNext && scrollProgress >= 0.95;
-      const isAtStart = !canScrollPrev && scrollProgress <= 0.05;
-
-      allowPageScroll = (isAtEnd || isAtStart) && !loop;
     };
 
     const onTouchMove = (e: TouchEvent) => {
-      if (allowPageScroll) {
-        const currentY = e.touches[0].clientY;
-        const deltaY = touchStartY - currentY;
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchStartY - currentY; // >0: свайп вверх (страница вниз)
 
-        const canScrollNext = emblaApi.canScrollNext();
-        const canScrollPrev = emblaApi.canScrollPrev();
+      const canScrollNext = emblaApi.canScrollNext();
+      const canScrollPrev = emblaApi.canScrollPrev();
 
-        // Разрешаем прокрутку страницы в направлении, куда нельзя прокрутить карусель
-        if ((deltaY > 0 && !canScrollNext) || (deltaY < 0 && !canScrollPrev)) {
-          return; // Не блокируем - разрешаем прокрутку страницы
-        }
+      const swipeUp = deltaY > 0;
+      const swipeDown = deltaY < 0;
+
+      // Если на границе — передаём скролл странице вручную
+      if (swipeUp && !canScrollNext && !loop) {
+        e.preventDefault();
+        scrollPage("down");
+        return;
+      }
+      if (swipeDown && !canScrollPrev && !loop) {
+        e.preventDefault();
+        scrollPage("up");
+        return;
       }
 
-      // Блокируем прокрутку страницы
-      e.preventDefault();
+      // Блокируем страницу только если карусель может скроллиться в направлении жеста
+      if ((swipeUp && canScrollNext) || (swipeDown && canScrollPrev)) {
+        e.preventDefault();
+        return;
+      }
+      // Иначе не мешаем — пусть страница скроллится
     };
 
-    // Используем capture для перехвата событий до Embla
     viewport.addEventListener("touchstart", onTouchStart, {
       passive: true,
       capture: true,
@@ -277,28 +215,8 @@ export function Carousel({
   }, [emblaApi, onSelect]);
 
   return (
-    <div
-      ref={emblaRef}
-      className={`h-screen overflow-hidden`}
-      style={{
-        // Дополнительные стили для мобильных устройств
-        WebkitOverflowScrolling: "touch",
-        overscrollBehavior: isVertical ? "contain" : "auto",
-        // Разрешаем цепочку скролла к странице и правильное направление жестов
-
-        touchAction: isVertical ? "pan-y" : "pan-x",
-      }}
-    >
-      <div
-        className={className}
-        style={{
-          display: "flex",
-          flexDirection: isVertical ? "column" : "row",
-          height: isVertical ? "100%" : "auto",
-        }}
-      >
-        {children}
-      </div>
+    <div ref={emblaRef} className="h-screen overflow-hidden">
+      <div className={className}>{children}</div>
     </div>
   );
 }
