@@ -211,27 +211,58 @@ export function Carousel({
     if (!emblaApi || !isVertical || !enablePageScroll || !isTouchDevice) return;
 
     const viewport = emblaApi.rootNode();
+    let touchStartY = 0;
+    let allowPageScroll = false;
 
-    viewport.addEventListener("touchstart", handleTouchStart, {
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+
+      // Проверяем границы сразу при начале касания
+      const canScrollNext = emblaApi.canScrollNext();
+      const canScrollPrev = emblaApi.canScrollPrev();
+      const scrollProgress = emblaApi.scrollProgress();
+
+      const isAtEnd = !canScrollNext && scrollProgress >= 0.95;
+      const isAtStart = !canScrollPrev && scrollProgress <= 0.05;
+
+      allowPageScroll = (isAtEnd || isAtStart) && !loop;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (allowPageScroll) {
+        const currentY = e.touches[0].clientY;
+        const deltaY = touchStartY - currentY;
+
+        const canScrollNext = emblaApi.canScrollNext();
+        const canScrollPrev = emblaApi.canScrollPrev();
+
+        // Разрешаем прокрутку страницы в направлении, куда нельзя прокрутить карусель
+        if ((deltaY > 0 && !canScrollNext) || (deltaY < 0 && !canScrollPrev)) {
+          return; // Не блокируем - разрешаем прокрутку страницы
+        }
+      }
+
+      // Блокируем прокрутку страницы
+      e.preventDefault();
+    };
+
+    // Используем capture для перехвата событий до Embla
+    viewport.addEventListener("touchstart", onTouchStart, {
       passive: true,
+      capture: true,
     });
-    viewport.addEventListener("touchmove", handleTouchMove, { passive: false });
-    viewport.addEventListener("touchend", handleTouchEnd, { passive: true });
+    viewport.addEventListener("touchmove", onTouchMove, {
+      passive: false,
+      capture: true,
+    });
 
     return () => {
-      viewport.removeEventListener("touchstart", handleTouchStart);
-      viewport.removeEventListener("touchmove", handleTouchMove);
-      viewport.removeEventListener("touchend", handleTouchEnd);
+      viewport.removeEventListener("touchstart", onTouchStart, {
+        capture: true,
+      });
+      viewport.removeEventListener("touchmove", onTouchMove, { capture: true });
     };
-  }, [
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-    emblaApi,
-    isVertical,
-    enablePageScroll,
-    isTouchDevice,
-  ]);
+  }, [emblaApi, isVertical, enablePageScroll, isTouchDevice, loop]);
 
   useEffect(() => {
     if (!emblaApi) return;
