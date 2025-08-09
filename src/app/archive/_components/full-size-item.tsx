@@ -12,7 +12,7 @@ interface Props {
 
 export function FullSizeItem({ className, archive }: Props) {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-between gap-4 lg:flex-row">
+    <div className="flex h-full w-full flex-col items-center justify-between gap-4 text-lg text-textColor lg:flex-row">
       <Text className="w-60 text-center lg:text-left">{archive?.heading}</Text>
       <div className={className}>
         <Link href={archive?.slug || ""}>

@@ -32,7 +32,6 @@ export function ArchiveLayout({
         onClick: handleChangeView,
       }}
       theme="dark"
-      className="pt-16"
     >
       <Galery
         archives={archives || []}

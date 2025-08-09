@@ -85,7 +85,6 @@ export default async function Page({ params }: ArchivePageParams) {
         center: "archive",
       }}
       theme="dark"
-      className="pt-16"
     >
       <PageComponent archive={archive} />
 
