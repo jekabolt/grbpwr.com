@@ -23,7 +23,7 @@ export function HeaderArchive({
           onClick={onClick}
         />
       </div>
-      <header className="fixed inset-x-2.5 bottom-2 z-30 hidden h-12 items-center justify-between gap-1 border-textInactiveColor bg-bgColor p-3 text-textColor lg:top-2 lg:flex lg:gap-0 lg:border-0 lg:px-5 lg:py-3">
+      <header className="fixed inset-x-2.5 bottom-2 z-30 hidden h-12 items-center justify-between gap-1 border-textInactiveColor bg-transparent p-3 text-textColor mix-blend-exclusion lg:top-2 lg:flex lg:gap-0 lg:border-0 lg:px-5 lg:py-3">
         <div className="flex gap-3">
           <Button asChild>
             <Link href={link ? link : "/"}>{left}</Link>

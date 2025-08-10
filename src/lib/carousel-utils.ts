@@ -1,5 +1,22 @@
 import { UseEmblaCarouselType } from "embla-carousel-react";
 
+type EmblaApi = UseEmblaCarouselType[1];
+
+export type WheelHandlerOptions = {
+    enablePageScroll: boolean;
+    loop: boolean;
+    snapToPageTopOnUp?: boolean;
+};
+
+export type TouchHandlersOptions = {
+    loop: boolean;
+    bridgeToPageAtEdges?: boolean;
+    snapToPageTopOnUp?: boolean;
+};
+
+const SCROLL_PROGRESS_EPSILON = 0.01; // tolerance for floating point rounding at edges
+const HOT_AREA_PADDING_PX = 100; // allow a bit of leeway below the carousel
+
 export const scrollPage = (direction: "up" | "down") => {
     const scrollAmount = window.innerHeight * 0.8;
     window.scrollBy({
@@ -8,62 +25,117 @@ export const scrollPage = (direction: "up" | "down") => {
     });
 };
 
-export const createScrollHandler = (
-    emblaApi: UseEmblaCarouselType[1] | undefined,
-    containerRef: React.RefObject<HTMLDivElement | null>,
-    bridgeTimeout: React.RefObject<NodeJS.Timeout | null>,
-) => {
-    return (event: WheelEvent | TouchEvent, deltaY: number) => {
-        if (!emblaApi || !containerRef.current || bridgeTimeout.current) return;
+function isWithinCarouselArea(y: number, rect: DOMRect): boolean {
+    return y >= rect.top && y <= rect.bottom + HOT_AREA_PADDING_PX;
+}
 
-        bridgeTimeout.current = setTimeout(() => {
-            bridgeTimeout.current = null;
-        }, 350);
+function shouldSnapToTopOnUp(
+    enabled: boolean,
+    upIntent: boolean,
+    inCarouselArea: boolean,
+    rectTop: number,
+): boolean {
+    if (!enabled) return false;
+    if (!upIntent) return false;
+    if (!inCarouselArea) return false;
+    if (window.scrollY <= 0) return false;
+    return rectTop < 0;
+}
 
-        const container = containerRef.current;
-        const rect = container.getBoundingClientRect();
+export function checkCarouselBounds(emblaApi: EmblaApi) {
+    if (!emblaApi) return { isAtEnd: false, isAtStart: false };
 
-        const isTouch = event instanceof TouchEvent;
-        // Wheel: positive => down. Touch: bottom->top (negative) => down per UX request
-        const scrollingDown = isTouch ? deltaY < 0 : deltaY > 0;
-        const scrollingUp = isTouch ? deltaY > 0 : deltaY < 0;
+    const canScrollNext = emblaApi.canScrollNext();
+    const canScrollPrev = emblaApi.canScrollPrev();
+    const progress = emblaApi.scrollProgress();
 
-        // Use both progress and snap index for reliable edge detection
-        const progress = emblaApi.scrollProgress();
-        const snapCount = emblaApi.scrollSnapList().length;
-        const selectedSnap = emblaApi.selectedScrollSnap();
-        const isFirstSnap = selectedSnap <= 0;
-        const isLastSnap = selectedSnap >= snapCount - 1;
+    const isAtEnd = !canScrollNext && progress >= 1 - SCROLL_PROGRESS_EPSILON;
+    const isAtStart = !canScrollPrev && progress <= SCROLL_PROGRESS_EPSILON;
 
-        const NEAR_START = 0.05;
-        const NEAR_END = 0.95;
-        const nearStartByProgress = progress <= NEAR_START;
-        const nearEndByProgress = progress >= NEAR_END;
+    return { isAtEnd, isAtStart };
+}
 
-        const isAtStart = isFirstSnap || nearStartByProgress;
-        const isAtEnd = isLastSnap || nearEndByProgress || !emblaApi.canScrollNext();
+export function createWheelHandler(
+    emblaApi: EmblaApi,
+    { enablePageScroll, loop, snapToPageTopOnUp = true }: WheelHandlerOptions,
+) {
+    return function onWheel(e: WheelEvent) {
+        if (!emblaApi || !enablePageScroll) return;
 
-        const inCarouselArea =
-            event instanceof WheelEvent
-                ? event.clientY >= rect.top && event.clientY <= rect.bottom + 200
-                : event instanceof TouchEvent && event.touches[0]
-                    ? event.touches[0].clientY >= rect.top && event.touches[0].clientY <= rect.bottom + 200
-                    : true;
+        const rect = emblaApi.rootNode().getBoundingClientRect();
+        const scrollingUp = e.deltaY < 0;
+        const inCarouselArea = isWithinCarouselArea(e.clientY, rect);
 
-        // 1) When at boundaries, bridge to page scroll in the same direction
-        if ((scrollingDown && isAtEnd) || (scrollingUp && isAtStart)) {
-            event.preventDefault();
-            scrollPage(scrollingDown ? "down" : "up");
-            return;
-        }
-
-        // 2) If user scrolls up while carousel is pinned to top area and page has scroll, jump to page top
-        if (scrollingUp && inCarouselArea && window.scrollY > 0 && rect.top < 0) {
-            event.preventDefault();
+        if (shouldSnapToTopOnUp(snapToPageTopOnUp, scrollingUp, inCarouselArea, rect.top)) {
+            e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
 
-        // 3) Otherwise, let the browser handle normal scrolling
+        const { isAtEnd, isAtStart } = checkCarouselBounds(emblaApi);
+        if (e.deltaY > 0 && isAtEnd && !loop) {
+            e.stopPropagation();
+            return;
+        }
+        if (e.deltaY < 0 && isAtStart && !loop) {
+            e.stopPropagation();
+            return;
+        }
+
+        e.preventDefault();
     };
-};
+}
+
+export function createTouchHandlers(
+    emblaApi: EmblaApi,
+    { loop, bridgeToPageAtEdges = true, snapToPageTopOnUp = true }: TouchHandlersOptions,
+) {
+    let touchStartY = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+        touchStartY = e.touches[0].clientY;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+        if (!emblaApi) return;
+
+        const currentY = e.touches[0].clientY;
+        const deltaY = touchStartY - currentY;
+        const swipeUp = deltaY > 0;
+        const swipeDown = deltaY < 0;
+
+        const rect = emblaApi.rootNode().getBoundingClientRect();
+        const inCarouselArea = e.touches[0]
+            ? isWithinCarouselArea(e.touches[0].clientY, rect)
+            : true;
+
+        if (shouldSnapToTopOnUp(snapToPageTopOnUp, swipeDown, inCarouselArea, rect.top)) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
+
+        const canScrollNext = emblaApi.canScrollNext();
+        const canScrollPrev = emblaApi.canScrollPrev();
+
+        if (bridgeToPageAtEdges) {
+            if (swipeUp && !canScrollNext && !loop) {
+                e.preventDefault();
+                scrollPage("down");
+                return;
+            }
+            if (swipeDown && !canScrollPrev && !loop) {
+                e.preventDefault();
+                scrollPage("up");
+                return;
+            }
+        }
+
+        if ((swipeUp && canScrollNext) || (swipeDown && canScrollPrev)) {
+            e.preventDefault();
+            return;
+        }
+    };
+
+    return { onTouchStart, onTouchMove };
+}

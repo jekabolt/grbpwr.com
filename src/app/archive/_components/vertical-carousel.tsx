@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { common_ArchiveList } from "@/api/proto-http/frontend";
 
+import { cn } from "@/lib/utils";
 import { Carousel } from "@/components/ui/carousel";
 
 import { FullSizeItem } from "./full-size-item";
@@ -19,22 +20,21 @@ export function VerticalCarousel({ archives }: CarouselProps) {
       <Carousel
         axis="y"
         align="center"
-        className="flex h-full w-full flex-col gap-20 lg:gap-0"
+        className="flex h-screen w-full flex-col gap-20 lg:lg:gap-0"
         enablePageScroll
-        selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
       >
         {archives.map((archive, index) => (
           <div key={index} className="px-14 lg:px-7">
             <FullSizeItem
               archive={archive}
-              className={
-                // "h-full w-44 scale-95 opacity-50 transition-all duration-300 ease-in-out lg:flex-[0_0_25%]",
-                // {
-                "w-60 scale-100 opacity-100 lg:flex-[0_0_35%]"
-                // index === selectedIndex,
-                // },
-              }
+              className={cn(
+                "h-full w-44 opacity-50 transition-all duration-300 ease-in-out lg:flex-[0_0_25%]",
+                {
+                  "w-full opacity-100 lg:flex-[0_0_40%]":
+                    index === selectedIndex,
+                },
+              )}
             />
           </div>
         ))}

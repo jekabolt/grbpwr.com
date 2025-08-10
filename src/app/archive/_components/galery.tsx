@@ -60,7 +60,7 @@ export function Galery({
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="w-full">
+    <div className="w-full pt-14 lg:pt-24">
       {viewMode === "horizontal" ? (
         <HorizontalGrid archives={items} />
       ) : (
