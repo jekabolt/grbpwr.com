@@ -16,29 +16,26 @@ export function VerticalCarousel({ archives }: CarouselProps) {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   return (
-    <div className="relative">
-      <Carousel
-        axis="y"
-        align="center"
-        className="flex h-screen w-full flex-col gap-20 lg:lg:gap-0"
-        enablePageScroll
-        setSelectedIndex={setSelectedIndex}
-      >
-        {archives.map((archive, index) => (
-          <div key={index} className="px-14 lg:px-7">
-            <FullSizeItem
-              archive={archive}
-              className={cn(
-                "h-full w-44 opacity-50 transition-all duration-300 ease-in-out lg:flex-[0_0_25%]",
-                {
-                  "w-full opacity-100 lg:flex-[0_0_40%]":
-                    index === selectedIndex,
-                },
-              )}
-            />
-          </div>
-        ))}
-      </Carousel>
-    </div>
+    <Carousel
+      axis="y"
+      align="center"
+      className="flex h-screen w-full flex-col gap-20 pt-14 lg:lg:gap-0 lg:pt-24"
+      enablePageScroll
+      setSelectedIndex={setSelectedIndex}
+    >
+      {archives.map((archive, index) => (
+        <div key={index} className="px-14 lg:px-7">
+          <FullSizeItem
+            archive={archive}
+            className={cn(
+              "h-full w-44 opacity-50 transition-all duration-300 ease-in-out lg:flex-[0_0_25%]",
+              {
+                "w-full opacity-100 lg:flex-[0_0_40%]": index === selectedIndex,
+              },
+            )}
+          />
+        </div>
+      ))}
+    </Carousel>
   );
 }
