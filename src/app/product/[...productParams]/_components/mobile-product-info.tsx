@@ -98,7 +98,7 @@ export function MobileProductInfo({
                   How it works
                 </h3>
                 <p className="leading-relaxed text-gray-600">
-                  This version uses a scrollable container that's exactly
+                  This version uses a scrollable container thats exactly
                   viewport height. The scroll happens within this container, not
                   the entire page.
                 </p>
