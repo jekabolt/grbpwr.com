@@ -31,7 +31,7 @@ export function HorizontalGrid({
                 )}
               />
             </div>
-            <Text variant="inactive" className="group-hover:text-textColor">
+            <Text className="text-highlightColor group-hover:text-textColor">
               {archive.heading}
             </Text>
           </Link>

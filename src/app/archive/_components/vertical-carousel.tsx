@@ -27,6 +27,7 @@ export function VerticalCarousel({ archives }: CarouselProps) {
         <div key={index} className="px-14 lg:px-7">
           <FullSizeItem
             archive={archive}
+            highlightedItem={index === selectedIndex}
             className={cn(
               "h-full w-44 opacity-50 transition-all duration-300 ease-in-out lg:flex-[0_0_25%]",
               {
