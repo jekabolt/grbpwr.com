@@ -13,6 +13,7 @@ export default function FlexibleLayout({
   headerType = "catalog",
   headerProps,
   mobileHeaderType,
+  displayFooter = true,
   theme,
   className,
 }: Props) {
@@ -41,7 +42,7 @@ export default function FlexibleLayout({
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
         <div className="w-full">{children}</div>
       </div>
-      <Footer theme={theme} />
+      {displayFooter && <Footer theme={theme} />}
       {headerType === "catalog" && (
         <CartPopup>
           <div className="h-full overflow-y-scroll">
@@ -56,6 +57,7 @@ export default function FlexibleLayout({
 
 type Props = {
   children: React.ReactNode;
+  displayFooter?: boolean;
   headerType?: "catalog" | "flexible" | "archive";
   mobileHeaderType?: "flexible";
   headerProps?: HeaderProps;

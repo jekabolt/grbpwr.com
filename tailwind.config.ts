@@ -30,6 +30,10 @@ const config = {
           "50%": { transform: "translateX(100%)" },
           "100%": { transform: "translateX(-100%)" },
         },
+        "plate-grow-height": {
+          "0%": { height: "35vh" },
+          "100%": { height: "100vh" },
+        },
       },
     },
   },

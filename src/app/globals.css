@@ -78,4 +78,24 @@
       @apply hidden;
     }
   }
+
+  /* Scroll-driven height growth from 35vh to 100vh */
+  /* @keyframes plate-grow-height {
+    from {
+      height: 35vh;
+    }
+    to {
+      height: 100vh;
+    }
+  } */
+
+  /* Uses CSS Scroll-Driven Animations. Falls back to 35vh if unsupported. */
+  /* .plate-scroll-grow {
+    animation-name: plate-grow-height;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-duration: 1ms;
+    animation-timeline: scroll(root block);
+    animation-range: 0 100vh;
+  } */
 }
