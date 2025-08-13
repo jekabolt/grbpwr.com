@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
+import { AccordionRoot, AccordionSection } from "@/components/ui/accordion";
 import MobilePlate from "@/components/ui/mobile-plate";
 import { Text } from "@/components/ui/text";
 
@@ -48,7 +49,32 @@ export function MobileProductInfo({
         <MobileImageCarousel media={product.media || []} />
       </div>
       <MobilePlate>
-        <Text variant="uppercase">{name}</Text>
+        <Text variant="uppercase" className="mb-32">
+          {name}
+        </Text>
+        <AccordionRoot
+          type="single"
+          value={openItem}
+          onValueChange={setOpenItem}
+          collapsible
+        >
+          <AccordionSection
+            value="item-1"
+            previewText={description}
+            currentValue={openItem}
+          >
+            <div>
+              {description?.split("\n").map((d, i) => (
+                <Text variant="uppercase" key={i}>
+                  {d}
+                </Text>
+              ))}
+              {modelWearText && (
+                <Text variant="uppercase">{modelWearText}</Text>
+              )}
+            </div>
+          </AccordionSection>
+        </AccordionRoot>
         {product.product && <LastViewedProducts product={product.product} />}
       </MobilePlate>
     </div>

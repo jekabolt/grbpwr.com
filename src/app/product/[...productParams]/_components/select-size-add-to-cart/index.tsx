@@ -86,10 +86,7 @@ export function AddToCartForm({
                 value="size"
                 className="flex h-full flex-col gap-y-5"
               >
-                <AccordionTrigger
-                  useMinus
-                  className="border-inactive border-b pb-2.5"
-                >
+                <AccordionTrigger className="border-inactive border-b pb-2.5">
                   <Text variant="uppercase">
                     {triggerText}
                     <Text

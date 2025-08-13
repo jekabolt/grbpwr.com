@@ -3,13 +3,7 @@
 import { useState } from "react";
 import { Drawer } from "vaul";
 
-const calculateMaxSnapPoint = () => {
-  const viewportHeight = window.innerHeight;
-  const topOffset = 48; // 3rem = 48px для top-12
-  return (viewportHeight - topOffset) / viewportHeight; // Возвращает долю от 0 до 1
-};
-
-const snapPoints = [0.35, calculateMaxSnapPoint()];
+const snapPoints = [0.35, 1];
 
 export default function VaulDrawer({
   children,
@@ -32,7 +26,7 @@ export default function VaulDrawer({
       <Drawer.Portal>
         <Drawer.Content
           data-testid="content"
-          className="border-b-none fixed inset-x-2.5 bottom-0 flex h-full max-h-screen flex-col border border-textInactiveColor bg-bgColor"
+          className="border-b-none fixed inset-x-2.5 bottom-0 top-12 flex h-full max-h-screen flex-col border border-textInactiveColor bg-bgColor"
         >
           {/* Dedicated drag handle - won't interfere with scroll */}
           <div className="absolute left-0 right-0 top-0 h-32 flex-shrink-0 cursor-grab p-4 active:cursor-grabbing" />
