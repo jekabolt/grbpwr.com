@@ -6,6 +6,7 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 import MobilePlate from "@/components/ui/mobile-plate";
 import { Text } from "@/components/ui/text";
 
+import { LastViewedProducts } from "./last-viewed-products";
 import { MobileImageCarousel } from "./mobile-image-carousel";
 import { useData } from "./select-size-add-to-cart/useData";
 
@@ -42,12 +43,13 @@ export function MobileProductInfo({
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
 
   return (
-    <div className="h-screen overflow-y-hidden px-2.5">
-      <div className="w-full pt-12">
+    <div className="relative h-full overflow-y-hidden">
+      <div className="fixed inset-x-2.5 top-12">
         <MobileImageCarousel media={product.media || []} />
       </div>
       <MobilePlate>
         <Text variant="uppercase">{name}</Text>
+        {product.product && <LastViewedProducts product={product.product} />}
       </MobilePlate>
     </div>
     // <div className="grid gap-10 px-2.5 pb-16 pt-2.5">
