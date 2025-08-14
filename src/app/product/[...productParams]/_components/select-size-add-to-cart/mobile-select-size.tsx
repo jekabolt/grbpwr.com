@@ -19,8 +19,8 @@ export function MobileSelectSize({
 }: {
   product: common_ProductFull;
   activeSizeId: number | undefined;
-  handleSizeSelect: (sizeId: number) => void;
   open: boolean;
+  handleSizeSelect: (sizeId: number) => void;
   onOpenChange: (open: boolean) => void;
 }) {
   const { sizeNames } = useActiveSizeInfo({

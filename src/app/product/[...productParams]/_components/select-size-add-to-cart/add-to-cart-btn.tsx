@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
@@ -16,7 +17,7 @@ type Handlers = {
   handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
   handleAddToCart?: () => Promise<boolean>;
   isMobileSizeDialogOpen?: boolean;
-  setIsMobileSizeDialogOpen?: (open: boolean) => void;
+  handleDialogClose?: () => void;
 };
 
 export function AddToCartBtn({
@@ -26,10 +27,10 @@ export function AddToCartBtn({
   product: common_ProductFull;
   handlers?: Handlers;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
   const internalHandlers = useHandlers({
     id: product.product?.id || 0,
   });
-
   const merged = handlers
     ? { ...internalHandlers, ...handlers }
     : internalHandlers;
@@ -41,11 +42,19 @@ export function AddToCartBtn({
     handleSizeSelect,
     handleAddToCart,
     isMobileSizeDialogOpen,
-    setIsMobileSizeDialogOpen,
+    handleDialogClose,
   } = merged as Required<Handlers> & ReturnType<typeof useHandlers>;
   const { preorder, preorderRaw } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
+  const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
+  const isNoSizeSelected = !activeSizeId && isHovered;
+
+  const btnText = isNoSizeSelected
+    ? "select size"
+    : isValidPreorder
+      ? "preorder"
+      : "add";
 
   return (
     <>
@@ -54,7 +63,7 @@ export function AddToCartBtn({
         activeSizeId={activeSizeId}
         handleSizeSelect={handleSizeSelect}
         open={isMobileSizeDialogOpen}
-        onOpenChange={setIsMobileSizeDialogOpen}
+        onOpenChange={handleDialogClose}
       />
       <div
         className={cn("fixed inset-x-5 bottom-2.5 z-10 grid lg:sticky", {
@@ -62,32 +71,32 @@ export function AddToCartBtn({
           "bg-bgColor": preorder,
         })}
       >
-        {preorder && isDateTodayOrFuture(preorderRaw || "") && (
-          <Text className="bg-[#F0F0F0] p-1.5 text-center uppercase leading-none text-textColor">
-            {preorder}
-          </Text>
-        )}
-        <LoadingButton
-          variant="simpleReverse"
-          size="lg"
-          onAction={handleAddToCart}
-          isLoadingExternal={isLoading}
-          className="border border-textColor lg:border-none"
-        >
-          <Text variant="inherit">
-            {preorder && isDateTodayOrFuture(preorderRaw || "")
-              ? "preorder"
-              : "add"}
-          </Text>
-          {isSaleApplied ? (
-            <Text variant="inactive">
-              {priceMinusSale}
-              <Text component="span">{priceWithSale}</Text>
+        <div>
+          {preorder && isDateTodayOrFuture(preorderRaw || "") && (
+            <Text className="bg-[#F0F0F0] p-1.5 text-center uppercase leading-none text-textColor">
+              {preorder}
             </Text>
-          ) : (
-            <Text variant="inherit">{price}</Text>
           )}
-        </LoadingButton>
+          <LoadingButton
+            variant="simpleReverse"
+            size="lg"
+            onAction={handleAddToCart}
+            isLoadingExternal={isLoading}
+            className="border-none"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <Text variant="inherit">{btnText}</Text>
+            {isSaleApplied ? (
+              <Text variant="inactive">
+                {priceMinusSale}
+                <Text component="span">{priceWithSale}</Text>
+              </Text>
+            ) : (
+              <Text variant="inherit">{price}</Text>
+            )}
+          </LoadingButton>
+        </div>
       </div>
     </>
   );

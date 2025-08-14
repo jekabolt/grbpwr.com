@@ -25,10 +25,9 @@ export function MobileProductInfo({
 
   const {
     activeSizeId,
-    openItem,
     isLoading,
     isMobileSizeDialogOpen,
-    setIsMobileSizeDialogOpen,
+    handleDialogClose,
     handleSizeSelect,
     handleAddToCart,
   } = useHandlers({
@@ -39,7 +38,7 @@ export function MobileProductInfo({
 
   return (
     <div className="relative h-full overflow-y-hidden">
-      <div className="fixed inset-x-2.5 top-12">
+      <div className="fixed inset-x-0 top-12">
         <MobileImageCarousel media={product.media || []} />
       </div>
       <MobilePlate>
@@ -65,10 +64,9 @@ export function MobileProductInfo({
         product={product}
         handlers={{
           activeSizeId,
-          openItem,
           isLoading,
           isMobileSizeDialogOpen,
-          setIsMobileSizeDialogOpen,
+          handleDialogClose,
           handleSizeSelect,
           handleAddToCart,
         }}
