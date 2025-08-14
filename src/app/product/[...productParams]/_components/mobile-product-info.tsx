@@ -3,45 +3,45 @@
 import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
+import { cn } from "@/lib/utils";
 import { AccordionRoot, AccordionSection } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { MobileMeasurements } from "@/components/ui/mobile-measurements";
 import MobilePlate from "@/components/ui/mobile-plate";
 import { Text } from "@/components/ui/text";
 
 import { LastViewedProducts } from "./last-viewed-products";
 import { MobileImageCarousel } from "./mobile-image-carousel";
-import { useData } from "./select-size-add-to-cart/useData";
+import { AddToCartBtn } from "./select-size-add-to-cart/add-to-cart-btn";
+import { useHandlers } from "./select-size-add-to-cart/useHandlers";
+import { useGarmentInfo } from "./utils/useGarmentInfo";
+import { useModelInfo } from "./utils/useModelInfo";
+import { useProductBasics } from "./utils/useProductBasics";
+import { useProductSizes } from "./utils/useProductSizes";
 
 export function MobileProductInfo({
   product,
 }: {
   product: common_ProductFull;
 }) {
+  const { name, description, productId } = useProductBasics({ product });
+  const { modelWear } = useModelInfo({ product });
+  const { composition, care } = useGarmentInfo({ product });
+  const [infoOpenItem, setInfoOpenItem] = useState<string | undefined>(
+    undefined,
+  );
   const {
-    name,
-    description,
-    modelWearText,
-    composition,
-    color,
-    care,
-    productComposition,
-    productCare,
-    productId,
-    sizes,
-    categoryId,
-    subCategoryId,
-    typeId,
-    gender,
-    measurements,
-    preorder,
-    isSaleApplied,
-    priceMinusSale,
-    priceWithSale,
-    price,
-    measurementType,
-  } = useData({
-    product,
+    activeSizeId,
+    openItem,
+    isLoading,
+    isMobileSizeDialogOpen,
+    setIsMobileSizeDialogOpen,
+    handleSizeSelect,
+    handleAddToCart,
+  } = useHandlers({
+    id: productId,
   });
-  const [openItem, setOpenItem] = useState<string | undefined>(undefined);
+  const { sizeNames } = useProductSizes({ product });
 
   return (
     <div className="relative h-full overflow-y-hidden">
@@ -49,19 +49,18 @@ export function MobileProductInfo({
         <MobileImageCarousel media={product.media || []} />
       </div>
       <MobilePlate>
-        <Text variant="uppercase" className="mb-32">
-          {name}
-        </Text>
+        <Text variant="uppercase">{name}</Text>
         <AccordionRoot
           type="single"
-          value={openItem}
-          onValueChange={setOpenItem}
+          value={infoOpenItem}
+          onValueChange={setInfoOpenItem}
           collapsible
+          className="space-y-5"
         >
           <AccordionSection
             value="item-1"
             previewText={description}
-            currentValue={openItem}
+            currentValue={infoOpenItem}
           >
             <div>
               {description?.split("\n").map((d, i) => (
@@ -69,83 +68,71 @@ export function MobileProductInfo({
                   {d}
                 </Text>
               ))}
-              {modelWearText && (
-                <Text variant="uppercase">{modelWearText}</Text>
-              )}
+              {modelWear && <Text variant="uppercase">{modelWear}</Text>}
             </div>
           </AccordionSection>
+          {composition && (
+            <AccordionSection
+              value="item-2"
+              title="composition"
+              currentValue={infoOpenItem}
+            >
+              <div className="flex flex-col">
+                {composition.split("\n").map((c, i) => (
+                  <Text variant="uppercase" key={i}>
+                    {c}
+                  </Text>
+                ))}
+              </div>
+            </AccordionSection>
+          )}
+          {care && (
+            <AccordionSection
+              value="item-3"
+              title="care"
+              currentValue={infoOpenItem}
+            >
+              {care?.map((c, i) => (
+                <Text variant="uppercase" key={i}>
+                  {c}
+                </Text>
+              ))}
+            </AccordionSection>
+          )}
         </AccordionRoot>
+
+        <div className="space-y-5">
+          <MobileMeasurements id={productId} product={product} />
+
+          <div className="grid grid-cols-4 gap-y-7">
+            {sizeNames?.map(({ name, id }) => (
+              <Button
+                key={id}
+                className={cn("uppercase", {
+                  "border-b border-textColor": activeSizeId === id,
+                })}
+                onClick={() => handleSizeSelect(id)}
+              >
+                {name}
+              </Button>
+            ))}
+          </div>
+        </div>
+
         {product.product && <LastViewedProducts product={product.product} />}
       </MobilePlate>
+      <AddToCartBtn
+        product={product}
+        handlers={{
+          activeSizeId,
+          openItem,
+          isLoading,
+          isMobileSizeDialogOpen,
+          setIsMobileSizeDialogOpen,
+          handleSizeSelect,
+          handleAddToCart,
+        }}
+      />
     </div>
-    // <div className="grid gap-10 px-2.5 pb-16 pt-2.5">
-    //   <Text variant="uppercase">{name}</Text>
-    //   <AddToCartForm id={product.product?.id || 0} product={product} />
-    //   <MobileMeasurements
-    //     id={productId}
-    //     sizes={sizes}
-    //     categoryId={categoryId}
-    //     subCategoryId={subCategoryId}
-    //     typeId={typeId}
-    //     gender={gender}
-    //     measurements={measurements}
-    //     preorder={preorder || ""}
-    //     isSaleApplied={isSaleApplied}
-    //     priceMinusSale={priceMinusSale}
-    //     priceWithSale={priceWithSale}
-    //     price={price}
-    //     type={measurementType}
-    //   />
-    //   <AccordionRoot
-    //     collapsible
-    //     type="single"
-    //     value={openItem}
-    //     onValueChange={setOpenItem}
-    //     className="space-y-6"
-    //   >
-    //     <AccordionItem value="item-1" className="space-y-5">
-    //       <AccordionTrigger useMinus>
-    //         <Text variant="uppercase">description</Text>
-    //       </AccordionTrigger>
-    //       <AccordionContent className="space-y-2">
-    //         {description?.split("\n").map((d, i) => (
-    //           <Text className="lowercase" key={i}>
-    //             {d}
-    //           </Text>
-    //         ))}
-    //         <Text className="mt-3 lowercase">{modelWearText}</Text>
-    //       </AccordionContent>
-    //     </AccordionItem>
-    //     {productComposition && (
-    //       <AccordionItem value="item-2" className="space-y-5">
-    //         <AccordionTrigger useMinus>
-    //           <Text variant="uppercase">composition</Text>
-    //         </AccordionTrigger>
-    //         <AccordionContent className="grid gap-1">
-    //           {composition?.map((c, i) => (
-    //             <Text className="lowercase" key={i}>
-    //               {c}
-    //             </Text>
-    //           ))}
-    //           <Text className="mt-3 lowercase">{`color: ${color}`}</Text>
-    //         </AccordionContent>
-    //       </AccordionItem>
-    //     )}
-    //     {productCare && (
-    //       <AccordionItem value="item-3" className="space-y-5">
-    //         <AccordionTrigger useMinus>
-    //           <Text variant="uppercase">care</Text>
-    //         </AccordionTrigger>
-    //         <AccordionContent className="grid gap-1">
-    //           {care?.map((c, i) => (
-    //             <Text className="lowercase" key={i}>
-    //               {c ? `- ${c}` : ""}
-    //             </Text>
-    //           ))}
-    //         </AccordionContent>
-    //       </AccordionItem>
-    //     )}
-    //   </AccordionRoot>
-    // </div>
   );
 }

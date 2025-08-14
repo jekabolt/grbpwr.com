@@ -15,8 +15,10 @@ import { HoverText } from "@/components/ui/hover-text";
 import { Text } from "@/components/ui/text";
 
 import { LoadingButton } from "../loading-button";
-import { MobileSelectSize } from "./mobile-select-size";
-import { useData } from "./useData";
+import { useActiveSizeInfo } from "../utils/useActiveSizeInfo";
+import { useProductBasics } from "../utils/useProductBasics";
+import { useProductPricing } from "../utils/useProductPricing";
+import { useProductSizes } from "../utils/useProductSizes";
 import { useDisabled } from "./useDisabled";
 import { useHandlers } from "./useHandlers";
 
@@ -30,7 +32,7 @@ export function AddToCartForm({
     activeSizeId,
     openItem,
     isLoading,
-    triggerDialodRef,
+    // triggerDialodRef,
     handleAddToCart,
     handleSizeSelect,
     onAccordionChange,
@@ -38,20 +40,14 @@ export function AddToCartForm({
     id,
     onSizeAccordionStateChange,
   });
-
-  const {
-    triggerText,
-    preorder,
-    preorderRaw,
-    sizeNames,
-    isOneSize,
-    sizeQuantity,
-    isSaleApplied,
-    price,
-    priceMinusSale,
-    priceWithSale,
-    lowStockText,
-  } = useData({ product, activeSizeId });
+  const { preorder, preorderRaw } = useProductBasics({ product });
+  const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
+  const { triggerText, lowStockText } = useActiveSizeInfo({
+    product,
+    activeSizeId,
+  });
+  const { isSaleApplied, price, priceMinusSale, priceWithSale } =
+    useProductPricing({ product });
 
   const { outOfStock } = useDisabled({ id, activeSizeId, product });
 
@@ -67,14 +63,14 @@ export function AddToCartForm({
         <Text variant="uppercase">one size</Text>
       ) : (
         <>
-          <div className="block lg:hidden">
+          {/* <div className="block lg:hidden">
             <MobileSelectSize
               product={product}
               activeSizeId={activeSizeId}
               triggerRef={triggerDialodRef}
               handleSizeSelect={handleSizeSelect}
             />
-          </div>
+          </div> */}
           <div className="hidden lg:block">
             <AccordionRoot
               type="single"

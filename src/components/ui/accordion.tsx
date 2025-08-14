@@ -48,18 +48,19 @@ export const AccordionItem = forwardRef<any, any>(
 AccordionItem.displayName = "AccordionItem";
 
 export const AccordionTrigger = forwardRef<any, any>(
-  ({ children, className, ...props }, forwardedRef) => (
-    <AccordionPrimitives.Header>
+  ({ children, title, className, ...props }, forwardedRef) => (
+    <AccordionPrimitives.Header className="w-full">
       <AccordionPrimitives.Trigger
         className={cn(
-          "group flex w-full cursor-pointer items-end justify-between gap-2.5 outline-none",
-          className,
+          "group flex w-full cursor-pointer items-center justify-between gap-2.5 outline-none",
+          {
+            "items-end": !title,
+          },
         )}
         {...props}
         ref={forwardedRef}
       >
         {children}
-
         <div className="p-1">
           <Text className="block group-data-[state=closed]:hidden">
             <MinusIcon />
@@ -72,11 +73,16 @@ export const AccordionTrigger = forwardRef<any, any>(
     </AccordionPrimitives.Header>
   ),
 );
+
 AccordionTrigger.displayName = "AccordionTrigger";
 
 export const AccordionContent = forwardRef<any, any>(
   ({ children, className, ...props }, forwardedRef) => (
-    <AccordionPrimitives.Content {...props} ref={forwardedRef}>
+    <AccordionPrimitives.Content
+      className={className}
+      {...props}
+      ref={forwardedRef}
+    >
       <Text>{children}</Text>
     </AccordionPrimitives.Content>
   ),
@@ -87,6 +93,7 @@ export const AccordionRoot = AccordionPrimitives.Root;
 
 type AccordionSectionProps = {
   value: string;
+  title?: string;
   previewText?: string;
   children: ReactNode;
   maxPreviewLines?: number;
@@ -95,6 +102,7 @@ type AccordionSectionProps = {
 
 export function AccordionSection({
   value,
+  title,
   previewText,
   children,
   maxPreviewLines = 4,
@@ -105,18 +113,34 @@ export function AccordionSection({
   return (
     <AccordionItem
       value={value}
-      className="flex items-end justify-between gap-x-2.5"
+      className={cn("flex w-full flex-row items-end", {
+        "flex-col items-start gap-y-4": title,
+      })}
     >
-      <AccordionContent>{children}</AccordionContent>
-      <AccordionTrigger>
-        {previewText && !isOpen && (
-          <PreviewTitle
-            text={previewText || ""}
-            maxLines={maxPreviewLines}
-            className="text-left uppercase"
-          />
-        )}
-      </AccordionTrigger>
+      <div
+        className={cn("order-2 w-full", {
+          "order-1": title,
+        })}
+      >
+        <AccordionTrigger title={title}>
+          {previewText && !isOpen ? (
+            <PreviewTitle
+              text={previewText || ""}
+              maxLines={maxPreviewLines}
+              className="text-left uppercase"
+            />
+          ) : (
+            <Text variant="uppercase">{title}</Text>
+          )}
+        </AccordionTrigger>
+      </div>
+      <div
+        className={cn("order-1", {
+          "order-2": title,
+        })}
+      >
+        <AccordionContent>{children}</AccordionContent>
+      </div>
     </AccordionItem>
   );
 }

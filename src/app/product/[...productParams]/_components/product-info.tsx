@@ -9,35 +9,16 @@ import { Text } from "@/components/ui/text";
 
 import { Measurements } from "./measurements";
 import { AddToCartForm } from "./select-size-add-to-cart/index";
-import { useData } from "./select-size-add-to-cart/useData";
+import { useGarmentInfo } from "./utils/useGarmentInfo";
+import { useModelInfo } from "./utils/useModelInfo";
+import { useProductBasics } from "./utils/useProductBasics";
 
 export function ProductInfo({ product }: { product: common_ProductFull }) {
-  const {
-    description,
-    composition,
-    care,
-    modelWearText,
-    color,
-    name,
-    productCare,
-    productComposition,
-    productId,
-    sizes,
-    categoryId,
-    subCategoryId,
-    typeId,
-    gender,
-    measurements,
-    price,
-    preorder,
-    isSaleApplied,
-    priceMinusSale,
-    priceWithSale,
-    measurementType,
-  } = useData({
+  const { name, description, productId, color, preorder } = useProductBasics({
     product,
   });
-
+  const { modelWear } = useModelInfo({ product });
+  const { composition, care } = useGarmentInfo({ product });
   const [isSizeAccordionOpen, setIsSizeAccordionOpen] = useState(false);
 
   const handleSizeAccordionChange = (isOpen: boolean) => {
@@ -69,26 +50,24 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                       {d}
                     </Text>
                   ))}
-                  <Text className="mt-3 lowercase">{modelWearText}</Text>
+                  {modelWear && <Text className="lowercase">{modelWear}</Text>}
                 </div>
               </Modal>
 
               <Modal
-                shouldRender={!!productComposition}
+                // shouldRender={!!productComposition}
                 openElement="composition"
                 title="composition"
                 customCursor
               >
                 <div className="grid gap-1">
-                  {composition
-                    ?.slice(0, 7)
-                    .map((c, i) => <Text key={i}>{c ? c : ""}</Text>)}
+                  <Text className="lowercase">{composition}</Text>
                   <Text className="mt-3 lowercase">{`color: ${color}`}</Text>
                 </div>
               </Modal>
 
               <Modal
-                shouldRender={!!productCare}
+                shouldRender={!!care}
                 openElement="care"
                 title="care"
                 customCursor
@@ -108,21 +87,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
               title="size guide"
               className="fixed bottom-0 left-auto right-0 top-0 h-screen w-[600px] p-2.5"
             >
-              <Measurements
-                id={productId}
-                sizes={sizes}
-                categoryId={categoryId}
-                subCategoryId={subCategoryId}
-                typeId={typeId}
-                gender={gender}
-                measurements={measurements}
-                preorder={preorder || ""}
-                isSaleApplied={isSaleApplied}
-                priceMinusSale={priceMinusSale}
-                priceWithSale={priceWithSale}
-                price={price}
-                type={measurementType}
-              />
+              <Measurements id={productId} product={product} />
             </Modal>
           </div>
         </div>

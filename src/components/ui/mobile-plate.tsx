@@ -26,12 +26,11 @@ export default function VaulDrawer({
       <Drawer.Portal>
         <Drawer.Content
           data-testid="content"
-          className="border-b-none fixed inset-x-2.5 bottom-0 top-12 flex h-full max-h-screen flex-col border border-textInactiveColor bg-bgColor"
+          className="border-b-none fixed inset-x-2.5 bottom-0 top-12 flex h-full max-h-screen flex-col border border-textInactiveColor bg-bgColor lg:hidden"
         >
-          {/* Dedicated drag handle - won't interfere with scroll */}
-          <div className="absolute left-0 right-0 top-0 h-32 flex-shrink-0 cursor-grab p-4 active:cursor-grabbing" />
+          <div className="absolute left-0 right-0 top-0 h-16 flex-shrink-0 cursor-grab p-4 active:cursor-grabbing" />
 
-          <div className="min-h-0 flex-1 overflow-y-auto px-2.5 pt-2.5">
+          <div className="flex-1 space-y-16 overflow-y-auto px-2.5 pb-32 pt-2.5">
             {children}
           </div>
         </Drawer.Content>
