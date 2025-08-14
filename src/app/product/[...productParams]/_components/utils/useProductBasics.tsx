@@ -6,8 +6,11 @@ export function useProductBasics({ product }: { product: common_ProductFull }) {
   const productBody = product.product?.productDisplay?.productBody;
 
   const preorder = getPreorderDate(product);
-
+  const isComposition = productBody?.composition;
+  const isCare = productBody?.careInstructions;
   return {
+    isComposition,
+    isCare,
     preorder,
     preorderRaw: productBody?.preorder,
     productId: product.product?.id || 0,

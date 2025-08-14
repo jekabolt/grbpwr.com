@@ -4,23 +4,15 @@ import { useEffect } from "react";
 import type { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionRoot,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { HoverText } from "@/components/ui/hover-text";
 import { Text } from "@/components/ui/text";
 
 import { LoadingButton } from "../loading-button";
 import { useActiveSizeInfo } from "../utils/useActiveSizeInfo";
+import { useDisabled } from "../utils/useDisabled";
+import { useHandlers } from "../utils/useHandlers";
 import { useProductBasics } from "../utils/useProductBasics";
 import { useProductPricing } from "../utils/useProductPricing";
 import { useProductSizes } from "../utils/useProductSizes";
-import { useDisabled } from "./useDisabled";
-import { useHandlers } from "./useHandlers";
 
 export function AddToCartForm({
   id,
@@ -59,67 +51,6 @@ export function AddToCartForm({
 
   return (
     <div className={cn("flex flex-col justify-between", className)}>
-      {isOneSize ? (
-        <Text variant="uppercase">one size</Text>
-      ) : (
-        <>
-          {/* <div className="block lg:hidden">
-            <MobileSelectSize
-              product={product}
-              activeSizeId={activeSizeId}
-              triggerRef={triggerDialodRef}
-              handleSizeSelect={handleSizeSelect}
-            />
-          </div> */}
-          <div className="hidden lg:block">
-            <AccordionRoot
-              type="single"
-              collapsible
-              value={openItem}
-              onValueChange={onAccordionChange}
-            >
-              <AccordionItem
-                value="size"
-                className="flex h-full flex-col gap-y-5"
-              >
-                <AccordionTrigger className="border-inactive border-b pb-2.5">
-                  <Text variant="uppercase">
-                    {triggerText}
-                    <Text
-                      component="span"
-                      variant="uppercase"
-                      className="text-textInactiveColor"
-                    >
-                      {" "}
-                      {lowStockText}
-                    </Text>
-                  </Text>
-                </AccordionTrigger>
-                <AccordionContent className="grid grid-cols-4 gap-2">
-                  {sizeNames?.map(({ name, id }) => (
-                    <Button
-                      className={cn("border-b border-transparent", {
-                        "border-textColor": activeSizeId === id,
-                        "hover:border-textColor": !outOfStock[id],
-                      })}
-                      key={id}
-                      onClick={() => handleSizeSelect(id)}
-                      disabled={outOfStock[id]}
-                    >
-                      <HoverText
-                        defaultText={name}
-                        hoveredText={`${sizeQuantity[id]} left`}
-                        hoverTextCondition={sizeQuantity[id] > 5}
-                      />
-                    </Button>
-                  ))}
-                </AccordionContent>
-              </AccordionItem>
-            </AccordionRoot>
-          </div>
-        </>
-      )}
-
       <div
         className={cn(
           "blackTheme fixed inset-x-2.5 bottom-2.5 z-10 grid gap-3 mix-blend-hard-light lg:relative lg:inset-x-0 lg:bottom-0 lg:bg-textColor lg:p-0 lg:text-bgColor lg:mix-blend-normal",

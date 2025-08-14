@@ -4,10 +4,10 @@ import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
 import { LoadingButton } from "../loading-button";
+import { useHandlers } from "../utils/useHandlers";
 import { useProductBasics } from "../utils/useProductBasics";
 import { useProductPricing } from "../utils/useProductPricing";
 import { MobileSelectSize } from "./mobile-select-size";
-import { useHandlers } from "./useHandlers";
 
 type Handlers = {
   activeSizeId?: number;
@@ -57,19 +57,13 @@ export function AddToCartBtn({
         onOpenChange={setIsMobileSizeDialogOpen}
       />
       <div
-        className={cn(
-          "blackTheme fixed inset-x-5 bottom-2.5 z-10 grid gap-3 mix-blend-hard-light lg:relative lg:inset-x-0 lg:bottom-0 lg:bg-textColor lg:p-0 lg:text-bgColor lg:mix-blend-normal",
-          {
-            "lg:hidden": openItem,
-            "bg-bgColor": preorder,
-          },
-        )}
+        className={cn("fixed inset-x-5 bottom-2.5 z-10 grid lg:sticky", {
+          "lg:hidden": openItem,
+          "bg-bgColor": preorder,
+        })}
       >
         {preorder && isDateTodayOrFuture(preorderRaw || "") && (
-          <Text
-            variant="inactive"
-            className="text-center uppercase lg:text-left"
-          >
+          <Text className="bg-[#F0F0F0] p-1.5 text-center uppercase leading-none text-textColor">
             {preorder}
           </Text>
         )}

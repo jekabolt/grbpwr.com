@@ -77,13 +77,15 @@ export const AccordionTrigger = forwardRef<any, any>(
 AccordionTrigger.displayName = "AccordionTrigger";
 
 export const AccordionContent = forwardRef<any, any>(
-  ({ children, className, ...props }, forwardedRef) => (
+  ({ children, title, ...props }, forwardedRef) => (
     <AccordionPrimitives.Content
-      className={className}
+      className={cn("mt-0", {
+        "mt-4": title,
+      })}
       {...props}
       ref={forwardedRef}
     >
-      <Text>{children}</Text>
+      <Text component="span">{children}</Text>
     </AccordionPrimitives.Content>
   ),
 );
@@ -114,7 +116,7 @@ export function AccordionSection({
     <AccordionItem
       value={value}
       className={cn("flex w-full flex-row items-end", {
-        "flex-col items-start gap-y-4": title,
+        "flex-col items-start": title,
       })}
     >
       <div
@@ -139,7 +141,7 @@ export function AccordionSection({
           "order-2": title,
         })}
       >
-        <AccordionContent>{children}</AccordionContent>
+        <AccordionContent title={title}>{children}</AccordionContent>
       </div>
     </AccordionItem>
   );

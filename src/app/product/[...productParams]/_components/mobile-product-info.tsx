@@ -1,21 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
-import { cn } from "@/lib/utils";
-import { AccordionRoot, AccordionSection } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
 import { MobileMeasurements } from "@/components/ui/mobile-measurements";
 import MobilePlate from "@/components/ui/mobile-plate";
 import { Text } from "@/components/ui/text";
 
+import { GarmentDescription } from "./garmentDescription";
 import { LastViewedProducts } from "./last-viewed-products";
 import { MobileImageCarousel } from "./mobile-image-carousel";
 import { AddToCartBtn } from "./select-size-add-to-cart/add-to-cart-btn";
-import { useHandlers } from "./select-size-add-to-cart/useHandlers";
-import { useGarmentInfo } from "./utils/useGarmentInfo";
-import { useModelInfo } from "./utils/useModelInfo";
+import { SizePicker } from "./size-picker";
+import { useDisabled } from "./utils/useDisabled";
+import { useHandlers } from "./utils/useHandlers";
 import { useProductBasics } from "./utils/useProductBasics";
 import { useProductSizes } from "./utils/useProductSizes";
 
@@ -24,12 +21,8 @@ export function MobileProductInfo({
 }: {
   product: common_ProductFull;
 }) {
-  const { name, description, productId } = useProductBasics({ product });
-  const { modelWear } = useModelInfo({ product });
-  const { composition, care } = useGarmentInfo({ product });
-  const [infoOpenItem, setInfoOpenItem] = useState<string | undefined>(
-    undefined,
-  );
+  const { name, productId } = useProductBasics({ product });
+
   const {
     activeSizeId,
     openItem,
@@ -41,7 +34,8 @@ export function MobileProductInfo({
   } = useHandlers({
     id: productId,
   });
-  const { sizeNames } = useProductSizes({ product });
+  const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
+  const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
 
   return (
     <div className="relative h-full overflow-y-hidden">
@@ -50,73 +44,19 @@ export function MobileProductInfo({
       </div>
       <MobilePlate>
         <Text variant="uppercase">{name}</Text>
-        <AccordionRoot
-          type="single"
-          value={infoOpenItem}
-          onValueChange={setInfoOpenItem}
-          collapsible
-          className="space-y-5"
-        >
-          <AccordionSection
-            value="item-1"
-            previewText={description}
-            currentValue={infoOpenItem}
-          >
-            <div>
-              {description?.split("\n").map((d, i) => (
-                <Text variant="uppercase" key={i}>
-                  {d}
-                </Text>
-              ))}
-              {modelWear && <Text variant="uppercase">{modelWear}</Text>}
-            </div>
-          </AccordionSection>
-          {composition && (
-            <AccordionSection
-              value="item-2"
-              title="composition"
-              currentValue={infoOpenItem}
-            >
-              <div className="flex flex-col">
-                {composition.split("\n").map((c, i) => (
-                  <Text variant="uppercase" key={i}>
-                    {c}
-                  </Text>
-                ))}
-              </div>
-            </AccordionSection>
-          )}
-          {care && (
-            <AccordionSection
-              value="item-3"
-              title="care"
-              currentValue={infoOpenItem}
-            >
-              {care?.map((c, i) => (
-                <Text variant="uppercase" key={i}>
-                  {c}
-                </Text>
-              ))}
-            </AccordionSection>
-          )}
-        </AccordionRoot>
+        <GarmentDescription product={product} />
 
         <div className="space-y-5">
           <MobileMeasurements id={productId} product={product} />
 
-          <div className="grid grid-cols-4 gap-y-7">
-            {sizeNames?.map(({ name, id }) => (
-              <Button
-                key={id}
-                className={cn("uppercase", {
-                  "border-b border-textColor": activeSizeId === id,
-                })}
-                onClick={() => handleSizeSelect(id)}
-              >
-                {name}
-              </Button>
-            ))}
-          </div>
+          <SizePicker
+            sizeNames={sizeNames || []}
+            activeSizeId={activeSizeId || 0}
+            outOfStock={outOfStock}
+            sizeQuantity={sizeQuantity}
+            isOneSize={isOneSize}
+            handleSizeSelect={handleSizeSelect}
+          />
         </div>
 
         {product.product && <LastViewedProducts product={product.product} />}

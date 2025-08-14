@@ -78,10 +78,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         link: "/catalog",
       }}
     >
-      <div className="relative lg:h-screen">
-        {/* <div className="block lg:hidden">
-          <MobileImageCarousel media={productMedia} />
-        </div> */}
+      <div className="lg:h-screen">
         <div className="hidden h-full w-full pt-12 lg:block">
           <ProductImagesCarousel productMedia={productMedia} />
         </div>
