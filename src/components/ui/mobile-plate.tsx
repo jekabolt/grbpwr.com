@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Drawer } from "vaul";
 
+import { cn } from "@/lib/utils";
+
 const snapPoints = [0.35, 1];
 
 export default function VaulDrawer({
@@ -12,6 +14,13 @@ export default function VaulDrawer({
 }) {
   const [snap, setSnap] = useState<number | string | null>(snapPoints[0]);
 
+  function handleSnapChange(snap: number | string | null) {
+    if (snap === snapPoints[0]) {
+      setSnap(snapPoints[1]);
+    } else {
+      setSnap(snapPoints[0]);
+    }
+  }
   return (
     <Drawer.Root
       snapPoints={snapPoints}
@@ -28,9 +37,16 @@ export default function VaulDrawer({
           data-testid="content"
           className="border-b-none fixed inset-x-2.5 bottom-0 top-12 flex h-full max-h-screen flex-col border border-textInactiveColor bg-bgColor lg:hidden"
         >
-          <div className="absolute left-0 right-0 top-0 h-16 flex-shrink-0 cursor-grab p-4 active:cursor-grabbing" />
+          <div
+            onClick={() => handleSnapChange(snap)}
+            className="absolute left-0 right-0 top-0 h-16 flex-shrink-0 cursor-grab p-4 active:cursor-grabbing"
+          />
 
-          <div className="flex-1 space-y-16 overflow-y-auto px-2.5 pb-32 pt-2.5">
+          <div
+            className={cn("space-y-16 px-2.5 pb-32 pt-2.5", {
+              "flex-1 overflow-y-auto": snap === snapPoints[1],
+            })}
+          >
             {children}
           </div>
         </Drawer.Content>

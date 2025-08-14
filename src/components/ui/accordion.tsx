@@ -77,7 +77,7 @@ export const AccordionTrigger = forwardRef<any, any>(
 AccordionTrigger.displayName = "AccordionTrigger";
 
 export const AccordionContent = forwardRef<any, any>(
-  ({ children, title, ...props }, forwardedRef) => (
+  ({ children, title, onContentClick, ...props }, forwardedRef) => (
     <AccordionPrimitives.Content
       className={cn("mt-0", {
         "mt-4": title,
@@ -85,7 +85,9 @@ export const AccordionContent = forwardRef<any, any>(
       {...props}
       ref={forwardedRef}
     >
-      <Text component="span">{children}</Text>
+      <Text component="span" onClick={onContentClick}>
+        {children}
+      </Text>
     </AccordionPrimitives.Content>
   ),
 );
@@ -100,6 +102,7 @@ type AccordionSectionProps = {
   children: ReactNode;
   maxPreviewLines?: number;
   currentValue?: string;
+  onValueChange?: (value: string) => void;
 };
 
 export function AccordionSection({
@@ -109,8 +112,15 @@ export function AccordionSection({
   children,
   maxPreviewLines = 4,
   currentValue,
+  onValueChange,
 }: AccordionSectionProps) {
   const isOpen = currentValue === value;
+
+  const handleContentClick = () => {
+    if (isOpen && onValueChange) {
+      onValueChange("");
+    }
+  };
 
   return (
     <AccordionItem
@@ -141,7 +151,9 @@ export function AccordionSection({
           "order-2": title,
         })}
       >
-        <AccordionContent title={title}>{children}</AccordionContent>
+        <AccordionContent onContentClick={handleContentClick} title={title}>
+          {children}
+        </AccordionContent>
       </div>
     </AccordionItem>
   );

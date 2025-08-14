@@ -32,6 +32,7 @@ export function GarmentDescription({
         value="item-1"
         previewText={description}
         currentValue={infoOpenItem}
+        onValueChange={setInfoOpenItem}
       >
         <div>
           {description?.split("\n").map((d, i) => (
@@ -47,6 +48,7 @@ export function GarmentDescription({
           value="item-2"
           title="composition"
           currentValue={infoOpenItem}
+          onValueChange={setInfoOpenItem}
         >
           <div className="flex flex-col">
             {composition.split("\n").map((c, i) => (
@@ -62,6 +64,7 @@ export function GarmentDescription({
           value="item-3"
           title="care"
           currentValue={infoOpenItem}
+          onValueChange={setInfoOpenItem}
         >
           {care?.map((c, i) => (
             <Text variant="uppercase" key={i}>
