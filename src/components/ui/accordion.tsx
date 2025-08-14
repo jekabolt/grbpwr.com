@@ -77,7 +77,7 @@ export const AccordionTrigger = forwardRef<any, any>(
 AccordionTrigger.displayName = "AccordionTrigger";
 
 export const AccordionContent = forwardRef<any, any>(
-  ({ children, title, onContentClick, ...props }, forwardedRef) => (
+  ({ children, title, ...props }, forwardedRef) => (
     <AccordionPrimitives.Content
       className={cn("mt-0", {
         "mt-4": title,
@@ -85,9 +85,7 @@ export const AccordionContent = forwardRef<any, any>(
       {...props}
       ref={forwardedRef}
     >
-      <Text component="span" onClick={onContentClick}>
-        {children}
-      </Text>
+      <Text component="span">{children}</Text>
     </AccordionPrimitives.Content>
   ),
 );
@@ -123,37 +121,37 @@ export function AccordionSection({
   };
 
   return (
-    <AccordionItem
-      value={value}
-      className={cn("flex w-full flex-row items-end", {
-        "flex-col items-start": title,
-      })}
-    >
+    <AccordionItem value={value}>
       <div
-        className={cn("order-2 w-full", {
-          "order-1": title,
+        onClick={handleContentClick}
+        className={cn("flex w-full flex-row items-end", {
+          "flex-col items-start": title,
         })}
       >
-        <AccordionTrigger title={title}>
-          {previewText && !isOpen ? (
-            <PreviewTitle
-              text={previewText || ""}
-              maxLines={maxPreviewLines}
-              className="text-left uppercase"
-            />
-          ) : (
-            <Text variant="uppercase">{title}</Text>
-          )}
-        </AccordionTrigger>
-      </div>
-      <div
-        className={cn("order-1", {
-          "order-2": title,
-        })}
-      >
-        <AccordionContent onContentClick={handleContentClick} title={title}>
-          {children}
-        </AccordionContent>
+        <div
+          className={cn("order-2 w-full", {
+            "order-1": title,
+          })}
+        >
+          <AccordionTrigger title={title}>
+            {previewText && !isOpen ? (
+              <PreviewTitle
+                text={previewText || ""}
+                maxLines={maxPreviewLines}
+                className="text-left uppercase"
+              />
+            ) : (
+              <Text variant="uppercase">{title}</Text>
+            )}
+          </AccordionTrigger>
+        </div>
+        <div
+          className={cn("order-1", {
+            "order-2": title,
+          })}
+        >
+          <AccordionContent title={title}>{children}</AccordionContent>
+        </div>
       </div>
     </AccordionItem>
   );

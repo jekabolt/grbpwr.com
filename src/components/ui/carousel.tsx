@@ -15,6 +15,7 @@ type CarouselProps = {
   disableForItemCounts?: number[];
   axis?: "x" | "y";
   enablePageScroll?: boolean;
+  startIndex?: number;
   setSelectedIndex?: (index: number) => void;
 };
 
@@ -27,6 +28,7 @@ export function Carousel({
   axis = "x",
   disableForItemCounts,
   enablePageScroll = false,
+  startIndex,
   setSelectedIndex,
 }: CarouselProps) {
   const childrenCount = Children.count(children);
@@ -38,6 +40,7 @@ export function Carousel({
       skipSnaps: true,
       align,
       axis,
+      startIndex,
     },
     isDisabled ? [] : [WheelGesturesPlugin()],
   );

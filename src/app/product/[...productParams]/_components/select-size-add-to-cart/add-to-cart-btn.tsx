@@ -44,6 +44,7 @@ export function AddToCartBtn({
     isMobileSizeDialogOpen,
     handleDialogClose,
   } = merged as Required<Handlers> & ReturnType<typeof useHandlers>;
+
   const { preorder, preorderRaw } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
