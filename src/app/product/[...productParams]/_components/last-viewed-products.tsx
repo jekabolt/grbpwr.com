@@ -35,10 +35,12 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
   return (
     <div
       className={cn(
-        "flex flex-col items-center gap-y-16 pb-16 pt-6 lg:gap-y-12 lg:py-24",
+        "flex flex-col items-center gap-y-16 pb-14 lg:pb-16 lg:pt-16",
       )}
     >
-      <Text variant="uppercase">recently viewed</Text>
+      <Text className="w-full text-left lg:text-center" variant="uppercase">
+        recently viewed
+      </Text>
 
       <div className="flex justify-center gap-2 lg:gap-7">
         {filteredProducts.map((product, index) => (

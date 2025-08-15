@@ -1,24 +1,22 @@
-"use client";
-
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
-import useEmblaCarousel from "embla-carousel-react";
 
 import { calculateAspectRatio } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Carousel } from "@/components/ui/carousel";
 import ImageComponent from "@/components/ui/image";
 
 export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
-  const [emblaRef] = useEmblaCarousel({
-    loop: true,
-    align: "center",
-    containScroll: false,
-  });
   return (
     <DialogPrimitives.Root modal={true}>
       <DialogPrimitives.Trigger asChild>
-        <div className="h-full w-full overflow-x-hidden" ref={emblaRef}>
-          <div className="flex h-full">
+        <div>
+          <Carousel
+            loop
+            align="center"
+            className="flex h-full w-full"
+            dragFree={false}
+          >
             {media.map((m, index) => (
               <div key={`${m.id}-${index}`} className="flex-[0_0_100%]">
                 <ImageComponent
@@ -32,7 +30,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
                 />
               </div>
             ))}
-          </div>
+          </Carousel>
         </div>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>

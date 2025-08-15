@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import Modal from "@/components/ui/modal";
@@ -15,6 +16,7 @@ import { useProductBasics } from "./utils/useProductBasics";
 import { useProductSizes } from "./utils/useProductSizes";
 
 export function ProductInfo({ product }: { product: common_ProductFull }) {
+  const sizePickerRef = useRef<HTMLDivElement>(null);
   const { name, productId } = useProductBasics({
     product,
   });
@@ -42,20 +44,23 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
             >
               <Measurements id={productId} product={product} />
             </Modal>
-            <SizePicker
-              sizeNames={sizeNames || []}
-              activeSizeId={activeSizeId || 0}
-              outOfStock={outOfStock}
-              sizeQuantity={sizeQuantity}
-              isOneSize={isOneSize}
-              handleSizeSelect={handleSizeSelect}
-            />
+            <div ref={sizePickerRef}>
+              <SizePicker
+                sizeNames={sizeNames || []}
+                activeSizeId={activeSizeId || 0}
+                outOfStock={outOfStock}
+                sizeQuantity={sizeQuantity}
+                isOneSize={isOneSize}
+                handleSizeSelect={handleSizeSelect}
+              />
+            </div>
           </div>
           <AddToCartBtn
             product={product}
             handlers={{
               activeSizeId,
               isLoading,
+              sizePickerRef,
               handleSizeSelect,
               handleAddToCart,
             }}

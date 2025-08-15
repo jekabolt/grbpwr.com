@@ -43,7 +43,7 @@ export default function VaulDrawer({
           />
 
           <div
-            className={cn("space-y-16 px-2.5 pb-32 pt-2.5", {
+            className={cn("space-y-12 px-2.5 pb-32 pt-2.5", {
               "flex-1 overflow-y-auto": snap === snapPoints[1],
             })}
           >

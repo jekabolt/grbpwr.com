@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, type ReactNode } from "react";
+import { forwardRef, useEffect, useRef, useState, type ReactNode } from "react";
 import * as AccordionPrimitives from "@radix-ui/react-accordion";
 
 import { cn } from "@/lib/utils";
@@ -13,11 +13,27 @@ type PreviewTitleProps = {
   text: string;
   maxLines?: number;
   className?: string;
+  onOverflowCheck?: (isOverflowing: boolean) => void;
 };
 
-function PreviewTitle({ text, maxLines = 4, className }: PreviewTitleProps) {
+function PreviewTitle({
+  text,
+  maxLines = 4,
+  className,
+  onOverflowCheck,
+}: PreviewTitleProps) {
+  const textRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!textRef.current || !onOverflowCheck) return;
+    const element = textRef.current;
+    const isOverflowing = element.scrollHeight > element.clientHeight;
+    onOverflowCheck(isOverflowing);
+  }, [text, onOverflowCheck]);
+
   return (
     <Text
+      ref={textRef}
       className={cn(
         `line-clamp-${maxLines} overflow-hidden text-ellipsis`,
         className,
@@ -113,12 +129,26 @@ export function AccordionSection({
   onValueChange,
 }: AccordionSectionProps) {
   const isOpen = currentValue === value;
+  const [isTextOverflowing, setIsTextOverflowing] = useState(false);
 
   const handleContentClick = () => {
     if (isOpen && onValueChange) {
       onValueChange("");
     }
   };
+
+  if (previewText && !isTextOverflowing) {
+    return (
+      <div className="w-full">
+        <PreviewTitle
+          text={previewText}
+          maxLines={maxPreviewLines}
+          className="text-left uppercase"
+          onOverflowCheck={setIsTextOverflowing}
+        />
+      </div>
+    );
+  }
 
   return (
     <AccordionItem value={value}>
@@ -136,9 +166,10 @@ export function AccordionSection({
           <AccordionTrigger title={title}>
             {previewText && !isOpen ? (
               <PreviewTitle
-                text={previewText || ""}
+                text={previewText}
                 maxLines={maxPreviewLines}
                 className="text-left uppercase"
+                onOverflowCheck={setIsTextOverflowing}
               />
             ) : (
               <Text variant="uppercase">{title}</Text>

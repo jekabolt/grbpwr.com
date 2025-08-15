@@ -14,9 +14,10 @@ type Handlers = {
   activeSizeId?: number;
   openItem?: string | undefined;
   isLoading?: boolean;
+  isMobileSizeDialogOpen?: boolean;
+  sizePickerRef?: React.RefObject<HTMLDivElement | null>;
   handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
   handleAddToCart?: () => Promise<boolean>;
-  isMobileSizeDialogOpen?: boolean;
   handleDialogClose?: () => void;
 };
 
@@ -39,6 +40,7 @@ export function AddToCartBtn({
     activeSizeId,
     openItem,
     isLoading,
+    sizePickerRef,
     handleSizeSelect,
     handleAddToCart,
     isMobileSizeDialogOpen,
@@ -56,6 +58,25 @@ export function AddToCartBtn({
     : isValidPreorder
       ? "preorder"
       : "add";
+
+  const handleAddToCartClick = () => {
+    if (!activeSizeId && sizePickerRef?.current) {
+      const scrollableContainer = sizePickerRef.current.closest(
+        ".overflow-y-scroll",
+      ) as HTMLElement;
+
+      if (scrollableContainer) {
+        const sizePickerElement = sizePickerRef.current as HTMLElement;
+        const offsetTop = sizePickerElement.offsetTop;
+
+        scrollableContainer.scrollTo({
+          top: offsetTop - 16,
+          behavior: "smooth",
+        });
+      }
+    }
+    return handleAddToCart?.();
+  };
 
   return (
     <>
@@ -81,20 +102,30 @@ export function AddToCartBtn({
           <LoadingButton
             variant="simpleReverse"
             size="lg"
-            onAction={handleAddToCart}
+            onAction={handleAddToCartClick}
             isLoadingExternal={isLoading}
             className="border-none"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <Text variant="inherit">{btnText}</Text>
-            {isSaleApplied ? (
-              <Text variant="inactive">
-                {priceMinusSale}
-                <Text component="span">{priceWithSale}</Text>
+            {isNoSizeSelected ? (
+              <Text className="w-full text-center" variant="inherit">
+                select size
               </Text>
             ) : (
-              <Text variant="inherit">{price}</Text>
+              <>
+                <Text variant="inherit">
+                  {isValidPreorder ? "preorder" : "add"}
+                </Text>
+                {isSaleApplied ? (
+                  <Text variant="inactive">
+                    {priceMinusSale}
+                    <Text component="span">{priceWithSale}</Text>
+                  </Text>
+                ) : (
+                  <Text variant="inherit">{price}</Text>
+                )}
+              </>
             )}
           </LoadingButton>
         </div>
