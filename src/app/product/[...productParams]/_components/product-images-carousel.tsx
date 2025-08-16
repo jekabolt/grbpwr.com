@@ -15,28 +15,26 @@ export function ProductImagesCarousel({ productMedia }: Props) {
       : productMedia;
 
   return (
-    <div className="h-screen overflow-y-hidden pt-8">
-      <Carousel
-        loop={productMedia.length > 1}
-        align={oneMedia ? "start" : "end"}
-        startIndex={oneMedia ? 0 : 2}
-        className="flex h-full w-full"
-      >
-        {mediaForCarousel.map((m, index) => (
-          <div key={`${m.id}-${index}`} className="h-full flex-[0_0_48%]">
-            <ImageComponent
-              src={m?.media?.fullSize?.mediaUrl!}
-              alt="Product image"
-              aspectRatio={calculateAspectRatio(
-                m?.media?.fullSize?.width,
-                m?.media?.fullSize?.height,
-              )}
-              fit="contain"
-            />
-          </div>
-        ))}
-      </Carousel>
-    </div>
+    <Carousel
+      loop={productMedia.length > 1}
+      align={oneMedia ? "start" : "end"}
+      startIndex={oneMedia ? 0 : 2}
+      className="flex h-screen w-full pt-8"
+    >
+      {mediaForCarousel.map((m, index) => (
+        <div key={`${m.id}-${index}`} className="h-full w-full flex-[0_0_48%]">
+          <ImageComponent
+            src={m?.media?.fullSize?.mediaUrl!}
+            alt="Product image"
+            aspectRatio={calculateAspectRatio(
+              m?.media?.fullSize?.width,
+              m?.media?.fullSize?.height,
+            )}
+            fit="contain"
+          />
+        </div>
+      ))}
+    </Carousel>
   );
 }
 
