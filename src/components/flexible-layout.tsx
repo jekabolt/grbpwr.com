@@ -15,6 +15,7 @@ export default function FlexibleLayout({
   mobileHeaderType,
   theme,
   className,
+  displayFooter = true,
 }: Props) {
   return (
     <div
@@ -25,7 +26,7 @@ export default function FlexibleLayout({
       <div className={cn("relative min-h-screen", className)}>
         {mobileHeaderType === "flexible" && (
           <div className="block lg:hidden">
-            <MobileProductInfoHeader />
+            <MobileProductInfoHeader {...headerProps} />
           </div>
         )}
         {headerType === "flexible" && (
@@ -41,7 +42,7 @@ export default function FlexibleLayout({
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
         <div className="w-full">{children}</div>
       </div>
-      <Footer theme={theme} />
+      {displayFooter && <Footer theme={theme} />}
       {headerType === "catalog" && (
         <CartPopup>
           <div className="h-full overflow-y-scroll">
@@ -61,6 +62,7 @@ type Props = {
   headerProps?: HeaderProps;
   theme?: "light" | "dark";
   className?: string;
+  displayFooter?: boolean;
 };
 
 export type HeaderProps = {

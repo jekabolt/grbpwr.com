@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  common_GenderEnum,
-  common_ProductMeasurement,
-  common_ProductSize,
-} from "@/api/proto-http/frontend";
+import { common_ProductFull } from "@/api/proto-http/frontend";
 import { MEASUREMENT_DESCRIPTIONS } from "@/constants";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -18,50 +14,33 @@ import { Text } from "@/components/ui/text";
 
 import { LoadingButton } from "./loading-button";
 import { MeasurementsTable, Unit } from "./measurements-table";
-import { MeasurementType } from "./select-size-add-to-cart/useData";
+import { useMeasurementType } from "./utils/useMeasurementType";
+import { useProductBasics } from "./utils/useProductBasics";
+import { useProductPricing } from "./utils/useProductPricing";
+import { useProductSizes } from "./utils/useProductSizes";
 
 export function Measurements({
   id,
-  sizes,
-  measurements,
-  categoryId,
-  subCategoryId,
-  typeId,
-  gender,
-  preorder,
-  isSaleApplied,
-  priceMinusSale,
-  priceWithSale,
-  price,
-  type,
+  product,
 }: {
+  product: common_ProductFull;
   id: number | undefined;
-  sizes: common_ProductSize[] | undefined;
-  measurements: common_ProductMeasurement[];
-  categoryId: number | undefined;
-  subCategoryId: number | undefined;
-  typeId: number | undefined;
-  gender: common_GenderEnum | undefined;
-  preorder: string;
-  isSaleApplied: boolean;
-  priceMinusSale: string;
-  priceWithSale: string;
-  price: string;
-  type: MeasurementType;
 }) {
+  const { dictionary } = useDataContext();
   const { increaseQuantity } = useCart((state) => state);
+  const { preorder } = useProductBasics({ product });
   const { hoveredMeasurement } = useMeasurementStore();
+  const { sizes, sizeNames } = useProductSizes({ product });
+  const { isSaleApplied, price, priceMinusSale, priceWithSale } =
+    useProductPricing({ product });
+  const { measurementType, subCategoryId, typeId, categoryId } =
+    useMeasurementType({ product });
   const [selectedSize, setSelectedSize] = useState<number | undefined>(
     sizes && sizes.length > 0 ? sizes[0].sizeId : undefined,
   );
   const [unit, setUnit] = useState(Unit.CM);
-  const isRing = type === "ring";
-  const isShoe = type === "shoe";
-  const { dictionary } = useDataContext();
-  const sizeNames = sizes?.map((s) => ({
-    id: s.sizeId as number,
-    name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
-  }));
+  const isRing = measurementType === "ring";
+  const isShoe = measurementType === "shoe";
 
   const handleAddToCart = async () => {
     if (!selectedSize) return false;
@@ -90,8 +69,8 @@ export function Measurements({
         categoryId={categoryId}
         subCategoryId={subCategoryId}
         typeId={typeId}
-        gender={gender}
-        measurements={measurements}
+        gender={product.product?.productDisplay?.productBody?.targetGender}
+        measurements={product.measurements || []}
         selectedSize={selectedSize}
         className={cn("h-[450px] lg:h-[450px]", {
           hidden: isRing || isShoe,
@@ -140,10 +119,10 @@ export function Measurements({
 
         <div className="flex-grow overflow-hidden">
           <MeasurementsTable
-            type={type}
+            type={measurementType}
             sizes={sizes || []}
             selectedSize={selectedSize}
-            measurements={measurements}
+            measurements={product.measurements || []}
             unit={unit}
             handleSelectSize={handleSelectSize}
           />

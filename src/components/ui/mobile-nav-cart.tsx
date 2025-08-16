@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
@@ -9,7 +11,11 @@ import CartTotalPrice from "@/app/(checkout)/cart/_components/CartTotalPrice";
 import { Button } from "./button";
 import { Text } from "./text";
 
-export function MobileNavCart() {
+export function MobileNavCart({
+  isProductInfo = false,
+}: {
+  isProductInfo?: boolean;
+}) {
   const { products, isOpen, closeCart, openCart } = useCart((state) => state);
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
@@ -20,9 +26,11 @@ export function MobileNavCart() {
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
       <Button
+        size={isProductInfo ? "default" : "lg"}
         onClick={openCart}
-        size="lg"
-        className="w-full bg-transparent text-right"
+        className={cn("w-full bg-transparent text-right", {
+          "w-1/3 py-2.5 pr-2.5": isProductInfo,
+        })}
       >
         cart {itemsQuantity ? itemsQuantity : ""}
       </Button>

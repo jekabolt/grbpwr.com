@@ -8,8 +8,8 @@ import type {
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
-import { MeasurementType } from "./select-size-add-to-cart/useData";
 import { SizesTable } from "./sizes-table";
+import { MeasurementType } from "./utils/useMeasurementType";
 
 export enum Unit {
   CM = "CM",

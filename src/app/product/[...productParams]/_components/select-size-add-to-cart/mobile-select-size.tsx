@@ -8,44 +8,32 @@ import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
-import { useData } from "./useData";
+import { useActiveSizeInfo } from "../utils/useActiveSizeInfo";
 
 export function MobileSelectSize({
   product,
   activeSizeId,
-  triggerRef,
   handleSizeSelect,
+  open,
+  onOpenChange,
 }: {
   product: common_ProductFull;
   activeSizeId: number | undefined;
-  triggerRef: React.RefObject<HTMLButtonElement | null>;
+  open: boolean;
   handleSizeSelect: (sizeId: number) => void;
+  onOpenChange: (open: boolean) => void;
 }) {
-  const { triggerText, sizeNames, lowStockText } = useData({
+  const { sizeNames } = useActiveSizeInfo({
     product,
     activeSizeId,
   });
 
   return (
-    <DialogPrimitives.Root modal={false}>
-      <DialogPrimitives.Trigger asChild>
-        <Button
-          ref={triggerRef}
-          className="border-textInaciveColor w-full border-b pb-2.5 text-left uppercase"
-        >
-          <Text component="span">
-            {triggerText}
-            <Text
-              component="span"
-              variant="uppercase"
-              className="text-textInactiveColor"
-            >
-              {" "}
-              {lowStockText}
-            </Text>
-          </Text>
-        </Button>
-      </DialogPrimitives.Trigger>
+    <DialogPrimitives.Root
+      modal={false}
+      open={open}
+      onOpenChange={onOpenChange}
+    >
       <DialogPrimitives.Portal>
         <Overlay cover="screen" />
         <DialogPrimitives.Title className="sr-only">

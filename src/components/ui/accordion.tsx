@@ -1,18 +1,59 @@
 "use client";
 
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useRef, useState, type ReactNode } from "react";
 import * as AccordionPrimitives from "@radix-ui/react-accordion";
 
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
+import { MinusIcon } from "./icons/minus";
+import { PlusIcon } from "./icons/plus";
+
+type PreviewTitleProps = {
+  text: string;
+  maxLines?: number;
+  className?: string;
+  onOverflowCheck?: (isOverflowing: boolean) => void;
+};
+
+function PreviewTitle({
+  text,
+  maxLines = 4,
+  className,
+  onOverflowCheck,
+}: PreviewTitleProps) {
+  const textRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!textRef.current || !onOverflowCheck) return;
+    const element = textRef.current;
+    const isOverflowing = element.scrollHeight > element.clientHeight;
+    onOverflowCheck(isOverflowing);
+  }, [text, onOverflowCheck]);
+
+  return (
+    <Text
+      ref={textRef}
+      className={cn(
+        `line-clamp-${maxLines} overflow-hidden text-ellipsis`,
+        className,
+      )}
+      style={{
+        display: "-webkit-box",
+        WebkitBoxOrient: "vertical",
+        WebkitLineClamp: maxLines,
+        lineClamp: maxLines,
+      }}
+    >
+      {text}
+    </Text>
+  );
+}
+
 export const AccordionItem = forwardRef<any, any>(
   ({ children, className, ...props }, forwardedRef) => (
     <AccordionPrimitives.Item
-      className={cn(
-        "w-full overflow-hidden first:mt-0 focus-within:relative focus-within:z-10",
-        className,
-      )}
+      className={cn("w-full", className)}
       {...props}
       ref={forwardedRef}
     >
@@ -23,54 +64,126 @@ export const AccordionItem = forwardRef<any, any>(
 AccordionItem.displayName = "AccordionItem";
 
 export const AccordionTrigger = forwardRef<any, any>(
-  ({ children, className, useMinus = false, ...props }, forwardedRef) => (
-    <AccordionPrimitives.Header className="flex">
+  ({ children, title, className, ...props }, forwardedRef) => (
+    <AccordionPrimitives.Header className="w-full">
       <AccordionPrimitives.Trigger
         className={cn(
-          "group flex w-full flex-1 cursor-pointer items-center justify-between gap-5 outline-none",
-          className,
+          "group flex w-full cursor-pointer items-center justify-between gap-2.5 outline-none",
+          {
+            "items-end": !title,
+          },
         )}
         {...props}
         ref={forwardedRef}
       >
         {children}
-        {useMinus ? (
-          <Text className="font-normal transition-opacity duration-150 ease-[cubic-bezier(0.87,_0,_0.13,_1)]">
-            <Text
-              component="span"
-              className="block group-data-[state=closed]:hidden"
-            >
-              -
-            </Text>
-            <Text
-              component="span"
-              className="hidden group-data-[state=closed]:block"
-            >
-              +
-            </Text>
+        <div className="p-1">
+          <Text className="block group-data-[state=closed]:hidden">
+            <MinusIcon />
           </Text>
-        ) : (
-          <Text className="transition-transform duration-150 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-45">
-            +
+          <Text className="hidden group-data-[state=closed]:block">
+            <PlusIcon />
           </Text>
-        )}
+        </div>
       </AccordionPrimitives.Trigger>
     </AccordionPrimitives.Header>
   ),
 );
+
 AccordionTrigger.displayName = "AccordionTrigger";
 
 export const AccordionContent = forwardRef<any, any>(
-  ({ children, className, ...props }, forwardedRef) => (
+  ({ children, title, ...props }, forwardedRef) => (
     <AccordionPrimitives.Content
-      className="overflow-hidden"
+      className={cn("mt-0", {
+        "mt-4": title,
+      })}
       {...props}
       ref={forwardedRef}
     >
-      <div className={cn("", className)}>{children}</div>
+      <Text component="span">{children}</Text>
     </AccordionPrimitives.Content>
   ),
 );
 AccordionContent.displayName = "AccordionContent";
 
 export const AccordionRoot = AccordionPrimitives.Root;
+
+type AccordionSectionProps = {
+  value: string;
+  title?: string;
+  previewText?: string;
+  children: ReactNode;
+  maxPreviewLines?: number;
+  currentValue?: string;
+  onValueChange?: (value: string) => void;
+};
+
+export function AccordionSection({
+  value,
+  title,
+  previewText,
+  children,
+  maxPreviewLines = 4,
+  currentValue,
+  onValueChange,
+}: AccordionSectionProps) {
+  const isOpen = currentValue === value;
+  const [isTextOverflowing, setIsTextOverflowing] = useState(false);
+
+  const handleContentClick = () => {
+    if (isOpen && onValueChange) {
+      onValueChange("");
+    }
+  };
+
+  if (previewText && !isTextOverflowing) {
+    return (
+      <div className="w-full">
+        <PreviewTitle
+          text={previewText}
+          maxLines={maxPreviewLines}
+          className="text-left uppercase"
+          onOverflowCheck={setIsTextOverflowing}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <AccordionItem value={value}>
+      <div
+        onClick={handleContentClick}
+        className={cn("flex w-full flex-row items-end", {
+          "flex-col items-start": title,
+        })}
+      >
+        <div
+          className={cn("order-2 w-full", {
+            "order-1": title,
+          })}
+        >
+          <AccordionTrigger title={title}>
+            {previewText && !isOpen ? (
+              <PreviewTitle
+                text={previewText}
+                maxLines={maxPreviewLines}
+                className="text-left uppercase"
+                onOverflowCheck={setIsTextOverflowing}
+              />
+            ) : (
+              <Text variant="uppercase">{title}</Text>
+            )}
+          </AccordionTrigger>
+        </div>
+        <div
+          className={cn("order-1", {
+            "order-2": title,
+          })}
+        >
+          <AccordionContent title={title}>{children}</AccordionContent>
+        </div>
+      </div>
+    </AccordionItem>
+  );
+}

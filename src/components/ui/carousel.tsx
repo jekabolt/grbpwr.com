@@ -15,6 +15,9 @@ type CarouselProps = {
   disableForItemCounts?: number[];
   axis?: "x" | "y";
   enablePageScroll?: boolean;
+  startIndex?: number;
+  dragFree?: boolean;
+  skipSnaps?: boolean;
   setSelectedIndex?: (index: number) => void;
 };
 
@@ -27,6 +30,9 @@ export function Carousel({
   axis = "x",
   disableForItemCounts,
   enablePageScroll = false,
+  startIndex = 0,
+  dragFree = true,
+  skipSnaps = true,
   setSelectedIndex,
 }: CarouselProps) {
   const childrenCount = Children.count(children);
@@ -34,10 +40,11 @@ export function Carousel({
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop,
-      dragFree: true,
-      skipSnaps: true,
+      dragFree,
+      skipSnaps,
       align,
       axis,
+      startIndex,
     },
     isDisabled ? [] : [WheelGesturesPlugin()],
   );

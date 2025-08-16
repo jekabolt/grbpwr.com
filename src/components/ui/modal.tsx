@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "./button";
-import CustomCursor from "./custom-cursor";
 import { Overlay } from "./overlay";
 import { Text } from "./text";
 
@@ -23,7 +22,6 @@ export default function Modal({
   title,
   children,
   openElement,
-  customCursor = false,
   shouldRender = true,
   overlayProps,
   className,
@@ -64,28 +62,12 @@ export default function Modal({
           className={cn(
             "absolute inset-0 z-50 flex h-full w-full flex-col gap-5 bg-bgColor",
             className,
-            {
-              "cursor-none": customCursor,
-            },
           )}
-          {...(customCursor && {
-            onClick: toggleModal,
-          })}
         >
-          {customCursor && (
-            <CustomCursor containerRef={modalRef} onClose={toggleModal} />
-          )}
           {title && (
             <div className="flex items-center justify-between">
               <Text variant="uppercase">{title}</Text>
-              <Button
-                className={cn("", {
-                  hidden: customCursor,
-                })}
-                onClick={toggleModal}
-              >
-                [x]
-              </Button>
+              <Button onClick={toggleModal}>[x]</Button>
             </div>
           )}
           <div className="h-full">{children}</div>

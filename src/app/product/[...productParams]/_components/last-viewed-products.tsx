@@ -33,15 +33,21 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
   }
 
   return (
-    <div className="space-y-16 px-2.5 pb-16 pt-6 lg:space-y-12 lg:py-32">
-      <Text variant="uppercase">recently viewed</Text>
+    <div
+      className={cn(
+        "flex flex-col items-center gap-y-16 pb-14 lg:pb-16 lg:pt-16",
+      )}
+    >
+      <Text className="w-full text-left lg:text-center" variant="uppercase">
+        recently viewed
+      </Text>
 
       <div className="flex justify-center gap-2 lg:gap-7">
         {filteredProducts.map((product, index) => (
           <div
             key={product.id}
-            className={cn("group relative w-32 lg:w-52", {
-              "hidden lg:block": index === 3,
+            className={cn("group relative w-40 lg:w-52", {
+              "hidden lg:block": index >= 2,
             })}
           >
             <ProductItem
