@@ -6,9 +6,10 @@ import { Text } from "@/components/ui/text";
 type Props = {
   sizeNames: { name: string; id: number }[];
   activeSizeId: number;
-  outOfStock: Record<number, boolean>;
-  sizeQuantity: Record<number, number>;
-  isOneSize: boolean;
+  outOfStock?: Record<number, boolean>;
+  sizeQuantity?: Record<number, number>;
+  isOneSize?: boolean;
+  view?: "grid" | "line";
   handleSizeSelect: (id: number) => void;
 };
 
@@ -18,6 +19,7 @@ export function SizePicker({
   outOfStock,
   sizeQuantity,
   isOneSize,
+  view = "grid",
   handleSizeSelect,
 }: Props) {
   return (
@@ -25,22 +27,31 @@ export function SizePicker({
       {isOneSize ? (
         <Text variant="uppercase">one size</Text>
       ) : (
-        <div className="grid grid-cols-4 gap-y-7">
+        <div
+          className={cn({
+            "grid grid-cols-4 gap-y-7": view === "grid",
+            "flex w-full items-center justify-center gap-x-4": view === "line",
+          })}
+        >
           {sizeNames?.map(({ name, id }) => (
             <Button
-              className={cn("border-b border-transparent", {
+              className={cn("w-full border-b border-transparent leading-none", {
                 "border-textColor": activeSizeId === id,
-                "hover:border-textColor": !outOfStock[id],
+                "hover:border-textColor": !outOfStock?.[id],
               })}
               key={id}
               onClick={() => handleSizeSelect(id)}
-              disabled={outOfStock[id]}
+              disabled={outOfStock?.[id]}
             >
-              <HoverText
-                defaultText={name}
-                hoveredText={`${sizeQuantity[id]} left`}
-                hoverTextCondition={sizeQuantity[id] > 5}
-              />
+              {sizeQuantity ? (
+                <HoverText
+                  defaultText={name}
+                  hoveredText={`${sizeQuantity?.[id]} left`}
+                  hoverTextCondition={sizeQuantity[id] > 5}
+                />
+              ) : (
+                <Text variant="uppercase">{name}</Text>
+              )}
             </Button>
           ))}
         </div>

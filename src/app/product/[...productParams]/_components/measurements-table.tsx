@@ -5,6 +5,8 @@ import type {
   common_ProductSize,
 } from "@/api/proto-http/frontend";
 
+import { useMeasurementStore } from "@/lib/stores/measurement/store";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
@@ -25,6 +27,7 @@ export function MeasurementsTable({
   handleSelectSize,
 }: Props) {
   const { dictionary } = useDataContext();
+  const { hoveredMeasurement } = useMeasurementStore();
 
   const measurementsWithNames = measurements.map((measurement) => {
     const name = dictionary?.measurements?.find(
@@ -44,26 +47,35 @@ export function MeasurementsTable({
     }));
 
   if (type === "clothing") {
-    return measurementsForSelectedSize.map((m, index) => (
-      <div
-        key={index}
-        className="flex items-center justify-between px-1 py-2.5 odd:bg-textInactiveColor"
-      >
-        <Text>{m.name}</Text>
-        <Text>{m.value}</Text>
+    return (
+      <div className="h-26 overflow-y-auto">
+        {measurementsForSelectedSize.map((m, index) => (
+          <div
+            key={index}
+            className={cn(
+              "flex items-center justify-between p-1 odd:bg-textInactiveColor hover:cursor-pointer hover:bg-highlightColor",
+              {
+                "bg-highlightColor text-bgColor odd:bg-highlightColor":
+                  hoveredMeasurement === m.name,
+              },
+            )}
+          >
+            <Text>{m.name}</Text>
+            <Text>{m.value}</Text>
+          </div>
+        ))}
       </div>
-    ));
+    );
   }
 
   if (type === "shoe" || type === "ring") {
     return (
-      <div className="h-[calc(100vh-200px)] w-full">
-        <SizesTable
-          sizes={sizes}
-          type={type}
-          handleSelectSize={handleSelectSize}
-        />
-      </div>
+      <SizesTable
+        sizes={sizes}
+        type={type}
+        selectedSize={selectedSize}
+        handleSelectSize={handleSelectSize}
+      />
     );
   }
 }
