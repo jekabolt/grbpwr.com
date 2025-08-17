@@ -23,7 +23,6 @@ export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
     productToRemove.index === index;
 
   const handleRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // Prevent both event propagation and default link navigation
     event.preventDefault();
     event.stopPropagation();
 
