@@ -3,8 +3,8 @@
 import { useRef } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
-import Modal from "@/components/ui/modal";
 import { Text } from "@/components/ui/text";
+import Modal from "@/app/product/[...productParams]/_components/MeasurementPopup";
 
 import { GarmentDescription } from "./garmentDescription";
 import { Measurements } from "./measurements";
@@ -12,6 +12,7 @@ import { AddToCartBtn } from "./select-size-add-to-cart/add-to-cart-btn";
 import { SizePicker } from "./size-picker";
 import { useDisabled } from "./utils/useDisabled";
 import { useHandlers } from "./utils/useHandlers";
+import { useMeasurementSizes } from "./utils/useMeasurementSizes";
 import { useProductBasics } from "./utils/useProductBasics";
 import { useProductSizes } from "./utils/useProductSizes";
 
@@ -26,6 +27,8 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
       id: productId,
     });
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
+  const { selectedSize, handleSelectSize, handleMeasurementSizes } =
+    useMeasurementSizes({ product });
 
   return (
     <div className="relative">
@@ -34,15 +37,13 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
           <Text variant="uppercase">{name}</Text>
           <GarmentDescription product={product} />
           <div className="space-y-5">
-            <Modal
-              overlayProps={{
-                cover: "screen",
-              }}
-              openElement="size guide"
-              title="size guide"
-              className="fixed bottom-0 left-auto right-0 top-0 h-screen w-[600px] p-2.5"
-            >
-              <Measurements id={productId} product={product} />
+            <Modal product={product} handleAddToCart={handleMeasurementSizes}>
+              <Measurements
+                product={product}
+                selectedSize={selectedSize || 0}
+                outOfStock={outOfStock}
+                handleSelectSize={handleSelectSize}
+              />
             </Modal>
             <div ref={sizePickerRef}>
               <SizePicker

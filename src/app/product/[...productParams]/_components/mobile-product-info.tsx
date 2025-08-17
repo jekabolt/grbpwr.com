@@ -2,9 +2,9 @@
 
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
-import { MobileMeasurements } from "@/components/ui/mobile-measurements";
 import MobilePlate from "@/components/ui/mobile-plate";
 import { Text } from "@/components/ui/text";
+import { MobileMeasurements } from "@/app/product/[...productParams]/_components/mobile-measurements";
 
 import { GarmentDescription } from "./garmentDescription";
 import { LastViewedProducts } from "./last-viewed-products";
@@ -13,6 +13,7 @@ import { AddToCartBtn } from "./select-size-add-to-cart/add-to-cart-btn";
 import { SizePicker } from "./size-picker";
 import { useDisabled } from "./utils/useDisabled";
 import { useHandlers } from "./utils/useHandlers";
+import { useMeasurementSizes } from "./utils/useMeasurementSizes";
 import { useProductBasics } from "./utils/useProductBasics";
 import { useProductSizes } from "./utils/useProductSizes";
 
@@ -35,6 +36,8 @@ export function MobileProductInfo({
   });
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
+  const { selectedSize, handleSelectSize, handleMeasurementSizes } =
+    useMeasurementSizes({ product });
 
   return (
     <div className="relative h-full overflow-y-hidden">
@@ -46,8 +49,12 @@ export function MobileProductInfo({
         <GarmentDescription product={product} />
 
         <div className="space-y-5">
-          <MobileMeasurements id={productId} product={product} />
-
+          <MobileMeasurements
+            product={product}
+            selectedSize={selectedSize || 0}
+            handleAddToCart={handleMeasurementSizes}
+            handleSelectSize={handleSelectSize}
+          />
           <SizePicker
             sizeNames={sizeNames || []}
             activeSizeId={activeSizeId || 0}

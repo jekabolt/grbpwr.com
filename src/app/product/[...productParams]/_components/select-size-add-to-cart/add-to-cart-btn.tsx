@@ -19,6 +19,7 @@ type Handlers = {
   handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
   handleAddToCart?: () => Promise<boolean>;
   handleDialogClose?: () => void;
+  toggleMeasurementPopup?: () => void; // New prop
 };
 
 export function AddToCartBtn({
@@ -52,12 +53,6 @@ export function AddToCartBtn({
     useProductPricing({ product });
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
   const isNoSizeSelected = !activeSizeId && isHovered;
-
-  const btnText = isNoSizeSelected
-    ? "select size"
-    : isValidPreorder
-      ? "preorder"
-      : "add";
 
   const handleAddToCartClick = () => {
     if (!activeSizeId && sizePickerRef?.current) {

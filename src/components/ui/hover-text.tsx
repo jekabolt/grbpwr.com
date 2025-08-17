@@ -5,7 +5,7 @@ import { Text } from "./text";
 interface Props {
   defaultText: string;
   hoveredText: string;
-  hoverTextCondition: boolean;
+  hoverTextCondition?: boolean;
 }
 
 export function HoverText({
