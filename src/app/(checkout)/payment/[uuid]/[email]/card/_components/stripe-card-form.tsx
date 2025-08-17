@@ -7,12 +7,14 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { Button } from "@/components/ui/button";
 
 export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
+  const { clearCart } = useCart((s) => s);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,13 +47,13 @@ export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
       },
       redirect: "if_required",
     });
-
     setIsLoading(false);
 
     if (error) {
       console.error("Error confirming payment:", error.message);
     } else {
       // Payment successful, redirect to order page
+      clearCart();
       window.location.href = `/order/${uuid}/${email}`;
     }
   };
@@ -95,4 +97,7 @@ interface Props {
   uuid: string;
   email: string;
   country: string;
+}
+function clearCart() {
+  throw new Error("Function not implemented.");
 }
