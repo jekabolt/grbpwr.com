@@ -29,11 +29,11 @@ export default function VaulDrawer({
       snapPoints={snapPoints}
       activeSnapPoint={snap}
       setActiveSnapPoint={setSnap}
-      dismissible={!isFullyExpanded} // Only dismissible when not fully expanded
+      dismissible={false}
+      modal={!isFullyExpanded}
       defaultOpen
     >
       <Drawer.Title />
-      {/* Only show overlay when fully expanded */}
       {isFullyExpanded && (
         <Drawer.Overlay className="fixed inset-x-0 bottom-16 top-0 bg-transparent" />
       )}
