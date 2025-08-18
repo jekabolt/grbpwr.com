@@ -30,7 +30,7 @@ export default function VaulDrawer({
       activeSnapPoint={snap}
       setActiveSnapPoint={setSnap}
       dismissible={false}
-      modal={!isFullyExpanded}
+      modal={isFullyExpanded}
       defaultOpen
     >
       <Drawer.Title />
