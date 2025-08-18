@@ -21,17 +21,22 @@ export default function VaulDrawer({
       setSnap(snapPoints[0]);
     }
   }
+
+  const isFullyExpanded = snap === snapPoints[1];
+
   return (
     <Drawer.Root
       snapPoints={snapPoints}
       activeSnapPoint={snap}
       setActiveSnapPoint={setSnap}
-      modal={false}
       dismissible={false}
+      modal={isFullyExpanded}
       defaultOpen
     >
       <Drawer.Title />
-      <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+      {isFullyExpanded && (
+        <Drawer.Overlay className="fixed inset-x-0 bottom-16 top-0 bg-transparent" />
+      )}
       <Drawer.Portal>
         <Drawer.Content
           data-testid="content"

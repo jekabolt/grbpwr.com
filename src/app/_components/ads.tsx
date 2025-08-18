@@ -20,49 +20,44 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
           case "HERO_TYPE_SINGLE":
             return (
               <div className="relative h-full w-full" key={i}>
-                <div className="relative h-full w-full">
-                  <div className="hidden lg:block">
-                    <Image
-                      src={
-                        e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
-                        ""
-                      }
-                      alt="ad hero image"
-                      aspectRatio={calculateAspectRatio(
-                        e.single?.mediaLandscape?.media?.fullSize?.width,
-                        e.single?.mediaLandscape?.media?.fullSize?.height,
-                      )}
-                      fit="contain"
-                    />
-                  </div>
-                  <div className="block lg:hidden">
-                    <Image
-                      src={
-                        e.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""
-                      }
-                      alt="ad hero image"
-                      aspectRatio={calculateAspectRatio(
-                        e.single?.mediaPortrait?.media?.fullSize?.width,
-                        e.single?.mediaPortrait?.media?.fullSize?.height,
-                      )}
-                      fit="contain"
-                    />
-                  </div>
-                  <div className="absolute inset-0 z-20 flex items-center justify-center gap-6">
-                    <Text variant="uppercase" className="text-white">
-                      {e.single?.headline}
-                    </Text>
-                    <Button
-                      variant="underline"
-                      className="uppercase text-white"
-                      asChild
-                    >
-                      <Link href={e.single?.exploreLink || ""}>
+                <Button asChild className="relative h-full w-full">
+                  <Link href={e.single?.exploreLink || ""}>
+                    <div className="hidden lg:block">
+                      <Image
+                        src={
+                          e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
+                          ""
+                        }
+                        alt="ad hero image"
+                        aspectRatio={calculateAspectRatio(
+                          e.single?.mediaLandscape?.media?.fullSize?.width,
+                          e.single?.mediaLandscape?.media?.fullSize?.height,
+                        )}
+                        fit="contain"
+                      />
+                    </div>
+                    <div className="block lg:hidden">
+                      <Image
+                        src={
+                          e.single?.mediaPortrait?.media?.fullSize?.mediaUrl ||
+                          ""
+                        }
+                        alt="ad hero image"
+                        aspectRatio={calculateAspectRatio(
+                          e.single?.mediaPortrait?.media?.fullSize?.width,
+                          e.single?.mediaPortrait?.media?.fullSize?.height,
+                        )}
+                        fit="contain"
+                      />
+                    </div>
+                    <div className="absolute inset-0 z-20 flex items-center justify-center gap-6 text-bgColor">
+                      <Text variant="uppercase">{e.single?.headline}</Text>
+                      <Text variant="underlined" className="uppercase">
                         {e.single?.exploreText}
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
+                      </Text>
+                    </div>
+                  </Link>
+                </Button>
                 <Overlay cover="container" />
               </div>
             );
@@ -72,65 +67,55 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 key={i}
                 className="relative flex h-full w-full flex-col lg:flex-row"
               >
-                <div className="relative h-full w-full">
-                  <Image
-                    src={
-                      e.double?.left?.mediaLandscape?.media?.fullSize
-                        ?.mediaUrl || ""
-                    }
-                    alt="ad hero image"
-                    aspectRatio={calculateAspectRatio(
-                      e.double?.left?.mediaLandscape?.media?.fullSize?.width,
-                      e.double?.left?.mediaLandscape?.media?.fullSize?.height,
-                    )}
-                    fit="contain"
-                  />
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
-                    <Text variant="uppercase" className="text-white">
-                      {e.double?.left?.headline}
-                    </Text>
-                    <Button
-                      variant="underline"
-                      className="uppercase text-white"
-                      asChild
-                    >
-                      <Link href={e.double?.left?.exploreLink || ""}>
+                <Button asChild className="relative h-full w-full">
+                  <Link href={e.double?.left?.exploreLink || ""}>
+                    <Image
+                      src={
+                        e.double?.left?.mediaLandscape?.media?.fullSize
+                          ?.mediaUrl || ""
+                      }
+                      alt="ad hero image"
+                      aspectRatio={calculateAspectRatio(
+                        e.double?.left?.mediaLandscape?.media?.fullSize?.width,
+                        e.double?.left?.mediaLandscape?.media?.fullSize?.height,
+                      )}
+                      fit="contain"
+                    />
+                    <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
+                      <Text variant="uppercase">
+                        {e.double?.left?.headline}
+                      </Text>
+                      <Text variant="underlined" className="uppercase">
                         {e.double?.left?.exploreText}
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-                <div
-                  key={e.double?.right?.mediaLandscape?.id}
-                  className="relative h-full w-full"
-                >
-                  <Image
-                    src={
-                      e.double?.right?.mediaLandscape?.media?.fullSize
-                        ?.mediaUrl || ""
-                    }
-                    alt="ad hero image"
-                    aspectRatio={calculateAspectRatio(
-                      e.double?.right?.mediaLandscape?.media?.fullSize?.width,
-                      e.double?.right?.mediaLandscape?.media?.fullSize?.height,
-                    )}
-                    fit="contain"
-                  />
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
-                    <Text variant="uppercase" className="text-white">
-                      {e.double?.right?.headline}
-                    </Text>
-                    <Button
-                      variant="underline"
-                      className="uppercase text-white"
-                      asChild
-                    >
-                      <Link href={e.double?.right?.exploreLink || ""}>
+                      </Text>
+                    </div>
+                  </Link>
+                </Button>
+                <Button asChild className="relative h-full w-full">
+                  <Link href={e.double?.right?.exploreLink || ""}>
+                    <Image
+                      src={
+                        e.double?.right?.mediaLandscape?.media?.fullSize
+                          ?.mediaUrl || ""
+                      }
+                      alt="ad hero image"
+                      aspectRatio={calculateAspectRatio(
+                        e.double?.right?.mediaLandscape?.media?.fullSize?.width,
+                        e.double?.right?.mediaLandscape?.media?.fullSize
+                          ?.height,
+                      )}
+                      fit="contain"
+                    />
+                    <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
+                      <Text variant="uppercase">
+                        {e.double?.right?.headline}
+                      </Text>
+                      <Text variant="underlined" className="uppercase">
                         {e.double?.right?.exploreText}
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
+                      </Text>
+                    </div>
+                  </Link>
+                </Button>
                 <Overlay cover="container" />
               </div>
             );

@@ -24,38 +24,35 @@ export function SizePicker({
 }: Props) {
   return (
     <div>
-      {isOneSize ? (
-        <Text variant="uppercase">one size</Text>
-      ) : (
-        <div
-          className={cn({
-            "grid grid-cols-4 gap-y-7": view === "grid",
-            "flex w-full items-center justify-center gap-x-4": view === "line",
-          })}
-        >
-          {sizeNames?.map(({ name, id }) => (
-            <Button
-              className={cn("w-full border-b border-transparent leading-none", {
-                "border-textColor": activeSizeId === id,
-                "hover:border-textColor": !outOfStock?.[id],
-              })}
-              key={id}
-              onClick={() => handleSizeSelect(id)}
-              disabled={outOfStock?.[id]}
-            >
-              {sizeQuantity ? (
-                <HoverText
-                  defaultText={name}
-                  hoveredText={`${sizeQuantity?.[id]} left`}
-                  hoverTextCondition={sizeQuantity[id] > 5}
-                />
-              ) : (
-                <Text variant="uppercase">{name}</Text>
-              )}
-            </Button>
-          ))}
-        </div>
-      )}
+      <div
+        className={cn({
+          "grid grid-cols-4 gap-y-7": view === "grid",
+          "flex w-full items-center justify-center gap-x-4": view === "line",
+          flex: isOneSize,
+        })}
+      >
+        {sizeNames?.map(({ name, id }) => (
+          <Button
+            className={cn("border-b border-transparent leading-none", {
+              "border-textColor": activeSizeId === id,
+              "hover:border-textColor": !outOfStock?.[id],
+            })}
+            key={id}
+            onClick={() => handleSizeSelect(id)}
+            disabled={outOfStock?.[id]}
+          >
+            {sizeQuantity ? (
+              <HoverText
+                defaultText={isOneSize ? "one size" : name}
+                hoveredText={`${sizeQuantity?.[id]} left`}
+                hoverTextCondition={sizeQuantity[id] > 5}
+              />
+            ) : (
+              <Text variant="uppercase">{name}</Text>
+            )}
+          </Button>
+        ))}
+      </div>
     </div>
   );
 }
