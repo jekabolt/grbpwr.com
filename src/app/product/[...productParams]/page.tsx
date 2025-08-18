@@ -5,6 +5,7 @@ import { notFound } from "next/dist/client/components/not-found";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { useCart } from "@/lib/stores/cart/store-provider";
 import FlexibleLayout from "@/components/flexible-layout";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";

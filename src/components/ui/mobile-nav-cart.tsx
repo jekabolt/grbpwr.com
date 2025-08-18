@@ -20,11 +20,8 @@ export function MobileNavCart({
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
-  const open = isMobile && isOpen;
-
   return (
-    <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
+    <DialogPrimitives.Root open={isOpen} onOpenChange={closeCart}>
       <Button
         size={isProductInfo ? "default" : "lg"}
         onClick={openCart}
@@ -38,7 +35,7 @@ export function MobileNavCart({
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay opacity-40" />
         <DialogPrimitives.Content
           className={cn(
-            "blackTheme fixed left-0 z-30 w-screen bg-bgColor p-2.5 text-textColor",
+            "blackTheme fixed left-0 z-30 w-screen bg-bgColor p-2.5 text-textColor lg:hidden",
             {
               "inset-y-0 py-5": itemsQuantity > 0,
               "bottom-0": itemsQuantity === 0,
@@ -70,16 +67,15 @@ export function MobileNavCart({
                 </div>
                 <div className="mt-auto space-y-6">
                   <CartTotalPrice />
-                  <DialogPrimitives.Close asChild>
-                    <Button
-                      asChild
-                      variant="main"
-                      size="lg"
-                      className="w-full uppercase"
-                    >
-                      <Link href="/checkout">proceed to checkout</Link>
-                    </Button>
-                  </DialogPrimitives.Close>
+
+                  <Button
+                    asChild
+                    variant="main"
+                    size="lg"
+                    className="w-full uppercase"
+                  >
+                    <Link href="/checkout">proceed to checkout</Link>
+                  </Button>
                 </div>
               </>
             ) : (

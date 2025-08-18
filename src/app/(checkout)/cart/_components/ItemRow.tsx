@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,6 +19,8 @@ export default function ItemRow({
   hideQuantityButtons,
   index,
 }: Props) {
+  const router = useRouter();
+  const { closeCart } = useCart((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
   const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${convertPrice(product?.productPrice || "")}`;
@@ -29,7 +33,7 @@ export default function ItemRow({
 
   return (
     <Button asChild>
-      <Link href={product?.slug || ""}>
+      <Link href={product.slug || ""}>
         <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
           <div className="min-w-[90px]">
             <Image
