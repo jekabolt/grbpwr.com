@@ -27,7 +27,7 @@ export const usePaymentActions = ({
     orderUuid,
     orderStatusId,
 }: Props) => {
-    const clearCart = useCart((cart) => cart.clearCart);
+    const { clearCart } = useCart((s) => s);
     const [transactionStatus, setTransactionStatus] = useState<TransactionStatus>(
         TransactionStatus.PENDING,
     );

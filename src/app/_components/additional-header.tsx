@@ -1,5 +1,9 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import { HeaderProps } from "@/components/flexible-layout";
 import { Button } from "@/components/ui/button";
@@ -8,9 +12,16 @@ export function AdditionalHeader({
   left,
   center,
   right,
-  link,
   hidden = false,
 }: HeaderProps) {
+  const router = useRouter();
+  const { openCart } = useCart((s) => s);
+
+  const handleLeftClick = () => {
+    openCart();
+    router.push("/");
+  };
+
   return (
     <header
       className={cn(
@@ -19,8 +30,8 @@ export function AdditionalHeader({
         "blackTheme bg-transparent text-textColor mix-blend-exclusion",
       )}
     >
-      <Button asChild size="sm">
-        <Link href={`/${link}`}>{left}</Link>
+      <Button size="sm" onClick={handleLeftClick}>
+        {left}
       </Button>
       <div className="flex-none text-center text-textBaseSize">{center}</div>
       <Button asChild size="sm" className="hidden lg:block">

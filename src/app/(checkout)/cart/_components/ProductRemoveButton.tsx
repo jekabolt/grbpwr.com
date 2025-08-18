@@ -22,7 +22,10 @@ export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
     productToRemove.size === size &&
     productToRemove.index === index;
 
-  const handleRemove = () => {
+  const handleRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
     if (isRemoveConfirmed) {
       removeProduct(id, size, index);
       setProductToRemove(null);
@@ -35,6 +38,7 @@ export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
     <>
       {isRemoveConfirmed && <Overlay color="dark" cover="container" />}
       <Button
+        type="button"
         onClick={handleRemove}
         variant="underline"
         className={cn("uppercase", { "z-20": isRemoveConfirmed })}

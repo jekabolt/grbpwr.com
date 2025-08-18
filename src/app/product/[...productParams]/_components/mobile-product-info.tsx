@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import MobilePlate from "@/components/ui/mobile-plate";
 import { Text } from "@/components/ui/text";
 import { MobileMeasurements } from "@/app/product/[...productParams]/_components/mobile-measurements";
@@ -23,7 +25,7 @@ export function MobileProductInfo({
   product: common_ProductFull;
 }) {
   const { name, productId } = useProductBasics({ product });
-
+  const { closeCart } = useCart((state) => state);
   const {
     activeSizeId,
     isLoading,
@@ -38,6 +40,10 @@ export function MobileProductInfo({
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
+
+  useEffect(() => {
+    closeCart();
+  }, [closeCart]);
 
   return (
     <div className="relative h-full overflow-y-hidden">

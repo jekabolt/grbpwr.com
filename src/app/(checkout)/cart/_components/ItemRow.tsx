@@ -1,8 +1,12 @@
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
@@ -15,6 +19,8 @@ export default function ItemRow({
   hideQuantityButtons,
   index,
 }: Props) {
+  const router = useRouter();
+  const { closeCart } = useCart((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
   const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${convertPrice(product?.productPrice || "")}`;
@@ -26,66 +32,72 @@ export default function ItemRow({
   const rawPreorderDate = product.preorder;
 
   return (
-    <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
-      <div className="min-w-[90px]">
-        <Image
-          src={product.thumbnail || ""}
-          alt="product"
-          fit="contain"
-          aspectRatio="3/4"
-        />
-      </div>
-      <div className="flex w-full justify-between">
-        <div className="flex w-full flex-col justify-between">
-          <div className="space-y-3">
-            <Text
-              className="line-clamp-1 overflow-hidden text-ellipsis"
-              variant="uppercase"
+    <Button asChild>
+      <Link href={product.slug || ""}>
+        <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
+          <div className="min-w-[90px]">
+            <Image
+              src={product.thumbnail || ""}
+              alt="product"
+              fit="contain"
+              aspectRatio="3/4"
+            />
+          </div>
+          <div className="flex w-full justify-between">
+            <div className="flex w-full flex-col justify-between">
+              <div className="space-y-3">
+                <Text
+                  className="line-clamp-1 overflow-hidden text-ellipsis"
+                  variant="uppercase"
+                >
+                  {product.productName}
+                </Text>
+                <div>
+                  <Text variant="uppercase">{product.color}</Text>
+                  <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+                </div>
+              </div>
+              {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
+                <Text
+                  variant="uppercase"
+                  className="whitespace-nowrap text-textInactiveColor"
+                >
+                  {preorderDate}
+                </Text>
+              )}
+            </div>
+            <div
+              className={cn(
+                "flex w-full flex-col items-end justify-between gap-3",
+                {
+                  "justify-end": hideQuantityButtons,
+                },
+              )}
             >
-              {product.productName}
-            </Text>
-            <div>
-              <Text variant="uppercase">{product.color}</Text>
-              <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+              {!hideQuantityButtons && (
+                <ProductRemoveButton
+                  id={product.orderItem?.productId || 0}
+                  size={product.orderItem?.sizeId + "" || ""}
+                  index={index}
+                />
+              )}
+              <div className="flex items-center">
+                {isSaleApplied ? (
+                  <div className="flex items-center gap-x-2">
+                    <Text variant="strileTroughInactive">
+                      {priceWithoutSale}
+                    </Text>
+                    <Text>{priceWithSale}</Text>
+                  </div>
+                ) : (
+                  <Text>{priceWithoutSale}</Text>
+                )}
+              </div>
             </div>
           </div>
-          {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
-            <Text
-              variant="uppercase"
-              className="whitespace-nowrap text-textInactiveColor"
-            >
-              {preorderDate}
-            </Text>
-          )}
         </div>
-        <div
-          className={cn(
-            "flex w-full flex-col items-end justify-between gap-3",
-            {
-              "justify-end": hideQuantityButtons,
-            },
-          )}
-        >
-          {!hideQuantityButtons && (
-            <ProductRemoveButton
-              id={product.orderItem?.productId || 0}
-              size={product.orderItem?.sizeId + "" || ""}
-              index={index}
-            />
-          )}
-          <div className="flex items-center">
-            {isSaleApplied ? (
-              <div className="flex items-center gap-x-2">
-                <Text variant="strileTroughInactive">{priceWithoutSale}</Text>
-                <Text>{priceWithSale}</Text>
-              </div>
-            ) : (
-              <Text>{priceWithoutSale}</Text>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+      </Link>
+    </Button>
   );
 }
 

@@ -39,21 +39,14 @@ export function DefaultMobileMenuDialog({
           {defaultMenuItems.map((item) => (
             <Button
               key={item.label}
-              asChild={!isBigMenuEnabled}
+              asChild
               className="flex items-center justify-between uppercase"
               onClick={item.action}
             >
-              {isBigMenuEnabled ? (
-                <>
-                  <Text>{item.label}</Text>
-                  {item.showArrow && <Text>{">"}</Text>}
-                </>
-              ) : (
-                <Link href={item.href}>
-                  <Text>{item.label}</Text>
-                  {item.showArrow && <Text>{">"}</Text>}
-                </Link>
-              )}
+              <Link href={item.href}>
+                <Text>{item.label}</Text>
+                {item.showArrow && <Text>{">"}</Text>}
+              </Link>
             </Button>
           ))}
         </div>
