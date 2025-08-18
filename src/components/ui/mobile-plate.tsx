@@ -35,7 +35,7 @@ export default function VaulDrawer({
       <Drawer.Title />
       {/* Only show overlay when fully expanded */}
       {isFullyExpanded && (
-        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+        <Drawer.Overlay className="fixed inset-x-0 bottom-16 top-0 bg-transparent" />
       )}
       <Drawer.Portal>
         <Drawer.Content
