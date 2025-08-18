@@ -26,7 +26,7 @@ export default function VaulDrawer({
       snapPoints={snapPoints}
       activeSnapPoint={snap}
       setActiveSnapPoint={setSnap}
-      modal={false}
+      modal={snap === snapPoints[1]}
       dismissible={false}
       defaultOpen
     >
