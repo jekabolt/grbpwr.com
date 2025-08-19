@@ -20,7 +20,10 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
           case "HERO_TYPE_SINGLE":
             return (
               <div className="relative h-screen w-full" key={i}>
-                <Button asChild className="group relative h-full w-full">
+                <Button
+                  asChild
+                  className="group relative h-full w-full active:bg-white active:opacity-40 active:duration-300"
+                >
                   <Link href={e.single?.exploreLink || ""}>
                     <div className="hidden h-full lg:block">
                       <Image
@@ -54,7 +57,8 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                       <Text
                         variant="uppercase"
                         className={cn("w-full text-center", {
-                          "group-hover:underline": !e.single?.exploreText,
+                          "group-hover:underline":
+                            !e.single?.exploreText && e.single?.exploreLink,
                         })}
                       >
                         {e.single?.headline}
@@ -77,7 +81,10 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 key={i}
                 className="relative flex h-full w-full flex-col lg:flex-row"
               >
-                <Button asChild className="group relative h-full w-full">
+                <Button
+                  asChild
+                  className="group relative h-full w-full active:bg-white active:opacity-40 active:duration-300"
+                >
                   <Link href={e.double?.left?.exploreLink || ""}>
                     <Image
                       src={
@@ -106,7 +113,10 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </div>
                   </Link>
                 </Button>
-                <Button asChild className="group relative h-full w-full">
+                <Button
+                  asChild
+                  className="group relative h-full w-full active:bg-white active:opacity-40 active:duration-300"
+                >
                   <Link href={e.double?.right?.exploreLink || ""}>
                     <Image
                       src={

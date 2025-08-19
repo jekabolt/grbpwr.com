@@ -36,7 +36,10 @@ export function ProductItem({
       <Button asChild>
         <Link
           href={product?.slug || ""}
-          className={cn("group flex h-full w-full flex-col", className)}
+          className={cn(
+            "group flex h-full w-full flex-col active:bg-white active:opacity-40 active:duration-300",
+            className,
+          )}
         >
           <div className="relative">
             <Image
