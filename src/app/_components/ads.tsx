@@ -19,10 +19,10 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
             return (
-              <div className="relative h-full w-full" key={i}>
+              <div className="relative h-screen w-full" key={i}>
                 <Button asChild className="group relative h-full w-full">
                   <Link href={e.single?.exploreLink || ""}>
-                    <div className="hidden h-screen lg:block">
+                    <div className="hidden h-full lg:block">
                       <Image
                         src={
                           e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
@@ -36,7 +36,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                         fit="cover"
                       />
                     </div>
-                    <div className="block h-screen lg:hidden">
+                    <div className="block h-full lg:hidden">
                       <Image
                         src={
                           e.single?.mediaPortrait?.media?.fullSize?.mediaUrl ||
@@ -50,10 +50,10 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                         fit="cover"
                       />
                     </div>
-                    <div className="absolute inset-0 z-20 flex items-center justify-center gap-6 text-bgColor">
+                    <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center text-bgColor">
                       <Text
                         variant="uppercase"
-                        className={cn({
+                        className={cn("w-full text-center", {
                           "group-hover:underline": !e.single?.exploreText,
                         })}
                       >

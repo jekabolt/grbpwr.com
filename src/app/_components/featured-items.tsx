@@ -81,7 +81,6 @@ function FourFeaturedItems({ data }: { data: FeaturedItemsData }) {
   );
 }
 
-//TODO: make two header section: for mobile and desktop. In desktop slash is needed too.
 export function HeaderSection({
   data,
   href,
@@ -96,7 +95,7 @@ export function HeaderSection({
       {data.headline && (
         <Button
           asChild
-          className="flex flex-row gap-2 whitespace-nowrap pl-2.5"
+          className="flex flex-row gap-2 whitespace-nowrap lg:pl-2.5"
         >
           <Link href={href}>
             <Text variant="uppercase">{data.headline}</Text>

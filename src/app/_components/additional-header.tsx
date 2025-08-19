@@ -30,16 +30,13 @@ export function AdditionalHeader({
         "blackTheme bg-transparent text-textColor mix-blend-exclusion",
       )}
     >
-      <Button size="sm" onClick={handleLeftClick}>
-        {left}
-      </Button>
+      <Button onClick={handleLeftClick}>{left}</Button>
       <div className="flex-none text-center text-textBaseSize">{center}</div>
-      <Button asChild size="sm" className="hidden lg:block">
+      <Button asChild className="hidden lg:block">
         <Link href="/">{right}</Link>
       </Button>
       <Button
         asChild
-        size="sm"
         className={cn("block lg:hidden", {
           hidden: hidden,
         })}
