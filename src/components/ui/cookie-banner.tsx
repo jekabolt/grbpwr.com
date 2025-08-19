@@ -81,7 +81,7 @@ export function CookieBanner() {
       </div>
       <div
         className={cn(
-          "fixed inset-y-2 right-2 z-30 hidden w-[459px] bg-bgColor p-2.5",
+          "fixed inset-y-2 right-2 z-30 hidden w-[459px] bg-bgColor p-2.5 mix-blend-normal",
           {
             block: open,
           },
