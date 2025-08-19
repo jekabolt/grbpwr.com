@@ -13,6 +13,8 @@ export function MobileFeaturedItems({
 }) {
   const isMultipleItems = itemsQuantity > 1;
   const itemSlug = data.products?.[0]?.slug || "";
+  const nonScrollable =
+    itemsQuantity === 1 || itemsQuantity === 2 || itemsQuantity === 4;
 
   return (
     <div className="space-y-10 py-16">
@@ -21,14 +23,14 @@ export function MobileFeaturedItems({
           data={data}
           href={isMultipleItems ? data.exploreLink || "" : itemSlug}
           linkText={isMultipleItems ? data.exploreText || "" : "buy now"}
-          className="flex flex-col gap-3"
         />
       </div>
       <Carousel
-        loop
+        loop={!nonScrollable}
         align="center"
+        startIndex={0}
         disableForItemCounts={[1, 2, 4]}
-        className={cn("flex gap-2.5", {
+        className={cn("flex", {
           "gap-0": itemsQuantity >= 3 && itemsQuantity !== 4,
           "grid grid-cols-2 gap-4": itemsQuantity === 4,
         })}
@@ -39,7 +41,7 @@ export function MobileFeaturedItems({
             className={cn("w-44 px-2.5", {
               "w-full": !isMultipleItems,
               "flex-[0_0_50%]": isMultipleItems,
-              "px-0": itemsQuantity >= 3 && itemsQuantity !== 4,
+              "w-44 px-0": itemsQuantity >= 3 && itemsQuantity !== 4,
             })}
             product={p}
           />

@@ -24,93 +24,91 @@ export function FeaturedItems({
   data: FeaturedItemsData | undefined;
   itemsQuantity: number;
 }) {
-  if (itemsQuantity === 1 && data) {
-    return <SingleFeaturedItem data={data} />;
-  }
-
-  if (itemsQuantity >= 4 && data) {
-    return <FourFeaturedItems data={data} />;
-  }
-
   if (!data) return null;
 
   return (
-    <>
+    <div>
       <div className="block lg:hidden">
         <MobileFeaturedItems data={data} itemsQuantity={itemsQuantity} />
       </div>
 
       <div
-        className={cn(
-          "hidden h-full items-center gap-64 overflow-x-auto py-16 pl-2.5 lg:flex",
-          {
-            "justify-between gap-0 overflow-x-hidden":
-              itemsQuantity === 2 || itemsQuantity === 3,
-          },
-        )}
+        className={cn("group hidden py-32 lg:block", {
+          "py-0": itemsQuantity === 1,
+        })}
       >
-        <HeaderSection
-          data={data}
-          href={data.exploreLink || ""}
-          linkText={data.exploreText || ""}
-          className="flex w-full flex-row gap-3 whitespace-nowrap"
-        />
-        <div
-          className={cn("flex flex-row gap-12", {
-            "gap-2.5": itemsQuantity === 2,
-          })}
-        >
-          {data.products?.map((p) => (
-            <ProductItem
-              key={p.id}
-              className={cn("w-80", {
-                "w-[28rem]": itemsQuantity === 2,
-                "w-72": itemsQuantity === 3,
-              })}
-              product={p}
+        {itemsQuantity === 1 && <SingleFeaturedItem data={data} />}
+        {itemsQuantity >= 4 && <FourFeaturedItems data={data} />}
+        {(itemsQuantity === 2 || itemsQuantity === 3) && (
+          <div className="flex h-full items-center justify-between pl-2.5">
+            <HeaderSection
+              data={data}
+              href={data.exploreLink || ""}
+              linkText={data.exploreText || ""}
             />
-          ))}
-        </div>
+            <div className="flex flex-row gap-12">
+              {data.products?.map((p) => (
+                <ProductItem
+                  key={p.id}
+                  className={cn("w-[28rem]", {
+                    "w-72": itemsQuantity === 3,
+                  })}
+                  product={p}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }
 
 function FourFeaturedItems({ data }: { data: FeaturedItemsData }) {
   return (
-    <div className="flex w-full flex-col gap-12 pl-2.5">
+    <div className="space-y-12">
       <HeaderSection
         data={data}
         href={data.exploreLink || ""}
         linkText={data.exploreText || ""}
-        className="flex w-full flex-row gap-3 whitespace-nowrap"
       />
-      <Carousel loop className="flex w-full gap-12">
+      <Carousel loop className="flex w-full">
         {data.products?.map((p) => (
-          <ProductItem key={p.id} className="w-80" product={p} />
+          <ProductItem key={p.id} className="flex-[0_0_25%] px-6" product={p} />
         ))}
       </Carousel>
     </div>
   );
 }
 
+//TODO: make two header section: for mobile and desktop. In desktop slash is needed too.
 export function HeaderSection({
   data,
   href,
   linkText,
-  className,
 }: {
   data: FeaturedItemsData;
   href: string;
   linkText: string;
-  className?: string;
 }) {
   return (
-    <div className={cn(className)}>
-      <Text variant="uppercase">{data.headline}</Text>
-      <Button variant="underline" className="uppercase" asChild>
-        <Link href={href}>{linkText}</Link>
-      </Button>
+    <div>
+      {data.headline && (
+        <Button
+          asChild
+          className="flex flex-row gap-2 whitespace-nowrap pl-2.5"
+        >
+          <Link href={href}>
+            <Text variant="uppercase">{data.headline}</Text>
+            {linkText && (
+              <Text className="flex gap-2 uppercase lg:hidden lg:group-hover:flex">
+                <Text component="span">{`/`}</Text>
+                <Text component="span">{linkText ? linkText : ""}</Text>
+              </Text>
+            )}
+          </Link>
+        </Button>
+      )}
     </div>
   );
 }

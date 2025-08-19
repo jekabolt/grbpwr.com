@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
-import { calculateAspectRatio } from "@/lib/utils";
+import { calculateAspectRatio, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -14,15 +14,15 @@ import { HeroArchive } from "./hero-archive";
 
 export function Ads({ entities }: { entities: common_HeroEntity[] }) {
   return (
-    <div>
+    <div className="w-full">
       {entities?.map((e, i) => {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
             return (
               <div className="relative h-full w-full" key={i}>
-                <Button asChild className="relative h-full w-full">
+                <Button asChild className="group relative h-full w-full">
                   <Link href={e.single?.exploreLink || ""}>
-                    <div className="hidden lg:block">
+                    <div className="hidden h-screen lg:block">
                       <Image
                         src={
                           e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
@@ -33,10 +33,10 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                           e.single?.mediaLandscape?.media?.fullSize?.width,
                           e.single?.mediaLandscape?.media?.fullSize?.height,
                         )}
-                        fit="contain"
+                        fit="cover"
                       />
                     </div>
-                    <div className="block lg:hidden">
+                    <div className="block h-screen lg:hidden">
                       <Image
                         src={
                           e.single?.mediaPortrait?.media?.fullSize?.mediaUrl ||
@@ -47,12 +47,22 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                           e.single?.mediaPortrait?.media?.fullSize?.width,
                           e.single?.mediaPortrait?.media?.fullSize?.height,
                         )}
-                        fit="contain"
+                        fit="cover"
                       />
                     </div>
                     <div className="absolute inset-0 z-20 flex items-center justify-center gap-6 text-bgColor">
-                      <Text variant="uppercase">{e.single?.headline}</Text>
-                      <Text variant="underlined" className="uppercase">
+                      <Text
+                        variant="uppercase"
+                        className={cn({
+                          "group-hover:underline": !e.single?.exploreText,
+                        })}
+                      >
+                        {e.single?.headline}
+                      </Text>
+                      <Text
+                        variant="uppercase"
+                        className="group-hover:underline"
+                      >
                         {e.single?.exploreText}
                       </Text>
                     </div>
@@ -67,7 +77,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 key={i}
                 className="relative flex h-full w-full flex-col lg:flex-row"
               >
-                <Button asChild className="relative h-full w-full">
+                <Button asChild className="group relative h-full w-full">
                   <Link href={e.double?.left?.exploreLink || ""}>
                     <Image
                       src={
@@ -82,16 +92,21 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                       fit="contain"
                     />
                     <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
-                      <Text variant="uppercase">
+                      <Text
+                        variant="uppercase"
+                        className={cn({
+                          "group-hover:underline": !e.double?.left?.exploreText,
+                        })}
+                      >
                         {e.double?.left?.headline}
                       </Text>
-                      <Text variant="underlined" className="uppercase">
+                      <Text className="uppercase group-hover:underline">
                         {e.double?.left?.exploreText}
                       </Text>
                     </div>
                   </Link>
                 </Button>
-                <Button asChild className="relative h-full w-full">
+                <Button asChild className="group relative h-full w-full">
                   <Link href={e.double?.right?.exploreLink || ""}>
                     <Image
                       src={
@@ -107,10 +122,16 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                       fit="contain"
                     />
                     <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
-                      <Text variant="uppercase">
+                      <Text
+                        variant="uppercase"
+                        className={cn({
+                          "group-hover:underline":
+                            !e.double?.right?.exploreText,
+                        })}
+                      >
                         {e.double?.right?.headline}
                       </Text>
-                      <Text variant="underlined" className="uppercase">
+                      <Text className="uppercase group-hover:underline">
                         {e.double?.right?.exploreText}
                       </Text>
                     </div>

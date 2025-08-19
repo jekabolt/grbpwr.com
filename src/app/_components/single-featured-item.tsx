@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 import { currencySymbols } from "@/constants";
 
@@ -11,9 +12,10 @@ import { FeaturedItemsData } from "./featured-items";
 
 export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="hidden lg:block">
+    <div>
       {data.products?.map((p) => {
         const priceWithSale =
           (parseFloat(p.productDisplay?.productBody?.price?.value || "0") *
@@ -28,10 +30,7 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
           ) > 0;
 
         return (
-          <div
-            key={p.id}
-            className="relative flex h-screen w-full justify-end py-16"
-          >
+          <div key={p.id} className="relative flex h-screen w-full justify-end">
             <div className="absolute inset-x-2.5 top-1/2 z-40 flex -translate-y-1/2 text-bgColor mix-blend-exclusion selection:bg-inverted selection:text-textColor">
               <div className="flex w-1/2 selection:bg-acidColor">
                 <div className="flex w-full flex-row gap-3 whitespace-nowrap">
@@ -57,24 +56,35 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
                     <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>
                   )}
                 </div>
-                <Button asChild className="whitespace-nowrap uppercase">
-                  <Link href={p.slug || ""}>buy now</Link>
-                </Button>
+                <Text
+                  variant={isHovered ? "underlined" : "default"}
+                  className="whitespace-nowrap uppercase"
+                >
+                  buy now
+                </Text>
               </div>
             </div>
-            <div className="h-full w-1/2">
-              <Image
-                src={
-                  p.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl || ""
-                }
-                alt={p.productDisplay?.productBody?.name || ""}
-                aspectRatio={calculateAspectRatio(
-                  p.productDisplay?.thumbnail?.media?.thumbnail?.width,
-                  p.productDisplay?.thumbnail?.media?.thumbnail?.height,
-                )}
-                fit="contain"
-              />
-            </div>
+            <Button
+              asChild
+              className="h-full w-1/2"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <Link href={p.slug || ""}>
+                <Image
+                  src={
+                    p.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
+                    ""
+                  }
+                  alt={p.productDisplay?.productBody?.name || ""}
+                  aspectRatio={calculateAspectRatio(
+                    p.productDisplay?.thumbnail?.media?.thumbnail?.width,
+                    p.productDisplay?.thumbnail?.media?.thumbnail?.height,
+                  )}
+                  fit="contain"
+                />
+              </Link>
+            </Button>
           </div>
         );
       })}
