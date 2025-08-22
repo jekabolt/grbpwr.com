@@ -41,7 +41,7 @@ export function AnimatedButton({
     if (onClick && !href) {
       onClick();
     }
-    setTimeout(() => setIsPressed(false), 300);
+    setTimeout(() => setIsPressed(false), 5000);
   };
 
   if (href) {
@@ -50,10 +50,10 @@ export function AnimatedButton({
         {...props}
         asChild
         className={cn(
-          "transition-all duration-300 ease-in-out",
+          "duration-5000 transition-all ease-in-out",
           {
             "bg-bgColor opacity-50": isPressed && animationArea === "container",
-            "text-textInactiveColor": isPressed && animationArea === "text",
+            underline: isPressed && animationArea === "text",
           },
           className,
         )}
@@ -72,7 +72,7 @@ export function AnimatedButton({
         "transition-all duration-300 ease-in-out",
         {
           "bg-bgColor opacity-50": isPressed && animationArea === "container",
-          "text-textInactiveColor": isPressed && animationArea === "text",
+          underline: isPressed && animationArea === "text",
         },
         className,
       )}

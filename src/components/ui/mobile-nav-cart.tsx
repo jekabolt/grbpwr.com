@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
@@ -17,21 +16,15 @@ export function MobileNavCart({
 }: {
   isProductInfo?: boolean;
 }) {
-  const { products } = useCart((state) => state);
-  const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
+  const { products, isOpen, openCart, closeCart } = useCart((state) => state);
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
 
-  const openCart = () => {
-    setIsMobileCartOpen(true);
-  };
-
-  const closeCart = () => {
-    setIsMobileCartOpen(false);
-  };
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const open = isMobile && isOpen;
 
   return (
-    <DialogPrimitives.Root open={isMobileCartOpen} onOpenChange={closeCart}>
+    <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
       <Button
         size={isProductInfo ? "default" : "lg"}
         onClick={openCart}

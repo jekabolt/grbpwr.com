@@ -45,7 +45,11 @@ export function DefaultMobileMenuDialog({
                   {item.showArrow && <Text>{">"}</Text>}
                 </AnimatedButton>
               ) : (
-                <AnimatedButton href={item.href}>
+                <AnimatedButton
+                  animationArea="text"
+                  href={item.href}
+                  className="hover:underline"
+                >
                   <Text>{item.label}</Text>
                   {item.showArrow && <Text>{">"}</Text>}
                 </AnimatedButton>
@@ -78,6 +82,7 @@ export function ActiveCategoryMenuDialog({
   return (
     <div className="flex h-full flex-col gap-10 overflow-y-auto">
       <AnimatedButton
+        animationArea="text"
         href="/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT"
         className="uppercase"
       >
@@ -85,6 +90,7 @@ export function ActiveCategoryMenuDialog({
       </AnimatedButton>
       <div className="flex flex-col gap-5">
         <AnimatedButton
+          animationArea="text"
           href={`/catalog/${activeCategory}`}
           className="uppercase"
         >
@@ -138,6 +144,7 @@ function CategoryButton({
   return (
     <AnimatedButton
       key={link.id}
+      animationArea="text"
       href={`/catalog/${activeCategory}/${link.title.toLowerCase()}`}
       className="uppercase"
     >

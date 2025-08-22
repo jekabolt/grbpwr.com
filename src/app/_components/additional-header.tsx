@@ -33,11 +33,16 @@ export function AdditionalHeader({
         {left}
       </AnimatedButton>
       <div className="flex-none text-center text-textBaseSize">{center}</div>
-      <AnimatedButton href="/" animationArea="text" className="hidden lg:block">
+      <AnimatedButton
+        href="/"
+        animationArea="text"
+        className="hidden hover:underline lg:block"
+      >
         {right}
       </AnimatedButton>
       <AnimatedButton
         href="/"
+        animationArea="text"
         className={cn("block lg:hidden", {
           hidden: hidden,
         })}
