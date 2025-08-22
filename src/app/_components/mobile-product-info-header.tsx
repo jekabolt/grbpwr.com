@@ -5,7 +5,13 @@ import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 export function MobileProductInfoHeader({ left, link }: HeaderProps) {
   return (
     <header className="fixed inset-x-2.5 top-2.5 z-10 flex items-center justify-between">
-      <AnimatedButton href={link}>{left}</AnimatedButton>
+      <AnimatedButton
+        href={link}
+        className="w-1/3 py-2.5 pl-2.5 text-left"
+        animationArea="text"
+      >
+        {left}
+      </AnimatedButton>
       <MobileNavCart isProductInfo />
     </header>
   );

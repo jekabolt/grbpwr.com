@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { common_Product } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import { Carousel } from "@/components/ui/carousel";
 import { Text } from "@/components/ui/text";
 
@@ -93,20 +92,19 @@ export function HeaderSection({
   return (
     <div>
       {data.headline && (
-        <Button
-          asChild
+        <AnimatedButton
+          href={href}
+          animationArea="text"
           className="flex flex-row gap-2 whitespace-nowrap lg:pl-2.5"
         >
-          <Link href={href}>
-            <Text variant="uppercase">{data.headline}</Text>
-            {linkText && (
-              <Text className="flex gap-2 uppercase lg:hidden lg:group-hover:flex">
-                <Text component="span">{`/`}</Text>
-                <Text component="span">{linkText ? linkText : ""}</Text>
-              </Text>
-            )}
-          </Link>
-        </Button>
+          <Text variant="uppercase">{data.headline}</Text>
+          {linkText && (
+            <Text className="flex gap-2 uppercase lg:hidden lg:group-hover:flex">
+              <Text component="span">{`/`}</Text>
+              <Text component="span">{linkText ? linkText : ""}</Text>
+            </Text>
+          )}
+        </AnimatedButton>
       )}
     </div>
   );

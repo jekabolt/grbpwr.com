@@ -10,6 +10,8 @@ import { Button } from "./button";
 type BaseButtonProps = {
   children: React.ReactNode;
   className?: string;
+  animationArea?: "text" | "container";
+  [k: string]: unknown;
 };
 
 type RegularButtonProps = BaseButtonProps & {
@@ -27,25 +29,35 @@ type AnimatedButtonProps = RegularButtonProps | LinkButtonProps;
 export function AnimatedButton({
   children,
   className,
+  animationArea = "container",
   href,
   onClick,
+  ...props
 }: AnimatedButtonProps) {
   const [isPressed, setIsPressed] = useState(false);
 
   const handlePress = () => {
     setIsPressed(true);
-    setTimeout(() => setIsPressed(false), 150);
+    if (onClick && !href) {
+      onClick();
+    }
+    setTimeout(() => setIsPressed(false), 300);
   };
 
-  const animationClass = cn(
-    "transition-colors duration-150",
-    isPressed && "bg-textInactiveColor opacity-50",
-  );
   return (
     <Button
+      {...props}
       asChild
-      className={cn(animationClass, className)}
+      className={cn(
+        "transition-all duration-300 ease-in-out",
+        {
+          "bg-bgColor opacity-50": isPressed && animationArea === "container",
+          "text-textInactiveColor": isPressed && animationArea === "text",
+        },
+        className,
+      )}
       onClick={handlePress}
+      disabled={isPressed}
     >
       <Link href={href || ""}>{children}</Link>
     </Button>

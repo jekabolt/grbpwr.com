@@ -1,10 +1,9 @@
 import { useState } from "react";
-import Link from "next/link";
 import { currencySymbols } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { calculateAspectRatio } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
@@ -64,27 +63,25 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
                 </Text>
               </div>
             </div>
-            <Button
-              asChild
+            <AnimatedButton
+              href={p.slug || ""}
+              animationArea="container"
               className="h-full w-1/2"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              <Link href={p.slug || ""}>
-                <Image
-                  src={
-                    p.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
-                    ""
-                  }
-                  alt={p.productDisplay?.productBody?.name || ""}
-                  aspectRatio={calculateAspectRatio(
-                    p.productDisplay?.thumbnail?.media?.thumbnail?.width,
-                    p.productDisplay?.thumbnail?.media?.thumbnail?.height,
-                  )}
-                  fit="contain"
-                />
-              </Link>
-            </Button>
+              <Image
+                src={
+                  p.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl || ""
+                }
+                alt={p.productDisplay?.productBody?.name || ""}
+                aspectRatio={calculateAspectRatio(
+                  p.productDisplay?.thumbnail?.media?.thumbnail?.width,
+                  p.productDisplay?.thumbnail?.media?.thumbnail?.height,
+                )}
+                fit="contain"
+              />
+            </AnimatedButton>
           </div>
         );
       })}
