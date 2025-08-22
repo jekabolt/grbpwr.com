@@ -55,7 +55,7 @@ export function MobileCookieModal({
           <div className="flex items-center justify-between px-5">
             <Text variant="uppercase">Cookie preferences</Text>
             <DialogPrimitives.Close asChild>
-              <Button>[X]</Button>
+              <Button>[x]</Button>
             </DialogPrimitives.Close>
           </div>
 

@@ -65,7 +65,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Text>
                   </div>
                 </AnimatedButton>
-                <Overlay cover="container" />
+                <Overlay cover="container" disablePointerEvents />
               </div>
             );
           case "HERO_TYPE_DOUBLE":
@@ -134,7 +134,7 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     </Text>
                   </div>
                 </AnimatedButton>
-                <Overlay cover="container" />
+                <Overlay cover="container" disablePointerEvents />
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":

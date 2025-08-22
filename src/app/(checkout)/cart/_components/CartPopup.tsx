@@ -29,15 +29,21 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   }, [isOpen]);
 
   return (
-    <div className="w-full lg:w-auto">
-      {isOpen && <Overlay cover="screen" onClick={closeCart} />}
+    <div className="w-full">
+      {isOpen && (
+        <Overlay
+          cover="screen"
+          onClick={closeCart}
+          disablePointerEvents={false}
+        />
+      )}
       <div className="hidden lg:block">
         {isOpen && (
           <div className="blackTheme fixed right-0 top-0 z-30 h-screen w-[500px] bg-bgColor p-2.5 text-textColor">
             <div className="flex h-full flex-col gap-y-6">
               <div className="flex items-center justify-between">
                 <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
-                <Button onClick={closeCart}>[X]</Button>
+                <Button onClick={closeCart}>[x]</Button>
               </div>
               {!itemsQuantity ? (
                 <div className="flex h-full items-center justify-center">

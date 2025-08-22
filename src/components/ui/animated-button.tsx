@@ -44,10 +44,30 @@ export function AnimatedButton({
     setTimeout(() => setIsPressed(false), 300);
   };
 
+  if (href) {
+    return (
+      <Button
+        {...props}
+        asChild
+        className={cn(
+          "transition-all duration-300 ease-in-out",
+          {
+            "bg-bgColor opacity-50": isPressed && animationArea === "container",
+            "text-textInactiveColor": isPressed && animationArea === "text",
+          },
+          className,
+        )}
+        onClick={handlePress}
+        disabled={isPressed}
+      >
+        <Link href={href || ""}>{children}</Link>
+      </Button>
+    );
+  }
+
   return (
     <Button
       {...props}
-      asChild
       className={cn(
         "transition-all duration-300 ease-in-out",
         {
@@ -59,7 +79,7 @@ export function AnimatedButton({
       onClick={handlePress}
       disabled={isPressed}
     >
-      <Link href={href || ""}>{children}</Link>
+      {children}
     </Button>
   );
 }

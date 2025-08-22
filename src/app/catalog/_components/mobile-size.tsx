@@ -72,7 +72,7 @@ export function MobileSize() {
           <div className="relative mb-4 flex items-center justify-between">
             <Text variant="uppercase">size</Text>
             <DialogPrimitives.Close asChild>
-              <Button>[X]</Button>
+              <Button>[x]</Button>
             </DialogPrimitives.Close>
           </div>
 
