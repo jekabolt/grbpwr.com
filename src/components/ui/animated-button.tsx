@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -27,10 +30,23 @@ export function AnimatedButton({
   href,
   onClick,
 }: AnimatedButtonProps) {
-  const animationClass =
-    "transition-colors focus:bg-textInactiveColor focus:opacity-50 ";
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handlePress = () => {
+    setIsPressed(true);
+    setTimeout(() => setIsPressed(false), 150);
+  };
+
+  const animationClass = cn(
+    "transition-colors duration-150",
+    isPressed && "bg-textInactiveColor opacity-50",
+  );
   return (
-    <Button asChild className={cn(animationClass, className)}>
+    <Button
+      asChild
+      className={cn(animationClass, className)}
+      onClick={handlePress}
+    >
       <Link href={href || ""}>{children}</Link>
     </Button>
   );
