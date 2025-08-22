@@ -47,7 +47,7 @@ export default function CurrencyPopover({ title, theme }: Props) {
           <div className="relative mb-4 flex items-center justify-between p-2">
             <Text variant="uppercase">{title}</Text>
             <DialogPrimitives.Close asChild>
-              <Button>[X]</Button>
+              <Button>[x]</Button>
             </DialogPrimitives.Close>
           </div>
           <div className="relative grow overflow-y-auto">

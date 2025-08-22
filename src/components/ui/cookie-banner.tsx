@@ -81,7 +81,7 @@ export function CookieBanner() {
       </div>
       <div
         className={cn(
-          "fixed inset-y-2 right-2 z-30 hidden w-[459px] bg-bgColor p-2.5",
+          "fixed inset-y-2 right-2 z-30 hidden w-[459px] bg-bgColor p-2.5 mix-blend-normal",
           {
             block: open,
           },
@@ -90,7 +90,7 @@ export function CookieBanner() {
         <div className="flex h-full flex-col gap-y-6">
           <div className="flex items-center justify-between">
             <Text variant="uppercase">cookie preferences</Text>
-            <Button onClick={() => setOpenStatus((v) => !v)}>[X]</Button>
+            <Button onClick={() => setOpenStatus((v) => !v)}>[x]</Button>
           </div>
           <div className="h-full overflow-y-scroll border-b">
             <CookieContent

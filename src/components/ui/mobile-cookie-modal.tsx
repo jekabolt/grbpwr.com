@@ -48,14 +48,14 @@ export function MobileCookieModal({
       </div>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-10 bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-0 z-30 flex flex-col gap-4 bg-bgColor py-4">
+        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-30 flex flex-col gap-4 bg-bgColor py-4 text-textColor">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
           <div className="flex items-center justify-between px-5">
             <Text variant="uppercase">Cookie preferences</Text>
             <DialogPrimitives.Close asChild>
-              <Button>[X]</Button>
+              <Button>[x]</Button>
             </DialogPrimitives.Close>
           </div>
 

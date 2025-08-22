@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import type { common_HeroEntity } from "@/api/proto-http/frontend";
 
-import { calculateAspectRatio } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { calculateAspectRatio, cn } from "@/lib/utils";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
@@ -19,46 +18,54 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
             return (
-              <div className="relative h-full w-full" key={i}>
-                <Button asChild className="relative h-full w-full">
-                  <Link href={e.single?.exploreLink || ""}>
-                    <div className="hidden lg:block">
-                      <Image
-                        src={
-                          e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
-                          ""
-                        }
-                        alt="ad hero image"
-                        aspectRatio={calculateAspectRatio(
-                          e.single?.mediaLandscape?.media?.fullSize?.width,
-                          e.single?.mediaLandscape?.media?.fullSize?.height,
-                        )}
-                        fit="contain"
-                      />
-                    </div>
-                    <div className="block lg:hidden">
-                      <Image
-                        src={
-                          e.single?.mediaPortrait?.media?.fullSize?.mediaUrl ||
-                          ""
-                        }
-                        alt="ad hero image"
-                        aspectRatio={calculateAspectRatio(
-                          e.single?.mediaPortrait?.media?.fullSize?.width,
-                          e.single?.mediaPortrait?.media?.fullSize?.height,
-                        )}
-                        fit="contain"
-                      />
-                    </div>
-                    <div className="absolute inset-0 z-20 flex items-center justify-center gap-6 text-bgColor">
-                      <Text variant="uppercase">{e.single?.headline}</Text>
-                      <Text variant="underlined" className="uppercase">
-                        {e.single?.exploreText}
-                      </Text>
-                    </div>
-                  </Link>
-                </Button>
-                <Overlay cover="container" />
+              <div className="relative h-screen w-full" key={i}>
+                <AnimatedButton
+                  href={e.single?.exploreLink || ""}
+                  className="group relative h-full w-full text-bgColor"
+                >
+                  <div className="hidden h-full lg:block">
+                    <Image
+                      src={
+                        e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
+                        ""
+                      }
+                      alt="ad hero image"
+                      aspectRatio={calculateAspectRatio(
+                        e.single?.mediaLandscape?.media?.fullSize?.width,
+                        e.single?.mediaLandscape?.media?.fullSize?.height,
+                      )}
+                      fit="cover"
+                    />
+                  </div>
+                  <div className="block h-full lg:hidden">
+                    <Image
+                      src={
+                        e.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""
+                      }
+                      alt="ad hero image"
+                      aspectRatio={calculateAspectRatio(
+                        e.single?.mediaPortrait?.media?.fullSize?.width,
+                        e.single?.mediaPortrait?.media?.fullSize?.height,
+                      )}
+                      fit="cover"
+                    />
+                  </div>
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center">
+                    <Text
+                      variant="uppercase"
+                      className={cn("w-full text-center", {
+                        "group-hover:underline":
+                          !e.single?.exploreText && e.single?.exploreLink,
+                      })}
+                    >
+                      {e.single?.headline}
+                    </Text>
+                    <Text variant="uppercase" className="group-hover:underline">
+                      {e.single?.exploreText}
+                    </Text>
+                  </div>
+                </AnimatedButton>
+                <Overlay cover="container" disablePointerEvents />
               </div>
             );
           case "HERO_TYPE_DOUBLE":
@@ -67,56 +74,67 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                 key={i}
                 className="relative flex h-full w-full flex-col lg:flex-row"
               >
-                <Button asChild className="relative h-full w-full">
-                  <Link href={e.double?.left?.exploreLink || ""}>
-                    <Image
-                      src={
-                        e.double?.left?.mediaLandscape?.media?.fullSize
-                          ?.mediaUrl || ""
-                      }
-                      alt="ad hero image"
-                      aspectRatio={calculateAspectRatio(
-                        e.double?.left?.mediaLandscape?.media?.fullSize?.width,
-                        e.double?.left?.mediaLandscape?.media?.fullSize?.height,
-                      )}
-                      fit="contain"
-                    />
-                    <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
-                      <Text variant="uppercase">
-                        {e.double?.left?.headline}
-                      </Text>
-                      <Text variant="underlined" className="uppercase">
-                        {e.double?.left?.exploreText}
-                      </Text>
-                    </div>
-                  </Link>
-                </Button>
-                <Button asChild className="relative h-full w-full">
-                  <Link href={e.double?.right?.exploreLink || ""}>
-                    <Image
-                      src={
-                        e.double?.right?.mediaLandscape?.media?.fullSize
-                          ?.mediaUrl || ""
-                      }
-                      alt="ad hero image"
-                      aspectRatio={calculateAspectRatio(
-                        e.double?.right?.mediaLandscape?.media?.fullSize?.width,
-                        e.double?.right?.mediaLandscape?.media?.fullSize
-                          ?.height,
-                      )}
-                      fit="contain"
-                    />
-                    <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
-                      <Text variant="uppercase">
-                        {e.double?.right?.headline}
-                      </Text>
-                      <Text variant="underlined" className="uppercase">
-                        {e.double?.right?.exploreText}
-                      </Text>
-                    </div>
-                  </Link>
-                </Button>
-                <Overlay cover="container" />
+                <AnimatedButton
+                  href={e.double?.left?.exploreLink || ""}
+                  className="group relative h-full w-full text-bgColor"
+                >
+                  <Image
+                    src={
+                      e.double?.left?.mediaLandscape?.media?.fullSize
+                        ?.mediaUrl || ""
+                    }
+                    alt="ad hero image"
+                    aspectRatio={calculateAspectRatio(
+                      e.double?.left?.mediaLandscape?.media?.fullSize?.width,
+                      e.double?.left?.mediaLandscape?.media?.fullSize?.height,
+                    )}
+                    fit="contain"
+                  />
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
+                    <Text
+                      variant="uppercase"
+                      className={cn({
+                        "group-hover:underline": !e.double?.left?.exploreText,
+                      })}
+                    >
+                      {e.double?.left?.headline}
+                    </Text>
+                    <Text className="uppercase group-hover:underline">
+                      {e.double?.left?.exploreText}
+                    </Text>
+                  </div>
+                </AnimatedButton>
+                <AnimatedButton
+                  href={e.double?.right?.exploreLink || ""}
+                  className="group relative h-full w-full"
+                >
+                  <Image
+                    src={
+                      e.double?.right?.mediaLandscape?.media?.fullSize
+                        ?.mediaUrl || ""
+                    }
+                    alt="ad hero image"
+                    aspectRatio={calculateAspectRatio(
+                      e.double?.right?.mediaLandscape?.media?.fullSize?.width,
+                      e.double?.right?.mediaLandscape?.media?.fullSize?.height,
+                    )}
+                    fit="contain"
+                  />
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
+                    <Text
+                      variant="uppercase"
+                      className={cn({
+                        "group-hover:underline": !e.double?.right?.exploreText,
+                      })}
+                    >
+                      {e.double?.right?.headline}
+                    </Text>
+                    <Text className="uppercase group-hover:underline">
+                      {e.double?.right?.exploreText}
+                    </Text>
+                  </div>
+                </AnimatedButton>
+                <Overlay cover="container" disablePointerEvents />
               </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":

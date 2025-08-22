@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import { HeaderProps } from "@/components/flexible-layout";
-import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/ui/animated-button";
 
 export function AdditionalHeader({
   left,
@@ -30,22 +29,26 @@ export function AdditionalHeader({
         "blackTheme bg-transparent text-textColor mix-blend-exclusion",
       )}
     >
-      <Button size="sm" onClick={handleLeftClick}>
+      <AnimatedButton animationArea="text" onClick={handleLeftClick}>
         {left}
-      </Button>
+      </AnimatedButton>
       <div className="flex-none text-center text-textBaseSize">{center}</div>
-      <Button asChild size="sm" className="hidden lg:block">
-        <Link href="/">{right}</Link>
-      </Button>
-      <Button
-        asChild
-        size="sm"
+      <AnimatedButton
+        href="/"
+        animationArea="text"
+        className="hidden hover:underline lg:block"
+      >
+        {right}
+      </AnimatedButton>
+      <AnimatedButton
+        href="/"
+        animationArea="text"
         className={cn("block lg:hidden", {
           hidden: hidden,
         })}
       >
-        <Link href="/">[x]</Link>
-      </Button>
+        [x]
+      </AnimatedButton>
     </header>
   );
 }

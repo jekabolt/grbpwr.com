@@ -16,12 +16,15 @@ export function MobileNavCart({
 }: {
   isProductInfo?: boolean;
 }) {
-  const { products, isOpen, closeCart, openCart } = useCart((state) => state);
+  const { products, isOpen, openCart, closeCart } = useCart((state) => state);
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const open = isMobile && isOpen;
+
   return (
-    <DialogPrimitives.Root open={isOpen} onOpenChange={closeCart}>
+    <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
       <Button
         size={isProductInfo ? "default" : "lg"}
         onClick={openCart}
@@ -56,7 +59,7 @@ export function MobileNavCart({
             >
               <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
               <DialogPrimitives.Close asChild>
-                <Button>[X]</Button>
+                <Button onClick={closeCart}>[x]</Button>
               </DialogPrimitives.Close>
             </div>
 

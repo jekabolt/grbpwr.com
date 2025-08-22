@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import {
   calculateAspectRatio,
   createActiveCategoryMenuItems,
@@ -11,7 +9,7 @@ import CurrencyPopover from "@/app/_components/mobile-currency-popover";
 import NewslatterForm from "@/app/_components/newslatter-form";
 
 import { useDataContext } from "../contexts/DataContext";
-import { Button } from "./button";
+import { AnimatedButton } from "./animated-button";
 import Image from "./image";
 import { Text } from "./text";
 
@@ -37,17 +35,26 @@ export function DefaultMobileMenuDialog({
       <div className="flex flex-col gap-10">
         <div className="flex flex-col gap-5">
           {defaultMenuItems.map((item) => (
-            <Button
-              key={item.label}
-              asChild
-              className="flex items-center justify-between uppercase"
-              onClick={item.action}
-            >
-              <Link href={item.href}>
-                <Text>{item.label}</Text>
-                {item.showArrow && <Text>{">"}</Text>}
-              </Link>
-            </Button>
+            <div key={item.label} className="w-full">
+              {isBigMenuEnabled ? (
+                <AnimatedButton
+                  className="flex w-full items-center justify-between uppercase"
+                  onClick={item.action}
+                >
+                  <Text>{item.label}</Text>
+                  {item.showArrow && <Text>{">"}</Text>}
+                </AnimatedButton>
+              ) : (
+                <AnimatedButton
+                  animationArea="text"
+                  href={item.href}
+                  className="hover:underline"
+                >
+                  <Text>{item.label}</Text>
+                  {item.showArrow && <Text>{">"}</Text>}
+                </AnimatedButton>
+              )}
+            </div>
           ))}
         </div>
         <div className="self-start">
@@ -74,15 +81,21 @@ export function ActiveCategoryMenuDialog({
 
   return (
     <div className="flex h-full flex-col gap-10 overflow-y-auto">
-      <Button asChild className="uppercase">
-        <Link href="/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT">
-          new in
-        </Link>
-      </Button>
+      <AnimatedButton
+        animationArea="text"
+        href="/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT"
+        className="uppercase"
+      >
+        new in
+      </AnimatedButton>
       <div className="flex flex-col gap-5">
-        <Button asChild className="uppercase">
-          <Link href={`/catalog/${activeCategory}`}>all</Link>
-        </Button>
+        <AnimatedButton
+          animationArea="text"
+          href={`/catalog/${activeCategory}`}
+          className="uppercase"
+        >
+          all
+        </AnimatedButton>
         {leftCategories.map((link) => (
           <CategoryButton
             key={link.id}
@@ -102,21 +115,19 @@ export function ActiveCategoryMenuDialog({
       </div>
       {heroNav?.media?.media?.thumbnail?.mediaUrl && (
         <div className="w-full">
-          <Button asChild className="space-y-2">
-            <Link href={heroLink}>
-              <div className="w-full">
-                <Image
-                  src={heroNav.media.media.thumbnail.mediaUrl}
-                  alt="mobile hero nav"
-                  aspectRatio={calculateAspectRatio(
-                    heroNav.media.media.thumbnail.width,
-                    heroNav.media.media.thumbnail.height,
-                  )}
-                />
-              </div>
-              <Text>{heroNav.exploreText}</Text>
-            </Link>
-          </Button>
+          <AnimatedButton href={heroLink} className="space-y-2">
+            <div className="w-full">
+              <Image
+                src={heroNav.media.media.thumbnail.mediaUrl}
+                alt="mobile hero nav"
+                aspectRatio={calculateAspectRatio(
+                  heroNav.media.media.thumbnail.width,
+                  heroNav.media.media.thumbnail.height,
+                )}
+              />
+            </div>
+            <Text>{heroNav.exploreText}</Text>
+          </AnimatedButton>
         </div>
       )}
     </div>
@@ -131,10 +142,13 @@ function CategoryButton({
   link: { title: string; id: string };
 }) {
   return (
-    <Button key={link.id} asChild className="uppercase">
-      <Link href={`/catalog/${activeCategory}/${link.title.toLowerCase()}`}>
-        {getCategoryDisplayName(link.title)}
-      </Link>
-    </Button>
+    <AnimatedButton
+      key={link.id}
+      animationArea="text"
+      href={`/catalog/${activeCategory}/${link.title.toLowerCase()}`}
+      className="uppercase"
+    >
+      {getCategoryDisplayName(link.title)}
+    </AnimatedButton>
   );
 }

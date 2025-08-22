@@ -34,7 +34,7 @@ export function MobileMeasurements({
           <div className="flex items-center justify-between">
             <Text variant="uppercase">size guide</Text>
             <DialogPrimitives.Close asChild>
-              <Button>[X]</Button>
+              <Button>[x]</Button>
             </DialogPrimitives.Close>
           </div>
           <div className="mb-10">

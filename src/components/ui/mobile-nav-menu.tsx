@@ -27,7 +27,7 @@ export function MobileNavMenu({
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Content className="fixed inset-0 z-40 bg-bgColor px-2.5 py-5">
+        <DialogPrimitives.Content className="fixed inset-0 z-40 bg-bgColor px-2.5 pt-5">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>

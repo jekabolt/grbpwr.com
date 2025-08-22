@@ -35,7 +35,7 @@ export function MobileSort() {
           <div className="relative mb-4 flex items-center justify-between">
             <Text variant="uppercase">sort by</Text>
             <DialogPrimitives.Close asChild>
-              <Button>[X]</Button>
+              <Button>[x]</Button>
             </DialogPrimitives.Close>
           </div>
           <div className="space-y-2 py-5">
