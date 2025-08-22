@@ -9,7 +9,7 @@ interface Props {
 export function Overlay({ cover, color = "dark", onClick }: Props) {
   return (
     <div
-      className={cn("inset-0 z-10 h-screen", {
+      className={cn("pointer-events-none inset-0 z-10 h-screen", {
         "bg-overlay": color === "dark",
         "bg-white/50": color === "light",
         fixed: cover === "screen",
