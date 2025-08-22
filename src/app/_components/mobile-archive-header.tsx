@@ -1,8 +1,5 @@
-import Link from "next/link";
-
 import { HeaderProps } from "@/components/flexible-layout";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import { AnimatedButton } from "@/components/ui/animated-button";
 
 export function MobileArchiveHeader({
   left,
@@ -14,13 +11,13 @@ export function MobileArchiveHeader({
   return (
     <>
       <div className="fixed inset-x-6 top-6 z-30 flex justify-end bg-transparent text-textColor mix-blend-exclusion">
-        <Button onClick={onClick}>{right}</Button>
+        <AnimatedButton animationArea="text" onClick={onClick}>
+          {right}
+        </AnimatedButton>
       </div>
       <div className="bottom fixed inset-x-2.5 bottom-2.5 z-30 flex h-12 items-center justify-between bg-bgColor px-4 py-2.5 text-textColor mix-blend-hard-light">
-        <Button asChild>
-          <Link href={link ? link : "/"}>{left}</Link>
-        </Button>
-        <Text>{center}</Text>
+        <AnimatedButton href={link ? link : "/"}>{left}</AnimatedButton>
+        <AnimatedButton href="/archive">{center}</AnimatedButton>
       </div>
     </>
   );

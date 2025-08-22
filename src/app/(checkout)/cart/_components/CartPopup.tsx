@@ -29,7 +29,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   }, [isOpen]);
 
   return (
-    <div className="w-full">
+    <div className="z-50 w-full">
       {isOpen && (
         <Overlay
           cover="screen"

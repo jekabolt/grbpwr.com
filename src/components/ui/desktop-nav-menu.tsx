@@ -8,6 +8,7 @@ import { filterNavigationLinks, processCategories } from "@/lib/categories-map";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 
+import { AnimatedButton } from "./animated-button";
 import { Button } from "./button";
 import Image from "./image";
 import { Text } from "./text";
@@ -180,21 +181,19 @@ function LinksGroup({
       </div>
       {heroNav?.media?.media?.thumbnail?.mediaUrl && (
         <div className="w-40">
-          <Button asChild>
-            <Link href={activeHeroNavLink} className="space-y-2">
-              <div className="w-full">
-                <Image
-                  src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
-                  alt="hero"
-                  aspectRatio={calculateAspectRatio(
-                    heroNav?.media?.media?.thumbnail?.width,
-                    heroNav?.media?.media?.thumbnail?.height,
-                  )}
-                />
-              </div>
-              <Text>{heroNav?.exploreText}</Text>
-            </Link>
-          </Button>
+          <AnimatedButton href={activeHeroNavLink} className="space-y-2">
+            <div className="w-full">
+              <Image
+                src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
+                alt="hero"
+                aspectRatio={calculateAspectRatio(
+                  heroNav?.media?.media?.thumbnail?.width,
+                  heroNav?.media?.media?.thumbnail?.height,
+                )}
+              />
+            </div>
+            <Text>{heroNav?.exploreText}</Text>
+          </AnimatedButton>
         </div>
       )}
     </div>
