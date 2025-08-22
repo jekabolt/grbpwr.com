@@ -28,7 +28,7 @@ export function AnimatedButton({
   onClick,
 }: AnimatedButtonProps) {
   const animationClass =
-    "transition-colors hover:bg-textInactiveColor hover:opacity-50 ";
+    "transition-colors focus:bg-textInactiveColor focus:opacity-50 ";
   return (
     <Button asChild className={cn(animationClass, className)}>
       <Link href={href || ""}>{children}</Link>
