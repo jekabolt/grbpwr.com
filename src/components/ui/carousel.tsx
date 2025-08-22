@@ -37,6 +37,7 @@ export function Carousel({
 }: CarouselProps) {
   const childrenCount = Children.count(children);
   const isDisabled = disabled || disableForItemCounts?.includes(childrenCount);
+
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop,
@@ -50,13 +51,13 @@ export function Carousel({
   );
 
   function onSelect() {
-    if (!emblaApi || !setSelectedIndex) return;
+    if (!emblaApi || !setSelectedIndex || isDisabled) return;
     const currentIndex = emblaApi.selectedScrollSnap();
     setSelectedIndex(currentIndex);
   }
 
   useEffect(() => {
-    if (!emblaApi || !enablePageScroll) return;
+    if (!emblaApi || !enablePageScroll || isDisabled) return;
 
     const viewport = emblaApi.rootNode();
 
@@ -89,10 +90,10 @@ export function Carousel({
       });
       viewport.removeEventListener("touchmove", onTouchMove, { capture: true });
     };
-  }, [emblaApi, enablePageScroll, loop]);
+  }, [emblaApi, enablePageScroll, loop, isDisabled]);
 
   useEffect(() => {
-    if (!emblaApi) return;
+    if (!emblaApi || isDisabled) return;
 
     onSelect();
     emblaApi.on("select", onSelect);
@@ -102,7 +103,7 @@ export function Carousel({
       emblaApi.off("select", onSelect);
       emblaApi.off("reInit", onSelect);
     };
-  }, [emblaApi, onSelect]);
+  }, [emblaApi, onSelect, isDisabled]);
 
   return (
     <div ref={emblaRef} className="overflow-hidden">

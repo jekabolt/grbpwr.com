@@ -71,7 +71,7 @@ function FourFeaturedItems({ data }: { data: FeaturedItemsData }) {
         href={data.exploreLink || ""}
         linkText={data.exploreText || ""}
       />
-      <Carousel loop className="flex w-full">
+      <Carousel disableForItemCounts={[4]} loop className="flex w-full">
         {data.products?.map((p) => (
           <ProductItem key={p.id} className="flex-[0_0_25%] px-6" product={p} />
         ))}
