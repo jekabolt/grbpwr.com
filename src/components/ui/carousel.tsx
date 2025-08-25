@@ -5,6 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 import { createTouchHandlers, createWheelHandler } from "@/lib/carousel-utils";
+import { cn } from "@/lib/utils";
 
 type CarouselProps = {
   className?: string;
@@ -18,6 +19,7 @@ type CarouselProps = {
   startIndex?: number;
   dragFree?: boolean;
   skipSnaps?: boolean;
+  scrollOnClick?: boolean;
   setSelectedIndex?: (index: number) => void;
 };
 
@@ -33,6 +35,7 @@ export function Carousel({
   startIndex = 0,
   dragFree = true,
   skipSnaps = true,
+  scrollOnClick = false,
   setSelectedIndex,
 }: CarouselProps) {
   const childrenCount = Children.count(children);
@@ -105,9 +108,28 @@ export function Carousel({
     };
   }, [emblaApi, onSelect, isDisabled]);
 
+  function scrollNext() {
+    emblaApi?.scrollNext();
+  }
+
+  function scrollPrev() {
+    emblaApi?.scrollPrev();
+  }
+
   return (
-    <div ref={emblaRef} className="overflow-hidden">
+    <div
+      ref={emblaRef}
+      className={cn("overflow-hidden", {
+        relative: scrollOnClick,
+      })}
+    >
       <div className={className}>{children}</div>
+      {scrollOnClick && (
+        <div className="absolute inset-0 flex">
+          <div onClick={scrollPrev} className="flex-1" />
+          <div onClick={scrollNext} className="flex-1" />
+        </div>
+      )}
     </div>
   );
 }

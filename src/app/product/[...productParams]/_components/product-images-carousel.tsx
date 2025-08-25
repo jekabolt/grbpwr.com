@@ -20,6 +20,7 @@ export function ProductImagesCarousel({ productMedia }: Props) {
       align={oneMedia ? "start" : "end"}
       startIndex={oneMedia ? 0 : 2}
       className="flex h-screen w-full pt-8"
+      scrollOnClick={true}
     >
       {mediaForCarousel.map((m, index) => (
         <div key={`${m.id}-${index}`} className="h-full w-full flex-[0_0_48%]">
