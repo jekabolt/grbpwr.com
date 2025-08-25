@@ -127,11 +127,13 @@ export function AddressFields({
       <SelectField
         loading={loading}
         variant="secondary"
+        fullWidth
         name={prefix ? `${prefix}.country` : "country"}
         label="country/region:"
         items={countries}
         disabled={disabled}
       />
+
       {stateItems.length > 0 && (
         <SelectField
           loading={loading}

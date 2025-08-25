@@ -84,7 +84,7 @@ export function PhoneField({ name, label, items, ...props }: Props) {
                     disabled={props.disabled}
                     variant="secondary"
                     className="flex-row-reverse"
-                    contentClassName="w-[370px] lg:w-[400px]"
+                    contentClassName="w-[342px] lg:w-[535px]"
                     renderValue={handleSelectChange}
                   />
                 </div>

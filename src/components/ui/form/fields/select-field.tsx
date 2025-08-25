@@ -8,6 +8,7 @@ type Props = {
   label: string;
   placeholder?: string;
   loading?: boolean;
+  className?: string;
   items: {
     label: string;
     value: string;
@@ -20,6 +21,7 @@ export default function SelectField({
   items,
   name,
   label,
+  className,
   ...props
 }: Props) {
   const { control, trigger } = useFormContext();
