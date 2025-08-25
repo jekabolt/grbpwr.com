@@ -78,7 +78,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
           <FooterNavMobile />
         </div>
         <div className="order-2 flex lg:order-4">
-          <CurrencyPopover align="start" title="currency:" theme={theme} />
+          <CurrencyPopover title="currency:" theme={theme} />
         </div>
       </div>
     </footer>

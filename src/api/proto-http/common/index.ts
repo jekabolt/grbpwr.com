@@ -100,6 +100,8 @@ export type Category = {
   levelId: number | undefined;
   level: string | undefined;
   parentId: number | undefined;
+  countMen: number | undefined;
+  countWomen: number | undefined;
 };
 
 export type Size = {
@@ -447,14 +449,11 @@ export type Dictionary = {
   paymentMethods: PaymentMethod[] | undefined;
   shipmentCarriers: ShipmentCarrier[] | undefined;
   sizes: Size[] | undefined;
-  genders: Genders[] | undefined;
-  orderFactors: OrderFactors[] | undefined;
-  sortFactors: SortFactors[] | undefined;
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
-  topCategories: TopCategoryCount[] | undefined;
+  announce: string | undefined;
 };
 
 export type Genders = {
@@ -470,12 +469,6 @@ export type OrderFactors = {
 export type SortFactors = {
   id: SortFactor | undefined;
   name: string | undefined;
-};
-
-export type TopCategoryCount = {
-  categoryId: number | undefined;
-  categoryName: string | undefined;
-  count: number | undefined;
 };
 
 // CurrencyRate represents the rate of a currency with a description.

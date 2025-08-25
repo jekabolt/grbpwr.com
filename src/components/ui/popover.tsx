@@ -13,7 +13,7 @@ type Props = {
   title?: string;
   contentProps?: Popover.PopoverContentProps;
   className?: string;
-  variant?: "default" | "currency";
+  gap?: "default" | "large";
 };
 
 export default function GenericPopover({
@@ -22,7 +22,7 @@ export default function GenericPopover({
   children,
   contentProps,
   className,
-  variant = "default",
+  gap = "default",
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -34,7 +34,7 @@ export default function GenericPopover({
       <PopoverContent
         className={className}
         title={title}
-        variant={variant}
+        gap={gap}
         {...contentProps}
       >
         {children}
@@ -47,13 +47,13 @@ function PopoverContent({
   children,
   title,
   className,
-  variant = "default",
+  gap = "default",
   ...contentProps
 }: {
   children: React.ReactNode;
   title?: string;
   className?: string;
-  variant?: "default" | "currency";
+  gap?: "default" | "large";
 }) {
   return (
     <Popover.Portal>
@@ -61,9 +61,9 @@ function PopoverContent({
         side="bottom"
         align="center"
         className={cn(
-          "relative z-20 w-full bg-bgColor px-2 py-6",
+          "relative z-20 w-full space-y-10 border border-textInactiveColor bg-bgColor px-2.5",
           {
-            "max-h-[50vh] overflow-y-scroll p-2": title,
+            "space-y-16": gap === "large",
           },
           className,
         )}
@@ -72,18 +72,19 @@ function PopoverContent({
         {title && (
           <Popover.Close
             className={cn(
-              "fixed left-0 top-0 flex w-full justify-between bg-bgColor p-2",
+              "fixed left-2 right-2 top-2.5 bg-bgColor",
               "appearance-none border-0 outline-none focus:outline-none",
-              {
-                "border-inactive border-l border-r border-t":
-                  variant === "currency",
-              },
             )}
           >
-            <Text variant="uppercase">{title}</Text>
+            <div className="flex items-center justify-between">
+              <Text variant="uppercase">{title}</Text>
+              <Text>[x]</Text>
+            </div>
           </Popover.Close>
         )}
-        <div className="mt-10">{children}</div>
+        <div className="relative max-h-[50vh] overflow-y-scroll">
+          <div className="sticky top-0">{children}</div>
+        </div>
       </Popover.Content>
     </Popover.Portal>
   );

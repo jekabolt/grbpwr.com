@@ -66,12 +66,13 @@ export default function Size() {
         sideOffset: -25,
         align: "end",
       }}
+      gap="large"
       title="size"
       openElement={<Trigger />}
     >
       <div
-        className={cn("grid h-full grid-cols-4 gap-x-2 gap-y-6 px-2 py-6", {
-          "mb-10": selectedSize,
+        className={cn({
+          "mb-20": selectedSize,
         })}
       >
         <FilterOptionButtons
@@ -82,7 +83,7 @@ export default function Size() {
         />
       </div>
       {selectedSize && (
-        <div className="fixed inset-x-2.5 bottom-0 flex justify-between gap-2 bg-bgColor">
+        <div className="fixed inset-x-2.5 bottom-2.5 flex justify-between gap-2 bg-bgColor">
           <Button
             className="w-full uppercase"
             size="lg"

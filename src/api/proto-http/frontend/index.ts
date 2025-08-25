@@ -236,14 +236,11 @@ export type common_Dictionary = {
   paymentMethods: common_PaymentMethod[] | undefined;
   shipmentCarriers: common_ShipmentCarrier[] | undefined;
   sizes: common_Size[] | undefined;
-  genders: common_Genders[] | undefined;
-  orderFactors: common_OrderFactors[] | undefined;
-  sortFactors: common_SortFactors[] | undefined;
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
-  topCategories: common_TopCategoryCount[] | undefined;
+  announce: string | undefined;
 };
 
 // Category represents a hierarchical category structure
@@ -253,6 +250,8 @@ export type common_Category = {
   levelId: number | undefined;
   level: string | undefined;
   parentId: number | undefined;
+  countMen: number | undefined;
+  countWomen: number | undefined;
 };
 
 export type common_MeasurementName = {
@@ -304,37 +303,6 @@ export type common_ShipmentCarrierInsert = {
 export type common_Size = {
   id: number | undefined;
   name: string | undefined;
-};
-
-export type common_Genders = {
-  id: common_GenderEnum | undefined;
-  name: string | undefined;
-};
-
-export type common_OrderFactors = {
-  id: common_OrderFactor | undefined;
-  name: string | undefined;
-};
-
-export type common_OrderFactor =
-  | "ORDER_FACTOR_UNKNOWN"
-  | "ORDER_FACTOR_ASC"
-  | "ORDER_FACTOR_DESC";
-export type common_SortFactors = {
-  id: common_SortFactor | undefined;
-  name: string | undefined;
-};
-
-export type common_SortFactor =
-  | "SORT_FACTOR_UNKNOWN"
-  | "SORT_FACTOR_CREATED_AT"
-  | "SORT_FACTOR_UPDATED_AT"
-  | "SORT_FACTOR_NAME"
-  | "SORT_FACTOR_PRICE";
-export type common_TopCategoryCount = {
-  categoryId: number | undefined;
-  categoryName: string | undefined;
-  count: number | undefined;
 };
 
 // CurrencyMap represents a map of currency codes to their rates.
@@ -400,6 +368,16 @@ export type GetProductsPagedRequest = {
   filterConditions: common_FilterConditions | undefined;
 };
 
+export type common_SortFactor =
+  | "SORT_FACTOR_UNKNOWN"
+  | "SORT_FACTOR_CREATED_AT"
+  | "SORT_FACTOR_UPDATED_AT"
+  | "SORT_FACTOR_NAME"
+  | "SORT_FACTOR_PRICE";
+export type common_OrderFactor =
+  | "ORDER_FACTOR_UNKNOWN"
+  | "ORDER_FACTOR_ASC"
+  | "ORDER_FACTOR_DESC";
 export type common_FilterConditions = {
   from: string | undefined;
   to: string | undefined;
