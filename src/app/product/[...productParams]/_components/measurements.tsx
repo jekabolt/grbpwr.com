@@ -61,6 +61,7 @@ export function Measurements({
               measurements={product.measurements || []}
               selectedSize={selectedSize}
               className="h-[450px]"
+              unit={unit}
             />
             <SizePicker
               view="line"

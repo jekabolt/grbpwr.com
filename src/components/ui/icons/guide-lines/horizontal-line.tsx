@@ -1,6 +1,10 @@
 import { FC } from "react";
 
 import { useMeasurementStore } from "@/lib/stores/measurement/store";
+import {
+  getUnit,
+  Unit,
+} from "@/app/product/[...productParams]/_components/measurements-table";
 
 import { Text } from "../../text";
 
@@ -18,6 +22,7 @@ type LabelProps = {
   y: number;
   xOffset?: number;
   yOffset?: number;
+  unit?: Unit;
 };
 
 const MeasurementLabel: FC<LabelProps> = ({
@@ -27,9 +32,12 @@ const MeasurementLabel: FC<LabelProps> = ({
   y,
   xOffset = 0,
   yOffset = 0,
+  unit = Unit.CM,
 }) => {
   const { handleMeasurementHover, handleMeasurementLeave } =
     useMeasurementStore();
+
+  const displayValue = getUnit(info, unit);
 
   return (
     <g transform={`translate(${x + xOffset} ${y + yOffset})`}>
@@ -43,7 +51,7 @@ const MeasurementLabel: FC<LabelProps> = ({
             {measurementType}
           </Text>
           <Text variant="inherit" size="measurement" className="uppercase">
-            {info} cm
+            {displayValue}
           </Text>
         </div>
       </foreignObject>
@@ -51,13 +59,14 @@ const MeasurementLabel: FC<LabelProps> = ({
   );
 };
 
-export const HorizontalLine: FC<Position & LabelProps> = ({
+export const HorizontalLine: FC<Position & LabelProps & { unit?: Unit }> = ({
   info,
   xStart,
   xEnd,
   y,
   rectYOffset = 0,
   measurementType,
+  unit = Unit.CM,
 }) => {
   const center = {
     x: (xStart + xEnd) / 2,
@@ -79,6 +88,7 @@ export const HorizontalLine: FC<Position & LabelProps> = ({
         measurementType={measurementType}
         x={center.x}
         y={center.y}
+        unit={unit}
       />
     </>
   );
