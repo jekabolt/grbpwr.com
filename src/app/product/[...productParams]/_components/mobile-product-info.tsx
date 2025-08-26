@@ -58,6 +58,7 @@ export function MobileProductInfo({
           <MobileMeasurements
             product={product}
             selectedSize={selectedSize || 0}
+            outOfStock={outOfStock}
             handleAddToCart={handleMeasurementSizes}
             handleSelectSize={handleSelectSize}
           />

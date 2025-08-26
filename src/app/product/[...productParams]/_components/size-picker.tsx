@@ -27,7 +27,7 @@ export function SizePicker({
       <div
         className={cn({
           "grid grid-cols-4 gap-y-7": view === "grid",
-          "flex w-full items-center justify-between gap-x-4": view === "line",
+          "flex w-full items-center justify-between": view === "line",
           flex: isOneSize,
         })}
       >

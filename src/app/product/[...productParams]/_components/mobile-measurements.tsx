@@ -12,6 +12,7 @@ import { useProductPricing } from "./utils/useProductPricing";
 export function MobileMeasurements({
   product,
   selectedSize,
+  outOfStock,
   handleAddToCart,
   handleSelectSize,
 }: MobileMeasurementsProps) {
@@ -27,7 +28,7 @@ export function MobileMeasurements({
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-10 bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-0 z-50 flex h-full flex-col gap-4 overflow-y-auto bg-bgColor p-2.5">
+        <DialogPrimitives.Content className="fixed inset-0 z-40 flex h-full flex-col gap-4 overflow-y-auto bg-bgColor p-2.5">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
@@ -41,6 +42,7 @@ export function MobileMeasurements({
             <Measurements
               product={product}
               selectedSize={selectedSize}
+              outOfStock={outOfStock}
               handleSelectSize={handleSelectSize}
             />
           </div>
@@ -70,6 +72,7 @@ export function MobileMeasurements({
 export type MobileMeasurementsProps = {
   product: common_ProductFull;
   selectedSize: number;
+  outOfStock?: Record<number, boolean>;
   handleAddToCart: () => Promise<boolean>;
   handleSelectSize: (size: number) => void;
 };
