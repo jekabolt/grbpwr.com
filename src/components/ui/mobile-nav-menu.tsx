@@ -27,11 +27,11 @@ export function MobileNavMenu({
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Content className="fixed inset-0 z-40 bg-bgColor px-2.5 pt-5">
+        <DialogPrimitives.Content className="fixed inset-0 z-40 bg-bgColor px-2.5 pb-4 pt-5">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="flex h-full flex-col">
+          <div className="flex h-full flex-col border border-red-500">
             <div className="mb-14">
               {activeCategory ? (
                 <div className="flex items-center justify-between">
