@@ -16,10 +16,12 @@ import { Text } from "./text";
 export function DesktopNavigationMenu({
   className,
   isBigMenuEnabled,
+  isAnnounceDismissed,
   onNavOpenChange,
 }: {
   isBigMenuEnabled?: boolean;
   className?: string;
+  isAnnounceDismissed?: string | null;
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
   const { dictionary } = useDataContext();
@@ -110,6 +112,7 @@ export function DesktopNavigationMenu({
       <div
         className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
           "border-none": !isBigMenuEnabled,
+          "top-16": isAnnounceDismissed === null,
         })}
       >
         <NavigationMenu.Viewport className="h-[var(--radix-navigation-menu-viewport-height)] w-full" />

@@ -3,10 +3,10 @@
 import { useState } from "react";
 import * as Toast from "@radix-ui/react-toast";
 
+import { useDataContext } from "../contexts/DataContext";
 import { Button } from "./button";
 import { Text } from "./text";
 
-// Global Toast Provider - add this to your app root
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <Toast.Provider duration={4000}>
@@ -63,6 +63,28 @@ export function SubmissionToaster({
     >
       <Toast.Title>
         <Text className="text-center text-bgColor">{message}</Text>
+      </Toast.Title>
+    </Toast.Root>
+  );
+}
+
+export function AnnounceToaster({
+  open,
+  onOpenChange,
+}: {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}) {
+  const { dictionary } = useDataContext();
+  return (
+    <Toast.Root
+      className="flex h-8 items-center justify-center bg-highlightColor"
+      open={open}
+      onOpenChange={onOpenChange}
+      duration={Infinity}
+    >
+      <Toast.Title>
+        <Text className="text-center text-bgColor">{dictionary?.announce}</Text>
       </Toast.Title>
     </Toast.Root>
   );

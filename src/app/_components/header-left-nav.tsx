@@ -3,9 +3,11 @@ import { MobileNavMenu } from "@/components/ui/mobile-nav-menu";
 
 export function HeaderLeftNav({
   isBigMenuEnabled,
+  isAnnounceDismissed,
   onNavOpenChange,
 }: {
   isBigMenuEnabled?: boolean;
+  isAnnounceDismissed?: string | null;
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
   return (
@@ -14,6 +16,7 @@ export function HeaderLeftNav({
         <DesktopNavigationMenu
           onNavOpenChange={onNavOpenChange}
           isBigMenuEnabled={isBigMenuEnabled}
+          isAnnounceDismissed={isAnnounceDismissed}
         />
       </div>
 

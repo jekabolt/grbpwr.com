@@ -11,7 +11,11 @@ import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
 import { HeaderLeftNav } from "./header-left-nav";
 
-export function Header() {
+export function Header({
+  isAnnounceDismissed,
+}: {
+  isAnnounceDismissed?: string | null;
+}) {
   const { dictionary } = useDataContext();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
@@ -25,15 +29,17 @@ export function Header() {
     const isMobile = window.innerWidth < 1024;
 
     if (isMobile) {
+      // Показываем навбар только при скролле вверх или когда на вершине
       if (scrollDirection === "down") {
         setIsVisible(false);
-      } else if (scrollDirection === "up") {
+      } else if (scrollDirection === "up" || isAtTop) {
         setIsVisible(true);
       }
     } else {
+      // На десктопе всегда показываем
       setIsVisible(true);
     }
-  }, [scrollDirection]);
+  }, [scrollDirection, isAtTop]);
 
   return (
     <header
@@ -43,11 +49,13 @@ export function Header() {
         "blackTheme border border-textInactiveColor bg-textColor text-bgColor lg:border-transparent lg:bg-bgColor lg:text-textColor",
         "transition-all duration-300 ease-in-out",
         {
+          "lg:top-6": isAnnounceDismissed === null,
           hidden: !isVisible,
           flex: isVisible,
-          "bg-bgColor text-textColor mix-blend-hard-light": isNavOpen,
+          "bg-bgColor text-textColor mix-blend-hard-light":
+            isNavOpen && isAtTop,
           "border-none bg-transparent text-textColor mix-blend-exclusion":
-            isAtTop,
+            isAtTop && !isNavOpen,
           "lg:bg-transparent lg:mix-blend-exclusion":
             !isNavOpen || (isNavOpen && !isBigMenuEnabled),
           "lg:border-none": !isBigMenuEnabled,
@@ -57,6 +65,7 @@ export function Header() {
       <HeaderLeftNav
         onNavOpenChange={setIsNavOpen}
         isBigMenuEnabled={isBigMenuEnabled}
+        isAnnounceDismissed={isAnnounceDismissed}
       />
 
       <Button asChild size="lg" className="w-1/3 text-center lg:w-auto">
@@ -92,33 +101,55 @@ export function useScrollPosition() {
 
   useEffect(() => {
     let lastScrollY = window.pageYOffset;
+    let downAccumulator = 0;
+    let upAccumulator = 0;
 
     const updateScrollDirection = () => {
       const scrollY = window.pageYOffset;
-      const direction = scrollY > lastScrollY ? "down" : "up";
 
       setIsAtTop(scrollY === 0);
 
-      if (Math.abs(scrollY - lastScrollY) < 10) {
-        return;
+      if (scrollY === lastScrollY) return;
+
+      const delta = scrollY - lastScrollY;
+
+      if (delta > 0) {
+        // Скролл вниз
+        downAccumulator += delta;
+        upAccumulator = 0; // Сбрасываем счетчик вверх
+
+        if (downAccumulator >= 400 && scrollDirection !== "down") {
+          setScrollDirection("down");
+        }
+      } else {
+        // Скролл вверх
+        upAccumulator += Math.abs(delta);
+        downAccumulator = 0; // Сбрасываем счетчик вниз
+
+        if (upAccumulator >= 10 && scrollDirection !== "up") {
+          setScrollDirection("up");
+        }
       }
 
-      if (
-        direction !== scrollDirection &&
-        (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)
-      ) {
-        setScrollDirection(direction);
-      }
-
-      lastScrollY = scrollY > 0 ? scrollY : 0;
+      lastScrollY = scrollY;
     };
 
-    window.addEventListener("scroll", updateScrollDirection);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateScrollDirection();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
 
+    window.addEventListener("scroll", handleScroll, { passive: true });
     updateScrollDirection();
 
     return () => {
-      window.removeEventListener("scroll", updateScrollDirection);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [scrollDirection]);
 

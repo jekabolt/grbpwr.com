@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { AdditionalHeader } from "@/app/_components/additional-header";
 import { Footer } from "@/app/_components/footer";
@@ -17,6 +19,9 @@ export default function FlexibleLayout({
   className,
   displayFooter = true,
 }: Props) {
+  const isAnnounceDismissed = localStorage.getItem(
+    "announcement-banner-dismissed",
+  );
   return (
     <div
       className={cn("bg-bgColor", {
@@ -31,12 +36,15 @@ export default function FlexibleLayout({
         )}
         {headerType === "flexible" && (
           <div className="block">
-            <AdditionalHeader {...headerProps} />
+            <AdditionalHeader
+              isAnnounceDismissed={isAnnounceDismissed}
+              {...headerProps}
+            />
           </div>
         )}
         {headerType === "catalog" && (
           <div className={mobileHeaderType ? "hidden lg:block" : ""}>
-            <Header />
+            <Header isAnnounceDismissed={isAnnounceDismissed} />
           </div>
         )}
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
@@ -71,5 +79,6 @@ export type HeaderProps = {
   right?: string;
   link?: string;
   hidden?: boolean;
+  isAnnounceDismissed?: string | null;
   onClick?: () => void;
 };
