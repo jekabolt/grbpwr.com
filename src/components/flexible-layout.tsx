@@ -12,7 +12,7 @@ import CartTotalPrice from "@/app/(checkout)/cart/_components/CartTotalPrice";
 
 export default function FlexibleLayout({
   children,
-  headerType = "catalog",
+  headerType = "main",
   headerProps,
   mobileHeaderType,
   theme,
@@ -36,7 +36,7 @@ export default function FlexibleLayout({
             <AdditionalHeader {...headerProps} />
           </div>
         )}
-        {headerType === "catalog" && (
+        {(headerType === "catalog" || headerType === "main") && (
           <div className={mobileHeaderType ? "hidden lg:block" : ""}>
             <Header isCatalog={headerType === "catalog"} />
           </div>
@@ -59,7 +59,7 @@ export default function FlexibleLayout({
 
 type Props = {
   children: React.ReactNode;
-  headerType?: "catalog" | "flexible" | "archive";
+  headerType?: "main" | "catalog" | "flexible" | "archive";
   mobileHeaderType?: "flexible";
   headerProps?: HeaderProps;
   theme?: "light" | "dark";

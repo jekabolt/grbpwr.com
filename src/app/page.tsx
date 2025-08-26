@@ -29,7 +29,7 @@ export default async function Page() {
   const isHero = hero?.entities?.length;
 
   return (
-    <FlexibleLayout theme={isHero ? "light" : "dark"} headerType="catalog">
+    <FlexibleLayout theme={isHero ? "light" : "dark"}>
       {isHero ? (
         <>
           <MainAds main={hero?.entities?.[0]?.main} />
