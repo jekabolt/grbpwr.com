@@ -19,9 +19,6 @@ export default function FlexibleLayout({
   className,
   displayFooter = true,
 }: Props) {
-  const isAnnounceDismissed = localStorage.getItem(
-    "announcement-banner-dismissed",
-  );
   return (
     <div
       className={cn("bg-bgColor", {
@@ -36,15 +33,12 @@ export default function FlexibleLayout({
         )}
         {headerType === "flexible" && (
           <div className="block">
-            <AdditionalHeader
-              isAnnounceDismissed={isAnnounceDismissed}
-              {...headerProps}
-            />
+            <AdditionalHeader {...headerProps} />
           </div>
         )}
         {headerType === "catalog" && (
           <div className={mobileHeaderType ? "hidden lg:block" : ""}>
-            <Header isAnnounceDismissed={isAnnounceDismissed} />
+            <Header />
           </div>
         )}
         {headerType === "archive" && <HeaderArchive {...headerProps} />}

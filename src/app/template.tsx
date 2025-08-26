@@ -8,7 +8,6 @@ import { CurrencyStoreProvider } from "@/lib/stores/currency/store-provider";
 import { LastViewedStoreProvider } from "@/lib/stores/last-viewed/store-provider.";
 import { DataContextProvider } from "@/components/contexts/DataContext";
 import { ServerActionsContextProvider } from "@/components/contexts/ServerActionsContext";
-import { AnnouncementBanner } from "@/components/ui/announcement-banner";
 
 export default async function Template({
   children,
@@ -31,7 +30,6 @@ export default async function Template({
             <LastViewedStoreProvider>
               <CurrencyStoreProvider rates={heroData.rates?.currencies || {}}>
                 <DataContextProvider {...heroData}>
-                  <AnnouncementBanner />
                   {children}
                 </DataContextProvider>
               </CurrencyStoreProvider>
