@@ -31,7 +31,7 @@ export function MobileNavMenu({
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="flex h-full flex-col border border-red-500">
+          <div className="flex h-full flex-col">
             <div className="mb-14">
               {activeCategory ? (
                 <div className="flex items-center justify-between">

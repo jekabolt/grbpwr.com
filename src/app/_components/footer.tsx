@@ -58,7 +58,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
           <Text variant="uppercase">grbpwr</Text>
           <LiveClock />
         </div>
-        <div className="order-3 flex gap-24 py-16 lg:order-2 lg:py-0">
+        <div className="order-3 flex justify-center gap-24 py-16 lg:order-2 lg:py-0">
           {links.map((l) => (
             <Button asChild key={l.text} className="uppercase">
               <Link href={l.href}>{l.text}</Link>

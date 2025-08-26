@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
 import { HeaderLeftNav } from "./header-left-nav";
+import { useHeaderScrollPosition } from "./useHeaderScrollPosition";
 
 export function Header({ isCatalog }: { isCatalog?: boolean }) {
   const { dictionary } = useDataContext();
@@ -19,20 +20,18 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
   const isBigMenuEnabled = dictionary?.bigMenu;
   const itemsQuantity = Object.keys(products).length;
   const [isVisible, setIsVisible] = useState(true);
-  const { scrollDirection, isAtTop } = useScrollPosition();
+  const { scrollDirection, isAtTop } = useHeaderScrollPosition();
 
   useEffect(() => {
     const isMobile = window.innerWidth < 1024;
 
     if (isMobile) {
-      // Показываем навбар только при скролле вверх или когда на вершине
       if (scrollDirection === "down") {
         setIsVisible(false);
       } else if (scrollDirection === "up" || isAtTop) {
         setIsVisible(true);
       }
     } else {
-      // На десктопе всегда показываем
       setIsVisible(true);
     }
   }, [scrollDirection, isAtTop]);
@@ -43,13 +42,10 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
         "fixed inset-x-2.5 bottom-2 z-30 h-12 py-2 lg:top-2 lg:gap-0 lg:px-5 lg:py-3",
         "flex items-center justify-between gap-1",
         "blackTheme border border-textInactiveColor bg-textColor text-bgColor lg:border-transparent lg:bg-bgColor lg:text-textColor",
-        "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]", // transition-all вместо transition-transform
+        "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] lg:transform-none lg:transition-none",
         {
-          // Показать навбар
           "pointer-events-auto translate-y-0": isVisible,
-          // Скрыть навбар полностью
-          "pointer-events-none translate-y-[120%]": !isVisible, // Увеличил отступ
-          // Остальные условия
+          "pointer-events-none translate-y-[120%]": !isVisible,
           "bg-bgColor text-textColor mix-blend-hard-light":
             isNavOpen && isAtTop && !isCatalog,
           "border-none bg-transparent text-textColor mix-blend-exclusion":
@@ -88,67 +84,4 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
       </div>
     </header>
   );
-}
-
-export function useScrollPosition() {
-  const [scrollDirection, setScrollDirection] = useState<"up" | "down" | null>(
-    null,
-  );
-  const [isAtTop, setIsAtTop] = useState(true);
-
-  useEffect(() => {
-    let lastScrollY = window.pageYOffset;
-    let downAccumulator = 0;
-    let upAccumulator = 0;
-
-    const updateScrollDirection = () => {
-      const scrollY = window.pageYOffset;
-
-      setIsAtTop(scrollY === 0);
-
-      if (scrollY === lastScrollY) return;
-
-      const delta = scrollY - lastScrollY;
-
-      if (delta > 0) {
-        // Скролл вниз
-        downAccumulator += delta;
-        upAccumulator = 0; // Сбрасываем счетчик вверх
-
-        if (downAccumulator >= 250 && scrollDirection !== "down") {
-          setScrollDirection("down");
-        }
-      } else {
-        // Скролл вверх
-        upAccumulator += Math.abs(delta);
-        downAccumulator = 0; // Сбрасываем счетчик вниз
-
-        if (upAccumulator >= 10 && scrollDirection !== "up") {
-          setScrollDirection("up");
-        }
-      }
-
-      lastScrollY = scrollY;
-    };
-
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateScrollDirection();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    updateScrollDirection();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [scrollDirection]);
-
-  return { scrollDirection, isAtTop };
 }

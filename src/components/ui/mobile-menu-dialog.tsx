@@ -36,7 +36,7 @@ export function DefaultMobileMenuDialog({
         <div className="flex flex-col gap-5">
           {defaultMenuItems.map((item) => (
             <div key={item.label} className="w-full">
-              {isBigMenuEnabled ? (
+              {isBigMenuEnabled && item.action ? (
                 <AnimatedButton
                   className="flex w-full items-center justify-between uppercase"
                   onClick={item.action}
@@ -48,7 +48,7 @@ export function DefaultMobileMenuDialog({
                 <AnimatedButton
                   animationArea="text"
                   href={item.href}
-                  className="hover:underline"
+                  className="uppercase hover:underline"
                 >
                   <Text>{item.label}</Text>
                   {item.showArrow && <Text>{">"}</Text>}

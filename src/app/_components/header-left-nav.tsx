@@ -4,11 +4,9 @@ import { MobileNavMenu } from "@/components/ui/mobile-nav-menu";
 export function HeaderLeftNav({
   isBigMenuEnabled,
   onNavOpenChange,
-  isVisible = true,
 }: {
   isBigMenuEnabled?: boolean;
   onNavOpenChange: (isOpen: boolean) => void;
-  isVisible?: boolean;
 }) {
   return (
     <div className="grow basis-0">
@@ -16,7 +14,6 @@ export function HeaderLeftNav({
         <DesktopNavigationMenu
           onNavOpenChange={onNavOpenChange}
           isBigMenuEnabled={isBigMenuEnabled}
-          isVisible={isVisible}
         />
       </div>
 

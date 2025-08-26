@@ -73,6 +73,5 @@ export type HeaderProps = {
   right?: string;
   link?: string;
   hidden?: boolean;
-  isAnnounceDismissed?: string | null;
   onClick?: () => void;
 };
