@@ -11,11 +11,7 @@ import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
 import { HeaderLeftNav } from "./header-left-nav";
 
-export function Header({
-  isAnnounceDismissed,
-}: {
-  isAnnounceDismissed?: string | null;
-}) {
+export function Header({ isCatalog }: { isCatalog?: boolean }) {
   const { dictionary } = useDataContext();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
@@ -55,9 +51,9 @@ export function Header({
           "pointer-events-none translate-y-[120%]": !isVisible, // Увеличил отступ
           // Остальные условия
           "bg-bgColor text-textColor mix-blend-hard-light":
-            isNavOpen && isAtTop,
+            isNavOpen && isAtTop && !isCatalog,
           "border-none bg-transparent text-textColor mix-blend-exclusion":
-            isAtTop && !isNavOpen,
+            isAtTop && !isNavOpen && !isCatalog,
           "lg:bg-transparent lg:mix-blend-exclusion":
             !isNavOpen || (isNavOpen && !isBigMenuEnabled),
           "lg:border-none": !isBigMenuEnabled,
@@ -67,7 +63,6 @@ export function Header({
       <HeaderLeftNav
         onNavOpenChange={setIsNavOpen}
         isBigMenuEnabled={isBigMenuEnabled}
-        isAnnounceDismissed={isAnnounceDismissed}
       />
 
       <Button asChild size="lg" className="w-1/3 text-center lg:w-auto">

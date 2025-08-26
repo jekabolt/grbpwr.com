@@ -38,7 +38,7 @@ export default function FlexibleLayout({
         )}
         {headerType === "catalog" && (
           <div className={mobileHeaderType ? "hidden lg:block" : ""}>
-            <Header />
+            <Header isCatalog={headerType === "catalog"} />
           </div>
         )}
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
