@@ -1,5 +1,3 @@
-"use client";
-
 import { common_HeroMain } from "@/api/proto-http/frontend";
 
 import { calculateAspectRatio } from "@/lib/utils";
