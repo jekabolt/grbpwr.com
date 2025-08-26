@@ -9,7 +9,7 @@ export default function SelectComponent({
   name,
   items,
   className,
-  contentClassName,
+  customWidth,
   fullWidth,
   renderValue,
   ...props
@@ -17,7 +17,7 @@ export default function SelectComponent({
   name: string;
   items: { value: string; label: string }[];
   className?: string;
-  contentClassName?: string;
+  customWidth?: number;
   fullWidth?: boolean;
   renderValue?: (
     selectedValue: string,
@@ -39,7 +39,7 @@ export default function SelectComponent({
       >
         <Arrow />
       </SelectTrigger>
-      <SelectContent fullWidth={fullWidth} className={contentClassName}>
+      <SelectContent fullWidth={fullWidth} customWidth={customWidth}>
         {items.map((item) => (
           <SelectItem key={item.value} value={item.value}>
             {item.label}
@@ -118,20 +118,25 @@ export function SelectTrigger({
 
 export function SelectContent({
   children,
-  className,
   fullWidth,
+  customWidth,
 }: {
   children: React.ReactNode;
-  className?: string;
   fullWidth?: boolean;
+  customWidth?: number;
 }) {
+  const getWidth = () => {
+    if (fullWidth) return "var(--radix-select-trigger-width)";
+    if (customWidth && customWidth > 0) return `${customWidth}px`;
+    return undefined;
+  };
   return (
     <Select.Portal>
       <Select.Content
-        className={cn("w-full overflow-hidden bg-bgColor shadow-md", className)}
+        className="w-full overflow-hidden bg-bgColor shadow-md"
         position="popper"
         style={{
-          width: fullWidth ? "var(--radix-select-trigger-width)" : undefined,
+          width: getWidth(),
         }}
       >
         <Select.Viewport className="max-h-[300px] bg-bgColor">

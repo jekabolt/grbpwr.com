@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "..";
@@ -17,6 +18,31 @@ type Props = {
 
 export function PhoneField({ name, label, items, ...props }: Props) {
   const { control, trigger } = useFormContext();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.getBoundingClientRect().width;
+        setContainerWidth(width);
+      }
+    };
+
+    updateWidth();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateWidth();
+    });
+
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   function splitValue(value: string) {
     if (!value) return { code: "", number: "" };
@@ -74,7 +100,7 @@ export function PhoneField({ name, label, items, ...props }: Props) {
           <FormItem>
             <FormLabel>{label}</FormLabel>
             <FormControl>
-              <div className="flex items-end">
+              <div className="flex items-end" ref={containerRef}>
                 <div className="flex items-end">
                   <Select
                     name={name + "_code"}
@@ -84,7 +110,7 @@ export function PhoneField({ name, label, items, ...props }: Props) {
                     disabled={props.disabled}
                     variant="secondary"
                     className="flex-row-reverse"
-                    contentClassName="w-[342px] lg:w-[535px]"
+                    customWidth={containerWidth}
                     renderValue={handleSelectChange}
                   />
                 </div>
