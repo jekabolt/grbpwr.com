@@ -5,10 +5,12 @@ export function HeaderLeftNav({
   isBigMenuEnabled,
   isAnnounceDismissed,
   onNavOpenChange,
+  isVisible = true,
 }: {
   isBigMenuEnabled?: boolean;
   isAnnounceDismissed?: string | null;
   onNavOpenChange: (isOpen: boolean) => void;
+  isVisible?: boolean;
 }) {
   return (
     <div className="grow basis-0">
@@ -17,6 +19,7 @@ export function HeaderLeftNav({
           onNavOpenChange={onNavOpenChange}
           isBigMenuEnabled={isBigMenuEnabled}
           isAnnounceDismissed={isAnnounceDismissed}
+          isVisible={isVisible}
         />
       </div>
 

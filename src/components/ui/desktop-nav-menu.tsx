@@ -18,11 +18,13 @@ export function DesktopNavigationMenu({
   isBigMenuEnabled,
   isAnnounceDismissed,
   onNavOpenChange,
+  isVisible = true,
 }: {
   isBigMenuEnabled?: boolean;
   className?: string;
   isAnnounceDismissed?: string | null;
   onNavOpenChange: (isOpen: boolean) => void;
+  isVisible?: boolean;
 }) {
   const { dictionary } = useDataContext();
   const pathname = usePathname();
@@ -110,10 +112,16 @@ export function DesktopNavigationMenu({
       </NavigationMenu.List>
 
       <div
-        className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
-          "border-none": !isBigMenuEnabled,
-          "top-16": isAnnounceDismissed === null,
-        })}
+        className={cn(
+          "duration-400 fixed inset-x-2.5 top-12 flex justify-center transition-transform ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
+          {
+            "border-none": !isBigMenuEnabled,
+            "top-16": isAnnounceDismissed === null,
+            // Hide viewport when header is hidden
+            "-translate-y-full": !isVisible,
+            "translate-y-0": isVisible,
+          },
+        )}
       >
         <NavigationMenu.Viewport className="h-[var(--radix-navigation-menu-viewport-height)] w-full" />
       </div>
