@@ -9,11 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
 interface Props {
-  title?: string;
   theme?: "light" | "dark";
 }
 
-export default function CurrencyPopover({ title, theme }: Props) {
+export default function MobileCurrencyPopover({ theme }: Props) {
   const { selectedCurrency, rates, setSelectedCurrency } = useCurrency(
     (state) => state,
   );
@@ -35,7 +34,7 @@ export default function CurrencyPopover({ title, theme }: Props) {
         <DialogPrimitives.Overlay className="fixed inset-0" />
         <DialogPrimitives.Content
           className={cn(
-            "fixed left-0 top-0 z-30 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor",
+            "flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor",
             {
               "blackTheme bg-bgColor text-textColor": theme === "dark",
             },
@@ -45,7 +44,7 @@ export default function CurrencyPopover({ title, theme }: Props) {
             grbpwr mobile menu
           </DialogPrimitives.Title>
           <div className="relative mb-4 flex items-center justify-between p-2">
-            <Text variant="uppercase">{title}</Text>
+            <Text variant="uppercase">currency:</Text>
             <DialogPrimitives.Close asChild>
               <Button>[x]</Button>
             </DialogPrimitives.Close>

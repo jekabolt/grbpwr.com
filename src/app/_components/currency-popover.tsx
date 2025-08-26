@@ -37,8 +37,8 @@ export default function CurrencyPopover({ title, theme = "light" }: Props) {
 
   return (
     <>
-      <div className="block w-full lg:hidden">
-        <MobileCurrencyPopover title={title} theme={theme} />
+      <div className="block lg:hidden">
+        <MobileCurrencyPopover theme={theme} />
       </div>
       <div className="hidden lg:block">
         <GenericPopover

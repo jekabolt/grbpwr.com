@@ -5,7 +5,7 @@ import {
   getCategoryDisplayName,
   getHeroNavLink,
 } from "@/lib/utils";
-import CurrencyPopover from "@/app/_components/mobile-currency-popover";
+import CurrencyPopover from "@/app/_components/currency-popover";
 import NewslatterForm from "@/app/_components/newslatter-form";
 
 import { useDataContext } from "../contexts/DataContext";
