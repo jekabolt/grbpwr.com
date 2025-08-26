@@ -48,6 +48,10 @@ export function NextCategoryButton() {
     (cat) => cat.name.toLowerCase() === nextCategoryName,
   );
 
+  if (currentCategoryName === "objects") {
+    return null;
+  }
+
   return (
     <Button variant="main" size="lg" className="uppercase" asChild>
       <Link href={`/catalog/${gender}/${nextCategory?.name.toLowerCase()}`}>

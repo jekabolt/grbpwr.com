@@ -58,7 +58,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
           <Text variant="uppercase">grbpwr</Text>
           <LiveClock />
         </div>
-        <div className="order-3 flex gap-24 py-16 lg:order-2 lg:py-0">
+        <div className="order-3 flex justify-center gap-24 py-16 lg:order-2 lg:py-0">
           {links.map((l) => (
             <Button asChild key={l.text} className="uppercase">
               <Link href={l.href}>{l.text}</Link>
@@ -78,7 +78,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
           <FooterNavMobile />
         </div>
         <div className="order-2 flex lg:order-4">
-          <CurrencyPopover align="start" title="currency:" theme={theme} />
+          <CurrencyPopover title="currency:" theme={theme} />
         </div>
       </div>
     </footer>

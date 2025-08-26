@@ -6,7 +6,6 @@ import * as Toast from "@radix-ui/react-toast";
 import { Button } from "./button";
 import { Text } from "./text";
 
-// Global Toast Provider - add this to your app root
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <Toast.Provider duration={4000}>

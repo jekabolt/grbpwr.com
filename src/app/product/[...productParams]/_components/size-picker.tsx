@@ -27,7 +27,7 @@ export function SizePicker({
       <div
         className={cn({
           "grid grid-cols-4 gap-y-7": view === "grid",
-          "flex w-full items-center justify-center gap-x-4": view === "line",
+          "flex w-full items-center justify-between gap-x-4": view === "line",
           flex: isOneSize,
         })}
       >
@@ -36,6 +36,7 @@ export function SizePicker({
             className={cn("border-b border-transparent leading-none", {
               "border-textColor": activeSizeId === id,
               "hover:border-textColor": !outOfStock?.[id],
+              "w-full": view === "line",
             })}
             key={id}
             onClick={() => handleSizeSelect(id)}

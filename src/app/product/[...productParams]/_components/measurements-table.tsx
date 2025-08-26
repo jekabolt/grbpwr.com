@@ -27,7 +27,7 @@ export function MeasurementsTable({
   handleSelectSize,
 }: Props) {
   const { dictionary } = useDataContext();
-  const { hoveredMeasurement } = useMeasurementStore();
+  const { hoveredMeasurement, setHoveredMeasurement } = useMeasurementStore();
 
   const measurementsWithNames = measurements.map((measurement) => {
     const name = dictionary?.measurements?.find(
@@ -53,12 +53,14 @@ export function MeasurementsTable({
           <div
             key={index}
             className={cn(
-              "flex items-center justify-between p-1 odd:bg-textInactiveColor hover:cursor-pointer hover:bg-highlightColor",
+              "flex items-center justify-between p-1 odd:bg-textInactiveColor hover:cursor-pointer hover:bg-highlightColor hover:text-bgColor",
               {
                 "bg-highlightColor text-bgColor odd:bg-highlightColor":
                   hoveredMeasurement === m.name,
               },
             )}
+            onMouseEnter={() => setHoveredMeasurement(m.name || null)}
+            onMouseLeave={() => setHoveredMeasurement(null)}
           >
             <Text>{m.name}</Text>
             <Text>{m.value}</Text>
@@ -80,7 +82,7 @@ export function MeasurementsTable({
   }
 }
 
-function getUnit(value: string, unit: Unit) {
+export function getUnit(value: string, unit: Unit) {
   if (unit === Unit.CM) {
     return `${value} CM`;
   }

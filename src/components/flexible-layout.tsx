@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { AdditionalHeader } from "@/app/_components/additional-header";
 import { Footer } from "@/app/_components/footer";
@@ -36,7 +38,7 @@ export default function FlexibleLayout({
         )}
         {headerType === "catalog" && (
           <div className={mobileHeaderType ? "hidden lg:block" : ""}>
-            <Header />
+            <Header isCatalog={headerType === "catalog"} />
           </div>
         )}
         {headerType === "archive" && <HeaderArchive {...headerProps} />}

@@ -2,6 +2,7 @@ import { SVGProps } from "react";
 import { common_ProductMeasurement } from "@/api/proto-http/frontend";
 
 import { useDataContext } from "@/components/contexts/DataContext";
+import { Unit } from "@/app/product/[...productParams]/_components/measurements-table";
 
 import { HorizontalLine } from "../icons/guide-lines/horizontal-line";
 import { VerticalLine } from "../icons/guide-lines/vertical-line";
@@ -44,6 +45,7 @@ interface MeasurementSvgProps extends SVGProps<SVGSVGElement> {
   originalViewBox?: string;
   children: React.ReactNode;
   selectedSize?: number;
+  unit?: Unit;
 }
 
 const normalizeSVGContainer = (originalViewBox: string) => {
@@ -91,6 +93,7 @@ export function SvgWrapper({
   originalViewBox = SVG_CONFIG.viewBox,
   children,
   selectedSize,
+  unit = Unit.CM,
   ...props
 }: MeasurementSvgProps) {
   const measurementValue = useMeasurementValue(measurements, selectedSize);
@@ -118,6 +121,7 @@ export function SvgWrapper({
               y={line.y || 0}
               xStart={line.xStart || 0}
               xEnd={line.xEnd || 0}
+              unit={unit}
             />
           ) : (
             <VerticalLine
@@ -129,6 +133,7 @@ export function SvgWrapper({
               yStart={line.yStart || 0}
               yEnd={line.yEnd || 0}
               view={line.view}
+              unit={unit}
             />
           ),
         )}

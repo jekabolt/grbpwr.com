@@ -35,11 +35,11 @@ export function MobileSelectSize({
       onOpenChange={onOpenChange}
     >
       <DialogPrimitives.Portal>
-        <Overlay cover="screen" />
+        <Overlay cover="screen" disablePointerEvents={false} />
         <DialogPrimitives.Title className="sr-only">
           grbpwr mobile menu
         </DialogPrimitives.Title>
-        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-40 flex h-auto w-screen flex-col gap-10 bg-bgColor p-2.5 pb-10 text-textColor mix-blend-hard-light">
+        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-50 flex h-auto w-screen flex-col gap-10 bg-bgColor p-2.5 pb-10 text-textColor mix-blend-hard-light">
           <DialogPrimitives.Close asChild>
             <div className="flex items-center justify-between">
               <Text variant="uppercase">select size</Text>

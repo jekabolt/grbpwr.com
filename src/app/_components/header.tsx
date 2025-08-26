@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -10,14 +10,31 @@ import { Button } from "@/components/ui/button";
 import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
 import { HeaderLeftNav } from "./header-left-nav";
+import { useHeaderScrollPosition } from "./useHeaderScrollPosition";
 
-export function Header() {
+export function Header({ isCatalog }: { isCatalog?: boolean }) {
   const { dictionary } = useDataContext();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
   const itemsQuantity = Object.keys(products).length;
+  const [isVisible, setIsVisible] = useState(true);
+  const { scrollDirection, isAtTop } = useHeaderScrollPosition();
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 1024;
+
+    if (isMobile) {
+      if (scrollDirection === "down") {
+        setIsVisible(false);
+      } else if (scrollDirection === "up" || isAtTop) {
+        setIsVisible(true);
+      }
+    } else {
+      setIsVisible(true);
+    }
+  }, [scrollDirection, isAtTop]);
 
   return (
     <header
@@ -25,8 +42,14 @@ export function Header() {
         "fixed inset-x-2.5 bottom-2 z-30 h-12 py-2 lg:top-2 lg:gap-0 lg:px-5 lg:py-3",
         "flex items-center justify-between gap-1",
         "blackTheme border border-textInactiveColor bg-textColor text-bgColor lg:border-transparent lg:bg-bgColor lg:text-textColor",
+        "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] lg:transform-none lg:transition-none",
         {
-          "bg-bgColor text-textColor mix-blend-hard-light": isNavOpen,
+          "pointer-events-auto translate-y-0": isVisible,
+          "pointer-events-none translate-y-[120%]": !isVisible,
+          "bg-bgColor text-textColor mix-blend-hard-light":
+            isNavOpen && isAtTop && !isCatalog,
+          "border-none bg-transparent text-textColor mix-blend-exclusion":
+            isAtTop && !isNavOpen && !isCatalog,
           "lg:bg-transparent lg:mix-blend-exclusion":
             !isNavOpen || (isNavOpen && !isBigMenuEnabled),
           "lg:border-none": !isBigMenuEnabled,

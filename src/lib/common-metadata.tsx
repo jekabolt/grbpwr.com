@@ -1,7 +1,7 @@
 // src/lib/metadata.ts
 import { Metadata } from "next";
 
-import logo from "../../public/grbpwr-logo.webp";
+import logo from "../../public/app-logo.webp";
 
 type GenerateOgParams = {
   title?: string;
@@ -16,8 +16,8 @@ export function generateOpenGraph({
   title = "grbpwr.com",
   description = "latest ready-to-wear menswear, womenswear, and accessories".toUpperCase(),
   imageUrl = logo.src,
-  imageWidth = 1200,
-  imageHeight = 630,
+  imageWidth = 512,
+  imageHeight = 512,
   imageAlt = "GRBPWR",
 }: GenerateOgParams = {}): Metadata["openGraph"] {
   return {

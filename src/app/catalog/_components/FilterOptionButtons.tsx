@@ -26,33 +26,50 @@ export default function FilterOptionButtons({
 
   const isShoes = category?.toLowerCase().includes("shoes");
 
-  const filteredValues = values.filter((factor) => {
-    if (!topCategoryId) {
-      return true;
-    }
-
+  const nonNumericValues = values.filter((factor) => {
     const name = factor.name?.toLowerCase() || "";
-    const isNumeric = /^\d+(\.\d+)?$/.test(name);
-
-    return isShoes ? isNumeric : !isNumeric;
+    return !/^\d+(\.\d+)?$/.test(name);
   });
 
+  const numericValues = values.filter((factor) => {
+    const name = factor.name?.toLowerCase() || "";
+    return /^\d+(\.\d+)?$/.test(name);
+  });
+
+  const showNonNumeric = !topCategoryId || !isShoes;
+  const showNumeric = !topCategoryId || isShoes;
+
+  const renderButton = (factor: common_Size) => (
+    <Button
+      onClick={() => handleFilterChange(factor.id + "")}
+      className={cn(
+        "block border-b border-transparent px-5 uppercase hover:border-textColor",
+        {
+          "border-textColor": factor.id + "" === defaultValue,
+        },
+      )}
+      key={factor.id}
+    >
+      {factor.name?.toLowerCase()}
+    </Button>
+  );
+
   return (
-    <>
-      {filteredValues.map((factor) => (
-        <Button
-          onClick={() => handleFilterChange(factor.id + "")}
-          className={cn(
-            "block border-b border-transparent px-5 uppercase hover:border-textColor",
-            {
-              "border-textColor": factor.id + "" === defaultValue,
-            },
-          )}
-          key={factor.id}
-        >
-          {factor.name?.toLowerCase()}
-        </Button>
-      ))}
-    </>
+    <div
+      className={cn("grid", {
+        "gap-y-7": showNonNumeric && showNumeric,
+      })}
+    >
+      {showNonNumeric && (
+        <div className="grid grid-cols-4 gap-x-2 gap-y-5">
+          {nonNumericValues.map(renderButton)}
+        </div>
+      )}
+      {showNumeric && (
+        <div className="grid grid-cols-4 gap-x-2 gap-y-5">
+          {numericValues.map(renderButton)}
+        </div>
+      )}
+    </div>
   );
 }

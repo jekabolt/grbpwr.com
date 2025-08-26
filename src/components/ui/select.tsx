@@ -10,6 +10,7 @@ export default function SelectComponent({
   items,
   className,
   contentClassName,
+  fullWidth,
   renderValue,
   ...props
 }: {
@@ -17,6 +18,7 @@ export default function SelectComponent({
   items: { value: string; label: string }[];
   className?: string;
   contentClassName?: string;
+  fullWidth?: boolean;
   renderValue?: (
     selectedValue: string,
     selectedItem: { label: string; value: string } | undefined,
@@ -37,7 +39,7 @@ export default function SelectComponent({
       >
         <Arrow />
       </SelectTrigger>
-      <SelectContent className={contentClassName}>
+      <SelectContent fullWidth={fullWidth} className={contentClassName}>
         {items.map((item) => (
           <SelectItem key={item.value} value={item.value}>
             {item.label}
@@ -117,15 +119,20 @@ export function SelectTrigger({
 export function SelectContent({
   children,
   className,
+  fullWidth,
 }: {
   children: React.ReactNode;
   className?: string;
+  fullWidth?: boolean;
 }) {
   return (
     <Select.Portal>
       <Select.Content
         className={cn("w-full overflow-hidden bg-bgColor shadow-md", className)}
         position="popper"
+        style={{
+          width: fullWidth ? "var(--radix-select-trigger-width)" : undefined,
+        }}
       >
         <Select.Viewport className="max-h-[300px] bg-bgColor">
           {children}
