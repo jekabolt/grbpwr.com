@@ -49,31 +49,39 @@ export function MobileProductInfo({
     <div className="relative h-full overflow-y-hidden">
       <div className="fixed inset-x-0 top-12">
         <MobileImageCarousel media={product.media || []} />
+        <div className="flex items-center justify-between px-2.5">
+          <Text>{"<"}</Text>
+          <Text>{">"}</Text>
+        </div>
       </div>
+
       <MobilePlate>
         <Text variant="uppercase">{name}</Text>
-        <GarmentDescription product={product} />
+        <div className="space-y-12">
+          <GarmentDescription product={product} />
 
-        <div className="space-y-5">
-          <MobileMeasurements
-            product={product}
-            selectedSize={selectedSize || 0}
-            outOfStock={outOfStock}
-            handleAddToCart={handleMeasurementSizes}
-            handleSelectSize={handleSelectSize}
-          />
-          <SizePicker
-            sizeNames={sizeNames || []}
-            activeSizeId={activeSizeId || 0}
-            outOfStock={outOfStock}
-            sizeQuantity={sizeQuantity}
-            isOneSize={isOneSize}
-            handleSizeSelect={handleSizeSelect}
-          />
+          <div className="space-y-5">
+            <MobileMeasurements
+              product={product}
+              selectedSize={selectedSize || 0}
+              outOfStock={outOfStock}
+              handleAddToCart={handleMeasurementSizes}
+              handleSelectSize={handleSelectSize}
+            />
+            <SizePicker
+              sizeNames={sizeNames || []}
+              activeSizeId={activeSizeId || 0}
+              outOfStock={outOfStock}
+              sizeQuantity={sizeQuantity}
+              isOneSize={isOneSize}
+              handleSizeSelect={handleSizeSelect}
+            />
+          </div>
         </div>
 
         {product.product && <LastViewedProducts product={product.product} />}
       </MobilePlate>
+
       <AddToCartBtn
         product={product}
         handlers={{

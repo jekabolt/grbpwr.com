@@ -19,11 +19,13 @@ export function Measurements({
   product,
   selectedSize,
   outOfStock,
+  isOneSize,
   handleSelectSize,
 }: {
   product: common_ProductFull;
   selectedSize: number;
   outOfStock?: Record<number, boolean>;
+  isOneSize?: boolean;
   handleSelectSize: (size: number) => void;
 }) {
   const { hoveredMeasurement } = useMeasurementStore();
@@ -69,6 +71,7 @@ export function Measurements({
               activeSizeId={selectedSize}
               outOfStock={outOfStock}
               sizeQuantity={sizeQuantity}
+              isOneSize={isOneSize}
               handleSizeSelect={handleSelectSize}
             />
           </div>

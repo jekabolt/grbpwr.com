@@ -5,7 +5,7 @@ import { Drawer } from "vaul";
 
 import { cn } from "@/lib/utils";
 
-const snapPoints = [0.35, 1];
+const snapPoints = [0.25, 1];
 
 export default function VaulDrawer({
   children,
@@ -48,7 +48,7 @@ export default function VaulDrawer({
           />
 
           <div
-            className={cn("space-y-12 px-2.5 pb-32 pt-2.5", {
+            className={cn("space-y-6 px-2.5 pb-32 pt-2.5", {
               "flex-1 overflow-y-auto": snap === snapPoints[1],
             })}
           >

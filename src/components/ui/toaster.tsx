@@ -47,12 +47,12 @@ export function EmailToaster({
 
 export function SubmissionToaster({
   open,
-  onOpenChange,
   message,
+  onOpenChange,
 }: {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
   message?: string;
+  onOpenChange: (open: boolean) => void;
 }) {
   return (
     <Toast.Root

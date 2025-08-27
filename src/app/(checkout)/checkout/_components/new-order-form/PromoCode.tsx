@@ -59,17 +59,19 @@ export default function PromoCode({
   }
 
   return (
-    <div className="relative flex items-center justify-between border border-textInactiveColor px-4 py-1.5">
-      <InputField
-        control={form.control}
-        loading={loading}
-        placeholder="ENTER PROMO CODE"
-        name="promoCode"
-        readOnly={!isFocused || isApplied}
-        onFocus={handleFocus}
-        autoComplete="off"
-        className="w-full grow border-none text-textBaseSize leading-4"
-      />
+    <div className="relative flex items-center border border-textInactiveColor px-4 py-1.5">
+      <div className="flex-1">
+        <InputField
+          control={form.control}
+          loading={loading}
+          placeholder="ENTER PROMO CODE"
+          name="promoCode"
+          readOnly={!isFocused || isApplied}
+          onFocus={handleFocus}
+          autoComplete="off"
+          className="w-full grow border-none text-textBaseSize leading-4"
+        />
+      </div>
       <Button
         type="input"
         className="flex-none uppercase"

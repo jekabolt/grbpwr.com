@@ -28,7 +28,7 @@ export function SizePicker({
         className={cn({
           "grid grid-cols-4 gap-y-7": view === "grid",
           "flex w-full items-center justify-between": view === "line",
-          flex: isOneSize,
+          "flex justify-center": isOneSize,
         })}
       >
         {sizeNames?.map(({ name, id }) => (
@@ -37,6 +37,7 @@ export function SizePicker({
               "border-textColor": activeSizeId === id,
               "hover:border-textColor": !outOfStock?.[id],
               "w-full": view === "line",
+              "w-auto": view === "line" && isOneSize,
             })}
             key={id}
             onClick={() => handleSizeSelect(id)}

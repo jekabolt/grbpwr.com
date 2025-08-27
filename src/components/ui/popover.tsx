@@ -14,6 +14,7 @@ type Props = {
   contentProps?: Popover.PopoverContentProps;
   className?: string;
   gap?: "default" | "large";
+  variant?: "default" | "no-borders";
 };
 
 export default function GenericPopover({
@@ -23,6 +24,7 @@ export default function GenericPopover({
   contentProps,
   className,
   gap = "default",
+  variant = "default",
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,6 +37,7 @@ export default function GenericPopover({
         className={className}
         title={title}
         gap={gap}
+        variant={variant}
         {...contentProps}
       >
         {children}
@@ -48,12 +51,14 @@ function PopoverContent({
   title,
   className,
   gap = "default",
+  variant = "default",
   ...contentProps
 }: {
   children: React.ReactNode;
   title?: string;
   className?: string;
   gap?: "default" | "large";
+  variant?: "default" | "no-borders";
 }) {
   return (
     <Popover.Portal>
@@ -64,6 +69,7 @@ function PopoverContent({
           "relative z-20 w-full space-y-10 border border-textInactiveColor bg-bgColor px-2.5",
           {
             "space-y-16": gap === "large",
+            "border-none": variant === "no-borders",
           },
           className,
         )}

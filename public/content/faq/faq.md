@@ -44,7 +44,7 @@ You can return your order within 14 days of receiving it. To make a return, plea
 
 Items that are damaged or missing labels will not be accepted for return.
 
-If you would like to exchange an item for a different size, please use our [Aftersale Services](/aftersale-services)s.
+If you would like to exchange an item for a different size, please use our [Aftersale Services](/aftersale-services).
 
 ## ORDER TRACKING & PRE-ORDER
 
