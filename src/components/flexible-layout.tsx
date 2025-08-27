@@ -45,15 +45,14 @@ export default function FlexibleLayout({
         <div className="w-full">{children}</div>
       </div>
       {displayFooter && <Footer theme={theme} />}
-      {headerType === "catalog" ||
-        (headerType === "main" && (
-          <CartPopup>
-            <div className="h-full overflow-y-scroll">
-              <CartProductsList />
-            </div>
-            <CartTotalPrice />
-          </CartPopup>
-        ))}
+      {(headerType === "catalog" || headerType === "main") && (
+        <CartPopup>
+          <div className="h-full overflow-y-scroll">
+            <CartProductsList />
+          </div>
+          <CartTotalPrice />
+        </CartPopup>
+      )}
     </div>
   );
 }
