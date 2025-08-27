@@ -7,6 +7,7 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { filterNavigationLinks, processCategories } from "@/lib/categories-map";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { useAnnounce } from "@/app/_components/useAnnounce";
 
 import { AnimatedButton } from "./animated-button";
 import { Button } from "./button";
@@ -24,6 +25,7 @@ export function DesktopNavigationMenu({
 }) {
   const { dictionary } = useDataContext();
   const pathname = usePathname();
+  const { open } = useAnnounce(dictionary?.announce || "");
 
   const processedCategories = dictionary?.categories
     ? processCategories(dictionary.categories).filter(
@@ -109,6 +111,7 @@ export function DesktopNavigationMenu({
 
       <div
         className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
+          "top-16": open,
           "border-none": !isBigMenuEnabled,
         })}
       >
