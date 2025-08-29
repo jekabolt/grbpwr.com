@@ -18,7 +18,7 @@ export function BottomSheet({
 
   const config = {
     movementThreshold: 5,
-    sensitivity: 20,
+    sensitivity: 5,
     minHeight: 150,
     topOffset: 48,
   };
