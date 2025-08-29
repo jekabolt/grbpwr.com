@@ -55,7 +55,7 @@ export function MobileProductInfo({
 
           <div className="pointer-events-none absolute inset-0">
             <BottomSheet mainAreaRef={mainAreaRef} containerRef={containerRef}>
-              <div className="pointer-events-auto space-y-6 px-2.5 pb-32 pt-2.5">
+              <div className="pointer-events-auto space-y-6 overflow-y-scroll px-2.5 pb-32 pt-2.5">
                 <Text variant="uppercase">{name}</Text>
                 <div className="space-y-12">
                   <GarmentDescription product={product} />

@@ -18,7 +18,7 @@ export function BottomSheet({
 
   const config = {
     movementThreshold: 5,
-    sensitivity: 2,
+    sensitivity: 40,
     minHeight: 150,
     topOffset: 48,
   };
@@ -34,11 +34,10 @@ export function BottomSheet({
 
   // Функция определения, можно ли прокручивать внутренний контент
   const canScrollInside = () => {
-    // Проверяем, что мы в браузере (не SSR)
     if (typeof window === "undefined") return false;
 
     const maxHeight = window.innerHeight - config.topOffset;
-    // Разрешаем внутреннюю прокрутку только когда плашка достигла максимальной высоты
+
     return containerHeight >= maxHeight;
   };
 
@@ -77,6 +76,13 @@ export function BottomSheet({
           if (!canScrollInside()) {
             state.isDragging = true;
             e.preventDefault();
+          } else {
+            // Если лист расширен и пользователь делает свайп вниз, включаем драг для закрытия
+            const isSwipeDown = currentY > state.startY;
+            if (isSwipeDown) {
+              state.isDragging = true;
+              e.preventDefault();
+            }
           }
           // Если можем прокручивать внутри, НЕ включаем драг - позволяем естественную прокрутку
         }
@@ -84,24 +90,27 @@ export function BottomSheet({
 
       if (state.hasMoved && state.isDragging && state.isVertical) {
         // Если можем прокручивать внутри, не блокируем событие
-        if (!canScrollInside()) {
+        // Но всегда блокируем если пользователь пытается закрыть расширенный лист
+        const isCollapsingFromExpanded =
+          canScrollInside() && currentY > state.startY;
+        if (!canScrollInside() || isCollapsingFromExpanded) {
           e.preventDefault();
-
-          const deltaMove = state.lastY - currentY;
-          const maxHeight = window.innerHeight - config.topOffset;
-          let newHeight = containerHeight + deltaMove * config.sensitivity;
-
-          if (newHeight < config.minHeight) {
-            const overshoot = config.minHeight - newHeight;
-            newHeight = config.minHeight - Math.pow(overshoot, 0.7) * 0.3;
-          } else if (newHeight > maxHeight) {
-            const overshoot = newHeight - maxHeight;
-            newHeight = maxHeight + Math.pow(overshoot, 0.7) * 0.3;
-          }
-
-          setContainerHeight(newHeight);
-          state.lastY = currentY;
         }
+
+        const deltaMove = state.lastY - currentY;
+        const maxHeight = window.innerHeight - config.topOffset;
+        let newHeight = containerHeight + deltaMove * config.sensitivity;
+
+        if (newHeight < config.minHeight) {
+          const overshoot = config.minHeight - newHeight;
+          newHeight = config.minHeight - Math.pow(overshoot, 0.7) * 0.3;
+        } else if (newHeight > maxHeight) {
+          const overshoot = newHeight - maxHeight;
+          newHeight = maxHeight + Math.pow(overshoot, 0.7) * 0.3;
+        }
+
+        setContainerHeight(newHeight);
+        state.lastY = currentY;
       }
     };
 
@@ -112,16 +121,19 @@ export function BottomSheet({
 
       if (state.isDragging && state.isVertical) {
         // Предотвращаем событие только если НЕ можем прокручивать внутри
-        if (!canScrollInside()) {
+        // Или если пользователь пытался закрыть расширенный лист
+        const wasCollapsingFromExpanded =
+          canScrollInside() && state.lastY > state.startY;
+        if (!canScrollInside() || wasCollapsingFromExpanded) {
           e.preventDefault();
+        }
 
-          const maxHeight = window.innerHeight - config.topOffset;
+        const maxHeight = window.innerHeight - config.topOffset;
 
-          if (containerHeight < config.minHeight) {
-            setContainerHeight(config.minHeight);
-          } else if (containerHeight > maxHeight) {
-            setContainerHeight(maxHeight);
-          }
+        if (containerHeight < config.minHeight) {
+          setContainerHeight(config.minHeight);
+        } else if (containerHeight > maxHeight) {
+          setContainerHeight(maxHeight);
         }
       }
 
@@ -156,8 +168,8 @@ export function BottomSheet({
       transition={{
         type: "spring",
         stiffness: 800,
-        damping: 25,
-        mass: 0.1,
+        damping: 55,
+        mass: 0.5,
         velocity: 100,
       }}
     >
