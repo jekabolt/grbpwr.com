@@ -30,6 +30,7 @@ export function BottomSheet({
     isDragging: false,
     hasMoved: false,
     isVertical: false,
+    startedAtTop: false,
   });
 
   // Функция определения, можно ли прокручивать внутренний контент
@@ -55,6 +56,18 @@ export function BottomSheet({
       state.isDragging = false;
       state.hasMoved = false;
       state.isVertical = false;
+
+      // Проверяем, началось ли касание в верхней части контента
+      if (containerRef.current && canScrollInside()) {
+        const scrollableElement = containerRef.current.querySelector(
+          '[class*="overflow-y-scroll"]',
+        );
+        if (scrollableElement) {
+          state.startedAtTop = scrollableElement.scrollTop <= 5; // 5px tolerance
+        }
+      } else {
+        state.startedAtTop = false;
+      }
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -77,9 +90,9 @@ export function BottomSheet({
             state.isDragging = true;
             e.preventDefault();
           } else {
-            // Если лист расширен и пользователь делает свайп вниз, включаем драг для закрытия
+            // Если лист расширен и пользователь делает свайп вниз с верха контента, включаем драг для закрытия
             const isSwipeDown = currentY > state.startY;
-            if (isSwipeDown) {
+            if (isSwipeDown && state.startedAtTop) {
               state.isDragging = true;
               e.preventDefault();
             }
@@ -92,7 +105,7 @@ export function BottomSheet({
         // Если можем прокручивать внутри, не блокируем событие
         // Но всегда блокируем если пользователь пытается закрыть расширенный лист
         const isCollapsingFromExpanded =
-          canScrollInside() && currentY > state.startY;
+          canScrollInside() && currentY > state.startY && state.startedAtTop;
         if (!canScrollInside() || isCollapsingFromExpanded) {
           e.preventDefault();
         }
@@ -123,7 +136,7 @@ export function BottomSheet({
         // Предотвращаем событие только если НЕ можем прокручивать внутри
         // Или если пользователь пытался закрыть расширенный лист
         const wasCollapsingFromExpanded =
-          canScrollInside() && state.lastY > state.startY;
+          canScrollInside() && state.lastY > state.startY && state.startedAtTop;
         if (!canScrollInside() || wasCollapsingFromExpanded) {
           e.preventDefault();
         }
