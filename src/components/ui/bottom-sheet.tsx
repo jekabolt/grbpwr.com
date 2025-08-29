@@ -5,109 +5,131 @@ import { motion } from "framer-motion";
 
 export interface BottomSheetProps {
   children: ReactNode;
-  initialHeight?: number;
-  minHeight?: number;
-  maxHeight?: number;
-  className?: string;
-  containerClassName?: string;
-  movementThreshold?: number;
-  sensitivity?: number;
+  mainAreaRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement>;
 }
 
 export function BottomSheet({
   children,
-  initialHeight = 150,
-  minHeight = 150,
-  maxHeight = 800,
-  className = "",
-  containerClassName = "",
-  movementThreshold = 5,
-  sensitivity = 1.3,
+  mainAreaRef,
+  containerRef,
 }: BottomSheetProps) {
-  // Container state for bottom sheet
-  const containerRef = useRef<HTMLDivElement>(null);
-  const mainAreaRef = useRef<HTMLDivElement>(null);
-  const [containerHeight, setContainerHeight] = useState(initialHeight);
-  const [lastTouchY, setLastTouchY] = useState(0);
-  const [touchStartY, setTouchStartY] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [hasMoved, setHasMoved] = useState(false);
+  const [containerHeight, setContainerHeight] = useState(150);
 
-  // Use useEffect to add non-passive event listeners
+  const config = {
+    movementThreshold: 5,
+    sensitivity: 2,
+    minHeight: 150,
+    topOffset: 48,
+  };
+
+  const touchState = useRef({
+    startY: 0,
+    startX: 0,
+    lastY: 0,
+    isDragging: false,
+    hasMoved: false,
+    isVertical: false,
+  });
+
+  // Функция определения, можно ли прокручивать внутренний контент
+  const canScrollInside = () => {
+    // Проверяем, что мы в браузере (не SSR)
+    if (typeof window === "undefined") return false;
+
+    const maxHeight = window.innerHeight - config.topOffset;
+    // Разрешаем внутреннюю прокрутку только когда плашка достигла максимальной высоты
+    return containerHeight >= maxHeight;
+  };
+
   useEffect(() => {
     const mainArea = mainAreaRef.current;
     if (!mainArea) return;
 
     const handleTouchStart = (e: TouchEvent) => {
       const touch = e.touches[0];
-      setTouchStartY(touch.clientY);
-      setLastTouchY(touch.clientY);
-      setIsDragging(false); // Don't set to true immediately
-      setHasMoved(false);
+      const state = touchState.current;
 
-      // Don't prevent default yet - let the event bubble normally for now
+      state.startY = touch.clientY;
+      state.startX = touch.clientX;
+      state.lastY = touch.clientY;
+      state.isDragging = false;
+      state.hasMoved = false;
+      state.isVertical = false;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       const touch = e.touches[0];
-      const currentTouchY = touch.clientY;
-      const totalMovement = Math.abs(currentTouchY - touchStartY);
+      const state = touchState.current;
+      const currentY = touch.clientY;
+      const currentX = touch.clientX;
 
-      // If user has moved beyond threshold, start treating it as a drag
-      if (totalMovement > movementThreshold && !hasMoved) {
-        setHasMoved(true);
-        setIsDragging(true);
-        // Now prevent default to stop any click events from firing
-        e.preventDefault();
+      const deltaY = Math.abs(currentY - state.startY);
+      const deltaX = Math.abs(currentX - state.startX);
+      const totalMovement = Math.max(deltaY, deltaX);
+
+      if (totalMovement > config.movementThreshold && !state.hasMoved) {
+        state.hasMoved = true;
+        state.isVertical = deltaY > deltaX;
+
+        if (state.isVertical) {
+          // Включаем драг только если НЕ можем прокручивать внутри
+          if (!canScrollInside()) {
+            state.isDragging = true;
+            e.preventDefault();
+          }
+          // Если можем прокручивать внутри, НЕ включаем драг - позволяем естественную прокрутку
+        }
       }
 
-      // If we're in drag mode, handle the drag
-      if (hasMoved && isDragging) {
-        e.preventDefault();
+      if (state.hasMoved && state.isDragging && state.isVertical) {
+        // Если можем прокручивать внутри, не блокируем событие
+        if (!canScrollInside()) {
+          e.preventDefault();
 
-        const deltaY = lastTouchY - currentTouchY; // Positive when swiping up
+          const deltaMove = state.lastY - currentY;
+          const maxHeight = window.innerHeight - config.topOffset;
+          let newHeight = containerHeight + deltaMove * config.sensitivity;
 
-        // Calculate new height with configurable sensitivity
-        let newHeight = containerHeight + deltaY * sensitivity;
+          if (newHeight < config.minHeight) {
+            const overshoot = config.minHeight - newHeight;
+            newHeight = config.minHeight - Math.pow(overshoot, 0.7) * 0.3;
+          } else if (newHeight > maxHeight) {
+            const overshoot = newHeight - maxHeight;
+            newHeight = maxHeight + Math.pow(overshoot, 0.7) * 0.3;
+          }
 
-        // Smooth resistance when approaching boundaries (no hard stops)
-        if (newHeight < minHeight) {
-          const overshoot = minHeight - newHeight;
-          newHeight = minHeight - Math.pow(overshoot, 0.7) * 0.3;
-        } else if (newHeight > maxHeight) {
-          const overshoot = newHeight - maxHeight;
-          newHeight = maxHeight + Math.pow(overshoot, 0.7) * 0.3;
+          setContainerHeight(newHeight);
+          state.lastY = currentY;
         }
-
-        setContainerHeight(newHeight);
-        setLastTouchY(currentTouchY);
       }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      // If user didn't move much, let the click/tap event fire normally
-      if (!hasMoved) {
-        setIsDragging(false);
-        return; // Don't prevent default - allow normal click behavior
-      }
+      const state = touchState.current;
 
-      // If it was a drag, prevent default and finish the drag
-      if (isDragging) {
-        e.preventDefault();
-        setIsDragging(false);
+      if (!state.hasMoved) return;
 
-        if (containerHeight < minHeight) {
-          setContainerHeight(minHeight);
-        } else if (containerHeight > maxHeight) {
-          setContainerHeight(maxHeight);
+      if (state.isDragging && state.isVertical) {
+        // Предотвращаем событие только если НЕ можем прокручивать внутри
+        if (!canScrollInside()) {
+          e.preventDefault();
+
+          const maxHeight = window.innerHeight - config.topOffset;
+
+          if (containerHeight < config.minHeight) {
+            setContainerHeight(config.minHeight);
+          } else if (containerHeight > maxHeight) {
+            setContainerHeight(maxHeight);
+          }
         }
       }
 
-      // Reset state
-      setHasMoved(false);
+      state.hasMoved = false;
+      state.isVertical = false;
+      state.isDragging = false;
     };
 
-    // Add non-passive event listeners
     mainArea.addEventListener("touchstart", handleTouchStart, {
       passive: false,
     });
@@ -119,53 +141,36 @@ export function BottomSheet({
       mainArea.removeEventListener("touchmove", handleTouchMove);
       mainArea.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [
-    isDragging,
-    containerHeight,
-    lastTouchY,
-    touchStartY,
-    hasMoved,
-    minHeight,
-    maxHeight,
-    movementThreshold,
-    sensitivity,
-  ]);
+  }, [containerHeight]);
 
   return (
-    <div ref={mainAreaRef} className={containerClassName}>
-      <motion.div
-        ref={containerRef}
-        className={`border-b-none absolute inset-x-2.5 bottom-0 z-30 flex flex-col border border-textInactiveColor bg-bgColor ${className}`}
-        style={{
-          height: containerHeight,
-          overflow: "hidden",
-        }}
-        animate={{ height: containerHeight }}
-        transition={{
-          type: "spring",
-          stiffness: 900,
-          damping: 35,
-          mass: 0.15,
-          velocity: 15,
-        }}
-      >
-        {children}
-      </motion.div>
-    </div>
+    <motion.div
+      ref={containerRef}
+      className="border-b-none absolute inset-x-2.5 bottom-0 z-30 flex flex-col border border-textInactiveColor bg-bgColor"
+      style={{
+        height: containerHeight,
+        // Включаем overflow-y только когда можем прокручивать внутри
+        overflowY: canScrollInside() ? "auto" : "hidden",
+      }}
+      animate={{ height: containerHeight }}
+      transition={{
+        type: "spring",
+        stiffness: 800,
+        damping: 25,
+        mass: 0.1,
+        velocity: 100,
+      }}
+    >
+      {/* Визуальный индикатор состояния */}
+      <div className="flex h-6 w-full flex-shrink-0 items-center justify-center bg-gray-50">
+        <div
+          className={`h-1 w-8 rounded transition-colors ${
+            canScrollInside() ? "bg-green-400" : "bg-gray-400"
+          }`}
+        />
+      </div>
+
+      {children}
+    </motion.div>
   );
-}
-
-// Hook to provide sheet control from parent components
-export function useBottomSheet(initialHeight = 150) {
-  const [height, setHeight] = useState(initialHeight);
-
-  const expand = (targetHeight: number) => setHeight(targetHeight);
-  const collapse = () => setHeight(initialHeight);
-
-  return {
-    height,
-    setHeight,
-    expand,
-    collapse,
-  };
 }
