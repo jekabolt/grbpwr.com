@@ -8,7 +8,6 @@ import {
   type UseBottomSheetConfig,
 } from "../../lib/hooks/useBottomSheet";
 import { AnimatedButton } from "./animated-button";
-import { Arrow } from "./icons/arrow";
 
 export interface BottomSheetProps {
   children: ReactNode;
@@ -64,22 +63,24 @@ export function BottomSheet({
             }}
             className="w-full"
           >
-            <div className="pointer-events-auto flex h-10 w-full flex-shrink-0 items-center justify-between px-2.5">
+            <div className="pointer-events-auto flex h-10 w-full flex-shrink-0 items-center justify-between">
               <AnimatedButton
+                className="h-full w-1/2 text-left"
                 animationDuration={500}
                 onClick={() => {
                   onArrowLeftClick?.();
                 }}
               >
-                <Arrow className="-rotate-90" />
+                {"<"}
               </AnimatedButton>
               <AnimatedButton
+                className="h-full w-1/2 text-right"
                 animationDuration={500}
                 onClick={() => {
                   onArrowRightClick?.();
                 }}
               >
-                <Arrow className="rotate-90" />
+                {">"}
               </AnimatedButton>
             </div>
           </motion.div>
