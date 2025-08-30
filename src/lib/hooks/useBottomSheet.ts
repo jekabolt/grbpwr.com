@@ -34,7 +34,7 @@ export function useBottomSheet({
     const [hideArrows, setHideArrows] = useState(false);
 
     const config = {
-        movementThreshold: 10,
+        movementThreshold: 2,
         sensitivity: 1,
         minHeight: 150,
         topOffset: 48,
