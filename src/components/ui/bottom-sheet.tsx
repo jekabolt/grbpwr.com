@@ -3,18 +3,23 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 
+import { Arrow } from "./icons/arrow";
+
 export interface BottomSheetProps {
   children: ReactNode;
   mainAreaRef: React.RefObject<HTMLDivElement>;
   containerRef: React.RefObject<HTMLDivElement>;
+  isCarouselScrolling?: boolean;
 }
 
 export function BottomSheet({
   children,
   mainAreaRef,
   containerRef,
+  isCarouselScrolling = false,
 }: BottomSheetProps) {
   const [containerHeight, setContainerHeight] = useState(150);
+  const [hideArrows, setHideArrows] = useState(false);
 
   const config = {
     movementThreshold: 5,
@@ -41,6 +46,17 @@ export function BottomSheet({
 
     return containerHeight >= maxHeight;
   };
+
+  // Обновляем состояние стрелок при изменении высоты контейнера
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const maxHeight = window.innerHeight - config.topOffset;
+    const isAtMaxHeight = containerHeight >= maxHeight;
+    const isDragging = touchState.current.isDragging;
+
+    setHideArrows(isAtMaxHeight || isDragging || isCarouselScrolling);
+  }, [containerHeight, config.topOffset, isCarouselScrolling]);
 
   useEffect(() => {
     const mainArea = mainAreaRef.current;
@@ -97,6 +113,14 @@ export function BottomSheet({
               e.preventDefault();
             }
           }
+
+          // Обновляем состояние стрелок при начале драга
+          if (state.isDragging) {
+            const maxHeight = window.innerHeight - config.topOffset;
+            const isAtMaxHeight = containerHeight >= maxHeight;
+            setHideArrows(isAtMaxHeight || true || isCarouselScrolling); // Hide arrows when dragging
+          }
+
           // Если можем прокручивать внутри, НЕ включаем драг - позволяем естественную прокрутку
         }
       }
@@ -153,6 +177,11 @@ export function BottomSheet({
       state.hasMoved = false;
       state.isVertical = false;
       state.isDragging = false;
+
+      // Обновляем состояние стрелок при окончании драга
+      const maxHeight = window.innerHeight - config.topOffset;
+      const isAtMaxHeight = containerHeight >= maxHeight;
+      setHideArrows(isAtMaxHeight || isCarouselScrolling); // Show arrows again if not at max height and not scrolling carousel
     };
 
     mainArea.addEventListener("touchstart", handleTouchStart, {
@@ -171,10 +200,9 @@ export function BottomSheet({
   return (
     <motion.div
       ref={containerRef}
-      className="border-b-none absolute inset-x-2.5 bottom-0 z-30 flex flex-col border border-textInactiveColor bg-bgColor"
+      className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col"
       style={{
         height: containerHeight,
-        // Включаем overflow-y только когда можем прокручивать внутри
         overflowY: canScrollInside() ? "auto" : "hidden",
       }}
       animate={{ height: containerHeight }}
@@ -186,13 +214,24 @@ export function BottomSheet({
         velocity: 100,
       }}
     >
-      {/* Визуальный индикатор состояния */}
-      <div className="flex h-6 w-full flex-shrink-0 items-center justify-center bg-gray-50">
-        <div
-          className={`h-1 w-8 rounded transition-colors ${
-            canScrollInside() ? "bg-green-400" : "bg-gray-400"
-          }`}
-        />
+      {/* {!hideArrows && (
+        
+      )} */}
+
+      <div className="w-full border border-red-500">
+        {!hideArrows && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.5,
+            }}
+            className="flex h-6 w-full flex-shrink-0 items-center justify-between"
+          >
+            <Arrow className="-rotate-90" />
+            <Arrow className="rotate-90" />
+          </motion.div>
+        )}
       </div>
 
       {children}

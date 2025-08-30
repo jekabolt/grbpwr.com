@@ -21,6 +21,8 @@ type CarouselProps = {
   skipSnaps?: boolean;
   scrollOnClick?: boolean;
   setSelectedIndex?: (index: number) => void;
+  onScrollStart?: () => void;
+  onScrollEnd?: () => void;
 };
 
 export function Carousel({
@@ -37,6 +39,8 @@ export function Carousel({
   skipSnaps = true,
   scrollOnClick = false,
   setSelectedIndex,
+  onScrollStart,
+  onScrollEnd,
 }: CarouselProps) {
   const childrenCount = Children.count(children);
   const isDisabled = disabled || disableForItemCounts?.includes(childrenCount);
@@ -102,11 +106,30 @@ export function Carousel({
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
 
+    // Add scroll detection listeners
+    if (onScrollStart) {
+      emblaApi.on("pointerDown", onScrollStart);
+    }
+
+    if (onScrollEnd) {
+      emblaApi.on("pointerUp", onScrollEnd);
+      emblaApi.on("settle", onScrollEnd);
+    }
+
     return () => {
       emblaApi.off("select", onSelect);
       emblaApi.off("reInit", onSelect);
+
+      if (onScrollStart) {
+        emblaApi.off("pointerDown", onScrollStart);
+      }
+
+      if (onScrollEnd) {
+        emblaApi.off("pointerUp", onScrollEnd);
+        emblaApi.off("settle", onScrollEnd);
+      }
     };
-  }, [emblaApi, onSelect, isDisabled]);
+  }, [emblaApi, onSelect, onScrollStart, onScrollEnd, isDisabled]);
 
   function scrollNext() {
     emblaApi?.scrollNext();

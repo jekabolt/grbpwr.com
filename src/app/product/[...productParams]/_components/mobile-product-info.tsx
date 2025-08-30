@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -42,20 +42,38 @@ export function MobileProductInfo({
     useMeasurementSizes({ product });
   const containerRef = useRef<HTMLDivElement>(null!);
   const mainAreaRef = useRef<HTMLDivElement>(null!);
+  const [isCarouselScrolling, setIsCarouselScrolling] = useState(false);
 
   useEffect(() => {
     closeCart();
   }, [closeCart]);
 
+  // Carousel scroll handlers
+  const handleCarouselScrollStart = () => {
+    setIsCarouselScrolling(true);
+  };
+
+  const handleCarouselScrollEnd = () => {
+    setIsCarouselScrolling(false);
+  };
+
   return (
     <div className="relative h-full overflow-y-hidden">
       <div ref={mainAreaRef} className="fixed inset-x-0 bottom-0 top-12">
         <div className="relative h-full">
-          <MobileImageCarousel media={product.media || []} />
+          <MobileImageCarousel
+            media={product.media || []}
+            onScrollStart={handleCarouselScrollStart}
+            onScrollEnd={handleCarouselScrollEnd}
+          />
 
           <div className="pointer-events-none absolute inset-0">
-            <BottomSheet mainAreaRef={mainAreaRef} containerRef={containerRef}>
-              <div className="pointer-events-auto space-y-6 overflow-y-scroll px-2.5 pb-32 pt-2.5">
+            <BottomSheet
+              mainAreaRef={mainAreaRef}
+              containerRef={containerRef}
+              isCarouselScrolling={isCarouselScrolling}
+            >
+              <div className="border-b-none pointer-events-auto space-y-6 overflow-y-scroll border border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5">
                 <Text variant="uppercase">{name}</Text>
                 <div className="space-y-12">
                   <GarmentDescription product={product} />

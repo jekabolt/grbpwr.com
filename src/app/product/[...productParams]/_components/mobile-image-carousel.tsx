@@ -6,7 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Carousel } from "@/components/ui/carousel";
 import ImageComponent from "@/components/ui/image";
 
-export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
+export function MobileImageCarousel({
+  media,
+  onScrollStart,
+  onScrollEnd,
+}: {
+  media: common_MediaFull[];
+  onScrollStart?: () => void;
+  onScrollEnd?: () => void;
+}) {
   return (
     <DialogPrimitives.Root modal={true}>
       <DialogPrimitives.Trigger asChild>
@@ -16,6 +24,8 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
             align="center"
             className="flex h-full w-full"
             dragFree={false}
+            onScrollStart={onScrollStart}
+            onScrollEnd={onScrollEnd}
           >
             {media.map((m, index) => (
               <div key={`${m.id}-${index}`} className="flex-[0_0_100%]">
