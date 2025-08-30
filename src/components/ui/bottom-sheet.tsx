@@ -1,8 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { motion } from "framer-motion";
 
+import {
+  useBottomSheet,
+  type UseBottomSheetConfig,
+} from "../../lib/hooks/useBottomSheet";
+import { AnimatedButton } from "./animated-button";
 import { Arrow } from "./icons/arrow";
 
 export interface BottomSheetProps {
@@ -10,6 +15,9 @@ export interface BottomSheetProps {
   mainAreaRef: React.RefObject<HTMLDivElement>;
   containerRef: React.RefObject<HTMLDivElement>;
   isCarouselScrolling?: boolean;
+  onArrowLeftClick?: () => void;
+  onArrowRightClick?: () => void;
+  config?: UseBottomSheetConfig;
 }
 
 export function BottomSheet({
@@ -17,218 +25,69 @@ export function BottomSheet({
   mainAreaRef,
   containerRef,
   isCarouselScrolling = false,
+  config,
+  onArrowLeftClick,
+  onArrowRightClick,
 }: BottomSheetProps) {
-  const [containerHeight, setContainerHeight] = useState(150);
-  const [hideArrows, setHideArrows] = useState(false);
-
-  const config = {
-    movementThreshold: 5,
-    sensitivity: 3,
-    minHeight: 150,
-    topOffset: 48,
-  };
-
-  const touchState = useRef({
-    startY: 0,
-    startX: 0,
-    lastY: 0,
-    isDragging: false,
-    hasMoved: false,
-    isVertical: false,
-    startedAtTop: false,
+  const { containerHeight, hideArrows, canScrollInside } = useBottomSheet({
+    mainAreaRef,
+    containerRef,
+    isCarouselScrolling,
+    config,
   });
 
-  // Функция определения, можно ли прокручивать внутренний контент
-  const canScrollInside = () => {
-    if (typeof window === "undefined") return false;
-
-    const maxHeight = window.innerHeight - config.topOffset;
-
-    return containerHeight >= maxHeight;
-  };
-
-  // Обновляем состояние стрелок при изменении высоты контейнера
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const isDragging = touchState.current.isDragging;
-    const isAtMinHeight = containerHeight <= config.minHeight + 10; // Small tolerance for min height
-
-    // Show arrows ONLY when at minimum height AND not dragging AND not scrolling carousel
-    setHideArrows(!isAtMinHeight || isDragging || isCarouselScrolling);
-  }, [containerHeight, config.minHeight, isCarouselScrolling]);
-
-  useEffect(() => {
-    const mainArea = mainAreaRef.current;
-    if (!mainArea) return;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      const state = touchState.current;
-
-      state.startY = touch.clientY;
-      state.startX = touch.clientX;
-      state.lastY = touch.clientY;
-      state.isDragging = false;
-      state.hasMoved = false;
-      state.isVertical = false;
-
-      // Проверяем, началось ли касание в верхней части контента
-      if (containerRef.current && canScrollInside()) {
-        const scrollableElement = containerRef.current.querySelector(
-          '[class*="overflow-y-scroll"]',
-        );
-        if (scrollableElement) {
-          state.startedAtTop = scrollableElement.scrollTop <= 5; // 5px tolerance
-        }
-      } else {
-        state.startedAtTop = false;
-      }
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      const state = touchState.current;
-      const currentY = touch.clientY;
-      const currentX = touch.clientX;
-
-      const deltaY = Math.abs(currentY - state.startY);
-      const deltaX = Math.abs(currentX - state.startX);
-      const totalMovement = Math.max(deltaY, deltaX);
-
-      if (totalMovement > config.movementThreshold && !state.hasMoved) {
-        state.hasMoved = true;
-        state.isVertical = deltaY > deltaX;
-
-        if (state.isVertical) {
-          // Включаем драг только если НЕ можем прокручивать внутри
-          if (!canScrollInside()) {
-            state.isDragging = true;
-            e.preventDefault();
-          } else {
-            // Если лист расширен и пользователь делает свайп вниз с верха контента, включаем драг для закрытия
-            const isSwipeDown = currentY > state.startY;
-            if (isSwipeDown && state.startedAtTop) {
-              state.isDragging = true;
-              e.preventDefault();
-            }
-          }
-
-          // Обновляем состояние стрелок при начале драга
-          if (state.isDragging) {
-            setHideArrows(true); // Always hide arrows when dragging
-          }
-
-          // Если можем прокручивать внутри, НЕ включаем драг - позволяем естественную прокрутку
-        }
-      }
-
-      if (state.hasMoved && state.isDragging && state.isVertical) {
-        // Если можем прокручивать внутри, не блокируем событие
-        // Но всегда блокируем если пользователь пытается закрыть расширенный лист
-        const isCollapsingFromExpanded =
-          canScrollInside() && currentY > state.startY && state.startedAtTop;
-        if (!canScrollInside() || isCollapsingFromExpanded) {
-          e.preventDefault();
-        }
-
-        const deltaMove = state.lastY - currentY;
-        const maxHeight = window.innerHeight - config.topOffset;
-        let newHeight = containerHeight + deltaMove * config.sensitivity;
-
-        if (newHeight < config.minHeight) {
-          const overshoot = config.minHeight - newHeight;
-          newHeight = config.minHeight - Math.pow(overshoot, 0.7) * 0.3;
-        } else if (newHeight > maxHeight) {
-          const overshoot = newHeight - maxHeight;
-          newHeight = maxHeight + Math.pow(overshoot, 0.7) * 0.3;
-        }
-
-        setContainerHeight(newHeight);
-        state.lastY = currentY;
-      }
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      const state = touchState.current;
-
-      if (!state.hasMoved) return;
-
-      if (state.isDragging && state.isVertical) {
-        // Предотвращаем событие только если НЕ можем прокручивать внутри
-        // Или если пользователь пытался закрыть расширенный лист
-        const wasCollapsingFromExpanded =
-          canScrollInside() && state.lastY > state.startY && state.startedAtTop;
-        if (!canScrollInside() || wasCollapsingFromExpanded) {
-          e.preventDefault();
-        }
-
-        const maxHeight = window.innerHeight - config.topOffset;
-
-        if (containerHeight < config.minHeight) {
-          setContainerHeight(config.minHeight);
-        } else if (containerHeight > maxHeight) {
-          setContainerHeight(maxHeight);
-        }
-      }
-
-      state.hasMoved = false;
-      state.isVertical = false;
-      state.isDragging = false;
-
-      // Обновляем состояние стрелок при окончании драга
-      const isAtMinHeight = containerHeight <= config.minHeight + 10; // Small tolerance for min height
-      setHideArrows(!isAtMinHeight || isCarouselScrolling); // Show arrows only if at min height and not scrolling carousel
-    };
-
-    mainArea.addEventListener("touchstart", handleTouchStart, {
-      passive: false,
-    });
-    mainArea.addEventListener("touchmove", handleTouchMove, { passive: false });
-    mainArea.addEventListener("touchend", handleTouchEnd, { passive: false });
-
-    return () => {
-      mainArea.removeEventListener("touchstart", handleTouchStart);
-      mainArea.removeEventListener("touchmove", handleTouchMove);
-      mainArea.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [containerHeight]);
-
   return (
-    <motion.div
-      ref={containerRef}
-      className="border-y-none absolute inset-x-2.5 bottom-0 z-30 flex flex-col border-x border-textInactiveColor bg-bgColor"
-      style={{
-        height: containerHeight,
-        overflowY: canScrollInside() ? "auto" : "hidden",
-      }}
-      animate={{ height: containerHeight }}
-      transition={{
-        type: "spring",
-        stiffness: 800,
-        damping: 55,
-        mass: 0.5,
-        velocity: 100,
-      }}
-    >
-      {!hideArrows && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{
-            duration: 0.3,
-          }}
-          className="w-full border-x-0 bg-transparent"
-        >
-          <div className="flex h-6 w-full flex-shrink-0 items-center justify-between px-2.5">
-            <Arrow className="-rotate-90" />
-            <Arrow className="rotate-90" />
-          </div>
-        </motion.div>
-      )}
-
-      {children}
-    </motion.div>
+    <div className="pointer-events-none absolute inset-0">
+      <motion.div
+        ref={containerRef}
+        className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col"
+        style={{
+          height: containerHeight,
+          overflowY: canScrollInside ? "auto" : "hidden",
+        }}
+        animate={{ height: containerHeight }}
+        transition={{
+          type: "spring",
+          stiffness: 800,
+          damping: 55,
+          mass: 0.5,
+          velocity: 100,
+        }}
+      >
+        {!hideArrows && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: 1,
+            }}
+            className="w-full"
+          >
+            <div className="pointer-events-auto flex h-10 w-full flex-shrink-0 items-center justify-between px-2.5">
+              <AnimatedButton
+                animationDuration={500}
+                onClick={() => {
+                  onArrowLeftClick?.();
+                }}
+              >
+                <Arrow className="-rotate-90" />
+              </AnimatedButton>
+              <AnimatedButton
+                animationDuration={500}
+                onClick={() => {
+                  onArrowRightClick?.();
+                }}
+              >
+                <Arrow className="rotate-90" />
+              </AnimatedButton>
+            </div>
+          </motion.div>
+        )}
+        <div className="border-b-none pointer-events-auto h-full space-y-6 overflow-y-scroll border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5">
+          {children}
+        </div>
+      </motion.div>
+    </div>
   );
 }

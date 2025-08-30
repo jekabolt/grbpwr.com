@@ -1,11 +1,18 @@
 "use client";
 
-import { Children, useEffect } from "react";
+import { Children, forwardRef, useEffect, useImperativeHandle } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 import { createTouchHandlers, createWheelHandler } from "@/lib/carousel-utils";
 import { cn } from "@/lib/utils";
+
+export interface CarouselRef {
+  scrollNext: () => void;
+  scrollPrev: () => void;
+  emblaApi?: any;
+  isDisabled?: boolean;
+}
 
 type CarouselProps = {
   className?: string;
@@ -21,138 +28,134 @@ type CarouselProps = {
   skipSnaps?: boolean;
   scrollOnClick?: boolean;
   setSelectedIndex?: (index: number) => void;
-  onScrollStart?: () => void;
-  onScrollEnd?: () => void;
 };
 
-export function Carousel({
-  className,
-  children,
-  loop = false,
-  disabled = false,
-  align = "start",
-  axis = "x",
-  disableForItemCounts,
-  enablePageScroll = false,
-  startIndex = 0,
-  dragFree = true,
-  skipSnaps = true,
-  scrollOnClick = false,
-  setSelectedIndex,
-  onScrollStart,
-  onScrollEnd,
-}: CarouselProps) {
-  const childrenCount = Children.count(children);
-  const isDisabled = disabled || disableForItemCounts?.includes(childrenCount);
-
-  const [emblaRef, emblaApi] = useEmblaCarousel(
+export const Carousel = forwardRef<CarouselRef, CarouselProps>(
+  function Carousel(
     {
-      loop,
-      dragFree,
-      skipSnaps,
-      align,
-      axis,
-      startIndex,
+      className,
+      children,
+      loop = false,
+      disabled = false,
+      align = "start",
+      axis = "x",
+      disableForItemCounts,
+      enablePageScroll = false,
+      startIndex = 0,
+      dragFree = true,
+      skipSnaps = true,
+      scrollOnClick = false,
+      setSelectedIndex,
     },
-    isDisabled ? [] : [WheelGesturesPlugin()],
-  );
+    ref,
+  ) {
+    const childrenCount = Children.count(children);
+    const isDisabled =
+      disabled || disableForItemCounts?.includes(childrenCount);
 
-  function onSelect() {
-    if (!emblaApi || !setSelectedIndex || isDisabled) return;
-    const currentIndex = emblaApi.selectedScrollSnap();
-    setSelectedIndex(currentIndex);
-  }
+    const [emblaRef, emblaApi] = useEmblaCarousel(
+      {
+        loop,
+        dragFree,
+        skipSnaps,
+        align,
+        axis,
+        startIndex,
+      },
+      isDisabled ? [] : [WheelGesturesPlugin()],
+    );
 
-  useEffect(() => {
-    if (!emblaApi || !enablePageScroll || isDisabled) return;
+    function onSelect() {
+      if (!emblaApi || !setSelectedIndex || isDisabled) return;
+      const currentIndex = emblaApi.selectedScrollSnap();
+      setSelectedIndex(currentIndex);
+    }
 
-    const viewport = emblaApi.rootNode();
+    useEffect(() => {
+      if (!emblaApi || !enablePageScroll || isDisabled) return;
 
-    const onWheel = createWheelHandler(emblaApi, {
-      enablePageScroll,
-      loop,
-    });
+      const viewport = emblaApi.rootNode();
 
-    const { onTouchStart, onTouchMove } = createTouchHandlers(emblaApi, {
-      loop,
-      bridgeToPageAtEdges: true,
-    });
+      const onWheel = createWheelHandler(emblaApi, {
+        enablePageScroll,
+        loop,
+      });
 
-    viewport.addEventListener("wheel", onWheel, {
-      passive: false,
-      capture: true,
-    });
-    viewport.addEventListener("touchstart", onTouchStart, {
-      passive: true,
-      capture: true,
-    });
-    viewport.addEventListener("touchmove", onTouchMove, {
-      passive: false,
-      capture: true,
-    });
+      const { onTouchStart, onTouchMove } = createTouchHandlers(emblaApi, {
+        loop,
+        bridgeToPageAtEdges: true,
+      });
 
-    return () => {
-      viewport.removeEventListener("touchstart", onTouchStart, {
+      viewport.addEventListener("wheel", onWheel, {
+        passive: false,
         capture: true,
       });
-      viewport.removeEventListener("touchmove", onTouchMove, { capture: true });
-    };
-  }, [emblaApi, enablePageScroll, loop, isDisabled]);
+      viewport.addEventListener("touchstart", onTouchStart, {
+        passive: true,
+        capture: true,
+      });
+      viewport.addEventListener("touchmove", onTouchMove, {
+        passive: false,
+        capture: true,
+      });
 
-  useEffect(() => {
-    if (!emblaApi || isDisabled) return;
+      return () => {
+        viewport.removeEventListener("touchstart", onTouchStart, {
+          capture: true,
+        });
+        viewport.removeEventListener("touchmove", onTouchMove, {
+          capture: true,
+        });
+      };
+    }, [emblaApi, enablePageScroll, loop, isDisabled]);
 
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
+    useEffect(() => {
+      if (!emblaApi || isDisabled) return;
 
-    // Add scroll detection listeners
-    if (onScrollStart) {
-      emblaApi.on("pointerDown", onScrollStart);
+      onSelect();
+      emblaApi.on("select", onSelect);
+      emblaApi.on("reInit", onSelect);
+
+      return () => {
+        emblaApi.off("select", onSelect);
+        emblaApi.off("reInit", onSelect);
+      };
+    }, [emblaApi, onSelect, isDisabled]);
+
+    function scrollNext() {
+      emblaApi?.scrollNext();
     }
 
-    if (onScrollEnd) {
-      emblaApi.on("pointerUp", onScrollEnd);
-      emblaApi.on("settle", onScrollEnd);
+    function scrollPrev() {
+      emblaApi?.scrollPrev();
     }
 
-    return () => {
-      emblaApi.off("select", onSelect);
-      emblaApi.off("reInit", onSelect);
+    useImperativeHandle(
+      ref,
+      () => ({
+        scrollNext,
+        scrollPrev,
+        emblaApi,
+        isDisabled,
+      }),
+      [emblaApi, isDisabled],
+    );
 
-      if (onScrollStart) {
-        emblaApi.off("pointerDown", onScrollStart);
-      }
-
-      if (onScrollEnd) {
-        emblaApi.off("pointerUp", onScrollEnd);
-        emblaApi.off("settle", onScrollEnd);
-      }
-    };
-  }, [emblaApi, onSelect, onScrollStart, onScrollEnd, isDisabled]);
-
-  function scrollNext() {
-    emblaApi?.scrollNext();
-  }
-
-  function scrollPrev() {
-    emblaApi?.scrollPrev();
-  }
-
-  return (
-    <div
-      ref={emblaRef}
-      className={cn("overflow-hidden", {
-        relative: scrollOnClick,
-      })}
-    >
-      <div className={className}>{children}</div>
-      {scrollOnClick && (
-        <div className="absolute inset-0 flex">
-          <div onClick={scrollPrev} className="flex-1" />
-          <div onClick={scrollNext} className="flex-1" />
-        </div>
-      )}
-    </div>
-  );
-}
+    return (
+      <div
+        ref={emblaRef}
+        className={cn("overflow-hidden", {
+          relative: scrollOnClick,
+        })}
+      >
+        <div className={className}>{children}</div>
+        {scrollOnClick && (
+          <div className="absolute inset-0 flex">
+            <div onClick={scrollPrev} className="flex-1" />
+            <div onClick={scrollNext} className="flex-1" />
+          </div>
+        )}
+      </div>
+    );
+  },
+);
