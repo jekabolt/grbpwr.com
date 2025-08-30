@@ -51,12 +51,12 @@ export function BottomSheet({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const maxHeight = window.innerHeight - config.topOffset;
-    const isAtMaxHeight = containerHeight >= maxHeight;
     const isDragging = touchState.current.isDragging;
+    const isAtMinHeight = containerHeight <= config.minHeight + 10; // Small tolerance for min height
 
-    setHideArrows(isAtMaxHeight || isDragging || isCarouselScrolling);
-  }, [containerHeight, config.topOffset, isCarouselScrolling]);
+    // Show arrows ONLY when at minimum height AND not dragging AND not scrolling carousel
+    setHideArrows(!isAtMinHeight || isDragging || isCarouselScrolling);
+  }, [containerHeight, config.minHeight, isCarouselScrolling]);
 
   useEffect(() => {
     const mainArea = mainAreaRef.current;
@@ -116,9 +116,7 @@ export function BottomSheet({
 
           // Обновляем состояние стрелок при начале драга
           if (state.isDragging) {
-            const maxHeight = window.innerHeight - config.topOffset;
-            const isAtMaxHeight = containerHeight >= maxHeight;
-            setHideArrows(isAtMaxHeight || true || isCarouselScrolling); // Hide arrows when dragging
+            setHideArrows(true); // Always hide arrows when dragging
           }
 
           // Если можем прокручивать внутри, НЕ включаем драг - позволяем естественную прокрутку
@@ -179,9 +177,8 @@ export function BottomSheet({
       state.isDragging = false;
 
       // Обновляем состояние стрелок при окончании драга
-      const maxHeight = window.innerHeight - config.topOffset;
-      const isAtMaxHeight = containerHeight >= maxHeight;
-      setHideArrows(isAtMaxHeight || isCarouselScrolling); // Show arrows again if not at max height and not scrolling carousel
+      const isAtMinHeight = containerHeight <= config.minHeight + 10; // Small tolerance for min height
+      setHideArrows(!isAtMinHeight || isCarouselScrolling); // Show arrows only if at min height and not scrolling carousel
     };
 
     mainArea.addEventListener("touchstart", handleTouchStart, {
@@ -200,7 +197,7 @@ export function BottomSheet({
   return (
     <motion.div
       ref={containerRef}
-      className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col bg-bgColor"
+      className="border-y-none absolute inset-x-2.5 bottom-0 z-30 flex flex-col border-x border-textInactiveColor bg-bgColor"
       style={{
         height: containerHeight,
         overflowY: canScrollInside() ? "auto" : "hidden",
@@ -214,16 +211,22 @@ export function BottomSheet({
         velocity: 100,
       }}
     >
-      {/* {!hideArrows && (
-        
-      )} */}
-
-      <div className="w-full bg-transparent">
-        <div className="flex h-6 w-full flex-shrink-0 items-center justify-between">
-          <Arrow className="-rotate-90" />
-          <Arrow className="rotate-90" />
-        </div>
-      </div>
+      {!hideArrows && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            duration: 0.3,
+          }}
+          className="w-full border-x-0 bg-transparent"
+        >
+          <div className="flex h-6 w-full flex-shrink-0 items-center justify-between px-2.5">
+            <Arrow className="-rotate-90" />
+            <Arrow className="rotate-90" />
+          </div>
+        </motion.div>
+      )}
 
       {children}
     </motion.div>

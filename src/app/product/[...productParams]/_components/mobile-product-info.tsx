@@ -73,7 +73,7 @@ export function MobileProductInfo({
               containerRef={containerRef}
               isCarouselScrolling={isCarouselScrolling}
             >
-              <div className="border-b-none pointer-events-auto space-y-6 overflow-y-scroll border border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5">
+              <div className="pointer-events-auto space-y-6 overflow-y-scroll border-t border-textInactiveColor px-2.5 pb-32 pt-2.5">
                 <Text variant="uppercase">{name}</Text>
                 <div className="space-y-12">
                   <GarmentDescription product={product} />
