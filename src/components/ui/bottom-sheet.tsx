@@ -48,9 +48,9 @@ export function BottomSheet({
         transition={{
           type: "spring",
           stiffness: 800,
-          damping: 55,
-          mass: 0.5,
-          velocity: 100,
+          damping: 100,
+          mass: 0.1,
+          velocity: 50,
         }}
       >
         {!hideArrows && (
