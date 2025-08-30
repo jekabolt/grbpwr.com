@@ -23,7 +23,7 @@ export function BottomSheet({
 
   const config = {
     movementThreshold: 5,
-    sensitivity: 5,
+    sensitivity: 3,
     minHeight: 150,
     topOffset: 48,
   };
@@ -200,7 +200,7 @@ export function BottomSheet({
   return (
     <motion.div
       ref={containerRef}
-      className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col"
+      className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col bg-bgColor"
       style={{
         height: containerHeight,
         overflowY: canScrollInside() ? "auto" : "hidden",
@@ -218,20 +218,11 @@ export function BottomSheet({
         
       )} */}
 
-      <div className="w-full border border-red-500">
-        {!hideArrows && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 0.5,
-            }}
-            className="flex h-6 w-full flex-shrink-0 items-center justify-between"
-          >
-            <Arrow className="-rotate-90" />
-            <Arrow className="rotate-90" />
-          </motion.div>
-        )}
+      <div className="w-full bg-transparent">
+        <div className="flex h-6 w-full flex-shrink-0 items-center justify-between">
+          <Arrow className="-rotate-90" />
+          <Arrow className="rotate-90" />
+        </div>
       </div>
 
       {children}
