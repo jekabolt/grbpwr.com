@@ -72,8 +72,9 @@ export function BottomSheet({
             )}
           >
             <AnimatedButton
+              animationArea="text"
               className="pointer-events-auto h-full w-1/2 text-left"
-              animationDuration={500}
+              animationDuration={100}
               onClick={() => {
                 onArrowLeftClick?.();
               }}
@@ -81,8 +82,9 @@ export function BottomSheet({
               {"<"}
             </AnimatedButton>
             <AnimatedButton
+              animationArea="text"
               className="pointer-events-auto h-full w-1/2 text-right"
-              animationDuration={500}
+              animationDuration={100}
               onClick={() => {
                 onArrowRightClick?.();
               }}
