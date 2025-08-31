@@ -55,7 +55,7 @@ export function MobileProductInfo({
         <div className="relative h-full">
           <MobileImageCarousel ref={carouselRef} media={product.media || []} />
           <BottomSheet
-            config={{ minHeight: 0.25 }}
+            config={{ minHeight: 0.29 }}
             mainAreaRef={mainAreaRef}
             containerRef={containerRef}
             onArrowLeftClick={() => {
