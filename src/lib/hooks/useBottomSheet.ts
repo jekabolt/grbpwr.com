@@ -31,28 +31,16 @@ export function useBottomSheet({
     isCarouselScrolling = false,
     config: userConfig = {},
 }: UseBottomSheetProps) {
-    const [containerHeight, setContainerHeight] = useState(() => {
-        if (typeof window === "undefined") return 150;
-        // Initialize with proper minHeight calculation
-        const config = {
-            minHeight: 150,
-            topOffset: 48,
-            ...userConfig,
-        };
-        if (config.minHeight > 0 && config.minHeight <= 1) {
-            return (window.innerHeight - config.topOffset) * config.minHeight;
-        }
-        return config.minHeight;
-    });
-    const [hideArrows, setHideArrows] = useState(false);
-
     const config = {
-        movementThreshold: 2,
-        sensitivity: 2,
+        movementThreshold: 0.1,
+        sensitivity: 3,
         minHeight: 150,
         topOffset: 48,
         ...userConfig,
     };
+
+    const [containerHeight, setContainerHeight] = useState(config.minHeight);
+    const [hideArrows, setHideArrows] = useState(false);
 
     const touchState = useRef<TouchState>({
         startY: 0,
@@ -87,7 +75,21 @@ export function useBottomSheet({
 
     const isAtMinHeight = () => containerHeight <= getMinHeight() + 10;
 
-    // Handle arrow visibility based on height, dragging state, and carousel scrolling
+
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+
+        if (config.minHeight > 0 && config.minHeight <= 1) {
+            const actualHeight = (window.innerHeight - config.topOffset) * config.minHeight;
+            const ssrHeight = (800 - config.topOffset) * config.minHeight;
+
+            if (Math.abs(actualHeight - ssrHeight) > 20) {
+                setContainerHeight(actualHeight);
+            }
+        }
+    }, []);
+
+
     useEffect(() => {
         if (typeof window === "undefined") return;
 

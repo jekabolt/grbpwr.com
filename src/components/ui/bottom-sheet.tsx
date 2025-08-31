@@ -3,6 +3,8 @@
 import { type ReactNode } from "react";
 import { motion } from "framer-motion";
 
+import { cn } from "@/lib/utils";
+
 import {
   useBottomSheet,
   type UseBottomSheetConfig,
@@ -47,44 +49,49 @@ export function BottomSheet({
         animate={{ height: containerHeight }}
         transition={{
           type: "spring",
-          stiffness: 800,
+          stiffness: 2000,
           damping: 100,
-          mass: 0.1,
-          velocity: 50,
+          mass: 0.2,
+          velocity: 100,
         }}
       >
-        {!hideArrows && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: 1,
-            }}
-            className="w-full"
+        <div
+          className={cn(
+            "h-10 w-full flex-shrink-0 transition-all duration-500 ease-in-out",
+            {
+              "h-0": hideArrows,
+            },
+          )}
+        >
+          <div
+            className={cn(
+              "flex h-full w-full items-center justify-between transition-all duration-500 ease-in-out",
+              {
+                hidden: hideArrows,
+              },
+            )}
           >
-            <div className="pointer-events-auto flex h-10 w-full flex-shrink-0 items-center justify-between">
-              <AnimatedButton
-                className="h-full w-1/2 text-left"
-                animationDuration={500}
-                onClick={() => {
-                  onArrowLeftClick?.();
-                }}
-              >
-                {"<"}
-              </AnimatedButton>
-              <AnimatedButton
-                className="h-full w-1/2 text-right"
-                animationDuration={500}
-                onClick={() => {
-                  onArrowRightClick?.();
-                }}
-              >
-                {">"}
-              </AnimatedButton>
-            </div>
-          </motion.div>
-        )}
+            <AnimatedButton
+              className="pointer-events-auto h-full w-1/2 text-left"
+              animationDuration={500}
+              onClick={() => {
+                onArrowLeftClick?.();
+              }}
+            >
+              {"<"}
+            </AnimatedButton>
+            <AnimatedButton
+              className="pointer-events-auto h-full w-1/2 text-right"
+              animationDuration={500}
+              onClick={() => {
+                onArrowRightClick?.();
+              }}
+            >
+              {">"}
+            </AnimatedButton>
+          </div>
+        </div>
+
         <div className="border-b-none pointer-events-auto h-full space-y-6 overflow-y-scroll border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5">
           {children}
         </div>
