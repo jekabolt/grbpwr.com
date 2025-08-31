@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export interface UseBottomSheetConfig {
     movementThreshold?: number;
     sensitivity?: number;
+    /** Minimum height in pixels, or as percentage (0-1) of available height */
     minHeight?: number;
     topOffset?: number;
 }
@@ -30,7 +31,19 @@ export function useBottomSheet({
     isCarouselScrolling = false,
     config: userConfig = {},
 }: UseBottomSheetProps) {
-    const [containerHeight, setContainerHeight] = useState(150);
+    const [containerHeight, setContainerHeight] = useState(() => {
+        if (typeof window === "undefined") return 150;
+        // Initialize with proper minHeight calculation
+        const config = {
+            minHeight: 150,
+            topOffset: 48,
+            ...userConfig,
+        };
+        if (config.minHeight > 0 && config.minHeight <= 1) {
+            return (window.innerHeight - config.topOffset) * config.minHeight;
+        }
+        return config.minHeight;
+    });
     const [hideArrows, setHideArrows] = useState(false);
 
     const config = {
@@ -63,7 +76,16 @@ export function useBottomSheet({
         return window.innerHeight - config.topOffset;
     };
 
-    const isAtMinHeight = () => containerHeight <= config.minHeight + 10;
+    const getMinHeight = () => {
+        if (typeof window === "undefined") return 150;
+        // If minHeight is between 0 and 1, treat as percentage
+        if (config.minHeight > 0 && config.minHeight <= 1) {
+            return (window.innerHeight - config.topOffset) * config.minHeight;
+        }
+        return config.minHeight;
+    };
+
+    const isAtMinHeight = () => containerHeight <= getMinHeight() + 10;
 
     // Handle arrow visibility based on height, dragging state, and carousel scrolling
     useEffect(() => {
@@ -144,9 +166,10 @@ export function useBottomSheet({
             let newHeight = containerHeight + deltaMove * config.sensitivity;
 
             // Apply resistance when going beyond bounds
-            if (newHeight < config.minHeight) {
-                const overshoot = config.minHeight - newHeight;
-                newHeight = config.minHeight - Math.pow(overshoot, 0.7) * 0.3;
+            const minHeight = getMinHeight();
+            if (newHeight < minHeight) {
+                const overshoot = minHeight - newHeight;
+                newHeight = minHeight - Math.pow(overshoot, 0.7) * 0.3;
             } else if (newHeight > maxHeight) {
                 const overshoot = newHeight - maxHeight;
                 newHeight = maxHeight + Math.pow(overshoot, 0.7) * 0.3;
@@ -170,10 +193,11 @@ export function useBottomSheet({
             }
 
             const maxHeight = getMaxHeight();
+            const minHeight = getMinHeight();
 
             // Snap to bounds
-            if (containerHeight < config.minHeight) {
-                setContainerHeight(config.minHeight);
+            if (containerHeight < minHeight) {
+                setContainerHeight(minHeight);
             } else if (containerHeight > maxHeight) {
                 setContainerHeight(maxHeight);
             }
