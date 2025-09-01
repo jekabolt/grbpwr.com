@@ -13,9 +13,10 @@ export interface BottomSheetProps {
   mainAreaRef: React.RefObject<HTMLDivElement>;
   containerRef: React.RefObject<HTMLDivElement>;
   isCarouselScrolling?: boolean;
-  onArrowLeftClick?: () => void;
-  onArrowRightClick?: () => void;
+  // onArrowLeftClick?: () => void;
+  // onArrowRightClick?: () => void;
   config?: UseBottomSheetConfig;
+  contentAboveRef?: React.RefObject<HTMLDivElement>;
 }
 
 export function BottomSheet({
@@ -24,14 +25,16 @@ export function BottomSheet({
   containerRef,
   isCarouselScrolling = false,
   config,
-  onArrowLeftClick,
-  onArrowRightClick,
+  // onArrowLeftClick,
+  // onArrowRightClick,
+  contentAboveRef,
 }: BottomSheetProps) {
   const { containerHeight, hideArrows, canScrollInside } = useBottomSheet({
     mainAreaRef,
     containerRef,
     isCarouselScrolling,
     config,
+    contentAboveRef,
   });
 
   return (

@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 export interface UseBottomSheetConfig {
     movementThreshold?: number;
     sensitivity?: number;
-    /** Minimum height in pixels, or as percentage (0-1) of available height */
     minHeight?: number;
     topOffset?: number;
 }
@@ -13,6 +12,7 @@ export interface UseBottomSheetProps {
     containerRef: React.RefObject<HTMLDivElement>;
     isCarouselScrolling?: boolean;
     config?: UseBottomSheetConfig;
+    contentAboveRef?: React.RefObject<HTMLDivElement>;
 }
 
 export interface TouchState {
@@ -30,6 +30,7 @@ export function useBottomSheet({
     containerRef,
     isCarouselScrolling = false,
     config: userConfig = {},
+    contentAboveRef,
 }: UseBottomSheetProps) {
     const config = {
         movementThreshold: 5,
@@ -86,18 +87,37 @@ export function useBottomSheet({
     useEffect(() => {
         if (typeof window === "undefined") return;
 
-        if (config.minHeight > 0 && config.minHeight <= 1) {
-            const actualHeight = (window.innerHeight - config.topOffset) * config.minHeight;
-            const ssrHeight = (800 - config.topOffset) * config.minHeight;
+        const measureAndSetHeight = () => {
+            if (contentAboveRef?.current) {
+                const rect = contentAboveRef.current.getBoundingClientRect();
+                const contentBottom = rect.height + config.topOffset;
+                const availableHeight = window.innerHeight - contentBottom;
+                setContainerHeight(Math.max(availableHeight, 200));
+            } else if (config.minHeight > 0 && config.minHeight <= 1) {
+                const actualHeight = (window.innerHeight - config.topOffset) * config.minHeight;
+                const ssrHeight = (800 - config.topOffset) * config.minHeight;
 
-            if (Math.abs(actualHeight - ssrHeight) > 20) {
-                setContainerHeight(actualHeight);
+                if (Math.abs(actualHeight - ssrHeight) > 20) {
+                    setContainerHeight(actualHeight);
+                }
+            } else {
+                // Update height when minHeight config changes (for pixel values)
+                setContainerHeight(config.minHeight);
             }
-        } else {
-            // Update height when minHeight config changes (for pixel values)
-            setContainerHeight(config.minHeight);
-        }
-    }, [config.minHeight, config.topOffset]);
+        };
+
+        measureAndSetHeight();
+
+        // Re-measure after a delay for image loading
+        const timer = setTimeout(measureAndSetHeight, 100);
+
+        window.addEventListener("resize", measureAndSetHeight);
+
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener("resize", measureAndSetHeight);
+        };
+    }, [config.minHeight, config.topOffset, contentAboveRef]);
 
 
     useEffect(() => {

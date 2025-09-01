@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -41,37 +41,14 @@ export function MobileProductInfo({
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
-  const containerRef = useRef<HTMLDivElement>(null!);
   const mainAreaRef = useRef<HTMLDivElement>(null!);
+  const containerRef = useRef<HTMLDivElement>(null!);
   const carouselRef = useRef<CarouselRef>(null);
-  const carouselContainerRef = useRef<HTMLDivElement>(null);
-  const [carouselHeight, setCarouselHeight] = useState(300);
+  const carouselContainerRef = useRef<HTMLDivElement>(null!);
 
   useEffect(() => {
     closeCart();
   }, [closeCart]);
-
-  useEffect(() => {
-    const measureCarousel = () => {
-      if (carouselContainerRef.current) {
-        const rect = carouselContainerRef.current.getBoundingClientRect();
-        const carouselBottom = rect.height + 48;
-        const availableHeight = window.innerHeight - carouselBottom;
-        setCarouselHeight(availableHeight);
-      }
-    };
-
-    measureCarousel();
-
-    const timer = setTimeout(measureCarousel, 100);
-
-    window.addEventListener("resize", measureCarousel);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("resize", measureCarousel);
-    };
-  }, [product.media]);
 
   return (
     <div className="relative h-full overflow-y-hidden">
@@ -82,23 +59,15 @@ export function MobileProductInfo({
               ref={carouselRef}
               media={product.media || []}
             />
-            <div className="absolute inset-x-2.5 bottom-0 flex items-center justify-between">
+            {/* <div className="absolute inset-x-2.5 bottom-0 flex items-center justify-between">
               <Text>{"<"}</Text>
               <Text>{">"}</Text>
-            </div>
+            </div> */}
           </div>
           <BottomSheet
-            config={{
-              minHeight: carouselHeight, // используем рассчитанную доступную высоту
-            }}
+            contentAboveRef={carouselContainerRef}
             mainAreaRef={mainAreaRef}
             containerRef={containerRef}
-            onArrowLeftClick={() => {
-              carouselRef.current?.scrollPrev();
-            }}
-            onArrowRightClick={() => {
-              carouselRef.current?.scrollNext();
-            }}
           >
             <Text variant="uppercase">{name}</Text>
             <div className="space-y-12">
