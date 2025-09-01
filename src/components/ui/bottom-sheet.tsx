@@ -49,9 +49,9 @@ export function BottomSheet({
         animate={{ height: containerHeight }}
         transition={{
           type: "spring",
-          stiffness: 2000,
+          stiffness: 0,
           damping: 100,
-          mass: 0.2,
+          mass: 0.1,
           velocity: 100,
         }}
       >

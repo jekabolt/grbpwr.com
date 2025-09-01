@@ -32,8 +32,8 @@ export function useBottomSheet({
     config: userConfig = {},
 }: UseBottomSheetProps) {
     const config = {
-        movementThreshold: 0.1,
-        sensitivity: 3,
+        movementThreshold: 5,
+        sensitivity: 1,
         minHeight: 150,
         topOffset: 48,
         ...userConfig,
@@ -132,7 +132,7 @@ export function useBottomSheet({
         const deltaX = Math.abs(currentX - state.startX);
         const totalMovement = Math.max(deltaY, deltaX);
 
-        // Determine if user has moved enough to start gesture recognition
+
         if (totalMovement > config.movementThreshold && !state.hasMoved) {
             state.hasMoved = true;
             state.isVertical = deltaY > deltaX;

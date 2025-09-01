@@ -152,6 +152,7 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(
         {scrollOnClick && (
           <div className="absolute inset-0 flex">
             <div onClick={scrollPrev} className="flex-1" />
+            <div className="flex-1" />
             <div onClick={scrollNext} className="flex-1" />
           </div>
         )}
