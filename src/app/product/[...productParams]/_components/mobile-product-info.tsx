@@ -45,7 +45,7 @@ export function MobileProductInfo({
   const mainAreaRef = useRef<HTMLDivElement>(null!);
   const carouselRef = useRef<CarouselRef>(null);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
-  const [carouselHeight, setCarouselHeight] = useState(0);
+  const [carouselHeight, setCarouselHeight] = useState(300);
 
   useEffect(() => {
     closeCart();
@@ -90,7 +90,7 @@ export function MobileProductInfo({
           </div>
           <BottomSheet
             config={{
-              minHeight: carouselHeight, // используем рассчитанную доступную высоту
+              minHeight: carouselHeight || 300, // используем рассчитанную доступную высоту
             }}
             mainAreaRef={mainAreaRef}
             containerRef={containerRef}
