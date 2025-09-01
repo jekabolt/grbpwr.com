@@ -55,7 +55,7 @@ export function MobileProductInfo({
     const measureCarousel = () => {
       if (carouselContainerRef.current) {
         const rect = carouselContainerRef.current.getBoundingClientRect();
-        const carouselBottom = rect.height + 48; // добавляем отступ от верха (top-12 = 48px)
+        const carouselBottom = rect.height + 48;
         const availableHeight = window.innerHeight - carouselBottom;
         setCarouselHeight(availableHeight);
       }
@@ -63,7 +63,6 @@ export function MobileProductInfo({
 
     measureCarousel();
 
-    // Измеряем повторно после небольшой задержки на случай если изображения не загрузились
     const timer = setTimeout(measureCarousel, 100);
 
     window.addEventListener("resize", measureCarousel);
@@ -90,7 +89,7 @@ export function MobileProductInfo({
           </div>
           <BottomSheet
             config={{
-              minHeight: carouselHeight || 300, // используем рассчитанную доступную высоту
+              minHeight: carouselHeight, // используем рассчитанную доступную высоту
             }}
             mainAreaRef={mainAreaRef}
             containerRef={containerRef}

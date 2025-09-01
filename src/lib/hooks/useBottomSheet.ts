@@ -39,7 +39,14 @@ export function useBottomSheet({
         ...userConfig,
     };
 
-    const [containerHeight, setContainerHeight] = useState(config.minHeight);
+    const [containerHeight, setContainerHeight] = useState(() => {
+        // Initialize with the actual minHeight value, handling both pixel and percentage values
+        if (typeof window === "undefined") return config.minHeight;
+        if (config.minHeight > 0 && config.minHeight <= 1) {
+            return (window.innerHeight - config.topOffset) * config.minHeight;
+        }
+        return config.minHeight;
+    });
     const [hideArrows, setHideArrows] = useState(false);
 
     const touchState = useRef<TouchState>({
@@ -86,8 +93,11 @@ export function useBottomSheet({
             if (Math.abs(actualHeight - ssrHeight) > 20) {
                 setContainerHeight(actualHeight);
             }
+        } else {
+            // Update height when minHeight config changes (for pixel values)
+            setContainerHeight(config.minHeight);
         }
-    }, []);
+    }, [config.minHeight, config.topOffset]);
 
 
     useEffect(() => {
