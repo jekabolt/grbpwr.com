@@ -151,9 +151,9 @@ export const Carousel = forwardRef<CarouselRef, CarouselProps>(
         <div className={className}>{children}</div>
         {scrollOnClick && (
           <div className="absolute inset-0 flex">
-            <div onClick={scrollPrev} className="flex-1" />
-            <div className="flex-1" />
-            <div onClick={scrollNext} className="flex-1" />
+            <div onClick={scrollPrev} className="w-16 border" />
+            <div className="flex-1 border" />
+            <div onClick={scrollNext} className="w-16 border" />
           </div>
         )}
       </div>
