@@ -3,13 +3,10 @@
 import { type ReactNode } from "react";
 import { motion } from "framer-motion";
 
-import { cn } from "@/lib/utils";
-
 import {
   useBottomSheet,
   type UseBottomSheetConfig,
 } from "../../lib/hooks/useBottomSheet";
-import { AnimatedButton } from "./animated-button";
 
 export interface BottomSheetProps {
   children: ReactNode;
@@ -55,15 +52,15 @@ export function BottomSheet({
           velocity: 100,
         }}
       >
-        <div
-          className={cn(
+        {/* <div */}
+        {/* className={cn(
             "h-10 w-full flex-shrink-0 transition-all duration-500 ease-in-out",
             {
               "h-0": hideArrows,
             },
           )}
-        >
-          <div
+        > */}
+        {/* <div
             className={cn(
               "flex h-full w-full items-center justify-between transition-all duration-500 ease-in-out",
               {
@@ -91,8 +88,8 @@ export function BottomSheet({
             >
               {">"}
             </AnimatedButton>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
 
         <div className="border-b-none pointer-events-auto h-full space-y-6 overflow-y-scroll border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5">
           {children}

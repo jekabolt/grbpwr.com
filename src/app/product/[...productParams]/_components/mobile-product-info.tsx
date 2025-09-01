@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -44,18 +44,54 @@ export function MobileProductInfo({
   const containerRef = useRef<HTMLDivElement>(null!);
   const mainAreaRef = useRef<HTMLDivElement>(null!);
   const carouselRef = useRef<CarouselRef>(null);
+  const carouselContainerRef = useRef<HTMLDivElement>(null);
+  const [carouselHeight, setCarouselHeight] = useState(0);
 
   useEffect(() => {
     closeCart();
   }, [closeCart]);
 
+  useEffect(() => {
+    const measureCarousel = () => {
+      if (carouselContainerRef.current) {
+        const rect = carouselContainerRef.current.getBoundingClientRect();
+        const carouselBottom = rect.height + 48; // добавляем отступ от верха (top-12 = 48px)
+        const availableHeight = window.innerHeight - carouselBottom;
+        setCarouselHeight(availableHeight);
+      }
+    };
+
+    measureCarousel();
+
+    // Измеряем повторно после небольшой задержки на случай если изображения не загрузились
+    const timer = setTimeout(measureCarousel, 100);
+
+    window.addEventListener("resize", measureCarousel);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", measureCarousel);
+    };
+  }, [product.media]);
+
   return (
     <div className="relative h-full overflow-y-hidden">
       <div ref={mainAreaRef} className="fixed inset-x-0 bottom-0 top-12">
         <div className="relative h-full">
-          <MobileImageCarousel ref={carouselRef} media={product.media || []} />
+          <div ref={carouselContainerRef} className="relative">
+            <MobileImageCarousel
+              ref={carouselRef}
+              media={product.media || []}
+            />
+            <div className="absolute inset-x-2.5 bottom-0 flex items-center justify-between">
+              <Text>{"<"}</Text>
+              <Text>{">"}</Text>
+            </div>
+          </div>
           <BottomSheet
-            config={{ minHeight: 0.283 }}
+            config={{
+              minHeight: carouselHeight, // используем рассчитанную доступную высоту
+            }}
             mainAreaRef={mainAreaRef}
             containerRef={containerRef}
             onArrowLeftClick={() => {
