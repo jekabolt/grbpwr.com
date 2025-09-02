@@ -52,7 +52,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
             animationDuration={300}
             animationArea="text-no-underline"
             onClick={scrollPrev}
-            className="flex w-16 flex-col items-start justify-end pl-2.5 text-bgColor"
+            className="flex w-20 flex-col items-start justify-end pl-2.5 text-bgColor"
           >
             {"<"}
           </AnimatedButton>
@@ -63,7 +63,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
             animationArea="text-no-underline"
             animationDuration={300}
             onClick={scrollNext}
-            className="z-50 flex w-16 flex-col items-end justify-end pr-2.5 text-bgColor"
+            className="z-50 flex w-20 flex-col items-end justify-end pr-2.5 text-bgColor"
           >
             {">"}
           </AnimatedButton>
