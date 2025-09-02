@@ -1,6 +1,6 @@
 "use client";
 
-import { Children, forwardRef, useEffect, useImperativeHandle } from "react";
+import { Children, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
@@ -30,133 +30,121 @@ type CarouselProps = {
   setSelectedIndex?: (index: number) => void;
 };
 
-export const Carousel = forwardRef<CarouselRef, CarouselProps>(
-  function Carousel(
+export function Carousel({
+  className,
+  children,
+  loop = false,
+  disabled = false,
+  align = "start",
+  axis = "x",
+  disableForItemCounts,
+  enablePageScroll = false,
+  startIndex = 0,
+  dragFree = true,
+  skipSnaps = true,
+  scrollOnClick = false,
+  setSelectedIndex,
+}: CarouselProps) {
+  const childrenCount = Children.count(children);
+  const isDisabled = disabled || disableForItemCounts?.includes(childrenCount);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
     {
-      className,
-      children,
-      loop = false,
-      disabled = false,
-      align = "start",
-      axis = "x",
-      disableForItemCounts,
-      enablePageScroll = false,
-      startIndex = 0,
-      dragFree = true,
-      skipSnaps = true,
-      scrollOnClick = false,
-      setSelectedIndex,
+      loop,
+      dragFree,
+      skipSnaps,
+      align,
+      axis,
+      startIndex,
     },
-    ref,
-  ) {
-    const childrenCount = Children.count(children);
-    const isDisabled =
-      disabled || disableForItemCounts?.includes(childrenCount);
+    isDisabled ? [] : [WheelGesturesPlugin()],
+  );
 
-    const [emblaRef, emblaApi] = useEmblaCarousel(
-      {
-        loop,
-        dragFree,
-        skipSnaps,
-        align,
-        axis,
-        startIndex,
-      },
-      isDisabled ? [] : [WheelGesturesPlugin()],
-    );
+  function onSelect() {
+    if (!emblaApi || !setSelectedIndex || isDisabled) return;
+    const currentIndex = emblaApi.selectedScrollSnap();
+    setSelectedIndex(currentIndex);
+  }
 
-    function onSelect() {
-      if (!emblaApi || !setSelectedIndex || isDisabled) return;
-      const currentIndex = emblaApi.selectedScrollSnap();
-      setSelectedIndex(currentIndex);
-    }
+  useEffect(() => {
+    if (!emblaApi || !enablePageScroll || isDisabled) return;
 
-    useEffect(() => {
-      if (!emblaApi || !enablePageScroll || isDisabled) return;
+    const viewport = emblaApi.rootNode();
 
-      const viewport = emblaApi.rootNode();
+    const onWheel = createWheelHandler(emblaApi, {
+      enablePageScroll,
+      loop,
+    });
 
-      const onWheel = createWheelHandler(emblaApi, {
-        enablePageScroll,
-        loop,
-      });
+    const { onTouchStart, onTouchMove } = createTouchHandlers(emblaApi, {
+      loop,
+      bridgeToPageAtEdges: true,
+    });
 
-      const { onTouchStart, onTouchMove } = createTouchHandlers(emblaApi, {
-        loop,
-        bridgeToPageAtEdges: true,
-      });
+    viewport.addEventListener("wheel", onWheel, {
+      passive: false,
+      capture: true,
+    });
+    viewport.addEventListener("touchstart", onTouchStart, {
+      passive: true,
+      capture: true,
+    });
+    viewport.addEventListener("touchmove", onTouchMove, {
+      passive: false,
+      capture: true,
+    });
 
-      viewport.addEventListener("wheel", onWheel, {
-        passive: false,
+    return () => {
+      viewport.removeEventListener("touchstart", onTouchStart, {
         capture: true,
       });
-      viewport.addEventListener("touchstart", onTouchStart, {
-        passive: true,
+      viewport.removeEventListener("touchmove", onTouchMove, {
         capture: true,
       });
-      viewport.addEventListener("touchmove", onTouchMove, {
-        passive: false,
-        capture: true,
-      });
+    };
+  }, [emblaApi, enablePageScroll, loop, isDisabled]);
 
-      return () => {
-        viewport.removeEventListener("touchstart", onTouchStart, {
-          capture: true,
-        });
-        viewport.removeEventListener("touchmove", onTouchMove, {
-          capture: true,
-        });
-      };
-    }, [emblaApi, enablePageScroll, loop, isDisabled]);
+  useEffect(() => {
+    if (!emblaApi || isDisabled) return;
 
-    useEffect(() => {
-      if (!emblaApi || isDisabled) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
 
-      onSelect();
-      emblaApi.on("select", onSelect);
-      emblaApi.on("reInit", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi, onSelect, isDisabled]);
 
-      return () => {
-        emblaApi.off("select", onSelect);
-        emblaApi.off("reInit", onSelect);
-      };
-    }, [emblaApi, onSelect, isDisabled]);
+  function scrollNext() {
+    emblaApi?.scrollNext();
+  }
 
-    function scrollNext() {
-      emblaApi?.scrollNext();
-    }
+  function scrollPrev() {
+    emblaApi?.scrollPrev();
+  }
 
-    function scrollPrev() {
-      emblaApi?.scrollPrev();
-    }
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        scrollNext,
-        scrollPrev,
-        emblaApi,
-        isDisabled,
-      }),
-      [emblaApi, isDisabled],
-    );
-
-    return (
-      <div
-        ref={emblaRef}
-        className={cn("overflow-hidden", {
-          relative: scrollOnClick,
-        })}
-      >
-        <div className={className}>{children}</div>
-        {scrollOnClick && (
-          <div className="absolute inset-0 flex">
-            <div onClick={scrollPrev} className="w-16" />
-            <div className="flex-1" />
-            <div onClick={scrollNext} className="w-16" />
-          </div>
-        )}
-      </div>
-    );
-  },
-);
+  return (
+    <div
+      ref={emblaRef}
+      className={cn("relative overflow-hidden", {
+        relative: scrollOnClick,
+      })}
+    >
+      <div className={className}>{children}</div>
+      {scrollOnClick && (
+        <div className="absolute inset-0 flex h-full">
+          <div
+            onClick={scrollPrev}
+            className="h-full flex-1 border border-red-500"
+          />
+          <div
+            onClick={scrollNext}
+            className="h-full flex-1 border border-red-500"
+          />
+        </div>
+      )}
+    </div>
+  );
+}

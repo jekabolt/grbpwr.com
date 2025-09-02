@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
+import { useElementHeight } from "@/lib/hooks/useBottomSheet";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
-import { CarouselRef } from "@/components/ui/carousel";
 import { Text } from "@/components/ui/text";
 
 import { GarmentDescription } from "./garmentDescription";
@@ -41,10 +41,10 @@ export function MobileProductInfo({
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
-  const mainAreaRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
-  const carouselRef = useRef<CarouselRef>(null);
-  const carouselContainerRef = useRef<HTMLDivElement>(null!);
+  const mainAreaRef = useRef<HTMLDivElement>(null!);
+  const carouselContainerRef = useRef<HTMLDivElement>(null);
+  const carouselHeight = useElementHeight(carouselContainerRef, 48);
 
   useEffect(() => {
     closeCart();
@@ -55,17 +55,12 @@ export function MobileProductInfo({
       <div ref={mainAreaRef} className="fixed inset-x-0 bottom-0 top-12">
         <div className="relative h-full">
           <div ref={carouselContainerRef} className="relative">
-            <MobileImageCarousel
-              ref={carouselRef}
-              media={product.media || []}
-            />
-            {/* <div className="absolute inset-x-2.5 bottom-0 flex items-center justify-between">
-              <Text>{"<"}</Text>
-              <Text>{">"}</Text>
-            </div> */}
+            <MobileImageCarousel media={product.media || []} />
           </div>
           <BottomSheet
-            contentAboveRef={carouselContainerRef}
+            config={{
+              minHeight: carouselHeight,
+            }}
             mainAreaRef={mainAreaRef}
             containerRef={containerRef}
           >

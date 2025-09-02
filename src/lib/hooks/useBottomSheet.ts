@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
 export interface UseBottomSheetConfig {
-    movementThreshold?: number;
-    sensitivity?: number;
     minHeight?: number;
     topOffset?: number;
 }
@@ -23,32 +21,27 @@ export interface TouchState {
     hasMoved: boolean;
     isVertical: boolean;
     startedAtTop: boolean;
+    velocityY: number;
+    lastTimestamp: number;
+    velocityHistory: Array<{ velocity: number; timestamp: number }>;
 }
 
 export function useBottomSheet({
     mainAreaRef,
     containerRef,
-    isCarouselScrolling = false,
     config: userConfig = {},
-    contentAboveRef,
 }: UseBottomSheetProps) {
     const config = {
-        movementThreshold: 5,
-        sensitivity: 1,
         minHeight: 150,
         topOffset: 48,
         ...userConfig,
     };
 
-    const [containerHeight, setContainerHeight] = useState(() => {
-        // Initialize with the actual minHeight value, handling both pixel and percentage values
-        if (typeof window === "undefined") return config.minHeight;
-        if (config.minHeight > 0 && config.minHeight <= 1) {
-            return (window.innerHeight - config.topOffset) * config.minHeight;
-        }
-        return config.minHeight;
-    });
-    const [hideArrows, setHideArrows] = useState(false);
+    const [containerHeight, setContainerHeight] = useState(config.minHeight);
+
+    useEffect(() => {
+        setContainerHeight(config.minHeight);
+    }, [config.minHeight]);
 
     const touchState = useRef<TouchState>({
         startY: 0,
@@ -58,6 +51,9 @@ export function useBottomSheet({
         hasMoved: false,
         isVertical: false,
         startedAtTop: false,
+        velocityY: 0,
+        lastTimestamp: 0,
+        velocityHistory: [],
     });
 
     const canScrollInside = () => {
@@ -74,7 +70,6 @@ export function useBottomSheet({
 
     const getMinHeight = () => {
         if (typeof window === "undefined") return 150;
-        // If minHeight is between 0 and 1, treat as percentage
         if (config.minHeight > 0 && config.minHeight <= 1) {
             return (window.innerHeight - config.topOffset) * config.minHeight;
         }
@@ -83,55 +78,43 @@ export function useBottomSheet({
 
     const isAtMinHeight = () => containerHeight <= getMinHeight() + 10;
 
+    const calculateVelocity = (currentY: number, timestamp: number) => {
+        const state = touchState.current;
+        const timeDelta = timestamp - state.lastTimestamp;
 
-    useEffect(() => {
-        if (typeof window === "undefined") return;
+        if (timeDelta === 0) return state.velocityY;
 
-        const measureAndSetHeight = () => {
-            if (contentAboveRef?.current) {
-                const rect = contentAboveRef.current.getBoundingClientRect();
-                const contentBottom = rect.height + config.topOffset;
-                const availableHeight = window.innerHeight - contentBottom;
-                setContainerHeight(Math.max(availableHeight, 200));
-            } else if (config.minHeight > 0 && config.minHeight <= 1) {
-                const actualHeight = (window.innerHeight - config.topOffset) * config.minHeight;
-                const ssrHeight = (800 - config.topOffset) * config.minHeight;
+        const velocity = (state.lastY - currentY) / timeDelta;
 
-                if (Math.abs(actualHeight - ssrHeight) > 20) {
-                    setContainerHeight(actualHeight);
-                }
-            } else {
-                // Update height when minHeight config changes (for pixel values)
-                setContainerHeight(config.minHeight);
-            }
-        };
+        state.velocityHistory.push({ velocity, timestamp });
 
-        measureAndSetHeight();
+        state.velocityHistory = state.velocityHistory.filter(
+            item => timestamp - item.timestamp < 100
+        );
 
-        // Re-measure after a delay for image loading
-        const timer = setTimeout(measureAndSetHeight, 100);
+        if (state.velocityHistory.length > 0) {
+            const avgVelocity = state.velocityHistory.reduce((sum, item) => sum + item.velocity, 0) / state.velocityHistory.length;
+            state.velocityY = avgVelocity;
+        }
 
-        window.addEventListener("resize", measureAndSetHeight);
+        return state.velocityY;
+    };
 
-        return () => {
-            clearTimeout(timer);
-            window.removeEventListener("resize", measureAndSetHeight);
-        };
-    }, [config.minHeight, config.topOffset, contentAboveRef]);
+    const applyMomentum = (currentHeight: number, velocity: number) => {
+        const minHeight = getMinHeight();
+        const maxHeight = getMaxHeight();
+        const momentumDistance = velocity * 200;
+        let targetHeight = currentHeight + momentumDistance;
 
+        targetHeight = Math.max(minHeight, Math.min(maxHeight, targetHeight));
 
-    useEffect(() => {
-        if (typeof window === "undefined") return;
-
-        const isDragging = touchState.current.isDragging;
-        const atMinHeight = isAtMinHeight();
-
-        setHideArrows(!atMinHeight || isDragging || isCarouselScrolling);
-    }, [containerHeight, config.minHeight, isCarouselScrolling]);
+        return targetHeight;
+    };
 
     const handleTouchStart = (e: TouchEvent) => {
         const touch = e.touches[0];
         const state = touchState.current;
+        const timestamp = Date.now();
 
         state.startY = touch.clientY;
         state.startX = touch.clientX;
@@ -139,6 +122,9 @@ export function useBottomSheet({
         state.isDragging = false;
         state.hasMoved = false;
         state.isVertical = false;
+        state.velocityY = 0;
+        state.lastTimestamp = timestamp;
+        state.velocityHistory = [];
 
         if (containerRef.current && canScrollInside()) {
             const scrollableElement = containerRef.current.querySelector(
@@ -157,13 +143,15 @@ export function useBottomSheet({
         const state = touchState.current;
         const currentY = touch.clientY;
         const currentX = touch.clientX;
+        const timestamp = Date.now();
 
         const deltaY = Math.abs(currentY - state.startY);
         const deltaX = Math.abs(currentX - state.startX);
         const totalMovement = Math.max(deltaY, deltaX);
 
+        calculateVelocity(currentY, timestamp);
 
-        if (totalMovement > config.movementThreshold && !state.hasMoved) {
+        if (totalMovement > 5 && !state.hasMoved) {
             state.hasMoved = true;
             state.isVertical = deltaY > deltaX;
 
@@ -178,14 +166,9 @@ export function useBottomSheet({
                         e.preventDefault();
                     }
                 }
-
-                if (state.isDragging) {
-                    setHideArrows(true);
-                }
             }
         }
 
-        // Handle dragging gesture
         if (state.hasMoved && state.isDragging && state.isVertical) {
             const isCollapsingFromExpanded =
                 canScrollInside() && currentY > state.startY && state.startedAtTop;
@@ -195,20 +178,22 @@ export function useBottomSheet({
 
             const deltaMove = state.lastY - currentY;
             const maxHeight = getMaxHeight();
-            let newHeight = containerHeight + deltaMove * config.sensitivity;
-
-            // Apply resistance when going beyond bounds
             const minHeight = getMinHeight();
+            let newHeight = containerHeight + deltaMove;
+
             if (newHeight < minHeight) {
                 const overshoot = minHeight - newHeight;
-                newHeight = minHeight - Math.pow(overshoot, 0.7) * 0.3;
+                const resistance = Math.min(overshoot / 100, 0.8);
+                newHeight = minHeight - overshoot * (1 - resistance);
             } else if (newHeight > maxHeight) {
                 const overshoot = newHeight - maxHeight;
-                newHeight = maxHeight + Math.pow(overshoot, 0.7) * 0.3;
+                const resistance = Math.min(overshoot / 100, 0.8);
+                newHeight = maxHeight + overshoot * (1 - resistance);
             }
 
             setContainerHeight(newHeight);
             state.lastY = currentY;
+            state.lastTimestamp = timestamp;
         }
     };
 
@@ -227,24 +212,25 @@ export function useBottomSheet({
             const maxHeight = getMaxHeight();
             const minHeight = getMinHeight();
 
-            // Snap to bounds
-            if (containerHeight < minHeight) {
-                setContainerHeight(minHeight);
-            } else if (containerHeight > maxHeight) {
-                setContainerHeight(maxHeight);
+            let targetHeight = containerHeight;
+            if (Math.abs(state.velocityY) > 0.1) {
+                targetHeight = applyMomentum(containerHeight, state.velocityY);
+            }
+
+            targetHeight = Math.max(minHeight, Math.min(maxHeight, targetHeight));
+
+            if (Math.abs(targetHeight - containerHeight) > 5) {
+                setContainerHeight(targetHeight);
             }
         }
 
-        // Reset touch state
         state.hasMoved = false;
         state.isVertical = false;
         state.isDragging = false;
-
-        // Update arrow visibility
-        setHideArrows(!isAtMinHeight() || isCarouselScrolling);
+        state.velocityY = 0;
+        state.velocityHistory = [];
     };
 
-    // Set up touch event listeners
     useEffect(() => {
         const mainArea = mainAreaRef.current;
         if (!mainArea) return;
@@ -264,9 +250,31 @@ export function useBottomSheet({
 
     return {
         containerHeight,
-        hideArrows,
         canScrollInside: canScrollInside(),
         isAtMinHeight: isAtMinHeight(),
         touchState: touchState.current,
     };
+}
+
+export function useElementHeight(ref: RefObject<HTMLElement | null>, offset = 0) {
+    const [height, setHeight] = useState(0);
+
+    useEffect(() => {
+        const measure = () => {
+            if (!ref.current) return;
+            const availableHeight = window.innerHeight - ref.current.getBoundingClientRect().height - offset;
+            setHeight(availableHeight);
+        };
+
+        measure();
+        const timer = setTimeout(measure, 100);
+        window.addEventListener("resize", measure);
+
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener("resize", measure);
+        };
+    }, [ref, offset]);
+
+    return height;
 }
