@@ -11,8 +11,10 @@ import { Text } from "@/components/ui/text";
 export default function HelpPopover({ theme }: { theme: "light" | "dark" }) {
   return (
     <GenericPopover
+      variant="no-borders"
       contentProps={{
         align: "start",
+        sideOffset: 10,
       }}
       className={cn("px-0", {
         "blackTheme bg-bgColor text-textColor": theme === "dark",

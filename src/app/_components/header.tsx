@@ -49,7 +49,7 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
           "blackTheme border border-textInactiveColor bg-textColor text-bgColor lg:border-transparent lg:bg-bgColor lg:text-textColor",
           "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] lg:transform-none lg:transition-none",
           {
-            "lg:top-8": open,
+            "lg:top-8": open && !isCatalog,
             "pointer-events-auto translate-y-0": isVisible,
             "pointer-events-none translate-y-[120%]": !isVisible,
             "bg-bgColor text-textColor mix-blend-hard-light":
@@ -63,6 +63,7 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
         )}
       >
         <HeaderLeftNav
+          isCatalog={isCatalog}
           onNavOpenChange={setIsNavOpen}
           isBigMenuEnabled={isBigMenuEnabled}
         />

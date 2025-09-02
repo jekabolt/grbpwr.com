@@ -19,7 +19,7 @@ export function ProductImagesCarousel({ productMedia }: Props) {
       loop={productMedia.length > 1}
       align={oneMedia ? "start" : "end"}
       startIndex={oneMedia ? 0 : 2}
-      className="flex h-screen w-full pt-8"
+      className="flex h-screen w-full pt-14"
       scrollOnClick={true}
     >
       {mediaForCarousel.map((m, index) => (

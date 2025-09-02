@@ -25,6 +25,8 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
   const { activeSizeId, isLoading, handleSizeSelect, handleAddToCart } =
     useHandlers({
       id: productId,
+      sizeNames,
+      isOneSize,
     });
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
@@ -42,6 +44,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 product={product}
                 selectedSize={selectedSize || 0}
                 outOfStock={outOfStock}
+                isOneSize={isOneSize}
                 handleSelectSize={handleSelectSize}
               />
             </Modal>
@@ -53,6 +56,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 sizeQuantity={sizeQuantity}
                 isOneSize={isOneSize}
                 handleSizeSelect={handleSizeSelect}
+                view={isOneSize ? "line" : "grid"}
               />
             </div>
           </div>

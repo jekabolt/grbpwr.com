@@ -15,10 +15,12 @@ import Image from "./image";
 import { Text } from "./text";
 
 export function DesktopNavigationMenu({
+  isCatalog,
   className,
   isBigMenuEnabled,
   onNavOpenChange,
 }: {
+  isCatalog?: boolean;
   isBigMenuEnabled?: boolean;
   className?: string;
   onNavOpenChange: (isOpen: boolean) => void;
@@ -85,7 +87,7 @@ export function DesktopNavigationMenu({
 
         <NavigationMenu.Item>
           <Button asChild>
-            <NavigationMenu.Link
+            <Link
               href={`/catalog/objects`}
               className={cn(
                 "flex items-center text-textBaseSize underline-offset-2 hover:underline",
@@ -93,25 +95,25 @@ export function DesktopNavigationMenu({
               )}
             >
               objects
-            </NavigationMenu.Link>
+            </Link>
           </Button>
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
           <Button asChild>
-            <NavigationMenu.Link
+            <Link
               href="/archive"
               className="flex items-center text-textBaseSize underline-offset-2 hover:underline"
             >
               archive
-            </NavigationMenu.Link>
+            </Link>
           </Button>
         </NavigationMenu.Item>
       </NavigationMenu.List>
 
       <div
         className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
-          "top-16": open,
+          "top-16": open && !isCatalog,
           "border-none": !isBigMenuEnabled,
         })}
       >

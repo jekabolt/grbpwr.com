@@ -1,15 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 
 import { useDisabled } from "./useDisabled";
 
-export function useHandlers({ id }: { id: number }) {
+export function useHandlers({
+  id,
+  sizeNames,
+  isOneSize,
+}: {
+  id: number;
+  sizeNames?: { name: string; id: number }[];
+  isOneSize?: boolean;
+}) {
   const { increaseQuantity, openCart } = useCart((state) => state);
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const { isMaxQuantity } = useDisabled({ id, activeSizeId });
   const [isLoading, setIsLoading] = useState(false);
   const [isMobileSizeDialogOpen, setIsMobileSizeDialogOpen] = useState(false);
+
+  // Auto-select size for one-size products
+  useEffect(() => {
+    if (isOneSize && sizeNames && sizeNames.length === 1 && !activeSizeId) {
+      setActiveSizeId(sizeNames[0].id);
+    }
+  }, [isOneSize, sizeNames, activeSizeId]);
 
   const handleAddToCart = async () => {
     if (isMaxQuantity) return false;

@@ -7,6 +7,13 @@ import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import { createTouchHandlers, createWheelHandler } from "@/lib/carousel-utils";
 import { cn } from "@/lib/utils";
 
+export interface CarouselRef {
+  scrollNext: () => void;
+  scrollPrev: () => void;
+  emblaApi?: any;
+  isDisabled?: boolean;
+}
+
 type CarouselProps = {
   className?: string;
   children: React.ReactNode;
@@ -91,7 +98,9 @@ export function Carousel({
       viewport.removeEventListener("touchstart", onTouchStart, {
         capture: true,
       });
-      viewport.removeEventListener("touchmove", onTouchMove, { capture: true });
+      viewport.removeEventListener("touchmove", onTouchMove, {
+        capture: true,
+      });
     };
   }, [emblaApi, enablePageScroll, loop, isDisabled]);
 
@@ -119,15 +128,15 @@ export function Carousel({
   return (
     <div
       ref={emblaRef}
-      className={cn("overflow-hidden", {
+      className={cn("relative overflow-hidden", {
         relative: scrollOnClick,
       })}
     >
       <div className={className}>{children}</div>
       {scrollOnClick && (
-        <div className="absolute inset-0 flex">
-          <div onClick={scrollPrev} className="flex-1" />
-          <div onClick={scrollNext} className="flex-1" />
+        <div className="absolute inset-0 flex h-full">
+          <div onClick={scrollPrev} className="h-full flex-1" />
+          <div onClick={scrollNext} className="h-full flex-1" />
         </div>
       )}
     </div>

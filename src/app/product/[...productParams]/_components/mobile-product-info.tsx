@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
+import { useElementHeight } from "@/lib/hooks/useBottomSheet";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import MobilePlate from "@/components/ui/mobile-plate";
+import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Text } from "@/components/ui/text";
-import { MobileMeasurements } from "@/app/product/[...productParams]/_components/mobile-measurements";
 
 import { GarmentDescription } from "./garmentDescription";
 import { LastViewedProducts } from "./last-viewed-products";
 import { MobileImageCarousel } from "./mobile-image-carousel";
+import { MobileMeasurements } from "./mobile-measurements";
 import { AddToCartBtn } from "./select-size-add-to-cart/add-to-cart-btn";
 import { SizePicker } from "./size-picker";
 import { useDisabled } from "./utils/useDisabled";
@@ -26,6 +27,7 @@ export function MobileProductInfo({
 }) {
   const { name, productId } = useProductBasics({ product });
   const { closeCart } = useCart((state) => state);
+  const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const {
     activeSizeId,
     isLoading,
@@ -35,11 +37,16 @@ export function MobileProductInfo({
     handleAddToCart,
   } = useHandlers({
     id: productId,
+    sizeNames,
+    isOneSize,
   });
-  const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
+  const containerRef = useRef<HTMLDivElement>(null!);
+  const mainAreaRef = useRef<HTMLDivElement>(null!);
+  const carouselContainerRef = useRef<HTMLDivElement>(null);
+  const carouselHeight = useElementHeight(carouselContainerRef, 48);
 
   useEffect(() => {
     closeCart();
@@ -47,33 +54,47 @@ export function MobileProductInfo({
 
   return (
     <div className="relative h-full overflow-y-hidden">
-      <div className="fixed inset-x-0 top-12">
-        <MobileImageCarousel media={product.media || []} />
-      </div>
-      <MobilePlate>
-        <Text variant="uppercase">{name}</Text>
-        <GarmentDescription product={product} />
-
-        <div className="space-y-5">
-          <MobileMeasurements
-            product={product}
-            selectedSize={selectedSize || 0}
-            outOfStock={outOfStock}
-            handleAddToCart={handleMeasurementSizes}
-            handleSelectSize={handleSelectSize}
-          />
-          <SizePicker
-            sizeNames={sizeNames || []}
-            activeSizeId={activeSizeId || 0}
-            outOfStock={outOfStock}
-            sizeQuantity={sizeQuantity}
-            isOneSize={isOneSize}
-            handleSizeSelect={handleSizeSelect}
-          />
+      <div ref={mainAreaRef} className="fixed inset-x-0 bottom-0 top-12">
+        <div className="relative h-full">
+          <div ref={carouselContainerRef} className="relative">
+            <MobileImageCarousel media={product.media || []} />
+          </div>
+          <BottomSheet
+            config={{
+              minHeight: carouselHeight,
+            }}
+            mainAreaRef={mainAreaRef}
+            containerRef={containerRef}
+          >
+            <Text variant="uppercase">{name}</Text>
+            <div className="space-y-12">
+              <GarmentDescription product={product} />
+              <div className="space-y-5">
+                <MobileMeasurements
+                  product={product}
+                  selectedSize={selectedSize || 0}
+                  outOfStock={outOfStock}
+                  isOneSize={isOneSize}
+                  handleAddToCart={handleMeasurementSizes}
+                  handleSelectSize={handleSelectSize}
+                />
+                <SizePicker
+                  sizeNames={sizeNames || []}
+                  activeSizeId={activeSizeId || 0}
+                  outOfStock={outOfStock}
+                  sizeQuantity={sizeQuantity}
+                  isOneSize={isOneSize}
+                  handleSizeSelect={handleSizeSelect}
+                  view={isOneSize ? "line" : "grid"}
+                />
+              </div>
+            </div>
+            {product.product && (
+              <LastViewedProducts product={product.product} />
+            )}
+          </BottomSheet>
         </div>
-
-        {product.product && <LastViewedProducts product={product.product} />}
-      </MobilePlate>
+      </div>
       <AddToCartBtn
         product={product}
         handlers={{
