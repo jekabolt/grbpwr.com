@@ -4,6 +4,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 import { calculateAspectRatio } from "@/lib/utils";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
 
@@ -21,11 +22,11 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
   );
 
   function scrollNext() {
-    emblaApi?.scrollNext();
+    emblaApi?.scrollNext(true);
   }
 
   function scrollPrev() {
-    emblaApi?.scrollPrev();
+    emblaApi?.scrollPrev(true);
   }
 
   return (
@@ -33,7 +34,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
       <div ref={emblaRef} className="relative overflow-hidden">
         <div className="flex h-full w-full">
           {media.map((m, index) => (
-            <div key={`${m.id}-${index}`} className="flex-[0_0_100%]">
+            <div key={`${m.id}-${index}`} className="h-full flex-[0_0_102%]">
               <ImageComponent
                 src={m?.media?.fullSize?.mediaUrl!}
                 alt="Product image"
@@ -46,18 +47,26 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 flex">
-          <div
+        <div className="absolute inset-0 flex text-bgColor mix-blend-exclusion">
+          <AnimatedButton
+            animationDuration={300}
+            animationArea="text-no-underline"
             onClick={scrollPrev}
-            className="w-16 border border-red-500"
-          ></div>
+            className="flex w-16 flex-col items-start justify-end pl-2.5 text-bgColor"
+          >
+            {"<"}
+          </AnimatedButton>
           <DialogPrimitives.Trigger asChild>
-            <div className="flex-1 border border-red-500" />
+            <div className="flex-1" />
           </DialogPrimitives.Trigger>
-          <div
+          <AnimatedButton
+            animationArea="text-no-underline"
+            animationDuration={300}
             onClick={scrollNext}
-            className="w-16 border border-red-500"
-          ></div>
+            className="z-50 flex w-16 flex-col items-end justify-end pr-2.5 text-bgColor"
+          >
+            {">"}
+          </AnimatedButton>
         </div>
       </div>
 
@@ -69,7 +78,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
           </DialogPrimitives.Title>
 
           <DialogPrimitives.Close asChild>
-            <Button className="absolute right-4 top-4 z-50">[x]</Button>
+            <Button className="fixed right-4 top-4 z-50">[x]</Button>
           </DialogPrimitives.Close>
 
           <DialogPrimitives.Close asChild>

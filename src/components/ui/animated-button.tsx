@@ -10,7 +10,7 @@ import { Button } from "./button";
 type BaseButtonProps = {
   children: React.ReactNode;
   className?: string;
-  animationArea?: "text" | "container";
+  animationArea?: "text" | "container" | "text-no-underline";
   animationDuration?: number;
   [k: string]: unknown;
 };
@@ -75,6 +75,7 @@ export function AnimatedButton({
         {
           "bg-bgColor opacity-50": isPressed && animationArea === "container",
           underline: isPressed && animationArea === "text",
+          "underline-none": isPressed && animationArea === "text-no-underline",
         },
         className,
       )}
