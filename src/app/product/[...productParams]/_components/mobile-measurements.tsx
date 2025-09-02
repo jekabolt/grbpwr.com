@@ -13,6 +13,7 @@ export function MobileMeasurements({
   product,
   selectedSize,
   outOfStock,
+  isOneSize,
   handleAddToCart,
   handleSelectSize,
 }: MobileMeasurementsProps) {
@@ -43,6 +44,7 @@ export function MobileMeasurements({
               product={product}
               selectedSize={selectedSize}
               outOfStock={outOfStock}
+              isOneSize={isOneSize}
               handleSelectSize={handleSelectSize}
             />
           </div>
@@ -73,6 +75,7 @@ export type MobileMeasurementsProps = {
   product: common_ProductFull;
   selectedSize: number;
   outOfStock?: Record<number, boolean>;
+  isOneSize?: boolean;
   handleAddToCart: () => Promise<boolean>;
   handleSelectSize: (size: number) => void;
 };

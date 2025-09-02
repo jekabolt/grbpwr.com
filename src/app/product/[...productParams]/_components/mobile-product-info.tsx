@@ -27,6 +27,7 @@ export function MobileProductInfo({
 }) {
   const { name, productId } = useProductBasics({ product });
   const { closeCart } = useCart((state) => state);
+  const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const {
     activeSizeId,
     isLoading,
@@ -36,8 +37,9 @@ export function MobileProductInfo({
     handleAddToCart,
   } = useHandlers({
     id: productId,
+    sizeNames,
+    isOneSize,
   });
-  const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
@@ -72,6 +74,7 @@ export function MobileProductInfo({
                   product={product}
                   selectedSize={selectedSize || 0}
                   outOfStock={outOfStock}
+                  isOneSize={isOneSize}
                   handleAddToCart={handleMeasurementSizes}
                   handleSelectSize={handleSelectSize}
                 />
@@ -82,6 +85,7 @@ export function MobileProductInfo({
                   sizeQuantity={sizeQuantity}
                   isOneSize={isOneSize}
                   handleSizeSelect={handleSizeSelect}
+                  view={isOneSize ? "line" : "grid"}
                 />
               </div>
             </div>

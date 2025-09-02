@@ -73,6 +73,7 @@ export function Measurements({
               sizeQuantity={sizeQuantity}
               isOneSize={isOneSize}
               handleSizeSelect={handleSelectSize}
+              className={cn({ "flex justify-center": isOneSize })}
             />
           </div>
           <div className="flex items-center justify-center gap-x-2">

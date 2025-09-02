@@ -56,6 +56,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 sizeQuantity={sizeQuantity}
                 isOneSize={isOneSize}
                 handleSizeSelect={handleSizeSelect}
+                view={isOneSize ? "line" : "grid"}
               />
             </div>
           </div>

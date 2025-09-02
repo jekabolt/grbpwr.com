@@ -105,9 +105,6 @@ importers:
       react-markdown:
         specifier: ^10.1.0
         version: 10.1.0(react@0.0.0-experimental-443b7ff2-20250303)(types-react@19.0.0-rc.1)
-      react-modal-sheet:
-        specifier: ^4.4.0
-        version: 4.4.0(motion@12.23.12(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303)
       react-photo-view:
         specifier: ^1.2.4
         version: 1.2.4(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303)
@@ -2568,20 +2565,6 @@ packages:
   motion-utils@12.23.6:
     resolution: {integrity: sha512-eAWoPgr4eFEOFfg2WjIsMoqJTW6Z8MTUCgn/GZ3VRpClWBdnbjryiA3ZSNLyxCTmCQx4RmYX6jX1iWHbenUPNQ==}
 
-  motion@12.23.12:
-    resolution: {integrity: sha512-8jCD8uW5GD1csOoqh1WhH1A6j5APHVE15nuBkFeRiMzYBdRwyAHmSP/oXSuW0WJPZRXTFdBoG4hY9TFWNhhwng==}
-    peerDependencies:
-      '@emotion/is-prop-valid': '*'
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
-    peerDependenciesMeta:
-      '@emotion/is-prop-valid':
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-
   ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
@@ -2921,13 +2904,6 @@ packages:
     peerDependencies:
       '@types/react': npm:types-react@19.0.0-rc.1
       react: '>=18'
-
-  react-modal-sheet@4.4.0:
-    resolution: {integrity: sha512-ub42vR7iwjdM/2Zl6uZoH5M5Dcb6KTuVaOQ+uQCIlo10SdlYAhksb6u3eIFSLohFrX5q03rgFnR6Y0PKhjjl/Q==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      motion: '>=11'
-      react: '>=16'
 
   react-photo-view@1.2.4:
     resolution: {integrity: sha512-8G7yb0YgQuVgEMT3DopiROZyY8cgCDpba+G5MoxDkHNFOyqtw3r5T5tazYeifybPrvHWuKXj/bnAlBtQcpxyzQ==}
@@ -6169,14 +6145,6 @@ snapshots:
 
   motion-utils@12.23.6: {}
 
-  motion@12.23.12(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303):
-    dependencies:
-      framer-motion: 12.23.12(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303)
-      tslib: 2.6.2
-    optionalDependencies:
-      react: 0.0.0-experimental-443b7ff2-20250303
-      react-dom: 0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303)
-
   ms@2.1.2: {}
 
   ms@2.1.3: {}
@@ -6462,11 +6430,6 @@ snapshots:
       vfile: 6.0.3
     transitivePeerDependencies:
       - supports-color
-
-  react-modal-sheet@4.4.0(motion@12.23.12(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303):
-    dependencies:
-      motion: 12.23.12(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303)
-      react: 0.0.0-experimental-443b7ff2-20250303
 
   react-photo-view@1.2.4(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303):
     dependencies:

@@ -10,6 +10,7 @@ type Props = {
   sizeQuantity?: Record<number, number>;
   isOneSize?: boolean;
   view?: "grid" | "line";
+  className?: string;
   handleSizeSelect: (id: number) => void;
 };
 
@@ -20,16 +21,19 @@ export function SizePicker({
   sizeQuantity,
   isOneSize,
   view = "grid",
+  className,
   handleSizeSelect,
 }: Props) {
   return (
     <div>
       <div
-        className={cn({
-          "grid grid-cols-4 gap-y-7": view === "grid",
-          "flex w-full items-center justify-between": view === "line",
-          "flex justify-center": isOneSize,
-        })}
+        className={cn(
+          {
+            "grid grid-cols-4 gap-y-7": view === "grid",
+            "flex w-full items-center justify-between": view === "line",
+          },
+          className,
+        )}
       >
         {sizeNames?.map(({ name, id }) => (
           <Button

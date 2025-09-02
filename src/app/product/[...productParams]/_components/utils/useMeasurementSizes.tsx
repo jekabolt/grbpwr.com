@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -14,11 +14,18 @@ export function useMeasurementSizes({
   product: common_ProductFull;
 }) {
   const { productId } = useProductBasics({ product });
-  const { sizes } = useProductSizes({ product });
+  const { sizes, sizeNames, isOneSize } = useProductSizes({ product });
   const { increaseQuantity } = useCart((state) => state);
   const [selectedSize, setSelectedSize] = useState<number | undefined>(
     sizes && sizes.length > 0 ? sizes[0].sizeId : undefined,
   );
+
+  // Auto-select size for one-size products
+  useEffect(() => {
+    if (isOneSize && sizeNames && sizeNames.length === 1 && !selectedSize) {
+      setSelectedSize(sizeNames[0].id);
+    }
+  }, [isOneSize, sizeNames, selectedSize]);
 
   const handleSelectSize = (sizeId: number) => {
     setSelectedSize(sizeId);
