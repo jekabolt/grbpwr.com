@@ -135,14 +135,8 @@ export function Carousel({
       <div className={className}>{children}</div>
       {scrollOnClick && (
         <div className="absolute inset-0 flex h-full">
-          <div
-            onClick={scrollPrev}
-            className="h-full flex-1 border border-red-500"
-          />
-          <div
-            onClick={scrollNext}
-            className="h-full flex-1 border border-red-500"
-          />
+          <div onClick={scrollPrev} className="h-full flex-1" />
+          <div onClick={scrollNext} className="h-full flex-1" />
         </div>
       )}
     </div>
