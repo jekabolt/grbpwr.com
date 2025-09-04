@@ -1,4 +1,5 @@
 import { FeatureMono } from "@/fonts";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { CookieBanner } from "@/components/ui/cookie-banner";
@@ -28,6 +29,7 @@ export default function RootLayout({
           <CookieBanner />
         </ToastProvider>
       </body>
+      <GoogleTagManager gtmId="GTM-WFC98J99" />
     </html>
   );
 }
