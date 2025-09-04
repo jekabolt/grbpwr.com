@@ -76,8 +76,6 @@ export default async function Page({ params }: ArchivePageParams) {
     nextArchive = nextArchivee?.archiveList;
   }
 
-  console.log(nextArchive);
-
   return (
     <FlexibleLayout
       headerType="archive"

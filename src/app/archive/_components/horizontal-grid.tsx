@@ -12,7 +12,6 @@ export function HorizontalGrid({
 }: {
   archives: common_ArchiveList[];
 }) {
-  console.log(archives);
   return (
     <div className="h-full px-2.5 pb-2.5 pt-14 lg:px-7 lg:pt-24">
       <div className="grid grid-cols-3 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-10">
