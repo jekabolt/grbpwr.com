@@ -48,7 +48,7 @@ export function DefaultMobileMenuDialog({
                 <AnimatedButton
                   animationArea="text"
                   href={item.href}
-                  className="uppercase hover:underline"
+                  className="flex w-full items-center justify-between uppercase hover:underline"
                 >
                   <Text>{item.label}</Text>
                   {item.showArrow && <Text>{">"}</Text>}
