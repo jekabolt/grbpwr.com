@@ -3,32 +3,10 @@
 import { useRef, useState } from "react";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
-import { calculateAspectRatio } from "@/lib/utils";
+import { calculateAspectRatio, isVideo } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
-
-export const isVideo = (mediaUrl: string | undefined): boolean => {
-  if (!mediaUrl) return false;
-
-  const extension = mediaUrl.split(".").pop()?.toLowerCase();
-  const videoExtensions = new Set([
-    "mp4",
-    "mov",
-    "avi",
-    "mkv",
-    "webm",
-    "flv",
-    "wmv",
-    "mpeg",
-    "mpg",
-    "m4v",
-    "3gp",
-    "ogv",
-  ]);
-
-  return extension ? videoExtensions.has(extension) : false;
-};
 
 export default function PageComponent({
   archive,
