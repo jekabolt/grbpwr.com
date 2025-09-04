@@ -27,6 +27,7 @@ export function MobileNavMenu({
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
+        <DialogPrimitives.Overlay className="fixed inset-0 z-30 bg-overlay opacity-40" />
         <DialogPrimitives.Content className="fixed inset-0 z-40 bg-bgColor px-2.5 pb-4 pt-5">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
