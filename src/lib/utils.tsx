@@ -177,3 +177,25 @@ export function getHeroNavLink(heroNav?: {
 export function getCategoryDisplayName(title: string) {
   return CATEGORY_TITLE_MAP[title] || title;
 }
+
+export function isVideo(mediaUrl: string | undefined): boolean {
+  if (!mediaUrl) return false;
+
+  const extension = mediaUrl.split(".").pop()?.toLowerCase();
+  const videoExtensions = new Set([
+    "mp4",
+    "mov",
+    "avi",
+    "mkv",
+    "webm",
+    "flv",
+    "wmv",
+    "mpeg",
+    "mpg",
+    "m4v",
+    "3gp",
+    "ogv",
+  ]);
+
+  return extension ? videoExtensions.has(extension) : false;
+}

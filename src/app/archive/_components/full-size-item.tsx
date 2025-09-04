@@ -13,19 +13,8 @@ interface Props {
 
 export function FullSizeItem({ className, archive, highlightedItem }: Props) {
   return (
-    <div
-      className={cn(
-        "flex h-full w-full flex-col items-center justify-between gap-4 text-textColor lg:flex-row",
-        {
-          "justify-center": !highlightedItem,
-        },
-      )}
-    >
-      {highlightedItem && (
-        <Text className="w-60 text-center lg:text-left">
-          {archive?.heading}
-        </Text>
-      )}
+    <div className="flex h-full w-full flex-col items-center justify-between gap-y-9 bg-bgColor text-textColor lg:flex-row lg:gap-4">
+      <Text className="w-60 text-center lg:text-left">{archive?.heading}</Text>
       <div className={className}>
         <Link href={archive?.slug || ""}>
           <ImageComponent

@@ -29,7 +29,7 @@ export default function HelpPopover({ theme }: { theme: "light" | "dark" }) {
       <div className="space-y-2">
         <CopyText
           text="CLIENT@GRBPWR.COM"
-          variant="undrleineWithColors"
+          variant={theme === "dark" ? "underlined" : "undrleineWithColors"}
           mode="toaster"
         />
         <Button asChild className="uppercase">
