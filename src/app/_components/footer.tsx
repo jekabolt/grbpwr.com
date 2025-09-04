@@ -1,84 +1,84 @@
-import Link from "next/link";
-import { FOOTER_LINKS as links } from "@/constants";
+"use client";
 
-import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { FOOTER_YEAR, FOOTER_LINKS as links } from "@/constants";
+
 import { Button } from "@/components/ui/button";
 import { WhiteLogo } from "@/components/ui/icons/white-logo";
+import { Logo } from "@/components/ui/logo";
 import { Text } from "@/components/ui/text";
 
 import CurrencyPopover from "./currency-popover";
-import { FooterNav } from "./footer-nav";
+import { FooterNavMobile } from "./footer-nav-mobile";
+import HelpPopover from "./help-popover";
 import NewslatterForm from "./newslatter-form";
 
-// todo: sync with BE
-const currencyNameMap = {
-  t: "ethereum",
-  b: "bitcoin",
-  e: "euro",
-  "0": "united states dollar",
-  ":": "united states dollar",
-  $: "united states dollar",
-  "%": "united states dollar",
-  "&": "united states dollar",
-  "*": "united states dollar",
-  ")": "united states dollar",
-  "[": "united states dollar",
-  "]": "united states dollar",
-  "@": "united states dollar",
-};
+function LiveClock() {
+  const [timestamp, setTimestamp] = useState<number | null>(null);
 
-const currentYear = () => new Date().getFullYear();
+  useEffect(() => {
+    setTimestamp(FOOTER_YEAR);
 
-export function Footer({
-  className,
-  hideForm,
-}: {
-  className?: string;
-  hideForm?: boolean;
-}) {
+    const interval = setInterval(() => {
+      setTimestamp(Math.floor(Date.now() / 1000));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return timestamp ? (
+    <Text variant="uppercase" className="text-textColor">
+      {timestamp}
+    </Text>
+  ) : (
+    ""
+  );
+}
+
+export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
   return (
-    <footer
-      className={cn(
-        "flex w-full flex-col gap-16 px-2.5 pb-40 pt-10 md:gap-44 md:px-7 md:py-10",
-        className,
-      )}
-    >
-      <div className="flex w-full flex-col items-start justify-between gap-16 md:flex-row">
-        <div className="inline-block aspect-square w-16 md:w-96">
-          <WhiteLogo />
-        </div>
-        <div className="flex h-full w-full flex-col gap-32 md:w-1/2 md:gap-44">
-          <div className="flex w-full flex-col justify-between gap-16 md:flex-row">
-            <div className="order-last flex w-full flex-col gap-6 md:order-none">
-              <div className="space-y-3 md:space-y-6">
-                <Text variant="inactive">press</Text>
-                <Text>work@grbpwr.com</Text>
-              </div>
-              <div className="space-y-3 md:space-y-6">
-                <Text variant="inactive">help</Text>
-                <Text>client@grbpwr.com</Text>
-              </div>
-            </div>
-            <div className="order-first w-full space-y-16 md:order-none">
-              <FooterNav className="flex-col gap-6 uppercase" />
-              <div className="w-full">
-                <CurrencyPopover align="start" title="Currency:" />
-              </div>
-            </div>
+    <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
+      <div className="flex justify-center pt-16 lg:py-52">
+        <div className="flex flex-col gap-y-16 lg:flex-row lg:gap-x-20">
+          <div className="flex justify-center lg:justify-end">
+            {theme === "dark" ? (
+              <Logo className="aspect-square h-full w-40" />
+            ) : (
+              <WhiteLogo className="aspect-square h-full w-40" />
+            )}
           </div>
-          <NewslatterForm />
+          <div className="w-full lg:w-[346px]">
+            <NewslatterForm />
+          </div>
         </div>
       </div>
-      <div className="flex w-full flex-col justify-between gap-16 md:flex-row">
-        <Text className="order-last uppercase md:order-first">
-          {`grbpwr ${currentYear()}©`}
-        </Text>
-        <div className="order-first flex w-full justify-between md:order-last md:w-1/2">
-          {links.map((link) => (
-            <Button asChild key={link.text} className="uppercase">
-              <Link href={link.href}>{link.text}</Link>
+      <div className="flex flex-col justify-between gap-x-24 lg:flex-row lg:px-7">
+        <div className="order-4 flex justify-center gap-2 lg:order-1 lg:justify-start">
+          <Text variant="uppercase">grbpwr</Text>
+          <LiveClock />
+        </div>
+        <div className="order-3 flex justify-center gap-24 py-16 lg:order-2 lg:py-0">
+          {links.map((l) => (
+            <Button asChild key={l.text} className="uppercase">
+              <Link href={l.href}>{l.text}</Link>
             </Button>
           ))}
+        </div>
+        <div className="order-3 hidden gap-24 lg:flex">
+          <HelpPopover theme={theme} />
+          <Button className="uppercase" asChild>
+            <Link href="/legal-notices">legal notices</Link>
+          </Button>
+          <Button className="uppercase" asChild>
+            <Link href="/order-status">order status</Link>
+          </Button>
+        </div>
+        <div className="order-1 block lg:hidden">
+          <FooterNavMobile />
+        </div>
+        <div className="order-2 flex lg:order-4">
+          <CurrencyPopover title="currency:" theme={theme} />
         </div>
       </div>
     </footer>

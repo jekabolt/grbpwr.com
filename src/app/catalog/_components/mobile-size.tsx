@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CATALOG_LIMIT } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
@@ -12,57 +12,49 @@ import { Text } from "@/components/ui/text";
 
 import FilterOptionButtons from "./FilterOptionButtons";
 import useFilterQueryParams from "./useFilterQueryParams";
+import { useRouteParams } from "./useRouteParams";
+import { useSizeFiltering } from "./useSizeFiltering";
 import { getProductsPagedQueryParams } from "./utils";
 
 export function MobileSize() {
   const { dictionary } = useDataContext();
-  const { defaultValue: category } = useFilterQueryParams("topCategoryIds");
-  const { defaultValue: gender } = useFilterQueryParams("gender");
-  const { defaultValue: size, handleFilterChange } =
-    useFilterQueryParams("size");
+  const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
+  const { gender, topCategory, subCategory } = useRouteParams();
+  const { sizeOptions } = useSizeFiltering();
   const [total, setTotal] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<string>(size || "");
-  const sortedSizes = dictionary?.sizes?.sort((a, b) => {
-    return (a.id || 0) - (b.id || 0);
-  });
-  const sizeNames = sortedSizes?.map((size) => {
-    return {
-      ...size,
-      name: size.name || "",
-    };
-  });
 
-  useEffect(() => {
-    if (!size) {
-      setSelectedSize("");
-      setTotal(0);
-    }
-  }, [size]);
+  const sizes = dictionary?.sizes || [];
+  const initSize = sizes?.find((s) => s.name === defaultValue)?.id?.toString();
+  const [selectedSize, setSelectedSize] = useState<string>(initSize || "");
+
+  const getSizeNameById = (id?: string) =>
+    sizeOptions?.find((s) => String(s.id) === id)?.name.toLowerCase();
 
   const handleSizeClick = async (sizeId?: string) => {
-    setSelectedSize(sizeId || "");
+    setSelectedSize(sizeId ?? "");
 
-    if (sizeId) {
-      try {
-        const searchParams = {
-          topCategoryIds: category,
-          gender,
-          size: sizeId,
-        };
-
-        const response = await serviceClient.GetProductsPaged({
-          limit: CATALOG_LIMIT,
-          offset: 0,
-          ...getProductsPagedQueryParams(searchParams),
-        });
-
-        setTotal(response.total || 0);
-      } catch (error) {
-        setTotal(0);
-      }
-    } else {
+    if (!sizeId) {
       setTotal(0);
-      setSelectedSize("");
+      return;
+    }
+
+    try {
+      const response = await serviceClient.GetProductsPaged({
+        limit: CATALOG_LIMIT,
+        offset: 0,
+        ...getProductsPagedQueryParams(
+          {
+            topCategoryIds: topCategory?.id?.toString(),
+            subCategoryIds: subCategory?.id?.toString(),
+            gender,
+            size: getSizeNameById(sizeId),
+          },
+          dictionary,
+        ),
+      });
+      setTotal(response.total ?? 0);
+    } catch {
+      setTotal(0);
     }
   };
 
@@ -72,15 +64,15 @@ export function MobileSize() {
         <Button className="uppercase">size +</Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed bottom-0 left-0 z-40 bg-black" />
-        <DialogPrimitives.Content className="fixed bottom-0 left-0 z-40 flex h-auto w-screen flex-col bg-bgColor p-2">
+        <DialogPrimitives.Overlay className="fixed bottom-0 left-0 z-50 bg-black" />
+        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-50 flex h-auto w-screen flex-col bg-bgColor p-2 text-textColor mix-blend-hard-light">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
           <div className="relative mb-4 flex items-center justify-between">
             <Text variant="uppercase">size</Text>
             <DialogPrimitives.Close asChild>
-              <Button>[X]</Button>
+              <Button>[x]</Button>
             </DialogPrimitives.Close>
           </div>
 
@@ -92,16 +84,16 @@ export function MobileSize() {
             <FilterOptionButtons
               defaultValue={selectedSize || ""}
               handleFilterChange={handleSizeClick}
-              values={sizeNames || []}
-              topCategoryId={category}
+              values={sizeOptions || []}
+              topCategoryId={topCategory?.id?.toString()}
             />
           </div>
           {selectedSize && (
-            <div className="fixed inset-x-2.5 bottom-0 flex justify-between gap-2 bg-bgColor">
+            <div className="fixed inset-x-2.5 bottom-2.5 flex justify-between gap-2">
               <Button
                 className="w-full uppercase"
                 size="lg"
-                variant="main"
+                variant="secondary"
                 onClick={() => handleFilterChange(undefined)}
               >
                 clear all
@@ -109,8 +101,14 @@ export function MobileSize() {
               <Button
                 className="w-full uppercase"
                 size="lg"
-                variant="main"
-                onClick={() => handleFilterChange(selectedSize)}
+                variant="secondary"
+                onClick={() => {
+                  const sizeName =
+                    dictionary?.sizes?.find(
+                      (s) => (s.id || 0).toString() === selectedSize,
+                    )?.name || "";
+                  handleFilterChange(sizeName || undefined);
+                }}
               >
                 show {selectedSize && total > 0 ? `[${total}]` : ""}
               </Button>

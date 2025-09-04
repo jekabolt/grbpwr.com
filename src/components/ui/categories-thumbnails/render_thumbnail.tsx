@@ -5,6 +5,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { Unit } from "@/app/product/[...productParams]/_components/measurements-table";
 
 import { getIconByCategoryId } from "./map_categories";
 
@@ -16,11 +17,13 @@ interface CategoryThumbnailProps {
   measurements: common_ProductMeasurement[];
   className?: string;
   selectedSize?: number;
+  unit?: Unit;
 }
 
 type IconComponentProps = React.SVGProps<SVGSVGElement> & {
   measurements?: common_ProductMeasurement[];
   selectedSize?: number;
+  unit?: Unit;
 };
 
 export function CategoryThumbnail({
@@ -31,6 +34,7 @@ export function CategoryThumbnail({
   className,
   gender,
   selectedSize,
+  unit = Unit.CM,
 }: CategoryThumbnailProps) {
   const { dictionary } = useDataContext();
 
@@ -63,6 +67,7 @@ export function CategoryThumbnail({
         className="h-full w-full"
         measurements={measurements}
         selectedSize={selectedSize}
+        unit={unit}
       />
     </div>
   );

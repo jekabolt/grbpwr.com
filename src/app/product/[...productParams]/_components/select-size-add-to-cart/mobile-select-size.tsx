@@ -8,50 +8,38 @@ import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
-import { useData } from "./useData";
+import { useActiveSizeInfo } from "../utils/useActiveSizeInfo";
 
 export function MobileSelectSize({
   product,
   activeSizeId,
-  triggerRef,
   handleSizeSelect,
+  open,
+  onOpenChange,
 }: {
   product: common_ProductFull;
   activeSizeId: number | undefined;
-  triggerRef: React.RefObject<HTMLButtonElement | null>;
+  open: boolean;
   handleSizeSelect: (sizeId: number) => void;
+  onOpenChange: (open: boolean) => void;
 }) {
-  const { triggerText, sizeNames, lowStockText } = useData({
+  const { sizeNames } = useActiveSizeInfo({
     product,
     activeSizeId,
   });
 
   return (
-    <DialogPrimitives.Root modal={false}>
-      <DialogPrimitives.Trigger asChild>
-        <Button
-          ref={triggerRef}
-          className="border-textInaciveColor w-full border-b pb-2.5 text-left uppercase"
-        >
-          <Text component="span">
-            {triggerText}
-            <Text
-              component="span"
-              variant="uppercase"
-              className="text-textInactiveColor"
-            >
-              {" "}
-              {lowStockText}
-            </Text>
-          </Text>
-        </Button>
-      </DialogPrimitives.Trigger>
+    <DialogPrimitives.Root
+      modal={false}
+      open={open}
+      onOpenChange={onOpenChange}
+    >
       <DialogPrimitives.Portal>
-        <Overlay cover="screen" />
+        <Overlay cover="screen" disablePointerEvents={false} />
         <DialogPrimitives.Title className="sr-only">
           grbpwr mobile menu
         </DialogPrimitives.Title>
-        <DialogPrimitives.Content className="fixed bottom-0 left-0 z-40 flex h-auto w-screen flex-col gap-10 bg-bgColor p-2.5 pb-10">
+        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-50 flex h-auto w-screen flex-col gap-10 bg-bgColor p-2.5 pb-10 text-textColor mix-blend-hard-light">
           <DialogPrimitives.Close asChild>
             <div className="flex items-center justify-between">
               <Text variant="uppercase">select size</Text>
@@ -63,8 +51,8 @@ export function MobileSelectSize({
               <DialogPrimitives.Close asChild key={id}>
                 <Button
                   key={id}
-                  className={cn("", {
-                    "border-b border-black": activeSizeId === id,
+                  className={cn("uppercase", {
+                    "border-b border-textColor": activeSizeId === id,
                   })}
                   onClick={() => handleSizeSelect(id)}
                 >

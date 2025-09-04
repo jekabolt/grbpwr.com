@@ -1,123 +1,42 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import type { common_ArchiveFull } from "@/api/proto-http/frontend";
+import { useState } from "react";
+import type { common_ArchiveList } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
+import { Carousel } from "@/components/ui/carousel";
 
 import { FullSizeItem } from "./full-size-item";
 
 interface CarouselProps {
-  archives: common_ArchiveFull[];
+  archives: common_ArchiveList[];
 }
 
 export function VerticalCarousel({ archives }: CarouselProps) {
-  const [selectedArchive, setSelectedArchive] = useState<number | null>(null);
-  const [highlightedArchive, setHighlightedArchive] = useState<number | null>(
-    null,
-  );
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const container = containerRef.current;
-      const containerRect = container.getBoundingClientRect();
-      const containerCenter = containerRect.top + containerRect.height / 2;
-
-      let closestItem: HTMLElement | null = null;
-      let closestDistance = Infinity;
-
-      container.querySelectorAll(".archive-item").forEach((item) => {
-        const itemElement = item as HTMLElement;
-        const itemRect = itemElement.getBoundingClientRect();
-        const itemCenter = itemRect.top + itemRect.height / 2;
-        const distance = Math.abs(containerCenter - itemCenter);
-
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestItem = itemElement;
-        }
-      });
-
-      if (closestItem) {
-        // @ts-ignore
-        const archiveId = Number(closestItem.getAttribute("data-archive-id"));
-        setHighlightedArchive(archiveId);
-      }
-    };
-
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
-
-    return () => {
-      if (container) {
-        container.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [archives]);
-
-  useEffect(() => {
-    if (highlightedArchive && containerRef.current) {
-      const highlightedElement = containerRef.current.querySelector(
-        `[data-archive-id="${highlightedArchive}"]`,
-      ) as HTMLElement;
-
-      if (highlightedElement) {
-        const container = containerRef.current;
-        const containerHeight = container.clientHeight;
-        const elementHeight = highlightedElement.offsetHeight;
-        const topOffset = (containerHeight - elementHeight) / 2;
-        const elementTop = highlightedElement.offsetTop;
-        const scrollPosition = elementTop - topOffset;
-
-        container.scrollTo({
-          top: scrollPosition,
-          behavior: "smooth",
-        });
-      }
-    }
-  }, [highlightedArchive]);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   return (
-    <div
-      className="relative h-screen overflow-auto scroll-smooth"
-      ref={containerRef}
+    <Carousel
+      axis="y"
+      align="center"
+      className="flex h-screen w-full flex-col gap-20 pt-14 lg:lg:gap-0 lg:pt-24"
+      enablePageScroll
+      setSelectedIndex={setSelectedIndex}
     >
-      {archives.map((archive, index) => {
-        const isHighlighted = archive.id === highlightedArchive;
-
-        return (
-          <div
-            key={index}
-            data-archive-id={archive.id}
+      {archives.map((archive, index) => (
+        <div key={index} className="px-14 lg:px-7">
+          <FullSizeItem
+            archive={archive}
+            highlightedItem={index === selectedIndex}
             className={cn(
-              "archive-item relative px-14 transition-transform duration-300 ease-in-out lg:px-7",
+              "h-full w-44 opacity-50 transition-all duration-300 ease-in-out lg:flex-[0_0_25%]",
               {
-                "scale-100": isHighlighted,
-                "scale-95 opacity-30": !isHighlighted,
+                "w-full opacity-100 lg:flex-[0_0_40%]": index === selectedIndex,
               },
             )}
-            onClick={() =>
-              isHighlighted && setSelectedArchive(archive.id || null)
-            }
-          >
-            <FullSizeItem
-              archive={archive}
-              className={cn(
-                "w-full transition-all duration-300 ease-in-out lg:w-[34rem]",
-                {
-                  "lg:w-96": !isHighlighted,
-                },
-              )}
-            />
-          </div>
-        );
-      })}
-    </div>
+          />
+        </div>
+      ))}
+    </Carousel>
   );
 }

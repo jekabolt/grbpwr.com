@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 
+import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
+import { EmailToaster } from "@/components/ui/toaster";
 
 import { Button } from "./button";
 import { CopyCheckIcon } from "./icons/copy-check-icon";
@@ -12,24 +14,30 @@ interface Props {
   text: string;
   displayText?: string;
   cutText?: number;
-  variant?: "inactive" | "underlined" | "default";
+  variant?: "underlined" | "undrleineWithColors" | "color";
+  mode?: "toaster" | "default";
+  className?: string;
 }
 
 export default function CopyText({
   text,
   displayText,
   cutText,
-  variant = "default",
+  mode = "default",
+  variant = "undrleineWithColors",
+  className,
 }: Props) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text);
-      setIsCopied(true);
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 1000);
+      if (mode === "default" || mode === "toaster") {
+        setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 3000);
+      }
     } catch (e) {
       console.error("failed to copy text", e);
     }
@@ -38,28 +46,40 @@ export default function CopyText({
   const getDisplayText = () => {
     if (displayText) return displayText;
 
-    if (!cutText) return text;
+    if (cutText) return `${text.slice(0, cutText)}...`;
 
-    return `${text.slice(0, cutText)}...`;
+    return text;
   };
 
+  const textElement = (
+    <Text
+      size="small"
+      variant={variant}
+      onClick={handleCopy}
+      className={cn("text cursor-pointer", {
+        "text-visitedLinkColor": mode === "toaster" && isCopied,
+      })}
+    >
+      {getDisplayText()}
+    </Text>
+  );
+
   return (
-    <div className="flex h-4 items-center gap-1">
-      <Text
-        size="small"
-        variant={variant}
-        onClick={handleCopy}
-        className="cursor-pointer"
-      >
-        {getDisplayText()}
-      </Text>
-      <Button size="sm" onClick={handleCopy} asChild>
-        {isCopied ? (
-          <CopyCheckIcon className="text-textColor" />
-        ) : (
-          <CopyIcon className="text-textColor" />
-        )}
-      </Button>
+    <div className={cn("flex h-4 items-center gap-1", className)}>
+      {mode === "toaster" ? (
+        <EmailToaster title="email">{textElement}</EmailToaster>
+      ) : (
+        <>
+          {textElement}
+          <Button size="sm" onClick={handleCopy} asChild>
+            {isCopied ? (
+              <CopyCheckIcon className="text-textColor" />
+            ) : (
+              <CopyIcon className="text-textColor" />
+            )}
+          </Button>
+        </>
+      )}
     </div>
   );
 }

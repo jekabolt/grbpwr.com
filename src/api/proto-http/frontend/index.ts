@@ -201,6 +201,12 @@ export type common_HeroFeaturedArchive = {
 };
 
 export type common_ArchiveFull = {
+  archiveList: common_ArchiveList | undefined;
+  mainMedia: common_MediaFull | undefined;
+  media: common_MediaFull[] | undefined;
+};
+
+export type common_ArchiveList = {
   id: number | undefined;
   heading: string | undefined;
   description: string | undefined;
@@ -208,8 +214,7 @@ export type common_ArchiveFull = {
   slug: string | undefined;
   nextSlug: string | undefined;
   createdAt: wellKnownTimestamp | undefined;
-  video: common_MediaFull | undefined;
-  media: common_MediaFull[] | undefined;
+  thumbnail: common_MediaFull | undefined;
 };
 
 export type common_NavFeatured = {
@@ -231,14 +236,11 @@ export type common_Dictionary = {
   paymentMethods: common_PaymentMethod[] | undefined;
   shipmentCarriers: common_ShipmentCarrier[] | undefined;
   sizes: common_Size[] | undefined;
-  genders: common_Genders[] | undefined;
-  orderFactors: common_OrderFactors[] | undefined;
-  sortFactors: common_SortFactors[] | undefined;
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
-  topCategories: common_TopCategoryCount[] | undefined;
+  announce: string | undefined;
 };
 
 // Category represents a hierarchical category structure
@@ -248,6 +250,8 @@ export type common_Category = {
   levelId: number | undefined;
   level: string | undefined;
   parentId: number | undefined;
+  countMen: number | undefined;
+  countWomen: number | undefined;
 };
 
 export type common_MeasurementName = {
@@ -299,37 +303,6 @@ export type common_ShipmentCarrierInsert = {
 export type common_Size = {
   id: number | undefined;
   name: string | undefined;
-};
-
-export type common_Genders = {
-  id: common_GenderEnum | undefined;
-  name: string | undefined;
-};
-
-export type common_OrderFactors = {
-  id: common_OrderFactor | undefined;
-  name: string | undefined;
-};
-
-export type common_OrderFactor =
-  | "ORDER_FACTOR_UNKNOWN"
-  | "ORDER_FACTOR_ASC"
-  | "ORDER_FACTOR_DESC";
-export type common_SortFactors = {
-  id: common_SortFactor | undefined;
-  name: string | undefined;
-};
-
-export type common_SortFactor =
-  | "SORT_FACTOR_UNKNOWN"
-  | "SORT_FACTOR_CREATED_AT"
-  | "SORT_FACTOR_UPDATED_AT"
-  | "SORT_FACTOR_NAME"
-  | "SORT_FACTOR_PRICE";
-export type common_TopCategoryCount = {
-  categoryId: number | undefined;
-  categoryName: string | undefined;
-  count: number | undefined;
 };
 
 // CurrencyMap represents a map of currency codes to their rates.
@@ -395,6 +368,16 @@ export type GetProductsPagedRequest = {
   filterConditions: common_FilterConditions | undefined;
 };
 
+export type common_SortFactor =
+  | "SORT_FACTOR_UNKNOWN"
+  | "SORT_FACTOR_CREATED_AT"
+  | "SORT_FACTOR_UPDATED_AT"
+  | "SORT_FACTOR_NAME"
+  | "SORT_FACTOR_PRICE";
+export type common_OrderFactor =
+  | "ORDER_FACTOR_UNKNOWN"
+  | "ORDER_FACTOR_ASC"
+  | "ORDER_FACTOR_DESC";
 export type common_FilterConditions = {
   from: string | undefined;
   to: string | undefined;
@@ -470,11 +453,12 @@ export type common_PaymentInsert = {
   expiredAt: wellKnownTimestamp | undefined;
 };
 
-export type GetOrderByUUIDRequest = {
+export type GetOrderByUUIDAndEmailRequest = {
   orderUuid: string | undefined;
+  b64Email: string | undefined;
 };
 
-export type GetOrderByUUIDResponse = {
+export type GetOrderByUUIDAndEmailResponse = {
   order: common_OrderFull | undefined;
 };
 
@@ -621,7 +605,7 @@ export type GetArchivesPagedRequest = {
 };
 
 export type GetArchivesPagedResponse = {
-  archives: common_ArchiveFull[] | undefined;
+  archives: common_ArchiveList[] | undefined;
   total: number | undefined;
 };
 
@@ -663,7 +647,7 @@ export interface FrontendService {
   // Submit an order
   SubmitOrder(request: SubmitOrderRequest): Promise<SubmitOrderResponse>;
   // Retrieves an order by its ID
-  GetOrderByUUID(request: GetOrderByUUIDRequest): Promise<GetOrderByUUIDResponse>;
+  GetOrderByUUIDAndEmail(request: GetOrderByUUIDAndEmailRequest): Promise<GetOrderByUUIDAndEmailResponse>;
   ValidateOrderItemsInsert(request: ValidateOrderItemsInsertRequest): Promise<ValidateOrderItemsInsertResponse>;
   ValidateOrderByUUID(request: ValidateOrderByUUIDRequest): Promise<ValidateOrderByUUIDResponse>;
   // Generate an invoice for the order or return the existing one
@@ -831,11 +815,14 @@ export function createFrontendServiceClient(
         method: "SubmitOrder",
       }) as Promise<SubmitOrderResponse>;
     },
-    GetOrderByUUID(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    GetOrderByUUIDAndEmail(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       if (!request.orderUuid) {
         throw new Error("missing required field request.order_uuid");
       }
-      const path = `api/frontend/order/${request.orderUuid}`; // eslint-disable-line quotes
+      if (!request.b64Email) {
+        throw new Error("missing required field request.b64_email");
+      }
+      const path = `api/frontend/order/${request.orderUuid}/${request.b64Email}`; // eslint-disable-line quotes
       const body = null;
       const queryParams: string[] = [];
       let uri = path;
@@ -848,8 +835,8 @@ export function createFrontendServiceClient(
         body,
       }, {
         service: "FrontendService",
-        method: "GetOrderByUUID",
-      }) as Promise<GetOrderByUUIDResponse>;
+        method: "GetOrderByUUIDAndEmail",
+      }) as Promise<GetOrderByUUIDAndEmailResponse>;
     },
     ValidateOrderItemsInsert(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/orders/validate-items`; // eslint-disable-line quotes

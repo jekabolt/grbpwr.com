@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { common_GenderEnum } from "@/api/proto-http/frontend";
 import { GENDER_MAP_REVERSE } from "@/constants";
 
@@ -11,18 +12,16 @@ import {
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 
-import useFilterQueryParams from "./useFilterQueryParams";
+import { useRouteParams } from "./useRouteParams";
 
 export function NextCategoryButton() {
   const { dictionary } = useDataContext();
-  const { defaultValue: topCategoryId, handleFilterChange } =
-    useFilterQueryParams("topCategoryIds");
-  const { defaultValue: gender } = useFilterQueryParams("gender");
+  const { gender, topCategory } = useRouteParams();
   const isMen = GENDER_MAP_REVERSE[gender as common_GenderEnum] === "men";
   const processedCategories = processCategories(dictionary?.categories || []);
 
   const currentCategory = processedCategories.find(
-    (cat) => cat.id === parseInt(topCategoryId || "0"),
+    (cat) => cat.id === topCategory?.id,
   );
 
   const currentCategoryName = currentCategory?.name.toLowerCase();
@@ -49,18 +48,16 @@ export function NextCategoryButton() {
     (cat) => cat.name.toLowerCase() === nextCategoryName,
   );
 
-  const handleClick = () => {
-    handleFilterChange(nextCategory?.id.toString() || "");
-  };
+  if (currentCategoryName === "objects") {
+    return null;
+  }
 
   return (
-    <Button
-      variant="main"
-      size="lg"
-      onClick={handleClick}
-      className="uppercase"
-    >
-      Next:{CATEGORY_TITLE_MAP[nextCategory?.name || ""] || nextCategory?.name}
+    <Button variant="main" size="lg" className="uppercase" asChild>
+      <Link href={`/catalog/${gender}/${nextCategory?.name.toLowerCase()}`}>
+        Next:
+        {CATEGORY_TITLE_MAP[nextCategory?.name || ""] || nextCategory?.name}
+      </Link>
     </Button>
   );
 }

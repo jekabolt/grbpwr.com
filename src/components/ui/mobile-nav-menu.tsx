@@ -4,14 +4,17 @@ import { useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { Button } from "./button";
-import { WhiteLogo } from "./icons/white-logo";
 import {
   ActiveCategoryMenuDialog,
   DefaultMobileMenuDialog,
 } from "./mobile-menu-dialog";
 import { Text } from "./text";
 
-export function MobileNavMenu() {
+export function MobileNavMenu({
+  isBigMenuEnabled,
+}: {
+  isBigMenuEnabled?: boolean;
+}) {
   const [activeCategory, setActiveCategory] = useState<
     "men" | "women" | undefined
   >();
@@ -19,12 +22,12 @@ export function MobileNavMenu() {
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
-        <Button size="lg" className="w-full" variant="simpleReverse">
+        <Button size="lg" className="w-full text-left">
           menu
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Content className="fixed inset-0 z-30 bg-bgColor px-2.5 py-5">
+        <DialogPrimitives.Content className="fixed inset-0 z-40 bg-bgColor px-2.5 pb-4 pt-5">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
@@ -35,24 +38,26 @@ export function MobileNavMenu() {
                   <Button onClick={() => setActiveCategory(undefined)}>
                     {"<"}
                   </Button>
-                  <Text variant="uppercase">{activeCategory}</Text>
+                  {isBigMenuEnabled && (
+                    <Text variant="uppercase">{activeCategory}</Text>
+                  )}
                   <DialogPrimitives.Close asChild>
                     <Button>[x]</Button>
                   </DialogPrimitives.Close>
                 </div>
               ) : (
-                <div className="flex items-center justify-between">
-                  <DialogPrimitives.Close className="aspect-square size-7">
-                    <WhiteLogo />
-                  </DialogPrimitives.Close>
+                <div className="flex items-center justify-end">
                   <DialogPrimitives.Close>
                     <Text>[x]</Text>
                   </DialogPrimitives.Close>
                 </div>
               )}
             </div>
-            {activeCategory === undefined ? (
-              <DefaultMobileMenuDialog setActiveCategory={setActiveCategory} />
+            {activeCategory === undefined || !isBigMenuEnabled ? (
+              <DefaultMobileMenuDialog
+                setActiveCategory={setActiveCategory}
+                isBigMenuEnabled={isBigMenuEnabled}
+              />
             ) : (
               <ActiveCategoryMenuDialog activeCategory={activeCategory} />
             )}

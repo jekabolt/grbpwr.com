@@ -1,6 +1,6 @@
 "use client";
 
-import { currencySymbols } from "@/constants";
+import { currencySymbols, getDisplayCurrencyKey } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
@@ -11,27 +11,26 @@ import { Text } from "@/components/ui/text";
 import MobileCurrencyPopover from "./mobile-currency-popover";
 
 interface Props {
-  align?: "start" | "end";
   theme?: "light" | "dark";
   title?: string;
 }
 
 function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
   return (
-    <Text variant="uppercase">
+    <Text variant="uppercase" className="whitespace-nowrap">
       currency:{" "}
-      <Text component="span" variant="inactive">
+      <Text
+        component="span"
+        variant="inactive"
+        className="inline-block min-w-16 text-left"
+      >
         {defaultValue}
       </Text>
     </Text>
   );
 }
 
-export default function CurrencyPopover({
-  align = "end",
-  title,
-  theme = "light",
-}: Props) {
+export default function CurrencyPopover({ title, theme = "light" }: Props) {
   const { selectedCurrency, rates, setSelectedCurrency } = useCurrency(
     (state) => state,
   );
@@ -39,48 +38,48 @@ export default function CurrencyPopover({
   return (
     <>
       <div className="block lg:hidden">
-        <MobileCurrencyPopover title={title} theme={theme} />
+        <MobileCurrencyPopover theme={theme} />
       </div>
       <div className="hidden lg:block">
         <GenericPopover
           title={title}
           openElement={
             <Trigger
-              defaultValue={`${currencySymbols[selectedCurrency]} / ${selectedCurrency}`}
+              defaultValue={`${currencySymbols[getDisplayCurrencyKey(selectedCurrency)]} / ${getDisplayCurrencyKey(selectedCurrency)}`}
             />
           }
-          className={cn("border-inactive border", {
+          className={cn({
             "blackTheme bg-bgColor text-textColor": theme === "dark",
           })}
-          variant="currency"
           contentProps={{
-            sideOffset: title ? -25 : 16,
-            align: align,
+            align: "end",
+            alignOffset: 10,
           }}
         >
-          <div
-            className={cn("space-y-2", {
-              "min-w-80": !title,
-              "w-full": title,
-            })}
-          >
+          <div className="w-72 space-y-2">
             {rates &&
-              Object.entries(rates).map(([k, v]) => (
-                <div key={k}>
-                  <Button
-                    onClick={() => {
-                      setSelectedCurrency(k);
-                    }}
-                    className={cn("flex w-full lowercase", {
-                      "underline underline-offset-2": k === selectedCurrency,
-                    })}
-                  >
-                    <Text variant="inherit" className="block min-w-8 text-left">
-                      {currencySymbols[k]} {v.description}
-                    </Text>
-                  </Button>
-                </div>
-              ))}
+              Object.entries(rates).map(([k, v]) => {
+                const displayKey = getDisplayCurrencyKey(k);
+                return (
+                  <div key={k}>
+                    <Button
+                      onClick={() => {
+                        setSelectedCurrency(k);
+                      }}
+                      className={cn("flex w-full lowercase", {
+                        "underline underline-offset-2": k === selectedCurrency,
+                      })}
+                    >
+                      <Text
+                        variant="inherit"
+                        className="block min-w-8 text-left"
+                      >
+                        {currencySymbols[displayKey]} {v.description}
+                      </Text>
+                    </Button>
+                  </div>
+                );
+              })}
           </div>
         </GenericPopover>
       </div>

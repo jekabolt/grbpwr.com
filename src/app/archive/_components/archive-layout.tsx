@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { common_ArchiveFull } from "@/api/proto-http/frontend";
+import { common_ArchiveList } from "@/api/proto-http/frontend";
 
 import FlexibleLayout from "@/components/flexible-layout";
 
@@ -13,7 +13,7 @@ export function ArchiveLayout({
   archives,
   total,
 }: {
-  archives: common_ArchiveFull[];
+  archives: common_ArchiveList[];
   total: number;
 }) {
   const [viewMode, setViewMode] = useState<ViewMode>("horizontal");
@@ -31,9 +31,7 @@ export function ArchiveLayout({
         right: "change view",
         onClick: handleChangeView,
       }}
-      footerType="mini"
       theme="dark"
-      className="pt-16"
     >
       <Galery
         archives={archives || []}

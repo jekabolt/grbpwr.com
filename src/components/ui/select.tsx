@@ -1,37 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Select from "@radix-ui/react-select";
 
 import { cn } from "@/lib/utils";
+import { Arrow } from "@/components/ui/icons/arrow";
 import { Text } from "@/components/ui/text";
 
 export default function SelectComponent({
   name,
   items,
   className,
+  customWidth,
+  fullWidth,
   renderValue,
   ...props
 }: {
   name: string;
   items: { value: string; label: string }[];
   className?: string;
+  customWidth?: number;
+  fullWidth?: boolean;
   renderValue?: (
     selectedValue: string,
     selectedItem: { label: string; value: string } | undefined,
   ) => React.ReactNode;
   [k: string]: any;
 }) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Select.Root {...props}>
+    <Select.Root {...props} open={open} onOpenChange={setOpen}>
       <SelectTrigger
         placeholder={props.placeholder}
         className={className}
         renderValue={renderValue}
         value={props.value}
         items={items}
+        isOpen={open}
       >
-        {">"}
+        <Arrow />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent fullWidth={fullWidth} customWidth={customWidth}>
         {items.map((item) => (
           <SelectItem key={item.value} value={item.value}>
             {item.label}
@@ -69,6 +77,7 @@ export function SelectTrigger({
   renderValue,
   value,
   items,
+  isOpen,
 }: {
   children: React.ReactNode;
   placeholder: string;
@@ -79,6 +88,7 @@ export function SelectTrigger({
   ) => React.ReactNode;
   value?: string;
   items?: { label: string; value: string }[];
+  isOpen?: boolean;
 }) {
   let displayValue = null;
   if (renderValue && value && items) {
@@ -95,17 +105,39 @@ export function SelectTrigger({
       aria-label={placeholder}
     >
       {displayValue ?? <Select.Value placeholder={placeholder} />}
-      <Select.Icon className="text-textColor">{children}</Select.Icon>
+      <Select.Icon
+        className={cn("rotate-180 text-textColor", {
+          "rotate-0": isOpen,
+        })}
+      >
+        {children}
+      </Select.Icon>
     </Select.Trigger>
   );
 }
 
-export function SelectContent({ children }: { children: React.ReactNode }) {
+export function SelectContent({
+  children,
+  fullWidth,
+  customWidth,
+}: {
+  children: React.ReactNode;
+  fullWidth?: boolean;
+  customWidth?: number;
+}) {
+  const getWidth = () => {
+    if (fullWidth) return "var(--radix-select-trigger-width)";
+    if (customWidth && customWidth > 0) return `${customWidth}px`;
+    return undefined;
+  };
   return (
     <Select.Portal>
       <Select.Content
         className="w-full overflow-hidden bg-bgColor shadow-md"
         position="popper"
+        style={{
+          width: getWidth(),
+        }}
       >
         <Select.Viewport className="max-h-[300px] bg-bgColor">
           {children}

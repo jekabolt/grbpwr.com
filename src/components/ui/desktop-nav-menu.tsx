@@ -1,31 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { GENDER_MAP } from "@/constants";
+import { usePathname } from "next/navigation";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import { filterNavigationLinks, processCategories } from "@/lib/categories-map";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { useAnnounce } from "@/app/_components/useAnnounce";
 
+import { AnimatedButton } from "./animated-button";
 import { Button } from "./button";
 import Image from "./image";
 import { Text } from "./text";
 
 export function DesktopNavigationMenu({
-  isNavOpen,
+  isCatalog,
   className,
   isBigMenuEnabled,
   onNavOpenChange,
 }: {
-  isNavOpen: boolean;
+  isCatalog?: boolean;
   isBigMenuEnabled?: boolean;
   className?: string;
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
   const { dictionary } = useDataContext();
-  const men = `gender=${GENDER_MAP["men"]}`;
-  const women = `gender=${GENDER_MAP["women"]}`;
+  const pathname = usePathname();
+  const { open } = useAnnounce(dictionary?.announce || "");
 
   const processedCategories = dictionary?.categories
     ? processCategories(dictionary.categories).filter(
@@ -33,9 +35,20 @@ export function DesktopNavigationMenu({
       )
     : [];
 
-  const objectsCategoryId =
-    dictionary?.categories?.find((cat) => cat.name?.toLowerCase() === "objects")
-      ?.id || "";
+  const genderNavItems = [
+    {
+      gender: "men" as const,
+      href: "/catalog/men",
+      isActive: pathname.startsWith("/catalog/men"),
+    },
+    {
+      gender: "women" as const,
+      href: "/catalog/women",
+      isActive: pathname.startsWith("/catalog/women"),
+    },
+  ];
+
+  const isOnObjectsPage = pathname.startsWith("/catalog/objects");
 
   return (
     <NavigationMenu.Root
@@ -45,72 +58,62 @@ export function DesktopNavigationMenu({
       }}
     >
       <NavigationMenu.List className="flex items-center gap-4">
-        <NavigationMenu.Item>
-          <NavigationMenu.Trigger className="flex items-center text-textBaseSize data-[state=open]:underline">
-            <Link href={`/catalog?${men}`} className="flex items-center">
-              men
-            </Link>
-          </NavigationMenu.Trigger>
-          {isBigMenuEnabled && (
-            <NavigationMenu.Content className="absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
-              <LinksGroup
-                gender="men"
-                links={processedCategories.map((item) => ({
-                  href: `${item.href}&${men}`,
-                  title: item.name,
-                  id: item.id.toString(),
-                }))}
-              />
-            </NavigationMenu.Content>
-          )}
-        </NavigationMenu.Item>
-
-        <NavigationMenu.Item>
-          <NavigationMenu.Trigger className="flex items-center text-textBaseSize data-[state=open]:underline">
-            <Link href={`/catalog?${women}`} className="flex items-center">
-              women
-            </Link>
-          </NavigationMenu.Trigger>
-          {isBigMenuEnabled && (
-            <NavigationMenu.Content className="absolute left-0 top-0 min-h-80 w-full bg-bgColor text-textColor">
-              <LinksGroup
-                gender="women"
-                links={processedCategories.map((item) => ({
-                  href: `${item.href}&${women}`,
-                  title: item.name,
-                  id: item.id.toString(),
-                }))}
-              />
-            </NavigationMenu.Content>
-          )}
-        </NavigationMenu.Item>
+        {genderNavItems.map(({ gender, href, isActive }) => (
+          <NavigationMenu.Item key={gender}>
+            <NavigationMenu.Trigger
+              className={cn(
+                "flex items-center text-textBaseSize data-[state=open]:underline",
+                { underline: isActive },
+              )}
+            >
+              <Link href={href} className="flex items-center">
+                {gender}
+              </Link>
+            </NavigationMenu.Trigger>
+            {isBigMenuEnabled && (
+              <NavigationMenu.Content className="blackTheme absolute left-0 top-0 min-h-56 w-full bg-bgColor text-textColor">
+                <LinksGroup
+                  gender={gender}
+                  links={processedCategories.map((item) => ({
+                    href: `/catalog/${gender}/${item.name.toLowerCase()}`,
+                    title: item.name,
+                    id: item.id.toString(),
+                  }))}
+                />
+              </NavigationMenu.Content>
+            )}
+          </NavigationMenu.Item>
+        ))}
 
         <NavigationMenu.Item>
           <Button asChild>
-            <NavigationMenu.Link
-              href={`/catalog?topCategoryIds=${objectsCategoryId}`}
-              className="flex items-center text-textBaseSize underline-offset-2 hover:underline"
+            <Link
+              href={`/catalog/objects`}
+              className={cn(
+                "flex items-center text-textBaseSize underline-offset-2 hover:underline",
+                { underline: isOnObjectsPage },
+              )}
             >
               objects
-            </NavigationMenu.Link>
+            </Link>
           </Button>
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
           <Button asChild>
-            <NavigationMenu.Link
+            <Link
               href="/archive"
               className="flex items-center text-textBaseSize underline-offset-2 hover:underline"
             >
               archive
-            </NavigationMenu.Link>
+            </Link>
           </Button>
         </NavigationMenu.Item>
       </NavigationMenu.List>
 
       <div
         className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
-          "border-x border-b border-textInactiveColor": isNavOpen,
+          "top-16": open && !isCatalog,
           "border-none": !isBigMenuEnabled,
         })}
       >
@@ -134,29 +137,28 @@ function LinksGroup({
   const { hero } = useDataContext();
   const { leftSideCategoryLinks, rightSideCategoryLinks } =
     filterNavigationLinks(links);
-  const filteredLeftSideCategoryLinks =
-    gender === "men"
-      ? leftSideCategoryLinks.filter((c) => c.title.toLowerCase() !== "dresses")
-      : leftSideCategoryLinks;
-
   const heroNav = hero?.navFeatured?.[gender];
   const isTagLink = heroNav?.featuredTag;
   const newIn = `/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT`;
   const tagLink = `/catalog?tag=${heroNav?.featuredTag}`;
   const archiveLink = `/archive?id=${heroNav?.featuredArchiveId}`;
   const activeHeroNavLink = isTagLink ? tagLink : archiveLink;
+  const filteredLeftSideCategoryLinks =
+    gender === "men"
+      ? leftSideCategoryLinks.filter((c) => c.title.toLowerCase() !== "dresses")
+      : leftSideCategoryLinks;
 
   return (
     <div className="flex w-full justify-between px-7 py-10">
       <div className="flex gap-24">
         <div className="space-y-4">
           <Button className="uppercase hover:underline" asChild>
-            <Link href={`/catalog?gender=${GENDER_MAP[gender]}`}>all</Link>
+            <Link href={`/catalog/${gender}`}>all</Link>
           </Button>
           <div className="space-y-4">
             {filteredLeftSideCategoryLinks.map((link) => (
               <div className="w-full" key={link.href}>
-                <Button className="hover:underline" asChild>
+                <Button className="uppercase hover:underline" asChild>
                   <Link href={link.href}>{link.title}</Link>
                 </Button>
               </div>
@@ -169,9 +171,11 @@ function LinksGroup({
           </Button>
           <div className="space-y-4">
             {rightSideCategoryLinks.map((link) => (
-              <div className="w-full" key={link.href}>
+              <div className="w-full" key={link.id}>
                 <Button className="uppercase hover:underline" asChild>
-                  <NavigationMenu.Link href={link.href}>
+                  <NavigationMenu.Link
+                    href={`/catalog/${gender}/${link.title.toLowerCase()}`}
+                  >
                     {link.title}
                   </NavigationMenu.Link>
                 </Button>
@@ -180,9 +184,9 @@ function LinksGroup({
           </div>
         </div>
       </div>
-      <div className="w-40">
-        <Button asChild>
-          <Link href={activeHeroNavLink} className="space-y-2">
+      {heroNav?.media?.media?.thumbnail?.mediaUrl && (
+        <div className="w-40">
+          <AnimatedButton href={activeHeroNavLink} className="space-y-2">
             <div className="w-full">
               <Image
                 src={heroNav?.media?.media?.thumbnail?.mediaUrl || ""}
@@ -194,9 +198,9 @@ function LinksGroup({
               />
             </div>
             <Text>{heroNav?.exploreText}</Text>
-          </Link>
-        </Button>
-      </div>
+          </AnimatedButton>
+        </div>
+      )}
     </div>
   );
 }

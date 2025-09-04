@@ -6,15 +6,14 @@ export default async function CheckoutPage() {
   return (
     <FlexibleLayout
       headerType="flexible"
-      footerType="mini"
+      displayFooter={false}
       headerProps={{
-        left: "< cart",
+        left: "<",
         center: "checkout",
         right: "close",
-        link: "cart",
       }}
     >
-      <div className="px-2.5 py-20 lg:px-32 lg:py-32">
+      <div className="px-2.5 py-20 lg:relative lg:min-h-screen lg:px-32 lg:py-24">
         <NewOrderForm />
       </div>
     </FlexibleLayout>

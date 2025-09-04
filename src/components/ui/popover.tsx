@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
 
 import { cn } from "@/lib/utils";
@@ -9,11 +9,12 @@ import { Text } from "./text";
 
 type Props = {
   children: React.ReactNode;
-  openElement: React.ReactNode;
+  openElement: React.ReactNode | ((isOpen: boolean) => React.ReactNode);
   title?: string;
   contentProps?: Popover.PopoverContentProps;
   className?: string;
-  variant?: "default" | "currency";
+  gap?: "default" | "large";
+  variant?: "default" | "no-borders";
 };
 
 export default function GenericPopover({
@@ -22,14 +23,20 @@ export default function GenericPopover({
   children,
   contentProps,
   className,
+  gap = "default",
   variant = "default",
 }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Popover.Root>
-      <Popover.Trigger>{openElement}</Popover.Trigger>
+    <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
+      <Popover.Trigger className="flex items-center">
+        {typeof openElement === "function" ? openElement(isOpen) : openElement}
+      </Popover.Trigger>
       <PopoverContent
         className={className}
         title={title}
+        gap={gap}
         variant={variant}
         {...contentProps}
       >
@@ -43,13 +50,15 @@ function PopoverContent({
   children,
   title,
   className,
+  gap = "default",
   variant = "default",
   ...contentProps
 }: {
   children: React.ReactNode;
   title?: string;
   className?: string;
-  variant?: "default" | "currency";
+  gap?: "default" | "large";
+  variant?: "default" | "no-borders";
 }) {
   return (
     <Popover.Portal>
@@ -57,9 +66,10 @@ function PopoverContent({
         side="bottom"
         align="center"
         className={cn(
-          "relative z-50 w-full bg-bgColor px-2 py-6",
+          "relative z-20 w-full space-y-10 border border-textInactiveColor bg-bgColor px-2.5",
           {
-            "max-h-[50vh] overflow-y-scroll p-2": title,
+            "space-y-16": gap === "large",
+            "border-none": variant === "no-borders",
           },
           className,
         )}
@@ -68,19 +78,19 @@ function PopoverContent({
         {title && (
           <Popover.Close
             className={cn(
-              "fixed left-0 top-0 flex w-full justify-between bg-bgColor p-2",
-              {
-                "border-inactive border-l border-r border-t":
-                  variant === "currency",
-              },
+              "fixed left-2 right-2 top-2.5 bg-bgColor",
+              "appearance-none border-0 outline-none focus:outline-none",
             )}
           >
-            <Text variant="uppercase" component="span">
-              {title}
-            </Text>
+            <div className="flex items-center justify-between">
+              <Text variant="uppercase">{title}</Text>
+              <Text>[x]</Text>
+            </div>
           </Popover.Close>
         )}
-        <div className="mt-10">{children}</div>
+        <div className="relative max-h-[50vh] overflow-y-scroll">
+          <div className="sticky top-0">{children}</div>
+        </div>
       </Popover.Content>
     </Popover.Portal>
   );

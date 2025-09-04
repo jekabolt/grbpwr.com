@@ -8,13 +8,15 @@ export const PRODUCTS_CACHE_TAG = "products";
 export const ARCHIVES_CACHE_TAG = "archives";
 export const HERO_CACHE_TAG = "hero";
 
-export const FOOTER_YEAR = new Date().getFullYear();
+export const FOOTER_YEAR = Math.floor(Date.now() / 1000);
+
+export const EMPTY_PREORDER = "0001-01-01T00:00:00Z";
 
 export const FOOTER_LINKS: { text: string; href: string }[] = [
   { text: "x", href: "https://www.x.com/grbpwr/" },
-  { text: "github", href: "https://www.github.com/grbpwr/" },
-  { text: "instagram", href: "https://www.instagram.com/grb.pwr/" },
-  { text: "telegram", href: "https://www.t.me/grbpwr/" },
+  { text: "gh", href: "https://www.github.com/grbpwr/" },
+  { text: "ig", href: "https://www.instagram.com/grb.pwr/" },
+  { text: "tg", href: "https://www.t.me/grbpwr/" },
 ];
 
 export const CATALOG_LIMIT = 16;
@@ -42,14 +44,45 @@ export const GENDER_MAP_REVERSE: Record<common_GenderEnum, string> = {
   "GENDER_ENUM_UNKNOWN": "ukn",
 };
 
+export const ORDER_MAP: Record<string, common_OrderFactor> = {
+  asc: "ORDER_FACTOR_ASC",
+  desc: "ORDER_FACTOR_DESC",
+};
+
+export const SORT_MAP_URL: Record<string, common_SortFactor> = {
+  "created_at": "SORT_FACTOR_CREATED_AT",
+  "updated_at": "SORT_FACTOR_UPDATED_AT",
+  name: "SORT_FACTOR_NAME",
+  price: "SORT_FACTOR_PRICE",
+};
+
+export const paymentMethodNamesMap = {
+  PAYMENT_METHOD_NAME_ENUM_CARD: "card",
+  PAYMENT_METHOD_NAME_ENUM_CARD_TEST: "card (Test)",
+  PAYMENT_METHOD_NAME_ENUM_ETH: "Ethereum (ETH)",
+  PAYMENT_METHOD_NAME_ENUM_ETH_TEST: "Ethereum (ETH) Test",
+  PAYMENT_METHOD_NAME_ENUM_USDT_TRON: "tron usdt",
+  PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA: "tron usdt (Test)",
+};
+
+export const currencyKeyMap: Record<string, string> = {
+  Bitcoin: "BTC",
+  Ethereum: "ETH",
+};
+
+// Helper function to get display currency key
+export const getDisplayCurrencyKey = (serverKey: string): string => {
+  return currencyKeyMap[serverKey] || serverKey;
+};
+
 export const currencySymbols: Record<string, string> = {
-  Bitcoin: "₿", // Bitcoin
+  BTC: "₿", // Bitcoin
   CHF: "Fr", // Swiss Franc
   CNY: "¥", // Chinese Yuan
   CZK: "Kč", // Czech Republic Koruna
   DKK: "kr", // Danish Krone
   EUR: "€", // Euro
-  Ethereum: "⟠", // Ethereum
+  ETH: "⟠", // Ethereum
   GBP: "£", // British Pound Sterling
   GEL: "₾", // Georgian Lari
   HKD: "$", // Hong Kong Dollar
@@ -253,7 +286,6 @@ export const RING_SIZE_CONVERSION: Record<string, Record<string, string>> = {
   "48": { "EU": "48", "US": "19", "UK": "15" }
 }
 
-
 export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
   waist: "Measured waist flat across garment",
   chest: "Measured chest flat across garment, from under-arm to under-arm",
@@ -271,5 +303,70 @@ export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
   width: "Width at the specified point",
 }
 
+export const keyboardRestrictions = {
+  nameFields: /[A-Za-z .'-]/,
+  addressField: /[A-Za-z0-9 .','-]/,
+  postalCodeField: /[A-Za-z0-9 \-]/,
+  companyField: /[A-Za-z0-9 .'-]/,
+};
 
-
+export const errorMessages = {
+  firstName: {
+    min: 'first name must contain at least 1 character',
+    max: 'first name must contain at most 40 characters',
+    regex: {
+      restriction: /^(?!.*  )(?=.*\p{L})[\p{L} .'-]+$/u,
+      message: 'must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed',
+    }
+  },
+  lastName: {
+    min: 'last name must contain at least 1 character',
+    max: 'last name must contain at most 40 characters',
+    regex: {
+      restriction: /^(?!.*  )(?=.*\p{L})[\p{L} .'-]+$/u,
+      message: 'must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed',
+    }
+  },
+  phone: {
+    min: 'phone must contain at least 5 numbers',
+    max: 'phone must contain at most 15 numbers'
+  },
+  city: {
+    min: 'city must contain at least 2 characters',
+    regex: {
+      restriction: /^(?!.*  )(?=.*\p{L})[\p{L} .'-]+$/u,
+      message: 'must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed',
+    }
+  },
+  address: {
+    min: 'address must contain at least 3 characters',
+    max: 'address must contain at most 40 characters',
+    regex: {
+      restriction: /^(?!.*  )[\p{L}0-9 .'-]+$/u,
+      message: 'only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed',
+    }
+  },
+  postalCode: {
+    min: 'postal code must contain at least 2 characters',
+    max: 'postal code must contain at most 12 characters',
+    regex: {
+      restriction: /^(?!.*  )[A-Za-z0-9 \- ]{2,12}$/,
+      message: 'postal code must contain only letters, numbers, spaces, or hyphens'
+    }
+  },
+  country: {
+    min: 'country must contain at least 2 characters'
+  },
+  company: {
+    min: 'company must contain at least 1 character',
+    max: 'company must contain at most 40 characters',
+    regex: {
+      restriction: /^(?!.*  )[\p{L}0-9 .'-]+$/u,
+      message: 'only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed',
+    }
+  },
+  email: {
+    invalid: 'invalid email',
+    max: 'email must contain at most 40 characters'
+  }
+};

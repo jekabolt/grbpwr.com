@@ -1,169 +1,106 @@
 "use client";
 
 import { useState } from "react";
-import {
-  common_GenderEnum,
-  common_ProductMeasurement,
-  common_ProductSize,
-} from "@/api/proto-http/frontend";
+import { common_ProductFull } from "@/api/proto-http/frontend";
 import { MEASUREMENT_DESCRIPTIONS } from "@/constants";
 
-import { useCart } from "@/lib/stores/cart/store-provider";
 import { useMeasurementStore } from "@/lib/stores/measurement/store";
 import { cn } from "@/lib/utils";
-import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
 import { Text } from "@/components/ui/text";
 
-import { LoadingButton } from "./loading-button";
 import { MeasurementsTable, Unit } from "./measurements-table";
-import { MeasurementType } from "./select-size-add-to-cart/useData";
+import { SizePicker } from "./size-picker";
+import { useMeasurementType } from "./utils/useMeasurementType";
+import { useProductSizes } from "./utils/useProductSizes";
 
 export function Measurements({
-  id,
-  sizes,
-  measurements,
-  categoryId,
-  subCategoryId,
-  typeId,
-  gender,
-  preorder,
-  isSaleApplied,
-  priceMinusSale,
-  priceWithSale,
-  price,
-  type,
+  product,
+  selectedSize,
+  outOfStock,
+  isOneSize,
+  handleSelectSize,
 }: {
-  id: number | undefined;
-  sizes: common_ProductSize[] | undefined;
-  measurements: common_ProductMeasurement[];
-  categoryId: number | undefined;
-  subCategoryId: number | undefined;
-  typeId: number | undefined;
-  gender: common_GenderEnum | undefined;
-  preorder: string;
-  isSaleApplied: boolean;
-  priceMinusSale: string;
-  priceWithSale: string;
-  price: string;
-  type: MeasurementType;
+  product: common_ProductFull;
+  selectedSize: number;
+  outOfStock?: Record<number, boolean>;
+  isOneSize?: boolean;
+  handleSelectSize: (size: number) => void;
 }) {
-  const { increaseQuantity } = useCart((state) => state);
   const { hoveredMeasurement } = useMeasurementStore();
-  const [selectedSize, setSelectedSize] = useState<number | undefined>(
-    sizes && sizes.length > 0 ? sizes[0].sizeId : undefined,
-  );
+  const { sizes, sizeNames, sizeQuantity } = useProductSizes({
+    product,
+  });
+  const { measurementType, subCategoryId, typeId, categoryId } =
+    useMeasurementType({ product });
+
   const [unit, setUnit] = useState(Unit.CM);
-  const isRing = type === "ring";
-  const isShoe = type === "shoe";
-  const { dictionary } = useDataContext();
-  const sizeNames = sizes?.map((s) => ({
-    id: s.sizeId as number,
-    name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
-  }));
-
-  const handleAddToCart = async () => {
-    if (!selectedSize) return false;
-
-    try {
-      await increaseQuantity(id!, selectedSize?.toString() || "", 1);
-      return true;
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
-  };
-
-  const handleSelectSize = (sizeId: number) => {
-    setSelectedSize(sizeId);
-  };
+  const isRing = measurementType === "ring";
+  const isShoe = measurementType === "shoe";
 
   return (
-    <div className="flex h-full flex-col bg-bgColor">
+    <div
+      className={cn("flex h-full flex-col overflow-y-hidden bg-bgColor", {
+        "overflow-y-auto": isRing || isShoe,
+      })}
+    >
       {hoveredMeasurement && MEASUREMENT_DESCRIPTIONS[hoveredMeasurement] && (
         <Text className="absolute left-0 top-0 z-10 w-full bg-highlightColor p-2.5 lowercase text-bgColor">
           {MEASUREMENT_DESCRIPTIONS[hoveredMeasurement]}
         </Text>
       )}
-      <CategoryThumbnail
-        categoryId={categoryId}
-        subCategoryId={subCategoryId}
-        typeId={typeId}
-        gender={gender}
-        measurements={measurements}
-        selectedSize={selectedSize}
-        className={cn("h-[450px] lg:h-[450px]", {
-          hidden: isRing || isShoe,
-        })}
-      />
-      <div className="flex flex-col space-y-6">
-        <div
-          className={cn("flex items-center justify-center gap-x-2", {
-            hidden: isRing || isShoe,
-          })}
-        >
-          <Button
-            variant={unit === Unit.CM ? "underline" : undefined}
-            onClick={() => setUnit(Unit.CM)}
-          >
-            CM
-          </Button>
-          <Text>/</Text>
-          <Button
-            variant={unit === Unit.INCHES ? "underline" : undefined}
-            onClick={() => setUnit(Unit.INCHES)}
-          >
-            INCHES
-          </Button>
-        </div>
-
-        <div
-          className={cn("flex items-center justify-center gap-x-4", {
-            hidden: isRing || isShoe,
-          })}
-        >
-          {sizeNames?.map(({ id }) => (
+      <div className={cn("space-y-6", { "space-y-0": isRing || isShoe })}>
+        <div className={cn("space-y-10", { hidden: isRing || isShoe })}>
+          <div className="space-y-5">
+            <CategoryThumbnail
+              categoryId={categoryId}
+              subCategoryId={subCategoryId}
+              typeId={typeId}
+              gender={
+                product.product?.productDisplay?.productBody?.targetGender
+              }
+              measurements={product.measurements || []}
+              selectedSize={selectedSize}
+              className="h-[450px]"
+              unit={unit}
+            />
+            <SizePicker
+              view="line"
+              sizeNames={sizeNames || []}
+              activeSizeId={selectedSize}
+              outOfStock={outOfStock}
+              sizeQuantity={sizeQuantity}
+              isOneSize={isOneSize}
+              handleSizeSelect={handleSelectSize}
+              className={cn({ "flex justify-center": isOneSize })}
+            />
+          </div>
+          <div className="flex items-center justify-center gap-x-2">
             <Button
-              key={id}
-              onClick={() => handleSelectSize(id)}
-              variant={selectedSize === id ? "underline" : undefined}
-              className="p-2"
+              variant={unit === Unit.CM ? "underline" : undefined}
+              onClick={() => setUnit(Unit.CM)}
             >
-              <Text variant="uppercase">
-                {dictionary?.sizes?.find((dictS) => dictS.id === id)?.name ||
-                  ""}
-              </Text>
+              CM
             </Button>
-          ))}
+            <Text>/</Text>
+            <Button
+              variant={unit === Unit.INCHES ? "underline" : undefined}
+              onClick={() => setUnit(Unit.INCHES)}
+            >
+              INCHES
+            </Button>
+          </div>
         </div>
 
-        <div className="flex-grow overflow-hidden">
-          <MeasurementsTable
-            type={type}
-            sizes={sizes || []}
-            selectedSize={selectedSize}
-            measurements={measurements}
-            unit={unit}
-            handleSelectSize={handleSelectSize}
-          />
-        </div>
-
-        <LoadingButton
-          variant="simpleReverse"
-          size="lg"
-          onAction={() => handleAddToCart()}
-        >
-          <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
-          {isSaleApplied ? (
-            <Text variant="inactive">
-              {priceMinusSale}
-              <Text component="span">{priceWithSale}</Text>
-            </Text>
-          ) : (
-            <Text variant="inherit">{price}</Text>
-          )}
-        </LoadingButton>
+        <MeasurementsTable
+          type={measurementType}
+          sizes={sizes || []}
+          selectedSize={selectedSize}
+          measurements={product.measurements || []}
+          unit={unit}
+          handleSelectSize={handleSelectSize}
+        />
       </div>
     </div>
   );

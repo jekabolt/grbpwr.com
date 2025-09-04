@@ -1,8 +1,10 @@
 "use client";
 
 import { common_Dictionary } from "@/api/proto-http/frontend";
+import { keyboardRestrictions } from "@/constants";
 import { useFormContext } from "react-hook-form";
 
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
 import { PhoneField } from "@/components/ui/form/fields/phone-field";
@@ -40,7 +42,14 @@ export default function ShippingFieldsGroup({
       disabled={disabled}
       isOpen={isOpen}
       onToggle={onToggle}
-      summary={<Summary dictionary={dictionary} />}
+      summary={
+        <Summary
+          dictionary={dictionary}
+          className={cn("text-textColor", {
+            "text-textInactiveColor": disabled,
+          })}
+        />
+      }
     >
       <AddressFields loading={loading} disabled={disabled} />
       <div>
@@ -55,15 +64,17 @@ export default function ShippingFieldsGroup({
             disabled={disabled}
             // label="shippingMethod"
             // @ts-ignore
-            items={dictionary?.shipmentCarriers?.map((c) => ({
-              label: c.shipmentCarrier?.carrier || "",
-              value: c.id + "" || "",
-              icon: createShipmentCarrierIcon(
-                c.shipmentCarrier?.carrier || "",
-                Number(c.shipmentCarrier?.price?.value) || 0,
-                dictionary.baseCurrency || "",
-              ),
-            }))}
+            items={dictionary?.shipmentCarriers
+              ?.filter((c) => c.shipmentCarrier?.allowed)
+              ?.map((c) => ({
+                label: c.shipmentCarrier?.carrier || "",
+                value: c.id + "" || "",
+                icon: createShipmentCarrierIcon(
+                  c.shipmentCarrier?.carrier || "",
+                  Number(c.shipmentCarrier?.price?.value) || 0,
+                  dictionary.baseCurrency || "",
+                ),
+              }))}
           />
         </div>
       </div>
@@ -92,6 +103,7 @@ export function AddressFields({
             name={prefix ? `${prefix}.firstName` : "firstName"}
             label="first name:"
             disabled={disabled}
+            keyboardRestriction={keyboardRestrictions.nameFields}
           />
         </div>
         <div className="col-span-1">
@@ -101,6 +113,7 @@ export function AddressFields({
             name={prefix ? `${prefix}.lastName` : "lastName"}
             label="last name:"
             disabled={disabled}
+            keyboardRestriction={keyboardRestrictions.nameFields}
           />
         </div>
       </div>
@@ -114,11 +127,13 @@ export function AddressFields({
       <SelectField
         loading={loading}
         variant="secondary"
+        fullWidth
         name={prefix ? `${prefix}.country` : "country"}
         label="country/region:"
         items={countries}
         disabled={disabled}
       />
+
       {stateItems.length > 0 && (
         <SelectField
           loading={loading}
@@ -135,6 +150,7 @@ export function AddressFields({
         name={prefix ? `${prefix}.city` : "city"}
         label="city:"
         disabled={disabled}
+        keyboardRestriction={keyboardRestrictions.nameFields}
       />
 
       <InputField
@@ -143,6 +159,7 @@ export function AddressFields({
         name={prefix ? `${prefix}.additionalAddress` : "additionalAddress"}
         label="additional address:"
         disabled={disabled}
+        keyboardRestriction={keyboardRestrictions.addressField}
       />
       <InputField
         loading={loading}
@@ -150,6 +167,7 @@ export function AddressFields({
         name={prefix ? `${prefix}.company` : "company"}
         label="company:"
         disabled={disabled}
+        keyboardRestriction={keyboardRestrictions.companyField}
       />
 
       <PhoneField
@@ -166,12 +184,19 @@ export function AddressFields({
         name={prefix ? `${prefix}.postalCode` : "postalCode"}
         label="postal code:"
         disabled={disabled}
+        keyboardRestriction={keyboardRestrictions.postalCodeField}
       />
     </>
   );
 }
 
-function Summary({ dictionary }: { dictionary?: common_Dictionary }) {
+function Summary({
+  dictionary,
+  className,
+}: {
+  dictionary?: common_Dictionary;
+  className?: string;
+}) {
   const { watch } = useFormContext();
   const {
     firstName,
@@ -214,7 +239,7 @@ function Summary({ dictionary }: { dictionary?: common_Dictionary }) {
     return null;
 
   return (
-    <div>
+    <div className={className}>
       {name && <Text>{name}</Text>}
       {phoneOrCompany && <Text>{phoneOrCompany}</Text>}
       {addressLine && <Text>{addressLine}</Text>}

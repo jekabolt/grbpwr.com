@@ -92,7 +92,7 @@ export default function PageComponent({
             {mediaItem.media?.fullSize && (
               <ImageComponent
                 src={mediaItem.media?.fullSize?.mediaUrl || ""}
-                alt={`${archive?.heading || ""} image ${index + 1}`}
+                alt={`${archive?.archiveList?.heading || ""} image ${index + 1}`}
                 aspectRatio={calculateAspectRatio(
                   mediaItem.media?.fullSize?.width,
                   mediaItem.media?.fullSize?.height,

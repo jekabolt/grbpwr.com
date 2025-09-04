@@ -22,15 +22,26 @@ export default function PromoCode({
 }: Props) {
   const [isApplied, setIsApplied] = useState(false);
   const [promoLoading, setPromoLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const { setValue } = useFormContext();
-
   const promoCode = form.watch("promoCode");
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
 
   async function handleApplyPromoClick(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
 
     if (!promoCode) return;
     setPromoLoading(true);
+
+    if (isApplied) {
+      setIsApplied(false);
+      setValue("promoCode", "");
+      setPromoLoading(false);
+      return;
+    }
 
     try {
       const response = await validateItems();
@@ -48,21 +59,26 @@ export default function PromoCode({
   }
 
   return (
-    <div className="relative flex items-center justify-between border border-textInactiveColor px-4 py-1.5">
-      <InputField
-        control={form.control}
-        loading={loading}
-        placeholder="ENTER PROMO CODE"
-        name="promoCode"
-        className="w-full grow border-none text-textBaseSize leading-4"
-      />
+    <div className="relative flex items-center border border-textInactiveColor px-4 py-1.5">
+      <div className="flex-1">
+        <InputField
+          control={form.control}
+          loading={loading}
+          placeholder="ENTER PROMO CODE"
+          name="promoCode"
+          readOnly={!isFocused || isApplied}
+          onFocus={handleFocus}
+          autoComplete="off"
+          className="w-full grow border-none text-textBaseSize leading-4"
+        />
+      </div>
       <Button
         type="input"
-        className="flex-none"
+        className="flex-none uppercase"
         onClick={handleApplyPromoClick}
-        disabled={isApplied || promoLoading || loading || !promoCode}
+        disabled={promoLoading || loading || !promoCode}
       >
-        {isApplied ? "APPLIED" : "APPLY"}
+        {isApplied ? "discard" : "apply"}
       </Button>
     </div>
   );

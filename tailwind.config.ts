@@ -12,6 +12,7 @@ const config = {
         buttonTextColor: "var(--button-text)",
         visitedLinkColor: "var(--visited-link)",
         acidColor: "var(--text-select)",
+        inverted: "var(--inverted)",
         overlay: "var(--overlay)",
       },
       fontSize: {
@@ -23,6 +24,11 @@ const config = {
         loading: {
           "0%": { transform: "translateX(-100%)" },
           "100%": { transform: "translateX(0%)" },
+        },
+        "infinite-loading": {
+          "0%": { transform: "translateX(-100%)" },
+          "50%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(-100%)" },
         },
       },
     },

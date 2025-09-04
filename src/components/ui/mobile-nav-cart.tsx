@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
@@ -9,8 +11,12 @@ import CartTotalPrice from "@/app/(checkout)/cart/_components/CartTotalPrice";
 import { Button } from "./button";
 import { Text } from "./text";
 
-export function MobileNavCart() {
-  const { products, isOpen, closeCart, openCart } = useCart((state) => state);
+export function MobileNavCart({
+  isProductInfo = false,
+}: {
+  isProductInfo?: boolean;
+}) {
+  const { products, isOpen, openCart, closeCart } = useCart((state) => state);
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
 
@@ -20,20 +26,24 @@ export function MobileNavCart() {
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
       <Button
+        size={isProductInfo ? "default" : "lg"}
         onClick={openCart}
-        size="lg"
-        variant="simpleReverse"
-        className="w-full bg-transparent"
+        className={cn("w-full bg-transparent text-right", {
+          "w-1/3 py-2.5 pr-2.5": isProductInfo,
+        })}
       >
         cart {itemsQuantity ? itemsQuantity : ""}
       </Button>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay" />
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay opacity-40" />
         <DialogPrimitives.Content
-          className={cn("fixed left-0 z-30 w-screen bg-bgColor p-2.5", {
-            "inset-y-0 py-5": itemsQuantity > 0,
-            "bottom-0": itemsQuantity === 0,
-          })}
+          className={cn(
+            "blackTheme fixed left-0 z-50 w-screen bg-bgColor p-2.5 text-textColor lg:hidden",
+            {
+              "inset-y-0 py-5": itemsQuantity > 0,
+              "bottom-0": itemsQuantity === 0,
+            },
+          )}
         >
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
@@ -49,7 +59,7 @@ export function MobileNavCart() {
             >
               <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
               <DialogPrimitives.Close asChild>
-                <Button>[X]</Button>
+                <Button onClick={closeCart}>[x]</Button>
               </DialogPrimitives.Close>
             </div>
 
@@ -60,16 +70,15 @@ export function MobileNavCart() {
                 </div>
                 <div className="mt-auto space-y-6">
                   <CartTotalPrice />
-                  <DialogPrimitives.Close asChild>
-                    <Button
-                      asChild
-                      variant="main"
-                      size="lg"
-                      className="w-full uppercase"
-                    >
-                      <Link href="/checkout">proceed to checkout</Link>
-                    </Button>
-                  </DialogPrimitives.Close>
+
+                  <Button
+                    asChild
+                    variant="main"
+                    size="lg"
+                    className="w-full uppercase"
+                  >
+                    <Link href="/checkout">proceed to checkout</Link>
+                  </Button>
                 </div>
               </>
             ) : (

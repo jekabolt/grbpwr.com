@@ -51,11 +51,7 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
         "leading-4",
         "text-center",
       ],
-      underline: [
-        "text-textColor",
-        "underline",
-        "disabled:text-textInactiveColor",
-      ],
+      underline: ["underline", "disabled:text-textInactiveColor"],
       underlineReverse: [
         "text-bgColor",
         "underline",
@@ -95,6 +91,7 @@ interface Props extends VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   children: React.ReactNode;
   loading?: boolean;
+  loadingType?: "default" | "order-processing";
   className?: string;
   [k: string]: unknown;
 }
@@ -103,12 +100,25 @@ export function Button({
   asChild,
   children,
   loading = false,
+  loadingType = "default",
   size,
   variant,
   className,
   ...props
 }: Props) {
   const Component = asChild ? Slot : "button";
+
+  const renderContent = () => {
+    if (!loading) return children;
+
+    return (
+      <Loader
+        type={
+          loadingType === "order-processing" ? "order-processing" : "default"
+        }
+      />
+    );
+  };
 
   return (
     <Component
@@ -120,7 +130,7 @@ export function Button({
         className,
       })}
     >
-      {loading ? <Loader /> : children}
+      {renderContent()}
     </Component>
   );
 }

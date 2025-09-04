@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { common_OrderNew } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +13,7 @@ import { Text } from "@/components/ui/text";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
+import { useOrderPersistence } from "./hooks/useOrderPersistence";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
@@ -105,73 +106,85 @@ export default function NewOrderForm() {
   });
 
   const { order, validateItems } = useValidatedOrder(form);
-  const { openGroup, handleGroupToggle, isGroupDisabled } =
+  const { clearFormData } = useOrderPersistence(form);
+  const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
 
+  useEffect(() => {
+    const subscription = form.watch((_, { name }) => {
+      handleFormChange(name);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, handleFormChange]);
+
   const onSubmit = async (data: CheckoutData) => {
+    setLoading(true);
+
     const response = await validateItems();
 
     const newOrderData = mapFormFieldToOrderDataFormat(
       data,
       response?.validItems?.map((i) => i.orderItem!) || [],
     );
-
     try {
       console.log("submit order");
       const newOrderResponse = await submitNewOrder(newOrderData);
       console.log("submit order finish");
 
       if (newOrderResponse.ok) {
+        clearFormData();
         // Cart will be cleared after successful payment confirmation
         const paymentType = newOrderResponse.order?.payment?.paymentMethod;
         switch (paymentType) {
           case "PAYMENT_METHOD_NAME_ENUM_USDT_TRON":
           case "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA":
-            router.push(`/payment/${newOrderResponse.order?.orderUuid}/crypto`);
-            break;
+            router.push(
+              `/payment/${newOrderResponse.order?.orderUuid}/${window.btoa(data.email)}/crypto`,
+            );
+            return;
           case "PAYMENT_METHOD_NAME_ENUM_CARD_TEST":
             const clientSecret = newOrderResponse.order?.payment?.clientSecret;
-
             // case "PAYMENT_METHOD_NAME_ENUM_CARD":
             router.push(
-              `/payment/${newOrderResponse.order?.orderUuid}/card?clientSecret=${clientSecret}`,
+              `/payment/${newOrderResponse.order?.orderUuid}/${window.btoa(data.email)}/card?clientSecret=${clientSecret}`,
             );
-            break;
+            return;
         }
       }
-
       console.log("finish and doesnt redirect");
+      setLoading(false);
     } catch (error) {
       console.error("Error submitting new order:", error);
+      setLoading(false);
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="relative">
         <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
           <div className="space-y-10 lg:space-y-16">
             <ContactFieldsGroup
               loading={loading}
-              isOpen={openGroup === "contact"}
+              isOpen={isGroupOpen("contact")}
               onToggle={() => handleGroupToggle("contact")}
               disabled={isGroupDisabled("contact")}
             />
             <ShippingFieldsGroup
               loading={loading}
               validateItems={validateItems}
-              isOpen={openGroup === "shipping"}
+              isOpen={isGroupOpen("shipping")}
               onToggle={() => handleGroupToggle("shipping")}
               disabled={isGroupDisabled("shipping")}
             />
             <PaymentFieldsGroup
               loading={loading}
-              isOpen={openGroup === "payment"}
+              isOpen={isGroupOpen("payment")}
               onToggle={() => handleGroupToggle("payment")}
               disabled={isGroupDisabled("payment")}
             />
           </div>
-          <div className="space-y-8">
+          <div className="space-y-8 lg:sticky lg:top-16 lg:self-start">
             <Text variant="uppercase">Order summary</Text>
 
             <OrderProducts validatedProducts={order?.validItems} />
@@ -186,10 +199,12 @@ export default function NewOrderForm() {
               <PriceSummary form={form} order={order} />
             </div>
             <Button
-              variant={"main"}
-              size={"lg"}
-              className="w-full"
+              variant="main"
+              size="lg"
+              className="w-full uppercase"
               disabled={!form.formState.isValid || loading}
+              loading={loading}
+              loadingType="order-processing"
             >
               pay
             </Button>

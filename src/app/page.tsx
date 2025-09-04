@@ -26,15 +26,18 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Page() {
   const { hero } = await serviceClient.GetHero({});
-
-  if (!hero?.entities?.length) return <EmptyHero />;
+  const isHero = hero?.entities?.length;
 
   return (
-    <>
-      <FlexibleLayout headerType="catalog" footerType="regular">
-        <MainAds main={hero?.entities?.[0]?.main} />
-        <Ads entities={hero?.entities || []} />
-      </FlexibleLayout>
-    </>
+    <FlexibleLayout theme={isHero ? "light" : "dark"}>
+      {isHero ? (
+        <>
+          <MainAds main={hero?.entities?.[0]?.main} />
+          <Ads entities={hero?.entities || []} />
+        </>
+      ) : (
+        <EmptyHero />
+      )}
+    </FlexibleLayout>
   );
 }

@@ -36,7 +36,7 @@ export type MediaInfo = {
   height: number | undefined;
 };
 
-export type ArchiveFull = {
+export type ArchiveList = {
   id: number | undefined;
   heading: string | undefined;
   description: string | undefined;
@@ -44,7 +44,12 @@ export type ArchiveFull = {
   slug: string | undefined;
   nextSlug: string | undefined;
   createdAt: wellKnownTimestamp | undefined;
-  video: MediaFull | undefined;
+  thumbnail: MediaFull | undefined;
+};
+
+export type ArchiveFull = {
+  archiveList: ArchiveList | undefined;
+  mainMedia: MediaFull | undefined;
   media: MediaFull[] | undefined;
 };
 
@@ -53,7 +58,8 @@ export type ArchiveInsert = {
   description: string | undefined;
   tag: string | undefined;
   mediaIds: number[] | undefined;
-  videoId: number | undefined;
+  mainMediaId: number | undefined;
+  thumbnailId: number | undefined;
 };
 
 export type Address = {
@@ -94,6 +100,8 @@ export type Category = {
   levelId: number | undefined;
   level: string | undefined;
   parentId: number | undefined;
+  countMen: number | undefined;
+  countWomen: number | undefined;
 };
 
 export type Size = {
@@ -441,14 +449,11 @@ export type Dictionary = {
   paymentMethods: PaymentMethod[] | undefined;
   shipmentCarriers: ShipmentCarrier[] | undefined;
   sizes: Size[] | undefined;
-  genders: Genders[] | undefined;
-  orderFactors: OrderFactors[] | undefined;
-  sortFactors: SortFactors[] | undefined;
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
-  topCategories: TopCategoryCount[] | undefined;
+  announce: string | undefined;
 };
 
 export type Genders = {
@@ -464,12 +469,6 @@ export type OrderFactors = {
 export type SortFactors = {
   id: SortFactor | undefined;
   name: string | undefined;
-};
-
-export type TopCategoryCount = {
-  categoryId: number | undefined;
-  categoryName: string | undefined;
-  count: number | undefined;
 };
 
 // CurrencyRate represents the rate of a currency with a description.
