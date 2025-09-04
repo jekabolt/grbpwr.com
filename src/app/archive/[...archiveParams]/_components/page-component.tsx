@@ -49,7 +49,10 @@ export default function PageComponent({
   return (
     <div className="space-y-2 text-textColor lg:min-h-screen lg:space-y-10">
       <div className="flex flex-col gap-x-4 lg:flex-row lg:items-start lg:justify-between">
-        <Text className="order-1 mb-2.5 lg:mb-0 lg:w-80" variant="uppercase">
+        <Text
+          className="order-1 mb-2.5 text-textInactiveColor lg:mb-0 lg:w-80 lg:text-textColor"
+          variant="uppercase"
+        >
           {archive?.archiveList?.heading || ""}
         </Text>
         {archive?.archiveList?.description && (
@@ -58,7 +61,7 @@ export default function PageComponent({
           </Text>
         )}
         <Text
-          className="order-2 lg:order-3 lg:w-80 lg:text-right"
+          className="order-2 text-textInactiveColor lg:order-3 lg:w-80 lg:text-right lg:text-textColor"
           variant="uppercase"
         >{`${archive?.archiveList?.tag || ""} / ${currentYear}`}</Text>
       </div>
