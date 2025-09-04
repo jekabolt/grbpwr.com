@@ -38,6 +38,8 @@ export function DefaultMobileMenuDialog({
             <div key={item.label} className="w-full">
               {isBigMenuEnabled && item.action ? (
                 <AnimatedButton
+                  animationDuration={1000}
+                  animationArea="full-underline"
                   className="flex w-full items-center justify-between uppercase"
                   onClick={item.action}
                 >
@@ -46,9 +48,10 @@ export function DefaultMobileMenuDialog({
                 </AnimatedButton>
               ) : (
                 <AnimatedButton
-                  animationArea="text"
+                  animationDuration={1000}
+                  animationArea="full-underline"
                   href={item.href}
-                  className="uppercase hover:underline"
+                  className="flex w-full items-center justify-between uppercase"
                 >
                   <Text>{item.label}</Text>
                   {item.showArrow && <Text>{">"}</Text>}
