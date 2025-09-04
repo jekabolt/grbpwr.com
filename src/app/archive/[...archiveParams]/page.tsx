@@ -68,13 +68,13 @@ export default async function Page({ params }: ArchivePageParams) {
 
     const [nextHeading, nextTag, nextId] = nextParams;
 
-    const { archive: nextArchivee } = await serviceClient.GetArchive({
+    const { archive: next } = await serviceClient.GetArchive({
       heading: nextHeading,
       tag: nextTag,
       id: parseInt(nextId),
     });
 
-    nextArchive = nextArchivee?.archiveList;
+    nextArchive = next?.archiveList;
   }
 
   return (
@@ -84,6 +84,7 @@ export default async function Page({ params }: ArchivePageParams) {
         left: "grbpwr.com",
         center: "archive",
       }}
+      className="pt-20"
       theme="dark"
     >
       <PageComponent archive={archive} />
