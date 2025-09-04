@@ -53,7 +53,7 @@ export default function PageComponent({
           {archive?.archiveList?.heading || ""}
         </Text>
         {archive?.archiveList?.description && (
-          <Text className="order-3 mb-12 mt-7 w-full lg:order-2 lg:m-0 lg:max-w-[800px]">
+          <Text className="order-3 mb-12 mt-7 break-words lg:order-2 lg:m-0 lg:w-fit lg:max-w-[calc(100%-theme(spacing.80)*2)] lg:flex-none">
             {archive?.archiveList?.description}
           </Text>
         )}
@@ -62,9 +62,10 @@ export default function PageComponent({
           variant="uppercase"
         >{`${archive?.archiveList?.tag || ""} / ${currentYear}`}</Text>
       </div>
+
       {archive?.mainMedia &&
         !isVideo(archive?.mainMedia?.media?.fullSize?.mediaUrl) && (
-          <div className="relative h-full w-full lg:h-screen">
+          <div className="relative h-full w-full lg:h-[80vh]">
             <ImageComponent
               src={archive.mainMedia.media?.thumbnail?.mediaUrl || ""}
               alt={archive?.archiveList?.heading || "Featured archive image"}
@@ -75,32 +76,31 @@ export default function PageComponent({
             />
           </div>
         )}
+
       {archive?.mainMedia &&
         isVideo(archive?.mainMedia?.media?.thumbnail?.mediaUrl) && (
-          <div className="w-full">
-            <div className="relative aspect-video w-full overflow-hidden">
-              <video
-                src={archive?.mainMedia?.media?.thumbnail?.mediaUrl || ""}
-                className="h-full w-full object-cover"
-                poster={archive?.mainMedia?.media?.thumbnail?.mediaUrl}
-                autoPlay
-                playsInline
-                controls={false}
-                muted
-                loop
-                preload="metadata"
-                ref={videoRef}
-              >
-                Your browser does not support the video tag.
-              </video>
-              <Button
-                onClick={toggleSound}
-                className="absolute bottom-2.5 right-2.5 uppercase text-white mix-blend-difference transition-all"
-                aria-label={isMuted ? "unmute" : "mute"}
-              >
-                {isMuted ? "sound on" : "sound off"}
-              </Button>
-            </div>
+          <div className="relative aspect-video h-full w-full overflow-hidden lg:h-[80vh]">
+            <video
+              src={archive?.mainMedia?.media?.thumbnail?.mediaUrl || ""}
+              className="h-full w-full object-cover"
+              poster={archive?.mainMedia?.media?.thumbnail?.mediaUrl}
+              autoPlay
+              playsInline
+              controls={false}
+              muted
+              loop
+              preload="metadata"
+              ref={videoRef}
+            >
+              Your browser does not support the video tag.
+            </video>
+            <Button
+              onClick={toggleSound}
+              className="absolute bottom-2.5 right-2.5 uppercase text-white mix-blend-difference transition-all"
+              aria-label={isMuted ? "unmute" : "mute"}
+            >
+              {isMuted ? "sound on" : "sound off"}
+            </Button>
           </div>
         )}
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:gap-4">

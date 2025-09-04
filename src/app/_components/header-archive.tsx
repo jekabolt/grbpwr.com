@@ -20,9 +20,11 @@ export function HeaderArchive({
           onClick={onClick}
         />
       </div>
-      <header className="fixed inset-x-2.5 bottom-2 z-30 hidden h-12 items-center justify-between gap-1 border-textInactiveColor bg-transparent p-3 text-textColor mix-blend-exclusion lg:top-2 lg:flex lg:gap-0 lg:border-0 lg:px-5 lg:py-3">
+      <header className="fixed inset-x-2.5 bottom-2 z-30 hidden h-12 items-center justify-between gap-1 border-textInactiveColor bg-transparent p-3 text-textColor mix-blend-exclusion lg:top-2 lg:flex lg:gap-0 lg:border-0 lg:px-2.5 lg:py-3">
         <div className="flex gap-3">
-          <AnimatedButton href={link ? link : "/"}>{left}</AnimatedButton>
+          <AnimatedButton className="lg:pl-2" href={link ? link : "/"}>
+            {left}
+          </AnimatedButton>
           <AnimatedButton
             href="/archive"
             className="flex grow basis-0 text-left"
