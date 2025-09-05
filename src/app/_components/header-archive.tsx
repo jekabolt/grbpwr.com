@@ -26,15 +26,15 @@ export function HeaderArchive({
             {left}
           </AnimatedButton>
           <AnimatedButton
-            href="/archive"
+            href="/timeline"
             className="flex grow basis-0 text-left"
           >
             {center}
           </AnimatedButton>
         </div>
-        <AnimatedButton animationArea="text" onClick={onClick}>
+        {/* <AnimatedButton animationArea="text" onClick={onClick}>
           {right}
-        </AnimatedButton>
+        </AnimatedButton> */}
       </header>
     </>
   );

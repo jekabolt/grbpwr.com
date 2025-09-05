@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
     if (typeof data.archive === "number") {
         revalidateTag(ARCHIVES_CACHE_TAG);
-        revalidatePath(`/archive/${data.archive}`);
+        revalidatePath(`/timeline/${data.archive}`);
     }
 
     return Response.json({

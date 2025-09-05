@@ -128,9 +128,9 @@ export function createMenuItems(
       href: "/catalog/objects",
     },
     {
-      label: "archive",
+      label: "timeline",
       showArrow: false,
-      href: "/archive",
+      href: "/timeline",
     },
   ];
 }
@@ -171,7 +171,7 @@ export function getHeroNavLink(heroNav?: {
   if (!heroNav) return "";
   return heroNav.featuredTag
     ? `/catalog?tag=${heroNav.featuredTag}`
-    : `/archive?id=${heroNav.featuredArchiveId}`;
+    : `/timeline?id=${heroNav.featuredArchiveId}`;
 }
 
 export function getCategoryDisplayName(title: string) {

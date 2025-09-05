@@ -102,10 +102,10 @@ export function DesktopNavigationMenu({
         <NavigationMenu.Item>
           <Button asChild>
             <Link
-              href="/archive"
+              href="/timeline"
               className="flex items-center text-textBaseSize underline-offset-2 hover:underline"
             >
-              archive
+              timeline
             </Link>
           </Button>
         </NavigationMenu.Item>
@@ -141,7 +141,7 @@ function LinksGroup({
   const isTagLink = heroNav?.featuredTag;
   const newIn = `/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT`;
   const tagLink = `/catalog?tag=${heroNav?.featuredTag}`;
-  const archiveLink = `/archive?id=${heroNav?.featuredArchiveId}`;
+  const archiveLink = `/timeline?id=${heroNav?.featuredArchiveId}`;
   const activeHeroNavLink = isTagLink ? tagLink : archiveLink;
   const filteredLeftSideCategoryLinks =
     gender === "men"

@@ -27,9 +27,9 @@ export function ArchiveLayout({
       headerType="archive"
       headerProps={{
         left: "grbpwr.com",
-        center: "archive",
-        right: "change view",
-        onClick: handleChangeView,
+        center: "timeline",
+        // right: "change view",
+        // onClick: handleChangeView,
       }}
       theme="dark"
     >
