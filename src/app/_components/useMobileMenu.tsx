@@ -56,7 +56,7 @@ function MobileMenuDropdown({
           <Link href="/catalog">catalog</Link>
         </Button>
         <Button asChild variant="underlineWithColors">
-          <Link href="/archive">archive</Link>
+          <Link href="/timeline">timeline</Link>
         </Button>
         <Button asChild variant="underlineWithColors">
           <Link href="/about">about</Link>

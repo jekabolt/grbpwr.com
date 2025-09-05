@@ -77,7 +77,7 @@ export function MobileSize() {
           </div>
 
           <div
-            className={cn("grid grid-cols-4 gap-x-2 gap-y-6 py-6", {
+            className={cn("grid w-full gap-x-2 gap-y-6 py-6", {
               "mb-10": selectedSize,
             })}
           >

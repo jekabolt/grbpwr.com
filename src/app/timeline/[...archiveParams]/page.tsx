@@ -81,7 +81,7 @@ export default async function Page({ params }: ArchivePageParams) {
       headerType="archive"
       headerProps={{
         left: "grbpwr.com",
-        center: "archive",
+        center: "timeline",
       }}
       theme="dark"
       className="pt-5 lg:pt-20"

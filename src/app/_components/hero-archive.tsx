@@ -61,7 +61,7 @@ export function HeroArchive({
       <div className="flex flex-col gap-3 px-2 lg:flex-row">
         <Text variant="uppercase">{archive?.headline}</Text>
         <Button variant="underline" className="uppercase" asChild>
-          <Link href={`/archive/${archive?.tag}`}>{archive?.exploreText}</Link>
+          <Link href={`/timeline/${archive?.tag}`}>{archive?.exploreText}</Link>
         </Button>
       </div>
       <div
