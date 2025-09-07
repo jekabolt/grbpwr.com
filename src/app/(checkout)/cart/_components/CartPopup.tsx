@@ -58,6 +58,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
                   variant="secondary"
                   size="lg"
                   className="block w-full uppercase"
+                  id="checkout_btn"
                 >
                   <Link href="/checkout">proceed to checkout</Link>
                 </Button>

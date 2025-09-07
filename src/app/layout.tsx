@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
+      <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
         <ToastProvider>
           <div className="lightTheme relative min-h-screen">{children}</div>
