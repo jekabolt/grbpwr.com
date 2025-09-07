@@ -29,7 +29,7 @@ export default function RootLayout({
           <CookieBanner />
         </ToastProvider>
       </body>
-      <GoogleTagManager gtmId="GTM-WFC98J99" />
+      <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
     </html>
   );
 }
