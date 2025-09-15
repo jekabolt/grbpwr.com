@@ -7,6 +7,7 @@ import { CATALOG_LIMIT } from "@/constants";
 import { useInView } from "react-intersection-observer";
 
 import { serviceClient } from "@/lib/api";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import ProductsGrid from "@/app/_components/product-grid";
 import { getProductsPagedQueryParams } from "@/app/catalog/_components/utils";
@@ -22,6 +23,7 @@ export function InfinityScrollCatalog({
 }) {
   const searchParams = useSearchParams();
   const { dictionary } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
   const { gender, topCategory, subCategory } = useRouteParams();
   const [items, setItems] = useState<common_Product[]>(firstPageItems);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +41,45 @@ export function InfinityScrollCatalog({
     setIsLoading(false);
     isRefetchingRef.current = false;
   }, [firstPageItems, total]);
+
+  // Refetch data when languageId changes
+  useEffect(() => {
+    if (isRefetchingRef.current) return;
+
+    const refetchData = async () => {
+      isRefetchingRef.current = true;
+      setIsLoading(true);
+
+      try {
+        const searchParamsObj = Object.fromEntries(searchParams.entries());
+        const response = await serviceClient.GetProductsPaged({
+          limit: CATALOG_LIMIT,
+          offset: 0,
+          ...getProductsPagedQueryParams(
+            {
+              gender,
+              topCategoryIds: topCategory?.id?.toString(),
+              subCategoryIds: subCategory?.id?.toString(),
+              ...searchParamsObj,
+            },
+            dictionary,
+          ),
+        });
+
+        setItems(response.products || []);
+        setCurrentTotal(response.total || 0);
+        hasMoreRef.current = (response.total || 0) >= CATALOG_LIMIT;
+        pageRef.current = 2;
+      } catch (error) {
+        console.error("Failed to fetch data on language change:", error);
+      } finally {
+        setIsLoading(false);
+        isRefetchingRef.current = false;
+      }
+    };
+
+    refetchData();
+  }, [languageId, dictionary, gender, topCategory, subCategory, searchParams]);
 
   useEffect(() => {
     const searchParamsObj = Object.fromEntries(searchParams.entries());
@@ -79,7 +120,7 @@ export function InfinityScrollCatalog({
     };
 
     refetchData();
-  }, [searchParams, dictionary, gender, topCategory, subCategory]);
+  }, [searchParams, dictionary, gender, topCategory, subCategory, languageId]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const loadMoreData = async () => {

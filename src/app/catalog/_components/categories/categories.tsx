@@ -1,6 +1,11 @@
 import { common_Category } from "@/api/proto-http/frontend";
 
-import { getSubCategoriesForTopCategory } from "@/lib/categories-map";
+import {
+  getSubCategoriesForTopCategory,
+  getSubCategoryName,
+  getTopCategoryName,
+} from "@/lib/categories-map";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
@@ -27,13 +32,16 @@ export function isCategoryDisabled(category: common_Category, gender: string) {
 
 export function Categories() {
   const { dictionary } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
 
   const { gender, categoryName, subCategoryName, topCategory } =
     useRouteParams();
   const categories = dictionary?.categories || [];
+  // Get subcategories with English names for URL generation
   const subCategories = getSubCategoriesForTopCategory(
     categories,
     topCategory?.id || 0,
+    1, // Always use English for URL generation
   );
   const filteredSubCategories = filterSubCategories(subCategories, gender);
 
@@ -41,10 +49,15 @@ export function Categories() {
     return <TopCategories />;
   }
 
+  // Get translated category name for display
+  const translatedCategoryName = topCategory
+    ? getTopCategoryName(categories, topCategory.id || 0, languageId)
+    : categoryName;
+
   return (
     <div className="flex items-center gap-2">
       <CategoryButton href={`/catalog/${gender}`}>
-        {categoryName}
+        {translatedCategoryName}
       </CategoryButton>
 
       {!!filteredSubCategories.length && <Text>/</Text>}
@@ -54,6 +67,16 @@ export function Categories() {
           categories.find((c) => c.id === subCategory.id) as common_Category,
           gender,
         );
+
+        // Get translated name for display
+        const translatedName = getSubCategoryName(
+          categories,
+          subCategory.id,
+          languageId,
+        );
+        const displayName =
+          translatedName?.replace(/_/g, " ") ||
+          subCategory.name?.replace(/_/g, " ");
 
         return (
           <div className="flex items-center gap-1" key={subCategory.id}>
@@ -66,7 +89,7 @@ export function Categories() {
               }
               disabled={isDisabled}
             >
-              {subCategory.name?.replace(/_/g, " ")}
+              {displayName}
             </CategoryButton>
             {index < filteredSubCategories.length - 1 && <Text>/</Text>}
           </div>

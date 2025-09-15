@@ -36,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "catalog".toUpperCase(),
   });
 }
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export default async function CatalogPage(props: CatalogPageProps) {
   const { hero, dictionary } = await serviceClient.GetHero({});
@@ -47,10 +47,13 @@ export default async function CatalogPage(props: CatalogPageProps) {
     params?.params,
   );
 
+  // Always use English (languageId = 1) for URL resolution since URLs are in English
+  // The client components will handle displaying the translated names
   const { topCategory, subCategory } = resolveCategories(
     dictionary?.categories,
     categoryName,
     subCategoryName,
+    1, // Always use English for URL resolution
   );
 
   const response = await serviceClient.GetProductsPaged({

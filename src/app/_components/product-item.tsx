@@ -2,6 +2,7 @@ import type { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols, EMPTY_PREORDER } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
@@ -16,7 +17,12 @@ export function ProductItem({
   className: string;
   isInfoVisible?: boolean;
 }) {
+  const { languageId } = useTranslationsStore((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const currentTranslation =
+    product.productDisplay?.productBody?.translations?.find(
+      (t) => t.languageId === languageId,
+    );
 
   const salePercentage =
     product.productDisplay?.productBody?.productBodyInsert?.salePercentage
@@ -50,9 +56,7 @@ export function ProductItem({
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
               ""
             }
-            alt={
-              product.productDisplay?.productBody?.translations?.[0].name || ""
-            }
+            alt={currentTranslation?.name || ""}
             aspectRatio={calculateAspectRatio(
               product.productDisplay?.thumbnail?.media?.thumbnail?.width,
               product.productDisplay?.thumbnail?.media?.thumbnail?.height,
@@ -69,7 +73,7 @@ export function ProductItem({
             variant="undrleineWithColors"
             className="overflow-hidden text-ellipsis leading-none group-[:visited]:text-visitedLinkColor"
           >
-            {product.productDisplay?.productBody?.translations?.[0].name}
+            {currentTranslation?.name}
           </Text>
           <div className="flex gap-1 leading-none">
             <Text variant={isSaleApplied ? "strileTroughInactive" : "default"}>

@@ -1,3 +1,5 @@
+import { getTopCategoryName } from "@/lib/categories-map";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
   calculateAspectRatio,
   createActiveCategoryMenuItems,
@@ -73,6 +75,7 @@ export function ActiveCategoryMenuDialog({
   activeCategory,
 }: ActiveCategoryMenuProps) {
   const { dictionary, hero } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
 
   const heroNav = activeCategory
     ? hero?.navFeatured?.[activeCategory]
@@ -130,7 +133,10 @@ export function ActiveCategoryMenuDialog({
                 )}
               />
             </div>
-            <Text>{heroNav.translations?.[0]?.exploreText}</Text>
+            <Text>
+              {heroNav.translations?.find((t) => t.languageId === languageId)
+                ?.exploreText || heroNav.translations?.[0]?.exploreText}
+            </Text>
           </AnimatedButton>
         </div>
       )}
@@ -145,6 +151,16 @@ function CategoryButton({
   activeCategory: Gender;
   link: { title: string; id: string };
 }) {
+  const { dictionary } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
+
+  // Get translated name for display
+  const translatedName = getTopCategoryName(
+    dictionary?.categories || [],
+    parseInt(link.id),
+    languageId,
+  );
+
   return (
     <AnimatedButton
       key={link.id}
@@ -152,7 +168,7 @@ function CategoryButton({
       href={`/catalog/${activeCategory}/${link.title.toLowerCase()}`}
       className="uppercase"
     >
-      {getCategoryDisplayName(link.title)}
+      {translatedName || getCategoryDisplayName(link.title)}
     </AnimatedButton>
   );
 }

@@ -4,7 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
-import { filterNavigationLinks, processCategories } from "@/lib/categories-map";
+import {
+  filterNavigationLinks,
+  getTopCategoryName,
+  processCategories,
+} from "@/lib/categories-map";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { useAnnounce } from "@/app/_components/useAnnounce";
@@ -26,12 +31,13 @@ export function DesktopNavigationMenu({
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
   const { dictionary } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
 
   const pathname = usePathname();
   const { open } = useAnnounce(dictionary?.announce || "");
 
   const processedCategories = dictionary?.categories
-    ? processCategories(dictionary.categories).filter(
+    ? processCategories(dictionary.categories, languageId).filter(
         (category) => category.name.toLowerCase() !== "objects",
       )
     : [];
@@ -135,10 +141,24 @@ function LinksGroup({
     id: string;
   }[];
 }) {
-  const { hero } = useDataContext();
+  const { hero, dictionary } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
+
+  // Get English categories for URL generation
+  const englishCategories = dictionary?.categories
+    ? processCategories(dictionary.categories, 1).filter(
+        (category) => category.name.toLowerCase() !== "objects",
+      )
+    : [];
+
+  const englishLinks = englishCategories.map((item) => ({
+    href: `/catalog/${gender}/${item.name.toLowerCase()}`,
+    title: item.name,
+    id: item.id.toString(),
+  }));
 
   const { leftSideCategoryLinks, rightSideCategoryLinks } =
-    filterNavigationLinks(links);
+    filterNavigationLinks(englishLinks);
   const heroNav = hero?.navFeatured?.[gender];
   const isTagLink = heroNav?.featuredTag;
   const newIn = `/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT`;
@@ -158,13 +178,20 @@ function LinksGroup({
             <Link href={`/catalog/${gender}`}>all</Link>
           </Button>
           <div className="space-y-4">
-            {filteredLeftSideCategoryLinks.map((link) => (
-              <div className="w-full" key={link.href}>
-                <Button className="uppercase hover:underline" asChild>
-                  <Link href={link.href}>{link.title}</Link>
-                </Button>
-              </div>
-            ))}
+            {filteredLeftSideCategoryLinks.map((link) => {
+              const translatedName = getTopCategoryName(
+                dictionary?.categories || [],
+                parseInt(link.id),
+                languageId,
+              );
+              return (
+                <div className="w-full" key={link.href}>
+                  <Button className="uppercase hover:underline" asChild>
+                    <Link href={link.href}>{translatedName || link.title}</Link>
+                  </Button>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="space-y-4">
@@ -172,17 +199,24 @@ function LinksGroup({
             <NavigationMenu.Link href={newIn}>new in</NavigationMenu.Link>
           </Button>
           <div className="space-y-4">
-            {rightSideCategoryLinks.map((link) => (
-              <div className="w-full" key={link.id}>
-                <Button className="uppercase hover:underline" asChild>
-                  <NavigationMenu.Link
-                    href={`/catalog/${gender}/${link.title.toLowerCase()}`}
-                  >
-                    {link.title}
-                  </NavigationMenu.Link>
-                </Button>
-              </div>
-            ))}
+            {rightSideCategoryLinks.map((link) => {
+              const translatedName = getTopCategoryName(
+                dictionary?.categories || [],
+                parseInt(link.id),
+                languageId,
+              );
+              return (
+                <div className="w-full" key={link.id}>
+                  <Button className="uppercase hover:underline" asChild>
+                    <NavigationMenu.Link
+                      href={`/catalog/${gender}/${link.title.toLowerCase()}`}
+                    >
+                      {translatedName || link.title}
+                    </NavigationMenu.Link>
+                  </Button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -199,7 +233,10 @@ function LinksGroup({
                 )}
               />
             </div>
-            <Text>{heroNav?.translations?.[0]?.exploreText}</Text>
+            <Text>
+              {heroNav?.translations?.find((t) => t.languageId === languageId)
+                ?.exploreText || heroNav?.translations?.[0]?.exploreText}
+            </Text>
           </AnimatedButton>
         </div>
       )}
