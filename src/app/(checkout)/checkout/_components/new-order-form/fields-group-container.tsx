@@ -57,7 +57,7 @@ export default function FieldsGroupContainer({
 
   return (
     <div
-      className={cn("space-y-4 lg:space-y-8", {
+      className={cn("space-y-4 bg-bgColor text-textColor lg:space-y-8", {
         "space-y-0 lg:space-y-0": clickableArea === "full",
         "space-y-4": mode === "non-collapsible",
       })}
@@ -91,7 +91,7 @@ export default function FieldsGroupContainer({
               "rotate-0": localIsOpen,
             })}
           >
-            <Arrow />
+            <Arrow className="text-textColor" />
           </div>
         ) : (
           <div className="text-textColor">

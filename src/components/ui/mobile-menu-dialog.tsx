@@ -1,3 +1,4 @@
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import {
   calculateAspectRatio,
   createActiveCategoryMenuItems,
@@ -73,6 +74,7 @@ export function ActiveCategoryMenuDialog({
   activeCategory,
 }: ActiveCategoryMenuProps) {
   const { dictionary, hero } = useDataContext();
+  const { selectedLanguage } = useCurrency((state) => state);
   const heroNav = activeCategory
     ? hero?.navFeatured?.[activeCategory]
     : undefined;
@@ -129,7 +131,9 @@ export function ActiveCategoryMenuDialog({
                 )}
               />
             </div>
-            <Text>{heroNav.translations?.[0]?.exploreText}</Text>
+            <Text>
+              {heroNav.translations?.[selectedLanguage.id]?.exploreText}
+            </Text>
           </AnimatedButton>
         </div>
       )}

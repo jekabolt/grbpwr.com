@@ -2,6 +2,7 @@
 
 import type { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
@@ -16,6 +17,7 @@ export function Ads({
 }: {
   entities: common_HeroEntityWithTranslations[];
 }) {
+  const { selectedLanguage } = useCurrency((state) => state);
   return (
     <div>
       {entities?.map((e, i) => {
@@ -59,14 +61,17 @@ export function Ads({
                       variant="uppercase"
                       className={cn("w-full text-center", {
                         "group-hover:underline":
-                          !e.single?.translations?.[0].exploreText &&
-                          e.single?.exploreLink,
+                          !e.single?.translations?.[selectedLanguage.id]
+                            .exploreText && e.single?.exploreLink,
                       })}
                     >
-                      {e.single?.translations?.[0].headline}
+                      {e.single?.translations?.[selectedLanguage.id].headline}
                     </Text>
                     <Text variant="uppercase" className="group-hover:underline">
-                      {e.single?.translations?.[0].exploreText}
+                      {
+                        e.single?.translations?.[selectedLanguage.id]
+                          .exploreText
+                      }
                     </Text>
                   </div>
                 </AnimatedButton>
@@ -100,13 +105,20 @@ export function Ads({
                       variant="uppercase"
                       className={cn({
                         "group-hover:underline":
-                          !e.double?.left?.translations?.[0].exploreText,
+                          !e.double?.left?.translations?.[selectedLanguage.id]
+                            .exploreText,
                       })}
                     >
-                      {e.double?.left?.translations?.[0].headline}
+                      {
+                        e.double?.left?.translations?.[selectedLanguage.id]
+                          .headline
+                      }
                     </Text>
                     <Text className="uppercase group-hover:underline">
-                      {e.double?.left?.translations?.[0].exploreText}
+                      {
+                        e.double?.left?.translations?.[selectedLanguage.id]
+                          .exploreText
+                      }
                     </Text>
                   </div>
                 </AnimatedButton>
@@ -131,13 +143,20 @@ export function Ads({
                       variant="uppercase"
                       className={cn({
                         "group-hover:underline":
-                          !e.double?.right?.translations?.[0].exploreText,
+                          !e.double?.right?.translations?.[selectedLanguage.id]
+                            .exploreText,
                       })}
                     >
-                      {e.double?.right?.translations?.[0].headline}
+                      {
+                        e.double?.right?.translations?.[selectedLanguage.id]
+                          .headline
+                      }
                     </Text>
                     <Text className="uppercase group-hover:underline">
-                      {e.double?.right?.translations?.[0].exploreText}
+                      {
+                        e.double?.right?.translations?.[selectedLanguage.id]
+                          .exploreText
+                      }
                     </Text>
                   </div>
                 </AnimatedButton>

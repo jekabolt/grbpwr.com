@@ -1,5 +1,8 @@
+"use client";
+
 import { common_HeroMainWithTranslations } from "@/api/proto-http/frontend";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { calculateAspectRatio } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
@@ -7,6 +10,7 @@ import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
+  const { selectedLanguage } = useCurrency((state) => state);
   if (!main) return null;
 
   return (
@@ -39,13 +43,17 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
       <Overlay cover="container" />
       <div className="absolute inset-x-0 top-32 z-20 flex h-screen items-center lg:top-20">
         <div className="flex w-full flex-col items-start gap-6 p-2 text-bgColor md:flex-row md:justify-between">
-          <Text variant="uppercase">{main.translations?.[0]?.tag}</Text>
-          <Text variant="uppercase">{main.translations?.[0]?.headline}</Text>
+          <Text variant="uppercase">
+            {main.translations?.[selectedLanguage.id]?.tag}
+          </Text>
+          <Text variant="uppercase">
+            {main.translations?.[selectedLanguage.id]?.headline}
+          </Text>
           <Text variant="uppercase" className="md:w-1/3">
-            {main.translations?.[0]?.description}
+            {main.translations?.[selectedLanguage.id]?.description}
           </Text>
           <Text variant="underlined" className="uppercase">
-            {main.translations?.[0]?.exploreText}
+            {main.translations?.[selectedLanguage.id]?.exploreText}
           </Text>
         </div>
       </div>

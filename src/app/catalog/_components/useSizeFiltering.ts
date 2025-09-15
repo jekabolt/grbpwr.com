@@ -1,14 +1,16 @@
 import { useDataContext } from "@/components/contexts/DataContext";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useRouteParams } from "./useRouteParams";
 
 export function useSizeFiltering() {
     const { dictionary } = useDataContext();
+    const { selectedLanguage } = useCurrency((state) => state);
     const { topCategory } = useRouteParams();
     const sizes = dictionary?.sizes || [];
     const categories = dictionary?.categories;
 
     const category = topCategory?.id
-        ? categories?.find((c) => c.id === topCategory.id)?.translations?.[0]?.name
+        ? categories?.find((c) => c.id === topCategory.id)?.translations?.[selectedLanguage.id]?.name
         : undefined;
 
     const isShoes = category?.toLowerCase().includes("shoes");

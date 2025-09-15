@@ -10,7 +10,9 @@ import { Text } from "@/components/ui/text";
 import { FeaturedItemsData } from "./featured-items";
 
 export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
-  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const { selectedCurrency, selectedLanguage, convertPrice } = useCurrency(
+    (state) => state,
+  );
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -45,7 +47,11 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
                   variant="undrleineWithColors"
                   className="w-full overflow-hidden leading-none text-inverted group-[:visited]:text-visitedLinkColor"
                 >
-                  {p.productDisplay?.productBody?.translations?.[0].name}
+                  {
+                    p.productDisplay?.productBody?.translations?.[
+                      selectedLanguage.id
+                    ].name
+                  }
                 </Text>
               </div>
 
@@ -80,7 +86,9 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
                   p.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl || ""
                 }
                 alt={
-                  p.productDisplay?.productBody?.translations?.[0].name || ""
+                  p.productDisplay?.productBody?.translations?.[
+                    selectedLanguage.id
+                  ].name || ""
                 }
                 aspectRatio={calculateAspectRatio(
                   p.productDisplay?.thumbnail?.media?.thumbnail?.width,

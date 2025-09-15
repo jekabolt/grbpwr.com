@@ -5,7 +5,9 @@ import { CurrencyState, CurrencyStore } from "./store-types";
 
 export const defaultInitState: CurrencyState = {
     selectedCurrency: "EUR",
+    selectedLanguage: { code: "en", id: 0 },
     rates: undefined,
+    isOpen: false,
 };
 
 export const createCurrencyStore = (initState: CurrencyState = defaultInitState) => {
@@ -13,8 +15,15 @@ export const createCurrencyStore = (initState: CurrencyState = defaultInitState)
         persist(
             (set, get) => ({
                 ...initState,
+
+                openCurrencyPopup: () => set({ isOpen: true }),
+                closeCurrencyPopup: () => set({ isOpen: false }),
+
                 setSelectedCurrency: (currency: string) => {
                     set({ selectedCurrency: currency });
+                },
+                setSelectedLanguage: (lng: { code: string; id: number }) => {
+                    set({ selectedLanguage: lng });
                 },
                 convertPrice: (amount: string) => {
                     const { rates, selectedCurrency } = get();
@@ -38,6 +47,7 @@ export const createCurrencyStore = (initState: CurrencyState = defaultInitState)
                 name: "currency-store",
                 partialize: (state) => ({
                     selectedCurrency: state.selectedCurrency,
+                    selectedLanguage: state.selectedLanguage,
                 }),
             },
         ),

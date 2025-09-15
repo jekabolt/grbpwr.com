@@ -56,6 +56,7 @@ const TypeIcons: Record<string, IconComponent> = {
 export function getIconByCategoryId(
   category: common_Category | undefined,
   gender: common_GenderEnum | undefined,
+  selectedLanguage: { code: string; id: number },
   subCategory?: common_Category,
   type?: common_Category,
 ): IconComponent {
@@ -65,23 +66,23 @@ export function getIconByCategoryId(
     return UnderwearFIcon;
   }
 
-  if (type?.translations?.[0]?.name) {
-    const typeIcon = TypeIcons[type.translations?.[0]?.name.toLowerCase()];
+  const typeName =
+    type?.translations?.[selectedLanguage.id]?.name?.toLowerCase();
+  if (typeName) {
+    const typeIcon = TypeIcons[typeName];
     if (typeIcon) return typeIcon;
   }
 
-  if (subCategory?.translations?.[0]?.name) {
-    const subCategoryIcon =
-      SubCategoryIcons[subCategory.translations?.[0]?.name.toLowerCase()];
+  const subName =
+    subCategory?.translations?.[selectedLanguage.id]?.name?.toLowerCase();
+  if (subName) {
+    const subCategoryIcon = SubCategoryIcons[subName];
     if (subCategoryIcon) return subCategoryIcon;
   }
 
-  if (category.translations?.[0]?.name) {
-    return (
-      TopCategoryIcons[category.translations?.[0]?.name.toLowerCase()] ||
-      OtherIcon
-    );
-  }
+  const topName =
+    category.translations?.[selectedLanguage.id]?.name?.toLowerCase();
+  if (topName) return TopCategoryIcons[topName] || OtherIcon;
 
   return OtherIcon;
 }

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import { filterNavigationLinks, processCategories } from "@/lib/categories-map";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { useAnnounce } from "@/app/_components/useAnnounce";
@@ -26,11 +27,12 @@ export function DesktopNavigationMenu({
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
   const { dictionary } = useDataContext();
+  const { selectedLanguage } = useCurrency((state) => state);
   const pathname = usePathname();
   const { open } = useAnnounce(dictionary?.announce || "");
 
   const processedCategories = dictionary?.categories
-    ? processCategories(dictionary.categories).filter(
+    ? processCategories(dictionary.categories, selectedLanguage).filter(
         (category) => category.name.toLowerCase() !== "objects",
       )
     : [];
@@ -135,6 +137,7 @@ function LinksGroup({
   }[];
 }) {
   const { hero } = useDataContext();
+  const { selectedLanguage } = useCurrency((state) => state);
   const { leftSideCategoryLinks, rightSideCategoryLinks } =
     filterNavigationLinks(links);
   const heroNav = hero?.navFeatured?.[gender];
@@ -197,7 +200,9 @@ function LinksGroup({
                 )}
               />
             </div>
-            <Text>{heroNav?.translations?.[0]?.exploreText}</Text>
+            <Text>
+              {heroNav?.translations?.[selectedLanguage.id]?.exploreText}
+            </Text>
           </AnimatedButton>
         </div>
       )}

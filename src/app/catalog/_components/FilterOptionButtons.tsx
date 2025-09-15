@@ -2,6 +2,7 @@
 
 import { common_Size } from "@/api/proto-http/frontend";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
@@ -18,11 +19,13 @@ export default function FilterOptionButtons({
   topCategoryId?: string;
 }) {
   const { dictionary } = useDataContext();
+  const { selectedLanguage } = useCurrency((state) => state);
   const categories = dictionary?.categories;
 
   const category = topCategoryId
-    ? categories?.find((c) => c.id === parseInt(topCategoryId))
-        ?.translations?.[0]?.name
+    ? categories?.find((c) => c.id === parseInt(topCategoryId))?.translations?.[
+        selectedLanguage.id
+      ]?.name
     : undefined;
 
   const isShoes = category?.toLowerCase().includes("shoes");

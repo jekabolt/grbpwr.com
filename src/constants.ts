@@ -370,3 +370,217 @@ export const errorMessages = {
     max: 'email must contain at most 40 characters'
   }
 };
+
+
+
+export type RegionCountryOption = {
+  label: string;
+  // Limit to only the display currencies used in COUNTRY_STATES_CURRENCY_MAP
+  currency: keyof typeof REGION_CURRENCY_SYMBOLS;
+  lng: string;
+  // ISO 4217 currency key to be used with rates/store selection
+  currencyKey?: keyof typeof currencySymbols | 'CNY' | 'AUD' | 'CAD' | 'DKK' | 'NOK' | 'SEK' | 'TWD' | 'KRW' | 'HKD' | 'JPY' | 'GBP' | 'USD' | 'EUR' | 'TRY' | 'HUF' | 'PLN' | 'ILS' | 'CHF';
+  // normalized dictionary language code (e.g., 'en','cn','ja','kr','fr','de','it')
+  lngCode?: string;
+  // normalized dictionary language id
+  lngId?: number;
+};
+
+// Narrow display currency set for region/country UI (matches COUNTRY_STATES_CURRENCY_MAP values)
+export const REGION_CURRENCY_SYMBOLS = {
+  '€': '€',
+  'C$': 'C$',
+  '$': '$',
+  'A$': 'A$',
+  'HK$': 'HK$',
+  '¥': '¥',
+  '₩': '₩',
+  'NT$': 'NT$',
+  '£': '£',
+  // keep lowercase keys to match current map entries
+  'ddk': 'ddk',
+  'nok': 'nok',
+  'sek': 'sek',
+} as const;
+
+// Normalized countries source of truth (ISO country ids, localized names, and display currency symbol)
+type CountryId =
+  | 'ZA' | 'CA' | 'CL' | 'MX' | 'US'
+  | 'AU' | 'HK' | 'IN' | 'JP' | 'MO' | 'CN' | 'MY' | 'NZ' | 'SG' | 'KR' | 'TW' | 'TH'
+  | 'AX' | 'AD' | 'AT' | 'BE' | 'BG' | 'HR' | 'CY' | 'CZ' | 'DK' | 'EE' | 'FO' | 'FI' | 'FR' | 'DE' | 'GI' | 'GR' | 'GL' | 'GG' | 'HU' | 'IS' | 'IT' | 'JE' | 'LV' | 'LI' | 'LT' | 'LU' | 'MT' | 'MC' | 'NL' | 'NO' | 'PL' | 'PT' | 'RO' | 'SK' | 'SI' | 'ES' | 'SE' | 'CH' | 'TR' | 'GB'
+  | 'BH' | 'IL' | 'KW' | 'QA' | 'SA' | 'AE';
+
+type LocalizedNames = Record<string, string>; // keys are your lng values ('en', '日本語', '简体中文', etc.)
+
+type NormalizedCountry = {
+  id: CountryId;
+  names: LocalizedNames; // should at least contain 'en'
+  currency: keyof typeof REGION_CURRENCY_SYMBOLS; // display symbol set only
+  currencyKey: keyof typeof currencySymbols | 'CNY' | 'AUD' | 'CAD' | 'DKK' | 'NOK' | 'SEK' | 'TWD' | 'KRW' | 'HKD' | 'JPY' | 'GBP' | 'USD' | 'EUR' | 'TRY' | 'HUF' | 'PLN' | 'ILS' | 'CHF';
+};
+
+type RegionCode = 'AFRICA' | 'AMERICAS' | 'ASIA PACIFIC' | 'EUROPE' | 'MIDDLE EAST';
+
+const COUNTRIES_BY_ID: Record<CountryId, NormalizedCountry> = {
+  // AFRICA
+  ZA: { id: 'ZA', names: { en: 'south africa' }, currency: '€', currencyKey: 'EUR' },
+
+  // AMERICAS
+  CA: { id: 'CA', names: { en: 'canada' }, currency: 'C$', currencyKey: 'CAD' },
+  CL: { id: 'CL', names: { en: 'chile' }, currency: '$', currencyKey: 'USD' },
+  MX: { id: 'MX', names: { en: 'mexico' }, currency: '$', currencyKey: 'USD' },
+  US: { id: 'US', names: { en: 'united states' }, currency: '$', currencyKey: 'USD' },
+
+  // ASIA PACIFIC
+  AU: { id: 'AU', names: { en: 'australia' }, currency: 'A$', currencyKey: 'AUD' },
+  HK: { id: 'HK', names: { en: 'hong kong sar' }, currency: 'HK$', currencyKey: 'HKD' },
+  IN: { id: 'IN', names: { en: 'india' }, currency: '€', currencyKey: 'EUR' },
+  JP: { id: 'JP', names: { en: 'japan', '日本語': '日本' }, currency: '¥', currencyKey: 'JPY' },
+  MO: { id: 'MO', names: { en: 'macau sar' }, currency: '€', currencyKey: 'EUR' },
+  CN: { id: 'CN', names: { en: 'mainland china', '简体中文': '中国大陆' }, currency: '¥', currencyKey: 'CNY' },
+  MY: { id: 'MY', names: { en: 'malaysia' }, currency: '€', currencyKey: 'EUR' },
+  NZ: { id: 'NZ', names: { en: 'new zealand' }, currency: '€', currencyKey: 'EUR' },
+  SG: { id: 'SG', names: { en: 'singapore' }, currency: '€', currencyKey: 'EUR' },
+  KR: { id: 'KR', names: { en: 'south korea', '한국인': '대한민국' }, currency: '₩', currencyKey: 'KRW' },
+  TW: { id: 'TW', names: { en: 'taiwan', '繁體中文': '台湾地区' }, currency: 'NT$', currencyKey: 'TWD' },
+  TH: { id: 'TH', names: { en: 'thailand' }, currency: '€', currencyKey: 'EUR' },
+
+  // EUROPE
+  AX: { id: 'AX', names: { en: 'aland islands' }, currency: '€', currencyKey: 'EUR' },
+  AD: { id: 'AD', names: { en: 'andorra' }, currency: '€', currencyKey: 'EUR' },
+  AT: { id: 'AT', names: { en: 'austria' }, currency: '€', currencyKey: 'EUR' },
+  BE: { id: 'BE', names: { en: 'belgium' }, currency: '€', currencyKey: 'EUR' },
+  BG: { id: 'BG', names: { en: 'bulgaria' }, currency: '€', currencyKey: 'EUR' },
+  HR: { id: 'HR', names: { en: 'croatia' }, currency: '€', currencyKey: 'EUR' },
+  CY: { id: 'CY', names: { en: 'cyprus' }, currency: '€', currencyKey: 'EUR' },
+  CZ: { id: 'CZ', names: { en: 'czech republic' }, currency: '€', currencyKey: 'EUR' },
+  DK: { id: 'DK', names: { en: 'denmark' }, currency: 'ddk', currencyKey: 'DKK' },
+  EE: { id: 'EE', names: { en: 'estonia' }, currency: '€', currencyKey: 'EUR' },
+  FO: { id: 'FO', names: { en: 'faroe islands' }, currency: '€', currencyKey: 'EUR' },
+  FI: { id: 'FI', names: { en: 'finland' }, currency: '€', currencyKey: 'EUR' },
+  FR: { id: 'FR', names: { en: 'france', fr: 'france' }, currency: '€', currencyKey: 'EUR' },
+  DE: { id: 'DE', names: { en: 'germany', de: 'deutschland' }, currency: '€', currencyKey: 'EUR' },
+  GI: { id: 'GI', names: { en: 'gibraltar' }, currency: '€', currencyKey: 'EUR' },
+  GR: { id: 'GR', names: { en: 'greece' }, currency: '€', currencyKey: 'EUR' },
+  GL: { id: 'GL', names: { en: 'greenland' }, currency: '€', currencyKey: 'EUR' },
+  GG: { id: 'GG', names: { en: 'guernsey' }, currency: '€', currencyKey: 'EUR' },
+  HU: { id: 'HU', names: { en: 'hungary' }, currency: '€', currencyKey: 'HUF' },
+  IS: { id: 'IS', names: { en: 'iceland' }, currency: '€', currencyKey: 'EUR' },
+  IT: { id: 'IT', names: { en: 'italy', it: 'italy' }, currency: '€', currencyKey: 'EUR' },
+  JE: { id: 'JE', names: { en: 'jersey' }, currency: '€', currencyKey: 'GBP' },
+  LV: { id: 'LV', names: { en: 'latvia' }, currency: '€', currencyKey: 'EUR' },
+  LI: { id: 'LI', names: { en: 'liechtenstein' }, currency: '€', currencyKey: 'CHF' },
+  LT: { id: 'LT', names: { en: 'lithuania' }, currency: '€', currencyKey: 'EUR' },
+  LU: { id: 'LU', names: { en: 'luxembourg' }, currency: '€', currencyKey: 'EUR' },
+  MT: { id: 'MT', names: { en: 'malta' }, currency: '€', currencyKey: 'EUR' },
+  MC: { id: 'MC', names: { en: 'monaco' }, currency: '€', currencyKey: 'EUR' },
+  NL: { id: 'NL', names: { en: 'netherland' }, currency: '€', currencyKey: 'EUR' },
+  NO: { id: 'NO', names: { en: 'norway' }, currency: 'nok', currencyKey: 'NOK' },
+  PL: { id: 'PL', names: { en: 'poland' }, currency: '€', currencyKey: 'PLN' },
+  PT: { id: 'PT', names: { en: 'portugal' }, currency: '€', currencyKey: 'EUR' },
+  RO: { id: 'RO', names: { en: 'romania' }, currency: '€', currencyKey: 'EUR' },
+  SK: { id: 'SK', names: { en: 'slovakia' }, currency: '€', currencyKey: 'EUR' },
+  SI: { id: 'SI', names: { en: 'slovenia' }, currency: '€', currencyKey: 'EUR' },
+  ES: { id: 'ES', names: { en: 'spain' }, currency: '€', currencyKey: 'EUR' },
+  SE: { id: 'SE', names: { en: 'sweeden' }, currency: 'sek', currencyKey: 'SEK' },
+  CH: { id: 'CH', names: { en: 'switzerland' }, currency: '€', currencyKey: 'CHF' },
+  TR: { id: 'TR', names: { en: 'turkey' }, currency: '€', currencyKey: 'TRY' },
+  GB: { id: 'GB', names: { en: 'united kingdom' }, currency: '£', currencyKey: 'GBP' },
+
+  // MIDDLE EAST
+  BH: { id: 'BH', names: { en: 'bahrain' }, currency: '€', currencyKey: 'EUR' },
+  IL: { id: 'IL', names: { en: 'israel' }, currency: '€', currencyKey: 'ILS' },
+  KW: { id: 'KW', names: { en: 'kuwait' }, currency: '€', currencyKey: 'EUR' },
+  QA: { id: 'QA', names: { en: 'qatar' }, currency: '€', currencyKey: 'EUR' },
+  SA: { id: 'SA', names: { en: 'saudi arabia' }, currency: '€', currencyKey: 'EUR' },
+  AE: { id: 'AE', names: { en: 'united arab emirates' }, currency: '€', currencyKey: 'EUR' },
+};
+
+const REGIONS_TO_COUNTRIES: Record<RegionCode, CountryId[]> = {
+  AFRICA: ['ZA'],
+  AMERICAS: ['CA', 'CL', 'MX', 'US'],
+  'ASIA PACIFIC': ['AU', 'HK', 'IN', 'JP', 'MO', 'CN', 'MY', 'NZ', 'SG', 'KR', 'TW', 'TH'],
+  EUROPE: ['AX', 'AD', 'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FO', 'FI', 'FR', 'DE', 'GI', 'GR', 'GL', 'GG', 'HU', 'IS', 'IT', 'JE', 'LV', 'LI', 'LT', 'LU', 'MT', 'MC', 'NL', 'NO', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'CH', 'TR', 'GB'],
+  'MIDDLE EAST': ['BH', 'IL', 'KW', 'QA', 'SA', 'AE']
+};
+
+export const buildCountryStatesCurrencyMap = (lng: string): Record<RegionCode, RegionCountryOption[]> => {
+  const getName = (c: NormalizedCountry): string => (c.names[lng] || c.names.en).toLowerCase();
+  const build = (ids: CountryId[]) => ids.map((id) => {
+    const c = COUNTRIES_BY_ID[id];
+    return { label: getName(c), currency: c.currency, lng, currencyKey: c.currencyKey, lngCode: mapLanguageToCode(lng), lngId: mapLanguageCodeToId(mapLanguageToCode(lng)) };
+  });
+  return {
+    AFRICA: build(REGIONS_TO_COUNTRIES.AFRICA),
+    AMERICAS: build(REGIONS_TO_COUNTRIES.AMERICAS),
+    'ASIA PACIFIC': build(REGIONS_TO_COUNTRIES['ASIA PACIFIC']),
+    EUROPE: build(REGIONS_TO_COUNTRIES.EUROPE),
+    'MIDDLE EAST': build(REGIONS_TO_COUNTRIES['MIDDLE EAST'])
+  };
+};
+
+// Build map including all language variants (duplicates per country for non-'en' names)
+export const buildCountryStatesCurrencyMapAllVariants = (): Record<RegionCode, RegionCountryOption[]> => {
+  const build = (ids: CountryId[]) => ids.flatMap((id) => {
+    const c = COUNTRIES_BY_ID[id];
+    const entries: RegionCountryOption[] = [];
+    // primary (en)
+    const enId = mapLanguageCodeToId('en');
+    console.log('buildCountryStatesCurrencyMapAllVariants - en ID:', enId);
+    entries.push({ label: (c.names.en || '').toLowerCase(), currency: c.currency, lng: 'en', currencyKey: c.currencyKey, lngCode: 'en', lngId: enId });
+    // other languages
+    for (const [lngKey, name] of Object.entries(c.names)) {
+      if (lngKey === 'en') continue;
+      { const code = mapLanguageToCode(lngKey as string); entries.push({ label: name.toLowerCase(), currency: c.currency, lng: lngKey as string, currencyKey: c.currencyKey, lngCode: code, lngId: mapLanguageCodeToId(code) }); }
+    }
+    return entries;
+  });
+  return {
+    AFRICA: build(REGIONS_TO_COUNTRIES.AFRICA),
+    AMERICAS: build(REGIONS_TO_COUNTRIES.AMERICAS),
+    'ASIA PACIFIC': build(REGIONS_TO_COUNTRIES['ASIA PACIFIC']),
+    EUROPE: build(REGIONS_TO_COUNTRIES.EUROPE),
+    'MIDDLE EAST': build(REGIONS_TO_COUNTRIES['MIDDLE EAST'])
+  };
+};
+
+// Map display language keys/labels used in names to dictionary codes
+export function mapLanguageToCode(input: string): string {
+  const normalized = (input || '').toLowerCase();
+  // direct ISO codes we already use
+  if (['en', 'fr', 'de', 'it', 'ja', 'kr', 'cn'].includes(normalized)) return normalized;
+  // map localized labels to codes
+  switch (normalized) {
+    case '日本語':
+    case '日本':
+      return 'ja';
+    case '한국인':
+    case '대한민국':
+      return 'kr';
+    case '简体中文':
+    case '繁體中文':
+    case '中国大陆':
+    case '台湾地区':
+      return 'cn';
+    case 'deutschland':
+      return 'de';
+    default:
+      return 'en';
+  }
+}
+
+// Map language codes to dictionary ids (keep in sync with backend)
+export function mapLanguageCodeToId(code: string): number {
+  switch ((code || '').toLowerCase()) {
+    case 'en': return 0;
+    case 'fr': return 1;
+    case 'de': return 2;
+    case 'it': return 3;
+    case 'ja': return 4;
+    case 'cn': return 5;
+    case 'kr': return 6;
+    default: return 0;
+  }
+}
+
+export const COUNTRY_STATES_CURRENCY_MAP: Record<string, RegionCountryOption[]> = buildCountryStatesCurrencyMap('en');

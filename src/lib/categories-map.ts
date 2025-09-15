@@ -58,6 +58,7 @@ interface ProcessedCategory {
 
 export const processCategories = (
   categories: common_Category[],
+  selectedLanguage: { code: string; id: number } = { code: "en", id: 0 },
 ): ProcessedCategory[] => {
   const topCategories = categories.filter(
     (cat) => cat.level === "top_category",
@@ -68,7 +69,7 @@ export const processCategories = (
       (cat) => cat.level === "sub_category" && cat.parentId === topCat.id!,
     );
 
-    const originalName = topCat.translations?.[0]?.name?.toLowerCase() ?? "";
+    const originalName = topCat.translations?.[selectedLanguage.id]?.name?.toLowerCase() ?? "";
     const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
 
     if (subCategories.length === 0) {
@@ -88,8 +89,8 @@ export const processCategories = (
 
     const processedSubCategories = subCategories.map((subCat) => ({
       id: subCat.id!,
-      name: subCat.translations?.[0]?.name!,
-      href: `/catalog/${displayName.toLowerCase()}/${subCat.translations?.[0]?.name!.toLowerCase()}`,
+      name: subCat.translations?.[selectedLanguage.id]?.name!,
+      href: `/catalog/${displayName.toLowerCase()}/${subCat.translations?.[selectedLanguage.id]?.name!.toLowerCase()}`,
     }));
 
     return {
@@ -104,6 +105,7 @@ export const processCategories = (
 export function findCategoryByName(
   categories: common_Category[],
   name: string | undefined,
+  selectedLanguage: { code: string; id: number } = { code: "en", id: 0 },
   parentId?: number,
 ): common_Category | undefined {
   if (!name) return undefined;
@@ -111,7 +113,7 @@ export function findCategoryByName(
   const level = parentId ? "sub_category" : "top_category";
 
   return categories.find((cat) => {
-    const nameMatch = cat.translations?.[0]?.name?.toLowerCase() === name.toLowerCase();
+    const nameMatch = cat.translations?.[selectedLanguage.id]?.name?.toLowerCase() === name.toLowerCase();
     const levelMatch = cat.level === level;
 
     if (level === "sub_category") {
@@ -124,28 +126,31 @@ export function findCategoryByName(
 
 export function getTopCategoryName(
   categories: common_Category[],
-  topCategoryId: number
+  topCategoryId: number,
+  selectedLanguage: { code: string; id: number } = { code: "en", id: 0 },
 ): string | null {
   const topCategory = categories.find(
     (cat) => cat.level === "top_category" && cat.id === topCategoryId
   );
 
-  if (!topCategory || !topCategory.translations?.[0]?.name) {
+  if (!topCategory || !topCategory.translations?.[selectedLanguage.id]?.name) {
     return null;
   }
 
-  if (CATEGORY_TITLE_MAP[topCategory.translations?.[0]?.name.toLowerCase()]) {
-    return CATEGORY_TITLE_MAP[topCategory.translations?.[0]?.name.toLowerCase()];
+  const categoryName = topCategory.translations?.[selectedLanguage.id]?.name?.toLowerCase();
+  if (categoryName && CATEGORY_TITLE_MAP[categoryName]) {
+    return CATEGORY_TITLE_MAP[categoryName];
   }
 
-  return topCategory.translations?.[0]?.name;
+  return topCategory.translations?.[selectedLanguage.id]?.name || null;
 }
 
 export function getSubCategoriesForTopCategory(
   categories: common_Category[],
-  topCategoryId: number
+  topCategoryId: number,
+  selectedLanguage: { code: string; id: number } = { code: "en", id: 0 },
 ): ProcessedCategory["subCategories"] {
-  const processed = processCategories(categories);
+  const processed = processCategories(categories, selectedLanguage);
   const topCategory = processed.find(cat => cat.id === topCategoryId);
   return topCategory?.subCategories || [];
 }
@@ -175,8 +180,8 @@ export function filterNavigationLinks(
     )
     .sort(
       (a, b) =>
-        RIGHT_SIDE_CATEGORIES_ORDER[a.title.toLowerCase()] -
-        RIGHT_SIDE_CATEGORIES_ORDER[b.title.toLowerCase()],
+        RIGHT_SIDE_CATEGORIES_ORDER[a.title.toLowerCase() as keyof typeof RIGHT_SIDE_CATEGORIES_ORDER] -
+        RIGHT_SIDE_CATEGORIES_ORDER[b.title.toLowerCase() as keyof typeof RIGHT_SIDE_CATEGORIES_ORDER],
     );
 
   return {
@@ -187,15 +192,16 @@ export function filterNavigationLinks(
 
 export function resolveCategories(
   categories: common_Category[] | undefined,
+  selectedLanguage: { code: string; id: number } = { code: "en", id: 0 },
   categoryName?: string,
   subCategoryName?: string,
 ) {
   const safeCategories = categories || [];
-  let topCategory = findCategoryByName(safeCategories, categoryName);
+  let topCategory = findCategoryByName(safeCategories, categoryName, selectedLanguage);
 
   if (!topCategory && categoryName) {
     topCategory = safeCategories.find((cat) => {
-      const originalName = cat.translations?.[0]?.name?.toLowerCase() ?? "";
+      const originalName = cat.translations?.[selectedLanguage.id]?.name?.toLowerCase() ?? "";
       const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
       return displayName.toLowerCase() === categoryName.toLowerCase();
     });
@@ -204,6 +210,7 @@ export function resolveCategories(
   const subCategory = findCategoryByName(
     safeCategories,
     subCategoryName,
+    selectedLanguage,
     topCategory?.id,
   );
 

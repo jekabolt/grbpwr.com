@@ -5,6 +5,7 @@ import { notFound } from "next/dist/client/components/not-found";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import FlexibleLayout from "@/components/flexible-layout";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
@@ -24,6 +25,7 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { productParams } = await params;
+  const { selectedLanguage } = useCurrency((state) => state);
   const [gender, brand, name, id] = productParams;
 
   const { product } = await serviceClient.GetProduct({
@@ -35,10 +37,13 @@ export async function generateMetadata({
 
   const productMedia = [...(product?.media || [])];
   const title =
-    product?.product?.productDisplay?.productBody?.translations?.[0].name;
+    product?.product?.productDisplay?.productBody?.translations?.[
+      selectedLanguage.id
+    ].name;
   const description =
-    product?.product?.productDisplay?.productBody?.translations?.[0]
-      .description;
+    product?.product?.productDisplay?.productBody?.translations?.[
+      selectedLanguage.id
+    ].description;
   const color =
     product?.product?.productDisplay?.productBody?.productBodyInsert?.color;
   const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
