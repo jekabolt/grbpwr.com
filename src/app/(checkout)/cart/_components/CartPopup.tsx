@@ -26,7 +26,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, closeCart]);
 
   return (
     <div className="z-50 w-full">

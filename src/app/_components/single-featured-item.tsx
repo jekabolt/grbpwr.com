@@ -90,9 +90,7 @@ export function SingleFeaturedItem({
                 src={
                   p.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl || ""
                 }
-                alt={
-                  p.productDisplay?.productBody?.translations?.[0].name || ""
-                }
+                alt={currentTranslation?.name || ""}
                 aspectRatio={calculateAspectRatio(
                   p.productDisplay?.thumbnail?.media?.thumbnail?.width,
                   p.productDisplay?.thumbnail?.media?.thumbnail?.height,

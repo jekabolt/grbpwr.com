@@ -35,6 +35,13 @@ export function Measurements({
   const { measurementType, subCategoryId, typeId, categoryId } =
     useMeasurementType({ product });
 
+  // Convert sizeId to productSizeId for measurements
+  const getProductSizeId = (sizeId: number): number | undefined => {
+    return sizes?.find((s) => s.sizeId === sizeId)?.id;
+  };
+
+  const selectedProductSizeId = getProductSizeId(selectedSize);
+
   const [unit, setUnit] = useState(Unit.CM);
   const isRing = measurementType === "ring";
   const isShoe = measurementType === "shoe";
@@ -62,7 +69,7 @@ export function Measurements({
                   ?.targetGender
               }
               measurements={product.measurements || []}
-              selectedSize={selectedSize}
+              selectedSize={selectedProductSizeId}
               className="h-[450px]"
               unit={unit}
             />
@@ -97,7 +104,7 @@ export function Measurements({
         <MeasurementsTable
           type={measurementType}
           sizes={sizes || []}
-          selectedSize={selectedSize}
+          selectedSize={selectedProductSizeId}
           measurements={product.measurements || []}
           unit={unit}
           handleSelectSize={handleSelectSize}

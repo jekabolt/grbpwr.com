@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, isVideo } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
@@ -13,9 +14,14 @@ export default function PageComponent({
 }: {
   archive?: common_ArchiveFull;
 }) {
+  const { languageId } = useTranslationsStore((state) => state);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const currentYear = new Date().getFullYear();
+  const currentTranslation =
+    archive?.archiveList?.translations?.find(
+      (t) => t.languageId === languageId,
+    ) || archive?.archiveList?.translations?.[0];
 
   const toggleSound = () => {
     if (videoRef.current) {
@@ -31,11 +37,11 @@ export default function PageComponent({
           className="order-1 mb-2.5 text-textInactiveColor lg:mb-0 lg:w-80 lg:text-textColor"
           variant="uppercase"
         >
-          {archive?.archiveList?.translations?.[0]?.heading || ""}
+          {currentTranslation?.heading || ""}
         </Text>
-        {archive?.archiveList?.translations?.[0]?.description && (
+        {currentTranslation?.description && (
           <Text className="order-3 mb-12 mt-7 break-words lg:order-2 lg:m-0 lg:w-fit lg:max-w-[calc(100%-theme(spacing.80)*2)] lg:flex-none">
-            {archive?.archiveList?.translations?.[0]?.description}
+            {currentTranslation?.description}
           </Text>
         )}
         <Text
@@ -49,10 +55,7 @@ export default function PageComponent({
           <div className="relative h-full w-full lg:h-[80vh]">
             <ImageComponent
               src={archive.mainMedia.media?.thumbnail?.mediaUrl || ""}
-              alt={
-                archive?.archiveList?.translations?.[0]?.heading ||
-                "Featured archive image"
-              }
+              alt={currentTranslation?.heading || "Featured archive image"}
               aspectRatio={calculateAspectRatio(
                 archive?.mainMedia?.media?.thumbnail?.width,
                 archive?.mainMedia?.media?.thumbnail?.height,
@@ -92,7 +95,7 @@ export default function PageComponent({
           <div key={id}>
             <ImageComponent
               src={item.media?.fullSize?.mediaUrl || ""}
-              alt={`${archive?.archiveList?.translations?.[0]?.heading || ""} image ${id + 1}`}
+              alt={`${currentTranslation?.heading || ""} image ${id + 1}`}
               aspectRatio={calculateAspectRatio(
                 item.media?.fullSize?.width,
                 item.media?.fullSize?.height,

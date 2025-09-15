@@ -31,6 +31,11 @@ export function useMeasurementSizes({
     setSelectedSize(sizeId);
   };
 
+  // Convert sizeId to productSizeId for measurements
+  const getProductSizeId = (sizeId: number): number | undefined => {
+    return sizes?.find((s) => s.sizeId === sizeId)?.id;
+  };
+
   async function handleMeasurementSizes() {
     if (!selectedSize) return false;
 
@@ -44,6 +49,9 @@ export function useMeasurementSizes({
   }
   return {
     selectedSize,
+    selectedProductSizeId: selectedSize
+      ? getProductSizeId(selectedSize)
+      : undefined,
     handleSelectSize,
     handleMeasurementSizes,
   };
