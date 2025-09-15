@@ -6,24 +6,25 @@ export type GetHeroRequest = {
 };
 
 export type GetHeroResponse = {
-  hero: common_HeroFull | undefined;
+  hero: common_HeroFullWithTranslations | undefined;
   dictionary: common_Dictionary | undefined;
   rates: common_CurrencyMap | undefined;
 };
 
-export type common_HeroFull = {
-  entities: common_HeroEntity[] | undefined;
-  navFeatured: common_NavFeatured | undefined;
+// Extended hero structures with translations
+export type common_HeroFullWithTranslations = {
+  entities: common_HeroEntityWithTranslations[] | undefined;
+  navFeatured: common_NavFeaturedWithTranslations | undefined;
 };
 
-export type common_HeroEntity = {
+export type common_HeroEntityWithTranslations = {
   type: common_HeroType | undefined;
-  single: common_HeroSingle | undefined;
-  double: common_HeroDouble | undefined;
-  main: common_HeroMain | undefined;
-  featuredProducts: common_HeroFeaturedProducts | undefined;
-  featuredProductsTag: common_HeroFeaturedProductsTag | undefined;
-  featuredArchive: common_HeroFeaturedArchive | undefined;
+  single: common_HeroSingleWithTranslations | undefined;
+  double: common_HeroDoubleWithTranslations | undefined;
+  main: common_HeroMainWithTranslations | undefined;
+  featuredProducts: common_HeroFeaturedProductsWithTranslations | undefined;
+  featuredProductsTag: common_HeroFeaturedProductsTagWithTranslations | undefined;
+  featuredArchive: common_HeroFeaturedArchiveWithTranslations | undefined;
 };
 
 export type common_HeroType =
@@ -34,12 +35,11 @@ export type common_HeroType =
   | "HERO_TYPE_FEATURED_PRODUCTS"
   | "HERO_TYPE_FEATURED_PRODUCTS_TAG"
   | "HERO_TYPE_FEATURED_ARCHIVE";
-export type common_HeroSingle = {
+export type common_HeroSingleWithTranslations = {
   mediaPortrait: common_MediaFull | undefined;
   mediaLandscape: common_MediaFull | undefined;
-  headline: string | undefined;
   exploreLink: string | undefined;
-  exploreText: string | undefined;
+  translations: common_HeroSingleInsertTranslation[] | undefined;
 };
 
 export type common_MediaFull = {
@@ -76,22 +76,34 @@ export type common_MediaInfo = {
   height: number | undefined;
 };
 
-export type common_HeroDouble = {
-  left: common_HeroSingle | undefined;
-  right: common_HeroSingle | undefined;
-};
-
-export type common_HeroMain = {
-  single: common_HeroSingle | undefined;
-  tag: string | undefined;
-  description: string | undefined;
-};
-
-export type common_HeroFeaturedProducts = {
-  products: common_Product[] | undefined;
+export type common_HeroSingleInsertTranslation = {
+  languageId: number | undefined;
   headline: string | undefined;
   exploreText: string | undefined;
+};
+
+export type common_HeroDoubleWithTranslations = {
+  left: common_HeroSingleWithTranslations | undefined;
+  right: common_HeroSingleWithTranslations | undefined;
+};
+
+export type common_HeroMainWithTranslations = {
+  single: common_HeroSingleWithTranslations | undefined;
+  translations: common_HeroMainInsertTranslation[] | undefined;
+};
+
+export type common_HeroMainInsertTranslation = {
+  languageId: number | undefined;
+  tag: string | undefined;
+  description: string | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type common_HeroFeaturedProductsWithTranslations = {
+  products: common_Product[] | undefined;
   exploreLink: string | undefined;
+  translations: common_HeroFeaturedProductsInsertTranslation[] | undefined;
 };
 
 export type common_Product = {
@@ -99,6 +111,7 @@ export type common_Product = {
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
   slug: string | undefined;
+  sku: string | undefined;
   productDisplay: common_ProductDisplay | undefined;
 };
 
@@ -108,10 +121,13 @@ export type common_ProductDisplay = {
 };
 
 export type common_ProductBody = {
+  productBodyInsert: common_ProductBodyInsert | undefined;
+  translations: common_ProductInsertTranslation[] | undefined;
+};
+
+export type common_ProductBodyInsert = {
   preorder: wellKnownTimestamp | undefined;
-  name: string | undefined;
   brand: string | undefined;
-  sku: string | undefined;
   color: string | undefined;
   colorHex: string | undefined;
   countryOfOrigin: string | undefined;
@@ -122,11 +138,12 @@ export type common_ProductBody = {
   typeId: number | undefined;
   modelWearsHeightCm: number | undefined;
   modelWearsSizeId: number | undefined;
-  description: string | undefined;
   careInstructions: string | undefined;
   composition: string | undefined;
   hidden: boolean | undefined;
   targetGender: common_GenderEnum | undefined;
+  version: string | undefined;
+  collection: string | undefined;
 };
 
 // A representation of a decimal value, such as 2.5. Clients may convert values
@@ -188,16 +205,36 @@ export type common_GenderEnum =
   | "GENDER_ENUM_MALE"
   | "GENDER_ENUM_FEMALE"
   | "GENDER_ENUM_UNISEX";
-export type common_HeroFeaturedProductsTag = {
-  tag: string | undefined;
-  products: common_HeroFeaturedProducts | undefined;
+export type common_ProductInsertTranslation = {
+  languageId: number | undefined;
+  name: string | undefined;
+  description: string | undefined;
 };
 
-export type common_HeroFeaturedArchive = {
+export type common_HeroFeaturedProductsInsertTranslation = {
+  languageId: number | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type common_HeroFeaturedProductsTagWithTranslations = {
+  tag: string | undefined;
+  products: common_HeroFeaturedProductsWithTranslations | undefined;
+  translations: common_HeroFeaturedProductsTagInsertTranslation[] | undefined;
+};
+
+export type common_HeroFeaturedProductsTagInsertTranslation = {
+  languageId: number | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type common_HeroFeaturedArchiveWithTranslations = {
   archive: common_ArchiveFull | undefined;
   tag: string | undefined;
   headline: string | undefined;
   exploreText: string | undefined;
+  translations: common_HeroFeaturedArchiveInsertTranslation[] | undefined;
 };
 
 export type common_ArchiveFull = {
@@ -208,25 +245,40 @@ export type common_ArchiveFull = {
 
 export type common_ArchiveList = {
   id: number | undefined;
-  heading: string | undefined;
-  description: string | undefined;
+  translations: common_ArchiveInsertTranslation[] | undefined;
   tag: string | undefined;
   slug: string | undefined;
-  nextSlug: string | undefined;
   createdAt: wellKnownTimestamp | undefined;
   thumbnail: common_MediaFull | undefined;
 };
 
-export type common_NavFeatured = {
-  men: common_NavFeaturedEntity | undefined;
-  women: common_NavFeaturedEntity | undefined;
+export type common_ArchiveInsertTranslation = {
+  languageId: number | undefined;
+  heading: string | undefined;
+  description: string | undefined;
 };
 
-export type common_NavFeaturedEntity = {
-  media: common_MediaFull | undefined;
+export type common_HeroFeaturedArchiveInsertTranslation = {
+  languageId: number | undefined;
+  headline: string | undefined;
   exploreText: string | undefined;
+};
+
+export type common_NavFeaturedWithTranslations = {
+  men: common_NavFeaturedEntityWithTranslations | undefined;
+  women: common_NavFeaturedEntityWithTranslations | undefined;
+};
+
+export type common_NavFeaturedEntityWithTranslations = {
+  media: common_MediaFull | undefined;
   featuredTag: string | undefined;
   featuredArchiveId: string | undefined;
+  translations: common_NavFeaturedEntityInsertTranslation[] | undefined;
+};
+
+export type common_NavFeaturedEntityInsertTranslation = {
+  languageId: number | undefined;
+  exploreText: string | undefined;
 };
 
 export type common_Dictionary = {
@@ -236,6 +288,7 @@ export type common_Dictionary = {
   paymentMethods: common_PaymentMethod[] | undefined;
   shipmentCarriers: common_ShipmentCarrier[] | undefined;
   sizes: common_Size[] | undefined;
+  languages: common_Language[] | undefined;
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
@@ -246,7 +299,7 @@ export type common_Dictionary = {
 // Category represents a hierarchical category structure
 export type common_Category = {
   id: number | undefined;
-  name: string | undefined;
+  translations: common_CategoryTranslation[] | undefined;
   levelId: number | undefined;
   level: string | undefined;
   parentId: number | undefined;
@@ -254,8 +307,22 @@ export type common_Category = {
   countWomen: number | undefined;
 };
 
+export type common_CategoryTranslation = {
+  id: number | undefined;
+  categoryId: number | undefined;
+  languageId: number | undefined;
+  name: string | undefined;
+};
+
 export type common_MeasurementName = {
   id: number | undefined;
+  translations: common_MeasurementNameTranslation[] | undefined;
+};
+
+export type common_MeasurementNameTranslation = {
+  id: number | undefined;
+  measurementNameId: number | undefined;
+  languageId: number | undefined;
   name: string | undefined;
 };
 
@@ -303,6 +370,14 @@ export type common_ShipmentCarrierInsert = {
 export type common_Size = {
   id: number | undefined;
   name: string | undefined;
+};
+
+export type common_Language = {
+  id: number | undefined;
+  code: string | undefined;
+  name: string | undefined;
+  isDefault: boolean | undefined;
+  isActive: boolean | undefined;
 };
 
 // CurrencyMap represents a map of currency codes to their rates.

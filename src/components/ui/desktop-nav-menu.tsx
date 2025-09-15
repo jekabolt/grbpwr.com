@@ -197,7 +197,7 @@ function LinksGroup({
                 )}
               />
             </div>
-            <Text>{heroNav?.exploreText}</Text>
+            <Text>{heroNav?.translations?.[0]?.exploreText}</Text>
           </AnimatedButton>
         </div>
       )}

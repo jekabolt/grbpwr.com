@@ -12,7 +12,10 @@ export function TopCategories() {
   const categories = dictionary?.categories || [];
 
   const topCategories = dictionary?.categories
-    ?.filter((c) => c.level === "top_category" && c.name !== "objects")
+    ?.filter(
+      (c) =>
+        c.level === "top_category" && c.translations?.[0]?.name !== "objects",
+    )
     ?.filter((c) => {
       if (gender === "men") {
         const categoryName = getTopCategoryName(categories, c.id || 0);

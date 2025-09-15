@@ -18,17 +18,23 @@ export function ProductItem({
 }) {
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const isSaleApplied =
-    product.productDisplay?.productBody?.salePercentage?.value !== "0";
+    product.productDisplay?.productBody?.productBodyInsert?.salePercentage
+      ?.value !== "0";
 
   const priceWithSale =
-    (parseFloat(product.productDisplay?.productBody?.price?.value || "0") *
+    (parseFloat(
+      product.productDisplay?.productBody?.productBodyInsert?.price?.value ||
+        "0",
+    ) *
       (100 -
         parseInt(
-          product.productDisplay?.productBody?.salePercentage?.value || "0",
+          product.productDisplay?.productBody?.productBodyInsert?.salePercentage
+            ?.value || "0",
         ))) /
     100;
 
-  const preorder = product.productDisplay?.productBody?.preorder;
+  const preorder =
+    product.productDisplay?.productBody?.productBodyInsert?.preorder;
 
   return (
     <div className={cn("relative", className)}>
@@ -42,7 +48,9 @@ export function ProductItem({
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
               ""
             }
-            alt={product.productDisplay?.productBody?.name || ""}
+            alt={
+              product.productDisplay?.productBody?.translations?.[0].name || ""
+            }
             aspectRatio={calculateAspectRatio(
               product.productDisplay?.thumbnail?.media?.thumbnail?.width,
               product.productDisplay?.thumbnail?.media?.thumbnail?.height,
@@ -59,11 +67,11 @@ export function ProductItem({
             variant="undrleineWithColors"
             className="overflow-hidden text-ellipsis leading-none group-[:visited]:text-visitedLinkColor"
           >
-            {product.productDisplay?.productBody?.name}
+            {product.productDisplay?.productBody?.translations?.[0].name}
           </Text>
           <div className="flex gap-1 leading-none">
             <Text variant={isSaleApplied ? "strileTroughInactive" : "default"}>
-              {`${currencySymbols[selectedCurrency]} ${convertPrice(product.productDisplay?.productBody?.price?.value || "")}`}
+              {`${currencySymbols[selectedCurrency]} ${convertPrice(product.productDisplay?.productBody?.productBodyInsert?.price?.value || "")}`}
             </Text>
             {isSaleApplied && (
               <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>

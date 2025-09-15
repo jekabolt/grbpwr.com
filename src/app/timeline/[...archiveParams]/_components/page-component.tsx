@@ -31,11 +31,11 @@ export default function PageComponent({
           className="order-1 mb-2.5 text-textInactiveColor lg:mb-0 lg:w-80 lg:text-textColor"
           variant="uppercase"
         >
-          {archive?.archiveList?.heading || ""}
+          {archive?.archiveList?.translations?.[0]?.heading || ""}
         </Text>
-        {archive?.archiveList?.description && (
+        {archive?.archiveList?.translations?.[0]?.description && (
           <Text className="order-3 mb-12 mt-7 break-words lg:order-2 lg:m-0 lg:w-fit lg:max-w-[calc(100%-theme(spacing.80)*2)] lg:flex-none">
-            {archive?.archiveList?.description}
+            {archive?.archiveList?.translations?.[0]?.description}
           </Text>
         )}
         <Text
@@ -49,7 +49,10 @@ export default function PageComponent({
           <div className="relative h-full w-full lg:h-[80vh]">
             <ImageComponent
               src={archive.mainMedia.media?.thumbnail?.mediaUrl || ""}
-              alt={archive?.archiveList?.heading || "Featured archive image"}
+              alt={
+                archive?.archiveList?.translations?.[0]?.heading ||
+                "Featured archive image"
+              }
               aspectRatio={calculateAspectRatio(
                 archive?.mainMedia?.media?.thumbnail?.width,
                 archive?.mainMedia?.media?.thumbnail?.height,
@@ -89,7 +92,7 @@ export default function PageComponent({
           <div key={id}>
             <ImageComponent
               src={item.media?.fullSize?.mediaUrl || ""}
-              alt={`${archive?.archiveList?.heading || ""} image ${id + 1}`}
+              alt={`${archive?.archiveList?.translations?.[0]?.heading || ""} image ${id + 1}`}
               aspectRatio={calculateAspectRatio(
                 item.media?.fullSize?.width,
                 item.media?.fullSize?.height,

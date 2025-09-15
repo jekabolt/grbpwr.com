@@ -68,7 +68,7 @@ export const processCategories = (
       (cat) => cat.level === "sub_category" && cat.parentId === topCat.id!,
     );
 
-    const originalName = topCat.name?.toLowerCase() ?? "";
+    const originalName = topCat.translations?.[0]?.name?.toLowerCase() ?? "";
     const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
 
     if (subCategories.length === 0) {
@@ -88,8 +88,8 @@ export const processCategories = (
 
     const processedSubCategories = subCategories.map((subCat) => ({
       id: subCat.id!,
-      name: subCat.name!,
-      href: `/catalog/${displayName.toLowerCase()}/${subCat.name!.toLowerCase()}`,
+      name: subCat.translations?.[0]?.name!,
+      href: `/catalog/${displayName.toLowerCase()}/${subCat.translations?.[0]?.name!.toLowerCase()}`,
     }));
 
     return {
@@ -111,7 +111,7 @@ export function findCategoryByName(
   const level = parentId ? "sub_category" : "top_category";
 
   return categories.find((cat) => {
-    const nameMatch = cat.name?.toLowerCase() === name.toLowerCase();
+    const nameMatch = cat.translations?.[0]?.name?.toLowerCase() === name.toLowerCase();
     const levelMatch = cat.level === level;
 
     if (level === "sub_category") {
@@ -130,15 +130,15 @@ export function getTopCategoryName(
     (cat) => cat.level === "top_category" && cat.id === topCategoryId
   );
 
-  if (!topCategory || !topCategory.name) {
+  if (!topCategory || !topCategory.translations?.[0]?.name) {
     return null;
   }
 
-  if (CATEGORY_TITLE_MAP[topCategory.name.toLowerCase()]) {
-    return CATEGORY_TITLE_MAP[topCategory.name.toLowerCase()];
+  if (CATEGORY_TITLE_MAP[topCategory.translations?.[0]?.name.toLowerCase()]) {
+    return CATEGORY_TITLE_MAP[topCategory.translations?.[0]?.name.toLowerCase()];
   }
 
-  return topCategory.name;
+  return topCategory.translations?.[0]?.name;
 }
 
 export function getSubCategoriesForTopCategory(
@@ -195,7 +195,7 @@ export function resolveCategories(
 
   if (!topCategory && categoryName) {
     topCategory = safeCategories.find((cat) => {
-      const originalName = cat.name?.toLowerCase() ?? "";
+      const originalName = cat.translations?.[0]?.name?.toLowerCase() ?? "";
       const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
       return displayName.toLowerCase() === categoryName.toLowerCase();
     });

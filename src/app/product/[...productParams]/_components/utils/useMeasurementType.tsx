@@ -10,19 +10,19 @@ export function useMeasurementType({
   product: common_ProductFull;
 }) {
   const { dictionary } = useDataContext();
-  const productBody = product.product?.productDisplay?.productBody;
+  const productBody =
+    product.product?.productDisplay?.productBody?.productBodyInsert;
   const categoryId = productBody?.topCategoryId;
   const subCategoryId = productBody?.subCategoryId;
   const typeId = productBody?.typeId;
 
-  const category = dictionary?.categories?.find(
-    (c) => c.id === categoryId,
-  )?.name;
+  const category = dictionary?.categories?.find((c) => c.id === categoryId)
+    ?.translations?.[0]?.name;
 
   const getMeasurementType = (): MeasurementType => {
     const type = dictionary?.categories
       ?.find((c) => c.id === typeId)
-      ?.name?.toLowerCase();
+      ?.translations?.[0]?.name?.toLowerCase();
     if (type === "rings") return "ring";
     if (category?.toLowerCase() === "shoes") return "shoe";
 

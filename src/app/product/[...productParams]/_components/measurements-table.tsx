@@ -32,7 +32,7 @@ export function MeasurementsTable({
   const measurementsWithNames = measurements.map((measurement) => {
     const name = dictionary?.measurements?.find(
       (m: any) => m.id === measurement.measurementNameId,
-    )?.name;
+    )?.translations?.[0]?.name;
     return {
       name,
       ...measurement,

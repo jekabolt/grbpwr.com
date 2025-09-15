@@ -2,7 +2,8 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 import { CARE_INSTRUCTIONS_MAP } from "@/constants";
 
 export function useGarmentInfo({ product }: { product: common_ProductFull }) {
-  const productBody = product.product?.productDisplay?.productBody;
+  const productBody =
+    product.product?.productDisplay?.productBody?.productBodyInsert;
 
   const composition = formatCompositionBySections(
     productBody?.composition || "",

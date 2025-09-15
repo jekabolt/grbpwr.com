@@ -21,7 +21,8 @@ export default function FilterOptionButtons({
   const categories = dictionary?.categories;
 
   const category = topCategoryId
-    ? categories?.find((c) => c.id === parseInt(topCategoryId))?.name
+    ? categories?.find((c) => c.id === parseInt(topCategoryId))
+        ?.translations?.[0]?.name
     : undefined;
 
   const isShoes = category?.toLowerCase().includes("shoes");

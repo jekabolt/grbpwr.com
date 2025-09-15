@@ -1,6 +1,6 @@
 "use client";
 
-import type { common_HeroEntity } from "@/api/proto-http/frontend";
+import type { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -11,7 +11,11 @@ import { Text } from "@/components/ui/text";
 import { FeaturedItems } from "./featured-items";
 import { HeroArchive } from "./hero-archive";
 
-export function Ads({ entities }: { entities: common_HeroEntity[] }) {
+export function Ads({
+  entities,
+}: {
+  entities: common_HeroEntityWithTranslations[];
+}) {
   return (
     <div>
       {entities?.map((e, i) => {
@@ -55,13 +59,14 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                       variant="uppercase"
                       className={cn("w-full text-center", {
                         "group-hover:underline":
-                          !e.single?.exploreText && e.single?.exploreLink,
+                          !e.single?.translations?.[0].exploreText &&
+                          e.single?.exploreLink,
                       })}
                     >
-                      {e.single?.headline}
+                      {e.single?.translations?.[0].headline}
                     </Text>
                     <Text variant="uppercase" className="group-hover:underline">
-                      {e.single?.exploreText}
+                      {e.single?.translations?.[0].exploreText}
                     </Text>
                   </div>
                 </AnimatedButton>
@@ -94,13 +99,14 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     <Text
                       variant="uppercase"
                       className={cn({
-                        "group-hover:underline": !e.double?.left?.exploreText,
+                        "group-hover:underline":
+                          !e.double?.left?.translations?.[0].exploreText,
                       })}
                     >
-                      {e.double?.left?.headline}
+                      {e.double?.left?.translations?.[0].headline}
                     </Text>
                     <Text className="uppercase group-hover:underline">
-                      {e.double?.left?.exploreText}
+                      {e.double?.left?.translations?.[0].exploreText}
                     </Text>
                   </div>
                 </AnimatedButton>
@@ -124,13 +130,14 @@ export function Ads({ entities }: { entities: common_HeroEntity[] }) {
                     <Text
                       variant="uppercase"
                       className={cn({
-                        "group-hover:underline": !e.double?.right?.exploreText,
+                        "group-hover:underline":
+                          !e.double?.right?.translations?.[0].exploreText,
                       })}
                     >
-                      {e.double?.right?.headline}
+                      {e.double?.right?.translations?.[0].headline}
                     </Text>
                     <Text className="uppercase group-hover:underline">
-                      {e.double?.right?.exploreText}
+                      {e.double?.right?.translations?.[0].exploreText}
                     </Text>
                   </div>
                 </AnimatedButton>

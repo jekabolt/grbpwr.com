@@ -46,9 +46,8 @@ export function useActiveSizeInfo({
   const categoryId = dictionary?.categories?.find((c) =>
     sizeNames?.some((s) => s.id === activeSizeId),
   )?.id;
-  const category = dictionary?.categories?.find(
-    (c) => c.id === categoryId,
-  )?.name;
+  const category = dictionary?.categories?.find((c) => c.id === categoryId)
+    ?.translations?.[0]?.name;
   const isShoes = category?.toLowerCase().includes("shoes");
 
   const triggerText = activeSizeName

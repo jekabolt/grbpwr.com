@@ -51,7 +51,7 @@ export function Categories() {
       {filteredSubCategories.map((subCategory, index) => {
         const isDisabled = isCategoryDisabled(
           categories.find(
-            (c) => c.name === subCategory.name,
+            (c) => c.translations?.[0]?.name === subCategory.name,
           ) as common_Category,
           gender,
         );

@@ -23,7 +23,7 @@ export function HorizontalGrid({
           >
             <div className="relative">
               <ImageComponent
-                alt={archive.heading + " " + index}
+                alt={archive.translations?.[0]?.heading + " " + index}
                 src={archive.thumbnail?.media?.fullSize?.mediaUrl || ""}
                 aspectRatio={calculateAspectRatio(
                   archive.thumbnail?.media?.fullSize?.width,
@@ -32,7 +32,7 @@ export function HorizontalGrid({
               />
             </div>
             <Text className="text-highlightColor group-hover:text-textColor">
-              {archive.heading}
+              {archive.translations?.[0]?.heading}
             </Text>
           </Link>
         ))}

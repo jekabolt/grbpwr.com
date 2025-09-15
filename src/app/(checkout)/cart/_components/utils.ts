@@ -11,7 +11,7 @@ function isValidDate(date: string): boolean {
 }
 
 export function getPreorderDate(product: common_OrderItem | common_ProductFull): string | null {
-  const preorderDate = 'preorder' in product ? product.preorder : product.product?.productDisplay?.productBody?.preorder;
+  const preorderDate = 'preorder' in product ? product.preorder : product.product?.productDisplay?.productBody?.productBodyInsert?.preorder;
   if (!preorderDate || !isValidDate(preorderDate)) return null;
 
   const date = new Date(preorderDate);

@@ -1,4 +1,4 @@
-import { common_HeroMain } from "@/api/proto-http/frontend";
+import { common_HeroMainWithTranslations } from "@/api/proto-http/frontend";
 
 import { calculateAspectRatio } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -6,7 +6,7 @@ import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
-export function MainAds({ main }: { main?: common_HeroMain }) {
+export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
   if (!main) return null;
 
   return (
@@ -39,13 +39,13 @@ export function MainAds({ main }: { main?: common_HeroMain }) {
       <Overlay cover="container" />
       <div className="absolute inset-x-0 top-32 z-20 flex h-screen items-center lg:top-20">
         <div className="flex w-full flex-col items-start gap-6 p-2 text-bgColor md:flex-row md:justify-between">
-          <Text variant="uppercase">{main.tag}</Text>
-          <Text variant="uppercase">{main.single?.headline}</Text>
+          <Text variant="uppercase">{main.translations?.[0]?.tag}</Text>
+          <Text variant="uppercase">{main.translations?.[0]?.headline}</Text>
           <Text variant="uppercase" className="md:w-1/3">
-            {main.description}
+            {main.translations?.[0]?.description}
           </Text>
           <Text variant="underlined" className="uppercase">
-            {main.single?.exploreText}
+            {main.translations?.[0]?.exploreText}
           </Text>
         </div>
       </div>

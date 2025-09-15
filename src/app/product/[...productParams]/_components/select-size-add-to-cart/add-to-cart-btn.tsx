@@ -32,6 +32,7 @@ export function AddToCartBtn({
   const [isHovered, setIsHovered] = useState(false);
   const internalHandlers = useHandlers({
     id: product.product?.id || 0,
+    product,
   });
   const merged = handlers
     ? { ...internalHandlers, ...handlers }

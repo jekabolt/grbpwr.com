@@ -72,7 +72,9 @@ const useMeasurementValue = (
 
   return (measurementName: string) => {
     const measurementId = dictionary?.measurements?.find(
-      (m) => m.name?.toLowerCase() === measurementName.toLowerCase(),
+      (m) =>
+        m.translations?.[0]?.name?.toLowerCase() ===
+        measurementName.toLowerCase(),
     )?.id;
 
     if (!measurementId) return "0";

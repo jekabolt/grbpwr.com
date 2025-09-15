@@ -10,7 +10,8 @@ function getModelText(height?: number | undefined, sizeName?: string): string {
 
 export function useModelInfo({ product }: { product: common_ProductFull }) {
   const { dictionary } = useDataContext();
-  const productBody = product.product?.productDisplay?.productBody;
+  const productBody =
+    product.product?.productDisplay?.productBody?.productBodyInsert;
   const modelSizeId = productBody?.modelWearsSizeId;
   const modelSize = dictionary?.sizes?.find((s) => s.id === modelSizeId)?.name;
   const modelHeight = productBody?.modelWearsHeightCm;

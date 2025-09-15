@@ -27,6 +27,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
       id: productId,
       sizeNames,
       isOneSize,
+      product,
     });
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =

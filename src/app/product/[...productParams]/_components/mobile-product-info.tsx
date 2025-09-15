@@ -39,6 +39,7 @@ export function MobileProductInfo({
     id: productId,
     sizeNames,
     isOneSize,
+    product,
   });
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =

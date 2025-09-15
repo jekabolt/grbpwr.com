@@ -34,10 +34,13 @@ export async function generateMetadata({
   });
 
   const productMedia = [...(product?.media || [])];
-  const title = product?.product?.productDisplay?.productBody?.name;
+  const title =
+    product?.product?.productDisplay?.productBody?.translations?.[0].name;
   const description =
-    product?.product?.productDisplay?.productBody?.description;
-  const color = product?.product?.productDisplay?.productBody?.color;
+    product?.product?.productDisplay?.productBody?.translations?.[0]
+      .description;
+  const color =
+    product?.product?.productDisplay?.productBody?.productBodyInsert?.color;
   const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
 
   return generateCommonMetadata({

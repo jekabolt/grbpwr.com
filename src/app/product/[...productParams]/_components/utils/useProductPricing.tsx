@@ -10,7 +10,8 @@ export function useProductPricing({
   product: common_ProductFull;
 }) {
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
-  const productBody = product.product?.productDisplay?.productBody;
+  const productBody =
+    product.product?.productDisplay?.productBody?.productBodyInsert;
   const salePercentage = productBody?.salePercentage?.value || "0";
   const currency = currencySymbols[selectedCurrency];
 

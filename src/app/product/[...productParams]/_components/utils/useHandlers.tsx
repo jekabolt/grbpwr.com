@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { common_ProductFull } from "@/api/proto-http/frontend";
 
+// import { pushAddToCartEvent } from "@/lib/gtm";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
 import { useDisabled } from "./useDisabled";
@@ -8,10 +10,12 @@ export function useHandlers({
   id,
   sizeNames,
   isOneSize,
+  product,
 }: {
   id: number;
   sizeNames?: { name: string; id: number }[];
   isOneSize?: boolean;
+  product?: common_ProductFull;
 }) {
   const { increaseQuantity, openCart } = useCart((state) => state);
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
@@ -38,6 +42,12 @@ export function useHandlers({
 
     try {
       await increaseQuantity(id, activeSizeId?.toString() || "", 1);
+
+      // // Trigger GTM event after successful cart addition
+      // if (product && activeSizeId) {
+      //   pushAddToCartEvent(product, activeSizeId.toString(), 1);
+      // }
+
       openCart();
       return true;
     } catch (error) {
@@ -53,6 +63,12 @@ export function useHandlers({
     if (isMobileSizeDialogOpen) {
       try {
         await increaseQuantity(id, sizeId.toString(), 1);
+
+        // // Trigger GTM event after successful cart addition
+        // if (product) {
+        //   pushAddToCartEvent(product, sizeId.toString(), 1);
+        // }
+
         openCart();
         return true;
       } catch (error) {

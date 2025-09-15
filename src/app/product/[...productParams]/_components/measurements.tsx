@@ -58,7 +58,8 @@ export function Measurements({
               subCategoryId={subCategoryId}
               typeId={typeId}
               gender={
-                product.product?.productDisplay?.productBody?.targetGender
+                product.product?.productDisplay?.productBody?.productBodyInsert
+                  ?.targetGender
               }
               measurements={product.measurements || []}
               selectedSize={selectedSize}

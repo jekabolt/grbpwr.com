@@ -8,7 +8,7 @@ export function useSizeFiltering() {
     const categories = dictionary?.categories;
 
     const category = topCategory?.id
-        ? categories?.find((c) => c.id === topCategory.id)?.name
+        ? categories?.find((c) => c.id === topCategory.id)?.translations?.[0]?.name
         : undefined;
 
     const isShoes = category?.toLowerCase().includes("shoes");

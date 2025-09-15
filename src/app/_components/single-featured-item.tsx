@@ -17,15 +17,20 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
     <div>
       {data.products?.map((p) => {
         const priceWithSale =
-          (parseFloat(p.productDisplay?.productBody?.price?.value || "0") *
+          (parseFloat(
+            p.productDisplay?.productBody?.productBodyInsert?.price?.value ||
+              "0",
+          ) *
             (100 -
               parseInt(
-                p.productDisplay?.productBody?.salePercentage?.value || "0",
+                p.productDisplay?.productBody?.productBodyInsert?.salePercentage
+                  ?.value || "0",
               ))) /
           100;
         const isSaleApplied =
           parseInt(
-            p.productDisplay?.productBody?.salePercentage?.value || "0",
+            p.productDisplay?.productBody?.productBodyInsert?.salePercentage
+              ?.value || "0",
           ) > 0;
 
         return (
@@ -40,7 +45,7 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
                   variant="undrleineWithColors"
                   className="w-full overflow-hidden leading-none text-inverted group-[:visited]:text-visitedLinkColor"
                 >
-                  {p.productDisplay?.productBody?.name}
+                  {p.productDisplay?.productBody?.translations?.[0].name}
                 </Text>
               </div>
 
@@ -49,7 +54,7 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
                   <Text
                     variant={isSaleApplied ? "strileTroughInactive" : "default"}
                   >
-                    {`${currencySymbols[selectedCurrency]} ${convertPrice(p.productDisplay?.productBody?.price?.value || "")}`}
+                    {`${currencySymbols[selectedCurrency]} ${convertPrice(p.productDisplay?.productBody?.productBodyInsert?.price?.value || "")}`}
                   </Text>
                   {isSaleApplied && (
                     <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>
@@ -74,7 +79,9 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
                 src={
                   p.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl || ""
                 }
-                alt={p.productDisplay?.productBody?.name || ""}
+                alt={
+                  p.productDisplay?.productBody?.translations?.[0].name || ""
+                }
                 aspectRatio={calculateAspectRatio(
                   p.productDisplay?.thumbnail?.media?.thumbnail?.width,
                   p.productDisplay?.thumbnail?.media?.thumbnail?.height,

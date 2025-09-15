@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { common_HeroEntity } from "@/api/proto-http/frontend";
+import { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -13,7 +13,7 @@ export function HeroArchive({
   entity,
   className,
 }: {
-  entity: common_HeroEntity;
+  entity: common_HeroEntityWithTranslations;
   className?: string;
 }) {
   const archiveRef = useRef<HTMLDivElement>(null);

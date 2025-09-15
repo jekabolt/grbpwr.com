@@ -1,9 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
-import {
-  common_ArchiveFull,
-  common_ArchiveList,
-} from "@/api/proto-http/frontend";
+import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -34,11 +31,13 @@ export async function generateMetadata({
 
   return generateCommonMetadata({
     title:
-      archive.archiveList?.heading?.toUpperCase() || "heading".toUpperCase(),
-    description: archive.archiveList?.description || "description",
+      archive.archiveList?.translations?.[0]?.heading?.toUpperCase() ||
+      "heading".toUpperCase(),
+    description:
+      archive.archiveList?.translations?.[0]?.description || "description",
     ogParams: {
       imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
-      imageAlt: archive.archiveList?.heading || "",
+      imageAlt: archive.archiveList?.translations?.[0]?.heading || "",
     },
   });
 }
@@ -48,7 +47,7 @@ export const dynamic = "force-static";
 export default async function Page({ params }: ArchivePageParams) {
   const { archiveParams } = await params;
 
-  let nextArchive: common_ArchiveList | undefined;
+  // let nextArchive: common_ArchiveList | undefined;
 
   if (archiveParams.length !== 3) {
     notFound();
@@ -61,20 +60,20 @@ export default async function Page({ params }: ArchivePageParams) {
     id: parseInt(id),
   });
 
-  if (archive?.archiveList?.nextSlug) {
-    const parts = archive.archiveList?.nextSlug.split("/");
-    const nextParams = parts.slice(2);
+  // if (archive?.archiveList?.nextSlug) {
+  //   const parts = archive.archiveList?.nextSlug.split("/");
+  //   const nextParams = parts.slice(2);
 
-    const [nextHeading, nextTag, nextId] = nextParams;
+  //   const [nextHeading, nextTag, nextId] = nextParams;
 
-    const { archive: nextArchivee } = await serviceClient.GetArchive({
-      heading: nextHeading,
-      tag: nextTag,
-      id: parseInt(nextId),
-    });
+  //   const { archive: nextArchivee } = await serviceClient.GetArchive({
+  //     heading: nextHeading,
+  //     tag: nextTag,
+  //     id: parseInt(nextId),
+  //   });
 
-    nextArchive = nextArchivee?.archiveList;
-  }
+  //   nextArchive = nextArchivee?.archiveList;
+  // }
 
   return (
     <FlexibleLayout

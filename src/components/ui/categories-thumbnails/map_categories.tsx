@@ -65,18 +65,22 @@ export function getIconByCategoryId(
     return UnderwearFIcon;
   }
 
-  if (type?.name) {
-    const typeIcon = TypeIcons[type.name.toLowerCase()];
+  if (type?.translations?.[0]?.name) {
+    const typeIcon = TypeIcons[type.translations?.[0]?.name.toLowerCase()];
     if (typeIcon) return typeIcon;
   }
 
-  if (subCategory?.name) {
-    const subCategoryIcon = SubCategoryIcons[subCategory.name.toLowerCase()];
+  if (subCategory?.translations?.[0]?.name) {
+    const subCategoryIcon =
+      SubCategoryIcons[subCategory.translations?.[0]?.name.toLowerCase()];
     if (subCategoryIcon) return subCategoryIcon;
   }
 
-  if (category.name) {
-    return TopCategoryIcons[category.name.toLowerCase()] || OtherIcon;
+  if (category.translations?.[0]?.name) {
+    return (
+      TopCategoryIcons[category.translations?.[0]?.name.toLowerCase()] ||
+      OtherIcon
+    );
   }
 
   return OtherIcon;
