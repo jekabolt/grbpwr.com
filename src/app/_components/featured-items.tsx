@@ -9,26 +9,31 @@ import { MobileFeaturedItems } from "./mobile-featured-items";
 import { ProductItem } from "./product-item";
 import { SingleFeaturedItem } from "./single-featured-item";
 
-export interface FeaturedItemsData {
+export function FeaturedItems({
+  headline,
+  exploreText,
+  exploreLink,
+  products,
+  tag,
+  itemsQuantity,
+}: {
   headline?: string;
   exploreText?: string;
   exploreLink?: string;
   products?: common_Product[];
-}
-
-export function FeaturedItems({
-  data,
-  itemsQuantity,
-}: {
-  data: FeaturedItemsData | undefined;
+  tag?: string;
   itemsQuantity: number;
 }) {
-  if (!data) return null;
-
   return (
     <div>
       <div className="block lg:hidden">
-        <MobileFeaturedItems data={data} itemsQuantity={itemsQuantity} />
+        <MobileFeaturedItems
+          headline={headline}
+          exploreLink={exploreLink ? exploreLink : tag || ""}
+          exploreText={exploreText || ""}
+          products={products || []}
+          itemsQuantity={itemsQuantity}
+        />
       </div>
 
       <div
@@ -36,17 +41,25 @@ export function FeaturedItems({
           "py-0": itemsQuantity === 1,
         })}
       >
-        {itemsQuantity === 1 && <SingleFeaturedItem data={data} />}
-        {itemsQuantity >= 4 && <FourFeaturedItems data={data} />}
+        {itemsQuantity === 1 && (
+          <SingleFeaturedItem products={products || []} headline={headline} />
+        )}
+        {itemsQuantity >= 4 && (
+          <FourFeaturedItems
+            products={products}
+            headline={headline}
+            href={exploreLink ? exploreLink : tag || ""}
+            linkText={exploreText || ""}
+          />
+        )}
         {(itemsQuantity === 2 || itemsQuantity === 3) && (
           <div className="flex h-full items-center justify-between pl-2.5">
             <HeaderSection
-              data={data}
-              href={data.exploreLink || ""}
-              linkText={data.exploreText || ""}
+              href={exploreLink ? exploreLink : tag || ""}
+              linkText={exploreText || ""}
             />
             <div className="flex flex-row gap-12">
-              {data.products?.map((p) => (
+              {products?.map((p) => (
                 <ProductItem
                   key={p.id}
                   className={cn("w-[28rem]", {
@@ -63,16 +76,24 @@ export function FeaturedItems({
   );
 }
 
-function FourFeaturedItems({ data }: { data: FeaturedItemsData }) {
+function FourFeaturedItems({
+  headline,
+  href,
+  linkText,
+  products,
+}: {
+  headline?: string;
+
+  href: string;
+  linkText: string;
+  products?: common_Product[];
+}) {
   return (
     <div className="space-y-12">
-      <HeaderSection
-        data={data}
-        href={data.exploreLink || ""}
-        linkText={data.exploreText || ""}
-      />
+      <HeaderSection headline={headline} href={href} linkText={linkText} />
+
       <Carousel disableForItemCounts={[4]} loop className="flex w-full">
-        {data.products?.map((p) => (
+        {products?.map((p) => (
           <ProductItem key={p.id} className="flex-[0_0_25%] px-6" product={p} />
         ))}
       </Carousel>
@@ -81,23 +102,23 @@ function FourFeaturedItems({ data }: { data: FeaturedItemsData }) {
 }
 
 export function HeaderSection({
-  data,
+  headline,
   href,
   linkText,
 }: {
-  data: FeaturedItemsData;
+  headline?: string;
   href: string;
   linkText: string;
 }) {
   return (
     <div>
-      {data.headline && (
+      {headline && (
         <AnimatedButton
           href={href}
           animationArea="text"
           className="flex flex-row gap-2 whitespace-nowrap lg:pl-2.5"
         >
-          <Text variant="uppercase">{data.headline}</Text>
+          <Text variant="uppercase">{headline}</Text>
           {linkText && (
             <Text className="flex gap-2 uppercase lg:hidden lg:group-hover:flex">
               <Text component="span">{`/`}</Text>

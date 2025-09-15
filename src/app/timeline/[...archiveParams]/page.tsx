@@ -4,7 +4,6 @@ import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import FlexibleLayout from "@/components/flexible-layout";
 
 import PageComponent from "./_components/page-component";
@@ -22,8 +21,6 @@ export async function generateMetadata({
 
   const [heading, tag, id] = archiveParams;
 
-  const { selectedLanguage } = useCurrency((state) => state);
-
   const archiveResponse = await serviceClient.GetArchive({
     heading,
     tag,
@@ -34,16 +31,13 @@ export async function generateMetadata({
 
   return generateCommonMetadata({
     title:
-      archive.archiveList?.translations?.[
-        selectedLanguage.id
-      ]?.heading?.toUpperCase() || "heading".toUpperCase(),
+      archive.archiveList?.translations?.[0]?.heading?.toUpperCase() ||
+      "heading".toUpperCase(),
     description:
-      archive.archiveList?.translations?.[selectedLanguage.id]?.description ||
-      "description",
+      archive.archiveList?.translations?.[0]?.description || "description",
     ogParams: {
       imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
-      imageAlt:
-        archive.archiveList?.translations?.[selectedLanguage.id]?.heading || "",
+      imageAlt: archive.archiveList?.translations?.[0]?.heading || "",
     },
   });
 }

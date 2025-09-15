@@ -6,7 +6,6 @@ import {
   getCategoryDescription,
   getTopCategoryName,
 } from "@/lib/categories-map";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
@@ -25,12 +24,11 @@ export default function Catalog({
   firstPageItems: common_Product[];
 }) {
   const { dictionary } = useDataContext();
-  const { selectedLanguage } = useCurrency((state) => state);
+
   const { gender, topCategory } = useRouteParams();
   const activeTopCategory = getTopCategoryName(
     dictionary?.categories || [],
     parseInt(topCategory || "0"),
-    selectedLanguage,
   );
   const categoryDescription = getCategoryDescription(
     activeTopCategory || "",

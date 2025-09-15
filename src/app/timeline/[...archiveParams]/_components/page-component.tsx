@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { calculateAspectRatio, isVideo } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
@@ -14,7 +13,6 @@ export default function PageComponent({
 }: {
   archive?: common_ArchiveFull;
 }) {
-  const { selectedLanguage } = useCurrency((state) => state);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const currentYear = new Date().getFullYear();
@@ -33,16 +31,11 @@ export default function PageComponent({
           className="order-1 mb-2.5 text-textInactiveColor lg:mb-0 lg:w-80 lg:text-textColor"
           variant="uppercase"
         >
-          {archive?.archiveList?.translations?.[selectedLanguage.id]?.heading ||
-            ""}
+          {archive?.archiveList?.translations?.[0]?.heading || ""}
         </Text>
-        {archive?.archiveList?.translations?.[selectedLanguage.id]
-          ?.description && (
+        {archive?.archiveList?.translations?.[0]?.description && (
           <Text className="order-3 mb-12 mt-7 break-words lg:order-2 lg:m-0 lg:w-fit lg:max-w-[calc(100%-theme(spacing.80)*2)] lg:flex-none">
-            {
-              archive?.archiveList?.translations?.[selectedLanguage.id]
-                ?.description
-            }
+            {archive?.archiveList?.translations?.[0]?.description}
           </Text>
         )}
         <Text
@@ -57,8 +50,8 @@ export default function PageComponent({
             <ImageComponent
               src={archive.mainMedia.media?.thumbnail?.mediaUrl || ""}
               alt={
-                archive?.archiveList?.translations?.[selectedLanguage.id]
-                  ?.heading || "Featured archive image"
+                archive?.archiveList?.translations?.[0]?.heading ||
+                "Featured archive image"
               }
               aspectRatio={calculateAspectRatio(
                 archive?.mainMedia?.media?.thumbnail?.width,

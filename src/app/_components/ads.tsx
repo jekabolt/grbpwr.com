@@ -2,7 +2,7 @@
 
 import type { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
@@ -17,12 +17,15 @@ export function Ads({
 }: {
   entities: common_HeroEntityWithTranslations[];
 }) {
-  const { selectedLanguage } = useCurrency((state) => state);
+  const { languageId } = useTranslationsStore((state) => state);
   return (
     <div>
       {entities?.map((e, i) => {
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
+            const currentTranslation = e.single?.translations?.find(
+              (t) => t.languageId === languageId,
+            );
             return (
               <div className="relative h-screen w-full" key={i}>
                 <AnimatedButton
@@ -61,17 +64,14 @@ export function Ads({
                       variant="uppercase"
                       className={cn("w-full text-center", {
                         "group-hover:underline":
-                          !e.single?.translations?.[selectedLanguage.id]
-                            .exploreText && e.single?.exploreLink,
+                          !currentTranslation?.exploreText &&
+                          e.single?.exploreLink,
                       })}
                     >
-                      {e.single?.translations?.[selectedLanguage.id].headline}
+                      {currentTranslation?.headline}
                     </Text>
                     <Text variant="uppercase" className="group-hover:underline">
-                      {
-                        e.single?.translations?.[selectedLanguage.id]
-                          .exploreText
-                      }
+                      {currentTranslation?.exploreText}
                     </Text>
                   </div>
                 </AnimatedButton>
@@ -79,6 +79,12 @@ export function Ads({
               </div>
             );
           case "HERO_TYPE_DOUBLE":
+            const leftTranslation = e.double?.left?.translations?.find(
+              (t) => t.languageId === languageId,
+            );
+            const rightTranslation = e.double?.right?.translations?.find(
+              (t) => t.languageId === languageId,
+            );
             return (
               <div
                 key={i}
@@ -104,21 +110,13 @@ export function Ads({
                     <Text
                       variant="uppercase"
                       className={cn({
-                        "group-hover:underline":
-                          !e.double?.left?.translations?.[selectedLanguage.id]
-                            .exploreText,
+                        "group-hover:underline": !leftTranslation?.exploreText,
                       })}
                     >
-                      {
-                        e.double?.left?.translations?.[selectedLanguage.id]
-                          .headline
-                      }
+                      {leftTranslation?.headline}
                     </Text>
                     <Text className="uppercase group-hover:underline">
-                      {
-                        e.double?.left?.translations?.[selectedLanguage.id]
-                          .exploreText
-                      }
+                      {leftTranslation?.exploreText}
                     </Text>
                   </div>
                 </AnimatedButton>
@@ -142,21 +140,13 @@ export function Ads({
                     <Text
                       variant="uppercase"
                       className={cn({
-                        "group-hover:underline":
-                          !e.double?.right?.translations?.[selectedLanguage.id]
-                            .exploreText,
+                        "group-hover:underline": !rightTranslation?.exploreText,
                       })}
                     >
-                      {
-                        e.double?.right?.translations?.[selectedLanguage.id]
-                          .headline
-                      }
+                      {rightTranslation?.headline}
                     </Text>
                     <Text className="uppercase group-hover:underline">
-                      {
-                        e.double?.right?.translations?.[selectedLanguage.id]
-                          .exploreText
-                      }
+                      {rightTranslation?.exploreText}
                     </Text>
                   </div>
                 </AnimatedButton>
@@ -165,20 +155,33 @@ export function Ads({
             );
           case "HERO_TYPE_FEATURED_PRODUCTS":
             const itemsQuantity = e.featuredProducts?.products?.length || 0;
+            const productsTranslation = e.featuredProducts?.translations?.find(
+              (t) => t.languageId === languageId,
+            );
             return (
               <FeaturedItems
                 key={i}
-                data={e.featuredProducts}
+                products={e.featuredProducts?.products}
+                headline={productsTranslation?.headline}
+                exploreText={productsTranslation?.exploreText}
+                exploreLink={e.featuredProducts?.exploreLink}
                 itemsQuantity={itemsQuantity}
               />
             );
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
             const productsTagCount =
               e.featuredProductsTag?.products?.products?.length || 0;
+            const productsTagTranslation =
+              e.featuredProductsTag?.translations?.find(
+                (t) => t.languageId === languageId,
+              );
             return (
               <FeaturedItems
                 key={i}
-                data={e.featuredProductsTag?.products}
+                products={e.featuredProductsTag?.products?.products}
+                headline={productsTagTranslation?.headline}
+                exploreText={productsTagTranslation?.exploreText}
+                exploreLink={e.featuredProductsTag?.products?.exploreLink}
                 itemsQuantity={productsTagCount}
               />
             );

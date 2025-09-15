@@ -16,9 +16,7 @@ export function ProductItem({
   className: string;
   isInfoVisible?: boolean;
 }) {
-  const { selectedCurrency, selectedLanguage, convertPrice } = useCurrency(
-    (state) => state,
-  );
+  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
 
   const salePercentage =
     product.productDisplay?.productBody?.productBodyInsert?.salePercentage
@@ -53,9 +51,7 @@ export function ProductItem({
               ""
             }
             alt={
-              product.productDisplay?.productBody?.translations?.[
-                selectedLanguage?.id ?? 0
-              ].name || ""
+              product.productDisplay?.productBody?.translations?.[0].name || ""
             }
             aspectRatio={calculateAspectRatio(
               product.productDisplay?.thumbnail?.media?.thumbnail?.width,
@@ -73,11 +69,7 @@ export function ProductItem({
             variant="undrleineWithColors"
             className="overflow-hidden text-ellipsis leading-none group-[:visited]:text-visitedLinkColor"
           >
-            {
-              product.productDisplay?.productBody?.translations?.[
-                selectedLanguage?.id ?? 0
-              ].name
-            }
+            {product.productDisplay?.productBody?.translations?.[0].name}
           </Text>
           <div className="flex gap-1 leading-none">
             <Text variant={isSaleApplied ? "strileTroughInactive" : "default"}>

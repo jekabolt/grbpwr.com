@@ -1,7 +1,6 @@
 import { common_Category } from "@/api/proto-http/frontend";
 
 import { getSubCategoriesForTopCategory } from "@/lib/categories-map";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
@@ -28,14 +27,13 @@ export function isCategoryDisabled(category: common_Category, gender: string) {
 
 export function Categories() {
   const { dictionary } = useDataContext();
-  const { selectedLanguage } = useCurrency((state) => state);
+
   const { gender, categoryName, subCategoryName, topCategory } =
     useRouteParams();
   const categories = dictionary?.categories || [];
   const subCategories = getSubCategoriesForTopCategory(
     categories,
     topCategory?.id || 0,
-    selectedLanguage,
   );
   const filteredSubCategories = filterSubCategories(subCategories, gender);
 

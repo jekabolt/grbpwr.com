@@ -56,7 +56,6 @@ const TypeIcons: Record<string, IconComponent> = {
 export function getIconByCategoryId(
   category: common_Category | undefined,
   gender: common_GenderEnum | undefined,
-  selectedLanguage: { code: string; id: number },
   subCategory?: common_Category,
   type?: common_Category,
 ): IconComponent {
@@ -66,22 +65,19 @@ export function getIconByCategoryId(
     return UnderwearFIcon;
   }
 
-  const typeName =
-    type?.translations?.[selectedLanguage.id]?.name?.toLowerCase();
+  const typeName = type?.translations?.[0]?.name?.toLowerCase();
   if (typeName) {
     const typeIcon = TypeIcons[typeName];
     if (typeIcon) return typeIcon;
   }
 
-  const subName =
-    subCategory?.translations?.[selectedLanguage.id]?.name?.toLowerCase();
+  const subName = subCategory?.translations?.[0]?.name?.toLowerCase();
   if (subName) {
     const subCategoryIcon = SubCategoryIcons[subName];
     if (subCategoryIcon) return subCategoryIcon;
   }
 
-  const topName =
-    category.translations?.[selectedLanguage.id]?.name?.toLowerCase();
+  const topName = category.translations?.[0]?.name?.toLowerCase();
   if (topName) return TopCategoryIcons[topName] || OtherIcon;
 
   return OtherIcon;

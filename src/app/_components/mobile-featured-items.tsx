@@ -1,18 +1,26 @@
+import { common_Product } from "@/api/proto-http/frontend";
+
 import { cn } from "@/lib/utils";
 import { Carousel } from "@/components/ui/carousel";
 
-import { FeaturedItemsData, HeaderSection } from "./featured-items";
+import { HeaderSection } from "./featured-items";
 import { ProductItem } from "./product-item";
 
 export function MobileFeaturedItems({
-  data,
+  products,
+  headline,
+  exploreText,
+  exploreLink,
   itemsQuantity,
 }: {
-  data: FeaturedItemsData;
+  products: common_Product[];
+  headline?: string;
+  exploreText?: string;
+  exploreLink?: string;
   itemsQuantity: number;
 }) {
   const isMultipleItems = itemsQuantity > 1;
-  const itemSlug = data.products?.[0]?.slug || "";
+  const itemSlug = products?.[0]?.slug || "";
   const nonScrollable =
     itemsQuantity === 1 || itemsQuantity === 2 || itemsQuantity === 4;
 
@@ -20,9 +28,9 @@ export function MobileFeaturedItems({
     <div className="space-y-10 py-16">
       <div className="px-2.5">
         <HeaderSection
-          data={data}
-          href={isMultipleItems ? data.exploreLink || "" : itemSlug}
-          linkText={isMultipleItems ? data.exploreText || "" : "buy now"}
+          headline={headline}
+          href={isMultipleItems ? exploreLink || "" : itemSlug}
+          linkText={isMultipleItems ? exploreText || "" : "buy now"}
         />
       </div>
       <Carousel
@@ -35,7 +43,7 @@ export function MobileFeaturedItems({
           "grid grid-cols-2 gap-4": itemsQuantity === 4,
         })}
       >
-        {data.products?.map((p) => (
+        {products?.map((p) => (
           <ProductItem
             key={p.id}
             className={cn("w-44 px-2.5", {

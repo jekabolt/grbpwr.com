@@ -1,7 +1,6 @@
 import { SVGProps } from "react";
 import { common_ProductMeasurement } from "@/api/proto-http/frontend";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Unit } from "@/app/product/[...productParams]/_components/measurements-table";
 
@@ -68,14 +67,13 @@ const normalizeSVGContainer = (originalViewBox: string) => {
 const useMeasurementValue = (
   measurements: common_ProductMeasurement[],
   selectedSize?: number,
-  selectedLanguage?: { code: string; id: number },
 ) => {
   const { dictionary } = useDataContext();
 
   return (measurementName: string) => {
     const measurementId = dictionary?.measurements?.find(
       (m) =>
-        m.translations?.[selectedLanguage?.id ?? 0]?.name?.toLowerCase() ===
+        m.translations?.[0]?.name?.toLowerCase() ===
         measurementName.toLowerCase(),
     )?.id;
 
@@ -100,12 +98,7 @@ export function SvgWrapper({
   unit = Unit.CM,
   ...props
 }: MeasurementSvgProps) {
-  const { selectedLanguage } = useCurrency((state) => state);
-  const measurementValue = useMeasurementValue(
-    measurements,
-    selectedSize,
-    selectedLanguage,
-  );
+  const measurementValue = useMeasurementValue(measurements, selectedSize);
   const transform = normalizeSVGContainer(originalViewBox);
 
   const filteredLines = lines.filter(

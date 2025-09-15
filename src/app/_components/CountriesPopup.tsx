@@ -1,18 +1,21 @@
-import { buildCountryStatesCurrencyMapAllVariants } from "@/constants";
+import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import FieldsGroupContainer from "@/app/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
 export function CountriesPopup() {
+  const { isOpen, selectedCurrency, closeCurrencyPopup, setSelectedCurrency } =
+    useCurrency((state) => state);
   const {
-    isOpen,
-    closeCurrencyPopup,
-    setSelectedCurrency,
-    setSelectedLanguage,
-  } = useCurrency((state) => state);
-  const regions = buildCountryStatesCurrencyMapAllVariants();
+    languageId,
+    country: selectedCountry,
+    setLanguageId,
+    setCountry,
+  } = useTranslationsStore((state) => state);
   return (
     <div>
       {/* {isOpen && (
@@ -41,37 +44,56 @@ export function CountriesPopup() {
 
               <div className="flex-1 overflow-y-auto pr-2">
                 <div className="space-y-4 text-textColor">
-                  {Object.entries(regions).map(([region, countries]) => (
-                    <FieldsGroupContainer
-                      key={region}
-                      styling={{ sign: "plus-minus" }}
-                      title={region}
-                      isOpen
-                    >
-                      <div className="flex flex-col gap-2">
-                        {countries.map((c) => (
-                          <Button
-                            key={`${region}-${c.label}-${c.lng}`}
-                            className="flex w-full items-center justify-between px-3"
-                            onClick={() => {
-                              if (c.currencyKey)
-                                setSelectedCurrency(c.currencyKey);
-                              setSelectedLanguage({
-                                code: c.lngCode || "en",
-                                id: c.lngId || 0,
-                              });
-                            }}
-                          >
-                            <div className="flex items-center gap-2">
-                              <Text>{c.label}</Text>
-                              <Text>{`[${c.currency}]`}</Text>
-                            </div>
-                            <Text>{c.lng}</Text>
-                          </Button>
-                        ))}
-                      </div>
-                    </FieldsGroupContainer>
-                  ))}
+                  {Object.entries(COUNTRIES_BY_REGION).map(
+                    ([region, countries]) => (
+                      <FieldsGroupContainer
+                        key={region}
+                        styling={{ sign: "plus-minus" }}
+                        title={region}
+                        isOpen
+                      >
+                        <div className="flex flex-col gap-2">
+                          {countries.map((country) => (
+                            <Button
+                              key={`${region}-${country.name}-${country.lng}`}
+                              className={cn(
+                                "flex w-full items-center justify-between border-b border-transparent px-3",
+                                {
+                                  "border-textColor":
+                                    country.currencyKey === selectedCurrency &&
+                                    country.name === selectedCountry.name &&
+                                    country.countryCode ===
+                                      selectedCountry.countryCode &&
+                                    LANGUAGE_CODE_TO_ID[country.lng] ===
+                                      languageId,
+                                },
+                              )}
+                              onClick={() => {
+                                setSelectedCurrency(country.currencyKey);
+                                setCountry({
+                                  name: country.name,
+                                  countryCode: country.countryCode,
+                                });
+                                const newLanguageId =
+                                  LANGUAGE_CODE_TO_ID[country.lng];
+                                if (newLanguageId !== undefined) {
+                                  setLanguageId(newLanguageId);
+                                }
+                              }}
+                            >
+                              <div className="flex items-center gap-2">
+                                <Text>{country.name}</Text>
+                                <Text>{`[${country.currency}]`}</Text>
+                              </div>
+                              <Text>
+                                {(country as any).displayLng || country.lng}
+                              </Text>
+                            </Button>
+                          ))}
+                        </div>
+                      </FieldsGroupContainer>
+                    ),
+                  )}
                 </div>
               </div>
             </div>

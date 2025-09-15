@@ -49,7 +49,6 @@ export default async function CatalogPage(props: CatalogPageProps) {
 
   const { topCategory, subCategory } = resolveCategories(
     dictionary?.categories,
-    { code: "en", id: 0 }, // Default for server component
     categoryName,
     subCategoryName,
   );

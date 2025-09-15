@@ -1,6 +1,5 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 
 import { useProductSizes } from "./useProductSizes";
@@ -32,7 +31,6 @@ export function useActiveSizeInfo({
   activeSizeId: number | undefined;
 }) {
   const { dictionary } = useDataContext();
-  const { selectedLanguage } = useCurrency((state) => state);
   const { sizeNames, sizeQuantity } = useProductSizes({ product });
 
   const activeSizeName = activeSizeId
@@ -49,7 +47,7 @@ export function useActiveSizeInfo({
     sizeNames?.some((s) => s.id === activeSizeId),
   )?.id;
   const category = dictionary?.categories?.find((c) => c.id === categoryId)
-    ?.translations?.[selectedLanguage.id]?.name;
+    ?.translations?.[0]?.name;
   const isShoes = category?.toLowerCase().includes("shoes");
 
   const triggerText = activeSizeName

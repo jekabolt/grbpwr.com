@@ -5,7 +5,6 @@ import type {
   common_ProductSize,
 } from "@/api/proto-http/frontend";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useMeasurementStore } from "@/lib/stores/measurement/store";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -28,13 +27,12 @@ export function MeasurementsTable({
   handleSelectSize,
 }: Props) {
   const { dictionary } = useDataContext();
-  const { selectedLanguage } = useCurrency((state) => state);
   const { hoveredMeasurement, setHoveredMeasurement } = useMeasurementStore();
 
   const measurementsWithNames = measurements.map((measurement) => {
     const name = dictionary?.measurements?.find(
       (m: any) => m.id === measurement.measurementNameId,
-    )?.translations?.[selectedLanguage.id]?.name;
+    )?.translations?.[0]?.name;
     return {
       name,
       ...measurement,

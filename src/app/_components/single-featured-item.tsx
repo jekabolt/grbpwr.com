@@ -1,23 +1,28 @@
 import { useState } from "react";
+import { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
-import { FeaturedItemsData } from "./featured-items";
-
-export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
-  const { selectedCurrency, selectedLanguage, convertPrice } = useCurrency(
-    (state) => state,
-  );
+export function SingleFeaturedItem({
+  products,
+  headline,
+}: {
+  products: common_Product[];
+  headline?: string;
+}) {
+  const { languageId } = useTranslationsStore((state) => state);
+  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div>
-      {data.products?.map((p) => {
+      {products?.map((p) => {
         const priceWithSale =
           (parseFloat(
             p.productDisplay?.productBody?.productBodyInsert?.price?.value ||
@@ -35,23 +40,23 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
               ?.value || "0",
           ) > 0;
 
+        const currentTranslation =
+          p.productDisplay?.productBody?.translations?.find(
+            (t) => t.languageId === languageId,
+          );
         return (
           <div key={p.id} className="relative flex h-screen w-full justify-end">
             <div className="absolute inset-x-2.5 top-1/2 z-40 flex -translate-y-1/2 text-bgColor mix-blend-exclusion selection:bg-inverted selection:text-textColor">
               <div className="flex w-1/2 selection:bg-acidColor">
                 <div className="flex w-full flex-row gap-3 whitespace-nowrap">
-                  <Text variant="uppercase">{data.headline}</Text>
+                  <Text variant="uppercase">{headline}</Text>
                 </div>
 
                 <Text
                   variant="undrleineWithColors"
                   className="w-full overflow-hidden leading-none text-inverted group-[:visited]:text-visitedLinkColor"
                 >
-                  {
-                    p.productDisplay?.productBody?.translations?.[
-                      selectedLanguage.id
-                    ].name
-                  }
+                  {currentTranslation?.name}
                 </Text>
               </div>
 
@@ -86,9 +91,7 @@ export function SingleFeaturedItem({ data }: { data: FeaturedItemsData }) {
                   p.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl || ""
                 }
                 alt={
-                  p.productDisplay?.productBody?.translations?.[
-                    selectedLanguage.id
-                  ].name || ""
+                  p.productDisplay?.productBody?.translations?.[0].name || ""
                 }
                 aspectRatio={calculateAspectRatio(
                   p.productDisplay?.thumbnail?.media?.thumbnail?.width,
