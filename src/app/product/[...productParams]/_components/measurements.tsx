@@ -6,6 +6,7 @@ import { MEASUREMENT_DESCRIPTIONS } from "@/constants";
 
 import { useMeasurementStore } from "@/lib/stores/measurement/store";
 import { cn } from "@/lib/utils";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
 import { Text } from "@/components/ui/text";
@@ -29,6 +30,7 @@ export function Measurements({
   handleSelectSize: (size: number) => void;
 }) {
   const { hoveredMeasurement } = useMeasurementStore();
+  const { dictionary } = useDataContext();
   const { sizes, sizeNames, sizeQuantity } = useProductSizes({
     product,
   });
@@ -46,17 +48,37 @@ export function Measurements({
   const isRing = measurementType === "ring";
   const isShoe = measurementType === "shoe";
 
+  const hoveredDescriptionKey = (() => {
+    if (!hoveredMeasurement) return null;
+
+    const measurement = dictionary?.measurements?.find((m: any) =>
+      (m.translations || []).some(
+        (t: any) => t?.name?.toLowerCase() === hoveredMeasurement.toLowerCase(),
+      ),
+    );
+
+    const baseName: string =
+      measurement?.translations?.[0]?.name || hoveredMeasurement;
+
+    return baseName
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  })();
+
   return (
     <div
       className={cn("flex h-full flex-col overflow-y-hidden bg-bgColor", {
         "overflow-y-auto": isRing || isShoe,
       })}
     >
-      {hoveredMeasurement && MEASUREMENT_DESCRIPTIONS[hoveredMeasurement] && (
-        <Text className="absolute left-0 top-0 z-10 w-full bg-highlightColor p-2.5 lowercase text-bgColor">
-          {MEASUREMENT_DESCRIPTIONS[hoveredMeasurement]}
-        </Text>
-      )}
+      {hoveredDescriptionKey &&
+        MEASUREMENT_DESCRIPTIONS[hoveredDescriptionKey] && (
+          <Text className="absolute left-0 top-0 z-10 w-full bg-highlightColor p-2.5 lowercase text-bgColor">
+            {MEASUREMENT_DESCRIPTIONS[hoveredDescriptionKey]}
+          </Text>
+        )}
       <div className={cn("space-y-6", { "space-y-0": isRing || isShoe })}>
         <div className={cn("space-y-10", { hidden: isRing || isShoe })}>
           <div className="space-y-5">
