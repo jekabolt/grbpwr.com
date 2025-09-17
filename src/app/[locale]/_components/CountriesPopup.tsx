@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname, useRouter } from "next/navigation";
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 
@@ -47,16 +49,26 @@ export function CountriesPopup() {
       // Get the new locale code
       const newLocale = LANGUAGE_ID_TO_LOCALE[newLanguageId];
       if (newLocale) {
-        // Remove current locale from pathname and add new one
-        const pathWithoutLocale =
-          pathname.replace(/^\/[a-z]{2}(?=\/|$)/, "") || "/";
-        const newPath =
-          newLocale === "en"
-            ? pathWithoutLocale
-            : `/${newLocale}${pathWithoutLocale}`;
+        // Persist preference so middleware respects it
+        const oneYear = 365 * 24 * 60 * 60 * 1000;
+        const expires = new Date(Date.now() + oneYear).toUTCString();
+        document.cookie = `NEXT_LOCALE=${newLocale}; Path=/; Expires=${expires}`;
+
+        // Remove current locale and optional country from the pathname
+        const pathWithoutLocaleCountry =
+          pathname
+            // remove /{COUNTRY}/{locale}
+            .replace(/^\/[A-Za-z]{2}\/[a-z]{2}(?=\/|$)/, "")
+            // remove /{locale}/{COUNTRY}
+            .replace(/^\/[a-z]{2}\/[A-Za-z]{2}(?=\/|$)/, "")
+            // remove /{locale}
+            .replace(/^\/[a-z]{2}(?=\/|$)/, "") || "/";
+
+        // Country first, then locale
+        const newPath = `/${country.countryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
 
         // Navigate to new locale
-        router.push(newPath);
+        router.replace(newPath);
       }
     }
 
@@ -120,9 +132,7 @@ export function CountriesPopup() {
                                 <Text>{country.name}</Text>
                                 <Text>{`[${country.currency}]`}</Text>
                               </div>
-                              <Text>
-                                {(country as any).displayLng || country.lng}
-                              </Text>
+                              <Text>{country.displayLng}</Text>
                             </Button>
                           ))}
                         </div>
