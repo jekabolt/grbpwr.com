@@ -1,7 +1,7 @@
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
-import ItemRow from "@/app/(checkout)/cart/_components/ItemRow";
+import ItemRow from "@/app/[locale]/(checkout)/cart/_components/ItemRow";
 
 export function OrderProductsList({
   className,

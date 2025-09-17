@@ -8,7 +8,7 @@ import { currencySymbols } from "@/constants";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { OrderProducts } from "@/app/(checkout)/checkout/_components/new-order-form/order-products";
+import { OrderProducts } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/order-products";
 
 import { OrderSecondaryInfo } from "./order-secondary-info";
 import { StatusBadge } from "./status-badge";

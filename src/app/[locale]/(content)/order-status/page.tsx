@@ -1,6 +1,6 @@
 import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
-import FieldsGroupContainer from "@/app/(checkout)/checkout/_components/new-order-form/fields-group-container";
+import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
 import OrderStatusForm from "../_components/order-status-form";
 

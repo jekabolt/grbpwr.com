@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
-import FieldsGroupContainer from "@/app/[country]/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
+import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
 import { createMarkdownComponents } from "./markdown-components";
 

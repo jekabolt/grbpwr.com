@@ -12,7 +12,7 @@ import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
 import TextareaField from "@/components/ui/form/fields/textarea-field";
 import { SubmissionToaster } from "@/components/ui/toaster";
-import FieldsGroupContainer from "@/app/(checkout)/checkout/_components/new-order-form/fields-group-container";
+import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
 import AftersaleSelector from "../../_components/aftersale-selector";
 import { civility, options } from "../../_components/constant";

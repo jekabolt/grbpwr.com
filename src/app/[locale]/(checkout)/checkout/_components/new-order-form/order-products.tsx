@@ -1,6 +1,6 @@
 import { common_OrderItem } from "@/api/proto-http/frontend";
 
-import CartProductsList from "@/app/[country]/[locale]/(checkout)/cart/_components/CartProductsList";
+import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartProductsList";
 
 import { MobileProductsCarousel } from "./mobile-products-carousel";
 

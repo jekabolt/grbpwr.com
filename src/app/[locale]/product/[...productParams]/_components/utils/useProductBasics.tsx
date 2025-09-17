@@ -1,7 +1,7 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { getPreorderDate } from "@/app/[country]/[locale]/(checkout)/cart/_components/utils";
+import { getPreorderDate } from "@/app/[locale]/(checkout)/cart/_components/utils";
 
 export function useProductBasics({ product }: { product: common_ProductFull }) {
   const { languageId } = useTranslationsStore((state) => state);

@@ -4,7 +4,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import { getCountry } from "@/lib/hooks/useCountry";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { ToastProvider } from "@/components/ui/toaster";
 
@@ -27,12 +26,11 @@ interface Props {
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
   const messages = await getMessages();
-  const country = await getCountry();
 
-  console.log("Locale:", locale, "Country:", country);
+  console.log(locale);
 
   return (
-    <html lang={locale} data-country={country}>
+    <html lang={locale}>
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
       <body className={FeatureMono.className}>
         <NextIntlClientProvider messages={messages}>
