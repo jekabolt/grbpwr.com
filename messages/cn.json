@@ -1,0 +1,76 @@
+{
+  "navigation": {
+    "men": "男装",
+    "women": "女装",
+    "objects": "物品",
+    "timeline": "时间轴",
+    "cart": "购物车",
+    "all": "全部",
+    "new in": "新品",
+    "checkout": "结算",
+    "close": "关闭"
+  },
+  "footer": {
+    "legal notices": "法律声明",
+    "order status": "订单状态",
+    "help": "帮助",
+    "aftersale services": "售后服务",
+    "faqs": "常见问题"
+  },
+  "newslatter": {
+    "mailing list": "邮件列表",
+    "agree": "我同意接收邮件。请阅读我们的隐私政策了解更多信息。",
+    "subscribe": "订阅"
+  },
+  "cart": {
+    "empty": "空",
+    "shopping cart": "购物车",
+    "proceed to checkout": "去结算",
+    "subtotal": "小计",
+    "remove": "删除",
+    "sure?": "确定吗？"
+  },
+  "catalog": {
+    "sort by": "排序",
+    "size": "尺码",
+    "next": "下一个"
+  },
+  "checkout": {
+    "email address:": "邮箱地址：",
+    "accept": "我同意注册订阅邮件",
+    "proceed": "继续购买即表示您同意接受",
+    "and": "和",
+    "terms and conditions": "条款和条件",
+    "privacy information notice": "隐私信息声明",
+    "shipping": "收货地址/配送方式",
+    "first name": "名",
+    "last name": "姓",
+    "country/region:": "国家/地区：",
+    "state:": "省/州：",
+    "city:": "城市：",
+    "additional address:": "详细地址：",
+    "company:": "公司：",
+    "phone number:": "电话号码：",
+    "postal code:": "邮政编码：",
+    "shipping method": "配送方式",
+    "shipping summary": "配送",
+    "payment method": "支付方式",
+    "billing address": "账单地址",
+    "billing text": "请选择与您的卡或支付方式匹配的地址",
+    "same as shipping address": "与收货地址相同",
+    "order summary": "订单摘要",
+    "apply": "应用",
+    "discard": "取消",
+    "enter promo code": "输入优惠码",
+    "pay": "支付",
+    "subtotal": "小计",
+    "promo discount": "优惠折扣",
+    "grand total": "总计",
+    "free by promo": "优惠免费"
+  },
+  "not-found": {
+    "title": "页面未找到",
+    "text": "抱歉，您查找的页面不存在或已被移动。请返回首页，如果问题仍然存在，请联系我们",
+    "main": "主页"
+  }
+}

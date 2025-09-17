@@ -1,36 +1,17 @@
-import Link from "next/link";
+"use client";
 
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import Error from "next/error";
 
-import "./globals.css";
+// This page renders when a route like `/unknown.txt` is requested.
+// In this case, the layout at `app/[locale]/layout.tsx` receives
+// an invalid value as the `[locale]` param and calls `notFound()`.
 
-import { generateCommonMetadata } from "@/lib/common-metadata";
-import FlexibleLayout from "@/components/flexible-layout";
-
-export const dynamic = "force-static";
-
-export const metadata = generateCommonMetadata({
-  title: "page not found".toUpperCase(),
-  description: "page not found",
-});
-
-export default function NotFoundPage() {
+export default function GlobalNotFound() {
   return (
-    <FlexibleLayout headerType="catalog">
-      <div className="flex h-screen flex-col items-center justify-center gap-6">
-        <Text variant="uppercase" component="h1">
-          page not found
-        </Text>
-        <Text className="max-w-xs px-2.5 text-center lg:max-w-72 lg:px-0">
-          sorry, the page you are looking for doesn&apos;t exist or has been
-          moved. please go back to the homepage or contact us if the problem
-          persists.
-        </Text>
-        <Button asChild variant="main" size="lg" className="uppercase">
-          <Link href="/">main</Link>
-        </Button>
-      </div>
-    </FlexibleLayout>
+    <html lang="en">
+      <body>
+        <Error statusCode={404} />;
+      </body>
+    </html>
   );
 }

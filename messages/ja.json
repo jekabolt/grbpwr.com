@@ -1,0 +1,76 @@
+{
+  "navigation": {
+    "men": "メンズ",
+    "women": "レディース",
+    "objects": "オブジェクト",
+    "timeline": "タイムライン",
+    "cart": "カート",
+    "all": "すべて",
+    "new in": "新着",
+    "checkout": "チェックアウト",
+    "close": "閉じる"
+  },
+  "footer": {
+    "legal notices": "法的通知",
+    "order status": "注文状況",
+    "help": "ヘルプ",
+    "aftersale services": "アフターサービス",
+    "faqs": "よくある質問"
+  },
+  "newslatter": {
+    "mailing list": "メーリングリスト",
+    "agree": "メール受信に同意します。詳細については、プライバシーポリシーをお読みください。",
+    "subscribe": "購読する"
+  },
+  "cart": {
+    "empty": "何もありません",
+    "shopping cart": "ショッピングカート",
+    "proceed to checkout": "チェックアウトに進む",
+    "subtotal": "小計",
+    "remove": "削除",
+    "sure?": "よろしいですか？"
+  },
+  "catalog": {
+    "sort by": "並び替え",
+    "size": "サイズ",
+    "next": "次へ"
+  },
+  "checkout": {
+    "email address:": "メールアドレス：",
+    "accept": "ニュースレター登録に同意します",
+    "proceed": "購入を進めることで以下に同意したものとみなされます",
+    "and": "および",
+    "terms and conditions": "利用規約",
+    "privacy information notice": "プライバシー情報通知",
+    "shipping": "配送先住所/配送方法",
+    "first name": "名",
+    "last name": "姓",
+    "country/region:": "国/地域：",
+    "state:": "都道府県：",
+    "city:": "市区町村：",
+    "additional address:": "追加住所：",
+    "company:": "会社名：",
+    "phone number:": "電話番号：",
+    "postal code:": "郵便番号：",
+    "shipping method": "配送方法",
+    "shipping summary": "配送",
+    "payment method": "支払い方法",
+    "billing address": "請求先住所",
+    "billing text": "カードまたは支払い方法と一致する住所を選択してください",
+    "same as shipping address": "配送先住所と同じ",
+    "order summary": "注文概要",
+    "apply": "適用",
+    "discard": "破棄",
+    "enter promo code": "プロモコードを入力",
+    "pay": "支払う",
+    "subtotal": "小計",
+    "promo discount": "プロモ割引",
+    "grand total": "総合計",
+    "free by promo": "プロモで無料"
+  },
+  "not-found": {
+    "title": "ページが見つかりません",
+    "text": "申し訳ございませんが、お探しのページは存在しないか移動されました。ホームページに戻るか、問題が続く場合はお問い合わせください",
+    "main": "メインページ"
+  }
+}

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { Header } from "@/app/_components/header";
+import { Header } from "@/app/[locale]/_components/header";
 
 export const dynamic = "force-static";
 

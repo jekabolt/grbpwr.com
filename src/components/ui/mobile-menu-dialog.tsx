@@ -7,8 +7,8 @@ import {
   getCategoryDisplayName,
   getHeroNavLink,
 } from "@/lib/utils";
-import CurrencyPopover from "@/app/_components/currency-popover";
-import NewslatterForm from "@/app/_components/newslatter-form";
+import CurrencyPopover from "@/app/[locale]/_components/currency-popover";
+import NewslatterForm from "@/app/[locale]/_components/newslatter-form";
 
 import { useDataContext } from "../contexts/DataContext";
 import { AnimatedButton } from "./animated-button";

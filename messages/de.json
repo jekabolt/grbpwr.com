@@ -1,0 +1,76 @@
+{
+  "navigation": {
+    "men": "herren",
+    "women": "damen",
+    "objects": "objekte",
+    "timeline": "zeitleiste",
+    "cart": "warenkorb",
+    "all": "alle",
+    "new in": "neu",
+    "checkout": "kasse",
+    "close": "schließen"
+  },
+  "footer": {
+    "legal notices": "rechtliche hinweise",
+    "order status": "bestellstatus",
+    "help": "hilfe",
+    "aftersale services": "kundenservice",
+    "faqs": "häufig gestellte fragen"
+  },
+  "newslatter": {
+    "mailing list": "mailingliste",
+    "agree": "ich stimme zu, e-mails zu erhalten. lesen sie unsere datenschutzrichtlinie für weitere informationen.",
+    "subscribe": "abonnieren"
+  },
+  "cart": {
+    "empty": "nichts",
+    "shopping cart": "warenkorb",
+    "proceed to checkout": "zur kasse gehen",
+    "subtotal": "zwischensumme",
+    "remove": "entfernen",
+    "sure?": "sicher?"
+  },
+  "catalog": {
+    "sort by": "sortieren nach",
+    "size": "größe",
+    "next": "weiter"
+  },
+  "checkout": {
+    "email address:": "e-mail-adresse:",
+    "accept": "ICH STIMME DER NEWSLETTER-ANMELDUNG ZU",
+    "proceed": "DURCH FORTFAHREN MIT DEM KAUF STIMMEN SIE ZU",
+    "and": "UND",
+    "terms and conditions": "GESCHÄFTSBEDINGUNGEN",
+    "privacy information notice": "DATENSCHUTZHINWEIS",
+    "shipping": "versandadresse/liefermethode",
+    "first name": "vorname",
+    "last name": "nachname",
+    "country/region:": "land/region:",
+    "state:": "bundesland:",
+    "city:": "stadt:",
+    "additional address:": "zusätzliche adresse:",
+    "company:": "unternehmen:",
+    "phone number:": "telefonnummer:",
+    "postal code:": "postleitzahl:",
+    "shipping method": "versandmethode",
+    "shipping summary": "versand",
+    "payment method": "zahlungsmethode",
+    "billing address": "rechnungsadresse",
+    "billing text": "wählen sie die adresse, die ihrer karte oder zahlungsmethode entspricht",
+    "same as shipping address": "gleich wie versandadresse",
+    "order summary": "bestellübersicht",
+    "apply": "anwenden",
+    "discard": "verwerfen",
+    "enter promo code": "GUTSCHEINCODE EINGEBEN",
+    "pay": "bezahlen",
+    "subtotal": "zwischensumme",
+    "promo discount": "gutscheinrabatt",
+    "grand total": "gesamtsumme",
+    "free by promo": "kostenlos durch gutschein"
+  },
+  "not-found": {
+    "title": "seite nicht gefunden",
+    "text": "entschuldigung, die seite, die sie suchen, existiert nicht oder wurde verschoben. bitte gehen sie zurück zur startseite oder kontaktieren sie uns, wenn das problem weiterhin besteht",
+    "main": "hauptseite"
+  }
+}

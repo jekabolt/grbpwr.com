@@ -5,8 +5,8 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
-import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList";
-import CartTotalPrice from "@/app/(checkout)/cart/_components/CartTotalPrice";
+import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartProductsList";
+import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
 
 import { Button } from "./button";
 import { Text } from "./text";

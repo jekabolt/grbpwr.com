@@ -3,7 +3,7 @@ import { common_ProductMeasurement } from "@/api/proto-http/frontend";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { Unit } from "@/app/product/[...productParams]/_components/measurements-table";
+import { Unit } from "@/app/[locale]/product/[...productParams]/_components/measurements-table";
 
 import { HorizontalLine } from "../icons/guide-lines/horizontal-line";
 import { VerticalLine } from "../icons/guide-lines/vertical-line";

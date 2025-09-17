@@ -1,0 +1,76 @@
+{
+  "navigation": {
+    "men": "men",
+    "women": "women",
+    "objects": "objects",
+    "timeline": "timeline",
+    "cart": "cart",
+    "all": "all",
+    "new in": "new in",
+    "checkout": "checkout",
+    "close": "close"
+  },
+  "footer": {
+    "legal notices": "legal notices",
+    "order status": "order status",
+    "help": "help",
+    "aftersale services": "aftersale services",
+    "faqs": "faqs"
+  },
+  "newslatter": {
+    "mailing list": "mailing list",
+    "agree": "i agree to recieve emails. read our privacy policy for more information.",
+    "subscribe": "subscribe"
+  },
+  "cart": {
+    "empty": "nothing",
+    "shopping cart": "shopping cart",
+    "proceed to checkout": "proceed to checkout",
+    "subtotal": "subtotal",
+    "remove": "remove",
+    "sure?": "sure?"
+  },
+  "catalog": {
+    "sort by": "sort by",
+    "size": "size",
+    "next": "next"
+  },
+  "checkout": {
+    "email address:": "email address:",
+    "accept": "I ACCEPT TO REGISTER TO NEWSLETTER",
+    "proceed": "BY PROCEEDING WITH PURCHASE YOU AGREEING TO ACCEPT",
+    "and": "AND",
+    "terms and conditions": "TERMS AND CONDITIONS",
+    "privacy information notice": "PRIVACY INFORMATION NOTICE",
+    "shipping": "shipping address/delivery method",
+    "first name": "first name",
+    "last name": "last name",
+    "country/region:": "country/region:",
+    "state:": "state:",
+    "city:": "city:",
+    "additional address:": "additional address:",
+    "company:": "company:",
+    "phone number:": "phone number:",
+    "postal code:": "postal code:",
+    "shipping method": "shipping method",
+    "shipping summary": "shipping",
+    "payment method": "payment method",
+    "billing address": "billing address",
+    "billing text": "select the address that matches your card or payment method",
+    "same as shipping address": "same as shipping address",
+    "order summary": "order summary",
+    "apply": "apply",
+    "discard": "discard",
+    "enter promo code": "ENTER PROMO CODE",
+    "pay": "pay",
+    "subtotal": "subtotal",
+    "promo discount": "promo discount",
+    "grand total": "grand total",
+    "free by promo": "free by promo"
+  },
+  "not-found": {
+    "title": "page not found",
+    "text": "sorry, the page you are looking for doesn&apos;t exist or has been moved. please go back to the homepage or contact us if the problem persists",
+    "main": "main"
+  }
+}

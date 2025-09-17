@@ -1,0 +1,76 @@
+{
+  "navigation": {
+    "men": "uomo",
+    "women": "donna",
+    "objects": "oggetti",
+    "timeline": "cronologia",
+    "cart": "carrello",
+    "all": "tutto",
+    "new in": "novità",
+    "checkout": "checkout",
+    "close": "chiudi"
+  },
+  "footer": {
+    "legal notices": "note legali",
+    "order status": "stato ordine",
+    "help": "aiuto",
+    "aftersale services": "servizi post vendita",
+    "faqs": "domande frequenti"
+  },
+  "newslatter": {
+    "mailing list": "mailing list",
+    "agree": "accetto di ricevere email. leggi la nostra informativa sulla privacy per maggiori informazioni.",
+    "subscribe": "iscriviti"
+  },
+  "cart": {
+    "empty": "niente",
+    "shopping cart": "carrello",
+    "proceed to checkout": "procedi al checkout",
+    "subtotal": "subtotale",
+    "remove": "rimuovi",
+    "sure?": "sicuro?"
+  },
+  "catalog": {
+    "sort by": "ordina per",
+    "size": "taglia",
+    "next": "avanti"
+  },
+  "checkout": {
+    "email address:": "indirizzo email:",
+    "accept": "ACCETTO DI ISCRIVERMI ALLA NEWSLETTER",
+    "proceed": "PROCEDENDO CON L'ACQUISTO ACCETTI DI ACCETTARE",
+    "and": "E",
+    "terms and conditions": "TERMINI E CONDIZIONI",
+    "privacy information notice": "INFORMATIVA SULLA PRIVACY",
+    "shipping": "indirizzo di spedizione/metodo di consegna",
+    "first name": "nome",
+    "last name": "cognome",
+    "country/region:": "paese/regione:",
+    "state:": "stato:",
+    "city:": "città:",
+    "additional address:": "indirizzo aggiuntivo:",
+    "company:": "azienda:",
+    "phone number:": "numero di telefono:",
+    "postal code:": "codice postale:",
+    "shipping method": "metodo di spedizione",
+    "shipping summary": "spedizione",
+    "payment method": "metodo di pagamento",
+    "billing address": "indirizzo di fatturazione",
+    "billing text": "seleziona l'indirizzo che corrisponde alla tua carta o metodo di pagamento",
+    "same as shipping address": "stesso dell'indirizzo di spedizione",
+    "order summary": "riepilogo ordine",
+    "apply": "applica",
+    "discard": "scarta",
+    "enter promo code": "INSERISCI CODICE PROMO",
+    "pay": "paga",
+    "subtotal": "subtotale",
+    "promo discount": "sconto promo",
+    "grand total": "totale finale",
+    "free by promo": "gratuito con promo"
+  },
+  "not-found": {
+    "title": "pagina non trovata",
+    "text": "spiacenti, la pagina che stai cercando non esiste o è stata spostata. torna alla homepage o contattaci se il problema persiste",
+    "main": "pagina d'inizio"
+  }
+}

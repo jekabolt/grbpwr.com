@@ -1,5 +1,5 @@
 import { Text } from "@/components/ui/text";
-import { useAnnounce } from "@/app/_components/useAnnounce";
+import { useAnnounce } from "@/app/[locale]/_components/useAnnounce";
 
 import { useDataContext } from "../contexts/DataContext";
 import { Button } from "./button";

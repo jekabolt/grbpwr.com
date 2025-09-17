@@ -1,4 +1,4 @@
-import type { CheckoutData } from "@/app/(checkout)/checkout/_components/new-order-form/schema";
+import type { CheckoutData } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/schema";
 
 export interface CheckoutState {
     formData: Partial<CheckoutData>;

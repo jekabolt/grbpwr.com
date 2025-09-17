@@ -1,0 +1,76 @@
+{
+  "navigation": {
+    "men": "hommes",
+    "women": "femmes",
+    "objects": "objets",
+    "timeline": "chronologie",
+    "cart": "panier",
+    "all": "tous",
+    "new in": "nouveau dans",
+    "checkout": "page de règlement",
+    "close": "fermer"
+  },
+  "footer": {
+    "legal notices": "mentions légales",
+    "order status": "statut de commande",
+    "help": "aide",
+    "aftersale services": "services après-vente",
+    "faqs": "faqs"
+  },
+  "newslatter": {
+    "mailing list": "liste de diffusion",
+    "agree": "j'accepte de recevoir des emails. lisez notre politique de confidentialité pour plus d'informations.",
+    "subscribe": "s'abonner"
+  },
+  "cart": {
+    "empty": "vide",
+    "shopping cart": "panier",
+    "proceed to checkout": "passer à la caisse",
+    "subtotal": "total",
+    "remove": "retirer",
+    "sure?": "tu es sûr?"
+  },
+  "catalog": {
+    "sort by": "trier par",
+    "size": "taille",
+    "next": "suivant"
+  },
+  "checkout": {
+    "email address:": "adresse email:",
+    "accept": "J'ACCEPTE DE REGISTER TO NEWSLETTER",
+    "proceed": "EN PROCÉDANT AVEC L'ACHAT VOUS AGREEZ A ACCEPTER",
+    "and": "ET",
+    "terms and conditions": "TERMES ET CONDITIONS",
+    "privacy information notice": "AVIS D'INFORMATION SUR LA CONFIDENTIALITÉ",
+    "shipping": "adresse de livraison/méthode de livraison",
+    "first name": "prénom",
+    "last name": "nom",
+    "country/region:": "pays/région:",
+    "state:": "état:",
+    "city:": "ville:",
+    "additional address:": "adresse complémentaire:",
+    "company:": "entreprise:",
+    "phone number:": "numéro de téléphone:",
+    "postal code:": "code postal:",
+    "shipping method": "méthode d'expédition",
+    "shipping summary": "méthode d'expédition",
+    "payment method": "méthode de paiement",
+    "billing address": "adresse de facturation",
+    "billing text": "sélectionnez l'adresse qui correspond à votre carte ou à votre méthode de paiement",
+    "same as shipping address": "même adresse que l'adresse de livraison",
+    "order summary": "récapitulatif de la commande",
+    "pay": "payer",
+    "apply": "appliquer",
+    "discard": "rejeter",
+    "enter promo code": "ENTREZ LE CODE PROMO",
+    "subtotal": "total",
+    "promo discount": "remise promo",
+    "grand total": "total général",
+    "free by promo": "gratuit par promo"
+  },
+  "not-found": {
+    "title": "page non trouvée",
+    "text": "désolé, la page que vous cherchez n'existe pas ou a été déplacée. veuillez retourner à la page d'accueil ou contacter nous si le problème persiste",
+    "main": "page d'accueil"
+  }
+}

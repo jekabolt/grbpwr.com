@@ -6,7 +6,7 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import {
   getUnit,
   Unit,
-} from "@/app/product/[...productParams]/_components/measurements-table";
+} from "@/app/[locale]/product/[...productParams]/_components/measurements-table";
 
 import { Text } from "../../text";
 
