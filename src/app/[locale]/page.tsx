@@ -9,7 +9,7 @@ import { EmptyHero } from "@/components/ui/empty-hero";
 import { Ads } from "./_components/ads";
 import { MainAds } from "./_components/main-ads";
 
-// export const dynamic = "force-static";
+export const dynamic = "force-static";
 
 export async function generateStaticParams() {
   return routing.locales.map((locale) => ({
