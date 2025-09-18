@@ -12,7 +12,11 @@ import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 
-// export const dynamic = "force-static";
+export const dynamic = "force-static";
+
+export async function generateStaticParams() {
+  return [];
+}
 
 interface ProductPageProps {
   params: Promise<{

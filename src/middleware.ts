@@ -8,7 +8,6 @@ export default function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
     const countryCookie = req.cookies.get('NEXT_COUNTRY')?.value?.toLowerCase();
 
-    // Match /{COUNTRY}/{locale}/{rest?}; COUNTRY is ISO 3166-1 alpha-2 (case-insensitive)
     const match = pathname.match(/^\/([A-Za-z]{2})\/([a-z]{2})(?=\/|$)(.*)$/);
     if (match) {
         const [, countryRaw, locale, rest] = match;

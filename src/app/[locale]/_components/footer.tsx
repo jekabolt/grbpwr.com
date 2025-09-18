@@ -2,10 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FOOTER_YEAR, FOOTER_LINKS as links } from "@/constants";
+import {
+  currencySymbols,
+  FOOTER_YEAR,
+  FOOTER_LINKS as links,
+} from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { WhiteLogo } from "@/components/ui/icons/white-logo";
 import { Logo } from "@/components/ui/logo";
@@ -39,7 +44,8 @@ function LiveClock() {
 }
 
 export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
-  const { openCurrencyPopup } = useCurrency((state) => state);
+  const { selectedCurrency, openCurrencyPopup } = useCurrency((state) => state);
+  const { country } = useTranslationsStore((state) => state);
   const t = useTranslations("footer");
   return (
     <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
@@ -82,9 +88,8 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
           <FooterNavMobile />
         </div>
         <div className="order-2 flex lg:order-4">
-          {/* <CurrencyPopover title="currency:" theme={theme} /> */}
           <Button className="uppercase" onClick={openCurrencyPopup}>
-            country
+            country: {country.name} / {currencySymbols[selectedCurrency]}
           </Button>
           <CountriesPopup />
         </div>
