@@ -1,4 +1,5 @@
 import { FeatureMono } from "@/fonts";
+import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -8,6 +9,10 @@ import { CookieBanner } from "@/components/ui/cookie-banner";
 import { ToastProvider } from "@/components/ui/toaster";
 
 import "../globals.css";
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 export const metadata = generateCommonMetadata();
 
@@ -26,8 +31,6 @@ interface Props {
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
   const messages = await getMessages();
-
-  console.log(locale);
 
   return (
     <html lang={locale}>
