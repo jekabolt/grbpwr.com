@@ -10,6 +10,8 @@ import { ToastProvider } from "@/components/ui/toaster";
 
 import "../globals.css";
 
+export const dynamic = "force-static";
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
