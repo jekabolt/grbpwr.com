@@ -44,10 +44,14 @@ export function useLocation() {
         const expires = new Date(Date.now() + oneYear).toUTCString();
         document.cookie = `NEXT_LOCALE=${newLocale}; Path=/; Expires=${expires}`;
 
-        // The pathname from usePathname() is already stripped of locale by Next.js
-        // So we just need to add the locale prefix
-        const pathWithoutLocale = pathname === "/" ? "" : pathname;
-        const newPath = `/${newLocale}${pathWithoutLocale}`;
+        // Remove current locale and optional country from the pathname
+        const pathWithoutLocaleCountry =
+          pathname.replace(
+            /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2}\/[A-Za-z]{2}|[a-z]{2})(?=\/|$)/,
+            "",
+          ) || "/";
+
+        const newPath = `/${country.countryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
 
         router.replace(newPath);
       }
