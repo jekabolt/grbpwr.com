@@ -2,7 +2,7 @@ import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { CookieBanner } from "@/components/ui/cookie-banner";
@@ -32,13 +32,15 @@ interface Props {
 
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
+  // Ensure next-intl resolves the correct locale during SSG/SSR
+  setRequestLocale(locale);
   const messages = await getMessages();
 
   return (
     <html lang={locale}>
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
       <body className={FeatureMono.className}>
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <ToastProvider>
             <div className="lightTheme relative min-h-screen">{children}</div>
             <CookieBanner />
