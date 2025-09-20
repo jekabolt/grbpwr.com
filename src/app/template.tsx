@@ -6,8 +6,8 @@ import { CartStoreProvider } from "@/lib/stores/cart/store-provider";
 import { CheckoutStoreProvider } from "@/lib/stores/checkout/store-provider";
 import { CurrencyStoreProvider } from "@/lib/stores/currency/store-provider";
 import { LastViewedStoreProvider } from "@/lib/stores/last-viewed/store-provider.";
-import { TranslationsStoreProvider } from "@/lib/stores/translations/store-provider";
 import { getInitialTranslationState } from "@/lib/stores/translations/cookie-utils";
+import { TranslationsStoreProvider } from "@/lib/stores/translations/store-provider";
 import { DataContextProvider } from "@/components/contexts/DataContext";
 import { ServerActionsContextProvider } from "@/components/contexts/ServerActionsContext";
 
