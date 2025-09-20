@@ -14,12 +14,21 @@ const TranslationsStoreContext = createContext<
 
 export const TranslationsStoreProvider = ({
   children,
+  initialCountry,
+  initialLanguageId,
 }: {
   children: React.ReactNode;
+  initialCountry?: { name: string; countryCode: string };
+  initialLanguageId?: number;
 }) => {
   const storeRef = useRef<TranslationsStoreApi>(null);
   if (!storeRef.current) {
-    storeRef.current = createTranslationsStore(defaultInitState);
+    const initState = {
+      ...defaultInitState,
+      ...(initialCountry && { country: initialCountry }),
+      ...(initialLanguageId && { languageId: initialLanguageId }),
+    };
+    storeRef.current = createTranslationsStore(initState);
   }
   return (
     <TranslationsStoreContext.Provider value={storeRef.current}>
