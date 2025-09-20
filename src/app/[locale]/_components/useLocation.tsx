@@ -39,10 +39,11 @@ export function useLocation() {
       // Get the new locale code
       const newLocale = LANGUAGE_ID_TO_LOCALE[newLanguageId];
       if (newLocale) {
-        // Persist preference so middleware respects it
+        // Persist preferences so middleware respects them
         const oneYear = 365 * 24 * 60 * 60 * 1000;
         const expires = new Date(Date.now() + oneYear).toUTCString();
         document.cookie = `NEXT_LOCALE=${newLocale}; Path=/; Expires=${expires}`;
+        document.cookie = `NEXT_COUNTRY=${country.countryCode.toLowerCase()}; Path=/; Expires=${expires}`;
 
         // Remove current locale and optional country from the pathname
         const pathWithoutLocaleCountry =
