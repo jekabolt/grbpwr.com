@@ -1,23 +1,34 @@
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
+import { COUNTRIES_BY_REGION } from './constants';
 import { routing } from './i18n/routing';
+
 
 const intlMiddleware = createMiddleware(routing);
 
-// Mapping стран к предпочтительным локалям
-const countryToLocaleMap: Record<string, string> = {
-    'pl': 'pl',
-    'de': 'de',
-    'fr': 'fr',
-    'it': 'it',
-    'us': 'en',
-    'cn': 'zh',
-    'jp': 'ja',
-    'kr': 'ko',
+// Автоматически создаем mapping из COUNTRIES_BY_REGION
+const createCountryToLocaleMap = () => {
+    const mapping: Record<string, string> = {};
+
+    Object.entries(COUNTRIES_BY_REGION).forEach(([region, countries]) => {
+        countries.forEach(country => {
+            mapping[country.countryCode.toLowerCase()] = country.lng;
+        });
+    });
+
+    return mapping;
 };
+
+const countryToLocaleMap = createCountryToLocaleMap();
+const supportedCountries = Object.keys(countryToLocaleMap);
 
 const getLocaleFromCountry = (country: string): string => {
     return countryToLocaleMap[country.toLowerCase()] || 'en';
+};
+
+const getNormalizedCountry = (detectedCountry: string): string => {
+    const countryCode = detectedCountry.toLowerCase();
+    return supportedCountries.includes(countryCode) ? countryCode : 'us';
 };
 
 export default function middleware(req: NextRequest) {
@@ -25,7 +36,6 @@ export default function middleware(req: NextRequest) {
     const countryCookie = req.cookies.get('NEXT_COUNTRY')?.value?.toLowerCase();
     const localeCookie = req.cookies.get('NEXT_LOCALE')?.value;
 
-    // Получаем страну из заголовков Vercel
     const detectedCountry = process.env.NODE_ENV === 'development'
         ? 'de'
         : (req.headers.get('x-vercel-ip-country')?.toLowerCase() || 'us');
@@ -34,6 +44,12 @@ export default function middleware(req: NextRequest) {
     if (match) {
         const [, countryRaw, locale, rest] = match;
         const country = countryRaw.toLowerCase();
+
+        if (!supportedCountries.includes(country)) {
+            const url = req.nextUrl.clone();
+            url.pathname = `/us/en${rest || ''}`;
+            return NextResponse.redirect(url, { status: 308 });
+        }
 
         const url = req.nextUrl.clone();
         url.pathname = `/${locale}${rest || ''}` || '/';
@@ -50,14 +66,29 @@ export default function middleware(req: NextRequest) {
         const localeOnly = pathname.match(/^\/([a-z]{2})(?=\/|$)(.*)$/);
         if (localeOnly) {
             const [, locale, rest] = localeOnly;
-            const country = countryCookie || detectedCountry;
+
+            let targetCountry = 'us';
+            if (countryCookie && supportedCountries.includes(countryCookie)) {
+                targetCountry = countryCookie;
+            } else {
+                targetCountry = getNormalizedCountry(detectedCountry);
+            }
+
             const url = req.nextUrl.clone();
-            url.pathname = `/${country}/${locale}${rest || ''}` || '/';
+            url.pathname = `/${targetCountry}/${locale}${rest || ''}`;
             return NextResponse.redirect(url, { status: 308 });
         }
 
-        const targetCountry = countryCookie || detectedCountry;
-        const targetLocale = localeCookie || getLocaleFromCountry(targetCountry);
+        let targetCountry = 'us';
+        let targetLocale = 'en';
+
+        if (countryCookie && supportedCountries.includes(countryCookie)) {
+            targetCountry = countryCookie;
+            targetLocale = localeCookie || getLocaleFromCountry(countryCookie);
+        } else {
+            targetCountry = getNormalizedCountry(detectedCountry);
+            targetLocale = localeCookie || getLocaleFromCountry(targetCountry);
+        }
 
         const url = req.nextUrl.clone();
         url.pathname = `/${targetCountry}/${targetLocale}${pathname}`;
