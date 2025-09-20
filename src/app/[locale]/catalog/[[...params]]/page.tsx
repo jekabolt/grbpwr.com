@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { CATALOG_LIMIT } from "@/constants";
+import { getTranslations } from "next-intl/server";
 
 import { serviceClient } from "@/lib/api";
 import { resolveCategories } from "@/lib/categories-map";
@@ -17,8 +18,9 @@ import {
 } from "../_components/utils";
 
 interface CatalogPageProps {
-  params?: Promise<{
-    params: string[];
+  params: Promise<{
+    locale: string;
+    params?: string[];
   }>;
   searchParams: Promise<{
     order?: string;
@@ -37,16 +39,66 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export const dynamic = "force-static";
+// export const dynamic = "force-static";
 
-export function generateStaticParams() {
-  return [];
+export async function generateStaticParams() {
+  const { dictionary } = await serviceClient.GetHero({});
+  const locales = ["en", "fr", "de", "it", "ja", "cn", "kr"];
+
+  // Get all categories for static generation
+  const categories = dictionary?.categories || [];
+  const topCategories = categories.filter(
+    (cat: any) => cat.level === "top_category",
+  );
+
+  const params = [];
+
+  // Generate params for each locale
+  for (const locale of locales) {
+    // Root catalog page
+    params.push({ locale, params: [] });
+
+    // Category pages
+    for (const category of topCategories) {
+      const translation =
+        category.translations?.find((t: any) => t.languageId === 1) ||
+        category.translations?.[0];
+      if (translation?.name) {
+        const categoryName = translation.name.toLowerCase();
+        params.push({ locale, params: [categoryName] });
+
+        // Subcategory pages
+        const subCategories = categories.filter(
+          (cat: any) =>
+            cat.level === "sub_category" && cat.parentId === category.id,
+        );
+
+        for (const subCategory of subCategories) {
+          const subTranslation =
+            subCategory.translations?.find((t: any) => t.languageId === 1) ||
+            subCategory.translations?.[0];
+          if (subTranslation?.name) {
+            const subCategoryName = subTranslation.name.toLowerCase();
+            params.push({ locale, params: [categoryName, subCategoryName] });
+          }
+        }
+      }
+    }
+  }
+
+  return params;
 }
 
 export default async function CatalogPage(props: CatalogPageProps) {
   const { hero, dictionary } = await serviceClient.GetHero({});
   const searchParams = await props.searchParams;
   const params = await props.params;
+
+  // Get server-side translations for the current locale
+  const t = await getTranslations({
+    locale: params.locale,
+    namespace: "catalog",
+  });
 
   const { gender, categoryName, subCategoryName } = parseRouteParams(
     params?.params,
@@ -77,6 +129,11 @@ export default async function CatalogPage(props: CatalogPageProps) {
 
   return (
     <FlexibleLayout headerType="catalog">
+      {/* Server-side rendered title with translations */}
+      <div className="hidden lg:block">
+        <h1 className="mb-6 text-2xl font-bold">{t("title")}</h1>
+      </div>
+
       <div className="block lg:hidden">
         <MobileCatalog
           firstPageItems={response.products || []}
