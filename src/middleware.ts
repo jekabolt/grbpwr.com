@@ -25,13 +25,15 @@ export default function middleware(req: NextRequest) {
         return res;
     }
 
-    // If URL is locale-only and we have a stored country, redirect to country-first URL
+    // If URL is locale-only, redirect to country-first URL
     if (!/^\/[A-Za-z]{2}\/[a-z]{2}(?=\/|$)/.test(pathname)) {
         const localeOnly = pathname.match(/^\/([a-z]{2})(?=\/|$)(.*)$/);
-        if (localeOnly && countryCookie) {
+        if (localeOnly) {
             const [, locale, rest] = localeOnly;
+            // Use stored country cookie or default to 'us' for first-time visitors
+            const country = countryCookie || 'us';
             const url = req.nextUrl.clone();
-            url.pathname = `/${countryCookie}/${locale}${rest || ''}` || '/';
+            url.pathname = `/${country}/${locale}${rest || ''}` || '/';
             return NextResponse.redirect(url, { status: 308 });
         }
     }
