@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
+import { useTranslations } from "next-intl";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
@@ -25,10 +26,11 @@ export default function ItemRow({
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
   const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${convertPrice(product?.productPrice || "")}`;
   const priceWithSale = `${currencySymbols[selectedCurrency]} ${convertPrice(product?.productPriceWithSale || "")}`;
+  const t = useTranslations("product");
 
   if (!product) return null;
 
-  const preorderDate = getPreorderDate(product);
+  const preorderDate = getPreorderDate(product, t);
   const rawPreorderDate = product.preorder;
 
   return (
