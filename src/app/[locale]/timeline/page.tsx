@@ -10,8 +10,6 @@ export const metadata = generateCommonMetadata({
   description: "discover archive and updates",
 });
 
-// export const dynamic = "force-static";
-
 export default async function Page() {
   const { archives, total } = await serviceClient.GetArchivesPaged({
     limit: ARCHIVE_LIMIT,

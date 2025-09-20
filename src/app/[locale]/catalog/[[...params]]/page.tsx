@@ -41,54 +41,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const dynamic = "force-static";
 
-export async function generateStaticParams() {
-  const { dictionary } = await serviceClient.GetHero({});
-  const locales = ["en", "fr", "de", "it", "ja", "cn", "kr"];
-
-  // Get all categories for static generation
-  const categories = dictionary?.categories || [];
-  const topCategories = categories.filter(
-    (cat: any) => cat.level === "top_category",
-  );
-
-  const params = [];
-
-  // Generate params for each locale
-  for (const locale of locales) {
-    // Root catalog page
-    params.push({ locale, params: [] });
-
-    // Category pages
-    for (const category of topCategories) {
-      const translation =
-        category.translations?.find((t: any) => t.languageId === 1) ||
-        category.translations?.[0];
-      if (translation?.name) {
-        const categoryName = translation.name.toLowerCase();
-        params.push({ locale, params: [categoryName] });
-
-        // Subcategory pages
-        const subCategories = categories.filter(
-          (cat: any) =>
-            cat.level === "sub_category" && cat.parentId === category.id,
-        );
-
-        for (const subCategory of subCategories) {
-          const subTranslation =
-            subCategory.translations?.find((t: any) => t.languageId === 1) ||
-            subCategory.translations?.[0];
-          if (subTranslation?.name) {
-            const subCategoryName = subTranslation.name.toLowerCase();
-            params.push({ locale, params: [categoryName, subCategoryName] });
-          }
-        }
-      }
-    }
-  }
-
-  return params;
-}
-
 export default async function CatalogPage(props: CatalogPageProps) {
   const { hero, dictionary } = await serviceClient.GetHero({});
   const searchParams = await props.searchParams;
