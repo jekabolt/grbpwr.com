@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { keyboardRestrictions } from "@/constants";
 import { Autocomplete, useLoadScript } from "@react-google-maps/api";
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import InputField from "@/components/ui/form/fields/input-field";
@@ -88,6 +89,7 @@ export default function AddressAutocomplete({
 }: Props) {
   const { setValue } = useFormContext();
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const t = useTranslations("checkout");
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
@@ -101,7 +103,7 @@ export default function AddressAutocomplete({
         <InputField
           loading={true}
           name={prefix ? `${prefix}.address` : "address"}
-          label="street and house number:"
+          label={t("street and house number:")}
           placeholder="sjyrniesu 10"
           disabled={true}
         />
@@ -128,7 +130,7 @@ export default function AddressAutocomplete({
         <InputField
           loading={loading}
           name={prefix ? `${prefix}.address` : "address"}
-          label="street and house number:"
+          label={t("street and house number:")}
           placeholder=" "
           disabled={disabled}
           keyboardRestriction={keyboardRestrictions.addressField}

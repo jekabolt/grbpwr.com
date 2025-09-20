@@ -8,19 +8,28 @@
     "all": "전체",
     "new in": "신상품",
     "checkout": "결제",
-    "close": "닫기"
+    "close": "닫기",
+    "menu": "메뉴"
   },
   "footer": {
     "legal notices": "법적 고지",
     "order status": "주문 상태",
     "help": "도움말",
     "aftersale services": "애프터서비스",
-    "faqs": "자주묻는질문"
+    "faqs": "자주묻는질문",
+    "country": "국가"
+  },
+  "countries-popup": {
+    "change country": "국가 변경",
+    "text": "선택한 국가의 통화로 가격이 표시됩니다",
+    "search location": "국가 검색",
+    "not-found": "죄송합니다. 검색 결과를 찾을 수 없습니다."
   },
   "newslatter": {
     "mailing list": "메일링 리스트",
     "agree": "이메일 수신에 동의합니다. 자세한 내용은 개인정보처리방침을 참조하세요.",
-    "subscribe": "구독하기"
+    "subscribe": "구독하기",
+    "email": "이메일"
   },
   "cart": {
     "empty": "없음",
@@ -35,7 +44,21 @@
     "size": "사이즈",
     "next": "다음"
   },
+  "product": {
+    "model is": "모델은",
+    "and wears size": "와 사이즈를 착용합니다",
+    "composition": "구성",
+    "care": "관리",
+    "preorder": "사전예약",
+    "add": "추가",
+    "select size": "사이즈 선택",
+    "ship by": "배송 일",
+    "size guide": "사이즈 가이드",
+    "recently viewed": "최근 본 상품"
+  },
   "checkout": {
+    "contact": "연락처",
+    "street and house number:": "도로명 주소/건물 번호:",
     "email address:": "이메일 주소:",
     "accept": "뉴스레터 등록에 동의합니다",
     "proceed": "구매를 진행하면 다음 사항에 동의하는 것으로 간주됩니다",
@@ -66,7 +89,9 @@
     "subtotal": "소계",
     "promo discount": "프로모 할인",
     "grand total": "총합계",
-    "free by promo": "프로모로 무료"
+    "free by promo": "프로모로 무료",
+    "DHL": "DHL",
+    "FREE": "무료"
   },
   "not-found": {
     "title": "페이지를 찾을 수 없습니다",

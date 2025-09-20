@@ -1,15 +1,18 @@
 "use client";
 
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
+import { useTranslations } from "next-intl";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Overlay } from "@/components/ui/overlay";
 import { Searchbar } from "@/components/ui/searchbar";
 import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "../(checkout)/checkout/_components/new-order-form/fields-group-container";
+import { MobileCountriesPopup } from "./mobile-countries-popup";
 import { useLocation } from "./useLocation";
 import { useSearchCountries } from "./useSearchCountries";
 
@@ -27,127 +30,130 @@ export function CountriesPopup() {
 
   const regionsWithCountries = Object.entries(COUNTRIES_BY_REGION);
 
+  const t = useTranslations("countries-popup");
+
   return (
-    <div>
-      {/* {isOpen && (
-        <Overlay
-          cover="screen"
-          onClick={closeCurrencyPopup}
-          disablePointerEvents={false}
-        />
-      )} */}
+    <>
+      <MobileCountriesPopup />
       <div className="hidden lg:block">
         {isOpen && (
-          <div className="blackTheme fixed right-0 top-0 z-30 h-screen w-[460px] bg-bgColor p-2.5 text-textColor">
-            <div className="flex h-full flex-col gap-10 overflow-y-auto">
-              <div className="sticky top-0 flex items-center justify-between bg-bgColor">
-                <Text variant="uppercase">change country</Text>
-                <Button onClick={closeCurrencyPopup}>[x]</Button>
-              </div>
+          <>
+            <Overlay
+              cover="screen"
+              onClick={closeCurrencyPopup}
+              disablePointerEvents={false}
+            />
 
-              <div className="space-y-6">
-                <Text>
-                  prices will be shown in the local currency based on your
-                  selection
-                </Text>
-                <Searchbar
-                  name="search"
-                  value={query}
-                  noFound={filteredCountries.length === 0}
-                  handleSearch={handleSearch}
-                  placeholder="search location"
-                />
-              </div>
+            <div className="blackTheme fixed right-0 top-0 z-30 h-screen w-[460px] bg-bgColor p-2.5 text-textColor">
+              <div className="flex h-full flex-col gap-10 overflow-y-auto">
+                <div className="sticky top-0 flex items-center justify-between bg-bgColor">
+                  <Text variant="uppercase">{t("change country")}</Text>
+                  <Button onClick={closeCurrencyPopup}>[x]</Button>
+                </div>
 
-              {/* <div className="flex-1 overflow-y-auto"> */}
-              <div className="space-y-4 text-textColor">
-                {searchQuery ? (
-                  <div className="flex flex-col gap-2">
-                    {filteredCountries.map((country) => (
-                      <Button
-                        key={`${country.countryCode}-${country.name}-${country.lng}`}
+                <div className="space-y-6">
+                  <Text>{t("text")}</Text>
+                  <Searchbar
+                    name="search"
+                    value={query}
+                    noFound={filteredCountries.length === 0}
+                    handleSearch={handleSearch}
+                    placeholder={t("search location")}
+                  />
+                </div>
+
+                {/* <div className="flex-1 overflow-y-auto"> */}
+                <div className="space-y-4 text-textColor">
+                  {searchQuery ? (
+                    <div className="flex flex-col gap-2">
+                      {filteredCountries.map((country) => (
+                        <Button
+                          key={`${country.countryCode}-${country.name}-${country.lng}`}
+                          className={cn(
+                            "flex w-full items-center justify-between border-b border-transparent px-3",
+                            {
+                              "border-textColor":
+                                country.currencyKey === selectedCurrency &&
+                                country.name === selectedCountry.name &&
+                                country.countryCode ===
+                                  selectedCountry.countryCode &&
+                                LANGUAGE_CODE_TO_ID[country.lng] === languageId,
+                            },
+                          )}
+                          onClick={() => handleCountrySelect(country)}
+                        >
+                          <div className="flex items-center gap-2">
+                            <Text className="uppercase">{country.name}</Text>
+                            <Text>{`[${country.currency}]`}</Text>
+                          </div>
+                          <Text className="uppercase">
+                            {country.displayLng}
+                          </Text>
+                        </Button>
+                      ))}
+                    </div>
+                  ) : (
+                    regionsWithCountries.map(([region, countries], index) => (
+                      <div
+                        key={region}
                         className={cn(
-                          "flex w-full items-center justify-between border-b border-transparent px-3",
+                          "border-b border-textInactiveColor hover:border-textColor",
                           {
-                            "border-textColor":
-                              country.currencyKey === selectedCurrency &&
-                              country.name === selectedCountry.name &&
-                              country.countryCode ===
-                                selectedCountry.countryCode &&
-                              LANGUAGE_CODE_TO_ID[country.lng] === languageId,
+                            "border-transparent hover:border-transparent":
+                              index === regionsWithCountries.length - 1,
                           },
                         )}
-                        onClick={() => handleCountrySelect(country)}
                       >
-                        <div className="flex items-center gap-2">
-                          <Text className="uppercase">{country.name}</Text>
-                          <Text>{`[${country.currency}]`}</Text>
-                        </div>
-                        <Text className="uppercase">{country.displayLng}</Text>
-                      </Button>
-                    ))}
-                  </div>
-                ) : (
-                  regionsWithCountries.map(([region, countries], index) => (
-                    <div
-                      key={region}
-                      className={cn(
-                        "border-b border-textInactiveColor hover:border-textColor",
-                        {
-                          "border-transparent hover:border-transparent":
-                            index === regionsWithCountries.length - 1,
-                        },
-                      )}
-                    >
-                      <FieldsGroupContainer
-                        key={region}
-                        styling={{
-                          sign: "plus-minus",
-                          clickableArea: "full",
-                          clickableAreaClassName: "h-9 items-start",
-                        }}
-                        title={region}
-                      >
-                        <div className="flex flex-col gap-2">
-                          {countries.map((country) => (
-                            <Button
-                              key={`${region}-${country.name}-${country.lng}`}
-                              className={cn(
-                                "flex w-full items-center justify-between border-b border-transparent px-3",
-                                {
-                                  "border-textColor":
-                                    country.currencyKey === selectedCurrency &&
-                                    country.name === selectedCountry.name &&
-                                    country.countryCode ===
-                                      selectedCountry.countryCode &&
-                                    LANGUAGE_CODE_TO_ID[country.lng] ===
-                                      languageId,
-                                },
-                              )}
-                              onClick={() => handleCountrySelect(country)}
-                            >
-                              <div className="flex items-center gap-2">
+                        <FieldsGroupContainer
+                          key={region}
+                          styling={{
+                            sign: "plus-minus",
+                            clickableArea: "full",
+                            clickableAreaClassName: "h-9 items-start",
+                          }}
+                          title={region}
+                        >
+                          <div className="flex flex-col gap-2">
+                            {countries.map((country) => (
+                              <Button
+                                key={`${region}-${country.name}-${country.lng}`}
+                                className={cn(
+                                  "flex w-full items-center justify-between border-b border-transparent px-3",
+                                  {
+                                    "border-textColor":
+                                      country.currencyKey ===
+                                        selectedCurrency &&
+                                      country.name === selectedCountry.name &&
+                                      country.countryCode ===
+                                        selectedCountry.countryCode &&
+                                      LANGUAGE_CODE_TO_ID[country.lng] ===
+                                        languageId,
+                                  },
+                                )}
+                                onClick={() => handleCountrySelect(country)}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <Text className="uppercase">
+                                    {country.name}
+                                  </Text>
+                                  <Text>{`[${country.currency}]`}</Text>
+                                </div>
                                 <Text className="uppercase">
-                                  {country.name}
+                                  {country.displayLng}
                                 </Text>
-                                <Text>{`[${country.currency}]`}</Text>
-                              </div>
-                              <Text className="uppercase">
-                                {country.displayLng}
-                              </Text>
-                            </Button>
-                          ))}
-                        </div>
-                      </FieldsGroupContainer>
-                    </div>
-                  ))
-                )}
+                              </Button>
+                            ))}
+                          </div>
+                        </FieldsGroupContainer>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          // </div>
+          </>
         )}
       </div>
-    </div>
+    </>
   );
 }

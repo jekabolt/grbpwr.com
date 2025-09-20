@@ -56,7 +56,7 @@ export default function NewslatterForm() {
             id="newsletter"
             type="email"
             required
-            placeholder="email"
+            placeholder={t("email")}
             name="email"
             value={email}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

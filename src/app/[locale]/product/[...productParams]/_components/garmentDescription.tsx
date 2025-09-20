@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { AccordionRoot, AccordionSection } from "@/components/ui/accordion";
 import { Text } from "@/components/ui/text";
@@ -18,6 +19,7 @@ export function GarmentDescription({
   const { description, isComposition, isCare } = useProductBasics({ product });
   const { composition, care } = useGarmentInfo({ product });
   const { modelWear } = useModelInfo({ product });
+  const t = useTranslations("product");
 
   const [infoOpenItem, setInfoOpenItem] = useState<string>("");
   return (
@@ -46,7 +48,7 @@ export function GarmentDescription({
       {isComposition && (
         <AccordionSection
           value="item-2"
-          title="composition"
+          title={t("composition")}
           currentValue={infoOpenItem}
           onValueChange={setInfoOpenItem}
         >
@@ -62,7 +64,7 @@ export function GarmentDescription({
       {isCare && (
         <AccordionSection
           value="item-3"
-          title="care"
+          title={t("care")}
           currentValue={infoOpenItem}
           onValueChange={setInfoOpenItem}
         >

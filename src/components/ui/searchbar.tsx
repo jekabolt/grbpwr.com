@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 import { cn } from "@/lib/utils";
 
 import { Button } from "./button";
@@ -11,6 +13,7 @@ type Props = InputProps & {
 };
 
 export function Searchbar({ value, noFound, handleSearch, ...props }: Props) {
+  const t = useTranslations("countries-popup");
   return (
     <div>
       <div className="flex h-9 cursor-pointer items-center gap-2 border border-textInactiveColor px-4 py-2.5 hover:border-textColor">
@@ -47,7 +50,7 @@ export function Searchbar({ value, noFound, handleSearch, ...props }: Props) {
           },
         )}
       >
-        no found
+        {t("not-found")}
       </Text>
     </div>
   );

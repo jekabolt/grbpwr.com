@@ -8,19 +8,28 @@
     "all": "tous",
     "new in": "nouveau dans",
     "checkout": "page de règlement",
-    "close": "fermer"
+    "close": "fermer",
+    "menu": "menu"
   },
   "footer": {
     "legal notices": "mentions légales",
     "order status": "statut de commande",
     "help": "aide",
     "aftersale services": "services après-vente",
-    "faqs": "faqs"
+    "faqs": "faqs",
+    "country": "pays"
+  },
+  "countries-popup": {
+    "change country": "changer de pays",
+    "text": "les prix seront affichés dans la monnaie locale en fonction de votre sélection",
+    "search location": "rechercher un pays",
+    "not-found": "désolé, nous n'avons pas trouvé de résultats pour votre recherche."
   },
   "newslatter": {
     "mailing list": "liste de diffusion",
     "agree": "j'accepte de recevoir des emails. lisez notre politique de confidentialité pour plus d'informations.",
-    "subscribe": "s'abonner"
+    "subscribe": "s'abonner",
+    "email": "email"
   },
   "cart": {
     "empty": "vide",
@@ -35,7 +44,21 @@
     "size": "taille",
     "next": "suivant"
   },
+  "product": {
+    "model is": "modèle est",
+    "and wears size": "et porte taille",
+    "composition": "composition",
+    "care": "soin",
+    "preorder": "précommande",
+    "add": "ajouter",
+    "select size": "sélectionner la taille",
+    "ship by": "livraison le",
+    "size guide": "guide de taille",
+    "recently viewed": "vue récente"
+  },
   "checkout": {
+    "contact": "contact",
+    "street and house number:": "rue et numéro de maison:",
     "email address:": "adresse email:",
     "accept": "J'ACCEPTE DE REGISTER TO NEWSLETTER",
     "proceed": "EN PROCÉDANT AVEC L'ACHAT VOUS AGREEZ A ACCEPTER",
@@ -66,7 +89,9 @@
     "subtotal": "total",
     "promo discount": "remise promo",
     "grand total": "total général",
-    "free by promo": "gratuit par promo"
+    "free by promo": "gratuit par promo",
+    "DHL": "DHL",
+    "FREE": "GRATUIT"
   },
   "not-found": {
     "title": "page non trouvée",

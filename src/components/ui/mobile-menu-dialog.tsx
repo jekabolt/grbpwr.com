@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 import { getTopCategoryName } from "@/lib/categories-map";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
@@ -31,6 +33,7 @@ export function DefaultMobileMenuDialog({
   isBigMenuEnabled,
 }: DefaultMenuProps) {
   const defaultMenuItems = createMenuItems(isBigMenuEnabled, setActiveCategory);
+  const t = useTranslations("navigation");
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -45,7 +48,7 @@ export function DefaultMobileMenuDialog({
                   className="flex w-full items-center justify-between uppercase"
                   onClick={item.action}
                 >
-                  <Text>{item.label}</Text>
+                  <Text>{t(item.label)}</Text>
                   {item.showArrow && <Text>{">"}</Text>}
                 </AnimatedButton>
               ) : (
@@ -55,7 +58,7 @@ export function DefaultMobileMenuDialog({
                   href={item.href}
                   className="flex w-full items-center justify-between uppercase"
                 >
-                  <Text>{item.label}</Text>
+                  <Text>{t(item.label)}</Text>
                   {item.showArrow && <Text>{">"}</Text>}
                 </AnimatedButton>
               )}

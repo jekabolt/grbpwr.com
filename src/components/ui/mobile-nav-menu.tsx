@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
+import { useTranslations } from "next-intl";
 
 import { Button } from "./button";
 import {
@@ -18,12 +19,13 @@ export function MobileNavMenu({
   const [activeCategory, setActiveCategory] = useState<
     "men" | "women" | undefined
   >();
+  const t = useTranslations("navigation");
 
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
         <Button size="lg" className="w-full text-left">
-          menu
+          {t("menu")}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>

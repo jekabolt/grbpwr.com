@@ -1,9 +1,11 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { getPreorderDate } from "@/app/[locale]/(checkout)/cart/_components/utils";
 
 export function useProductBasics({ product }: { product: common_ProductFull }) {
+  const t = useTranslations("product");
   const { languageId } = useTranslationsStore((state) => state);
   const productBody =
     product.product?.productDisplay?.productBody?.productBodyInsert;
@@ -15,7 +17,7 @@ export function useProductBasics({ product }: { product: common_ProductFull }) {
     productTranslations?.find((t) => t.languageId === languageId) ||
     productTranslations?.[0];
 
-  const preorder = getPreorderDate(product);
+  const preorder = getPreorderDate(product, t);
   const isComposition = productBody?.composition;
   const isCare = productBody?.careInstructions;
   return {

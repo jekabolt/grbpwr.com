@@ -88,8 +88,11 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
           <FooterNavMobile />
         </div>
         <div className="order-2 flex lg:order-4">
-          <Button className="uppercase" onClick={openCurrencyPopup}>
-            country: {country.name} / {currencySymbols[selectedCurrency]}
+          <Button
+            className="hidden uppercase lg:block"
+            onClick={openCurrencyPopup}
+          >
+            {t("country")}: {country.name} / {currencySymbols[selectedCurrency]}
           </Button>
           <CountriesPopup />
         </div>

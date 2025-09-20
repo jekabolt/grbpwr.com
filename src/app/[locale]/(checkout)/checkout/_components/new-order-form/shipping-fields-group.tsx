@@ -69,7 +69,10 @@ export default function ShippingFieldsGroup({
             items={dictionary?.shipmentCarriers
               ?.filter((c) => c.shipmentCarrier?.allowed)
               ?.map((c) => ({
-                label: c.shipmentCarrier?.carrier || "",
+                label:
+                  t(c.shipmentCarrier?.carrier || "") ||
+                  c.shipmentCarrier?.carrier ||
+                  "",
                 value: c.id + "" || "",
                 icon: createShipmentCarrierIcon(
                   c.shipmentCarrier?.carrier || "",

@@ -8,19 +8,28 @@
     "all": "tutto",
     "new in": "novità",
     "checkout": "checkout",
-    "close": "chiudi"
+    "close": "chiudi",
+    "menu": "menu"
   },
   "footer": {
     "legal notices": "note legali",
     "order status": "stato ordine",
     "help": "aiuto",
     "aftersale services": "servizi post vendita",
-    "faqs": "domande frequenti"
+    "faqs": "domande frequenti",
+    "country": "paese"
+  },
+  "countries-popup": {
+    "change country": "cambia paese",
+    "text": "i prezzi saranno mostrati nella valuta locale in base alla tua selezione",
+    "search location": "cerca un paese",
+    "not-found": "scusa, non abbiamo trovato risultati per la tua ricerca."
   },
   "newslatter": {
     "mailing list": "mailing list",
     "agree": "accetto di ricevere email. leggi la nostra informativa sulla privacy per maggiori informazioni.",
-    "subscribe": "iscriviti"
+    "subscribe": "iscriviti",
+    "email": "email"
   },
   "cart": {
     "empty": "niente",
@@ -35,7 +44,21 @@
     "size": "taglia",
     "next": "avanti"
   },
+  "product": {
+    "model is": "modello è",
+    "and wears size": "e indossa taglia",
+    "composition": "composizione",
+    "care": "cura",
+    "preorder": "preordine",
+    "add": "aggiungi",
+    "select size": "seleziona taglia",
+    "ship by": "consegna il",
+    "size guide": "guida taglie",
+    "recently viewed": "recentemente visualizzato"
+  },
   "checkout": {
+    "contact": "contatto",
+    "street and house number:": "via e numero di casa:",
     "email address:": "indirizzo email:",
     "accept": "ACCETTO DI ISCRIVERMI ALLA NEWSLETTER",
     "proceed": "PROCEDENDO CON L'ACQUISTO ACCETTI DI ACCETTARE",
@@ -66,7 +89,9 @@
     "subtotal": "subtotale",
     "promo discount": "sconto promo",
     "grand total": "totale finale",
-    "free by promo": "gratuito con promo"
+    "free by promo": "gratuito con promo",
+    "DHL": "DHL",
+    "FREE": "GRATUITO"
   },
   "not-found": {
     "title": "pagina non trovata",

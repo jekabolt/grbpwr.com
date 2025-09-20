@@ -8,19 +8,28 @@
     "all": "alle",
     "new in": "neu",
     "checkout": "kasse",
-    "close": "schließen"
+    "close": "schließen",
+    "menu": "menu"
   },
   "footer": {
     "legal notices": "rechtliche hinweise",
     "order status": "bestellstatus",
     "help": "hilfe",
     "aftersale services": "kundenservice",
-    "faqs": "häufig gestellte fragen"
+    "faqs": "häufig gestellte fragen",
+    "country": "land"
+  },
+  "countries-popup": {
+    "change country": "land ändern",
+    "text": "die preise werden in der lokalen währung basierend auf ihrer auswahl angezeigt",
+    "search location": "suchen nach einem land",
+    "not-found": "entschuldigung, wir konnten keine ergebnisse für ihre suche finden."
   },
   "newslatter": {
     "mailing list": "mailingliste",
     "agree": "ich stimme zu, e-mails zu erhalten. lesen sie unsere datenschutzrichtlinie für weitere informationen.",
-    "subscribe": "abonnieren"
+    "subscribe": "abonnieren",
+    "email": "email"
   },
   "cart": {
     "empty": "nichts",
@@ -35,7 +44,21 @@
     "size": "größe",
     "next": "weiter"
   },
+  "product": {
+    "model is": "modell ist",
+    "and wears size": "und trägt größe",
+    "composition": "zusammensetzung",
+    "care": "pflege",
+    "preorder": "vorbestellung",
+    "add": "hinzufügen",
+    "select size": "größe auswählen",
+    "ship by": "versand am",
+    "size guide": "größenleitfaden",
+    "recently viewed": "zuletzt angesehen"
+  },
   "checkout": {
+    "contact": "kontakt",
+    "street and house number:": "straße und hausnummer:",
     "email address:": "e-mail-adresse:",
     "accept": "ICH STIMME DER NEWSLETTER-ANMELDUNG ZU",
     "proceed": "DURCH FORTFAHREN MIT DEM KAUF STIMMEN SIE ZU",
@@ -66,7 +89,9 @@
     "subtotal": "zwischensumme",
     "promo discount": "gutscheinrabatt",
     "grand total": "gesamtsumme",
-    "free by promo": "kostenlos durch gutschein"
+    "free by promo": "kostenlos durch gutschein",
+    "DHL": "DHL",
+    "FREE": "KOSTENLOS"
   },
   "not-found": {
     "title": "seite nicht gefunden",

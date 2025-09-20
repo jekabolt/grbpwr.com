@@ -8,19 +8,28 @@
     "all": "全部",
     "new in": "新品",
     "checkout": "结算",
-    "close": "关闭"
+    "close": "关闭",
+    "menu": "菜单"
   },
   "footer": {
     "legal notices": "法律声明",
     "order status": "订单状态",
     "help": "帮助",
     "aftersale services": "售后服务",
-    "faqs": "常见问题"
+    "faqs": "常见问题",
+    "country": "国家"
+  },
+  "countries-popup": {
+    "change country": "更改国家",
+    "text": "根据您的选择，价格将显示在本地货币中",
+    "search location": "搜索国家",
+    "not-found": "抱歉，我们找不到您搜索的结果。"
   },
   "newslatter": {
     "mailing list": "邮件列表",
     "agree": "我同意接收邮件。请阅读我们的隐私政策了解更多信息。",
-    "subscribe": "订阅"
+    "subscribe": "订阅",
+    "email": "电子邮件"
   },
   "cart": {
     "empty": "空",
@@ -35,7 +44,21 @@
     "size": "尺码",
     "next": "下一个"
   },
+  "product": {
+    "model is": "模特是",
+    "and wears size": "和尺码",
+    "composition": "成分",
+    "care": "护理",
+    "preorder": "预购",
+    "add": "添加",
+    "select size": "选择尺码",
+    "ship by": "发货日期",
+    "size guide": "尺码指南",
+    "recently viewed": "最近浏览的商品"
+  },
   "checkout": {
+    "contact": "联系人",
+    "street and house number:": "地址/门牌号：",
     "email address:": "邮箱地址：",
     "accept": "我同意注册订阅邮件",
     "proceed": "继续购买即表示您同意接受",
@@ -66,7 +89,9 @@
     "subtotal": "小计",
     "promo discount": "优惠折扣",
     "grand total": "总计",
-    "free by promo": "优惠免费"
+    "free by promo": "优惠免费",
+    "DHL": "DHL",
+    "free": "免费"
   },
   "not-found": {
     "title": "页面未找到",

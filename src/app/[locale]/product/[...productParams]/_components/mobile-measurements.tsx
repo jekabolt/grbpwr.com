@@ -1,5 +1,6 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
+import { useTranslations } from "next-intl";
 
 import { Measurements } from "@/app/[locale]/product/[...productParams]/_components/measurements";
 
@@ -20,11 +21,12 @@ export function MobileMeasurements({
   const { preorder } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
+  const t = useTranslations("product");
   return (
     <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild className="text-left">
         <Button variant="underline" className="uppercase">
-          size guide
+          {t("size guide")}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
@@ -34,7 +36,7 @@ export function MobileMeasurements({
             grbpwr mobile menu
           </DialogPrimitives.Title>
           <div className="flex items-center justify-between">
-            <Text variant="uppercase">size guide</Text>
+            <Text variant="uppercase">{t("size guide")}</Text>
             <DialogPrimitives.Close asChild>
               <Button>[x]</Button>
             </DialogPrimitives.Close>
@@ -54,7 +56,9 @@ export function MobileMeasurements({
               size="lg"
               onAction={() => handleAddToCart()}
             >
-              <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
+              <Text variant="inherit">
+                {preorder ? t("preorder") : t("add")}
+              </Text>
               {isSaleApplied ? (
                 <Text variant="inactive">
                   {priceMinusSale}

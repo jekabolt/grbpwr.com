@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { LoadingButton } from "@/app/[locale]/product/[...productParams]/_components/loading-button";
 import { useProductBasics } from "@/app/[locale]/product/[...productParams]/_components/utils/useProductBasics";
@@ -25,6 +26,7 @@ export default function MeasurementPopup({
   const { preorder } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
+  const t = useTranslations("product");
 
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -59,13 +61,13 @@ export default function MeasurementPopup({
     <div>
       {isModalOpen && <Overlay cover="screen" onClick={toggleModal} />}
       <Button variant="underline" className="uppercase" onClick={toggleModal}>
-        size guide
+        {t("size guide")}
       </Button>
       {isModalOpen && (
         <div className="fixed inset-y-0 right-0 z-50 h-screen w-[600px] bg-bgColor p-2.5">
           <div className="flex h-full flex-col gap-12">
             <div className="flex items-center justify-between">
-              <Text variant="uppercase">size guide</Text>
+              <Text variant="uppercase">{t("size guide")}</Text>
               <Button onClick={toggleModal}>[x]</Button>
             </div>
 
@@ -76,7 +78,9 @@ export default function MeasurementPopup({
               size="lg"
               onAction={() => handleAddToCartComplete()}
             >
-              <Text variant="inherit">{preorder ? "preorder" : "add"}</Text>
+              <Text variant="inherit">
+                {preorder ? t("preorder") : t("add")}
+              </Text>
               {isSaleApplied ? (
                 <Text variant="inactive">
                   {priceMinusSale}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
@@ -54,6 +55,7 @@ export function AddToCartBtn({
     useProductPricing({ product });
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
   const isNoSizeSelected = !activeSizeId && isHovered;
+  const t = useTranslations("product");
 
   const handleAddToCartClick = () => {
     if (!activeSizeId && sizePickerRef?.current) {
@@ -106,12 +108,12 @@ export function AddToCartBtn({
           >
             {isNoSizeSelected ? (
               <Text className="w-full text-center" variant="inherit">
-                select size
+                {t("select size")}
               </Text>
             ) : (
               <>
                 <Text variant="inherit">
-                  {isValidPreorder ? "preorder" : "add"}
+                  {isValidPreorder ? t("preorder") : t("add")}
                 </Text>
                 {isSaleApplied ? (
                   <Text variant="inactive">

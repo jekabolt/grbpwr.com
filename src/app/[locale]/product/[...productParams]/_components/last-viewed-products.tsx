@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { common_Product } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { useLastViewed } from "@/lib/stores/last-viewed/store-provider.";
 import { cn } from "@/lib/utils";
@@ -15,7 +16,7 @@ interface LastViewedProductsProps {
 
 export function LastViewedProducts({ product }: LastViewedProductsProps) {
   const { products, addProduct } = useLastViewed((state) => state);
-
+  const t = useTranslations("product");
   const filteredProducts = products
     .filter((viewedProduct) => viewedProduct.id !== product.id)
     .slice(0, 4);
@@ -39,7 +40,7 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
       )}
     >
       <Text className="w-full text-left lg:text-center" variant="uppercase">
-        recently viewed
+        {t("recently viewed")}
       </Text>
 
       <div className="flex justify-center gap-2 lg:gap-7">

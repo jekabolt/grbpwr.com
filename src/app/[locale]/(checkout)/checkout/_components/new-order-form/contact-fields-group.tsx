@@ -26,7 +26,7 @@ export default function ContactFieldsGroup({
   return (
     <FieldsGroupContainer
       stage="1/3"
-      title="contact"
+      title={t("contact")}
       isOpen={isOpen}
       onToggle={onToggle}
       disabled={disabled}

@@ -8,19 +8,28 @@
     "all": "all",
     "new in": "new in",
     "checkout": "checkout",
-    "close": "close"
+    "close": "close",
+    "menu": "menu"
   },
   "footer": {
     "legal notices": "legal notices",
     "order status": "order status",
     "help": "help",
     "aftersale services": "aftersale services",
-    "faqs": "faqs"
+    "faqs": "faqs",
+    "country": "country"
+  },
+  "countries-popup": {
+    "change country": "change country",
+    "text": "prices will be shown in the local currency based on your selection",
+    "search location": "search location",
+    "not-found": "sorry, we couldn't find results for your search."
   },
   "newslatter": {
     "mailing list": "mailing list",
     "agree": "i agree to recieve emails. read our privacy policy for more information.",
-    "subscribe": "subscribe"
+    "subscribe": "subscribe",
+    "email": "email"
   },
   "cart": {
     "empty": "nothing",
@@ -35,7 +44,21 @@
     "size": "size",
     "next": "next"
   },
+  "product": {
+    "model is": "model is",
+    "and wears size": "and wears size",
+    "composition": "composition",
+    "care": "care",
+    "preorder": "preorder",
+    "add": "add",
+    "select size": "select size",
+    "ship by": "ship by",
+    "size guide": "size guide",
+    "recently viewed": "recently viewed"
+  },
   "checkout": {
+    "contact": "contact",
+    "street and house number:": "street and house number:",
     "email address:": "email address:",
     "accept": "I ACCEPT TO REGISTER TO NEWSLETTER",
     "proceed": "BY PROCEEDING WITH PURCHASE YOU AGREEING TO ACCEPT",
@@ -66,7 +89,9 @@
     "subtotal": "subtotal",
     "promo discount": "promo discount",
     "grand total": "grand total",
-    "free by promo": "free by promo"
+    "free by promo": "free by promo",
+    "DHL": "DHL",
+    "FREE": "FREE"
   },
   "not-found": {
     "title": "page not found",

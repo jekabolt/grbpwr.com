@@ -8,19 +8,28 @@
     "all": "すべて",
     "new in": "新着",
     "checkout": "チェックアウト",
-    "close": "閉じる"
+    "close": "閉じる",
+    "menu": "メニュー"
   },
   "footer": {
     "legal notices": "法的通知",
     "order status": "注文状況",
     "help": "ヘルプ",
     "aftersale services": "アフターサービス",
-    "faqs": "よくある質問"
+    "faqs": "よくある質問",
+    "country": "国"
+  },
+  "countries-popup": {
+    "change country": "国を変更",
+    "text": "選択した国の通貨で価格が表示されます",
+    "search location": "国を検索",
+    "not-found": "申し訳ありませんが、検索結果が見つかりませんでした。"
   },
   "newslatter": {
     "mailing list": "メーリングリスト",
     "agree": "メール受信に同意します。詳細については、プライバシーポリシーをお読みください。",
-    "subscribe": "購読する"
+    "subscribe": "購読する",
+    "email": "メール"
   },
   "cart": {
     "empty": "何もありません",
@@ -35,7 +44,21 @@
     "size": "サイズ",
     "next": "次へ"
   },
+  "product": {
+    "model is": "モデルは",
+    "and wears size": "とサイズを着用します",
+    "composition": "構成",
+    "care": "ケア",
+    "preorder": "前払い",
+    "add": "追加",
+    "select size": "サイズを選択",
+    "ship by": "発送日",
+    "size guide": "サイズガイド",
+    "recently viewed": "最近見た商品"
+  },
   "checkout": {
+    "contact": "連絡先",
+    "street and house number:": "住所/番地:",
     "email address:": "メールアドレス：",
     "accept": "ニュースレター登録に同意します",
     "proceed": "購入を進めることで以下に同意したものとみなされます",
@@ -66,7 +89,9 @@
     "subtotal": "小計",
     "promo discount": "プロモ割引",
     "grand total": "総合計",
-    "free by promo": "プロモで無料"
+    "free by promo": "プロモで無料",
+    "DHL": "DHL",
+    "FREE": "無料"
   },
   "not-found": {
     "title": "ページが見つかりません",
