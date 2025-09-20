@@ -37,11 +37,11 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-// export const dynamic = "force-static";
+export const dynamic = "force-static";
 
-// export function generateStaticParams() {
-//   return [];
-// }
+export function generateStaticParams() {
+  return [];
+}
 
 export default async function CatalogPage(props: CatalogPageProps) {
   const { hero, dictionary } = await serviceClient.GetHero({});
