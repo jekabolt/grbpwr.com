@@ -39,22 +39,20 @@ export function useLocation() {
       // Get the new locale code
       const newLocale = LANGUAGE_ID_TO_LOCALE[newLanguageId];
       if (newLocale) {
-        // Persist preferences so middleware respects them
-        const oneYear = 365 * 24 * 60 * 60 * 1000;
-        const expires = new Date(Date.now() + oneYear).toUTCString();
-        document.cookie = `NEXT_LOCALE=${newLocale}; Path=/; Expires=${expires}`;
-        document.cookie = `NEXT_COUNTRY=${country.countryCode.toLowerCase()}; Path=/; Expires=${expires}`;
-
         // Remove current locale and optional country from the pathname
+        // Handle patterns like: /ja/ja, /us/en, /en, etc.
         const pathWithoutLocaleCountry =
           pathname.replace(
-            /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2}\/[A-Za-z]{2}|[a-z]{2})(?=\/|$)/,
+            /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
             "",
           ) || "/";
 
         const newPath = `/${country.countryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
 
-        router.replace(newPath);
+        console.log("Navigating from:", pathname, "to:", newPath);
+
+        // Use window.location for full page navigation to ensure middleware processes the URL
+        window.location.href = newPath;
       }
     }
 

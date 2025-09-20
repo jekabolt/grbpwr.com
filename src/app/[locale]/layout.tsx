@@ -1,5 +1,4 @@
 import { FeatureMono } from "@/fonts";
-import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -12,9 +11,9 @@ import "../globals.css";
 
 // export const dynamic = "force-static";
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+// export function generateStaticParams() {
+//   return routing.locales.map((locale) => ({ locale }));
+// }
 
 export const metadata = generateCommonMetadata();
 
