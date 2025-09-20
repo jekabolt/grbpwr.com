@@ -39,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-// export const dynamic = "force-static";
+export const dynamic = "force-static";
 
 export async function generateStaticParams() {
   const { dictionary } = await serviceClient.GetHero({});
@@ -129,11 +129,6 @@ export default async function CatalogPage(props: CatalogPageProps) {
 
   return (
     <FlexibleLayout headerType="catalog">
-      {/* Server-side rendered title with translations */}
-      <div className="hidden lg:block">
-        <h1 className="mb-6 text-2xl font-bold">{t("title")}</h1>
-      </div>
-
       <div className="block lg:hidden">
         <MobileCatalog
           firstPageItems={response.products || []}
