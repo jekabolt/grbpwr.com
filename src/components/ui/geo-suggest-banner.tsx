@@ -5,35 +5,53 @@ import { usePathname, useRouter } from "next/navigation";
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { cn } from "@/lib/utils";
 
+import { Banner } from "./banner";
 import { Button } from "./button";
+import { Text } from "./text";
 
 interface Props {
   suggestCountry?: string;
   suggestLocale?: string;
-  suggestPath?: string;
+
   currentCountry?: string;
-  currentLocale?: string;
 }
 
 export function GeoSuggestBanner({
   suggestCountry,
   suggestLocale,
-  suggestPath,
+
   currentCountry,
-  currentLocale,
 }: Props) {
   const { setLanguageId, setCountry } = useTranslationsStore((state) => state);
   const [visible, setVisible] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
-  const targetHref = useMemo(() => {
-    if (!suggestCountry || !suggestLocale) return null;
-    const rest = suggestPath || "";
-    return `/${suggestCountry}/${suggestLocale}${rest}`;
-  }, [suggestCountry, suggestLocale, suggestPath]);
+  // const targetHref = useMemo(() => {
+  //   if (!suggestCountry || !suggestLocale) return null;
+  //   return `/${suggestCountry}/${suggestLocale}`;
+  // }, [suggestCountry, suggestLocale]);
+
+  const suggestedCountryName = useMemo(() => {
+    if (!suggestCountry) return undefined;
+    const codeLc = suggestCountry.toLowerCase();
+    for (const [, list] of Object.entries(COUNTRIES_BY_REGION)) {
+      const found = list.find((c) => c.countryCode.toLowerCase() === codeLc);
+      if (found) return found.name;
+    }
+    return suggestCountry.toUpperCase();
+  }, [suggestCountry]);
+
+  const currentCountryName = useMemo(() => {
+    if (!currentCountry) return undefined;
+    const codeLc = currentCountry.toLowerCase();
+    for (const [, list] of Object.entries(COUNTRIES_BY_REGION)) {
+      const found = list.find((c) => c.countryCode.toLowerCase() === codeLc);
+      if (found) return found.name;
+    }
+    return currentCountry.toUpperCase();
+  }, [currentCountry]);
 
   useEffect(() => {
     if (!suggestCountry || !suggestLocale) return;
@@ -76,26 +94,33 @@ export function GeoSuggestBanner({
     router.push(url.toString());
   };
 
-  if (!visible || !targetHref) return null;
+  // if (!visible || !targetHref) return null;
 
   return (
-    <div
-      className={cn(
-        "blackTheme fixed inset-x-2 top-2 z-40 flex items-center justify-between gap-3 bg-bgColor p-2.5 text-textColor lg:bottom-2 lg:left-auto lg:top-auto lg:w-[520px]",
-      )}
-    >
-      <div className="text-sm">
-        We detected your region. Switch to {suggestCountry?.toUpperCase()} /{" "}
-        {suggestLocale?.toUpperCase()}?
+    <Banner>
+      <div className="flex flex-col gap-y-6 p-2.5">
+        <Text>
+          {`We think you are in ${suggestedCountryName}. Update your location?`}
+        </Text>
+        <div className="flex items-center gap-2">
+          <Button
+            size="lg"
+            className="w-full uppercase"
+            variant="main"
+            onClick={onDismiss}
+          >
+            {`Stay ${currentCountryName}`}
+          </Button>
+          <Button
+            size="lg"
+            className="w-full uppercase"
+            variant="simpleReverse"
+            onClick={onAccept}
+          >
+            Switch
+          </Button>
+        </div>
       </div>
-      <div className="flex items-center gap-2">
-        <Button variant="simpleReverse" size="sm" onClick={onDismiss}>
-          Stay {currentCountry?.toUpperCase()} / {currentLocale?.toUpperCase()}
-        </Button>
-        <Button variant="secondary" size="sm" onClick={onAccept}>
-          Switch
-        </Button>
-      </div>
-    </div>
+    </Banner>
   );
 }

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
 
+import { Banner } from "./banner";
 import { Button } from "./button";
 import { MobileCookieModal } from "./mobile-cookie-modal";
 
@@ -51,7 +52,7 @@ export function CookieBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="blackTheme fixed inset-x-2 top-2 z-30 bg-bgColor text-textColor mix-blend-hard-light lg:bottom-2 lg:left-auto lg:top-auto lg:w-96">
+    <Banner>
       <div className="block lg:hidden">
         <MobileCookieModal
           isVisible={isVisible}
@@ -119,6 +120,6 @@ export function CookieBanner() {
           </div>
         </div>
       </div>
-    </div>
+    </Banner>
   );
 }

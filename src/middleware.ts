@@ -51,9 +51,7 @@ export default function middleware(req: NextRequest) {
         const clearSuggestCookies = () => {
             res.cookies.set('NEXT_SUGGEST_COUNTRY', '', { path: '/', maxAge: 0 });
             res.cookies.set('NEXT_SUGGEST_LOCALE', '', { path: '/', maxAge: 0 });
-            res.cookies.set('NEXT_SUGGEST_PATH', '', { path: '/', maxAge: 0 });
             res.cookies.set('NEXT_SUGGEST_CURRENT_COUNTRY', '', { path: '/', maxAge: 0 });
-            res.cookies.set('NEXT_SUGGEST_CURRENT_LOCALE', '', { path: '/', maxAge: 0 });
         };
 
         if (action === 'dismiss') {
@@ -64,7 +62,6 @@ export default function middleware(req: NextRequest) {
         // accept
         const suggestCountry = req.cookies.get('NEXT_SUGGEST_COUNTRY')?.value;
         const suggestLocale = req.cookies.get('NEXT_SUGGEST_LOCALE')?.value;
-        const suggestPath = req.cookies.get('NEXT_SUGGEST_PATH')?.value || '';
 
         if (suggestCountry && suggestLocale) {
             // Persist accepted pair
@@ -74,7 +71,7 @@ export default function middleware(req: NextRequest) {
             // Redirect to suggested route
             const target = req.nextUrl.clone();
             target.searchParams.delete('geo');
-            target.pathname = `/${suggestCountry}/${suggestLocale}${suggestPath}`;
+            target.pathname = `/${suggestCountry}/${suggestLocale}`;
             const acceptRes = NextResponse.redirect(target, { status: 308 });
             clearSuggestCookies();
             return acceptRes;
@@ -115,12 +112,9 @@ export default function middleware(req: NextRequest) {
             const geoLocale = getLocaleFromCountry(geoCountry);
             const differs = geoCountry !== country || geoLocale !== locale;
             if (differs) {
-                const restPath = rest ? `/${rest}` : '';
                 res.cookies.set('NEXT_SUGGEST_COUNTRY', geoCountry, { path: '/', maxAge: 60 * 30 });
                 res.cookies.set('NEXT_SUGGEST_LOCALE', geoLocale, { path: '/', maxAge: 60 * 30 });
-                res.cookies.set('NEXT_SUGGEST_PATH', restPath, { path: '/', maxAge: 60 * 30 });
                 res.cookies.set('NEXT_SUGGEST_CURRENT_COUNTRY', country, { path: '/', maxAge: 60 * 30 });
-                res.cookies.set('NEXT_SUGGEST_CURRENT_LOCALE', locale, { path: '/', maxAge: 60 * 30 });
             }
         }
 
