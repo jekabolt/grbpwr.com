@@ -114,5 +114,10 @@
     "statistical analysis cookies": "cookie di analisi statistica",
     "advertising and social media cookies": "cookie pubblicitari e social media",
     "cookies to personalize the grbpwr experience": "cookie per personalizzare l'esperienza grbpwr"
+  },
+  "geo-suggest": {
+    "message": "Pensiamo che tu sia in {country}. Aggiorna il tuo luogo?",
+    "stay": "Rimani {country}",
+    "switch": "Cambia"
   }
 }

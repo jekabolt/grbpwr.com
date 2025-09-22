@@ -114,5 +114,10 @@
     "statistical analysis cookies": "통계 분석 쿠키",
     "advertising and social media cookies": "광고 및 소셜 미디어 쿠키",
     "cookies to personalize the grbpwr experience": "grbpwr 경험을 개인화하는 쿠키"
+  },
+  "geo-suggest": {
+    "message": "우리는 당신이 {country}에 있다고 생각합니다. 위치를 업데이트하시겠습니까?",
+    "stay": "{country}에 머물러 주세요",
+    "switch": "변경"
   }
 }

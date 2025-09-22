@@ -114,5 +114,10 @@
     "statistical analysis cookies": "统计分析cookie",
     "advertising and social media cookies": "广告和社交媒体cookie",
     "cookies to personalize the grbpwr experience": "个性化grbpwr体验的cookie"
+  },
+  "geo-suggest": {
+    "message": "我们认为您在{country}。更新您的位置？",
+    "stay": "{country}停留",
+    "switch": "切换"
   }
 }

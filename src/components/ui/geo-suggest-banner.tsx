@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
+import { COUNTRIES_BY_REGION } from "@/constants";
+import { useTranslations } from "next-intl";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { getCountryName } from "@/lib/utils";
+import { useLocation } from "@/app/[locale]/_components/useLocation";
 
 import { Banner } from "./banner";
 import { Button } from "./button";
@@ -13,55 +15,23 @@ import { Text } from "./text";
 interface Props {
   suggestCountry?: string;
   suggestLocale?: string;
-
   currentCountry?: string;
 }
 
 export function GeoSuggestBanner({
   suggestCountry,
   suggestLocale,
-
   currentCountry,
 }: Props) {
-  const { setLanguageId, setCountry } = useTranslationsStore((state) => state);
+  const { handleCountrySelect } = useLocation();
   const [visible, setVisible] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("geo-suggest");
 
-  const suggestedCountryName = useMemo(() => {
-    if (!suggestCountry) return undefined;
-    const codeLc = suggestCountry.toLowerCase();
-    const preferredLng = suggestLocale?.toLowerCase();
-    let fallback: string | undefined;
-    for (const [, list] of Object.entries(COUNTRIES_BY_REGION)) {
-      for (const c of list) {
-        if (c.countryCode.toLowerCase() !== codeLc) continue;
-        // Prefer exact locale match (e.g., de → "deutschland")
-        if (preferredLng && c.lng.toLowerCase() === preferredLng) return c.name;
-        // Capture first match as fallback (likely en)
-        if (!fallback) fallback = c.name;
-      }
-    }
-    return fallback || suggestCountry.toUpperCase();
-  }, [suggestCountry, suggestLocale]);
+  const suggestedCountryName = getCountryName(suggestCountry, suggestLocale);
 
-  const currentCountryName = useMemo(() => {
-    if (!currentCountry) return undefined;
-    const codeLc = currentCountry.toLowerCase();
-    // Try to infer current display locale from the store's languageId (reverse map)
-    let currentLng: string | undefined;
-    // Reverse LANGUAGE_CODE_TO_ID
-    for (const [lng, id] of Object.entries(LANGUAGE_CODE_TO_ID)) {
-      if (id === undefined) continue;
-      if (id === undefined) continue;
-    }
-    // We do have setLanguageId in scope but not the current value; rely on best available name
-    for (const [, list] of Object.entries(COUNTRIES_BY_REGION)) {
-      const found = list.find((c) => c.countryCode.toLowerCase() === codeLc);
-      if (found) return found.name;
-    }
-    return currentCountry.toUpperCase();
-  }, [currentCountry]);
+  const currentCountryName = getCountryName(currentCountry);
 
   useEffect(() => {
     if (!suggestCountry || !suggestLocale) return;
@@ -78,30 +48,28 @@ export function GeoSuggestBanner({
   };
 
   const onAccept = () => {
-    // Update translations store immediately for zero-lag UI, then let middleware persist cookies and redirect
     if (suggestCountry && suggestLocale) {
-      const langId = LANGUAGE_CODE_TO_ID[suggestLocale];
-      if (langId !== undefined) setLanguageId(langId);
-
-      // Find country display name from constants
-      let displayName = suggestCountry.toUpperCase();
+      let countryData: any = null;
       outer: for (const [, list] of Object.entries(COUNTRIES_BY_REGION)) {
         for (const c of list) {
-          if (c.countryCode.toLowerCase() === suggestCountry.toLowerCase()) {
-            displayName = c.name;
+          if (
+            c.countryCode.toLowerCase() === suggestCountry.toLowerCase() &&
+            c.lng === suggestLocale
+          ) {
+            countryData = c;
             break outer;
           }
         }
       }
-      setCountry({
-        name: displayName,
-        countryCode: suggestCountry.toUpperCase(),
-      });
+
+      if (countryData) {
+        handleCountrySelect(countryData);
+      } else {
+        const url = new URL(window.location.href);
+        url.searchParams.set("geo", "accept");
+        router.push(url.toString());
+      }
     }
-    // Trigger middleware to accept and redirect to suggested route
-    const url = new URL(window.location.href);
-    url.searchParams.set("geo", "accept");
-    router.push(url.toString());
   };
 
   if (!visible) return null;
@@ -110,7 +78,7 @@ export function GeoSuggestBanner({
     <Banner>
       <div className="flex flex-col gap-y-6 p-2.5">
         <Text className="uppercase">
-          {`We think you are in ${suggestedCountryName}. Update your location?`}
+          {t("message", { country: suggestedCountryName || "" })}
         </Text>
         <div className="flex items-center gap-2">
           <Button
@@ -119,7 +87,7 @@ export function GeoSuggestBanner({
             variant="main"
             onClick={onDismiss}
           >
-            {`Stay ${currentCountryName}`}
+            {t("stay", { country: currentCountryName || "" })}
           </Button>
           <Button
             size="lg"
@@ -127,7 +95,7 @@ export function GeoSuggestBanner({
             variant="simpleReverse"
             onClick={onAccept}
           >
-            Switch
+            {t("switch")}
           </Button>
         </div>
       </div>

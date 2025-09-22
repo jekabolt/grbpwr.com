@@ -114,5 +114,10 @@
     "statistical analysis cookies": "統計分析クッキー",
     "advertising and social media cookies": "広告とソーシャルメディアクッキー",
     "cookies to personalize the grbpwr experience": "grbpwr体験を個性化するクッキー"
+  },
+  "geo-suggest": {
+    "message": "あなたは{country}にいると思います。場所を更新しますか？",
+    "stay": "{country}に留まる",
+    "switch": "切り替え"
   }
 }
