@@ -27,9 +27,9 @@ export function GeoSuggestBanner({
 }: Props) {
   const { handleCountrySelect } = useLocation();
   const [visible, setVisible] = useState(false);
+  const [isCookiesAccepted, setIsCookiesAccepted] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const isCookiesAccepted = localStorage.getItem("cookieConsent");
   const defaultT = useTranslations("geo-suggest");
 
   const t = messages?.geo_suggest
@@ -48,6 +48,9 @@ export function GeoSuggestBanner({
   const currentCountryName = getCountryName(currentCountry);
 
   useEffect(() => {
+    const cookieConsent = localStorage.getItem("cookieConsent");
+    setIsCookiesAccepted(Boolean(cookieConsent));
+
     if (!suggestCountry || !suggestLocale) return;
     const alreadyOnSuggested = pathname?.startsWith(
       `/${suggestCountry}/${suggestLocale}`,
