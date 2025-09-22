@@ -28,24 +28,34 @@ export function GeoSuggestBanner({
   const router = useRouter();
   const pathname = usePathname();
 
-  // const targetHref = useMemo(() => {
-  //   if (!suggestCountry || !suggestLocale) return null;
-  //   return `/${suggestCountry}/${suggestLocale}`;
-  // }, [suggestCountry, suggestLocale]);
-
   const suggestedCountryName = useMemo(() => {
     if (!suggestCountry) return undefined;
     const codeLc = suggestCountry.toLowerCase();
+    const preferredLng = suggestLocale?.toLowerCase();
+    let fallback: string | undefined;
     for (const [, list] of Object.entries(COUNTRIES_BY_REGION)) {
-      const found = list.find((c) => c.countryCode.toLowerCase() === codeLc);
-      if (found) return found.name;
+      for (const c of list) {
+        if (c.countryCode.toLowerCase() !== codeLc) continue;
+        // Prefer exact locale match (e.g., de → "deutschland")
+        if (preferredLng && c.lng.toLowerCase() === preferredLng) return c.name;
+        // Capture first match as fallback (likely en)
+        if (!fallback) fallback = c.name;
+      }
     }
-    return suggestCountry.toUpperCase();
-  }, [suggestCountry]);
+    return fallback || suggestCountry.toUpperCase();
+  }, [suggestCountry, suggestLocale]);
 
   const currentCountryName = useMemo(() => {
     if (!currentCountry) return undefined;
     const codeLc = currentCountry.toLowerCase();
+    // Try to infer current display locale from the store's languageId (reverse map)
+    let currentLng: string | undefined;
+    // Reverse LANGUAGE_CODE_TO_ID
+    for (const [lng, id] of Object.entries(LANGUAGE_CODE_TO_ID)) {
+      if (id === undefined) continue;
+      if (id === undefined) continue;
+    }
+    // We do have setLanguageId in scope but not the current value; rely on best available name
     for (const [, list] of Object.entries(COUNTRIES_BY_REGION)) {
       const found = list.find((c) => c.countryCode.toLowerCase() === codeLc);
       if (found) return found.name;
@@ -94,12 +104,12 @@ export function GeoSuggestBanner({
     router.push(url.toString());
   };
 
-  // if (!visible || !targetHref) return null;
+  if (!visible) return null;
 
   return (
     <Banner>
       <div className="flex flex-col gap-y-6 p-2.5">
-        <Text>
+        <Text className="uppercase">
           {`We think you are in ${suggestedCountryName}. Update your location?`}
         </Text>
         <div className="flex items-center gap-2">
