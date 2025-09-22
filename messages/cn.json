@@ -98,5 +98,21 @@
     "title": "页面未找到",
     "text": "抱歉，您查找的页面不存在或已被移动。请返回首页，如果问题仍然存在，请联系我们",
     "main": "主页"
+  },
+  "cookies": {
+    "cookies title": "我们使用cookie来增强网站的功能。您可以在浏览器设置中禁用cookie。",
+    "cookie preferences": "cookie设置",
+    "accept": "接受",
+    "accept all cookies": "接受所有cookie",
+    "save preferences": "保存偏好",
+    "content text 1": "cookie是存储在您的计算机、平板电脑、智能手机或其他设备上的小文本文件，当您使用浏览器访问在线服务时。cookie允许其发送者识别存储在其上的设备，在同意期限内，不超过13个月。",
+    "content text 2": "这些cookie是必需的，以确保网站的最佳功能，不能配置。它们允许我们为您提供网站的关键功能（使用的语言、显示分辨率、账户访问、购物车、愿望清单等），为您提供在线建议，并保护我们的网站免受任何欺诈企图。",
+    "content text 3": "这些cookie用于衡量和分析我们的网站受众（访客数量、浏览页面、平均浏览时间等），以帮助我们改进其性能。通过接受这些cookie，您帮助我们改进我们的网站。",
+    "content text 4": "这些cookie用于Off White广告在第三方网站上显示，包括社交媒体，并根据您的偏好调整，以帮助我们衡量广告活动的有效性。如果您禁用这些cookie，广告（包括我们的广告）将继续显示，尽管它们不再针对您的个人兴趣，因此相关性较低。",
+    "content text 5": "这些cookie允许我们为您提供与您的期望和偏好相匹配的在线或店内产品、服务和内容。通过接受这些cookie，您选择一个更丰富和个性化的体验。",
+    "functional cookie (non-optional)": "功能性cookie（非可选）",
+    "statistical analysis cookies": "统计分析cookie",
+    "advertising and social media cookies": "广告和社交媒体cookie",
+    "cookies to personalize the grbpwr experience": "个性化grbpwr体验的cookie"
   }
 }

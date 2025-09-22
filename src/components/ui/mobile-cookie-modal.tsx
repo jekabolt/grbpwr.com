@@ -1,4 +1,5 @@
 import * as DialogPrimitives from "@radix-ui/react-dialog";
+import { useTranslations } from "next-intl";
 
 import { Text } from "@/components/ui/text";
 import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
@@ -23,17 +24,17 @@ export function MobileCookieModal({
   handleSaveCookies,
   handlePreferenceChange,
 }: Props) {
+  const t = useTranslations("cookies");
   if (!isVisible) return null;
 
   return (
     <DialogPrimitives.Root>
       <div className="flex flex-col items-start gap-6 p-2.5">
         <Text className="tracking-wider">
-          we use cookies to enhance the functionality of the website.You can
-          disable cookies in your browser settings.
+          {t("cookies title")}
           <DialogPrimitives.Trigger asChild>
             <Button variant="underline" className="inline">
-              cookie preferences
+              {t("cookie preferences")}
             </Button>
           </DialogPrimitives.Trigger>
         </Text>
@@ -43,7 +44,7 @@ export function MobileCookieModal({
           size="lg"
           className="uppercase"
         >
-          Accept
+          {t("accept")}
         </Button>
       </div>
       <DialogPrimitives.Portal>
@@ -53,7 +54,7 @@ export function MobileCookieModal({
             grbpwr mobile menu
           </DialogPrimitives.Title>
           <div className="flex items-center justify-between px-5">
-            <Text variant="uppercase">Cookie preferences</Text>
+            <Text variant="uppercase">{t("cookie preferences")}</Text>
             <DialogPrimitives.Close asChild>
               <Button>[x]</Button>
             </DialogPrimitives.Close>
@@ -74,7 +75,7 @@ export function MobileCookieModal({
                 size="lg"
                 className="w-full uppercase"
               >
-                Accept all cookies
+                {t("accept all cookies")}
               </Button>
             </DialogPrimitives.Close>
             <DialogPrimitives.Close asChild>
@@ -84,7 +85,7 @@ export function MobileCookieModal({
                 size="lg"
                 className="w-full uppercase"
               >
-                Save preferences
+                {t("save preferences")}
               </Button>
             </DialogPrimitives.Close>
           </div>

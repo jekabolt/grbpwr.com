@@ -98,5 +98,21 @@
     "title": "page non trouvée",
     "text": "désolé, la page que vous cherchez n'existe pas ou a été déplacée. veuillez retourner à la page d'accueil ou contacter nous si le problème persiste",
     "main": "page d'accueil"
+  },
+  "cookies": {
+    "cookies title": "nous utilisons des cookies pour améliorer la fonctionnalité du site web. vous pouvez désactiver les cookies dans vos paramètres de navigateur.",
+    "cookie preferences": "préférences des cookies",
+    "accept": "accepter",
+    "accept all cookies": "accepter tous les cookies",
+    "save preferences": "enregistrer les préférences",
+    "content text 1": "Un cookie est un petit fichier texte stocké dans un emplacement dédié sur votre ordinateur, tablette, smartphone ou autre appareil lorsque vous utilisez votre navigateur pour visiter un service en ligne. Un cookie permet à son expéditeur de reconnaître l'appareil sur lequel il est stocké pendant la période de validité du consentement, qui ne dépasse pas 13 mois.",
+    "content text 2": "Ces cookies sont nécessaires pour un fonctionnement optimal du site web et ne peuvent pas être configurés. Ils nous permettent de vous offrir les fonctions clés du site web (langue utilisée, résolution d'affichage, accès au compte, panier, liste de souhaits, etc.), de vous fournir des conseils en ligne et de sécuriser notre site web contre toute tentative de fraude.",
+    "content text 3": "Ces cookies sont utilisés pour mesurer et analyser notre audience du site web (volume des visiteurs, pages consultées, temps moyen de navigation, etc.) afin d'améliorer ses performances. En acceptant ces cookies, vous nous aidez à améliorer notre site web.",
+    "content text 4": "Ces cookies sont utilisés pour les publicités d'Off White affichées sur des sites web tiers, y compris les médias sociaux, et sont adaptés à vos préférences et pour nous aider à mesurer l'efficacité de nos campagnes publicitaires. Si vous désactivez ces cookies, la publicité (y compris la nôtre) continuera d'être affichée lorsque vous naviguez sur Internet, bien qu'elle ne sera plus spécifique à vos intérêts personnels et sera donc moins pertinente.",
+    "content text 5": "Ces cookies nous permettent de vous fournir des recommandations en ligne ou en magasin de produits, services et contenus qui correspondent à vos attentes et préférences. En acceptant ces cookies, vous choisissez un expérience enrichie et personnalisée.",
+    "functional cookie (non-optional)": "cookie fonctionnel (non-optionnel)",
+    "statistical analysis cookies": "cookies d'analyse statistique",
+    "advertising and social media cookies": "cookies publicitaires et sociaux",
+    "cookies to personalize the grbpwr experience": "cookies pour personnaliser l'expérience grbpwr"
   }
 }

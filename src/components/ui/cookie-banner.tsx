@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
@@ -20,6 +21,7 @@ export function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const [open, setOpenStatus] = useState(false);
   const [preferences, setPreferences] = useState(defaultCookiePreferences);
+  const t = useTranslations("cookies");
 
   useEffect(() => {
     const savedConsent = localStorage.getItem("cookieConsent");
@@ -60,14 +62,13 @@ export function CookieBanner() {
       </div>
       <div className="hidden space-y-6 p-2.5 lg:block">
         <Text variant="inherit" className="tracking-wider">
-          we use to enhance the functionality of the website.you can disable
-          cookies in your browser settings.
+          {t("cookies title")}
           <Button
             variant="underline"
             className="inline"
             onClick={() => setOpenStatus((v) => !v)}
           >
-            cookie preferences
+            {t("cookie preferences")}
           </Button>
         </Text>
         <Button
@@ -76,7 +77,7 @@ export function CookieBanner() {
           className="uppercase"
           onClick={handleSaveCookies}
         >
-          accept
+          {t("accept")}
         </Button>
       </div>
       <div
@@ -89,7 +90,7 @@ export function CookieBanner() {
       >
         <div className="flex h-full flex-col gap-y-6">
           <div className="flex items-center justify-between">
-            <Text variant="uppercase">cookie preferences</Text>
+            <Text variant="uppercase">{t("cookie preferences")}</Text>
             <Button onClick={() => setOpenStatus((v) => !v)}>[x]</Button>
           </div>
           <div className="h-full overflow-y-scroll border-b">
@@ -105,7 +106,7 @@ export function CookieBanner() {
               size="lg"
               className="w-1/2 uppercase"
             >
-              accept all cookies
+              {t("accept all cookies")}
             </Button>
             <Button
               variant="simpleReverse"
@@ -113,7 +114,7 @@ export function CookieBanner() {
               size="lg"
               className="uppercase"
             >
-              save preferences
+              {t("save preferences")}
             </Button>
           </div>
         </div>

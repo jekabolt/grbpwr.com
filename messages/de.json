@@ -98,5 +98,21 @@
     "title": "seite nicht gefunden",
     "text": "entschuldigung, die seite, die sie suchen, existiert nicht oder wurde verschoben. bitte gehen sie zurück zur startseite oder kontaktieren sie uns, wenn das problem weiterhin besteht",
     "main": "hauptseite"
+  },
+  "cookies": {
+    "cookies title": "wir verwenden cookies, um die funktion des websites zu verbessern. sie können cookies in ihren browser-einstellungen deaktivieren.",
+    "cookie preferences": "cookie-einstellungen",
+    "accept": "akzeptieren",
+    "accept all cookies": "alle cookies akzeptieren",
+    "save preferences": "einstellungen speichern",
+    "content text 1": "Ein Cookie ist ein kleiner Text-Datei, der in einem dedizierten Speicherort auf Ihrem Computer, Tablet, Smartphone oder anderen Gerät gespeichert wird, wenn Sie Ihren Browser verwenden, um einen Online-Service zu besuchen. Ein Cookie ermöglicht es seinem Absender, das Gerät zu erkennen, auf dem es gespeichert wird, während die Gültigkeit des Zustimmungsinhalts nicht länger als 13 Monate dauert.",
+    "content text 2": "Diese Cookies sind für das optimale Funktionieren des Websites erforderlich und können nicht konfiguriert werden. Sie ermöglichen es uns, Ihnen die wichtigsten Funktionen des Websites (verwendete Sprache, Anzeigegröße, Kontozugang, Warenkorb, Wunschliste usw.) anzubieten, Ihnen Online-Beratung zu geben und unsere Website gegen jede versuchte Betrug zu schützen.",
+    "content text 3": "Diese Cookies werden verwendet, um unsere Website-Zielgruppe (Besuchervolumen, besuchte Seiten, durchschnittliche Surfzeit usw.) zu messen und zu analysieren, um unsere Leistung zu verbessern. Durch die Annahme dieser Cookies helfen Sie uns, unsere Website zu verbessern.",
+    "content text 4": "Diese Cookies werden für Off White-Werbung auf Drittanbieter-Websites, einschließlich Social Media, verwendet und sind an Ihre Präferenzen angepasst, um die Effizienz unserer Werbekampagnen zu messen. Wenn Sie diese Cookies deaktivieren, wird die Werbung (einschließlich unserer) weiterhin angezeigt, während sie nicht mehr spezifisch auf Ihre persönlichen Interessen ausgerichtet ist und daher weniger relevant ist.",
+    "content text 5": "Diese Cookies ermöglichen es uns, Ihnen Produkte, Dienstleistungen und Inhalte online oder im Laden zu empfehlen, die Ihren Erwartungen und Präferenzen entsprechen. Durch die Annahme dieser Cookies wählen Sie eine umfangreichere und persönliche Erfahrung.",
+    "functional cookie (non-optional)": "funktionelles cookie (nicht optional)",
+    "statistical analysis cookies": "statistische analyse-cookies",
+    "advertising and social media cookies": "werbe- und sozialmedia-cookies",
+    "cookies to personalize the grbpwr experience": "cookies zur persönlichen gestaltung der grbpwr-erfahrung"
   }
 }
