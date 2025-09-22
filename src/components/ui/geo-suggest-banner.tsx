@@ -1,8 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 
 import { Button } from "./button";
@@ -22,6 +24,7 @@ export function GeoSuggestBanner({
   currentCountry,
   currentLocale,
 }: Props) {
+  const { setLanguageId, setCountry } = useTranslationsStore((state) => state);
   const [visible, setVisible] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -40,19 +43,38 @@ export function GeoSuggestBanner({
     setVisible(!alreadyOnSuggested);
   }, [pathname, suggestCountry, suggestLocale]);
 
-  const onDismiss = useCallback(() => {
-    // Trigger middleware via query param; it will clear cookies and redirect back
+  const onDismiss = () => {
     const url = new URL(window.location.href);
     url.searchParams.set("geo", "dismiss");
     router.push(url.toString());
-  }, [router]);
+  };
 
-  const onAccept = useCallback(() => {
+  const onAccept = () => {
+    // Update translations store immediately for zero-lag UI, then let middleware persist cookies and redirect
+    if (suggestCountry && suggestLocale) {
+      const langId = LANGUAGE_CODE_TO_ID[suggestLocale];
+      if (langId !== undefined) setLanguageId(langId);
+
+      // Find country display name from constants
+      let displayName = suggestCountry.toUpperCase();
+      outer: for (const [, list] of Object.entries(COUNTRIES_BY_REGION)) {
+        for (const c of list) {
+          if (c.countryCode.toLowerCase() === suggestCountry.toLowerCase()) {
+            displayName = c.name;
+            break outer;
+          }
+        }
+      }
+      setCountry({
+        name: displayName,
+        countryCode: suggestCountry.toUpperCase(),
+      });
+    }
     // Trigger middleware to accept and redirect to suggested route
     const url = new URL(window.location.href);
     url.searchParams.set("geo", "accept");
     router.push(url.toString());
-  }, [router]);
+  };
 
   if (!visible || !targetHref) return null;
 
@@ -61,8 +83,6 @@ export function GeoSuggestBanner({
       className={cn(
         "blackTheme fixed inset-x-2 top-2 z-40 flex items-center justify-between gap-3 bg-bgColor p-2.5 text-textColor lg:bottom-2 lg:left-auto lg:top-auto lg:w-[520px]",
       )}
-      role="region"
-      aria-label="Geo suggestion"
     >
       <div className="text-sm">
         We detected your region. Switch to {suggestCountry?.toUpperCase()} /{" "}
