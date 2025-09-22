@@ -40,22 +40,19 @@ export function GeoSuggestBanner({
     setVisible(!alreadyOnSuggested);
   }, [pathname, suggestCountry, suggestLocale]);
 
-  const clearSuggestion = useCallback(async () => {
-    try {
-      await fetch("/api/geo-suggest/dismiss", { method: "POST" });
-    } catch {}
-  }, []);
+  const onDismiss = useCallback(() => {
+    // Trigger middleware via query param; it will clear cookies and redirect back
+    const url = new URL(window.location.href);
+    url.searchParams.set("geo", "dismiss");
+    router.push(url.toString());
+  }, [router]);
 
-  const onDismiss = useCallback(async () => {
-    setVisible(false);
-    await clearSuggestion();
-  }, [clearSuggestion]);
-
-  const onAccept = useCallback(async () => {
-    if (!targetHref) return;
-    await clearSuggestion();
-    router.push(targetHref);
-  }, [targetHref, clearSuggestion, router]);
+  const onAccept = useCallback(() => {
+    // Trigger middleware to accept and redirect to suggested route
+    const url = new URL(window.location.href);
+    url.searchParams.set("geo", "accept");
+    router.push(url.toString());
+  }, [router]);
 
   if (!visible || !targetHref) return null;
 

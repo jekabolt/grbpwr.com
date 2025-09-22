@@ -40,6 +40,51 @@ export default function middleware(req: NextRequest) {
         ? 'de'
         : (req.headers.get('x-vercel-ip-country')?.toLowerCase() || 'us');
 
+    // Handle geo suggestion actions via query params to avoid custom APIs
+    const action = req.nextUrl.searchParams.get('geo');
+    if (action === 'dismiss' || action === 'accept') {
+        const url = req.nextUrl.clone();
+        url.searchParams.delete('geo');
+
+        const res = NextResponse.redirect(url, { status: 307 });
+
+        const clearSuggestCookies = () => {
+            res.cookies.set('NEXT_SUGGEST_COUNTRY', '', { path: '/', maxAge: 0 });
+            res.cookies.set('NEXT_SUGGEST_LOCALE', '', { path: '/', maxAge: 0 });
+            res.cookies.set('NEXT_SUGGEST_PATH', '', { path: '/', maxAge: 0 });
+            res.cookies.set('NEXT_SUGGEST_CURRENT_COUNTRY', '', { path: '/', maxAge: 0 });
+            res.cookies.set('NEXT_SUGGEST_CURRENT_LOCALE', '', { path: '/', maxAge: 0 });
+        };
+
+        if (action === 'dismiss') {
+            clearSuggestCookies();
+            return res;
+        }
+
+        // accept
+        const suggestCountry = req.cookies.get('NEXT_SUGGEST_COUNTRY')?.value;
+        const suggestLocale = req.cookies.get('NEXT_SUGGEST_LOCALE')?.value;
+        const suggestPath = req.cookies.get('NEXT_SUGGEST_PATH')?.value || '';
+
+        if (suggestCountry && suggestLocale) {
+            // Persist accepted pair
+            res.cookies.set('NEXT_COUNTRY', suggestCountry, { path: '/', maxAge: 60 * 60 * 24 * 365 });
+            res.cookies.set('NEXT_LOCALE', suggestLocale, { path: '/', maxAge: 60 * 60 * 24 * 365 });
+
+            // Redirect to suggested route
+            const target = req.nextUrl.clone();
+            target.searchParams.delete('geo');
+            target.pathname = `/${suggestCountry}/${suggestLocale}${suggestPath}`;
+            const acceptRes = NextResponse.redirect(target, { status: 308 });
+            clearSuggestCookies();
+            return acceptRes;
+        }
+
+        // Fallback: nothing to accept, just clear and proceed
+        clearSuggestCookies();
+        return res;
+    }
+
     const match = pathname.match(/^\/([A-Za-z]{2})\/([a-z]{2})(?=\/|$)(.*)$/);
     if (match) {
         const [, countryRaw, locale, rest] = match;
