@@ -6,6 +6,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { CookieBanner } from "@/components/ui/cookie-banner";
+import { GeoSuggestBannerServer } from "@/components/ui/geo-suggest-banner.server";
 import { ToastProvider } from "@/components/ui/toaster";
 
 import "../globals.css";
@@ -43,6 +44,10 @@ export default async function RootLayout({ children, params }: Props) {
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ToastProvider>
             <div className="lightTheme relative min-h-screen">{children}</div>
+            {/* Geo suggestion banner (only when suggestion cookies are set) */}
+            {/* Server wrapper reads cookies and renders client banner */}
+            {/* Placed after main content to avoid CLS */}
+            <GeoSuggestBannerServer />
             <CookieBanner />
           </ToastProvider>
         </NextIntlClientProvider>

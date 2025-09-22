@@ -57,8 +57,28 @@ export default function middleware(req: NextRequest) {
         const newReq = new NextRequest(url, { headers: req.headers });
         const res = intlMiddleware(newReq);
 
+        const hadCountry = Boolean(countryCookie);
+        const hadLocale = Boolean(localeCookie);
+
+        // Persist explicit URL selection
         res.cookies.set('NEXT_COUNTRY', country, { path: '/', maxAge: 60 * 60 * 24 * 365 });
         res.cookies.set('NEXT_LOCALE', locale, { path: '/', maxAge: 60 * 60 * 24 * 365 });
+
+        // If first-time (no cookies yet) and geo differs, set suggestion cookies (short-lived)
+        if (!hadCountry || !hadLocale) {
+            const geoCountry = getNormalizedCountry(detectedCountry);
+            const geoLocale = getLocaleFromCountry(geoCountry);
+            const differs = geoCountry !== country || geoLocale !== locale;
+            if (differs) {
+                const restPath = rest ? `/${rest}` : '';
+                res.cookies.set('NEXT_SUGGEST_COUNTRY', geoCountry, { path: '/', maxAge: 60 * 30 });
+                res.cookies.set('NEXT_SUGGEST_LOCALE', geoLocale, { path: '/', maxAge: 60 * 30 });
+                res.cookies.set('NEXT_SUGGEST_PATH', restPath, { path: '/', maxAge: 60 * 30 });
+                res.cookies.set('NEXT_SUGGEST_CURRENT_COUNTRY', country, { path: '/', maxAge: 60 * 30 });
+                res.cookies.set('NEXT_SUGGEST_CURRENT_LOCALE', locale, { path: '/', maxAge: 60 * 30 });
+            }
+        }
+
         return res;
     }
 
