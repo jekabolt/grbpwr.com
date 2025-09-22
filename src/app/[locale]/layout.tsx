@@ -44,9 +44,6 @@ export default async function RootLayout({ children, params }: Props) {
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ToastProvider>
             <div className="lightTheme relative min-h-screen">{children}</div>
-            {/* Geo suggestion banner (only when suggestion cookies are set) */}
-            {/* Server wrapper reads cookies and renders client banner */}
-            {/* Placed after main content to avoid CLS */}
             <GeoSuggestBannerServer />
             <CookieBanner />
           </ToastProvider>

@@ -16,18 +16,30 @@ interface Props {
   suggestCountry?: string;
   suggestLocale?: string;
   currentCountry?: string;
+  messages?: any;
 }
 
 export function GeoSuggestBanner({
   suggestCountry,
   suggestLocale,
   currentCountry,
+  messages,
 }: Props) {
   const { handleCountrySelect } = useLocation();
   const [visible, setVisible] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const t = useTranslations("geo-suggest");
+  // Use suggested locale messages if available, fallback to current locale
+  const t = messages?.geo_suggest
+    ? (key: string, values?: any) => {
+        const template = messages.geo_suggest[key];
+        if (!template) return key;
+        return template.replace(
+          /\{(\w+)\}/g,
+          (_: any, name: string) => values?.[name] || "",
+        );
+      }
+    : useTranslations("geo-suggest");
 
   const suggestedCountryName = getCountryName(suggestCountry, suggestLocale);
 
