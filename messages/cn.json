@@ -119,5 +119,10 @@
     "message": "我们认为您在{country}。更新您的位置？",
     "stay": "{country}停留",
     "switch": "切换"
+  },
+  "update_location": {
+    "message": "您当前在{currentCountry}购物。更改国家/地区时，购物车将被清空。您确定要继续吗？",
+    "continue": "继续到{country}",
+    "cancel": "取消"
   }
 }

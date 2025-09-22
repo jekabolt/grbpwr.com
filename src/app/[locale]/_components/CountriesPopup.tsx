@@ -9,24 +9,22 @@ import {
 import { useTranslations } from "next-intl";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
 import { Searchbar } from "@/components/ui/searchbar";
 import { Text } from "@/components/ui/text";
+import { UpdateLocation } from "@/components/ui/update-location";
 
 import FieldsGroupContainer from "../(checkout)/checkout/_components/new-order-form/fields-group-container";
 import { MobileCountriesPopup } from "./mobile-countries-popup";
-import { useLocation } from "./useLocation";
 import { useSearchCountries } from "./useSearchCountries";
 
 export function CountriesPopup() {
   const [seletedLocation, setSeletedLocation] = useState<CountryOption>();
   const { isOpen, closeCurrencyPopup } = useCurrency((state) => state);
-  // const { languageId, country: selectedCountry } = useTranslationsStore(
-  //   (state) => state,
-  // );
-  const { handleCountrySelect } = useLocation();
+  const { country: currentCountry } = useTranslationsStore((state) => state);
 
   const { query, filteredCountries, searchQuery, handleSearch } =
     useSearchCountries();
@@ -35,7 +33,9 @@ export function CountriesPopup() {
 
   const t = useTranslations("countries-popup");
 
-  console.log("seletedLocation", seletedLocation);
+  function cancelSelection() {
+    setSeletedLocation(undefined);
+  }
 
   return (
     <>
@@ -161,17 +161,16 @@ export function CountriesPopup() {
                     )}
                   </div>
                 </div>
-                <Button
-                  size="lg"
-                  variant="simple"
-                  className={cn("uppercase")}
-                  onClick={() => handleCountrySelect(seletedLocation)}
-                >
-                  update
-                </Button>
               </div>
             </div>
           </>
+        )}
+        {seletedLocation && (
+          <UpdateLocation
+            selectedLocation={seletedLocation}
+            currentCountry={currentCountry?.name || ""}
+            onCancel={cancelSelection}
+          />
         )}
       </div>
     </>

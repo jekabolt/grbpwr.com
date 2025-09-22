@@ -29,7 +29,6 @@ export function GeoSuggestBanner({
   const [visible, setVisible] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  // Always call the hook, then override if we have suggested messages
   const defaultT = useTranslations("geo-suggest");
 
   const t = messages?.geo_suggest

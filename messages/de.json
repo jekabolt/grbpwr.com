@@ -119,5 +119,10 @@
     "message": "Wir denken, Sie sind in {country}. Aktualisieren Sie Ihre Standort?",
     "stay": "Bleiben Sie {country}",
     "switch": "Wechseln"
+  },
+  "update_location": {
+    "message": "Sie sind derzeit in {currentCountry}. Beim Wechseln von Ländern/Regionen wird Ihr Warenkorb geleert. Sind Sie sicher, dass Sie fortfahren möchten?",
+    "continue": "Weiter zu {country}",
+    "cancel": "Abbrechen"
   }
 }

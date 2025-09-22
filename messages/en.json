@@ -119,5 +119,10 @@
     "message": "We think you are in {country}. Update your location?",
     "stay": "Stay {country}",
     "switch": "Switch"
+  },
+  "update_location": {
+    "message": "You are currently shopping on the {currentCountry}. When changing countries/regions your shopping bag will be emptied. Are you sure you want to proceed?",
+    "continue": "Continue to {country}",
+    "cancel": "Cancel"
   }
 }
