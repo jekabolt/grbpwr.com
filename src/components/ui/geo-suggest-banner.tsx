@@ -29,7 +29,9 @@ export function GeoSuggestBanner({
   const [visible, setVisible] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  // Use suggested locale messages if available, fallback to current locale
+  // Always call the hook, then override if we have suggested messages
+  const defaultT = useTranslations("geo-suggest");
+
   const t = messages?.geo_suggest
     ? (key: string, values?: any) => {
         const template = messages.geo_suggest[key];
@@ -39,7 +41,7 @@ export function GeoSuggestBanner({
           (_: any, name: string) => values?.[name] || "",
         );
       }
-    : useTranslations("geo-suggest");
+    : defaultT;
 
   const suggestedCountryName = getCountryName(suggestCountry, suggestLocale);
 
