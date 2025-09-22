@@ -29,6 +29,7 @@ export function GeoSuggestBanner({
   const [visible, setVisible] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const isCookiesAccepted = localStorage.getItem("cookieConsent");
   const defaultT = useTranslations("geo-suggest");
 
   const t = messages?.geo_suggest
@@ -85,7 +86,7 @@ export function GeoSuggestBanner({
     }
   };
 
-  if (!visible) return null;
+  if (!isCookiesAccepted || !visible) return null;
 
   return (
     <Banner>

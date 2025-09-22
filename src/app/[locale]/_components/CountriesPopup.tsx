@@ -24,6 +24,7 @@ import { useSearchCountries } from "./useSearchCountries";
 export function CountriesPopup() {
   const [seletedLocation, setSeletedLocation] = useState<CountryOption>();
   const { isOpen, closeCurrencyPopup } = useCurrency((state) => state);
+
   const { country: currentCountry } = useTranslationsStore((state) => state);
 
   const { query, filteredCountries, searchQuery, handleSearch } =
