@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
@@ -8,13 +9,23 @@ import { EmptyHero } from "@/components/ui/empty-hero";
 import { Ads } from "./_components/ads";
 import { MainAds } from "./_components/main-ads";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+
+  const description = t("description");
+
   const { hero } = await serviceClient.GetHero({});
   const heroImage =
     hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.thumbnail
       ?.mediaUrl;
 
   return generateCommonMetadata({
+    description,
     ogParams: {
       imageUrl: heroImage,
       imageAlt: "main hero image",

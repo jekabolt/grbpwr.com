@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
+import { LANGUAGE_CODE_TO_ID } from "@/constants";
 import { getTranslations } from "next-intl/server";
 
 import { serviceClient } from "@/lib/api";
@@ -17,9 +18,11 @@ interface ArchivePageParams {
 
 export async function generateMetadata({
   params,
-}: ArchivePageParams): Promise<Metadata> {
-  const { archiveParams } = await params;
-
+}: {
+  params: Promise<{ locale: string; archiveParams: string[] }>;
+}): Promise<Metadata> {
+  const { archiveParams, locale } = await params;
+  const localeId = LANGUAGE_CODE_TO_ID[locale];
   const [heading, tag, id] = archiveParams;
 
   const archiveResponse = await serviceClient.GetArchive({
@@ -29,21 +32,22 @@ export async function generateMetadata({
   });
 
   const archive = archiveResponse.archive as common_ArchiveFull;
+  const currentTranslation =
+    archive.archiveList?.translations?.find((t) => t.languageId === localeId) ||
+    archive.archiveList?.translations?.[0];
 
   return generateCommonMetadata({
     title:
-      archive.archiveList?.translations?.[0]?.heading?.toUpperCase() ||
-      "heading".toUpperCase(),
-    description:
-      archive.archiveList?.translations?.[0]?.description || "description",
+      currentTranslation?.heading?.toUpperCase() || "heading".toUpperCase(),
+    description: currentTranslation?.description || "description",
     ogParams: {
       imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
-      imageAlt: archive.archiveList?.translations?.[0]?.heading || "",
+      imageAlt: currentTranslation?.heading || "",
     },
   });
 }
 
-// export const dynamic = "force-static";
+export const dynamic = "force-static";
 
 export default async function Page({ params }: ArchivePageParams) {
   const { archiveParams } = await params;

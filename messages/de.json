@@ -142,6 +142,8 @@
   },
   "meta": {
     "description": "neueste Ready-to-Wear-Menswear, Womenswear und Accessoires",
-    "catalog": "katalog"
+    "catalog": "katalog",
+    "timeline": "zeitleiste",
+    "timeline description": "archiv und updates entdecken"
   }
 }

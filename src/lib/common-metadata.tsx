@@ -1,4 +1,3 @@
-// src/lib/metadata.ts
 import { Metadata } from "next";
 
 import logo from "../../public/app-logo.webp";

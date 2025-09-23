@@ -142,6 +142,8 @@
   },
   "meta": {
     "description": "latest ready-to-wear menswear, womenswear, and accessories",
-    "catalog": "catalog"
+    "catalog": "catalog",
+    "timeline": "timeline",
+    "timeline description": "discover archive and updates"
   }
 }

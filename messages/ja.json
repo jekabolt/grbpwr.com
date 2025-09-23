@@ -142,6 +142,8 @@
   },
   "meta": {
     "description": "最新のメンズ、レディース、アクセサリーのコレクション",
-    "catalog": "カタログ"
+    "catalog": "カタログ",
+    "timeline": "タイムライン",
+    "timeline description": "アーカイブと更新を発見"
   }
 }

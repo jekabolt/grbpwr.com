@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { CATALOG_LIMIT } from "@/constants";
+import { getTranslations } from "next-intl/server";
 
 import { serviceClient } from "@/lib/api";
 import { resolveCategories } from "@/lib/categories-map";
@@ -32,9 +33,20 @@ interface CatalogPageProps {
   }>;
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+
+  const title = t("catalog");
+  const description = t("description");
+
   return generateCommonMetadata({
-    title: "catalog".toUpperCase(),
+    title: title.toUpperCase(),
+    description,
   });
 }
 
