@@ -124,5 +124,23 @@
     "message": "Vous êtes actuellement dans {currentCountry}. Lors du changement de pays/région, votre panier sera vidé. Êtes-vous sûr de vouloir continuer?",
     "continue": "Continuer vers {country}",
     "cancel": "Annuler"
+  },
+  "measurements-descriptions": {
+    "waist": "Tour de taille mesuré à plat sur le vêtement",
+    "chest": "Tour de poitrine mesuré à plat sur le vêtement, d'aisselle à aisselle",
+    "shoulders": "Mesuré horizontalement sur le vêtement, de couture d'épaule à couture d'épaule",
+    "hips": "Tour de hanches mesuré à plat sur le vêtement",
+    "leg-opening": "Mesurer l'ouverture de l'ourlet du bas.",
+    "bottom-width": "Largeur du bas mesurée à plat sur le vêtement",
+    "end-fit-length": "Longueur depuis le point d'ajustement final.",
+    "start-fit-length": "Longueur depuis le point d'ajustement initial.",
+    "length": "Mesuré du centre du dos du col jusqu'au bas du vêtement",
+    "inseam": "Mesuré de l'entrejambe jusqu'au bas le long de la couture intérieure (intérieur de la jambe)",
+    "sleeve": "Mesuré du centre du dos du col, y compris l'épaule jusqu'au bas de l'ourlet",
+    "height": "Hauteur totale du vêtement.",
+    "width": "Largeur au point spécifié"
+  },
+  "meta": {
+    "description": "dernière collection de prêt-à-porter homme, femme et accessoires"
   }
 }

@@ -124,5 +124,23 @@
     "message": "Sei attualmente in {currentCountry}. Quando cambi paese/regione, il tuo carrello sarà svuotato. Sei sicuro di voler continuare?",
     "continue": "Continua a {country}",
     "cancel": "Annulla"
+  },
+  "measurements-descriptions": {
+    "waist": "Vita misurata piatta sul capo",
+    "chest": "Petto misurato piatto sul capo, da sotto-braccio a sotto-braccio",
+    "shoulders": "Misurato orizzontalmente sul capo, da cucitura spalla a cucitura spalla",
+    "hips": "Fianchi misurati piatti sul capo",
+    "leg-opening": "Misurare l'apertura dell'orlo inferiore.",
+    "bottom-width": "Larghezza inferiore misurata piatta sul capo",
+    "end-fit-length": "Lunghezza dal punto di vestibilità finale.",
+    "start-fit-length": "Lunghezza dal punto di vestibilità iniziale.",
+    "length": "Misurato dal centro del collo posteriore fino al fondo del capo",
+    "inseam": "Misurato dal cavallo fino al fondo lungo la cucitura interna (interno gamba)",
+    "sleeve": "Misurato dal centro del collo posteriore, inclusa la spalla fino al fondo dell'orlo",
+    "height": "Altezza totale del capo.",
+    "width": "Larghezza al punto specificato"
+  },
+  "meta": {
+    "description": "ultima collezione di prêt-à-porter maschile, femminile e accessori"
   }
 }

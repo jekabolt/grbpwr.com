@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from "next-intl/server";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { CookieBanner } from "@/components/ui/cookie-banner";
@@ -17,7 +22,19 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export const metadata = generateCommonMetadata();
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Promise<Metadata> {
+  const { locale } = params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "meta" });
+
+  const description = t("description");
+
+  return generateCommonMetadata({ description });
+}
 
 export const viewport = {
   width: "device-width",
@@ -33,7 +50,7 @@ interface Props {
 
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
-  // Ensure next-intl resolves the correct locale during SSG/SSR
+
   setRequestLocale(locale);
   const messages = await getMessages();
 

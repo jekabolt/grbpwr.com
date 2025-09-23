@@ -124,5 +124,23 @@
     "message": "Sie sind derzeit in {currentCountry}. Beim Wechseln von Ländern/Regionen wird Ihr Warenkorb geleert. Sind Sie sicher, dass Sie fortfahren möchten?",
     "continue": "Weiter zu {country}",
     "cancel": "Abbrechen"
+  },
+  "measurements-descriptions": {
+    "waist": "Taillenweite flach am Kleidungsstück gemessen",
+    "chest": "Brustweite flach am Kleidungsstück gemessen, von Achsel zu Achsel",
+    "shoulders": "Horizontal am Kleidungsstück gemessen, von Schulternaht zu Schulternaht",
+    "hips": "Hüftweite flach am Kleidungsstück gemessen",
+    "leg-opening": "Die untere Saumöffnung messen.",
+    "bottom-width": "Untere Breite flach am Kleidungsstück gemessen",
+    "end-fit-length": "Länge vom Ende des Anpassungspunktes.",
+    "start-fit-length": "Länge vom Start des Anpassungspunktes.",
+    "length": "Gemessen vom hinteren Halsansatz bis zum unteren Ende des Kleidungsstücks",
+    "inseam": "Gemessen vom Schritt bis zum unteren Ende entlang der Innennaht (Beininnenseite)",
+    "sleeve": "Gemessen vom hinteren Halsansatz, einschließlich Schulter bis zum unteren Saumende",
+    "height": "Gesamthöhe des Kleidungsstücks.",
+    "width": "Breite am angegebenen Punkt"
+  },
+  "meta": {
+    "description": "neueste Ready-to-Wear-Menswear, Womenswear und Accessoires"
   }
 }

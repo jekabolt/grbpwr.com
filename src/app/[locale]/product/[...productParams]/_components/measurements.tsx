@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { MEASUREMENT_DESCRIPTIONS } from "@/constants";
+import { useTranslations } from "next-intl";
 
 import { useMeasurementStore } from "@/lib/stores/measurement/store";
 import { cn } from "@/lib/utils";
@@ -47,6 +48,7 @@ export function Measurements({
   const [unit, setUnit] = useState(Unit.CM);
   const isRing = measurementType === "ring";
   const isShoe = measurementType === "shoe";
+  const t = useTranslations();
 
   const hoveredDescriptionKey = (() => {
     if (!hoveredMeasurement) return null;
@@ -67,18 +69,27 @@ export function Measurements({
       .replace(/(^-|-$)/g, "");
   })();
 
+  const hoveredDescription = (() => {
+    if (!hoveredDescriptionKey) return null;
+    try {
+      const key = `measurements-descriptions.${hoveredDescriptionKey}`;
+      const translated = t(key as any) as string;
+      if (translated && translated !== key) return translated;
+    } catch (_) {}
+    return MEASUREMENT_DESCRIPTIONS[hoveredDescriptionKey] || null;
+  })();
+
   return (
     <div
       className={cn("flex h-full flex-col overflow-y-hidden bg-bgColor", {
         "overflow-y-auto": isRing || isShoe,
       })}
     >
-      {hoveredDescriptionKey &&
-        MEASUREMENT_DESCRIPTIONS[hoveredDescriptionKey] && (
-          <Text className="absolute left-0 top-0 z-10 w-full bg-highlightColor p-2.5 lowercase text-bgColor">
-            {MEASUREMENT_DESCRIPTIONS[hoveredDescriptionKey]}
-          </Text>
-        )}
+      {hoveredDescription && (
+        <Text className="absolute left-0 top-0 z-10 w-full bg-highlightColor p-2.5 lowercase text-bgColor">
+          {hoveredDescription}
+        </Text>
+      )}
       <div className={cn("space-y-6", { "space-y-0": isRing || isShoe })}>
         <div className={cn("space-y-10", { hidden: isRing || isShoe })}>
           <div className="space-y-5">
