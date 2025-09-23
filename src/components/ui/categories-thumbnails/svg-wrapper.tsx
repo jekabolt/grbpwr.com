@@ -1,8 +1,9 @@
 import { SVGProps } from "react";
 import { common_ProductMeasurement } from "@/api/proto-http/frontend";
 
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { Unit } from "@/app/product/[...productParams]/_components/measurements-table";
+import { Unit } from "@/app/[locale]/product/[...productParams]/_components/measurements-table";
 
 import { HorizontalLine } from "../icons/guide-lines/horizontal-line";
 import { VerticalLine } from "../icons/guide-lines/vertical-line";
@@ -69,21 +70,38 @@ const useMeasurementValue = (
   selectedSize?: number,
 ) => {
   const { dictionary } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
 
   return (measurementName: string) => {
-    const measurementId = dictionary?.measurements?.find(
-      (m) => m.name?.toLowerCase() === measurementName.toLowerCase(),
+    // First try to find by translated name (current language)
+    let measurementId = dictionary?.measurements?.find(
+      (m) =>
+        m.translations
+          ?.find((t) => t.languageId === languageId)
+          ?.name?.toLowerCase() === measurementName.toLowerCase(),
     )?.id;
 
-    if (!measurementId) return "0";
+    // If not found, try to find by English name (fallback)
+    if (!measurementId) {
+      measurementId = dictionary?.measurements?.find(
+        (m) =>
+          m.translations?.[0]?.name?.toLowerCase() ===
+          measurementName.toLowerCase(),
+      )?.id;
+    }
 
-    return (
+    if (!measurementId) {
+      return "0";
+    }
+
+    const value =
       measurements.find(
         (m) =>
           m.measurementNameId === measurementId &&
           m.productSizeId === selectedSize,
-      )?.measurementValue?.value || "0"
-    );
+      )?.measurementValue?.value || "0";
+
+    return value;
   };
 };
 

@@ -6,6 +6,8 @@ import { CartStoreProvider } from "@/lib/stores/cart/store-provider";
 import { CheckoutStoreProvider } from "@/lib/stores/checkout/store-provider";
 import { CurrencyStoreProvider } from "@/lib/stores/currency/store-provider";
 import { LastViewedStoreProvider } from "@/lib/stores/last-viewed/store-provider.";
+import { getInitialTranslationState } from "@/lib/stores/translations/cookie-utils";
+import { TranslationsStoreProvider } from "@/lib/stores/translations/store-provider";
 import { DataContextProvider } from "@/components/contexts/DataContext";
 import { ServerActionsContextProvider } from "@/components/contexts/ServerActionsContext";
 
@@ -15,6 +17,7 @@ export default async function Template({
   children: React.ReactNode;
 }) {
   const heroData = await serviceClient.GetHero({});
+  const initialTranslationState = await getInitialTranslationState();
 
   return (
     <QueryWrapper>
@@ -29,9 +32,14 @@ export default async function Template({
           <CheckoutStoreProvider>
             <LastViewedStoreProvider>
               <CurrencyStoreProvider rates={heroData.rates?.currencies || {}}>
-                <DataContextProvider {...heroData}>
-                  {children}
-                </DataContextProvider>
+                <TranslationsStoreProvider
+                  initialCountry={initialTranslationState.country}
+                  initialLanguageId={initialTranslationState.languageId}
+                >
+                  <DataContextProvider {...heroData}>
+                    {children}
+                  </DataContextProvider>
+                </TranslationsStoreProvider>
               </CurrencyStoreProvider>
             </LastViewedStoreProvider>
           </CheckoutStoreProvider>

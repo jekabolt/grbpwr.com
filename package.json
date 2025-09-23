@@ -11,6 +11,7 @@
     "gen": "cd proto && git pull origin main && cd .. && make proto"
   },
   "dependencies": {
+    "@formatjs/intl-localematcher": "^0.5.4",
     "@hookform/resolvers": "^3.6.0",
     "@next/third-parties": "^15.5.2",
     "@radix-ui/react-accordion": "^1.2.1",
@@ -36,7 +37,9 @@
     "embla-carousel-react": "^8.5.1",
     "embla-carousel-wheel-gestures": "^8.0.1",
     "framer-motion": "^12.23.12",
+    "negotiator": "^0.6.3",
     "next": "15.0.1",
+    "next-intl": "^4.3.9",
     "qrcode": "^1.5.3",
     "react": "0.0.0-experimental-443b7ff2-20250303",
     "react-dom": "0.0.0-experimental-443b7ff2-20250303",

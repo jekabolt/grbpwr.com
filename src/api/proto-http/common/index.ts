@@ -2,6 +2,82 @@
 /* eslint-disable camelcase */
 // @ts-nocheck
 
+export type Language = {
+  id: number | undefined;
+  code: string | undefined;
+  name: string | undefined;
+  isDefault: boolean | undefined;
+  isActive: boolean | undefined;
+};
+
+export type ProductInsertTranslation = {
+  languageId: number | undefined;
+  name: string | undefined;
+  description: string | undefined;
+};
+
+export type ArchiveInsertTranslation = {
+  languageId: number | undefined;
+  heading: string | undefined;
+  description: string | undefined;
+};
+
+export type CategoryTranslation = {
+  id: number | undefined;
+  categoryId: number | undefined;
+  languageId: number | undefined;
+  name: string | undefined;
+};
+
+export type MeasurementNameTranslation = {
+  id: number | undefined;
+  measurementNameId: number | undefined;
+  languageId: number | undefined;
+  name: string | undefined;
+};
+
+export type HeroSingleInsertTranslation = {
+  languageId: number | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type HeroMainInsertTranslation = {
+  languageId: number | undefined;
+  tag: string | undefined;
+  description: string | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type HeroFeaturedProductsInsertTranslation = {
+  languageId: number | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type HeroFeaturedProductsTagInsertTranslation = {
+  languageId: number | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type HeroFeaturedArchiveInsertTranslation = {
+  languageId: number | undefined;
+  headline: string | undefined;
+  exploreText: string | undefined;
+};
+
+export type NavFeaturedEntityInsertTranslation = {
+  languageId: number | undefined;
+  exploreText: string | undefined;
+};
+
+export type AnnounceTranslation = {
+  languageId: number | undefined;
+  text: string | undefined;
+};
+
 export type MediaFull = {
   // Media ID
   id: number | undefined;
@@ -38,11 +114,9 @@ export type MediaInfo = {
 
 export type ArchiveList = {
   id: number | undefined;
-  heading: string | undefined;
-  description: string | undefined;
+  translations: ArchiveInsertTranslation[] | undefined;
   tag: string | undefined;
   slug: string | undefined;
-  nextSlug: string | undefined;
   createdAt: wellKnownTimestamp | undefined;
   thumbnail: MediaFull | undefined;
 };
@@ -54,12 +128,11 @@ export type ArchiveFull = {
 };
 
 export type ArchiveInsert = {
-  heading: string | undefined;
-  description: string | undefined;
   tag: string | undefined;
   mediaIds: number[] | undefined;
   mainMediaId: number | undefined;
   thumbnailId: number | undefined;
+  translations: ArchiveInsertTranslation[] | undefined;
 };
 
 export type Address = {
@@ -96,7 +169,7 @@ export type GenderEnum =
 // Category represents a hierarchical category structure
 export type Category = {
   id: number | undefined;
-  name: string | undefined;
+  translations: CategoryTranslation[] | undefined;
   levelId: number | undefined;
   level: string | undefined;
   parentId: number | undefined;
@@ -111,7 +184,7 @@ export type Size = {
 
 export type MeasurementName = {
   id: number | undefined;
-  name: string | undefined;
+  translations: MeasurementNameTranslation[] | undefined;
 };
 
 export type ProductNew = {
@@ -122,15 +195,14 @@ export type ProductNew = {
 };
 
 export type ProductInsert = {
-  productBody: ProductBody | undefined;
+  productBodyInsert: ProductBodyInsert | undefined;
   thumbnailMediaId: number | undefined;
+  translations: ProductInsertTranslation[] | undefined;
 };
 
-export type ProductBody = {
+export type ProductBodyInsert = {
   preorder: wellKnownTimestamp | undefined;
-  name: string | undefined;
   brand: string | undefined;
-  sku: string | undefined;
   color: string | undefined;
   colorHex: string | undefined;
   countryOfOrigin: string | undefined;
@@ -141,11 +213,12 @@ export type ProductBody = {
   typeId: number | undefined;
   modelWearsHeightCm: number | undefined;
   modelWearsSizeId: number | undefined;
-  description: string | undefined;
   careInstructions: string | undefined;
   composition: string | undefined;
   hidden: boolean | undefined;
   targetGender: GenderEnum | undefined;
+  version: string | undefined;
+  collection: string | undefined;
 };
 
 // A representation of a decimal value, such as 2.5. Clients may convert values
@@ -234,12 +307,18 @@ export type Product = {
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
   slug: string | undefined;
+  sku: string | undefined;
   productDisplay: ProductDisplay | undefined;
 };
 
 export type ProductDisplay = {
   productBody: ProductBody | undefined;
   thumbnail: MediaFull | undefined;
+};
+
+export type ProductBody = {
+  productBodyInsert: ProductBodyInsert | undefined;
+  translations: ProductInsertTranslation[] | undefined;
 };
 
 export type ProductSize = {
@@ -449,11 +528,12 @@ export type Dictionary = {
   paymentMethods: PaymentMethod[] | undefined;
   shipmentCarriers: ShipmentCarrier[] | undefined;
   sizes: Size[] | undefined;
+  languages: Language[] | undefined;
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
-  announce: string | undefined;
+  announceTranslations: AnnounceTranslation[] | undefined;
 };
 
 export type Genders = {
@@ -490,69 +570,69 @@ export type HeroType =
   | "HERO_TYPE_FEATURED_PRODUCTS"
   | "HERO_TYPE_FEATURED_PRODUCTS_TAG"
   | "HERO_TYPE_FEATURED_ARCHIVE";
-export type HeroFull = {
-  entities: HeroEntity[] | undefined;
-  navFeatured: NavFeatured | undefined;
+// Extended hero structures with translations
+export type HeroFullWithTranslations = {
+  entities: HeroEntityWithTranslations[] | undefined;
+  navFeatured: NavFeaturedWithTranslations | undefined;
 };
 
-export type HeroEntity = {
+export type HeroEntityWithTranslations = {
   type: HeroType | undefined;
-  single: HeroSingle | undefined;
-  double: HeroDouble | undefined;
-  main: HeroMain | undefined;
-  featuredProducts: HeroFeaturedProducts | undefined;
-  featuredProductsTag: HeroFeaturedProductsTag | undefined;
-  featuredArchive: HeroFeaturedArchive | undefined;
+  single: HeroSingleWithTranslations | undefined;
+  double: HeroDoubleWithTranslations | undefined;
+  main: HeroMainWithTranslations | undefined;
+  featuredProducts: HeroFeaturedProductsWithTranslations | undefined;
+  featuredProductsTag: HeroFeaturedProductsTagWithTranslations | undefined;
+  featuredArchive: HeroFeaturedArchiveWithTranslations | undefined;
 };
 
-export type HeroSingle = {
+export type HeroSingleWithTranslations = {
   mediaPortrait: MediaFull | undefined;
   mediaLandscape: MediaFull | undefined;
-  headline: string | undefined;
   exploreLink: string | undefined;
-  exploreText: string | undefined;
+  translations: HeroSingleInsertTranslation[] | undefined;
 };
 
-export type HeroDouble = {
-  left: HeroSingle | undefined;
-  right: HeroSingle | undefined;
+export type HeroDoubleWithTranslations = {
+  left: HeroSingleWithTranslations | undefined;
+  right: HeroSingleWithTranslations | undefined;
 };
 
-export type HeroMain = {
-  single: HeroSingle | undefined;
-  tag: string | undefined;
-  description: string | undefined;
+export type HeroMainWithTranslations = {
+  single: HeroSingleWithTranslations | undefined;
+  translations: HeroMainInsertTranslation[] | undefined;
 };
 
-export type HeroFeaturedProducts = {
+export type HeroFeaturedProductsWithTranslations = {
   products: Product[] | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
   exploreLink: string | undefined;
+  translations: HeroFeaturedProductsInsertTranslation[] | undefined;
 };
 
-export type HeroFeaturedProductsTag = {
+export type HeroFeaturedProductsTagWithTranslations = {
   tag: string | undefined;
-  products: HeroFeaturedProducts | undefined;
+  products: HeroFeaturedProductsWithTranslations | undefined;
+  translations: HeroFeaturedProductsTagInsertTranslation[] | undefined;
 };
 
-export type HeroFeaturedArchive = {
+export type HeroFeaturedArchiveWithTranslations = {
   archive: ArchiveFull | undefined;
   tag: string | undefined;
   headline: string | undefined;
   exploreText: string | undefined;
+  translations: HeroFeaturedArchiveInsertTranslation[] | undefined;
 };
 
-export type NavFeatured = {
-  men: NavFeaturedEntity | undefined;
-  women: NavFeaturedEntity | undefined;
+export type NavFeaturedWithTranslations = {
+  men: NavFeaturedEntityWithTranslations | undefined;
+  women: NavFeaturedEntityWithTranslations | undefined;
 };
 
-export type NavFeaturedEntity = {
+export type NavFeaturedEntityWithTranslations = {
   media: MediaFull | undefined;
-  exploreText: string | undefined;
   featuredTag: string | undefined;
   featuredArchiveId: string | undefined;
+  translations: NavFeaturedEntityInsertTranslation[] | undefined;
 };
 
 export type NavFeaturedInsert = {
@@ -562,9 +642,9 @@ export type NavFeaturedInsert = {
 
 export type NavFeaturedEntityInsert = {
   mediaId: number | undefined;
-  exploreText: string | undefined;
   featuredTag: string | undefined;
   featuredArchiveId: number | undefined;
+  translations: NavFeaturedEntityInsertTranslation[] | undefined;
 };
 
 export type HeroFullInsert = {
@@ -585,9 +665,8 @@ export type HeroEntityInsert = {
 export type HeroSingleInsert = {
   mediaPortraitId: number | undefined;
   mediaLandscapeId: number | undefined;
-  headline: string | undefined;
   exploreLink: string | undefined;
-  exploreText: string | undefined;
+  translations: HeroSingleInsertTranslation[] | undefined;
 };
 
 export type HeroDoubleInsert = {
@@ -596,29 +675,27 @@ export type HeroDoubleInsert = {
 };
 
 export type HeroMainInsert = {
-  single: HeroSingleInsert | undefined;
-  tag: string | undefined;
-  description: string | undefined;
+  mediaPortraitId: number | undefined;
+  mediaLandscapeId: number | undefined;
+  exploreLink: string | undefined;
+  translations: HeroMainInsertTranslation[] | undefined;
 };
 
 export type HeroFeaturedProductsInsert = {
   productIds: number[] | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
   exploreLink: string | undefined;
+  translations: HeroFeaturedProductsInsertTranslation[] | undefined;
 };
 
 export type HeroFeaturedProductsTagInsert = {
   tag: string | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
+  translations: HeroFeaturedProductsTagInsertTranslation[] | undefined;
 };
 
 export type HeroFeaturedArchiveInsert = {
   archiveId: number | undefined;
   tag: string | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
+  translations: HeroFeaturedArchiveInsertTranslation[] | undefined;
 };
 
 // Subscriber represents the subscriber table

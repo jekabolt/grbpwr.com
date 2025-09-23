@@ -4,6 +4,7 @@ import type {
 } from "@/api/proto-http/frontend";
 import {
   COMPOSITION_MAP,
+  COUNTRIES_BY_REGION,
   OrderFactorOption,
   RING_SIZE_CONVERSION,
   SHOES_SIZE_CONVERSION,
@@ -198,4 +199,18 @@ export function isVideo(mediaUrl: string | undefined): boolean {
   ]);
 
   return extension ? videoExtensions.has(extension) : false;
+}
+
+export function getCountryName(countryCode?: string, preferredLng?: string) {
+  if (!countryCode) return undefined;
+  const codeLc = countryCode.toLowerCase();
+  const lng = preferredLng?.toLowerCase();
+
+  const countries = Object.values(COUNTRIES_BY_REGION)
+    .flat()
+    .filter((c) => c.countryCode.toLowerCase() === codeLc);
+
+  const match =
+    countries.find((c) => c.lng.toLowerCase() === lng) || countries[0];
+  return match?.name || countryCode.toUpperCase();
 }

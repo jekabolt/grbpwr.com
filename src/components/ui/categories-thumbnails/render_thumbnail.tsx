@@ -5,7 +5,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { Unit } from "@/app/product/[...productParams]/_components/measurements-table";
+import { Unit } from "@/app/[locale]/product/[...productParams]/_components/measurements-table";
 
 import { getIconByCategoryId } from "./map_categories";
 

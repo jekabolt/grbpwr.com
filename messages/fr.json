@@ -1,0 +1,147 @@
+{
+  "navigation": {
+    "men": "hommes",
+    "women": "femmes",
+    "objects": "objets",
+    "timeline": "chronologie",
+    "cart": "panier",
+    "all": "tous",
+    "new in": "nouveau dans",
+    "checkout": "page de règlement",
+    "close": "fermer",
+    "menu": "menu"
+  },
+  "footer": {
+    "legal notices": "mentions légales",
+    "order status": "statut de commande",
+    "help": "aide",
+    "aftersale services": "services après-vente",
+    "faqs": "faqs",
+    "country": "pays"
+  },
+  "countries-popup": {
+    "change country": "changer de pays",
+    "text": "les prix seront affichés dans la monnaie locale en fonction de votre sélection",
+    "search location": "rechercher un pays",
+    "not-found": "désolé, nous n'avons pas trouvé de résultats pour votre recherche."
+  },
+  "newslatter": {
+    "mailing list": "liste de diffusion",
+    "agree": "j'accepte de recevoir des emails. lisez notre politique de confidentialité pour plus d'informations.",
+    "subscribe": "s'abonner",
+    "email": "email"
+  },
+  "cart": {
+    "empty": "vide",
+    "shopping cart": "panier",
+    "proceed to checkout": "passer à la caisse",
+    "subtotal": "total",
+    "remove": "retirer",
+    "sure?": "tu es sûr?"
+  },
+  "catalog": {
+    "title": "catalogue",
+    "sort by": "trier par",
+    "size": "taille",
+    "next": "suivant"
+  },
+  "product": {
+    "model is": "modèle est",
+    "and wears size": "et porte taille",
+    "composition": "composition",
+    "care": "soin",
+    "preorder": "précommande",
+    "add": "ajouter",
+    "select size": "sélectionner la taille",
+    "ship by": "livraison le",
+    "size guide": "guide de taille",
+    "recently viewed": "vue récente"
+  },
+  "checkout": {
+    "contact": "contact",
+    "street and house number:": "rue et numéro de maison:",
+    "email address:": "adresse email:",
+    "accept": "J'ACCEPTE DE REGISTER TO NEWSLETTER",
+    "proceed": "EN PROCÉDANT AVEC L'ACHAT VOUS AGREEZ A ACCEPTER",
+    "and": "ET",
+    "terms and conditions": "TERMES ET CONDITIONS",
+    "privacy information notice": "AVIS D'INFORMATION SUR LA CONFIDENTIALITÉ",
+    "shipping": "adresse de livraison/méthode de livraison",
+    "first name": "prénom",
+    "last name": "nom",
+    "country/region:": "pays/région:",
+    "state:": "état:",
+    "city:": "ville:",
+    "additional address:": "adresse complémentaire:",
+    "company:": "entreprise:",
+    "phone number:": "numéro de téléphone:",
+    "postal code:": "code postal:",
+    "shipping method": "méthode d'expédition",
+    "shipping summary": "méthode d'expédition",
+    "payment method": "méthode de paiement",
+    "billing address": "adresse de facturation",
+    "billing text": "sélectionnez l'adresse qui correspond à votre carte ou à votre méthode de paiement",
+    "same as shipping address": "même adresse que l'adresse de livraison",
+    "order summary": "récapitulatif de la commande",
+    "pay": "payer",
+    "apply": "appliquer",
+    "discard": "rejeter",
+    "enter promo code": "ENTREZ LE CODE PROMO",
+    "subtotal": "total",
+    "promo discount": "remise promo",
+    "grand total": "total général",
+    "free by promo": "gratuit par promo",
+    "DHL": "DHL",
+    "FREE": "GRATUIT"
+  },
+  "not-found": {
+    "title": "page non trouvée",
+    "text": "désolé, la page que vous cherchez n'existe pas ou a été déplacée. veuillez retourner à la page d'accueil ou contacter nous si le problème persiste",
+    "main": "page d'accueil"
+  },
+  "cookies": {
+    "cookies title": "nous utilisons des cookies pour améliorer la fonctionnalité du site web. vous pouvez désactiver les cookies dans vos paramètres de navigateur.",
+    "cookie preferences": "préférences des cookies",
+    "accept": "accepter",
+    "accept all cookies": "accepter tous les cookies",
+    "save preferences": "enregistrer les préférences",
+    "content text 1": "Un cookie est un petit fichier texte stocké dans un emplacement dédié sur votre ordinateur, tablette, smartphone ou autre appareil lorsque vous utilisez votre navigateur pour visiter un service en ligne. Un cookie permet à son expéditeur de reconnaître l'appareil sur lequel il est stocké pendant la période de validité du consentement, qui ne dépasse pas 13 mois.",
+    "content text 2": "Ces cookies sont nécessaires pour un fonctionnement optimal du site web et ne peuvent pas être configurés. Ils nous permettent de vous offrir les fonctions clés du site web (langue utilisée, résolution d'affichage, accès au compte, panier, liste de souhaits, etc.), de vous fournir des conseils en ligne et de sécuriser notre site web contre toute tentative de fraude.",
+    "content text 3": "Ces cookies sont utilisés pour mesurer et analyser notre audience du site web (volume des visiteurs, pages consultées, temps moyen de navigation, etc.) afin d'améliorer ses performances. En acceptant ces cookies, vous nous aidez à améliorer notre site web.",
+    "content text 4": "Ces cookies sont utilisés pour les publicités d'Off White affichées sur des sites web tiers, y compris les médias sociaux, et sont adaptés à vos préférences et pour nous aider à mesurer l'efficacité de nos campagnes publicitaires. Si vous désactivez ces cookies, la publicité (y compris la nôtre) continuera d'être affichée lorsque vous naviguez sur Internet, bien qu'elle ne sera plus spécifique à vos intérêts personnels et sera donc moins pertinente.",
+    "content text 5": "Ces cookies nous permettent de vous fournir des recommandations en ligne ou en magasin de produits, services et contenus qui correspondent à vos attentes et préférences. En acceptant ces cookies, vous choisissez un expérience enrichie et personnalisée.",
+    "functional cookie (non-optional)": "cookie fonctionnel (non-optionnel)",
+    "statistical analysis cookies": "cookies d'analyse statistique",
+    "advertising and social media cookies": "cookies publicitaires et sociaux",
+    "cookies to personalize the grbpwr experience": "cookies pour personnaliser l'expérience grbpwr"
+  },
+  "geo-suggest": {
+    "message": "Nous pensons que vous êtes dans {country}. Mettre à jour votre emplacement?",
+    "stay": "Restez {country}",
+    "switch": "Changer"
+  },
+  "update_location": {
+    "message": "Vous êtes actuellement dans {currentCountry}. Lors du changement de pays/région, votre panier sera vidé. Êtes-vous sûr de vouloir continuer?",
+    "continue": "Continuer vers {country}",
+    "cancel": "Annuler"
+  },
+  "measurements-descriptions": {
+    "waist": "Tour de taille mesuré à plat sur le vêtement",
+    "chest": "Tour de poitrine mesuré à plat sur le vêtement, d'aisselle à aisselle",
+    "shoulders": "Mesuré horizontalement sur le vêtement, de couture d'épaule à couture d'épaule",
+    "hips": "Tour de hanches mesuré à plat sur le vêtement",
+    "leg-opening": "Mesurer l'ouverture de l'ourlet du bas.",
+    "bottom-width": "Largeur du bas mesurée à plat sur le vêtement",
+    "end-fit-length": "Longueur depuis le point d'ajustement final.",
+    "start-fit-length": "Longueur depuis le point d'ajustement initial.",
+    "length": "Mesuré du centre du dos du col jusqu'au bas du vêtement",
+    "inseam": "Mesuré de l'entrejambe jusqu'au bas le long de la couture intérieure (intérieur de la jambe)",
+    "sleeve": "Mesuré du centre du dos du col, y compris l'épaule jusqu'au bas de l'ourlet",
+    "height": "Hauteur totale du vêtement.",
+    "width": "Largeur au point spécifié"
+  },
+  "meta": {
+    "description": "dernière collection de prêt-à-porter homme, femme et accessoires",
+    "catalog": "catalogue"
+  }
+}

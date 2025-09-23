@@ -1,10 +1,12 @@
 import { FC } from "react";
 
 import { useMeasurementStore } from "@/lib/stores/measurement/store";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { useDataContext } from "@/components/contexts/DataContext";
 import {
   getUnit,
   Unit,
-} from "@/app/product/[...productParams]/_components/measurements-table";
+} from "@/app/[locale]/product/[...productParams]/_components/measurements-table";
 
 import { Text } from "../../text";
 
@@ -36,19 +38,42 @@ const MeasurementLabel: FC<LabelProps> = ({
 }) => {
   const { handleMeasurementHover, handleMeasurementLeave } =
     useMeasurementStore();
+  const { dictionary } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
 
   const displayValue = getUnit(info, unit);
+
+  // Get the translated measurement name
+  const getTranslatedMeasurementName = (name: string): string => {
+    const measurement = dictionary?.measurements?.find(
+      (m) =>
+        m.translations
+          ?.find((t) => t.languageId === languageId)
+          ?.name?.toLowerCase() === name.toLowerCase() ||
+        m.translations?.[0]?.name?.toLowerCase() === name.toLowerCase(),
+    );
+
+    return (
+      measurement?.translations?.find((t) => t.languageId === languageId)
+        ?.name ||
+      measurement?.translations?.[0]?.name ||
+      name
+    );
+  };
+
+  const translatedMeasurementType =
+    getTranslatedMeasurementName(measurementType);
 
   return (
     <g transform={`translate(${x + xOffset} ${y + yOffset})`}>
       <foreignObject x="-120" y="-20" width="240" height="60">
         <div
           className="m-auto flex w-fit cursor-pointer flex-col items-center bg-highlightColor px-2 text-bgColor"
-          onMouseEnter={() => handleMeasurementHover(measurementType)}
+          onMouseEnter={() => handleMeasurementHover(translatedMeasurementType)}
           onMouseLeave={() => handleMeasurementLeave()}
         >
           <Text variant="inherit" size="measurement" className="uppercase">
-            {measurementType}
+            {translatedMeasurementType}
           </Text>
           <Text variant="inherit" size="measurement" className="uppercase">
             {displayValue}

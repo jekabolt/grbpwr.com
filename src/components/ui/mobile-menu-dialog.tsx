@@ -1,3 +1,7 @@
+import { useTranslations } from "next-intl";
+
+import { getTopCategoryName } from "@/lib/categories-map";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
   calculateAspectRatio,
   createActiveCategoryMenuItems,
@@ -5,8 +9,8 @@ import {
   getCategoryDisplayName,
   getHeroNavLink,
 } from "@/lib/utils";
-import CurrencyPopover from "@/app/_components/currency-popover";
-import NewslatterForm from "@/app/_components/newslatter-form";
+import CurrencyPopover from "@/app/[locale]/_components/currency-popover";
+import NewslatterForm from "@/app/[locale]/_components/newslatter-form";
 
 import { useDataContext } from "../contexts/DataContext";
 import { AnimatedButton } from "./animated-button";
@@ -29,6 +33,7 @@ export function DefaultMobileMenuDialog({
   isBigMenuEnabled,
 }: DefaultMenuProps) {
   const defaultMenuItems = createMenuItems(isBigMenuEnabled, setActiveCategory);
+  const t = useTranslations("navigation");
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -43,7 +48,7 @@ export function DefaultMobileMenuDialog({
                   className="flex w-full items-center justify-between uppercase"
                   onClick={item.action}
                 >
-                  <Text>{item.label}</Text>
+                  <Text>{t(item.label)}</Text>
                   {item.showArrow && <Text>{">"}</Text>}
                 </AnimatedButton>
               ) : (
@@ -53,7 +58,7 @@ export function DefaultMobileMenuDialog({
                   href={item.href}
                   className="flex w-full items-center justify-between uppercase"
                 >
-                  <Text>{item.label}</Text>
+                  <Text>{t(item.label)}</Text>
                   {item.showArrow && <Text>{">"}</Text>}
                 </AnimatedButton>
               )}
@@ -73,6 +78,8 @@ export function ActiveCategoryMenuDialog({
   activeCategory,
 }: ActiveCategoryMenuProps) {
   const { dictionary, hero } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
+
   const heroNav = activeCategory
     ? hero?.navFeatured?.[activeCategory]
     : undefined;
@@ -129,7 +136,10 @@ export function ActiveCategoryMenuDialog({
                 )}
               />
             </div>
-            <Text>{heroNav.exploreText}</Text>
+            <Text>
+              {heroNav.translations?.find((t) => t.languageId === languageId)
+                ?.exploreText || heroNav.translations?.[0]?.exploreText}
+            </Text>
           </AnimatedButton>
         </div>
       )}
@@ -144,6 +154,16 @@ function CategoryButton({
   activeCategory: Gender;
   link: { title: string; id: string };
 }) {
+  const { dictionary } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
+
+  // Get translated name for display
+  const translatedName = getTopCategoryName(
+    dictionary?.categories || [],
+    parseInt(link.id),
+    languageId,
+  );
+
   return (
     <AnimatedButton
       key={link.id}
@@ -151,7 +171,7 @@ function CategoryButton({
       href={`/catalog/${activeCategory}/${link.title.toLowerCase()}`}
       className="uppercase"
     >
-      {getCategoryDisplayName(link.title)}
+      {translatedName || getCategoryDisplayName(link.title)}
     </AnimatedButton>
   );
 }

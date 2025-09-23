@@ -1,0 +1,147 @@
+{
+  "navigation": {
+    "men": "メンズ",
+    "women": "レディース",
+    "objects": "オブジェクト",
+    "timeline": "タイムライン",
+    "cart": "カート",
+    "all": "すべて",
+    "new in": "新着",
+    "checkout": "チェックアウト",
+    "close": "閉じる",
+    "menu": "メニュー"
+  },
+  "footer": {
+    "legal notices": "法的通知",
+    "order status": "注文状況",
+    "help": "ヘルプ",
+    "aftersale services": "アフターサービス",
+    "faqs": "よくある質問",
+    "country": "国"
+  },
+  "countries-popup": {
+    "change country": "国を変更",
+    "text": "選択した国の通貨で価格が表示されます",
+    "search location": "国を検索",
+    "not-found": "申し訳ありませんが、検索結果が見つかりませんでした。"
+  },
+  "newslatter": {
+    "mailing list": "メーリングリスト",
+    "agree": "メール受信に同意します。詳細については、プライバシーポリシーをお読みください。",
+    "subscribe": "購読する",
+    "email": "メール"
+  },
+  "cart": {
+    "empty": "何もありません",
+    "shopping cart": "ショッピングカート",
+    "proceed to checkout": "チェックアウトに進む",
+    "subtotal": "小計",
+    "remove": "削除",
+    "sure?": "よろしいですか？"
+  },
+  "catalog": {
+    "title": "カタログ",
+    "sort by": "並び替え",
+    "size": "サイズ",
+    "next": "次へ"
+  },
+  "product": {
+    "model is": "モデルは",
+    "and wears size": "とサイズを着用します",
+    "composition": "構成",
+    "care": "ケア",
+    "preorder": "前払い",
+    "add": "追加",
+    "select size": "サイズを選択",
+    "ship by": "発送日",
+    "size guide": "サイズガイド",
+    "recently viewed": "最近見た商品"
+  },
+  "checkout": {
+    "contact": "連絡先",
+    "street and house number:": "住所/番地:",
+    "email address:": "メールアドレス：",
+    "accept": "ニュースレター登録に同意します",
+    "proceed": "購入を進めることで以下に同意したものとみなされます",
+    "and": "および",
+    "terms and conditions": "利用規約",
+    "privacy information notice": "プライバシー情報通知",
+    "shipping": "配送先住所/配送方法",
+    "first name": "名",
+    "last name": "姓",
+    "country/region:": "国/地域：",
+    "state:": "都道府県：",
+    "city:": "市区町村：",
+    "additional address:": "追加住所：",
+    "company:": "会社名：",
+    "phone number:": "電話番号：",
+    "postal code:": "郵便番号：",
+    "shipping method": "配送方法",
+    "shipping summary": "配送",
+    "payment method": "支払い方法",
+    "billing address": "請求先住所",
+    "billing text": "カードまたは支払い方法と一致する住所を選択してください",
+    "same as shipping address": "配送先住所と同じ",
+    "order summary": "注文概要",
+    "apply": "適用",
+    "discard": "破棄",
+    "enter promo code": "プロモコードを入力",
+    "pay": "支払う",
+    "subtotal": "小計",
+    "promo discount": "プロモ割引",
+    "grand total": "総合計",
+    "free by promo": "プロモで無料",
+    "DHL": "DHL",
+    "FREE": "無料"
+  },
+  "not-found": {
+    "title": "ページが見つかりません",
+    "text": "申し訳ございませんが、お探しのページは存在しないか移動されました。ホームページに戻るか、問題が続く場合はお問い合わせください",
+    "main": "メインページ"
+  },
+  "cookies": {
+    "cookies title": "ウェブサイトの機能を向上させるために、クッキーを使用しています。ブラウザの設定でクッキーを無効にすることができます。",
+    "cookie preferences": "クッキーの設定",
+    "accept": "受け入れる",
+    "accept all cookies": "すべてのクッキーを受け入れる",
+    "save preferences": "設定を保存する",
+    "content text 1": "クッキーは、オンラインサービスを訪問する際に、ブラウザを使用して専用の場所に保存される小さなテキストファイルです。クッキーは、許可期間内に保存されるデバイスを識別することができます。この期間は13ヶ月を超えません。",
+    "content text 2": "これらのクッキーは、ウェブサイトの最適な機能を維持するために必要であり、設定できません。ウェブサイトの主要な機能（使用言語、表示解像度、アカウントアクセス、ショッピングカート、ウィッシュリストなど）を提供し、オンラインアドバイスを提供し、ウェブサイトを詐欺から保護することができます。",
+    "content text 3": "これらのクッキーは、ウェブサイトの閲覧者数（訪問者数、閲覧ページ数、平均閲覧時間など）を測定し、分析するために使用され、ウェブサイトのパフォーマンスを向上させるのに役立ちます。これらのクッキーを受け入れることで、ウェブサイトを改善するのにお手伝いします。",
+    "content text 4": "これらのクッキーは、オフィスホワイトの広告がサードパーティーのウェブサイトに表示されるために使用され、ソーシャルメディアを含むサードパーティーのウェブサイトに表示されるオフィスホワイトの広告を調整し、広告キャンペーンの効果を測定するために使用されます。これらのクッキーを無効にすると、インターネットを閲覧する際に広告（私たちの広告を含む）が表示され続けますが、あなたの個人的な関心に特化したものではなく、そのためより関連性が低くなります。",
+    "content text 5": "これらのクッキーは、あなたの期待と関心に合致する製品、サービス、コンテンツをオンラインまたは店舗で提供することができます。これらのクッキーを受け入れることで、より豊かで個性的な体験を選択することができます。",
+    "functional cookie (non-optional)": "機能的クッキー（非オプション）",
+    "statistical analysis cookies": "統計分析クッキー",
+    "advertising and social media cookies": "広告とソーシャルメディアクッキー",
+    "cookies to personalize the grbpwr experience": "grbpwr体験を個性化するクッキー"
+  },
+  "geo-suggest": {
+    "message": "あなたは{country}にいると思います。場所を更新しますか？",
+    "stay": "{country}に留まる",
+    "switch": "切り替え"
+  },
+  "update_location": {
+    "message": "あなたは現在{currentCountry}でショッピングしています。国/地域を変更すると、ショッピングカートが空になります。続行してもよろしいですか？",
+    "continue": "{country}に進む",
+    "cancel": "キャンセル"
+  },
+  "measurements-descriptions": {
+    "waist": "衣服を平らにしてウエストを測定",
+    "chest": "衣服を平らにして脇の下から脇の下まで胸囲を測定",
+    "shoulders": "衣服を水平に、肩の縫い目から肩の縫い目まで測定",
+    "hips": "衣服を平らにしてヒップを測定",
+    "leg-opening": "裾の開口部を測定。",
+    "bottom-width": "衣服を平らにして下幅を測定",
+    "end-fit-length": "フィット終了点からの長さ。",
+    "start-fit-length": "フィット開始点からの長さ。",
+    "length": "後ろ首の中心から衣服の下端まで測定",
+    "inseam": "股下から内側の縫い目に沿って下端まで測定（脚の内側）",
+    "sleeve": "後ろ首の中心から肩を含めて裾の下端まで測定",
+    "height": "衣服の全高。",
+    "width": "指定された点での幅"
+  },
+  "meta": {
+    "description": "最新のメンズ、レディース、アクセサリーのコレクション",
+    "catalog": "カタログ"
+  }
+}

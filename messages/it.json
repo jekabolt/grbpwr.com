@@ -1,0 +1,147 @@
+{
+  "navigation": {
+    "men": "uomo",
+    "women": "donna",
+    "objects": "oggetti",
+    "timeline": "cronologia",
+    "cart": "carrello",
+    "all": "tutto",
+    "new in": "novità",
+    "checkout": "checkout",
+    "close": "chiudi",
+    "menu": "menu"
+  },
+  "footer": {
+    "legal notices": "note legali",
+    "order status": "stato ordine",
+    "help": "aiuto",
+    "aftersale services": "servizi post vendita",
+    "faqs": "domande frequenti",
+    "country": "paese"
+  },
+  "countries-popup": {
+    "change country": "cambia paese",
+    "text": "i prezzi saranno mostrati nella valuta locale in base alla tua selezione",
+    "search location": "cerca un paese",
+    "not-found": "scusa, non abbiamo trovato risultati per la tua ricerca."
+  },
+  "newslatter": {
+    "mailing list": "mailing list",
+    "agree": "accetto di ricevere email. leggi la nostra informativa sulla privacy per maggiori informazioni.",
+    "subscribe": "iscriviti",
+    "email": "email"
+  },
+  "cart": {
+    "empty": "niente",
+    "shopping cart": "carrello",
+    "proceed to checkout": "procedi al checkout",
+    "subtotal": "subtotale",
+    "remove": "rimuovi",
+    "sure?": "sicuro?"
+  },
+  "catalog": {
+    "title": "catalogo",
+    "sort by": "ordina per",
+    "size": "taglia",
+    "next": "avanti"
+  },
+  "product": {
+    "model is": "modello è",
+    "and wears size": "e indossa taglia",
+    "composition": "composizione",
+    "care": "cura",
+    "preorder": "preordine",
+    "add": "aggiungi",
+    "select size": "seleziona taglia",
+    "ship by": "consegna il",
+    "size guide": "guida taglie",
+    "recently viewed": "recentemente visualizzato"
+  },
+  "checkout": {
+    "contact": "contatto",
+    "street and house number:": "via e numero di casa:",
+    "email address:": "indirizzo email:",
+    "accept": "ACCETTO DI ISCRIVERMI ALLA NEWSLETTER",
+    "proceed": "PROCEDENDO CON L'ACQUISTO ACCETTI DI ACCETTARE",
+    "and": "E",
+    "terms and conditions": "TERMINI E CONDIZIONI",
+    "privacy information notice": "INFORMATIVA SULLA PRIVACY",
+    "shipping": "indirizzo di spedizione/metodo di consegna",
+    "first name": "nome",
+    "last name": "cognome",
+    "country/region:": "paese/regione:",
+    "state:": "stato:",
+    "city:": "città:",
+    "additional address:": "indirizzo aggiuntivo:",
+    "company:": "azienda:",
+    "phone number:": "numero di telefono:",
+    "postal code:": "codice postale:",
+    "shipping method": "metodo di spedizione",
+    "shipping summary": "spedizione",
+    "payment method": "metodo di pagamento",
+    "billing address": "indirizzo di fatturazione",
+    "billing text": "seleziona l'indirizzo che corrisponde alla tua carta o metodo di pagamento",
+    "same as shipping address": "stesso dell'indirizzo di spedizione",
+    "order summary": "riepilogo ordine",
+    "apply": "applica",
+    "discard": "scarta",
+    "enter promo code": "INSERISCI CODICE PROMO",
+    "pay": "paga",
+    "subtotal": "subtotale",
+    "promo discount": "sconto promo",
+    "grand total": "totale finale",
+    "free by promo": "gratuito con promo",
+    "DHL": "DHL",
+    "FREE": "GRATUITO"
+  },
+  "not-found": {
+    "title": "pagina non trovata",
+    "text": "spiacenti, la pagina che stai cercando non esiste o è stata spostata. torna alla homepage o contattaci se il problema persiste",
+    "main": "pagina d'inizio"
+  },
+  "cookies": {
+    "cookies title": "utilizziamo i cookie per migliorare la funzionalità del sito web. puoi disabilitare i cookie nelle tue impostazioni del browser.",
+    "cookie preferences": "preferenze dei cookie",
+    "accept": "accetta",
+    "accept all cookies": "accetta tutti i cookie",
+    "save preferences": "salva le preferenze",
+    "content text 1": "Un cookie è un piccolo file di testo memorizzato in un'area dedicata sul tuo computer, tablet, smartphone o altro dispositivo quando utilizzi il tuo browser per visitare un servizio online. Un cookie consente al suo mittente di identificare il dispositivo su cui è memorizzato durante il periodo di validità del consenso, che non supera i 13 mesi.",
+    "content text 2": "Questi cookie sono necessari per un funzionamento ottimale del sito web e non possono essere configurati. Ci consentono di offrire alle tue chiave funzionalità del sito web (lingua utilizzata, risoluzione di visualizzazione, accesso al tuo account, carrello, lista dei desideri, ecc.), di fornirti consigli online e di proteggere il nostro sito web da qualsiasi tentativo di frode.",
+    "content text 3": "Questi cookie sono utilizzati per misurare e analizzare la nostra audience del sito web (volume dei visitatori, pagine visitate, tempo medio di navigazione, ecc.) per aiutarci a migliorare le sue prestazioni. Accettando questi cookie, ci aiuti a migliorare il nostro sito web.",
+    "content text 4": "Questi cookie sono utilizzati per le pubblicità di Off White visualizzate su siti web di terze parti, compresi i social media, e sono adattati alle tue preferenze per aiutarci a misurare l'efficacia delle nostre campagne pubblicitarie. Se disabiliti questi cookie, la pubblicità (compresa la nostra) continuerà ad essere visualizzata mentre navighi sul Web, anche se non sarà più specifica per i tuoi interessi personali e sarà quindi meno pertinente.",
+    "content text 5": "Questi cookie ci consentono di offrire ai tuoi prodotti, servizi e contenuti online o in negozio che corrispondono alle tue aspettative e preferenze. Accettando questi cookie, scegli un'esperienza più ricca e personalizzata.",
+    "functional cookie (non-optional)": "cookie funzionale (non-opzionale)",
+    "statistical analysis cookies": "cookie di analisi statistica",
+    "advertising and social media cookies": "cookie pubblicitari e social media",
+    "cookies to personalize the grbpwr experience": "cookie per personalizzare l'esperienza grbpwr"
+  },
+  "geo-suggest": {
+    "message": "Pensiamo che tu sia in {country}. Aggiorna il tuo luogo?",
+    "stay": "Rimani {country}",
+    "switch": "Cambia"
+  },
+  "update_location": {
+    "message": "Sei attualmente in {currentCountry}. Quando cambi paese/regione, il tuo carrello sarà svuotato. Sei sicuro di voler continuare?",
+    "continue": "Continua a {country}",
+    "cancel": "Annulla"
+  },
+  "measurements-descriptions": {
+    "waist": "Vita misurata piatta sul capo",
+    "chest": "Petto misurato piatto sul capo, da sotto-braccio a sotto-braccio",
+    "shoulders": "Misurato orizzontalmente sul capo, da cucitura spalla a cucitura spalla",
+    "hips": "Fianchi misurati piatti sul capo",
+    "leg-opening": "Misurare l'apertura dell'orlo inferiore.",
+    "bottom-width": "Larghezza inferiore misurata piatta sul capo",
+    "end-fit-length": "Lunghezza dal punto di vestibilità finale.",
+    "start-fit-length": "Lunghezza dal punto di vestibilità iniziale.",
+    "length": "Misurato dal centro del collo posteriore fino al fondo del capo",
+    "inseam": "Misurato dal cavallo fino al fondo lungo la cucitura interna (interno gamba)",
+    "sleeve": "Misurato dal centro del collo posteriore, inclusa la spalla fino al fondo dell'orlo",
+    "height": "Altezza totale del capo.",
+    "width": "Larghezza al punto specificato"
+  },
+  "meta": {
+    "description": "ultima collezione di prêt-à-porter maschile, femminile e accessori",
+    "catalog": "catalogo"
+  }
+}

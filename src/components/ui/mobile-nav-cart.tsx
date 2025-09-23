@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
+import { useTranslations } from "next-intl";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
-import CartProductsList from "@/app/(checkout)/cart/_components/CartProductsList";
-import CartTotalPrice from "@/app/(checkout)/cart/_components/CartTotalPrice";
+import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartProductsList";
+import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
 
 import { Button } from "./button";
 import { Text } from "./text";
@@ -22,6 +23,8 @@ export function MobileNavCart({
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const open = isMobile && isOpen;
+  const t = useTranslations("navigation");
+  const tCart = useTranslations("cart");
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
@@ -32,7 +35,7 @@ export function MobileNavCart({
           "w-1/3 py-2.5 pr-2.5": isProductInfo,
         })}
       >
-        cart {itemsQuantity ? itemsQuantity : ""}
+        {t("cart")} {itemsQuantity ? itemsQuantity : ""}
       </Button>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay opacity-40" />
@@ -57,7 +60,7 @@ export function MobileNavCart({
                 },
               )}
             >
-              <Text variant="uppercase">{`shopping cart ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
+              <Text variant="uppercase">{`${tCart("shopping cart")} ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
               <DialogPrimitives.Close asChild>
                 <Button onClick={closeCart}>[x]</Button>
               </DialogPrimitives.Close>
@@ -77,12 +80,12 @@ export function MobileNavCart({
                     size="lg"
                     className="w-full uppercase"
                   >
-                    <Link href="/checkout">proceed to checkout</Link>
+                    <Link href="/checkout">{tCart("proceed to checkout")}</Link>
                   </Button>
                 </div>
               </>
             ) : (
-              <Text variant="uppercase">empty</Text>
+              <Text variant="uppercase">{tCart("empty")}</Text>
             )}
           </div>
         </DialogPrimitives.Content>

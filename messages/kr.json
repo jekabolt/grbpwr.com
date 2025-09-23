@@ -1,0 +1,147 @@
+{
+  "navigation": {
+    "men": "남성",
+    "women": "여성",
+    "objects": "오브젝트",
+    "timeline": "타임라인",
+    "cart": "장바구니",
+    "all": "전체",
+    "new in": "신상품",
+    "checkout": "결제",
+    "close": "닫기",
+    "menu": "메뉴"
+  },
+  "footer": {
+    "legal notices": "법적 고지",
+    "order status": "주문 상태",
+    "help": "도움말",
+    "aftersale services": "애프터서비스",
+    "faqs": "자주묻는질문",
+    "country": "국가"
+  },
+  "countries-popup": {
+    "change country": "국가 변경",
+    "text": "선택한 국가의 통화로 가격이 표시됩니다",
+    "search location": "국가 검색",
+    "not-found": "죄송합니다. 검색 결과를 찾을 수 없습니다."
+  },
+  "newslatter": {
+    "mailing list": "메일링 리스트",
+    "agree": "이메일 수신에 동의합니다. 자세한 내용은 개인정보처리방침을 참조하세요.",
+    "subscribe": "구독하기",
+    "email": "이메일"
+  },
+  "cart": {
+    "empty": "없음",
+    "shopping cart": "장바구니",
+    "proceed to checkout": "결제하기",
+    "subtotal": "소계",
+    "remove": "삭제",
+    "sure?": "확실한가요?"
+  },
+  "catalog": {
+    "title": "카탈로그",
+    "sort by": "정렬",
+    "size": "사이즈",
+    "next": "다음"
+  },
+  "product": {
+    "model is": "모델은",
+    "and wears size": "와 사이즈를 착용합니다",
+    "composition": "구성",
+    "care": "관리",
+    "preorder": "사전예약",
+    "add": "추가",
+    "select size": "사이즈 선택",
+    "ship by": "배송 일",
+    "size guide": "사이즈 가이드",
+    "recently viewed": "최근 본 상품"
+  },
+  "checkout": {
+    "contact": "연락처",
+    "street and house number:": "도로명 주소/건물 번호:",
+    "email address:": "이메일 주소:",
+    "accept": "뉴스레터 등록에 동의합니다",
+    "proceed": "구매를 진행하면 다음 사항에 동의하는 것으로 간주됩니다",
+    "and": "그리고",
+    "terms and conditions": "이용약관",
+    "privacy information notice": "개인정보 처리방침",
+    "shipping": "배송지 주소/배송 방법",
+    "first name": "이름",
+    "last name": "성",
+    "country/region:": "국가/지역:",
+    "state:": "시/도:",
+    "city:": "시/군/구:",
+    "additional address:": "상세주소:",
+    "company:": "회사명:",
+    "phone number:": "전화번호:",
+    "postal code:": "우편번호:",
+    "shipping method": "배송 방법",
+    "shipping summary": "배송",
+    "payment method": "결제 수단",
+    "billing address": "청구지 주소",
+    "billing text": "카드 또는 결제 수단과 일치하는 주소를 선택하세요",
+    "same as shipping address": "배송지와 동일",
+    "order summary": "주문 요약",
+    "apply": "적용",
+    "discard": "취소",
+    "enter promo code": "프로모 코드 입력",
+    "pay": "결제",
+    "subtotal": "소계",
+    "promo discount": "프로모 할인",
+    "grand total": "총합계",
+    "free by promo": "프로모로 무료",
+    "DHL": "DHL",
+    "FREE": "무료"
+  },
+  "not-found": {
+    "title": "페이지를 찾을 수 없습니다",
+    "text": "죄송합니다. 찾으시는 페이지가 존재하지 않거나 이동되었습니다. 홈페이지로 돌아가시거나 문제가 지속되면 문의해 주세요",
+    "main": "메인 페이지"
+  },
+  "cookies": {
+    "cookies title": "쿠키를 사용하여 웹사이트의 기능을 강화합니다. 브라우저 설정에서 쿠키를 비활성화할 수 있습니다.",
+    "cookie preferences": "쿠키 설정",
+    "accept": "수락",
+    "accept all cookies": "모든 쿠키 수락",
+    "save preferences": "설정 저장",
+    "content text 1": "쿠키는 온라인 서비스를 방문할 때 브라우저를 사용하여 전용 위치에 저장되는 작은 텍스트 파일입니다. 쿠키는 그것의 발신자가 동의 기간 동안 저장된 장치를 인식할 수 있도록 합니다. 이 기간은 13개월을 초과하지 않습니다.",
+    "content text 2": "이러한 쿠키는 웹사이트의 최적 기능을 유지하기 위해 필요하며 설정할 수 없습니다. 웹사이트의 주요 기능(사용 언어, 표시 해상도, 계정 접근, 장바구니, 위시리스트 등)을 제공하고 온라인 상담을 제공하며 웹사이트를 사기 시도로부터 보호할 수 있습니다.",
+    "content text 3": "이러한 쿠키는 웹사이트 방문자(방문자 수, 방문한 페이지, 평균 브라우징 시간 등)를 측정하고 분석하여 성능을 개선하기 위해 사용됩니다. 이러한 쿠키를 수락하면 웹사이트를 개선하는 데 도움이 됩니다.",
+    "content text 4": "이러한 쿠키는 오프 화이트 광고가 세 번째 파트 웹사이트에 표시되도록 사용되며 광고 캠페인의 효과를 측정하기 위해 사용됩니다. 이러한 쿠키를 비활성화하면 광고(우리의 광고 포함)가 계속 표시되지만 개인 관심에 특정되지 않으므로 관련성이 떨어집니다.",
+    "content text 5": "이러한 쿠키는 온라인 또는 매장에서 제품, 서비스 및 콘텐츠를 제공하여 기대와 선호도에 맞게 할 수 있습니다. 이러한 쿠키를 수락하면 더 풍부하고 개인화된 경험을 선택할 수 있습니다.",
+    "functional cookie (non-optional)": "기능적 쿠키(필수)",
+    "statistical analysis cookies": "통계 분석 쿠키",
+    "advertising and social media cookies": "광고 및 소셜 미디어 쿠키",
+    "cookies to personalize the grbpwr experience": "grbpwr 경험을 개인화하는 쿠키"
+  },
+  "geo-suggest": {
+    "message": "우리는 당신이 {country}에 있다고 생각합니다. 위치를 업데이트하시겠습니까?",
+    "stay": "{country}에 머물러 주세요",
+    "switch": "변경"
+  },
+  "update_location": {
+    "message": "당신은 현재 {currentCountry}에서 쇼핑을 하고 있습니다. 국가/지역을 변경하면 쇼핑카트가 비워집니다. 계속하시겠습니까?",
+    "continue": "{country}로 이동",
+    "cancel": "취소"
+  },
+  "measurements-descriptions": {
+    "waist": "의복을 평평하게 놓고 허리둘레 측정",
+    "chest": "의복을 평평하게 놓고 겨드랑이부터 겨드랑이까지 가슴둘레 측정",
+    "shoulders": "의복을 수평으로 어깨 솔기부터 어깨 솔기까지 측정",
+    "hips": "의복을 평평하게 놓고 엉덩이둘레 측정",
+    "leg-opening": "하단 밑단 개구부를 측정하세요.",
+    "bottom-width": "의복을 평평하게 놓고 하단 너비 측정",
+    "end-fit-length": "끝 맞춤 지점에서의 길이.",
+    "start-fit-length": "시작 맞춤 지점에서의 길이.",
+    "length": "뒤 목 중심에서 의복 하단까지 측정",
+    "inseam": "가랑이에서 안쪽 솔기를 따라 하단까지 측정 (다리 안쪽)",
+    "sleeve": "뒤 목 중심에서 어깨를 포함하여 밑단 하단까지 측정",
+    "height": "의복의 전체 높이.",
+    "width": "지정된 지점에서의 너비"
+  },
+  "meta": {
+    "description": "최신 남성, 여성 및 액세서리 컬렉션",
+    "catalog": "카탈로그"
+  }
+}

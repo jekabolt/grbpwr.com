@@ -1,0 +1,147 @@
+{
+  "navigation": {
+    "men": "men",
+    "women": "women",
+    "objects": "objects",
+    "timeline": "timeline",
+    "cart": "cart",
+    "all": "all",
+    "new in": "new in",
+    "checkout": "checkout",
+    "close": "close",
+    "menu": "menu"
+  },
+  "footer": {
+    "legal notices": "legal notices",
+    "order status": "order status",
+    "help": "help",
+    "aftersale services": "aftersale services",
+    "faqs": "faqs",
+    "country": "country"
+  },
+  "countries-popup": {
+    "change country": "change country",
+    "text": "prices will be shown in the local currency based on your selection",
+    "search location": "search location",
+    "not-found": "sorry, we couldn't find results for your search."
+  },
+  "newslatter": {
+    "mailing list": "mailing list",
+    "agree": "i agree to recieve emails. read our privacy policy for more information.",
+    "subscribe": "subscribe",
+    "email": "email"
+  },
+  "cart": {
+    "empty": "nothing",
+    "shopping cart": "shopping cart",
+    "proceed to checkout": "proceed to checkout",
+    "subtotal": "subtotal",
+    "remove": "remove",
+    "sure?": "sure?"
+  },
+  "catalog": {
+    "title": "catalog",
+    "sort by": "sort by",
+    "size": "size",
+    "next": "next"
+  },
+  "product": {
+    "model is": "model is",
+    "and wears size": "and wears size",
+    "composition": "composition",
+    "care": "care",
+    "preorder": "preorder",
+    "add": "add",
+    "select size": "select size",
+    "ship by": "ship by",
+    "size guide": "size guide",
+    "recently viewed": "recently viewed"
+  },
+  "checkout": {
+    "contact": "contact",
+    "street and house number:": "street and house number:",
+    "email address:": "email address:",
+    "accept": "I ACCEPT TO REGISTER TO NEWSLETTER",
+    "proceed": "BY PROCEEDING WITH PURCHASE YOU AGREEING TO ACCEPT",
+    "and": "AND",
+    "terms and conditions": "TERMS AND CONDITIONS",
+    "privacy information notice": "PRIVACY INFORMATION NOTICE",
+    "shipping": "shipping address/delivery method",
+    "first name": "first name",
+    "last name": "last name",
+    "country/region:": "country/region:",
+    "state:": "state:",
+    "city:": "city:",
+    "additional address:": "additional address:",
+    "company:": "company:",
+    "phone number:": "phone number:",
+    "postal code:": "postal code:",
+    "shipping method": "shipping method",
+    "shipping summary": "shipping",
+    "payment method": "payment method",
+    "billing address": "billing address",
+    "billing text": "select the address that matches your card or payment method",
+    "same as shipping address": "same as shipping address",
+    "order summary": "order summary",
+    "apply": "apply",
+    "discard": "discard",
+    "enter promo code": "ENTER PROMO CODE",
+    "pay": "pay",
+    "subtotal": "subtotal",
+    "promo discount": "promo discount",
+    "grand total": "grand total",
+    "free by promo": "free by promo",
+    "DHL": "DHL",
+    "FREE": "FREE"
+  },
+  "not-found": {
+    "title": "page not found",
+    "text": "sorry, the page you are looking for doesn&apos;t exist or has been moved. please go back to the homepage or contact us if the problem persists",
+    "main": "main"
+  },
+  "cookies": {
+    "cookies title": "we use cookies to enhance the functionality of the website.you can disable cookies in your browser settings.",
+    "cookie preferences": "cookie preferences",
+    "accept": "accept",
+    "accept all cookies": "accept all cookies",
+    "save preferences": "save preferences",
+    "content text 1": "A cookie is a small text file that is stored in a dedicated location on your computer, tablet, smartphone or other device when you use your browser to visit an online service. A cookie allows its sender to identify the device on which it is stored during the period of validity of consent, which does not exceed 13 months.",
+    "content text 2": "These cookies are required for optimum operation of the website, and cannot be configured. They allow us to offer you the key functions of the website (language used, display resolution, account access, shopping bag, wish list, etc.), provide you with online advice and secure our website against any attempted fraud.",
+    "content text 3": "These cookies are used to measure and analyse our website audience (visitor volume, pages viewed, average browsing time, etc.) to help us improve its performance.By accepting these cookies, you are helping us to improve our website.",
+    "content text 4": "These cookies are used for Off White advertisements displayed on third-party websites, including social media, and are tailored to your preferences and to help us measure the effectiveness of our advertising campaigns. If you deactivate these cookies,advertising (including ours) will continue to be displayed as you browse the Internet, although they will not be specific to your personal interests, and will therefore be less relevant.",
+    "content text 5": "These cookies allow us to provide you with online or in-store recommendations of products, services and content that match your expectations and preferences. By accepting these cookies, you are opting for an enriched and personalised experience.",
+    "functional cookie (non-optional)": "functional cookie (non-optional)",
+    "statistical analysis cookies": "statistical analysis cookies",
+    "advertising and social media cookies": "advertising and social media cookies",
+    "cookies to personalize the grbpwr experience": "cookies to personalize the grbpwr experience"
+  },
+  "geo-suggest": {
+    "message": "We think you are in {country}. Update your location?",
+    "stay": "Stay {country}",
+    "switch": "Switch"
+  },
+  "update_location": {
+    "message": "You are currently shopping on the {currentCountry}. When changing countries/regions your shopping bag will be emptied. Are you sure you want to proceed?",
+    "continue": "Continue to {country}",
+    "cancel": "Cancel"
+  },
+  "measurements-descriptions": {
+    "waist": "Measured waist flat across garment",
+    "chest": "Measured chest flat across garment, from under-arm to under-arm",
+    "shoulders": "Measured horizontally across garment, from shoulder-seam to shoulder-seam",
+    "hips": "Measured hip flat across garment",
+    "leg-opening": "Measure the bottom hem opening.",
+    "bottom-width": "Measured bottom width flat across garment",
+    "end-fit-length": "Length from end fit point.",
+    "start-fit-length": "Length from start fit point.",
+    "length": "Measured from center-back neck down to bottom of garment",
+    "inseam": "Measured from crotch down to bottom along inseam (inside leg)",
+    "sleeve": "Measured from center back neck, including shoulder to bottom of hem",
+    "height": "Full height of the garment.",
+    "width": "Width at the specified point"
+  },
+  "meta": {
+    "description": "latest ready-to-wear menswear, womenswear, and accessories",
+    "catalog": "catalog"
+  }
+}

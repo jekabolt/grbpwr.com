@@ -6,6 +6,7 @@ import { CurrencyState, CurrencyStore } from "./store-types";
 export const defaultInitState: CurrencyState = {
     selectedCurrency: "EUR",
     rates: undefined,
+    isOpen: false,
 };
 
 export const createCurrencyStore = (initState: CurrencyState = defaultInitState) => {
@@ -13,6 +14,10 @@ export const createCurrencyStore = (initState: CurrencyState = defaultInitState)
         persist(
             (set, get) => ({
                 ...initState,
+
+                openCurrencyPopup: () => set({ isOpen: true }),
+                closeCurrencyPopup: () => set({ isOpen: false }),
+
                 setSelectedCurrency: (currency: string) => {
                     set({ selectedCurrency: currency });
                 },
