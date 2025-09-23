@@ -34,6 +34,11 @@ export function CountriesPopup() {
 
   const t = useTranslations("countries-popup");
 
+  function handleSelection(location: CountryOption) {
+    setSeletedLocation(location);
+    closeCurrencyPopup();
+  }
+
   function cancelSelection() {
     setSeletedLocation(undefined);
   }
@@ -89,7 +94,7 @@ export function CountriesPopup() {
                                     LANGUAGE_CODE_TO_ID[seletedLocation?.lng],
                               },
                             )}
-                            onClick={() => setSeletedLocation(country)}
+                            onClick={() => handleSelection(country)}
                           >
                             <div className="flex items-center gap-2">
                               <Text className="uppercase">{country.name}</Text>
@@ -142,7 +147,7 @@ export function CountriesPopup() {
                                           ],
                                     },
                                   )}
-                                  onClick={() => setSeletedLocation(country)}
+                                  onClick={() => handleSelection(country)}
                                 >
                                   <div className="flex items-center gap-2">
                                     <Text className="uppercase">
