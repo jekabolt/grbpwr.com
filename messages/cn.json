@@ -142,6 +142,8 @@
   },
   "meta": {
     "description": "最新男士、女士和配饰系列",
-    "catalog": "目录"
+    "catalog": "目录",
+    "timeline": "时间轴",
+    "timeline description": "发现档案和更新"
   }
 }

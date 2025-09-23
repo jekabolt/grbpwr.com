@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import { TranslationsState, TranslationsStore } from "./store-types";
 
 export const defaultInitState: TranslationsState = {
-    languageId: 1, // English (en)
+    languageId: 1, // english
     country: { name: "united states", countryCode: "US" },
     translations: undefined,
 };

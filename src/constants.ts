@@ -378,8 +378,8 @@ export type CountryOption = {
   currency: string;
   currencyKey: string;
   lng: string;
-  countryCode: string; // ISO country code
-  displayLng?: string; // For displaying hieroglyphs in UI
+  countryCode: string;
+  displayLng?: string;
 };
 
 export const COUNTRIES_BY_REGION = {
@@ -465,7 +465,6 @@ export const COUNTRIES_BY_REGION = {
   ],
 } satisfies Record<string, CountryOption[]>;
 
-// Map language codes to language IDs (from dictionary)
 export const LANGUAGE_CODE_TO_ID: Record<string, number> = {
   'en': 1,
   'fr': 2,

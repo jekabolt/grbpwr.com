@@ -142,6 +142,8 @@
   },
   "meta": {
     "description": "최신 남성, 여성 및 액세서리 컬렉션",
-    "catalog": "카탈로그"
+    "catalog": "카탈로그",
+    "timeline": "타임라인",
+    "timeline description": "아카이브와 업데이트 발견"
   }
 }

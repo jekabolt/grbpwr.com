@@ -1,6 +1,9 @@
+import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
+import { LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
@@ -12,6 +15,45 @@ interface ProductPageProps {
   params: Promise<{
     productParams: string[];
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; productParams: string[] }>;
+}): Promise<Metadata> {
+  const { productParams, locale } = await params;
+  const [gender, brand, name, id] = productParams;
+  const localeId = LANGUAGE_CODE_TO_ID[locale];
+
+  const { product } = await serviceClient.GetProduct({
+    gender,
+    brand,
+    name,
+    id: parseInt(id),
+  });
+
+  const productMedia = [...(product?.media || [])];
+  const productBody = product?.product?.productDisplay?.productBody;
+
+  const title = productBody?.translations?.find(
+    (t) => t.languageId === localeId,
+  )?.name;
+  const description = productBody?.translations?.find(
+    (t) => t.languageId === localeId,
+  )?.description;
+
+  const color = productBody?.productBodyInsert?.color;
+  const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
+
+  return generateCommonMetadata({
+    title: title?.toUpperCase(),
+    description: `${description}'\n'${color}`,
+    ogParams: {
+      imageUrl: productImageUrl,
+      imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
+    },
+  });
 }
 
 export const dynamic = "force-static";

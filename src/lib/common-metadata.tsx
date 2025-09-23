@@ -1,4 +1,3 @@
-// src/lib/metadata.ts
 import { Metadata } from "next";
 
 import logo from "../../public/app-logo.webp";
@@ -14,7 +13,7 @@ type GenerateOgParams = {
 
 export function generateOpenGraph({
   title = "grbpwr.com",
-  description = "latest ready-to-wear menswear, womenswear, and accessories".toUpperCase(),
+  description = "latest ready-to-wear menswear, womenswear, and accessories",
   imageUrl = logo.src,
   imageWidth = 512,
   imageHeight = 512,
@@ -60,13 +59,13 @@ export function generateCommonMetadata({
     },
     openGraph: generateOpenGraph({
       title,
-      description: description.toUpperCase(),
+      description: description,
       ...ogParams,
     }),
     twitter: {
       card: "player",
       title,
-      description: description.toUpperCase(),
+      description: description,
       images: [ogParams.imageUrl || logo.src],
     },
   };
