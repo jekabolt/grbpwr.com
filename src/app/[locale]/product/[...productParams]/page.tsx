@@ -1,5 +1,3 @@
-// app/product/[...productParams]/page.tsx
-
 import { notFound } from "next/dist/client/components/not-found";
 
 import { serviceClient } from "@/lib/api";

@@ -1,15 +1,9 @@
-import type { Metadata } from "next";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { NextIntlClientProvider } from "next-intl";
-import {
-  getMessages,
-  getTranslations,
-  setRequestLocale,
-} from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 
-import { generateCommonMetadata } from "@/lib/common-metadata";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
 import { ToastProvider } from "@/components/ui/toaster";
@@ -22,19 +16,19 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string };
-}): Promise<Metadata> {
-  const { locale } = params;
-  setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "meta" });
+// export async function generateMetadata({
+//   params,
+// }: {
+//   params: { locale: string };
+// }): Promise<Metadata> {
+//   const { locale } = params;
+//   setRequestLocale(locale);
+//   const t = await getTranslations({ locale, namespace: "meta" });
 
-  const description = t("description");
+//   const description = t("description");
 
-  return generateCommonMetadata({ description });
-}
+//   return generateCommonMetadata({ description });
+// }
 
 export const viewport = {
   width: "device-width",
