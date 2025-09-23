@@ -1,10 +1,7 @@
-import { Metadata } from "next";
 import { CATALOG_LIMIT } from "@/constants";
-import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { serviceClient } from "@/lib/api";
 import { resolveCategories } from "@/lib/categories-map";
-import { generateCommonMetadata } from "@/lib/common-metadata";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 import { HeroArchive } from "@/app/[locale]/_components/hero-archive";
@@ -33,16 +30,16 @@ interface CatalogPageProps {
   }>;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string; params?: string[] }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "meta" });
-  return generateCommonMetadata({ title: t("catalog").toUpperCase() });
-}
+// export async function generateMetadata({
+//   params,
+// }: {
+//   params: Promise<{ locale: string; params?: string[] }>;
+// }): Promise<Metadata> {
+//   const { locale } = await params;
+//   setRequestLocale(locale);
+//   const t = await getTranslations({ locale, namespace: "meta" });
+//   return generateCommonMetadata({ title: t("catalog").toUpperCase() });
+// }
 
 export const dynamic = "force-static";
 
