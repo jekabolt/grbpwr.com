@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { CATALOG_LIMIT } from "@/constants";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { serviceClient } from "@/lib/api";
 import { resolveCategories } from "@/lib/categories-map";
@@ -36,16 +36,12 @@ interface CatalogPageProps {
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string; params?: string[] }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({
-    locale,
-    namespace: "meta",
-  });
-  return generateCommonMetadata({
-    title: t("catalog").toUpperCase(),
-  });
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return generateCommonMetadata({ title: t("catalog").toUpperCase() });
 }
 
 export const dynamic = "force-static";
@@ -55,23 +51,15 @@ export default async function CatalogPage(props: CatalogPageProps) {
   const searchParams = await props.searchParams;
   const params = await props.params;
 
-  // Get server-side translations for the current locale
-  const t = await getTranslations({
-    locale: params.locale,
-    namespace: "catalog",
-  });
-
   const { gender, categoryName, subCategoryName } = parseRouteParams(
     params?.params,
   );
 
-  // Always use English (languageId = 1) for URL resolution since URLs are in English
-  // The client components will handle displaying the translated names
   const { topCategory, subCategory } = resolveCategories(
     dictionary?.categories,
     categoryName,
     subCategoryName,
-    1, // Always use English for URL resolution
+    1,
   );
 
   const response = await serviceClient.GetProductsPaged({
