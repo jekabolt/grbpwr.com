@@ -73,6 +73,11 @@ export type NavFeaturedEntityInsertTranslation = {
   exploreText: string | undefined;
 };
 
+export type AnnounceTranslation = {
+  languageId: number | undefined;
+  text: string | undefined;
+};
+
 export type MediaFull = {
   // Media ID
   id: number | undefined;
@@ -528,7 +533,7 @@ export type Dictionary = {
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
-  announce: string | undefined;
+  announceTranslations: AnnounceTranslation[] | undefined;
 };
 
 export type Genders = {

@@ -3,7 +3,7 @@ import { getMessages } from "next-intl/server";
 
 import { GeoSuggestBanner } from "./geo-suggest-banner";
 
-export async function GeoSuggestBannerServer() {
+export async function GeoSuggestWrapper() {
   const cookieStore = await cookies();
   const suggestCountry = cookieStore.get("NEXT_SUGGEST_COUNTRY")?.value;
   const suggestLocale = cookieStore.get("NEXT_SUGGEST_LOCALE")?.value;

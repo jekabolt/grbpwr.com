@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Announce } from "@/components/ui/announce";
@@ -24,7 +25,11 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
   const itemsQuantity = Object.keys(products).length;
   const [isVisible, setIsVisible] = useState(true);
   const { scrollDirection, isAtTop } = useHeaderScrollPosition();
-  const { open } = useAnnounce(dictionary?.announce || "");
+  const { languageId } = useTranslationsStore((state) => state);
+  const announceTranslation = dictionary?.announceTranslations?.find(
+    (t) => t.languageId === languageId,
+  );
+  const { open } = useAnnounce(announceTranslation?.text || "");
   const t = useTranslations("navigation");
 
   useEffect(() => {

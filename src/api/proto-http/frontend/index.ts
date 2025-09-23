@@ -293,7 +293,7 @@ export type common_Dictionary = {
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
-  announce: string | undefined;
+  announceTranslations: common_AnnounceTranslation[] | undefined;
 };
 
 // Category represents a hierarchical category structure
@@ -378,6 +378,11 @@ export type common_Language = {
   name: string | undefined;
   isDefault: boolean | undefined;
   isActive: boolean | undefined;
+};
+
+export type common_AnnounceTranslation = {
+  languageId: number | undefined;
+  text: string | undefined;
 };
 
 // CurrencyMap represents a map of currency codes to their rates.

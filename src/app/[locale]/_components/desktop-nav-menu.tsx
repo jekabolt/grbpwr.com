@@ -35,7 +35,10 @@ export function DesktopNavigationMenu({
   const { languageId } = useTranslationsStore((state) => state);
 
   const pathname = usePathname();
-  const { open } = useAnnounce(dictionary?.announce || "");
+  const announceTranslation = dictionary?.announceTranslations?.find(
+    (t) => t.languageId === languageId,
+  );
+  const { open } = useAnnounce(announceTranslation?.text || "");
 
   const t = useTranslations("navigation");
 

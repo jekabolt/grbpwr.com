@@ -1,3 +1,4 @@
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Text } from "@/components/ui/text";
 import { useAnnounce } from "@/app/[locale]/_components/useAnnounce";
 
@@ -6,7 +7,10 @@ import { Button } from "./button";
 
 export function Announce() {
   const { dictionary } = useDataContext();
-  const announce = dictionary?.announce || "";
+  const { languageId } = useTranslationsStore((state) => state);
+  const announce =
+    dictionary?.announceTranslations?.find((t) => t.languageId === languageId)
+      ?.text || "";
   const { open, handleClose } = useAnnounce(announce);
 
   if (!open || !announce) return null;
