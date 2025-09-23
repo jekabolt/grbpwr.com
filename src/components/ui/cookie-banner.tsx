@@ -33,6 +33,7 @@ export function CookieBanner() {
 
   const handleSaveCookies = () => {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    window.dispatchEvent(new Event("cookie-consent-accepted"));
     setIsVisible(false);
   };
 
@@ -47,6 +48,7 @@ export function CookieBanner() {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
     setIsVisible(false);
     setOpenStatus(false);
+    window.dispatchEvent(new Event("cookie-consent-accepted"));
   };
 
   if (!isVisible) return null;

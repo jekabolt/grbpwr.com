@@ -48,15 +48,20 @@ export function GeoSuggestBanner({
   const currentCountryName = getCountryName(currentCountry);
 
   useEffect(() => {
-    const cookieConsent = localStorage.getItem("cookieConsent");
-    setIsCookiesAccepted(Boolean(cookieConsent));
-
     if (!suggestCountry || !suggestLocale) return;
     const alreadyOnSuggested = pathname?.startsWith(
       `/${suggestCountry}/${suggestLocale}`,
     );
     setVisible(!alreadyOnSuggested);
   }, [pathname, suggestCountry, suggestLocale]);
+
+  useEffect(() => {
+    const onConsentAccepted = () => setIsCookiesAccepted(true);
+    window.addEventListener("cookie-consent-accepted", onConsentAccepted);
+    return () => {
+      window.removeEventListener("cookie-consent-accepted", onConsentAccepted);
+    };
+  }, []);
 
   const onDismiss = () => {
     const url = new URL(window.location.href);
@@ -89,7 +94,7 @@ export function GeoSuggestBanner({
     }
   };
 
-  if (!visible) return null;
+  if (!visible || !isCookiesAccepted) return null;
 
   return (
     <Banner>
