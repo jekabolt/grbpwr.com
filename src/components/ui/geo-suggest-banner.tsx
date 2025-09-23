@@ -89,7 +89,7 @@ export function GeoSuggestBanner({
     }
   };
 
-  if (!isCookiesAccepted || !visible) return null;
+  if (!visible) return null;
 
   return (
     <Banner>
