@@ -141,6 +141,7 @@
     "width": "Largeur au point spécifié"
   },
   "meta": {
-    "description": "dernière collection de prêt-à-porter homme, femme et accessoires"
+    "description": "dernière collection de prêt-à-porter homme, femme et accessoires",
+    "catalog": "catalogue"
   }
 }

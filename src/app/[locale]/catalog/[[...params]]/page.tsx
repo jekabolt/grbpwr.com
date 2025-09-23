@@ -33,9 +33,18 @@ interface CatalogPageProps {
   }>;
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({
+    locale,
+    namespace: "meta",
+  });
   return generateCommonMetadata({
-    title: "catalog".toUpperCase(),
+    title: t("catalog").toUpperCase(),
   });
 }
 

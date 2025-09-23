@@ -141,6 +141,7 @@
     "width": "Width at the specified point"
   },
   "meta": {
-    "description": "latest ready-to-wear menswear, womenswear, and accessories"
+    "description": "latest ready-to-wear menswear, womenswear, and accessories",
+    "catalog": "catalog"
   }
 }

@@ -141,6 +141,7 @@
     "width": "指定点的宽度"
   },
   "meta": {
-    "description": "最新男士、女士和配饰系列"
+    "description": "最新男士、女士和配饰系列",
+    "catalog": "目录"
   }
 }

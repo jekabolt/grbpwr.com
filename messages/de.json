@@ -141,6 +141,7 @@
     "width": "Breite am angegebenen Punkt"
   },
   "meta": {
-    "description": "neueste Ready-to-Wear-Menswear, Womenswear und Accessoires"
+    "description": "neueste Ready-to-Wear-Menswear, Womenswear und Accessoires",
+    "catalog": "katalog"
   }
 }
