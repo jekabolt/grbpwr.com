@@ -1,7 +1,9 @@
+import { Metadata } from "next";
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { resolveCategories } from "@/lib/categories-map";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 import { HeroArchive } from "@/app/[locale]/_components/hero-archive";
@@ -15,11 +17,11 @@ import {
 } from "../_components/utils";
 
 interface CatalogPageProps {
-  params: {
+  params: Promise<{
     locale: string;
     params?: string[];
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     order?: string;
     sort?: string;
     size?: string;
@@ -27,27 +29,21 @@ interface CatalogPageProps {
     topCategoryIds?: string;
     sale?: string;
     tag?: string;
-  };
+  }>;
 }
 
-// export async function generateMetadata({
-//   params,
-// }: {
-//   params: Promise<{ locale: string; params?: string[] }>;
-// }): Promise<Metadata> {
-//   const { locale } = await params;
-//   setRequestLocale(locale);
-//   const t = await getTranslations({ locale, namespace: "meta" });
-//   return generateCommonMetadata({ title: t("catalog").toUpperCase() });
-// }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateCommonMetadata({
+    title: "catalog".toUpperCase(),
+  });
+}
 
 export const dynamic = "force-static";
 
-export default async function CatalogPage({
-  params,
-  searchParams,
-}: CatalogPageProps) {
+export default async function CatalogPage(props: CatalogPageProps) {
   const { hero, dictionary } = await serviceClient.GetHero({});
+  const searchParams = await props.searchParams;
+  const params = await props.params;
 
   const { gender, categoryName, subCategoryName } = parseRouteParams(
     params?.params,
