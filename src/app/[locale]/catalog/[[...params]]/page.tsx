@@ -15,11 +15,11 @@ import {
 } from "../_components/utils";
 
 interface CatalogPageProps {
-  params: Promise<{
+  params: {
     locale: string;
     params?: string[];
-  }>;
-  searchParams: Promise<{
+  };
+  searchParams: {
     order?: string;
     sort?: string;
     size?: string;
@@ -27,7 +27,7 @@ interface CatalogPageProps {
     topCategoryIds?: string;
     sale?: string;
     tag?: string;
-  }>;
+  };
 }
 
 // export async function generateMetadata({
@@ -43,10 +43,11 @@ interface CatalogPageProps {
 
 export const dynamic = "force-static";
 
-export default async function CatalogPage(props: CatalogPageProps) {
+export default async function CatalogPage({
+  params,
+  searchParams,
+}: CatalogPageProps) {
   const { hero, dictionary } = await serviceClient.GetHero({});
-  const searchParams = await props.searchParams;
-  const params = await props.params;
 
   const { gender, categoryName, subCategoryName } = parseRouteParams(
     params?.params,
