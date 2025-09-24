@@ -8,7 +8,6 @@ import { Text } from "./text";
 export interface RadioGroupsProps {
   name: string;
   className?: string;
-  itemsClassName?: string;
   items: {
     label: string | React.ReactNode;
     value: string;
@@ -24,7 +23,6 @@ export interface RadioGroupsProps {
 export default function RadioGroupComponent({
   name,
   className,
-  itemsClassName,
   items,
   view = "default",
   ...props
