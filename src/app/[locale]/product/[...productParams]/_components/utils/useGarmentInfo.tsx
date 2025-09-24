@@ -5,24 +5,30 @@ export function useGarmentInfo({ product }: { product: common_ProductFull }) {
   const productBody =
     product.product?.productDisplay?.productBody?.productBodyInsert;
 
-  const composition = formatCompositionBySections(
-    productBody?.composition || "",
-  );
+  const { formatted: composition, structured: compositionStructured } =
+    formatCompositionBySections(productBody?.composition || "");
 
-  const care = productBody?.careInstructions
+  const careCodes = productBody?.careInstructions
     ?.split(",")
-    .map((c) => CARE_INSTRUCTIONS_MAP[c.trim()]);
+    .map((c) => c.trim())
+    .filter(Boolean);
+  const care = careCodes?.map((code) => CARE_INSTRUCTIONS_MAP[code] || code);
 
   return {
     composition,
+    compositionStructured,
+    careCodes,
     care,
   };
 }
 
-type CompositionItem = { code: string; percent: number };
-type CompositionSections = Record<string, CompositionItem[]>;
+export type CompositionItem = { code: string; percent: number };
+export type CompositionSections = Record<string, CompositionItem[]>;
 
-function formatCompositionBySections(jsonString: string): string {
+function formatCompositionBySections(jsonString: string): {
+  formatted: string;
+  structured: CompositionSections | null;
+} {
   try {
     const data = JSON.parse(jsonString) as CompositionSections;
 
@@ -50,8 +56,8 @@ function formatCompositionBySections(jsonString: string): string {
       }
     });
 
-    return formattedSections.join("\n");
+    return { formatted: formattedSections.join("\n"), structured: data };
   } catch (error) {
-    return jsonString;
+    return { formatted: jsonString, structured: null };
   }
 }

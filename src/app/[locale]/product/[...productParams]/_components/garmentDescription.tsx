@@ -17,9 +17,14 @@ export function GarmentDescription({
   product: common_ProductFull;
 }) {
   const { description, isComposition, isCare } = useProductBasics({ product });
-  const { composition, care } = useGarmentInfo({ product });
+  const { composition, compositionStructured, care, careCodes } =
+    useGarmentInfo({
+      product,
+    });
   const { modelWear } = useModelInfo({ product });
   const t = useTranslations("product");
+  const tComp = useTranslations("composition");
+  const tCare = useTranslations("care");
 
   const [infoOpenItem, setInfoOpenItem] = useState<string>("");
   return (
@@ -52,13 +57,29 @@ export function GarmentDescription({
           currentValue={infoOpenItem}
           onValueChange={setInfoOpenItem}
         >
-          <div className="flex flex-col">
-            {composition.split("\n").map((c, i) => (
-              <Text variant="uppercase" key={i}>
-                {c}
-              </Text>
-            ))}
-          </div>
+          {compositionStructured ? (
+            <div className="flex flex-col">
+              {Object.entries(compositionStructured).map(
+                ([sectionKey, items]) => (
+                  <Text variant="uppercase" key={sectionKey}>
+                    {tComp(sectionKey)}:{" "}
+                    {items
+                      .filter((i) => i.percent > 0)
+                      .map((i) => `${tComp(i.code)} ${i.percent}%`)
+                      .join(", ")}
+                  </Text>
+                ),
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col">
+              {composition.split("\n").map((c, i) => (
+                <Text variant="uppercase" key={i}>
+                  {c}
+                </Text>
+              ))}
+            </div>
+          )}
         </AccordionSection>
       )}
       {isCare && (
@@ -68,9 +89,9 @@ export function GarmentDescription({
           currentValue={infoOpenItem}
           onValueChange={setInfoOpenItem}
         >
-          {care?.map((c, i) => (
+          {(careCodes?.length ? careCodes : care || []).map((c, i) => (
             <Text variant="uppercase" key={i}>
-              {c}
+              {tCare(c)}
             </Text>
           ))}
         </AccordionSection>
