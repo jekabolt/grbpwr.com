@@ -21,6 +21,11 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
             }),
             {
                 name: "translations-store",
+                merge: (persistedState, currentState) => {
+                    const persisted = persistedState as Partial<TranslationsState> | undefined;
+                    const current = currentState as TranslationsStore;
+                    return { ...(persisted || {}), ...current } as TranslationsStore;
+                },
                 partialize: (state) => ({
                     languageId: state.languageId,
                     country: state.country,

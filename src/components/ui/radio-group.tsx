@@ -7,10 +7,12 @@ import { Text } from "./text";
 
 export interface RadioGroupsProps {
   name: string;
+  className?: string;
   items: {
     label: string | React.ReactNode;
     value: string;
     icon?: React.ReactNode;
+    className?: string;
   }[];
   // todo: add disabled
   view?: "card" | "default";
@@ -20,6 +22,7 @@ export interface RadioGroupsProps {
 
 export default function RadioGroupComponent({
   name,
+  className,
   items,
   view = "default",
   ...props
@@ -38,21 +41,27 @@ export default function RadioGroupComponent({
       <div
         className={cn(
           "flex items-center gap-3 overflow-x-scroll lg:grid lg:grid-cols-2",
+          className,
           {
             "lg:grid-cols-3": isCardView && hasThreeItems,
           },
         )}
       >
-        {items.map(({ value, label, icon }) => {
+        {items.map(({ value, label, icon, className: itemClassName }) => {
           return (
             <Label
               key={value}
-              className={cn("flex w-full cursor-pointer gap-3", {
-                "h-28 border border-textInactiveColor p-3": isCardView,
-                "w-40 min-w-40 flex-shrink-0 lg:w-full":
-                  isCardView && hasManyItems,
-                "border-textColor": value === props.value && isCardView,
-              })}
+              className={cn(
+                "flex w-full cursor-pointer gap-3",
+
+                itemClassName,
+                {
+                  "h-28 border border-textInactiveColor p-3": isCardView,
+                  "w-40 min-w-40 flex-shrink-0 lg:w-full":
+                    isCardView && hasManyItems,
+                  "border-textColor": value === props.value && isCardView,
+                },
+              )}
               htmlFor={`${value}-r`}
             >
               <div className="flex h-full flex-col justify-between">

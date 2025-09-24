@@ -23,6 +23,7 @@
     "change country": "国を変更",
     "text": "現在{currentCountry}への配送を行っており、ご注文は{currency}で請求されます。",
     "search location": "国を検索",
+    "language": "言語",
     "not-found": "申し訳ありませんが、検索結果が見つかりませんでした。"
   },
   "newslatter": {

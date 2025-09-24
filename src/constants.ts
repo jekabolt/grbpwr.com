@@ -476,3 +476,13 @@ export const LANGUAGE_CODE_TO_ID: Record<string, number> = {
   'kr': 7,
 };
 
+export const LANGUAGE_ID_TO_LOCALE: Record<number, string> = {
+  1: "en",
+  2: "fr",
+  3: "de",
+  4: "it",
+  5: "ja",
+  6: "cn",
+  7: "kr",
+};
+
