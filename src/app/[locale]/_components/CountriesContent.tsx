@@ -80,7 +80,7 @@ export function CountriesContent({
               <div
                 key={region}
                 className={cn(
-                  "border-b border-textInactiveColor hover:border-textColor",
+                  "border-textInactiveColorAlpha border-b hover:border-textColor",
                   {
                     "border-transparent hover:border-transparent":
                       index === regionsWithCountries.length - 1,

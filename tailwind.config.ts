@@ -6,6 +6,7 @@ const config = {
       colors: {
         textColor: "var(--text)",
         textInactiveColor: "var(--inactive)",
+        textInactiveColorAlpha: "var(--inactive-alpha)",
         bgColor: "var(--background)",
         highlightColor: "var(--highlight)",
         errorColor: "var(--error)",
