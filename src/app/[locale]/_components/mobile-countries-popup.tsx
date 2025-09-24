@@ -55,7 +55,7 @@ export function MobileCountriesPopup({
     <DialogPrimitives.Root open={open} onOpenChange={closeCurrencyPopup}>
       <Button
         onClick={openCurrencyPopup}
-        className="flex w-full items-center justify-between border border-textColor uppercase lg:hidden"
+        className="flex w-full items-center justify-between uppercase lg:hidden"
       >
         <Text>{f("country")}:</Text>
         <Text>
