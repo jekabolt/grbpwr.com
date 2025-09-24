@@ -21,12 +21,9 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
             }),
             {
                 name: "translations-store",
-                version: 2,
-                // Prefer server-provided init (from cookies/middleware) over stale persisted values on rehydrate
                 merge: (persistedState, currentState) => {
                     const persisted = persistedState as Partial<TranslationsState> | undefined;
                     const current = currentState as TranslationsStore;
-                    // current contains actions + initState from server; let it override persisted
                     return { ...(persisted || {}), ...current } as TranslationsStore;
                 },
                 partialize: (state) => ({
