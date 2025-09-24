@@ -266,5 +266,14 @@
     "catalog": "catalogo",
     "timeline": "cronologia",
     "timeline description": "scopri l'archivio e le aggiornamenti"
+  },
+  "order-status": {
+    "order status": "stato dell'ordine",
+    "text": "troverai il numero del tuo ordine nell'email di conferma dell'ordine. se hai recentemente effettuato un acquisto, tieni presente che potrebbero essere necessari alcuni minuti per elaborare il tuo ordine e ricevere l'email di conferma. se non trovi l'email di conferma, controlla la cartella spam.",
+    "check your order status": "controlla lo stato del tuo ordine",
+    "email": "EMAIL*",
+    "order reference": "RIFERIMENTO ORDINE*",
+    "submit": "invia",
+    "order not found": "ordine non trovato"
   }
 }

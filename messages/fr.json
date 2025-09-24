@@ -266,5 +266,14 @@
     "catalog": "catalogue",
     "timeline": "chronologie",
     "timeline description": "découvrir l'archive et les mises à jour"
+  },
+  "order-status": {
+    "order status": "statut de commande",
+    "text": "vous trouverez votre numéro de commande dans votre email de confirmation de commande. si vous avez récemment effectué un achat, sachez qu'il peut falloir quelques minutes pour traiter votre commande et recevoir l'email de confirmation. si vous ne trouvez pas votre email de confirmation, veuillez vérifier votre dossier spam.",
+    "check your order status": "vérifiez le statut de votre commande",
+    "email": "EMAIL*",
+    "order reference": "RÉFÉRENCE DE COMMANDE*",
+    "submit": "soumettre",
+    "order not found": "commande introuvable"
   }
 }

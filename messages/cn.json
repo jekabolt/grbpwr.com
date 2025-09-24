@@ -266,5 +266,14 @@
     "catalog": "目录",
     "timeline": "时间轴",
     "timeline description": "发现档案和更新"
+  },
+  "order-status": {
+    "order status": "订单状态",
+    "text": "您可以在订单确认邮件中找到您的订单号。如果您最近购买了商品，请注意处理您的订单和接收确认邮件可能需要几分钟时间。如果您没有找到确认邮件，请检查您的垃圾邮件文件夹。",
+    "check your order status": "查看您的订单状态",
+    "email": "邮箱*",
+    "order reference": "订单号*",
+    "submit": "提交",
+    "order not found": "未找到订单"
   }
 }

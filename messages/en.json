@@ -266,5 +266,14 @@
     "catalog": "catalog",
     "timeline": "timeline",
     "timeline description": "discover archive and updates"
+  },
+  "order-status": {
+    "order status": "order status",
+    "text": "you will find your order number in your order confirmation email. if you recently made a purchase, be aware that it could take a few minutes to process your order and receive the confirmation email. if you do not find you confirmation email, please check your spam folder.",
+    "check your order status": "check your order status",
+    "email": "EMAIL*",
+    "order reference": "ORDER REFERENCE*",
+    "submit": "submit",
+    "order not found": "order not found"
   }
 }
