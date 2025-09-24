@@ -48,11 +48,23 @@ export default function middleware(req: NextRequest) {
         const res = NextResponse.redirect(url, { status: 307 });
 
         const clearSuggestCookies = () => {
-            res.cookies.set("NEXT_SUGGEST_COUNTRY", "", { path: "/", maxAge: 0 });
-            res.cookies.set("NEXT_SUGGEST_LOCALE", "", { path: "/", maxAge: 0 });
+            res.cookies.set("NEXT_SUGGEST_COUNTRY", "", {
+                path: "/",
+                maxAge: 0,
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production",
+            });
+            res.cookies.set("NEXT_SUGGEST_LOCALE", "", {
+                path: "/",
+                maxAge: 0,
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production",
+            });
             res.cookies.set("NEXT_SUGGEST_CURRENT_COUNTRY", "", {
                 path: "/",
                 maxAge: 0,
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production",
             });
         };
 
@@ -68,10 +80,14 @@ export default function middleware(req: NextRequest) {
             res.cookies.set("NEXT_COUNTRY", suggestCountry, {
                 path: "/",
                 maxAge: 60 * 60 * 24 * 365,
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production",
             });
             res.cookies.set("NEXT_LOCALE", suggestLocale, {
                 path: "/",
                 maxAge: 60 * 60 * 24 * 365,
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production",
             });
 
             const target = req.nextUrl.clone();
@@ -109,10 +125,14 @@ export default function middleware(req: NextRequest) {
         res.cookies.set("NEXT_COUNTRY", country, {
             path: "/",
             maxAge: 60 * 60 * 24 * 365,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
         });
         res.cookies.set("NEXT_LOCALE", locale, {
             path: "/",
             maxAge: 60 * 60 * 24 * 365,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
         });
 
         if (!hadCountry || !hadLocale) {
@@ -123,21 +143,42 @@ export default function middleware(req: NextRequest) {
                 res.cookies.set("NEXT_SUGGEST_COUNTRY", geoCountry, {
                     path: "/",
                     maxAge: 60 * 30,
+                    sameSite: "lax",
+                    secure: process.env.NODE_ENV === "production",
                 });
                 res.cookies.set("NEXT_SUGGEST_LOCALE", geoLocale, {
                     path: "/",
                     maxAge: 60 * 30,
+                    sameSite: "lax",
+                    secure: process.env.NODE_ENV === "production",
                 });
                 res.cookies.set("NEXT_SUGGEST_CURRENT_COUNTRY", country, {
                     path: "/",
                     maxAge: 60 * 30,
+                    sameSite: "lax",
+                    secure: process.env.NODE_ENV === "production",
                 });
             }
         } else {
 
-            res.cookies.set("NEXT_SUGGEST_COUNTRY", "", { path: "/", maxAge: 0 });
-            res.cookies.set("NEXT_SUGGEST_LOCALE", "", { path: "/", maxAge: 0 });
-            res.cookies.set("NEXT_SUGGEST_CURRENT_COUNTRY", "", { path: "/", maxAge: 0 });
+            res.cookies.set("NEXT_SUGGEST_COUNTRY", "", {
+                path: "/",
+                maxAge: 0,
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production",
+            });
+            res.cookies.set("NEXT_SUGGEST_LOCALE", "", {
+                path: "/",
+                maxAge: 0,
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production",
+            });
+            res.cookies.set("NEXT_SUGGEST_CURRENT_COUNTRY", "", {
+                path: "/",
+                maxAge: 0,
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production",
+            });
         }
 
         return res;
