@@ -266,5 +266,41 @@
     "catalog": "catalogue",
     "timeline": "chronologie",
     "timeline description": "découvrir l'archive et les mises à jour"
+  },
+  "order-status": {
+    "order status": "statut de commande",
+    "text": "vous trouverez votre numéro de commande dans votre email de confirmation de commande. si vous avez récemment effectué un achat, sachez qu'il peut falloir quelques minutes pour traiter votre commande et recevoir l'email de confirmation. si vous ne trouvez pas votre email de confirmation, veuillez vérifier votre dossier spam.",
+    "check your order status": "vérifiez le statut de votre commande",
+    "email": "EMAIL*",
+    "order reference": "RÉFÉRENCE DE COMMANDE*",
+    "submit": "soumettre",
+    "order not found": "commande introuvable"
+  },
+  "aftersale-services": {
+    "aftersale services": "services après-vente",
+    "topic": "sujet",
+    "subject": "objet",
+    "civility": "civilité",
+    "fill out the form": "remplir le formulaire",
+    "enter notes": "saisir des notes",
+    "send": "envoyer",
+    "email": "EMAIL*",
+    "first name": "PRÉNOM*",
+    "last name": "NOM*",
+    "order reference": "RÉFÉRENCE DE COMMANDE",
+    "product information": "informations produit",
+    "purchase": "achat",
+    "return & exchange": "retour et échange",
+    "repair": "réparation",
+    "availability": "disponibilité",
+    "price": "prix",
+    "sizing": "taille",
+    "characteristics": "caractéristiques",
+    "care": "entretien",
+    "gender": "mlle, mme, ms",
+    "mx": "mx",
+    "mr": "m.",
+    "i'd rather not say": "je préfère ne pas le dire",
+    "form submitted successfully": "formulaire soumis avec succès"
   }
 }

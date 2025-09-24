@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { errorMessages } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -25,6 +26,7 @@ const orderStatusSchema = z.object({
 type OrderStatusData = z.infer<typeof orderStatusSchema>;
 
 export default function OrderStatusForm() {
+  const t = useTranslations("order-status");
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -65,13 +67,13 @@ export default function OrderStatusForm() {
               <InputField
                 name="email"
                 type="email"
-                label="EMAIL*"
+                label={t("email")}
                 variant="secondary"
                 loading={isLoading}
               />
               <InputField
                 name="orderUuid"
-                label="ORDER REFERENCE*"
+                label={t("order reference")}
                 variant="secondary"
                 loading={isLoading}
               />
@@ -83,7 +85,7 @@ export default function OrderStatusForm() {
               disabled={!form.formState.isValid || isLoading}
               className="uppercase"
             >
-              submit
+              {t("submit")}
             </Button>
           </div>
         </form>
@@ -91,7 +93,7 @@ export default function OrderStatusForm() {
       <SubmissionToaster
         open={open}
         onOpenChange={setOpen}
-        message="order not found"
+        message={t("order not found")}
       />
     </>
   );

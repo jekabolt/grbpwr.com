@@ -266,5 +266,41 @@
     "catalog": "catalog",
     "timeline": "timeline",
     "timeline description": "discover archive and updates"
+  },
+  "order-status": {
+    "order status": "order status",
+    "text": "you will find your order number in your order confirmation email. if you recently made a purchase, be aware that it could take a few minutes to process your order and receive the confirmation email. if you do not find you confirmation email, please check your spam folder.",
+    "check your order status": "check your order status",
+    "email": "EMAIL*",
+    "order reference": "ORDER REFERENCE*",
+    "submit": "submit",
+    "order not found": "order not found"
+  },
+  "aftersale-services": {
+    "aftersale services": "aftersale services",
+    "topic": "topic",
+    "subject": "subject",
+    "civility": "civility",
+    "fill out the form": "fill out the form",
+    "enter notes": "enter notes",
+    "send": "send",
+    "email": "EMAIL*",
+    "first name": "FIRST NAME*",
+    "last name": "LAST NAME*",
+    "order reference": "ORDER REFERENCE",
+    "product information": "product information",
+    "purchase": "purchase",
+    "return & exchange": "return & exchange",
+    "repair": "repair",
+    "availability": "availability",
+    "price": "price",
+    "sizing": "sizing",
+    "characteristics": "characteristics",
+    "care": "care",
+    "gender": "miss, mrs, ms",
+    "mx": "mx",
+    "mr": "mr",
+    "i'd rather not say": "i'd rather not say",
+    "form submitted successfully": "form submitted successfully"
   }
 }

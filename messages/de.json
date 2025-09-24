@@ -266,5 +266,41 @@
     "catalog": "katalog",
     "timeline": "zeitleiste",
     "timeline description": "archiv und updates entdecken"
+  },
+  "order-status": {
+    "order status": "Bestellstatus",
+    "text": "Sie finden Ihre Bestellnummer in Ihrer Bestellbestätigungs-E-Mail. Wenn Sie kürzlich einen Kauf getätigt haben, beachten Sie bitte, dass es einige Minuten dauern kann, bis Ihre Bestellung verarbeitet und die Bestätigungs-E-Mail gesendet wird. Falls Sie Ihre Bestätigungs-E-Mail nicht finden, überprüfen Sie bitte Ihren Spam-Ordner.",
+    "check your order status": "Überprüfen Sie Ihren Bestellstatus",
+    "email": "E-MAIL*",
+    "order reference": "BESTELLREFERENZ*",
+    "submit": "Absenden",
+    "order not found": "Bestellung nicht gefunden"
+  },
+  "aftersale-services": {
+    "aftersale services": "Kundendienst",
+    "topic": "Thema",
+    "subject": "Betreff",
+    "civility": "Anrede",
+    "fill out the form": "Formular ausfüllen",
+    "enter notes": "Notizen eingeben",
+    "send": "senden",
+    "email": "E-MAIL*",
+    "first name": "VORNAME*",
+    "last name": "NACHNAME*",
+    "order reference": "BESTELLREFERENZ",
+    "product information": "Produktinformationen",
+    "purchase": "Kauf",
+    "return & exchange": "Rückgabe & Umtausch",
+    "repair": "Reparatur",
+    "availability": "Verfügbarkeit",
+    "price": "Preis",
+    "sizing": "Größe",
+    "characteristics": "Eigenschaften",
+    "care": "Pflege",
+    "gender": "Frl., Fr., Ms",
+    "mx": "Mx",
+    "mr": "Hr.",
+    "i'd rather not say": "möchte ich nicht angeben",
+    "form submitted successfully": "formular erfolgreich abgeschickt"
   }
 }

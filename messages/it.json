@@ -266,5 +266,41 @@
     "catalog": "catalogo",
     "timeline": "cronologia",
     "timeline description": "scopri l'archivio e le aggiornamenti"
+  },
+  "order-status": {
+    "order status": "stato dell'ordine",
+    "text": "troverai il numero del tuo ordine nell'email di conferma dell'ordine. se hai recentemente effettuato un acquisto, tieni presente che potrebbero essere necessari alcuni minuti per elaborare il tuo ordine e ricevere l'email di conferma. se non trovi l'email di conferma, controlla la cartella spam.",
+    "check your order status": "controlla lo stato del tuo ordine",
+    "email": "EMAIL*",
+    "order reference": "RIFERIMENTO ORDINE*",
+    "submit": "invia",
+    "order not found": "ordine non trovato"
+  },
+  "aftersale-services": {
+    "aftersale services": "servizi post-vendita",
+    "topic": "argomento",
+    "subject": "oggetto",
+    "civility": "titolo",
+    "fill out the form": "compila il modulo",
+    "enter notes": "inserisci note",
+    "send": "invia",
+    "email": "EMAIL*",
+    "first name": "NOME*",
+    "last name": "COGNOME*",
+    "order reference": "RIFERIMENTO ORDINE",
+    "product information": "informazioni prodotto",
+    "purchase": "acquisto",
+    "return & exchange": "reso e cambio",
+    "repair": "riparazione",
+    "availability": "disponibilità",
+    "price": "prezzo",
+    "sizing": "taglie",
+    "characteristics": "caratteristiche",
+    "care": "cura",
+    "gender": "sig.na, sig.ra, ms",
+    "mx": "mx",
+    "mr": "sig.",
+    "i'd rather not say": "preferisco non dirlo",
+    "form submitted successfully": "modulo inviato con successo"
   }
 }
