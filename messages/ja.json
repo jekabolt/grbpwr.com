@@ -21,7 +21,7 @@
   },
   "countries-popup": {
     "change country": "国を変更",
-    "text": "選択した国の通貨で価格が表示されます",
+    "text": "現在{currentCountry}への配送を行っており、ご注文は{currency}で請求されます。",
     "search location": "国を検索",
     "not-found": "申し訳ありませんが、検索結果が見つかりませんでした。"
   },

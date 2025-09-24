@@ -26,6 +26,7 @@
   .blackTheme {
     --text: #fff;
     --inactive: #cccccc;
+    --inactive-alpha: rgba(180, 180, 180, 0.2);
     --background: #000;
     --highlight: #535353;
     --error: #ff0000;

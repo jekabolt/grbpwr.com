@@ -1,7 +1,10 @@
+"use client";
+
+import { useState } from "react";
 import {
   COUNTRIES_BY_REGION,
+  CountryOption,
   currencySymbols,
-  LANGUAGE_CODE_TO_ID,
 } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
@@ -14,26 +17,30 @@ import { Searchbar } from "@/components/ui/searchbar";
 import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "../(checkout)/checkout/_components/new-order-form/fields-group-container";
-import { useLocation } from "./useLocation";
 import { useSearchCountries } from "./useSearchCountries";
 
-export function MobileCountriesPopup() {
+export function MobileCountriesPopup({
+  onCountrySelect,
+}: {
+  onCountrySelect: (location: CountryOption) => void;
+}) {
   const { isOpen, selectedCurrency, closeCurrencyPopup, openCurrencyPopup } =
     useCurrency((state) => state);
-  const { languageId, country: selectedCountry } = useTranslationsStore(
-    (state) => state,
-  );
-  const { handleCountrySelect } = useLocation();
-
+  const { country: selectedCountry } = useTranslationsStore((state) => state);
   const { query, filteredCountries, searchQuery, handleSearch } =
     useSearchCountries();
 
+  const [openSection, setOpenSection] = useState<number | null>(null);
   const regionsWithCountries = Object.entries(COUNTRIES_BY_REGION);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const open = isMobile && isOpen;
 
   const t = useTranslations("countries-popup");
   const f = useTranslations("footer");
+
+  function toggleSection(index: number) {
+    setOpenSection((prev) => (prev === index ? null : index));
+  }
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCurrencyPopup}>
@@ -61,7 +68,12 @@ export function MobileCountriesPopup() {
             </div>
 
             <div className="space-y-6">
-              <Text>{t("text")}</Text>
+              <Text className="uppercase">
+                {t("text", {
+                  currentCountry: selectedCountry.name,
+                  currency: selectedCurrency,
+                })}
+              </Text>
               <Searchbar
                 name="search"
                 value={query}
@@ -77,18 +89,8 @@ export function MobileCountriesPopup() {
                   {filteredCountries.map((country) => (
                     <Button
                       key={`${country.countryCode}-${country.name}-${country.lng}`}
-                      className={cn(
-                        "flex w-full items-center justify-between border-b border-transparent px-3",
-                        {
-                          "border-textColor":
-                            country.currencyKey === selectedCurrency &&
-                            country.name === selectedCountry.name &&
-                            country.countryCode ===
-                              selectedCountry.countryCode &&
-                            LANGUAGE_CODE_TO_ID[country.lng] === languageId,
-                        },
-                      )}
-                      onClick={() => handleCountrySelect(country)}
+                      className="flex w-full items-center justify-between px-3"
+                      onClick={() => onCountrySelect(country)}
                     >
                       <div className="flex items-center gap-2">
                         <Text className="uppercase">{country.name}</Text>
@@ -116,26 +118,18 @@ export function MobileCountriesPopup() {
                         sign: "plus-minus",
                         clickableArea: "full",
                         clickableAreaClassName: "h-9 items-start",
+                        childrenSpacing: "pb-4",
                       }}
                       title={region}
+                      isOpen={openSection === index}
+                      onToggle={() => toggleSection(index)}
                     >
                       <div className="flex flex-col gap-2">
                         {countries.map((country) => (
                           <Button
                             key={`${region}-${country.name}-${country.lng}`}
-                            className={cn(
-                              "flex w-full items-center justify-between border-b border-transparent px-3",
-                              {
-                                "border-textColor":
-                                  country.currencyKey === selectedCurrency &&
-                                  country.name === selectedCountry.name &&
-                                  country.countryCode ===
-                                    selectedCountry.countryCode &&
-                                  LANGUAGE_CODE_TO_ID[country.lng] ===
-                                    languageId,
-                              },
-                            )}
-                            onClick={() => handleCountrySelect(country)}
+                            className="flex w-full items-center justify-between px-3"
+                            onClick={() => onCountrySelect(country)}
                           >
                             <div className="flex items-center gap-2">
                               <Text className="uppercase">{country.name}</Text>

@@ -21,7 +21,7 @@
   },
   "countries-popup": {
     "change country": "land ändern",
-    "text": "die preise werden in der lokalen währung basierend auf ihrer auswahl angezeigt",
+    "text": "Sie versenden derzeit nach {currentCountry} und Ihre Bestellung wird in {currency} abgerechnet.",
     "search location": "suchen nach einem land",
     "not-found": "entschuldigung, wir konnten keine ergebnisse für ihre suche finden."
   },
