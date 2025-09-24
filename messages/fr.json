@@ -23,6 +23,7 @@
     "change country": "changer de pays",
     "text": "Vous expédiez actuellement vers {currentCountry} et votre commande sera facturée en {currency}.",
     "search location": "rechercher un pays",
+    "language": "langue",
     "not-found": "désolé, nous n'avons pas trouvé de résultats pour votre recherche."
   },
   "newslatter": {

@@ -5,6 +5,7 @@ import {
   COUNTRIES_BY_REGION,
   CountryOption,
   currencySymbols,
+  LANGUAGE_ID_TO_LOCALE,
 } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
@@ -13,10 +14,12 @@ import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import RadioGroup from "@/components/ui/radio-group";
 import { Searchbar } from "@/components/ui/searchbar";
 import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "../(checkout)/checkout/_components/new-order-form/fields-group-container";
+import { useLocation } from "./useLocation";
 import { useSearchCountries } from "./useSearchCountries";
 
 export function MobileCountriesPopup({
@@ -26,7 +29,9 @@ export function MobileCountriesPopup({
 }) {
   const { isOpen, selectedCurrency, closeCurrencyPopup, openCurrencyPopup } =
     useCurrency((state) => state);
-  const { country: selectedCountry } = useTranslationsStore((state) => state);
+  const { country: selectedCountry, languageId } = useTranslationsStore(
+    (state) => state,
+  );
   const { query, filteredCountries, searchQuery, handleSearch } =
     useSearchCountries();
 
@@ -34,6 +39,10 @@ export function MobileCountriesPopup({
   const regionsWithCountries = Object.entries(COUNTRIES_BY_REGION);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const open = isMobile && isOpen;
+
+  const { languagesForCurrentCountry, handleChangeLocaleOnly } = useLocation({
+    regionsWithCountries,
+  });
 
   const t = useTranslations("countries-popup");
   const f = useTranslations("footer");
@@ -67,13 +76,28 @@ export function MobileCountriesPopup({
               </DialogPrimitives.Close>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-8">
               <Text className="uppercase">
                 {t("text", {
                   currentCountry: selectedCountry.name,
                   currency: selectedCurrency,
                 })}
               </Text>
+              <div className="space-y-2.5">
+                <Text className="uppercase">{t("language")}</Text>
+                {languagesForCurrentCountry &&
+                  languagesForCurrentCountry.length > 1 && (
+                    <RadioGroup
+                      items={languagesForCurrentCountry}
+                      name="language-selector"
+                      value={LANGUAGE_ID_TO_LOCALE[languageId]}
+                      onValueChange={(val: string) =>
+                        handleChangeLocaleOnly(val)
+                      }
+                      className="flex flex-col gap-0 uppercase"
+                    />
+                  )}
+              </div>
               <Searchbar
                 name="search"
                 value={query}

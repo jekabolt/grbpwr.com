@@ -23,6 +23,7 @@
     "change country": "更改国家",
     "text": "您目前的配送地址为{currentCountry}，您的订单将以{currency}计费。",
     "search location": "搜索国家",
+    "language": "语言",
     "not-found": "抱歉，我们找不到您搜索的结果。"
   },
   "newslatter": {

@@ -1,17 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { COUNTRIES_BY_REGION, CountryOption } from "@/constants";
+import {
+  COUNTRIES_BY_REGION,
+  CountryOption,
+  LANGUAGE_ID_TO_LOCALE,
+} from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import RadioGroup from "@/components/ui/radio-group";
 import { Searchbar } from "@/components/ui/searchbar";
 import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "../(checkout)/checkout/_components/new-order-form/fields-group-container";
+import { useLocation } from "./useLocation";
 import { useSearchCountries } from "./useSearchCountries";
 
 export function CountriesContent({
@@ -30,7 +36,12 @@ export function CountriesContent({
   );
   const { filteredCountries, query, searchQuery, handleSearch } =
     useSearchCountries();
-  const { country: currentCountry } = useTranslationsStore((state) => state);
+  const { country: currentCountry, languageId } = useTranslationsStore(
+    (state) => state,
+  );
+  const { languagesForCurrentCountry, handleChangeLocaleOnly } = useLocation({
+    regionsWithCountries,
+  });
 
   function toggleSection(index: number) {
     setOpenSection((prev) => (prev === index ? null : index));
@@ -43,13 +54,26 @@ export function CountriesContent({
           <Button onClick={closeCurrencyPopup}>[x]</Button>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           <Text className="uppercase">
             {t("text", {
               currentCountry: currentCountry.name,
               currency: selectedCurrency,
             })}
           </Text>
+          <div className="space-y-2.5">
+            <Text className="uppercase">{t("language")}</Text>
+            {languagesForCurrentCountry &&
+              languagesForCurrentCountry.length > 1 && (
+                <RadioGroup
+                  items={languagesForCurrentCountry}
+                  name="language-selector"
+                  value={LANGUAGE_ID_TO_LOCALE[languageId]}
+                  onValueChange={(val: string) => handleChangeLocaleOnly(val)}
+                  className="gap-0 uppercase lg:grid lg:grid-cols-1"
+                />
+              )}
+          </div>
           <Searchbar
             name="search"
             value={query}
