@@ -133,6 +133,11 @@ export default function middleware(req: NextRequest) {
                     maxAge: 60 * 30,
                 });
             }
+        } else {
+
+            res.cookies.set("NEXT_SUGGEST_COUNTRY", "", { path: "/", maxAge: 0 });
+            res.cookies.set("NEXT_SUGGEST_LOCALE", "", { path: "/", maxAge: 0 });
+            res.cookies.set("NEXT_SUGGEST_CURRENT_COUNTRY", "", { path: "/", maxAge: 0 });
         }
 
         return res;
