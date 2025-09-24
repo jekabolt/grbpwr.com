@@ -275,5 +275,32 @@
     "order reference": "订单号*",
     "submit": "提交",
     "order not found": "未找到订单"
+  },
+  "aftersale-services": {
+    "aftersale services": "售后服务",
+    "topic": "主题",
+    "subject": "标题",
+    "civility": "称谓",
+    "fill out the form": "填写表格",
+    "enter notes": "输入备注",
+    "send": "发送",
+    "email": "邮箱*",
+    "first name": "名*",
+    "last name": "姓*",
+    "order reference": "订单号",
+    "product information": "产品信息",
+    "purchase": "购买",
+    "return & exchange": "退换货",
+    "repair": "维修",
+    "availability": "库存",
+    "price": "价格",
+    "sizing": "尺码",
+    "characteristics": "特性",
+    "care": "保养",
+    "gender": "小姐, 女士, Ms",
+    "mx": "Mx",
+    "mr": "先生",
+    "i'd rather not say": "不愿透露",
+    "form submitted successfully": "表单提交成功"
   }
 }

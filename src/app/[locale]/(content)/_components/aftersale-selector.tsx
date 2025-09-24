@@ -16,11 +16,13 @@ export default function AftersaleSelector({
   name,
   list,
   className,
+  renderLabel,
 }: {
   control: Control<AftersaleSchema>;
   name: keyof AftersaleSchema;
   list: string[];
   className?: string;
+  renderLabel?: (value: string) => string;
 }) {
   return (
     <FormField
@@ -42,7 +44,7 @@ export default function AftersaleSelector({
                     l === field.value && "bg-textColor text-bgColor",
                   )}
                 >
-                  {l}
+                  {renderLabel ? renderLabel(l) : l}
                 </Button>
               ))}
             </div>

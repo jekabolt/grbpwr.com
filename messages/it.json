@@ -275,5 +275,32 @@
     "order reference": "RIFERIMENTO ORDINE*",
     "submit": "invia",
     "order not found": "ordine non trovato"
+  },
+  "aftersale-services": {
+    "aftersale services": "servizi post-vendita",
+    "topic": "argomento",
+    "subject": "oggetto",
+    "civility": "titolo",
+    "fill out the form": "compila il modulo",
+    "enter notes": "inserisci note",
+    "send": "invia",
+    "email": "EMAIL*",
+    "first name": "NOME*",
+    "last name": "COGNOME*",
+    "order reference": "RIFERIMENTO ORDINE",
+    "product information": "informazioni prodotto",
+    "purchase": "acquisto",
+    "return & exchange": "reso e cambio",
+    "repair": "riparazione",
+    "availability": "disponibilità",
+    "price": "prezzo",
+    "sizing": "taglie",
+    "characteristics": "caratteristiche",
+    "care": "cura",
+    "gender": "sig.na, sig.ra, ms",
+    "mx": "mx",
+    "mr": "sig.",
+    "i'd rather not say": "preferisco non dirlo",
+    "form submitted successfully": "modulo inviato con successo"
   }
 }

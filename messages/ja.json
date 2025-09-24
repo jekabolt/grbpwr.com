@@ -275,5 +275,32 @@
     "order reference": "注文番号*",
     "submit": "送信",
     "order not found": "注文が見つかりません"
+  },
+  "aftersale-services": {
+    "aftersale services": "アフターサービス",
+    "topic": "トピック",
+    "subject": "件名",
+    "civility": "敬称",
+    "fill out the form": "フォームに記入する",
+    "enter notes": "備考を入力する",
+    "send": "送信",
+    "email": "メールアドレス*",
+    "first name": "名*",
+    "last name": "姓*",
+    "order reference": "注文番号",
+    "product information": "商品情報",
+    "purchase": "購入",
+    "return & exchange": "返品・交換",
+    "repair": "修理",
+    "availability": "在庫状況",
+    "price": "価格",
+    "sizing": "サイズ",
+    "characteristics": "特徴",
+    "care": "お手入れ",
+    "gender": "さん, 様, Ms",
+    "mx": "Mx",
+    "mr": "様",
+    "i'd rather not say": "回答しない",
+    "form submitted successfully": "フォームが正常に送信されました"
   }
 }

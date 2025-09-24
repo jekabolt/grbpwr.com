@@ -275,5 +275,32 @@
     "order reference": "주문 번호*",
     "submit": "제출",
     "order not found": "주문을 찾을 수 없습니다"
+  },
+  "aftersale-services": {
+    "aftersale services": "애프터서비스",
+    "topic": "주제",
+    "subject": "제목",
+    "civility": "호칭",
+    "fill out the form": "양식 작성",
+    "enter notes": "메모 입력",
+    "send": "보내기",
+    "email": "이메일*",
+    "first name": "이름*",
+    "last name": "성*",
+    "order reference": "주문 번호",
+    "product information": "제품 정보",
+    "purchase": "구매",
+    "return & exchange": "반품 및 교환",
+    "repair": "수리",
+    "availability": "재고",
+    "price": "가격",
+    "sizing": "사이즈",
+    "characteristics": "특징",
+    "care": "관리",
+    "gender": "님, 씨, Ms",
+    "mx": "Mx",
+    "mr": "님",
+    "i'd rather not say": "답변하지 않음",
+    "form submitted successfully": "양식 제출 성공"
   }
 }

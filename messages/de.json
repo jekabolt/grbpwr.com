@@ -275,5 +275,32 @@
     "order reference": "BESTELLREFERENZ*",
     "submit": "Absenden",
     "order not found": "Bestellung nicht gefunden"
+  },
+  "aftersale-services": {
+    "aftersale services": "Kundendienst",
+    "topic": "Thema",
+    "subject": "Betreff",
+    "civility": "Anrede",
+    "fill out the form": "Formular ausfüllen",
+    "enter notes": "Notizen eingeben",
+    "send": "senden",
+    "email": "E-MAIL*",
+    "first name": "VORNAME*",
+    "last name": "NACHNAME*",
+    "order reference": "BESTELLREFERENZ",
+    "product information": "Produktinformationen",
+    "purchase": "Kauf",
+    "return & exchange": "Rückgabe & Umtausch",
+    "repair": "Reparatur",
+    "availability": "Verfügbarkeit",
+    "price": "Preis",
+    "sizing": "Größe",
+    "characteristics": "Eigenschaften",
+    "care": "Pflege",
+    "gender": "Frl., Fr., Ms",
+    "mx": "Mx",
+    "mr": "Hr.",
+    "i'd rather not say": "möchte ich nicht angeben",
+    "form submitted successfully": "formular erfolgreich abgeschickt"
   }
 }

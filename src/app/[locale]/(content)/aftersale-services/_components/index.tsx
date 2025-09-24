@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { keyboardRestrictions } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
@@ -19,6 +20,7 @@ import { civility, options } from "../../_components/constant";
 import { aftersaleForm, AftersaleSchema, defaultValues } from "./schema";
 
 export default function AftersaleForm() {
+  const t = useTranslations("aftersale-services");
   const form = useForm<AftersaleSchema>({
     resolver: zodResolver(aftersaleForm),
     defaultValues,
@@ -33,9 +35,14 @@ export default function AftersaleForm() {
     : [];
 
   const formSteps = [
-    { step: "1/4", title: "topic", name: "topic", list: Object.keys(options) },
-    { step: "2/4", title: "subject", name: "subject", list: subjectList },
-    { step: "3/4", title: "civility", name: "civility", list: civility },
+    {
+      step: "1/4",
+      title: t("topic"),
+      name: "topic",
+      list: Object.keys(options),
+    },
+    { step: "2/4", title: t("subject"), name: "subject", list: subjectList },
+    { step: "3/4", title: t("civility"), name: "civility", list: civility },
   ] as const;
 
   const handleSubmit = async (data: AftersaleSchema) => {
@@ -75,12 +82,13 @@ export default function AftersaleForm() {
                   name={name}
                   list={list}
                   className="w-full lg:w-3/4"
+                  renderLabel={(value) => t(value as any)}
                 />
               </FieldsGroupContainer>
             ))}
             <FieldsGroupContainer
               stage="4/4"
-              title="fill out the form"
+              title={t("fill out the form")}
               mode="non-collapsible"
             >
               <PersonalInfoForm />
@@ -92,7 +100,7 @@ export default function AftersaleForm() {
               disabled={!form.formState.isValid}
               className="uppercase lg:ml-14"
             >
-              send
+              {t("send")}
             </Button>
           </div>
         </form>
@@ -100,19 +108,20 @@ export default function AftersaleForm() {
       <SubmissionToaster
         open={open}
         onOpenChange={setOpen}
-        message="form submitted successfully"
+        message={t("form submitted successfully")}
       />
     </>
   );
 }
 
 function PersonalInfoForm() {
+  const t = useTranslations("aftersale-services");
   return (
     <div className="w-full space-y-6">
       <InputField
         variant="secondary"
         name="email"
-        label="EMAIL*"
+        label={t("email")}
         type="email"
       />
       <div className="flex w-full gap-3">
@@ -120,7 +129,7 @@ function PersonalInfoForm() {
           <InputField
             variant="secondary"
             name="firstName"
-            label="FIRST NAME*"
+            label={t("first name")}
             keyboardRestriction={keyboardRestrictions.nameFields}
           />
         </div>
@@ -128,7 +137,7 @@ function PersonalInfoForm() {
           <InputField
             variant="secondary"
             name="lastName"
-            label="LAST NAME*"
+            label={t("last name")}
             keyboardRestriction={keyboardRestrictions.nameFields}
           />
         </div>
@@ -136,12 +145,12 @@ function PersonalInfoForm() {
       <InputField
         variant="secondary"
         name="orderReference"
-        label="ORDER REFERENCE"
+        label={t("order reference")}
       />
       <TextareaField
         variant="secondary"
         name="notes"
-        placeholder="ENTER NOTES"
+        placeholder={t("enter notes")}
         showCharCount
         maxLength={1500}
         className="placeholder:text-textColor"

@@ -275,5 +275,32 @@
     "order reference": "ORDER REFERENCE*",
     "submit": "submit",
     "order not found": "order not found"
+  },
+  "aftersale-services": {
+    "aftersale services": "aftersale services",
+    "topic": "topic",
+    "subject": "subject",
+    "civility": "civility",
+    "fill out the form": "fill out the form",
+    "enter notes": "enter notes",
+    "send": "send",
+    "email": "EMAIL*",
+    "first name": "FIRST NAME*",
+    "last name": "LAST NAME*",
+    "order reference": "ORDER REFERENCE",
+    "product information": "product information",
+    "purchase": "purchase",
+    "return & exchange": "return & exchange",
+    "repair": "repair",
+    "availability": "availability",
+    "price": "price",
+    "sizing": "sizing",
+    "characteristics": "characteristics",
+    "care": "care",
+    "gender": "miss, mrs, ms",
+    "mx": "mx",
+    "mr": "mr",
+    "i'd rather not say": "i'd rather not say",
+    "form submitted successfully": "form submitted successfully"
   }
 }
