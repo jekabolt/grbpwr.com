@@ -115,6 +115,8 @@ export default function middleware(req: NextRequest) {
             maxAge: 60 * 60 * 24 * 365,
         });
 
+        // Only set suggest cookies if this is the first visit (no existing cookies)
+        // and the detected geo-location differs from the current selection
         if (!hadCountry || !hadLocale) {
             const geoCountry = getNormalizedCountry(detectedCountry);
             const geoLocale = getLocaleFromCountry(geoCountry);
@@ -133,6 +135,12 @@ export default function middleware(req: NextRequest) {
                     maxAge: 60 * 30,
                 });
             }
+        } else {
+            // If user already has cookies, clear any existing suggest cookies
+            // This prevents suggest cookies from persisting when user manually selects a country
+            res.cookies.set("NEXT_SUGGEST_COUNTRY", "", { path: "/", maxAge: 0 });
+            res.cookies.set("NEXT_SUGGEST_LOCALE", "", { path: "/", maxAge: 0 });
+            res.cookies.set("NEXT_SUGGEST_CURRENT_COUNTRY", "", { path: "/", maxAge: 0 });
         }
 
         return res;
