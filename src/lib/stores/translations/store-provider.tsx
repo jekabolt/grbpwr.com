@@ -36,37 +36,31 @@ export const TranslationsStoreProvider = ({
     storeRef.current = createTranslationsStore(initState);
   }
 
-  // Добавляем синхронизацию после mount
   useEffect(() => {
     if (storeRef.current) {
-      // Сначала rehydrate store
-      storeRef.current.persist.rehydrate();
+      const result = storeRef.current.persist.rehydrate();
+      const doSync = () => storeRef.current?.getState().syncWithMiddleware();
+      if (result && typeof (result as any).then === "function") {
+        (result as Promise<void>).then(doSync);
+      } else {
+        doSync();
+      }
 
-      // Затем синхронизируем с middleware cookies
-      const syncTimeout = setTimeout(() => {
-        storeRef.current?.getState().syncWithMiddleware();
-      }, 100);
-
-      // Слушаем изменения cookies через navigation events
       const handleNavigation = () => {
         storeRef.current?.getState().syncWithMiddleware();
       };
 
-      // Слушаем popstate (back/forward navigation)
       window.addEventListener("popstate", handleNavigation);
 
-      // Опционально: слушаем focus для синхронизации между табами
       window.addEventListener("focus", handleNavigation);
 
       return () => {
-        clearTimeout(syncTimeout);
         window.removeEventListener("popstate", handleNavigation);
         window.removeEventListener("focus", handleNavigation);
       };
     }
   }, []);
 
-  // Синхронизация при изменении пути (client-side навигация App Router)
   useEffect(() => {
     if (!storeRef.current) return;
     storeRef.current.getState().syncWithMiddleware();

@@ -21,12 +21,10 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                 setLanguageId: (languageId: number) => set({ languageId }),
                 setCountry: (country: { name: string; countryCode: string }) => set({ country }),
 
-                // Новый метод для синхронизации
                 syncWithMiddleware: () => {
                     const synced = syncWithMiddlewareCookies();
                     const currentState = get();
 
-                    // Обновляем только если данные изменились
                     if (synced.country?.countryCode !== currentState.country.countryCode ||
                         synced.languageId !== currentState.languageId) {
                         set({
@@ -38,12 +36,12 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
             }),
             {
                 name: "translations-store",
-                storage: createJSONStorage(() => cookieStorage), // Используем cookies
-                skipHydration: true, // Важно для предотвращения hydration mismatch
+                storage: createJSONStorage(() => cookieStorage),
+                skipHydration: true,
                 merge: (persistedState, currentState) => {
                     const persisted = persistedState as Partial<TranslationsState> | undefined;
                     const current = currentState as TranslationsStore;
-                    return { ...(persisted || {}), ...current } as TranslationsStore;
+                    return { ...current, ...(persisted || {}) } as TranslationsStore;
                 },
                 partialize: (state) => ({
                     languageId: state.languageId,
