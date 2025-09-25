@@ -2,7 +2,7 @@ import createMiddleware from "next-intl/middleware";
 
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
-import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, PERSISTENT_COOKIE_OPTIONS, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
+import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -39,7 +39,7 @@ export default function middleware(req: NextRequest) {
         const res = intlMiddleware(newReq);
 
         // persist only country; let next-intl own NEXT_LOCALE
-        res.cookies.set("NEXT_COUNTRY", country!, PERSISTENT_COOKIE_OPTIONS);
+        setMainCookies(res, country!, locale!);
 
         //suggest cookies control
         const hadCountry = Boolean(countryCookie);
@@ -71,11 +71,7 @@ export default function middleware(req: NextRequest) {
 
             const url = req.nextUrl.clone();
             url.pathname = `/${targetCountry}/${locale}${rest}`;
-            const res = NextResponse.redirect(url, { status: 308 });
-            // persist only country; let next-intl own NEXT_LOCALE
-            res.cookies.set("NEXT_COUNTRY", targetCountry, PERSISTENT_COOKIE_OPTIONS);
-            clearSuggestCookies(res);
-            return res;
+            return NextResponse.redirect(url, { status: 308 });
         }
 
         // redirect to country/locale
