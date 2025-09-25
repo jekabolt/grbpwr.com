@@ -486,3 +486,15 @@ export const LANGUAGE_ID_TO_LOCALE: Record<number, string> = {
   7: "ko",
 };
 
+// Map validation messages to translation keys
+export const errorMap: Record<string, string> = {
+  "invalid email": "invalid",
+  "must contain at least": "min",
+  "must contain at most": "max",
+  "must not exceed": "max",
+  required: "required",
+  regex: "regex",
+  format: "regex",
+  "you must accept the terms & conditions": "required",
+  "you must accept the terms and conditions": "required",
+};

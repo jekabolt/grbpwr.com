@@ -109,17 +109,17 @@ export function GeoSuggestBanner({
             size="lg"
             className="w-full uppercase"
             variant="main"
-            onClick={onDismiss}
+            onClick={onAccept}
           >
-            {currentCountryName}
+            {suggestedCountryName}
           </Button>
           <Button
             size="lg"
             className="w-full uppercase"
             variant="simpleReverse"
-            onClick={onAccept}
+            onClick={onDismiss}
           >
-            {suggestedCountryName}
+            {currentCountryName}
           </Button>
         </div>
       </div>

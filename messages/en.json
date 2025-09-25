@@ -301,5 +301,58 @@
     "mr": "mr",
     "i'd rather not say": "i'd rather not say",
     "form submitted successfully": "form submitted successfully"
+  },
+  "errors": {
+    "firstName": {
+      "min": "first name must contain at least 1 character",
+      "max": "first name must contain at most 40 characters",
+      "regex": "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "lastName": {
+      "min": "last name must contain at least 1 character",
+      "max": "last name must contain at most 40 characters",
+      "regex": "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "phone": {
+      "min": "phone must contain at least 5 numbers",
+      "max": "phone must contain at most 15 numbers"
+    },
+    "city": {
+      "min": "city must contain at least 2 characters",
+      "regex": "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "address": {
+      "min": "address must contain at least 3 characters",
+      "max": "address must contain at most 40 characters",
+      "regex": "only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "postalCode": {
+      "min": "postal code must contain at least 2 characters",
+      "max": "postal code must contain at most 12 characters",
+      "regex": "postal code must contain only letters, numbers, spaces, or hyphens"
+    },
+    "country": {
+      "min": "country must contain at least 2 characters"
+    },
+    "company": {
+      "min": "company must contain at least 1 character",
+      "max": "company must contain at most 40 characters",
+      "regex": "only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "email": {
+      "invalid": "invalid email",
+      "max": "email must contain at most 40 characters"
+    },
+    "additionalAddress": {
+      "min": "additional address must contain at least 3 characters",
+      "max": "additional address must contain at most 40 characters",
+      "regex": "only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "termsOfService": {
+      "required": "you must accept the terms and conditions to proceed"
+    },
+    "orderUuid": {
+      "required": "order reference is required" 
+    }
   }
 }

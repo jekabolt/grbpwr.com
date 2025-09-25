@@ -301,5 +301,58 @@
     "mr": "sig.",
     "i'd rather not say": "preferisco non dirlo",
     "form submitted successfully": "modulo inviato con successo"
+  },
+  "errors": {
+    "firstName": {
+      "min": "il nome deve contenere almeno 1 carattere",
+      "max": "il nome può contenere al massimo 40 caratteri",
+      "regex": "deve contenere almeno una lettera e sono consentiti solo lettere, spazi, trattini, apostrofi e punti"
+    },
+    "lastName": {
+      "min": "il cognome deve contenere almeno 1 carattere",
+      "max": "il cognome può contenere al massimo 40 caratteri",
+      "regex": "deve contenere almeno una lettera e sono consentiti solo lettere, spazi, trattini, apostrofi e punti"
+    },
+    "phone": {
+      "min": "il telefono deve contenere almeno 5 numeri",
+      "max": "il telefono può contenere al massimo 15 numeri"
+    },
+    "city": {
+      "min": "la città deve contenere almeno 2 caratteri",
+      "regex": "deve contenere almeno una lettera e sono consentiti solo lettere, spazi, trattini, apostrofi e punti"
+    },
+    "address": {
+      "min": "l'indirizzo deve contenere almeno 3 caratteri",
+      "max": "l'indirizzo può contenere al massimo 40 caratteri",
+      "regex": "sono consentiti solo lettere, numeri, spazi, trattini, apostrofi e punti"
+    },
+    "postalCode": {
+      "min": "il codice postale deve contenere almeno 2 caratteri",
+      "max": "il codice postale può contenere al massimo 12 caratteri",
+      "regex": "il codice postale può contenere solo lettere, numeri, spazi o trattini"
+    },
+    "country": {
+      "min": "il paese deve contenere almeno 2 caratteri"
+    },
+    "company": {
+      "min": "l'azienda deve contenere almeno 1 carattere",
+      "max": "l'azienda può contenere al massimo 40 caratteri",
+      "regex": "sono consentiti solo lettere, numeri, spazi, trattini, apostrofi e punti"
+    },
+    "email": {
+      "invalid": "email non valida",
+      "max": "l'email può contenere al massimo 40 caratteri"
+    },
+    "additionalAddress": {
+      "min": "l'indirizzo aggiuntivo deve contenere almeno 3 caratteri",
+      "max": "l'indirizzo aggiuntivo può contenere al massimo 40 caratteri",
+      "regex": "sono consentiti solo lettere, numeri, spazi, trattini, apostrofi e punti"
+    },
+    "termsOfService": {
+      "required": "devi accettare i termini e le condizioni per procedere"
+    },
+    "orderUuid": {
+      "required": "la riferimento dell'ordine è obbligatorio"
+    }
   }
 }

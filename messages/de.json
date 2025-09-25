@@ -301,5 +301,58 @@
     "mr": "Hr.",
     "i'd rather not say": "möchte ich nicht angeben",
     "form submitted successfully": "formular erfolgreich abgeschickt"
+  },
+  "errors": {
+    "firstName": {
+      "min": "vorname muss mindestens 1 zeichen enthalten",
+      "max": "vorname darf höchstens 40 zeichen enthalten",
+      "regex": "muss mindestens einen buchstaben enthalten und nur buchstaben, leerzeichen, bindestriche, apostrophe und punkte sind erlaubt"
+    },
+    "lastName": {
+      "min": "nachname muss mindestens 1 zeichen enthalten",
+      "max": "nachname darf höchstens 40 zeichen enthalten",
+      "regex": "muss mindestens einen buchstaben enthalten und nur buchstaben, leerzeichen, bindestriche, apostrophe und punkte sind erlaubt"
+    },
+    "phone": {
+      "min": "telefon muss mindestens 5 zahlen enthalten",
+      "max": "telefon darf höchstens 15 zahlen enthalten"
+    },
+    "city": {
+      "min": "stadt muss mindestens 2 zeichen enthalten",
+      "regex": "muss mindestens einen buchstaben enthalten und nur buchstaben, leerzeichen, bindestriche, apostrophe und punkte sind erlaubt"
+    },
+    "address": {
+      "min": "adresse muss mindestens 3 zeichen enthalten",
+      "max": "adresse darf höchstens 40 zeichen enthalten",
+      "regex": "nur buchstaben, zahlen, leerzeichen, bindestriche, apostrophe und punkte sind erlaubt"
+    },
+    "postalCode": {
+      "min": "postleitzahl muss mindestens 2 zeichen enthalten",
+      "max": "postleitzahl darf höchstens 12 zeichen enthalten",
+      "regex": "postleitzahl darf nur buchstaben, zahlen, leerzeichen oder bindestriche enthalten"
+    },
+    "country": {
+      "min": "land muss mindestens 2 zeichen enthalten"
+    },
+    "company": {
+      "min": "unternehmen muss mindestens 1 zeichen enthalten",
+      "max": "unternehmen darf höchstens 40 zeichen enthalten",
+      "regex": "nur buchstaben, zahlen, leerzeichen, bindestriche, apostrophe und punkte sind erlaubt"
+    },
+    "email": {
+      "invalid": "ungültige email",
+      "max": "email darf höchstens 40 zeichen enthalten"
+    },
+    "additionalAddress": {
+      "min": "zusätzliche adresse muss mindestens 3 zeichen enthalten",
+      "max": "zusätzliche adresse darf höchstens 40 zeichen enthalten",
+      "regex": "nur buchstaben, zahlen, leerzeichen, bindestriche, apostrophe und punkte sind erlaubt"
+    },
+    "termsOfService": {
+      "required": "sie müssen den allgemeinen geschäftsbedingungen zustimmen, um fortzufahren"
+    },
+    "orderUuid": {
+      "required": "bestellnummer ist erforderlich"
+    }
   }
 }
