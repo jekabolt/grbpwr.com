@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
 
 import { serviceClient } from "@/lib/api";
@@ -37,13 +36,9 @@ export async function generateMetadata({
 export default async function Page() {
   const { hero } = await serviceClient.GetHero({});
   const isHero = hero?.entities?.length;
-  const c = await cookies();
-  const all = Object.fromEntries(
-    c.getAll().map(({ name, value }) => [name, value]),
-  );
+
   return (
     <FlexibleLayout theme={isHero ? "light" : "dark"}>
-      <pre>{JSON.stringify(all, null, 2)}</pre>
       {isHero ? (
         <>
           <MainAds main={hero?.entities?.[0]?.main} />

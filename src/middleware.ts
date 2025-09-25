@@ -38,7 +38,7 @@ export default function middleware(req: NextRequest) {
         const newReq = new NextRequest(url, { headers: req.headers });
         const res = intlMiddleware(newReq);
 
-        //set main cookies
+        // persist only country; let next-intl own NEXT_LOCALE
         setMainCookies(res, country!, locale!);
 
         //suggest cookies control
