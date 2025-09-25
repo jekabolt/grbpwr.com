@@ -12,7 +12,6 @@ export interface TranslationsState {
 export interface TranslationsActions {
     setLanguageId: (languageId: number) => void;
     setCountry: (country: { name: string; countryCode: string }) => void;
-    syncWithMiddleware: () => void; // Добавляем новый метод
 }
 
 export type TranslationsStore = TranslationsState & TranslationsActions;
