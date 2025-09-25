@@ -159,9 +159,7 @@
     "VGW": "Lavaggio molto delicato"
   },
   "geo-suggest": {
-    "message": "Pensiamo che tu sia in {country}. Aggiorna il tuo luogo?",
-    "stay": "Rimani {country}",
-    "switch": "Cambia"
+    "message": "Pensiamo che tu sia in {country}. Aggiorna il tuo luogo?"
   },
   "update_location": {
     "message": "Sei attualmente in {currentCountry}. Quando cambi paese/regione, il tuo carrello sarà svuotato. Sei sicuro di voler continuare?",

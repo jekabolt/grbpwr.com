@@ -100,18 +100,18 @@ export function GeoSuggestBanner({
 
   return (
     <Banner>
-      <div className="flex flex-col gap-y-6 p-2.5">
+      <div className="flex flex-col gap-y-4 p-2.5">
         <Text className="uppercase">
           {t("message", { country: suggestedCountryName || "" })}
         </Text>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           <Button
             size="lg"
             className="w-full uppercase"
             variant="main"
             onClick={onDismiss}
           >
-            {t("stay", { country: currentCountryName || "" })}
+            {currentCountryName}
           </Button>
           <Button
             size="lg"
@@ -119,7 +119,7 @@ export function GeoSuggestBanner({
             variant="simpleReverse"
             onClick={onAccept}
           >
-            {t("switch")}
+            {suggestedCountryName}
           </Button>
         </div>
       </div>

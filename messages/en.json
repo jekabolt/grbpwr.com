@@ -159,9 +159,7 @@
     "VGW": "Very Gentle Wash"
   },
   "geo-suggest": {
-    "message": "We think you are in {country}. Update your location?",
-    "stay": "Stay {country}",
-    "switch": "Switch"
+    "message": "We think you are in {country}. Update your location?"
   },
   "update_location": {
     "message": "You are currently shopping on the {currentCountry}. When changing countries/regions your shopping bag will be emptied. Are you sure you want to proceed?",

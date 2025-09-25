@@ -28,7 +28,7 @@ export function UpdateLocation({ selectedLocation, onCancel }: Props) {
         <Text className="uppercase">
           {t("message", { currentCountry: initialCountryName.current })}
         </Text>
-        <div className="flex items-center">
+        <div className="flex items-center justify-between gap-2">
           <Button
             variant="main"
             size="lg"

@@ -159,9 +159,7 @@
     "VGW": "非常に弱い洗濯"
   },
   "geo-suggest": {
-    "message": "あなたは{country}にいると思います。場所を更新しますか？",
-    "stay": "{country}に留まる",
-    "switch": "切り替え"
+    "message": "あなたは{country}にいると思います。場所を更新しますか？"
   },
   "update_location": {
     "message": "あなたは現在{currentCountry}でショッピングしています。国/地域を変更すると、ショッピングカートが空になります。続行してもよろしいですか？",

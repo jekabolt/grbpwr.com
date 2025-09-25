@@ -159,9 +159,7 @@
     "VGW": "매우 약한 세탁"
   },
   "geo-suggest": {
-    "message": "우리는 당신이 {country}에 있다고 생각합니다. 위치를 업데이트하시겠습니까?",
-    "stay": "{country}에 머물러 주세요",
-    "switch": "변경"
+    "message": "우리는 당신이 {country}에 있다고 생각합니다. 위치를 업데이트하시겠습니까?"
   },
   "update_location": {
     "message": "당신은 현재 {currentCountry}에서 쇼핑을 하고 있습니다. 국가/지역을 변경하면 쇼핑카트가 비워집니다. 계속하시겠습니까?",
