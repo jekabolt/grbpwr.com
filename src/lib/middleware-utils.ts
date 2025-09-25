@@ -31,6 +31,7 @@ const getCookieOptions = (maxAge: number) => {
         maxAge,
         sameSite: "lax" as const,
         secure: process.env.NODE_ENV === "production",
+        domain: process.env.NODE_ENV === "production" ? ".grbpwr.com" : undefined,
     };
 };
 
