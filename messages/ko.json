@@ -165,7 +165,7 @@
   },
   "update_location": {
     "message": "당신은 현재 {currentCountry}에서 쇼핑을 하고 있습니다. 국가/지역을 변경하면 쇼핑카트가 비워집니다. 계속하시겠습니까?",
-    "continue": "{country}로 이동",
+    "continue": "계속하다: {country}",
     "cancel": "취소"
   },
   "measurements-descriptions": {
