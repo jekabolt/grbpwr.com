@@ -1,8 +1,6 @@
 import { createStore } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { cookieStorage } from "./cookie-storage";
 import { TranslationsState, TranslationsStore } from "./store-types";
-import { syncWithMiddlewareCookies } from "./translation-sync";
 
 
 
@@ -20,24 +18,10 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
 
                 setLanguageId: (languageId: number) => set({ languageId }),
                 setCountry: (country: { name: string; countryCode: string }) => set({ country }),
-
-                syncWithMiddleware: () => {
-                    const synced = syncWithMiddlewareCookies();
-                    const currentState = get();
-
-                    if (synced.country?.countryCode !== currentState.country.countryCode ||
-                        synced.languageId !== currentState.languageId) {
-                        set({
-                            ...(synced.country && { country: synced.country }),
-                            ...(synced.languageId !== undefined && { languageId: synced.languageId }),
-                        });
-                    }
-                },
             }),
             {
                 name: "translations-store",
-                storage: createJSONStorage(() => cookieStorage),
-                skipHydration: true,
+                storage: createJSONStorage(() => localStorage),
                 merge: (persistedState, currentState) => {
                     const persisted = persistedState as Partial<TranslationsState> | undefined;
                     const current = currentState as TranslationsStore;
