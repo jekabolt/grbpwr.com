@@ -41,7 +41,7 @@ export default function middleware(req: NextRequest) {
         // persist only country; let next-intl own NEXT_LOCALE
         setMainCookies(res, country!, locale!);
 
-        //suggest cookies control
+        //suggest cookies control - only for new users (no cookies)
         const hadCountry = Boolean(countryCookie);
         const hadLocale = Boolean(localeCookie);
 
