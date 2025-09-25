@@ -88,8 +88,6 @@ export function useLocation({
 
         const newPath = `/${country.countryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
 
-        console.log("Navigating from:", pathname, "to:", newPath);
-
         window.location.href = newPath;
       }
     }

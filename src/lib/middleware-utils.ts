@@ -6,7 +6,7 @@ const createCountryToLocaleMap = () => {
 
     Object.entries(COUNTRIES_BY_REGION).forEach(([, countries]) => {
         countries.forEach((country) => {
-            mapping[country.countryCode.toLowerCase()] = country.lng;
+            mapping[country.countryCode] = country.lng;
         });
     });
 
@@ -17,11 +17,11 @@ export const countryToLocaleMap = createCountryToLocaleMap();
 export const supportedCountries = Object.keys(countryToLocaleMap);
 
 export const getLocaleFromCountry = (country: string): string => {
-    return countryToLocaleMap[country.toLowerCase()] || "en";
+    return countryToLocaleMap[country] || "en";
 };
 
 export const getNormalizedCountry = (detectedCountry: string): string => {
-    const countryCode = detectedCountry.toLowerCase();
+    const countryCode = detectedCountry;
     return supportedCountries.includes(countryCode) ? countryCode : "us";
 };
 
@@ -116,7 +116,7 @@ export const parseCountryLocalePath = (pathname: string): ParsedPath | null => {
 
     const [, countryRaw, locale, rest] = match;
     return {
-        country: countryRaw.toLowerCase(),
+        country: countryRaw,
         locale,
         rest: rest || "",
     };
