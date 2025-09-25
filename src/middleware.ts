@@ -15,7 +15,7 @@ export default function middleware(req: NextRequest) {
 
     //define detected country
     const detectedCountry = process.env.NODE_ENV === "development"
-        ? "us"
+        ? "de"
         : req.headers.get("x-vercel-ip-country") || "us";
 
     //handle geo actions
