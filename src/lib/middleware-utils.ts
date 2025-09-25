@@ -21,7 +21,7 @@ export const getLocaleFromCountry = (country: string): string => {
 };
 
 export const getNormalizedCountry = (detectedCountry: string): string => {
-    const countryCode = detectedCountry;
+    const countryCode = detectedCountry.toLowerCase();
     return supportedCountries.includes(countryCode) ? countryCode : "us";
 };
 
@@ -116,7 +116,7 @@ export const parseCountryLocalePath = (pathname: string): ParsedPath | null => {
 
     const [, countryRaw, locale, rest] = match;
     return {
-        country: countryRaw,
+        country: countryRaw.toLowerCase(),
         locale,
         rest: rest || "",
     };
