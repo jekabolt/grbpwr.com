@@ -2,7 +2,7 @@ import createMiddleware from "next-intl/middleware";
 
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
-import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
+import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleGeoAction, parseCountryLocalePath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -10,13 +10,13 @@ export default function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
     // get existing cookies
-    const countryCookie = req.cookies.get("NEXT_COUNTRY")?.value.toLowerCase();
+    const countryCookie = req.cookies.get("NEXT_COUNTRY")?.value;
     const localeCookie = req.cookies.get("NEXT_LOCALE")?.value;
 
     //define detected country
     const detectedCountry = process.env.NODE_ENV === "development"
         ? "us"
-        : req.headers.get("x-vercel-ip-country")?.toLowerCase() || "us";
+        : req.headers.get("x-vercel-ip-country") || "us";
 
     //handle geo actions
     const geoResponse = handleGeoAction(req);
@@ -61,19 +61,6 @@ export default function middleware(req: NextRequest) {
 
     //handle paths without country/locale
     if (!/^\/[A-Za-z]{2}\/[a-z]{2}(?=\/|$)/.test(pathname)) {
-        // check only locale
-        const localeOnly = parseLocaleOnlyPath(pathname);
-        if (localeOnly) {
-            const { locale, rest } = localeOnly;
-            const targetCountry = (countryCookie && supportedCountries.includes(countryCookie))
-                ? countryCookie
-                : getNormalizedCountry(detectedCountry);
-
-            const url = req.nextUrl.clone();
-            url.pathname = `/${targetCountry}/${locale}${rest}`;
-            return NextResponse.redirect(url, { status: 308 });
-        }
-
         // redirect to country/locale
         const targetCountry = (countryCookie && supportedCountries.includes(countryCookie))
             ? countryCookie
@@ -83,7 +70,11 @@ export default function middleware(req: NextRequest) {
 
         const url = req.nextUrl.clone();
         url.pathname = `/${targetCountry}/${targetLocale}${pathname}`;
-        return NextResponse.redirect(url, { status: 308 });
+        const res = NextResponse.redirect(url, { status: 308 });
+        // Ensure defaults are persisted for subsequent requests
+        setMainCookies(res, targetCountry, targetLocale);
+        clearSuggestCookies(res);
+        return res;
     }
     return intlMiddleware(req);
 }

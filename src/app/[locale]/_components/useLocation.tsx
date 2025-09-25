@@ -74,19 +74,22 @@ export function useLocation({
       countryCode: country.countryCode,
     });
 
-    // preserve current locale if set; otherwise fall back to country's default lng
-    const currentLocale = LANGUAGE_ID_TO_LOCALE[languageId];
-    const newLocale = currentLocale || country.lng;
-    const maybeLanguageId = LANGUAGE_CODE_TO_ID[newLocale];
-    if (maybeLanguageId !== undefined) {
-      setLanguageId(maybeLanguageId);
+    const newLanguageId = LANGUAGE_CODE_TO_ID[country.lng];
+    if (newLanguageId !== undefined) {
+      setLanguageId(newLanguageId);
 
-      const pathWithoutLocaleCountry =
-        pathname.replace(/^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/, "") ||
-        "/";
+      const newLocale = LANGUAGE_ID_TO_LOCALE[newLanguageId];
+      if (newLocale) {
+        const pathWithoutLocaleCountry =
+          pathname.replace(
+            /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
+            "",
+          ) || "/";
 
-      const newPath = `/${country.countryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
-      window.location.href = newPath;
+        const newPath = `/${country.countryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
+
+        window.location.href = newPath;
+      }
     }
 
     closeCurrencyPopup();
