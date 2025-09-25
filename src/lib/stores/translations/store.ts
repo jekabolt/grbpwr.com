@@ -1,6 +1,5 @@
 import { createStore } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { cookieStorage } from "./cookie-storage";
 import { TranslationsState, TranslationsStore } from "./store-types";
 
 
@@ -22,8 +21,7 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
             }),
             {
                 name: "translations-store",
-                storage: createJSONStorage(() => cookieStorage),
-                skipHydration: true,
+                storage: createJSONStorage(() => localStorage),
                 merge: (persistedState, currentState) => {
                     const persisted = persistedState as Partial<TranslationsState> | undefined;
                     const current = currentState as TranslationsStore;
