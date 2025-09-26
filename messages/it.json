@@ -354,5 +354,16 @@
     "orderUuid": {
       "required": "la riferimento dell'ordine è obbligatorio"
     }
+  },
+  "content": {
+    "legal notices": "note legali",
+    "legal notice": "note legali",
+    "privacy policy": "informativa sulla privacy",
+    "terms and conditions of use": "termini e condizioni",
+    "terms and conditions of sale": "condizioni di vendita",
+    "return and exchange policy": "politica di reso e cambio",
+    "cookie settings": "impostazioni cookie",
+    "frequently asked questions": "domande frequenti",
+    "placing an order": "effettuare un ordine, tracciamento dell'ordine, politica dei resi, servizi post-vendita e sviluppo sostenibile."
   }
 }

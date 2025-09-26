@@ -354,5 +354,16 @@
     "orderUuid": {
       "required": "order reference is required" 
     }
+  },
+  "content": {
+    "legal notices": "legal notices",
+    "legal notice": "legal notice",
+    "privacy policy": "privacy policy",
+    "terms and conditions of use": "terms and conditions of use",
+    "terms and conditions of sale": "terms and conditions of sale",
+    "return and exchange policy": "return and exchange policy",
+    "cookie settings": "cookie settings",
+    "frequently asked questions": "frequently asked questions",
+    "placing an order": "placing an order, order tracking, returns policy, aftersale services and sustainable development."
   }
 }

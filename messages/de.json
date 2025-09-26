@@ -354,5 +354,16 @@
     "orderUuid": {
       "required": "bestellnummer ist erforderlich"
     }
+  },
+  "content": {
+    "legal notices": "rechtliche hinweise",
+    "legal notice": "rechtliche hinweise",
+    "privacy policy": "datenschutzerklärung",
+    "terms and conditions of use": "allgemeine geschäftsbedingungen",
+    "terms and conditions of sale": "verkaufsbedingungen",
+    "return and exchange policy": "rückgabe- und umtauschrichtlinien",
+    "cookie settings": "cookie-einstellungen",
+    "frequently asked questions": "häufig gestellte fragen",
+    "placing an order": "bestellung aufgeben, sendungsverfolgung, rückgaberichtlinien, kundendienst und nachhaltige entwicklung."
   }
 }

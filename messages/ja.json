@@ -354,5 +354,16 @@
     "orderUuid": {
       "required": "注文番号は必須です"
     }
+  },
+  "content": {
+    "legal notices": "法的告知",
+    "legal notice": "法的告知",
+    "privacy policy": "プライバシーポリシー",
+    "terms and conditions of use": "利用規約",
+    "terms and conditions of sale": "販売条件",
+    "return and exchange policy": "返品・交換ポリシー",
+    "cookie settings": "クッキー設定",
+    "frequently asked questions": "よくある質問",
+    "placing an order": "注文方法、注文追跡、返品ポリシー、アフターサービス、持続可能な開発について。"
   }
 }

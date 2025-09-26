@@ -354,5 +354,16 @@
     "orderUuid": {
       "required": "订单号是必需的"
     }
+  },
+  "content": {
+    "legal notices": "法律声明",
+    "legal notice": "法律声明",
+    "privacy policy": "隐私政策",
+    "terms and conditions of use": "条款和条件",
+    "terms and conditions of sale": "销售条款",
+    "return and exchange policy": "退换货政策",
+    "cookie settings": "cookie设置",
+    "frequently asked questions": "常见问题",
+    "placing an order": "下订单、订单跟踪、退货政策、售后服务和可持续发展。"
   }
 }

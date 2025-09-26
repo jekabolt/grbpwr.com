@@ -354,5 +354,16 @@
     "orderUuid": {
       "required": "주문 참조가 필요합니다"
     }
+  },
+  "content": {
+    "legal notices": "법적 고지",
+    "legal notice": "법적 고지",
+    "privacy policy": "개인정보처리방침",
+    "terms and conditions of use": "이용약관",
+    "terms and conditions of sale": "판매조건",
+    "return and exchange policy": "반품 및 교환 정책",
+    "cookie settings": "쿠키 설정",
+    "frequently asked questions": "자주 묻는 질문",
+    "placing an order": "주문하기, 주문 추적, 반품 정책, 애프터서비스 및 지속가능한 발전."
   }
 }
