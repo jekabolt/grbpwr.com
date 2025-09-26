@@ -50,7 +50,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
   return (
     <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
       <div className="flex justify-center pt-16 lg:py-52">
-        <div className="flex flex-col gap-y-16 lg:flex-row lg:gap-x-20">
+        <div className="flex w-full flex-col gap-y-16 lg:w-auto lg:flex-row lg:gap-x-20">
           <div className="flex justify-center lg:justify-end">
             {theme === "dark" ? (
               <Logo className="aspect-square h-full w-40" />

@@ -9,7 +9,7 @@ import {
   getCategoryDisplayName,
   getHeroNavLink,
 } from "@/lib/utils";
-import CurrencyPopover from "@/app/[locale]/_components/currency-popover";
+import { CountriesPopup } from "@/app/[locale]/_components/CountriesPopup";
 import NewslatterForm from "@/app/[locale]/_components/newslatter-form";
 
 import { useDataContext } from "../contexts/DataContext";
@@ -66,7 +66,7 @@ export function DefaultMobileMenuDialog({
           ))}
         </div>
         <div className="self-start">
-          <CurrencyPopover title="currency:" />
+          <CountriesPopup />
         </div>
       </div>
       <NewslatterForm />
@@ -79,6 +79,7 @@ export function ActiveCategoryMenuDialog({
 }: ActiveCategoryMenuProps) {
   const { dictionary, hero } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
+  const t = useTranslations("navigation");
 
   const heroNav = activeCategory
     ? hero?.navFeatured?.[activeCategory]
@@ -96,7 +97,7 @@ export function ActiveCategoryMenuDialog({
         href="/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT"
         className="uppercase"
       >
-        new in
+        {t("new in")}
       </AnimatedButton>
       <div className="flex flex-col gap-5">
         <AnimatedButton
@@ -104,7 +105,7 @@ export function ActiveCategoryMenuDialog({
           href={`/catalog/${activeCategory}`}
           className="uppercase"
         >
-          all
+          {t("all")}
         </AnimatedButton>
         {leftCategories.map((link) => (
           <CategoryButton

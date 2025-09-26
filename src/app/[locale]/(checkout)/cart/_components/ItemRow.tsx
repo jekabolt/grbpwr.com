@@ -83,7 +83,7 @@ export default function ItemRow({
                   index={index}
                 />
               )}
-              <div className="flex items-center">
+              <div className="flex items-center whitespace-nowrap border border-red-500">
                 {isSaleApplied ? (
                   <div className="flex items-center gap-x-2">
                     <Text variant="strileTroughInactive">

@@ -47,11 +47,14 @@ export default function NewslatterForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-full flex-col items-start gap-6"
+      >
         <Text variant="uppercase" className="leading-none">
           {t("mailing list")}
         </Text>
-        <div className="flex w-full flex-col items-start gap-3">
+        <div className="flex w-full flex-col space-y-3">
           <Input
             id="newsletter"
             type="email"
