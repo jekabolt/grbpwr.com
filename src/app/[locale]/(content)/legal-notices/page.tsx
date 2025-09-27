@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 
 import FlexibleLayout from "@/components/flexible-layout";
@@ -15,8 +16,18 @@ import { useMarkdownContent } from "../_components/use-markdown-content";
 export default function LegalNotices() {
   const locale = useLocale();
   const t = useTranslations("content");
+  const searchParams = useSearchParams();
   const [selectedSection, setSelectedSection] =
     useState<LegalSection>("privacy");
+  const [autoOpenFirst, setAutoOpenFirst] = useState(false);
+
+  useEffect(() => {
+    const sectionParam = searchParams.get("section");
+    if (sectionParam && sectionParam in legalSections) {
+      setSelectedSection(sectionParam as LegalSection);
+      setAutoOpenFirst(true);
+    }
+  }, [searchParams]);
 
   const selectedFile = legalSections[selectedSection].file || "";
   const localizedCandidates = selectedFile
@@ -65,6 +76,7 @@ export default function LegalNotices() {
                 selectedSection === "terms-of-sale"
               }
               showDirectly={selectedSection === "legal-notice"}
+              autoOpenFirst={autoOpenFirst}
               onSectionChange={(section) =>
                 setSelectedSection(section as LegalSection)
               }
