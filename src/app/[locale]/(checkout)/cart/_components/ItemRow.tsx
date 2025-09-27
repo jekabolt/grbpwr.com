@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -20,13 +18,12 @@ export default function ItemRow({
   hideQuantityButtons,
   index,
 }: Props) {
-  const router = useRouter();
-  const { closeCart } = useCart((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
   const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${convertPrice(product?.productPrice || "")}`;
   const priceWithSale = `${currencySymbols[selectedCurrency]} ${convertPrice(product?.productPriceWithSale || "")}`;
   const t = useTranslations("product");
+  const tColors = useTranslations("colors");
 
   if (!product) return null;
 
@@ -55,7 +52,9 @@ export default function ItemRow({
                   {product.productName}
                 </Text>
                 <div>
-                  <Text variant="uppercase">{product.color}</Text>
+                  <Text variant="uppercase">
+                    {tColors(product.color || "")}
+                  </Text>
                   <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
                 </div>
               </div>

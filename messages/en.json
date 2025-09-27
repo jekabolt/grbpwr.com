@@ -352,7 +352,7 @@
       "required": "you must accept the terms and conditions to proceed"
     },
     "orderUuid": {
-      "required": "order reference is required" 
+      "required": "order reference is required"
     }
   },
   "content": {
@@ -365,5 +365,44 @@
     "cookie settings": "cookie settings",
     "frequently asked questions": "frequently asked questions",
     "placing an order": "placing an order, order tracking, returns policy, aftersale services and sustainable development."
+  },
+  "colors": {
+    "black": "black",
+    "white": "white",
+    "red": "red",
+    "blue": "blue",
+    "green": "green",
+    "navy": "navy",
+    "gray": "gray",
+    "yellow": "yellow",
+    "pink": "pink",
+    "beige": "beige",
+    "crimson": "crimson",
+    "orange": "orange",
+    "purple": "purple",
+    "teal": "teal",
+    "lime": "lime",
+    "silver": "silver",
+    "maroon": "maroon",
+    "olive": "olive",
+    "brown": "brown",
+    "gold": "gold",
+    "cyan": "cyan",
+    "magenta": "magenta",
+    "ivory": "ivory",
+    "coral": "coral",
+    "chocolate": "chocolate",
+    "mint green": "mint green",
+    "light blue": "light blue",
+    "peach": "peach",
+    "lavender": "lavender",
+    "turquoise": "turquoise",
+    "indigo": "indigo",
+    "mustard": "mustard",
+    "plum": "plum",
+    "violet": "violet",
+    "sand": "sand",
+    "off white": "off white",
+    "hot pink": "hot pink"
   }
 }
