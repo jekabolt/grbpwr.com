@@ -301,7 +301,22 @@
     "mx": "Mx",
     "mr": "先生",
     "i'd rather not say": "不愿透露",
-    "form submitted successfully": "表单提交成功"
+    "form submitted successfully": "表单提交成功",
+    "order status": "订单状态",
+    "delivery": "配送",
+    "cancellation request": "取消申请",
+    "invoice request": "发票申请",
+    "payment issue": "支付问题",
+    "website issue": "网站问题",
+    "return process": "退货流程",
+    "refund request": "退款申请",
+    "return in store": "店内退货",
+    "return policy": "退货政策",
+    "exchange request": "换货申请",
+    "pickup": "取件",
+    "repair process": "维修流程",
+    "repair status": "维修状态",
+    "repair request": "维修申请"
   },
   "errors": {
     "firstName": {

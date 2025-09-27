@@ -301,7 +301,22 @@
     "mx": "Mx",
     "mr": "様",
     "i'd rather not say": "回答しない",
-    "form submitted successfully": "フォームが正常に送信されました"
+    "form submitted successfully": "フォームが正常に送信されました",
+    "order status": "注文状況",
+    "delivery": "配送",
+    "cancellation request": "キャンセル依頼",
+    "invoice request": "請求書依頼",
+    "payment issue": "決済問題",
+    "website issue": "サイトの問題",
+    "return process": "返品手続き",
+    "refund request": "返金申請",
+    "return in store": "店舗返品",
+    "return policy": "返品ポリシー",
+    "exchange request": "交換申請",
+    "pickup": "集荷",
+    "repair process": "修理手続き",
+    "repair status": "修理状況",
+    "repair request": "修理依頼"
   },
   "errors": {
     "firstName": {

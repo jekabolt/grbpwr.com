@@ -301,7 +301,22 @@
     "mx": "Mx",
     "mr": "Hr.",
     "i'd rather not say": "möchte ich nicht angeben",
-    "form submitted successfully": "formular erfolgreich abgeschickt"
+    "form submitted successfully": "formular erfolgreich abgeschickt",
+    "order status": "Bestellstatus",
+    "delivery": "Lieferung",
+    "cancellation request": "Stornierungsanfrage",
+    "invoice request": "Rechnungsanfrage",
+    "payment issue": "Zahlungsproblem",
+    "website issue": "Website-Problem",
+    "return process": "Rückgabeverfahren",
+    "refund request": "Erstattungsantrag",
+    "return in store": "Rückgabe im Geschäft",
+    "return policy": "Rückgaberichtlinien",
+    "exchange request": "Umtauschantrag",
+    "pickup": "Abholung",
+    "repair process": "Reparaturverfahren",
+    "repair status": "Reparaturstatus",
+    "repair request": "Reparaturantrag"
   },
   "errors": {
     "firstName": {

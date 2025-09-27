@@ -301,7 +301,22 @@
     "mx": "mx",
     "mr": "mr",
     "i'd rather not say": "i'd rather not say",
-    "form submitted successfully": "form submitted successfully"
+    "form submitted successfully": "form submitted successfully",
+    "order status": "order status",
+    "delivery": "delivery",
+    "cancellation request": "cancellation request",
+    "invoice request": "invoice request",
+    "payment issue": "payment issue",
+    "website issue": "website issue",
+    "return process": "return process",
+    "refund request": "refund request",
+    "return in store": "return in store",
+    "return policy": "return policy",
+    "exchange request": "exchange request",
+    "pickup": "pickup",
+    "repair process": "repair process",
+    "repair status": "repair status",
+    "repair request": "repair request"
   },
   "errors": {
     "firstName": {

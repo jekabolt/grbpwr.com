@@ -301,7 +301,22 @@
     "mx": "Mx",
     "mr": "님",
     "i'd rather not say": "답변하지 않음",
-    "form submitted successfully": "양식 제출 성공"
+    "form submitted successfully": "양식 제출 성공",
+    "order status": "주문 상태",
+    "delivery": "배송",
+    "cancellation request": "취소 요청",
+    "invoice request": "인보이스 요청",
+    "payment issue": "결제 문제",
+    "website issue": "웹사이트 문제",
+    "return process": "반품 절차",
+    "refund request": "환불 요청",
+    "return in store": "매장 반품",
+    "return policy": "반품 정책",
+    "exchange request": "교환 요청",
+    "pickup": "픽업",
+    "repair process": "수리 절차",
+    "repair status": "수리 상태",
+    "repair request": "수리 요청"
   },
   "errors": {
     "firstName": {
