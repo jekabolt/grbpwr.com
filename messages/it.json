@@ -56,7 +56,8 @@
     "select size": "seleziona taglia",
     "ship by": "consegna il",
     "size guide": "guida taglie",
-    "recently viewed": "recentemente visualizzato"
+    "recently viewed": "recentemente visualizzato",
+    "empty": "vuoto"
   },
   "checkout": {
     "contact": "contatto",

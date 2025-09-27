@@ -56,7 +56,8 @@
     "select size": "选择尺码",
     "ship by": "发货日期",
     "size guide": "尺码指南",
-    "recently viewed": "最近浏览的商品"
+    "recently viewed": "最近浏览的商品",
+    "empty": "空"
   },
   "checkout": {
     "contact": "联系人",

@@ -56,7 +56,8 @@
     "select size": "select size",
     "ship by": "ship by",
     "size guide": "size guide",
-    "recently viewed": "recently viewed"
+    "recently viewed": "recently viewed",
+    "empty": "nothing"
   },
   "checkout": {
     "contact": "contact",
