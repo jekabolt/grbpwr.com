@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 
 import FlexibleLayout from "@/components/flexible-layout";
 import { Button } from "@/components/ui/button";
@@ -12,18 +14,42 @@ import { LegalSection, legalSections } from "../_components/constant";
 import { useMarkdownContent } from "../_components/use-markdown-content";
 
 export default function LegalNotices() {
+  const locale = useLocale();
+  const t = useTranslations("content");
+  const searchParams = useSearchParams();
   const [selectedSection, setSelectedSection] =
     useState<LegalSection>("privacy");
-  const { content } = useMarkdownContent(
-    legalSections[selectedSection].file || "",
-  );
+  const [autoOpenFirst, setAutoOpenFirst] = useState(false);
+
+  useEffect(() => {
+    const sectionParam = searchParams.get("section");
+    if (sectionParam && sectionParam in legalSections) {
+      setSelectedSection(sectionParam as LegalSection);
+      setAutoOpenFirst(true);
+    }
+  }, [searchParams]);
+
+  const selectedFile = legalSections[selectedSection].file || "";
+  const localizedCandidates = selectedFile
+    ? [
+        selectedFile
+          .replace("/content/legal/", `/content/legal/`)
+          .replace(".md", `/${locale}.md`),
+        selectedFile
+          .replace("/content/legal/", `/content/legal/`)
+          .replace(".md", "/en.md"),
+        selectedFile,
+      ]
+    : "";
+
+  const { content } = useMarkdownContent(localizedCandidates);
 
   return (
     <FlexibleLayout>
       <div className="flex h-full flex-col space-y-20 px-2.5 pb-20 pt-10 lg:flex-row lg:justify-between lg:py-24">
         <div className="flex w-full flex-col lg:w-1/2 lg:pl-8 lg:pt-56">
           <div className="space-y-10">
-            <Text className="uppercase">Legal Notices</Text>
+            <Text className="uppercase">{t("legal notices")}</Text>
             <div className="space-y-4">
               {Object.entries(legalSections).map(([key, section]) => (
                 <Button
@@ -32,7 +58,7 @@ export default function LegalNotices() {
                   onClick={() => setSelectedSection(key as LegalSection)}
                   className="uppercase"
                 >
-                  {section.title}
+                  {t(section.title)}
                 </Button>
               ))}
             </div>
@@ -50,6 +76,7 @@ export default function LegalNotices() {
                 selectedSection === "terms-of-sale"
               }
               showDirectly={selectedSection === "legal-notice"}
+              autoOpenFirst={autoOpenFirst}
               onSectionChange={(section) =>
                 setSelectedSection(section as LegalSection)
               }

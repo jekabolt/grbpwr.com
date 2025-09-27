@@ -7,7 +7,13 @@ export interface MarkdownContentHook {
     error: string | null;
 }
 
-export const useMarkdownContent = (filePath: string): MarkdownContentHook => {
+/**
+ * Loads markdown content from one or more candidate paths.
+ * If multiple paths are provided, the first successful response is used.
+ */
+export const useMarkdownContent = (
+    filePathOrPaths: string | string[],
+): MarkdownContentHook => {
     const [content, setContent] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -18,28 +24,41 @@ export const useMarkdownContent = (filePath: string): MarkdownContentHook => {
             setError(null);
             setContent("");
 
-            try {
-                const response = await fetch(filePath);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch content: ${response.status}`);
-                }
-                const text = await response.text();
-                setContent(text);
-            } catch (err) {
-                const errorMessage = err instanceof Error ? err.message : "Unknown error occurred";
-                setError(errorMessage);
-                setContent("Error loading content. Please try again later.");
-            } finally {
+            const candidates = Array.isArray(filePathOrPaths)
+                ? filePathOrPaths.filter(Boolean)
+                : [filePathOrPaths].filter(Boolean);
+
+            if (candidates.length === 0) {
+                setContent("");
                 setLoading(false);
+                return;
             }
-        };
-        if (filePath) {
-            loadContent();
-        } else {
-            setContent("");
+
+            let lastError: string | null = null;
+            for (const path of candidates) {
+                try {
+                    const response = await fetch(path);
+                    if (!response.ok) {
+                        lastError = `Failed to fetch content: ${response.status}`;
+                        continue;
+                    }
+                    const text = await response.text();
+                    setContent(text);
+                    setLoading(false);
+                    setError(null);
+                    return;
+                } catch (err) {
+                    lastError = err instanceof Error ? err.message : "Unknown error occurred";
+                }
+            }
+
+            setError(lastError || "Unable to load content from provided paths");
+            setContent("Error loading content. Please try again later.");
             setLoading(false);
-        }
-    }, [filePath]);
+        };
+
+        loadContent();
+    }, [JSON.stringify(filePathOrPaths)]);
 
     return { content, loading, error };
 };

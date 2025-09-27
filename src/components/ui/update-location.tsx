@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { CountryOption } from "@/constants";
 import { useTranslations } from "next-intl";
 
@@ -19,12 +20,15 @@ export function UpdateLocation({ selectedLocation, onCancel }: Props) {
   const { country: currentCountry } = useTranslationsStore((state) => state);
   const { handleCountrySelect } = useLocation();
   const t = useTranslations("update_location");
+  const initialCountryName = useRef(currentCountry.name);
 
   return (
     <Banner>
-      <div className="flex flex-col p-2.5">
-        <Text>{t("message", { currentCountry: currentCountry.name })}</Text>
-        <div className="flex items-center">
+      <div className="flex flex-col gap-y-4 p-2.5">
+        <Text className="uppercase">
+          {t("message", { currentCountry: initialCountryName.current })}
+        </Text>
+        <div className="flex items-center justify-between gap-2">
           <Button
             variant="main"
             size="lg"

@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useId } from "react";
+import { errorMap } from "@/constants";
 import { Label } from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import {
@@ -132,9 +133,30 @@ function FormDescription({ className, ref, ...props }: any) {
 
 FormDescription.displayName = "FormDescription";
 
-function FormMessage({ className, children, ref, ...props }: any) {
+function FormMessage({
+  className,
+  children,
+  ref,
+  translateError,
+  fieldName,
+  ...props
+}: any) {
   const { error, formMessageId } = useFormField();
-  const body = error ? String(error?.message) : children;
+  let body;
+
+  if (error && translateError && fieldName) {
+    const errorMessage = String(error.message || "");
+    const errorType =
+      Object.entries(errorMap).find(([key]) =>
+        errorMessage.includes(key),
+      )?.[1] || errorMessage.replace(/\s+/g, "");
+
+    const errorKey = `${fieldName}.${errorType}`;
+    const translated = translateError(errorKey);
+    body = translated === errorKey ? errorMessage : translated;
+  } else {
+    body = error ? String(error?.message) : children;
+  }
 
   if (!body) {
     return null;

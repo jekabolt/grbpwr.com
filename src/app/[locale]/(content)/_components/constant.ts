@@ -8,27 +8,27 @@ export type LegalSection =
 
 export const legalSections: Record<LegalSection, { title: string; file?: string }> = {
     privacy: {
-        title: "Privacy Policy",
+        title: "privacy policy",
         file: "/content/legal/privacy-policy.md",
     },
     terms: {
-        title: "Terms and Conditions of Use",
+        title: "terms and conditions of use",
         file: "/content/legal/terms-conditions.md",
     },
     "terms-of-sale": {
-        title: "Terms and Conditions of Sale",
+        title: "terms and conditions of sale",
         file: "/content/legal/terms-of-sale.md",
     },
     "legal-notice": {
-        title: "Legal Notice",
+        title: "legal notice",
         file: "/content/legal/legal-notice.md",
     },
     "return-exchange": {
-        title: "Return and Exchange Policy",
+        title: "return and exchange policy",
         file: "/content/legal/return-exchange.md",
     },
     cookies: {
-        title: "Cookie Settings",
+        title: "cookie settings",
     },
 };
 

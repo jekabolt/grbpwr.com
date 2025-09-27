@@ -11,6 +11,7 @@ export async function GeoSuggestWrapper() {
 
   if (!suggestCountry || !suggestLocale) return null;
 
+  // Get suggested locale messages for banner text
   const suggestedMessages = await getMessages({ locale: suggestLocale });
 
   return (

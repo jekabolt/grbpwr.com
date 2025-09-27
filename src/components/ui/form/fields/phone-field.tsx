@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "..";
@@ -18,6 +19,7 @@ type Props = {
 
 export function PhoneField({ name, label, items, ...props }: Props) {
   const { control, trigger } = useFormContext();
+  const t = useTranslations("errors");
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
 
@@ -125,7 +127,7 @@ export function PhoneField({ name, label, items, ...props }: Props) {
                 />
               </div>
             </FormControl>
-            <FormMessage />
+            <FormMessage translateError={t} fieldName={name} />
           </FormItem>
         );
       }}
