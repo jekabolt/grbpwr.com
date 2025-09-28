@@ -420,5 +420,11 @@
     "sand": "sand",
     "off white": "cremeweiß",
     "hot pink": "knallrosa"
+  },
+  "toaster": {
+    "successfully_subscribed": "erfolgreich für Newsletter angemeldet!",
+    "failed_to_subscribe": "anmeldung fehlgeschlagen. bitte versuchen Sie es erneut.",
+    "invalid_email": "bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "email_copied": "e-mail kopiert"
   }
 }

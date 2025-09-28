@@ -420,5 +420,11 @@
     "sand": "sabbia",
     "off white": "bianco sporco",
     "hot pink": "rosa acceso"
+  },
+  "toaster": {
+    "successfully_subscribed": "iscrizione alla newsletter avvenuta con successo!",
+    "failed_to_subscribe": "iscrizione fallita. riprova.",
+    "invalid_email": "inserisci un indirizzo email valido",
+    "email_copied": "email copiata"
   }
 }

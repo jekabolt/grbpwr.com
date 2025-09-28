@@ -18,12 +18,13 @@ export default function NewslatterForm() {
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const t = useTranslations("newslatter");
+  const tToaster = useTranslations("toaster");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
-      setToastMessage("Please enter a valid email address");
+      setToastMessage(tToaster("invalid_email"));
       setToastOpen(true);
       return;
     }
@@ -34,11 +35,11 @@ export default function NewslatterForm() {
       await serviceClient.SubscribeNewsletter({ email });
       setEmail("");
       setIsChecked(false);
-      setToastMessage("successfully subscribed to newsletter!");
+      setToastMessage(tToaster("successfully_subscribed"));
       setToastOpen(true);
     } catch (error) {
       console.error("Failed to subscribe to newsletter:", error);
-      setToastMessage("failed to subscribe. please try again.");
+      setToastMessage(tToaster("failed_to_subscribe"));
       setToastOpen(true);
     } finally {
       setIsLoading(false);

@@ -420,5 +420,11 @@
     "sand": "沙色",
     "off white": "米白色",
     "hot pink": "亮粉色"
+  },
+  "toaster": {
+    "successfully_subscribed": "成功订阅新闻通讯！",
+    "failed_to_subscribe": "订阅失败，请重试。",
+    "invalid_email": "请输入有效的邮箱地址",
+    "email_copied": "邮箱已复制"
   }
 }

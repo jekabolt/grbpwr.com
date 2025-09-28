@@ -22,10 +22,12 @@ import HelpPopover from "./help-popover";
 import NewslatterForm from "./newslatter-form";
 
 function LiveClock() {
-  const [timestamp, setTimestamp] = useState<number | null>(null);
+  const [timestamp, setTimestamp] = useState<number>(FOOTER_YEAR);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setTimestamp(FOOTER_YEAR);
+    setIsClient(true);
+    setTimestamp(Math.floor(Date.now() / 1000));
 
     const interval = setInterval(() => {
       setTimestamp(Math.floor(Date.now() / 1000));
@@ -34,12 +36,10 @@ function LiveClock() {
     return () => clearInterval(interval);
   }, []);
 
-  return timestamp ? (
+  return (
     <Text variant="uppercase" className="text-textColor">
-      {timestamp}
+      {isClient ? timestamp : FOOTER_YEAR}
     </Text>
-  ) : (
-    ""
   );
 }
 

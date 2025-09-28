@@ -420,5 +420,11 @@
     "sand": "サンド",
     "off white": "オフホワイト",
     "hot pink": "ホットピンク"
+  },
+  "toaster": {
+    "successfully_subscribed": "ニュースレターの購読が完了しました！",
+    "failed_to_subscribe": "購読に失敗しました。もう一度お試しください。",
+    "invalid_email": "有効なメールアドレスを入力してください",
+    "email_copied": "メールアドレスがコピーされました"
   }
 }

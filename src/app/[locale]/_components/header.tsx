@@ -24,6 +24,7 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
   const isBigMenuEnabled = dictionary?.bigMenu;
   const itemsQuantity = Object.keys(products).length;
   const [isVisible, setIsVisible] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const { scrollDirection, isAtTop } = useHeaderScrollPosition();
   const { languageId } = useTranslationsStore((state) => state);
   const announceTranslation = dictionary?.announceTranslations?.find(
@@ -33,8 +34,17 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
   const t = useTranslations("navigation");
 
   useEffect(() => {
-    const isMobile = window.innerWidth < 1024;
+    setIsMobile(window.innerWidth < 1024);
 
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     if (isMobile) {
       if (scrollDirection === "down") {
         setIsVisible(false);
@@ -44,7 +54,7 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
     } else {
       setIsVisible(true);
     }
-  }, [scrollDirection, isAtTop]);
+  }, [scrollDirection, isAtTop, isMobile]);
 
   return (
     <>

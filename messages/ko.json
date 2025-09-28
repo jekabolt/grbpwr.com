@@ -420,5 +420,11 @@
     "sand": "모래색",
     "off white": "오프화이트",
     "hot pink": "핫핑크"
-  }
+  },
+  "toaster": {
+    "successfully_subscribed": "뉴스레터 구독이 완료되었습니다!",
+    "failed_to_subscribe": "구독에 실패했습니다. 다시 시도해주세요.",
+    "invalid_email": "유효한 이메일 주소를 입력해주세요",
+    "email_copied": "이메일 복사됨"
+  }  
 }

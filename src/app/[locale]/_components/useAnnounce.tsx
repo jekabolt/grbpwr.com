@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 function getLastAnnounce() {
   try {
-    if (typeof window !== undefined) {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("last-announce") || "";
     }
     return "";
@@ -16,7 +16,7 @@ function getLastAnnounce() {
 
 function setLastAnnounce(message: string) {
   try {
-    if (typeof window !== undefined) {
+    if (typeof window !== "undefined") {
       localStorage.setItem("last-announce", message);
     }
   } catch (e) {
