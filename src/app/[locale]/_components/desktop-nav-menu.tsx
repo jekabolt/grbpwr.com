@@ -21,12 +21,12 @@ import Image from "../../../components/ui/image";
 import { Text } from "../../../components/ui/text";
 
 export function DesktopNavigationMenu({
-  isCatalog,
+  showAnnounce,
   className,
   isBigMenuEnabled,
   onNavOpenChange,
 }: {
-  isCatalog?: boolean;
+  showAnnounce?: boolean;
   isBigMenuEnabled?: boolean;
   className?: string;
   onNavOpenChange: (isOpen: boolean) => void;
@@ -126,7 +126,7 @@ export function DesktopNavigationMenu({
 
       <div
         className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
-          "top-16": open && !isCatalog,
+          "top-16": open && showAnnounce,
           "border-none": !isBigMenuEnabled,
         })}
       >

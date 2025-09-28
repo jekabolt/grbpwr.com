@@ -18,6 +18,7 @@ export default function FlexibleLayout({
   theme,
   className,
   displayFooter = true,
+  showAnnounce = false,
 }: Props) {
   return (
     <div
@@ -38,7 +39,7 @@ export default function FlexibleLayout({
         )}
         {(headerType === "catalog" || headerType === "main") && (
           <div className={mobileHeaderType ? "hidden lg:block" : ""}>
-            <Header isCatalog={headerType === "catalog"} />
+            <Header showAnnounce={showAnnounce} />
           </div>
         )}
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
@@ -65,6 +66,7 @@ type Props = {
   theme?: "light" | "dark";
   className?: string;
   displayFooter?: boolean;
+  showAnnounce?: boolean;
 };
 
 export type HeaderProps = {

@@ -16,7 +16,7 @@ import { HeaderLeftNav } from "./header-left-nav";
 import { useAnnounce } from "./useAnnounce";
 import { useHeaderScrollPosition } from "./useHeaderScrollPosition";
 
-export function Header({ isCatalog }: { isCatalog?: boolean }) {
+export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
   const { dictionary } = useDataContext();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
@@ -30,7 +30,7 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
   const announceTranslation = dictionary?.announceTranslations?.find(
     (t) => t.languageId === languageId,
   );
-  const { open } = useAnnounce(announceTranslation?.text || "");
+  const { open, handleClose } = useAnnounce(announceTranslation?.text || "");
   const t = useTranslations("navigation");
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
 
   return (
     <>
-      {!isCatalog && <Announce />}
+      {showAnnounce && <Announce open={open} onClose={handleClose} />}
       <header
         className={cn(
           "fixed inset-x-2.5 bottom-2 z-30 h-12 py-2 lg:top-2 lg:gap-0 lg:px-5 lg:py-3",
@@ -66,13 +66,13 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
           "blackTheme border border-textInactiveColor bg-textColor text-bgColor lg:border-transparent lg:bg-bgColor lg:text-textColor",
           "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] lg:transform-none lg:transition-none",
           {
-            "lg:top-8": open && !isCatalog,
+            "lg:top-8": open && showAnnounce,
             "pointer-events-auto translate-y-0": isVisible,
             "pointer-events-none translate-y-[120%]": !isVisible,
             "bg-bgColor text-textColor mix-blend-hard-light":
-              isNavOpen && isAtTop && !isCatalog,
+              isNavOpen && isAtTop && showAnnounce,
             "border-none bg-transparent text-textColor mix-blend-exclusion":
-              isAtTop && !isNavOpen && !isCatalog,
+              isAtTop && !isNavOpen && showAnnounce,
             "lg:bg-transparent lg:mix-blend-exclusion":
               !isNavOpen || (isNavOpen && !isBigMenuEnabled),
             "lg:border-none": !isBigMenuEnabled,
@@ -80,7 +80,7 @@ export function Header({ isCatalog }: { isCatalog?: boolean }) {
         )}
       >
         <HeaderLeftNav
-          isCatalog={isCatalog}
+          showAnnounce={showAnnounce}
           onNavOpenChange={setIsNavOpen}
           isBigMenuEnabled={isBigMenuEnabled}
         />

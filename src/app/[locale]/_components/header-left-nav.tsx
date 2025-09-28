@@ -2,11 +2,11 @@ import { MobileNavMenu } from "@/components/ui/mobile-nav-menu";
 import { DesktopNavigationMenu } from "@/app/[locale]/_components/desktop-nav-menu";
 
 export function HeaderLeftNav({
-  isCatalog,
+  showAnnounce,
   isBigMenuEnabled,
   onNavOpenChange,
 }: {
-  isCatalog?: boolean;
+  showAnnounce?: boolean;
   isBigMenuEnabled?: boolean;
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
@@ -14,7 +14,7 @@ export function HeaderLeftNav({
     <div className="grow basis-0">
       <div className="hidden lg:block">
         <DesktopNavigationMenu
-          isCatalog={isCatalog}
+          showAnnounce={showAnnounce}
           onNavOpenChange={onNavOpenChange}
           isBigMenuEnabled={isBigMenuEnabled}
         />
