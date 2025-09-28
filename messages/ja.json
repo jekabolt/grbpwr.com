@@ -44,7 +44,8 @@
     "title": "カタログ",
     "sort by": "並び替え",
     "size": "サイズ",
-    "next": "次へ"
+    "next": "次へ",
+    "empty": "空"
   },
   "product": {
     "model is": "モデルは",
@@ -56,8 +57,7 @@
     "select size": "サイズを選択",
     "ship by": "発送日",
     "size guide": "サイズガイド",
-    "recently viewed": "最近見た商品",
-    "empty": "空"
+    "recently viewed": "最近見た商品"
   },
   "checkout": {
     "contact": "連絡先",

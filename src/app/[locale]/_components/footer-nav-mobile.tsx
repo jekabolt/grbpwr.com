@@ -38,10 +38,10 @@ export function FooterNavMobile() {
         >
           <CopyText text="CLIENT@GRBPWR.COM" mode="toaster" />
           <Button asChild className="uppercase">
-            <Link href="/aftersale-services">aftersales service</Link>
+            <Link href="/aftersale-services">{t("aftersale services")}</Link>
           </Button>
           <Button asChild className="uppercase">
-            <Link href="/faq">faqs</Link>
+            <Link href="/faq">{t("faqs")}</Link>
           </Button>
         </FieldsGroupContainer>
       </div>

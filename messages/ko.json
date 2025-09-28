@@ -44,7 +44,8 @@
     "title": "카탈로그",
     "sort by": "정렬",
     "size": "사이즈",
-    "next": "다음"
+    "next": "다음",
+    "empty": "없음"
   },
   "product": {
     "model is": "모델은",
@@ -56,8 +57,7 @@
     "select size": "사이즈 선택",
     "ship by": "배송 일",
     "size guide": "사이즈 가이드",
-    "recently viewed": "최근 본 상품",
-    "empty": "없음"
+    "recently viewed": "최근 본 상품"
   },
   "checkout": {
     "contact": "연락처",

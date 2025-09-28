@@ -44,7 +44,8 @@
     "title": "目录",
     "sort by": "排序",
     "size": "尺码",
-    "next": "下一个"
+    "next": "下一个",
+    "empty": "空"
   },
   "product": {
     "model is": "模特是",
@@ -56,8 +57,7 @@
     "select size": "选择尺码",
     "ship by": "发货日期",
     "size guide": "尺码指南",
-    "recently viewed": "最近浏览的商品",
-    "empty": "空"
+    "recently viewed": "最近浏览的商品"
   },
   "checkout": {
     "contact": "联系人",

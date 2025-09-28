@@ -44,7 +44,8 @@
     "title": "katalog",
     "sort by": "sortieren nach",
     "size": "größe",
-    "next": "weiter"
+    "next": "weiter",
+    "empty": "nichts"
   },
   "product": {
     "model is": "modell ist",
@@ -56,8 +57,7 @@
     "select size": "größe auswählen",
     "ship by": "versand am",
     "size guide": "größenleitfaden",
-    "recently viewed": "zuletzt angesehen",
-    "empty": "nichts"
+    "recently viewed": "zuletzt angesehen"
   },
   "checkout": {
     "contact": "kontakt",
