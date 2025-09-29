@@ -9,77 +9,53 @@ import { useFormContext } from "react-hook-form";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import InputField from "@/components/ui/form/fields/input-field";
 
-// type AddressComponents = {
-//   streetNumber: string;
-//   route: string;
-//   city: string;
-//   state: string;
-//   country: string;
-//   postalCode: string;
-// };
+type AddressComponents = {
+  streetNumber: string;
+  route: string;
+  postalCode: string;
+};
 
-// function extractAddressComponents(addressComponents: any[]): AddressComponents {
-//   return addressComponents.reduce(
-//     (acc, component) => {
-//       const types = component.types;
-//       if (types.includes("street_number"))
-//         acc.streetNumber = component.long_name;
-//       else if (types.includes("route")) acc.route = component.long_name;
-//       else if (types.includes("locality")) acc.city = component.long_name;
-//       else if (types.includes("administrative_area_level_1"))
-//         acc.state = component.short_name;
-//       else if (types.includes("country")) acc.country = component.short_name;
-//       else if (types.includes("postal_code"))
-//         acc.postalCode = component.long_name;
-//       return acc;
-//     },
-//     {
-//       streetNumber: "",
-//       route: "",
-//       city: "",
-//       state: "",
-//       country: "",
-//       postalCode: "",
-//     },
-//   );
-// }
+function extractAddressComponents(addressComponents: any[]): AddressComponents {
+  return addressComponents.reduce(
+    (acc, component) => {
+      const types = component.types;
+      if (types.includes("street_number"))
+        acc.streetNumber = component.long_name;
+      else if (types.includes("route")) acc.route = component.long_name;
+      else if (types.includes("postal_code"))
+        acc.postalCode = component.long_name;
+      return acc;
+    },
+    {
+      streetNumber: "",
+      route: "",
+      postalCode: "",
+    },
+  );
+}
 
-// function updateFormValues(
-//   components: AddressComponents,
-//   prefix: string | undefined,
-//   setValue: (field: string, value: string) => void,
-// ) {
-//   const address = [components.route, components.streetNumber]
-//     .filter(Boolean)
-//     .join(" ");
+function updateAddressFields(
+  components: AddressComponents,
+  prefix: string | undefined,
+  setValue: (field: string, value: string) => void,
+) {
+  const address = [components.route, components.streetNumber]
+    .filter(Boolean)
+    .join(" ");
 
-//   const fields = {
-//     address,
-//     city: components.city,
-//     country: components.country,
-//     postalCode: components.postalCode,
-//   };
+  const addressFieldName = prefix ? `${prefix}.address` : "address";
+  const postalCodeFieldName = prefix ? `${prefix}.postalCode` : "postalCode";
 
-//   Object.entries(fields).forEach(([key, value]) => {
-//     const fieldName = prefix ? `${prefix}.${key}` : key;
-//     setValue(fieldName, value);
-//   });
-
-//   const stateFieldName = prefix ? `${prefix}.state` : "state";
-//   const hasStates =
-//     components.country && components.country in countryStatesMap;
-//   if (hasStates) {
-//     setValue(stateFieldName, components.state);
-//   } else {
-//     setValue(stateFieldName, "");
-//   }
-// }
+  if (address) setValue(addressFieldName, address);
+  if (components.postalCode)
+    setValue(postalCodeFieldName, components.postalCode);
+}
 
 type Props = {
   loading: boolean;
   disabled?: boolean;
   prefix?: string;
-  countryCode?: string | string[]; // ISO 3166-1 alpha-2, e.g. "DE" or ["DE", "AT"]
+  countryCode?: string | string[];
 };
 
 export default function AddressAutocomplete({
@@ -154,8 +130,8 @@ export default function AddressAutocomplete({
           if (!autocomplete) return;
           const place = autocomplete.getPlace();
           if (!place || !place.address_components) return;
-          // const components = extractAddressComponents(place.address_components);
-          // updateFormValues(components, prefix, setValue);
+          const components = extractAddressComponents(place.address_components);
+          updateAddressFields(components, prefix, setValue);
         }}
       >
         <InputField
@@ -170,9 +146,3 @@ export default function AddressAutocomplete({
     </div>
   );
 }
-
-// Keep component restrictions in sync if the country changes at runtime
-// (e.g., user switches country before confirming the address).
-// Google Autocomplete doesn't always react to prop changes, so enforce via instance.
-// This effect is defined after the component for readability but relies on closure values.
-// Note: define inside component if your linter requires hooks top-level in the component.
