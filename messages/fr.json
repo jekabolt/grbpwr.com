@@ -44,7 +44,8 @@
     "title": "catalogue",
     "sort by": "trier par",
     "size": "taille",
-    "next": "suivant"
+    "next": "suivant",
+    "empty": "vide"
   },
   "product": {
     "model is": "modèle est",
@@ -159,13 +160,11 @@
     "VGW": "Lavage très délicat"
   },
   "geo-suggest": {
-    "message": "Nous pensons que vous êtes dans {country}. Mettre à jour votre emplacement?",
-    "stay": "Restez {country}",
-    "switch": "Changer"
+    "message": "Nous pensons que vous êtes dans {country}. Mettre à jour votre emplacement?"
   },
   "update_location": {
     "message": "Vous êtes actuellement dans {currentCountry}. Lors du changement de pays/région, votre panier sera vidé. Êtes-vous sûr de vouloir continuer?",
-    "continue": "Continuer vers {country}",
+    "continue": "Continuer vers: {country}",
     "cancel": "Annuler"
   },
   "measurements-descriptions": {
@@ -302,6 +301,130 @@
     "mx": "mx",
     "mr": "m.",
     "i'd rather not say": "je préfère ne pas le dire",
-    "form submitted successfully": "formulaire soumis avec succès"
+    "form submitted successfully": "formulaire soumis avec succès",
+    "order status": "statut de commande",
+    "delivery": "livraison",
+    "cancellation request": "demande d'annulation",
+    "invoice request": "demande de facture",
+    "payment issue": "problème de paiement",
+    "website issue": "problème de site web",
+    "return process": "processus de retour",
+    "refund request": "demande de remboursement",
+    "return in store": "retour en magasin",
+    "return policy": "politique de retour",
+    "exchange request": "demande d'échange",
+    "pickup": "collecte",
+    "repair process": "processus de réparation",
+    "repair status": "statut de réparation",
+    "repair request": "demande de réparation"
+  },
+  "errors": {
+    "firstName": {
+      "min": "le prénom doit contenir au moins 1 caractère",
+      "max": "le prénom peut contenir au maximum 40 caractères",
+      "regex": "doit contenir au moins une lettre et seules les lettres, espaces, tirets, apostrophes et points sont autorisés"
+    },
+    "lastName": {
+      "min": "le nom doit contenir au moins 1 caractère",
+      "max": "le nom peut contenir au maximum 40 caractères",
+      "regex": "doit contenir au moins une lettre et seules les lettres, espaces, tirets, apostrophes et points sont autorisés"
+    },
+    "phone": {
+      "min": "le téléphone doit contenir au moins 5 chiffres",
+      "max": "le téléphone peut contenir au maximum 15 chiffres"
+    },
+    "city": {
+      "min": "la ville doit contenir au moins 2 caractères",
+      "regex": "doit contenir au moins une lettre et seules les lettres, espaces, tirets, apostrophes et points sont autorisés"
+    },
+    "address": {
+      "min": "l'adresse doit contenir au moins 3 caractères",
+      "max": "l'adresse peut contenir au maximum 40 caractères",
+      "regex": "seules les lettres, chiffres, espaces, tirets, apostrophes et points sont autorisés"
+    },
+    "postalCode": {
+      "min": "le code postal doit contenir au moins 2 caractères",
+      "max": "le code postal peut contenir au maximum 12 caractères",
+      "regex": "le code postal ne peut contenir que des lettres, chiffres, espaces ou tirets"
+    },
+    "country": {
+      "min": "le pays doit contenir au moins 2 caractères"
+    },
+    "company": {
+      "min": "l'entreprise doit contenir au moins 1 caractère",
+      "max": "l'entreprise peut contenir au maximum 40 caractères",
+      "regex": "seules les lettres, chiffres, espaces, tirets, apostrophes et points sont autorisés"
+    },
+    "email": {
+      "invalid": "email invalide",
+      "max": "l'email peut contenir au maximum 40 caractères"
+    },
+    "additionalAddress": {
+      "min": "l'adresse supplémentaire doit contenir au moins 3 caractères",
+      "max": "l'adresse supplémentaire peut contenir au maximum 40 caractères",
+      "regex": "seules les lettres, chiffres, espaces, tirets, apostrophes et points sont autorisés"
+    },
+    "termsOfService": {
+      "required": "vous devez accepter les conditions générales pour continuer"
+    },
+    "orderUuid": {
+      "required": "la référence de commande est requise"
+    }
+  },
+  "content": {
+    "legal notices": "mentions légales",
+    "legal notice": "mentions légales",
+    "privacy policy": "politique de confidentialité",
+    "terms and conditions of use": "conditions générales",
+    "terms and conditions of sale": "conditions de vente",
+    "return and exchange policy": "politique de retour et d'échange",
+    "cookie settings": "paramètres des cookies",
+    "frequently asked questions": "questions fréquemment posées",
+    "placing an order": "passer une commande, suivi de commande, politique de retour, services après-vente et développement durable."
+  },
+  "colors": {
+    "black": "noir",
+    "white": "blanc",
+    "red": "rouge",
+    "blue": "bleu",
+    "green": "vert",
+    "navy": "bleu marine",
+    "gray": "gris",
+    "yellow": "jaune",
+    "pink": "rose",
+    "beige": "beige",
+    "crimson": "cramoisi",
+    "orange": "orange",
+    "purple": "violet",
+    "teal": "sarcelle",
+    "lime": "vert lime",
+    "silver": "argent",
+    "maroon": "marron",
+    "olive": "olive",
+    "brown": "brun",
+    "gold": "or",
+    "cyan": "cyan",
+    "magenta": "magenta",
+    "ivory": "ivoire",
+    "coral": "corail",
+    "chocolate": "chocolat",
+    "mint green": "vert menthe",
+    "light blue": "bleu clair",
+    "peach": "pêche",
+    "lavender": "lavande",
+    "turquoise": "turquoise",
+    "indigo": "indigo",
+    "mustard": "moutarde",
+    "plum": "prune",
+    "violet": "violet",
+    "sand": "sable",
+    "off white": "blanc cassé",
+    "hot pink": "rose vif"
+  },
+  "toaster": {
+    "successfully_subscribed": "abonnement à la newsletter réussi !",
+    "failed_to_subscribe": "échec de l'abonnement. veuillez réessayer.",
+    "invalid_email": "veuillez saisir une adresse email valide",
+    "email_copied": "email copié"
   }
 }

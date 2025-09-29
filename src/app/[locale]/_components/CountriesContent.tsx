@@ -61,10 +61,10 @@ export function CountriesContent({
               currency: selectedCurrency,
             })}
           </Text>
-          <div className="space-y-2.5">
-            <Text className="uppercase">{t("language")}</Text>
-            {languagesForCurrentCountry &&
-              languagesForCurrentCountry.length > 1 && (
+          {languagesForCurrentCountry &&
+            languagesForCurrentCountry.length > 1 && (
+              <div className="space-y-2.5">
+                <Text className="uppercase">{t("language")}</Text>
                 <RadioGroup
                   items={languagesForCurrentCountry}
                   name="language-selector"
@@ -72,8 +72,8 @@ export function CountriesContent({
                   onValueChange={(val: string) => handleChangeLocaleOnly(val)}
                   className="gap-0 uppercase lg:grid lg:grid-cols-1"
                 />
-              )}
-          </div>
+              </div>
+            )}
           <Searchbar
             name="search"
             value={query}

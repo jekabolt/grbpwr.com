@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { COUNTRIES_BY_REGION } from "@/constants";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { getCountryName } from "@/lib/utils";
 import { useLocation } from "@/app/[locale]/_components/useLocation";
@@ -30,22 +30,24 @@ export function GeoSuggestBanner({
   const [isCookiesAccepted, setIsCookiesAccepted] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const locale = useLocale();
   const defaultT = useTranslations("geo-suggest");
 
-  const t = messages?.geo_suggest
-    ? (key: string, values?: any) => {
-        const template = messages.geo_suggest[key];
-        if (!template) return key;
-        return template.replace(
-          /\{(\w+)\}/g,
-          (_: any, name: string) => values?.[name] || "",
-        );
-      }
-    : defaultT;
+  const t =
+    messages && messages["geo-suggest"]
+      ? (key: string, values?: any) => {
+          const template = messages["geo-suggest"][key];
+          if (!template) return key;
+          return template.replace(
+            /\{(\w+)\}/g,
+            (_: any, name: string) => values?.[name] || "",
+          );
+        }
+      : defaultT;
 
   const suggestedCountryName = getCountryName(suggestCountry, suggestLocale);
 
-  const currentCountryName = getCountryName(currentCountry);
+  const currentCountryName = getCountryName(currentCountry, locale);
 
   useEffect(() => {
     if (!suggestCountry || !suggestLocale) return;
@@ -98,26 +100,26 @@ export function GeoSuggestBanner({
 
   return (
     <Banner>
-      <div className="flex flex-col gap-y-6 p-2.5">
+      <div className="flex flex-col gap-y-4 p-2.5">
         <Text className="uppercase">
           {t("message", { country: suggestedCountryName || "" })}
         </Text>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           <Button
             size="lg"
             className="w-full uppercase"
             variant="main"
-            onClick={onDismiss}
+            onClick={onAccept}
           >
-            {t("stay", { country: currentCountryName || "" })}
+            {suggestedCountryName}
           </Button>
           <Button
             size="lg"
             className="w-full uppercase"
             variant="simpleReverse"
-            onClick={onAccept}
+            onClick={onDismiss}
           >
-            {t("switch")}
+            {currentCountryName}
           </Button>
         </div>
       </div>

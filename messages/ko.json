@@ -44,7 +44,8 @@
     "title": "카탈로그",
     "sort by": "정렬",
     "size": "사이즈",
-    "next": "다음"
+    "next": "다음",
+    "empty": "없음"
   },
   "product": {
     "model is": "모델은",
@@ -159,13 +160,11 @@
     "VGW": "매우 약한 세탁"
   },
   "geo-suggest": {
-    "message": "우리는 당신이 {country}에 있다고 생각합니다. 위치를 업데이트하시겠습니까?",
-    "stay": "{country}에 머물러 주세요",
-    "switch": "변경"
+    "message": "우리는 당신이 {country}에 있다고 생각합니다. 위치를 업데이트하시겠습니까?"
   },
   "update_location": {
     "message": "당신은 현재 {currentCountry}에서 쇼핑을 하고 있습니다. 국가/지역을 변경하면 쇼핑카트가 비워집니다. 계속하시겠습니까?",
-    "continue": "{country}로 이동",
+    "continue": "계속하다: {country}",
     "cancel": "취소"
   },
   "measurements-descriptions": {
@@ -302,6 +301,130 @@
     "mx": "Mx",
     "mr": "님",
     "i'd rather not say": "답변하지 않음",
-    "form submitted successfully": "양식 제출 성공"
-  }
+    "form submitted successfully": "양식 제출 성공",
+    "order status": "주문 상태",
+    "delivery": "배송",
+    "cancellation request": "취소 요청",
+    "invoice request": "인보이스 요청",
+    "payment issue": "결제 문제",
+    "website issue": "웹사이트 문제",
+    "return process": "반품 절차",
+    "refund request": "환불 요청",
+    "return in store": "매장 반품",
+    "return policy": "반품 정책",
+    "exchange request": "교환 요청",
+    "pickup": "픽업",
+    "repair process": "수리 절차",
+    "repair status": "수리 상태",
+    "repair request": "수리 요청"
+  },
+  "errors": {
+    "firstName": {
+      "min": "이름은 최소 1자 이상이어야 합니다",
+      "max": "이름은 최대 40자까지 입력할 수 있습니다",
+      "regex": "최소 하나의 문자를 포함해야 하며 문자, 공백, 하이픈, 아포스트로피, 마침표만 허용됩니다"
+    },
+    "lastName": {
+      "min": "성은 최소 1자 이상이어야 합니다",
+      "max": "성은 최대 40자까지 입력할 수 있습니다",
+      "regex": "최소 하나의 문자를 포함해야 하며 문자, 공백, 하이픈, 아포스트로피, 마침표만 허용됩니다"
+    },
+    "phone": {
+      "min": "전화번호는 최소 5자리 숫자여야 합니다",
+      "max": "전화번호는 최대 15자리 숫자까지 입력할 수 있습니다"
+    },
+    "city": {
+      "min": "도시명은 최소 2자 이상이어야 합니다",
+      "regex": "최소 하나의 문자를 포함해야 하며 문자, 공백, 하이픈, 아포스트로피, 마침표만 허용됩니다"
+    },
+    "address": {
+      "min": "주소는 최소 3자 이상이어야 합니다",
+      "max": "주소는 최대 40자까지 입력할 수 있습니다",
+      "regex": "문자, 숫자, 공백, 하이픈, 아포스트로피, 마침표만 허용됩니다"
+    },
+    "postalCode": {
+      "min": "우편번호는 최소 2자 이상이어야 합니다",
+      "max": "우편번호는 최대 12자까지 입력할 수 있습니다",
+      "regex": "우편번호는 문자, 숫자, 공백, 하이픈만 포함할 수 있습니다"
+    },
+    "country": {
+      "min": "국가명은 최소 2자 이상이어야 합니다"
+    },
+    "company": {
+      "min": "회사명은 최소 1자 이상이어야 합니다",
+      "max": "회사명은 최대 40자까지 입력할 수 있습니다",
+      "regex": "문자, 숫자, 공백, 하이픈, 아포스트로피, 마침표만 허용됩니다"
+    },
+    "email": {
+      "invalid": "유효하지 않은 이메일",
+      "max": "이메일은 최대 40자까지 입력할 수 있습니다"
+    },
+    "additionalAddress": {
+      "min": "추가 주소는 최소 3자 이상이어야 합니다",
+      "max": "추가 주소는 최대 40자까지 입력할 수 있습니다",
+      "regex": "문자, 숫자, 공백, 하이픈, 아포스트로피, 마침표만 허용됩니다"
+    },
+    "termsOfService": {
+      "required": "서비스 이용 약관에 동의해야 합니다"
+    },
+    "orderUuid": {
+      "required": "주문 참조가 필요합니다"
+    }
+  },
+  "content": {
+    "legal notices": "법적 고지",
+    "legal notice": "법적 고지",
+    "privacy policy": "개인정보처리방침",
+    "terms and conditions of use": "이용약관",
+    "terms and conditions of sale": "판매조건",
+    "return and exchange policy": "반품 및 교환 정책",
+    "cookie settings": "쿠키 설정",
+    "frequently asked questions": "자주 묻는 질문",
+    "placing an order": "주문하기, 주문 추적, 반품 정책, 애프터서비스 및 지속가능한 발전."
+  },
+  "colors": {
+    "black": "검은색",
+    "white": "흰색",
+    "red": "빨간색",
+    "blue": "파란색",
+    "green": "녹색",
+    "navy": "네이비",
+    "gray": "회색",
+    "yellow": "노란색",
+    "pink": "분홍색",
+    "beige": "베이지",
+    "crimson": "진홍색",
+    "orange": "주황색",
+    "purple": "보라색",
+    "teal": "청록색",
+    "lime": "라임색",
+    "silver": "은색",
+    "maroon": "적갈색",
+    "olive": "올리브색",
+    "brown": "갈색",
+    "gold": "금색",
+    "cyan": "시안색",
+    "magenta": "자주색",
+    "ivory": "아이보리",
+    "coral": "코랄색",
+    "chocolate": "초콜릿색",
+    "mint green": "민트그린",
+    "light blue": "연한 파란색",
+    "peach": "복숭아색",
+    "lavender": "라벤더색",
+    "turquoise": "터키석색",
+    "indigo": "남색",
+    "mustard": "머스타드색",
+    "plum": "자두색",
+    "violet": "보라색",
+    "sand": "모래색",
+    "off white": "오프화이트",
+    "hot pink": "핫핑크"
+  },
+  "toaster": {
+    "successfully_subscribed": "뉴스레터 구독이 완료되었습니다!",
+    "failed_to_subscribe": "구독에 실패했습니다. 다시 시도해주세요.",
+    "invalid_email": "유효한 이메일 주소를 입력해주세요",
+    "email_copied": "이메일 복사됨"
+  }  
 }

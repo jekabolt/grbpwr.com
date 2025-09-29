@@ -14,13 +14,17 @@ export function CollapsibleSections({
   skipFirstSectionNumber = false,
   showDirectly = false,
   onSectionChange,
+  autoOpenFirst = false,
 }: {
   content: string;
   skipFirstSectionNumber?: boolean;
   showDirectly?: boolean;
   onSectionChange?: (section: string) => void;
+  autoOpenFirst?: boolean;
 }) {
-  const [openSection, setOpenSection] = useState<number | null>(null);
+  const [openSection, setOpenSection] = useState<number | null>(
+    autoOpenFirst ? 0 : null,
+  );
 
   const sections = content.split(/(?=^## )/m).filter(Boolean);
   const contentSections = sections;

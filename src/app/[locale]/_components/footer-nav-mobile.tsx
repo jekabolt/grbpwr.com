@@ -26,7 +26,7 @@ export function FooterNavMobile() {
     <div className="mb-4 space-y-4">
       <div className="border-b border-textInactiveColor">
         <FieldsGroupContainer
-          title="help"
+          title={t("help")}
           isOpen={isOpen}
           styling={{
             clickableAreaClassName: "h-8",
@@ -38,10 +38,10 @@ export function FooterNavMobile() {
         >
           <CopyText text="CLIENT@GRBPWR.COM" mode="toaster" />
           <Button asChild className="uppercase">
-            <Link href="/aftersale-services">aftersales service</Link>
+            <Link href="/aftersale-services">{t("aftersale services")}</Link>
           </Button>
           <Button asChild className="uppercase">
-            <Link href="/faq">faqs</Link>
+            <Link href="/faq">{t("faqs")}</Link>
           </Button>
         </FieldsGroupContainer>
       </div>
@@ -51,7 +51,7 @@ export function FooterNavMobile() {
           asChild
           className="h-8 border-b border-textInactiveColor uppercase"
         >
-          <Link href={link.href}>{link.title}</Link>
+          <Link href={link.href}>{t(link.title)}</Link>
         </Button>
       ))}
     </div>

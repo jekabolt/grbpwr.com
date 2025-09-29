@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
@@ -27,6 +28,7 @@ export default function CheckboxField({
   description,
   ...props
 }: Props) {
+  const t = useTranslations("errors");
   const { control, trigger } = useFormContext();
 
   function onBlur() {
@@ -58,7 +60,7 @@ export default function CheckboxField({
               <FormDescription>{description}</FormDescription>
             </div>
           </div>
-          <FormMessage />
+          <FormMessage translateError={t} fieldName={name} />
         </FormItem>
       )}
     />

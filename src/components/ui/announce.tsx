@@ -1,17 +1,21 @@
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Text } from "@/components/ui/text";
-import { useAnnounce } from "@/app/[locale]/_components/useAnnounce";
 
 import { useDataContext } from "../contexts/DataContext";
 import { Button } from "./button";
 
-export function Announce() {
+export function Announce({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
   const announce =
     dictionary?.announceTranslations?.find((t) => t.languageId === languageId)
       ?.text || "";
-  const { open, handleClose } = useAnnounce(announce);
 
   if (!open || !announce) return null;
 
@@ -21,7 +25,7 @@ export function Announce() {
         <Text variant="uppercase">{announce}</Text>
       </div>
       <Button
-        onClick={handleClose}
+        onClick={onClose}
         className="lg:absolute lg:right-4 lg:top-1/2 lg:-translate-y-1/2"
       >
         [x]

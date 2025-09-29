@@ -44,7 +44,8 @@
     "title": "カタログ",
     "sort by": "並び替え",
     "size": "サイズ",
-    "next": "次へ"
+    "next": "次へ",
+    "empty": "空"
   },
   "product": {
     "model is": "モデルは",
@@ -159,13 +160,11 @@
     "VGW": "非常に弱い洗濯"
   },
   "geo-suggest": {
-    "message": "あなたは{country}にいると思います。場所を更新しますか？",
-    "stay": "{country}に留まる",
-    "switch": "切り替え"
+    "message": "あなたは{country}にいると思います。場所を更新しますか？"
   },
   "update_location": {
     "message": "あなたは現在{currentCountry}でショッピングしています。国/地域を変更すると、ショッピングカートが空になります。続行してもよろしいですか？",
-    "continue": "{country}に進む",
+    "continue": "次へ進む: {country}",
     "cancel": "キャンセル"
   },
   "measurements-descriptions": {
@@ -302,6 +301,130 @@
     "mx": "Mx",
     "mr": "様",
     "i'd rather not say": "回答しない",
-    "form submitted successfully": "フォームが正常に送信されました"
+    "form submitted successfully": "フォームが正常に送信されました",
+    "order status": "注文状況",
+    "delivery": "配送",
+    "cancellation request": "キャンセル依頼",
+    "invoice request": "請求書依頼",
+    "payment issue": "決済問題",
+    "website issue": "サイトの問題",
+    "return process": "返品手続き",
+    "refund request": "返金申請",
+    "return in store": "店舗返品",
+    "return policy": "返品ポリシー",
+    "exchange request": "交換申請",
+    "pickup": "集荷",
+    "repair process": "修理手続き",
+    "repair status": "修理状況",
+    "repair request": "修理依頼"
+  },
+  "errors": {
+    "firstName": {
+      "min": "名前は最低1文字以上必要です",
+      "max": "名前は最大40文字まで入力できます",
+      "regex": "少なくとも1つの文字を含む必要があり、文字、スペース、ハイフン、アポストロフィ、ピリオドのみ使用できます"
+    },
+    "lastName": {
+      "min": "姓は最低1文字以上必要です",
+      "max": "姓は最大40文字まで入力できます",
+      "regex": "少なくとも1つの文字を含む必要があり、文字、スペース、ハイフン、アポストロフィ、ピリオドのみ使用できます"
+    },
+    "phone": {
+      "min": "電話番号は最低5桁の数字が必要です",
+      "max": "電話番号は最大15桁まで入力できます"
+    },
+    "city": {
+      "min": "都市名は最低2文字以上必要です",
+      "regex": "少なくとも1つの文字を含む必要があり、文字、スペース、ハイフン、アポストロフィ、ピリオドのみ使用できます"
+    },
+    "address": {
+      "min": "住所は最低3文字以上必要です",
+      "max": "住所は最大40文字まで入力できます",
+      "regex": "文字、数字、スペース、ハイフン、アポストロフィ、ピリオドのみ使用できます"
+    },
+    "postalCode": {
+      "min": "郵便番号は最低2文字以上必要です",
+      "max": "郵便番号は最大12文字まで入力できます",
+      "regex": "郵便番号は文字、数字、スペース、ハイフンのみ使用できます"
+    },
+    "country": {
+      "min": "国名は最低2文字以上必要です"
+    },
+    "company": {
+      "min": "会社名は最低1文字以上必要です",
+      "max": "会社名は最大40文字まで入力できます",
+      "regex": "文字、数字、スペース、ハイフン、アポストロフィ、ピリオドのみ使用できます"
+    },
+    "email": {
+      "invalid": "無効なメールアドレス",
+      "max": "メールアドレスは最大40文字まで入力できます"
+    },
+    "additionalAddress": {
+      "min": "追加住所は最低3文字以上必要です",
+      "max": "追加住所は最大40文字まで入力できます",
+      "regex": "文字、数字、スペース、ハイフン、アポストロフィ、ピリオドのみ使用できます"
+    },
+    "termsOfService": {
+      "required": "あなたは利用規約に同意する必要があります"
+    },
+    "orderUuid": {
+      "required": "注文番号は必須です"
+    }
+  },
+  "content": {
+    "legal notices": "法的告知",
+    "legal notice": "法的告知",
+    "privacy policy": "プライバシーポリシー",
+    "terms and conditions of use": "利用規約",
+    "terms and conditions of sale": "販売条件",
+    "return and exchange policy": "返品・交換ポリシー",
+    "cookie settings": "クッキー設定",
+    "frequently asked questions": "よくある質問",
+    "placing an order": "注文方法、注文追跡、返品ポリシー、アフターサービス、持続可能な開発について。"
+  },
+  "colors": {
+    "black": "黒",
+    "white": "白",
+    "red": "赤",
+    "blue": "青",
+    "green": "緑",
+    "navy": "ネイビー",
+    "gray": "グレー",
+    "yellow": "黄色",
+    "pink": "ピンク",
+    "beige": "ベージュ",
+    "crimson": "深紅",
+    "orange": "オレンジ",
+    "purple": "紫",
+    "teal": "ティール",
+    "lime": "ライム",
+    "silver": "シルバー",
+    "maroon": "マルーン",
+    "olive": "オリーブ",
+    "brown": "茶色",
+    "gold": "ゴールド",
+    "cyan": "シアン",
+    "magenta": "マゼンタ",
+    "ivory": "アイボリー",
+    "coral": "コーラル",
+    "chocolate": "チョコレート",
+    "mint green": "ミントグリーン",
+    "light blue": "ライトブルー",
+    "peach": "ピーチ",
+    "lavender": "ラベンダー",
+    "turquoise": "ターコイズ",
+    "indigo": "インディゴ",
+    "mustard": "マスタード",
+    "plum": "プラム",
+    "violet": "バイオレット",
+    "sand": "サンド",
+    "off white": "オフホワイト",
+    "hot pink": "ホットピンク"
+  },
+  "toaster": {
+    "successfully_subscribed": "ニュースレターの購読が完了しました！",
+    "failed_to_subscribe": "購読に失敗しました。もう一度お試しください。",
+    "invalid_email": "有効なメールアドレスを入力してください",
+    "email_copied": "メールアドレスがコピーされました"
   }
 }

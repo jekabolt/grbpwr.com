@@ -52,14 +52,14 @@ export default function ContactFieldsGroup({
             <>
               *{t("proceed")}{" "}
               <Link
-                href="/terms-and-conditions"
+                href="/legal-notices?section=terms"
                 className="underline hover:no-underline"
               >
                 {t("terms and conditions")}
               </Link>{" "}
-              AND{" "}
+              {t("and").toLocaleUpperCase()}{" "}
               <Link
-                href="/privacy-policy"
+                href="/legal-notices?section=privacy"
                 className="underline hover:no-underline"
               >
                 {t("privacy information notice")}

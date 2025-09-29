@@ -44,7 +44,8 @@
     "title": "目录",
     "sort by": "排序",
     "size": "尺码",
-    "next": "下一个"
+    "next": "下一个",
+    "empty": "空"
   },
   "product": {
     "model is": "模特是",
@@ -93,7 +94,7 @@
     "grand total": "总计",
     "free by promo": "优惠免费",
     "DHL": "DHL",
-    "free": "免费"
+    "FREE": "免费"
   },
   "not-found": {
     "title": "页面未找到",
@@ -159,13 +160,11 @@
     "VGW": "非常温和的水洗"
   },
   "geo-suggest": {
-    "message": "我们认为您在{country}。更新您的位置？",
-    "stay": "{country}停留",
-    "switch": "切换"
+    "message": "我们认为您在{country}。更新您的位置？"
   },
   "update_location": {
     "message": "您当前在{currentCountry}购物。更改国家/地区时，购物车将被清空。您确定要继续吗？",
-    "continue": "继续到{country}",
+    "continue": "继续前往: {country}",
     "cancel": "取消"
   },
   "measurements-descriptions": {
@@ -302,6 +301,130 @@
     "mx": "Mx",
     "mr": "先生",
     "i'd rather not say": "不愿透露",
-    "form submitted successfully": "表单提交成功"
+    "form submitted successfully": "表单提交成功",
+    "order status": "订单状态",
+    "delivery": "配送",
+    "cancellation request": "取消申请",
+    "invoice request": "发票申请",
+    "payment issue": "支付问题",
+    "website issue": "网站问题",
+    "return process": "退货流程",
+    "refund request": "退款申请",
+    "return in store": "店内退货",
+    "return policy": "退货政策",
+    "exchange request": "换货申请",
+    "pickup": "取件",
+    "repair process": "维修流程",
+    "repair status": "维修状态",
+    "repair request": "维修申请"
+  },
+  "errors": {
+    "firstName": {
+      "min": "名字至少需要包含1个字符",
+      "max": "名字最多只能包含40个字符",
+      "regex": "必须至少包含一个字母，只允许字母、空格、连字符、撇号和句号"
+    },
+    "lastName": {
+      "min": "姓氏至少需要包含1个字符",
+      "max": "姓氏最多只能包含40个字符",
+      "regex": "必须至少包含一个字母，只允许字母、空格、连字符、撇号和句号"
+    },
+    "phone": {
+      "min": "电话号码至少需要包含5个数字",
+      "max": "电话号码最多只能包含15个数字"
+    },
+    "city": {
+      "min": "城市名称至少需要包含2个字符",
+      "regex": "必须至少包含一个字母，只允许字母、空格、连字符、撇号和句号"
+    },
+    "address": {
+      "min": "地址至少需要包含3个字符",
+      "max": "地址最多只能包含40个字符",
+      "regex": "只允许字母、数字、空格、连字符、撇号和句号"
+    },
+    "postalCode": {
+      "min": "邮政编码至少需要包含2个字符",
+      "max": "邮政编码最多只能包含12个字符",
+      "regex": "邮政编码只能包含字母、数字、空格或连字符"
+    },
+    "country": {
+      "min": "国家名称至少需要包含2个字符"
+    },
+    "company": {
+      "min": "公司名称至少需要包含1个字符",
+      "max": "公司名称最多只能包含40个字符",
+      "regex": "只允许字母、数字、空格、连字符、撇号和句号"
+    },
+    "email": {
+      "invalid": "无效的邮箱",
+      "max": "邮箱最多只能包含40个字符"
+    },
+    "additionalAddress": {
+      "min": "附加地址至少需要包含3个字符",
+      "max": "附加地址最多只能包含40个字符",
+      "regex": "只允许字母、数字、空格、连字符、撇号和句号"
+    },
+    "termsOfService": {
+      "required": "您必须接受条款和条件才能继续"
+    },
+    "orderUuid": {
+      "required": "订单号是必需的"
+    }
+  },
+  "content": {
+    "legal notices": "法律声明",
+    "legal notice": "法律声明",
+    "privacy policy": "隐私政策",
+    "terms and conditions of use": "条款和条件",
+    "terms and conditions of sale": "销售条款",
+    "return and exchange policy": "退换货政策",
+    "cookie settings": "cookie设置",
+    "frequently asked questions": "常见问题",
+    "placing an order": "下订单、订单跟踪、退货政策、售后服务和可持续发展。"
+  },
+  "colors": {
+    "black": "黑色",
+    "white": "白色",
+    "red": "红色",
+    "blue": "蓝色",
+    "green": "绿色",
+    "navy": "深蓝色",
+    "gray": "灰色",
+    "yellow": "黄色",
+    "pink": "粉色",
+    "beige": "米色",
+    "crimson": "深红色",
+    "orange": "橙色",
+    "purple": "紫色",
+    "teal": "青蓝色",
+    "lime": "青柠色",
+    "silver": "银色",
+    "maroon": "栗色",
+    "olive": "橄榄色",
+    "brown": "棕色",
+    "gold": "金色",
+    "cyan": "青色",
+    "magenta": "洋红色",
+    "ivory": "象牙色",
+    "coral": "珊瑚色",
+    "chocolate": "巧克力色",
+    "mint green": "薄荷绿",
+    "light blue": "浅蓝色",
+    "peach": "桃色",
+    "lavender": "薰衣草色",
+    "turquoise": "绿松石色",
+    "indigo": "靛蓝色",
+    "mustard": "芥末色",
+    "plum": "梅子色",
+    "violet": "紫罗兰色",
+    "sand": "沙色",
+    "off white": "米白色",
+    "hot pink": "亮粉色"
+  },
+  "toaster": {
+    "successfully_subscribed": "成功订阅新闻通讯！",
+    "failed_to_subscribe": "订阅失败，请重试。",
+    "invalid_email": "请输入有效的邮箱地址",
+    "email_copied": "邮箱已复制"
   }
 }

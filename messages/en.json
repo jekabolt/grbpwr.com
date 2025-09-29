@@ -44,7 +44,8 @@
     "title": "catalog",
     "sort by": "sort by",
     "size": "size",
-    "next": "next"
+    "next": "next",
+    "empty": "nothing"
   },
   "product": {
     "model is": "model is",
@@ -159,13 +160,11 @@
     "VGW": "Very Gentle Wash"
   },
   "geo-suggest": {
-    "message": "We think you are in {country}. Update your location?",
-    "stay": "Stay {country}",
-    "switch": "Switch"
+    "message": "We think you are in {country}. Update your location?"
   },
   "update_location": {
     "message": "You are currently shopping on the {currentCountry}. When changing countries/regions your shopping bag will be emptied. Are you sure you want to proceed?",
-    "continue": "Continue to {country}",
+    "continue": "Continue to: {country}",
     "cancel": "Cancel"
   },
   "measurements-descriptions": {
@@ -302,6 +301,130 @@
     "mx": "mx",
     "mr": "mr",
     "i'd rather not say": "i'd rather not say",
-    "form submitted successfully": "form submitted successfully"
+    "form submitted successfully": "form submitted successfully",
+    "order status": "order status",
+    "delivery": "delivery",
+    "cancellation request": "cancellation request",
+    "invoice request": "invoice request",
+    "payment issue": "payment issue",
+    "website issue": "website issue",
+    "return process": "return process",
+    "refund request": "refund request",
+    "return in store": "return in store",
+    "return policy": "return policy",
+    "exchange request": "exchange request",
+    "pickup": "pickup",
+    "repair process": "repair process",
+    "repair status": "repair status",
+    "repair request": "repair request"
+  },
+  "errors": {
+    "firstName": {
+      "min": "first name must contain at least 1 character",
+      "max": "first name must contain at most 40 characters",
+      "regex": "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "lastName": {
+      "min": "last name must contain at least 1 character",
+      "max": "last name must contain at most 40 characters",
+      "regex": "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "phone": {
+      "min": "phone must contain at least 5 numbers",
+      "max": "phone must contain at most 15 numbers"
+    },
+    "city": {
+      "min": "city must contain at least 2 characters",
+      "regex": "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "address": {
+      "min": "address must contain at least 3 characters",
+      "max": "address must contain at most 40 characters",
+      "regex": "only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "postalCode": {
+      "min": "postal code must contain at least 2 characters",
+      "max": "postal code must contain at most 12 characters",
+      "regex": "postal code must contain only letters, numbers, spaces, or hyphens"
+    },
+    "country": {
+      "min": "country must contain at least 2 characters"
+    },
+    "company": {
+      "min": "company must contain at least 1 character",
+      "max": "company must contain at most 40 characters",
+      "regex": "only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "email": {
+      "invalid": "invalid email",
+      "max": "email must contain at most 40 characters"
+    },
+    "additionalAddress": {
+      "min": "additional address must contain at least 3 characters",
+      "max": "additional address must contain at most 40 characters",
+      "regex": "only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed"
+    },
+    "termsOfService": {
+      "required": "you must accept the terms and conditions to proceed"
+    },
+    "orderUuid": {
+      "required": "order reference is required"
+    }
+  },
+  "content": {
+    "legal notices": "legal notices",
+    "legal notice": "legal notice",
+    "privacy policy": "privacy policy",
+    "terms and conditions of use": "terms and conditions of use",
+    "terms and conditions of sale": "terms and conditions of sale",
+    "return and exchange policy": "return and exchange policy",
+    "cookie settings": "cookie settings",
+    "frequently asked questions": "frequently asked questions",
+    "placing an order": "placing an order, order tracking, returns policy, aftersale services and sustainable development."
+  },
+  "colors": {
+    "black": "black",
+    "white": "white",
+    "red": "red",
+    "blue": "blue",
+    "green": "green",
+    "navy": "navy",
+    "gray": "gray",
+    "yellow": "yellow",
+    "pink": "pink",
+    "beige": "beige",
+    "crimson": "crimson",
+    "orange": "orange",
+    "purple": "purple",
+    "teal": "teal",
+    "lime": "lime",
+    "silver": "silver",
+    "maroon": "maroon",
+    "olive": "olive",
+    "brown": "brown",
+    "gold": "gold",
+    "cyan": "cyan",
+    "magenta": "magenta",
+    "ivory": "ivory",
+    "coral": "coral",
+    "chocolate": "chocolate",
+    "mint green": "mint green",
+    "light blue": "light blue",
+    "peach": "peach",
+    "lavender": "lavender",
+    "turquoise": "turquoise",
+    "indigo": "indigo",
+    "mustard": "mustard",
+    "plum": "plum",
+    "violet": "violet",
+    "sand": "sand",
+    "off white": "off white",
+    "hot pink": "hot pink"
+  },
+  "toaster": {
+    "successfully_subscribed": "successfully subscribed to newsletter!",
+    "failed_to_subscribe": "failed to subscribe. please try again.",
+    "invalid_email": "please enter a valid email address",
+    "email_copied": "e-mail copied"
   }
 }

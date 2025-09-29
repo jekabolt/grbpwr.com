@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import * as Toast from "@radix-ui/react-toast";
+import { useTranslations } from "next-intl";
 
 import { Button } from "./button";
 import { Text } from "./text";
@@ -10,7 +11,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <Toast.Provider duration={4000}>
       {children}
-      <Toast.Viewport className="not-prose fixed inset-x-2.5 top-2.5 z-50 lg:top-14" />
+      <Toast.Viewport className="not-prose fixed inset-x-2.5 top-2.5 z-50 lg:top-2" />
     </Toast.Provider>
   );
 }
@@ -26,7 +27,7 @@ export function EmailToaster({
 }) {
   const [open, setOpen] = useState(false);
   const isEmail = title === "email";
-
+  const tToaster = useTranslations("toaster");
   return (
     <>
       <Button className={className} onClick={() => setOpen(true)}>
@@ -38,7 +39,9 @@ export function EmailToaster({
         onOpenChange={setOpen}
       >
         <Toast.Title>
-          <Text className="text-bgColor">{isEmail && "e-mail copied"}</Text>
+          <Text className="text-bgColor">
+            {isEmail && tToaster("email_copied")}
+          </Text>
         </Toast.Title>
       </Toast.Root>
     </>

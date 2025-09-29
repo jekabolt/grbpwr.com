@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import Input, { InputProps } from "@/components/ui/input";
@@ -28,6 +29,7 @@ export default function InputField({
   ...props
 }: Props) {
   const { control, trigger, setValue } = useFormContext();
+  const t = useTranslations("errors");
 
   function onBlur() {
     trigger(name);
@@ -76,7 +78,7 @@ export default function InputField({
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
+          <FormMessage translateError={t} fieldName={name} />
         </FormItem>
       )}
     />
