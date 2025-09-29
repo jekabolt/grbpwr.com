@@ -15,7 +15,7 @@ export function useAddressFields(prefix?: string) {
   const { watch, setValue, getValues, reset } = useFormContext();
   const { clearFormData } = useCheckoutStore((state) => state);
   const { handleCountrySelect } = useLocation();
-  const { countryCode } = useTranslationsStore((state) => state.country);
+  const { countryCode } = useTranslationsStore((state) => state.currentCountry);
 
   const countryFieldName = prefix ? `${prefix}.country` : "country";
   const phoneFieldName = prefix ? `${prefix}.phone` : "phone";

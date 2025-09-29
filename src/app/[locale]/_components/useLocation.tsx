@@ -18,12 +18,8 @@ export function useLocation({
 } = {}) {
   const pathname = usePathname();
 
-  const {
-    languageId,
-    country: currentCountry,
-    setCountry,
-    setLanguageId,
-  } = useTranslationsStore((state) => state);
+  const { languageId, currentCountry, setNextCountry, setLanguageId } =
+    useTranslationsStore((state) => state);
   const { setSelectedCurrency, closeCurrencyPopup } = useCurrency(
     (state) => state,
   );
@@ -69,7 +65,7 @@ export function useLocation({
 
   const handleCountrySelect = (country: any) => {
     setSelectedCurrency(country.currencyKey);
-    setCountry({
+    setNextCountry({
       name: country.name,
       countryCode: country.countryCode,
     });
@@ -77,19 +73,6 @@ export function useLocation({
     const newLanguageId = LANGUAGE_CODE_TO_ID[country.lng];
     if (newLanguageId !== undefined) {
       setLanguageId(newLanguageId);
-
-      const newLocale = LANGUAGE_ID_TO_LOCALE[newLanguageId];
-      if (newLocale) {
-        const pathWithoutLocaleCountry =
-          pathname.replace(
-            /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
-            "",
-          ) || "/";
-
-        const newPath = `/${country.countryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
-
-        window.location.href = newPath;
-      }
     }
 
     closeCurrencyPopup();

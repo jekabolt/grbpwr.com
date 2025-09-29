@@ -1,17 +1,22 @@
-import { common_Language } from "@/api/proto-http/frontend";
 
 export interface TranslationsState {
     languageId: number;
-    country: {
+    currentCountry: {
         name: string;
         countryCode: string;
     };
-    translations: { [key: string]: common_Language } | undefined;
+    nextCountry: {
+        name: string;
+        countryCode: string;
+    };
 }
 
 export interface TranslationsActions {
     setLanguageId: (languageId: number) => void;
-    setCountry: (country: { name: string; countryCode: string }) => void;
+    setNextCountry: (country: { name: string; countryCode: string }) => void;
+    applyNextCountry: () => void;
+    cancelNextCountry: () => void;
+    setCurrentCountry: (country: { name: string; countryCode: string }) => void;
 }
 
 export type TranslationsStore = TranslationsState & TranslationsActions;

@@ -91,7 +91,7 @@ async function submitNewOrder(newOrderData: common_OrderNew) {
 }
 
 export default function NewOrderForm() {
-  const { countryCode } = useTranslationsStore((state) => state.country);
+  const { countryCode } = useTranslationsStore((state) => state.currentCountry);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const t = useTranslations("checkout");

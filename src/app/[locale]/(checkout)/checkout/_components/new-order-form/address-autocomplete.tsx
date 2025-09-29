@@ -67,7 +67,9 @@ export default function AddressAutocomplete({
   const { setValue } = useFormContext();
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const t = useTranslations("checkout");
-  const storeCountryCode = useTranslationsStore((s) => s.country.countryCode);
+  const storeCountryCode = useTranslationsStore(
+    (s) => s.currentCountry.countryCode,
+  );
   const effectiveCountryCode = countryCode ?? storeCountryCode;
 
   useEffect(() => {

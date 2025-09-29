@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  COUNTRIES_BY_REGION,
-  CountryOption,
-  LANGUAGE_ID_TO_LOCALE,
-} from "@/constants";
+import { COUNTRIES_BY_REGION, LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
@@ -20,13 +16,7 @@ import FieldsGroupContainer from "../(checkout)/checkout/_components/new-order-f
 import { useLocation } from "./useLocation";
 import { useSearchCountries } from "./useSearchCountries";
 
-export function CountriesContent({
-  className,
-  onSelect,
-}: {
-  className?: string;
-  onSelect: (country: CountryOption) => void;
-}) {
+export function CountriesContent({ className }: { className?: string }) {
   const [openSection, setOpenSection] = useState<number | null>(null);
   const regionsWithCountries = Object.entries(COUNTRIES_BY_REGION);
   const t = useTranslations("countries-popup");
@@ -36,16 +26,19 @@ export function CountriesContent({
   );
   const { filteredCountries, query, searchQuery, handleSearch } =
     useSearchCountries();
-  const { country: currentCountry, languageId } = useTranslationsStore(
-    (state) => state,
-  );
-  const { languagesForCurrentCountry, handleChangeLocaleOnly } = useLocation({
+  const { currentCountry, languageId } = useTranslationsStore((s) => s);
+  const {
+    languagesForCurrentCountry,
+    handleChangeLocaleOnly,
+    handleCountrySelect,
+  } = useLocation({
     regionsWithCountries,
   });
 
   function toggleSection(index: number) {
     setOpenSection((prev) => (prev === index ? null : index));
   }
+
   return (
     <div className={cn("flex h-full flex-col justify-between", className)}>
       <div className="space-y-10 overflow-y-auto">
@@ -89,7 +82,7 @@ export function CountriesContent({
                 <Button
                   key={`${country.countryCode}-${country.name}-${country.lng}`}
                   className="flex w-full items-center justify-between px-4"
-                  onClick={() => onSelect(country)}
+                  onClick={() => handleCountrySelect(country)}
                 >
                   <div className="flex items-center gap-3">
                     <Text className="uppercase">{country.name}</Text>
@@ -128,7 +121,7 @@ export function CountriesContent({
                       <Button
                         key={`${region}-${country.name}-${country.lng}`}
                         className="flex w-full items-center justify-between px-4"
-                        onClick={() => onSelect(country)}
+                        onClick={() => handleCountrySelect(country)}
                       >
                         <div className="flex items-center gap-2">
                           <Text className="uppercase">{country.name}</Text>
