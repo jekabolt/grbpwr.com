@@ -4,6 +4,7 @@ import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
@@ -19,6 +20,7 @@ export default function ItemRow({
   index,
 }: Props) {
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const { languageId } = useTranslationsStore((state) => state);
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
   const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${convertPrice(product?.productPrice || "")}`;
   const priceWithSale = `${currencySymbols[selectedCurrency]} ${convertPrice(product?.productPriceWithSale || "")}`;
@@ -29,6 +31,9 @@ export default function ItemRow({
 
   const preorderDate = getPreorderDate(product, t);
   const rawPreorderDate = product.preorder;
+  const productName = product.translations?.find(
+    (t) => t.languageId === languageId,
+  )?.name;
 
   return (
     <Button asChild>
@@ -49,7 +54,7 @@ export default function ItemRow({
                   className="line-clamp-1 overflow-hidden text-ellipsis"
                   variant="uppercase"
                 >
-                  {product.productName}
+                  {productName}
                 </Text>
                 <div>
                   <Text variant="uppercase">

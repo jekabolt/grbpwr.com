@@ -501,7 +501,6 @@ export type OrderItem = {
   orderId: number | undefined;
   thumbnail: string | undefined;
   blurhash: string | undefined;
-  productName: string | undefined;
   productPrice: string | undefined;
   productPriceWithSale: string | undefined;
   productSalePercentage: string | undefined;
@@ -514,6 +513,7 @@ export type OrderItem = {
   sku: string | undefined;
   preorder: wellKnownTimestamp | undefined;
   orderItem: OrderItemInsert | undefined;
+  translations: ProductInsertTranslation[] | undefined;
 };
 
 export type OrderStatus = {
