@@ -7,7 +7,7 @@
     "cart": "carrello",
     "all": "tutto",
     "new in": "novità",
-    "checkout": "checkout",
+    "checkout": "pagamento",
     "close": "chiudi",
     "menu": "menu"
   },
@@ -27,7 +27,7 @@
     "not-found": "scusa, non abbiamo trovato risultati per la tua ricerca."
   },
   "newslatter": {
-    "mailing list": "mailing list",
+    "mailing list": "lista di distribuzione",
     "agree": "accetto di ricevere email. leggi la nostra informativa sulla privacy per maggiori informazioni.",
     "subscribe": "iscriviti",
     "email": "email"
