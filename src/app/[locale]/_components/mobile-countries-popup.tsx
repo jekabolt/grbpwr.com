@@ -3,7 +3,6 @@
 import { useState } from "react";
 import {
   COUNTRIES_BY_REGION,
-  CountryOption,
   currencySymbols,
   LANGUAGE_ID_TO_LOCALE,
 } from "@/constants";
@@ -22,16 +21,10 @@ import FieldsGroupContainer from "../(checkout)/checkout/_components/new-order-f
 import { useLocation } from "./useLocation";
 import { useSearchCountries } from "./useSearchCountries";
 
-export function MobileCountriesPopup({
-  onCountrySelect,
-}: {
-  onCountrySelect: (location: CountryOption) => void;
-}) {
+export function MobileCountriesPopup() {
   const { isOpen, selectedCurrency, closeCurrencyPopup, openCurrencyPopup } =
-    useCurrency((state) => state);
-  const { country: selectedCountry, languageId } = useTranslationsStore(
-    (state) => state,
-  );
+    useCurrency((s) => s);
+  const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const { query, filteredCountries, searchQuery, handleSearch } =
     useSearchCountries();
 
@@ -40,7 +33,11 @@ export function MobileCountriesPopup({
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const open = isMobile && isOpen;
 
-  const { languagesForCurrentCountry, handleChangeLocaleOnly } = useLocation({
+  const {
+    languagesForCurrentCountry,
+    handleChangeLocaleOnly,
+    handleCountrySelect,
+  } = useLocation({
     regionsWithCountries,
   });
 
@@ -59,7 +56,7 @@ export function MobileCountriesPopup({
       >
         <Text>{f("country")}:</Text>
         <Text>
-          {selectedCountry.name} / {currencySymbols[selectedCurrency]}
+          {currentCountry.name} / {currencySymbols[selectedCurrency]}
         </Text>
       </Button>
       <DialogPrimitives.Portal>
@@ -79,7 +76,7 @@ export function MobileCountriesPopup({
             <div className="space-y-8">
               <Text className="uppercase">
                 {t("text", {
-                  currentCountry: selectedCountry.name,
+                  currentCountry: currentCountry.name,
                   currency: selectedCurrency,
                 })}
               </Text>
@@ -114,7 +111,7 @@ export function MobileCountriesPopup({
                     <Button
                       key={`${country.countryCode}-${country.name}-${country.lng}`}
                       className="flex w-full items-center justify-between px-3"
-                      onClick={() => onCountrySelect(country)}
+                      onClick={() => handleCountrySelect(country)}
                     >
                       <div className="flex items-center gap-2">
                         <Text className="uppercase">{country.name}</Text>
@@ -153,7 +150,7 @@ export function MobileCountriesPopup({
                           <Button
                             key={`${region}-${country.name}-${country.lng}`}
                             className="flex w-full items-center justify-between px-3"
-                            onClick={() => onCountrySelect(country)}
+                            onClick={() => handleCountrySelect(country)}
                           >
                             <div className="flex items-center gap-2">
                               <Text className="uppercase">{country.name}</Text>

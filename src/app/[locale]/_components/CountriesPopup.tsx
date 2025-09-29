@@ -25,11 +25,6 @@ export function CountriesPopup() {
           </>
         )}
       </div>
-
-      {/* <UpdateLocation
-        selectedLocation={seletedLocation}
-        onCancel={cancelSelection}
-      /> */}
     </>
   );
 }
