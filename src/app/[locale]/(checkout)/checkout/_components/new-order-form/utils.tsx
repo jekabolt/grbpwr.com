@@ -4,6 +4,7 @@ import {
   common_OrderItemInsert,
   common_OrderNew,
 } from "@/api/proto-http/frontend";
+import { COUNTRIES_BY_REGION } from "@/constants";
 
 import { Dhl } from "@/components/ui/icons/dhl";
 import { Text } from "@/components/ui/text";
@@ -81,3 +82,28 @@ export const createShipmentCarrierIcon = (
       return null;
   }
 };
+
+export function getUniqueCountries() {
+  const countries = Object.values(COUNTRIES_BY_REGION).flat();
+  const countryMap = new Map();
+
+  for (const country of countries) {
+    const key = country.countryCode;
+    const existing = countryMap.get(key);
+
+    if (!existing || (existing.lng !== "en" && country.lng === "en")) {
+      countryMap.set(key, country);
+    }
+  }
+
+  return Array.from(countryMap.values());
+}
+
+export function findCountryByCode(
+  countries: ReturnType<typeof getUniqueCountries>,
+  countryCode: string,
+) {
+  return countries.find(
+    (c) => c.countryCode.toLowerCase() === countryCode.toLowerCase(),
+  );
+}

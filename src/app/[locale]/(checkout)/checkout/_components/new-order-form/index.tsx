@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
@@ -90,12 +91,14 @@ async function submitNewOrder(newOrderData: common_OrderNew) {
 }
 
 export default function NewOrderForm() {
+  const { countryCode } = useTranslationsStore((state) => state.country);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const t = useTranslations("checkout");
 
   const defaultValues = {
     ...defaultData,
+    country: countryCode,
     // promoCustomConditions: {
     //   totalSale: order?.totalSale,
     //   subtotal: order?.subtotal,
@@ -111,6 +114,13 @@ export default function NewOrderForm() {
   const { clearFormData } = useOrderPersistence(form);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
+
+  useEffect(() => {
+    const currentCountry = form.getValues("country");
+    if (countryCode && !currentCountry) {
+      form.setValue("country", countryCode, { shouldValidate: true });
+    }
+  }, [countryCode, form, clearFormData]);
 
   useEffect(() => {
     const subscription = form.watch((_, { name }) => {
