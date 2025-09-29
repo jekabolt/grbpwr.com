@@ -4,13 +4,14 @@ import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Overlay } from "@/components/ui/overlay";
 
 import { CountriesContent } from "./CountriesContent";
+import { MobileCountriesPopup } from "./mobile-countries-popup";
 
 export function CountriesPopup() {
   const { isOpen, closeCurrencyPopup } = useCurrency((state) => state);
 
   return (
     <>
-      {/* <MobileCountriesPopup onCountrySelect={handleSelection} /> */}
+      <MobileCountriesPopup />
       <div className="hidden lg:block">
         {isOpen && (
           <>
