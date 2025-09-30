@@ -1,7 +1,7 @@
 "use client";
 
 import { common_Dictionary } from "@/api/proto-http/frontend";
-import { keyboardRestrictions } from "@/constants";
+import { COUNTRIES_BY_REGION, keyboardRestrictions } from "@/constants";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
@@ -14,7 +14,6 @@ import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
 
 import AddressAutocomplete from "./address-autocomplete";
-import { countries } from "./constants";
 import FieldsGroupContainer from "./fields-group-container";
 import { useAddressFields } from "./hooks/useAddressFields";
 import { createShipmentCarrierIcon } from "./utils";
@@ -96,7 +95,8 @@ export function AddressFields({
   prefix?: string;
   disabled?: boolean;
 }) {
-  const { phoneCodeItems, stateItems } = useAddressFields(prefix);
+  const { phoneCodeItems, stateItems, countries, handleCountryChange } =
+    useAddressFields(prefix);
   const t = useTranslations("checkout");
 
   return (
@@ -136,8 +136,12 @@ export function AddressFields({
         fullWidth
         name={prefix ? `${prefix}.country` : "country"}
         label={t("country/region:")}
-        items={countries}
+        items={countries.map((c) => ({
+          label: c.name,
+          value: c.countryCode,
+        }))}
         disabled={disabled}
+        onValueChange={handleCountryChange}
       />
 
       {stateItems.length > 0 && (
@@ -220,6 +224,7 @@ function Summary({
   } = watch();
 
   const name = [firstName, lastName].filter(Boolean).join(" ");
+  const countries = Object.values(COUNTRIES_BY_REGION).flat();
   const phoneOrCompany = [phone && `+${phone}`, company]
     .filter(Boolean)
     .join(" ");
@@ -227,7 +232,7 @@ function Summary({
   const countryInfo = [
     city,
     state,
-    countries.find((c) => c.value === country)?.label,
+    countries.find((c) => c.countryCode === country)?.name,
     postalCode,
   ]
     .filter(Boolean)

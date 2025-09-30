@@ -16,6 +16,8 @@ import { ToastProvider } from "@/components/ui/toaster";
 
 import "../globals.css";
 
+import { UpdateLocation } from "@/components/ui/update-location";
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -60,6 +62,7 @@ export default async function RootLayout({ children, params }: Props) {
           <ToastProvider>
             <div className="lightTheme relative min-h-screen">{children}</div>
             <GeoSuggestWrapper />
+            <UpdateLocation />
             <CookieBanner />
           </ToastProvider>
         </NextIntlClientProvider>

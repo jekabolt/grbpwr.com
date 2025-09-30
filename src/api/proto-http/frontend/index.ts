@@ -568,7 +568,6 @@ export type common_OrderItem = {
   orderId: number | undefined;
   thumbnail: string | undefined;
   blurhash: string | undefined;
-  productName: string | undefined;
   productPrice: string | undefined;
   productPriceWithSale: string | undefined;
   productSalePercentage: string | undefined;
@@ -581,6 +580,7 @@ export type common_OrderItem = {
   sku: string | undefined;
   preorder: wellKnownTimestamp | undefined;
   orderItem: common_OrderItemInsert | undefined;
+  translations: common_ProductInsertTranslation[] | undefined;
 };
 
 // Payment represents the payment table

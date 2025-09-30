@@ -45,7 +45,7 @@ function LiveClock() {
 
 export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
   const { selectedCurrency, openCurrencyPopup } = useCurrency((state) => state);
-  const { country } = useTranslationsStore((state) => state);
+  const { currentCountry } = useTranslationsStore((state) => state);
   const t = useTranslations("footer");
   return (
     <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
@@ -92,7 +92,8 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
             className="hidden uppercase lg:block"
             onClick={openCurrencyPopup}
           >
-            {t("country")}: {country.name} / {currencySymbols[selectedCurrency]}
+            {t("country")}: {currentCountry.name} /{" "}
+            {currencySymbols[selectedCurrency]}
           </Button>
           <CountriesPopup />
         </div>

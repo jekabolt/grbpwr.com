@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { COUNTRIES_BY_REGION } from "@/constants";
+import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 import { useLocale, useTranslations } from "next-intl";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { getCountryName } from "@/lib/utils";
-import { useLocation } from "@/app/[locale]/_components/useLocation";
 
 import { Banner } from "./banner";
 import { Button } from "./button";
@@ -25,13 +26,17 @@ export function GeoSuggestBanner({
   currentCountry,
   messages,
 }: Props) {
-  const { handleCountrySelect } = useLocation();
   const [visible, setVisible] = useState(false);
   const [isCookiesAccepted, setIsCookiesAccepted] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
   const defaultT = useTranslations("geo-suggest");
+
+  const { setCurrentCountry, setLanguageId } = useTranslationsStore(
+    (state) => state,
+  );
+  const { setSelectedCurrency } = useCurrency((state) => state);
 
   const t =
     messages && messages["geo-suggest"]
@@ -87,12 +92,21 @@ export function GeoSuggestBanner({
       }
 
       if (countryData) {
-        handleCountrySelect(countryData);
-      } else {
-        const url = new URL(window.location.href);
-        url.searchParams.set("geo", "accept");
-        router.push(url.toString());
+        setCurrentCountry({
+          name: countryData.name,
+          countryCode: countryData.countryCode,
+        });
+
+        const newLanguageId = LANGUAGE_CODE_TO_ID[countryData.lng];
+        if (newLanguageId !== undefined) {
+          setLanguageId(newLanguageId);
+        }
+
+        setSelectedCurrency(countryData.currencyKey);
       }
+      const url = new URL(window.location.href);
+      url.searchParams.set("geo", "accept");
+      window.location.href = url.toString();
     }
   };
 

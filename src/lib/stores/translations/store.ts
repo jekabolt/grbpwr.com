@@ -6,8 +6,8 @@ import { TranslationsState, TranslationsStore } from "./store-types";
 
 export const defaultInitState: TranslationsState = {
     languageId: 1, // english
-    country: { name: "united states", countryCode: "US" },
-    translations: undefined,
+    currentCountry: { name: "united states", countryCode: "US" },
+    nextCountry: { name: "", countryCode: "" },
 };
 
 export const createTranslationsStore = (initState: TranslationsState = defaultInitState) => {
@@ -17,7 +17,21 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                 ...initState,
 
                 setLanguageId: (languageId: number) => set({ languageId }),
-                setCountry: (country: { name: string; countryCode: string }) => set({ country }),
+                setNextCountry: (country: { name: string; countryCode: string }) =>
+                    set({ nextCountry: country }),
+                applyNextCountry: () => {
+                    const { nextCountry, languageId } = get();
+                    if (nextCountry.name && nextCountry.countryCode) {
+                        set({
+                            currentCountry: nextCountry,
+                            nextCountry: { name: "", countryCode: "" }
+                        });
+                    }
+                },
+                setCurrentCountry: (country: { name: string; countryCode: string }) =>
+                    set({ currentCountry: country }),
+                cancelNextCountry: () =>
+                    set({ nextCountry: { name: "", countryCode: "" } }),
             }),
             {
                 name: "translations-store",
@@ -29,7 +43,8 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                 },
                 partialize: (state) => ({
                     languageId: state.languageId,
-                    country: state.country,
+                    currentCountry: state.currentCountry,
+                    nextCountry: state.nextCountry,
                 }),
             }
         )
