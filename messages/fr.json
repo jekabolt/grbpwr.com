@@ -44,8 +44,19 @@
     "title": "catalogue",
     "sort by": "trier par",
     "size": "taille",
+    "shoe size": "taille de chaussure",
+    "filter": "filtrer",
     "next": "suivant",
-    "empty": "vide"
+    "empty": "vide",
+    "clear all": "tout effacer",
+    "show": "afficher",
+    "sort": {
+      "latest arrivals": "dernières arrivées",
+      "price": "prix",
+      "low to high": "croissant",
+      "high to low": "décroissant",
+      "sale": "soldes"
+    }
   },
   "product": {
     "model is": "modèle est",

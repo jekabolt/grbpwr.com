@@ -1,10 +1,12 @@
 "use client";
 
 import { common_Size } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 export default function FilterOptionButtons({
   handleFilterChange,
@@ -20,6 +22,7 @@ export default function FilterOptionButtons({
   const { dictionary } = useDataContext();
 
   const categories = dictionary?.categories;
+  const t = useTranslations("catalog");
 
   const category = topCategoryId
     ? categories?.find((c) => c.id === parseInt(topCategoryId))
@@ -63,13 +66,23 @@ export default function FilterOptionButtons({
       })}
     >
       {showNonNumeric && (
-        <div className="grid grid-cols-4 gap-x-2 gap-y-5">
-          {nonNumericValues.map(renderButton)}
+        <div className="space-y-6">
+          <Text variant="uppercase" className="text-textInactiveColor">
+            {t("size")}
+          </Text>
+          <div className="grid grid-cols-4 gap-x-2 gap-y-5">
+            {nonNumericValues.map(renderButton)}
+          </div>
         </div>
       )}
       {showNumeric && (
-        <div className="grid grid-cols-4 gap-x-2 gap-y-5">
-          {numericValues.map(renderButton)}
+        <div className="space-y-6">
+          <Text variant="uppercase" className="text-textInactiveColor">
+            {t("shoe size")}
+          </Text>
+          <div className="grid grid-cols-4 gap-x-2 gap-y-5">
+            {numericValues.map(renderButton)}
+          </div>
         </div>
       )}
     </div>

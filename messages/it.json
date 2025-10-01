@@ -44,8 +44,19 @@
     "title": "catalogo",
     "sort by": "ordina per",
     "size": "taglia",
+    "shoe size": "taglia scarpa",
+    "filter": "filtro",
     "next": "avanti",
-    "empty": "vuoto"
+    "empty": "vuoto",
+    "clear all": "tutto rimuovere",
+    "show": "mostrare",
+    "sort": {
+      "latest arrivals": "ultimi arrivi",
+      "price": "prezzo",
+      "low to high": "dal basso all'alto",
+      "high to low": "dall'alto al basso",
+      "sale": "saldi"
+    }
   },
   "product": {
     "model is": "modello è",
