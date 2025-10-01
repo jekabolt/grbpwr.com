@@ -83,12 +83,12 @@ export function Filter({
             <div className="flex h-full flex-col justify-between">
               <div className="space-y-10">
                 <div className="flex items-center justify-between">
-                  <Text variant="uppercase">filter</Text>
+                  <Text variant="uppercase">{t("filter")}</Text>
                   <Button onClick={toggleModal}>[x]</Button>
                 </div>
                 <div className="space-y-6">
                   <Text variant="uppercase" className="text-textInactiveColor">
-                    sort by
+                    {t("sort by")}
                   </Text>
                   <Sort />
                 </div>
@@ -110,7 +110,7 @@ export function Filter({
                       handleFilterChange(undefined);
                     }}
                   >
-                    clear all
+                    {t("clear all")}
                   </Button>
                   <Button
                     className="w-full uppercase"
@@ -118,7 +118,7 @@ export function Filter({
                     variant="main"
                     onClick={() => handleShowSize(selectedSize)}
                   >
-                    show {selectedSize && total > 0 ? `[${total}]` : ""}
+                    {t("show")} {selectedSize && total > 0 ? `[${total}]` : ""}
                   </Button>
                 </div>
               )}

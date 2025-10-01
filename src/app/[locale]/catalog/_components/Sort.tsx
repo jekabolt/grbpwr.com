@@ -58,7 +58,7 @@ export default function Sort() {
                   isSortValuesMatch && isOrderValuesMatch && isSaleValuesMatch,
               })}
             >
-              {getButtonText(sortData, orderFactor)}
+              {getButtonText(sortData, orderFactor, t)}
             </Button>
           );
         }),

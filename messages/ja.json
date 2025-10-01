@@ -44,8 +44,19 @@
     "title": "カタログ",
     "sort by": "並び替え",
     "size": "サイズ",
+    "shoe size": "シューズサイズ",
+    "filter": "フィルター",
     "next": "次へ",
-    "empty": "空"
+    "empty": "空",
+    "clear all": "すべてクリア",
+    "show": "表示",
+    "sort": {
+      "latest arrivals": "新着アイテム",
+      "price": "価格",
+      "low to high": "安い順",
+      "high to low": "高い順",
+      "sale": "セール"
+    }
   },
   "product": {
     "model is": "モデルは",

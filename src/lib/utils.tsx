@@ -36,10 +36,12 @@ export function calculateAspectRatio(
 export const getButtonText = (
   sortData: SortFactorConfig,
   orderFactor: OrderFactorOption,
+  t: (key: string) => string,
 ): string => {
   const saleFactor = orderFactor.sale;
-  const label = sortData.label ? `${sortData.label}: ` : "";
-  return `${saleFactor ? "sale: " : label}${orderFactor.name}`;
+  const label = sortData.label ? `${t(sortData.label)}: ` : "";
+  const salePrefix = saleFactor ? `${t("sort.sale")}: ` : "";
+  return `${saleFactor ? salePrefix : label}${t(orderFactor.name)}`;
 };
 
 export function getFullComposition(composition: string | undefined): string[] {

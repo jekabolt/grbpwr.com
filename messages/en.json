@@ -44,8 +44,19 @@
     "title": "catalog",
     "sort by": "sort by",
     "size": "size",
+    "shoe size": "shoe size",
+    "filter": "filter",
     "next": "next",
-    "empty": "nothing"
+    "empty": "nothing",
+    "clear all": "clear all",
+    "show": "show",
+    "sort": {
+      "latest arrivals": "latest arrivals",
+      "price": "price",
+      "low to high": "low to high",
+      "high to low": "high to low",
+      "sale": "sale"
+    }
   },
   "product": {
     "model is": "model is",

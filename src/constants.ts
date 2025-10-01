@@ -113,16 +113,16 @@ export type SortFactorConfig = {
 export const SORT_MAP: Partial<Record<common_SortFactor, SortFactorConfig>> = {
   SORT_FACTOR_CREATED_AT: {
     orderFactors: [
-      { factor: 'ORDER_FACTOR_DESC', name: 'latest arrivals' }
+      { factor: 'ORDER_FACTOR_DESC', name: 'sort.latest arrivals' }
     ]
   },
   SORT_FACTOR_PRICE: {
-    label: 'price',
+    label: 'sort.price',
     orderFactors: [
-      { factor: 'ORDER_FACTOR_ASC', name: 'low to high' },
-      { factor: 'ORDER_FACTOR_DESC', name: 'high to low' },
-      { factor: 'ORDER_FACTOR_ASC', name: 'low to high', sale: true },
-      { factor: 'ORDER_FACTOR_DESC', name: 'high to low', sale: true }
+      { factor: 'ORDER_FACTOR_ASC', name: 'sort.low to high' },
+      { factor: 'ORDER_FACTOR_DESC', name: 'sort.high to low' },
+      { factor: 'ORDER_FACTOR_ASC', name: 'sort.low to high', sale: true },
+      { factor: 'ORDER_FACTOR_DESC', name: 'sort.high to low', sale: true }
     ]
   },
 };

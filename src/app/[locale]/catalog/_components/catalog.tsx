@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { common_GenderEnum, common_Product } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import {
   getCategoryDescription,
@@ -30,6 +31,7 @@ export default function Catalog({
   const { gender, topCategory } = useRouteParams();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const t = useTranslations("catalog");
 
   const activeTopCategory = getTopCategoryName(
     dictionary?.categories || [],
@@ -50,7 +52,7 @@ export default function Catalog({
       <div className="sticky top-20 z-10 flex items-start justify-between text-bgColor mix-blend-exclusion">
         <Categories />
         <Button className="flex w-auto uppercase" onClick={toggleModal}>
-          filter +
+          {t("filter")} +
         </Button>
       </div>
       <Filter isModalOpen={isModalOpen} toggleModal={toggleModal} />
