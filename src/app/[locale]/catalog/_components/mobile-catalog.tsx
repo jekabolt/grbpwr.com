@@ -13,8 +13,7 @@ import { InfinityScrollCatalog } from "@/app/[locale]/catalog/_components/infini
 
 import { Categories } from "./categories/categories";
 import { EmptyCatalog } from "./empty-catalog";
-import { MobileSize } from "./mobile-size";
-import { MobileSort } from "./mobile-sort";
+import { MobileFilter } from "./mobile-filter";
 import { useRouteParams } from "./useRouteParams";
 
 export function MobileCatalog({
@@ -43,10 +42,7 @@ export function MobileCatalog({
         <div className="w-full overflow-x-auto">
           <Categories />
         </div>
-        <div className="flex w-full justify-between py-3">
-          <MobileSort />
-          <MobileSize />
-        </div>
+        <MobileFilter />
       </div>
       {total > 0 ? (
         <div>
