@@ -1,6 +1,7 @@
 import type { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols, EMPTY_PREORDER } from "@/constants";
 
+import { selectItemEvent } from "@/lib/analitycs/catalog";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
@@ -8,22 +9,27 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
+import { useAnalytics } from "../catalog/_components/useAnalytics";
+
 export function ProductItem({
   product,
   className,
   isInfoVisible = true,
+  index,
 }: {
   product: common_Product;
   className: string;
   isInfoVisible?: boolean;
+  index?: number;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const { listName, listId } = useAnalytics();
+
   const currentTranslation =
     product.productDisplay?.productBody?.translations?.find(
       (t) => t.languageId === languageId,
     );
-
   const salePercentage =
     product.productDisplay?.productBody?.productBodyInsert?.salePercentage
       ?.value;
@@ -44,10 +50,15 @@ export function ProductItem({
   const preorder =
     product.productDisplay?.productBody?.productBodyInsert?.preorder;
 
+  function handleSelectItemEvent() {
+    selectItemEvent(product, listName, listId, index || 0);
+  }
+
   return (
     <div className={cn("relative", className)}>
       <AnimatedButton
         href={product?.slug || ""}
+        onMouseDown={handleSelectItemEvent}
         className={cn("group flex h-full w-full flex-col", className)}
       >
         <div className="relative">
