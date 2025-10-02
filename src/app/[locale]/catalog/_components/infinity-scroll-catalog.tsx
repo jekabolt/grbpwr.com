@@ -6,12 +6,14 @@ import type { common_Product } from "@/api/proto-http/frontend";
 import { CATALOG_LIMIT } from "@/constants";
 import { useInView } from "react-intersection-observer";
 
+import { sendViewItemListEvent } from "@/lib/analitycs/catalog";
 import { serviceClient } from "@/lib/api";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import ProductsGrid from "@/app/[locale]/_components/product-grid";
 import { getProductsPagedQueryParams } from "@/app/[locale]/catalog/_components/utils";
 
+import { useAnalytics } from "./useAnalytics";
 import { useRouteParams } from "./useRouteParams";
 
 export function InfinityScrollCatalog({
@@ -25,10 +27,13 @@ export function InfinityScrollCatalog({
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
   const { gender, topCategory, subCategory } = useRouteParams();
+  const { listName, listId } = useAnalytics();
+  const { ref, inView } = useInView();
+
   const [items, setItems] = useState<common_Product[]>(firstPageItems);
   const [isLoading, setIsLoading] = useState(false);
   const [currentTotal, setCurrentTotal] = useState(total);
-  const { ref, inView } = useInView();
+
   const pageRef = useRef(2);
   const hasMoreRef = useRef(total >= CATALOG_LIMIT);
   const isRefetchingRef = useRef(false);
@@ -40,7 +45,13 @@ export function InfinityScrollCatalog({
     pageRef.current = 2;
     setIsLoading(false);
     isRefetchingRef.current = false;
-  }, [firstPageItems, total]);
+
+    if (firstPageItems.length > 0) {
+      setTimeout(() => {
+        sendViewItemListEvent(firstPageItems, listName, listId);
+      }, 100);
+    }
+  }, [firstPageItems, total, listName, listId]);
 
   // Refetch data when languageId changes
   useEffect(() => {
@@ -66,10 +77,15 @@ export function InfinityScrollCatalog({
           ),
         });
 
-        setItems(response.products || []);
+        const newProducts = response.products || [];
+        setItems(newProducts);
         setCurrentTotal(response.total || 0);
         hasMoreRef.current = (response.total || 0) >= CATALOG_LIMIT;
         pageRef.current = 2;
+
+        if (newProducts.length > 0) {
+          sendViewItemListEvent(newProducts, listName, listId);
+        }
       } catch (error) {
         console.error("Failed to fetch data on language change:", error);
       } finally {
@@ -107,10 +123,19 @@ export function InfinityScrollCatalog({
           ),
         });
 
-        setItems(response.products || []);
+        const newProducts = response.products || [];
+        setItems(newProducts);
         setCurrentTotal(response.total || 0);
         hasMoreRef.current = (response.total || 0) >= CATALOG_LIMIT;
         pageRef.current = 2;
+
+        if (newProducts.length > 0) {
+          sendViewItemListEvent(
+            newProducts,
+            `Filtered ${listName}`,
+            `filtered_${listId}`,
+          );
+        }
       } catch (error) {
         console.error("Failed to fetch filtered data:", error);
       } finally {
@@ -147,11 +172,23 @@ export function InfinityScrollCatalog({
         ),
       });
 
+      const newProducts = response.products || [];
       pageRef.current += 1;
+
       setItems((prevItems) => {
-        const newItems = [...prevItems, ...(response.products || [])];
-        hasMoreRef.current = newItems.length < currentTotal;
-        return newItems;
+        const updatedItems = [...prevItems, ...newProducts];
+        hasMoreRef.current = updatedItems.length < currentTotal;
+
+        // Отправляем событие view_item_list только для новых загруженных товаров
+        if (newProducts.length > 0) {
+          sendViewItemListEvent(
+            newProducts,
+            `${listName} - Page ${pageRef.current - 1}`,
+            `${listId}_page_${pageRef.current - 1}`,
+          );
+        }
+
+        return updatedItems;
       });
     } catch (error) {
       console.error("Failed to fetch data:", error);
