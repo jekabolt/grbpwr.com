@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
+import { sendViewItemEvent } from "@/lib/analitycs/product";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Text } from "@/components/ui/text";
 import Modal from "@/app/[locale]/product/[...productParams]/_components/MeasurementPopup";
 
@@ -18,6 +20,8 @@ import { useProductSizes } from "./utils/useProductSizes";
 
 export function ProductInfo({ product }: { product: common_ProductFull }) {
   const sizePickerRef = useRef<HTMLDivElement>(null);
+  const { selectedCurrency } = useCurrency((s) => s);
+
   const { name, productId } = useProductBasics({
     product,
   });
@@ -32,6 +36,12 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
+
+  useEffect(() => {
+    if (product && selectedCurrency) {
+      sendViewItemEvent(selectedCurrency, product);
+    }
+  }, [product, selectedCurrency]);
 
   return (
     <div className="relative">

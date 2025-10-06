@@ -3,8 +3,10 @@
 import { useEffect, useRef } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
+import { sendViewItemEvent } from "@/lib/analitycs/product";
 import { useElementHeight } from "@/lib/hooks/useBottomSheet";
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Text } from "@/components/ui/text";
 
@@ -27,6 +29,7 @@ export function MobileProductInfo({
 }) {
   const { name, productId } = useProductBasics({ product });
   const { closeCart } = useCart((state) => state);
+  const { selectedCurrency } = useCurrency((s) => s);
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const {
     activeSizeId,
@@ -52,6 +55,12 @@ export function MobileProductInfo({
   useEffect(() => {
     closeCart();
   }, [closeCart]);
+
+  useEffect(() => {
+    if (product && selectedCurrency) {
+      sendViewItemEvent(selectedCurrency, product);
+    }
+  }, [product, selectedCurrency]);
 
   return (
     <div className="relative h-full overflow-y-hidden">
