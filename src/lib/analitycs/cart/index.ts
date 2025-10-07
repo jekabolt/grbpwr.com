@@ -60,12 +60,40 @@ export function sendViewCartEvent(currency: string, products: common_OrderItem[]
             items: products.map((p) => ({
                 item_id: p.sku || "",
                 item_name: p.translations?.[0]?.name || "",
-                discount: parseFloat(p.productPriceWithSale || "0"),
+                discount: (parseFloat(p.productPrice || "0") * parseFloat(p.productSalePercentage || "0")) / 100,
                 item_brand: p.productBrand,
                 item_variant: p.color,
                 price: parseFloat(p.productPrice || "0"),
                 quantity: p.orderItem?.quantity || 1
             }))
+        },
+    });
+}
+
+export function sendRemoveFromCartEvent(
+    currency: string,
+    product: common_OrderItem,
+) {
+    if (typeof window === "undefined" || !product) return;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+
+    window.dataLayer.push({
+        event: "remove_from_cart",
+        ecommerce: {
+            currency: currency,
+            value: product.productPriceWithSale,
+            items: [
+                {
+                    item_id: product.sku,
+                    item_name: product.translations?.[0]?.name,
+                    item_brand: product.productBrand,
+                    item_variant: product.color,
+                    price: product.productPrice,
+                    quantity: product.orderItem?.quantity,
+                },
+            ],
         },
     });
 }
