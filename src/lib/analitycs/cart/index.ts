@@ -2,7 +2,7 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { getTotalProductQuantity, getTotalProductValue } from "@/lib/utils";
 
-export function sendViewItemEvent(
+export function sendAddToCartEvent(
     currency: string,
     product: common_ProductFull,
     price: number,
@@ -11,27 +11,25 @@ export function sendViewItemEvent(
 ) {
     const productBody =
         product.product?.productDisplay?.productBody?.productBodyInsert;
+    const translation =
+        product.product?.productDisplay?.productBody?.translations?.[0];
     const salePercentage = parseInt(productBody?.salePercentage?.value || "0");
     const discount = (price * salePercentage) / 100;
     const totalValue = getTotalProductValue(product);
     const totalQuantity = getTotalProductQuantity(product);
 
-    if (typeof window === "undefined" || !product) return;
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
 
     window.dataLayer.push({
-        event: "view_item",
+        event: "add_to_cart",
         ecommerce: {
             currency: currency,
             value: totalValue,
             items: [
                 {
-                    item_id: product.product?.sku || "",
-                    item_name:
-                        product.product?.productDisplay?.productBody?.translations?.[0]
-                            .name || "",
+                    item_id: product.product?.id,
+                    item_name: translation?.name || "",
                     affiliation: "GRBPWR STORE",
                     discount: discount,
                     index: product.product?.id,
