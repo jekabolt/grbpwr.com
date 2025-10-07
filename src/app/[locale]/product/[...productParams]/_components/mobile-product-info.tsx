@@ -48,7 +48,7 @@ export function MobileProductInfo({
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
-  const { price } = useProductPricing({ product });
+  const { priceNumber } = useProductPricing({ product });
   const containerRef = useRef<HTMLDivElement>(null!);
   const mainAreaRef = useRef<HTMLDivElement>(null!);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
@@ -60,7 +60,7 @@ export function MobileProductInfo({
 
   useEffect(() => {
     if (product && selectedCurrency) {
-      sendViewItemEvent(selectedCurrency, product, Number(price));
+      sendViewItemEvent(selectedCurrency, product, priceNumber);
     }
   }, [product, selectedCurrency]);
 

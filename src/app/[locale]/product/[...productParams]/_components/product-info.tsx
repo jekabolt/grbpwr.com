@@ -27,7 +27,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     product,
   });
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
-  const { price } = useProductPricing({ product });
+  const { priceNumber } = useProductPricing({ product });
   const { activeSizeId, isLoading, handleSizeSelect, handleAddToCart } =
     useHandlers({
       id: productId,
@@ -41,7 +41,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
 
   useEffect(() => {
     if (product && selectedCurrency) {
-      sendViewItemEvent(selectedCurrency, product, Number(price));
+      sendViewItemEvent(selectedCurrency, product, priceNumber);
     }
   }, [product, selectedCurrency]);
 
