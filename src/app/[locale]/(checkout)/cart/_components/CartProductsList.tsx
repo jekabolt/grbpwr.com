@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
 import { common_OrderItem } from "@/api/proto-http/frontend";
 
+import { sendViewCartEvent } from "@/lib/analitycs/cart";
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import ItemRow from "@/app/[locale]/(checkout)/cart/_components/ItemRow";
 
 export default function CartProductsList({
@@ -11,6 +14,13 @@ export default function CartProductsList({
 }: Props) {
   const products = useCart((state) => state.products).map((v) => v.productData);
   const finalProducts = validatedProducts || products;
+  const { selectedCurrency } = useCurrency((state) => state);
+
+  useEffect(() => {
+    if (finalProducts && selectedCurrency) {
+      sendViewCartEvent(selectedCurrency, finalProducts as common_OrderItem[]);
+    }
+  }, [finalProducts, selectedCurrency]);
 
   return (
     <>

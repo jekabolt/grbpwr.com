@@ -1,8 +1,11 @@
 "use client";
 
+import { common_OrderItem } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
+import { sendRemoveFromCartEvent } from "@/lib/analitycs/cart";
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
@@ -11,10 +14,17 @@ type Props = {
   id: number;
   size: string;
   index?: number;
+  product: common_OrderItem;
 };
 
-export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
+export default function ProductRemoveButton({
+  id,
+  size,
+  index = 0,
+  product,
+}: Props) {
   const t = useTranslations("cart");
+  const { selectedCurrency } = useCurrency((state) => state);
   const { removeProduct, productToRemove, setProductToRemove } = useCart(
     (state) => state,
   );
@@ -31,6 +41,7 @@ export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
 
     if (isRemoveConfirmed) {
       removeProduct(id, size, index);
+      sendRemoveFromCartEvent(selectedCurrency, product);
       setProductToRemove(null);
     } else {
       setProductToRemove({ id, size, index });

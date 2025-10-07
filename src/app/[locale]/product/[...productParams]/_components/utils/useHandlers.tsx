@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
-// import { pushAddToCartEvent } from "@/lib/gtm";
+import { sendAddToCartEvent } from "@/lib/analitycs/cart";
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 
 import { useDisabled } from "./useDisabled";
+import { useProductBasics } from "./useProductBasics";
+import { useProductPricing } from "./useProductPricing";
 
 export function useHandlers({
   id,
@@ -18,10 +21,18 @@ export function useHandlers({
   product?: common_ProductFull;
 }) {
   const { increaseQuantity, openCart } = useCart((state) => state);
+  const { selectedCurrency } = useCurrency((s) => s);
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const { isMaxQuantity } = useDisabled({ id, activeSizeId });
   const [isLoading, setIsLoading] = useState(false);
   const [isMobileSizeDialogOpen, setIsMobileSizeDialogOpen] = useState(false);
+
+  const { productCategory, productSubCategory } = useProductBasics({
+    product: product as common_ProductFull,
+  });
+  const { priceNumber } = useProductPricing({
+    product: product as common_ProductFull,
+  });
 
   // Auto-select size for one-size products
   useEffect(() => {
@@ -43,10 +54,16 @@ export function useHandlers({
     try {
       await increaseQuantity(id, activeSizeId?.toString() || "", 1);
 
-      // // Trigger GTM event after successful cart addition
-      // if (product && activeSizeId) {
-      //   pushAddToCartEvent(product, activeSizeId.toString(), 1);
-      // }
+      // Send add to cart analytics event
+      if (product && selectedCurrency) {
+        sendAddToCartEvent(
+          selectedCurrency,
+          product,
+          priceNumber,
+          productCategory || "",
+          productSubCategory || "",
+        );
+      }
 
       openCart();
       return true;
@@ -64,10 +81,16 @@ export function useHandlers({
       try {
         await increaseQuantity(id, sizeId.toString(), 1);
 
-        // // Trigger GTM event after successful cart addition
-        // if (product) {
-        //   pushAddToCartEvent(product, sizeId.toString(), 1);
-        // }
+        // Send add to cart analytics event
+        if (product && selectedCurrency) {
+          sendAddToCartEvent(
+            selectedCurrency,
+            product,
+            priceNumber,
+            productCategory || "",
+            productSubCategory || "",
+          );
+        }
 
         openCart();
         return true;

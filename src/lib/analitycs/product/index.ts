@@ -1,38 +1,6 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
-import { currencySymbols } from "@/constants";
 
-export function getTotalProductQuantity(product: common_ProductFull): number {
-    if (!product?.sizes || product.sizes.length === 0) {
-        return 0;
-    }
-
-    return product.sizes.reduce((total, size) => {
-        const quantity = parseInt(size.quantity?.value || "0");
-        return total + quantity;
-    }, 0);
-}
-
-export function getTotalProductValue(product: common_ProductFull): number {
-    if (!product?.sizes || product.sizes.length === 0) {
-        return 0;
-    }
-
-    const price = parseInt(
-        product.product?.productDisplay?.productBody?.productBodyInsert?.price
-            ?.value || "0",
-    );
-    const salePercentage = parseInt(
-        product.product?.productDisplay?.productBody?.productBodyInsert
-            ?.salePercentage?.value || "0",
-    );
-    const finalPrice =
-        salePercentage > 0 ? price - (price * salePercentage) / 100 : price;
-
-    return product.sizes.reduce((total, size) => {
-        const quantity = parseInt(size.quantity?.value || "0");
-        return total + quantity * finalPrice;
-    }, 0);
-}
+import { getTotalProductQuantity, getTotalProductValue } from "@/lib/utils";
 
 export function sendViewItemEvent(
     currency: string,
@@ -43,10 +11,7 @@ export function sendViewItemEvent(
 ) {
     const productBody =
         product.product?.productDisplay?.productBody?.productBodyInsert;
-    const salePercentage = parseInt(
-        product.product?.productDisplay?.productBody?.productBodyInsert
-            ?.salePercentage?.value || "0",
-    );
+    const salePercentage = parseFloat(productBody?.salePercentage?.value || "0");
     const discount = (price * salePercentage) / 100;
     const totalValue = getTotalProductValue(product);
     const totalQuantity = getTotalProductQuantity(product);
@@ -59,7 +24,7 @@ export function sendViewItemEvent(
     window.dataLayer.push({
         event: "view_item",
         ecommerce: {
-            currency: currencySymbols[currency],
+            currency: currency,
             value: totalValue,
             items: [
                 {
@@ -71,8 +36,8 @@ export function sendViewItemEvent(
                     discount: discount,
                     index: product.product?.id,
                     item_brand: productBody?.brand,
-                    item_category: topCategory || "not set",
-                    item_category2: subCategory || "not set",
+                    item_category: topCategory || "",
+                    item_category2: subCategory || "",
                     item_variant: productBody?.color || "",
                     price: price,
                     quantity: totalQuantity,

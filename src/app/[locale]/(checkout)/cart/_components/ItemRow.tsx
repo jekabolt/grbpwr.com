@@ -82,6 +82,7 @@ export default function ItemRow({
             >
               {!hideQuantityButtons && (
                 <ProductRemoveButton
+                  product={product}
                   id={product.orderItem?.productId || 0}
                   size={product.orderItem?.sizeId + "" || ""}
                   index={index}
