@@ -20,6 +20,7 @@ import { useDisabled } from "./utils/useDisabled";
 import { useHandlers } from "./utils/useHandlers";
 import { useMeasurementSizes } from "./utils/useMeasurementSizes";
 import { useProductBasics } from "./utils/useProductBasics";
+import { useProductPricing } from "./utils/useProductPricing";
 import { useProductSizes } from "./utils/useProductSizes";
 
 export function MobileProductInfo({
@@ -47,6 +48,7 @@ export function MobileProductInfo({
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
+  const { price } = useProductPricing({ product });
   const containerRef = useRef<HTMLDivElement>(null!);
   const mainAreaRef = useRef<HTMLDivElement>(null!);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
@@ -58,7 +60,7 @@ export function MobileProductInfo({
 
   useEffect(() => {
     if (product && selectedCurrency) {
-      sendViewItemEvent(selectedCurrency, product);
+      sendViewItemEvent(selectedCurrency, product, Number(price));
     }
   }, [product, selectedCurrency]);
 

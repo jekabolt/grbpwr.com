@@ -1,4 +1,5 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { currencySymbols } from "@/constants";
 
 export function getTotalProductQuantity(product: common_ProductFull): number {
     if (!product?.sizes || product.sizes.length === 0) {
@@ -26,9 +27,8 @@ export function getTotalProductValue(product: common_ProductFull): number {
     }, 0);
 }
 
-export function sendViewItemEvent(currency: string, product: common_ProductFull) {
+export function sendViewItemEvent(currency: string, product: common_ProductFull, price: number) {
     const productBody = product.product?.productDisplay?.productBody?.productBodyInsert;
-    const price = parseInt(product.product?.productDisplay?.productBody?.productBodyInsert?.price?.value || "0");
     const salePercentage = parseInt(product.product?.productDisplay?.productBody?.productBodyInsert?.salePercentage?.value || "0");
     const discount = (price * salePercentage) / 100;
     const totalValue = getTotalProductValue(product);
@@ -42,7 +42,7 @@ export function sendViewItemEvent(currency: string, product: common_ProductFull)
     window.dataLayer.push({
         event: "view_item",
         ecommerce: {
-            currency: currency,
+            currency: currencySymbols[currency],
             value: totalValue,
             items: [{
                 item_id: product.product?.sku || "",
