@@ -11,7 +11,7 @@ export function sendViewItemEvent(
 ) {
     const productBody =
         product.product?.productDisplay?.productBody?.productBodyInsert;
-    const salePercentage = parseInt(productBody?.salePercentage?.value || "0");
+    const salePercentage = parseFloat(productBody?.salePercentage?.value || "0");
     const discount = (price * salePercentage) / 100;
     const totalValue = getTotalProductValue(product);
     const totalQuantity = getTotalProductQuantity(product);

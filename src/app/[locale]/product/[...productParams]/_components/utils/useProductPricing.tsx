@@ -23,7 +23,9 @@ export function useProductPricing({
     salePercentage,
   )}`;
 
-  const priceNumber = parseInt(convertPrice(productBody?.price?.value || "0"));
+  const priceNumber = parseFloat(
+    convertPrice(productBody?.price?.value || "0"),
+  );
 
   return {
     isSaleApplied,

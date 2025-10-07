@@ -1,6 +1,5 @@
-import { common_ProductFull } from "@/api/proto-http/frontend";
+import { common_OrderItem, common_ProductFull } from "@/api/proto-http/frontend";
 
-import { getTotalProductQuantity, getTotalProductValue } from "@/lib/utils";
 
 export function sendAddToCartEvent(
     currency: string,
@@ -15,8 +14,6 @@ export function sendAddToCartEvent(
         product.product?.productDisplay?.productBody?.translations?.[0];
     const salePercentage = parseInt(productBody?.salePercentage?.value || "0");
     const discount = (price * salePercentage) / 100;
-    const totalValue = getTotalProductValue(product);
-    const totalQuantity = getTotalProductQuantity(product);
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
@@ -25,7 +22,7 @@ export function sendAddToCartEvent(
         event: "add_to_cart",
         ecommerce: {
             currency: currency,
-            value: totalValue,
+            value: price,
             items: [
                 {
                     item_id: product.product?.id,
@@ -38,9 +35,37 @@ export function sendAddToCartEvent(
                     item_category2: subCategory || "",
                     item_variant: productBody?.color || "",
                     price: price,
-                    quantity: totalQuantity,
+                    quantity: 1,
                 },
             ],
+        },
+    });
+}
+
+export function sendViewCartEvent(currency: string, products: common_OrderItem[]) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+
+    const totalValue = products.reduce((sum, p) => {
+        const price = parseFloat(p.productPriceWithSale || p.productPrice || "0");
+        const quantity = p.orderItem?.quantity || 1;
+        return sum + (price * quantity);
+    }, 0);
+
+    window.dataLayer.push({
+        event: "view_cart",
+        ecommerce: {
+            currency: currency,
+            value: totalValue,
+            items: products.map((p) => ({
+                item_id: p.sku || "",
+                item_name: p.translations?.[0]?.name || "",
+                discount: parseFloat(p.productPriceWithSale || "0"),
+                item_brand: p.productBrand,
+                item_variant: p.color,
+                price: parseFloat(p.productPrice || "0"),
+                quantity: p.orderItem?.quantity || 1
+            }))
         },
     });
 }
