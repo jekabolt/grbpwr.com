@@ -48,7 +48,7 @@ export function selectItemEvent(product: common_Product, listName: string, listI
                 item_id: product.id?.toString() || '',
                 item_name: product.productDisplay?.productBody?.translations?.[0]?.name || '',
                 item_brand: product.productDisplay?.productBody?.productBodyInsert?.brand || '',
-                price: product.productDisplay?.productBody?.productBodyInsert?.price || 0,
+                price: parseInt(product.productDisplay?.productBody?.productBodyInsert?.price?.value || '0') || 0,
                 item_category: product.productDisplay?.productBody?.productBodyInsert?.topCategoryId || '',
                 index: index + 1,
                 quantity: 1

@@ -56,7 +56,7 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html lang={locale}>
-      <GoogleTagManager gtmId="GTM-WFC98J99" />
+      <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
       <body className={FeatureMono.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ToastProvider>

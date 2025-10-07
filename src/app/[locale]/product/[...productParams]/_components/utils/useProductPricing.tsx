@@ -23,10 +23,13 @@ export function useProductPricing({
     salePercentage,
   )}`;
 
+  const priceNumber = parseInt(convertPrice(productBody?.price?.value || "0"));
+
   return {
     isSaleApplied,
     price,
     priceMinusSale,
     priceWithSale,
+    priceNumber,
   };
 }

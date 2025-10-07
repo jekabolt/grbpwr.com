@@ -1,11 +1,14 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
+import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { getPreorderDate } from "@/app/[locale]/(checkout)/cart/_components/utils";
 
 export function useProductBasics({ product }: { product: common_ProductFull }) {
   const t = useTranslations("product");
+  const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
   const productBody =
     product.product?.productDisplay?.productBody?.productBodyInsert;
@@ -20,6 +23,19 @@ export function useProductBasics({ product }: { product: common_ProductFull }) {
   const preorder = getPreorderDate(product, t);
   const isComposition = productBody?.composition;
   const isCare = productBody?.careInstructions;
+
+  const productCategory = getTopCategoryName(
+    dictionary?.categories || [],
+    productBody?.topCategoryId || 0,
+    languageId,
+  );
+
+  const productSubCategory = getSubCategoryName(
+    dictionary?.categories || [],
+    productBody?.subCategoryId || 0,
+    languageId,
+  );
+
   return {
     isComposition,
     isCare,
@@ -33,5 +49,7 @@ export function useProductBasics({ product }: { product: common_ProductFull }) {
     typeId: productBody?.typeId,
     gender: productBody?.targetGender,
     color: productBody?.color,
+    productCategory,
+    productSubCategory,
   };
 }
