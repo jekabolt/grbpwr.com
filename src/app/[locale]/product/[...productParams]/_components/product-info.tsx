@@ -23,9 +23,10 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
   const sizePickerRef = useRef<HTMLDivElement>(null);
   const { selectedCurrency } = useCurrency((s) => s);
 
-  const { name, productId } = useProductBasics({
-    product,
-  });
+  const { name, productId, productCategory, productSubCategory } =
+    useProductBasics({
+      product,
+    });
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const { priceNumber } = useProductPricing({ product });
   const { activeSizeId, isLoading, handleSizeSelect, handleAddToCart } =
@@ -41,7 +42,13 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
 
   useEffect(() => {
     if (product && selectedCurrency) {
-      sendViewItemEvent(selectedCurrency, product, priceNumber);
+      sendViewItemEvent(
+        selectedCurrency,
+        product,
+        priceNumber,
+        productCategory || "",
+        productSubCategory || "",
+      );
     }
   }, [product, selectedCurrency]);
 

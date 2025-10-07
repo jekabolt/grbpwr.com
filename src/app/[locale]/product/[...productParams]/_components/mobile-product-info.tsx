@@ -28,7 +28,8 @@ export function MobileProductInfo({
 }: {
   product: common_ProductFull;
 }) {
-  const { name, productId } = useProductBasics({ product });
+  const { name, productId, productCategory, productSubCategory } =
+    useProductBasics({ product });
   const { closeCart } = useCart((state) => state);
   const { selectedCurrency } = useCurrency((s) => s);
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
@@ -60,7 +61,13 @@ export function MobileProductInfo({
 
   useEffect(() => {
     if (product && selectedCurrency) {
-      sendViewItemEvent(selectedCurrency, product, priceNumber);
+      sendViewItemEvent(
+        selectedCurrency,
+        product,
+        priceNumber,
+        productCategory || "",
+        productSubCategory || "",
+      );
     }
   }, [product, selectedCurrency]);
 
