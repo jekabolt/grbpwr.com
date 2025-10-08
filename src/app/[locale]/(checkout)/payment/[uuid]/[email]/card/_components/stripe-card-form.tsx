@@ -64,11 +64,7 @@ export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
   };
 
   function handlePurchaseEvent() {
-    sendPurchaseEvent(
-      selectedCurrency,
-      orderItems as common_OrderItem[],
-      clientSecret,
-    );
+    sendPurchaseEvent(selectedCurrency, orderItems as common_OrderItem[], uuid);
   }
 
   return (
