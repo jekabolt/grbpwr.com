@@ -1,10 +1,13 @@
 "use client";
 
-import { common_Dictionary } from "@/api/proto-http/frontend";
+import { common_Dictionary, common_OrderItem } from "@/api/proto-http/frontend";
 import { COUNTRIES_BY_REGION, keyboardRestrictions } from "@/constants";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
+import { sendAddShippingInfoEvent } from "@/lib/analitycs/checkout";
+import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -35,6 +38,27 @@ export default function ShippingFieldsGroup({
 }: Props) {
   const { dictionary } = useDataContext();
   const t = useTranslations("checkout");
+  const { selectedCurrency } = useCurrency((state) => state);
+  const products = useCart((state) => state.products).map((v) => v.productData);
+
+  const handleShippingCarrierChange = async (carrierId: string) => {
+    const response = await validateItems(carrierId);
+
+    const selectedCarrier = dictionary?.shipmentCarriers?.find(
+      (c) => c.id?.toString() === carrierId,
+    );
+    const carrierName = selectedCarrier?.shipmentCarrier?.carrier || "";
+
+    if (carrierName && selectedCurrency && products.length > 0) {
+      sendAddShippingInfoEvent(
+        selectedCurrency,
+        products as common_OrderItem[],
+        carrierName,
+      );
+    }
+
+    return response;
+  };
 
   return (
     <FieldsGroupContainer
@@ -61,7 +85,7 @@ export default function ShippingFieldsGroup({
             view="card"
             loading={loading}
             name="shipmentCarrierId"
-            onChange={validateItems}
+            onChange={handleShippingCarrierChange}
             disabled={disabled}
             // label="shippingMethod"
             // @ts-ignore
