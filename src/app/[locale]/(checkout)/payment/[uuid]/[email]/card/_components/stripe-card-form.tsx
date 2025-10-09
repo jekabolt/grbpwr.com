@@ -10,7 +10,6 @@ import {
 
 import { sendPurchaseEvent } from "@/lib/analitycs/checkout";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Button } from "@/components/ui/button";
 
 export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
@@ -18,7 +17,6 @@ export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const { clearCart } = useCart((s) => s);
-  const { selectedCurrency } = useCurrency((s) => s);
   const orderItems = useCart((s) => s.products).map((v) => v.productData);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -64,7 +62,7 @@ export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
   };
 
   function handlePurchaseEvent() {
-    sendPurchaseEvent(selectedCurrency, orderItems as common_OrderItem[], uuid);
+    sendPurchaseEvent(orderItems as common_OrderItem[], uuid);
   }
 
   return (

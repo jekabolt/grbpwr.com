@@ -1,126 +1,164 @@
 import { common_OrderItem } from "@/api/proto-http/frontend";
 
+interface AnalyticsItem {
+  item_id: string;
+  item_name?: string;
+  item_brand?: string;
+  item_variant?: string;
+  discount: number;
+  price: number;
+  quantity: number;
+}
+
+interface EcommerceEvent {
+  event: string;
+  ecommerce: {
+    currency: string;
+    value: number;
+    items: AnalyticsItem[];
+    [key: string]: any;
+  };
+}
+
+const calculateTotalValue = (products: common_OrderItem[]): number => {
+  return products.reduce((sum, product) => {
+    const price = parseFloat(product.productPriceWithSale || product.productPrice || "0");
+    const quantity = product.orderItem?.quantity || 1;
+    return sum + price * quantity;
+  }, 0);
+};
+
+const mapProductsToAnalyticsItems = (products: common_OrderItem[]): AnalyticsItem[] => {
+  return products.map((product) => {
+    const originalPrice = parseFloat(product.productPrice || "0");
+    const salePercentage = parseFloat(product.productSalePercentage || "0");
+    const quantity = product.orderItem?.quantity || 1;
+
+    return {
+      item_id: product.sku || '',
+      item_name: product.translations?.[0]?.name || '',
+      item_brand: product.productBrand || '',
+      item_variant: product.orderItem?.productId?.toString() || '',
+      discount: (originalPrice * salePercentage) / 100,
+      price: originalPrice,
+      quantity,
+    };
+  });
+};
+
+
+const initializeDataLayer = (): void => {
+  if (typeof window === 'undefined') return;
+
+  (window as any).dataLayer = (window as any).dataLayer || [];
+  (window as any).dataLayer.push({ ecommerce: null });
+};
+
+const pushAnalyticsEvent = (event: EcommerceEvent): void => {
+  try {
+    if (typeof window === 'undefined') {
+      console.warn('Analytics: Window object not available (SSR)');
+      return;
+    }
+
+    const dataLayer = (window as any).dataLayer;
+    if (!dataLayer) {
+      console.warn('Analytics: dataLayer not initialized');
+      return;
+    }
+
+    dataLayer.push(event);
+  } catch (error) {
+    console.error('Analytics: Failed to push event', error);
+  }
+};
+
+const validateProducts = (products: common_OrderItem[]): boolean => {
+  if (!Array.isArray(products) || products.length === 0) {
+    console.warn('Analytics: Invalid or empty products array');
+    return false;
+  }
+  return true;
+};
+
 export function sendBeginCheckoutEvent(
-  currency: string,
   products: common_OrderItem[],
-) {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ ecommerce: null });
+): void {
+  if (!validateProducts(products)) return;
 
-  const totalValue = products.reduce((sum, p) => {
-    const price = parseFloat(p.productPriceWithSale || p.productPrice || "0");
-    const quantity = p.orderItem?.quantity || 1;
-    return sum + price * quantity;
-  }, 0);
+  initializeDataLayer();
 
-  window.dataLayer.push({
-    event: "begin_checkout",
+  const event: EcommerceEvent = {
+    event: 'begin_checkout',
     ecommerce: {
-      currency: currency,
-      value: totalValue,
-      items: products.map((p) => ({
-        item_id: p.sku,
-        item_name: p.translations?.[0]?.name,
-        item_brand: p.productBrand,
-        item_variant: p.color,
-        discount: (parseFloat(p.productPrice || "0") * parseFloat(p.productSalePercentage || "0")) / 100,
-        price: parseFloat(p.productPrice || "0"),
-        quantity: 1,
-      })),
+      currency: 'EUR',
+      value: calculateTotalValue(products),
+      items: mapProductsToAnalyticsItems(products),
     },
-  });
+  };
+
+  pushAnalyticsEvent(event);
 }
 
-export function sendAddShippingInfoEvent(currency: string, products: common_OrderItem[], shippingCarrier: string) {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ ecommerce: null });
+export function sendAddShippingInfoEvent(
+  products: common_OrderItem[],
+  shippingCarrier: string
+): void {
+  if (!validateProducts(products)) return;
 
-  const totalValue = products.reduce((sum, p) => {
-    const price = parseFloat(p.productPriceWithSale || p.productPrice || "0");
-    const quantity = p.orderItem?.quantity || 1;
-    return sum + price * quantity;
-  }, 0);
+  initializeDataLayer();
 
-  window.dataLayer.push({
-    event: "add_shipping_info",
+  const event: EcommerceEvent = {
+    event: 'add_shipping_info',
     ecommerce: {
-      currency: currency,
-      value: totalValue,
+      currency: 'EUR',
+      value: calculateTotalValue(products),
       shipping_tier: shippingCarrier,
-      items: products.map((p) => ({
-        item_id: p.sku,
-        item_name: p.translations?.[0]?.name,
-        item_brand: p.productBrand,
-        item_variant: p.color,
-        discount: (parseFloat(p.productPrice || "0") * parseFloat(p.productSalePercentage || "0")) / 100,
-        price: parseFloat(p.productPrice || "0"),
-        quantity: 1,
-      })),
+      items: mapProductsToAnalyticsItems(products),
     },
-  });
+  };
+
+  pushAnalyticsEvent(event);
 }
 
+export function sendAddPaymentInfoEvent(
+  products: common_OrderItem[],
+  paymentMethod: string
+): void {
+  if (!validateProducts(products)) return;
 
-export function sendAddPaymentInfoEvent(currency: string, products: common_OrderItem[], paymentMethod: string) {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ ecommerce: null });
+  initializeDataLayer();
 
-  const totalValue = products.reduce((sum, p) => {
-    const price = parseFloat(p.productPriceWithSale || p.productPrice || "0");
-    const quantity = p.orderItem?.quantity || 1;
-    return sum + price * quantity;
-  }, 0);
-
-  window.dataLayer.push({
-    event: "add_payment_info",
+  const event: EcommerceEvent = {
+    event: 'add_payment_info',
     ecommerce: {
-      currency: currency,
-      value: totalValue,
+      currency: 'EUR',
+      value: calculateTotalValue(products),
       payment_type: paymentMethod,
-      items: products.map((p) => ({
-        item_id: p.sku,
-        item_name: p.translations?.[0]?.name,
-        item_brand: p.productBrand,
-        item_variant: p.color,
-        discount: (parseFloat(p.productPrice || "0") * parseFloat(p.productSalePercentage || "0")) / 100,
-        price: parseFloat(p.productPrice || "0"),
-        quantity: 1,
-      })),
+      items: mapProductsToAnalyticsItems(products),
     },
-  });
-}
+  };
 
+  pushAnalyticsEvent(event);
+}
 
 export function sendPurchaseEvent(
-  currency: string,
   products: common_OrderItem[],
   transactionId: string,
-) {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ ecommerce: null });
+): void {
+  if (!validateProducts(products)) return;
 
-  const totalValue = products.reduce((sum, p) => {
-    const price = parseFloat(p.productPriceWithSale || p.productPrice || "0");
-    const quantity = p.orderItem?.quantity || 1;
-    return sum + price * quantity;
-  }, 0);
+  initializeDataLayer();
 
-  window.dataLayer.push({
-    event: "purchase",
+  const event: EcommerceEvent = {
+    event: 'purchase',
     ecommerce: {
-      currency: currency,
-      value: totalValue,
-      shipping: 0,
+      currency: 'EUR',
+      value: calculateTotalValue(products),
       transaction_id: transactionId,
-      items: products.map((p) => ({
-        item_id: p.sku,
-        item_name: p.translations?.[0]?.name,
-        item_brand: p.productBrand,
-        item_variant: p.color,
-        discount: (parseFloat(p.productPrice || "0") * parseFloat(p.productSalePercentage || "0")) / 100,
-        price: parseFloat(p.productPrice || "0"),
-        quantity: 1,
-      })),
+      items: mapProductsToAnalyticsItems(products),
     },
-  });
+  };
+
+  pushAnalyticsEvent(event);
 }

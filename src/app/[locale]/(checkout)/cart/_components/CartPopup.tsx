@@ -39,7 +39,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   }, [isOpen, closeCart]);
 
   function handleBeginCheckoutEvent() {
-    sendBeginCheckoutEvent(selectedCurrency, orderItems as common_OrderItem[]);
+    sendBeginCheckoutEvent(orderItems as common_OrderItem[]);
   }
 
   return (
