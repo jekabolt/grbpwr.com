@@ -14,12 +14,22 @@ export function getUrlKey(enumValue: EnumType, map: MapType): string {
   return Object.keys(map).find(key => map[key] === enumValue) || "";
 }
 
+function decodeParam(param: string): string {
+  try {
+    return decodeURIComponent(param);
+  } catch {
+    return param;
+  }
+}
+
 export function parseRouteParams(params: string[] = []): {
   gender: string | undefined;
   categoryName: string;
   subCategoryName: string;
 } {
-  const [firstParam, secondParam, thirdParam] = params;
+  const [firstParam, secondParam, thirdParam] = params.map(param =>
+    param ? decodeParam(param) : param
+  );
 
   if (firstParam === "objects") {
     return {

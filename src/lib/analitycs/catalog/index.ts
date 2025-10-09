@@ -1,58 +1,92 @@
 import { common_Product } from "@/api/proto-http/frontend";
 
+interface AnalyticsItem {
+    item_id: string;
+    item_name: string;
+    item_brand: string;
+    item_variant: string;
+    discount: number;
+    price: number;
+    index: number;
+    quantity: number;
+}
+
+interface EcommerceEvent {
+    event: string;
+    ecommerce: {
+        currency: string;
+        item_list_id: string;
+        item_list_name: string;
+        items: AnalyticsItem[];
+    };
+}
+
+function mapProductToAnalyticsItem(product: common_Product): AnalyticsItem {
+    const productBody = product.productDisplay?.productBody?.productBodyInsert
+    const price = parseFloat(productBody?.price?.value || "0")
+    const salePercentage = parseFloat(productBody?.salePercentage?.value || "0");
+    const discount = (price * salePercentage) / 100;
+
+    return {
+        item_id: product.sku || "",
+        item_name: product.productDisplay?.productBody?.translations?.[0]?.name || "",
+        item_brand: productBody?.brand || "",
+        item_variant: productBody?.version || "",
+        discount: discount || 0,
+        price: price || 0,
+        index: product.id || 0,
+        quantity: 1,
+    };
+}
+
+function pushToDataLayer(event: EcommerceEvent): void {
+    try {
+        if (typeof window === "undefined") return;
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ ecommerce: null });
+        window.dataLayer.push(event);
+    } catch (error) {
+        console.warn("Analytics tracking failed:", error);
+    }
+}
+
 export function sendViewItemListEvent(
     products: common_Product[],
     listName: string,
     listId: string,
-) {
-    if (typeof window === "undefined" || !products.length) return;
+): void {
+    if (!products?.length || !listName || !listId) return;
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ ecommerce: null });
-
-    window.dataLayer.push({
+    const event: EcommerceEvent = {
         event: "view_item_list",
         ecommerce: {
+            currency: "EUR",
             item_list_id: listId,
             item_list_name: listName,
-            items: products.map((product, index) => ({
-                item_id: product.id?.toString() || "",
-                item_name:
-                    product.productDisplay?.productBody?.translations?.[0]?.name || "",
-                item_brand:
-                    product.productDisplay?.productBody?.productBodyInsert?.brand || "",
-                price:
-                    product.productDisplay?.productBody?.productBodyInsert?.price || 0,
-                item_category:
-                    product.productDisplay?.productBody?.productBodyInsert
-                        ?.topCategoryId || "",
-                index: index + 1,
-                quantity: 1,
-            })),
+            items: products.map((product) => mapProductToAnalyticsItem(product)),
         },
-    });
-};
+    };
 
-export function selectItemEvent(product: common_Product, listName: string, listId: string, index: number) {
-    if (typeof window === "undefined" || !product) return;
+    pushToDataLayer(event);
+}
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ ecommerce: null });
+export function selectItemEvent(
+    product: common_Product,
+    listName: string,
+    listId: string,
+): void {
+    if (!product || !listName || !listId) return;
 
-    window.dataLayer.push({
+    const event: EcommerceEvent = {
         event: 'select_item',
         ecommerce: {
+            currency: "EUR",
             item_list_id: listId,
             item_list_name: listName,
-            items: [{
-                item_id: product.id?.toString() || '',
-                item_name: product.productDisplay?.productBody?.translations?.[0]?.name || '',
-                item_brand: product.productDisplay?.productBody?.productBodyInsert?.brand || '',
-                price: parseInt(product.productDisplay?.productBody?.productBodyInsert?.price?.value || '0') || 0,
-                item_category: product.productDisplay?.productBody?.productBodyInsert?.topCategoryId || '',
-                index: index + 1,
-                quantity: 1
-            }]
+            items: [mapProductToAnalyticsItem(product)]
         }
-    });
+    };
+
+    pushToDataLayer(event);
 }

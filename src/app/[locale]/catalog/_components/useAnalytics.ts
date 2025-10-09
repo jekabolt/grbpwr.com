@@ -3,15 +3,32 @@ import { useRouteParams } from "./useRouteParams";
 
 export function useAnalytics() {
     const searchParams = useSearchParams();
-    const { gender, topCategory, subCategory } = useRouteParams();
+    const { gender, categoryName, subCategoryName, topCategory, subCategory } = useRouteParams();
+
+    function decodeUrlValue(value: string): string {
+        try {
+            return decodeURIComponent(value);
+        } catch {
+            return value;
+        }
+    }
 
     function getListName() {
         const hasFilters = Array.from(searchParams.entries()).length > 0;
         const filterPrefix = hasFilters ? 'Filtered ' : '';
 
-        if (subCategory?.name) return `${filterPrefix}${subCategory.name}`;
-        if (topCategory?.name) return `${filterPrefix}${topCategory.name}`;
-        if (gender) return `${filterPrefix}${gender} Products`;
+        if (subCategory) {
+            const decodedName = decodeUrlValue(subCategoryName);
+            return `${filterPrefix}${decodedName}`;
+        }
+        if (topCategory) {
+            const decodedName = decodeUrlValue(categoryName);
+            return `${filterPrefix}${decodedName}`;
+        }
+        if (gender) {
+            const decodedGender = decodeUrlValue(gender);
+            return `${filterPrefix}${decodedGender} Products`;
+        }
         return `${filterPrefix}Product Catalog`;
     }
 
@@ -21,8 +38,8 @@ export function useAnalytics() {
             ? `_filtered_${searchParamsString.replace(/[^a-zA-Z0-9]/g, '_')}`
             : '';
 
-        if (subCategory?.id) return `subcategory_${subCategory.id}${filterSuffix}`;
-        if (topCategory?.id) return `category_${topCategory.id}${filterSuffix}`;
+        if (subCategory) return `subcategory_${subCategoryName}${filterSuffix}`;
+        if (topCategory) return `category_${categoryName}${filterSuffix}`;
         if (gender) return `gender_${gender}${filterSuffix}`;
         return `catalog${filterSuffix}`;
     }
