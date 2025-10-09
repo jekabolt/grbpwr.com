@@ -6,7 +6,6 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 import { sendViewItemEvent } from "@/lib/analitycs/product";
 import { useElementHeight } from "@/lib/hooks/useBottomSheet";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Text } from "@/components/ui/text";
 
@@ -20,7 +19,6 @@ import { useDisabled } from "./utils/useDisabled";
 import { useHandlers } from "./utils/useHandlers";
 import { useMeasurementSizes } from "./utils/useMeasurementSizes";
 import { useProductBasics } from "./utils/useProductBasics";
-import { useProductPricing } from "./utils/useProductPricing";
 import { useProductSizes } from "./utils/useProductSizes";
 
 export function MobileProductInfo({
@@ -31,7 +29,6 @@ export function MobileProductInfo({
   const { name, productId, productCategory, productSubCategory } =
     useProductBasics({ product });
   const { closeCart } = useCart((state) => state);
-  const { selectedCurrency } = useCurrency((s) => s);
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const {
     activeSizeId,
@@ -49,7 +46,6 @@ export function MobileProductInfo({
   const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
-  const { priceNumber } = useProductPricing({ product });
   const containerRef = useRef<HTMLDivElement>(null!);
   const mainAreaRef = useRef<HTMLDivElement>(null!);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
@@ -60,16 +56,14 @@ export function MobileProductInfo({
   }, [closeCart]);
 
   useEffect(() => {
-    if (product && selectedCurrency) {
+    if (product) {
       sendViewItemEvent(
-        selectedCurrency,
         product,
-        priceNumber,
         productCategory || "",
         productSubCategory || "",
       );
     }
-  }, [product, selectedCurrency]);
+  }, [product]);
 
   return (
     <div className="relative h-full overflow-y-hidden">

@@ -1,10 +1,10 @@
-import { common_OrderItem, common_ProductFull } from "@/api/proto-http/frontend";
-
+import {
+    common_OrderItem,
+    common_ProductFull,
+} from "@/api/proto-http/frontend";
 
 export function sendAddToCartEvent(
-    currency: string,
     product: common_ProductFull,
-    price: number,
     topCategory: string,
     subCategory: string,
 ) {
@@ -12,6 +12,7 @@ export function sendAddToCartEvent(
         product.product?.productDisplay?.productBody?.productBodyInsert;
     const translation =
         product.product?.productDisplay?.productBody?.translations?.[0];
+    const price = parseFloat(productBody?.price?.value || "0");
     const salePercentage = parseInt(productBody?.salePercentage?.value || "0");
     const discount = (price * salePercentage) / 100;
 
@@ -21,7 +22,7 @@ export function sendAddToCartEvent(
     window.dataLayer.push({
         event: "add_to_cart",
         ecommerce: {
-            currency: currency,
+            currency: "EUR",
             value: price,
             items: [
                 {
@@ -42,56 +43,62 @@ export function sendAddToCartEvent(
     });
 }
 
-export function sendViewCartEvent(currency: string, products: common_OrderItem[]) {
+export function sendViewCartEvent(products: common_OrderItem[]) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
 
     const totalValue = products.reduce((sum, p) => {
-        const price = parseFloat(p.productPriceWithSale || p.productPrice || "0");
+        const price = parseFloat(p.productPrice || "0");
         const quantity = p.orderItem?.quantity || 1;
-        return sum + (price * quantity);
+        return sum + price * quantity;
     }, 0);
 
     window.dataLayer.push({
         event: "view_cart",
         ecommerce: {
-            currency: currency,
+            currency: "EUR",
             value: totalValue,
             items: products.map((p) => ({
                 item_id: p.sku || "",
                 item_name: p.translations?.[0]?.name || "",
-                discount: (parseFloat(p.productPrice || "0") * parseFloat(p.productSalePercentage || "0")) / 100,
+                discount:
+                    (parseFloat(p.productPrice || "0") *
+                        parseFloat(p.productSalePercentage || "0")) /
+                    100,
                 item_brand: p.productBrand,
                 item_variant: p.color,
                 price: parseFloat(p.productPrice || "0"),
-                quantity: p.orderItem?.quantity || 1
-            }))
+                quantity: 1,
+            })),
         },
     });
 }
 
-export function sendRemoveFromCartEvent(
-    currency: string,
-    product: common_OrderItem,
-) {
+export function sendRemoveFromCartEvent(product: common_OrderItem, topCategory: string) {
     if (typeof window === "undefined" || !product) return;
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
 
+    const price = parseFloat(product.productPrice || "0");
+    const salePercentage = parseFloat(product.productSalePercentage || "0");
+    const discount = (price * salePercentage) / 100;
+
     window.dataLayer.push({
         event: "remove_from_cart",
         ecommerce: {
-            currency: currency,
-            value: product.productPriceWithSale,
+            currency: "EUR",
+            value: price,
             items: [
                 {
                     item_id: product.sku,
                     item_name: product.translations?.[0]?.name,
                     item_brand: product.productBrand,
-                    item_variant: product.color,
+                    item_variant: product.orderItem?.productId?.toString() || "",
+                    discount: discount,
+                    item_category: topCategory,
                     price: product.productPrice,
-                    quantity: product.orderItem?.quantity,
+                    quantity: 1
                 },
             ],
         },

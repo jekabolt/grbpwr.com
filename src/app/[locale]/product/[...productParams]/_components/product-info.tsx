@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { sendViewItemEvent } from "@/lib/analitycs/product";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Text } from "@/components/ui/text";
 import Modal from "@/app/[locale]/product/[...productParams]/_components/MeasurementPopup";
 
@@ -16,19 +15,16 @@ import { useDisabled } from "./utils/useDisabled";
 import { useHandlers } from "./utils/useHandlers";
 import { useMeasurementSizes } from "./utils/useMeasurementSizes";
 import { useProductBasics } from "./utils/useProductBasics";
-import { useProductPricing } from "./utils/useProductPricing";
 import { useProductSizes } from "./utils/useProductSizes";
 
 export function ProductInfo({ product }: { product: common_ProductFull }) {
   const sizePickerRef = useRef<HTMLDivElement>(null);
-  const { selectedCurrency } = useCurrency((s) => s);
 
   const { name, productId, productCategory, productSubCategory } =
     useProductBasics({
       product,
     });
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
-  const { priceNumber } = useProductPricing({ product });
   const { activeSizeId, isLoading, handleSizeSelect, handleAddToCart } =
     useHandlers({
       id: productId,
@@ -41,16 +37,14 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     useMeasurementSizes({ product });
 
   useEffect(() => {
-    if (product && selectedCurrency) {
+    if (product) {
       sendViewItemEvent(
-        selectedCurrency,
         product,
-        priceNumber,
         productCategory || "",
         productSubCategory || "",
       );
     }
-  }, [product, selectedCurrency]);
+  }, [product]);
 
   return (
     <div className="relative">

@@ -3,14 +3,13 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 import { getTotalProductQuantity, getTotalProductValue } from "@/lib/utils";
 
 export function sendViewItemEvent(
-    currency: string,
     product: common_ProductFull,
-    price: number,
     topCategory: string,
     subCategory: string,
 ) {
     const productBody =
         product.product?.productDisplay?.productBody?.productBodyInsert;
+    const price = parseFloat(productBody?.price?.value || "0");
     const salePercentage = parseFloat(productBody?.salePercentage?.value || "0");
     const discount = (price * salePercentage) / 100;
     const totalValue = getTotalProductValue(product);
@@ -24,7 +23,7 @@ export function sendViewItemEvent(
     window.dataLayer.push({
         event: "view_item",
         ecommerce: {
-            currency: currency,
+            currency: "EUR",
             value: totalValue,
             items: [
                 {
@@ -32,7 +31,6 @@ export function sendViewItemEvent(
                     item_name:
                         product.product?.productDisplay?.productBody?.translations?.[0]
                             .name || "",
-                    affiliation: "GRBPWR STORE",
                     discount: discount,
                     index: product.product?.id,
                     item_brand: productBody?.brand,
