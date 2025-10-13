@@ -2,8 +2,6 @@
 interface NewsletterFormData {
     email: string;
     formId?: string;
-    formLocation?: string;
-    additionalData?: Record<string, any>;
 }
 
 
@@ -13,19 +11,19 @@ export function sendNewsLetterFormEvent(data: NewsletterFormData) {
         return;
     }
 
+    window.dataLayer = window.dataLayer || [];
+
     const eventData = {
         event: 'form_submission',
         form_id: data.formId || 'newsletter_subscription',
         form_data: {
             email: data.email,
             email_domain: data.email.split('@')[1] || '',
-            ...data.additionalData
         },
         form_type: 'newsletter',
-        form_location: data.formLocation || 'footer',
-        submission_successful: true,
-        timestamp: new Date().toISOString()
     };
 
     window.dataLayer.push(eventData);
+
+    console.log('Newsletter subscription event sent to DataLayer:', eventData);
 }

@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 
 import { sendNewsLetterFormEvent } from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { validateEmail } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
@@ -14,8 +13,6 @@ import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
 export default function NewslatterForm() {
-  const { languageId } = useTranslationsStore((state) => state);
-
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -40,10 +37,6 @@ export default function NewslatterForm() {
       sendNewsLetterFormEvent({
         email,
         formId: "newsletter_subscription",
-        formLocation: "footer",
-        additionalData: {
-          newsletter_consent: isChecked,
-        },
       });
       setEmail("");
       setIsChecked(false);
