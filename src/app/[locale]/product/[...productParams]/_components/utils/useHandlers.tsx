@@ -7,7 +7,6 @@ import { useCurrency } from "@/lib/stores/currency/store-provider";
 
 import { useDisabled } from "./useDisabled";
 import { useProductBasics } from "./useProductBasics";
-import { useProductPricing } from "./useProductPricing";
 
 export function useHandlers({
   id,
@@ -28,9 +27,6 @@ export function useHandlers({
   const [isMobileSizeDialogOpen, setIsMobileSizeDialogOpen] = useState(false);
 
   const { productCategory, productSubCategory } = useProductBasics({
-    product: product as common_ProductFull,
-  });
-  const { priceNumber } = useProductPricing({
     product: product as common_ProductFull,
   });
 
@@ -57,9 +53,7 @@ export function useHandlers({
       // Send add to cart analytics event
       if (product && selectedCurrency) {
         sendAddToCartEvent(
-          selectedCurrency,
           product,
-          priceNumber,
           productCategory || "",
           productSubCategory || "",
         );
@@ -84,9 +78,7 @@ export function useHandlers({
         // Send add to cart analytics event
         if (product && selectedCurrency) {
           sendAddToCartEvent(
-            selectedCurrency,
             product,
-            priceNumber,
             productCategory || "",
             productSubCategory || "",
           );

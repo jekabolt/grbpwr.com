@@ -7,7 +7,6 @@ import { useFormContext } from "react-hook-form";
 
 import { sendAddShippingInfoEvent } from "@/lib/analitycs/checkout";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -38,7 +37,6 @@ export default function ShippingFieldsGroup({
 }: Props) {
   const { dictionary } = useDataContext();
   const t = useTranslations("checkout");
-  const { selectedCurrency } = useCurrency((state) => state);
   const products = useCart((state) => state.products).map((v) => v.productData);
 
   const handleShippingCarrierChange = async (carrierId: string) => {
@@ -49,12 +47,8 @@ export default function ShippingFieldsGroup({
     );
     const carrierName = selectedCarrier?.shipmentCarrier?.carrier || "";
 
-    if (carrierName && selectedCurrency && products.length > 0) {
-      sendAddShippingInfoEvent(
-        selectedCurrency,
-        products as common_OrderItem[],
-        carrierName,
-      );
+    if (carrierName && products.length > 0) {
+      sendAddShippingInfoEvent(products as common_OrderItem[], carrierName);
     }
 
     return response;

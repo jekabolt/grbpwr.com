@@ -5,22 +5,21 @@ import { common_OrderItem } from "@/api/proto-http/frontend";
 
 import { sendViewCartEvent } from "@/lib/analitycs/cart";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import ItemRow from "@/app/[locale]/(checkout)/cart/_components/ItemRow";
 
 export default function CartProductsList({
   hideQuantityButtons,
   validatedProducts,
 }: Props) {
+  const { isOpen } = useCart((state) => state);
   const products = useCart((state) => state.products).map((v) => v.productData);
   const finalProducts = validatedProducts || products;
-  const { selectedCurrency } = useCurrency((state) => state);
 
   useEffect(() => {
-    if (finalProducts && selectedCurrency) {
-      sendViewCartEvent(selectedCurrency, finalProducts as common_OrderItem[]);
+    if (finalProducts && isOpen) {
+      sendViewCartEvent(finalProducts as common_OrderItem[]);
     }
-  }, [finalProducts, selectedCurrency]);
+  }, [finalProducts, isOpen]);
 
   return (
     <>

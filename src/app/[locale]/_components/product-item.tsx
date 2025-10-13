@@ -15,12 +15,10 @@ export function ProductItem({
   product,
   className,
   isInfoVisible = true,
-  index,
 }: {
   product: common_Product;
   className: string;
   isInfoVisible?: boolean;
-  index?: number;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
@@ -51,7 +49,7 @@ export function ProductItem({
     product.productDisplay?.productBody?.productBodyInsert?.preorder;
 
   function handleSelectItemEvent() {
-    selectItemEvent(product, listName, listId, index || 0);
+    selectItemEvent(product, listName, listId);
   }
 
   return (
