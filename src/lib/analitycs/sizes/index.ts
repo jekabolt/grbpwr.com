@@ -16,7 +16,7 @@ export function sendSizeSelectionEvent(data: SizeSelectionEvent) {
     const eventData = {
         event: 'size_selection',
         size_name: data.sizeName,
-        out_of_stock: data.outOfStock ? "out of stock" : "in stock",
+        size_status: data.outOfStock ? "out of stock" : "in stock",
     }
 
     window.dataLayer.push(eventData);
