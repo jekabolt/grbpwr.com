@@ -1,3 +1,4 @@
+import { sendSizeSelectionEvent } from "@/lib/analitycs/sizes";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { HoverText } from "@/components/ui/hover-text";
@@ -24,6 +25,19 @@ export function SizePicker({
   className,
   handleSizeSelect,
 }: Props) {
+  const handleAnalytics = (
+    isTouch = false,
+    sizeName: string,
+    outOfStock: boolean,
+  ) => {
+    if (!isTouch && "ontouchstart" in window) return;
+
+    sendSizeSelectionEvent({
+      sizeName: sizeName,
+      outOfStock: outOfStock,
+    });
+  };
+
   return (
     <div>
       <div
@@ -45,6 +59,12 @@ export function SizePicker({
             })}
             key={id}
             onClick={() => handleSizeSelect(id)}
+            onMouseEnter={() =>
+              handleAnalytics(false, name, outOfStock?.[id] || false)
+            }
+            onTouchStart={() =>
+              handleAnalytics(true, name, outOfStock?.[id] || false)
+            }
             disabled={outOfStock?.[id]}
           >
             {sizeQuantity ? (
