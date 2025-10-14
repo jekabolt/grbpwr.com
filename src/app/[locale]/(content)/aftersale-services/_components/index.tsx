@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
+import { sendFormEvent } from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -53,6 +54,11 @@ export default function AftersaleForm() {
           orderReference: data.orderReference || "",
           notes: data.notes || "",
         },
+      });
+
+      sendFormEvent({
+        email: data.email,
+        formId: "aftersale-services",
       });
 
       setOpen(true);

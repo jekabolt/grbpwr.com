@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { sendFormEvent } from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -44,6 +45,11 @@ export default function OrderStatusForm() {
       const response = await serviceClient.GetOrderByUUIDAndEmail({
         orderUuid: data.orderUuid,
         b64Email: window.btoa(data.email),
+      });
+
+      sendFormEvent({
+        email: data.email,
+        formId: "order_status",
       });
 
       if (response.order) {

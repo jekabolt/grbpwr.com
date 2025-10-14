@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { sendNewsLetterFormEvent } from "@/lib/analitycs/form";
+import { sendFormEvent } from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
 import { validateEmail } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,7 @@ export default function NewslatterForm() {
 
     try {
       await serviceClient.SubscribeNewsletter({ email });
-      sendNewsLetterFormEvent({
+      sendFormEvent({
         email,
         formId: "newsletter_subscription",
       });
