@@ -5,7 +5,7 @@ interface NewsletterFormData {
 }
 
 
-export function sendNewsLetterFormEvent(data: NewsletterFormData) {
+export function sendFormEvent(data: NewsletterFormData) {
     if (typeof window === 'undefined' || !window.dataLayer) {
         console.warn('DataLayer is not available');
         return;
@@ -15,12 +15,11 @@ export function sendNewsLetterFormEvent(data: NewsletterFormData) {
 
     const eventData = {
         event: 'form_submission',
-        form_id: data.formId || 'newsletter_subscription',
+        form_id: data.formId,
         form_data: {
             email: data.email,
             email_domain: data.email.split('@')[1] || '',
         },
-        form_type: 'newsletter',
     };
 
     window.dataLayer.push(eventData);
