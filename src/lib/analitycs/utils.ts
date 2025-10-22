@@ -1,11 +1,14 @@
-import { common_OrderItem, common_ProductFull } from "@/api/proto-http/frontend";
+import {
+    common_OrderItem,
+    common_ProductFull,
+} from "@/api/proto-http/frontend";
 
 export interface EcommerceEvent {
     event: string;
     ecommerce: {
         currency: string;
         [key: string]: any;
-    }
+    };
 }
 
 export interface AnalyticsItem {
@@ -20,8 +23,6 @@ export interface AnalyticsItem {
     quantity: number;
 }
 
-
-
 export function pushToDataLayer(event: EcommerceEvent): void {
     try {
         if (typeof window === "undefined") return;
@@ -33,7 +34,6 @@ export function pushToDataLayer(event: EcommerceEvent): void {
         console.warn("Analytics tracking failed:", error);
     }
 }
-
 
 export function getTotalProductQuantity(product: common_ProductFull): number {
     if (!product?.sizes || product.sizes.length === 0) {
@@ -51,14 +51,14 @@ export function getTotalProductValue(product: common_ProductFull): number {
         return 0;
     }
 
-    const productBody = product.product?.productDisplay?.productBody?.productBodyInsert;
+    const productBody =
+        product.product?.productDisplay?.productBody?.productBodyInsert;
     const price = parseFloat(productBody?.price?.value || "0");
     return product.sizes.reduce((total, size) => {
         const quantity = parseInt(size.quantity?.value || "0");
         return total + quantity * price;
     }, 0);
 }
-
 
 export const calculateTotalValue = (items: common_OrderItem[]): number => {
     return items.reduce((sum, item) => {
@@ -67,5 +67,3 @@ export const calculateTotalValue = (items: common_OrderItem[]): number => {
         return sum + price * quantity;
     }, 0);
 };
-
-

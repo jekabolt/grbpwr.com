@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { common_OrderItem } from "@/api/proto-http/frontend";
 
 import { sendViewCartEvent } from "@/lib/analitycs/cart";
@@ -16,18 +16,16 @@ export default function CartProductsList({
   const products = useCart((state) => state.products).map((v) => v.productData);
   const finalProducts = validatedProducts || products;
   const { topCategoryName, subCategoryName } = useCheckoutAnalytics({});
-  const prevIsOpenRef = useRef(isOpen);
 
   useEffect(() => {
-    if (isOpen && !prevIsOpenRef.current && finalProducts.length > 0) {
+    if (isOpen && finalProducts.length > 0) {
       sendViewCartEvent(
         finalProducts as common_OrderItem[],
         topCategoryName || "",
         subCategoryName || "",
       );
     }
-    prevIsOpenRef.current = isOpen;
-  }, [isOpen, finalProducts.length, topCategoryName, subCategoryName]);
+  }, [isOpen, finalProducts.length]);
 
   return (
     <>
