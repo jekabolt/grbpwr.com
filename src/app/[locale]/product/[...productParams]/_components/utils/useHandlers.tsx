@@ -50,7 +50,6 @@ export function useHandlers({
     try {
       await increaseQuantity(id, activeSizeId?.toString() || "", 1);
 
-      // Send add to cart analytics event
       if (product && selectedCurrency) {
         sendAddToCartEvent(
           product,

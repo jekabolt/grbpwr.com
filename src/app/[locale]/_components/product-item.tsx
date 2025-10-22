@@ -1,7 +1,6 @@
 import type { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols, EMPTY_PREORDER } from "@/constants";
 
-import { selectItemEvent } from "@/lib/analitycs/catalog";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
@@ -22,41 +21,31 @@ export function ProductItem({
 }) {
   const { languageId } = useTranslationsStore((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
-  const { listName, listId } = useAnalytics();
+  const { handleSelectItemEvent } = useAnalytics();
 
-  const currentTranslation =
-    product.productDisplay?.productBody?.translations?.find(
-      (t) => t.languageId === languageId,
-    );
-  const salePercentage =
-    product.productDisplay?.productBody?.productBodyInsert?.salePercentage
-      ?.value;
+  const productBody = product.productDisplay?.productBody;
+
+  const currentTranslation = productBody?.translations?.find(
+    (t) => t.languageId === languageId,
+  );
+  const salePercentage = productBody?.productBodyInsert?.salePercentage?.value;
   const isSaleApplied = salePercentage && salePercentage !== "0";
 
   const priceWithSale =
-    (parseFloat(
-      product.productDisplay?.productBody?.productBodyInsert?.price?.value ||
-        "0",
-    ) *
+    (parseFloat(productBody?.productBodyInsert?.price?.value || "0") *
       (100 -
         parseInt(
-          product.productDisplay?.productBody?.productBodyInsert?.salePercentage
-            ?.value || "0",
+          productBody?.productBodyInsert?.salePercentage?.value || "0",
         ))) /
     100;
 
-  const preorder =
-    product.productDisplay?.productBody?.productBodyInsert?.preorder;
-
-  function handleSelectItemEvent() {
-    selectItemEvent(product, listName, listId);
-  }
+  const preorder = productBody?.productBodyInsert?.preorder;
 
   return (
     <div className={cn("relative", className)}>
       <AnimatedButton
         href={product?.slug || ""}
-        onMouseDown={handleSelectItemEvent}
+        onMouseDown={() => handleSelectItemEvent(product)}
         className={cn("group flex h-full w-full flex-col", className)}
       >
         <div className="relative">

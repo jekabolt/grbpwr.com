@@ -144,6 +144,7 @@ export type common_ProductBodyInsert = {
   targetGender: common_GenderEnum | undefined;
   version: string | undefined;
   collection: string | undefined;
+  fit: string | undefined;
 };
 
 // A representation of a decimal value, such as 2.5. Clients may convert values
@@ -339,6 +340,8 @@ export type common_OrderStatusEnum =
   | "ORDER_STATUS_ENUM_SHIPPED"
   | "ORDER_STATUS_ENUM_DELIVERED"
   | "ORDER_STATUS_ENUM_CANCELLED"
+  | "ORDER_STATUS_ENUM_PENDING_RETURN"
+  | "ORDER_STATUS_ENUM_REFUND_IN_PROGRESS"
   | "ORDER_STATUS_ENUM_REFUNDED";
 // PaymentMethod represents the payment_method table
 export type common_PaymentMethod = {
@@ -561,6 +564,8 @@ export type common_Order = {
   totalPrice: googletype_Decimal | undefined;
   orderStatusId: number | undefined;
   promoId: number | undefined;
+  refundReason: string | undefined;
+  orderComment: string | undefined;
 };
 
 export type common_OrderItem = {
@@ -664,6 +669,16 @@ export type CancelOrderInvoiceRequest = {
 export type CancelOrderInvoiceResponse = {
 };
 
+export type CancelOrderByUserRequest = {
+  orderUuid: string | undefined;
+  b64Email: string | undefined;
+  reason: string | undefined;
+};
+
+export type CancelOrderByUserResponse = {
+  order: common_OrderFull | undefined;
+};
+
 export type SubscribeNewsletterRequest = {
   email: string | undefined;
 };
@@ -734,6 +749,8 @@ export interface FrontendService {
   GetOrderInvoice(request: GetOrderInvoiceRequest): Promise<GetOrderInvoiceResponse>;
   // Cancel an invoice for the order
   CancelOrderInvoice(request: CancelOrderInvoiceRequest): Promise<CancelOrderInvoiceResponse>;
+  // Cancel order by user with reason
+  CancelOrderByUser(request: CancelOrderByUserRequest): Promise<CancelOrderByUserResponse>;
   // Subscribe to the newsletter
   SubscribeNewsletter(request: SubscribeNewsletterRequest): Promise<SubscribeNewsletterResponse>;
   // Unsubscribe from the newsletter
@@ -997,6 +1014,29 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "CancelOrderInvoice",
       }) as Promise<CancelOrderInvoiceResponse>;
+    },
+    CancelOrderByUser(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.orderUuid) {
+        throw new Error("missing required field request.order_uuid");
+      }
+      if (!request.b64Email) {
+        throw new Error("missing required field request.b64_email");
+      }
+      const path = `api/frontend/order/${request.orderUuid}/${request.b64Email}/cancel`; // eslint-disable-line quotes
+      const body = JSON.stringify(request);
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return handler({
+        path: uri,
+        method: "POST",
+        body,
+      }, {
+        service: "FrontendService",
+        method: "CancelOrderByUser",
+      }) as Promise<CancelOrderByUserResponse>;
     },
     SubscribeNewsletter(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/newsletter/subscribe`; // eslint-disable-line quotes

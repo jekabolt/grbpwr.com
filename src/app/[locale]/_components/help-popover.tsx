@@ -38,6 +38,9 @@ export default function HelpPopover({ theme }: { theme: "light" | "dark" }) {
           <Link href="/aftersale-services">{t("aftersale services")}</Link>
         </Button>
         <Button asChild className="uppercase">
+          <Link href="/refund">refund</Link>
+        </Button>
+        <Button asChild className="uppercase">
           <Link href="/faq">{t("faqs")}</Link>
         </Button>
       </div>

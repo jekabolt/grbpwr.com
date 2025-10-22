@@ -1,164 +1,120 @@
 import { common_OrderItem } from "@/api/proto-http/frontend";
 
-interface AnalyticsItem {
-  item_id: string;
-  item_name?: string;
-  item_brand?: string;
-  item_variant?: string;
-  discount: number;
-  price: number;
-  quantity: number;
-}
+import {
+  AnalyticsItem,
+  calculateTotalValue,
+  EcommerceEvent,
+  pushToDataLayer,
+} from "../utils";
 
-interface EcommerceEvent {
-  event: string;
-  ecommerce: {
-    currency: string;
-    value: number;
-    items: AnalyticsItem[];
-    [key: string]: any;
+export function mapItemsToAnalyticsItems(
+  item: common_OrderItem,
+  quantity: number,
+  topCategory: string,
+  subCategory: string,
+): AnalyticsItem {
+  const originalPrice = parseFloat(item.productPrice || "0");
+  const salePercentage = parseFloat(item.productSalePercentage || "0");
+
+  return {
+    item_id: item.sku || "",
+    item_name: item.translations?.[0]?.name || "",
+    item_brand: item.productBrand || "",
+    item_category: topCategory || "",
+    item_category2: subCategory || "",
+    item_variant: item.orderItem?.productId?.toString() || "",
+    discount: (originalPrice * salePercentage) / 100,
+    price: originalPrice,
+    quantity: quantity || 1,
   };
 }
 
-const calculateTotalValue = (products: common_OrderItem[]): number => {
-  return products.reduce((sum, product) => {
-    const price = parseFloat(product.productPriceWithSale || product.productPrice || "0");
-    const quantity = product.orderItem?.quantity || 1;
-    return sum + price * quantity;
-  }, 0);
-};
-
-const mapProductsToAnalyticsItems = (products: common_OrderItem[]): AnalyticsItem[] => {
-  return products.map((product) => {
-    const originalPrice = parseFloat(product.productPrice || "0");
-    const salePercentage = parseFloat(product.productSalePercentage || "0");
-    const quantity = product.orderItem?.quantity || 1;
-
-    return {
-      item_id: product.sku || '',
-      item_name: product.translations?.[0]?.name || '',
-      item_brand: product.productBrand || '',
-      item_variant: product.orderItem?.productId?.toString() || '',
-      discount: (originalPrice * salePercentage) / 100,
-      price: originalPrice,
-      quantity,
-    };
-  });
-};
-
-
-const initializeDataLayer = (): void => {
-  if (typeof window === 'undefined') return;
-
-  (window as any).dataLayer = (window as any).dataLayer || [];
-  (window as any).dataLayer.push({ ecommerce: null });
-};
-
-const pushAnalyticsEvent = (event: EcommerceEvent): void => {
-  try {
-    if (typeof window === 'undefined') {
-      console.warn('Analytics: Window object not available (SSR)');
-      return;
-    }
-
-    const dataLayer = (window as any).dataLayer;
-    if (!dataLayer) {
-      console.warn('Analytics: dataLayer not initialized');
-      return;
-    }
-
-    dataLayer.push(event);
-  } catch (error) {
-    console.error('Analytics: Failed to push event', error);
-  }
-};
-
-const validateProducts = (products: common_OrderItem[]): boolean => {
-  if (!Array.isArray(products) || products.length === 0) {
-    console.warn('Analytics: Invalid or empty products array');
-    return false;
-  }
-  return true;
-};
-
 export function sendBeginCheckoutEvent(
-  products: common_OrderItem[],
+  items: common_OrderItem[],
+  topCategory: string,
+  subCategory: string,
 ): void {
-  if (!validateProducts(products)) return;
-
-  initializeDataLayer();
+  if (!items || !items?.length) return;
 
   const event: EcommerceEvent = {
-    event: 'begin_checkout',
+    event: "begin_checkout",
     ecommerce: {
-      currency: 'EUR',
-      value: calculateTotalValue(products),
-      items: mapProductsToAnalyticsItems(products),
+      currency: "EUR",
+      value: calculateTotalValue(items),
+      items: items.map((item) =>
+        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+      ),
     },
   };
 
-  pushAnalyticsEvent(event);
+  pushToDataLayer(event);
 }
 
 export function sendAddShippingInfoEvent(
-  products: common_OrderItem[],
-  shippingCarrier: string
+  items: common_OrderItem[],
+  shippingCarrier: string,
+  topCategory: string,
+  subCategory: string,
 ): void {
-  if (!validateProducts(products)) return;
-
-  initializeDataLayer();
+  if (!items || !items?.length) return;
 
   const event: EcommerceEvent = {
-    event: 'add_shipping_info',
+    event: "add_shipping_info",
     ecommerce: {
-      currency: 'EUR',
-      value: calculateTotalValue(products),
+      currency: "EUR",
+      value: calculateTotalValue(items),
       shipping_tier: shippingCarrier,
-      items: mapProductsToAnalyticsItems(products),
+      items: items.map((item) =>
+        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+      ),
     },
   };
 
-  pushAnalyticsEvent(event);
+  pushToDataLayer(event);
 }
 
 export function sendAddPaymentInfoEvent(
-  products: common_OrderItem[],
-  paymentMethod: string
+  items: common_OrderItem[],
+  paymentMethod: string,
+  topCategory: string,
+  subCategory: string,
 ): void {
-  if (!validateProducts(products)) return;
-
-  initializeDataLayer();
+  if (!items || !items?.length) return;
 
   const event: EcommerceEvent = {
-    event: 'add_payment_info',
+    event: "add_payment_info",
     ecommerce: {
-      currency: 'EUR',
-      value: calculateTotalValue(products),
+      currency: "EUR",
+      value: calculateTotalValue(items),
       payment_type: paymentMethod,
-      items: mapProductsToAnalyticsItems(products),
+      items: items.map((item) =>
+        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+      ),
     },
   };
 
-  pushAnalyticsEvent(event);
+  pushToDataLayer(event);
 }
 
 export function sendPurchaseEvent(
-  products: common_OrderItem[],
+  items: common_OrderItem[],
   transactionId: string,
+  topCategory: string,
+  subCategory: string,
 ): void {
-  if (!validateProducts(products)) return;
-
-  initializeDataLayer();
+  if (!items || !items?.length) return;
 
   const event: EcommerceEvent = {
-    event: 'purchase',
+    event: "purchase",
     ecommerce: {
-      currency: 'EUR',
-      value: calculateTotalValue(products),
+      currency: "EUR",
+      value: calculateTotalValue(items),
       transaction_id: transactionId,
-      items: mapProductsToAnalyticsItems(products),
+      items: items.map((item) =>
+        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+      ),
     },
   };
 
-  pushAnalyticsEvent(event);
+  pushToDataLayer(event);
 }

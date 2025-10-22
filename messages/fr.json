@@ -437,5 +437,24 @@
     "failed_to_subscribe": "échec de l'abonnement. veuillez réessayer.",
     "invalid_email": "veuillez saisir une adresse email valide",
     "email_copied": "email copié"
+  },
+  "refund": {
+    "return status": "statut du retour",
+    "text": "vous trouverez votre numéro de retour dans l&apos;e-mail de confirmation de retour. Si vous avez récemment demandé un retour, veuillez noter qu&apos;il peut falloir quelques minutes pour traiter votre demande et envoyer l&apos;e-mail de confirmation. Si vous ne voyez pas l&apos;e-mail de confirmation, veuillez vérifier votre dossier de courrier indésirable.",
+    "check your return status": "vérifiez le statut de votre retour",
+    "email": "E-MAIL*",
+    "return reference": "RÉFÉRENCE DE RETOUR*",
+    "submit": "envoyer",
+    "size": "problèmes de taille",
+    "damaged or defective": "endommage ou défectueux",
+    "wrong item received": "mauvais article reçu",
+    "item does not match description": "l&apos;article ne correspond pas à la description",
+    "changed my mind": "j&apos;ai changé d&apos;avis",
+    "quality not as expected": "qualité non conforme aux attentes",
+    "ordered by mistake": "commandé par erreur",
+    "other": "autre",
+    "order already in refund progress": "commande déjà en cours de remboursement",
+    "refund request submitted successfully": "demande de remboursement soumise avec succès",
+    "reason": "raison"
   }
 }

@@ -1,13 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { common_OrderItem } from "@/api/proto-http/frontend";
 import { paymentMethodNamesMap } from "@/constants";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
-import { sendAddPaymentInfoEvent } from "@/lib/analitycs/checkout";
-import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCheckoutAnalytics } from "@/lib/hooks/useCheckoutAnalytics";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
@@ -38,21 +36,7 @@ export default function PaymentFieldsGroup({
   const { dictionary } = useDataContext();
   const { watch, unregister } = useFormContext();
   const t = useTranslations("checkout");
-  const products = useCart((state) => state.products).map((v) => v.productData);
-
-  const handlePaymentMethodChange = (paymentMethodName: string) => {
-    const paymentMethodDisplayName =
-      paymentMethodNamesMap[
-        paymentMethodName as keyof typeof paymentMethodNamesMap
-      ];
-
-    if (paymentMethodDisplayName && products.length > 0) {
-      sendAddPaymentInfoEvent(
-        products as common_OrderItem[],
-        paymentMethodDisplayName,
-      );
-    }
-  };
+  const { handlePaymentMethodChange } = useCheckoutAnalytics({});
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
