@@ -1,4 +1,4 @@
-import { common_OrderItem } from "@/api/proto-http/frontend";
+import { common_OrderFull, common_OrderItem } from "@/api/proto-http/frontend";
 
 import {
   AnalyticsItem,
@@ -117,4 +117,26 @@ export function sendPurchaseEvent(
   };
 
   pushToDataLayer(event);
+}
+
+export function sendRefundEvent(
+  orderData: common_OrderFull,
+  topCategory: string,
+  subCategory: string,
+) {
+  if (!orderData || !orderData.order) return;
+
+  const event: EcommerceEvent = {
+    event: "refund",
+    ecommerce: {
+      currency: "EUR",
+      value: calculateTotalValue(orderData.orderItems || []),
+      transaction_id: orderData.order.uuid,
+      coupon: orderData.promoCode || "not set",
+      shipping: parseFloat(orderData.shipment?.cost?.value || "0") || 0,
+      items: orderData.orderItems?.map((item) =>
+        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+      ),
+    },
+  };
 }
