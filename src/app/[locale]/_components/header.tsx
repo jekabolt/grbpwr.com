@@ -25,6 +25,7 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
   const itemsQuantity = Object.keys(products).length;
   const [isVisible, setIsVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [isAnnounceVisible, setIsAnnounceVisible] = useState(true);
   const { scrollDirection, isAtTop } = useHeaderScrollPosition();
   const { languageId } = useTranslationsStore((state) => state);
   const announceTranslation = dictionary?.announceTranslations?.find(
@@ -56,17 +57,32 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
     }
   }, [scrollDirection, isAtTop, isMobile]);
 
+  useEffect(() => {
+    if (scrollDirection === "down") {
+      setIsAnnounceVisible(false);
+    } else if (scrollDirection === "up" || isAtTop) {
+      setIsAnnounceVisible(true);
+    }
+  }, [scrollDirection, isAtTop]);
+
   return (
     <>
-      {showAnnounce && <Announce open={open} onClose={handleClose} />}
+      {showAnnounce && (
+        <Announce
+          open={open}
+          onClose={handleClose}
+          isVisible={isAnnounceVisible}
+        />
+      )}
       <header
         className={cn(
           "fixed inset-x-2.5 bottom-2 z-30 h-12 py-2 lg:top-2 lg:gap-0 lg:px-5 lg:py-3",
           "flex items-center justify-between gap-1",
           "blackTheme border border-textInactiveColor bg-textColor text-bgColor lg:border-transparent lg:bg-bgColor lg:text-textColor",
-          "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] lg:transform-none lg:transition-none",
+          "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
+          "lg:transform-none lg:transition-[top] lg:duration-150 lg:ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
           {
-            "lg:top-8": open && showAnnounce,
+            "lg:top-8": open && showAnnounce && isAnnounceVisible,
             "pointer-events-auto translate-y-0": isVisible,
             "pointer-events-none translate-y-[120%]": !isVisible,
             "bg-bgColor text-textColor mix-blend-hard-light":
