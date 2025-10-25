@@ -75,7 +75,7 @@ export function MobileFilter() {
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="flex h-full w-full flex-col gap-6 overflow-y-auto border-2 border-red-500">
+          <div className="flex h-full w-full flex-col gap-6 overflow-y-auto">
             <div className="space-y-10 pb-24">
               <DialogPrimitives.Close asChild>
                 <div className="fixed inset-x-2.5 top-2.5 flex items-center justify-between bg-bgColor">
