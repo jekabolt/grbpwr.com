@@ -34,7 +34,7 @@ export default function MobileCurrencyPopover({ theme }: Props) {
         <DialogPrimitives.Overlay className="fixed inset-0 z-50 bg-black/50" />
         <DialogPrimitives.Content
           className={cn(
-            "fixed inset-0 z-50 flex h-screen w-screen flex-col bg-bgColor p-2.5 text-textColor",
+            "fixed inset-0 z-50 flex h-dvh flex-col bg-bgColor p-2.5 text-textColor",
             {
               "blackTheme bg-bgColor text-textColor": theme === "dark",
             },
