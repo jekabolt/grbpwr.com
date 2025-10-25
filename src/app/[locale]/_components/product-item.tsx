@@ -1,9 +1,13 @@
 import type { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols, EMPTY_PREORDER } from "@/constants";
 
+
+import { selectItemEvent } from "@/lib/analitycs/catalog";
+import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
@@ -19,27 +23,36 @@ export function ProductItem({
   className: string;
   isInfoVisible?: boolean;
 }) {
+  const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const { handleSelectItemEvent } = useAnalytics();
-
-  const productBody = product.productDisplay?.productBody;
-
-  const currentTranslation = productBody?.translations?.find(
-    (t) => t.languageId === languageId,
-  );
-  const salePercentage = productBody?.productBodyInsert?.salePercentage?.value;
+    
+  const productBody = product.productDisplay?.productBody?.productBodyInsert;
+  const salePercentage = productBody?.salePercentage?.value || "0";
   const isSaleApplied = salePercentage && salePercentage !== "0";
+  const preorder = productBody?.preorder;
+  const fit = productBody?.fit || "";
+  const topCategory = getTopCategoryName(
+    dictionary?.categories || [],
+    productBody?.topCategoryId || 0,
+    languageId,
+  );
+  const subCategory = getSubCategoryName(
+    dictionary?.categories || [],
+    productBody?.subCategoryId || 0,
+    languageId,
+  );
+  const name = `${fit} ${subCategory || topCategory}`;
 
   const priceWithSale =
-    (parseFloat(productBody?.productBodyInsert?.price?.value || "0") *
-      (100 -
-        parseInt(
-          productBody?.productBodyInsert?.salePercentage?.value || "0",
-        ))) /
+    (parseFloat(productBody?.price?.value || "0") *
+      (100 - parseInt(salePercentage || "0"))) /
     100;
 
-  const preorder = productBody?.productBodyInsert?.preorder;
+  function handleSelectItemEvent() {
+    selectItemEvent(product, listName, listId);
+  }
 
   return (
     <div className={cn("relative", className)}>
@@ -54,7 +67,7 @@ export function ProductItem({
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
               ""
             }
-            alt={currentTranslation?.name || ""}
+            alt={name}
             aspectRatio={calculateAspectRatio(
               product.productDisplay?.thumbnail?.media?.thumbnail?.width,
               product.productDisplay?.thumbnail?.media?.thumbnail?.height,
@@ -71,7 +84,7 @@ export function ProductItem({
             variant="undrleineWithColors"
             className="overflow-hidden text-ellipsis leading-none group-[:visited]:text-visitedLinkColor"
           >
-            {currentTranslation?.name}
+            {name}
           </Text>
           <div className="flex gap-1 leading-none">
             <Text variant={isSaleApplied ? "strileTroughInactive" : "default"}>

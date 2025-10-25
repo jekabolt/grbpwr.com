@@ -55,6 +55,7 @@ export function FeaturedItems({
         {(itemsQuantity === 2 || itemsQuantity === 3) && (
           <div className="flex h-full items-center justify-between pl-2.5">
             <HeaderSection
+              headline={headline}
               href={exploreLink ? exploreLink : tag || ""}
               linkText={exploreText || ""}
             />
@@ -116,15 +117,10 @@ export function HeaderSection({
         <AnimatedButton
           href={href}
           animationArea="text"
-          className="flex flex-row gap-2 whitespace-nowrap lg:pl-2.5"
+          className="flex flex-wrap items-center gap-2 uppercase lg:flex-nowrap lg:pl-2.5"
         >
-          <Text variant="uppercase">{headline}</Text>
-          {linkText && (
-            <Text className="flex gap-2 uppercase lg:hidden lg:group-hover:flex">
-              <Text component="span">{`/`}</Text>
-              <Text component="span">{linkText ? linkText : ""}</Text>
-            </Text>
-          )}
+          <Text className="text-wrap">{headline}</Text>
+          <Text variant="underlined">{linkText ? linkText : ""}</Text>
         </AnimatedButton>
       )}
     </div>
