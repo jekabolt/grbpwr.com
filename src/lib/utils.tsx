@@ -1,5 +1,4 @@
 import type {
-  common_ProductFull,
   common_ProductSize,
   common_Size,
 } from "@/api/proto-http/frontend";
@@ -216,37 +215,4 @@ export function getCountryName(countryCode?: string, preferredLng?: string) {
   const match =
     countries.find((c) => c.lng.toLowerCase() === lng) || countries[0];
   return match?.name || countryCode.toUpperCase();
-}
-
-export function getTotalProductQuantity(product: common_ProductFull): number {
-  if (!product?.sizes || product.sizes.length === 0) {
-    return 0;
-  }
-
-  return product.sizes.reduce((total, size) => {
-    const quantity = parseInt(size.quantity?.value || "0");
-    return total + quantity;
-  }, 0);
-}
-
-export function getTotalProductValue(product: common_ProductFull): number {
-  if (!product?.sizes || product.sizes.length === 0) {
-    return 0;
-  }
-
-  const price = parseInt(
-    product.product?.productDisplay?.productBody?.productBodyInsert?.price
-      ?.value || "0",
-  );
-  const salePercentage = parseInt(
-    product.product?.productDisplay?.productBody?.productBodyInsert
-      ?.salePercentage?.value || "0",
-  );
-  const finalPrice =
-    salePercentage > 0 ? price - (price * salePercentage) / 100 : price;
-
-  return product.sizes.reduce((total, size) => {
-    const quantity = parseInt(size.quantity?.value || "0");
-    return total + quantity * finalPrice;
-  }, 0);
 }

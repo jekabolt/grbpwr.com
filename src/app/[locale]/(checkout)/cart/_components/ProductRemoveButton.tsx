@@ -4,9 +4,8 @@ import { common_OrderItem } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import { sendRemoveFromCartEvent } from "@/lib/analitycs/cart";
-import { getTopCategoryName } from "@/lib/categories-map";
+import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
@@ -26,9 +25,7 @@ export default function ProductRemoveButton({
   product,
 }: Props) {
   const t = useTranslations("cart");
-
   const { dictionary } = useDataContext();
-  const { languageId } = useTranslationsStore((state) => state);
   const { removeProduct, productToRemove, setProductToRemove } = useCart(
     (state) => state,
   );
@@ -36,8 +33,15 @@ export default function ProductRemoveButton({
   const topCategory = getTopCategoryName(
     dictionary?.categories || [],
     product.topCategoryId || 0,
-    languageId,
+    1,
   );
+
+  const subCategory = getSubCategoryName(
+    dictionary?.categories || [],
+    product.subCategoryId || 0,
+    1,
+  );
+
   const isRemoveConfirmed =
     productToRemove &&
     productToRemove.id === id &&
@@ -50,7 +54,7 @@ export default function ProductRemoveButton({
 
     if (isRemoveConfirmed) {
       removeProduct(id, size, index);
-      sendRemoveFromCartEvent(product, topCategory || "");
+      sendRemoveFromCartEvent(product, topCategory || "", subCategory || "");
       setProductToRemove(null);
     } else {
       setProductToRemove({ id, size, index });

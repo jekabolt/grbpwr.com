@@ -1,7 +1,6 @@
 import type { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols, EMPTY_PREORDER } from "@/constants";
 
-import { selectItemEvent } from "@/lib/analitycs/catalog";
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -25,7 +24,7 @@ export function ProductItem({
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
-  const { listName, listId } = useAnalytics();
+  const { handleSelectItemEvent } = useAnalytics();
 
   const productBody = product.productDisplay?.productBody?.productBodyInsert;
   const salePercentage = productBody?.salePercentage?.value || "0";
@@ -49,15 +48,11 @@ export function ProductItem({
       (100 - parseInt(salePercentage || "0"))) /
     100;
 
-  function handleSelectItemEvent() {
-    selectItemEvent(product, listName, listId);
-  }
-
   return (
     <div className={cn("relative", className)}>
       <AnimatedButton
         href={product?.slug || ""}
-        onMouseDown={handleSelectItemEvent}
+        onMouseDown={() => handleSelectItemEvent(product)}
         className={cn("group flex h-full w-full flex-col", className)}
       >
         <div className="relative">

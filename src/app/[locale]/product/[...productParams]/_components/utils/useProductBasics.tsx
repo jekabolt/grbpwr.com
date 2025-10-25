@@ -28,13 +28,11 @@ export function useProductBasics({ product }: { product: common_ProductFull }) {
   const productCategory = getTopCategoryName(
     dictionary?.categories || [],
     productBody?.topCategoryId || 0,
-    languageId,
   );
 
   const productSubCategory = getSubCategoryName(
     dictionary?.categories || [],
     productBody?.subCategoryId || 0,
-    languageId,
   );
 
   const name = `${productBody?.collection || ""} ${productBody?.version || ""} ${productBody?.fit || ""} ${productBody?.color || ""} ${currentTranslation?.name || ""}`;

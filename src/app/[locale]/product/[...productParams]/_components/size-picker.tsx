@@ -25,13 +25,7 @@ export function SizePicker({
   className,
   handleSizeSelect,
 }: Props) {
-  const handleAnalytics = (
-    isTouch = false,
-    sizeName: string,
-    outOfStock: boolean,
-  ) => {
-    if (!isTouch && "ontouchstart" in window) return;
-
+  const handleAnalytics = (sizeName: string, outOfStock: boolean) => {
     sendSizeSelectionEvent({
       sizeName: sizeName,
       outOfStock: outOfStock,
@@ -59,11 +53,8 @@ export function SizePicker({
             })}
             key={id}
             onClick={() => handleSizeSelect(id)}
-            onMouseEnter={() =>
-              handleAnalytics(false, name, outOfStock?.[id] || false)
-            }
-            onTouchStart={() =>
-              handleAnalytics(true, name, outOfStock?.[id] || false)
+            onPointerDown={() =>
+              handleAnalytics(name, outOfStock?.[id] || false)
             }
             disabled={outOfStock?.[id]}
           >

@@ -437,5 +437,24 @@
     "failed_to_subscribe": "구독에 실패했습니다. 다시 시도해주세요.",
     "invalid_email": "유효한 이메일 주소를 입력해주세요",
     "email_copied": "이메일 복사됨"
-  }  
+  },
+  "refund": {
+    "return status": "반품 상태",
+    "text": "반품 확인 이메일에서 반품 번호를 확인하실 수 있습니다. 최근에 반품을 요청하셨다면, 요청이 처리되고 확인 이메일이 전송되는 데 몇 분 정도 걸릴 수 있습니다. 확인 이메일이 보이지 않으면 스팸함을 확인해 주세요.",
+    "check your return status": "반품 상태 확인",
+    "email": "이메일*",
+    "return reference": "반품 참조 번호*",
+    "submit": "제출",
+    "size": "사이즈 문제",
+    "damaged or defective": "손상 또는 불량품",
+    "wrong item received": "잘못된 상품 수령",
+    "item does not match description": "상품이 설명과 다름",
+    "changed my mind": "마음이 바뀜",
+    "quality not as expected": "품질이 기대에 미치지 못함",
+    "ordered by mistake": "실수로 주문함",
+    "other": "기타",
+    "order already in refund progress": "주문이 이미 환불 진행 중임",
+    "refund request submitted successfully": "환불 요청이 성공적으로 제출되었습니다",
+    "reason": "사유"
+  }
 }

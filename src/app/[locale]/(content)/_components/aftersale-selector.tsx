@@ -1,4 +1,4 @@
-import { Control } from "react-hook-form";
+import { Control, FieldPath, FieldValues } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -9,21 +9,21 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 
-import { AftersaleSchema } from "../aftersale-services/_components/schema";
+export interface AftersaleSelectorProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
+  list: string[];
+  className?: string;
+  renderLabel?: (value: string) => string;
+}
 
-export default function AftersaleSelector({
+export default function AftersaleSelector<T extends FieldValues>({
   control,
   name,
   list,
   className,
   renderLabel,
-}: {
-  control: Control<AftersaleSchema>;
-  name: keyof AftersaleSchema;
-  list: string[];
-  className?: string;
-  renderLabel?: (value: string) => string;
-}) {
+}: AftersaleSelectorProps<T>) {
   return (
     <FormField
       control={control}
