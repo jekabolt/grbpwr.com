@@ -139,4 +139,6 @@ export function sendRefundEvent(
       ),
     },
   };
+
+  pushToDataLayer(event);
 }

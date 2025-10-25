@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
+import { useCheckoutAnalytics } from "@/lib/hooks/useCheckoutAnalytics";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -21,6 +22,7 @@ import { defaultData, refundForm, RefundSchema } from "./schema";
 export function RefundForm() {
   const t = useTranslations("refund");
   const router = useRouter();
+  const { handleRefundEvent } = useCheckoutAnalytics({});
 
   const [open, setOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -48,6 +50,7 @@ export function RefundForm() {
       if (response.order) {
         setErrorMessage(t("refund request submitted successfully"));
         setOpen(true);
+        handleRefundEvent(response.order);
         router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
       }
 
