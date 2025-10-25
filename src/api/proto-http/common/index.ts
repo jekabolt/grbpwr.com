@@ -219,6 +219,7 @@ export type ProductBodyInsert = {
   targetGender: GenderEnum | undefined;
   version: string | undefined;
   collection: string | undefined;
+  fit: string | undefined;
 };
 
 // A representation of a decimal value, such as 2.5. Clients may convert values
@@ -458,6 +459,8 @@ export type OrderStatusEnum =
   | "ORDER_STATUS_ENUM_SHIPPED"
   | "ORDER_STATUS_ENUM_DELIVERED"
   | "ORDER_STATUS_ENUM_CANCELLED"
+  | "ORDER_STATUS_ENUM_PENDING_RETURN"
+  | "ORDER_STATUS_ENUM_REFUND_IN_PROGRESS"
   | "ORDER_STATUS_ENUM_REFUNDED";
 export type OrderNew = {
   items: OrderItemInsert[] | undefined;
@@ -494,6 +497,8 @@ export type Order = {
   totalPrice: googletype_Decimal | undefined;
   orderStatusId: number | undefined;
   promoId: number | undefined;
+  refundReason: string | undefined;
+  orderComment: string | undefined;
 };
 
 export type OrderItem = {

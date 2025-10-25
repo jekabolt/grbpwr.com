@@ -10,6 +10,7 @@ export function useProductBasics({ product }: { product: common_ProductFull }) {
   const t = useTranslations("product");
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
+
   const productBody =
     product.product?.productDisplay?.productBody?.productBodyInsert;
 
@@ -36,13 +37,15 @@ export function useProductBasics({ product }: { product: common_ProductFull }) {
     languageId,
   );
 
+  const name = `${productBody?.collection || ""} ${productBody?.version || ""} ${productBody?.fit || ""} ${productBody?.color || ""} ${currentTranslation?.name || ""}`;
+
   return {
     isComposition,
     isCare,
     preorder,
     preorderRaw: productBody?.preorder,
     productId: product.product?.id || 0,
-    name: currentTranslation?.name,
+    name,
     description: currentTranslation?.description,
     topCategoryId: productBody?.topCategoryId,
     subCategoryId: productBody?.subCategoryId,
