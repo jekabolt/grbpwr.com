@@ -4,6 +4,7 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import { serviceClient } from "@/lib/api";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -65,19 +66,19 @@ export function MobileFilter() {
 
   return (
     <DialogPrimitives.Root>
-      <DialogPrimitives.Trigger asChild>
+      <DialogPrimitives.Trigger asChild className="w-full text-right">
         <Button className="uppercase">{t("filter")} +</Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-50 bg-black/50" />
-        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 h-screen w-screen bg-bgColor p-2.5 text-textColor lg:hidden">
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay opacity-40" />
+        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 h-dvh bg-bgColor p-2.5 text-textColor lg:hidden">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="flex h-full flex-col justify-between">
-            <div className="space-y-10">
+          <div className="flex h-full w-full flex-col gap-6 overflow-y-auto border-2 border-red-500">
+            <div className="space-y-10 pb-24">
               <DialogPrimitives.Close asChild>
-                <div className="flex items-center justify-between">
+                <div className="fixed inset-x-2.5 top-2.5 flex items-center justify-between bg-bgColor">
                   <Text variant="uppercase">{t("filter")}</Text>
                   <Button>[x]</Button>
                 </div>
@@ -95,31 +96,37 @@ export function MobileFilter() {
                 topCategoryId={topCategory?.id?.toString()}
               />
             </div>
-            {selectedSize && (
-              <div className="flex justify-between gap-2 bg-bgColor">
+
+            <div
+              className={cn(
+                "fixed inset-x-2.5 bottom-5 hidden gap-2 bg-bgColor",
+                {
+                  "flex justify-between": selectedSize,
+                },
+              )}
+            >
+              <Button
+                className="w-full uppercase"
+                size="lg"
+                variant="main"
+                onClick={() => {
+                  handleSizeClick(undefined);
+                  handleFilterChange(undefined);
+                }}
+              >
+                {t("clear all")}
+              </Button>
+              <DialogPrimitives.Close asChild>
                 <Button
                   className="w-full uppercase"
                   size="lg"
                   variant="main"
-                  onClick={() => {
-                    handleSizeClick(undefined);
-                    handleFilterChange(undefined);
-                  }}
+                  onClick={() => handleShowSize(selectedSize)}
                 >
-                  {t("clear all")}
+                  {t("show")} {selectedSize && total > 0 ? `[${total}]` : ""}
                 </Button>
-                <DialogPrimitives.Close asChild>
-                  <Button
-                    className="w-full uppercase"
-                    size="lg"
-                    variant="main"
-                    onClick={() => handleShowSize(selectedSize)}
-                  >
-                    {t("show")} {selectedSize && total > 0 ? `[${total}]` : ""}
-                  </Button>
-                </DialogPrimitives.Close>
-              </div>
-            )}
+              </DialogPrimitives.Close>
+            </div>
           </div>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>

@@ -61,7 +61,7 @@ export function MobileCountriesPopup() {
       </Button>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay opacity-40" />
-        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 h-screen w-screen bg-bgColor p-2.5 text-textColor lg:hidden">
+        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 h-dvh bg-bgColor p-2.5 text-textColor lg:hidden">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
@@ -126,7 +126,7 @@ export function MobileCountriesPopup() {
                   <div
                     key={region}
                     className={cn(
-                      "border-textInactiveColorAlpha border-b hover:border-textColor",
+                      "border-b border-textInactiveColorAlpha hover:border-textColor",
                       {
                         "border-transparent hover:border-transparent":
                           index === regionsWithCountries.length - 1,
