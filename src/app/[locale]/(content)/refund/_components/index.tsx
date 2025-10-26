@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { common_OrderFull } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
+import { sendRefundEvent } from "@/lib/analitycs/checkout";
 import { serviceClient } from "@/lib/api";
-import { useCheckoutAnalytics } from "@/lib/hooks/useCheckoutAnalytics";
+import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -20,9 +23,9 @@ import { reasons } from "../../_components/constant";
 import { defaultData, refundForm, RefundSchema } from "./schema";
 
 export function RefundForm() {
+  const { dictionary } = useDataContext();
   const t = useTranslations("refund");
   const router = useRouter();
-  const { handleRefundEvent } = useCheckoutAnalytics({});
 
   const [open, setOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,6 +34,21 @@ export function RefundForm() {
     resolver: zodResolver(refundForm),
     defaultValues: defaultData,
   });
+
+  function handleRefundEvent(order: common_OrderFull) {
+    const categories = dictionary?.categories || [];
+    const items = order.orderItems || [];
+
+    const topCategoryId =
+      items.find((i) => i.topCategoryId)?.topCategoryId || 0;
+    const subCategoryId =
+      items.find((i) => i.subCategoryId)?.subCategoryId || 0;
+
+    const topCategoryName = getTopCategoryName(categories, topCategoryId) || "";
+    const subCategoryName = getSubCategoryName(categories, subCategoryId) || "";
+
+    sendRefundEvent(order, topCategoryName, subCategoryName);
+  }
 
   async function handleSubmit(data: RefundSchema) {
     try {

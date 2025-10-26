@@ -132,7 +132,7 @@ export function sendRefundEvent(
       currency: "EUR",
       value: calculateTotalValue(orderData.orderItems || []),
       transaction_id: orderData.order.uuid,
-      coupon: orderData.promoCode || "not set",
+      coupon: orderData.promoCode?.promoCodeInsert?.code || "not set",
       shipping: parseFloat(orderData.shipment?.cost?.value || "0") || 0,
       items: orderData.orderItems?.map((item) =>
         mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),

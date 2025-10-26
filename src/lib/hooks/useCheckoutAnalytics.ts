@@ -1,4 +1,4 @@
-import { common_OrderFull, common_OrderItem } from "@/api/proto-http/frontend";
+import { common_OrderItem } from "@/api/proto-http/frontend";
 import { paymentMethodNamesMap } from "@/constants";
 
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -7,8 +7,7 @@ import {
     sendAddPaymentInfoEvent,
     sendAddShippingInfoEvent,
     sendBeginCheckoutEvent,
-    sendPurchaseEvent,
-    sendRefundEvent,
+    sendPurchaseEvent
 } from "../analitycs/checkout";
 import { getSubCategoryName, getTopCategoryName } from "../categories-map";
 import { useCart } from "../stores/cart/store-provider";
@@ -86,14 +85,6 @@ export function useCheckoutAnalytics({
         );
     }
 
-    function handleRefundEvent(orderData: common_OrderFull) {
-        sendRefundEvent(
-            orderData,
-            topCategoryName || "",
-            subCategoryName || "",
-        );
-    }
-
     return {
         topCategoryName,
         subCategoryName,
@@ -101,6 +92,5 @@ export function useCheckoutAnalytics({
         handleShippingCarrierChange,
         handlePaymentMethodChange,
         handlePurchaseEvent,
-        handleRefundEvent,
     };
 }
