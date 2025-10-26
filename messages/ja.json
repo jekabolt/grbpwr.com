@@ -445,7 +445,7 @@
     "email": "メールアドレス*",
     "return reference": "返品番号*",
     "submit": "送信",
-    "size": "サイズの問題",
+    "size issues": "サイズの問題",
     "damaged or defective": "破損または不良品",
     "wrong item received": "誤った商品を受け取った",
     "item does not match description": "商品が説明と一致しない",

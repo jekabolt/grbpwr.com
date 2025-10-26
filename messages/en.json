@@ -109,7 +109,7 @@
   },
   "not-found": {
     "title": "page not found",
-    "text": "sorry, the page you are looking for doesn&apos;t exist or has been moved. please go back to the homepage or contact us if the problem persists",
+    "text": "sorry, the page you are looking for doesn't exist or has been moved. please go back to the homepage or contact us if the problem persists",
     "main": "main"
   },
   "cookies": {
@@ -445,7 +445,7 @@
     "email": "EMAIL*",
     "return reference": "RETURN REFERENCE*",
     "submit": "submit",
-    "size": "size issues",
+    "size issues": "size issues",
     "damaged or defective": "damaged or defective",
     "wrong item received": "wrong item received",
     "item does not match description": "item does not match description",
