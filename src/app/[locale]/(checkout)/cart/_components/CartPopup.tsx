@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
-import { useCheckoutAnalytics } from "@/lib/hooks/useCheckoutAnalytics";
+import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";

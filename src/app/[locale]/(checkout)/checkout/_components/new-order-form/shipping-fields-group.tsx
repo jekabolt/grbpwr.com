@@ -5,7 +5,7 @@ import { COUNTRIES_BY_REGION, keyboardRestrictions } from "@/constants";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
-import { useCheckoutAnalytics } from "@/lib/hooks/useCheckoutAnalytics";
+import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";

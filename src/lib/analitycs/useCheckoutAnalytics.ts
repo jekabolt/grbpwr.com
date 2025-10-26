@@ -3,14 +3,14 @@ import { paymentMethodNamesMap } from "@/constants";
 
 import { useDataContext } from "@/components/contexts/DataContext";
 
+import { getSubCategoryName, getTopCategoryName } from "../categories-map";
+import { useCart } from "../stores/cart/store-provider";
 import {
     sendAddPaymentInfoEvent,
     sendAddShippingInfoEvent,
     sendBeginCheckoutEvent,
     sendPurchaseEvent
-} from "../analitycs/checkout";
-import { getSubCategoryName, getTopCategoryName } from "../categories-map";
-import { useCart } from "../stores/cart/store-provider";
+} from "./checkout";
 
 export function useCheckoutAnalytics({
     validateItems,
