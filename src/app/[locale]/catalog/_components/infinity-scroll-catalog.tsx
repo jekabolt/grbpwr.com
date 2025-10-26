@@ -6,7 +6,6 @@ import type { common_Product } from "@/api/proto-http/frontend";
 import { CATALOG_LIMIT } from "@/constants";
 import { useInView } from "react-intersection-observer";
 
-import { sendViewItemListEvent } from "@/lib/analitycs/catalog";
 import { serviceClient } from "@/lib/api";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -27,7 +26,7 @@ export function InfinityScrollCatalog({
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
   const { gender, topCategory, subCategory } = useRouteParams();
-  const { listName, listId } = useAnalytics();
+  const { listName, listId, handleViewItemListEvent } = useAnalytics();
   const { ref, inView } = useInView();
 
   const [items, setItems] = useState<common_Product[]>(firstPageItems);
@@ -48,7 +47,7 @@ export function InfinityScrollCatalog({
 
     if (firstPageItems.length > 0) {
       setTimeout(() => {
-        sendViewItemListEvent(firstPageItems, listName, listId);
+        handleViewItemListEvent(firstPageItems);
       }, 100);
     }
   }, [firstPageItems, total, listName, listId]);
@@ -84,7 +83,7 @@ export function InfinityScrollCatalog({
         pageRef.current = 2;
 
         if (newProducts.length > 0) {
-          sendViewItemListEvent(newProducts, listName, listId);
+          handleViewItemListEvent(newProducts);
         }
       } catch (error) {
         console.error("Failed to fetch data on language change:", error);
@@ -130,11 +129,7 @@ export function InfinityScrollCatalog({
         pageRef.current = 2;
 
         if (newProducts.length > 0) {
-          sendViewItemListEvent(
-            newProducts,
-            `Filtered ${listName}`,
-            `filtered_${listId}`,
-          );
+          handleViewItemListEvent(newProducts);
         }
       } catch (error) {
         console.error("Failed to fetch filtered data:", error);
@@ -179,13 +174,8 @@ export function InfinityScrollCatalog({
         const updatedItems = [...prevItems, ...newProducts];
         hasMoreRef.current = updatedItems.length < currentTotal;
 
-        // Отправляем событие view_item_list только для новых загруженных товаров
         if (newProducts.length > 0) {
-          sendViewItemListEvent(
-            newProducts,
-            `${listName} - Page ${pageRef.current - 1}`,
-            `${listId}_page_${pageRef.current - 1}`,
-          );
+          handleViewItemListEvent(newProducts);
         }
 
         return updatedItems;

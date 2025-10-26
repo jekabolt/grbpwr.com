@@ -437,5 +437,24 @@
     "failed_to_subscribe": "订阅失败，请重试。",
     "invalid_email": "请输入有效的邮箱地址",
     "email_copied": "邮箱已复制"
+  },
+  "refund": {
+    "return status": "退货状态",
+    "text": "您可以在退货确认邮件中找到您的退货编号。如果您最近提交了退货请求，请注意，处理您的请求并发送确认邮件可能需要几分钟。如果没有看到确认邮件，请检查垃圾邮件文件夹。",
+    "check your return status": "查看退货状态",
+    "email": "电子邮件*",
+    "return reference": "退货参考号*",
+    "submit": "提交",
+    "size issues": "尺码问题",
+    "damaged or defective": "损坏或有缺陷",
+    "wrong item received": "收到错误的商品",
+    "item does not match description": "商品与描述不符",
+    "changed my mind": "改变主意",
+    "quality not as expected": "质量不符合预期",
+    "ordered by mistake": "误下订单",
+    "other": "其他",
+    "order already in refund progress": "订单已在退款处理中",
+    "refund request submitted successfully": "退款请求提交成功",
+    "reason": "原因"
   }
 }

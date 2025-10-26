@@ -20,6 +20,10 @@ const getStatusInfo = (statusId: number) => {
       return { text: "Cancelled", color: "bg-red-100 text-red-800" };
     case 7:
       return { text: "Refunded", color: "bg-gray-100 text-gray-800" };
+    case 8:
+      return { text: "Pending return", color: "bg-gray-100 text-gray-800" };
+    case 9:
+      return { text: "Refund in progress", color: "bg-gray-100 text-gray-800" };
     default:
       return { text: "Unknown", color: "bg-gray-100 text-gray-800" };
   }

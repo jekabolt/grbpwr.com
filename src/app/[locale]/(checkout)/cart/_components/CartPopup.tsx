@@ -2,22 +2,17 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { common_OrderItem } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
-import { sendBeginCheckoutEvent } from "@/lib/analitycs/checkout";
+import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 export default function CartPopup({ children }: { children: React.ReactNode }) {
   const { products, isOpen, closeCart, toggleCart } = useCart((state) => state);
-  const orderItems = useCart((state) => state.products).map(
-    (v) => v.productData,
-  );
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { handleBeginCheckoutEvent } = useCheckoutAnalytics({});
 
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
@@ -37,10 +32,6 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, closeCart]);
-
-  function handleBeginCheckoutEvent() {
-    sendBeginCheckoutEvent(orderItems as common_OrderItem[]);
-  }
 
   return (
     <div className="z-50 w-full">

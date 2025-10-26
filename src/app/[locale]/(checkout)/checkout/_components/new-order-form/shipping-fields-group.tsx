@@ -1,12 +1,11 @@
 "use client";
 
-import { common_Dictionary, common_OrderItem } from "@/api/proto-http/frontend";
+import { common_Dictionary } from "@/api/proto-http/frontend";
 import { COUNTRIES_BY_REGION, keyboardRestrictions } from "@/constants";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
-import { sendAddShippingInfoEvent } from "@/lib/analitycs/checkout";
-import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -37,22 +36,9 @@ export default function ShippingFieldsGroup({
 }: Props) {
   const { dictionary } = useDataContext();
   const t = useTranslations("checkout");
-  const products = useCart((state) => state.products).map((v) => v.productData);
-
-  const handleShippingCarrierChange = async (carrierId: string) => {
-    const response = await validateItems(carrierId);
-
-    const selectedCarrier = dictionary?.shipmentCarriers?.find(
-      (c) => c.id?.toString() === carrierId,
-    );
-    const carrierName = selectedCarrier?.shipmentCarrier?.carrier || "";
-
-    if (carrierName && products.length > 0) {
-      sendAddShippingInfoEvent(products as common_OrderItem[], carrierName);
-    }
-
-    return response;
-  };
+  const { handleShippingCarrierChange } = useCheckoutAnalytics({
+    validateItems,
+  });
 
   return (
     <FieldsGroupContainer

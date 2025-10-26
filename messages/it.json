@@ -437,5 +437,24 @@
     "failed_to_subscribe": "iscrizione fallita. riprova.",
     "invalid_email": "inserisci un indirizzo email valido",
     "email_copied": "email copiata"
+  },
+  "refund": {
+    "return status": "stato del reso",
+    "text": "troverai il numero di reso nell'e-mail di conferma del reso. Se hai recentemente richiesto un reso, ti informiamo che potrebbero volerci alcuni minuti per elaborare la richiesta e inviare l'e-mail di conferma. Se non vedi l'e-mail di conferma, controlla la cartella spam.",
+    "check your return status": "verifica lo stato del tuo reso",
+    "email": "E-MAIL*",
+    "return reference": "RIFERIMENTO RESO*",
+    "submit": "invia",
+    "size issues": "problemi di taglia",
+    "damaged or defective": "danneggiato o difettoso",
+    "wrong item received": "articolo errato ricevuto",
+    "item does not match description": "l'articolo non corrisponde alla descrizione",
+    "changed my mind": "ho cambiato idea",
+    "quality not as expected": "qualità inferiore alle aspettative",
+    "ordered by mistake": "ordinato per errore",
+    "other": "altro",
+    "order already in refund progress": "ordine già in corso di rimborso",
+    "refund request submitted successfully": "richiesta di rimborso inviata con successo",
+    "reason": "motivo"
   }
 }

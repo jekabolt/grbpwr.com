@@ -71,3 +71,14 @@ export const civility = [
     "mr",
     "i'd rather not say",
 ]
+
+export const reasons = [
+    "size issues",
+    "damaged or defective",
+    "wrong item received",
+    "item does not match description",
+    "changed my mind",
+    "quality not as expected",
+    "ordered by mistake",
+    "other",
+]

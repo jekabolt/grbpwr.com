@@ -437,5 +437,24 @@
     "failed_to_subscribe": "購読に失敗しました。もう一度お試しください。",
     "invalid_email": "有効なメールアドレスを入力してください",
     "email_copied": "メールアドレスがコピーされました"
+  },
+  "refund": {
+    "return status": "返品状況",
+    "text": "返品確認メールに返品番号が記載されています。最近返品をリクエストされた場合、リクエストが処理されて確認メールが送信されるまで数分かかることがあります。確認メールが見つからない場合は、迷惑メールフォルダを確認してください。",
+    "check your return status": "返品状況を確認する",
+    "email": "メールアドレス*",
+    "return reference": "返品番号*",
+    "submit": "送信",
+    "size issues": "サイズの問題",
+    "damaged or defective": "破損または不良品",
+    "wrong item received": "誤った商品を受け取った",
+    "item does not match description": "商品が説明と一致しない",
+    "changed my mind": "気が変わった",
+    "quality not as expected": "品質が期待に満たない",
+    "ordered by mistake": "誤って注文した",
+    "other": "その他",
+    "order already in refund progress": "注文はすでに返金処理中です",
+    "refund request submitted successfully": "返金リクエストが正常に送信されました",
+    "reason": "理由"
   }
 }

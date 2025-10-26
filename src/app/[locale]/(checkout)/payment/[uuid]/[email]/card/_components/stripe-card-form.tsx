@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { common_OrderItem } from "@/api/proto-http/frontend";
 import {
   PaymentElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
 
-import { sendPurchaseEvent } from "@/lib/analitycs/checkout";
+import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { Button } from "@/components/ui/button";
 
@@ -17,7 +16,7 @@ export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const { clearCart } = useCart((s) => s);
-  const orderItems = useCart((s) => s.products).map((v) => v.productData);
+  const { handlePurchaseEvent } = useCheckoutAnalytics({});
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,15 +54,11 @@ export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
     if (error) {
       console.error("Error confirming payment:", error.message);
     } else {
-      // Payment successful, redirect to order page
+      handlePurchaseEvent(uuid);
       clearCart();
       window.location.href = `/order/${uuid}/${email}`;
     }
   };
-
-  function handlePurchaseEvent() {
-    sendPurchaseEvent(orderItems as common_OrderItem[], uuid);
-  }
 
   return (
     <form
@@ -92,7 +87,6 @@ export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
         size="lg"
         className="w-full uppercase"
         disabled={!stripe || isLoading}
-        onMouseDown={handlePurchaseEvent}
       >
         pay
       </Button>
