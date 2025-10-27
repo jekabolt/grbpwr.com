@@ -135,8 +135,7 @@ export function MobileFilter() {
                   variant="main"
                   onClick={() => handleShowSize()}
                 >
-                  {t("show")}{" "}
-                  {selectedSizes.length > 0 && total > 0 ? `[${total}]` : ""}
+                  {t("show")} {total > 0 ? `[${total}]` : ""}
                 </Button>
               </DialogPrimitives.Close>
             </div>
