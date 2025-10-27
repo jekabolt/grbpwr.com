@@ -50,7 +50,7 @@ export function Loader({
         <div className="absolute inset-0 h-full w-full overflow-hidden">
           <div
             className={cn(
-              "absolute left-0 top-0 h-full w-full bg-textInactiveColor",
+              "absolute left-0 top-0 h-full w-full bg-textColor",
               reverse
                 ? "animate-[loading-reverse_1s_ease-out_forwards]"
                 : "animate-[loading_1s_ease-out_forwards]",
