@@ -26,20 +26,29 @@ export function MobileFilter() {
   const t = useTranslations("catalog");
   const sizes = dictionary?.sizes || [];
   const initSize = sizes?.find((s) => s.name === defaultValue)?.id?.toString();
-  const [selectedSize, setSelectedSize] = useState<string>(initSize || "");
+  const [selectedSizes, setSelectedSizes] = useState<string[]>(
+    initSize ? [initSize] : [],
+  );
 
   const getSizeNameById = (id?: string) =>
     sizeOptions?.find((s) => String(s.id) === id)?.name.toLowerCase();
 
   const handleSizeClick = async (sizeId?: string) => {
-    setSelectedSize(sizeId ?? "");
+    const newSelectedSize = selectedSizes.includes(sizeId || "")
+      ? selectedSizes.filter((id) => id !== sizeId)
+      : [...selectedSizes, sizeId || ""];
+    setSelectedSizes(newSelectedSize);
 
-    if (!sizeId) {
+    if (newSelectedSize.length === 0) {
       setTotal(0);
       return;
     }
 
     try {
+      const sizeNames = newSelectedSize
+        .map(getSizeNameById)
+        .filter(Boolean)
+        .join(",");
       const response = await serviceClient.GetProductsPaged({
         limit: CATALOG_LIMIT,
         offset: 0,
@@ -48,7 +57,7 @@ export function MobileFilter() {
             topCategoryIds: topCategory?.id?.toString(),
             subCategoryIds: subCategory?.id?.toString(),
             gender,
-            size: getSizeNameById(sizeId),
+            size: sizeNames,
           },
           dictionary,
         ),
@@ -59,9 +68,12 @@ export function MobileFilter() {
     }
   };
 
-  function handleShowSize(selectedSize: string) {
-    const sizeName = getSizeNameById(selectedSize);
-    handleFilterChange(sizeName || undefined);
+  function handleShowSize() {
+    const sizeNames = selectedSizes
+      .map(getSizeNameById)
+      .filter(Boolean)
+      .join(",");
+    handleFilterChange(sizeNames || undefined);
   }
 
   return (
@@ -90,7 +102,7 @@ export function MobileFilter() {
                 <Sort />
               </div>
               <FilterOptionButtons
-                defaultValue={selectedSize}
+                selectedValues={selectedSizes}
                 handleFilterChange={handleSizeClick}
                 values={sizeOptions || []}
                 topCategoryId={topCategory?.id?.toString()}
@@ -101,7 +113,7 @@ export function MobileFilter() {
               className={cn(
                 "fixed inset-x-2.5 bottom-5 hidden gap-2 bg-bgColor",
                 {
-                  "flex justify-between": selectedSize,
+                  "flex justify-between": selectedSizes.length > 0,
                 },
               )}
             >
@@ -121,9 +133,10 @@ export function MobileFilter() {
                   className="w-full uppercase"
                   size="lg"
                   variant="main"
-                  onClick={() => handleShowSize(selectedSize)}
+                  onClick={() => handleShowSize()}
                 >
-                  {t("show")} {selectedSize && total > 0 ? `[${total}]` : ""}
+                  {t("show")}{" "}
+                  {selectedSizes.length > 0 && total > 0 ? `[${total}]` : ""}
                 </Button>
               </DialogPrimitives.Close>
             </div>

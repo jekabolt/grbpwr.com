@@ -31,20 +31,31 @@ export function Filter({
   const t = useTranslations("catalog");
   const sizes = dictionary?.sizes || [];
   const initSize = sizes?.find((s) => s.name === defaultValue)?.id?.toString();
-  const [selectedSize, setSelectedSize] = useState<string>(initSize || "");
+  const [selectedSizes, setSelectedSizes] = useState<string[]>(
+    initSize ? [initSize] : [],
+  );
 
   const getSizeNameById = (id?: string) =>
     sizeOptions?.find((s) => String(s.id) === id)?.name.toLowerCase();
 
-  const handleSizeClick = async (sizeId?: string) => {
-    setSelectedSize(sizeId ?? "");
+  const handleSizeToggle = async (sizeId: string) => {
+    const newSelectedSizes = selectedSizes.includes(sizeId)
+      ? selectedSizes.filter((id) => id !== sizeId)
+      : [...selectedSizes, sizeId];
 
-    if (!sizeId) {
+    setSelectedSizes(newSelectedSizes);
+
+    if (newSelectedSizes.length === 0) {
       setTotal(0);
       return;
     }
 
     try {
+      const sizeNames = newSelectedSizes
+        .map(getSizeNameById)
+        .filter(Boolean)
+        .join(",");
+
       const response = await serviceClient.GetProductsPaged({
         limit: CATALOG_LIMIT,
         offset: 0,
@@ -53,7 +64,7 @@ export function Filter({
             topCategoryIds: topCategory?.id?.toString(),
             subCategoryIds: subCategory?.id?.toString(),
             gender,
-            size: getSizeNameById(sizeId),
+            size: sizeNames,
           },
           dictionary,
         ),
@@ -64,9 +75,12 @@ export function Filter({
     }
   };
 
-  function handleShowSize(selectedSize: string) {
-    const sizeName = getSizeNameById(selectedSize);
-    handleFilterChange(sizeName || undefined);
+  function handleShowSizes() {
+    const sizeNames = selectedSizes
+      .map(getSizeNameById)
+      .filter(Boolean)
+      .join(",");
+    handleFilterChange(sizeNames || undefined);
     toggleModal();
   }
 
@@ -93,20 +107,21 @@ export function Filter({
                   <Sort />
                 </div>
                 <FilterOptionButtons
-                  defaultValue={selectedSize}
-                  handleFilterChange={handleSizeClick}
+                  selectedValues={selectedSizes}
+                  handleFilterChange={handleSizeToggle}
                   values={sizeOptions || []}
                   topCategoryId={topCategory?.id?.toString()}
                 />
               </div>
-              {selectedSize && (
+              {selectedSizes.length > 0 && (
                 <div className="flex justify-between gap-2 bg-bgColor">
                   <Button
                     className="w-full uppercase"
                     size="lg"
                     variant="main"
                     onClick={() => {
-                      handleSizeClick(undefined);
+                      setSelectedSizes([]);
+                      setTotal(0);
                       handleFilterChange(undefined);
                     }}
                   >
@@ -116,9 +131,9 @@ export function Filter({
                     className="w-full uppercase"
                     size="lg"
                     variant="main"
-                    onClick={() => handleShowSize(selectedSize)}
+                    onClick={() => handleShowSizes()}
                   >
-                    {t("show")} {selectedSize && total > 0 ? `[${total}]` : ""}
+                    {t("show")} {total > 0 ? `[${total}]` : ""}
                   </Button>
                 </div>
               )}

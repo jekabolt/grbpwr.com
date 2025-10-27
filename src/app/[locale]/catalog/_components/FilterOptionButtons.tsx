@@ -10,12 +10,12 @@ import { Text } from "@/components/ui/text";
 
 export default function FilterOptionButtons({
   handleFilterChange,
-  defaultValue,
+  selectedValues,
   values,
   topCategoryId,
 }: {
-  handleFilterChange: (term?: string) => void;
-  defaultValue: string;
+  handleFilterChange: (id: string) => void;
+  selectedValues: string[];
   values: common_Size[];
   topCategoryId?: string;
 }) {
@@ -44,20 +44,24 @@ export default function FilterOptionButtons({
   const showNonNumeric = !topCategoryId || !isShoes;
   const showNumeric = !topCategoryId || isShoes;
 
-  const renderButton = (factor: common_Size) => (
-    <Button
-      onClick={() => handleFilterChange(factor.id + "")}
-      className={cn(
-        "block border-b border-transparent px-5 uppercase hover:border-textColor",
-        {
-          "border-textColor": factor.id + "" === defaultValue,
-        },
-      )}
-      key={factor.id}
-    >
-      {factor.name?.toLowerCase()}
-    </Button>
-  );
+  const renderButton = (factor: common_Size) => {
+    const isSelected = selectedValues.includes(factor.id + "");
+
+    return (
+      <Button
+        onClick={() => handleFilterChange(factor.id + "")}
+        className={cn(
+          "block border-b border-transparent px-5 uppercase hover:border-textColor",
+          {
+            "border-textColor": isSelected,
+          },
+        )}
+        key={factor.id}
+      >
+        {factor.name?.toLowerCase()}
+      </Button>
+    );
+  };
 
   return (
     <div
