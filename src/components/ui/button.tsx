@@ -91,7 +91,8 @@ interface Props extends VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   children: React.ReactNode;
   loading?: boolean;
-  loadingType?: "default" | "order-processing";
+  loadingType?: "default" | "order-processing" | "overlay";
+  loadingReverse?: boolean;
   className?: string;
   [k: string]: unknown;
 }
@@ -101,6 +102,7 @@ export function Button({
   children,
   loading = false,
   loadingType = "default",
+  loadingReverse = false,
   size,
   variant,
   className,
@@ -111,13 +113,15 @@ export function Button({
   const renderContent = () => {
     if (!loading) return children;
 
-    return (
-      <Loader
-        type={
-          loadingType === "order-processing" ? "order-processing" : "default"
-        }
-      />
-    );
+    if (loadingType === "overlay") {
+      return (
+        <Loader type={loadingType} reverse={loadingReverse}>
+          {children}
+        </Loader>
+      );
+    }
+
+    return <Loader type={loadingType} reverse={loadingReverse} />;
   };
 
   return (

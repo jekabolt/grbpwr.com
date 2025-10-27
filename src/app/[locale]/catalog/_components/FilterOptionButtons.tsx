@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { common_Size } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
@@ -20,6 +21,7 @@ export default function FilterOptionButtons({
   topCategoryId?: string;
 }) {
   const { dictionary } = useDataContext();
+  const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const categories = dictionary?.categories;
   const t = useTranslations("catalog");
@@ -44,14 +46,30 @@ export default function FilterOptionButtons({
   const showNonNumeric = !topCategoryId || !isShoes;
   const showNumeric = !topCategoryId || isShoes;
 
+  const handleClick = async (id: string) => {
+    setLoadingId(id);
+
+    // Manual delay
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    handleFilterChange(id);
+    setLoadingId(null);
+  };
+
   const renderButton = (factor: common_Size) => {
-    const isSelected = selectedValues.includes(factor.id + "");
+    const factorId = factor.id + "";
+    const isSelected = selectedValues.includes(factorId);
+    const isLoading = loadingId === factorId;
 
     return (
       <Button
-        onClick={() => handleFilterChange(factor.id + "")}
+        onClick={() => handleClick(factorId)}
+        loading={isLoading}
+        loadingReverse={isSelected}
+        loadingType="overlay"
+        disabled={isLoading}
         className={cn(
-          "block border border-transparent px-5 uppercase hover:border-textColor",
+          "block border border-transparent uppercase hover:border-textColor",
           {
             "border-textColor": isSelected,
           },
