@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CATALOG_LIMIT } from "@/constants";
 import { useTranslations } from "next-intl";
 
@@ -24,6 +24,10 @@ export function Filter({
 }) {
   const { dictionary } = useDataContext();
   const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
+  const { defaultValue: sortValue, handleFilterChange: handleSortChange } =
+    useFilterQueryParams("sort");
+  const { defaultValue: orderValue } = useFilterQueryParams("order");
+  const { defaultValue: saleValue } = useFilterQueryParams("sale");
   const { gender, topCategory, subCategory } = useRouteParams();
   const { sizeOptions } = useSizeFiltering();
 
@@ -35,8 +39,37 @@ export function Filter({
     initSize ? [initSize] : [],
   );
 
+  const hasActiveFilters =
+    selectedSizes.length > 0 || !!sortValue || !!orderValue || !!saleValue;
+
   const getSizeNameById = (id?: string) =>
     sizeOptions?.find((s) => String(s.id) === id)?.name.toLowerCase();
+
+  useEffect(() => {
+    const fetchInitialTotal = async () => {
+      try {
+        const response = await serviceClient.GetProductsPaged({
+          limit: CATALOG_LIMIT,
+          offset: 0,
+          ...getProductsPagedQueryParams(
+            {
+              topCategoryIds: topCategory?.id?.toString(),
+              subCategoryIds: subCategory?.id?.toString(),
+              gender,
+            },
+            dictionary,
+          ),
+        });
+        setTotal(response.total ?? 0);
+      } catch {
+        setTotal(0);
+      }
+    };
+
+    if (isModalOpen) {
+      fetchInitialTotal();
+    }
+  }, [isModalOpen, gender, topCategory?.id, subCategory?.id, dictionary]);
 
   const handleSizeToggle = async (sizeId: string) => {
     const newSelectedSizes = selectedSizes.includes(sizeId)
@@ -45,17 +78,19 @@ export function Filter({
 
     setSelectedSizes(newSelectedSizes);
 
+    const sizeNames = newSelectedSizes
+      .map(getSizeNameById)
+      .filter(Boolean)
+      .join(",");
+
+    handleFilterChange(sizeNames || undefined);
+
     if (newSelectedSizes.length === 0) {
       setTotal(0);
       return;
     }
 
     try {
-      const sizeNames = newSelectedSizes
-        .map(getSizeNameById)
-        .filter(Boolean)
-        .join(",");
-
       const response = await serviceClient.GetProductsPaged({
         limit: CATALOG_LIMIT,
         offset: 0,
@@ -74,15 +109,6 @@ export function Filter({
       setTotal(0);
     }
   };
-
-  function handleShowSizes() {
-    const sizeNames = selectedSizes
-      .map(getSizeNameById)
-      .filter(Boolean)
-      .join(",");
-    handleFilterChange(sizeNames || undefined);
-    toggleModal();
-  }
 
   return (
     <>
@@ -113,30 +139,35 @@ export function Filter({
                   topCategoryId={topCategory?.id?.toString()}
                 />
               </div>
-              {selectedSizes.length > 0 && (
-                <div className="flex justify-between gap-2 bg-bgColor">
+
+              <div className="flex items-center justify-end gap-2 bg-bgColor">
+                {hasActiveFilters && (
                   <Button
-                    className="w-full uppercase"
+                    className="w-1/2 uppercase"
                     size="lg"
-                    variant="main"
+                    variant="simpleReverseWithBorder"
                     onClick={() => {
                       setSelectedSizes([]);
                       setTotal(0);
                       handleFilterChange(undefined);
+                      handleSortChange(undefined, {
+                        order: "",
+                        sale: "",
+                      });
                     }}
                   >
                     {t("clear all")}
                   </Button>
-                  <Button
-                    className="w-full uppercase"
-                    size="lg"
-                    variant="main"
-                    onClick={() => handleShowSizes()}
-                  >
-                    {t("show")} {total > 0 ? `[${total}]` : ""}
-                  </Button>
-                </div>
-              )}
+                )}
+                <Button
+                  className="w-1/2 uppercase"
+                  size="lg"
+                  variant="main"
+                  onClick={() => toggleModal()}
+                >
+                  {t("show")} {total > 0 ? `[${total}]` : ""}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
