@@ -76,11 +76,11 @@ export default function FieldsGroupContainer({
       >
         <div className="flex gap-x-6">
           {stage && (
-            <Text variant={disabled ? "inactive" : "uppercase"} className="w-8">
+            <Text variant="uppercase" className="w-8 text-textColor">
               {stage}
             </Text>
           )}
-          <Text variant={disabled ? "inactive" : "uppercase"} component="h2">
+          <Text variant="uppercase" className="text-textColor" component="h2">
             {title}
           </Text>
         </div>
@@ -108,7 +108,13 @@ export default function FieldsGroupContainer({
         {children}
       </div>
       {mode === "collapsible" && !localIsOpen && (
-        <div className="space-y-8">{summary}</div>
+        <div
+          className={cn("space-y-8", {
+            "opacity-50": disabled,
+          })}
+        >
+          {summary}
+        </div>
       )}
     </div>
   );
