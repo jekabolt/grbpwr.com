@@ -16,16 +16,12 @@ export function TopCategories() {
   const topCategories = dictionary?.categories
     ?.filter((c) => {
       // Always use English translation for filtering since URLs are in English
-      const englishTranslation =
-        c.translations?.find((t) => t.languageId === 1) || c.translations?.[0];
-      return (
-        c.level === "top_category" && englishTranslation?.name !== "objects"
-      );
+      return c.level === "top_category" && c.name !== "objects";
     })
     ?.filter((c) => {
       if (gender === "men") {
         // Use English name for filtering
-        const categoryName = getTopCategoryName(categories, c.id || 0, 1);
+        const categoryName = getTopCategoryName(categories, c.id || 0);
         return categoryName?.toLowerCase() !== "dresses";
       }
       return true;
@@ -36,13 +32,9 @@ export function TopCategories() {
     <div className="flex items-center gap-2">
       {topCategories?.map((category, index) => {
         // Get English name for URL
-        const englishName = getTopCategoryName(categories, category.id || 0, 1);
+        const englishName = getTopCategoryName(categories, category.id || 0);
         // Get translated name for display
-        const displayName = getTopCategoryName(
-          categories,
-          category.id || 0,
-          languageId,
-        );
+        const displayName = getTopCategoryName(categories, category.id || 0);
 
         if (!englishName || !displayName) return null;
 

@@ -10,7 +10,6 @@ import {
   CATEGORY_TITLE_MAP,
   processCategories,
 } from "@/lib/categories-map";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 
@@ -18,20 +17,12 @@ import { useRouteParams } from "./useRouteParams";
 
 export function NextCategoryButton() {
   const { dictionary } = useDataContext();
-  const { languageId } = useTranslationsStore((state) => state);
   const { gender, topCategory } = useRouteParams();
   const isMen = GENDER_MAP_REVERSE[gender as common_GenderEnum] === "men";
-  const processedCategoriesEn = processCategories(
-    dictionary?.categories || [],
-    1,
-  );
-  const processedCategoriesTr = processCategories(
-    dictionary?.categories || [],
-    languageId,
-  );
+  const processedCategories = processCategories(dictionary?.categories || []);
   const t = useTranslations("catalog");
 
-  const currentCategory = processedCategoriesEn.find(
+  const currentCategory = processedCategories.find(
     (cat) => cat.id === topCategory?.id,
   );
 
@@ -55,11 +46,8 @@ export function NextCategoryButton() {
 
   const nextCategoryName = nextCategoryEntry?.[0];
 
-  const nextCategoryEn = processedCategoriesEn.find(
+  const nextCategory = processedCategories.find(
     (cat) => cat.name.toLowerCase() === nextCategoryName,
-  );
-  const nextCategoryTr = processedCategoriesTr.find(
-    (cat) => cat.id === nextCategoryEn?.id,
   );
 
   if (currentCategoryName === "objects") {
@@ -68,11 +56,11 @@ export function NextCategoryButton() {
 
   return (
     <Button variant="main" size="lg" className="uppercase" asChild>
-      <Link href={`/catalog/${gender}/${nextCategoryEn?.name.toLowerCase()}`}>
+      <Link href={`/catalog/${gender}/${nextCategory?.name.toLowerCase()}`}>
         {t("next")}:
-        {nextCategoryTr?.name ||
-          CATEGORY_TITLE_MAP[nextCategoryEn?.name || ""] ||
-          nextCategoryEn?.name}
+        {nextCategory?.name ||
+          CATEGORY_TITLE_MAP[nextCategory?.name || ""] ||
+          nextCategory?.name}
       </Link>
     </Button>
   );

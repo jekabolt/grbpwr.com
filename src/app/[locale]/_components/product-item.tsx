@@ -3,7 +3,6 @@ import { currencySymbols, EMPTY_PREORDER } from "@/constants";
 
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -22,7 +21,6 @@ export function ProductItem({
   isInfoVisible?: boolean;
 }) {
   const { dictionary } = useDataContext();
-  const { languageId } = useTranslationsStore((state) => state);
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const { handleSelectItemEvent } = useAnalytics();
 
@@ -34,12 +32,10 @@ export function ProductItem({
   const topCategory = getTopCategoryName(
     dictionary?.categories || [],
     productBody?.topCategoryId || 0,
-    languageId,
   );
   const subCategory = getSubCategoryName(
     dictionary?.categories || [],
     productBody?.subCategoryId || 0,
-    languageId,
   );
   const name = `${fit} ${subCategory || topCategory}`;
 
