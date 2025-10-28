@@ -156,13 +156,10 @@ function CategoryButton({
   link: { title: string; id: string };
 }) {
   const { dictionary } = useDataContext();
-  const { languageId } = useTranslationsStore((state) => state);
 
-  // Get translated name for display
   const translatedName = getTopCategoryName(
     dictionary?.categories || [],
     parseInt(link.id),
-    languageId,
   );
 
   return (

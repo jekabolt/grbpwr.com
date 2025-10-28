@@ -41,7 +41,6 @@ export function Categories() {
   const subCategories = getSubCategoriesForTopCategory(
     categories,
     topCategory?.id || 0,
-    1, // Always use English for URL generation
   );
   const filteredSubCategories = filterSubCategories(subCategories, gender);
 
@@ -51,7 +50,7 @@ export function Categories() {
 
   // Get translated category name for display
   const translatedCategoryName = topCategory
-    ? getTopCategoryName(categories, topCategory.id || 0, languageId)
+    ? getTopCategoryName(categories, topCategory.id || 0)
     : categoryName;
 
   return (
@@ -68,12 +67,7 @@ export function Categories() {
           gender,
         );
 
-        // Get translated name for display
-        const translatedName = getSubCategoryName(
-          categories,
-          subCategory.id,
-          languageId,
-        );
+        const translatedName = getSubCategoryName(categories, subCategory.id);
         const displayName =
           translatedName?.replace(/_/g, " ") ||
           subCategory.name?.replace(/_/g, " ");

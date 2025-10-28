@@ -6,7 +6,6 @@ import type {
 } from "@/api/proto-http/frontend";
 
 import { useMeasurementStore } from "@/lib/stores/measurement/store";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
@@ -28,18 +27,13 @@ export function MeasurementsTable({
   handleSelectSize,
 }: Props) {
   const { dictionary } = useDataContext();
-  const { languageId } = useTranslationsStore((state) => state);
   const { hoveredMeasurement, setHoveredMeasurement } = useMeasurementStore();
 
   const measurementsWithNames = measurements.map((measurement) => {
     const measurementData = dictionary?.measurements?.find(
       (m: any) => m.id === measurement.measurementNameId,
     );
-    const translation =
-      measurementData?.translations?.find(
-        (t: any) => t.languageId === languageId,
-      ) || measurementData?.translations?.[0];
-    const name = translation?.name;
+    const name = measurementData?.name || "";
     return {
       name,
       ...measurement,

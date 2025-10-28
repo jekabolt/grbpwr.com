@@ -58,7 +58,6 @@ interface ProcessedCategory {
 
 export const processCategories = (
   categories: common_Category[],
-  languageId: number = 1,
 ): ProcessedCategory[] => {
   const topCategories = categories.filter(
     (cat) => cat.level === "top_category",
@@ -69,8 +68,7 @@ export const processCategories = (
       (cat) => cat.level === "sub_category" && cat.parentId === topCat.id!,
     );
 
-    const translation = topCat.translations?.find(t => t.languageId === languageId) || topCat.translations?.[0];
-    const originalName = translation?.name?.toLowerCase() ?? "";
+    const originalName = topCat.name?.toLowerCase() ?? "";
     const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
 
     if (subCategories.length === 0) {
@@ -89,11 +87,10 @@ export const processCategories = (
     }
 
     const processedSubCategories = subCategories.map((subCat) => {
-      const subTranslation = subCat.translations?.find(t => t.languageId === languageId) || subCat.translations?.[0];
       return {
         id: subCat.id!,
-        name: subTranslation?.name!,
-        href: `/catalog/${displayName.toLowerCase()}/${subTranslation?.name!.toLowerCase()}`,
+        name: subCat.name!,
+        href: `/catalog/${displayName.toLowerCase()}/${subCat.name!.toLowerCase()}`,
       };
     });
 
@@ -110,15 +107,13 @@ export function findCategoryByName(
   categories: common_Category[],
   name: string | undefined,
   parentId?: number,
-  languageId: number = 1,
 ): common_Category | undefined {
   if (!name) return undefined;
 
   const level = parentId ? "sub_category" : "top_category";
 
   return categories.find((cat) => {
-    const translation = cat.translations?.find(t => t.languageId === languageId) || cat.translations?.[0];
-    const nameMatch = translation?.name?.toLowerCase() === name.toLowerCase();
+    const nameMatch = cat.name?.toLowerCase() === name.toLowerCase();
     const levelMatch = cat.level === level;
 
     if (level === "sub_category") {
@@ -132,50 +127,41 @@ export function findCategoryByName(
 export function getTopCategoryName(
   categories: common_Category[],
   topCategoryId: number,
-  languageId: number = 1,
 ): string | null {
-  const topCategory = categories.find(
-    (cat) => cat.level === "top_category" && cat.id === topCategoryId
-  );
+  const topCategory = categories.find((cat) => cat.level === "top_category" && cat.id === topCategoryId);
 
-  const translation = topCategory?.translations?.find(t => t.languageId === languageId) || topCategory?.translations?.[0];
-
-  if (!topCategory || !translation?.name) {
+  if (!topCategory || !topCategory.name) {
     return null;
   }
 
-  const categoryName = translation.name.toLowerCase();
+  const categoryName = topCategory.name.toLowerCase();
   if (categoryName && CATEGORY_TITLE_MAP[categoryName]) {
     return CATEGORY_TITLE_MAP[categoryName];
   }
 
-  return translation.name || null;
+  return topCategory.name || null;
 }
 
 export function getSubCategoryName(
   categories: common_Category[],
   subCategoryId: number,
-  languageId: number = 1,
 ): string | null {
   const subCategory = categories.find(
     (cat) => cat.level === "sub_category" && cat.id === subCategoryId
   );
 
-  const translation = subCategory?.translations?.find(t => t.languageId === languageId) || subCategory?.translations?.[0];
-
-  if (!subCategory || !translation?.name) {
+  if (!subCategory || !subCategory.name) {
     return null;
   }
 
-  return translation.name || null;
+  return subCategory.name || null;
 }
 
 export function getSubCategoriesForTopCategory(
   categories: common_Category[],
   topCategoryId: number,
-  languageId: number = 1,
 ): ProcessedCategory["subCategories"] {
-  const processed = processCategories(categories, languageId);
+  const processed = processCategories(categories);
   const topCategory = processed.find(cat => cat.id === topCategoryId);
   return topCategory?.subCategories || [];
 }
@@ -219,46 +205,36 @@ export function resolveCategories(
   categories: common_Category[] | undefined,
   categoryName?: string,
   subCategoryName?: string,
-  languageId: number = 1,
 ) {
   const safeCategories = categories || [];
 
-  // Always use English (languageId = 1) for URL resolution since URLs are in English
-  let topCategory = findCategoryByName(safeCategories, categoryName, undefined, 1);
+  let topCategory = findCategoryByName(safeCategories, categoryName, undefined);
 
-  // If not found by English name, try to find by matching the category name against English translations
   if (!topCategory && categoryName) {
     topCategory = safeCategories.find((cat) => {
       if (cat.level !== "top_category") return false;
 
-      // Find the English translation (languageId = 1)
-      const englishTranslation = cat.translations?.find(t => t.languageId === 1) || cat.translations?.[0];
-      if (!englishTranslation?.name) return false;
+      if (!cat.name) return false;
 
-      const originalName = englishTranslation.name.toLowerCase();
+      const originalName = cat.name.toLowerCase();
       const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
       return displayName.toLowerCase() === categoryName.toLowerCase();
     });
   }
 
-  // Find subcategory using English names
   let subCategory = findCategoryByName(
     safeCategories,
     subCategoryName,
     topCategory?.id,
-    1, // Always use English for URL resolution
   );
 
-  // If not found, try to find by matching the subcategory name against English translations
   if (!subCategory && subCategoryName && topCategory) {
     subCategory = safeCategories.find((cat) => {
       if (cat.level !== "sub_category" || cat.parentId !== topCategory.id) return false;
 
-      // Find the English translation (languageId = 1)
-      const englishTranslation = cat.translations?.find(t => t.languageId === 1) || cat.translations?.[0];
-      if (!englishTranslation?.name) return false;
+      if (!cat.name) return false;
 
-      return englishTranslation.name.toLowerCase() === subCategoryName.toLowerCase();
+      return cat.name.toLowerCase() === subCategoryName.toLowerCase();
     });
   }
 

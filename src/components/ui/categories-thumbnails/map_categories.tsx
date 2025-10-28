@@ -65,19 +65,19 @@ export function getIconByCategoryId(
     return UnderwearFIcon;
   }
 
-  const typeName = type?.translations?.[0]?.name?.toLowerCase();
+  const typeName = type?.name?.toLowerCase() || "";
   if (typeName) {
     const typeIcon = TypeIcons[typeName];
     if (typeIcon) return typeIcon;
   }
 
-  const subName = subCategory?.translations?.[0]?.name?.toLowerCase();
+  const subName = subCategory?.name?.toLowerCase() || "";
   if (subName) {
     const subCategoryIcon = SubCategoryIcons[subName];
     if (subCategoryIcon) return subCategoryIcon;
   }
 
-  const topName = category.translations?.[0]?.name?.toLowerCase();
+  const topName = category?.name?.toLowerCase() || "";
   if (topName) return TopCategoryIcons[topName] || OtherIcon;
 
   return OtherIcon;

@@ -75,18 +75,13 @@ const useMeasurementValue = (
   return (measurementName: string) => {
     // First try to find by translated name (current language)
     let measurementId = dictionary?.measurements?.find(
-      (m) =>
-        m.translations
-          ?.find((t) => t.languageId === languageId)
-          ?.name?.toLowerCase() === measurementName.toLowerCase(),
+      (m) => m.name?.toLowerCase() === measurementName.toLowerCase(),
     )?.id;
 
     // If not found, try to find by English name (fallback)
     if (!measurementId) {
       measurementId = dictionary?.measurements?.find(
-        (m) =>
-          m.translations?.[0]?.name?.toLowerCase() ===
-          measurementName.toLowerCase(),
+        (m) => m.name?.toLowerCase() === measurementName.toLowerCase(),
       )?.id;
     }
 

@@ -43,7 +43,7 @@ export function DesktopNavigationMenu({
   const t = useTranslations("navigation");
 
   const processedCategories = dictionary?.categories
-    ? processCategories(dictionary.categories, languageId).filter(
+    ? processCategories(dictionary.categories).filter(
         (category) => category.name.toLowerCase() !== "objects",
       )
     : [];
@@ -153,7 +153,7 @@ function LinksGroup({
 
   // Get English categories for URL generation
   const englishCategories = dictionary?.categories
-    ? processCategories(dictionary.categories, 1).filter(
+    ? processCategories(dictionary.categories).filter(
         (category) => category.name.toLowerCase() !== "objects",
       )
     : [];
@@ -189,7 +189,6 @@ function LinksGroup({
               const translatedName = getTopCategoryName(
                 dictionary?.categories || [],
                 parseInt(link.id),
-                languageId,
               );
               return (
                 <div className="w-full" key={link.href}>
@@ -212,7 +211,6 @@ function LinksGroup({
               const translatedName = getTopCategoryName(
                 dictionary?.categories || [],
                 parseInt(link.id),
-                languageId,
               );
               return (
                 <div className="w-full" key={link.id}>

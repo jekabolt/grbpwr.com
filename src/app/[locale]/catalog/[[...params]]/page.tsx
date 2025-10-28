@@ -65,7 +65,6 @@ export default async function CatalogPage(props: CatalogPageProps) {
     dictionary?.categories,
     categoryName,
     subCategoryName,
-    1,
   );
 
   const response = await serviceClient.GetProductsPaged({

@@ -300,7 +300,7 @@ export type common_Dictionary = {
 // Category represents a hierarchical category structure
 export type common_Category = {
   id: number | undefined;
-  translations: common_CategoryTranslation[] | undefined;
+  name: string | undefined;
   levelId: number | undefined;
   level: string | undefined;
   parentId: number | undefined;
@@ -308,22 +308,8 @@ export type common_Category = {
   countWomen: number | undefined;
 };
 
-export type common_CategoryTranslation = {
-  id: number | undefined;
-  categoryId: number | undefined;
-  languageId: number | undefined;
-  name: string | undefined;
-};
-
 export type common_MeasurementName = {
   id: number | undefined;
-  translations: common_MeasurementNameTranslation[] | undefined;
-};
-
-export type common_MeasurementNameTranslation = {
-  id: number | undefined;
-  measurementNameId: number | undefined;
-  languageId: number | undefined;
   name: string | undefined;
 };
 
