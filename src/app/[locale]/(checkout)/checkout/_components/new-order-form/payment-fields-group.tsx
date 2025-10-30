@@ -2,10 +2,12 @@
 
 import { useEffect } from "react";
 import { paymentMethodNamesMap } from "@/constants";
+import { PaymentElement } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
@@ -32,10 +34,12 @@ export default function PaymentFieldsGroup({
   onToggle,
   disabled = false,
 }: Props) {
+  const t = useTranslations("checkout");
+
   const { dictionary } = useDataContext();
   const { watch, unregister } = useFormContext();
-  const t = useTranslations("checkout");
   const { handlePaymentMethodChange } = useCheckoutAnalytics({});
+  const { countryCode } = useTranslationsStore((state) => state.currentCountry);
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
@@ -79,6 +83,7 @@ export default function PaymentFieldsGroup({
         items={paymentMethodsItems as any}
         disabled={disabled}
       />
+
       <Text variant="uppercase" component="h2">
         {t("billing address")}
       </Text>
@@ -97,6 +102,28 @@ export default function PaymentFieldsGroup({
           prefix="billingAddress"
           loading={loading}
           disabled={disabled}
+        />
+      )}
+
+      {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
+        <PaymentElement
+          options={{
+            layout: "tabs",
+            fields: {
+              billingDetails: {
+                address: {
+                  country: "never",
+                },
+              },
+            },
+            defaultValues: {
+              billingDetails: {
+                address: {
+                  country: countryCode,
+                },
+              },
+            },
+          }}
         />
       )}
     </FieldsGroupContainer>

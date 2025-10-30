@@ -11,14 +11,14 @@ import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { Button } from "@/components/ui/button";
 
-export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
+export function StripeCardForm({ clientSecret, email, country, uuid }: Props) {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const { clearCart } = useCart((s) => s);
   const { handlePurchaseEvent } = useCheckoutAnalytics({});
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setIsLoading(true);
@@ -62,7 +62,7 @@ export function StripeCardForm({ clientSecret, uuid, email, country }: Props) {
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       className="flex w-full flex-col justify-between gap-2.5"
     >
       <div className="min-h-72">
