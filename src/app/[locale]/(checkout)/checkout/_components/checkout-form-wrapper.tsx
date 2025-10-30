@@ -1,8 +1,10 @@
 "use client";
 
+import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
-import { Appearance, loadStripe } from "@stripe/stripe-js";
+import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 
 import NewOrderForm from "./new-order-form";
@@ -11,24 +13,24 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
 
-// Расширенный интерфейс для поддержки fonts
 interface ExtendedAppearance extends Appearance {
   fonts?: { cssSrc: string }[];
 }
 
 export function CheckoutFormWrapper() {
   const { dictionary } = useDataContext();
+  const { languageId } = useTranslationsStore((state) => state);
+
   const baseCurrency = dictionary?.baseCurrency?.toLowerCase();
 
-  // Appearance с кастомным полем fonts и типом ExtendedAppearance
   const appearance: ExtendedAppearance = {
-    theme: "stripe", // 'stripe', 'night', 'flat', or 'none'
+    theme: "stripe",
     fonts: [
       {
         cssSrc: "/fonts/FeatureMono-Regular.ttf",
       },
     ],
-    labels: "floating", // 'floating' or 'above'
+    labels: "floating",
     variables: {
       colorPrimary: "#000000",
       colorBackground: "#ffffff",
@@ -78,7 +80,8 @@ export function CheckoutFormWrapper() {
         currency: baseCurrency,
         appearance,
         paymentMethodCreation: "manual",
-        // paymentMethodTypes: ["card", "klarna", "paypal"],
+        locale: LANGUAGE_ID_TO_LOCALE[languageId] as StripeElementLocale,
+        // paymentMethodTypes: ["card"],
       }}
     >
       <NewOrderForm />
