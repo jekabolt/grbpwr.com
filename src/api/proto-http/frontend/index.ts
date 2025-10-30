@@ -468,6 +468,7 @@ export type GetProductsPagedResponse = {
 
 export type SubmitOrderRequest = {
   order: common_OrderNew | undefined;
+  paymentIntentId: string | undefined;
 };
 
 export type common_OrderNew = {
@@ -620,6 +621,9 @@ export type ValidateOrderItemsInsertRequest = {
   items: common_OrderItemInsert[] | undefined;
   promoCode: string | undefined;
   shipmentCarrierId: number | undefined;
+  country: string | undefined;
+  paymentMethod: common_PaymentMethodNameEnum | undefined;
+  currency: string | undefined;
 };
 
 export type ValidateOrderItemsInsertResponse = {
@@ -628,6 +632,8 @@ export type ValidateOrderItemsInsertResponse = {
   subtotal: googletype_Decimal | undefined;
   totalSale: googletype_Decimal | undefined;
   promo: common_PromoCodeInsert | undefined;
+  clientSecret: string | undefined;
+  paymentIntentId: string | undefined;
 };
 
 export type ValidateOrderByUUIDRequest = {

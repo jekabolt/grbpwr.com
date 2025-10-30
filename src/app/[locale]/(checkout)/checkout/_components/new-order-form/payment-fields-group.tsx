@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { paymentMethodNamesMap } from "@/constants";
+import { PaymentElement } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
@@ -32,9 +33,10 @@ export default function PaymentFieldsGroup({
   onToggle,
   disabled = false,
 }: Props) {
+  const t = useTranslations("checkout");
+
   const { dictionary } = useDataContext();
   const { watch, unregister } = useFormContext();
-  const t = useTranslations("checkout");
   const { handlePaymentMethodChange } = useCheckoutAnalytics({});
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
@@ -79,6 +81,7 @@ export default function PaymentFieldsGroup({
         items={paymentMethodsItems as any}
         disabled={disabled}
       />
+
       <Text variant="uppercase" component="h2">
         {t("billing address")}
       </Text>
@@ -97,6 +100,21 @@ export default function PaymentFieldsGroup({
           prefix="billingAddress"
           loading={loading}
           disabled={disabled}
+        />
+      )}
+
+      {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
+        <PaymentElement
+          options={{
+            layout: "tabs",
+            fields: {
+              billingDetails: {
+                address: {
+                  country: "never",
+                },
+              },
+            },
+          }}
         />
       )}
     </FieldsGroupContainer>
