@@ -57,6 +57,9 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
               })),
               shipmentCarrierId: undefined,
               promoCode: undefined,
+              country: undefined,
+              paymentMethod: undefined,
+              currency: undefined,
             });
 
             const validatedItem = response.validItems?.find(
