@@ -38,24 +38,32 @@ export default function Sort() {
           const isSaleValuesMatch = orderFactor.sale
             ? saleValue === "true"
             : !saleValue;
+          const isSelected =
+            isSortValuesMatch && isOrderValuesMatch && isSaleValuesMatch;
           return (
             <Button
               key={`${sortKey}-${id}`}
-              onClick={() =>
-                handleSortChange(
-                  getUrlKey(sortKey as common_SortFactor, SORT_MAP_URL),
-                  {
-                    order: getUrlKey(
-                      orderFactor.factor as common_OrderFactor,
-                      ORDER_MAP,
-                    ),
-                    sale: orderFactor.sale ? "true" : "",
-                  },
-                )
-              }
+              onClick={() => {
+                if (isSelected) {
+                  handleSortChange(undefined, {
+                    order: "",
+                    sale: "",
+                  });
+                } else {
+                  handleSortChange(
+                    getUrlKey(sortKey as common_SortFactor, SORT_MAP_URL),
+                    {
+                      order: getUrlKey(
+                        orderFactor.factor as common_OrderFactor,
+                        ORDER_MAP,
+                      ),
+                      sale: orderFactor.sale ? "true" : "",
+                    },
+                  );
+                }
+              }}
               className={cn("block", {
-                underline:
-                  isSortValuesMatch && isOrderValuesMatch && isSaleValuesMatch,
+                underline: isSelected,
               })}
             >
               {getButtonText(sortData, orderFactor, t)}

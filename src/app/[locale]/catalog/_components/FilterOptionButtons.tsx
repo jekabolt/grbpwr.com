@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { common_Size } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
@@ -10,16 +11,17 @@ import { Text } from "@/components/ui/text";
 
 export default function FilterOptionButtons({
   handleFilterChange,
-  defaultValue,
+  selectedValues,
   values,
   topCategoryId,
 }: {
-  handleFilterChange: (term?: string) => void;
-  defaultValue: string;
+  handleFilterChange: (id: string) => void;
+  selectedValues: string[];
   values: common_Size[];
   topCategoryId?: string;
 }) {
   const { dictionary } = useDataContext();
+  const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const categories = dictionary?.categories;
   const t = useTranslations("catalog");
@@ -43,20 +45,40 @@ export default function FilterOptionButtons({
   const showNonNumeric = !topCategoryId || !isShoes;
   const showNumeric = !topCategoryId || isShoes;
 
-  const renderButton = (factor: common_Size) => (
-    <Button
-      onClick={() => handleFilterChange(factor.id + "")}
-      className={cn(
-        "block border-b border-transparent px-5 uppercase hover:border-textColor",
-        {
-          "border-textColor": factor.id + "" === defaultValue,
-        },
-      )}
-      key={factor.id}
-    >
-      {factor.name?.toLowerCase()}
-    </Button>
-  );
+  const handleClick = async (id: string) => {
+    setLoadingId(id);
+
+    // Manual delay
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    handleFilterChange(id);
+    setLoadingId(null);
+  };
+
+  const renderButton = (factor: common_Size) => {
+    const factorId = factor.id + "";
+    const isSelected = selectedValues.includes(factorId);
+    const isLoading = loadingId === factorId;
+
+    return (
+      <Button
+        onClick={() => handleClick(factorId)}
+        loading={isLoading}
+        loadingReverse={isSelected}
+        loadingType="overlay"
+        disabled={isLoading}
+        className={cn(
+          "block border border-transparent uppercase hover:border-textColor",
+          {
+            "border-textColor": isSelected,
+          },
+        )}
+        key={factor.id}
+      >
+        {factor.name?.toLowerCase()}
+      </Button>
+    );
+  };
 
   return (
     <div
