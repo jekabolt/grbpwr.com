@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
@@ -20,8 +21,13 @@ interface ExtendedAppearance extends Appearance {
 export function CheckoutFormWrapper() {
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
+  const [orderAmount, setOrderAmount] = useState<number>(1000);
 
   const baseCurrency = dictionary?.baseCurrency?.toLowerCase();
+
+  const handleAmountChange = (amount: number) => {
+    setOrderAmount(amount);
+  };
 
   const appearance: ExtendedAppearance = {
     theme: "stripe",
@@ -76,7 +82,7 @@ export function CheckoutFormWrapper() {
       stripe={stripePromise}
       options={{
         mode: "payment",
-        amount: 1000,
+        amount: orderAmount,
         currency: baseCurrency,
         appearance,
         paymentMethodCreation: "manual",
@@ -84,7 +90,7 @@ export function CheckoutFormWrapper() {
         // paymentMethodTypes: ["card"],
       }}
     >
-      <NewOrderForm />
+      <NewOrderForm onAmountChange={handleAmountChange} />
     </Elements>
   );
 }
