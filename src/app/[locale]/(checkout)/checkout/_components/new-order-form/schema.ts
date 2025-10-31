@@ -71,7 +71,7 @@ export const defaultData: Omit<z.infer<typeof checkoutSchema>, "paymentMethod"> 
   subscribe: false,
   billingAddressIsSameAsAddress: true,
   billingAddress: undefined,
-  paymentMethod: undefined,
+  paymentMethod: "PAYMENT_METHOD_NAME_ENUM_CARD_TEST",
   rememberMe: false, // todo: groom the feature
   promoCode: "",
 };
