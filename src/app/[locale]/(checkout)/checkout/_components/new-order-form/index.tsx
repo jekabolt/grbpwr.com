@@ -68,7 +68,11 @@ async function submitNewOrder(
   }
 }
 
-export default function NewOrderForm() {
+type NewOrderFormProps = {
+  onAmountChange: (amount: number) => void;
+};
+
+export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { countryCode } = useTranslationsStore((state) => state.currentCountry);
   const [loading, setLoading] = useState<boolean>(false);
   const t = useTranslations("checkout");
@@ -90,6 +94,13 @@ export default function NewOrderForm() {
   const { clearFormData } = useOrderPersistence(form);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
+
+  useEffect(() => {
+    if (order?.totalSale?.value) {
+      const amountInCents = Math.round(parseFloat(order.totalSale.value));
+      onAmountChange(amountInCents);
+    }
+  }, [order?.totalSale?.value, onAmountChange]);
 
   useEffect(() => {
     const currentCountry = form.getValues("country");
@@ -140,7 +151,6 @@ export default function NewOrderForm() {
               return;
             }
 
-            // Submit Stripe elements
             const { error: submitError } = await elements.submit();
 
             if (submitError) {
@@ -149,7 +159,6 @@ export default function NewOrderForm() {
               return;
             }
 
-            // Confirm payment with Stripe
             const { error } = await stripe.confirmPayment({
               clientSecret,
               elements,
@@ -170,7 +179,6 @@ export default function NewOrderForm() {
               console.error("Error confirming payment:", error.message);
               setLoading(false);
             } else {
-              // Payment successful
               handlePurchaseEvent(orderUuid);
               clearCart();
               clearFormData();
