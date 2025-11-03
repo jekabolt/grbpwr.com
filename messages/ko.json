@@ -456,5 +456,11 @@
     "order already in refund progress": "주문이 이미 환불 진행 중임",
     "refund request submitted successfully": "환불 요청이 성공적으로 제출되었습니다",
     "reason": "사유"
+  },
+  "unsubscribe": {
+    "title": "목록 \"grbpwr\"에서 구독이 취소됩니다. 구독 취소를 클릭하면 마케팅 이메일을 더 이상 받지 않습니다.",
+    "unsubscribe": "구독 취소",
+    "success": "뉴스레터 구독이 취소되었습니다.",
+    "error": "오류가 발생했습니다. 다시 시도해주세요."
   }
 }

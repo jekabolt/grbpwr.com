@@ -166,6 +166,8 @@ export type Category = {
 export type Size = {
   id: number | undefined;
   name: string | undefined;
+  countMen: number | undefined;
+  countWomen: number | undefined;
 };
 
 export type MeasurementName = {

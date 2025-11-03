@@ -456,5 +456,11 @@
     "order already in refund progress": "order already in refund progress",
     "refund request submitted successfully": "refund request submitted successfully",
     "reason": "reason"
+  },
+  "unsubscribe": {
+    "title": "unsubscribing from list \"grbpwr\". by clicking unsubscribe, you’ll no longer receive marketing emails.",
+    "unsubscribe": "unsubscribe",
+    "success": "you have been unsubscribed from the newsletter.",
+    "error": "an error occurred. please try again."
   }
 }

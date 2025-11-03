@@ -456,5 +456,11 @@
     "order already in refund progress": "bestellung bereits in erstattungsbearbeitung",
     "refund request submitted successfully": "rückerstattungsanfrage erfolgreich eingereicht",
     "reason": "grund"
+  },
+  "unsubscribe": {
+    "title": "abmeldung von der liste \"grbpwr\". durch klicken auf abmelden erhalten sie keine marketing-e-mails mehr.",
+    "unsubscribe": "abmelden",
+    "success": "sie wurden vom Newsletter abgemeldet.",
+    "error": "ein fehler ist aufgetreten. bitte versuchen sie es erneut."
   }
 }
