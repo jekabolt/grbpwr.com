@@ -359,6 +359,8 @@ export type common_ShipmentCarrierInsert = {
 export type common_Size = {
   id: number | undefined;
   name: string | undefined;
+  countMen: number | undefined;
+  countWomen: number | undefined;
 };
 
 export type common_Language = {

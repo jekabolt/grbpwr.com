@@ -456,5 +456,11 @@
     "order already in refund progress": "注文はすでに返金処理中です",
     "refund request submitted successfully": "返金リクエストが正常に送信されました",
     "reason": "理由"
+  },
+  "unsubscribe": {
+    "title": "リスト「grbpwr」からの配信を停止します。購読解除をクリックすると、今後マーケティングメールは受信されません。",
+    "unsubscribe": "購読解除",
+    "success": "ニュースレターの配信を停止しました。",
+    "error": "エラーが発生しました。もう一度お試しください。"
   }
 }

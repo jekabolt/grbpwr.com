@@ -456,5 +456,11 @@
     "order already in refund progress": "ordine già in corso di rimborso",
     "refund request submitted successfully": "richiesta di rimborso inviata con successo",
     "reason": "motivo"
+  },
+  "unsubscribe": {
+    "title": "annullamento dell'iscrizione alla lista \"grbpwr\". cliccando su annulla iscrizione, non riceverai più email di marketing.",
+    "unsubscribe": "annulla iscrizione",
+    "success": "sei stato disiscritto dalla newsletter.",
+    "error": "si è verificato un errore. per favore riprova."
   }
 }

@@ -456,5 +456,11 @@
     "order already in refund progress": "订单已在退款处理中",
     "refund request submitted successfully": "退款请求提交成功",
     "reason": "原因"
+  },
+  "unsubscribe": {
+    "title": "取消订阅列表\"grbpwr\"。点击取消订阅后，您将不再接收营销电子邮件。",
+    "unsubscribe": "取消订阅",
+    "success": "您已取消订阅新闻通讯。",
+    "error": "发生错误。请再试一次。"
   }
 }
