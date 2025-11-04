@@ -9,22 +9,17 @@ import { useTranslations } from "next-intl";
 
 import { cn, getButtonText } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
 
 import useFilterQueryParams from "./useFilterQueryParams";
 import { getUrlKey } from "./utils";
 
-function Trigger() {
-  const t = useTranslations("catalog");
-  return <Text variant="uppercase">{t("sort by")} +</Text>;
-}
-
 export default function Sort() {
+  const t = useTranslations("catalog");
+
   const { defaultValue: sortValue, handleFilterChange: handleSortChange } =
     useFilterQueryParams("sort");
   const { defaultValue: orderValue } = useFilterQueryParams("order");
   const { defaultValue: saleValue } = useFilterQueryParams("sale");
-  const t = useTranslations("catalog");
 
   return (
     <div className="mr-16 space-y-2">

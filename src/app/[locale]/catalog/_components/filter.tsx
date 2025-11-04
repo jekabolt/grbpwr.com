@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react";
-import { CATALOG_LIMIT } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { serviceClient } from "@/lib/api";
-import { useDataContext } from "@/components/contexts/DataContext";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
-import FilterOptionButtons from "./FilterOptionButtons";
+import { Collection } from "./collection";
+import { Sizes } from "./sizes";
 import Sort from "./Sort";
 import useFilterQueryParams from "./useFilterQueryParams";
 import { useRouteParams } from "./useRouteParams";
-import { useSizeFiltering } from "./useSizeFiltering";
-import { getProductsPagedQueryParams } from "./utils";
+import { useTotalProducts } from "./useTotalProducts";
 
 export function Filter({
   isModalOpen,
@@ -22,92 +19,36 @@ export function Filter({
   isModalOpen: boolean;
   toggleModal: () => void;
 }) {
-  const { dictionary } = useDataContext();
+  const t = useTranslations("catalog");
+
   const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
-  const { defaultValue: sortValue, handleFilterChange: handleSortChange } =
-    useFilterQueryParams("sort");
+  const { defaultValue: sortValue } = useFilterQueryParams("sort");
   const { defaultValue: orderValue } = useFilterQueryParams("order");
   const { defaultValue: saleValue } = useFilterQueryParams("sale");
+  const { defaultValue: collectionValue } = useFilterQueryParams("collection");
   const { gender, topCategory, subCategory } = useRouteParams();
-  const { sizeOptions } = useSizeFiltering();
-
-  const [total, setTotal] = useState(0);
-  const t = useTranslations("catalog");
-  const sizes = dictionary?.sizes || [];
-  const initSize = sizes?.find((s) => s.name === defaultValue)?.id?.toString();
-  const [selectedSizes, setSelectedSizes] = useState<string[]>(
-    initSize ? [initSize] : [],
-  );
+  const { total, resetTotal } = useTotalProducts({
+    gender,
+    topCategoryId: topCategory?.id,
+    subCategoryId: subCategory?.id,
+    isModalOpen,
+  });
 
   const hasActiveFilters =
-    selectedSizes.length > 0 || !!sortValue || !!orderValue || !!saleValue;
+    !!defaultValue ||
+    !!sortValue ||
+    !!orderValue ||
+    !!saleValue ||
+    !!collectionValue;
 
-  const getSizeNameById = (id?: string) =>
-    sizeOptions?.find((s) => String(s.id) === id)?.name.toLowerCase();
-
-  useEffect(() => {
-    const fetchInitialTotal = async () => {
-      try {
-        const response = await serviceClient.GetProductsPaged({
-          limit: CATALOG_LIMIT,
-          offset: 0,
-          ...getProductsPagedQueryParams(
-            {
-              topCategoryIds: topCategory?.id?.toString(),
-              subCategoryIds: subCategory?.id?.toString(),
-              gender,
-            },
-            dictionary,
-          ),
-        });
-        setTotal(response.total ?? 0);
-      } catch {
-        setTotal(0);
-      }
-    };
-
-    if (isModalOpen) {
-      fetchInitialTotal();
-    }
-  }, [isModalOpen, gender, topCategory?.id, subCategory?.id, dictionary]);
-
-  const handleSizeToggle = async (sizeId: string) => {
-    const newSelectedSizes = selectedSizes.includes(sizeId)
-      ? selectedSizes.filter((id) => id !== sizeId)
-      : [...selectedSizes, sizeId];
-
-    setSelectedSizes(newSelectedSizes);
-
-    const sizeNames = newSelectedSizes
-      .map(getSizeNameById)
-      .filter(Boolean)
-      .join(",");
-
-    handleFilterChange(sizeNames || undefined);
-
-    if (newSelectedSizes.length === 0) {
-      setTotal(0);
-      return;
-    }
-
-    try {
-      const response = await serviceClient.GetProductsPaged({
-        limit: CATALOG_LIMIT,
-        offset: 0,
-        ...getProductsPagedQueryParams(
-          {
-            topCategoryIds: topCategory?.id?.toString(),
-            subCategoryIds: subCategory?.id?.toString(),
-            gender,
-            size: sizeNames,
-          },
-          dictionary,
-        ),
-      });
-      setTotal(response.total ?? 0);
-    } catch {
-      setTotal(0);
-    }
+  const handleClearAll = () => {
+    resetTotal();
+    handleFilterChange(undefined, {
+      collection: "",
+      sort: "",
+      order: "",
+      sale: "",
+    });
   };
 
   return (
@@ -132,33 +73,21 @@ export function Filter({
                   </Text>
                   <Sort />
                 </div>
-                <FilterOptionButtons
-                  selectedValues={selectedSizes}
-                  handleFilterChange={handleSizeToggle}
-                  values={sizeOptions || []}
-                  topCategoryId={topCategory?.id?.toString()}
-                />
+                <Collection />
+                <Sizes topCategoryId={topCategory?.id} gender={gender} />
               </div>
 
               <div className="flex items-center justify-end gap-2 bg-bgColor">
-                {hasActiveFilters && (
-                  <Button
-                    className="w-1/2 uppercase"
-                    size="lg"
-                    variant="simpleReverseWithBorder"
-                    onClick={() => {
-                      setSelectedSizes([]);
-                      setTotal(0);
-                      handleFilterChange(undefined);
-                      handleSortChange(undefined, {
-                        order: "",
-                        sale: "",
-                      });
-                    }}
-                  >
-                    {t("clear all")}
-                  </Button>
-                )}
+                <Button
+                  className={cn("hidden w-1/2 uppercase", {
+                    block: hasActiveFilters,
+                  })}
+                  size="lg"
+                  variant="simpleReverseWithBorder"
+                  onClick={handleClearAll}
+                >
+                  {t("clear all")}
+                </Button>
                 <Button
                   className="w-1/2 uppercase"
                   size="lg"

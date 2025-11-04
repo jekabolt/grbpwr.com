@@ -1,14 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import type { common_Product } from "@/api/proto-http/frontend";
+import type {
+  common_Product,
+  GetProductsPagedResponse,
+} from "@/api/proto-http/frontend";
 import { CATALOG_LIMIT } from "@/constants";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
-import { serviceClient } from "@/lib/api";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { useServerActionsContext } from "@/components/contexts/ServerActionsContext";
 import ProductsGrid from "@/app/[locale]/_components/product-grid";
 import { getProductsPagedQueryParams } from "@/app/[locale]/catalog/_components/utils";
 
@@ -24,183 +28,93 @@ export function InfinityScrollCatalog({
 }) {
   const searchParams = useSearchParams();
   const { dictionary } = useDataContext();
+  const { GetProductsPaged } = useServerActionsContext();
   const { languageId } = useTranslationsStore((state) => state);
   const { gender, topCategory, subCategory } = useRouteParams();
   const { listName, listId, handleViewItemListEvent } = useAnalytics();
   const { ref, inView } = useInView();
 
-  const [items, setItems] = useState<common_Product[]>(firstPageItems);
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentTotal, setCurrentTotal] = useState(total);
+  const searchParamsObj = useMemo(
+    () => Object.fromEntries(searchParams.entries()),
+    [searchParams],
+  );
 
-  const pageRef = useRef(2);
-  const hasMoreRef = useRef(total >= CATALOG_LIMIT);
-  const isRefetchingRef = useRef(false);
+  const queryKey = useMemo(
+    () => [
+      "products",
+      "paged",
+      {
+        languageId,
+        gender,
+        topCategoryId: topCategory?.id,
+        subCategoryId: subCategory?.id,
+        ...searchParamsObj,
+      },
+    ],
+    [languageId, gender, topCategory?.id, subCategory?.id, searchParamsObj],
+  );
 
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery<GetProductsPagedResponse>({
+      queryKey,
+      queryFn: ({ pageParam }) =>
+        GetProductsPaged({
+          limit: CATALOG_LIMIT,
+          offset: pageParam as number,
+          ...getProductsPagedQueryParams(
+            {
+              gender,
+              topCategoryIds: topCategory?.id?.toString(),
+              subCategoryIds: subCategory?.id?.toString(),
+              ...searchParamsObj,
+            },
+            dictionary,
+          ),
+        }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        const totalFetched = allPages.reduce(
+          (acc, page) => acc + (page.products?.length || 0),
+          0,
+        );
+        return totalFetched < (lastPage.total || 0) ? totalFetched : undefined;
+      },
+      initialData: {
+        pages: [{ products: firstPageItems, total }],
+        pageParams: [0],
+      },
+      // Prevent refetch on mount when we have server-provided initialData
+      refetchOnMount: false,
+    });
+
+  const items = data?.pages.flatMap((page) => page.products || []) || [];
+  const currentTotal = data?.pages[data.pages.length - 1]?.total || total;
+
+  // Track analytics when filters change
   useEffect(() => {
-    setItems(firstPageItems);
-    setCurrentTotal(total);
-    hasMoreRef.current = total >= CATALOG_LIMIT;
-    pageRef.current = 2;
-    setIsLoading(false);
-    isRefetchingRef.current = false;
-
-    if (firstPageItems.length > 0) {
+    if (items.length > 0 && items.length === firstPageItems.length) {
+      // Only track on initial load or when filters change (first page matches)
       setTimeout(() => {
         handleViewItemListEvent(firstPageItems);
       }, 100);
     }
-  }, [firstPageItems, total, listName, listId]);
+  }, [queryKey, firstPageItems, items.length, handleViewItemListEvent]);
 
-  // Refetch data when languageId changes
+  // Load more when in view
   useEffect(() => {
-    if (isRefetchingRef.current) return;
-
-    const refetchData = async () => {
-      isRefetchingRef.current = true;
-      setIsLoading(true);
-
-      try {
-        const searchParamsObj = Object.fromEntries(searchParams.entries());
-        const response = await serviceClient.GetProductsPaged({
-          limit: CATALOG_LIMIT,
-          offset: 0,
-          ...getProductsPagedQueryParams(
-            {
-              gender,
-              topCategoryIds: topCategory?.id?.toString(),
-              subCategoryIds: subCategory?.id?.toString(),
-              ...searchParamsObj,
-            },
-            dictionary,
-          ),
-        });
-
-        const newProducts = response.products || [];
-        setItems(newProducts);
-        setCurrentTotal(response.total || 0);
-        hasMoreRef.current = (response.total || 0) >= CATALOG_LIMIT;
-        pageRef.current = 2;
-
-        if (newProducts.length > 0) {
-          handleViewItemListEvent(newProducts);
-        }
-      } catch (error) {
-        console.error("Failed to fetch data on language change:", error);
-      } finally {
-        setIsLoading(false);
-        isRefetchingRef.current = false;
-      }
-    };
-
-    refetchData();
-  }, [languageId, dictionary, gender, topCategory, subCategory, searchParams]);
-
-  useEffect(() => {
-    const searchParamsObj = Object.fromEntries(searchParams.entries());
-    const hasFilters = Object.keys(searchParamsObj).length > 0;
-
-    if (!hasFilters) return;
-    if (isRefetchingRef.current) return;
-
-    const refetchData = async () => {
-      isRefetchingRef.current = true;
-      setIsLoading(true);
-
-      try {
-        const response = await serviceClient.GetProductsPaged({
-          limit: CATALOG_LIMIT,
-          offset: 0,
-          ...getProductsPagedQueryParams(
-            {
-              gender,
-              topCategoryIds: topCategory?.id?.toString(),
-              subCategoryIds: subCategory?.id?.toString(),
-              ...searchParamsObj,
-            },
-            dictionary,
-          ),
-        });
-
-        const newProducts = response.products || [];
-        setItems(newProducts);
-        setCurrentTotal(response.total || 0);
-        hasMoreRef.current = (response.total || 0) >= CATALOG_LIMIT;
-        pageRef.current = 2;
-
-        if (newProducts.length > 0) {
-          handleViewItemListEvent(newProducts);
-        }
-      } catch (error) {
-        console.error("Failed to fetch filtered data:", error);
-      } finally {
-        setIsLoading(false);
-        isRefetchingRef.current = false;
-      }
-    };
-
-    refetchData();
-  }, [searchParams, dictionary, gender, topCategory, subCategory, languageId]);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const loadMoreData = async () => {
-    if (!hasMoreRef.current || isLoading) return;
-    setIsLoading(true);
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const response = await serviceClient.GetProductsPaged({
-        limit: CATALOG_LIMIT,
-        offset: (pageRef.current - 1) * CATALOG_LIMIT,
-        ...getProductsPagedQueryParams(
-          {
-            gender,
-            topCategoryIds: topCategory?.id?.toString(),
-            subCategoryIds: subCategory?.id?.toString(),
-            size: searchParams.get("size"),
-            sort: searchParams.get("sort"),
-            order: searchParams.get("order"),
-            sale: searchParams.get("sale"),
-            tag: searchParams.get("tag"),
-          },
-          dictionary,
-        ),
-      });
-
-      const newProducts = response.products || [];
-      pageRef.current += 1;
-
-      setItems((prevItems) => {
-        const updatedItems = [...prevItems, ...newProducts];
-        hasMoreRef.current = updatedItems.length < currentTotal;
-
-        if (newProducts.length > 0) {
-          handleViewItemListEvent(newProducts);
-        }
-
-        return updatedItems;
-      });
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-    } finally {
-      setIsLoading(false);
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
-  };
-
-  useEffect(() => {
-    if (inView && hasMoreRef.current) {
-      loadMoreData();
-    }
-  }, [inView, loadMoreData]);
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div>
       <ProductsGrid
         products={items}
-        isLoading={isLoading}
+        isLoading={isFetchingNextPage}
         total={currentTotal}
       />
-      {hasMoreRef.current && <div ref={ref} />}
+      {hasNextPage && !isFetchingNextPage && <div ref={ref} />}
     </div>
   );
 }
