@@ -2,14 +2,13 @@
 
 import { useEffect } from "react";
 import { paymentMethodNamesMap } from "@/constants";
+import { PaymentElement } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
-import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
-import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import { Tron } from "@/components/ui/icons/tron";
 import { Text } from "@/components/ui/text";
 
@@ -33,9 +32,10 @@ export default function PaymentFieldsGroup({
   onToggle,
   disabled = false,
 }: Props) {
+  const t = useTranslations("checkout");
+
   const { dictionary } = useDataContext();
   const { watch, unregister } = useFormContext();
-  const t = useTranslations("checkout");
   const { handlePaymentMethodChange } = useCheckoutAnalytics({});
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
@@ -70,26 +70,34 @@ export default function PaymentFieldsGroup({
       isOpen={isOpen}
       disabled={disabled}
       onToggle={onToggle}
-      summary={
-        selectedPaymentMethod && (
-          <Text
-            className={cn("text-textColor", {
-              "text-textInactiveColor": disabled,
-            })}
-          >
-            {selectedPaymentMethod}
-          </Text>
-        )
-      }
+      summary={selectedPaymentMethod && <Text>{selectedPaymentMethod}</Text>}
     >
-      <RadioGroupField
+      {/* <RadioGroupField
         view="card"
         loading={loading}
         name="paymentMethod"
         onChange={handlePaymentMethodChange}
         items={paymentMethodsItems as any}
         disabled={disabled}
-      />
+      /> */}
+
+      <div className="py-2">
+        {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
+          <PaymentElement
+            options={{
+              layout: "tabs",
+              fields: {
+                billingDetails: {
+                  address: {
+                    country: "never",
+                  },
+                },
+              },
+            }}
+          />
+        )}
+      </div>
+
       <Text variant="uppercase" component="h2">
         {t("billing address")}
       </Text>

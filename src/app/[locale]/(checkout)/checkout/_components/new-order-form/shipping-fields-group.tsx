@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
-import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
 import { PhoneField } from "@/components/ui/form/fields/phone-field";
@@ -47,14 +46,7 @@ export default function ShippingFieldsGroup({
       disabled={disabled}
       isOpen={isOpen}
       onToggle={onToggle}
-      summary={
-        <Summary
-          dictionary={dictionary}
-          className={cn("text-textColor", {
-            "text-textInactiveColor": disabled,
-          })}
-        />
-      }
+      summary={<Summary dictionary={dictionary} />}
     >
       <AddressFields loading={loading} disabled={disabled} />
       <div>

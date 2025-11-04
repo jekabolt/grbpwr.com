@@ -22,6 +22,8 @@ function decodeParam(param: string): string {
   }
 }
 
+const VALID_GENDERS = Object.keys(GENDER_MAP);
+
 export function parseRouteParams(params: string[] = []): {
   gender: string | undefined;
   categoryName: string;
@@ -35,6 +37,17 @@ export function parseRouteParams(params: string[] = []): {
     return {
       gender: undefined,
       categoryName: "objects",
+      subCategoryName: secondParam || "",
+    };
+  }
+
+  // Check if firstParam is a valid gender
+  const isGender = firstParam && VALID_GENDERS.includes(firstParam.toLowerCase());
+
+  if (!isGender && firstParam) {
+    return {
+      gender: undefined,
+      categoryName: firstParam,
       subCategoryName: secondParam || "",
     };
   }

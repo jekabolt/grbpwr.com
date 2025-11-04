@@ -456,5 +456,11 @@
     "order already in refund progress": "commande déjà en cours de remboursement",
     "refund request submitted successfully": "demande de remboursement soumise avec succès",
     "reason": "raison"
+  },
+  "unsubscribe": {
+    "title": "désinscription de la liste \"grbpwr\". en cliquant sur se désabonner, vous ne recevrez plus d'e-mails marketing.",
+    "unsubscribe": "se désabonner",
+    "success": "vous avez été désabonné de la newsletter.",
+    "error": "une erreur s'est produite. veuillez réessayer."
   }
 }

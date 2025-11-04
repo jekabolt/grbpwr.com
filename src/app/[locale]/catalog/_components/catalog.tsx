@@ -36,7 +36,6 @@ export default function Catalog({
   const activeTopCategory = getTopCategoryName(
     dictionary?.categories || [],
     parseInt(topCategory || "0"),
-    languageId,
   );
   const categoryDescription = getCategoryDescription(
     activeTopCategory || "",

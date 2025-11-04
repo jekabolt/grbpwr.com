@@ -16,13 +16,14 @@ export function useMeasurementType({
   const subCategoryId = productBody?.subCategoryId;
   const typeId = productBody?.typeId;
 
-  const category = dictionary?.categories?.find((c) => c.id === categoryId)
-    ?.translations?.[0]?.name;
+  const category = dictionary?.categories?.find(
+    (c) => c.id === categoryId,
+  )?.name;
 
   const getMeasurementType = (): MeasurementType => {
     const type = dictionary?.categories
       ?.find((c) => c.id === typeId)
-      ?.translations?.[0]?.name?.toLowerCase();
+      ?.name?.toLowerCase();
     if (type === "rings") return "ring";
     if (category?.toLowerCase() === "shoes") return "shoe";
 

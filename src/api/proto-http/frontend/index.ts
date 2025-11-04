@@ -300,7 +300,7 @@ export type common_Dictionary = {
 // Category represents a hierarchical category structure
 export type common_Category = {
   id: number | undefined;
-  translations: common_CategoryTranslation[] | undefined;
+  name: string | undefined;
   levelId: number | undefined;
   level: string | undefined;
   parentId: number | undefined;
@@ -308,22 +308,8 @@ export type common_Category = {
   countWomen: number | undefined;
 };
 
-export type common_CategoryTranslation = {
-  id: number | undefined;
-  categoryId: number | undefined;
-  languageId: number | undefined;
-  name: string | undefined;
-};
-
 export type common_MeasurementName = {
   id: number | undefined;
-  translations: common_MeasurementNameTranslation[] | undefined;
-};
-
-export type common_MeasurementNameTranslation = {
-  id: number | undefined;
-  measurementNameId: number | undefined;
-  languageId: number | undefined;
   name: string | undefined;
 };
 
@@ -373,6 +359,8 @@ export type common_ShipmentCarrierInsert = {
 export type common_Size = {
   id: number | undefined;
   name: string | undefined;
+  countMen: number | undefined;
+  countWomen: number | undefined;
 };
 
 export type common_Language = {
@@ -482,6 +470,7 @@ export type GetProductsPagedResponse = {
 
 export type SubmitOrderRequest = {
   order: common_OrderNew | undefined;
+  paymentIntentId: string | undefined;
 };
 
 export type common_OrderNew = {
@@ -634,6 +623,9 @@ export type ValidateOrderItemsInsertRequest = {
   items: common_OrderItemInsert[] | undefined;
   promoCode: string | undefined;
   shipmentCarrierId: number | undefined;
+  country: string | undefined;
+  paymentMethod: common_PaymentMethodNameEnum | undefined;
+  currency: string | undefined;
 };
 
 export type ValidateOrderItemsInsertResponse = {
@@ -642,6 +634,8 @@ export type ValidateOrderItemsInsertResponse = {
   subtotal: googletype_Decimal | undefined;
   totalSale: googletype_Decimal | undefined;
   promo: common_PromoCodeInsert | undefined;
+  clientSecret: string | undefined;
+  paymentIntentId: string | undefined;
 };
 
 export type ValidateOrderByUUIDRequest = {

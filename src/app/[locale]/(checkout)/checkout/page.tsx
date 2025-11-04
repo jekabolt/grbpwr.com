@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 import FlexibleLayout from "@/components/flexible-layout";
 
-import NewOrderForm from "./_components/new-order-form";
+import { CheckoutFormWrapper } from "./_components/checkout-form-wrapper";
 
 export default async function CheckoutPage() {
   const t = await getTranslations("navigation");
@@ -17,7 +17,7 @@ export default async function CheckoutPage() {
       }}
     >
       <div className="px-2.5 py-20 lg:relative lg:min-h-screen lg:px-32 lg:py-24">
-        <NewOrderForm />
+        <CheckoutFormWrapper />
       </div>
     </FlexibleLayout>
   );

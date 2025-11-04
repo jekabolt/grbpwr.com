@@ -53,14 +53,11 @@ export function Measurements({
   const hoveredDescriptionKey = (() => {
     if (!hoveredMeasurement) return null;
 
-    const measurement = dictionary?.measurements?.find((m: any) =>
-      (m.translations || []).some(
-        (t: any) => t?.name?.toLowerCase() === hoveredMeasurement.toLowerCase(),
-      ),
+    const measurement = dictionary?.measurements?.find(
+      (m: any) => m.name?.toLowerCase() === hoveredMeasurement.toLowerCase(),
     );
 
-    const baseName: string =
-      measurement?.translations?.[0]?.name || hoveredMeasurement;
+    const baseName: string = measurement?.name || hoveredMeasurement;
 
     return baseName
       .trim()

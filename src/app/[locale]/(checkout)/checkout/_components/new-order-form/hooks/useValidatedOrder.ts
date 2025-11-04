@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
+import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
+import { useDataContext } from "@/components/contexts/DataContext";
 import { serviceClient } from "@/lib/api";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
@@ -14,6 +15,7 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
     ValidateOrderItemsInsertResponse | undefined
   >(undefined);
   const products = useCart((cart) => cart.products);
+  const { dictionary } = useDataContext();
 
   const validateItems = async () => {
     const items = products.map((p) => ({
@@ -26,12 +28,18 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
 
     const promoCode = form.getValues("promoCode");
     const shipmentCarrierId = form.getValues("shipmentCarrierId");
+    const country = form.getValues("country");
+    const paymentMethod = form.getValues("paymentMethod");
+    const currency = dictionary?.baseCurrency;
 
     console.log("validating products ⌛️");
     const response = await serviceClient.ValidateOrderItemsInsert({
       items,
       promoCode,
       shipmentCarrierId: parseInt(shipmentCarrierId),
+      country,
+      paymentMethod,
+      currency,
     });
     console.log("finished validating products 🎉");
 

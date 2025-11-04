@@ -22,20 +22,6 @@ export type ArchiveInsertTranslation = {
   description: string | undefined;
 };
 
-export type CategoryTranslation = {
-  id: number | undefined;
-  categoryId: number | undefined;
-  languageId: number | undefined;
-  name: string | undefined;
-};
-
-export type MeasurementNameTranslation = {
-  id: number | undefined;
-  measurementNameId: number | undefined;
-  languageId: number | undefined;
-  name: string | undefined;
-};
-
 export type HeroSingleInsertTranslation = {
   languageId: number | undefined;
   headline: string | undefined;
@@ -169,7 +155,7 @@ export type GenderEnum =
 // Category represents a hierarchical category structure
 export type Category = {
   id: number | undefined;
-  translations: CategoryTranslation[] | undefined;
+  name: string | undefined;
   levelId: number | undefined;
   level: string | undefined;
   parentId: number | undefined;
@@ -180,11 +166,13 @@ export type Category = {
 export type Size = {
   id: number | undefined;
   name: string | undefined;
+  countMen: number | undefined;
+  countWomen: number | undefined;
 };
 
 export type MeasurementName = {
   id: number | undefined;
-  translations: MeasurementNameTranslation[] | undefined;
+  name: string | undefined;
 };
 
 export type ProductNew = {

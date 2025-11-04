@@ -1,10 +1,8 @@
 import { useDataContext } from "@/components/contexts/DataContext";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useRouteParams } from "./useRouteParams";
 
 export function useSizeFiltering() {
     const { dictionary } = useDataContext();
-    const { languageId } = useTranslationsStore((state) => state);
     const { topCategory } = useRouteParams();
     const sizes = dictionary?.sizes || [];
     const categories = dictionary?.categories;
@@ -12,12 +10,9 @@ export function useSizeFiltering() {
     const categoryData = topCategory?.id
         ? categories?.find((c) => c.id === topCategory.id)
         : undefined;
-    const translation = categoryData?.translations?.find(
-        (t) => t.languageId === languageId,
-    ) || categoryData?.translations?.[0];
-    const category = translation?.name;
+    const category = categoryData?.name || "";
 
-    const isShoes = category?.toLowerCase().includes("shoes");
+    const isShoes = category.toLowerCase().includes("shoes");
 
     const filteredSizes = sizes.filter((size) => {
         if (!topCategory?.id) return true;
