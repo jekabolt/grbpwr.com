@@ -51,18 +51,18 @@ export function MobileFilter() {
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay opacity-40" />
-        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 h-dvh bg-bgColor p-2.5 text-textColor lg:hidden">
+        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 bg-bgColor p-2.5 text-textColor lg:hidden">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="flex h-full w-full flex-col gap-6 overflow-y-auto">
-            <div className="space-y-10 pb-24">
-              <DialogPrimitives.Close asChild>
-                <div className="fixed inset-x-2.5 top-2.5 flex items-center justify-between bg-bgColor">
-                  <Text variant="uppercase">{t("filter")}</Text>
-                  <Button>[x]</Button>
-                </div>
-              </DialogPrimitives.Close>
+          <div className="flex h-full flex-col justify-between">
+            <DialogPrimitives.Close asChild>
+              <div className="flex items-center justify-between">
+                <Text variant="uppercase">{t("filter")}</Text>
+                <Button>[x]</Button>
+              </div>
+            </DialogPrimitives.Close>
+            <div className="mt-10 h-full space-y-10 overflow-y-scroll">
               <div className="space-y-6">
                 <Text variant="uppercase" className="text-textInactiveColor">
                   {t("sort by")}
@@ -72,7 +72,6 @@ export function MobileFilter() {
               <Collection />
               <Sizes topCategoryId={topCategory?.id} gender={gender} />
             </div>
-
             <div className="flex items-center justify-end gap-2 bg-bgColor">
               <Button
                 className={cn("hidden w-1/2 uppercase", {
