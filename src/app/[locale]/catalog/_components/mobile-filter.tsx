@@ -85,7 +85,7 @@ export function MobileFilter() {
                 {t("clear all")}
               </Button>
               <DialogPrimitives.Close asChild>
-                <Button className="w-full uppercase" size="lg" variant="main">
+                <Button className="w-1/2 uppercase" size="lg" variant="main">
                   {t("show")} {total > 0 ? `[${total}]` : ""}
                 </Button>
               </DialogPrimitives.Close>

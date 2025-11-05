@@ -31,7 +31,7 @@ export function InfinityScrollCatalog({
   const { GetProductsPaged } = useServerActionsContext();
   const { languageId } = useTranslationsStore((state) => state);
   const { gender, topCategory, subCategory } = useRouteParams();
-  const { listName, listId, handleViewItemListEvent } = useAnalytics();
+  const { handleViewItemListEvent } = useAnalytics();
   const { ref, inView } = useInView();
 
   const searchParamsObj = useMemo(
