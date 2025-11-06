@@ -39,6 +39,12 @@ export function InfinityScrollCatalog({
     [searchParams],
   );
 
+  // Check if any filters are active
+  const hasFilters = useMemo(
+    () => Object.keys(searchParamsObj).length > 0,
+    [searchParamsObj],
+  );
+
   const queryKey = useMemo(
     () => [
       "products",
@@ -79,16 +85,19 @@ export function InfinityScrollCatalog({
         );
         return totalFetched < (lastPage.total || 0) ? totalFetched : undefined;
       },
-      initialData: {
-        pages: [{ products: firstPageItems, total }],
-        pageParams: [0],
-      },
-      // Permanent cache - only revalidate via webhook
+      // Only use initialData when there are no filters (base route)
+      initialData: !hasFilters
+        ? {
+            pages: [{ products: firstPageItems, total }],
+            pageParams: [0],
+          }
+        : undefined,
+      // Cache behavior: Never refetch unless queryKey changes
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
-      staleTime: Infinity, // Never consider stale
-      gcTime: Infinity, // Keep forever
+      staleTime: Infinity, // Data is fresh until queryKey changes
+      gcTime: Infinity, // Keep in cache forever
     });
 
   const items = data?.pages.flatMap((page) => page.products || []) || [];

@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Metadata } from "next";
 import { CATALOG_LIMIT } from "@/constants";
 import { getTranslations } from "next-intl/server";
@@ -34,7 +33,8 @@ interface CatalogPageProps {
 }
 
 // Pre-generate common catalog routes at build time
-// These will be statically generated and cached, making first load instant
+// Base routes (/catalog, /catalog/men, /catalog/women) will be static (HIT)
+// Routes with filters/searchParams will be dynamic (MISS) but data is cached
 export async function generateStaticParams() {
   return [
     { params: [] }, // /catalog - all genders
@@ -43,10 +43,8 @@ export async function generateStaticParams() {
   ];
 }
 
-// Force static generation for routes from generateStaticParams
-// Pages with searchParams will still be dynamic, but base routes will be static (HIT)
 export const dynamic = "force-static";
-export const dynamicParams = true; // Allow dynamic params beyond generateStaticParams
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,
@@ -121,34 +119,17 @@ async function CatalogProducts({
   );
 }
 
-// Loading fallback
-function CatalogSkeleton() {
-  return (
-    <div className="px-7 pt-24">
-      <div className="animate-pulse">
-        <div className="mb-6 h-8 w-48 bg-gray-200" />
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="aspect-[3/4] bg-gray-200" />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default async function CatalogPage(props: CatalogPageProps) {
   // Fetch hero data (fast, cached from template.tsx)
   const { hero } = await serviceClient.GetHero({});
 
   return (
     <FlexibleLayout headerType="catalog">
-      <Suspense fallback={<CatalogSkeleton />}>
-        <CatalogProducts
-          searchParams={props.searchParams}
-          params={props.params}
-        />
-      </Suspense>
+      <CatalogProducts
+        searchParams={props.searchParams}
+        params={props.params}
+      />
+
       <div className="flex justify-center pb-5 pt-16">
         <NextCategoryButton />
       </div>
