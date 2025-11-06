@@ -60,7 +60,7 @@ export default async function RootLayout({ children, params }: Props) {
       <body className={FeatureMono.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ToastProvider>
-            <div className="lightTheme relative min-h-screen">{children}</div>
+            <div className="relative min-h-screen">{children}</div>
             <GeoSuggestWrapper />
             <UpdateLocation />
             <CookieBanner />

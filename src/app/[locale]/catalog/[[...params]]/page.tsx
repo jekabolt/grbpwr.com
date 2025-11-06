@@ -32,15 +32,8 @@ interface CatalogPageProps {
   }>;
 }
 
-// Pre-generate common catalog routes at build time
-// Base routes (/catalog, /catalog/men, /catalog/women) will be static (HIT)
-// Routes with filters/searchParams will be dynamic (MISS) but data is cached
 export async function generateStaticParams() {
-  return [
-    { params: [] }, // /catalog - all genders
-    { params: ["men"] }, // /catalog/men
-    { params: ["women"] }, // /catalog/women
-  ];
+  return [{ params: [] }, { params: ["men"] }, { params: ["women"] }];
 }
 
 export const dynamic = "force-static";

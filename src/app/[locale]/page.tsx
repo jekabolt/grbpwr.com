@@ -7,6 +7,7 @@ import FlexibleLayout from "@/components/flexible-layout";
 import { EmptyHero } from "@/components/ui/empty-hero";
 
 import { Ads } from "./_components/ads";
+import { HeroBackground } from "./_components/hero-background";
 import { MainAds } from "./_components/main-ads";
 
 export async function generateMetadata({
@@ -36,9 +37,14 @@ export async function generateMetadata({
 export default async function Page() {
   const { hero } = await serviceClient.GetHero({});
   const isHero = hero?.entities?.length;
+  
+  // Get the hero image URL for background color extraction
+  const heroImageUrl =
+    hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.fullSize?.mediaUrl;
 
   return (
     <FlexibleLayout theme={isHero ? "light" : "dark"} showAnnounce={true}>
+      <HeroBackground imageUrl={heroImageUrl} />
       {isHero ? (
         <>
           <MainAds main={hero?.entities?.[0]?.main} />
