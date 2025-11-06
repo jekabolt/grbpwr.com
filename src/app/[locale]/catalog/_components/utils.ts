@@ -102,6 +102,10 @@ export function getProductsPagedQueryParams(
       .filter((id): id is number => id !== undefined)
     : undefined;
 
+  const collections = collection
+    ? collection.split(",").map(c => c.trim()).filter(Boolean)
+    : undefined;
+
   // todo: validate params before make a request
   return {
     sortFactors: sortFactor ? [sortFactor] : undefined,
@@ -118,7 +122,7 @@ export function getProductsPagedQueryParams(
       preorder: undefined,
       byTag: tag ? tag : undefined,
       gender: genderEnums ? [genderEnums] : undefined,
-      collection: collection ? collection : undefined,
+      collections: collections && collections.length > 0 ? collections : undefined,
     },
   };
 }

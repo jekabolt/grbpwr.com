@@ -18,25 +18,21 @@ export function useFilterSelection({
 
     const items = dictionary?.[filterKey === "size" ? "sizes" : "collections"] || [];
 
-    // Find initial selected item(s)
-    const findInitialItem = () => {
-        if (!defaultValue) return null;
+    const findInitialItems = () => {
+        if (!defaultValue) return [];
 
-        if (filterKey === "size") {
-            return items.find((item: any) => item.name === defaultValue);
-        } else {
-            return items.find((item: any) => item.name?.toLowerCase() === defaultValue?.toLowerCase());
-        }
+        const values = defaultValue.split(",");
+        return values
+            .map(val => items.find((item: any) => item.name?.toLowerCase() === val.toLowerCase()))
+            .filter(Boolean);
     };
 
-    const initItem = findInitialItem();
-    const initValue = filterKey === "size"
-        ? (initItem as any)?.id?.toString()
-        : (initItem as any)?.name;
+    const initItems = findInitialItems();
+    const initValues = filterKey === "size"
+        ? initItems.map((item: any) => item?.id?.toString())
+        : initItems.map((item: any) => item?.name);
 
-    const [selectedValues, setSelectedValues] = useState<string[]>(
-        initValue ? [initValue] : [],
-    );
+    const [selectedValues, setSelectedValues] = useState<string[]>(initValues);
 
     // Sync with URL changes
     useEffect(() => {
@@ -58,7 +54,6 @@ export function useFilterSelection({
 
         setSelectedValues(newSelected);
 
-        // Convert IDs to names for size filter
         let filterValue: string | undefined;
         if (filterKey === "size") {
             const names = newSelected
@@ -67,7 +62,7 @@ export function useFilterSelection({
                 .join(",");
             filterValue = names || undefined;
         } else {
-            filterValue = newSelected[0] || undefined;
+            filterValue = newSelected.join(",") || undefined;
         }
 
         handleFilterChange(filterValue);

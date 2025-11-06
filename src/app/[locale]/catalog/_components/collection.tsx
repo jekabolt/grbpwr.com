@@ -15,7 +15,7 @@ export function Collection() {
   const { gender } = useRouteParams();
   const { selectedValues, handleToggle } = useFilterSelection({
     filterKey: "collection",
-    multiSelect: false,
+    multiSelect: true,
   });
 
   return (

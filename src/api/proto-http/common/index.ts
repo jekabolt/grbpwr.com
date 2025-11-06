@@ -364,7 +364,7 @@ export type FilterConditions = {
   sizesIds: number[] | undefined;
   preorder: boolean | undefined;
   byTag: string | undefined;
-  collection: string | undefined;
+  collections: string[] | undefined;
 };
 
 export type PaymentMethodNameEnum =

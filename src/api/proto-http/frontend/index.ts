@@ -468,7 +468,7 @@ export type common_FilterConditions = {
   sizesIds: number[] | undefined;
   preorder: boolean | undefined;
   byTag: string | undefined;
-  collection: string | undefined;
+  collections: string[] | undefined;
 };
 
 export type GetProductsPagedResponse = {
@@ -895,8 +895,10 @@ export function createFrontendServiceClient(
       if (request.filterConditions?.byTag) {
         queryParams.push(`filterConditions.byTag=${encodeURIComponent(request.filterConditions.byTag.toString())}`)
       }
-      if (request.filterConditions?.collection) {
-        queryParams.push(`filterConditions.collection=${encodeURIComponent(request.filterConditions.collection.toString())}`)
+      if (request.filterConditions?.collections) {
+        request.filterConditions.collections.forEach((x) => {
+          queryParams.push(`filterConditions.collections=${encodeURIComponent(x.toString())}`)
+        })
       }
       let uri = path;
       if (queryParams.length > 0) {
