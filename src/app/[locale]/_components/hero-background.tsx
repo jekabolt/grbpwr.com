@@ -5,9 +5,17 @@ import { useEffect, useRef } from "react";
 export function HeroBackground({ imageUrl }: { imageUrl?: string }) {
   const hasSet = useRef(false);
   const styleElementRef = useRef<HTMLStyleElement | null>(null);
+  const originalHtmlBg = useRef<string | null>(null);
+  const originalBodyBg = useRef<string | null>(null);
 
   useEffect(() => {
     if (!imageUrl || hasSet.current) return;
+
+    // Store original background colors for cleanup
+    const htmlStyle = window.getComputedStyle(document.documentElement);
+    const bodyStyle = window.getComputedStyle(document.body);
+    originalHtmlBg.current = htmlStyle.backgroundColor;
+    originalBodyBg.current = bodyStyle.backgroundColor;
 
     // Use Next.js image optimization endpoint to bypass CORS
     const nextImageUrl = `/_next/image?url=${encodeURIComponent(imageUrl)}&w=1920&q=75`;
@@ -83,20 +91,36 @@ export function HeroBackground({ imageUrl }: { imageUrl?: string }) {
           document.head.appendChild(styleElementRef.current);
         }
 
-        // Apply color to top 50% using pseudo-element
+        // Apply color to top 50% using pseudo-element and set html/body bg for Safari overscroll
         styleElementRef.current.textContent = `
-          body::before {
+          html {
+            position: relative;
+            background-color: ${hexColor} !important;
+          }
+          html::before {
             content: '';
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            right: 0;
+            width: 100vw;
             height: 50vh;
-            background-color: ${hexColor};
-            z-index: -1;
+            min-height: 50vh;
+            background-color: ${hexColor} !important;
+            z-index: -9999;
             pointer-events: none;
+            display: block;
+          }
+          @supports (height: 50dvh) {
+            html::before {
+              height: 50dvh;
+              min-height: 50dvh;
+            }
           }
         `;
+
+        // Also set body background to extracted color for Safari overscroll bounce
+        document.body.style.backgroundColor = hexColor;
 
         document.documentElement.style.setProperty("--hero-bg-color", hexColor);
         hasSet.current = true;
@@ -118,6 +142,9 @@ export function HeroBackground({ imageUrl }: { imageUrl?: string }) {
         styleElementRef.current = null;
       }
       document.documentElement.style.removeProperty("--hero-bg-color");
+      document.documentElement.style.backgroundColor =
+        originalHtmlBg.current || "";
+      document.body.style.backgroundColor = originalBodyBg.current || "";
       hasSet.current = false;
     };
   }, [imageUrl]);
