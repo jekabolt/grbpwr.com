@@ -61,10 +61,6 @@ export async function generateMetadata({
   });
 }
 
-// Enable ISR - revalidate every 60 seconds
-// This caches the page but allows background updates
-export const revalidate = 60;
-
 // Products component that can be streamed
 async function CatalogProducts({
   searchParams,

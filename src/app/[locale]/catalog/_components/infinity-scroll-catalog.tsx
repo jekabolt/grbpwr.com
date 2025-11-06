@@ -83,8 +83,12 @@ export function InfinityScrollCatalog({
         pages: [{ products: firstPageItems, total }],
         pageParams: [0],
       },
-      // Prevent refetch on mount when we have server-provided initialData
+      // Permanent cache - only revalidate via webhook
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      staleTime: Infinity, // Never consider stale
+      gcTime: Infinity, // Keep forever
     });
 
   const items = data?.pages.flatMap((page) => page.products || []) || [];
