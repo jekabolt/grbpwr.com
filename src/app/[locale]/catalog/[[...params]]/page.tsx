@@ -35,7 +35,6 @@ interface CatalogPageProps {
 
 // Pre-generate common catalog routes at build time
 // These will be statically generated and cached, making first load instant
-// When searchParams are used (filters), the page becomes dynamic but still uses cache
 export async function generateStaticParams() {
   return [
     { params: [] }, // /catalog - all genders
@@ -43,6 +42,11 @@ export async function generateStaticParams() {
     { params: ["women"] }, // /catalog/women
   ];
 }
+
+// Force static generation for routes from generateStaticParams
+// Pages with searchParams will still be dynamic, but base routes will be static (HIT)
+export const dynamic = "force-static";
+export const dynamicParams = true; // Allow dynamic params beyond generateStaticParams
 
 export async function generateMetadata({
   params,
