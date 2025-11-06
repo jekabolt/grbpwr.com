@@ -20,21 +20,21 @@ function getItemName(item: FilterItem): string {
 }
 
 export default function FilterOptionButtons({
-  handleFilterChange,
   selectedValues,
   values,
   topCategoryId,
   title,
   showSeparated = false,
   gender,
+  handleFilterChange,
 }: {
-  handleFilterChange: (id: string) => void;
   selectedValues: string[];
   values: FilterItem[];
   topCategoryId?: string;
   title?: string;
   showSeparated?: boolean;
   gender?: string;
+  handleFilterChange: (id: string) => void;
 }) {
   const { dictionary } = useDataContext();
   const [loadingId, setLoadingId] = useState<string | null>(null);
@@ -93,7 +93,7 @@ export default function FilterOptionButtons({
         loadingType="overlay"
         disabled={isLoading || !isAvailable}
         className={cn(
-          "block border border-transparent uppercase hover:border-textColor",
+          "block border border-transparent uppercase md:hover:border-textColor",
           {
             "border-textColor": isSelected,
           },
