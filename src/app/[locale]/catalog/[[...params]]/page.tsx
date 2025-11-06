@@ -50,10 +50,10 @@ export async function generateMetadata({
   });
 }
 
-export const dynamic = "force-static";
+// Removed force-static - this is a dynamic page with params/searchParams
+// GetHero is already fetched in template.tsx and should be cached/deduped by Next.js
 
 export default async function CatalogPage(props: CatalogPageProps) {
-  const { hero, dictionary } = await serviceClient.GetHero({});
   const searchParams = await props.searchParams;
   const params = await props.params;
 
@@ -61,12 +61,16 @@ export default async function CatalogPage(props: CatalogPageProps) {
     params?.params,
   );
 
+  // Fetch hero data (should be cached from template.tsx)
+  const { hero, dictionary } = await serviceClient.GetHero({});
+
   const { topCategory, subCategory } = resolveCategories(
     dictionary?.categories,
     categoryName,
     subCategoryName,
   );
 
+  // Fetch products
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,

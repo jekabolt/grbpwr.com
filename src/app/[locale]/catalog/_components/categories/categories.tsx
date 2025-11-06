@@ -54,11 +54,12 @@ export function Categories() {
     ? getTopCategoryName(categories, topCategory.id || 0)
     : categoryName;
 
+  // Build base href based on whether gender exists
+  const baseHref = gender ? `/catalog/${gender}` : "/catalog";
+
   return (
     <div className="flex items-center gap-2">
-      <CategoryButton href={`/catalog/${gender}`}>
-        {topCategoryName}
-      </CategoryButton>
+      <CategoryButton href={baseHref}>{topCategoryName}</CategoryButton>
 
       {!!filteredSubCategories.length && <Text>/</Text>}
 
@@ -70,10 +71,15 @@ export function Categories() {
         const isDisabled = isCategoryDisabled(findSubCategory, gender);
         const subCatName = getSubCategoryName(categories, subCategory.id);
 
+        // Build subcategory href with or without gender
+        const subCategoryHref = gender
+          ? `/catalog/${gender}/${categoryName}/${subCategory.name?.toLowerCase()}`
+          : `/catalog/${categoryName}/${subCategory.name?.toLowerCase()}`;
+
         return (
           <div className="flex items-center gap-1" key={subCategory.id}>
             <CategoryButton
-              href={`/catalog/${gender}/${categoryName}/${subCategory.name?.toLowerCase()}`}
+              href={subCategoryHref}
               variant={
                 subCategoryName === subCategory.name?.toLowerCase()
                   ? "underline"

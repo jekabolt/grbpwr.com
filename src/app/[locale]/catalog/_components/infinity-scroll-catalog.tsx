@@ -93,10 +93,7 @@ export function InfinityScrollCatalog({
   // Track analytics when filters change
   useEffect(() => {
     if (items.length > 0 && items.length === firstPageItems.length) {
-      // Only track on initial load or when filters change (first page matches)
-      setTimeout(() => {
-        handleViewItemListEvent(firstPageItems);
-      }, 100);
+      handleViewItemListEvent(firstPageItems);
     }
   }, [queryKey, firstPageItems, items.length, handleViewItemListEvent]);
 
