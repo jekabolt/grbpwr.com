@@ -24,9 +24,12 @@ export async function POST(request: Request) {
 
     if (Array.isArray(data.products) && data.products.length > 0) {
         revalidateTag(PRODUCTS_CACHE_TAG);
+        // Revalidate individual product pages
         for (const id of data.products) {
             revalidatePath(`/product/${id}`);
         }
+        // Revalidate all catalog pages (dynamic routes)
+        revalidatePath("/catalog", "layout");
     }
 
     if (data.hero === true) {

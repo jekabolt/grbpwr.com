@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
 import { CATALOG_LIMIT } from "@/constants";
 import { getTranslations } from "next-intl/server";
@@ -5,7 +6,6 @@ import { getTranslations } from "next-intl/server";
 import { serviceClient } from "@/lib/api";
 import { resolveCategories } from "@/lib/categories-map";
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 import { HeroArchive } from "@/app/[locale]/_components/hero-archive";
 import { MobileCatalog } from "@/app/[locale]/catalog/_components/mobile-catalog";
@@ -33,6 +33,17 @@ interface CatalogPageProps {
   }>;
 }
 
+// Pre-generate common catalog routes at build time
+// These will be statically generated and cached, making first load instant
+// When searchParams are used (filters), the page becomes dynamic but still uses cache
+export async function generateStaticParams() {
+  return [
+    { params: [] }, // /catalog - all genders
+    { params: ["men"] }, // /catalog/men
+    { params: ["women"] }, // /catalog/women
+  ];
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -50,19 +61,26 @@ export async function generateMetadata({
   });
 }
 
-// Removed force-static - this is a dynamic page with params/searchParams
-// GetHero is already fetched in template.tsx and should be cached/deduped by Next.js
+// Enable ISR - revalidate every 60 seconds
+// This caches the page but allows background updates
+export const revalidate = 60;
 
-export default async function CatalogPage(props: CatalogPageProps) {
-  const searchParams = await props.searchParams;
-  const params = await props.params;
+// Products component that can be streamed
+async function CatalogProducts({
+  searchParams,
+  params,
+}: {
+  searchParams: CatalogPageProps["searchParams"];
+  params: CatalogPageProps["params"];
+}) {
+  const resolvedSearchParams = await searchParams;
+  const resolvedParams = await params;
 
   const { gender, categoryName, subCategoryName } = parseRouteParams(
-    params?.params,
+    resolvedParams?.params,
   );
 
-  // Fetch hero data (should be cached from template.tsx)
-  const { hero, dictionary } = await serviceClient.GetHero({});
+  const { dictionary } = await serviceClient.GetHero({});
 
   const { topCategory, subCategory } = resolveCategories(
     dictionary?.categories,
@@ -70,13 +88,13 @@ export default async function CatalogPage(props: CatalogPageProps) {
     subCategoryName,
   );
 
-  // Fetch products
+  // Fetch products - already cached via PRODUCTS_CACHE_TAG in lib/api.ts
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
     ...getProductsPagedQueryParams(
       {
-        ...searchParams,
+        ...resolvedSearchParams,
         gender,
         topCategoryIds: !subCategory ? topCategory?.id?.toString() : undefined,
         subCategoryIds: subCategory?.id?.toString(),
@@ -86,7 +104,7 @@ export default async function CatalogPage(props: CatalogPageProps) {
   });
 
   return (
-    <FlexibleLayout headerType="catalog">
+    <>
       <div className="block lg:hidden">
         <MobileCatalog
           firstPageItems={response.products || []}
@@ -99,25 +117,51 @@ export default async function CatalogPage(props: CatalogPageProps) {
           firstPageItems={response.products || []}
         />
       </div>
-      <div
-        className={cn("block", {
-          hidden: !response.total,
-        })}
-      >
-        <div className="flex justify-center pb-5 pt-16">
-          <NextCategoryButton />
+    </>
+  );
+}
+
+// Loading fallback
+function CatalogSkeleton() {
+  return (
+    <div className="px-7 pt-24">
+      <div className="animate-pulse">
+        <div className="mb-6 h-8 w-48 bg-gray-200" />
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="aspect-[3/4] bg-gray-200" />
+          ))}
         </div>
-        <div>
-          {hero?.entities
-            ?.filter((e) => e.type === "HERO_TYPE_FEATURED_ARCHIVE")
-            .map((e, i) => (
-              <HeroArchive
-                entity={e}
-                key={i}
-                className="space-y-12 pb-40 pt-14 lg:py-32"
-              />
-            ))}
-        </div>
+      </div>
+    </div>
+  );
+}
+
+export default async function CatalogPage(props: CatalogPageProps) {
+  // Fetch hero data (fast, cached from template.tsx)
+  const { hero } = await serviceClient.GetHero({});
+
+  return (
+    <FlexibleLayout headerType="catalog">
+      <Suspense fallback={<CatalogSkeleton />}>
+        <CatalogProducts
+          searchParams={props.searchParams}
+          params={props.params}
+        />
+      </Suspense>
+      <div className="flex justify-center pb-5 pt-16">
+        <NextCategoryButton />
+      </div>
+      <div>
+        {hero?.entities
+          ?.filter((e) => e.type === "HERO_TYPE_FEATURED_ARCHIVE")
+          .map((e, i) => (
+            <HeroArchive
+              entity={e}
+              key={i}
+              className="space-y-12 pb-40 pt-14 lg:py-32"
+            />
+          ))}
       </div>
     </FlexibleLayout>
   );
