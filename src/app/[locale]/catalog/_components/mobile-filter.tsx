@@ -1,68 +1,48 @@
-import { useState } from "react";
-import { CATALOG_LIMIT } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
-import { serviceClient } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
-import FilterOptionButtons from "./FilterOptionButtons";
+import { Collection } from "./collection";
+import { Sizes } from "./sizes";
 import Sort from "./Sort";
 import useFilterQueryParams from "./useFilterQueryParams";
 import { useRouteParams } from "./useRouteParams";
-import { useSizeFiltering } from "./useSizeFiltering";
-import { getProductsPagedQueryParams } from "./utils";
+import { useTotalProducts } from "./useTotalProducts";
 
 export function MobileFilter() {
-  const { dictionary } = useDataContext();
-  const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
-  const { gender, topCategory, subCategory } = useRouteParams();
-  const { sizeOptions } = useSizeFiltering();
-
-  const [total, setTotal] = useState(0);
   const t = useTranslations("catalog");
-  const sizes = dictionary?.sizes || [];
-  const initSize = sizes?.find((s) => s.name === defaultValue)?.id?.toString();
-  const [selectedSize, setSelectedSize] = useState<string>(initSize || "");
 
-  const getSizeNameById = (id?: string) =>
-    sizeOptions?.find((s) => String(s.id) === id)?.name.toLowerCase();
+  const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
+  const { defaultValue: sortValue } = useFilterQueryParams("sort");
+  const { defaultValue: orderValue } = useFilterQueryParams("order");
+  const { defaultValue: saleValue } = useFilterQueryParams("sale");
+  const { defaultValue: collectionValue } = useFilterQueryParams("collection");
+  const { gender, topCategory, subCategory } = useRouteParams();
+  const { total, resetTotal } = useTotalProducts({
+    gender,
+    topCategoryId: topCategory?.id,
+    subCategoryId: subCategory?.id,
+  });
 
-  const handleSizeClick = async (sizeId?: string) => {
-    setSelectedSize(sizeId ?? "");
+  const hasActiveFilters =
+    !!defaultValue ||
+    !!sortValue ||
+    !!orderValue ||
+    !!saleValue ||
+    !!collectionValue;
 
-    if (!sizeId) {
-      setTotal(0);
-      return;
-    }
-
-    try {
-      const response = await serviceClient.GetProductsPaged({
-        limit: CATALOG_LIMIT,
-        offset: 0,
-        ...getProductsPagedQueryParams(
-          {
-            topCategoryIds: topCategory?.id?.toString(),
-            subCategoryIds: subCategory?.id?.toString(),
-            gender,
-            size: getSizeNameById(sizeId),
-          },
-          dictionary,
-        ),
-      });
-      setTotal(response.total ?? 0);
-    } catch {
-      setTotal(0);
-    }
+  const handleClearAll = () => {
+    resetTotal();
+    handleFilterChange(undefined, {
+      collection: "",
+      sort: "",
+      order: "",
+      sale: "",
+    });
   };
-
-  function handleShowSize(selectedSize: string) {
-    const sizeName = getSizeNameById(selectedSize);
-    handleFilterChange(sizeName || undefined);
-  }
 
   return (
     <DialogPrimitives.Root>
@@ -71,59 +51,41 @@ export function MobileFilter() {
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay opacity-40" />
-        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 h-dvh bg-bgColor p-2.5 text-textColor lg:hidden">
+        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 bg-bgColor p-2.5 text-textColor lg:hidden">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="flex h-full w-full flex-col gap-6 overflow-y-auto">
-            <div className="space-y-10 pb-24">
-              <DialogPrimitives.Close asChild>
-                <div className="fixed inset-x-2.5 top-2.5 flex items-center justify-between bg-bgColor">
-                  <Text variant="uppercase">{t("filter")}</Text>
-                  <Button>[x]</Button>
-                </div>
-              </DialogPrimitives.Close>
+          <div className="flex h-full flex-col justify-between">
+            <DialogPrimitives.Close asChild>
+              <div className="flex items-center justify-between">
+                <Text variant="uppercase">{t("filter")}</Text>
+                <Button>[x]</Button>
+              </div>
+            </DialogPrimitives.Close>
+            <div className="mt-10 h-full space-y-10 overflow-y-scroll">
               <div className="space-y-6">
                 <Text variant="uppercase" className="text-textInactiveColor">
                   {t("sort by")}
                 </Text>
                 <Sort />
               </div>
-              <FilterOptionButtons
-                defaultValue={selectedSize}
-                handleFilterChange={handleSizeClick}
-                values={sizeOptions || []}
-                topCategoryId={topCategory?.id?.toString()}
-              />
+              <Collection />
+              <Sizes topCategoryId={topCategory?.id} gender={gender} />
             </div>
-
-            <div
-              className={cn(
-                "fixed inset-x-2.5 bottom-5 hidden gap-2 bg-bgColor",
-                {
-                  "flex justify-between": selectedSize,
-                },
-              )}
-            >
+            <div className="flex items-center justify-end gap-2 bg-bgColor">
               <Button
-                className="w-full uppercase"
+                className={cn("hidden w-1/2 uppercase", {
+                  block: hasActiveFilters,
+                })}
                 size="lg"
-                variant="main"
-                onClick={() => {
-                  handleSizeClick(undefined);
-                  handleFilterChange(undefined);
-                }}
+                variant="simpleReverseWithBorder"
+                onClick={handleClearAll}
               >
                 {t("clear all")}
               </Button>
               <DialogPrimitives.Close asChild>
-                <Button
-                  className="w-full uppercase"
-                  size="lg"
-                  variant="main"
-                  onClick={() => handleShowSize(selectedSize)}
-                >
-                  {t("show")} {selectedSize && total > 0 ? `[${total}]` : ""}
+                <Button className="w-1/2 uppercase" size="lg" variant="main">
+                  {t("show")} {total > 0 ? `[${total}]` : ""}
                 </Button>
               </DialogPrimitives.Close>
             </div>

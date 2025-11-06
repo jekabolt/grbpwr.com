@@ -73,7 +73,6 @@ export function MobileNavCart({
                 </div>
                 <div className="mt-auto space-y-6">
                   <CartTotalPrice />
-
                   <Button
                     asChild
                     variant="main"

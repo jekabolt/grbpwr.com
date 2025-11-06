@@ -289,6 +289,7 @@ export type common_Dictionary = {
   paymentMethods: common_PaymentMethod[] | undefined;
   shipmentCarriers: common_ShipmentCarrier[] | undefined;
   sizes: common_Size[] | undefined;
+  collections: common_Collection[] | undefined;
   languages: common_Language[] | undefined;
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
@@ -358,6 +359,12 @@ export type common_ShipmentCarrierInsert = {
 
 export type common_Size = {
   id: number | undefined;
+  name: string | undefined;
+  countMen: number | undefined;
+  countWomen: number | undefined;
+};
+
+export type common_Collection = {
   name: string | undefined;
   countMen: number | undefined;
   countWomen: number | undefined;
@@ -461,6 +468,7 @@ export type common_FilterConditions = {
   sizesIds: number[] | undefined;
   preorder: boolean | undefined;
   byTag: string | undefined;
+  collections: string[] | undefined;
 };
 
 export type GetProductsPagedResponse = {
@@ -687,6 +695,15 @@ export type UnsubscribeNewsletterRequest = {
 export type UnsubscribeNewsletterResponse = {
 };
 
+export type NotifyMeRequest = {
+  email: string | undefined;
+  productId: number | undefined;
+  sizeId: number | undefined;
+};
+
+export type NotifyMeResponse = {
+};
+
 export type GetArchivesPagedRequest = {
   limit: number | undefined;
   offset: number | undefined;
@@ -749,6 +766,8 @@ export interface FrontendService {
   SubscribeNewsletter(request: SubscribeNewsletterRequest): Promise<SubscribeNewsletterResponse>;
   // Unsubscribe from the newsletter
   UnsubscribeNewsletter(request: UnsubscribeNewsletterRequest): Promise<UnsubscribeNewsletterResponse>;
+  // NotifyMe adds an email to the waitlist for a specific product/size when out of stock
+  NotifyMe(request: NotifyMeRequest): Promise<NotifyMeResponse>;
   // GetArchivesPaged retrieves paged archives.
   GetArchivesPaged(request: GetArchivesPagedRequest): Promise<GetArchivesPagedResponse>;
   // GetArchive retrieves an archive by its heading, tag and id.
@@ -875,6 +894,11 @@ export function createFrontendServiceClient(
       }
       if (request.filterConditions?.byTag) {
         queryParams.push(`filterConditions.byTag=${encodeURIComponent(request.filterConditions.byTag.toString())}`)
+      }
+      if (request.filterConditions?.collections) {
+        request.filterConditions.collections.forEach((x) => {
+          queryParams.push(`filterConditions.collections=${encodeURIComponent(x.toString())}`)
+        })
       }
       let uri = path;
       if (queryParams.length > 0) {
@@ -1065,6 +1089,23 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "UnsubscribeNewsletter",
       }) as Promise<UnsubscribeNewsletterResponse>;
+    },
+    NotifyMe(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      const path = `api/frontend/notify-me`; // eslint-disable-line quotes
+      const body = JSON.stringify(request);
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return handler({
+        path: uri,
+        method: "POST",
+        body,
+      }, {
+        service: "FrontendService",
+        method: "NotifyMe",
+      }) as Promise<NotifyMeResponse>;
     },
     GetArchivesPaged(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/archive/paged`; // eslint-disable-line quotes

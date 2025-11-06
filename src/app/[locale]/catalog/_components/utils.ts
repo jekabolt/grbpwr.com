@@ -74,6 +74,7 @@ export function getProductsPagedQueryParams(
     size,
     sale,
     tag,
+    collection,
   }: {
     sort?: string | null;
     order?: string | null;
@@ -83,6 +84,7 @@ export function getProductsPagedQueryParams(
     size?: string | null;
     sale?: string | null;
     tag?: string | null;
+    collection?: string | null;
   },
   dictionary?: common_Dictionary
 ): Pick<
@@ -92,7 +94,17 @@ export function getProductsPagedQueryParams(
   const sortFactor = getEnumFromUrl(sort, SORT_MAP_URL) as common_SortFactor | undefined;
   const orderFactor = getEnumFromUrl(order, ORDER_MAP) as common_OrderFactor | undefined;
   const genderEnums = getEnumFromUrl(gender, GENDER_MAP) as common_GenderEnum | undefined;
-  const sizeId = dictionary?.sizes?.find(s => s.name?.toLowerCase() === size?.toLowerCase())?.id;
+
+  const sizeIds = size
+    ? size
+      .split(",")
+      .map(s => dictionary?.sizes?.find(sz => sz.name?.toLowerCase() === s.toLowerCase())?.id)
+      .filter((id): id is number => id !== undefined)
+    : undefined;
+
+  const collections = collection
+    ? collection.split(",").map(c => c.trim()).filter(Boolean)
+    : undefined;
 
   // todo: validate params before make a request
   return {
@@ -102,7 +114,7 @@ export function getProductsPagedQueryParams(
       topCategoryIds: topCategoryIds ? [parseInt(topCategoryIds)] : undefined,
       subCategoryIds: subCategoryIds ? [parseInt(subCategoryIds)] : undefined,
       typeIds: undefined,
-      sizesIds: sizeId ? [sizeId] : undefined,
+      sizesIds: sizeIds && sizeIds.length > 0 ? sizeIds : undefined,
       from: undefined,
       to: undefined,
       onSale: sale ? sale === "true" : undefined,
@@ -110,6 +122,7 @@ export function getProductsPagedQueryParams(
       preorder: undefined,
       byTag: tag ? tag : undefined,
       gender: genderEnums ? [genderEnums] : undefined,
+      collections: collections && collections.length > 0 ? collections : undefined,
     },
   };
 }

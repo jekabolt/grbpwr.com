@@ -364,6 +364,7 @@ export type FilterConditions = {
   sizesIds: number[] | undefined;
   preorder: boolean | undefined;
   byTag: string | undefined;
+  collections: string[] | undefined;
 };
 
 export type PaymentMethodNameEnum =
@@ -521,12 +522,19 @@ export type Dictionary = {
   paymentMethods: PaymentMethod[] | undefined;
   shipmentCarriers: ShipmentCarrier[] | undefined;
   sizes: Size[] | undefined;
+  collections: Collection[] | undefined;
   languages: Language[] | undefined;
   siteEnabled: boolean | undefined;
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
   announceTranslations: AnnounceTranslation[] | undefined;
+};
+
+export type Collection = {
+  name: string | undefined;
+  countMen: number | undefined;
+  countWomen: number | undefined;
 };
 
 export type Genders = {

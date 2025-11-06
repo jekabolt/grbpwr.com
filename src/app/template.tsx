@@ -1,4 +1,7 @@
-import { GetArchivesPagedRequest } from "@/api/proto-http/frontend";
+import type {
+  GetArchivesPagedRequest,
+  GetProductsPagedRequest,
+} from "@/api/proto-http/frontend";
 import { QueryWrapper } from "@/providers/query-wrapper";
 
 import { serviceClient } from "@/lib/api";
@@ -26,6 +29,10 @@ export default async function Template({
         GetArchivesPaged={async (request: GetArchivesPagedRequest) => {
           "use server";
           return serviceClient.GetArchivesPaged(request);
+        }}
+        GetProductsPaged={async (request: GetProductsPagedRequest) => {
+          "use server";
+          return serviceClient.GetProductsPaged(request);
         }}
       >
         <CartStoreProvider>

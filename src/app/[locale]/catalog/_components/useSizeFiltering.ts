@@ -27,5 +27,6 @@ export function useSizeFiltering() {
         ?.sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
         ?.map((s) => ({ ...s, name: s.name ?? "" }));
 
+
     return { sizeOptions, filteredSizes };
 } 

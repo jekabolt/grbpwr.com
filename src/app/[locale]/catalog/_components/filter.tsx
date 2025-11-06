@@ -1,19 +1,16 @@
-import { useState } from "react";
-import { CATALOG_LIMIT } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { serviceClient } from "@/lib/api";
-import { useDataContext } from "@/components/contexts/DataContext";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
-import FilterOptionButtons from "./FilterOptionButtons";
+import { Collection } from "./collection";
+import { Sizes } from "./sizes";
 import Sort from "./Sort";
 import useFilterQueryParams from "./useFilterQueryParams";
 import { useRouteParams } from "./useRouteParams";
-import { useSizeFiltering } from "./useSizeFiltering";
-import { getProductsPagedQueryParams } from "./utils";
+import { useTotalProducts } from "./useTotalProducts";
 
 export function Filter({
   isModalOpen,
@@ -22,56 +19,91 @@ export function Filter({
   isModalOpen: boolean;
   toggleModal: () => void;
 }) {
-  const { dictionary } = useDataContext();
-  const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
-  const { gender, topCategory, subCategory } = useRouteParams();
-  const { sizeOptions } = useSizeFiltering();
-
-  const [total, setTotal] = useState(0);
   const t = useTranslations("catalog");
-  const sizes = dictionary?.sizes || [];
-  const initSize = sizes?.find((s) => s.name === defaultValue)?.id?.toString();
-  const [selectedSize, setSelectedSize] = useState<string>(initSize || "");
 
-  const getSizeNameById = (id?: string) =>
-    sizeOptions?.find((s) => String(s.id) === id)?.name.toLowerCase();
+  const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
+  const { defaultValue: sortValue } = useFilterQueryParams("sort");
+  const { defaultValue: orderValue } = useFilterQueryParams("order");
+  const { defaultValue: saleValue } = useFilterQueryParams("sale");
+  const { defaultValue: collectionValue } = useFilterQueryParams("collection");
+  const { gender, topCategory, subCategory } = useRouteParams();
+  const { total, resetTotal } = useTotalProducts({
+    gender,
+    topCategoryId: topCategory?.id,
+    subCategoryId: subCategory?.id,
+    isModalOpen,
+  });
 
-  const handleSizeClick = async (sizeId?: string) => {
-    setSelectedSize(sizeId ?? "");
+  const hasActiveFilters =
+    !!defaultValue ||
+    !!sortValue ||
+    !!orderValue ||
+    !!saleValue ||
+    !!collectionValue;
 
-    if (!sizeId) {
-      setTotal(0);
-      return;
-    }
-
-    try {
-      const response = await serviceClient.GetProductsPaged({
-        limit: CATALOG_LIMIT,
-        offset: 0,
-        ...getProductsPagedQueryParams(
-          {
-            topCategoryIds: topCategory?.id?.toString(),
-            subCategoryIds: subCategory?.id?.toString(),
-            gender,
-            size: getSizeNameById(sizeId),
-          },
-          dictionary,
-        ),
-      });
-      setTotal(response.total ?? 0);
-    } catch {
-      setTotal(0);
-    }
+  const handleClearAll = () => {
+    resetTotal();
+    handleFilterChange(undefined, {
+      collection: "",
+      sort: "",
+      order: "",
+      sale: "",
+    });
   };
 
-  function handleShowSize(selectedSize: string) {
-    const sizeName = getSizeNameById(selectedSize);
-    handleFilterChange(sizeName || undefined);
-    toggleModal();
-  }
-
   return (
-    <>
+    // <>
+    //   {isModalOpen && (
+    //     <div className="hidden lg:block">
+    //       <Overlay
+    //         cover="screen"
+    //         onClick={toggleModal}
+    //         disablePointerEvents={false}
+    //       />
+    //       <div className="blackTheme fixed right-0 top-0 z-30 h-screen w-[445px] bg-bgColor p-2.5 text-textColor">
+    //         <div className="flex h-full flex-col gap-y-6">
+    //           {/* <div className="space-y-10 pb-10"> */}
+    //           <div className="flex items-center justify-between">
+    //             <Text variant="uppercase">{t("filter")}</Text>
+    //             <Button onClick={toggleModal}>[x]</Button>
+    //           </div>
+    //           <div className="h-full overflow-y-scroll">
+    //             <div className="space-y-6">
+    //               <Text variant="uppercase" className="text-textInactiveColor">
+    //                 {t("sort by")}
+    //               </Text>
+    //               <Sort />
+    //             </div>
+    //             <Collection />
+    //             <Sizes topCategoryId={topCategory?.id} gender={gender} />
+    //           </div>
+    //         </div>
+    //         <div className="flex items-center justify-end gap-2 bg-bgColor">
+    //           <Button
+    //             className={cn("hidden w-1/2 uppercase", {
+    //               block: hasActiveFilters,
+    //             })}
+    //             size="lg"
+    //             variant="simpleReverseWithBorder"
+    //             onClick={handleClearAll}
+    //           >
+    //             {t("clear all")}
+    //           </Button>
+    //           <Button
+    //             className="w-1/2 uppercase"
+    //             size="lg"
+    //             variant="main"
+    //             onClick={() => toggleModal()}
+    //           >
+    //             {t("show")} {total > 0 ? `[${total}]` : ""}
+    //           </Button>
+    //         </div>
+    //       </div>
+    //       {/* </div> */}
+    //     </div>
+    //   )}
+    // </>
+    <div className="z-50 w-full">
       {isModalOpen && (
         <div className="hidden lg:block">
           <Overlay
@@ -79,53 +111,46 @@ export function Filter({
             onClick={toggleModal}
             disablePointerEvents={false}
           />
-          <div className="blackTheme fixed inset-y-0 right-0 z-50 h-screen w-[450px] bg-bgColor p-2.5 text-textColor">
-            <div className="flex h-full flex-col justify-between">
-              <div className="space-y-10">
-                <div className="flex items-center justify-between">
-                  <Text variant="uppercase">{t("filter")}</Text>
-                  <Button onClick={toggleModal}>[x]</Button>
-                </div>
+          <div className="blackTheme fixed right-0 top-0 z-30 h-screen w-[445px] bg-bgColor p-2.5 text-textColor">
+            <div className="flex h-full flex-col gap-y-6">
+              <div className="flex items-center justify-between">
+                <Text variant="uppercase">{t("filter")}</Text>
+                <Button onClick={toggleModal}>[x]</Button>
+              </div>
+              <div className="h-full space-y-10 overflow-y-scroll">
                 <div className="space-y-6">
                   <Text variant="uppercase" className="text-textInactiveColor">
                     {t("sort by")}
                   </Text>
                   <Sort />
                 </div>
-                <FilterOptionButtons
-                  defaultValue={selectedSize}
-                  handleFilterChange={handleSizeClick}
-                  values={sizeOptions || []}
-                  topCategoryId={topCategory?.id?.toString()}
-                />
+                <Collection />
+                <Sizes topCategoryId={topCategory?.id} gender={gender} />
               </div>
-              {selectedSize && (
-                <div className="flex justify-between gap-2 bg-bgColor">
-                  <Button
-                    className="w-full uppercase"
-                    size="lg"
-                    variant="main"
-                    onClick={() => {
-                      handleSizeClick(undefined);
-                      handleFilterChange(undefined);
-                    }}
-                  >
-                    {t("clear all")}
-                  </Button>
-                  <Button
-                    className="w-full uppercase"
-                    size="lg"
-                    variant="main"
-                    onClick={() => handleShowSize(selectedSize)}
-                  >
-                    {t("show")} {selectedSize && total > 0 ? `[${total}]` : ""}
-                  </Button>
-                </div>
-              )}
+              <div className="flex items-center justify-end gap-2 bg-bgColor">
+                <Button
+                  className={cn("hidden w-1/2 uppercase", {
+                    block: hasActiveFilters,
+                  })}
+                  size="lg"
+                  variant="simpleReverseWithBorder"
+                  onClick={handleClearAll}
+                >
+                  {t("clear all")}
+                </Button>
+                <Button
+                  className="w-1/2 uppercase"
+                  size="lg"
+                  variant="main"
+                  onClick={() => toggleModal()}
+                >
+                  {t("show")} {total > 0 ? `[${total}]` : ""}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
