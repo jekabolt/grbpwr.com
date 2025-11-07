@@ -52,57 +52,6 @@ export function Filter({
   };
 
   return (
-    // <>
-    //   {isModalOpen && (
-    //     <div className="hidden lg:block">
-    //       <Overlay
-    //         cover="screen"
-    //         onClick={toggleModal}
-    //         disablePointerEvents={false}
-    //       />
-    //       <div className="blackTheme fixed right-0 top-0 z-30 h-screen w-[445px] bg-bgColor p-2.5 text-textColor">
-    //         <div className="flex h-full flex-col gap-y-6">
-    //           {/* <div className="space-y-10 pb-10"> */}
-    //           <div className="flex items-center justify-between">
-    //             <Text variant="uppercase">{t("filter")}</Text>
-    //             <Button onClick={toggleModal}>[x]</Button>
-    //           </div>
-    //           <div className="h-full overflow-y-scroll">
-    //             <div className="space-y-6">
-    //               <Text variant="uppercase" className="text-textInactiveColor">
-    //                 {t("sort by")}
-    //               </Text>
-    //               <Sort />
-    //             </div>
-    //             <Collection />
-    //             <Sizes topCategoryId={topCategory?.id} gender={gender} />
-    //           </div>
-    //         </div>
-    //         <div className="flex items-center justify-end gap-2 bg-bgColor">
-    //           <Button
-    //             className={cn("hidden w-1/2 uppercase", {
-    //               block: hasActiveFilters,
-    //             })}
-    //             size="lg"
-    //             variant="simpleReverseWithBorder"
-    //             onClick={handleClearAll}
-    //           >
-    //             {t("clear all")}
-    //           </Button>
-    //           <Button
-    //             className="w-1/2 uppercase"
-    //             size="lg"
-    //             variant="main"
-    //             onClick={() => toggleModal()}
-    //           >
-    //             {t("show")} {total > 0 ? `[${total}]` : ""}
-    //           </Button>
-    //         </div>
-    //       </div>
-    //       {/* </div> */}
-    //     </div>
-    //   )}
-    // </>
     <div className="z-50 w-full">
       {isModalOpen && (
         <div className="hidden lg:block">

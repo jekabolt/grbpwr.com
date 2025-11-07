@@ -39,6 +39,12 @@ export function InfinityScrollCatalog({
     [searchParams],
   );
 
+  // Check if any filters are active
+  const hasFilters = useMemo(
+    () => Object.keys(searchParamsObj).length > 0,
+    [searchParamsObj],
+  );
+
   const queryKey = useMemo(
     () => [
       "products",
@@ -79,12 +85,19 @@ export function InfinityScrollCatalog({
         );
         return totalFetched < (lastPage.total || 0) ? totalFetched : undefined;
       },
-      initialData: {
-        pages: [{ products: firstPageItems, total }],
-        pageParams: [0],
-      },
-      // Prevent refetch on mount when we have server-provided initialData
+      // Only use initialData when there are no filters (base route)
+      initialData: !hasFilters
+        ? {
+            pages: [{ products: firstPageItems, total }],
+            pageParams: [0],
+          }
+        : undefined,
+      // Cache behavior: Never refetch unless queryKey changes
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      staleTime: Infinity, // Data is fresh until queryKey changes
+      gcTime: Infinity, // Keep in cache forever
     });
 
   const items = data?.pages.flatMap((page) => page.products || []) || [];
@@ -93,10 +106,7 @@ export function InfinityScrollCatalog({
   // Track analytics when filters change
   useEffect(() => {
     if (items.length > 0 && items.length === firstPageItems.length) {
-      // Only track on initial load or when filters change (first page matches)
-      setTimeout(() => {
-        handleViewItemListEvent(firstPageItems);
-      }, 100);
+      handleViewItemListEvent(firstPageItems);
     }
   }, [queryKey, firstPageItems, items.length, handleViewItemListEvent]);
 

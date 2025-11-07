@@ -1,17 +1,29 @@
+"use client";
+
 import { HeaderProps } from "@/components/flexible-layout";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
-export function MobileProductInfoHeader({ left, link }: HeaderProps) {
+export function MobileProductInfoHeader({ left, link, onClick }: HeaderProps) {
   return (
     <header className="fixed inset-x-2.5 top-2.5 z-10 flex items-center justify-between">
-      <AnimatedButton
-        href={link}
-        className="w-1/3 py-2.5 pl-2.5 text-left"
-        animationArea="text"
-      >
-        {left}
-      </AnimatedButton>
+      {onClick ? (
+        <AnimatedButton
+          onClick={onClick}
+          className="w-1/3 py-2.5 pl-2.5 text-left"
+          animationArea="text"
+        >
+          {left}
+        </AnimatedButton>
+      ) : (
+        <AnimatedButton
+          href={link || "/catalog"}
+          className="w-1/3 py-2.5 pl-2.5 text-left"
+          animationArea="text"
+        >
+          {left}
+        </AnimatedButton>
+      )}
       <MobileNavCart isProductInfo />
     </header>
   );

@@ -31,10 +31,15 @@ export function TopCategories() {
 
         if (!categoryName) return null;
 
+        // Build href: if no gender, skip it; otherwise include it
+        const href = gender
+          ? `/catalog/${gender}/${categoryName.toLowerCase()}`
+          : `/catalog/${categoryName.toLowerCase()}`;
+
         return (
           <div className="flex items-center gap-2" key={category.id}>
             <CategoryButton
-              href={`/catalog/${gender}/${categoryName.toLowerCase()}`}
+              href={href}
               disabled={isCategoryDisabled(category, gender)}
             >
               {categoryName}

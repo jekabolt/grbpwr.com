@@ -4,12 +4,12 @@ import { LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import FlexibleLayout from "@/components/flexible-layout";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
+import { ProductPageLayout } from "./_components/product-page-layout";
 
 interface ProductPageProps {
   params: Promise<{
@@ -77,15 +77,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const productMedia = [...(product?.media || [])];
 
   return (
-    <FlexibleLayout
-      mobileHeaderType="flexible"
-      headerType="catalog"
-      displayFooter={false}
-      headerProps={{
-        left: `<`,
-        link: "/catalog",
-      }}
-    >
+    <ProductPageLayout>
       <div className="block lg:hidden">
         {product && <MobileProductInfo product={product} />}
       </div>
@@ -94,6 +86,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {product && <ProductInfo product={product} />}
         {product?.product && <LastViewedProducts product={product.product} />}
       </div>
-    </FlexibleLayout>
+    </ProductPageLayout>
   );
 }
