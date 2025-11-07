@@ -1,7 +1,7 @@
 import type { common_Product } from "@/api/proto-http/frontend";
 import { CATALOG_LIMIT } from "@/constants";
 
-import { Skeleton } from "@/components/ui/skeleton";
+import { ProductSkeleton } from "@/components/ui/product-skeleton";
 
 import { ProductItem } from "./product-item";
 
@@ -27,16 +27,6 @@ export default function ProductsGridSection({
         Array.from({
           length: Math.min(CATALOG_LIMIT, total - products.length),
         }).map((_, index) => <ProductSkeleton key={`skeleton-${index}`} />)}
-    </div>
-  );
-}
-
-function ProductSkeleton() {
-  return (
-    <div className="flex flex-col gap-2">
-      <Skeleton className="aspect-[3/4] w-full" />
-      <Skeleton className="h-3 w-2/3" />
-      <Skeleton className="h-3 w-1/3" />
     </div>
   );
 }
