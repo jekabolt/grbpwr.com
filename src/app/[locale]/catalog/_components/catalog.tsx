@@ -16,6 +16,7 @@ import { Categories } from "./categories/categories";
 import { EmptyCatalog } from "./empty-catalog";
 import { Filter } from "./filter";
 import { InfinityScrollCatalog } from "./infinity-scroll-catalog";
+import { MobileCatalog } from "./mobile-catalog";
 import { useRouteParams } from "./useRouteParams";
 
 export default function Catalog({
@@ -45,27 +46,35 @@ export default function Catalog({
   }
 
   return (
-    <div className="flex flex-col gap-6 px-7 pt-24">
-      <div className="sticky top-20 z-10 flex items-start justify-between text-bgColor mix-blend-exclusion">
-        <Categories />
-        <Button className="flex w-auto uppercase" onClick={toggleModal}>
-          {t("filter")} +
-        </Button>
+    <>
+      <div className="block lg:hidden">
+        <MobileCatalog
+          firstPageItems={firstPageItems || []}
+          total={total || 0}
+        />
       </div>
-      <Filter isModalOpen={isModalOpen} toggleModal={toggleModal} />
-      {total > 0 ? (
-        <div className="mix-blend-normal">
-          <Text className="w-2/3 lowercase">{categoryDescription}</Text>
-          <InfinityScrollCatalog
-            firstPageItems={firstPageItems}
-            total={total}
-          />
+      <div className="flex flex-col gap-6 px-7 pt-24">
+        <div className="sticky top-20 z-10 flex items-start justify-between text-bgColor mix-blend-exclusion">
+          <Categories />
+          <Button className="flex w-auto uppercase" onClick={toggleModal}>
+            {t("filter")} +
+          </Button>
         </div>
-      ) : (
-        <div className="h-screen w-full">
-          <EmptyCatalog />
-        </div>
-      )}
-    </div>
+        <Filter isModalOpen={isModalOpen} toggleModal={toggleModal} />
+        {total > 0 ? (
+          <div className="mix-blend-normal">
+            <Text className="w-2/3 lowercase">{categoryDescription}</Text>
+            <InfinityScrollCatalog
+              firstPageItems={firstPageItems}
+              total={total}
+            />
+          </div>
+        ) : (
+          <div className="h-screen w-full">
+            <EmptyCatalog />
+          </div>
+        )}
+      </div>
+    </>
   );
 }
