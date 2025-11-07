@@ -55,8 +55,12 @@
     @apply no-scroll-bar;
   }
 
+  html {
+    position: relative;
+    background-color: var(--background);
+  }
+
   body {
-    /* background-color: #000; */
     touch-action: manipulation;
     background-color: var(--background);
     ::selection {

@@ -2,103 +2,108 @@
 
 import { useEffect, useRef } from "react";
 
-export function HeroBackground({ imageUrl }: { imageUrl?: string }) {
-  const hasSet = useRef(false);
-  const styleElementRef = useRef<HTMLStyleElement | null>(null);
-  const originalHtmlBg = useRef<string | null>(null);
-  const originalBodyBg = useRef<string | null>(null);
+interface HeroBackgroundProps {
+  imageUrl?: string;
+}
 
-  useEffect(() => {
-    if (!imageUrl || hasSet.current) return;
-
-    // Store original background colors for cleanup
-    const htmlStyle = window.getComputedStyle(document.documentElement);
-    const bodyStyle = window.getComputedStyle(document.body);
-    originalHtmlBg.current = htmlStyle.backgroundColor;
-    originalBodyBg.current = bodyStyle.backgroundColor;
-
-    // Use Next.js image optimization endpoint to bypass CORS
-    const nextImageUrl = `/_next/image?url=${encodeURIComponent(imageUrl)}&w=1920&q=75`;
-
-    // Start loading immediately
+/**
+ * Extract average RGB color from top-left corner of an image.
+ * Applies a dark overlay blend to simulate CSS overlay effect.
+ */
+async function extractAverageColorWithOverlay(
+  imageUrl: string,
+  overlayAlpha = 0.4,
+  sampleSize = 50,
+): Promise<string | null> {
+  return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
-
     img.onload = () => {
       try {
-        // Create canvas to extract color from top corner
         const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        if (!ctx) return;
-
-        // Sample a small area from the top corner (e.g., 50x50px from top-left)
-        const sampleSize = 50;
         canvas.width = sampleSize;
         canvas.height = sampleSize;
 
-        // Draw the top corner portion of the image
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          reject(new Error("Could not get canvas context"));
+          return;
+        }
+
         ctx.drawImage(
           img,
           0,
           0,
           sampleSize,
-          sampleSize, // source: top-left corner
+          sampleSize,
           0,
           0,
           sampleSize,
-          sampleSize, // destination: full canvas
+          sampleSize,
         );
 
-        // Get the average color from the sampled area
-        const imageData = ctx.getImageData(0, 0, sampleSize, sampleSize);
-        const data = imageData.data;
+        const imageData = ctx.getImageData(0, 0, sampleSize, sampleSize).data;
 
         let r = 0,
           g = 0,
           b = 0;
         const pixelCount = sampleSize * sampleSize;
-
-        for (let i = 0; i < data.length; i += 4) {
-          r += data[i];
-          g += data[i + 1];
-          b += data[i + 2];
+        for (let i = 0; i < imageData.length; i += 4) {
+          r += imageData[i];
+          g += imageData[i + 1];
+          b += imageData[i + 2];
         }
 
-        r = Math.round(r / pixelCount);
-        g = Math.round(g / pixelCount);
-        b = Math.round(b / pixelCount);
+        r = Math.round((r / pixelCount) * (1 - overlayAlpha));
+        g = Math.round((g / pixelCount) * (1 - overlayAlpha));
+        b = Math.round((b / pixelCount) * (1 - overlayAlpha));
 
-        // Account for overlay rgba(0, 0, 0, 0.4) - blend with 40% black overlay
-        // Formula: result = base * (1 - overlay_alpha) + overlay * overlay_alpha
-        // Since overlay is black (0,0,0), this simplifies to: result = base * 0.6
-        const overlayAlpha = 0.4;
-        r = Math.round(r * (1 - overlayAlpha));
-        g = Math.round(g * (1 - overlayAlpha));
-        b = Math.round(b * (1 - overlayAlpha));
+        const toHex = (v: number) => v.toString(16).padStart(2, "0");
+        resolve(`#${toHex(r)}${toHex(g)}${toHex(b)}`);
+      } catch (error) {
+        reject(error);
+      }
+    };
 
-        // Convert to hex
-        const hexColor = `#${[r, g, b]
-          .map((x) => {
-            const hex = x.toString(16);
-            return hex.length === 1 ? "0" + hex : hex;
-          })
-          .join("")}`;
+    img.onerror = () =>
+      reject(new Error("Failed to load image for color extraction"));
+    img.src = imageUrl;
+  });
+}
 
-        // Create or update style element for pseudo-element
+export function HeroBackground({ imageUrl }: HeroBackgroundProps) {
+  const styleElementRef = useRef<HTMLStyleElement | null>(null);
+  const originalBodyBg = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!imageUrl) return;
+
+    const nextImageUrl = `/_next/image?url=${encodeURIComponent(imageUrl)}&w=1920&q=75`;
+
+    // Prevent duplicate style insertions
+    if (styleElementRef.current) return;
+
+    let isMounted = true;
+
+    // Save original body background for cleanup
+    originalBodyBg.current = window.getComputedStyle(
+      document.body,
+    ).backgroundColor;
+
+    extractAverageColorWithOverlay(nextImageUrl)
+      .then((hexColor) => {
+        if (!isMounted || !hexColor) return;
+
+        // Create and append style element if not already created
         if (!styleElementRef.current) {
-          styleElementRef.current = document.createElement("style");
-          document.head.appendChild(styleElementRef.current);
+          const styleEl = document.createElement("style");
+          styleElementRef.current = styleEl;
+          document.head.appendChild(styleEl);
         }
 
-        // Apply color to top 50% using pseudo-element and set html/body bg for Safari overscroll
         styleElementRef.current.textContent = `
-          html {
-            position: relative;
-            background-color: ${hexColor} !important;
-          }
           html::before {
-            content: '';
+            content: "";
             position: fixed;
             top: 0;
             left: 0;
@@ -106,7 +111,7 @@ export function HeroBackground({ imageUrl }: { imageUrl?: string }) {
             width: 100vw;
             height: 50vh;
             min-height: 50vh;
-            background-color: ${hexColor} !important;
+            background-color: ${hexColor};
             z-index: -9999;
             pointer-events: none;
             display: block;
@@ -119,33 +124,21 @@ export function HeroBackground({ imageUrl }: { imageUrl?: string }) {
           }
         `;
 
-        // Also set body background to extracted color for Safari overscroll bounce
+        // Set body background color for Safari overscroll bounce
         document.body.style.backgroundColor = hexColor;
+      })
+      .catch((error) =>
+        console.error("HeroBackground color extraction error:", error),
+      );
 
-        document.documentElement.style.setProperty("--hero-bg-color", hexColor);
-        hasSet.current = true;
-      } catch (error) {
-        console.error("Error extracting color from image:", error);
-      }
-    };
-
-    img.onerror = () => {
-      console.error("Failed to load image for color extraction");
-    };
-
-    img.src = nextImageUrl;
-
-    // Cleanup: remove style element when component unmounts (navigating away from main page)
     return () => {
+      isMounted = false;
+
       if (styleElementRef.current) {
         styleElementRef.current.remove();
         styleElementRef.current = null;
       }
-      document.documentElement.style.removeProperty("--hero-bg-color");
-      document.documentElement.style.backgroundColor =
-        originalHtmlBg.current || "";
       document.body.style.backgroundColor = originalBodyBg.current || "";
-      hasSet.current = false;
     };
   }, [imageUrl]);
 
