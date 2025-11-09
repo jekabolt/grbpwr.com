@@ -140,13 +140,27 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
 
       if (newOrderResponse.ok) {
         const paymentType = newOrderResponse.order?.payment?.paymentMethod;
-        const clientSecret = newOrderResponse.order?.payment?.clientSecret;
+        // Use clientSecret from validation response as primary source, fallback to submit response
+        const clientSecret =
+          response?.clientSecret ||
+          newOrderResponse.order?.payment?.clientSecret;
         const orderUuid = newOrderResponse.order?.orderUuid;
 
         switch (paymentType) {
           case "PAYMENT_METHOD_NAME_ENUM_CARD_TEST":
-            if (!clientSecret || !orderUuid) {
-              console.error("Missing clientSecret or orderUuid");
+            // Ensure clientSecret is a non-empty string
+            if (
+              !clientSecret ||
+              typeof clientSecret !== "string" ||
+              clientSecret.trim() === "" ||
+              !orderUuid
+            ) {
+              console.error("Missing clientSecret or orderUuid", {
+                clientSecret,
+                orderUuid,
+                fromValidation: response?.clientSecret,
+                fromSubmit: newOrderResponse.order?.payment?.clientSecret,
+              });
               setLoading(false);
               return;
             }
