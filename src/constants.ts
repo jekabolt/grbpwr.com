@@ -1,7 +1,7 @@
 import type {
   common_GenderEnum,
   common_OrderFactor,
-  common_SortFactor
+  common_SortFactor,
 } from "./api/proto-http/frontend";
 
 export const PRODUCTS_CACHE_TAG = "products";
@@ -38,10 +38,10 @@ export const GENDER_MAP: Record<string, common_GenderEnum> = {
 };
 
 export const GENDER_MAP_REVERSE: Record<common_GenderEnum, string> = {
-  "GENDER_ENUM_MALE": "men",
-  "GENDER_ENUM_FEMALE": "women",
-  "GENDER_ENUM_UNISEX": "unisex",
-  "GENDER_ENUM_UNKNOWN": "ukn",
+  GENDER_ENUM_MALE: "men",
+  GENDER_ENUM_FEMALE: "women",
+  GENDER_ENUM_UNISEX: "unisex",
+  GENDER_ENUM_UNKNOWN: "ukn",
 };
 
 export const ORDER_MAP: Record<string, common_OrderFactor> = {
@@ -50,8 +50,8 @@ export const ORDER_MAP: Record<string, common_OrderFactor> = {
 };
 
 export const SORT_MAP_URL: Record<string, common_SortFactor> = {
-  "created_at": "SORT_FACTOR_CREATED_AT",
-  "updated_at": "SORT_FACTOR_UPDATED_AT",
+  created_at: "SORT_FACTOR_CREATED_AT",
+  updated_at: "SORT_FACTOR_UPDATED_AT",
   name: "SORT_FACTOR_NAME",
   price: "SORT_FACTOR_PRICE",
 };
@@ -103,27 +103,27 @@ export type OrderFactorOption = {
   factor: common_OrderFactor;
   name: string;
   sale?: boolean;
-}
+};
 
 export type SortFactorConfig = {
   label?: string;
   orderFactors: OrderFactorOption[];
-}
+};
 
 export const SORT_MAP: Partial<Record<common_SortFactor, SortFactorConfig>> = {
   SORT_FACTOR_CREATED_AT: {
     orderFactors: [
-      { factor: 'ORDER_FACTOR_DESC', name: 'sort.latest arrivals' }
-    ]
+      { factor: "ORDER_FACTOR_DESC", name: "sort.latest arrivals" },
+    ],
   },
   SORT_FACTOR_PRICE: {
-    label: 'sort.price',
+    label: "sort.price",
     orderFactors: [
-      { factor: 'ORDER_FACTOR_ASC', name: 'sort.low to high' },
-      { factor: 'ORDER_FACTOR_DESC', name: 'sort.high to low' },
-      { factor: 'ORDER_FACTOR_ASC', name: 'sort.low to high', sale: true },
-      { factor: 'ORDER_FACTOR_DESC', name: 'sort.high to low', sale: true }
-    ]
+      { factor: "ORDER_FACTOR_ASC", name: "sort.low to high" },
+      { factor: "ORDER_FACTOR_DESC", name: "sort.high to low" },
+      { factor: "ORDER_FACTOR_ASC", name: "sort.low to high", sale: true },
+      { factor: "ORDER_FACTOR_DESC", name: "sort.high to low", sale: true },
+    ],
   },
 };
 
@@ -167,7 +167,7 @@ export const CARE_INSTRUCTIONS_MAP: Record<string, string> = {
   TDN: "Tumble Dry Normal",
   VGDC: "Very Gentle Dry Clean with Any Solvent Except Trichloroethylene",
   VGPWC: "Very Gentle Professional Wet Clean",
-  VGW: "Very Gentle Wash"
+  VGW: "Very Gentle Wash",
 };
 
 export const COMPOSITION_MAP: Record<string, string> = {
@@ -223,68 +223,68 @@ export const COMPOSITION_MAP: Record<string, string> = {
   WOL: "Wool",
   "WOL-SYN": "Wool-Synthetic Blend",
   YAK: "Yak Wool",
-  ZIB: "Zibeline"
+  ZIB: "Zibeline",
 };
 
 export const SHOES_SIZE_CONVERSION: Record<string, Record<string, string>> = {
-  "35": { "EU": "35", "US": "5", "UK": "2", "CM": "22.0" },
-  "35.5": { "EU": "35.5", "US": "5.5", "UK": "2.5", "CM": "22.5" },
-  "36": { "EU": "36", "US": "6", "UK": "3", "CM": "23.0" },
-  "36.5": { "EU": "36.5", "US": "6.5", "UK": "3.5", "CM": "23.5" },
-  "37": { "EU": "37", "US": "7", "UK": "4", "CM": "24.0" },
-  "37.5": { "EU": "37.5", "US": "7.5", "UK": "4.5", "CM": "24.5" },
-  "38": { "EU": "38", "US": "8", "UK": "5", "CM": "25.0" },
-  "38.5": { "EU": "38.5", "US": "8.5", "UK": "5.5", "CM": "25.5" },
-  "39": { "EU": "39", "US": "9", "UK": "6", "CM": "26.0" },
-  "39.5": { "EU": "39.5", "US": "9.5", "UK": "6.5", "CM": "26.5" },
-  "40": { "EU": "40", "US": "10", "UK": "7", "CM": "27.0" },
-  "40.5": { "EU": "40.5", "US": "10.5", "UK": "7.5", "CM": "27.5" },
-  "41": { "EU": "41", "US": "11", "UK": "8", "CM": "28.0" },
-  "41.5": { "EU": "41.5", "US": "11.5", "UK": "8.5", "CM": "28.5" },
-  "42": { "EU": "42", "US": "12", "UK": "9", "CM": "29.0" },
-  "42.5": { "EU": "42.5", "US": "12.5", "UK": "9.5", "CM": "29.5" },
-  "43": { "EU": "43", "US": "13", "UK": "10", "CM": "30.0" },
-  "43.5": { "EU": "43.5", "US": "13.5", "UK": "10.5", "CM": "30.5" },
-  "44": { "EU": "44", "US": "14", "UK": "11", "CM": "31.0" },
-  "44.5": { "EU": "44.5", "US": "14.5", "UK": "11.5", "CM": "31.5" },
-  "45": { "EU": "45", "US": "15", "UK": "12", "CM": "32.0" },
-  "45.5": { "EU": "45.5", "US": "15.5", "UK": "12.5", "CM": "32.5" },
-  "46": { "EU": "46", "US": "16", "UK": "13", "CM": "33.0" },
-  "46.5": { "EU": "46.5", "US": "16.5", "UK": "13.5", "CM": "33.5" },
-  "47": { "EU": "47", "US": "17", "UK": "14", "CM": "34.0" },
-  "47.5": { "EU": "47.5", "US": "17.5", "UK": "14.5", "CM": "34.5" },
-  "48": { "EU": "48", "US": "18", "UK": "15", "CM": "35.0" }
-}
+  "35": { EU: "35", US: "5", UK: "2", CM: "22.0" },
+  "35.5": { EU: "35.5", US: "5.5", UK: "2.5", CM: "22.5" },
+  "36": { EU: "36", US: "6", UK: "3", CM: "23.0" },
+  "36.5": { EU: "36.5", US: "6.5", UK: "3.5", CM: "23.5" },
+  "37": { EU: "37", US: "7", UK: "4", CM: "24.0" },
+  "37.5": { EU: "37.5", US: "7.5", UK: "4.5", CM: "24.5" },
+  "38": { EU: "38", US: "8", UK: "5", CM: "25.0" },
+  "38.5": { EU: "38.5", US: "8.5", UK: "5.5", CM: "25.5" },
+  "39": { EU: "39", US: "9", UK: "6", CM: "26.0" },
+  "39.5": { EU: "39.5", US: "9.5", UK: "6.5", CM: "26.5" },
+  "40": { EU: "40", US: "10", UK: "7", CM: "27.0" },
+  "40.5": { EU: "40.5", US: "10.5", UK: "7.5", CM: "27.5" },
+  "41": { EU: "41", US: "11", UK: "8", CM: "28.0" },
+  "41.5": { EU: "41.5", US: "11.5", UK: "8.5", CM: "28.5" },
+  "42": { EU: "42", US: "12", UK: "9", CM: "29.0" },
+  "42.5": { EU: "42.5", US: "12.5", UK: "9.5", CM: "29.5" },
+  "43": { EU: "43", US: "13", UK: "10", CM: "30.0" },
+  "43.5": { EU: "43.5", US: "13.5", UK: "10.5", CM: "30.5" },
+  "44": { EU: "44", US: "14", UK: "11", CM: "31.0" },
+  "44.5": { EU: "44.5", US: "14.5", UK: "11.5", CM: "31.5" },
+  "45": { EU: "45", US: "15", UK: "12", CM: "32.0" },
+  "45.5": { EU: "45.5", US: "15.5", UK: "12.5", CM: "32.5" },
+  "46": { EU: "46", US: "16", UK: "13", CM: "33.0" },
+  "46.5": { EU: "46.5", US: "16.5", UK: "13.5", CM: "33.5" },
+  "47": { EU: "47", US: "17", UK: "14", CM: "34.0" },
+  "47.5": { EU: "47.5", US: "17.5", UK: "14.5", CM: "34.5" },
+  "48": { EU: "48", US: "18", UK: "15", CM: "35.0" },
+};
 
 export const RING_SIZE_CONVERSION: Record<string, Record<string, string>> = {
-  "35": { "EU": "35", "US": "6", "UK": "2" },
-  "35.5": { "EU": "35.5", "US": "6.5", "UK": "2.5" },
-  "36": { "EU": "36", "US": "7", "UK": "3" },
-  "36.5": { "EU": "36.5", "US": "7.5", "UK": "3.5" },
-  "37": { "EU": "37", "US": "8", "UK": "4" },
-  "37.5": { "EU": "37.5", "US": "8.5", "UK": "4.5" },
-  "38": { "EU": "38", "US": "9", "UK": "5" },
-  "38.5": { "EU": "38.5", "US": "9.5", "UK": "5.5" },
-  "39": { "EU": "39", "US": "10", "UK": "6" },
-  "39.5": { "EU": "39.5", "US": "10.5", "UK": "6.5" },
-  "40": { "EU": "40", "US": "11", "UK": "7" },
-  "40.5": { "EU": "40.5", "US": "11.5", "UK": "7.5" },
-  "41": { "EU": "41", "US": "12", "UK": "8" },
-  "41.5": { "EU": "41.5", "US": "12.5", "UK": "8.5" },
-  "42": { "EU": "42", "US": "13", "UK": "9" },
-  "42.5": { "EU": "42.5", "US": "13.5", "UK": "9.5" },
-  "43": { "EU": "43", "US": "14", "UK": "10" },
-  "43.5": { "EU": "43.5", "US": "14.5", "UK": "10.5" },
-  "44": { "EU": "44", "US": "15", "UK": "11" },
-  "44.5": { "EU": "44.5", "US": "15.5", "UK": "11.5" },
-  "45": { "EU": "45", "US": "16", "UK": "12" },
-  "45.5": { "EU": "45.5", "US": "16.5", "UK": "12.5" },
-  "46": { "EU": "46", "US": "17", "UK": "13" },
-  "46.5": { "EU": "46.5", "US": "17.5", "UK": "13.5" },
-  "47": { "EU": "47", "US": "18", "UK": "14" },
-  "47.5": { "EU": "47.5", "US": "18.5", "UK": "14.5" },
-  "48": { "EU": "48", "US": "19", "UK": "15" }
-}
+  "35": { EU: "35", US: "6", UK: "2" },
+  "35.5": { EU: "35.5", US: "6.5", UK: "2.5" },
+  "36": { EU: "36", US: "7", UK: "3" },
+  "36.5": { EU: "36.5", US: "7.5", UK: "3.5" },
+  "37": { EU: "37", US: "8", UK: "4" },
+  "37.5": { EU: "37.5", US: "8.5", UK: "4.5" },
+  "38": { EU: "38", US: "9", UK: "5" },
+  "38.5": { EU: "38.5", US: "9.5", UK: "5.5" },
+  "39": { EU: "39", US: "10", UK: "6" },
+  "39.5": { EU: "39.5", US: "10.5", UK: "6.5" },
+  "40": { EU: "40", US: "11", UK: "7" },
+  "40.5": { EU: "40.5", US: "11.5", UK: "7.5" },
+  "41": { EU: "41", US: "12", UK: "8" },
+  "41.5": { EU: "41.5", US: "12.5", UK: "8.5" },
+  "42": { EU: "42", US: "13", UK: "9" },
+  "42.5": { EU: "42.5", US: "13.5", UK: "9.5" },
+  "43": { EU: "43", US: "14", UK: "10" },
+  "43.5": { EU: "43.5", US: "14.5", UK: "10.5" },
+  "44": { EU: "44", US: "15", UK: "11" },
+  "44.5": { EU: "44.5", US: "15.5", UK: "11.5" },
+  "45": { EU: "45", US: "16", UK: "12" },
+  "45.5": { EU: "45.5", US: "16.5", UK: "12.5" },
+  "46": { EU: "46", US: "17", UK: "13" },
+  "46.5": { EU: "46.5", US: "17.5", UK: "13.5" },
+  "47": { EU: "47", US: "18", UK: "14" },
+  "47.5": { EU: "47.5", US: "18.5", UK: "14.5" },
+  "48": { EU: "48", US: "19", UK: "15" },
+};
 
 export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
   waist: "Measured waist flat across garment",
@@ -301,7 +301,7 @@ export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
   sleeve: "Measured from center back neck, including shoulder to bottom of hem",
   height: "Full height of the garment.",
   width: "Width at the specified point",
-}
+};
 
 export const keyboardRestrictions = {
   nameFields: /[A-Za-z .'-]/,
@@ -312,66 +312,70 @@ export const keyboardRestrictions = {
 
 export const errorMessages = {
   firstName: {
-    min: 'first name must contain at least 1 character',
-    max: 'first name must contain at most 40 characters',
+    min: "first name must contain at least 1 character",
+    max: "first name must contain at most 40 characters",
     regex: {
       restriction: /^(?!.*  )(?=.*\p{L})[\p{L} .'-]+$/u,
-      message: 'must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed',
-    }
+      message:
+        "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed",
+    },
   },
   lastName: {
-    min: 'last name must contain at least 1 character',
-    max: 'last name must contain at most 40 characters',
+    min: "last name must contain at least 1 character",
+    max: "last name must contain at most 40 characters",
     regex: {
       restriction: /^(?!.*  )(?=.*\p{L})[\p{L} .'-]+$/u,
-      message: 'must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed',
-    }
+      message:
+        "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed",
+    },
   },
   phone: {
-    min: 'phone must contain at least 5 numbers',
-    max: 'phone must contain at most 15 numbers'
+    min: "phone must contain at least 5 numbers",
+    max: "phone must contain at most 15 numbers",
   },
   city: {
-    min: 'city must contain at least 2 characters',
+    min: "city must contain at least 2 characters",
     regex: {
       restriction: /^(?!.*  )(?=.*\p{L})[\p{L} .'-]+$/u,
-      message: 'must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed',
-    }
+      message:
+        "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed",
+    },
   },
   address: {
-    min: 'address must contain at least 3 characters',
-    max: 'address must contain at most 40 characters',
+    min: "address must contain at least 3 characters",
+    max: "address must contain at most 40 characters",
     regex: {
       restriction: /^(?!.*  )[\p{L}0-9 .'-]+$/u,
-      message: 'only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed',
-    }
+      message:
+        "only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed",
+    },
   },
   postalCode: {
-    min: 'postal code must contain at least 2 characters',
-    max: 'postal code must contain at most 12 characters',
+    min: "postal code must contain at least 2 characters",
+    max: "postal code must contain at most 12 characters",
     regex: {
       restriction: /^(?!.*  )[A-Za-z0-9 \- ]{2,12}$/,
-      message: 'postal code must contain only letters, numbers, spaces, or hyphens'
-    }
+      message:
+        "postal code must contain only letters, numbers, spaces, or hyphens",
+    },
   },
   country: {
-    min: 'country must contain at least 2 characters'
+    min: "country must contain at least 2 characters",
   },
   company: {
-    min: 'company must contain at least 1 character',
-    max: 'company must contain at most 40 characters',
+    min: "company must contain at least 1 character",
+    max: "company must contain at most 40 characters",
     regex: {
       restriction: /^(?!.*  )[\p{L}0-9 .'-]+$/u,
-      message: 'only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed',
-    }
+      message:
+        "only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed",
+    },
   },
   email: {
-    invalid: 'invalid email',
-    max: 'email must contain at most 40 characters'
-  }
+    invalid: "invalid email",
+    max: "email must contain at most 40 characters",
+  },
 };
-
-
 
 export type CountryOption = {
   name: string;
@@ -388,12 +392,14 @@ const country = (
   name: string,
   countryCode: string,
   phoneCode: string,
-  overrides: Partial<Omit<CountryOption, 'name' | 'countryCode' | 'phoneCode'>> = {}
+  overrides: Partial<
+    Omit<CountryOption, "name" | "countryCode" | "phoneCode">
+  > = {},
 ): CountryOption => ({
-  currency: '€',
-  currencyKey: 'EUR',
-  lng: 'en',
-  displayLng: 'english',
+  currency: "€",
+  currencyKey: "EUR",
+  lng: "en",
+  displayLng: "english",
   ...overrides,
   name,
   countryCode,
@@ -401,96 +407,107 @@ const country = (
 });
 
 export const COUNTRIES_BY_REGION = {
-  AFRICA: [
-    country('south africa', 'za', '27'),
-  ],
+  AFRICA: [country("south africa", "za", "27")],
   AMERICAS: [
-    country('canada', 'ca', '1', { currency: '$', currencyKey: 'USD' }),
-    country('chile', 'cl', '56', { currency: '$', currencyKey: 'USD' }),
-    country('mexico', 'mx', '52', { currency: '$', currencyKey: 'USD' }),
-    country('united states', 'us', '1', { currency: '$', currencyKey: 'USD' }),
+    country("canada", "ca", "1", { currency: "$", currencyKey: "USD" }),
+    country("chile", "cl", "56", { currency: "$", currencyKey: "USD" }),
+    country("mexico", "mx", "52", { currency: "$", currencyKey: "USD" }),
+    country("united states", "us", "1", { currency: "$", currencyKey: "USD" }),
   ],
-  'ASIA PACIFIC': [
-    country('australia', 'au', '61'),
-    country('hong kong sar', 'hk', '852'),
-    country('india', 'in', '91'),
-    country('japan', 'jp', '81', { currency: '¥', currencyKey: 'JPY' }),
-    country('日本', 'jp', '81', { currency: '¥', currencyKey: 'JPY', lng: 'ja', displayLng: '日本語' }),
-    country('macau sar', 'mo', '853'),
-    country('mainland china', 'cn', '86', { currency: '¥', currencyKey: 'CNY' }),
-    country('中国大陆', 'cn', '86', { currency: '¥', currencyKey: 'CNY', lng: 'zh', displayLng: '简体中文' }),
-    country('malaysia', 'my', '60'),
-    country('new zealand', 'nz', '64'),
-    country('singapore', 'sg', '65'),
-    country('south korea', 'kr', '82'),
-    country('대한민국', 'kr', '82', { lng: 'ko', displayLng: '한국인' }),
-    country('taiwan', 'tw', '886'),
-    country('台湾地区', 'tw', '886', { lng: 'zh', displayLng: '繁體中文' }),
-    country('thailand', 'th', '66'),
+  "ASIA PACIFIC": [
+    country("australia", "au", "61"),
+    country("hong kong sar", "hk", "852"),
+    country("india", "in", "91"),
+    country("japan", "jp", "81", { currency: "¥", currencyKey: "JPY" }),
+    country("日本", "jp", "81", {
+      currency: "¥",
+      currencyKey: "JPY",
+      lng: "ja",
+      displayLng: "日本語",
+    }),
+    country("macau sar", "mo", "853"),
+    country("mainland china", "cn", "86", {
+      currency: "¥",
+      currencyKey: "CNY",
+    }),
+    country("中国大陆", "cn", "86", {
+      currency: "¥",
+      currencyKey: "CNY",
+      lng: "zh",
+      displayLng: "简体中文",
+    }),
+    country("malaysia", "my", "60"),
+    country("new zealand", "nz", "64"),
+    country("singapore", "sg", "65"),
+    country("south korea", "kr", "82"),
+    country("대한민국", "kr", "82", { lng: "ko", displayLng: "한국인" }),
+    country("taiwan", "tw", "886"),
+    country("台湾地区", "tw", "886", { lng: "zh", displayLng: "繁體中文" }),
+    country("thailand", "th", "66"),
   ],
   EUROPE: [
-    country('aland islands', 'ax', '358'),
-    country('andorra', 'ad', '376'),
-    country('austria', 'at', '43'),
-    country('belgium', 'be', '32'),
-    country('bulgaria', 'bg', '359'),
-    country('croatia', 'hr', '385'),
-    country('cyprus', 'cy', '357'),
-    country('czech republic', 'cz', '420'),
-    country('denmark', 'dk', '45'),
-    country('estonia', 'ee', '372'),
-    country('faroe islands', 'fo', '298'),
-    country('finland', 'fi', '358'),
-    country('france', 'fr', '33'),
-    country('france', 'fr', '33', { lng: 'fr', displayLng: 'français' }),
-    country('germany', 'de', '49'),
-    country('deutschland', 'de', '49', { lng: 'de', displayLng: 'deutsch' }),
-    country('gibraltar', 'gi', '350'),
-    country('greece', 'gr', '30'),
-    country('greenland', 'gl', '299'),
-    country('guernsey', 'gg', '44'),
-    country('hungary', 'hu', '36'),
-    country('iceland', 'is', '354'),
-    country('italy', 'it', '39'),
-    country('italy', 'it', '39', { lng: 'it', displayLng: 'italiano' }),
-    country('jersey', 'je', '44'),
-    country('latvia', 'lv', '371'),
-    country('liechtenstein', 'li', '423'),
-    country('lithuania', 'lt', '370'),
-    country('luxembourg', 'lu', '352'),
-    country('malta', 'mt', '356'),
-    country('monaco', 'mc', '377'),
-    country('netherland', 'nl', '31'),
-    country('norway', 'no', '47'),
-    country('poland', 'pl', '48'),
-    country('portugal', 'pt', '351'),
-    country('romania', 'ro', '40'),
-    country('slovakia', 'sk', '421'),
-    country('slovenia', 'si', '386'),
-    country('spain', 'es', '34'),
-    country('sweeden', 'se', '46'),
-    country('switzerland', 'ch', '41'),
-    country('turkey', 'tr', '90'),
-    country('united kingdom', 'gb', '44'),
+    country("aland islands", "ax", "358"),
+    country("andorra", "ad", "376"),
+    country("austria", "at", "43"),
+    country("belgium", "be", "32"),
+    country("bulgaria", "bg", "359"),
+    country("croatia", "hr", "385"),
+    country("cyprus", "cy", "357"),
+    country("czech republic", "cz", "420"),
+    country("denmark", "dk", "45"),
+    country("estonia", "ee", "372"),
+    country("faroe islands", "fo", "298"),
+    country("finland", "fi", "358"),
+    country("france", "fr", "33"),
+    country("france", "fr", "33", { lng: "fr", displayLng: "français" }),
+    country("germany", "de", "49"),
+    country("deutschland", "de", "49", { lng: "de", displayLng: "deutsch" }),
+    country("gibraltar", "gi", "350"),
+    country("greece", "gr", "30"),
+    country("greenland", "gl", "299"),
+    country("guernsey", "gg", "44"),
+    country("hungary", "hu", "36"),
+    country("iceland", "is", "354"),
+    country("italy", "it", "39"),
+    country("italy", "it", "39", { lng: "it", displayLng: "italiano" }),
+    country("jersey", "je", "44"),
+    country("latvia", "lv", "371"),
+    country("liechtenstein", "li", "423"),
+    country("lithuania", "lt", "370"),
+    country("luxembourg", "lu", "352"),
+    country("malta", "mt", "356"),
+    country("monaco", "mc", "377"),
+    country("netherland", "nl", "31"),
+    country("norway", "no", "47"),
+    country("poland", "pl", "48"),
+    country("portugal", "pt", "351"),
+    country("romania", "ro", "40"),
+    country("slovakia", "sk", "421"),
+    country("slovenia", "si", "386"),
+    country("spain", "es", "34"),
+    country("sweeden", "se", "46"),
+    country("switzerland", "ch", "41"),
+    country("turkey", "tr", "90"),
+    country("united kingdom", "gb", "44"),
   ],
-  'MIDDLE EAST': [
-    country('bahrain', 'bh', '973'),
-    country('israel', 'il', '972'),
-    country('kuwait', 'kw', '965'),
-    country('qatar', 'qa', '974'),
-    country('saudi arabia', 'sa', '966'),
-    country('united arab emirates', 'ae', '971'),
+  "MIDDLE EAST": [
+    country("bahrain", "bh", "973"),
+    country("israel", "il", "972"),
+    country("kuwait", "kw", "965"),
+    country("qatar", "qa", "974"),
+    country("saudi arabia", "sa", "966"),
+    country("united arab emirates", "ae", "971"),
   ],
 } satisfies Record<string, CountryOption[]>;
 
 export const LANGUAGE_CODE_TO_ID: Record<string, number> = {
-  'en': 1,
-  'fr': 2,
-  'de': 3,
-  'it': 4,
-  'ja': 5,
-  'zh': 6,
-  'ko': 7,
+  en: 1,
+  fr: 2,
+  de: 3,
+  it: 4,
+  ja: 5,
+  zh: 6,
+  ko: 7,
 };
 
 export const LANGUAGE_ID_TO_LOCALE: Record<number, string> = {
@@ -514,4 +531,24 @@ export const errorMap: Record<string, string> = {
   format: "regex",
   "you must accept the terms & conditions": "required",
   "you must accept the terms and conditions": "required",
+};
+
+export const PLURIAL_SINGLE_CATEGORY_MAP: Record<string, string> = {
+  dresses: "dress",
+  jackets: "jacket",
+  coats: "coat",
+  vests: "vest",
+  shirts: "shirt",
+  tshirts: "tshirt",
+  sweaters_knits: "sweater",
+  tanks: "tank",
+  hoodies_sweatshirts: "sweatshirt",
+  crop: "crop",
+  skirts: "skirt",
+  bralettes: "bralette",
+  robes: "robe",
+  hats: "hat",
+  belts: "belt",
+  scarves: "scarf",
+  backpacks: "backpack",
 };
