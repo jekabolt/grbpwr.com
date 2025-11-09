@@ -1,4 +1,5 @@
 import { common_Category } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import {
   getSubCategoriesForTopCategory,
@@ -35,6 +36,7 @@ export function isCategoryDisabled(category: common_Category, gender: string) {
 }
 
 export function Categories() {
+  const t = useTranslations("categories");
   const { dictionary } = useDataContext();
   const { gender, categoryName, subCategoryName, topCategory } =
     useRouteParams();
@@ -59,7 +61,9 @@ export function Categories() {
 
   return (
     <div className="flex items-center gap-2">
-      <CategoryButton href={baseHref}>{topCategoryName}</CategoryButton>
+      <CategoryButton href={baseHref}>
+        {t((topCategoryName || categoryName || "").toLowerCase())}
+      </CategoryButton>
 
       {!!filteredSubCategories.length && <Text>/</Text>}
 
@@ -87,7 +91,7 @@ export function Categories() {
               }
               disabled={isDisabled}
             >
-              {subCatName}
+              {subCatName ? t(subCatName.toLowerCase()) : ""}
             </CategoryButton>
             {index < filteredSubCategories.length - 1 && <Text>/</Text>}
           </div>
