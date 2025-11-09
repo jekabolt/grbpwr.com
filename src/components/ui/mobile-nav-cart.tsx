@@ -38,7 +38,7 @@ export function MobileNavCart({
         {t("cart")} {itemsQuantity ? itemsQuantity : ""}
       </Button>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-textColor opacity-40" />
+        <DialogPrimitives.Overlay className="bg-black-500 fixed inset-0 z-20" />
         <DialogPrimitives.Content
           className={cn(
             "blackTheme fixed left-0 z-50 w-screen bg-bgColor p-2.5 text-textColor lg:hidden",
