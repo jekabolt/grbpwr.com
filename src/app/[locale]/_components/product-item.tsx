@@ -1,5 +1,9 @@
 import type { common_Product } from "@/api/proto-http/frontend";
-import { currencySymbols, EMPTY_PREORDER } from "@/constants";
+import {
+  currencySymbols,
+  EMPTY_PREORDER,
+  PLURIAL_SINGLE_CATEGORY_MAP,
+} from "@/constants";
 
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
@@ -37,7 +41,13 @@ export function ProductItem({
     dictionary?.categories || [],
     productBody?.subCategoryId || 0,
   );
-  const name = `${fit} ${subCategory || topCategory}`;
+  const categoryName = (subCategory || topCategory || "").toLowerCase();
+  const singularCategory =
+    PLURIAL_SINGLE_CATEGORY_MAP[categoryName] ||
+    subCategory ||
+    topCategory ||
+    "";
+  const name = `${fit} ${singularCategory}`;
 
   const priceWithSale =
     (parseFloat(productBody?.price?.value || "0") *
