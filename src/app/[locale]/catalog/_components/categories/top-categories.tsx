@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 import { getTopCategoryName } from "@/lib/categories-map";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
@@ -7,6 +9,7 @@ import { isCategoryDisabled } from "./categories";
 import { CategoryButton } from "./category-btn";
 
 export function TopCategories() {
+  const t = useTranslations("categories");
   const { gender } = useRouteParams();
   const { dictionary } = useDataContext();
   const categories = dictionary?.categories || [];
@@ -28,6 +31,7 @@ export function TopCategories() {
     <div className="flex items-center gap-2">
       {topCategories?.map((category, index) => {
         const categoryName = getTopCategoryName(categories, category.id || 0);
+        const originalCategoryName = category.name?.toLowerCase() || "";
 
         if (!categoryName) return null;
 
@@ -42,7 +46,7 @@ export function TopCategories() {
               href={href}
               disabled={isCategoryDisabled(category, gender)}
             >
-              {categoryName}
+              {originalCategoryName ? t(originalCategoryName) : ""}
             </CategoryButton>
             {index < topCategories.length - 1 && <Text>/</Text>}
           </div>

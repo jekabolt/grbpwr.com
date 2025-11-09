@@ -4,6 +4,7 @@ import {
   EMPTY_PREORDER,
   PLURIAL_SINGLE_CATEGORY_MAP,
 } from "@/constants";
+import { useTranslations } from "next-intl";
 
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
@@ -24,6 +25,7 @@ export function ProductItem({
   className: string;
   isInfoVisible?: boolean;
 }) {
+  const t = useTranslations("categories");
   const { dictionary } = useDataContext();
   const { selectedCurrency, convertPrice } = useCurrency((state) => state);
   const { handleSelectItemEvent } = useAnalytics();
@@ -47,7 +49,10 @@ export function ProductItem({
     subCategory ||
     topCategory ||
     "";
-  const name = `${fit} ${singularCategory}`;
+  const translatedCategory = singularCategory
+    ? t(singularCategory.toLowerCase())
+    : "";
+  const name = `${fit} ${translatedCategory}`;
 
   const priceWithSale =
     (parseFloat(productBody?.price?.value || "0") *

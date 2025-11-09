@@ -18,7 +18,7 @@ export const CATEGORIES_ORDER: Record<string, number> = {
   tops: 1,
   bottoms: 2,
   dresses: 3,
-  loungewear: 4,
+  loungewear_sleepwear: 4,
   accessories: 5,
   shoes: 6,
   bags: 7,
@@ -69,7 +69,7 @@ export const processCategories = (
     );
 
     const originalName = topCat.name?.toLowerCase() ?? "";
-    const displayName = CATEGORY_TITLE_MAP[originalName] || originalName;
+    const displayName = originalName;
 
     if (subCategories.length === 0) {
       return {
@@ -135,8 +135,8 @@ export function getTopCategoryName(
   }
 
   const categoryName = topCategory.name.toLowerCase();
-  if (categoryName && CATEGORY_TITLE_MAP[categoryName]) {
-    return CATEGORY_TITLE_MAP[categoryName];
+  if (categoryName) {
+    return categoryName;
   }
 
   return topCategory.name || null;

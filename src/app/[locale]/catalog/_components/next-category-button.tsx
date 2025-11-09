@@ -5,11 +5,7 @@ import { common_GenderEnum } from "@/api/proto-http/frontend";
 import { GENDER_MAP_REVERSE } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import {
-  CATEGORIES_ORDER,
-  CATEGORY_TITLE_MAP,
-  processCategories,
-} from "@/lib/categories-map";
+import { CATEGORIES_ORDER, processCategories } from "@/lib/categories-map";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 
@@ -21,6 +17,7 @@ export function NextCategoryButton() {
   const isMen = GENDER_MAP_REVERSE[gender as common_GenderEnum] === "men";
   const processedCategories = processCategories(dictionary?.categories || []);
   const t = useTranslations("catalog");
+  const tCategories = useTranslations("categories");
 
   const currentCategory = processedCategories.find(
     (cat) => cat.id === topCategory?.id,
@@ -57,10 +54,7 @@ export function NextCategoryButton() {
   return (
     <Button variant="main" size="lg" className="uppercase" asChild>
       <Link href={`/catalog/${gender}/${nextCategory?.name.toLowerCase()}`}>
-        {t("next")}:
-        {nextCategory?.name ||
-          CATEGORY_TITLE_MAP[nextCategory?.name || ""] ||
-          nextCategory?.name}
+        {t("next")}:{tCategories(nextCategory?.name || "")}
       </Link>
     </Button>
   );
