@@ -19,7 +19,10 @@ function filterSubCategories(
 ) {
   if (gender === "men") {
     return categories.filter(
-      (c) => !["swimwear_w", "bralettes"].includes(c.name?.toLowerCase() ?? ""),
+      (c) =>
+        !["swimwear_w", "bralettes", "heels"].includes(
+          c.name?.toLowerCase() ?? "",
+        ),
     );
   }
   return categories.filter((c) => c.name?.toLowerCase() !== "swimwear_m");
@@ -72,7 +75,7 @@ export function Categories() {
           (c) => c.id === subCategory.id,
         ) as common_Category;
 
-        const isDisabled = isCategoryDisabled(findSubCategory, gender);
+        // const isDisabled = isCategoryDisabled(findSubCategory, gender);
         const subCatName = getSubCategoryName(categories, subCategory.id);
 
         // Build subcategory href with or without gender
@@ -89,7 +92,7 @@ export function Categories() {
                   ? "underline"
                   : "default"
               }
-              disabled={isDisabled}
+              // disabled={isDisabled}
             >
               {subCatName ? t(subCatName.toLowerCase()) : ""}
             </CategoryButton>
