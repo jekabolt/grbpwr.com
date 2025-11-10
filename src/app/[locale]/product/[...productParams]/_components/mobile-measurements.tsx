@@ -30,7 +30,7 @@ export function MobileMeasurements({
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-10 bg-overlay" />
+        <DialogPrimitives.Overlay className="fixed inset-0 z-10 bg-bgColor" />
         <DialogPrimitives.Content className="fixed inset-0 z-40 flex h-full flex-col gap-4 overflow-y-auto bg-bgColor p-2.5">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
