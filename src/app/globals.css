@@ -58,15 +58,28 @@
   html {
     position: relative;
     background-color: #000000;
+    height: 100%;
   }
 
   body {
     touch-action: manipulation;
     background-color: #000000;
     min-height: 100vh;
-    min-height: -webkit-fill-available;
+    min-height: 100dvh;
+    position: relative;
     ::selection {
       @apply bg-acidColor text-bgColor;
+    }
+  }
+
+  /* iOS specific: Ensure safe areas have black background */
+  @supports (-webkit-touch-callout: none) {
+    html {
+      height: -webkit-fill-available;
+    }
+
+    body {
+      min-height: -webkit-fill-available;
     }
   }
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import Link from "next/link";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
@@ -27,14 +26,6 @@ export function MobileNavCart({
   const t = useTranslations("navigation");
   const tCart = useTranslations("cart");
 
-  useEffect(() => {
-    if (open) {
-      document.documentElement.style.setProperty("--bg-color", "#000000");
-    } else {
-      document.documentElement.style.setProperty("--bg-color", "#ffffff");
-    }
-  }, [open]);
-
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
       <Button
@@ -47,13 +38,12 @@ export function MobileNavCart({
         {t("cart")} {itemsQuantity ? itemsQuantity : ""}
       </Button>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-textColor" />
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 min-h-dvh min-h-screen bg-textColor" />
         <DialogPrimitives.Content
           className={cn(
-            "blackTheme fixed inset-0 z-50 w-screen bg-bgColor p-2.5 text-textColor lg:hidden",
+            "blackTheme fixed inset-0 z-50 min-h-dvh min-h-screen w-screen bg-bgColor p-2.5 text-textColor lg:hidden",
             {
-              "inset-y-0 py-5": itemsQuantity > 0,
-              "bottom-0": itemsQuantity === 0,
+              "py-5": itemsQuantity > 0,
             },
           )}
         >
