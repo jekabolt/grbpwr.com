@@ -56,6 +56,9 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html lang={locale}>
+      <head>
+        <meta name="theme-color" content="var(--bg-color)" />
+      </head>
       <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>
