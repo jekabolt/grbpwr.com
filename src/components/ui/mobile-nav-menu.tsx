@@ -10,6 +10,7 @@ import {
   DefaultMobileMenuDialog,
 } from "./mobile-menu-dialog";
 import { Text } from "./text";
+import { ThemeColorManager } from "./theme-color-manager";
 
 export function MobileNavMenu({
   isBigMenuEnabled,
@@ -19,10 +20,12 @@ export function MobileNavMenu({
   const [activeCategory, setActiveCategory] = useState<
     "men" | "women" | undefined
   >();
+  const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations("navigation");
 
   return (
-    <DialogPrimitives.Root>
+    <DialogPrimitives.Root open={isOpen} onOpenChange={setIsOpen}>
+      <ThemeColorManager color={isOpen ? "#ffffff" : "#ffffff"} />
       <DialogPrimitives.Trigger asChild>
         <Button size="lg" className="w-full text-left">
           {t("menu")}
@@ -30,7 +33,7 @@ export function MobileNavMenu({
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-40 bg-bgColor" />
-        <DialogPrimitives.Content className="fixed inset-0 z-50 bg-bgColor px-2.5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
+        <DialogPrimitives.Content className="fixed inset-0 z-50 bg-bgColor px-2.5 pb-4 pt-5">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>

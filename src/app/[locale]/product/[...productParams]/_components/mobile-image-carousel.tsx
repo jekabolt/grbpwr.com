@@ -72,13 +72,13 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
 
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-50 bg-black/50" />
-        <DialogPrimitives.Content className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-white pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]">
+        <DialogPrimitives.Content className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-white">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
 
           <DialogPrimitives.Close asChild>
-            <Button className="fixed right-4 top-[max(1rem,env(safe-area-inset-top))] z-50">[x]</Button>
+            <Button className="fixed right-4 top-4 z-50">[x]</Button>
           </DialogPrimitives.Close>
 
           <DialogPrimitives.Close asChild>
