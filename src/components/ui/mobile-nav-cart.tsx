@@ -11,7 +11,6 @@ import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotal
 
 import { Button } from "./button";
 import { Text } from "./text";
-import { ThemeColorManager } from "./theme-color-manager";
 
 export function MobileNavCart({
   isProductInfo = false,
@@ -29,7 +28,6 @@ export function MobileNavCart({
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
-      <ThemeColorManager color={open ? "#000000" : "#ffffff"} />
       <Button
         size={isProductInfo ? "default" : "lg"}
         onClick={openCart}
@@ -40,10 +38,10 @@ export function MobileNavCart({
         {t("cart")} {itemsQuantity ? itemsQuantity : ""}
       </Button>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-textColor" />
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-textColor" />
         <DialogPrimitives.Content
           className={cn(
-            "blackTheme fixed left-0 z-50 w-screen bg-bgColor p-2.5 text-textColor lg:hidden",
+            "blackTheme fixed left-0 z-50 h-screen w-screen bg-bgColor p-2.5 text-textColor lg:hidden",
             {
               "inset-y-0 py-5": itemsQuantity > 0,
               "bottom-0": itemsQuantity === 0,

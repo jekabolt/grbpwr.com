@@ -10,7 +10,6 @@ import {
   DefaultMobileMenuDialog,
 } from "./mobile-menu-dialog";
 import { Text } from "./text";
-import { ThemeColorManager } from "./theme-color-manager";
 
 export function MobileNavMenu({
   isBigMenuEnabled,
@@ -20,12 +19,10 @@ export function MobileNavMenu({
   const [activeCategory, setActiveCategory] = useState<
     "men" | "women" | undefined
   >();
-  const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations("navigation");
 
   return (
-    <DialogPrimitives.Root open={isOpen} onOpenChange={setIsOpen}>
-      <ThemeColorManager color={isOpen ? "#ffffff" : "#ffffff"} />
+    <DialogPrimitives.Root>
       <DialogPrimitives.Trigger asChild>
         <Button size="lg" className="w-full text-left">
           {t("menu")}
