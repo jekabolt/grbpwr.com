@@ -1,4 +1,5 @@
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
+import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
@@ -7,9 +8,12 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 export function PriceSummary({ order, form }: PriceSummaryProps) {
-  const { dictionary } = useDataContext();
-  const { convertPrice } = useCurrency((state) => state);
   const t = useTranslations("checkout");
+
+  const { dictionary } = useDataContext();
+  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+
+  const currencySymbol = currencySymbols[selectedCurrency];
 
   if (!order) return null;
 
@@ -25,15 +29,16 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
       <div className="space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t("subtotal")}:</Text>
-          <Text>{convertPrice(order?.subtotal?.value || "")}</Text>
+          <Text>
+            {currencySymbol} {convertPrice(order?.subtotal?.value || "")}
+          </Text>
         </div>
         {(selectedShipmentCarrierPrice || promoFreeShipping) && (
           <div className="flex justify-between">
-            <Text variant={"uppercase"}>{t("shipping summary")}:</Text>
+            <Text variant="uppercase">{t("shipping summary")}:</Text>
             <Text>
-              {promoFreeShipping
-                ? t("free by promo")
-                : selectedShipmentCarrierPrice}
+              {promoFreeShipping ? t("free by promo") : currencySymbol}{" "}
+              {selectedShipmentCarrierPrice}
             </Text>
           </div>
         )}

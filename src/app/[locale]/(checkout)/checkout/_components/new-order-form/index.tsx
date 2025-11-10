@@ -11,6 +11,7 @@ import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { serviceClient } from "@/lib/api";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
@@ -94,6 +95,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { clearFormData } = useOrderPersistence(form);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
+
+  const email = form.watch("email");
+  const emailError = form.formState.errors.email;
+  const hasValidEmail = !!email && !emailError;
 
   useEffect(() => {
     if (order?.totalSale?.value) {
@@ -252,12 +257,16 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
             <Button
               variant="main"
               size="lg"
-              className="w-full uppercase"
+              className={cn("uppercase", {
+                "hidden w-full lg:block": !hasValidEmail,
+                "fixed inset-x-2.5 bottom-2 z-30 lg:static lg:w-full":
+                  hasValidEmail,
+              })}
               disabled={!form.formState.isValid || loading}
               loading={loading}
               loadingType="order-processing"
             >
-              {t("pay")}
+              {t("place")}
             </Button>
           </div>
         </div>
