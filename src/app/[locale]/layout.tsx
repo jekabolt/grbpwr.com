@@ -57,7 +57,17 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={locale}>
       <head>
-        <meta name="theme-color" content="var(--bg-color)" />
+        <meta name="theme-color" content="#000000" />
+        <meta
+          name="theme-color"
+          media="(prefers-color-scheme: dark)"
+          content="#000000"
+        />
+        <meta
+          name="theme-color"
+          media="(prefers-color-scheme: light)"
+          content="#ffffff"
+        />
       </head>
       <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>

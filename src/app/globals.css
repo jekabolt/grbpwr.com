@@ -62,7 +62,7 @@
 
   body {
     touch-action: manipulation;
-    background-color: var(--background);
+    background-color: #000000;
     ::selection {
       @apply bg-acidColor text-bgColor;
     }
