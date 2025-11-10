@@ -51,7 +51,7 @@ export function MobileFilter() {
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay opacity-40" />
-        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 bg-bgColor p-2.5 text-textColor lg:hidden">
+        <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 bg-bgColor px-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] pt-[max(0.625rem,env(safe-area-inset-top))] text-textColor lg:hidden">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>

@@ -43,8 +43,9 @@ export function MobileNavCart({
           className={cn(
             "blackTheme fixed left-0 z-50 w-screen bg-bgColor p-2.5 text-textColor lg:hidden",
             {
-              "inset-y-0 py-5": itemsQuantity > 0,
-              "bottom-0": itemsQuantity === 0,
+              "inset-y-0 pb-5 pt-[max(1.25rem,env(safe-area-inset-top))]":
+                itemsQuantity > 0,
+              "bottom-0 pb-[env(safe-area-inset-bottom)]": itemsQuantity === 0,
             },
           )}
         >
