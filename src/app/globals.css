@@ -57,12 +57,14 @@
 
   html {
     position: relative;
-    background-color: var(--background);
+    background-color: #000000;
   }
 
   body {
     touch-action: manipulation;
     background-color: #000000;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     ::selection {
       @apply bg-acidColor text-bgColor;
     }

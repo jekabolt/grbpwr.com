@@ -41,6 +41,7 @@ export const viewport = {
   initialScale: 1.0,
   maximumScale: 1.0,
   userScalable: false,
+  viewportFit: "cover",
 };
 
 interface Props {
@@ -58,16 +59,6 @@ export default async function RootLayout({ children, params }: Props) {
     <html lang={locale}>
       <head>
         <meta name="theme-color" content="#000000" />
-        <meta
-          name="theme-color"
-          media="(prefers-color-scheme: dark)"
-          content="#000000"
-        />
-        <meta
-          name="theme-color"
-          media="(prefers-color-scheme: light)"
-          content="#ffffff"
-        />
       </head>
       <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
