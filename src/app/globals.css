@@ -34,6 +34,7 @@
     /* components-specific colors */
     --button-text: #fff;
     --visited-link: #501089;
+    --overlay: rgba(0, 0, 0, 0.4);
 
     /* TEXT */
     --text-giant: 200px;
@@ -57,14 +58,14 @@
 
   html {
     position: relative;
-    background-color: #000000;
+    background-color: var(--background);
     height: 100%;
     overflow-x: hidden;
   }
 
   body {
     touch-action: manipulation;
-    background-color: #000000;
+    background-color: var(--background);
     min-height: 100vh;
     min-height: 100dvh;
     position: relative;
@@ -79,7 +80,7 @@
     content: "";
     position: fixed;
     inset: 0;
-    background-color: #000000;
+    background-color: var(--background);
     z-index: -9999;
     pointer-events: none;
   }
