@@ -38,19 +38,24 @@ export function MobileNavCart({
         {t("cart")} {itemsQuantity ? itemsQuantity : ""}
       </Button>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 min-h-dvh min-h-screen bg-overlay" />
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 min-h-dvh bg-overlay" />
         <DialogPrimitives.Content
-          className={cn(
-            "blackTheme fixed inset-0 z-50 w-screen bg-bgColor p-2.5 text-textColor lg:hidden",
-            {
-              "py-5": itemsQuantity > 0,
-            },
-          )}
+          className="blackTheme fixed inset-0 z-50 flex min-h-dvh w-screen flex-col bg-bgColor text-textColor lg:hidden"
+          style={{
+            paddingTop: `max(0.625rem, env(safe-area-inset-top))`,
+            paddingBottom: `max(0.625rem, env(safe-area-inset-bottom))`,
+            paddingLeft: `max(0.625rem, env(safe-area-inset-left))`,
+            paddingRight: `max(0.625rem, env(safe-area-inset-right))`,
+          }}
         >
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
-          <div className="flex h-full flex-col justify-between">
+          <div
+            className={cn("flex h-full flex-col justify-between", {
+              "pt-4": itemsQuantity > 0,
+            })}
+          >
             <div
               className={cn(
                 "relative mb-10 flex items-center justify-between",
