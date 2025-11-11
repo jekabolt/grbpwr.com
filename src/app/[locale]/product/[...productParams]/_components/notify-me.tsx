@@ -92,7 +92,7 @@ export function NotifyMe({
               </DialogPrimitives.Close>
             </div>
 
-            <Text>
+            <Text className="leading-none">
               select your size and we will email you when this product is back
               in stock.
             </Text>
@@ -100,7 +100,7 @@ export function NotifyMe({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(handleSubmit)}
-                className="flex h-full flex-col justify-between"
+                className="mt-4 flex h-full flex-col justify-between"
               >
                 <div className="space-y-10">
                   <div className="space-y-4">
