@@ -23,7 +23,7 @@ export default function FlexibleLayout({
   return (
     <div
       className={cn("bg-bgColor", {
-        blackTheme: theme === "dark",
+        whiteTheme: theme === "light",
       })}
     >
       <div className={cn("relative min-h-screen", className)}>

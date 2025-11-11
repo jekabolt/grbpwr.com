@@ -5,10 +5,11 @@
 @layer base {
   :root {
     /* COLORS */
-    --text: #000;
+    --text: #fff;
     --inactive: #cccccc;
-    --background: #fff;
-    --highlight: #311eee;
+    --inactive-alpha: rgba(180, 180, 180, 0.2);
+    --background: #000;
+    --highlight: #535353;
     --error: #ff0000;
     --text-select: #311eee;
     --inverted: #cde100;
@@ -29,6 +30,24 @@
     --inactive-alpha: rgba(180, 180, 180, 0.2);
     --background: #000;
     --highlight: #535353;
+    --error: #ff0000;
+    --text-select: #311eee;
+    /* components-specific colors */
+    --button-text: #fff;
+    --visited-link: #501089;
+    --overlay: rgba(0, 0, 0, 0.4);
+
+    /* TEXT */
+    --text-giant: 200px;
+    --text-giant-small: 110px;
+    --text-base: 12px;
+  }
+
+  .whiteTheme {
+    --text: #000;
+    --inactive: #cccccc;
+    --background: #fff;
+    --highlight: #311eee;
     --error: #ff0000;
     --text-select: #311eee;
     /* components-specific colors */
