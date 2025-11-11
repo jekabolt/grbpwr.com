@@ -10,6 +10,7 @@ import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartPro
 import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
 
 import { Button } from "./button";
+import { DialogBackgroundManager } from "./dialog-background-manager";
 import { Text } from "./text";
 
 export function MobileNavCart({
@@ -27,72 +28,77 @@ export function MobileNavCart({
   const tCart = useTranslations("cart");
 
   return (
-    <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
-      <Button
-        size={isProductInfo ? "default" : "lg"}
-        onClick={openCart}
-        className={cn("w-full bg-transparent text-right", {
-          "w-1/3 py-2.5 pr-2.5": isProductInfo,
-        })}
-      >
-        {t("cart")} {itemsQuantity ? itemsQuantity : ""}
-      </Button>
-      <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 min-h-dvh bg-overlay" />
-        <DialogPrimitives.Content
-          className="blackTheme fixed inset-0 z-50 flex min-h-dvh w-screen flex-col bg-bgColor text-textColor lg:hidden"
-          style={{
-            paddingTop: `max(0.625rem, env(safe-area-inset-top))`,
-            paddingBottom: `max(0.625rem, env(safe-area-inset-bottom))`,
-            paddingLeft: `max(0.625rem, env(safe-area-inset-left))`,
-            paddingRight: `max(0.625rem, env(safe-area-inset-right))`,
-          }}
+    <>
+      <DialogBackgroundManager isOpen={open} backgroundColor="#000000" />
+      <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
+        <Button
+          size={isProductInfo ? "default" : "lg"}
+          onClick={openCart}
+          className={cn("w-full bg-transparent text-right", {
+            "w-1/3 py-2.5 pr-2.5": isProductInfo,
+          })}
         >
-          <DialogPrimitives.Title className="sr-only">
-            grbpwr mobile menu
-          </DialogPrimitives.Title>
-          <div
-            className={cn("flex h-full flex-col justify-between", {
-              "pt-4": itemsQuantity > 0,
-            })}
+          {t("cart")} {itemsQuantity ? itemsQuantity : ""}
+        </Button>
+        <DialogPrimitives.Portal>
+          <DialogPrimitives.Overlay className="fixed inset-0 z-20 min-h-dvh bg-overlay" />
+          <DialogPrimitives.Content
+            className="blackTheme fixed inset-0 z-50 flex min-h-dvh w-screen flex-col bg-bgColor text-textColor lg:hidden"
+            style={{
+              paddingTop: `max(0.625rem, env(safe-area-inset-top))`,
+              paddingBottom: `max(0.625rem, env(safe-area-inset-bottom))`,
+              paddingLeft: `max(0.625rem, env(safe-area-inset-left))`,
+              paddingRight: `max(0.625rem, env(safe-area-inset-right))`,
+            }}
           >
+            <DialogPrimitives.Title className="sr-only">
+              grbpwr mobile menu
+            </DialogPrimitives.Title>
             <div
-              className={cn(
-                "relative mb-10 flex items-center justify-between",
-                {
-                  "mb-10": itemsQuantity === 0,
-                },
-              )}
+              className={cn("flex h-full flex-col justify-between", {
+                "pt-4": itemsQuantity > 0,
+              })}
             >
-              <Text variant="uppercase">{`${tCart("shopping cart")} ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
-              <DialogPrimitives.Close asChild>
-                <Button onClick={closeCart}>[x]</Button>
-              </DialogPrimitives.Close>
-            </div>
+              <div
+                className={cn(
+                  "relative mb-10 flex items-center justify-between",
+                  {
+                    "mb-10": itemsQuantity === 0,
+                  },
+                )}
+              >
+                <Text variant="uppercase">{`${tCart("shopping cart")} ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
+                <DialogPrimitives.Close asChild>
+                  <Button onClick={closeCart}>[x]</Button>
+                </DialogPrimitives.Close>
+              </div>
 
-            {itemsQuantity > 0 ? (
-              <>
-                <div className="no-scroll-bar h-full overflow-y-scroll">
-                  <CartProductsList />
-                </div>
-                <div className="mt-auto space-y-6">
-                  <CartTotalPrice />
-                  <Button
-                    asChild
-                    variant="main"
-                    size="lg"
-                    className="w-full uppercase"
-                  >
-                    <Link href="/checkout">{tCart("proceed to checkout")}</Link>
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <Text variant="uppercase">{tCart("empty")}</Text>
-            )}
-          </div>
-        </DialogPrimitives.Content>
-      </DialogPrimitives.Portal>
-    </DialogPrimitives.Root>
+              {itemsQuantity > 0 ? (
+                <>
+                  <div className="no-scroll-bar h-full overflow-y-scroll">
+                    <CartProductsList />
+                  </div>
+                  <div className="mt-auto space-y-6">
+                    <CartTotalPrice />
+                    <Button
+                      asChild
+                      variant="main"
+                      size="lg"
+                      className="w-full uppercase"
+                    >
+                      <Link href="/checkout">
+                        {tCart("proceed to checkout")}
+                      </Link>
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <Text variant="uppercase">{tCart("empty")}</Text>
+              )}
+            </div>
+          </DialogPrimitives.Content>
+        </DialogPrimitives.Portal>
+      </DialogPrimitives.Root>
+    </>
   );
 }

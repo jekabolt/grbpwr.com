@@ -5,17 +5,17 @@ import { useEffect } from "react";
 export function ThemeColorManager() {
   useEffect(() => {
     const updateThemeColor = () => {
-      // Check if body or any parent has whiteTheme class
-      const hasWhiteTheme =
-        document.body.classList.contains("whiteTheme") ||
-        document.documentElement.classList.contains("whiteTheme") ||
-        document.querySelector(".whiteTheme") !== null;
+      // Check if body or any parent has blackTheme class
+      const hasBlackTheme =
+        document.body.classList.contains("blackTheme") ||
+        document.documentElement.classList.contains("blackTheme") ||
+        document.querySelector(".blackTheme") !== null;
 
       // Get computed CSS variable value
-      const backgroundColor = hasWhiteTheme ? "#ffffff" : "#000000";
-      const appleStatusBarStyle = hasWhiteTheme
-        ? "default"
-        : "black-translucent";
+      const backgroundColor = hasBlackTheme ? "#000000" : "#ffffff";
+      const appleStatusBarStyle = hasBlackTheme
+        ? "black-translucent"
+        : "default";
 
       // Update meta theme-color
       let metaThemeColor = document.querySelector('meta[name="theme-color"]');
