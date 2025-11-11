@@ -13,6 +13,7 @@ import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { DialogBackgroundManager } from "@/components/ui/dialog-background-manager";
 import RadioGroup from "@/components/ui/radio-group";
 import { Searchbar } from "@/components/ui/searchbar";
 import { Text } from "@/components/ui/text";
@@ -49,16 +50,18 @@ export function MobileCountriesPopup() {
   }
 
   return (
-    <DialogPrimitives.Root open={open} onOpenChange={closeCurrencyPopup}>
-      <Button
-        onClick={openCurrencyPopup}
-        className="flex w-full items-center justify-between uppercase lg:hidden"
-      >
-        <Text>{f("country")}:</Text>
-        <Text>
-          {currentCountry.name} / {currencySymbols[selectedCurrency]}
-        </Text>
-      </Button>
+    <>
+      <DialogBackgroundManager isOpen={open} backgroundColor="#000000" />
+      <DialogPrimitives.Root open={open} onOpenChange={closeCurrencyPopup}>
+        <Button
+          onClick={openCurrencyPopup}
+          className="flex w-full items-center justify-between uppercase lg:hidden"
+        >
+          <Text>{f("country")}:</Text>
+          <Text>
+            {currentCountry.name} / {currencySymbols[selectedCurrency]}
+          </Text>
+        </Button>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay opacity-40" />
         <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 h-dvh bg-bgColor p-2.5 text-textColor lg:hidden">
@@ -171,5 +174,6 @@ export function MobileCountriesPopup() {
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
+    </>
   );
 }

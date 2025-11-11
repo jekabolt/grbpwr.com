@@ -59,40 +59,13 @@
   html {
     position: relative;
     background-color: var(--background);
-    height: 100%;
-    overflow-x: hidden;
   }
 
   body {
     touch-action: manipulation;
     background-color: var(--background);
-    min-height: 100vh;
-    min-height: 100dvh;
-    position: relative;
-    overflow-x: hidden;
     ::selection {
       @apply bg-acidColor text-bgColor;
-    }
-  }
-
-  /* Force Safari to recognize black background for bottom toolbar */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-color: var(--background);
-    z-index: -9999;
-    pointer-events: none;
-  }
-
-  /* iOS specific: Ensure safe areas have black background */
-  @supports (-webkit-touch-callout: none) {
-    html {
-      height: -webkit-fill-available;
-    }
-
-    body {
-      min-height: -webkit-fill-available;
     }
   }
 }
