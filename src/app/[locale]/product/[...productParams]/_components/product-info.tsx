@@ -79,6 +79,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
             handlers={{
               activeSizeId,
               isLoading,
+              outOfStock,
               sizePickerRef,
               handleSizeSelect,
               handleAddToCart,

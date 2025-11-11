@@ -6,9 +6,11 @@ import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
 import { LoadingButton } from "../loading-button";
+import { NotifyMe } from "../notify-me";
 import { useHandlers } from "../utils/useHandlers";
 import { useProductBasics } from "../utils/useProductBasics";
 import { useProductPricing } from "../utils/useProductPricing";
+import { useProductSizes } from "../utils/useProductSizes";
 import { MobileSelectSize } from "./mobile-select-size";
 
 type Handlers = {
@@ -17,6 +19,7 @@ type Handlers = {
   isLoading?: boolean;
   isMobileSizeDialogOpen?: boolean;
   sizePickerRef?: React.RefObject<HTMLDivElement | null>;
+  outOfStock?: Record<number, boolean>;
   handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
   handleAddToCart?: () => Promise<boolean>;
   handleDialogClose?: () => void;
@@ -31,6 +34,7 @@ export function AddToCartBtn({
   handlers?: Handlers;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
   const internalHandlers = useHandlers({
     id: product.product?.id || 0,
     product,
@@ -44,6 +48,7 @@ export function AddToCartBtn({
     openItem,
     isLoading,
     sizePickerRef,
+    outOfStock,
     handleSizeSelect,
     handleAddToCart,
     isMobileSizeDialogOpen,
@@ -53,11 +58,19 @@ export function AddToCartBtn({
   const { preorder, preorderRaw } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
+  const { sizeNames } = useProductSizes({ product });
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
   const isNoSizeSelected = !activeSizeId && isHovered;
+  const isSelectedSizeOutOfStock = activeSizeId && outOfStock?.[activeSizeId];
   const t = useTranslations("product");
 
   const handleAddToCartClick = () => {
+    // If size is out of stock, open notify me dialog
+    if (isSelectedSizeOutOfStock) {
+      setIsNotifyMeOpen(true);
+      return Promise.resolve(false);
+    }
+
     if (!activeSizeId && sizePickerRef?.current) {
       const scrollableContainer = sizePickerRef.current.closest(
         ".overflow-y-scroll",
@@ -78,6 +91,14 @@ export function AddToCartBtn({
 
   return (
     <>
+      <NotifyMe
+        id={product.product?.id || 0}
+        open={isNotifyMeOpen}
+        onOpenChange={setIsNotifyMeOpen}
+        sizeNames={sizeNames}
+        outOfStock={outOfStock}
+        activeSizeId={activeSizeId}
+      />
       <MobileSelectSize
         product={product}
         activeSizeId={activeSizeId}
@@ -109,6 +130,10 @@ export function AddToCartBtn({
             {isNoSizeSelected ? (
               <Text className="w-full text-center" variant="inherit">
                 {t("select size")}
+              </Text>
+            ) : isSelectedSizeOutOfStock ? (
+              <Text className="w-full text-center uppercase" variant="inherit">
+                notify me
               </Text>
             ) : (
               <>

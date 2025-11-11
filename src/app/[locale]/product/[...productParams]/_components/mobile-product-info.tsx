@@ -113,6 +113,7 @@ export function MobileProductInfo({
         handlers={{
           activeSizeId,
           isLoading,
+          outOfStock,
           isMobileSizeDialogOpen,
           handleDialogClose,
           handleSizeSelect,

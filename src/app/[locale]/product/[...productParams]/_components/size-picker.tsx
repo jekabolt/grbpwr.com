@@ -45,18 +45,19 @@ export function SizePicker({
       >
         {sizeNames?.map(({ name, id }) => (
           <Button
-            className={cn("border-b border-transparent leading-none", {
-              "border-textColor": activeSizeId === id,
-              "hover:border-textColor": !outOfStock?.[id],
-              "w-full": view === "line",
-              "w-auto": view === "line" && isOneSize,
-            })}
+            className={cn(
+              "border-b border-transparent leading-none hover:border-textColor",
+              {
+                "border-textColor": activeSizeId === id,
+                "w-full": view === "line",
+                "w-auto": view === "line" && isOneSize,
+              },
+            )}
             key={id}
             onClick={() => handleSizeSelect(id)}
             onPointerDown={() =>
               handleAnalytics(name, outOfStock?.[id] || false)
             }
-            disabled={outOfStock?.[id]}
           >
             {sizeQuantity ? (
               <HoverText
