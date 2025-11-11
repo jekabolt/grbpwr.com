@@ -12,6 +12,7 @@ import {
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
+import { ThemeColorManager } from "@/components/ui/theme-color-manager";
 import { ToastProvider } from "@/components/ui/toaster";
 
 import "../globals.css";
@@ -41,6 +42,7 @@ export const viewport = {
   initialScale: 1.0,
   maximumScale: 1.0,
   userScalable: false,
+  viewportFit: "cover",
 };
 
 interface Props {
@@ -56,8 +58,12 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html lang={locale}>
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+      </head>
       <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
+        <ThemeColorManager />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ToastProvider>
             <div className="relative min-h-screen">{children}</div>
