@@ -19,7 +19,10 @@ function filterSubCategories(
 ) {
   if (gender === "men") {
     return categories.filter(
-      (c) => !["swimwear_w", "bralettes"].includes(c.name?.toLowerCase() ?? ""),
+      (c) =>
+        !["swimwear_w", "bralettes", "heels"].includes(
+          c.name?.toLowerCase() ?? "",
+        ),
     );
   }
   return categories.filter((c) => c.name?.toLowerCase() !== "swimwear_m");
