@@ -43,33 +43,40 @@ export function SizePicker({
           className,
         )}
       >
-        {sizeNames?.map(({ name, id }) => (
-          <Button
-            className={cn(
-              "border-b border-transparent leading-none hover:border-textColor",
-              {
-                "border-textColor": activeSizeId === id,
+        {sizeNames?.map(({ name, id }) => {
+          const isOutOfStock = outOfStock?.[id];
+          const isActive = activeSizeId === id;
+
+          return (
+            <Button
+              className={cn("border-b border-transparent leading-none", {
+                "border-textInactiveColor text-textInactiveColor":
+                  isActive && isOutOfStock,
+                "border-textColor": isActive && !isOutOfStock,
+                "text-textInactiveColor hover:border-textInactiveColor":
+                  !isActive && isOutOfStock,
+                "hover:border-textColor": !isActive && !isOutOfStock,
                 "w-full": view === "line",
                 "w-auto": view === "line" && isOneSize,
-              },
-            )}
-            key={id}
-            onClick={() => handleSizeSelect(id)}
-            onPointerDown={() =>
-              handleAnalytics(name, outOfStock?.[id] || false)
-            }
-          >
-            {sizeQuantity ? (
-              <HoverText
-                defaultText={isOneSize ? "one size" : name}
-                hoveredText={`${sizeQuantity?.[id]} left`}
-                hoverTextCondition={sizeQuantity[id] > 5}
-              />
-            ) : (
-              <Text variant="uppercase">{name}</Text>
-            )}
-          </Button>
-        ))}
+              })}
+              key={id}
+              onClick={() => handleSizeSelect(id)}
+              onPointerDown={() =>
+                handleAnalytics(name, outOfStock?.[id] || false)
+              }
+            >
+              {sizeQuantity ? (
+                <HoverText
+                  defaultText={isOneSize ? "one size" : name}
+                  hoveredText={`${sizeQuantity?.[id]} left`}
+                  hoverTextCondition={sizeQuantity[id] > 5}
+                />
+              ) : (
+                <Text variant="uppercase">{name}</Text>
+              )}
+            </Button>
+          );
+        })}
       </div>
     </div>
   );

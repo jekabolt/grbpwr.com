@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { serviceClient } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
+import { DialogBackgroundManager } from "@/components/ui/dialog-background-manager";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
 import { Text } from "@/components/ui/text";
@@ -49,9 +50,16 @@ export function NotifyMe({
   });
 
   const selectedSizeId = form.watch("sizeId");
-  const selectedSizeName = outOfStockSizes.find(
-    (size) => size.id === selectedSizeId,
-  )?.name;
+
+  useEffect(() => {
+    if (open && activeSizeId) {
+      form.reset({
+        email: "",
+        sizeId: activeSizeId,
+        productId: id,
+      });
+    }
+  }, [open, activeSizeId, id, form]);
 
   const handleSizeSelect = (sizeId: number) => {
     form.setValue("sizeId", sizeId, {
@@ -77,80 +85,85 @@ export function NotifyMe({
   }
 
   return (
-    <DialogPrimitives.Root open={open} onOpenChange={onOpenChange}>
-      <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="border-inactive fixed inset-0 z-50 h-screen w-screen border bg-bgColor p-2.5 lg:left-1/2 lg:top-1/2 lg:h-[45%] lg:w-80 lg:-translate-x-1/2 lg:-translate-y-1/2">
-          <DialogPrimitives.Title className="sr-only">
-            grbpwr notify me
-          </DialogPrimitives.Title>
-          <div className="flex h-full flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <Text variant="uppercase">notify me</Text>
-              <DialogPrimitives.Close asChild>
-                <Button>[x]</Button>
-              </DialogPrimitives.Close>
-            </div>
+    <>
+      <DialogBackgroundManager isOpen={open} backgroundColor="#ffffff" />
+      <DialogPrimitives.Root open={open} onOpenChange={onOpenChange}>
+        <DialogPrimitives.Portal>
+          <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-black" />
+          <DialogPrimitives.Content className="border-inactive fixed inset-0 z-50 flex min-h-dvh w-screen flex-col bg-bgColor text-textColor lg:left-1/2 lg:top-1/2 lg:h-[45%] lg:w-80 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:border">
+            <DialogPrimitives.Title className="sr-only">
+              grbpwr notify me
+            </DialogPrimitives.Title>
+            <div className="flex h-full flex-col pt-4">
+              <div className="mb-10 flex items-center justify-between">
+                <Text variant="uppercase">notify me</Text>
+                <DialogPrimitives.Close asChild>
+                  <Button>[x]</Button>
+                </DialogPrimitives.Close>
+              </div>
 
-            <Text className="leading-none">
-              select your size and we will email you when this product is back
-              in stock.
-            </Text>
+              <Text className="mb-4 leading-none">
+                select your size and we will email you when this product is back
+                in stock.
+              </Text>
 
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(handleSubmit)}
-                className="mt-4 flex h-full flex-col justify-between"
-              >
-                <div className="space-y-10">
-                  <div className="space-y-4">
-                    <Text>select size:</Text>
-                    <SizePicker
-                      sizeNames={outOfStockSizes}
-                      activeSizeId={selectedSizeId}
-                      handleSizeSelect={handleSizeSelect}
-                      view="grid"
-                    />
-                    {form.formState.errors.sizeId && (
-                      <Text className="text-[10px] text-errorColor">
-                        {form.formState.errors.sizeId.message}
-                      </Text>
-                    )}
-                  </div>
-                  <InputField
-                    name="email"
-                    label="email"
-                    type="email"
-                    variant="secondary"
-                  />
-                  <CheckboxGlobal
-                    name="newsLetter"
-                    label={t("agree")}
-                    checked={isChecked}
-                    onCheckedChange={(checked: boolean) =>
-                      setIsChecked(checked)
-                    }
-                  />
-                </div>
-                <Button
-                  variant="main"
-                  type="submit"
-                  size="lg"
-                  className="w-full uppercase"
-                  disabled={
-                    !isChecked ||
-                    !selectedSizeId ||
-                    !form.formState.isValid ||
-                    form.formState.isSubmitting
-                  }
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(handleSubmit)}
+                  className="flex h-full flex-col justify-between"
                 >
-                  notify me
-                </Button>
-              </form>
-            </Form>
-          </div>
-        </DialogPrimitives.Content>
-      </DialogPrimitives.Portal>
-    </DialogPrimitives.Root>
+                  <div className="space-y-10">
+                    <div className="space-y-4">
+                      <Text>select size:</Text>
+                      <SizePicker
+                        sizeNames={outOfStockSizes}
+                        activeSizeId={selectedSizeId}
+                        handleSizeSelect={handleSizeSelect}
+                        view="grid"
+                      />
+                      {form.formState.errors.sizeId && (
+                        <Text className="text-errorColor">
+                          {form.formState.errors.sizeId.message}
+                        </Text>
+                      )}
+                    </div>
+                    <InputField
+                      name="email"
+                      label="email"
+                      type="email"
+                      variant="secondary"
+                    />
+                    <CheckboxGlobal
+                      name="newsLetter"
+                      label={t("agree")}
+                      checked={isChecked}
+                      onCheckedChange={(checked: boolean) =>
+                        setIsChecked(checked)
+                      }
+                    />
+                  </div>
+                  <div className="mt-auto space-y-6">
+                    <Button
+                      variant="main"
+                      type="submit"
+                      size="lg"
+                      className="w-full uppercase"
+                      disabled={
+                        !isChecked ||
+                        !selectedSizeId ||
+                        !form.formState.isValid ||
+                        form.formState.isSubmitting
+                      }
+                    >
+                      notify me
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            </div>
+          </DialogPrimitives.Content>
+        </DialogPrimitives.Portal>
+      </DialogPrimitives.Root>
+    </>
   );
 }
