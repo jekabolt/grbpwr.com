@@ -4,15 +4,13 @@ import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export function QueryWrapper({ children }: { children: React.ReactNode }) {
-  // Create QueryClient once per component instance with aggressive caching
   const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
           queries: {
-            // Permanent cache - only revalidate via webhook
-            staleTime: Infinity, // Never consider data stale
-            gcTime: Infinity, // Keep in cache forever
+            staleTime: 24 * 60 * 60 * 1000,
+            gcTime: 24 * 60 * 60 * 1000,
             refetchOnWindowFocus: false,
             refetchOnMount: false,
             refetchOnReconnect: false,
