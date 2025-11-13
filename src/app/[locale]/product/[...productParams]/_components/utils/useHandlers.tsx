@@ -104,6 +104,7 @@ export function useHandlers({
     activeSizeId,
     isLoading,
     isMobileSizeDialogOpen,
+    setActiveSizeId,
     handleAddToCart,
     handleSizeSelect,
     handleDialogClose,

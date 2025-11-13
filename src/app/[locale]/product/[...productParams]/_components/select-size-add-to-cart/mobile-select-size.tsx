@@ -13,20 +13,37 @@ import { useActiveSizeInfo } from "../utils/useActiveSizeInfo";
 export function MobileSelectSize({
   product,
   activeSizeId,
-  handleSizeSelect,
   open,
+  outOfStock,
+  onNotifyMeOpen,
   onOpenChange,
+  handleSizeSelect,
 }: {
   product: common_ProductFull;
   activeSizeId: number | undefined;
   open: boolean;
+  outOfStock?: Record<number, boolean>;
   handleSizeSelect: (sizeId: number) => void;
   onOpenChange: (open: boolean) => void;
+  onNotifyMeOpen?: (sizeId: number) => void;
 }) {
   const { sizeNames } = useActiveSizeInfo({
     product,
     activeSizeId,
   });
+
+  const handleSizeClick = (sizeId: number) => {
+    const isOutOfStock = outOfStock?.[sizeId];
+
+    if (isOutOfStock) {
+      onOpenChange(false);
+      setTimeout(() => {
+        onNotifyMeOpen?.(sizeId);
+      }, 100);
+    } else {
+      handleSizeSelect(sizeId);
+    }
+  };
 
   return (
     <DialogPrimitives.Root
@@ -47,19 +64,40 @@ export function MobileSelectSize({
             </div>
           </DialogPrimitives.Close>
           <div className="grid grid-cols-4 gap-y-7">
-            {sizeNames?.map(({ name, id }) => (
-              <DialogPrimitives.Close asChild key={id}>
-                <Button
-                  key={id}
-                  className={cn("uppercase", {
-                    "border-b border-textColor": activeSizeId === id,
-                  })}
-                  onClick={() => handleSizeSelect(id)}
-                >
-                  {name}
-                </Button>
-              </DialogPrimitives.Close>
-            ))}
+            {sizeNames?.map(({ name, id }) => {
+              const isOutOfStock = outOfStock?.[id];
+              const isActive = activeSizeId === id;
+
+              if (isOutOfStock) {
+                return (
+                  <Button
+                    key={id}
+                    className={cn("uppercase", {
+                      "border-b border-textInactiveColor text-textInactiveColor":
+                        isActive && isOutOfStock,
+                      "border-b border-textColor": isActive && !isOutOfStock,
+                      "text-textInactiveColor": !isActive && isOutOfStock,
+                    })}
+                    onClick={() => handleSizeClick(id)}
+                  >
+                    {name}
+                  </Button>
+                );
+              }
+
+              return (
+                <DialogPrimitives.Close asChild key={id}>
+                  <Button
+                    className={cn("uppercase", {
+                      "border-b border-textColor": isActive,
+                    })}
+                    onClick={() => handleSizeClick(id)}
+                  >
+                    {name}
+                  </Button>
+                </DialogPrimitives.Close>
+              );
+            })}
           </div>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>

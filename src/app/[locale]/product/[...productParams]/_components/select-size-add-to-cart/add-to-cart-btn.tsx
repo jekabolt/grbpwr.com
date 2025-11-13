@@ -20,6 +20,7 @@ type Handlers = {
   isMobileSizeDialogOpen?: boolean;
   sizePickerRef?: React.RefObject<HTMLDivElement | null>;
   outOfStock?: Record<number, boolean>;
+  setActiveSizeId?: (sizeId: number) => void;
   handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
   handleAddToCart?: () => Promise<boolean>;
   handleDialogClose?: () => void;
@@ -45,6 +46,7 @@ export function AddToCartBtn({
 
   const {
     activeSizeId,
+    setActiveSizeId,
     openItem,
     isLoading,
     sizePickerRef,
@@ -105,6 +107,11 @@ export function AddToCartBtn({
         handleSizeSelect={handleSizeSelect}
         open={isMobileSizeDialogOpen}
         onOpenChange={handleDialogClose}
+        outOfStock={outOfStock}
+        onNotifyMeOpen={(sizeId) => {
+          setActiveSizeId(sizeId);
+          setIsNotifyMeOpen(true);
+        }}
       />
       <div
         className={cn("fixed inset-x-5 bottom-2.5 z-10 grid lg:sticky", {

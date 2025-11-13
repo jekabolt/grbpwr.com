@@ -89,20 +89,20 @@ export function NotifyMe({
       <DialogBackgroundManager isOpen={open} backgroundColor="#ffffff" />
       <DialogPrimitives.Root open={open} onOpenChange={onOpenChange}>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-black" />
-          <DialogPrimitives.Content className="border-inactive fixed inset-0 z-50 flex min-h-dvh w-screen flex-col bg-bgColor text-textColor lg:left-1/2 lg:top-1/2 lg:h-[45%] lg:w-80 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:border">
+          <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-white lg:bg-overlay" />
+          <DialogPrimitives.Content className="border-inactive fixed inset-0 z-50 flex h-dvh w-screen flex-col bg-bgColor p-2.5 text-textColor lg:left-1/2 lg:top-1/2 lg:h-[45%] lg:w-80 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:border">
             <DialogPrimitives.Title className="sr-only">
               grbpwr notify me
             </DialogPrimitives.Title>
-            <div className="flex h-full flex-col pt-4">
-              <div className="mb-10 flex items-center justify-between">
+            <div className="flex h-full flex-col space-y-16 lg:space-y-6">
+              <div className="flex items-center justify-between">
                 <Text variant="uppercase">notify me</Text>
                 <DialogPrimitives.Close asChild>
                   <Button>[x]</Button>
                 </DialogPrimitives.Close>
               </div>
 
-              <Text className="mb-4 leading-none">
+              <Text className="leading-none">
                 select your size and we will email you when this product is back
                 in stock.
               </Text>
@@ -110,9 +110,9 @@ export function NotifyMe({
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(handleSubmit)}
-                  className="flex h-full flex-col justify-between"
+                  className="flex h-full flex-col justify-between space-y-10"
                 >
-                  <div className="space-y-10">
+                  <div className="space-y-16 lg:space-y-10">
                     <div className="space-y-4">
                       <Text>select size:</Text>
                       <SizePicker
@@ -142,22 +142,21 @@ export function NotifyMe({
                       }
                     />
                   </div>
-                  <div className="mt-auto space-y-6">
-                    <Button
-                      variant="main"
-                      type="submit"
-                      size="lg"
-                      className="w-full uppercase"
-                      disabled={
-                        !isChecked ||
-                        !selectedSizeId ||
-                        !form.formState.isValid ||
-                        form.formState.isSubmitting
-                      }
-                    >
-                      notify me
-                    </Button>
-                  </div>
+
+                  <Button
+                    variant="main"
+                    type="submit"
+                    size="lg"
+                    className="w-full uppercase"
+                    disabled={
+                      !isChecked ||
+                      !selectedSizeId ||
+                      !form.formState.isValid ||
+                      form.formState.isSubmitting
+                    }
+                  >
+                    notify me
+                  </Button>
                 </form>
               </Form>
             </div>
