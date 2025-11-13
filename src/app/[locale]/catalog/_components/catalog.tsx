@@ -53,7 +53,7 @@ export default function Catalog({
           total={total || 0}
         />
       </div>
-      <div className="flex flex-col gap-6 px-7 pt-24">
+      <div className="hidden flex-col gap-6 px-7 pt-24 lg:flex">
         <div className="sticky top-20 z-10 flex items-start justify-between text-bgColor mix-blend-exclusion">
           <Categories />
           <Button className="flex w-auto uppercase" onClick={toggleModal}>
