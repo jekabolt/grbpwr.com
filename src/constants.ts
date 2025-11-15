@@ -76,27 +76,27 @@ export const getDisplayCurrencyKey = (serverKey: string): string => {
 };
 
 export const currencySymbols: Record<string, string> = {
-  BTC: "₿", // Bitcoin
-  CHF: "Fr", // Swiss Franc
   CNY: "¥", // Chinese Yuan
-  CZK: "Kč", // Czech Republic Koruna
-  DKK: "kr", // Danish Krone
   EUR: "€", // Euro
-  ETH: "⟠", // Ethereum
+  KRW: "₩", // Korean Won
   GBP: "£", // British Pound Sterling
-  GEL: "₾", // Georgian Lari
-  HKD: "$", // Hong Kong Dollar
-  HUF: "Ft", // Hungarian Forint
-  ILS: "₪", // Israeli New Sheqel
   JPY: "¥", // Japanese Yen
-  NOK: "kr", // Norwegian Krone
-  PLN: "zł", // Polish Zloty
-  RUB: "₽", // Russian Ruble
-  SEK: "kr", // Swedish Krona
-  SGD: "$", // Singapore Dollar
-  TRY: "₺", // Turkish Lira
-  UAH: "₴", // Ukrainian Hryvnia
   USD: "$", // United States Dollar
+  // BTC: "₿", // Bitcoin
+  // CHF: "Fr", // Swiss Franc
+  // CZK: "Kč", // Czech Republic Koruna
+  // DKK: "kr", // Danish Krone
+  // ETH: "⟠", // Ethereum
+  // GEL: "₾", // Georgian Lari
+  // HUF: "Ft", // Hungarian Forint
+  // ILS: "₪", // Israeli New Sheqel
+  // NOK: "kr", // Norwegian Krone
+  // PLN: "zł", // Polish Zloty
+  // RUB: "₽", // Russian Ruble
+  // SEK: "kr", // Swedish Krona
+  // TRY: "₺", // Turkish Lira
+  // UAH: "₴", // Ukrainian Hryvnia
+  // HKD: "$", // Hong Kong Dollar
 };
 
 export type OrderFactorOption = {
@@ -439,8 +439,8 @@ export const COUNTRIES_BY_REGION = {
     country("malaysia", "my", "60"),
     country("new zealand", "nz", "64"),
     country("singapore", "sg", "65"),
-    country("south korea", "kr", "82"),
-    country("대한민국", "kr", "82", { lng: "ko", displayLng: "한국인" }),
+    country("south korea", "kr", "82", { currency: "₩", currencyKey: "KRW" }),
+    country("대한민국", "kr", "82", { currency: "₩", currencyKey: "KRW", lng: "ko", displayLng: "한국인" }),
     country("taiwan", "tw", "886"),
     country("台湾地区", "tw", "886", { lng: "zh", displayLng: "繁體中文" }),
     country("thailand", "th", "66"),
@@ -488,7 +488,7 @@ export const COUNTRIES_BY_REGION = {
     country("sweeden", "se", "46"),
     country("switzerland", "ch", "41"),
     country("turkey", "tr", "90"),
-    country("united kingdom", "gb", "44"),
+    country("united kingdom", "gb", "44", { currency: "£", currencyKey: "GBP" }),
   ],
   "MIDDLE EAST": [
     country("bahrain", "bh", "973"),
