@@ -16,12 +16,9 @@ export function useProductPricing({
   const currency = currencySymbols[selectedCurrency];
 
   const isSaleApplied = salePercentage !== "0";
-  const price = `${currency} ${convertPrice(productBody?.price?.value || "0")}`;
+  const price = `${currency} ${convertPrice(product.product?.prices?.[0].price?.value || "0")}`;
   const priceMinusSale = `${price} - ${salePercentage}% = `;
-  const priceWithSale = `${currency} ${calculatePriceWithSale(
-    productBody?.price?.value || "0",
-    salePercentage,
-  )}`;
+  const priceWithSale = `${currency} ${calculatePriceWithSale(product.product?.prices?.[0].price?.value || "0", salePercentage)}`;
 
   return {
     isSaleApplied,

@@ -113,11 +113,13 @@ export type common_Product = {
   slug: string | undefined;
   sku: string | undefined;
   productDisplay: common_ProductDisplay | undefined;
+  prices: common_ProductPrice[] | undefined;
 };
 
 export type common_ProductDisplay = {
   productBody: common_ProductBody | undefined;
   thumbnail: common_MediaFull | undefined;
+  secondaryThumbnail: common_MediaFull | undefined;
 };
 
 export type common_ProductBody = {
@@ -131,7 +133,6 @@ export type common_ProductBodyInsert = {
   color: string | undefined;
   colorHex: string | undefined;
   countryOfOrigin: string | undefined;
-  price: googletype_Decimal | undefined;
   salePercentage: googletype_Decimal | undefined;
   topCategoryId: number | undefined;
   subCategoryId: number | undefined;
@@ -210,6 +211,11 @@ export type common_ProductInsertTranslation = {
   languageId: number | undefined;
   name: string | undefined;
   description: string | undefined;
+};
+
+export type common_ProductPrice = {
+  currency: string | undefined;
+  price: googletype_Decimal | undefined;
 };
 
 export type common_HeroFeaturedProductsInsertTranslation = {
@@ -295,7 +301,7 @@ export type common_Dictionary = {
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
-  announceTranslations: common_AnnounceTranslation[] | undefined;
+  announce: common_Announce | undefined;
 };
 
 // Category represents a hierarchical category structure
@@ -376,6 +382,11 @@ export type common_Language = {
   name: string | undefined;
   isDefault: boolean | undefined;
   isActive: boolean | undefined;
+};
+
+export type common_Announce = {
+  link: string | undefined;
+  translations: common_AnnounceTranslation[] | undefined;
 };
 
 export type common_AnnounceTranslation = {
@@ -459,6 +470,7 @@ export type common_OrderFactor =
 export type common_FilterConditions = {
   from: string | undefined;
   to: string | undefined;
+  currency: string | undefined;
   onSale: boolean | undefined;
   gender: common_GenderEnum[] | undefined;
   color: string | undefined;
@@ -489,6 +501,7 @@ export type common_OrderNew = {
   paymentMethod: common_PaymentMethodNameEnum | undefined;
   shipmentCarrierId: number | undefined;
   promoCode: string | undefined;
+  currency: string | undefined;
 };
 
 export type common_OrderItemInsert = {
@@ -559,6 +572,7 @@ export type common_Order = {
   placed: wellKnownTimestamp | undefined;
   modified: wellKnownTimestamp | undefined;
   totalPrice: googletype_Decimal | undefined;
+  currency: string | undefined;
   orderStatusId: number | undefined;
   promoId: number | undefined;
   refundReason: string | undefined;
@@ -857,6 +871,9 @@ export function createFrontendServiceClient(
       }
       if (request.filterConditions?.to) {
         queryParams.push(`filterConditions.to=${encodeURIComponent(request.filterConditions.to.toString())}`)
+      }
+      if (request.filterConditions?.currency) {
+        queryParams.push(`filterConditions.currency=${encodeURIComponent(request.filterConditions.currency.toString())}`)
       }
       if (request.filterConditions?.onSale) {
         queryParams.push(`filterConditions.onSale=${encodeURIComponent(request.filterConditions.onSale.toString())}`)

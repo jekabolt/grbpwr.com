@@ -55,7 +55,7 @@ export function ProductItem({
   const name = `${fit} ${translatedCategory}`;
 
   const priceWithSale =
-    (parseFloat(productBody?.price?.value || "0") *
+    (parseFloat(product.prices?.[0]?.price?.value || "0") *
       (100 - parseInt(salePercentage || "0"))) /
     100;
 
@@ -93,7 +93,7 @@ export function ProductItem({
           </Text>
           <div className="flex gap-1 leading-none">
             <Text variant={isSaleApplied ? "strileTroughInactive" : "default"}>
-              {`${currencySymbols[selectedCurrency]} ${convertPrice(product.productDisplay?.productBody?.productBodyInsert?.price?.value || "")}`}
+              {`${currencySymbols[selectedCurrency]} ${convertPrice(product.prices?.[0].price?.value || "")}`}
             </Text>
             {isSaleApplied && (
               <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>

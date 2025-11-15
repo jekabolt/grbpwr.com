@@ -51,9 +51,7 @@ export function getTotalProductValue(product: common_ProductFull): number {
         return 0;
     }
 
-    const productBody =
-        product.product?.productDisplay?.productBody?.productBodyInsert;
-    const price = parseFloat(productBody?.price?.value || "0");
+    const price = parseFloat(product.product?.prices?.[0].price?.value || "0");
     return product.sizes.reduce((total, size) => {
         const quantity = parseInt(size.quantity?.value || "0");
         return total + quantity * price;

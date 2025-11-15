@@ -12,9 +12,8 @@ export function sendAddToCartEvent(
     topCategory: string,
     subCategory: string,
 ) {
-    const productBody = item.product?.productDisplay?.productBody;
     const totalValue = parseFloat(
-        productBody?.productBodyInsert?.price?.value || "0",
+        item.product?.prices?.[0].price?.value || "0",
     );
 
     if (!item || !item.product) return;
