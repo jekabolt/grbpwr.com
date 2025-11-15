@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { serviceClient } from "@/lib/api";
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -79,6 +80,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const { clearCart } = useCart((s) => s);
+  const { selectedCurrency } = useCurrency((state) => state);
   const { handlePurchaseEvent } = useCheckoutAnalytics({});
 
   const defaultValues = {
@@ -129,6 +131,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     const newOrderData = mapFormFieldToOrderDataFormat(
       data,
       response?.validItems?.map((i) => i.orderItem!) || [],
+      selectedCurrency,
     );
     try {
       console.log("submit order");

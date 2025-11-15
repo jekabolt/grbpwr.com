@@ -123,6 +123,7 @@ export function getProductsPagedQueryParams(
       byTag: tag ? tag : undefined,
       gender: genderEnums ? [genderEnums] : undefined,
       collections: collections && collections.length > 0 ? collections : undefined,
+      currency: undefined,
     },
   };
 }

@@ -15,7 +15,7 @@ export function mapItemsToDataLayer(
     subCategory: string,
 ): AnalyticsItem {
     const productBody = product.productDisplay?.productBody?.productBodyInsert;
-    const price = parseFloat(productBody?.price?.value || "0");
+    const price = parseFloat(product.prices?.[0].price?.value || "0");
     const salePercentage = parseFloat(productBody?.salePercentage?.value || "0");
     const discount = (price * salePercentage) / 100;
 

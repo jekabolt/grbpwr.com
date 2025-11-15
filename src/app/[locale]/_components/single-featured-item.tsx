@@ -24,10 +24,7 @@ export function SingleFeaturedItem({
     <div>
       {products?.map((p) => {
         const priceWithSale =
-          (parseFloat(
-            p.productDisplay?.productBody?.productBodyInsert?.price?.value ||
-              "0",
-          ) *
+          (parseFloat(p.prices?.[0]?.price?.value || "0") *
             (100 -
               parseInt(
                 p.productDisplay?.productBody?.productBodyInsert?.salePercentage
@@ -65,7 +62,7 @@ export function SingleFeaturedItem({
                   <Text
                     variant={isSaleApplied ? "strileTroughInactive" : "default"}
                   >
-                    {`${currencySymbols[selectedCurrency]} ${convertPrice(p.productDisplay?.productBody?.productBodyInsert?.price?.value || "")}`}
+                    {`${currencySymbols[selectedCurrency]} ${convertPrice(p.prices?.[0]?.price?.value || "")}`}
                   </Text>
                   {isSaleApplied && (
                     <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>

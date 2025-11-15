@@ -28,7 +28,7 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
   const [isAnnounceVisible, setIsAnnounceVisible] = useState(true);
   const { scrollDirection, isAtTop } = useHeaderScrollPosition();
   const { languageId } = useTranslationsStore((state) => state);
-  const announceTranslation = dictionary?.announceTranslations?.find(
+  const announceTranslation = dictionary?.announce?.translations?.find(
     (t) => t.languageId === languageId,
   );
   const { open, handleClose } = useAnnounce(announceTranslation?.text || "");

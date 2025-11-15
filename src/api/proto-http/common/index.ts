@@ -64,6 +64,11 @@ export type AnnounceTranslation = {
   text: string | undefined;
 };
 
+export type Announce = {
+  link: string | undefined;
+  translations: AnnounceTranslation[] | undefined;
+};
+
 export type MediaFull = {
   // Media ID
   id: number | undefined;
@@ -180,12 +185,15 @@ export type ProductNew = {
   sizeMeasurements: SizeWithMeasurementInsert[] | undefined;
   mediaIds: number[] | undefined;
   tags: ProductTagInsert[] | undefined;
+  prices: ProductPriceInsert[] | undefined;
 };
 
 export type ProductInsert = {
   productBodyInsert: ProductBodyInsert | undefined;
   thumbnailMediaId: number | undefined;
   translations: ProductInsertTranslation[] | undefined;
+  secondaryThumbnailMediaId: number | undefined;
+  prices: ProductPriceInsert[] | undefined;
 };
 
 export type ProductBodyInsert = {
@@ -194,7 +202,6 @@ export type ProductBodyInsert = {
   color: string | undefined;
   colorHex: string | undefined;
   countryOfOrigin: string | undefined;
-  price: googletype_Decimal | undefined;
   salePercentage: googletype_Decimal | undefined;
   topCategoryId: number | undefined;
   subCategoryId: number | undefined;
@@ -264,6 +271,11 @@ export type googletype_Decimal = {
   value: string | undefined;
 };
 
+export type ProductPriceInsert = {
+  currency: string | undefined;
+  price: googletype_Decimal | undefined;
+};
+
 export type SizeWithMeasurementInsert = {
   productSize: ProductSizeInsert | undefined;
   measurements: ProductMeasurementInsert[] | undefined;
@@ -298,16 +310,23 @@ export type Product = {
   slug: string | undefined;
   sku: string | undefined;
   productDisplay: ProductDisplay | undefined;
+  prices: ProductPrice[] | undefined;
 };
 
 export type ProductDisplay = {
   productBody: ProductBody | undefined;
   thumbnail: MediaFull | undefined;
+  secondaryThumbnail: MediaFull | undefined;
 };
 
 export type ProductBody = {
   productBodyInsert: ProductBodyInsert | undefined;
   translations: ProductInsertTranslation[] | undefined;
+};
+
+export type ProductPrice = {
+  currency: string | undefined;
+  price: googletype_Decimal | undefined;
 };
 
 export type ProductSize = {
@@ -355,6 +374,7 @@ export type SortFactor =
 export type FilterConditions = {
   from: string | undefined;
   to: string | undefined;
+  currency: string | undefined;
   onSale: boolean | undefined;
   gender: GenderEnum[] | undefined;
   color: string | undefined;
@@ -459,6 +479,7 @@ export type OrderNew = {
   paymentMethod: PaymentMethodNameEnum | undefined;
   shipmentCarrierId: number | undefined;
   promoCode: string | undefined;
+  currency: string | undefined;
 };
 
 export type OrderItemInsert = {
@@ -484,6 +505,7 @@ export type Order = {
   placed: wellKnownTimestamp | undefined;
   modified: wellKnownTimestamp | undefined;
   totalPrice: googletype_Decimal | undefined;
+  currency: string | undefined;
   orderStatusId: number | undefined;
   promoId: number | undefined;
   refundReason: string | undefined;
@@ -528,7 +550,7 @@ export type Dictionary = {
   maxOrderItems: number | undefined;
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
-  announceTranslations: AnnounceTranslation[] | undefined;
+  announce: Announce | undefined;
 };
 
 export type Collection = {

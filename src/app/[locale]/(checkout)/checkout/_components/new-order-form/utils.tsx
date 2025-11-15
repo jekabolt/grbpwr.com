@@ -14,6 +14,7 @@ import { CheckoutData } from "./schema";
 export function mapFormFieldToOrderDataFormat(
   data: CheckoutData,
   orderItems: common_OrderItemInsert[],
+  currency: string,
 ) {
   const shippingAddress: common_AddressInsert = {
     addressLineOne: data.address,
@@ -58,6 +59,7 @@ export function mapFormFieldToOrderDataFormat(
     paymentMethod: data.paymentMethod,
     shipmentCarrierId: parseInt(data.shipmentCarrierId),
     promoCode: data.promoCode,
+    currency,
   };
 
   return newOrderData;
