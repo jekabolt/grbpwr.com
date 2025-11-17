@@ -3,6 +3,7 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
+import { sendButtonEvent } from "@/lib/analitycs/button";
 import { Measurements } from "@/app/[locale]/product/[...productParams]/_components/measurements";
 
 import { Button } from "../../../../../components/ui/button";
@@ -21,14 +22,25 @@ export function MobileMeasurements({
   handleSelectSize,
 }: MobileMeasurementsProps) {
   const [open, setOpen] = useState(false);
-  const { preorder } = useProductBasics({ product });
+  const { preorder, name } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
   const t = useTranslations("product");
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (isOpen) {
+      sendButtonEvent({
+        buttonId: "size_guide",
+        productName: name,
+      });
+    }
+    setOpen(isOpen);
+  };
+
   return (
     <>
       <DialogBackgroundManager isOpen={open} backgroundColor="#ffffff" />
-      <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
+      <DialogPrimitives.Root open={open} onOpenChange={handleOpenChange}>
         <DialogPrimitives.Trigger asChild className="text-left">
           <Button variant="underline" className="uppercase">
             {t("size guide")}
