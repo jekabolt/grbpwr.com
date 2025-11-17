@@ -2,6 +2,7 @@
 
 import type { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
+import { sendHeroEvent } from "@/lib/analitycs/hero";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -31,6 +32,9 @@ export function Ads({
                 <AnimatedButton
                   href={e.single?.exploreLink || ""}
                   className="group relative h-full w-full text-bgColor"
+                  onClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_SINGLE" })
+                  }
                 >
                   <div className="hidden h-full lg:block">
                     <Image
@@ -93,6 +97,9 @@ export function Ads({
                 <AnimatedButton
                   href={e.double?.left?.exploreLink || ""}
                   className="group relative h-full w-full text-bgColor"
+                  onClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_DOUBLE_LEFT" })
+                  }
                 >
                   <Image
                     src={
@@ -123,6 +130,9 @@ export function Ads({
                 <AnimatedButton
                   href={e.double?.right?.exploreLink || ""}
                   className="group relative h-full w-full"
+                  onClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_DOUBLE_RIGHT" })
+                  }
                 >
                   <Image
                     src={
@@ -166,6 +176,9 @@ export function Ads({
                 exploreText={productsTranslation?.exploreText}
                 exploreLink={e.featuredProducts?.exploreLink}
                 itemsQuantity={itemsQuantity}
+                onHeroClick={() =>
+                  sendHeroEvent({ heroType: "HERO_TYPE_FEATURED_PRODUCTS" })
+                }
               />
             );
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
@@ -183,6 +196,9 @@ export function Ads({
                 exploreText={productsTagTranslation?.exploreText}
                 exploreLink={e.featuredProductsTag?.products?.exploreLink}
                 itemsQuantity={productsTagCount}
+                onHeroClick={() =>
+                  sendHeroEvent({ heroType: "HERO_TYPE_FEATURED_PRODUCTS_TAG" })
+                }
               />
             );
           case "HERO_TYPE_FEATURED_ARCHIVE":
@@ -191,6 +207,9 @@ export function Ads({
                 entity={e}
                 key={i}
                 className="space-y-12 pt-16 lg:py-32"
+                onHeroClick={() =>
+                  sendHeroEvent({ heroType: "HERO_TYPE_FEATURED_ARCHIVE" })
+                }
               />
             );
           default:

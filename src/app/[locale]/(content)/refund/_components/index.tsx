@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { sendRefundEvent } from "@/lib/analitycs/checkout";
+import { sendFormEvent } from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -69,6 +70,10 @@ export function RefundForm() {
         setErrorMessage(t("refund request submitted successfully"));
         setOpen(true);
         handleRefundEvent(response.order);
+        sendFormEvent({
+          email: data.email,
+          formId: "refund",
+        });
         router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
       }
 

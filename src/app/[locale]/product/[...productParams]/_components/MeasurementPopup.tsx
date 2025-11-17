@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
+import { sendButtonEvent } from "@/lib/analitycs/button";
 import { LoadingButton } from "@/app/[locale]/product/[...productParams]/_components/loading-button";
 import { useProductBasics } from "@/app/[locale]/product/[...productParams]/_components/utils/useProductBasics";
 import { useProductPricing } from "@/app/[locale]/product/[...productParams]/_components/utils/useProductPricing";
@@ -23,7 +24,7 @@ export default function MeasurementPopup({
   product,
   handleAddToCart,
 }: ModalProps) {
-  const { preorder } = useProductBasics({ product });
+  const { preorder, name } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
   const t = useTranslations("product");
@@ -46,6 +47,12 @@ export default function MeasurementPopup({
   }, [isModalOpen]);
 
   const toggleModal = () => {
+    if (!isModalOpen) {
+      sendButtonEvent({
+        buttonId: "size_guide",
+        productName: name,
+      });
+    }
     setModalOpen(!isModalOpen);
   };
 
@@ -70,9 +77,7 @@ export default function MeasurementPopup({
               <Text variant="uppercase">{t("size guide")}</Text>
               <Button onClick={toggleModal}>[x]</Button>
             </div>
-
             {children}
-
             <LoadingButton
               variant="simpleReverse"
               size="lg"

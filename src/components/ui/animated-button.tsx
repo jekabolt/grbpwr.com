@@ -22,7 +22,7 @@ type RegularButtonProps = BaseButtonProps & {
 
 type LinkButtonProps = BaseButtonProps & {
   href: string;
-  onClick?: never;
+  onClick?: () => void;
 };
 
 type AnimatedButtonProps = RegularButtonProps | LinkButtonProps;
@@ -40,7 +40,7 @@ export function AnimatedButton({
 
   const handlePress = () => {
     setIsPressed(true);
-    if (onClick && !href) {
+    if (onClick) {
       onClick();
     }
     setTimeout(() => setIsPressed(false), animationDuration);

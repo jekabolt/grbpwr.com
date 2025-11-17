@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
+import { sendFormEvent } from "@/lib/analitycs/form";
 import { Button } from "@/components/ui/button";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
@@ -28,6 +29,10 @@ export function UnsubscribeForm({ email }: Props) {
     setToastOpen(true);
 
     if (result.success) {
+      sendFormEvent({
+        email,
+        formId: "unsubscribe",
+      });
       setTimeout(() => {
         router.push("/");
       }, 2000);

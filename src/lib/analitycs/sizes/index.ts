@@ -13,6 +13,8 @@ export function sendSizeSelectionEvent(data: SizeSelectionEvent) {
 
     window.dataLayer = window.dataLayer || [];
 
+    window.dataLayer.push({ ecommerce: null });
+
     const eventData = {
         event: 'size_selection',
         size_name: data.sizeName,

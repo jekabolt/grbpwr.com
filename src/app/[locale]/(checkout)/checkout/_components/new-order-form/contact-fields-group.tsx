@@ -1,7 +1,11 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
+import { sendFormEvent } from "@/lib/analitycs/form";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import InputField from "@/components/ui/form/fields/input-field";
 import { Text } from "@/components/ui/text";
@@ -21,7 +25,19 @@ export default function ContactFieldsGroup({
 }) {
   const { watch } = useFormContext();
   const email = watch("email");
+  const subscribe = watch("subscribe");
+  const prevSubscribeRef = useRef<boolean>(false);
   const t = useTranslations("checkout");
+
+  useEffect(() => {
+    if (subscribe && !prevSubscribeRef.current && email) {
+      sendFormEvent({
+        email,
+        formId: "checkout_subscribe",
+      });
+    }
+    prevSubscribeRef.current = subscribe;
+  }, [subscribe, email]);
 
   return (
     <FieldsGroupContainer

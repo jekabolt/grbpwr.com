@@ -12,12 +12,14 @@ export function MobileFeaturedItems({
   exploreText,
   exploreLink,
   itemsQuantity,
+  onHeroClick,
 }: {
   products: common_Product[];
   headline?: string;
   exploreText?: string;
   exploreLink?: string;
   itemsQuantity: number;
+  onHeroClick?: () => void;
 }) {
   const isMultipleItems = itemsQuantity > 1;
   const itemSlug = products?.[0]?.slug || "";
@@ -31,6 +33,7 @@ export function MobileFeaturedItems({
           headline={headline}
           href={isMultipleItems ? exploreLink || "" : itemSlug}
           linkText={isMultipleItems ? exploreText || "" : "buy now"}
+          onHeroClick={onHeroClick}
         />
       </div>
       <Carousel

@@ -13,6 +13,8 @@ export function sendFormEvent(data: NewsletterFormData) {
 
     window.dataLayer = window.dataLayer || [];
 
+    window.dataLayer.push({ ecommerce: null });
+
     const eventData = {
         event: 'form_submission',
         form_id: data.formId,
