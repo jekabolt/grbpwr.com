@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 
 import { useProductBasics } from "./useProductBasics";
 import { useProductSizes } from "./useProductSizes";
@@ -16,6 +17,7 @@ export function useMeasurementSizes({
   const { productId } = useProductBasics({ product });
   const { sizes, sizeNames, isOneSize } = useProductSizes({ product });
   const { increaseQuantity } = useCart((state) => state);
+  const { selectedCurrency } = useCurrency((state) => state);
   const [selectedSize, setSelectedSize] = useState<number | undefined>(
     sizes && sizes.length > 0 ? sizes[0].sizeId : undefined,
   );
@@ -40,7 +42,7 @@ export function useMeasurementSizes({
     if (!selectedSize) return false;
 
     try {
-      await increaseQuantity(productId, selectedSize?.toString() || "", 1);
+      await increaseQuantity(productId, selectedSize?.toString() || "", 1, selectedCurrency);
       return true;
     } catch (error) {
       console.error(error);

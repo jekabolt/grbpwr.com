@@ -7,6 +7,7 @@ import { Text } from "@/components/ui/text";
 
 import { LoadingButton } from "../loading-button";
 import { NotifyMe } from "../notify-me";
+import { useDisabled } from "../utils/useDisabled";
 import { useHandlers } from "../utils/useHandlers";
 import { useProductBasics } from "../utils/useProductBasics";
 import { useProductPricing } from "../utils/useProductPricing";
@@ -36,13 +37,24 @@ export function AddToCartBtn({
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
+  const { preorder, preorderRaw } = useProductBasics({ product });
+  const { isSaleApplied, price, priceMinusSale, priceWithSale } =
+    useProductPricing({ product });
+  const { sizeNames, isOneSize } = useProductSizes({ product });
   const internalHandlers = useHandlers({
     id: product.product?.id || 0,
+    sizeNames,
+    isOneSize,
+    product,
+  });
+  const { outOfStock: internalOutOfStock } = useDisabled({
+    id: product.product?.id || 0,
+    activeSizeId: internalHandlers.activeSizeId,
     product,
   });
   const merged = handlers
-    ? { ...internalHandlers, ...handlers }
-    : internalHandlers;
+    ? { ...internalHandlers, outOfStock: internalOutOfStock, ...handlers }
+    : { ...internalHandlers, outOfStock: internalOutOfStock };
 
   const {
     activeSizeId,
@@ -56,11 +68,6 @@ export function AddToCartBtn({
     isMobileSizeDialogOpen,
     handleDialogClose,
   } = merged as Required<Handlers> & ReturnType<typeof useHandlers>;
-
-  const { preorder, preorderRaw } = useProductBasics({ product });
-  const { isSaleApplied, price, priceMinusSale, priceWithSale } =
-    useProductPricing({ product });
-  const { sizeNames } = useProductSizes({ product });
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
   const isNoSizeSelected = !activeSizeId && isHovered;
   const isSelectedSizeOutOfStock = activeSizeId && outOfStock?.[activeSizeId];

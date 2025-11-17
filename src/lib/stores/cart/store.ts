@@ -35,6 +35,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           productId: number,
           size: string,
           quantity: number = 1,
+          currency?: string,
         ) => {
           const { products } = get();
 

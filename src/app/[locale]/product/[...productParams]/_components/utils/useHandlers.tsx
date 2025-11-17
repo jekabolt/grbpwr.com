@@ -48,7 +48,7 @@ export function useHandlers({
     }
 
     try {
-      await increaseQuantity(id, activeSizeId?.toString() || "", 1);
+      await increaseQuantity(id, activeSizeId?.toString() || "", 1, selectedCurrency);
 
       if (product && selectedCurrency) {
         sendAddToCartEvent(
@@ -61,6 +61,7 @@ export function useHandlers({
       openCart();
       return true;
     } catch (error) {
+      console.error("Failed to add item to cart:", error);
       return false;
     }
   };
@@ -72,7 +73,7 @@ export function useHandlers({
 
     if (isMobileSizeDialogOpen) {
       try {
-        await increaseQuantity(id, sizeId.toString(), 1);
+        await increaseQuantity(id, sizeId.toString(), 1, selectedCurrency);
 
         // Send add to cart analytics event
         if (product && selectedCurrency) {
