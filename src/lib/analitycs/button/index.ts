@@ -12,6 +12,8 @@ export function sendButtonEvent(data: ButtonEventData) {
 
     window.dataLayer = window.dataLayer || [];
 
+    window.dataLayer.push({ ecommerce: null });
+
     const eventData = {
         event: 'button_click',
         button_id: data.buttonId,
