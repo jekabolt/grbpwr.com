@@ -143,7 +143,6 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
 
       if (newOrderResponse.ok) {
         const paymentType = newOrderResponse.order?.payment?.paymentMethod;
-        // Use clientSecret from validation response as primary source, fallback to submit response
         const clientSecret =
           response?.clientSecret ||
           newOrderResponse.order?.payment?.clientSecret;
@@ -151,7 +150,6 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
 
         switch (paymentType) {
           case "PAYMENT_METHOD_NAME_ENUM_CARD_TEST":
-            // Ensure clientSecret is a non-empty string
             if (
               !clientSecret ||
               typeof clientSecret !== "string" ||

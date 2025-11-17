@@ -8,7 +8,7 @@ import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Text } from "@/components/ui/text";
 
 export default function CartTotalPrice() {
-  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const { selectedCurrency } = useCurrency((state) => state);
   const { subTotalPrice } = useCart((state) => state);
   const t = useTranslations("cart");
 
@@ -16,8 +16,7 @@ export default function CartTotalPrice() {
     <div className="flex items-center justify-between border-t border-solid border-textInactiveColor pt-3">
       <Text variant="uppercase">{t("subtotal")}:</Text>
       <Text variant="uppercase" size="small">
-        {currencySymbols[selectedCurrency]}{" "}
-        {convertPrice(subTotalPrice.toString())}
+        {currencySymbols[selectedCurrency]} {subTotalPrice.toString()}
       </Text>
     </div>
   );

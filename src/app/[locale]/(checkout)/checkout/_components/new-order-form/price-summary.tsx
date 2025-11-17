@@ -2,13 +2,11 @@ import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 export function PriceSummary({ order, form }: PriceSummaryProps) {
   const { dictionary } = useDataContext();
-  const { convertPrice } = useCurrency((state) => state);
   const t = useTranslations("checkout");
 
   if (!order) return null;
@@ -25,7 +23,7 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
       <div className="space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t("subtotal")}:</Text>
-          <Text>{convertPrice(order?.subtotal?.value || "")}</Text>
+          <Text>{order?.subtotal?.value || ""}</Text>
         </div>
         {(selectedShipmentCarrierPrice || promoFreeShipping) && (
           <div className="flex justify-between">
@@ -47,7 +45,7 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
         <div className="pt-5">
           <div className="flex justify-between border-t border-textInactiveColor pt-3">
             <Text variant={"uppercase"}>{t("grand total")}:</Text>
-            <Text>{convertPrice(order.totalSale?.value || "")}</Text>
+            <Text>{order.totalSale?.value || ""}</Text>
           </div>
         </div>
       </div>

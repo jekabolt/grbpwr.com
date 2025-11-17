@@ -19,11 +19,11 @@ export default function ItemRow({
   hideQuantityButtons,
   index,
 }: Props) {
-  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const { selectedCurrency } = useCurrency((state) => state);
   const { languageId } = useTranslationsStore((state) => state);
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
-  const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${convertPrice(product?.productPrice || "")}`;
-  const priceWithSale = `${currencySymbols[selectedCurrency]} ${convertPrice(product?.productPriceWithSale || "")}`;
+  const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${product?.productPrice}`;
+  const priceWithSale = `${currencySymbols[selectedCurrency]} ${product?.productPriceWithSale}`;
   const t = useTranslations("product");
   const tColors = useTranslations("colors");
 

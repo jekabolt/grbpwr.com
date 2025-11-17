@@ -17,7 +17,7 @@ export function SingleFeaturedItem({
   headline?: string;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
-  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const { selectedCurrency } = useCurrency((state) => state);
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -62,10 +62,10 @@ export function SingleFeaturedItem({
                   <Text
                     variant={isSaleApplied ? "strileTroughInactive" : "default"}
                   >
-                    {`${currencySymbols[selectedCurrency]} ${convertPrice(p.prices?.[0]?.price?.value || "")}`}
+                    {`${currencySymbols[selectedCurrency]} ${p.prices?.[0]?.price?.value || ""}`}
                   </Text>
                   {isSaleApplied && (
-                    <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>
+                    <Text>{`${currencySymbols[selectedCurrency]} ${priceWithSale.toString()}`}</Text>
                   )}
                 </div>
                 <Text

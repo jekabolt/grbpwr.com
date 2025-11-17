@@ -48,9 +48,11 @@ export function useHandlers({
     }
 
     try {
-      await increaseQuantity(id, activeSizeId?.toString() || "", 1, selectedCurrency);
+      // Ensure currency is always provided (fallback to EUR)
+      const currency = selectedCurrency || "EUR";
+      await increaseQuantity(id, activeSizeId?.toString() || "", 1, currency);
 
-      if (product && selectedCurrency) {
+      if (product && currency) {
         sendAddToCartEvent(
           product,
           productCategory || "",
@@ -73,10 +75,12 @@ export function useHandlers({
 
     if (isMobileSizeDialogOpen) {
       try {
-        await increaseQuantity(id, sizeId.toString(), 1, selectedCurrency);
+        // Ensure currency is always provided (fallback to EUR)
+        const currency = selectedCurrency || "EUR";
+        await increaseQuantity(id, sizeId.toString(), 1, currency);
 
         // Send add to cart analytics event
-        if (product && selectedCurrency) {
+        if (product && currency) {
           sendAddToCartEvent(
             product,
             productCategory || "",
@@ -87,6 +91,7 @@ export function useHandlers({
         openCart();
         return true;
       } catch (error) {
+        console.error("Failed to add item to cart:", error);
         return false;
       } finally {
         setIsLoading(false);
