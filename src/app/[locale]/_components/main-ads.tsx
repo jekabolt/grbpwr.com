@@ -2,6 +2,7 @@
 
 import { common_HeroMainWithTranslations } from "@/api/proto-http/frontend";
 
+import { sendHeroEvent } from "@/lib/analitycs/hero";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -22,6 +23,7 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
     <AnimatedButton
       href={main.single?.exploreLink || ""}
       className="relative h-screen w-full"
+      onClick={() => sendHeroEvent({ heroType: "HERO_TYPE_MAIN" })}
     >
       <div className="hidden h-full lg:block">
         <Image

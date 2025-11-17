@@ -16,6 +16,7 @@ export function FeaturedItems({
   products,
   tag,
   itemsQuantity,
+  onHeroClick,
 }: {
   headline?: string;
   exploreText?: string;
@@ -23,6 +24,7 @@ export function FeaturedItems({
   products?: common_Product[];
   tag?: string;
   itemsQuantity: number;
+  onHeroClick?: () => void;
 }) {
   return (
     <div>
@@ -33,6 +35,7 @@ export function FeaturedItems({
           exploreText={exploreText || ""}
           products={products || []}
           itemsQuantity={itemsQuantity}
+          onHeroClick={onHeroClick}
         />
       </div>
 
@@ -50,6 +53,7 @@ export function FeaturedItems({
             headline={headline}
             href={exploreLink ? exploreLink : tag || ""}
             linkText={exploreText || ""}
+            onHeroClick={onHeroClick}
           />
         )}
         {(itemsQuantity === 2 || itemsQuantity === 3) && (
@@ -58,6 +62,7 @@ export function FeaturedItems({
               headline={headline}
               href={exploreLink ? exploreLink : tag || ""}
               linkText={exploreText || ""}
+              onHeroClick={onHeroClick}
             />
             <div className="flex flex-row gap-12">
               {products?.map((p) => (
@@ -82,16 +87,18 @@ function FourFeaturedItems({
   href,
   linkText,
   products,
+  onHeroClick,
 }: {
   headline?: string;
 
   href: string;
   linkText: string;
   products?: common_Product[];
+  onHeroClick?: () => void;
 }) {
   return (
     <div className="space-y-12">
-      <HeaderSection headline={headline} href={href} linkText={linkText} />
+      <HeaderSection headline={headline} href={href} linkText={linkText} onHeroClick={onHeroClick} />
 
       <Carousel disableForItemCounts={[4]} loop className="flex w-full">
         {products?.map((p) => (
@@ -106,10 +113,12 @@ export function HeaderSection({
   headline,
   href,
   linkText,
+  onHeroClick,
 }: {
   headline?: string;
   href: string;
   linkText: string;
+  onHeroClick?: () => void;
 }) {
   return (
     <div>
@@ -118,6 +127,7 @@ export function HeaderSection({
           href={href}
           animationArea="text"
           className="flex flex-wrap items-center gap-2 uppercase lg:flex-nowrap lg:pl-2.5"
+          onClick={onHeroClick}
         >
           <Text className="text-wrap">{headline}</Text>
           <Text variant="underlined">{linkText ? linkText : ""}</Text>
