@@ -42,9 +42,13 @@ export function useMeasurementSizes({
     if (!selectedSize) return false;
 
     try {
-      // Ensure currency is always provided (fallback to EUR)
       const currency = selectedCurrency || "EUR";
-      await increaseQuantity(productId, selectedSize?.toString() || "", 1, currency);
+      await increaseQuantity(
+        productId,
+        selectedSize?.toString() || "",
+        1,
+        currency,
+      );
       return true;
     } catch (error) {
       console.error(error);

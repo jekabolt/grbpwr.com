@@ -6,6 +6,7 @@ import {
     sendViewItemListEvent,
 } from "@/lib/analitycs/product";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useRouteParams } from "./useRouteParams";
 
 function decodeUrlValue(value: string): string {
@@ -18,6 +19,7 @@ function decodeUrlValue(value: string): string {
 
 export function useAnalytics() {
     const searchParams = useSearchParams();
+    const { selectedCurrency } = useCurrency((state) => state);
     const { gender, categoryName, subCategoryName, topCategory, subCategory } =
         useRouteParams();
 
@@ -64,6 +66,7 @@ export function useAnalytics() {
             listId,
             decodedCategoryName,
             decodedSubCategoryName,
+            selectedCurrency,
         );
     }
 
@@ -74,6 +77,7 @@ export function useAnalytics() {
             listId,
             decodedCategoryName,
             decodedSubCategoryName,
+            selectedCurrency,
         );
     }
 

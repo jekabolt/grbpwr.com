@@ -48,7 +48,6 @@ export function useHandlers({
     }
 
     try {
-      // Ensure currency is always provided (fallback to EUR)
       const currency = selectedCurrency || "EUR";
       await increaseQuantity(id, activeSizeId?.toString() || "", 1, currency);
 
@@ -57,6 +56,7 @@ export function useHandlers({
           product,
           productCategory || "",
           productSubCategory || "",
+          selectedCurrency,
         );
       }
 
@@ -75,16 +75,15 @@ export function useHandlers({
 
     if (isMobileSizeDialogOpen) {
       try {
-        // Ensure currency is always provided (fallback to EUR)
         const currency = selectedCurrency || "EUR";
         await increaseQuantity(id, sizeId.toString(), 1, currency);
 
-        // Send add to cart analytics event
         if (product && currency) {
           sendAddToCartEvent(
             product,
             productCategory || "",
             productSubCategory || "",
+            selectedCurrency,
           );
         }
 

@@ -58,14 +58,14 @@ export function AddToCartBtn({
 
   const {
     activeSizeId,
-    setActiveSizeId,
     openItem,
     isLoading,
     sizePickerRef,
     outOfStock,
+    isMobileSizeDialogOpen,
+    setActiveSizeId,
     handleSizeSelect,
     handleAddToCart,
-    isMobileSizeDialogOpen,
     handleDialogClose,
   } = merged as Required<Handlers> & ReturnType<typeof useHandlers>;
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");

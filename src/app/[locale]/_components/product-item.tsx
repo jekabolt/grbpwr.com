@@ -30,6 +30,8 @@ export function ProductItem({
   const { selectedCurrency } = useCurrency((state) => state);
   const { handleSelectItemEvent } = useAnalytics();
 
+  // Find the price for the selected currency
+  const currencyKey = selectedCurrency || "EUR";
   const productBody = product.productDisplay?.productBody?.productBodyInsert;
   const salePercentage = productBody?.salePercentage?.value || "0";
   const isSaleApplied = salePercentage && salePercentage !== "0";
@@ -54,8 +56,6 @@ export function ProductItem({
     : "";
   const name = `${fit} ${translatedCategory}`;
 
-  // Find the price for the selected currency
-  const currencyKey = selectedCurrency || "EUR";
   const productPrice =
     product.prices?.find(
       (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
@@ -67,7 +67,6 @@ export function ProductItem({
   const priceWithSale =
     (parseFloat(priceValue) * (100 - parseInt(salePercentage || "0"))) / 100;
 
-  // Format price values for display
   const formattedPrice = parseFloat(priceValue).toFixed(2);
   const formattedPriceWithSale = priceWithSale.toFixed(2);
 
