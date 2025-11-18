@@ -36,7 +36,7 @@ export default function PaymentFieldsGroup({
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
-  const { watch, unregister } = useFormContext();
+  const { watch, unregister, setValue, getValues, trigger } = useFormContext();
   // const { handlePaymentMethodChange } = useCheckoutAnalytics({});
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
@@ -44,9 +44,54 @@ export default function PaymentFieldsGroup({
 
   useEffect(() => {
     if (billingAddressIsSameAsAddress) {
+      const values = getValues();
+      const addressFields = [
+        "firstName",
+        "lastName",
+        "address",
+        "country",
+        "state",
+        "city",
+        "additionalAddress",
+        "company",
+        "phone",
+        "postalCode",
+      ] as const;
+
+      addressFields.forEach((field) => {
+        setValue(`billingAddress.${field}`, values[field] || "", {
+          shouldValidate: false,
+        });
+      });
+
       unregister("billingAddress");
+    } else {
+      // When unchecked, ensure billingAddress structure exists for field registration
+      const currentBilling = getValues("billingAddress");
+      if (!currentBilling) {
+        const addressFields = [
+          "firstName",
+          "lastName",
+          "address",
+          "country",
+          "state",
+          "city",
+          "additionalAddress",
+          "company",
+          "phone",
+          "postalCode",
+        ] as const;
+
+        addressFields.forEach((field) => {
+          setValue(`billingAddress.${field}`, "", { shouldValidate: false });
+        });
+      }
+      // Trigger validation to check if billing address is filled
+      requestAnimationFrame(() => {
+        trigger("billingAddress");
+      });
     }
-  }, [billingAddressIsSameAsAddress, unregister]);
+  }, [billingAddressIsSameAsAddress, unregister, setValue, getValues, trigger]);
 
   const handlePaymentElementChange = (e: { complete: boolean }) => {
     if (onPaymentElementChange) {

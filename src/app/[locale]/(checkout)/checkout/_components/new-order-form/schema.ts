@@ -49,7 +49,43 @@ const baseCheckoutSchema = z.object({
       z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
       z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
     ])
-})
+}).superRefine((data, ctx) => {
+  if (data.billingAddressIsSameAsAddress) return;
+
+  if (!data.billingAddress) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Billing address is required",
+      path: ["billingAddress"],
+    });
+    return;
+  }
+
+  const billing = data.billingAddress;
+  const requiredFields: Array<{
+    key: keyof typeof billing;
+    errorMessage: string;
+  }> = [
+      { key: "firstName", errorMessage: errorMessages.firstName.min },
+      { key: "lastName", errorMessage: errorMessages.lastName.min },
+      { key: "country", errorMessage: errorMessages.country.min },
+      { key: "city", errorMessage: errorMessages.city.min },
+      { key: "address", errorMessage: errorMessages.address.min },
+      { key: "phone", errorMessage: errorMessages.phone.min },
+      { key: "postalCode", errorMessage: errorMessages.postalCode.min },
+    ];
+
+  requiredFields.forEach(({ key, errorMessage }) => {
+    const value = billing[key];
+    if (!value || (typeof value === "string" && value.trim() === "")) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: errorMessage,
+        path: ["billingAddress", key],
+      });
+    }
+  });
+});
 
 export const checkoutSchema = baseCheckoutSchema;
 
