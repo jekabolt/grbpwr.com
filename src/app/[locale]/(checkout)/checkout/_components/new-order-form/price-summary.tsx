@@ -1,13 +1,22 @@
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
+import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 export function PriceSummary({ order, form }: PriceSummaryProps) {
-  const { dictionary } = useDataContext();
   const t = useTranslations("checkout");
+
+  const { dictionary } = useDataContext();
+  const { selectedCurrency } = useCurrency((state) => state);
+
+  const currency = selectedCurrency;
+  const currencySymbol =
+    currencySymbols[currency] ||
+    currencySymbols[dictionary?.baseCurrency || "EUR"];
 
   if (!order) return null;
 
@@ -17,13 +26,13 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
 
   const selectedShipmentCarrierPrice = dictionary?.shipmentCarriers?.find(
     (c) => c.id + "" === selectedShipmentCarrierId,
-  )?.shipmentCarrier?.price?.value;
+  )?.prices?.[0]?.price?.value;
   return (
     <>
       <div className="space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t("subtotal")}:</Text>
-          <Text>{order?.subtotal?.value || ""}</Text>
+          <Text>{`${currencySymbol} ${order?.subtotal?.value || ""}`}</Text>
         </div>
         {(selectedShipmentCarrierPrice || promoFreeShipping) && (
           <div className="flex justify-between">
@@ -31,7 +40,7 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
             <Text>
               {promoFreeShipping
                 ? t("free by promo")
-                : selectedShipmentCarrierPrice}
+                : `${currencySymbol} ${selectedShipmentCarrierPrice}`}
             </Text>
           </div>
         )}
@@ -45,7 +54,7 @@ export function PriceSummary({ order, form }: PriceSummaryProps) {
         <div className="pt-5">
           <div className="flex justify-between border-t border-textInactiveColor pt-3">
             <Text variant={"uppercase"}>{t("grand total")}:</Text>
-            <Text>{order.totalSale?.value || ""}</Text>
+            <Text>{`${currencySymbol} ${order.totalSale?.value || ""}`}</Text>
           </div>
         </div>
       </div>

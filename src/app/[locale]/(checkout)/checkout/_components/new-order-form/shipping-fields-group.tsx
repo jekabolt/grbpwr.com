@@ -71,7 +71,7 @@ export default function ShippingFieldsGroup({
                 value: c.id + "" || "",
                 icon: createShipmentCarrierIcon(
                   c.shipmentCarrier?.carrier || "",
-                  Number(c.shipmentCarrier?.price?.value) || 0,
+                  Number(c.prices?.[0]?.price?.value) || 0,
                   dictionary.baseCurrency || "",
                 ),
               }))}

@@ -76,6 +76,8 @@ type NewOrderFormProps = {
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { countryCode } = useTranslationsStore((state) => state.currentCountry);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isPaymentElementComplete, setIsPaymentElementComplete] =
+    useState<boolean>(false);
   const t = useTranslations("checkout");
   const stripe = useStripe();
   const elements = useElements();
@@ -117,6 +119,19 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     });
     return () => subscription.unsubscribe();
   }, [form, handleFormChange]);
+
+  // Watch payment method for reactive validation
+  const paymentMethod = form.watch("paymentMethod");
+
+  const isPaymentFieldsValid = () => {
+    // If payment method is not card, payment element doesn't need to be complete
+    if (paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") {
+      return true;
+    }
+
+    // For card payment, PaymentElement must be complete
+    return isPaymentElementComplete;
+  };
 
   const onSubmit = async (data: CheckoutData) => {
     setLoading(true);
@@ -234,6 +249,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               isOpen={isGroupOpen("payment")}
               onToggle={() => handleGroupToggle("payment")}
               disabled={isGroupDisabled("payment")}
+              onPaymentElementChange={setIsPaymentElementComplete}
             />
           </div>
           <div className="space-y-8 lg:sticky lg:top-16 lg:self-start">
@@ -254,7 +270,9 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               variant="main"
               size="lg"
               className="w-full uppercase"
-              disabled={!form.formState.isValid || loading}
+              disabled={
+                !form.formState.isValid || !isPaymentFieldsValid() || loading
+              }
               loading={loading}
               loadingType="order-processing"
             >

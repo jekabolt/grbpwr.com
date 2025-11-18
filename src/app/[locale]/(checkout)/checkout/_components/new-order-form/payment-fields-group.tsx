@@ -6,7 +6,6 @@ import { PaymentElement } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
-import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { useDataContext } from "@/components/contexts/DataContext";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import { Tron } from "@/components/ui/icons/tron";
@@ -24,19 +23,21 @@ type Props = {
   isOpen: boolean;
   onToggle: () => void;
   disabled?: boolean;
+  onPaymentElementChange?: (isComplete: boolean) => void;
 };
 
 export default function PaymentFieldsGroup({
   loading,
   isOpen,
-  onToggle,
   disabled = false,
+  onToggle,
+  onPaymentElementChange,
 }: Props) {
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
   const { watch, unregister } = useFormContext();
-  const { handlePaymentMethodChange } = useCheckoutAnalytics({});
+  // const { handlePaymentMethodChange } = useCheckoutAnalytics({});
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
@@ -46,6 +47,12 @@ export default function PaymentFieldsGroup({
       unregister("billingAddress");
     }
   }, [billingAddressIsSameAsAddress, unregister]);
+
+  const handlePaymentElementChange = (e: { complete: boolean }) => {
+    if (onPaymentElementChange) {
+      onPaymentElementChange(e.complete);
+    }
+  };
 
   const allowedMethods =
     dictionary?.paymentMethods?.filter((v) => v.allowed) || [];
@@ -57,11 +64,11 @@ export default function PaymentFieldsGroup({
       ]
     : undefined;
 
-  const paymentMethodsItems = allowedMethods.map((v) => ({
-    label: paymentMethodNamesMap[v.name as keyof typeof paymentMethodNamesMap],
-    value: v.name,
-    icon: v.name ? paymentMethodIcons[v.name] || null : null,
-  }));
+  // const paymentMethodsItems = allowedMethods.map((v) => ({
+  //   label: paymentMethodNamesMap[v.name as keyof typeof paymentMethodNamesMap],
+  //   value: v.name,
+  //   icon: v.name ? paymentMethodIcons[v.name] || null : null,
+  // }));
 
   return (
     <FieldsGroupContainer
@@ -84,6 +91,7 @@ export default function PaymentFieldsGroup({
       <div className="py-2">
         {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
           <PaymentElement
+            onChange={handlePaymentElementChange}
             options={{
               layout: "tabs",
               fields: {

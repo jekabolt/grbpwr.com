@@ -354,13 +354,18 @@ export type common_PaymentMethodNameEnum =
 export type common_ShipmentCarrier = {
   id: number | undefined;
   shipmentCarrier: common_ShipmentCarrierInsert | undefined;
+  prices: common_ShipmentCarrierPrice[] | undefined;
 };
 
 export type common_ShipmentCarrierInsert = {
   carrier: string | undefined;
-  price: googletype_Decimal | undefined;
   allowed: boolean | undefined;
   description: string | undefined;
+};
+
+export type common_ShipmentCarrierPrice = {
+  currency: string | undefined;
+  price: googletype_Decimal | undefined;
 };
 
 export type common_Size = {

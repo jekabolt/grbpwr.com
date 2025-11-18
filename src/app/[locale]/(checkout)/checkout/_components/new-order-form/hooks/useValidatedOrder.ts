@@ -8,6 +8,7 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { serviceClient } from "@/lib/api";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { CheckoutData } from "../schema";
 
 export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
@@ -16,8 +17,10 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   >(undefined);
   const products = useCart((cart) => cart.products);
   const { dictionary } = useDataContext();
+  const { selectedCurrency } = useCurrency((state) => state);
+  const currency = selectedCurrency || dictionary?.baseCurrency;
 
-  const validateItems = async () => {
+  const validateItems = async (shipmentCarrierId?: string) => {
     const items = products.map((p) => ({
       productId: p.id,
       quantity: p.quantity,
@@ -27,16 +30,15 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
     if (!items || items?.length === 0) return null;
 
     const promoCode = form.getValues("promoCode");
-    const shipmentCarrierId = form.getValues("shipmentCarrierId");
+    const carrierId = shipmentCarrierId || form.getValues("shipmentCarrierId");
     const country = form.getValues("country");
     const paymentMethod = form.getValues("paymentMethod");
-    const currency = dictionary?.baseCurrency;
 
     console.log("validating products ⌛️");
     const response = await serviceClient.ValidateOrderItemsInsert({
       items,
       promoCode,
-      shipmentCarrierId: parseInt(shipmentCarrierId),
+      shipmentCarrierId: parseInt(carrierId),
       country,
       paymentMethod,
       currency,
