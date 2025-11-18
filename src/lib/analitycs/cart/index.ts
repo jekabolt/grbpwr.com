@@ -11,20 +11,22 @@ export function sendAddToCartEvent(
     item: common_ProductFull,
     topCategory: string,
     subCategory: string,
+    selectedCurrency: string,
 ) {
-    const productBody = item.product?.productDisplay?.productBody;
-    const totalValue = parseFloat(
-        productBody?.productBodyInsert?.price?.value || "0",
-    );
+    const currencyKey = selectedCurrency || "EUR";
+    const price = item.product?.prices?.find(
+        (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
+    ) || item.product?.prices?.[0];
+    const totalValue = parseFloat(price?.price?.value || "0");
 
     if (!item || !item.product) return;
 
     const event: EcommerceEvent = {
         event: "add_to_cart",
         ecommerce: {
-            currency: "EUR",
+            currency: currencyKey.toUpperCase(),
             value: totalValue,
-            items: [mapItemsToDataLayer(item.product, 1, topCategory, subCategory)],
+            items: [mapItemsToDataLayer(item.product, 1, topCategory, subCategory, selectedCurrency)],
         },
     };
 

@@ -46,17 +46,18 @@ export function getTotalProductQuantity(product: common_ProductFull): number {
     }, 0);
 }
 
-export function getTotalProductValue(product: common_ProductFull): number {
+export function getTotalProductValue(product: common_ProductFull, selectedCurrency: string): number {
     if (!product?.sizes || product.sizes.length === 0) {
         return 0;
     }
 
-    const productBody =
-        product.product?.productDisplay?.productBody?.productBodyInsert;
-    const price = parseFloat(productBody?.price?.value || "0");
+    const price = product.product?.prices?.find(
+        (p) => p.currency?.toUpperCase() === selectedCurrency.toUpperCase(),
+    ) || product.product?.prices?.[0];
+    const priceValue = parseFloat(price?.price?.value || "0");
     return product.sizes.reduce((total, size) => {
         const quantity = parseInt(size.quantity?.value || "0");
-        return total + quantity * price;
+        return total + quantity * priceValue;
     }, 0);
 }
 

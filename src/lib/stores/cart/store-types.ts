@@ -23,6 +23,7 @@ export interface CartActions {
     productId: number,
     size: string,
     quantity?: number,
+    currency?: string,
   ) => Promise<void>;
   removeProduct: (productId: number, size: string, index?: number) => void;
   clearCart: () => void;

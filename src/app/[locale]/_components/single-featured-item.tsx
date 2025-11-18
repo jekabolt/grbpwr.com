@@ -4,7 +4,7 @@ import { currencySymbols } from "@/constants";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio } from "@/lib/utils";
+import { calculateAspectRatio, calculatePriceWithSale } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
@@ -17,28 +17,27 @@ export function SingleFeaturedItem({
   headline?: string;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
-  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const { selectedCurrency } = useCurrency((state) => state);
   const [isHovered, setIsHovered] = useState(false);
+
+  const currencyKey = selectedCurrency || "EUR";
 
   return (
     <div>
       {products?.map((p) => {
-        const priceWithSale =
-          (parseFloat(
-            p.productDisplay?.productBody?.productBodyInsert?.price?.value ||
-              "0",
-          ) *
-            (100 -
-              parseInt(
-                p.productDisplay?.productBody?.productBodyInsert?.salePercentage
-                  ?.value || "0",
-              ))) /
-          100;
-        const isSaleApplied =
-          parseInt(
-            p.productDisplay?.productBody?.productBodyInsert?.salePercentage
-              ?.value || "0",
-          ) > 0;
+        const productBody = p.productDisplay?.productBody?.productBodyInsert;
+        const price =
+          p.prices?.find(
+            (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
+          ) || p.prices?.[0];
+        const salePercentage = productBody?.salePercentage?.value || "0";
+        const salePercentageNum = parseInt(salePercentage, 10);
+        const isSaleApplied = salePercentageNum > 0;
+
+        const priceWithSale = calculatePriceWithSale(
+          price?.price?.value,
+          salePercentage,
+        );
 
         const currentTranslation =
           p.productDisplay?.productBody?.translations?.find(
@@ -65,10 +64,10 @@ export function SingleFeaturedItem({
                   <Text
                     variant={isSaleApplied ? "strileTroughInactive" : "default"}
                   >
-                    {`${currencySymbols[selectedCurrency]} ${convertPrice(p.productDisplay?.productBody?.productBodyInsert?.price?.value || "")}`}
+                    {`${currencySymbols[selectedCurrency]} ${price?.price?.value || ""}`}
                   </Text>
                   {isSaleApplied && (
-                    <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>
+                    <Text>{`${currencySymbols[selectedCurrency]} ${priceWithSale.toString()}`}</Text>
                   )}
                 </div>
                 <Text

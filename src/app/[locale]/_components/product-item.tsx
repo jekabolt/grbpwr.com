@@ -27,9 +27,11 @@ export function ProductItem({
 }) {
   const t = useTranslations("categories");
   const { dictionary } = useDataContext();
-  const { selectedCurrency, convertPrice } = useCurrency((state) => state);
+  const { selectedCurrency } = useCurrency((state) => state);
   const { handleSelectItemEvent } = useAnalytics();
 
+  // Find the price for the selected currency
+  const currencyKey = selectedCurrency || "EUR";
   const productBody = product.productDisplay?.productBody?.productBodyInsert;
   const salePercentage = productBody?.salePercentage?.value || "0";
   const isSaleApplied = salePercentage && salePercentage !== "0";
@@ -54,10 +56,19 @@ export function ProductItem({
     : "";
   const name = `${fit} ${translatedCategory}`;
 
+  const productPrice =
+    product.prices?.find(
+      (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
+    ) || product.prices?.[0];
+
+  const priceValue = productPrice?.price?.value || "0";
+  const currencySymbol = currencySymbols[currencyKey] || currencySymbols["EUR"];
+
   const priceWithSale =
-    (parseFloat(productBody?.price?.value || "0") *
-      (100 - parseInt(salePercentage || "0"))) /
-    100;
+    (parseFloat(priceValue) * (100 - parseInt(salePercentage || "0"))) / 100;
+
+  const formattedPrice = parseFloat(priceValue).toFixed(2);
+  const formattedPriceWithSale = priceWithSale.toFixed(2);
 
   return (
     <div className={cn("relative", className)}>
@@ -93,10 +104,10 @@ export function ProductItem({
           </Text>
           <div className="flex gap-1 leading-none">
             <Text variant={isSaleApplied ? "strileTroughInactive" : "default"}>
-              {`${currencySymbols[selectedCurrency]} ${convertPrice(product.productDisplay?.productBody?.productBodyInsert?.price?.value || "")}`}
+              {`${currencySymbol} ${formattedPrice}`}
             </Text>
             {isSaleApplied && (
-              <Text>{`${currencySymbols[selectedCurrency]} ${convertPrice(priceWithSale.toString())}`}</Text>
+              <Text>{`${currencySymbol} ${formattedPriceWithSale}`}</Text>
             )}
             {preorder !== EMPTY_PREORDER &&
               isDateTodayOrFuture(preorder || "") && (

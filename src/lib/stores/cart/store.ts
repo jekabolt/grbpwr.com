@@ -35,6 +35,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           productId: number,
           size: string,
           quantity: number = 1,
+          currency?: string,
         ) => {
           const { products } = get();
 
@@ -48,6 +49,22 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
           const updatedProducts = [...products, ...newItems];
 
+          let currencyToUse = currency;
+          if (!currencyToUse && typeof window !== "undefined") {
+            try {
+              const currencyStorage = localStorage.getItem("currency-store");
+              if (currencyStorage) {
+                const parsed = JSON.parse(currencyStorage);
+                currencyToUse = parsed?.state?.selectedCurrency || "EUR";
+              } else {
+                currencyToUse = "EUR";
+              }
+            } catch {
+              currencyToUse = "EUR";
+            }
+          }
+          currencyToUse = currencyToUse || "EUR";
+
           try {
             const response = await serviceClient.ValidateOrderItemsInsert({
               items: updatedProducts.map((p) => ({
@@ -59,7 +76,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
               promoCode: undefined,
               country: undefined,
               paymentMethod: undefined,
-              currency: undefined,
+              currency: currencyToUse,
             });
 
             const validatedItem = response.validItems?.find(

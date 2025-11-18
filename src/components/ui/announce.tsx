@@ -17,7 +17,7 @@ export function Announce({
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
   const announce =
-    dictionary?.announceTranslations?.find((t) => t.languageId === languageId)
+    dictionary?.announce?.translations?.find((t) => t.languageId === languageId)
       ?.text || "";
 
   if (!open || !announce) return null;

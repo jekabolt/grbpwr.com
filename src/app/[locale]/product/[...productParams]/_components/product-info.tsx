@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { sendViewItemEvent } from "@/lib/analitycs/product";
+import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Text } from "@/components/ui/text";
 import Modal from "@/app/[locale]/product/[...productParams]/_components/MeasurementPopup";
 
@@ -20,6 +21,7 @@ import { useProductSizes } from "./utils/useProductSizes";
 export function ProductInfo({ product }: { product: common_ProductFull }) {
   const sizePickerRef = useRef<HTMLDivElement>(null);
 
+  const { selectedCurrency } = useCurrency((state) => state);
   const { name, productId, productCategory, productSubCategory } =
     useProductBasics({
       product,
@@ -42,6 +44,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
         product,
         productCategory || "",
         productSubCategory || "",
+        selectedCurrency,
       );
     }
   }, [product]);

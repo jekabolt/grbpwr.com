@@ -13,11 +13,16 @@ export function mapItemsToDataLayer(
     quantity: number,
     topCategory: string,
     subCategory: string,
+    selectedCurrency: string,
 ): AnalyticsItem {
+    const currencyKey = selectedCurrency || "EUR";
     const productBody = product.productDisplay?.productBody?.productBodyInsert;
-    const price = parseFloat(productBody?.price?.value || "0");
+    const price = product.prices?.find(
+        (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
+    ) || product.prices?.[0];
+    const priceValue = parseFloat(price?.price?.value || "0");
     const salePercentage = parseFloat(productBody?.salePercentage?.value || "0");
-    const discount = (price * salePercentage) / 100;
+    const discount = (priceValue * salePercentage) / 100;
 
     return {
         item_id: product.sku || "",
@@ -28,7 +33,7 @@ export function mapItemsToDataLayer(
         item_category2: subCategory || "",
         item_variant: productBody?.version || "",
         discount: discount || 0,
-        price: price || 0,
+        price: priceValue || 0,
         quantity: quantity || 1,
     };
 }
@@ -39,17 +44,19 @@ export function sendViewItemListEvent(
     listId: string,
     topCategory: string,
     subCategory: string,
+    selectedCurrency: string,
 ) {
     if (!products?.length || !listName || !listId) return;
 
+    const currencyKey = selectedCurrency || "EUR";
     const event: EcommerceEvent = {
         event: "view_item_list",
         ecommerce: {
-            currency: "EUR",
+            currency: currencyKey.toUpperCase(),
             item_list_id: listId,
             item_list_name: listName,
             items: products.map((p) =>
-                mapItemsToDataLayer(p, 1, topCategory, subCategory),
+                mapItemsToDataLayer(p, 1, topCategory, subCategory, selectedCurrency),
             ),
         },
     };
@@ -63,16 +70,18 @@ export function sendSelectItemEvent(
     listId: string,
     topCategory: string,
     subCategory: string,
+    selectedCurrency: string,
 ) {
     if (!product || !listName || !listId) return;
 
+    const currencyKey = selectedCurrency || "EUR";
     const event: EcommerceEvent = {
         event: "select_item",
         ecommerce: {
-            currency: "EUR",
+            currency: currencyKey.toUpperCase(),
             item_list_id: listId,
             item_list_name: listName,
-            items: [mapItemsToDataLayer(product, 1, topCategory, subCategory)],
+            items: [mapItemsToDataLayer(product, 1, topCategory, subCategory, selectedCurrency)],
         },
     };
 
@@ -83,8 +92,10 @@ export function sendViewItemEvent(
     product: common_ProductFull,
     topCategory: string,
     subCategory: string,
+    selectedCurrency: string,
 ) {
-    const totalValue = getTotalProductValue(product);
+    const currencyKey = selectedCurrency || "EUR";
+    const totalValue = getTotalProductValue(product, currencyKey);
     const totalQuantity = getTotalProductQuantity(product);
 
     if (!product || !product?.product) return;
@@ -92,7 +103,7 @@ export function sendViewItemEvent(
     const event: EcommerceEvent = {
         event: "view_item",
         ecommerce: {
-            currency: "EUR",
+            currency: currencyKey.toUpperCase(),
             value: totalValue,
             items: [
                 mapItemsToDataLayer(
@@ -100,6 +111,7 @@ export function sendViewItemEvent(
                     totalQuantity,
                     topCategory,
                     subCategory,
+                    selectedCurrency,
                 ),
             ],
         },
