@@ -42,20 +42,16 @@ export function MobileNavCart({
         </Button>
         <DialogPrimitives.Portal>
           <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-black" />
-          <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 flex min-h-dvh w-screen flex-col bg-bgColor text-textColor lg:hidden">
+          <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 flex min-h-dvh w-screen flex-col bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>
-            <div
-              className={cn("flex h-full flex-col justify-between", {
-                "pt-4": itemsQuantity > 0,
-              })}
-            >
+            <div className="flex h-full flex-col justify-between">
               <div
                 className={cn(
                   "relative mb-10 flex items-center justify-between",
                   {
-                    "mb-10": itemsQuantity === 0,
+                    "mb-0": itemsQuantity === 0,
                   },
                 )}
               >
@@ -64,7 +60,6 @@ export function MobileNavCart({
                   <Button onClick={closeCart}>[x]</Button>
                 </DialogPrimitives.Close>
               </div>
-
               {itemsQuantity > 0 ? (
                 <>
                   <div className="no-scroll-bar h-full overflow-y-scroll">
@@ -85,7 +80,9 @@ export function MobileNavCart({
                   </div>
                 </>
               ) : (
-                <Text variant="uppercase">{tCart("empty")}</Text>
+                <div className="flex h-full items-center justify-center">
+                  <Text variant="uppercase">{tCart("empty")}</Text>
+                </div>
               )}
             </div>
           </DialogPrimitives.Content>
