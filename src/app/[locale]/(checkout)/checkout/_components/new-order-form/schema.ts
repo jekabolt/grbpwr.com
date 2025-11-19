@@ -60,15 +60,48 @@ const baseCheckoutSchema = z.object({
     ),
 
   rememberMe: z.boolean().optional(),
-  paymentMethod: z
-    .union([
-      z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
-      z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
-      z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
-      z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
-      z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
-    ])
+  paymentMethod: z.union([
+    z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
+  ]),
 })
+  .superRefine((data, ctx) => {
+    if (!data.billingAddressIsSameAsAddress) {
+      if (!data.billingAddress) {
+        ctx.addIssue({
+          path: ["billingAddress"],
+          message: "Billing address is required",
+          code: z.ZodIssueCode.custom,
+        });
+        return;
+      }
+
+      const requiredFields = [
+        "firstName",
+        "lastName",
+        "country",
+        "city",
+        "address",
+        "phone",
+        "postalCode",
+      ];
+
+      for (const field of requiredFields) {
+        const value = data.billingAddress[field as keyof typeof data.billingAddress];
+        if (!value || (typeof value === "string" && value.trim() === "")) {
+          ctx.addIssue({
+            path: ["billingAddress", field],
+            message: (errorMessages as any)[field]?.min || `${field} is required`,
+            code: z.ZodIssueCode.custom,
+          });
+        }
+      }
+    }
+  });
+
 
 export const checkoutSchema = baseCheckoutSchema;
 
