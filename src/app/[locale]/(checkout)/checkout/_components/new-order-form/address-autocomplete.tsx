@@ -13,6 +13,7 @@ type AddressComponents = {
   streetNumber: string;
   route: string;
   postalCode: string;
+  city: string;
 };
 
 function extractAddressComponents(addressComponents: any[]): AddressComponents {
@@ -24,12 +25,20 @@ function extractAddressComponents(addressComponents: any[]): AddressComponents {
       else if (types.includes("route")) acc.route = component.long_name;
       else if (types.includes("postal_code"))
         acc.postalCode = component.long_name;
+      else if (
+        types.includes("locality") ||
+        types.includes("postal_town") ||
+        (types.includes("administrative_area_level_2") && !acc.city)
+      ) {
+        acc.city = component.long_name;
+      }
       return acc;
     },
     {
       streetNumber: "",
       route: "",
       postalCode: "",
+      city: "",
     },
   );
 }
@@ -37,7 +46,11 @@ function extractAddressComponents(addressComponents: any[]): AddressComponents {
 function updateAddressFields(
   components: AddressComponents,
   prefix: string | undefined,
-  setValue: (field: string, value: string) => void,
+  setValue: (
+    field: string,
+    value: string,
+    options?: { shouldValidate?: boolean; shouldDirty?: boolean },
+  ) => void,
 ) {
   const address = [components.route, components.streetNumber]
     .filter(Boolean)
@@ -45,10 +58,23 @@ function updateAddressFields(
 
   const addressFieldName = prefix ? `${prefix}.address` : "address";
   const postalCodeFieldName = prefix ? `${prefix}.postalCode` : "postalCode";
+  const cityFieldName = prefix ? `${prefix}.city` : "city";
 
-  if (address) setValue(addressFieldName, address);
+  if (address)
+    setValue(addressFieldName, address, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   if (components.postalCode)
-    setValue(postalCodeFieldName, components.postalCode);
+    setValue(postalCodeFieldName, components.postalCode, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  if (components.city)
+    setValue(cityFieldName, components.city, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
 }
 
 type Props = {
