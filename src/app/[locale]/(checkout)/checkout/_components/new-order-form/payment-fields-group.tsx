@@ -21,8 +21,8 @@ export const paymentMethodIcons: Record<string, React.ReactNode> = {
 type Props = {
   loading: boolean;
   isOpen: boolean;
-  onToggle: () => void;
   disabled?: boolean;
+  onToggle: () => void;
   onPaymentElementChange?: (isComplete: boolean) => void;
 };
 
