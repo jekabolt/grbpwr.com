@@ -437,9 +437,13 @@ export type PromoCode = {
   promoCodeInsert: PromoCodeInsert | undefined;
 };
 
+export type ShipmentCarrierPrice = {
+  currency: string | undefined;
+  price: googletype_Decimal | undefined;
+};
+
 export type ShipmentCarrierInsert = {
   carrier: string | undefined;
-  price: googletype_Decimal | undefined;
   allowed: boolean | undefined;
   description: string | undefined;
 };
@@ -447,6 +451,7 @@ export type ShipmentCarrierInsert = {
 export type ShipmentCarrier = {
   id: number | undefined;
   shipmentCarrier: ShipmentCarrierInsert | undefined;
+  prices: ShipmentCarrierPrice[] | undefined;
 };
 
 // Shipment represents the shipment table

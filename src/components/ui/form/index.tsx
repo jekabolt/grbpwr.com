@@ -148,10 +148,15 @@ function FormMessage({
     const errorMessage = String(error.message || "");
     const errorType =
       Object.entries(errorMap).find(([key]) =>
-        errorMessage.includes(key),
-      )?.[1] || errorMessage.replace(/\s+/g, "");
+        errorMessage.toLowerCase().includes(key.toLowerCase()),
+      )?.[1] || errorMessage.replace(/\s+/g, "").toLowerCase();
 
-    const errorKey = `${fieldName}.${errorType}`;
+    // Extract the field name from nested paths (e.g., "billingAddress.firstName" -> "firstName")
+    const baseFieldName = fieldName.includes(".")
+      ? fieldName.split(".").pop() || fieldName
+      : fieldName;
+
+    const errorKey = `${baseFieldName}.${errorType}`;
     const translated = translateError(errorKey);
     body = translated === errorKey ? errorMessage : translated;
   } else {

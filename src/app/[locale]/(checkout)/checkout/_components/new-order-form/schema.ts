@@ -38,18 +38,70 @@ const baseCheckoutSchema = z.object({
   promoCode: z.string().optional(),
 
   billingAddressIsSameAsAddress: z.boolean(),
-  billingAddress: z.object(addressFields).optional(),
+  billingAddress: z
+    .preprocess(
+      (val) => {
+        if (!val || typeof val !== "object") return val;
+        const obj = val as Record<string, unknown>;
+        return {
+          firstName: obj.firstName ?? "",
+          lastName: obj.lastName ?? "",
+          country: obj.country ?? "",
+          state: obj.state ?? "",
+          city: obj.city ?? "",
+          address: obj.address ?? "",
+          additionalAddress: obj.additionalAddress ?? "",
+          company: obj.company ?? "",
+          phone: obj.phone ?? "",
+          postalCode: obj.postalCode ?? "",
+        };
+      },
+      z.object(addressFields).optional(),
+    ),
 
   rememberMe: z.boolean().optional(),
-  paymentMethod: z
-    .union([
-      z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
-      z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
-      z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
-      z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
-      z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
-    ])
+  paymentMethod: z.union([
+    z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
+    z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
+  ]),
 })
+  .superRefine((data, ctx) => {
+    if (!data.billingAddressIsSameAsAddress) {
+      if (!data.billingAddress) {
+        ctx.addIssue({
+          path: ["billingAddress"],
+          message: "Billing address is required",
+          code: z.ZodIssueCode.custom,
+        });
+        return;
+      }
+
+      const requiredFields = [
+        "firstName",
+        "lastName",
+        "country",
+        "city",
+        "address",
+        "phone",
+        "postalCode",
+      ];
+
+      for (const field of requiredFields) {
+        const value = data.billingAddress[field as keyof typeof data.billingAddress];
+        if (!value || (typeof value === "string" && value.trim() === "")) {
+          ctx.addIssue({
+            path: ["billingAddress", field],
+            message: (errorMessages as any)[field]?.min || `${field} is required`,
+            code: z.ZodIssueCode.custom,
+          });
+        }
+      }
+    }
+  });
+
 
 export const checkoutSchema = baseCheckoutSchema;
 

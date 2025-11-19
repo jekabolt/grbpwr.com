@@ -71,7 +71,7 @@ export default function ShippingFieldsGroup({
                 value: c.id + "" || "",
                 icon: createShipmentCarrierIcon(
                   c.shipmentCarrier?.carrier || "",
-                  Number(c.shipmentCarrier?.price?.value) || 0,
+                  Number(c.prices?.[0]?.price?.value) || 0,
                   dictionary.baseCurrency || "",
                 ),
               }))}
@@ -93,7 +93,11 @@ export function AddressFields({
 }) {
   const { phoneCodeItems, stateItems, countries, handleCountryChange } =
     useAddressFields(prefix);
+  const { watch } = useFormContext();
   const t = useTranslations("checkout");
+
+  const countryFieldName = prefix ? `${prefix}.country` : "country";
+  const selectedCountry = watch(countryFieldName);
 
   return (
     <>
@@ -124,6 +128,7 @@ export function AddressFields({
         loading={loading}
         disabled={disabled}
         prefix={prefix}
+        countryCode={selectedCountry}
       />
 
       <SelectField
