@@ -75,15 +75,17 @@ type NewOrderFormProps = {
 
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { countryCode } = useTranslationsStore((state) => state.currentCountry);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [isPaymentElementComplete, setIsPaymentElementComplete] =
-    useState<boolean>(false);
-  const t = useTranslations("checkout");
-  const stripe = useStripe();
-  const elements = useElements();
   const { clearCart } = useCart((s) => s);
   const { selectedCurrency } = useCurrency((state) => state);
   const { handlePurchaseEvent } = useCheckoutAnalytics({});
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isPaymentElementComplete, setIsPaymentElementComplete] =
+    useState<boolean>(false);
+
+  const t = useTranslations("checkout");
+  const stripe = useStripe();
+  const elements = useElements();
 
   const defaultValues = {
     ...defaultData,
@@ -120,16 +122,12 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     return () => subscription.unsubscribe();
   }, [form, handleFormChange]);
 
-  // Watch payment method for reactive validation
   const paymentMethod = form.watch("paymentMethod");
 
   const isPaymentFieldsValid = () => {
-    // If payment method is not card, payment element doesn't need to be complete
     if (paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") {
       return true;
     }
-
-    // For card payment, PaymentElement must be complete
     return isPaymentElementComplete;
   };
 
