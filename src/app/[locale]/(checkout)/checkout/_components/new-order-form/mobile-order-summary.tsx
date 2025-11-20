@@ -12,7 +12,7 @@ type Props = {
   validatedProducts?: common_OrderItem[];
 };
 
-export function MobileItemsWrapper({ validatedProducts }: Props) {
+export function MobileOrderSummary({ validatedProducts }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   function handleToggle() {

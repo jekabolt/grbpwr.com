@@ -20,7 +20,6 @@ import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
 import { useOrderPersistence } from "./hooks/useOrderPersistence";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
-import { MobileItemsWrapper } from "./mobile-items-wrapper";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
 import { PriceSummary } from "./price-summary";
@@ -247,7 +246,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               disabled={isGroupDisabled("shipping")}
             />
             <PaymentFieldsGroup
+              validatedProducts={order?.validItems}
               loading={loading}
+              form={form}
+              validateItems={validateItems}
               isOpen={isGroupOpen("payment")}
               onToggle={() => handleGroupToggle("payment")}
               disabled={isGroupDisabled("payment")}
@@ -283,9 +285,6 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               {t("pay")}
             </Button>
           </div>
-        </div>
-        <div className="block lg:hidden">
-          <MobileItemsWrapper validatedProducts={order?.validItems} />
         </div>
       </form>
     </Form>

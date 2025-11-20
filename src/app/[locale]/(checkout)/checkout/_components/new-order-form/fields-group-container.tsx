@@ -69,14 +69,10 @@ export default function FieldsGroupContainer({
 
   return (
     <div
-      className={cn(
-        "space-y-4 bg-bgColor text-textColor lg:space-y-8",
-        {
-          "space-y-0 lg:space-y-0": clickableArea === "full",
-          "space-y-4": mode === "non-collapsible",
-        },
-        className,
-      )}
+      className={cn("space-y-4 bg-bgColor text-textColor lg:space-y-8", {
+        "space-y-0 lg:space-y-0": clickableArea === "full",
+        "space-y-4": mode === "non-collapsible",
+      })}
     >
       <div
         className={cn(
@@ -88,6 +84,7 @@ export default function FieldsGroupContainer({
             "cursor-pointer": mode === "collapsible" && !disabled,
           },
           clickableArea === "full" ? clickableAreaClassName : undefined,
+          className,
         )}
         onClick={mode === "collapsible" ? handleToggle : undefined}
       >

@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  common_OrderItem,
+  ValidateOrderItemsInsertResponse,
+} from "@/api/proto-http/frontend";
 import { paymentMethodNamesMap } from "@/constants";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, UseFormReturn } from "react-hook-form";
 
 import { useDataContext } from "@/components/contexts/DataContext";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
@@ -12,6 +16,8 @@ import { Tron } from "@/components/ui/icons/tron";
 import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "./fields-group-container";
+import { MobileOrderSummary } from "./mobile-order-summary";
+import PromoCode from "./PromoCode";
 import { AddressFields } from "./shipping-fields-group";
 
 export const paymentMethodIcons: Record<string, React.ReactNode> = {
@@ -22,6 +28,9 @@ type Props = {
   loading: boolean;
   isOpen: boolean;
   disabled?: boolean;
+  validatedProducts?: common_OrderItem[];
+  form: UseFormReturn<any>;
+  validateItems: () => Promise<ValidateOrderItemsInsertResponse | null>;
   onToggle: () => void;
   onPaymentElementChange?: (isComplete: boolean) => void;
 };
@@ -30,6 +39,9 @@ export default function PaymentFieldsGroup({
   loading,
   isOpen,
   disabled = false,
+  validatedProducts,
+  form,
+  validateItems,
   onToggle,
   onPaymentElementChange,
 }: Props) {
@@ -37,6 +49,8 @@ export default function PaymentFieldsGroup({
 
   const { dictionary } = useDataContext();
   const { watch, unregister, setValue, trigger } = useFormContext();
+
+  const [open, setOpen] = useState(false);
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
@@ -62,6 +76,10 @@ export default function PaymentFieldsGroup({
       onPaymentElementChange(e.complete);
     }
   };
+
+  function handleToggle() {
+    setOpen((prev) => !prev);
+  }
 
   const allowedMethods =
     dictionary?.paymentMethods?.filter((v) => v.allowed) || [];
@@ -97,22 +115,46 @@ export default function PaymentFieldsGroup({
         disabled={disabled}
       /> */}
 
-      <div className="py-2">
-        {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
-          <PaymentElement
-            onChange={handlePaymentElementChange}
-            options={{
-              layout: "tabs",
-              fields: {
-                billingDetails: {
-                  address: {
-                    country: "never",
+      <div>
+        <div className="block lg:hidden">
+          <FieldsGroupContainer
+            styling={{
+              sign: "plus-minus",
+              signPosition: "before",
+            }}
+            title="redeem promo code"
+            isOpen={open}
+            onToggle={handleToggle}
+          >
+            <PromoCode
+              freeShipmentCarrierId={2}
+              form={form}
+              loading={loading}
+              validateItems={validateItems}
+            />
+          </FieldsGroupContainer>
+        </div>
+        <div className="py-2">
+          {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
+            <PaymentElement
+              onChange={handlePaymentElementChange}
+              options={{
+                layout: "tabs",
+                fields: {
+                  billingDetails: {
+                    address: {
+                      country: "never",
+                    },
                   },
                 },
-              },
-            }}
-          />
-        )}
+              }}
+            />
+          )}
+        </div>
+
+        <div className="block lg:hidden">
+          <MobileOrderSummary validatedProducts={validatedProducts} />
+        </div>
       </div>
 
       <Text variant="uppercase" component="h2">
