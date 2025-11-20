@@ -20,6 +20,7 @@ import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
 import { useOrderPersistence } from "./hooks/useOrderPersistence";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
+import { MobileItemsWrapper } from "./mobile-items-wrapper";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
 import { PriceSummary } from "./price-summary";
@@ -226,7 +227,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="relative">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="relative space-y-14 lg:space-y-0"
+      >
+        <div className="block lg:hidden">
+          <MobileItemsWrapper validatedProducts={order?.validItems} />
+        </div>
         <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
           <div className="space-y-10 lg:space-y-16">
             <ContactFieldsGroup
@@ -250,19 +257,21 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               onPaymentElementChange={setIsPaymentElementComplete}
             />
           </div>
-          <div className="space-y-8 lg:sticky lg:top-16 lg:self-start">
-            <Text variant="uppercase">{t("order summary")}</Text>
+          <div className="fixed inset-x-0 bottom-0 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
+            <div className="hidden space-y-8 lg:block">
+              <Text variant="uppercase">{t("order summary")}</Text>
 
-            <OrderProducts validatedProducts={order?.validItems} />
+              <OrderProducts validatedProducts={order?.validItems} />
 
-            <div className="space-y-8">
-              <PromoCode
-                freeShipmentCarrierId={2}
-                form={form}
-                loading={loading}
-                validateItems={validateItems}
-              />
-              <PriceSummary form={form} order={order} />
+              <div className="space-y-8">
+                <PromoCode
+                  freeShipmentCarrierId={2}
+                  form={form}
+                  loading={loading}
+                  validateItems={validateItems}
+                />
+                <PriceSummary form={form} order={order} />
+              </div>
             </div>
             <Button
               variant="main"

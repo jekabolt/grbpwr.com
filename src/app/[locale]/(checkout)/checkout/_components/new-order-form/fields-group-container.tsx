@@ -8,19 +8,28 @@ import { MinusIcon } from "@/components/ui/icons/minus";
 import { PlusIcon } from "@/components/ui/icons/plus";
 import { Text } from "@/components/ui/text";
 
+interface CollapsibleSignProps {
+  sign: "arrow" | "plus-minus";
+  isOpen: boolean;
+  position: "before" | "after";
+}
+
 interface FieldsGroupContainerProps {
   stage?: string;
   title: string;
+  preview?: React.ReactNode;
   summary?: React.ReactNode;
   children: React.ReactNode;
   isOpen?: boolean;
   disabled?: boolean;
   mode?: "collapsible" | "non-collapsible";
+  className?: string;
   styling?: {
     clickableArea?: "full" | "default";
     clickableAreaClassName?: string;
     childrenSpacing?: string;
     sign?: "arrow" | "plus-minus";
+    signPosition?: "before" | "after";
   };
   onToggle?: () => void;
 }
@@ -28,11 +37,13 @@ interface FieldsGroupContainerProps {
 export default function FieldsGroupContainer({
   stage,
   title,
+  preview,
   children,
   summary,
   isOpen = false,
   disabled = false,
   mode = "collapsible",
+  className,
   styling = {},
   onToggle,
 }: FieldsGroupContainerProps) {
@@ -43,6 +54,7 @@ export default function FieldsGroupContainer({
     clickableAreaClassName,
     childrenSpacing = "space-y-8",
     sign = "arrow",
+    signPosition = "after",
   } = styling;
 
   useEffect(() => {
@@ -57,15 +69,20 @@ export default function FieldsGroupContainer({
 
   return (
     <div
-      className={cn("space-y-4 bg-bgColor text-textColor lg:space-y-8", {
-        "space-y-0 lg:space-y-0": clickableArea === "full",
-        "space-y-4": mode === "non-collapsible",
-      })}
+      className={cn(
+        "space-y-4 bg-bgColor text-textColor lg:space-y-8",
+        {
+          "space-y-0 lg:space-y-0": clickableArea === "full",
+          "space-y-4": mode === "non-collapsible",
+        },
+        className,
+      )}
     >
       <div
         className={cn(
-          "flex items-center justify-between",
+          "flex items-center",
           {
+            "justify-between": mode === "collapsible",
             "h-20": clickableArea === "full" && !clickableAreaClassName,
             "opacity-50": disabled,
             "cursor-pointer": mode === "collapsible" && !disabled,
@@ -74,29 +91,44 @@ export default function FieldsGroupContainer({
         )}
         onClick={mode === "collapsible" ? handleToggle : undefined}
       >
-        <div className="flex gap-x-6">
+        <div
+          className={cn("flex flex-1 gap-x-6", {
+            "items-center": !preview,
+            "items-start": preview,
+          })}
+        >
           {stage && (
             <Text variant="uppercase" className="w-8 text-textColor">
               {stage}
             </Text>
           )}
-          <Text variant="uppercase" className="text-textColor" component="h2">
-            {title}
-          </Text>
+          <div className="flex flex-1 items-start justify-between">
+            <div className="flex items-center">
+              {mode === "collapsible" && signPosition === "before" && (
+                <CollapsibleSign
+                  sign={sign}
+                  isOpen={localIsOpen}
+                  position={signPosition}
+                />
+              )}
+              <Text
+                variant="uppercase"
+                className="text-textColor"
+                component="h2"
+              >
+                {title}
+              </Text>
+            </div>
+            {preview && <div>{preview}</div>}
+          </div>
         </div>
 
-        {mode === "collapsible" && sign === "arrow" ? (
-          <div
-            className={cn("rotate-180 text-textColor", {
-              "rotate-0": localIsOpen,
-            })}
-          >
-            <Arrow className="text-textColor" />
-          </div>
-        ) : (
-          <div className="text-textColor">
-            {localIsOpen ? <MinusIcon /> : <PlusIcon />}
-          </div>
+        {mode === "collapsible" && signPosition === "after" && (
+          <CollapsibleSign
+            sign={sign}
+            isOpen={localIsOpen}
+            position={signPosition}
+          />
         )}
       </div>
       <div
@@ -116,6 +148,32 @@ export default function FieldsGroupContainer({
           {summary}
         </div>
       )}
+    </div>
+  );
+}
+
+function CollapsibleSign({ sign, isOpen, position }: CollapsibleSignProps) {
+  const signContent =
+    sign === "arrow" ? (
+      <div
+        className={cn("rotate-180", {
+          "rotate-0": isOpen,
+        })}
+      >
+        <Arrow className="text-textColor" />
+      </div>
+    ) : (
+      <>{isOpen ? <MinusIcon /> : <PlusIcon />}</>
+    );
+
+  return (
+    <div
+      className={cn("text-textColor", {
+        "mr-6": position === "before" && sign === "arrow",
+        "mr-4": position === "before" && sign === "plus-minus",
+      })}
+    >
+      {signContent}
     </div>
   );
 }
