@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { paymentMethodNamesMap } from "@/constants";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
@@ -40,13 +40,20 @@ export default function PaymentFieldsGroup({
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     if (billingAddressIsSameAsAddress) {
       unregister("billingAddress");
       trigger();
     } else {
       setValue("billingAddress", {}, { shouldValidate: true });
+      trigger("billingAddress");
     }
   }, [billingAddressIsSameAsAddress, unregister, setValue, trigger]);
 
