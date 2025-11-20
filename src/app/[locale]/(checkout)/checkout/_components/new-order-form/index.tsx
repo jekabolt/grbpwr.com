@@ -231,9 +231,6 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="relative space-y-14 lg:space-y-0"
       >
-        <div className="block lg:hidden">
-          <MobileItemsWrapper validatedProducts={order?.validItems} />
-        </div>
         <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
           <div className="space-y-10 lg:space-y-16">
             <ContactFieldsGroup
@@ -286,6 +283,9 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               {t("pay")}
             </Button>
           </div>
+        </div>
+        <div className="block lg:hidden">
+          <MobileItemsWrapper validatedProducts={order?.validItems} />
         </div>
       </form>
     </Form>

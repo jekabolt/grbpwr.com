@@ -26,20 +26,11 @@ export function MobileItemsWrapper({ validatedProducts }: Props) {
         signPosition: "before",
       }}
       title={`${isOpen ? "hide" : "show"} order summary`}
-      preview={<Preview />}
+      preview={<Text>2450.00 USD</Text>}
       isOpen={isOpen}
       onToggle={handleToggle}
     >
       <OrderProducts validatedProducts={validatedProducts} />
     </FieldsGroupContainer>
-  );
-}
-
-function Preview() {
-  return (
-    <div className="flex flex-col items-end">
-      <Text>2450.00 USD</Text>
-      <Text>01 item</Text>
-    </div>
   );
 }
