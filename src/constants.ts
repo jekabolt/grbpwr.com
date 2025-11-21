@@ -385,6 +385,8 @@ export type CountryOption = {
   countryCode: string;
   phoneCode: string;
   displayLng?: string;
+  vatRate?: number; // VAT rate as percentage (e.g., 19 for 19%)
+  taxType?: "VAT" | "Sales Tax" | "GST"; // Tax terminology used in the country
 };
 
 // Helper to create country with defaults
@@ -407,96 +409,99 @@ const country = (
 });
 
 export const COUNTRIES_BY_REGION = {
-  AFRICA: [country("south africa", "za", "27")],
+  AFRICA: [country("south africa", "za", "27", { vatRate: 15 })],
   AMERICAS: [
-    country("canada", "ca", "1", { currency: "$", currencyKey: "USD" }),
-    country("chile", "cl", "56", { currency: "$", currencyKey: "USD" }),
-    country("mexico", "mx", "52", { currency: "$", currencyKey: "USD" }),
-    country("united states", "us", "1", { currency: "$", currencyKey: "USD" }),
+    country("canada", "ca", "1", { currency: "$", currencyKey: "USD", vatRate: 0, taxType: "GST" }), // GST/HST varies by province
+    country("chile", "cl", "56", { currency: "$", currencyKey: "USD", vatRate: 19 }),
+    country("mexico", "mx", "52", { currency: "$", currencyKey: "USD", vatRate: 16 }),
+    country("united states", "us", "1", { currency: "$", currencyKey: "USD", vatRate: 0, taxType: "Sales Tax" }), // Sales tax varies by state
   ],
   "ASIA PACIFIC": [
-    country("australia", "au", "61"),
-    country("hong kong sar", "hk", "852"),
-    country("india", "in", "91"),
-    country("japan", "jp", "81", { currency: "¥", currencyKey: "JPY" }),
+    country("australia", "au", "61", { vatRate: 10, taxType: "GST" }),
+    country("hong kong sar", "hk", "852", { vatRate: 0 }),
+    country("india", "in", "91", { vatRate: 18, taxType: "GST" }),
+    country("japan", "jp", "81", { currency: "¥", currencyKey: "JPY", vatRate: 10 }),
     country("日本", "jp", "81", {
       currency: "¥",
       currencyKey: "JPY",
       lng: "ja",
       displayLng: "日本語",
+      vatRate: 10,
     }),
-    country("macau sar", "mo", "853"),
+    country("macau sar", "mo", "853", { vatRate: 0 }),
     country("mainland china", "cn", "86", {
       currency: "¥",
       currencyKey: "CNY",
+      vatRate: 13,
     }),
     country("中国大陆", "cn", "86", {
       currency: "¥",
       currencyKey: "CNY",
       lng: "zh",
       displayLng: "简体中文",
+      vatRate: 13,
     }),
-    country("malaysia", "my", "60"),
-    country("new zealand", "nz", "64"),
-    country("singapore", "sg", "65"),
-    country("south korea", "kr", "82", { currency: "₩", currencyKey: "KRW" }),
-    country("대한민국", "kr", "82", { currency: "₩", currencyKey: "KRW", lng: "ko", displayLng: "한국인" }),
-    country("taiwan", "tw", "886"),
-    country("台湾地区", "tw", "886", { lng: "zh", displayLng: "繁體中文" }),
-    country("thailand", "th", "66"),
+    country("malaysia", "my", "60", { vatRate: 6 }), // SST (Sales and Service Tax)
+    country("new zealand", "nz", "64", { vatRate: 15, taxType: "GST" }),
+    country("singapore", "sg", "65", { vatRate: 8, taxType: "GST" }),
+    country("south korea", "kr", "82", { currency: "₩", currencyKey: "KRW", vatRate: 10 }),
+    country("대한민국", "kr", "82", { currency: "₩", currencyKey: "KRW", lng: "ko", displayLng: "한국인", vatRate: 10 }),
+    country("taiwan", "tw", "886", { vatRate: 5 }),
+    country("台湾地区", "tw", "886", { lng: "zh", displayLng: "繁體中文", vatRate: 5 }),
+    country("thailand", "th", "66", { vatRate: 7 }),
   ],
   EUROPE: [
-    country("aland islands", "ax", "358"),
-    country("andorra", "ad", "376"),
-    country("austria", "at", "43"),
-    country("belgium", "be", "32"),
-    country("bulgaria", "bg", "359"),
-    country("croatia", "hr", "385"),
-    country("cyprus", "cy", "357"),
-    country("czech republic", "cz", "420"),
-    country("denmark", "dk", "45"),
-    country("estonia", "ee", "372"),
-    country("faroe islands", "fo", "298"),
-    country("finland", "fi", "358"),
-    country("france", "fr", "33"),
-    country("france", "fr", "33", { lng: "fr", displayLng: "français" }),
-    country("germany", "de", "49"),
-    country("deutschland", "de", "49", { lng: "de", displayLng: "deutsch" }),
-    country("gibraltar", "gi", "350"),
-    country("greece", "gr", "30"),
-    country("greenland", "gl", "299"),
-    country("guernsey", "gg", "44"),
-    country("hungary", "hu", "36"),
-    country("iceland", "is", "354"),
-    country("italy", "it", "39"),
-    country("italy", "it", "39", { lng: "it", displayLng: "italiano" }),
-    country("jersey", "je", "44"),
-    country("latvia", "lv", "371"),
-    country("liechtenstein", "li", "423"),
-    country("lithuania", "lt", "370"),
-    country("luxembourg", "lu", "352"),
-    country("malta", "mt", "356"),
-    country("monaco", "mc", "377"),
-    country("netherland", "nl", "31"),
-    country("norway", "no", "47"),
-    country("poland", "pl", "48"),
-    country("portugal", "pt", "351"),
-    country("romania", "ro", "40"),
-    country("slovakia", "sk", "421"),
-    country("slovenia", "si", "386"),
-    country("spain", "es", "34"),
-    country("sweeden", "se", "46"),
-    country("switzerland", "ch", "41"),
-    country("turkey", "tr", "90"),
-    country("united kingdom", "gb", "44", { currency: "£", currencyKey: "GBP" }),
+    country("aland islands", "ax", "358", { vatRate: 0 }),
+    country("andorra", "ad", "376", { vatRate: 4.5 }),
+    country("austria", "at", "43", { vatRate: 20 }),
+    country("belgium", "be", "32", { vatRate: 21 }),
+    country("bulgaria", "bg", "359", { vatRate: 20 }),
+    country("croatia", "hr", "385", { vatRate: 25 }),
+    country("cyprus", "cy", "357", { vatRate: 19 }),
+    country("czech republic", "cz", "420", { vatRate: 21 }),
+    country("denmark", "dk", "45", { vatRate: 25 }),
+    country("estonia", "ee", "372", { vatRate: 20 }),
+    country("faroe islands", "fo", "298", { vatRate: 0 }),
+    country("finland", "fi", "358", { vatRate: 24 }),
+    country("france", "fr", "33", { vatRate: 20 }),
+    country("france", "fr", "33", { lng: "fr", displayLng: "français", vatRate: 20 }),
+    country("germany", "de", "49", { vatRate: 19 }),
+    country("deutschland", "de", "49", { lng: "de", displayLng: "deutsch", vatRate: 19 }),
+    country("gibraltar", "gi", "350", { vatRate: 0 }),
+    country("greece", "gr", "30", { vatRate: 24 }),
+    country("greenland", "gl", "299", { vatRate: 0 }),
+    country("guernsey", "gg", "44", { vatRate: 0 }),
+    country("hungary", "hu", "36", { vatRate: 27 }),
+    country("iceland", "is", "354", { vatRate: 24 }),
+    country("italy", "it", "39", { vatRate: 22 }),
+    country("italy", "it", "39", { lng: "it", displayLng: "italiano", vatRate: 22 }),
+    country("jersey", "je", "44", { vatRate: 0 }),
+    country("latvia", "lv", "371", { vatRate: 21 }),
+    country("liechtenstein", "li", "423", { vatRate: 7.7 }),
+    country("lithuania", "lt", "370", { vatRate: 21 }),
+    country("luxembourg", "lu", "352", { vatRate: 17 }),
+    country("malta", "mt", "356", { vatRate: 18 }),
+    country("monaco", "mc", "377", { vatRate: 20 }),
+    country("netherland", "nl", "31", { vatRate: 21 }),
+    country("norway", "no", "47", { vatRate: 25 }),
+    country("poland", "pl", "48", { vatRate: 23 }),
+    country("portugal", "pt", "351", { vatRate: 23 }),
+    country("romania", "ro", "40", { vatRate: 19 }),
+    country("slovakia", "sk", "421", { vatRate: 20 }),
+    country("slovenia", "si", "386", { vatRate: 22 }),
+    country("spain", "es", "34", { vatRate: 21 }),
+    country("sweeden", "se", "46", { vatRate: 25 }),
+    country("switzerland", "ch", "41", { vatRate: 7.7 }),
+    country("turkey", "tr", "90", { vatRate: 20 }),
+    country("united kingdom", "gb", "44", { currency: "£", currencyKey: "GBP", vatRate: 20 }),
   ],
   "MIDDLE EAST": [
-    country("bahrain", "bh", "973"),
-    country("israel", "il", "972"),
-    country("kuwait", "kw", "965"),
-    country("qatar", "qa", "974"),
-    country("saudi arabia", "sa", "966"),
-    country("united arab emirates", "ae", "971"),
+    country("bahrain", "bh", "973", { vatRate: 10 }),
+    country("israel", "il", "972", { vatRate: 17 }),
+    country("kuwait", "kw", "965", { vatRate: 0 }), // VAT not implemented yet
+    country("qatar", "qa", "974", { vatRate: 0 }), // VAT not implemented yet
+    country("saudi arabia", "sa", "966", { vatRate: 15 }),
+    country("united arab emirates", "ae", "971", { vatRate: 5 }),
   ],
 } satisfies Record<string, CountryOption[]>;
 
@@ -552,3 +557,113 @@ export const PLURIAL_SINGLE_CATEGORY_MAP: Record<string, string> = {
   scarves: "scarf",
   backpacks: "backpack",
 };
+
+/**
+ * Get VAT rate for a country by its country code
+ * @param countryCode - ISO country code (e.g., "de", "fr", "us")
+ * @returns VAT rate as percentage (e.g., 19 for 19%) or undefined if not found
+ */
+export function getVatRateByCountryCode(countryCode: string): number | undefined {
+  const allCountries = Object.values(COUNTRIES_BY_REGION).flat();
+  const country = allCountries.find(
+    (c) => c.countryCode.toLowerCase() === countryCode.toLowerCase(),
+  );
+  return country?.vatRate;
+}
+
+/**
+ * Get tax type for a country by its country code
+ * @param countryCode - ISO country code (e.g., "de", "fr", "us")
+ * @returns Tax type ("VAT", "Sales Tax", "GST") or "VAT" as default
+ */
+export function getTaxTypeByCountryCode(
+  countryCode: string,
+): "VAT" | "Sales Tax" | "GST" {
+  const allCountries = Object.values(COUNTRIES_BY_REGION).flat();
+  const country = allCountries.find(
+    (c) => c.countryCode.toLowerCase() === countryCode.toLowerCase(),
+  );
+  return country?.taxType || "VAT";
+}
+
+/**
+ * Get all countries with their VAT rates for verification
+ * Useful for checking VAT rate correctness
+ * @returns Array of countries with VAT rate information
+ */
+export function getAllCountriesWithVatRates(): Array<{
+  name: string;
+  countryCode: string;
+  vatRate: number | undefined;
+  region: string;
+}> {
+  const result: Array<{
+    name: string;
+    countryCode: string;
+    vatRate: number | undefined;
+    region: string;
+  }> = [];
+
+  Object.entries(COUNTRIES_BY_REGION).forEach(([region, countries]) => {
+    countries.forEach((country) => {
+      result.push({
+        name: country.name,
+        countryCode: country.countryCode,
+        vatRate: country.vatRate,
+        region,
+      });
+    });
+  });
+
+  return result.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Get countries missing VAT rates
+ * Useful for identifying countries that need VAT rate configuration
+ * @returns Array of countries without VAT rates
+ */
+export function getCountriesWithoutVatRates(): Array<{
+  name: string;
+  countryCode: string;
+  region: string;
+}> {
+  return getAllCountriesWithVatRates()
+    .filter((country) => country.vatRate === undefined)
+    .map(({ vatRate, ...rest }) => rest);
+}
+
+/**
+ * Validate VAT rate for a country
+ * Checks if VAT rate is within reasonable bounds (0-30%)
+ * @param countryCode - ISO country code
+ * @returns Validation result with message
+ */
+export function validateVatRate(countryCode: string): {
+  valid: boolean;
+  message: string;
+  vatRate?: number;
+} {
+  const vatRate = getVatRateByCountryCode(countryCode);
+
+  if (vatRate === undefined) {
+    return {
+      valid: false,
+      message: `VAT rate not configured for country: ${countryCode.toUpperCase()}`,
+    };
+  }
+
+  if (vatRate < 0 || vatRate > 30) {
+    return {
+      valid: false,
+      message: `VAT rate ${vatRate}% seems unusual for country: ${countryCode.toUpperCase()}. Most countries have VAT rates between 0-30%.`,
+      vatRate,
+    };
+  }
+
+  return {
+    valid: true,
+    message: `VAT rate ${vatRate}% is configured for country: ${countryCode.toUpperCase()}`,
+    vatRate,
+  };
+}

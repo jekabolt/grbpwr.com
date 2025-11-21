@@ -11,8 +11,8 @@ import InputField from "@/components/ui/form/fields/input-field";
 type Props = {
   loading: boolean;
   form: UseFormReturn<any>;
-  validateItems: () => Promise<ValidateOrderItemsInsertResponse | null>;
   freeShipmentCarrierId?: number;
+  validateItems: () => Promise<ValidateOrderItemsInsertResponse | null>;
 };
 
 export default function PromoCode({
