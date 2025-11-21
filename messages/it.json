@@ -105,6 +105,9 @@
     "promo discount": "sconto promo",
     "grand total": "totale finale",
     "free by promo": "gratuito con promo",
+    "vat": "IVA",
+    "sales tax": "Imposta sulle vendite",
+    "gst": "GST",
     "DHL": "DHL",
     "FREE": "GRATUITO"
   },

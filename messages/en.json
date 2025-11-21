@@ -105,6 +105,9 @@
     "promo discount": "promo discount",
     "grand total": "grand total",
     "free by promo": "free by promo",
+    "vat": "VAT",
+    "sales tax": "Sales Tax",
+    "gst": "GST",
     "DHL": "DHL",
     "FREE": "FREE"
   },

@@ -249,6 +249,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               validatedProducts={order?.validItems}
               loading={loading}
               form={form}
+              order={order}
               validateItems={validateItems}
               isOpen={isGroupOpen("payment")}
               onToggle={() => handleGroupToggle("payment")}

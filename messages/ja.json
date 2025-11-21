@@ -105,6 +105,9 @@
     "promo discount": "プロモ割引",
     "grand total": "総合計",
     "free by promo": "プロモで無料",
+    "vat": "消費税",
+    "sales tax": "売上税",
+    "gst": "GST",
     "DHL": "DHL",
     "FREE": "無料"
   },

@@ -30,6 +30,7 @@ type Props = {
   disabled?: boolean;
   validatedProducts?: common_OrderItem[];
   form: UseFormReturn<any>;
+  order?: ValidateOrderItemsInsertResponse;
   validateItems: () => Promise<ValidateOrderItemsInsertResponse | null>;
   onToggle: () => void;
   onPaymentElementChange?: (isComplete: boolean) => void;
@@ -41,6 +42,7 @@ export default function PaymentFieldsGroup({
   disabled = false,
   validatedProducts,
   form,
+  order,
   validateItems,
   onToggle,
   onPaymentElementChange,
@@ -115,7 +117,7 @@ export default function PaymentFieldsGroup({
         disabled={disabled}
       /> */}
 
-      <div>
+      <div className="space-y-6 lg:space-y-0">
         <div className="block lg:hidden">
           <FieldsGroupContainer
             styling={{
@@ -134,7 +136,7 @@ export default function PaymentFieldsGroup({
             />
           </FieldsGroupContainer>
         </div>
-        <div className="py-2">
+        <div>
           {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
             <PaymentElement
               onChange={handlePaymentElementChange}
@@ -153,7 +155,11 @@ export default function PaymentFieldsGroup({
         </div>
 
         <div className="block lg:hidden">
-          <MobileOrderSummary validatedProducts={validatedProducts} />
+          <MobileOrderSummary
+            form={form}
+            order={order}
+            validatedProducts={validatedProducts}
+          />
         </div>
       </div>
 
