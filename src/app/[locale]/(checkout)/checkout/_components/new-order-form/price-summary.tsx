@@ -20,22 +20,23 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
     currencySymbols[currency] ||
     currencySymbols[dictionary?.baseCurrency || "EUR"];
 
+  const selectedShipmentCarrierId = form.watch("shipmentCarrierId");
+  const selectedCountry = form.watch("country");
+
+  const { vatAmount, taxLabel } = useVatCalculation({
+    countryCode: selectedCountry,
+    subtotal: order?.subtotal?.value || "0",
+    vatRate,
+  });
+
   if (!order) return null;
 
   const promoPercentageOff = parseInt(order.promo?.discount?.value || "0");
   const promoFreeShipping = !!order.promo?.freeShipping;
-  const selectedShipmentCarrierId = form.watch("shipmentCarrierId");
-  const selectedCountry = form.watch("country");
 
   const selectedShipmentCarrierPrice = dictionary?.shipmentCarriers?.find(
     (c) => c.id + "" === selectedShipmentCarrierId,
   )?.prices?.[0]?.price?.value;
-
-  const { vatAmount, taxLabel } = useVatCalculation({
-    countryCode: selectedCountry,
-    subtotal: order.subtotal?.value || "0",
-    vatRate,
-  });
 
   return (
     <>
