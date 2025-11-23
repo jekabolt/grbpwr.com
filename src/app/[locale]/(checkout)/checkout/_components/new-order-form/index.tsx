@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { common_OrderNew } from "@/api/proto-http/frontend";
+import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
@@ -12,6 +13,7 @@ import { serviceClient } from "@/lib/api";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
@@ -257,7 +259,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               onPaymentElementChange={setIsPaymentElementComplete}
             />
           </div>
-          <div className="fixed inset-x-0 bottom-0 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
+          <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
             <div className="hidden space-y-8 lg:block">
               <Text variant="uppercase">{t("order summary")}</Text>
 
@@ -276,14 +278,16 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
             <Button
               variant="main"
               size="lg"
-              className="w-full uppercase"
+              className={cn("w-full uppercase", {
+                "hidden lg:block": !isPaymentFieldsValid(),
+              })}
               disabled={
                 !form.formState.isValid || !isPaymentFieldsValid() || loading
               }
               loading={loading}
               loadingType="order-processing"
             >
-              {t("pay")}
+              {`${t("pay")} ${currencySymbols[selectedCurrency || "EUR"]} ${order?.totalSale?.value || ""}`}
             </Button>
           </div>
         </div>
