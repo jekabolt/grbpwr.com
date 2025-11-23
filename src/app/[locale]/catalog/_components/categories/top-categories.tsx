@@ -5,7 +5,6 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 import { useRouteParams } from "../useRouteParams";
-import { isCategoryDisabled } from "./categories";
 import { CategoryButton } from "./category-btn";
 
 export function TopCategories() {
@@ -44,7 +43,7 @@ export function TopCategories() {
           <div className="flex items-center gap-2" key={category.id}>
             <CategoryButton
               href={href}
-              disabled={isCategoryDisabled(category, gender)}
+              // disabled={isCategoryDisabled(category, gender)}
             >
               {originalCategoryName ? t(originalCategoryName) : ""}
             </CategoryButton>
