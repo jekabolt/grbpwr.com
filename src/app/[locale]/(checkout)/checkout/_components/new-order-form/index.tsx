@@ -125,6 +125,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   }, [form, handleFormChange]);
 
   const paymentMethod = form.watch("paymentMethod");
+  const shipmentCarrierId = form.watch("shipmentCarrierId");
 
   const isPaymentFieldsValid = () => {
     if (paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") {
@@ -279,7 +280,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               variant="main"
               size="lg"
               className={cn("w-full uppercase", {
-                "hidden lg:block": !isPaymentFieldsValid(),
+                "hidden lg:block": !shipmentCarrierId,
               })}
               disabled={
                 !form.formState.isValid || !isPaymentFieldsValid() || loading
