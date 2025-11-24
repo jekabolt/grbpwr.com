@@ -39,8 +39,8 @@ export function MobileOrderSummary({ form, validatedProducts, order }: Props) {
   return (
     <FieldsGroupContainer
       signType="plus-minus"
+      className="space-y-0 border border-textInactiveColor p-2.5"
       signPosition="before"
-      titleWrapperClassName="h-10 flex items-center border border-textInactiveColor px-2.5"
       title={`${isOpen ? "hide" : "show"} order summary`}
       preview={
         <Text>{`${currencySymbol} ${order?.totalSale?.value || ""}`}</Text>
@@ -48,9 +48,7 @@ export function MobileOrderSummary({ form, validatedProducts, order }: Props) {
       isOpen={isOpen}
       onToggle={handleToggle}
     >
-      {/* <div className="border-t border-textInactiveColor"> */}
       <PriceSummary form={form} order={order} />
-      {/* </div> */}
       <OrderProducts validatedProducts={validatedProducts} />
     </FieldsGroupContainer>
   );

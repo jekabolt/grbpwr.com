@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { common_OrderNew } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
@@ -9,7 +8,8 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
-import { serviceClient } from "@/lib/api";
+import { submitNewOrder } from "@/lib/checkout/order-service";
+import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -30,47 +30,6 @@ import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
 import { mapFormFieldToOrderDataFormat } from "./utils";
 
-async function submitNewOrder(
-  newOrderData: common_OrderNew,
-  paymentIntentId: string,
-) {
-  console.log("order data: ", {
-    order: newOrderData,
-  });
-
-  try {
-    const submitOrderResponse = await serviceClient.SubmitOrder({
-      order: newOrderData,
-      paymentIntentId: paymentIntentId,
-    });
-
-    if (!submitOrderResponse?.orderUuid) {
-      console.log("no data to create order invoice");
-
-      return {
-        ok: false,
-      };
-    }
-
-    console.log({
-      ok: true,
-      order: submitOrderResponse,
-    });
-
-    // clearCartProducts();
-
-    return {
-      ok: true,
-      order: submitOrderResponse,
-    };
-  } catch (error) {
-    console.error("Error submitting new order:", error);
-    return {
-      ok: false,
-    };
-  }
-}
-
 type NewOrderFormProps = {
   onAmountChange: (amount: number) => void;
 };
@@ -81,21 +40,17 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { selectedCurrency } = useCurrency((state) => state);
   const { handlePurchaseEvent } = useCheckoutAnalytics({});
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
   const [isPaymentElementComplete, setIsPaymentElementComplete] =
-    useState<boolean>(false);
+    useState(false);
 
   const t = useTranslations("checkout");
   const stripe = useStripe();
   const elements = useElements();
 
-  const defaultValues = {
-    ...defaultData,
-    country: countryCode,
-  };
   const form = useForm<CheckoutData>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues,
+    defaultValues: { ...defaultData, country: countryCode },
   });
 
   const { order, validateItems } = useValidatedOrder(form);
@@ -105,17 +60,15 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
 
   useEffect(() => {
     if (order?.totalSale?.value) {
-      const amountInCents = Math.round(parseFloat(order.totalSale.value));
-      onAmountChange(amountInCents);
+      onAmountChange(Math.round(parseFloat(order.totalSale.value)));
     }
   }, [order?.totalSale?.value, onAmountChange]);
 
   useEffect(() => {
-    const currentCountry = form.getValues("country");
-    if (countryCode && !currentCountry) {
+    if (countryCode && !form.getValues("country")) {
       form.setValue("country", countryCode, { shouldValidate: true });
     }
-  }, [countryCode, form, clearFormData]);
+  }, [countryCode, form]);
 
   useEffect(() => {
     const subscription = form.watch((_, { name }) => {
@@ -125,101 +78,63 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   }, [form, handleFormChange]);
 
   const paymentMethod = form.watch("paymentMethod");
-  const shipmentCarrierId = form.watch("shipmentCarrierId");
-
-  const isPaymentFieldsValid = () => {
-    if (paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") {
-      return true;
-    }
-    return isPaymentElementComplete;
-  };
+  const isPaymentFieldsValid =
+    paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" ||
+    isPaymentElementComplete;
 
   const onSubmit = async (data: CheckoutData) => {
+    if (!stripe || !elements) return;
+
     setLoading(true);
 
-    if (!stripe || !elements) {
-      setLoading(false);
-      return;
-    }
-
-    const response = await validateItems();
-
-    const newOrderData = mapFormFieldToOrderDataFormat(
-      data,
-      response?.validItems?.map((i) => i.orderItem!) || [],
-      selectedCurrency,
-    );
     try {
-      console.log("submit order");
+      const response = await validateItems();
+      const newOrderData = mapFormFieldToOrderDataFormat(
+        data,
+        response?.validItems?.map((i) => i.orderItem!) || [],
+        selectedCurrency,
+      );
+
       const newOrderResponse = await submitNewOrder(
         newOrderData,
         response?.paymentIntentId || "",
       );
-      console.log("submit order finish");
 
-      if (newOrderResponse.ok) {
-        const paymentType = newOrderResponse.order?.payment?.paymentMethod;
-        const clientSecret =
-          response?.clientSecret ||
-          newOrderResponse.order?.payment?.clientSecret;
-        const orderUuid = newOrderResponse.order?.orderUuid;
-
-        switch (paymentType) {
-          case "PAYMENT_METHOD_NAME_ENUM_CARD_TEST":
-            if (
-              !clientSecret ||
-              typeof clientSecret !== "string" ||
-              clientSecret.trim() === "" ||
-              !orderUuid
-            ) {
-              console.error("Missing clientSecret or orderUuid", {
-                clientSecret,
-                orderUuid,
-                fromValidation: response?.clientSecret,
-                fromSubmit: newOrderResponse.order?.payment?.clientSecret,
-              });
-              setLoading(false);
-              return;
-            }
-
-            const { error: submitError } = await elements.submit();
-
-            if (submitError) {
-              console.error("Error submitting payment elements:", submitError);
-              setLoading(false);
-              return;
-            }
-
-            const { error } = await stripe.confirmPayment({
-              clientSecret,
-              elements,
-              confirmParams: {
-                return_url: `${window.location.origin}/order/${orderUuid}/${window.btoa(data.email)}`,
-                payment_method_data: {
-                  billing_details: {
-                    address: {
-                      country: data.country,
-                    },
-                  },
-                },
-              },
-              redirect: "if_required",
-            });
-
-            if (error) {
-              console.error("Error confirming payment:", error.message);
-              setLoading(false);
-            } else {
-              handlePurchaseEvent(orderUuid);
-              clearCart();
-              clearFormData();
-              window.location.href = `/order/${orderUuid}/${window.btoa(data.email)}`;
-            }
-            return;
-          // case "PAYMENT_METHOD_NAME_ENUM_CARD":
-        }
+      if (!newOrderResponse.ok) {
+        setLoading(false);
+        return;
       }
-      console.log("finish and doesnt redirect");
+
+      const paymentType = newOrderResponse.order?.payment?.paymentMethod;
+      const clientSecret =
+        response?.clientSecret || newOrderResponse.order?.payment?.clientSecret;
+      const orderUuid = newOrderResponse.order?.orderUuid;
+
+      if (
+        paymentType === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" &&
+        clientSecret &&
+        orderUuid
+      ) {
+        const paymentResult = await confirmStripePayment({
+          stripe,
+          elements,
+          clientSecret,
+          orderUuid,
+          email: data.email,
+          country: data.country,
+        });
+
+        if (paymentResult.success) {
+          handlePurchaseEvent(paymentResult.orderUuid);
+          clearCart();
+          clearFormData();
+          window.location.href = `/order/${paymentResult.orderUuid}/${window.btoa(data.email)}`;
+          return;
+        }
+
+        console.error("Payment confirmation failed:", paymentResult.error);
+      }
+
       setLoading(false);
     } catch (error) {
       console.error("Error submitting new order:", error);
@@ -256,10 +171,8 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               disabled={isGroupDisabled("shipping")}
             />
             <PaymentFieldsGroup
-              validatedProducts={order?.validItems}
               loading={loading}
               form={form}
-              order={order}
               validateItems={validateItems}
               isOpen={isGroupOpen("payment")}
               onToggle={() => handleGroupToggle("payment")}
@@ -288,7 +201,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               size="lg"
               className="w-full uppercase"
               disabled={
-                !form.formState.isValid || !isPaymentFieldsValid() || loading
+                !form.formState.isValid || !isPaymentFieldsValid || loading
               }
               loading={loading}
               loadingType="order-processing"

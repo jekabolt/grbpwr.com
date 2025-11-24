@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import {
-  common_OrderItem,
-  ValidateOrderItemsInsertResponse,
-} from "@/api/proto-http/frontend";
+import { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { paymentMethodNamesMap } from "@/constants";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
@@ -27,9 +24,7 @@ type Props = {
   loading: boolean;
   isOpen: boolean;
   disabled?: boolean;
-  validatedProducts?: common_OrderItem[];
   form: UseFormReturn<any>;
-  order?: ValidateOrderItemsInsertResponse;
   validateItems: () => Promise<ValidateOrderItemsInsertResponse | null>;
   onToggle: () => void;
   onPaymentElementChange?: (isComplete: boolean) => void;
@@ -39,9 +34,7 @@ export default function PaymentFieldsGroup({
   loading,
   isOpen,
   disabled = false,
-  validatedProducts,
   form,
-  order,
   validateItems,
   onToggle,
   onPaymentElementChange,

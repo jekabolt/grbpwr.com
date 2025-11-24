@@ -18,12 +18,12 @@ interface FieldsGroupContainerProps {
   disabled?: boolean;
   collapsible?: boolean; // instead of mode
   className?: string;
-  onToggle?: () => void;
   signType?: "arrow" | "plus-minus"; // simplified sign props
   signPosition?: "before" | "after";
   clickableAreaClassName?: string; // optional to extend control
   childrenSpacingClass?: string; // spacing customization
   titleWrapperClassName?: string;
+  onToggle?: () => void;
 }
 
 export default function FieldsGroupContainer({
@@ -36,12 +36,12 @@ export default function FieldsGroupContainer({
   disabled = false,
   collapsible = true,
   className,
-  onToggle,
   signType = "arrow",
   signPosition = "after",
   clickableAreaClassName,
   childrenSpacingClass = "space-y-8",
   titleWrapperClassName,
+  onToggle,
 }: FieldsGroupContainerProps) {
   const [localIsOpen, setLocalIsOpen] = useState(isOpen);
 
@@ -71,12 +71,7 @@ export default function FieldsGroupContainer({
         )}
         onClick={collapsible ? handleToggle : undefined}
       >
-        <div
-          className={cn("flex flex-1 gap-x-6", {
-            "items-center": !preview,
-            "items-start": preview,
-          })}
-        >
+        <div className="flex flex-1 items-center gap-x-6">
           {stage && (
             <Text variant="uppercase" className="w-8 text-textColor">
               {stage}
@@ -85,7 +80,7 @@ export default function FieldsGroupContainer({
 
           <div
             className={cn(
-              "flex flex-1 items-start justify-between",
+              "flex flex-1 items-center justify-between",
               titleWrapperClassName,
             )}
           >
@@ -97,11 +92,7 @@ export default function FieldsGroupContainer({
                   position={signPosition}
                 />
               )}
-              <Text
-                variant="uppercase"
-                className="text-textColor"
-                component="h2"
-              >
+              <Text variant="uppercase" className="text-textColor">
                 {title}
               </Text>
             </div>
