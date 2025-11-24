@@ -18,7 +18,7 @@ export default function OrderStatus() {
         <FieldsGroupContainer
           stage="1/1"
           title={t("check your order status")}
-          mode="non-collapsible"
+          collapsible={false}
         >
           <OrderStatusForm />
         </FieldsGroupContainer>

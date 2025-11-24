@@ -16,7 +16,6 @@ import { Tron } from "@/components/ui/icons/tron";
 import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "./fields-group-container";
-import { MobileOrderSummary } from "./mobile-order-summary";
 import PromoCode from "./PromoCode";
 import { AddressFields } from "./shipping-fields-group";
 
@@ -120,10 +119,8 @@ export default function PaymentFieldsGroup({
       <div className="space-y-6 lg:space-y-0">
         <div className="block lg:hidden">
           <FieldsGroupContainer
-            styling={{
-              sign: "plus-minus",
-              signPosition: "before",
-            }}
+            signType="plus-minus"
+            signPosition="before"
             title="redeem promo code"
             isOpen={open}
             onToggle={handleToggle}
@@ -152,14 +149,6 @@ export default function PaymentFieldsGroup({
               }}
             />
           )}
-        </div>
-
-        <div className="block lg:hidden">
-          <MobileOrderSummary
-            form={form}
-            order={order}
-            validatedProducts={validatedProducts}
-          />
         </div>
       </div>
 

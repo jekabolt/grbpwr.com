@@ -40,7 +40,7 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
 
   return (
     <>
-      <div className="space-y-3">
+      <div className="mt-4 space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t("subtotal")}:</Text>
           <Text>{`${currencySymbol} ${order?.subtotal?.value || ""}`}</Text>
@@ -70,7 +70,12 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
         <div className="pt-5">
           <div className="flex justify-between border-t border-textInactiveColor pt-3">
             <Text variant={"uppercase"}>{t("grand total")}:</Text>
-            <Text>{`${currencySymbol} ${order.totalSale?.value || ""}`}</Text>
+            <div className="flex items-center gap-x-2">
+              <Text variant="uppercase" className="text-textInactiveColor">
+                incl. vat
+              </Text>
+              <Text>{`${currencySymbol} ${order.totalSale?.value || ""}`}</Text>
+            </div>
           </div>
         </div>
       </div>

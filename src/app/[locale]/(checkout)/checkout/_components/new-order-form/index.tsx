@@ -13,7 +13,6 @@ import { serviceClient } from "@/lib/api";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
@@ -22,6 +21,7 @@ import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
 import { useOrderPersistence } from "./hooks/useOrderPersistence";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
+import { MobileOrderSummary } from "./mobile-order-summary";
 import { OrderProducts } from "./order-products";
 import PaymentFieldsGroup from "./payment-fields-group";
 import { PriceSummary } from "./price-summary";
@@ -234,6 +234,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         className="relative space-y-14 lg:space-y-0"
       >
         <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
+          <div className="block lg:hidden">
+            <MobileOrderSummary
+              form={form}
+              order={order}
+              validatedProducts={order?.validItems}
+            />
+          </div>
           <div className="space-y-10 lg:space-y-16">
             <ContactFieldsGroup
               loading={loading}
@@ -279,16 +286,14 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
             <Button
               variant="main"
               size="lg"
-              className={cn("w-full uppercase", {
-                "hidden lg:block": !shipmentCarrierId,
-              })}
+              className="w-full uppercase"
               disabled={
                 !form.formState.isValid || !isPaymentFieldsValid() || loading
               }
               loading={loading}
               loadingType="order-processing"
             >
-              {`${t("pay")} ${currencySymbols[selectedCurrency || "EUR"]} ${order?.totalSale?.value || ""}`}
+              {`${t("place order")} ${currencySymbols[selectedCurrency || "EUR"]} ${order?.totalSale?.value || ""}`}
             </Button>
           </div>
         </div>

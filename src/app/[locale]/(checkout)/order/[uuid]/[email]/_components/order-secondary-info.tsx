@@ -114,7 +114,7 @@ export function MobileOrderSecondaryInfo({
   return (
     <FieldsGroupContainer
       title="delivery/payment info"
-      styling={{ clickableArea: "full" }}
+      clickableAreaClassName="w-full"
     >
       <div className="space-y-10">
         <div className="flex w-full justify-between">

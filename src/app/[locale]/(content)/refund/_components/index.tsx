@@ -90,7 +90,7 @@ export function RefundForm() {
           <div className="w-full space-y-9 lg:w-1/2">
             <FieldsGroupContainer
               stage="1/1"
-              mode="non-collapsible"
+              collapsible={false}
               title={t("check your return status")}
             >
               <InputField
