@@ -114,7 +114,7 @@ export default function PaymentFieldsGroup({
           <FieldsGroupContainer
             signType="plus-minus"
             signPosition="before"
-            title="redeem promo code"
+            title={t("redeem promo code")}
             isOpen={open}
             onToggle={handleToggle}
           >

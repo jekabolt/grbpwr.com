@@ -109,7 +109,11 @@
     "sales tax": "売上税",
     "gst": "GST",
     "DHL": "DHL",
-    "FREE": "無料"
+    "FREE": "無料",
+    "hide": "非表示",
+    "show": "表示",
+    "incl. vat": "税込",
+    "redeem promo code": "プロモコードを適用"
   },
   "not-found": {
     "title": "ページが見つかりません",

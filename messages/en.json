@@ -109,7 +109,11 @@
     "sales tax": "Sales Tax",
     "gst": "GST",
     "DHL": "DHL",
-    "FREE": "FREE"
+    "FREE": "FREE",
+    "hide": "hide",
+    "show": "show",
+    "incl. vat": "incl. vat",
+    "redeem promo code": "redeem promo code"
   },
   "not-found": {
     "title": "page not found",

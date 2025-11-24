@@ -6,6 +6,7 @@ import {
   ValidateOrderItemsInsertResponse,
 } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
+import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
@@ -23,6 +24,8 @@ type Props = {
 };
 
 export function MobileOrderSummary({ form, validatedProducts, order }: Props) {
+  const t = useTranslations("checkout");
+
   const { dictionary } = useDataContext();
   const { selectedCurrency } = useCurrency((state) => state);
 
@@ -41,7 +44,7 @@ export function MobileOrderSummary({ form, validatedProducts, order }: Props) {
       signType="plus-minus"
       className="space-y-0 border border-textInactiveColor p-2.5"
       signPosition="before"
-      title={`${isOpen ? "hide" : "show"} order summary`}
+      title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
       preview={
         <Text>{`${currencySymbol} ${order?.totalSale?.value || ""}`}</Text>
       }

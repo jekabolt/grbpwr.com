@@ -109,7 +109,11 @@
     "sales tax": "销售税",
     "gst": "GST",
     "DHL": "DHL",
-    "FREE": "免费"
+    "FREE": "免费",
+    "hide": "隐藏",
+    "show": "显示",
+    "incl. vat": "含税",
+    "redeem promo code": "兑换优惠码"
   },
   "not-found": {
     "title": "页面未找到",

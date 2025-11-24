@@ -63,7 +63,7 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
         )}
 
         <div className="flex justify-between">
-          <Text variant={"uppercase"}>{taxLabel}:</Text>
+          <Text variant={"uppercase"}>{t(taxLabel)}:</Text>
           <Text>{`${currencySymbol} ${vatAmount.toFixed(2)}`}</Text>
         </div>
 
@@ -72,7 +72,7 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
             <Text variant={"uppercase"}>{t("grand total")}:</Text>
             <div className="flex items-center gap-x-2">
               <Text variant="uppercase" className="text-textInactiveColor">
-                incl. vat
+                {t("incl. vat")}
               </Text>
               <Text>{`${currencySymbol} ${order.totalSale?.value || ""}`}</Text>
             </div>

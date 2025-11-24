@@ -109,7 +109,11 @@
     "sales tax": "Umsatzsteuer",
     "gst": "GST",
     "DHL": "DHL",
-    "FREE": "KOSTENLOS"
+    "FREE": "KOSTENLOS",
+    "hide": "ausblenden",
+    "show": "anzeigen",
+    "incl. vat": "inkl. MwSt.",
+    "redeem promo code": "Aktionscode einlösen"
   },
   "not-found": {
     "title": "seite nicht gefunden",
