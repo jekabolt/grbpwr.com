@@ -72,7 +72,7 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
             <Text variant={"uppercase"}>{t("grand total")}:</Text>
             <div className="flex items-center gap-x-2">
               <Text variant="uppercase" className="text-textInactiveColor">
-                {t("incl. vat")}
+                {t("incl")}
               </Text>
               <Text>{`${currencySymbol} ${order.totalSale?.value || ""}`}</Text>
             </div>
