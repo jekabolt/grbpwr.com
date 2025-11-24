@@ -237,3 +237,18 @@ export function calculateVatFromInclusivePrice(
   // Formula: VAT = Price × (VAT Rate / (100 + VAT Rate))
   return (price * vatRate) / (100 + vatRate);
 }
+
+/**
+ * Get VAT rate for a country by its country code
+ * @param countryCode - ISO country code (e.g., "de", "fr", "us")
+ * @returns VAT rate as percentage (e.g., 19 for 19%) or undefined if not found
+ */
+export function getVatRateByCountryCode(
+  countryCode: string,
+): number | undefined {
+  const allCountries = Object.values(COUNTRIES_BY_REGION).flat();
+  const country = allCountries.find(
+    (c) => c.countryCode.toLowerCase() === countryCode.toLowerCase(),
+  );
+  return country?.vatRate;
+}

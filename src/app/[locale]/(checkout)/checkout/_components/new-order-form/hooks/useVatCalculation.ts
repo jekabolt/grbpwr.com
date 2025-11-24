@@ -1,5 +1,4 @@
-import { getVatRateByCountryCode } from "@/constants";
-import { calculateVatFromInclusivePrice } from "@/lib/utils";
+import { calculateVatFromInclusivePrice, getVatRateByCountryCode } from "@/lib/utils";
 
 interface UseVatCalculationProps {
     countryCode?: string;
