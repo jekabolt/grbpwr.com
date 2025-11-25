@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
-import { paymentMethodNamesMap } from "@/constants";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
@@ -75,15 +74,15 @@ export default function PaymentFieldsGroup({
     setOpen((prev) => !prev);
   }
 
-  const allowedMethods =
-    dictionary?.paymentMethods?.filter((v) => v.allowed) || [];
+  // const allowedMethods =
+  //   dictionary?.paymentMethods?.filter((v) => v.allowed) || [];
 
-  const selectedMethod = allowedMethods.find((v) => v.name === paymentMethod);
-  const selectedPaymentMethod = selectedMethod
-    ? paymentMethodNamesMap[
-        selectedMethod.name as keyof typeof paymentMethodNamesMap
-      ]
-    : undefined;
+  // const selectedMethod = allowedMethods.find((v) => v.name === paymentMethod);
+  // const selectedPaymentMethod = selectedMethod
+  //   ? paymentMethodNamesMap[
+  //       selectedMethod.name as keyof typeof paymentMethodNamesMap
+  //     ]
+  //   : undefined;
 
   // const paymentMethodsItems = allowedMethods.map((v) => ({
   //   label: paymentMethodNamesMap[v.name as keyof typeof paymentMethodNamesMap],
@@ -98,7 +97,7 @@ export default function PaymentFieldsGroup({
       isOpen={isOpen}
       disabled={disabled}
       onToggle={onToggle}
-      summary={selectedPaymentMethod && <Text>{selectedPaymentMethod}</Text>}
+      // summary={selectedPaymentMethod && <Text>{selectedPaymentMethod}</Text>}
     >
       {/* <RadioGroupField
         view="card"

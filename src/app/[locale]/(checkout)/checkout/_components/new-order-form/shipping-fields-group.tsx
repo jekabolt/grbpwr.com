@@ -1,7 +1,6 @@
 "use client";
 
-import { common_Dictionary } from "@/api/proto-http/frontend";
-import { COUNTRIES_BY_REGION, keyboardRestrictions } from "@/constants";
+import { keyboardRestrictions } from "@/constants";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
@@ -46,7 +45,7 @@ export default function ShippingFieldsGroup({
       disabled={disabled}
       isOpen={isOpen}
       onToggle={onToggle}
-      summary={<Summary dictionary={dictionary} />}
+      // summary={<Summary dictionary={dictionary} />}
     >
       <AddressFields loading={loading} disabled={disabled} />
       <div>
@@ -201,67 +200,67 @@ export function AddressFields({
   );
 }
 
-function Summary({
-  dictionary,
-  className,
-}: {
-  dictionary?: common_Dictionary;
-  className?: string;
-}) {
-  const t = useTranslations("checkout");
-  const { watch } = useFormContext();
-  const {
-    firstName,
-    lastName,
-    company,
-    address,
-    additionalAddress,
-    city,
-    state,
-    country,
-    postalCode,
-    phone,
-    shipmentCarrierId,
-  } = watch();
+// function Summary({
+//   dictionary,
+//   className,
+// }: {
+//   dictionary?: common_Dictionary;
+//   className?: string;
+// }) {
+//   const t = useTranslations("checkout");
+//   const { watch } = useFormContext();
+//   const {
+//     firstName,
+//     lastName,
+//     company,
+//     address,
+//     additionalAddress,
+//     city,
+//     state,
+//     country,
+//     postalCode,
+//     phone,
+//     shipmentCarrierId,
+//   } = watch();
 
-  const name = [firstName, lastName].filter(Boolean).join(" ");
-  const countries = Object.values(COUNTRIES_BY_REGION).flat();
-  const phoneOrCompany = [phone && `+${phone}`, company]
-    .filter(Boolean)
-    .join(" ");
-  const addressLine = [address, additionalAddress].filter(Boolean).join(" ");
-  const countryInfo = [
-    city,
-    state,
-    countries.find((c) => c.countryCode === country)?.name,
-    postalCode,
-  ]
-    .filter(Boolean)
-    .join(" ");
-  const shipmentCarrier = dictionary?.shipmentCarriers?.find(
-    (c) => c.id?.toString() === shipmentCarrierId,
-  )?.shipmentCarrier?.carrier;
+//   const name = [firstName, lastName].filter(Boolean).join(" ");
+//   const countries = Object.values(COUNTRIES_BY_REGION).flat();
+//   const phoneOrCompany = [phone && `+${phone}`, company]
+//     .filter(Boolean)
+//     .join(" ");
+//   const addressLine = [address, additionalAddress].filter(Boolean).join(" ");
+//   const countryInfo = [
+//     city,
+//     state,
+//     countries.find((c) => c.countryCode === country)?.name,
+//     postalCode,
+//   ]
+//     .filter(Boolean)
+//     .join(" ");
+//   const shipmentCarrier = dictionary?.shipmentCarriers?.find(
+//     (c) => c.id?.toString() === shipmentCarrierId,
+//   )?.shipmentCarrier?.carrier;
 
-  if (
-    !name &&
-    !phoneOrCompany &&
-    !addressLine &&
-    !shipmentCarrier &&
-    !countryInfo
-  )
-    return null;
+//   if (
+//     !name &&
+//     !phoneOrCompany &&
+//     !addressLine &&
+//     !shipmentCarrier &&
+//     !countryInfo
+//   )
+//     return null;
 
-  return (
-    <div className={className}>
-      {name && <Text>{name}</Text>}
-      {phoneOrCompany && <Text>{phoneOrCompany}</Text>}
-      {addressLine && <Text>{addressLine}</Text>}
-      {countryInfo && <Text>{countryInfo}</Text>}
-      {shipmentCarrier && (
-        <Text variant="uppercase">
-          {t("shipping summary")}: {shipmentCarrier}
-        </Text>
-      )}
-    </div>
-  );
-}
+//   return (
+//     <div className={className}>
+//       {name && <Text>{name}</Text>}
+//       {phoneOrCompany && <Text>{phoneOrCompany}</Text>}
+//       {addressLine && <Text>{addressLine}</Text>}
+//       {countryInfo && <Text>{countryInfo}</Text>}
+//       {shipmentCarrier && (
+//         <Text variant="uppercase">
+//           {t("shipping summary")}: {shipmentCarrier}
+//         </Text>
+//       )}
+//     </div>
+//   );
+// }

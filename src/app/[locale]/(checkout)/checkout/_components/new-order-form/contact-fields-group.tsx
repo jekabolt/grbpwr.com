@@ -8,7 +8,6 @@ import { useFormContext } from "react-hook-form";
 import { sendFormEvent } from "@/lib/analitycs/form";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import InputField from "@/components/ui/form/fields/input-field";
-import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "./fields-group-container";
 
@@ -46,7 +45,6 @@ export default function ContactFieldsGroup({
       isOpen={isOpen}
       onToggle={onToggle}
       disabled={disabled}
-      summary={email && <Text>{email}</Text>}
     >
       <InputField
         loading={loading}
