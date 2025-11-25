@@ -100,13 +100,20 @@
     "apply": "apply",
     "discard": "discard",
     "enter promo code": "ENTER PROMO CODE",
-    "pay": "pay",
+    "place order": "place order",
     "subtotal": "subtotal",
     "promo discount": "promo discount",
     "grand total": "grand total",
     "free by promo": "free by promo",
+    "vat": "VAT",
+    "sales tax": "Sales Tax",
+    "gst": "GST",
     "DHL": "DHL",
-    "FREE": "FREE"
+    "FREE": "FREE",
+    "hide": "hide",
+    "show": "show",
+    "incl": "incl. vat",
+    "redeem promo code": "redeem promo code"
   },
   "not-found": {
     "title": "page not found",

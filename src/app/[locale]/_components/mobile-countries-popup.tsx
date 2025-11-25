@@ -138,12 +138,9 @@ export function MobileCountriesPopup() {
                     >
                       <FieldsGroupContainer
                         key={region}
-                        styling={{
-                          sign: "plus-minus",
-                          clickableArea: "full",
-                          clickableAreaClassName: "h-9 items-start",
-                          childrenSpacing: "pb-4",
-                        }}
+                        signType="plus-minus"
+                        clickableAreaClassName="h-9 items-start"
+                        childrenSpacingClass="pb-4"
                         title={region}
                         isOpen={openSection === index}
                         onToggle={() => toggleSection(index)}

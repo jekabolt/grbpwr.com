@@ -216,3 +216,39 @@ export function getCountryName(countryCode?: string, preferredLng?: string) {
     countries.find((c) => c.lng.toLowerCase() === lng) || countries[0];
   return match?.name || countryCode.toUpperCase();
 }
+
+/**
+ * Calculate VAT amount from a price that includes VAT
+ * @param priceIncludingVat - The total price including VAT
+ * @param vatRate - VAT rate as percentage (e.g., 19 for 19%)
+ * @returns The VAT amount
+ */
+export function calculateVatFromInclusivePrice(
+  priceIncludingVat: string | number,
+  vatRate: number,
+): number {
+  const price =
+    typeof priceIncludingVat === "string"
+      ? parseFloat(priceIncludingVat)
+      : priceIncludingVat;
+
+  if (isNaN(price) || price === 0) return 0;
+
+  // Formula: VAT = Price × (VAT Rate / (100 + VAT Rate))
+  return (price * vatRate) / (100 + vatRate);
+}
+
+/**
+ * Get VAT rate for a country by its country code
+ * @param countryCode - ISO country code (e.g., "de", "fr", "us")
+ * @returns VAT rate as percentage (e.g., 19 for 19%) or undefined if not found
+ */
+export function getVatRateByCountryCode(
+  countryCode: string,
+): number | undefined {
+  const allCountries = Object.values(COUNTRIES_BY_REGION).flat();
+  const country = allCountries.find(
+    (c) => c.countryCode.toLowerCase() === countryCode.toLowerCase(),
+  );
+  return country?.vatRate;
+}

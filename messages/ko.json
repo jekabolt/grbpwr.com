@@ -105,8 +105,15 @@
     "promo discount": "프로모 할인",
     "grand total": "총합계",
     "free by promo": "프로모로 무료",
+    "vat": "부가세",
+    "sales tax": "판매세",
+    "gst": "GST",
     "DHL": "DHL",
-    "FREE": "무료"
+    "FREE": "무료",
+    "hide": "숨기기",
+    "show": "표시",
+    "incl": "부가세 포함",
+    "redeem promo code": "프로모션 코드 사용"
   },
   "not-found": {
     "title": "페이지를 찾을 수 없습니다",

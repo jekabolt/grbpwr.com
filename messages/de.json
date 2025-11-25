@@ -105,8 +105,15 @@
     "promo discount": "gutscheinrabatt",
     "grand total": "gesamtsumme",
     "free by promo": "kostenlos durch gutschein",
+    "vat": "MwSt",
+    "sales tax": "Umsatzsteuer",
+    "gst": "GST",
     "DHL": "DHL",
-    "FREE": "KOSTENLOS"
+    "FREE": "KOSTENLOS",
+    "hide": "ausblenden",
+    "show": "anzeigen",
+    "incl": "inkl. MwSt.",
+    "redeem promo code": "Aktionscode einlösen"
   },
   "not-found": {
     "title": "seite nicht gefunden",

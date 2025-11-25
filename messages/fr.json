@@ -105,8 +105,15 @@
     "promo discount": "remise promo",
     "grand total": "total général",
     "free by promo": "gratuit par promo",
+    "vat": "TVA",
+    "sales tax": "Taxe de vente",
+    "gst": "TPS",
     "DHL": "DHL",
-    "FREE": "GRATUIT"
+    "FREE": "GRATUIT",
+    "hide": "masquer",
+    "show": "afficher",
+    "incl": "TVA incl.",
+    "redeem promo code": "utiliser le code promo"
   },
   "not-found": {
     "title": "page non trouvée",

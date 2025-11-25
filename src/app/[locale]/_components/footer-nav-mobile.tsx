@@ -28,12 +28,9 @@ export function FooterNavMobile() {
         <FieldsGroupContainer
           title={t("help")}
           isOpen={isOpen}
-          styling={{
-            clickableAreaClassName: "h-8",
-            clickableArea: "full",
-            childrenSpacing: "space-y-4 py-4",
-            sign: "plus-minus",
-          }}
+          clickableAreaClassName="h-8"
+          childrenSpacingClass="space-y-4 py-4"
+          signType="plus-minus"
           onToggle={handleToggle}
         >
           <CopyText text="CLIENT@GRBPWR.COM" mode="toaster" />

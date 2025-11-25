@@ -81,7 +81,7 @@ export default function AftersaleForm() {
                 key={name}
                 stage={step}
                 title={title}
-                mode="non-collapsible"
+                collapsible={false}
               >
                 <AftersaleSelector
                   control={form.control}
@@ -95,7 +95,7 @@ export default function AftersaleForm() {
             <FieldsGroupContainer
               stage="4/4"
               title={t("fill out the form")}
-              mode="non-collapsible"
+              collapsible={false}
             >
               <PersonalInfoForm />
             </FieldsGroupContainer>

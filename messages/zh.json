@@ -105,8 +105,15 @@
     "promo discount": "优惠折扣",
     "grand total": "总计",
     "free by promo": "优惠免费",
+    "vat": "增值税",
+    "sales tax": "销售税",
+    "gst": "GST",
     "DHL": "DHL",
-    "FREE": "免费"
+    "FREE": "免费",
+    "hide": "隐藏",
+    "show": "显示",
+    "incl": "含税",
+    "redeem promo code": "兑换优惠码"
   },
   "not-found": {
     "title": "页面未找到",

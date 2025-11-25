@@ -105,8 +105,15 @@
     "promo discount": "プロモ割引",
     "grand total": "総合計",
     "free by promo": "プロモで無料",
+    "vat": "消費税",
+    "sales tax": "売上税",
+    "gst": "GST",
     "DHL": "DHL",
-    "FREE": "無料"
+    "FREE": "無料",
+    "hide": "非表示",
+    "show": "表示",
+    "incl": "税込",
+    "redeem promo code": "プロモコードを適用"
   },
   "not-found": {
     "title": "ページが見つかりません",
