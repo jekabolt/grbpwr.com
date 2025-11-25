@@ -6,7 +6,6 @@ import { PaymentElement } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
-import { useDataContext } from "@/components/contexts/DataContext";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import { Tron } from "@/components/ui/icons/tron";
 import { Text } from "@/components/ui/text";
@@ -40,7 +39,6 @@ export default function PaymentFieldsGroup({
 }: Props) {
   const t = useTranslations("checkout");
 
-  const { dictionary } = useDataContext();
   const { watch, unregister, setValue, trigger } = useFormContext();
 
   const [open, setOpen] = useState(false);
@@ -74,22 +72,6 @@ export default function PaymentFieldsGroup({
     setOpen((prev) => !prev);
   }
 
-  // const allowedMethods =
-  //   dictionary?.paymentMethods?.filter((v) => v.allowed) || [];
-
-  // const selectedMethod = allowedMethods.find((v) => v.name === paymentMethod);
-  // const selectedPaymentMethod = selectedMethod
-  //   ? paymentMethodNamesMap[
-  //       selectedMethod.name as keyof typeof paymentMethodNamesMap
-  //     ]
-  //   : undefined;
-
-  // const paymentMethodsItems = allowedMethods.map((v) => ({
-  //   label: paymentMethodNamesMap[v.name as keyof typeof paymentMethodNamesMap],
-  //   value: v.name,
-  //   icon: v.name ? paymentMethodIcons[v.name] || null : null,
-  // }));
-
   return (
     <FieldsGroupContainer
       stage="3/3"
@@ -97,7 +79,6 @@ export default function PaymentFieldsGroup({
       isOpen={isOpen}
       disabled={disabled}
       onToggle={onToggle}
-      // summary={selectedPaymentMethod && <Text>{selectedPaymentMethod}</Text>}
     >
       {/* <RadioGroupField
         view="card"

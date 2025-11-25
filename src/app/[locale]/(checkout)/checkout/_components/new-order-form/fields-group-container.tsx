@@ -12,16 +12,15 @@ interface FieldsGroupContainerProps {
   stage?: string;
   title: string;
   preview?: React.ReactNode;
-  summary?: React.ReactNode;
   children: React.ReactNode;
-  isOpen?: boolean; // controlled open state
+  isOpen?: boolean;
   disabled?: boolean;
-  collapsible?: boolean; // instead of mode
+  collapsible?: boolean;
   className?: string;
-  signType?: "arrow" | "plus-minus"; // simplified sign props
+  signType?: "arrow" | "plus-minus";
   signPosition?: "before" | "after";
-  clickableAreaClassName?: string; // optional to extend control
-  childrenSpacingClass?: string; // spacing customization
+  clickableAreaClassName?: string;
+  childrenSpacingClass?: string;
   titleWrapperClassName?: string;
   onToggle?: () => void;
 }
@@ -30,7 +29,6 @@ export default function FieldsGroupContainer({
   stage,
   title,
   preview,
-  summary,
   children,
   isOpen = false,
   disabled = false,
@@ -117,12 +115,6 @@ export default function FieldsGroupContainer({
       >
         {children}
       </div>
-
-      {collapsible && !localIsOpen && (
-        <div className={cn("space-y-8", { "opacity-50": disabled })}>
-          {summary}
-        </div>
-      )}
     </div>
   );
 }

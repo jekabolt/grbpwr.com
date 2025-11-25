@@ -14,13 +14,13 @@ import FieldsGroupContainer from "./fields-group-container";
 export default function ContactFieldsGroup({
   loading,
   isOpen,
-  onToggle,
   disabled = false,
+  onToggle,
 }: {
   loading: boolean;
   isOpen: boolean;
-  onToggle: () => void;
   disabled?: boolean;
+  onToggle: () => void;
 }) {
   const { watch } = useFormContext();
   const email = watch("email");
