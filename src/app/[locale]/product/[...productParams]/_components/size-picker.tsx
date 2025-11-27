@@ -49,6 +49,7 @@ export function SizePicker({
 
           return (
             <Button
+              disabled={!!isOutOfStock}
               className={cn("border-b border-transparent leading-none", {
                 "border-textInactiveColor text-textInactiveColor":
                   isActive && isOutOfStock,

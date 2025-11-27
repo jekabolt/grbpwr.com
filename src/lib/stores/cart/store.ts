@@ -1,7 +1,8 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 
-import { serviceClient } from "@/lib/api";
+import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
+import { validateCartItems } from "@/lib/cart/validate-cart-items";
 
 import { CartState, CartStore } from "./store-types";
 
@@ -36,7 +37,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           size: string,
           quantity: number = 1,
           currency?: string,
-        ) => {
+        ): Promise<boolean> => {
           const { products } = get();
 
           const newItems = Array(quantity)
@@ -66,18 +67,16 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           currencyToUse = currencyToUse || "EUR";
 
           try {
-            const response = await serviceClient.ValidateOrderItemsInsert({
-              items: updatedProducts.map((p) => ({
-                productId: p.id,
-                quantity: p.quantity,
-                sizeId: Number(p.size),
-              })),
-              shipmentCarrierId: undefined,
-              promoCode: undefined,
-              country: undefined,
-              paymentMethod: undefined,
+            const result = await validateCartItems({
+              products: updatedProducts,
               currency: currencyToUse,
             });
+
+            if (!result) {
+              return false;
+            }
+
+            const { response } = result;
 
             const validatedItem = response.validItems?.find(
               (item) =>
@@ -87,7 +86,10 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
             const maxAllowedQuantity = validatedItem?.orderItem?.quantity || 0;
 
-            if (currentQuantity + quantity > maxAllowedQuantity) return;
+            if (currentQuantity + quantity > maxAllowedQuantity) {
+              // Backend validation says we can't add this many items
+              return false;
+            }
 
             const validatedProducts = updatedProducts.map(product => ({
               ...product,
@@ -104,8 +106,10 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
               totalPrice: Number(response.totalSale?.value || 0),
               subTotalPrice: Number(response.subtotal?.value || 0),
             });
+            return true;
           } catch (error) {
             console.error("increaseQuantity failed 💩:", error);
+            return false;
           }
         },
 
@@ -155,6 +159,45 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             totalItems: updatedProducts.length,
             totalPrice: newTotal,
             subTotalPrice: newSubTotal,
+          });
+        },
+
+        syncWithValidatedItems: (
+          validationResponse: ValidateOrderItemsInsertResponse,
+        ) => {
+          const { validItems, totalSale, subtotal } = validationResponse;
+
+          if (!validItems || validItems.length === 0) {
+            set({
+              products: [],
+              totalItems: 0,
+              totalPrice: 0,
+              subTotalPrice: 0,
+            });
+            return;
+          }
+
+          const rebuiltProducts =
+            validItems.flatMap((item) => {
+              const orderItem = item.orderItem;
+              if (!orderItem?.productId || !orderItem.sizeId) return [];
+
+              const qty = orderItem.quantity || 0;
+              if (qty <= 0) return [];
+
+              return Array.from({ length: qty }, () => ({
+                id: orderItem.productId as number,
+                size: String(orderItem.sizeId),
+                quantity: 1,
+                productData: item,
+              }));
+            }) ?? [];
+
+          set({
+            products: rebuiltProducts,
+            totalItems: rebuiltProducts.length,
+            totalPrice: Number(totalSale?.value || 0),
+            subTotalPrice: Number(subtotal?.value || 0),
           });
         },
 

@@ -43,13 +43,13 @@ export function useMeasurementSizes({
 
     try {
       const currency = selectedCurrency || "EUR";
-      await increaseQuantity(
+      const success = await increaseQuantity(
         productId,
         selectedSize?.toString() || "",
         1,
         currency,
       );
-      return true;
+      return success;
     } catch (error) {
       console.error(error);
       return false;

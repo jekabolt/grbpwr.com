@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
@@ -16,6 +16,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
@@ -43,6 +44,8 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const [loading, setLoading] = useState(false);
   const [isPaymentElementComplete, setIsPaymentElementComplete] =
     useState(false);
+  const [orderModifiedToastOpen, setOrderModifiedToastOpen] = useState(false);
+  const lastValidatedCountRef = useRef<number | null>(null);
 
   const t = useTranslations("checkout");
   const stripe = useStripe();
@@ -57,6 +60,24 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { clearFormData } = useOrderPersistence(form);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
+
+  useEffect(() => {
+    if (!order?.validItems) return;
+
+    const currentCount = order.validItems.reduce(
+      (sum, item) => sum + (item.orderItem?.quantity || 0),
+      0,
+    );
+
+    if (
+      lastValidatedCountRef.current !== null &&
+      currentCount !== lastValidatedCountRef.current
+    ) {
+      setOrderModifiedToastOpen(true);
+    }
+
+    lastValidatedCountRef.current = currentCount;
+  }, [order?.validItems]);
 
   useEffect(() => {
     if (order?.totalSale?.value) {
@@ -143,74 +164,81 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="relative space-y-14 lg:space-y-0"
-      >
-        <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
-          <div className="block lg:hidden">
-            <MobileOrderSummary
-              form={form}
-              order={order}
-              validatedProducts={order?.validItems}
-            />
-          </div>
-          <div className="space-y-10 lg:space-y-16">
-            <ContactFieldsGroup
-              loading={loading}
-              isOpen={isGroupOpen("contact")}
-              onToggle={() => handleGroupToggle("contact")}
-              disabled={isGroupDisabled("contact")}
-            />
-            <ShippingFieldsGroup
-              loading={loading}
-              validateItems={validateItems}
-              isOpen={isGroupOpen("shipping")}
-              onToggle={() => handleGroupToggle("shipping")}
-              disabled={isGroupDisabled("shipping")}
-            />
-            <PaymentFieldsGroup
-              loading={loading}
-              form={form}
-              validateItems={validateItems}
-              isOpen={isGroupOpen("payment")}
-              onToggle={() => handleGroupToggle("payment")}
-              disabled={isGroupDisabled("payment")}
-              onPaymentElementChange={setIsPaymentElementComplete}
-            />
-          </div>
-          <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
-            <div className="hidden space-y-8 lg:block">
-              <Text variant="uppercase">{t("order summary")}</Text>
-
-              <OrderProducts validatedProducts={order?.validItems} />
-
-              <div className="space-y-8">
-                <PromoCode
-                  freeShipmentCarrierId={2}
-                  form={form}
-                  loading={loading}
-                  validateItems={validateItems}
-                />
-                <PriceSummary form={form} order={order} />
-              </div>
+    <>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="relative space-y-14 lg:space-y-0"
+        >
+          <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
+            <div className="block lg:hidden">
+              <MobileOrderSummary
+                form={form}
+                order={order}
+                validatedProducts={order?.validItems}
+              />
             </div>
-            <Button
-              variant="main"
-              size="lg"
-              className="w-full uppercase"
-              disabled={
-                !form.formState.isValid || !isPaymentFieldsValid || loading
-              }
-              loading={loading}
-              loadingType="order-processing"
-            >
-              {`${t("place order")} ${currencySymbols[selectedCurrency || "EUR"]} ${order?.totalSale?.value || ""}`}
-            </Button>
+            <div className="space-y-10 lg:space-y-16">
+              <ContactFieldsGroup
+                loading={loading}
+                isOpen={isGroupOpen("contact")}
+                onToggle={() => handleGroupToggle("contact")}
+                disabled={isGroupDisabled("contact")}
+              />
+              <ShippingFieldsGroup
+                loading={loading}
+                validateItems={validateItems}
+                isOpen={isGroupOpen("shipping")}
+                onToggle={() => handleGroupToggle("shipping")}
+                disabled={isGroupDisabled("shipping")}
+              />
+              <PaymentFieldsGroup
+                loading={loading}
+                form={form}
+                validateItems={validateItems}
+                isOpen={isGroupOpen("payment")}
+                onToggle={() => handleGroupToggle("payment")}
+                disabled={isGroupDisabled("payment")}
+                onPaymentElementChange={setIsPaymentElementComplete}
+              />
+            </div>
+            <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
+              <div className="hidden space-y-8 lg:block">
+                <Text variant="uppercase">{t("order summary")}</Text>
+
+                <OrderProducts validatedProducts={order?.validItems} />
+
+                <div className="space-y-8">
+                  <PromoCode
+                    freeShipmentCarrierId={2}
+                    form={form}
+                    loading={loading}
+                    validateItems={validateItems}
+                  />
+                  <PriceSummary form={form} order={order} />
+                </div>
+              </div>
+              <Button
+                variant="main"
+                size="lg"
+                className="w-full uppercase"
+                disabled={
+                  !form.formState.isValid || !isPaymentFieldsValid || loading
+                }
+                loading={loading}
+                loadingType="order-processing"
+              >
+                {`${t("place order")} ${currencySymbols[selectedCurrency || "EUR"]}${order?.totalSale?.value || ""}`}
+              </Button>
+            </div>
           </div>
-        </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+      <SubmissionToaster
+        open={orderModifiedToastOpen}
+        message="you order is has been modified"
+        onOpenChange={setOrderModifiedToastOpen}
+      />
+    </>
   );
 }
