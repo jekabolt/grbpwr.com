@@ -12,6 +12,7 @@ type Props = {
   isOneSize?: boolean;
   view?: "grid" | "line";
   className?: string;
+  isMaxQuantity?: boolean;
   handleSizeSelect: (id: number) => void;
 };
 
@@ -23,6 +24,7 @@ export function SizePicker({
   isOneSize,
   view = "grid",
   className,
+  isMaxQuantity,
   handleSizeSelect,
 }: Props) {
   const handleAnalytics = (sizeName: string, outOfStock: boolean) => {
@@ -44,7 +46,7 @@ export function SizePicker({
         )}
       >
         {sizeNames?.map(({ name, id }) => {
-          const isOutOfStock = outOfStock?.[id];
+          const isOutOfStock = outOfStock?.[id] || sizeQuantity?.[id] === 0;
           const isActive = activeSizeId === id;
 
           return (
@@ -62,9 +64,7 @@ export function SizePicker({
               })}
               key={id}
               onClick={() => handleSizeSelect(id)}
-              onPointerDown={() =>
-                handleAnalytics(name, outOfStock?.[id] || false)
-              }
+              onPointerDown={() => handleAnalytics(name, isOutOfStock)}
             >
               {sizeQuantity ? (
                 <HoverText

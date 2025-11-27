@@ -4,7 +4,7 @@ import { createStore } from "zustand/vanilla";
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { validateCartItems } from "@/lib/cart/validate-cart-items";
 
-import { CartState, CartStore } from "./store-types";
+import { CartProduct, CartState, CartStore } from "./store-types";
 
 export const defaultInitState: CartState = {
   products: [],
@@ -41,18 +41,14 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
         ): Promise<boolean> => {
           const { products } = get();
 
+          // Check against GLOBAL cart limit (total items in entire cart)
+          if (products.length + quantity > maxOrderItems) {
+            return false;
+          }
+
           const newItems = Array(quantity)
             .fill(null)
             .map(() => ({ id: productId, size, quantity }));
-
-          const currentQuantity = products.filter(
-            p => p.id === productId && p.size === size
-          ).length;
-
-          // Check against maxOrderItems limit before proceeding
-          if (currentQuantity + quantity > maxOrderItems) {
-            return false;
-          }
 
           const updatedProducts = [...products, ...newItems];
 
@@ -84,17 +80,15 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
             const { response } = result;
 
-            const validatedItem = response.validItems?.find(
-              (item) =>
-                item.orderItem?.productId === productId &&
-                item.orderItem?.sizeId === Number(size)
+            // Calculate total items after validation
+            const totalValidatedItems = (response.validItems || []).reduce(
+              (sum, item) => sum + (item.orderItem?.quantity || 0),
+              0
             );
 
-            const backendMaxQuantity = validatedItem?.orderItem?.quantity || 0;
-            const effectiveMaxQuantity = Math.min(backendMaxQuantity, maxOrderItems);
-
-            if (currentQuantity + quantity > effectiveMaxQuantity) {
-              // Either backend stock or maxOrderItems limit exceeded
+            // Check if total items exceed global cart limit
+            if (totalValidatedItems > maxOrderItems) {
+              // Global cart limit exceeded
               return false;
             }
 
@@ -185,24 +179,33 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             return;
           }
 
-          const rebuiltProducts =
-            validItems.flatMap((item) => {
-              const orderItem = item.orderItem;
-              if (!orderItem?.productId || !orderItem.sizeId) return [];
+          // Rebuild products from validated items
+          let rebuiltProducts: CartProduct[] = [];
+          let totalItemsCount = 0;
 
-              const backendQty = orderItem.quantity || 0;
-              if (backendQty <= 0) return [];
+          for (const item of validItems) {
+            const orderItem = item.orderItem;
+            if (!orderItem?.productId || !orderItem.sizeId) continue;
 
-              // Cap quantity at maxOrderItems to enforce client-side limit
-              const effectiveQty = Math.min(backendQty, maxOrderItems);
+            const backendQty = orderItem.quantity || 0;
+            if (backendQty <= 0) continue;
 
-              return Array.from({ length: effectiveQty }, () => ({
-                id: orderItem.productId as number,
-                size: String(orderItem.sizeId),
-                quantity: 1,
-                productData: item,
-              }));
-            }) ?? [];
+            // Add items up to global cart limit
+            const itemsToAdd = Math.min(backendQty, maxOrderItems - totalItemsCount);
+            if (itemsToAdd <= 0) break;
+
+            const newProducts = Array.from({ length: itemsToAdd }, () => ({
+              id: orderItem.productId as number,
+              size: String(orderItem.sizeId),
+              quantity: 1,
+              productData: item,
+            }));
+
+            rebuiltProducts.push(...newProducts);
+            totalItemsCount += itemsToAdd;
+
+            if (totalItemsCount >= maxOrderItems) break;
+          }
 
           set({
             products: rebuiltProducts,

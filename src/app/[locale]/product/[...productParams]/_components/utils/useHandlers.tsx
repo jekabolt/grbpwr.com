@@ -6,7 +6,6 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 
-import { useDisabled } from "./useDisabled";
 import { useProductBasics } from "./useProductBasics";
 
 export function useHandlers({
@@ -24,7 +23,6 @@ export function useHandlers({
   const { selectedCurrency } = useCurrency((s) => s);
   const { dictionary } = useDataContext();
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
-  const { isMaxQuantity } = useDisabled({ id, activeSizeId });
   const [isLoading, setIsLoading] = useState(false);
   const [isMobileSizeDialogOpen, setIsMobileSizeDialogOpen] = useState(false);
 
@@ -42,8 +40,6 @@ export function useHandlers({
   }, [isOneSize, sizeNames, activeSizeId]);
 
   const handleAddToCart = async () => {
-    if (isMaxQuantity) return false;
-
     if (!activeSizeId) {
       if (typeof window !== "undefined" && window.innerWidth < 1024) {
         setIsMobileSizeDialogOpen(true);

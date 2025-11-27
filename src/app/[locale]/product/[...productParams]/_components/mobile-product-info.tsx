@@ -45,7 +45,7 @@ export function MobileProductInfo({
     product,
   });
   const { selectedCurrency } = useCurrency((state) => state);
-  const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
+  const { outOfStock, isMaxQuantity } = useDisabled({ id: productId, activeSizeId, product });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
   const containerRef = useRef<HTMLDivElement>(null!);
@@ -100,6 +100,7 @@ export function MobileProductInfo({
                   outOfStock={outOfStock}
                   sizeQuantity={sizeQuantity}
                   isOneSize={isOneSize}
+                  isMaxQuantity={isMaxQuantity}
                   handleSizeSelect={handleSizeSelect}
                   view={isOneSize ? "line" : "grid"}
                 />

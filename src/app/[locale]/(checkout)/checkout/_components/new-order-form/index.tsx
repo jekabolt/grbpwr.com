@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
@@ -36,8 +37,9 @@ type NewOrderFormProps = {
 };
 
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
+  const router = useRouter();
   const { countryCode } = useTranslationsStore((state) => state.currentCountry);
-  const { clearCart } = useCart((s) => s);
+  const { clearCart, products } = useCart((s) => s);
   const { selectedCurrency } = useCurrency((state) => state);
   const { handlePurchaseEvent } = useCheckoutAnalytics({});
 
@@ -45,6 +47,9 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const [isPaymentElementComplete, setIsPaymentElementComplete] =
     useState(false);
   const [orderModifiedToastOpen, setOrderModifiedToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState(
+    "you order is has been modified",
+  );
   const lastValidatedCountRef = useRef<number | null>(null);
 
   const t = useTranslations("checkout");
@@ -62,6 +67,21 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     useAutoGroupOpen(form);
 
   useEffect(() => {
+    // Check if cart is empty OR validation returned no valid items - redirect to main page
+    const shouldRedirect =
+      products.length === 0 ||
+      (order?.validItems?.length === 0 &&
+        lastValidatedCountRef.current !== null);
+
+    if (shouldRedirect) {
+      setToastMessage("cart outdated");
+      setOrderModifiedToastOpen(true);
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+      return;
+    }
+
     if (!order?.validItems) return;
 
     const currentCount = order.validItems.reduce(
@@ -73,11 +93,12 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
       lastValidatedCountRef.current !== null &&
       currentCount !== lastValidatedCountRef.current
     ) {
+      setToastMessage("you order is has been modified");
       setOrderModifiedToastOpen(true);
     }
 
     lastValidatedCountRef.current = currentCount;
-  }, [order?.validItems]);
+  }, [order?.validItems, products.length, router]);
 
   useEffect(() => {
     if (order?.totalSale?.value) {
@@ -236,7 +257,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
       </Form>
       <SubmissionToaster
         open={orderModifiedToastOpen}
-        message="you order is has been modified"
+        message={toastMessage}
         onOpenChange={setOrderModifiedToastOpen}
       />
     </>
