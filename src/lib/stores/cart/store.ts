@@ -37,6 +37,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           size: string,
           quantity: number = 1,
           currency?: string,
+          maxOrderItems: number = 3,
         ): Promise<boolean> => {
           const { products } = get();
 
@@ -47,6 +48,11 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           const currentQuantity = products.filter(
             p => p.id === productId && p.size === size
           ).length;
+
+          // Check against maxOrderItems limit before proceeding
+          if (currentQuantity + quantity > maxOrderItems) {
+            return false;
+          }
 
           const updatedProducts = [...products, ...newItems];
 
@@ -84,10 +90,11 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
                 item.orderItem?.sizeId === Number(size)
             );
 
-            const maxAllowedQuantity = validatedItem?.orderItem?.quantity || 0;
+            const backendMaxQuantity = validatedItem?.orderItem?.quantity || 0;
+            const effectiveMaxQuantity = Math.min(backendMaxQuantity, maxOrderItems);
 
-            if (currentQuantity + quantity > maxAllowedQuantity) {
-              // Backend validation says we can't add this many items
+            if (currentQuantity + quantity > effectiveMaxQuantity) {
+              // Either backend stock or maxOrderItems limit exceeded
               return false;
             }
 
@@ -164,6 +171,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
         syncWithValidatedItems: (
           validationResponse: ValidateOrderItemsInsertResponse,
+          maxOrderItems: number = 3,
         ) => {
           const { validItems, totalSale, subtotal } = validationResponse;
 
@@ -182,10 +190,13 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
               const orderItem = item.orderItem;
               if (!orderItem?.productId || !orderItem.sizeId) return [];
 
-              const qty = orderItem.quantity || 0;
-              if (qty <= 0) return [];
+              const backendQty = orderItem.quantity || 0;
+              if (backendQty <= 0) return [];
 
-              return Array.from({ length: qty }, () => ({
+              // Cap quantity at maxOrderItems to enforce client-side limit
+              const effectiveQty = Math.min(backendQty, maxOrderItems);
+
+              return Array.from({ length: effectiveQty }, () => ({
                 id: orderItem.productId as number,
                 size: String(orderItem.sizeId),
                 quantity: 1,

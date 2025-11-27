@@ -47,7 +47,9 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
 
     if (normalizedResponse.validItems) {
       setValidatedOrder(normalizedResponse);
-      syncWithValidatedItems(normalizedResponse);
+      // Sync cart with validated items (remove invalid/unavailable items)
+      const maxOrderItems = dictionary?.maxOrderItems || 3;
+      syncWithValidatedItems(normalizedResponse, maxOrderItems);
     }
 
     return normalizedResponse;

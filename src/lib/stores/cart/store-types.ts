@@ -24,9 +24,13 @@ export interface CartActions {
     size: string,
     quantity?: number,
     currency?: string,
+    maxOrderItems?: number,
   ) => Promise<boolean>;
   removeProduct: (productId: number, size: string, index?: number) => void;
-  syncWithValidatedItems: (validationResponse: ValidateOrderItemsInsertResponse) => void;
+  syncWithValidatedItems: (
+    validationResponse: ValidateOrderItemsInsertResponse,
+    maxOrderItems?: number,
+  ) => void;
   clearCart: () => void;
   openCart: () => void;
   closeCart: () => void;

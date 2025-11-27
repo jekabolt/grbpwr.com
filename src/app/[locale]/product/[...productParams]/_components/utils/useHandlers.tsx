@@ -4,6 +4,7 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 import { sendAddToCartEvent } from "@/lib/analitycs/cart";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useDataContext } from "@/components/contexts/DataContext";
 
 import { useDisabled } from "./useDisabled";
 import { useProductBasics } from "./useProductBasics";
@@ -21,10 +22,13 @@ export function useHandlers({
 }) {
   const { increaseQuantity, openCart } = useCart((state) => state);
   const { selectedCurrency } = useCurrency((s) => s);
+  const { dictionary } = useDataContext();
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const { isMaxQuantity } = useDisabled({ id, activeSizeId });
   const [isLoading, setIsLoading] = useState(false);
   const [isMobileSizeDialogOpen, setIsMobileSizeDialogOpen] = useState(false);
+
+  const maxOrderItems = dictionary?.maxOrderItems || 3;
 
   const { productCategory, productSubCategory } = useProductBasics({
     product: product as common_ProductFull,
@@ -49,7 +53,13 @@ export function useHandlers({
 
     try {
       const currency = selectedCurrency || "EUR";
-      await increaseQuantity(id, activeSizeId?.toString() || "", 1, currency);
+      await increaseQuantity(
+        id,
+        activeSizeId?.toString() || "",
+        1,
+        currency,
+        maxOrderItems,
+      );
 
       if (product && currency) {
         sendAddToCartEvent(
@@ -76,7 +86,13 @@ export function useHandlers({
     if (isMobileSizeDialogOpen) {
       try {
         const currency = selectedCurrency || "EUR";
-        await increaseQuantity(id, sizeId.toString(), 1, currency);
+        await increaseQuantity(
+          id,
+          sizeId.toString(),
+          1,
+          currency,
+          maxOrderItems,
+        );
 
         if (product && currency) {
           sendAddToCartEvent(
