@@ -62,5 +62,3 @@ export async function validateCartItems({
 
     return { response, hasItemsChanged };
 }
-
-

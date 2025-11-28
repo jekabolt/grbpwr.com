@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
@@ -21,6 +20,7 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
+import { useCheckoutEffects } from "./hooks/useCheckout";
 import { useOrderPersistence } from "./hooks/useOrderPersistence";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { MobileOrderSummary } from "./mobile-order-summary";
@@ -37,20 +37,14 @@ type NewOrderFormProps = {
 };
 
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
-  const router = useRouter();
   const { countryCode } = useTranslationsStore((state) => state.currentCountry);
-  const { clearCart, products } = useCart((s) => s);
+  const { products, clearCart } = useCart((s) => s);
   const { selectedCurrency } = useCurrency((state) => state);
   const { handlePurchaseEvent } = useCheckoutAnalytics({});
 
   const [loading, setLoading] = useState(false);
   const [isPaymentElementComplete, setIsPaymentElementComplete] =
     useState(false);
-  const [orderModifiedToastOpen, setOrderModifiedToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState(
-    "you order is has been modified",
-  );
-  const lastValidatedCountRef = useRef<number | null>(null);
 
   const t = useTranslations("checkout");
   const stripe = useStripe();
@@ -65,59 +59,16 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { clearFormData } = useOrderPersistence(form);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
-
-  useEffect(() => {
-    // Check if cart is empty OR validation returned no valid items - redirect to main page
-    const shouldRedirect =
-      products.length === 0 ||
-      (order?.validItems?.length === 0 &&
-        lastValidatedCountRef.current !== null);
-
-    if (shouldRedirect) {
-      setToastMessage("cart outdated");
-      setOrderModifiedToastOpen(true);
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
-      return;
-    }
-
-    if (!order?.validItems) return;
-
-    const currentCount = order.validItems.reduce(
-      (sum, item) => sum + (item.orderItem?.quantity || 0),
-      0,
-    );
-
-    if (
-      lastValidatedCountRef.current !== null &&
-      currentCount !== lastValidatedCountRef.current
-    ) {
-      setToastMessage("you order is has been modified");
-      setOrderModifiedToastOpen(true);
-    }
-
-    lastValidatedCountRef.current = currentCount;
-  }, [order?.validItems, products.length, router]);
-
-  useEffect(() => {
-    if (order?.totalSale?.value) {
-      onAmountChange(Math.round(parseFloat(order.totalSale.value)));
-    }
-  }, [order?.totalSale?.value, onAmountChange]);
-
-  useEffect(() => {
-    if (countryCode && !form.getValues("country")) {
-      form.setValue("country", countryCode, { shouldValidate: true });
-    }
-  }, [countryCode, form]);
-
-  useEffect(() => {
-    const subscription = form.watch((_, { name }) => {
-      handleFormChange(name);
+  const { orderModifiedToastOpen, setOrderModifiedToastOpen, toastMessage } =
+    useCheckoutEffects({
+      order,
+      products,
+      loading,
+      form,
+      countryCode,
+      onAmountChange,
+      handleFormChange,
     });
-    return () => subscription.unsubscribe();
-  }, [form, handleFormChange]);
 
   const paymentMethod = form.watch("paymentMethod");
   const isPaymentFieldsValid =
