@@ -6,6 +6,7 @@ import { CheckoutFormWrapper } from "./_components/checkout-form-wrapper";
 
 export default async function CheckoutPage() {
   const t = await getTranslations("navigation");
+
   return (
     <FlexibleLayout
       headerType="flexible"

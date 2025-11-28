@@ -80,7 +80,6 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
       const validItems = response.validItems || [];
       const maxOrderItems = dictionary?.maxOrderItems || 3;
 
-      // No valid items left after validation: clear/sync cart, show toast, close popup, don't navigate
       if (validItems.length === 0) {
         syncWithValidatedItems(response, maxOrderItems);
         setToastMessage("your cart is outaded");
@@ -89,7 +88,6 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      // We have some valid items; sync cart and optionally show "modified" toast
       syncWithValidatedItems(response, maxOrderItems);
 
       if (hasItemsChanged) {
@@ -97,7 +95,6 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
         setOrderModifiedToastOpen(true);
       }
 
-      // Navigate to checkout when there are still valid items
       if (validItems.length > 0) {
         handleBeginCheckoutEvent();
         router.push("/checkout");
