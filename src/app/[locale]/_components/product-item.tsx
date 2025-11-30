@@ -30,7 +30,6 @@ export function ProductItem({
   const { selectedCurrency } = useCurrency((state) => state);
   const { handleSelectItemEvent } = useAnalytics();
 
-  // Find the price for the selected currency
   const currencyKey = selectedCurrency || "EUR";
   const productBody = product.productDisplay?.productBody?.productBodyInsert;
   const salePercentage = productBody?.salePercentage?.value || "0";
