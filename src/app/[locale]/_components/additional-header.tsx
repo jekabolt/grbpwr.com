@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
@@ -15,10 +14,14 @@ export function AdditionalHeader({
   hidden = false,
 }: HeaderProps) {
   const router = useRouter();
-  const { openCart } = useCart((s) => s);
-  const t = useTranslations("navigation");
+  const { openCart, closeCart } = useCart((s) => s);
 
   const handleLeftClick = () => {
+    closeCart();
+    router.push("/");
+  };
+
+  const handleRightClick = () => {
     openCart();
     router.push("/");
   };
@@ -36,14 +39,14 @@ export function AdditionalHeader({
       </AnimatedButton>
       <div className="flex-none text-center text-textBaseSize">{center}</div>
       <AnimatedButton
-        href="/"
+        onClick={handleRightClick}
         animationArea="text"
         className="hidden hover:underline lg:block"
       >
         {right}
       </AnimatedButton>
       <AnimatedButton
-        href="/"
+        onClick={handleRightClick}
         animationArea="text"
         className={cn("block lg:hidden", {
           hidden: hidden,

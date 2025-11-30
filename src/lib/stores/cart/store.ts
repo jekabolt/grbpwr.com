@@ -1,9 +1,10 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 
-import { serviceClient } from "@/lib/api";
+import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
+import { validateCartItems } from "@/lib/cart/validate-cart-items";
 
-import { CartState, CartStore } from "./store-types";
+import { CartProduct, CartState, CartStore } from "./store-types";
 
 export const defaultInitState: CartState = {
   products: [],
@@ -36,16 +37,18 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           size: string,
           quantity: number = 1,
           currency?: string,
-        ) => {
+          maxOrderItems: number = 3,
+        ): Promise<boolean> => {
           const { products } = get();
+
+          // Check against GLOBAL cart limit (total items in entire cart)
+          if (products.length + quantity > maxOrderItems) {
+            return false;
+          }
 
           const newItems = Array(quantity)
             .fill(null)
             .map(() => ({ id: productId, size, quantity }));
-
-          const currentQuantity = products.filter(
-            p => p.id === productId && p.size === size
-          ).length;
 
           const updatedProducts = [...products, ...newItems];
 
@@ -66,28 +69,28 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           currencyToUse = currencyToUse || "EUR";
 
           try {
-            const response = await serviceClient.ValidateOrderItemsInsert({
-              items: updatedProducts.map((p) => ({
-                productId: p.id,
-                quantity: p.quantity,
-                sizeId: Number(p.size),
-              })),
-              shipmentCarrierId: undefined,
-              promoCode: undefined,
-              country: undefined,
-              paymentMethod: undefined,
+            const result = await validateCartItems({
+              products: updatedProducts,
               currency: currencyToUse,
             });
 
-            const validatedItem = response.validItems?.find(
-              (item) =>
-                item.orderItem?.productId === productId &&
-                item.orderItem?.sizeId === Number(size)
+            if (!result) {
+              return false;
+            }
+
+            const { response } = result;
+
+            // Calculate total items after validation
+            const totalValidatedItems = (response.validItems || []).reduce(
+              (sum, item) => sum + (item.orderItem?.quantity || 0),
+              0
             );
 
-            const maxAllowedQuantity = validatedItem?.orderItem?.quantity || 0;
-
-            if (currentQuantity + quantity > maxAllowedQuantity) return;
+            // Check if total items exceed global cart limit
+            if (totalValidatedItems > maxOrderItems) {
+              // Global cart limit exceeded
+              return false;
+            }
 
             const validatedProducts = updatedProducts.map(product => ({
               ...product,
@@ -104,8 +107,10 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
               totalPrice: Number(response.totalSale?.value || 0),
               subTotalPrice: Number(response.subtotal?.value || 0),
             });
+            return true;
           } catch (error) {
             console.error("increaseQuantity failed 💩:", error);
+            return false;
           }
         },
 
@@ -158,6 +163,58 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           });
         },
 
+        syncWithValidatedItems: (
+          validationResponse: ValidateOrderItemsInsertResponse,
+          maxOrderItems: number = 3,
+        ) => {
+          const { validItems, totalSale, subtotal } = validationResponse;
+
+          if (!validItems || validItems.length === 0) {
+            set({
+              products: [],
+              totalItems: 0,
+              totalPrice: 0,
+              subTotalPrice: 0,
+            });
+            return;
+          }
+
+          // Rebuild products from validated items
+          let rebuiltProducts: CartProduct[] = [];
+          let totalItemsCount = 0;
+
+          for (const item of validItems) {
+            const orderItem = item.orderItem;
+            if (!orderItem?.productId || !orderItem.sizeId) continue;
+
+            const backendQty = orderItem.quantity || 0;
+            if (backendQty <= 0) continue;
+
+            // Add items up to global cart limit
+            const itemsToAdd = Math.min(backendQty, maxOrderItems - totalItemsCount);
+            if (itemsToAdd <= 0) break;
+
+            const newProducts = Array.from({ length: itemsToAdd }, () => ({
+              id: orderItem.productId as number,
+              size: String(orderItem.sizeId),
+              quantity: 1,
+              productData: item,
+            }));
+
+            rebuiltProducts.push(...newProducts);
+            totalItemsCount += itemsToAdd;
+
+            if (totalItemsCount >= maxOrderItems) break;
+          }
+
+          set({
+            products: rebuiltProducts,
+            totalItems: rebuiltProducts.length,
+            totalPrice: Number(totalSale?.value || 0),
+            subTotalPrice: Number(subtotal?.value || 0),
+          });
+        },
+
         clearCart: () => {
           set(defaultInitState);
         },
@@ -170,7 +227,6 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           totalItems: state.totalItems,
           totalPrice: state.totalPrice,
           subTotalPrice: state.subTotalPrice,
-          isOpen: state.isOpen,
         }),
       },
     ),

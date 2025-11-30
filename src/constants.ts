@@ -410,12 +410,14 @@ const country = (
 
 export const COUNTRIES_BY_REGION = {
   AFRICA: [country("south africa", "za", "27", { vatRate: 15 })],
+  //remove vat
   AMERICAS: [
     country("canada", "ca", "1", { currency: "$", currencyKey: "USD", vatRate: 0, taxType: "GST" }), // GST/HST varies by province
     country("chile", "cl", "56", { currency: "$", currencyKey: "USD", vatRate: 19 }),
     country("mexico", "mx", "52", { currency: "$", currencyKey: "USD", vatRate: 16 }),
     country("united states", "us", "1", { currency: "$", currencyKey: "USD", vatRate: 0, taxType: "Sales Tax" }), // Sales tax varies by state
   ],
+  // remove vat
   "ASIA PACIFIC": [
     country("australia", "au", "61", { vatRate: 10, taxType: "GST" }),
     country("hong kong sar", "hk", "852", { vatRate: 0 }),
@@ -495,6 +497,7 @@ export const COUNTRIES_BY_REGION = {
     country("turkey", "tr", "90", { vatRate: 20 }),
     country("united kingdom", "gb", "44", { currency: "£", currencyKey: "GBP", vatRate: 20 }),
   ],
+  // remove vat
   "MIDDLE EAST": [
     country("bahrain", "bh", "973", { vatRate: 10 }),
     country("israel", "il", "972", { vatRate: 17 }),

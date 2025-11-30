@@ -22,12 +22,14 @@ export function Measurements({
   selectedSize,
   outOfStock,
   isOneSize,
+  isMaxQuantity,
   handleSelectSize,
 }: {
   product: common_ProductFull;
   selectedSize: number;
   outOfStock?: Record<number, boolean>;
   isOneSize?: boolean;
+  isMaxQuantity?: boolean;
   handleSelectSize: (size: number) => void;
 }) {
   const { hoveredMeasurement } = useMeasurementStore();
@@ -110,6 +112,7 @@ export function Measurements({
               outOfStock={outOfStock}
               sizeQuantity={sizeQuantity}
               isOneSize={isOneSize}
+              isMaxQuantity={isMaxQuantity}
               handleSizeSelect={handleSelectSize}
               className={cn({ "flex justify-center": isOneSize })}
             />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
@@ -16,9 +16,11 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
+import { useCheckoutEffects } from "./hooks/useCheckout";
 import { useOrderPersistence } from "./hooks/useOrderPersistence";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { MobileOrderSummary } from "./mobile-order-summary";
@@ -36,7 +38,7 @@ type NewOrderFormProps = {
 
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { countryCode } = useTranslationsStore((state) => state.currentCountry);
-  const { clearCart } = useCart((s) => s);
+  const { products, clearCart } = useCart((s) => s);
   const { selectedCurrency } = useCurrency((state) => state);
   const { handlePurchaseEvent } = useCheckoutAnalytics({});
 
@@ -57,25 +59,16 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { clearFormData } = useOrderPersistence(form);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
-
-  useEffect(() => {
-    if (order?.totalSale?.value) {
-      onAmountChange(Math.round(parseFloat(order.totalSale.value)));
-    }
-  }, [order?.totalSale?.value, onAmountChange]);
-
-  useEffect(() => {
-    if (countryCode && !form.getValues("country")) {
-      form.setValue("country", countryCode, { shouldValidate: true });
-    }
-  }, [countryCode, form]);
-
-  useEffect(() => {
-    const subscription = form.watch((_, { name }) => {
-      handleFormChange(name);
+  const { orderModifiedToastOpen, setOrderModifiedToastOpen, toastMessage } =
+    useCheckoutEffects({
+      order,
+      products,
+      loading,
+      form,
+      countryCode,
+      onAmountChange,
+      handleFormChange,
     });
-    return () => subscription.unsubscribe();
-  }, [form, handleFormChange]);
 
   const paymentMethod = form.watch("paymentMethod");
   const isPaymentFieldsValid =
@@ -143,74 +136,81 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="relative space-y-14 lg:space-y-0"
-      >
-        <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
-          <div className="block lg:hidden">
-            <MobileOrderSummary
-              form={form}
-              order={order}
-              validatedProducts={order?.validItems}
-            />
-          </div>
-          <div className="space-y-10 lg:space-y-16">
-            <ContactFieldsGroup
-              loading={loading}
-              isOpen={isGroupOpen("contact")}
-              onToggle={() => handleGroupToggle("contact")}
-              disabled={isGroupDisabled("contact")}
-            />
-            <ShippingFieldsGroup
-              loading={loading}
-              validateItems={validateItems}
-              isOpen={isGroupOpen("shipping")}
-              onToggle={() => handleGroupToggle("shipping")}
-              disabled={isGroupDisabled("shipping")}
-            />
-            <PaymentFieldsGroup
-              loading={loading}
-              form={form}
-              validateItems={validateItems}
-              isOpen={isGroupOpen("payment")}
-              onToggle={() => handleGroupToggle("payment")}
-              disabled={isGroupDisabled("payment")}
-              onPaymentElementChange={setIsPaymentElementComplete}
-            />
-          </div>
-          <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
-            <div className="hidden space-y-8 lg:block">
-              <Text variant="uppercase">{t("order summary")}</Text>
-
-              <OrderProducts validatedProducts={order?.validItems} />
-
-              <div className="space-y-8">
-                <PromoCode
-                  freeShipmentCarrierId={2}
-                  form={form}
-                  loading={loading}
-                  validateItems={validateItems}
-                />
-                <PriceSummary form={form} order={order} />
-              </div>
+    <>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="relative space-y-14 lg:space-y-0"
+        >
+          <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
+            <div className="block lg:hidden">
+              <MobileOrderSummary
+                form={form}
+                order={order}
+                validatedProducts={order?.validItems}
+              />
             </div>
-            <Button
-              variant="main"
-              size="lg"
-              className="w-full uppercase"
-              disabled={
-                !form.formState.isValid || !isPaymentFieldsValid || loading
-              }
-              loading={loading}
-              loadingType="order-processing"
-            >
-              {`${t("place order")} ${currencySymbols[selectedCurrency || "EUR"]} ${order?.totalSale?.value || ""}`}
-            </Button>
+            <div className="space-y-10 lg:space-y-16">
+              <ContactFieldsGroup
+                loading={loading}
+                isOpen={isGroupOpen("contact")}
+                onToggle={() => handleGroupToggle("contact")}
+                disabled={isGroupDisabled("contact")}
+              />
+              <ShippingFieldsGroup
+                loading={loading}
+                validateItems={validateItems}
+                isOpen={isGroupOpen("shipping")}
+                onToggle={() => handleGroupToggle("shipping")}
+                disabled={isGroupDisabled("shipping")}
+              />
+              <PaymentFieldsGroup
+                loading={loading}
+                form={form}
+                validateItems={validateItems}
+                isOpen={isGroupOpen("payment")}
+                onToggle={() => handleGroupToggle("payment")}
+                disabled={isGroupDisabled("payment")}
+                onPaymentElementChange={setIsPaymentElementComplete}
+              />
+            </div>
+            <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
+              <div className="hidden space-y-8 lg:block">
+                <Text variant="uppercase">{t("order summary")}</Text>
+
+                <OrderProducts validatedProducts={order?.validItems} />
+
+                <div className="space-y-8">
+                  <PromoCode
+                    freeShipmentCarrierId={2}
+                    form={form}
+                    loading={loading}
+                    validateItems={validateItems}
+                  />
+                  <PriceSummary form={form} order={order} />
+                </div>
+              </div>
+              <Button
+                variant="main"
+                size="lg"
+                className="w-full uppercase"
+                disabled={
+                  !form.formState.isValid || !isPaymentFieldsValid || loading
+                }
+                loading={loading}
+                loadingType="order-processing"
+              >
+                {`${t("place order")} ${currencySymbols[selectedCurrency || "EUR"]}${order?.totalSale?.value || ""}`}
+              </Button>
+            </div>
           </div>
-        </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+      <SubmissionToaster
+        open={orderModifiedToastOpen}
+        message={toastMessage}
+        onOpenChange={setOrderModifiedToastOpen}
+      />
+    </>
   );
 }

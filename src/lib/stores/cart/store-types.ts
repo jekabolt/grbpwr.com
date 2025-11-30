@@ -1,4 +1,4 @@
-import type { common_OrderItem } from "@/api/proto-http/frontend";
+import type { common_OrderItem, ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { StateCreator } from "zustand";
 import { PersistOptions } from "zustand/middleware";
 
@@ -24,8 +24,13 @@ export interface CartActions {
     size: string,
     quantity?: number,
     currency?: string,
-  ) => Promise<void>;
+    maxOrderItems?: number,
+  ) => Promise<boolean>;
   removeProduct: (productId: number, size: string, index?: number) => void;
+  syncWithValidatedItems: (
+    validationResponse: ValidateOrderItemsInsertResponse,
+    maxOrderItems?: number,
+  ) => void;
   clearCart: () => void;
   openCart: () => void;
   closeCart: () => void;

@@ -34,7 +34,11 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
       isOneSize,
       product,
     });
-  const { outOfStock } = useDisabled({ id: productId, activeSizeId, product });
+  const { outOfStock, isMaxQuantity } = useDisabled({
+    id: productId,
+    activeSizeId,
+    product,
+  });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
 
@@ -62,6 +66,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 selectedSize={selectedSize || 0}
                 outOfStock={outOfStock}
                 isOneSize={isOneSize}
+                isMaxQuantity={isMaxQuantity}
                 handleSelectSize={handleSelectSize}
               />
             </Modal>
@@ -72,6 +77,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 outOfStock={outOfStock}
                 sizeQuantity={sizeQuantity}
                 isOneSize={isOneSize}
+                isMaxQuantity={isMaxQuantity}
                 handleSizeSelect={handleSizeSelect}
                 view={isOneSize ? "line" : "grid"}
               />

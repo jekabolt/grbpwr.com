@@ -1,18 +1,32 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
+
+import { useProductBasics } from "./useProductBasics";
 
 export function useProductSizes({ product }: { product: common_ProductFull }) {
   const { dictionary } = useDataContext();
+  const { productId } = useProductBasics({ product });
+  const cartProducts = useCart((state) => state.products);
+
   const sizes = product.sizes;
   const sizeNames = sizes?.map((s) => ({
     id: s.sizeId as number,
     name: dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId)?.name || "",
   }));
-  const sizeQuantity =
+
+  // Calculate available quantity per size (backend stock - items in cart)
+  const sizeQuantity: Record<number, number> =
     product.sizes?.reduce(
       (acc, size) => {
-        acc[size.sizeId as number] = Number(size.quantity?.value || "0");
+        const sizeId = size.sizeId as number;
+        const backendQty = Number(size.quantity?.value || "0");
+        const inCartCount = cartProducts.filter(
+          (p) => p.id === productId && Number(p.size) === sizeId,
+        ).length;
+
+        acc[sizeId] = Math.max(0, backendQty - inCartCount);
         return acc;
       },
       {} as Record<number, number>,

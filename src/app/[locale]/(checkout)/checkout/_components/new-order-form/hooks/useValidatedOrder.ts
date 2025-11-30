@@ -1,11 +1,11 @@
 "use client";
 
-import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
+import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { serviceClient } from "@/lib/api";
+import { validateCartItems } from "@/lib/cart/validate-cart-items";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
 import { useCurrency } from "@/lib/stores/currency/store-provider";
@@ -16,40 +16,43 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
     ValidateOrderItemsInsertResponse | undefined
   >(undefined);
   const products = useCart((cart) => cart.products);
+  const syncWithValidatedItems = useCart((cart) => cart.syncWithValidatedItems);
   const { dictionary } = useDataContext();
   const { selectedCurrency } = useCurrency((state) => state);
-  const currency = selectedCurrency || dictionary?.baseCurrency;
+  const currency = selectedCurrency || dictionary?.baseCurrency || "EUR";
 
   const validateItems = async (shipmentCarrierId?: string) => {
-    const items = products.map((p) => ({
-      productId: p.id,
-      quantity: p.quantity,
-      sizeId: parseInt(p.size),
-    }));
-
-    if (!items || items?.length === 0) return null;
-
-    const promoCode = form.getValues("promoCode");
-    const carrierId = shipmentCarrierId || form.getValues("shipmentCarrierId");
-    const country = form.getValues("country");
-    const paymentMethod = form.getValues("paymentMethod");
+    const promoCode: string = form.getValues("promoCode") || "";
+    const carrierId = shipmentCarrierId || form.getValues("shipmentCarrierId") || "";
+    const country = form.getValues("country") || undefined;
+    const paymentMethod = form.getValues("paymentMethod") || undefined;
 
     console.log("validating products ⌛️");
-    const response = await serviceClient.ValidateOrderItemsInsert({
-      items,
+    const result = await validateCartItems({
+      products,
+      currency,
       promoCode,
-      shipmentCarrierId: parseInt(carrierId),
+      shipmentCarrierId: carrierId,
       country,
       paymentMethod,
-      currency,
     });
     console.log("finished validating products 🎉");
 
-    if (response.validItems) {
-      setValidatedOrder(response);
+    if (!result) return null;
+
+    const { response, hasItemsChanged } = result;
+    const normalizedResponse: ValidateOrderItemsInsertResponse = hasItemsChanged
+      ? { ...response, hasChanged: true }
+      : response;
+
+    if (normalizedResponse.validItems) {
+      setValidatedOrder(normalizedResponse);
+      // Sync cart with validated items (remove invalid/unavailable items)
+      const maxOrderItems = dictionary?.maxOrderItems || 3;
+      syncWithValidatedItems(normalizedResponse, maxOrderItems);
     }
 
-    return response;
+    return normalizedResponse;
   };
 
   useEffect(() => {
