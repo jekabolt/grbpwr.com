@@ -21,7 +21,6 @@ export async function confirmStripePayment({
     email,
     country,
 }: ConfirmPaymentParams): Promise<ConfirmPaymentResult> {
-    // Validate required parameters
     if (
         !clientSecret ||
         typeof clientSecret !== "string" ||
@@ -36,7 +35,6 @@ export async function confirmStripePayment({
         return { success: false, error: errorMessage };
     }
 
-    // Submit payment elements
     const { error: submitError } = await elements.submit();
 
     if (submitError) {
@@ -44,7 +42,6 @@ export async function confirmStripePayment({
         return { success: false, error: submitError.message || "Failed to submit payment elements" };
     }
 
-    // Confirm payment
     const { error } = await stripe.confirmPayment({
         clientSecret,
         elements,
@@ -58,7 +55,7 @@ export async function confirmStripePayment({
                 },
             },
         },
-        redirect: "if_required",
+        redirect: 'if_required',
     });
 
     if (error) {

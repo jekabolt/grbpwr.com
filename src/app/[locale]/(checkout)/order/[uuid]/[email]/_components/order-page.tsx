@@ -1,10 +1,12 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -20,6 +22,22 @@ export function OrderPageComponent({
 }) {
   const { order: orderData } = use(orderPromise);
   const { selectedCurrency } = useCurrency((state) => state);
+  const { clearCart } = useCart((state) => state);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+    const redirectStatus = params.get("redirect_status");
+
+    if (redirectStatus === "succeeded") {
+      clearCart();
+    } else if (redirectStatus === "failed" || redirectStatus === "canceled") {
+      console.error("Payment failed or canceled");
+      router.push("/checkout");
+    }
+  }, [clearCart, router, orderData]);
 
   if (!orderData) return null;
 

@@ -227,7 +227,6 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           totalItems: state.totalItems,
           totalPrice: state.totalPrice,
           subTotalPrice: state.subTotalPrice,
-          isOpen: state.isOpen,
         }),
       },
     ),
