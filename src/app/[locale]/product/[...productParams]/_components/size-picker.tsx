@@ -39,7 +39,7 @@ export function SizePicker({
       <div
         className={cn(
           {
-            "grid grid-cols-4 gap-y-7": view === "grid",
+            "grid grid-cols-4 gap-x-3 gap-y-7": view === "grid",
             "flex w-full items-center justify-between": view === "line",
           },
           className,
@@ -52,12 +52,12 @@ export function SizePicker({
           return (
             <Button
               disabled={!!isOutOfStock}
+              variant={isOutOfStock ? "crossed" : "default"}
               className={cn("border-b border-transparent leading-none", {
-                "border-textInactiveColor text-textInactiveColor":
-                  isActive && isOutOfStock,
+                // "border-textInactiveColor text-textInactiveColor":
+                //   isActive && isOutOfStock,
                 "border-textColor": isActive && !isOutOfStock,
-                "text-textInactiveColor hover:border-textInactiveColor":
-                  !isActive && isOutOfStock,
+                // "text-textInactiveColor": !isActive && isOutOfStock,
                 "hover:border-textColor": !isActive && !isOutOfStock,
                 "w-full": view === "line",
                 "w-auto": view === "line" && isOneSize,

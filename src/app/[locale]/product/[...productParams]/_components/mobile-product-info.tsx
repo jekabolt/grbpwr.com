@@ -45,7 +45,11 @@ export function MobileProductInfo({
     product,
   });
   const { selectedCurrency } = useCurrency((state) => state);
-  const { outOfStock, isMaxQuantity } = useDisabled({ id: productId, activeSizeId, product });
+  const { outOfStock, isMaxQuantity } = useDisabled({
+    id: productId,
+    activeSizeId,
+    product,
+  });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
   const containerRef = useRef<HTMLDivElement>(null!);
@@ -85,7 +89,7 @@ export function MobileProductInfo({
             <Text variant="uppercase">{name}</Text>
             <div className="space-y-12">
               <GarmentDescription product={product} />
-              <div className="space-y-5">
+              <div className="space-y-12">
                 <MobileMeasurements
                   product={product}
                   selectedSize={selectedSize || 0}
@@ -105,10 +109,10 @@ export function MobileProductInfo({
                   view={isOneSize ? "line" : "grid"}
                 />
               </div>
+              {product.product && (
+                <LastViewedProducts product={product.product} />
+              )}
             </div>
-            {product.product && (
-              <LastViewedProducts product={product.product} />
-            )}
           </BottomSheet>
         </div>
       </div>
