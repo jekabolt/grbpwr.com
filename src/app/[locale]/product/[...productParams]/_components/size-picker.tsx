@@ -52,7 +52,7 @@ export function SizePicker({
           return (
             <Button
               disabled={!!isOutOfStock}
-              variant={isOutOfStock ? "crossed" : "default"}
+              variant={isOutOfStock ? "strikeThrough" : "default"}
               className={cn("border-b border-transparent leading-none", {
                 // "border-textInactiveColor text-textInactiveColor":
                 //   isActive && isOutOfStock,

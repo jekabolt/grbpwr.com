@@ -123,6 +123,7 @@ export function MobileProductInfo({
           isLoading,
           outOfStock,
           isMobileSizeDialogOpen,
+          sizeQuantity,
           handleDialogClose,
           handleSizeSelect,
           handleAddToCart,

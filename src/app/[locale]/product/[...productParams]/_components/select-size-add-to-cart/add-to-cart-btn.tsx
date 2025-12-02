@@ -21,6 +21,7 @@ type Handlers = {
   isMobileSizeDialogOpen?: boolean;
   sizePickerRef?: React.RefObject<HTMLDivElement | null>;
   outOfStock?: Record<number, boolean>;
+  sizeQuantity?: Record<number, number>;
   setActiveSizeId?: (sizeId: number) => void;
   handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
   handleAddToCart?: () => Promise<boolean>;
@@ -62,6 +63,7 @@ export function AddToCartBtn({
     isLoading,
     sizePickerRef,
     outOfStock,
+    sizeQuantity,
     isMobileSizeDialogOpen,
     setActiveSizeId,
     handleSizeSelect,
@@ -111,10 +113,11 @@ export function AddToCartBtn({
       <MobileSelectSize
         product={product}
         activeSizeId={activeSizeId}
-        handleSizeSelect={handleSizeSelect}
         open={isMobileSizeDialogOpen}
-        onOpenChange={handleDialogClose}
         outOfStock={outOfStock}
+        sizeQuantity={sizeQuantity}
+        handleSizeSelect={handleSizeSelect}
+        onOpenChange={handleDialogClose}
         onNotifyMeOpen={(sizeId) => {
           setActiveSizeId(sizeId);
           setIsNotifyMeOpen(true);
