@@ -42,7 +42,11 @@ export function AddToCartBtn({
   const { preorder, preorderRaw } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
-  const { sizeNames, isOneSize } = useProductSizes({ product });
+  const {
+    sizeNames,
+    isOneSize,
+    sizeQuantity: internalSizeQuantity,
+  } = useProductSizes({ product });
   const internalHandlers = useHandlers({
     id: product.product?.id || 0,
     sizeNames,
@@ -54,33 +58,34 @@ export function AddToCartBtn({
     activeSizeId: internalHandlers.activeSizeId,
     product,
   });
-  const merged = handlers
-    ? { ...internalHandlers, outOfStock: internalOutOfStock, ...handlers }
-    : { ...internalHandlers, outOfStock: internalOutOfStock };
-
   const {
     activeSizeId,
     openItem,
     isLoading,
     sizePickerRef,
-    outOfStock,
-    sizeQuantity,
     isMobileSizeDialogOpen,
     isMaxQuantity,
     setActiveSizeId,
     handleSizeSelect,
     handleAddToCart,
     handleDialogClose,
-  } = merged as Required<Handlers> & ReturnType<typeof useHandlers>;
+  } = { ...internalHandlers, ...handlers };
+
+  const outOfStock = handlers?.outOfStock ?? internalOutOfStock;
+  const sizeQuantity = handlers?.sizeQuantity ?? internalSizeQuantity;
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
   const isNoSizeSelected = !activeSizeId && isHovered;
   const isSelectedSizeOutOfStock = activeSizeId && outOfStock?.[activeSizeId];
+  const isSoldOut = product.product?.soldOut === true;
   const t = useTranslations("product");
 
   const handleAddToCartClick = () => {
-    // If size is out of stock, open notify me dialog
-    if (isSelectedSizeOutOfStock) {
+    if (isSoldOut || isSelectedSizeOutOfStock) {
       setIsNotifyMeOpen(true);
+      return Promise.resolve(false);
+    }
+
+    if (activeSizeId && sizeQuantity?.[activeSizeId] === 0) {
       return Promise.resolve(false);
     }
 
@@ -146,13 +151,13 @@ export function AddToCartBtn({
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            {isNoSizeSelected ? (
-              <Text className="w-full text-center" variant="inherit">
-                {t("select size")}
-              </Text>
-            ) : isSelectedSizeOutOfStock ? (
+            {isSoldOut || isSelectedSizeOutOfStock ? (
               <Text className="w-full text-center uppercase" variant="inherit">
                 notify me
+              </Text>
+            ) : isNoSizeSelected ? (
+              <Text className="w-full text-center" variant="inherit">
+                {t("select size")}
               </Text>
             ) : isMaxQuantity ? (
               <Text className="w-full text-center uppercase" variant="inherit">

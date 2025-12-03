@@ -46,18 +46,20 @@ export function SizePicker({
         )}
       >
         {sizeNames?.map(({ name, id }) => {
-          const isOutOfStock = outOfStock?.[id] || sizeQuantity?.[id] === 0;
+          const isTrulyOutOfStock = outOfStock?.[id];
+          const hasNoAvailableQty = sizeQuantity?.[id] === 0;
+          const isOutOfStock = isTrulyOutOfStock || hasNoAvailableQty;
           const isActive = activeSizeId === id;
+
+          const isDisabled = hasNoAvailableQty && !isTrulyOutOfStock;
 
           return (
             <Button
-              disabled={!!isOutOfStock}
+              type="button"
+              disabled={isDisabled}
               variant={isOutOfStock ? "strikeThrough" : "default"}
               className={cn("border-b border-transparent leading-none", {
-                // "border-textInactiveColor text-textInactiveColor":
-                //   isActive && isOutOfStock,
                 "border-textColor": isActive && !isOutOfStock,
-                // "text-textInactiveColor": !isActive && isOutOfStock,
                 "hover:border-textColor": !isActive && !isOutOfStock,
                 "w-full": view === "line",
                 "w-auto": view === "line" && isOneSize,
@@ -66,11 +68,11 @@ export function SizePicker({
               onClick={() => handleSizeSelect(id)}
               onPointerDown={() => handleAnalytics(name, isOutOfStock)}
             >
-              {sizeQuantity ? (
+              {sizeQuantity?.[id] && sizeQuantity?.[id] > 0 ? (
                 <HoverText
                   defaultText={isOneSize ? "one size" : name}
                   hoveredText={`${sizeQuantity?.[id]} left`}
-                  hoverTextCondition={sizeQuantity[id] > 5}
+                  hoverTextCondition={sizeQuantity?.[id] > 5}
                 />
               ) : (
                 <Text variant="uppercase">{name}</Text>
