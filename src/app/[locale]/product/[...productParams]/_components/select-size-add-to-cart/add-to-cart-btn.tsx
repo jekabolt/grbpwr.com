@@ -22,6 +22,7 @@ type Handlers = {
   sizePickerRef?: React.RefObject<HTMLDivElement | null>;
   outOfStock?: Record<number, boolean>;
   sizeQuantity?: Record<number, number>;
+  isMaxQuantity?: boolean;
   setActiveSizeId?: (sizeId: number) => void;
   handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
   handleAddToCart?: () => Promise<boolean>;
@@ -65,6 +66,7 @@ export function AddToCartBtn({
     outOfStock,
     sizeQuantity,
     isMobileSizeDialogOpen,
+    isMaxQuantity,
     setActiveSizeId,
     handleSizeSelect,
     handleAddToCart,
@@ -151,6 +153,10 @@ export function AddToCartBtn({
             ) : isSelectedSizeOutOfStock ? (
               <Text className="w-full text-center uppercase" variant="inherit">
                 notify me
+              </Text>
+            ) : isMaxQuantity ? (
+              <Text className="w-full text-center uppercase" variant="inherit">
+                max quantity reached
               </Text>
             ) : (
               <>

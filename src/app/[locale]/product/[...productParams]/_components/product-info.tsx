@@ -90,6 +90,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
               isLoading,
               outOfStock,
               sizePickerRef,
+              isMaxQuantity,
               handleSizeSelect,
               handleAddToCart,
             }}
