@@ -124,6 +124,7 @@ export function MobileProductInfo({
           outOfStock,
           isMobileSizeDialogOpen,
           sizeQuantity,
+          isMaxQuantity,
           handleDialogClose,
           handleSizeSelect,
           handleAddToCart,
