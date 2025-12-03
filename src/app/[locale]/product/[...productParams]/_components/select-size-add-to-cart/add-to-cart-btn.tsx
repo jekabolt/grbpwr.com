@@ -156,7 +156,7 @@ export function AddToCartBtn({
               </Text>
             ) : isMaxQuantity ? (
               <Text className="w-full text-center uppercase" variant="inherit">
-                max quantity reached
+                order limit exceeded
               </Text>
             ) : (
               <>
