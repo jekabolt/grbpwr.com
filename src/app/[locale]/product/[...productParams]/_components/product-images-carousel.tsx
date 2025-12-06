@@ -6,8 +6,8 @@ import { common_MediaFull } from "@/api/proto-http/frontend";
 import { calculateAspectRatio } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselRef } from "@/components/ui/carousel";
-import { Arrow } from "@/components/ui/icons/arrow";
 import ImageComponent from "@/components/ui/image";
+import { Text } from "@/components/ui/text";
 
 export function ProductImagesCarousel({ productMedia }: Props) {
   const carouselRef = useRef<CarouselRef>(null);
@@ -19,12 +19,15 @@ export function ProductImagesCarousel({ productMedia }: Props) {
       : productMedia;
 
   return (
-    <div className="relative">
-      <div className="absolute left-0 top-1/2 z-50 -translate-y-1/2 leading-none">
-        <Button onClick={() => carouselRef.current?.scrollPrev()}>
-          <Arrow className="rotate-[-90deg]" />
-        </Button>
-      </div>
+    <div className="relative h-full">
+      <Button
+        onClick={() => carouselRef.current?.scrollNext()}
+        className="absolute inset-y-16 z-20 h-full w-28 mix-blend-exclusion"
+      >
+        <Text className="leading-none text-bgColor mix-blend-exclusion">
+          {"<"}
+        </Text>
+      </Button>
 
       <Carousel
         ref={carouselRef}

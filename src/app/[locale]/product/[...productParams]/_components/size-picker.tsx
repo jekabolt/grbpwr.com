@@ -14,6 +14,7 @@ type Props = {
   className?: string;
   isMaxQuantity?: boolean;
   handleSizeSelect: (id: number) => void;
+  onOutOfStockHover?: (sizeId: number | null) => void;
 };
 
 export function SizePicker({
@@ -26,6 +27,7 @@ export function SizePicker({
   className,
   isMaxQuantity,
   handleSizeSelect,
+  onOutOfStockHover,
 }: Props) {
   const handleAnalytics = (sizeName: string, outOfStock: boolean) => {
     sendSizeSelectionEvent({
@@ -50,7 +52,6 @@ export function SizePicker({
           const hasNoAvailableQty = sizeQuantity?.[id] === 0;
           const isOutOfStock = isTrulyOutOfStock || hasNoAvailableQty;
           const isActive = activeSizeId === id;
-
           const isDisabled = hasNoAvailableQty && !isTrulyOutOfStock;
 
           return (
@@ -63,10 +64,14 @@ export function SizePicker({
                 "hover:border-textColor": !isActive && !isOutOfStock,
                 "w-full": view === "line",
                 "w-auto": view === "line" && isOneSize,
+                "!text-textColor": isOutOfStock && isActive,
+                "hover:!text-textColor": isOutOfStock && !isActive,
               })}
               key={id}
               onClick={() => handleSizeSelect(id)}
               onPointerDown={() => handleAnalytics(name, isOutOfStock)}
+              onMouseEnter={() => isOutOfStock && onOutOfStockHover?.(id)}
+              onMouseLeave={() => isOutOfStock && onOutOfStockHover?.(null)}
             >
               {sizeQuantity?.[id] && sizeQuantity?.[id] > 0 ? (
                 <HoverText

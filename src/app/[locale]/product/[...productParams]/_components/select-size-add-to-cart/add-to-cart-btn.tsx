@@ -23,6 +23,7 @@ type Handlers = {
   outOfStock?: Record<number, boolean>;
   sizeQuantity?: Record<number, number>;
   isMaxQuantity?: boolean;
+  hoveredOutOfStockSizeId?: number | null;
   setActiveSizeId?: (sizeId: number) => void;
   handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
   handleAddToCart?: () => Promise<boolean>;
@@ -65,6 +66,7 @@ export function AddToCartBtn({
     sizePickerRef,
     isMobileSizeDialogOpen,
     isMaxQuantity,
+    hoveredOutOfStockSizeId,
     setActiveSizeId,
     handleSizeSelect,
     handleAddToCart,
@@ -76,6 +78,7 @@ export function AddToCartBtn({
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
   const isNoSizeSelected = !activeSizeId && isHovered;
   const isSelectedSizeOutOfStock = activeSizeId && outOfStock?.[activeSizeId];
+  const isHoveringOutOfStock = hoveredOutOfStockSizeId !== null;
   const isSoldOut = product.product?.soldOut === true;
   const t = useTranslations("product");
 
@@ -145,13 +148,14 @@ export function AddToCartBtn({
           <LoadingButton
             variant="simpleReverse"
             size="lg"
+            disabled={isMaxQuantity}
             onAction={handleAddToCartClick}
             isLoadingExternal={isLoading}
             className="border-none"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            {isSoldOut || isSelectedSizeOutOfStock ? (
+            {isSoldOut || isSelectedSizeOutOfStock || isHoveringOutOfStock ? (
               <Text className="w-full text-center uppercase" variant="inherit">
                 notify me
               </Text>

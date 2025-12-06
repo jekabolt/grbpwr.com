@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { sendViewItemEvent } from "@/lib/analitycs/product";
@@ -27,6 +27,9 @@ export function MobileProductInfo({
 }: {
   product: common_ProductFull;
 }) {
+  const [hoveredOutOfStockSizeId, setHoveredOutOfStockSizeId] = useState<
+    number | null
+  >(null);
   const { name, productId, productCategory, productSubCategory } =
     useProductBasics({ product });
   const { closeCart } = useCart((state) => state);
@@ -107,6 +110,7 @@ export function MobileProductInfo({
                   isMaxQuantity={isMaxQuantity}
                   handleSizeSelect={handleSizeSelect}
                   view={isOneSize ? "line" : "grid"}
+                  onOutOfStockHover={setHoveredOutOfStockSizeId}
                 />
               </div>
               {product.product && (
@@ -128,6 +132,7 @@ export function MobileProductInfo({
           handleDialogClose,
           handleSizeSelect,
           handleAddToCart,
+          hoveredOutOfStockSizeId,
         }}
       />
     </div>

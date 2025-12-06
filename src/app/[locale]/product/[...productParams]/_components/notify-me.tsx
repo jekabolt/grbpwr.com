@@ -96,13 +96,13 @@ export function NotifyMe({
                 onSubmit={form.handleSubmit(handleSubmit)}
                 className="flex h-full flex-col justify-between lg:h-auto lg:gap-10"
               >
-                <div className="space-y-10">
-                  <div className="flex items-center justify-between">
-                    <Text variant="uppercase">notify me</Text>
-                    <DialogPrimitives.Close asChild>
-                      <Button>[x]</Button>
-                    </DialogPrimitives.Close>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <Text variant="uppercase">notify me</Text>
+                  <DialogPrimitives.Close asChild>
+                    <Button>[x]</Button>
+                  </DialogPrimitives.Close>
+                </div>
+                <div className="flex h-full flex-col justify-center space-y-10">
                   <Text className="leading-none">
                     select your size and we will email you when this product is
                     back in stock.
@@ -123,20 +123,22 @@ export function NotifyMe({
                         </Text>
                       )}
                     </div>
-                    <InputField
-                      name="email"
-                      label="email"
-                      type="email"
-                      variant="secondary"
-                    />
-                    <CheckboxGlobal
-                      name="newsLetter"
-                      label={t("agree")}
-                      checked={isChecked}
-                      onCheckedChange={(checked: boolean) =>
-                        setIsChecked(checked)
-                      }
-                    />
+                    <div className="space-y-4">
+                      <InputField
+                        name="email"
+                        label="email"
+                        type="email"
+                        variant="secondary"
+                      />
+                      <CheckboxGlobal
+                        name="newsLetter"
+                        label={t("agree")}
+                        checked={isChecked}
+                        onCheckedChange={(checked: boolean) =>
+                          setIsChecked(checked)
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -145,7 +147,7 @@ export function NotifyMe({
                   type="submit"
                   size="lg"
                   className="w-full uppercase"
-                  disabled={!selectedSizeId || form.formState.isSubmitting}
+                  disabled={form.formState.isSubmitting}
                 >
                   notify me
                 </Button>
