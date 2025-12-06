@@ -112,7 +112,6 @@ export function Measurements({
               outOfStock={outOfStock}
               sizeQuantity={sizeQuantity}
               isOneSize={isOneSize}
-              isMaxQuantity={isMaxQuantity}
               handleSizeSelect={handleSelectSize}
               className={cn({ "flex justify-center": isOneSize })}
             />
