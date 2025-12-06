@@ -30,11 +30,11 @@ export function ProductItem({
   const { selectedCurrency } = useCurrency((state) => state);
   const { handleSelectItemEvent } = useAnalytics();
 
-  // Find the price for the selected currency
   const currencyKey = selectedCurrency || "EUR";
   const productBody = product.productDisplay?.productBody?.productBodyInsert;
   const salePercentage = productBody?.salePercentage?.value || "0";
   const isSaleApplied = salePercentage && salePercentage !== "0";
+  const isSoldOut = product.soldOut;
   const preorder = productBody?.preorder;
   const fit = productBody?.fit || "";
   const topCategory = getTopCategoryName(
@@ -103,16 +103,24 @@ export function ProductItem({
             {name}
           </Text>
           <div className="flex gap-1 leading-none">
-            <Text variant={isSaleApplied ? "strileTroughInactive" : "default"}>
-              {`${currencySymbol} ${formattedPrice}`}
-            </Text>
-            {isSaleApplied && (
-              <Text>{`${currencySymbol} ${formattedPriceWithSale}`}</Text>
+            {isSoldOut ? (
+              <Text>sold out</Text>
+            ) : (
+              <>
+                <Text
+                  variant={isSaleApplied ? "strileTroughInactive" : "default"}
+                >
+                  {`${currencySymbol} ${formattedPrice}`}
+                </Text>
+                {isSaleApplied && (
+                  <Text>{`${currencySymbol} ${formattedPriceWithSale}`}</Text>
+                )}
+                {preorder !== EMPTY_PREORDER &&
+                  isDateTodayOrFuture(preorder || "") && (
+                    <Text variant="inactive">preorder</Text>
+                  )}
+              </>
             )}
-            {preorder !== EMPTY_PREORDER &&
-              isDateTodayOrFuture(preorder || "") && (
-                <Text variant="inactive">preorder</Text>
-              )}
           </div>
         </div>
       </AnimatedButton>
