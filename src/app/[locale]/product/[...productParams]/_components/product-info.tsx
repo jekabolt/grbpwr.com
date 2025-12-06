@@ -80,7 +80,6 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 outOfStock={outOfStock}
                 sizeQuantity={sizeQuantity}
                 isOneSize={isOneSize}
-                isMaxQuantity={isMaxQuantity}
                 handleSizeSelect={handleSizeSelect}
                 view={isOneSize ? "line" : "grid"}
                 onOutOfStockHover={setHoveredOutOfStockSizeId}

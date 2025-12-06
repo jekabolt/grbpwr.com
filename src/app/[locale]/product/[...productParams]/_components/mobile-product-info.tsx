@@ -107,7 +107,6 @@ export function MobileProductInfo({
                   outOfStock={outOfStock}
                   sizeQuantity={sizeQuantity}
                   isOneSize={isOneSize}
-                  isMaxQuantity={isMaxQuantity}
                   handleSizeSelect={handleSizeSelect}
                   view={isOneSize ? "line" : "grid"}
                   onOutOfStockHover={setHoveredOutOfStockSizeId}

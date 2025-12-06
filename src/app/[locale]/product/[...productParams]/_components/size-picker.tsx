@@ -12,7 +12,7 @@ type Props = {
   isOneSize?: boolean;
   view?: "grid" | "line";
   className?: string;
-  isMaxQuantity?: boolean;
+
   handleSizeSelect: (id: number) => void;
   onOutOfStockHover?: (sizeId: number | null) => void;
 };
@@ -25,7 +25,6 @@ export function SizePicker({
   isOneSize,
   view = "grid",
   className,
-  isMaxQuantity,
   handleSizeSelect,
   onOutOfStockHover,
 }: Props) {
