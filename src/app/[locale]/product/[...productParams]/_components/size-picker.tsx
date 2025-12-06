@@ -12,7 +12,6 @@ type Props = {
   isOneSize?: boolean;
   view?: "grid" | "line";
   className?: string;
-
   handleSizeSelect: (id: number) => void;
   onOutOfStockHover?: (sizeId: number | null) => void;
 };
