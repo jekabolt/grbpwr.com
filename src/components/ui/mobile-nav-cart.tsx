@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
@@ -38,11 +38,16 @@ export function MobileNavCart({
   const [toastMessage, setToastMessage] = useState<string | undefined>(
     "you cart has been modified",
   );
+  const [isMobile, setIsMobile] = useState(false);
 
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  // Track mobile state properly after hydration
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 1024);
+  }, []);
+
   const open = isMobile && isOpen;
   const t = useTranslations("navigation");
   const tCart = useTranslations("cart");
