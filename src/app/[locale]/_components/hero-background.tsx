@@ -101,6 +101,9 @@ export function HeroBackground({ imageUrl }: HeroBackgroundProps) {
           document.head.appendChild(styleEl);
         }
 
+        // html::before = top 50vh with extracted color
+        // html::after = bottom 50vh with white (covers the colored body)
+        // body = extracted color (for Safari bar/overscroll)
         styleElementRef.current.textContent = `
           html::before {
             content: "";
@@ -116,15 +119,33 @@ export function HeroBackground({ imageUrl }: HeroBackgroundProps) {
             pointer-events: none;
             display: block;
           }
+          html::after {
+            content: "";
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            height: 50vh;
+            min-height: 50vh;
+            background-color: #fff;
+            z-index: -9999;
+            pointer-events: none;
+            display: block;
+          }
           @supports (height: 50dvh) {
             html::before {
+              height: 50dvh;
+              min-height: 50dvh;
+            }
+            html::after {
               height: 50dvh;
               min-height: 50dvh;
             }
           }
         `;
 
-        // Set body background color for Safari overscroll bounce
+        // Set body background for Safari bar coloring
         document.body.style.backgroundColor = hexColor;
       })
       .catch((error) =>

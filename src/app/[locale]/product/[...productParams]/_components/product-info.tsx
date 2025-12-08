@@ -93,9 +93,9 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
               outOfStock,
               sizePickerRef,
               isMaxQuantity,
+              hoveredOutOfStockSizeId,
               handleSizeSelect,
               handleAddToCart,
-              hoveredOutOfStockSizeId,
             }}
           />
         </div>

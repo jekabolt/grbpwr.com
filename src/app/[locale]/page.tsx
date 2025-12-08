@@ -37,10 +37,11 @@ export async function generateMetadata({
 export default async function Page() {
   const { hero } = await serviceClient.GetHero({});
   const isHero = hero?.entities?.length;
-  
+
   // Get the hero image URL for background color extraction
   const heroImageUrl =
-    hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.fullSize?.mediaUrl;
+    hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.thumbnail
+      ?.mediaUrl;
 
   return (
     <FlexibleLayout theme={isHero ? "light" : "dark"} showAnnounce={true}>
