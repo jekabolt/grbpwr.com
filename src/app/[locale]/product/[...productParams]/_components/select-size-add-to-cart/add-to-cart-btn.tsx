@@ -21,6 +21,9 @@ type Handlers = {
   isMobileSizeDialogOpen?: boolean;
   sizePickerRef?: React.RefObject<HTMLDivElement | null>;
   outOfStock?: Record<number, boolean>;
+  sizeQuantity?: Record<number, number>;
+  isMaxQuantity?: boolean;
+  hoveredOutOfStockSizeId?: number | null;
   setActiveSizeId?: (sizeId: number) => void;
   handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
   handleAddToCart?: () => Promise<boolean>;
@@ -40,7 +43,11 @@ export function AddToCartBtn({
   const { preorder, preorderRaw } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
-  const { sizeNames, isOneSize } = useProductSizes({ product });
+  const {
+    sizeNames,
+    isOneSize,
+    sizeQuantity: internalSizeQuantity,
+  } = useProductSizes({ product });
   const internalHandlers = useHandlers({
     id: product.product?.id || 0,
     sizeNames,
@@ -52,31 +59,36 @@ export function AddToCartBtn({
     activeSizeId: internalHandlers.activeSizeId,
     product,
   });
-  const merged = handlers
-    ? { ...internalHandlers, outOfStock: internalOutOfStock, ...handlers }
-    : { ...internalHandlers, outOfStock: internalOutOfStock };
-
   const {
     activeSizeId,
     openItem,
     isLoading,
     sizePickerRef,
-    outOfStock,
     isMobileSizeDialogOpen,
+    isMaxQuantity,
+    hoveredOutOfStockSizeId,
     setActiveSizeId,
     handleSizeSelect,
     handleAddToCart,
     handleDialogClose,
-  } = merged as Required<Handlers> & ReturnType<typeof useHandlers>;
+  } = { ...internalHandlers, ...handlers };
+
+  const outOfStock = handlers?.outOfStock ?? internalOutOfStock;
+  const sizeQuantity = handlers?.sizeQuantity ?? internalSizeQuantity;
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
   const isNoSizeSelected = !activeSizeId && isHovered;
   const isSelectedSizeOutOfStock = activeSizeId && outOfStock?.[activeSizeId];
+  const isHoveringOutOfStock = hoveredOutOfStockSizeId !== null;
+  const isSoldOut = product.product?.soldOut === true;
   const t = useTranslations("product");
 
   const handleAddToCartClick = () => {
-    // If size is out of stock, open notify me dialog
-    if (isSelectedSizeOutOfStock) {
+    if (isSoldOut || isSelectedSizeOutOfStock) {
       setIsNotifyMeOpen(true);
+      return Promise.resolve(false);
+    }
+
+    if (activeSizeId && sizeQuantity?.[activeSizeId] === 0) {
       return Promise.resolve(false);
     }
 
@@ -111,10 +123,11 @@ export function AddToCartBtn({
       <MobileSelectSize
         product={product}
         activeSizeId={activeSizeId}
-        handleSizeSelect={handleSizeSelect}
         open={isMobileSizeDialogOpen}
-        onOpenChange={handleDialogClose}
         outOfStock={outOfStock}
+        sizeQuantity={sizeQuantity}
+        handleSizeSelect={handleSizeSelect}
+        onOpenChange={handleDialogClose}
         onNotifyMeOpen={(sizeId) => {
           setActiveSizeId(sizeId);
           setIsNotifyMeOpen(true);
@@ -135,19 +148,24 @@ export function AddToCartBtn({
           <LoadingButton
             variant="simpleReverse"
             size="lg"
+            disabled={isMaxQuantity}
             onAction={handleAddToCartClick}
             isLoadingExternal={isLoading}
             className="border-none"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            {isNoSizeSelected ? (
+            {isSoldOut || isSelectedSizeOutOfStock || isHoveringOutOfStock ? (
+              <Text className="w-full text-center uppercase" variant="inherit">
+                notify me
+              </Text>
+            ) : isNoSizeSelected ? (
               <Text className="w-full text-center" variant="inherit">
                 {t("select size")}
               </Text>
-            ) : isSelectedSizeOutOfStock ? (
+            ) : isMaxQuantity ? (
               <Text className="w-full text-center uppercase" variant="inherit">
-                notify me
+                order limit exceeded
               </Text>
             ) : (
               <>

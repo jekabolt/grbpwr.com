@@ -311,6 +311,7 @@ export type Product = {
   sku: string | undefined;
   productDisplay: ProductDisplay | undefined;
   prices: ProductPrice[] | undefined;
+  soldOut: boolean | undefined;
 };
 
 export type ProductDisplay = {

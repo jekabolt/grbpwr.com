@@ -114,6 +114,7 @@ export type common_Product = {
   sku: string | undefined;
   productDisplay: common_ProductDisplay | undefined;
   prices: common_ProductPrice[] | undefined;
+  soldOut: boolean | undefined;
 };
 
 export type common_ProductDisplay = {

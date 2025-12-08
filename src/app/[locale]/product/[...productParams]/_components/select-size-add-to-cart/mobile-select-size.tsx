@@ -3,7 +3,6 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
@@ -13,6 +12,7 @@ import { useActiveSizeInfo } from "../utils/useActiveSizeInfo";
 export function MobileSelectSize({
   product,
   activeSizeId,
+  sizeQuantity,
   open,
   outOfStock,
   onNotifyMeOpen,
@@ -21,6 +21,7 @@ export function MobileSelectSize({
 }: {
   product: common_ProductFull;
   activeSizeId: number | undefined;
+  sizeQuantity: Record<number, number>;
   open: boolean;
   outOfStock?: Record<number, boolean>;
   handleSizeSelect: (sizeId: number) => void;
@@ -56,46 +57,27 @@ export function MobileSelectSize({
         <DialogPrimitives.Title className="sr-only">
           grbpwr mobile menu
         </DialogPrimitives.Title>
-        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-50 flex h-auto w-screen flex-col gap-10 bg-bgColor p-2.5 pb-10 text-textColor mix-blend-hard-light">
+        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-50 flex h-auto w-screen flex-col gap-10 bg-bgColor p-2.5 pb-10 text-textColor">
           <DialogPrimitives.Close asChild>
             <div className="flex items-center justify-between">
               <Text variant="uppercase">select size</Text>
               <Text variant="uppercase">[x]</Text>
             </div>
           </DialogPrimitives.Close>
-          <div className="grid grid-cols-4 gap-y-7">
+          <div className="grid grid-cols-4 gap-x-2 gap-y-7">
             {sizeNames?.map(({ name, id }) => {
-              const isOutOfStock = outOfStock?.[id];
-              const isActive = activeSizeId === id;
-
-              if (isOutOfStock) {
-                return (
-                  <Button
-                    key={id}
-                    className={cn("uppercase", {
-                      "border-b border-textInactiveColor text-textInactiveColor":
-                        isActive && isOutOfStock,
-                      "border-b border-textColor": isActive && !isOutOfStock,
-                      "text-textInactiveColor": !isActive && isOutOfStock,
-                    })}
-                    onClick={() => handleSizeClick(id)}
-                  >
-                    {name}
-                  </Button>
-                );
-              }
+              const isOutOfStock = outOfStock?.[id] || sizeQuantity?.[id] === 0;
 
               return (
-                <DialogPrimitives.Close asChild key={id}>
-                  <Button
-                    className={cn("uppercase", {
-                      "border-b border-textColor": isActive,
-                    })}
-                    onClick={() => handleSizeClick(id)}
-                  >
-                    {name}
-                  </Button>
-                </DialogPrimitives.Close>
+                <Button
+                  disabled={!!isOutOfStock}
+                  variant={isOutOfStock ? "strikeThrough" : "default"}
+                  className="uppercase"
+                  key={id}
+                  onClick={() => handleSizeClick(id)}
+                >
+                  {name}
+                </Button>
               );
             })}
           </div>

@@ -12,8 +12,8 @@ type Props = {
   isOneSize?: boolean;
   view?: "grid" | "line";
   className?: string;
-  isMaxQuantity?: boolean;
   handleSizeSelect: (id: number) => void;
+  onOutOfStockHover?: (sizeId: number | null) => void;
 };
 
 export function SizePicker({
@@ -24,8 +24,8 @@ export function SizePicker({
   isOneSize,
   view = "grid",
   className,
-  isMaxQuantity,
   handleSizeSelect,
+  onOutOfStockHover,
 }: Props) {
   const handleAnalytics = (sizeName: string, outOfStock: boolean) => {
     sendSizeSelectionEvent({
@@ -39,38 +39,43 @@ export function SizePicker({
       <div
         className={cn(
           {
-            "grid grid-cols-4 gap-y-7": view === "grid",
+            "grid grid-cols-4 gap-x-3 gap-y-7": view === "grid",
             "flex w-full items-center justify-between": view === "line",
           },
           className,
         )}
       >
         {sizeNames?.map(({ name, id }) => {
-          const isOutOfStock = outOfStock?.[id] || sizeQuantity?.[id] === 0;
+          const isTrulyOutOfStock = outOfStock?.[id];
+          const hasNoAvailableQty = sizeQuantity?.[id] === 0;
+          const isOutOfStock = isTrulyOutOfStock || hasNoAvailableQty;
           const isActive = activeSizeId === id;
+          const isDisabled = hasNoAvailableQty && !isTrulyOutOfStock;
 
           return (
             <Button
-              disabled={!!isOutOfStock}
+              type="button"
+              disabled={isDisabled}
+              variant={isOutOfStock ? "strikeThrough" : "default"}
               className={cn("border-b border-transparent leading-none", {
-                "border-textInactiveColor text-textInactiveColor":
-                  isActive && isOutOfStock,
                 "border-textColor": isActive && !isOutOfStock,
-                "text-textInactiveColor hover:border-textInactiveColor":
-                  !isActive && isOutOfStock,
                 "hover:border-textColor": !isActive && !isOutOfStock,
                 "w-full": view === "line",
                 "w-auto": view === "line" && isOneSize,
+                "!text-textColor": isOutOfStock && isActive,
+                "hover:!text-textColor": isOutOfStock && !isActive,
               })}
               key={id}
               onClick={() => handleSizeSelect(id)}
               onPointerDown={() => handleAnalytics(name, isOutOfStock)}
+              onMouseEnter={() => isOutOfStock && onOutOfStockHover?.(id)}
+              onMouseLeave={() => isOutOfStock && onOutOfStockHover?.(null)}
             >
-              {sizeQuantity ? (
+              {sizeQuantity?.[id] && sizeQuantity?.[id] > 0 ? (
                 <HoverText
                   defaultText={isOneSize ? "one size" : name}
                   hoveredText={`${sizeQuantity?.[id]} left`}
-                  hoverTextCondition={sizeQuantity[id] > 5}
+                  hoverTextCondition={sizeQuantity?.[id] > 5}
                 />
               ) : (
                 <Text variant="uppercase">{name}</Text>

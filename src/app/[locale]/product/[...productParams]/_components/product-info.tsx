@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { sendViewItemEvent } from "@/lib/analitycs/product";
@@ -20,6 +20,9 @@ import { useProductSizes } from "./utils/useProductSizes";
 
 export function ProductInfo({ product }: { product: common_ProductFull }) {
   const sizePickerRef = useRef<HTMLDivElement>(null);
+  const [hoveredOutOfStockSizeId, setHoveredOutOfStockSizeId] = useState<
+    number | null
+  >(null);
 
   const { selectedCurrency } = useCurrency((state) => state);
   const { name, productId, productCategory, productSubCategory } =
@@ -66,7 +69,6 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 selectedSize={selectedSize || 0}
                 outOfStock={outOfStock}
                 isOneSize={isOneSize}
-                isMaxQuantity={isMaxQuantity}
                 handleSelectSize={handleSelectSize}
               />
             </Modal>
@@ -77,9 +79,9 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 outOfStock={outOfStock}
                 sizeQuantity={sizeQuantity}
                 isOneSize={isOneSize}
-                isMaxQuantity={isMaxQuantity}
                 handleSizeSelect={handleSizeSelect}
                 view={isOneSize ? "line" : "grid"}
+                onOutOfStockHover={setHoveredOutOfStockSizeId}
               />
             </div>
           </div>
@@ -90,8 +92,10 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
               isLoading,
               outOfStock,
               sizePickerRef,
+              isMaxQuantity,
               handleSizeSelect,
               handleAddToCart,
+              hoveredOutOfStockSizeId,
             }}
           />
         </div>

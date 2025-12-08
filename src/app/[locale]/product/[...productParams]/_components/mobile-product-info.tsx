@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { sendViewItemEvent } from "@/lib/analitycs/product";
@@ -27,6 +27,9 @@ export function MobileProductInfo({
 }: {
   product: common_ProductFull;
 }) {
+  const [hoveredOutOfStockSizeId, setHoveredOutOfStockSizeId] = useState<
+    number | null
+  >(null);
   const { name, productId, productCategory, productSubCategory } =
     useProductBasics({ product });
   const { closeCart } = useCart((state) => state);
@@ -45,7 +48,11 @@ export function MobileProductInfo({
     product,
   });
   const { selectedCurrency } = useCurrency((state) => state);
-  const { outOfStock, isMaxQuantity } = useDisabled({ id: productId, activeSizeId, product });
+  const { outOfStock, isMaxQuantity } = useDisabled({
+    id: productId,
+    activeSizeId,
+    product,
+  });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
   const containerRef = useRef<HTMLDivElement>(null!);
@@ -85,7 +92,7 @@ export function MobileProductInfo({
             <Text variant="uppercase">{name}</Text>
             <div className="space-y-12">
               <GarmentDescription product={product} />
-              <div className="space-y-5">
+              <div className="space-y-12">
                 <MobileMeasurements
                   product={product}
                   selectedSize={selectedSize || 0}
@@ -100,15 +107,15 @@ export function MobileProductInfo({
                   outOfStock={outOfStock}
                   sizeQuantity={sizeQuantity}
                   isOneSize={isOneSize}
-                  isMaxQuantity={isMaxQuantity}
                   handleSizeSelect={handleSizeSelect}
                   view={isOneSize ? "line" : "grid"}
+                  onOutOfStockHover={setHoveredOutOfStockSizeId}
                 />
               </div>
+              {product.product && (
+                <LastViewedProducts product={product.product} />
+              )}
             </div>
-            {product.product && (
-              <LastViewedProducts product={product.product} />
-            )}
           </BottomSheet>
         </div>
       </div>
@@ -119,9 +126,12 @@ export function MobileProductInfo({
           isLoading,
           outOfStock,
           isMobileSizeDialogOpen,
+          sizeQuantity,
+          isMaxQuantity,
           handleDialogClose,
           handleSizeSelect,
           handleAddToCart,
+          hoveredOutOfStockSizeId,
         }}
       />
     </div>

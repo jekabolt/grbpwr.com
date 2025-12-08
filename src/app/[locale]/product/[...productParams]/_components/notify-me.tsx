@@ -47,6 +47,7 @@ export function NotifyMe({
       sizeId: activeSizeId || 0,
       productId: id,
     },
+    mode: "onSubmit",
   });
 
   const selectedSizeId = form.watch("sizeId");
@@ -62,11 +63,7 @@ export function NotifyMe({
   }, [open, activeSizeId, id, form]);
 
   const handleSizeSelect = (sizeId: number) => {
-    form.setValue("sizeId", sizeId, {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
+    form.setValue("sizeId", sizeId);
   };
 
   async function handleSubmit(data: NotifySchema) {
@@ -90,28 +87,27 @@ export function NotifyMe({
       <DialogPrimitives.Root open={open} onOpenChange={onOpenChange}>
         <DialogPrimitives.Portal>
           <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-white lg:bg-overlay" />
-          <DialogPrimitives.Content className="border-inactive fixed inset-0 z-50 flex h-dvh w-screen flex-col bg-bgColor p-2.5 text-textColor lg:left-1/2 lg:top-1/2 lg:h-[45%] lg:w-80 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:border">
+          <DialogPrimitives.Content className="border-inactive fixed inset-0 z-50 flex w-screen flex-col bg-bgColor p-2.5 text-textColor lg:inset-auto lg:left-1/2 lg:top-1/2 lg:h-auto lg:w-80 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:border">
             <DialogPrimitives.Title className="sr-only">
               grbpwr notify me
             </DialogPrimitives.Title>
-            <div className="flex h-full flex-col space-y-16 lg:space-y-6">
-              <div className="flex items-center justify-between">
-                <Text variant="uppercase">notify me</Text>
-                <DialogPrimitives.Close asChild>
-                  <Button>[x]</Button>
-                </DialogPrimitives.Close>
-              </div>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(handleSubmit)}
+                className="flex h-full flex-col justify-between lg:h-auto lg:gap-10"
+              >
+                <div className="flex items-center justify-between">
+                  <Text variant="uppercase">notify me</Text>
+                  <DialogPrimitives.Close asChild>
+                    <Button>[x]</Button>
+                  </DialogPrimitives.Close>
+                </div>
+                <div className="flex h-full flex-col justify-center space-y-10">
+                  <Text className="leading-none">
+                    select your size and we will email you when this product is
+                    back in stock.
+                  </Text>
 
-              <Text className="leading-none">
-                select your size and we will email you when this product is back
-                in stock.
-              </Text>
-
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(handleSubmit)}
-                  className="flex h-full flex-col justify-between space-y-10"
-                >
                   <div className="space-y-16 lg:space-y-10">
                     <div className="space-y-4">
                       <Text>select size:</Text>
@@ -127,39 +123,36 @@ export function NotifyMe({
                         </Text>
                       )}
                     </div>
-                    <InputField
-                      name="email"
-                      label="email"
-                      type="email"
-                      variant="secondary"
-                    />
-                    <CheckboxGlobal
-                      name="newsLetter"
-                      label={t("agree")}
-                      checked={isChecked}
-                      onCheckedChange={(checked: boolean) =>
-                        setIsChecked(checked)
-                      }
-                    />
+                    <div className="space-y-4">
+                      <InputField
+                        name="email"
+                        label="email"
+                        type="email"
+                        variant="secondary"
+                      />
+                      <CheckboxGlobal
+                        name="newsLetter"
+                        label={t("agree")}
+                        checked={isChecked}
+                        onCheckedChange={(checked: boolean) =>
+                          setIsChecked(checked)
+                        }
+                      />
+                    </div>
                   </div>
+                </div>
 
-                  <Button
-                    variant="main"
-                    type="submit"
-                    size="lg"
-                    className="w-full uppercase"
-                    disabled={
-                      !isChecked ||
-                      !selectedSizeId ||
-                      !form.formState.isValid ||
-                      form.formState.isSubmitting
-                    }
-                  >
-                    notify me
-                  </Button>
-                </form>
-              </Form>
-            </div>
+                <Button
+                  variant="main"
+                  type="submit"
+                  size="lg"
+                  className="w-full uppercase"
+                  disabled={form.formState.isSubmitting}
+                >
+                  notify me
+                </Button>
+              </form>
+            </Form>
           </DialogPrimitives.Content>
         </DialogPrimitives.Portal>
       </DialogPrimitives.Root>
