@@ -50,9 +50,10 @@ export function ThemeColorManager() {
 
     const observer = new MutationObserver(updateThemeColor);
 
+    // Watch for class changes and data-dialog-open attribute
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: ["class"],
+      attributeFilter: ["class", "data-dialog-open"],
       subtree: true,
       childList: true,
     });
