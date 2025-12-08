@@ -5,6 +5,11 @@ import { useEffect } from "react";
 export function ThemeColorManager() {
   useEffect(() => {
     const updateThemeColor = () => {
+      // Skip updates when DialogBackgroundManager is controlling theme-color
+      if (document.body.dataset.dialogOpen === "true") {
+        return;
+      }
+
       const hasBlackTheme =
         document.body.classList.contains("blackTheme") ||
         document.documentElement.classList.contains("blackTheme") ||
