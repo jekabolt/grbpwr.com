@@ -68,6 +68,12 @@
       @apply bg-acidColor text-bgColor;
     }
   }
+
+  /* Force black background on safe areas when dialog is open (iOS Safari) */
+  html.dialog-dark-bg,
+  html.dialog-dark-bg body {
+    background-color: #000 !important;
+  }
 }
 
 @layer utilities {

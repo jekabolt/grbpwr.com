@@ -10,7 +10,7 @@ interface DialogBackgroundManagerProps {
 /**
  * Temporarily changes theme-color meta AND html/body background when dialog is open.
  * - theme-color: controls iOS Safari status bar (top)
- * - html/body background: controls home indicator area (bottom) on iPhone 15+
+ * - CSS class on html: controls home indicator area (bottom) on iPhone 15+
  *
  * Uses useLayoutEffect to ensure changes happen synchronously before paint.
  */
@@ -20,6 +20,12 @@ export function DialogBackgroundManager({
 }: DialogBackgroundManagerProps) {
   const originalThemeColor = useRef<string | null>(null);
   const wasOpen = useRef(false);
+
+  // Determine which CSS class to use based on background color
+  const isDark =
+    backgroundColor === "#000000" ||
+    backgroundColor === "#000" ||
+    backgroundColor === "black";
 
   // useLayoutEffect runs synchronously before browser paint
   useLayoutEffect(() => {
@@ -35,25 +41,18 @@ export function DialogBackgroundManager({
         themeColorMeta.setAttribute("content", backgroundColor);
       }
 
-      // Set html/body background for bottom safe area (iPhone 15+)
-      document.documentElement.style.setProperty(
-        "background-color",
-        backgroundColor,
-        "important",
-      );
-      document.body.style.setProperty(
-        "background-color",
-        backgroundColor,
-        "important",
-      );
+      // Add CSS class to html for bottom safe area (iOS Safari)
+      // This is more reliable than inline styles on iOS
+      if (isDark) {
+        document.documentElement.classList.add("dialog-dark-bg");
+      }
     } else if (!isOpen && wasOpen.current) {
       // Closing: remove overrides
       delete document.body.dataset.dialogOpen;
       wasOpen.current = false;
 
-      // Remove inline background styles - CSS will take over
-      document.documentElement.style.removeProperty("background-color");
-      document.body.style.removeProperty("background-color");
+      // Remove CSS class
+      document.documentElement.classList.remove("dialog-dark-bg");
 
       // Restore theme-color
       if (originalThemeColor.current !== null) {
@@ -70,8 +69,7 @@ export function DialogBackgroundManager({
     return () => {
       if (wasOpen.current) {
         delete document.body.dataset.dialogOpen;
-        document.documentElement.style.removeProperty("background-color");
-        document.body.style.removeProperty("background-color");
+        document.documentElement.classList.remove("dialog-dark-bg");
 
         if (originalThemeColor.current !== null) {
           const themeColorMeta = document.querySelector(
@@ -83,7 +81,7 @@ export function DialogBackgroundManager({
         }
       }
     };
-  }, [isOpen, backgroundColor]);
+  }, [isOpen, backgroundColor, isDark]);
 
   return null;
 }
