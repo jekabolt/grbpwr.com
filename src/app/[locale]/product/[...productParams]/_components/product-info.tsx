@@ -69,7 +69,6 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 selectedSize={selectedSize || 0}
                 outOfStock={outOfStock}
                 isOneSize={isOneSize}
-                isMaxQuantity={isMaxQuantity}
                 handleSelectSize={handleSelectSize}
               />
             </Modal>
