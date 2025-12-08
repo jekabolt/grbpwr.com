@@ -22,14 +22,12 @@ export function Measurements({
   selectedSize,
   outOfStock,
   isOneSize,
-  isMaxQuantity,
   handleSelectSize,
 }: {
   product: common_ProductFull;
   selectedSize: number;
   outOfStock?: Record<number, boolean>;
   isOneSize?: boolean;
-  isMaxQuantity?: boolean;
   handleSelectSize: (size: number) => void;
 }) {
   const { hoveredMeasurement } = useMeasurementStore();
