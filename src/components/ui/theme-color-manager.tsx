@@ -5,11 +5,6 @@ import { useEffect } from "react";
 export function ThemeColorManager() {
   useEffect(() => {
     const updateThemeColor = () => {
-      // Skip updates when DialogBackgroundManager is controlling theme-color
-      if (document.body.dataset.dialogOpen === "true") {
-        return;
-      }
-
       const hasBlackTheme =
         document.body.classList.contains("blackTheme") ||
         document.documentElement.classList.contains("blackTheme") ||
@@ -50,10 +45,9 @@ export function ThemeColorManager() {
 
     const observer = new MutationObserver(updateThemeColor);
 
-    // Watch for class changes and data-dialog-open attribute
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: ["class", "data-dialog-open"],
+      attributeFilter: ["class"],
       subtree: true,
       childList: true,
     });
