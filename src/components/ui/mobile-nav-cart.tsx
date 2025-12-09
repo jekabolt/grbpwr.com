@@ -16,6 +16,7 @@ import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartPro
 import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
 
 import { Button } from "./button";
+import { DialogBackgroundManager } from "./dialog-background-manager";
 import { Text } from "./text";
 import { SubmissionToaster } from "./toaster";
 
@@ -102,7 +103,7 @@ export function MobileNavCart({
 
   return (
     <>
-      {/* <DialogBackgroundManager isOpen={isOpen} backgroundColor="#000000" /> */}
+      <DialogBackgroundManager isOpen={isOpen} backgroundColor="#000000" />
       <DialogPrimitives.Root open={isOpen} onOpenChange={closeCart}>
         <Button
           size={isProductInfo ? "default" : "lg"}

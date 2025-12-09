@@ -9,7 +9,7 @@ interface DialogBackgroundManagerProps {
 
 function forceSafariRepaint() {
   void document.body.offsetHeight;
-  void document.documentElement.offsetHeight; // Добавьте для html
+  void document.documentElement.offsetHeight;
   const x = window.scrollX;
   const y = window.scrollY;
   window.scrollTo(x, y + 1);
@@ -19,8 +19,20 @@ function forceSafariRepaint() {
 }
 
 function applyDarkBackground(color: string) {
-  document.body.style.backgroundColor = color;
+  // Use window.outerHeight for iOS 18+ Liquid Glass support
+  const outerHeight = window.outerHeight;
+
+  // Set HTML background first (covers safe area)
   document.documentElement.style.backgroundColor = color;
+  document.documentElement.style.minHeight = `${outerHeight}px`;
+
+  // Set body background
+  document.body.style.backgroundColor = color;
+  document.body.style.minHeight = `${outerHeight}px`;
+
+  // Force layout recalc
+  void document.documentElement.offsetHeight;
+  void document.body.offsetHeight;
 
   document.querySelectorAll("body > *").forEach((el) => {
     const element = el as HTMLElement;
@@ -41,7 +53,7 @@ function applyDarkBackground(color: string) {
     }
   });
 
-  // Двойной repaint для safe area
+  // Multiple repaints for iOS safe area
   forceSafariRepaint();
   requestAnimationFrame(() => {
     forceSafariRepaint();
@@ -50,7 +62,9 @@ function applyDarkBackground(color: string) {
 
 function removeDarkBackground() {
   document.body.style.removeProperty("background-color");
+  document.body.style.removeProperty("min-height");
   document.documentElement.style.removeProperty("background-color");
+  document.documentElement.style.removeProperty("min-height");
 
   document.querySelectorAll('[data-hidden-for-dialog="true"]').forEach((el) => {
     const element = el as HTMLElement;
