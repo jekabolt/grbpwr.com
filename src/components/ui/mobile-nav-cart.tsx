@@ -16,7 +16,6 @@ import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartPro
 import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
 
 import { Button } from "./button";
-import { DialogBackgroundManager } from "./dialog-background-manager";
 import { Text } from "./text";
 import { SubmissionToaster } from "./toaster";
 
@@ -103,7 +102,7 @@ export function MobileNavCart({
 
   return (
     <>
-      <DialogBackgroundManager isOpen={isOpen} backgroundColor="#000000" />
+      {/* <DialogBackgroundManager isOpen={isOpen} backgroundColor="#000000" /> */}
       <DialogPrimitives.Root open={isOpen} onOpenChange={closeCart}>
         <Button
           size={isProductInfo ? "default" : "lg"}
@@ -115,7 +114,7 @@ export function MobileNavCart({
           {t("cart")} {itemsQuantity ? itemsQuantity : ""}
         </Button>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-30 h-screen bg-black" />
+          <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-dvh bg-black" />
           <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 flex h-dvh w-screen flex-col bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu

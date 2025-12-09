@@ -9,7 +9,7 @@ interface DialogBackgroundManagerProps {
 
 function forceSafariRepaint() {
   void document.body.offsetHeight;
-  void document.documentElement.offsetHeight;
+  void document.documentElement.offsetHeight; // Добавьте для html
   const x = window.scrollX;
   const y = window.scrollY;
   window.scrollTo(x, y + 1);
@@ -19,8 +19,6 @@ function forceSafariRepaint() {
 }
 
 function applyDarkBackground(color: string) {
-  // КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: используем CSS переменную
-  document.documentElement.style.setProperty("--background", color);
   document.body.style.backgroundColor = color;
   document.documentElement.style.backgroundColor = color;
 
@@ -43,15 +41,14 @@ function applyDarkBackground(color: string) {
     }
   });
 
+  // Двойной repaint для safe area
   forceSafariRepaint();
+  requestAnimationFrame(() => {
+    forceSafariRepaint();
+  });
 }
 
 function removeDarkBackground() {
-  // Восстанавливаем исходный цвет из :root или .blackTheme
-  const isDark = document.body.classList.contains("blackTheme");
-  const originalColor = isDark ? "#000" : "#fff";
-
-  document.documentElement.style.setProperty("--background", originalColor);
   document.body.style.removeProperty("background-color");
   document.documentElement.style.removeProperty("background-color");
 
@@ -79,12 +76,7 @@ export function DialogBackgroundManager({
         );
 
         if (portalExists) {
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              applyDarkBackground(backgroundColor);
-            });
-          });
-
+          applyDarkBackground(backgroundColor);
           if (observerRef.current) {
             observerRef.current.disconnect();
           }
