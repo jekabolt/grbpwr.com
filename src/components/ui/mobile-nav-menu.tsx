@@ -5,7 +5,6 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import { Button } from "./button";
-import { DialogBackgroundManager } from "./dialog-background-manager";
 import {
   ActiveCategoryMenuDialog,
   DefaultMobileMenuDialog,
@@ -25,7 +24,7 @@ export function MobileNavMenu({
 
   return (
     <>
-      <DialogBackgroundManager isOpen={open} backgroundColor="#ffffff" />
+      {/* <DialogBackgroundManager isOpen={open} backgroundColor="#ffffff" /> */}
       <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
         <DialogPrimitives.Trigger asChild>
           <Button size="lg" className="w-full text-left">
@@ -33,8 +32,8 @@ export function MobileNavMenu({
           </Button>
         </DialogPrimitives.Trigger>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-40 bg-bgColor" />
-          <DialogPrimitives.Content className="fixed inset-0 z-50 bg-bgColor px-2.5 pb-4 pt-5">
+          {/* <DialogPrimitives.Overlay className="fixed inset-0 z-40 bg-bgColor" /> */}
+          <DialogPrimitives.Content className="fixed inset-x-2.5 bottom-2 top-2.5 z-50 border border-textInactiveColor bg-bgColor px-2.5 pb-4 pt-5">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>
