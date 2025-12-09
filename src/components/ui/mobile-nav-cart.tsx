@@ -115,7 +115,7 @@ export function MobileNavCart({
         </Button>
         <DialogPrimitives.Portal>
           <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-dvh bg-black" />
-          <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 flex h-dvh w-screen flex-col bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden">
+          <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 flex min-h-dvh w-screen flex-col bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>
