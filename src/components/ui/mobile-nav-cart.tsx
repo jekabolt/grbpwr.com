@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
@@ -16,7 +16,6 @@ import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartPro
 import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
 
 import { Button } from "./button";
-import { DialogBackgroundManager } from "./dialog-background-manager";
 import { Text } from "./text";
 import { SubmissionToaster } from "./toaster";
 
@@ -44,6 +43,18 @@ export function MobileNavCart({
 
   const t = useTranslations("navigation");
   const tCart = useTranslations("cart");
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   const handleProceedToCheckout = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -103,8 +114,12 @@ export function MobileNavCart({
 
   return (
     <>
-      <DialogBackgroundManager isOpen={isOpen} backgroundColor="#000000" />
-      <DialogPrimitives.Root open={isOpen} onOpenChange={closeCart}>
+      {/* <DialogBackgroundManager isOpen={isOpen} backgroundColor="#000000" /> */}
+      <DialogPrimitives.Root
+        open={isOpen}
+        onOpenChange={closeCart}
+        modal={false}
+      >
         <Button
           size={isProductInfo ? "default" : "lg"}
           onClick={openCart}
@@ -115,20 +130,8 @@ export function MobileNavCart({
           {t("cart")} {itemsQuantity ? itemsQuantity : ""}
         </Button>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay
-            className="fixed inset-0 z-30 bg-black"
-            style={{
-              height: "var(--full-height, 100vh)",
-              minHeight: "var(--full-height, 100vh)",
-            }}
-          />
-          <DialogPrimitives.Content
-            className="blackTheme z-50 flex w-screen flex-col bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden"
-            style={{
-              height: "var(--full-height, 100vh)",
-              minHeight: "var(--full-height, 100vh)",
-            }}
-          >
+          <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-black" />
+          <DialogPrimitives.Content className="blackTheme fixed inset-x-2.5 bottom-2 top-2.5 z-50 flex flex-col bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>
