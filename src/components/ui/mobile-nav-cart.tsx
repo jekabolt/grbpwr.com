@@ -130,7 +130,7 @@ export function MobileNavCart({
           {t("cart")} {itemsQuantity ? itemsQuantity : ""}
         </Button>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-black" />
+          {/* <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-black" /> */}
           <DialogPrimitives.Content
             className="blackTheme fixed inset-x-2.5 bottom-2.5 z-50 flex max-h-[calc(100vh-5px)] flex-col overflow-hidden bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden"
             style={{ top: "auto" }}

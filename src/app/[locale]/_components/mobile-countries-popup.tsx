@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   COUNTRIES_BY_REGION,
   currencySymbols,
@@ -13,7 +13,6 @@ import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { DialogBackgroundManager } from "@/components/ui/dialog-background-manager";
 import RadioGroup from "@/components/ui/radio-group";
 import { Searchbar } from "@/components/ui/searchbar";
 import { Text } from "@/components/ui/text";
@@ -45,13 +44,25 @@ export function MobileCountriesPopup() {
   const t = useTranslations("countries-popup");
   const f = useTranslations("footer");
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   function toggleSection(index: number) {
     setOpenSection((prev) => (prev === index ? null : index));
   }
 
   return (
     <>
-      <DialogBackgroundManager isOpen={open} backgroundColor="#000000" />
+      {/* <DialogBackgroundManager isOpen={open} backgroundColor="#000000" /> */}
       <DialogPrimitives.Root open={open} onOpenChange={closeCurrencyPopup}>
         <Button
           onClick={openCurrencyPopup}
@@ -63,8 +74,8 @@ export function MobileCountriesPopup() {
           </Text>
         </Button>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-black" />
-          <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 h-dvh bg-bgColor p-2.5 text-textColor lg:hidden">
+          {/* <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-black" /> */}
+          <DialogPrimitives.Content className="blackTheme fixed inset-x-2.5 bottom-2 top-2.5 z-50 bg-bgColor p-2.5 text-textColor lg:hidden">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>
