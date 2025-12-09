@@ -57,7 +57,7 @@ export function MobileSelectSize({
         <DialogPrimitives.Title className="sr-only">
           grbpwr mobile menu
         </DialogPrimitives.Title>
-        <DialogPrimitives.Content className="blackTheme fixed bottom-0 left-0 z-50 flex h-auto w-screen flex-col gap-10 bg-bgColor p-2.5 pb-10 text-textColor">
+        <DialogPrimitives.Content className="blackTheme fixed inset-x-2.5 bottom-2 top-2.5 top-auto z-50 flex flex-col gap-10 bg-bgColor p-2.5 pb-10 text-textColor">
           <DialogPrimitives.Close asChild>
             <div className="flex items-center justify-between">
               <Text variant="uppercase">select size</Text>

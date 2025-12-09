@@ -47,8 +47,8 @@ export function MobileMeasurements({
           </Button>
         </DialogPrimitives.Trigger>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-white" />
-          <DialogPrimitives.Content className="fixed inset-0 z-40 flex h-full flex-col gap-4 overflow-y-auto bg-bgColor p-2.5">
+          <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
+          <DialogPrimitives.Content className="fixed inset-x-2.5 bottom-2 top-2.5 z-40 flex flex-col gap-4 overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>
@@ -67,25 +67,25 @@ export function MobileMeasurements({
                 handleSelectSize={handleSelectSize}
               />
             </div>
-            <div className="fixed bottom-2.5 left-2.5 right-2.5">
-              <LoadingButton
-                variant="simpleReverse"
-                size="lg"
-                onAction={() => handleAddToCart()}
-              >
-                <Text variant="inherit">
-                  {preorder ? t("preorder") : t("add")}
+            {/* <div className="fixed bottom-2.5 left-2.5 right-2.5"> */}
+            <LoadingButton
+              variant="simpleReverse"
+              size="lg"
+              onAction={() => handleAddToCart()}
+            >
+              <Text variant="inherit">
+                {preorder ? t("preorder") : t("add")}
+              </Text>
+              {isSaleApplied ? (
+                <Text variant="inactive">
+                  {priceMinusSale}
+                  <Text component="span">{priceWithSale}</Text>
                 </Text>
-                {isSaleApplied ? (
-                  <Text variant="inactive">
-                    {priceMinusSale}
-                    <Text component="span">{priceWithSale}</Text>
-                  </Text>
-                ) : (
-                  <Text variant="inherit">{price}</Text>
-                )}
-              </LoadingButton>
-            </div>
+              ) : (
+                <Text variant="inherit">{price}</Text>
+              )}
+            </LoadingButton>
+            {/* </div> */}
           </DialogPrimitives.Content>
         </DialogPrimitives.Portal>
       </DialogPrimitives.Root>

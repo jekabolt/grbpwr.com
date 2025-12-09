@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { DialogBackgroundManager } from "@/components/ui/dialog-background-manager";
 import { Text } from "@/components/ui/text";
 
 import { Collection } from "./collection";
@@ -37,6 +36,18 @@ export function MobileFilter() {
     !!saleValue ||
     !!collectionValue;
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   const handleClearAll = () => {
     resetTotal();
     handleFilterChange(undefined, {
@@ -49,14 +60,14 @@ export function MobileFilter() {
 
   return (
     <>
-      <DialogBackgroundManager isOpen={open} backgroundColor="#000000" />
+      {/* <DialogBackgroundManager isOpen={open} backgroundColor="#000000" /> */}
       <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
         <DialogPrimitives.Trigger asChild className="w-full text-right">
           <Button className="uppercase">{t("filter")} +</Button>
         </DialogPrimitives.Trigger>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-black" />
-          <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 bg-bgColor p-2.5 text-textColor lg:hidden">
+          {/* <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-black" /> */}
+          <DialogPrimitives.Content className="blackTheme fixed inset-x-2.5 bottom-2 top-2.5 z-50 bg-bgColor p-2.5 text-textColor lg:hidden">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>

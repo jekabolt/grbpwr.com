@@ -7,7 +7,6 @@ import FlexibleLayout from "@/components/flexible-layout";
 
 import { HeroArchive } from "../../_components/hero-archive";
 import Catalog from "./catalog";
-import { NextCategoryButton } from "./next-category-button";
 import { getProductsPagedQueryParams, parseRouteParams } from "./utils";
 
 interface CatalogContentProps {
@@ -67,9 +66,9 @@ export async function CatalogContent(props: CatalogContentProps) {
           hidden: !response.total,
         })}
       >
-        <div className="flex justify-center pb-5 pt-16">
+        {/* <div className="flex justify-center pb-5 pt-16">
           <NextCategoryButton />
-        </div>
+        </div> */}
         <div>
           {hero?.entities
             ?.filter((e) => e.type === "HERO_TYPE_FEATURED_ARCHIVE")
