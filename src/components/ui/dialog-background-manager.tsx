@@ -1,10 +1,16 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
 interface DialogBackgroundManagerProps {
   isOpen: boolean;
   backgroundColor?: string;
+}
+
+function setViewportHeight() {
+  // Use innerHeight for content area, not outerHeight
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
 }
 
 function forceSafariRepaint() {
@@ -19,20 +25,21 @@ function forceSafariRepaint() {
 }
 
 function applyDarkBackground(color: string) {
-  // Use window.outerHeight for iOS 18+ Liquid Glass support
-  const outerHeight = window.outerHeight;
+  // Update viewport height
+  setViewportHeight();
 
-  // Set HTML background first (covers safe area)
+  // Apply background to html first (critical for safe area)
   document.documentElement.style.backgroundColor = color;
-  document.documentElement.style.minHeight = `${outerHeight}px`;
-
-  // Set body background
   document.body.style.backgroundColor = color;
-  document.body.style.minHeight = `${outerHeight}px`;
+
+  // Prevent body scroll on iOS
+  document.body.style.overflow = "hidden";
+  document.body.style.position = "fixed";
+  document.body.style.width = "100%";
+  document.body.style.height = "100%";
 
   // Force layout recalc
   void document.documentElement.offsetHeight;
-  void document.body.offsetHeight;
 
   document.querySelectorAll("body > *").forEach((el) => {
     const element = el as HTMLElement;
@@ -53,18 +60,16 @@ function applyDarkBackground(color: string) {
     }
   });
 
-  // Multiple repaints for iOS safe area
   forceSafariRepaint();
-  requestAnimationFrame(() => {
-    forceSafariRepaint();
-  });
 }
 
 function removeDarkBackground() {
   document.body.style.removeProperty("background-color");
-  document.body.style.removeProperty("min-height");
+  document.body.style.removeProperty("overflow");
+  document.body.style.removeProperty("position");
+  document.body.style.removeProperty("width");
+  document.body.style.removeProperty("height");
   document.documentElement.style.removeProperty("background-color");
-  document.documentElement.style.removeProperty("min-height");
 
   document.querySelectorAll('[data-hidden-for-dialog="true"]').forEach((el) => {
     const element = el as HTMLElement;
@@ -81,6 +86,20 @@ export function DialogBackgroundManager({
 }: DialogBackgroundManagerProps) {
   const effectRan = useRef(false);
   const observerRef = useRef<MutationObserver | null>(null);
+
+  // Update --vh on resize
+  useEffect(() => {
+    setViewportHeight();
+
+    const handleResize = () => setViewportHeight();
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
+  }, []);
 
   useLayoutEffect(() => {
     if (isOpen) {

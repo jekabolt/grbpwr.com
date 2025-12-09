@@ -115,8 +115,18 @@ export function MobileNavCart({
           {t("cart")} {itemsQuantity ? itemsQuantity : ""}
         </Button>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-dvh bg-black" />
-          <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 flex min-h-dvh w-screen flex-col bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden">
+          <DialogPrimitives.Overlay
+            className="fixed inset-0 z-30 bg-black"
+            style={{
+              height: "calc(var(--vh, 1vh) * 100)",
+            }}
+          />
+          <DialogPrimitives.Content
+            className="blackTheme fixed inset-0 z-50 flex w-screen flex-col bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden"
+            style={{
+              height: "calc(var(--vh, 1vh) * 100)",
+            }}
+          >
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>
