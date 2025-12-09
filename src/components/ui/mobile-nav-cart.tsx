@@ -118,13 +118,15 @@ export function MobileNavCart({
           <DialogPrimitives.Overlay
             className="fixed inset-0 z-30 bg-black"
             style={{
-              height: "calc(var(--vh, 1vh) * 100)",
+              height: "var(--full-height, 100vh)",
+              minHeight: "var(--full-height, 100vh)",
             }}
           />
           <DialogPrimitives.Content
             className="blackTheme fixed inset-0 z-50 flex w-screen flex-col bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden"
             style={{
-              height: "calc(var(--vh, 1vh) * 100)",
+              height: "var(--full-height, 100vh)",
+              minHeight: "var(--full-height, 100vh)",
             }}
           >
             <DialogPrimitives.Title className="sr-only">
