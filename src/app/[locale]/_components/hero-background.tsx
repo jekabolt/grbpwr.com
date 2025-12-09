@@ -147,6 +147,9 @@ export function HeroBackground({ imageUrl }: HeroBackgroundProps) {
 
         // Set body background for Safari bar coloring
         document.body.style.backgroundColor = hexColor;
+
+        // Set data attribute for DialogBackgroundManager coordination
+        document.body.setAttribute("data-hero-bg-color", hexColor);
       })
       .catch((error) =>
         console.error("HeroBackground color extraction error:", error),
@@ -160,6 +163,7 @@ export function HeroBackground({ imageUrl }: HeroBackgroundProps) {
         styleElementRef.current = null;
       }
       document.body.style.backgroundColor = originalBodyBg.current || "";
+      document.body.removeAttribute("data-hero-bg-color");
     };
   }, [imageUrl]);
 

@@ -32,7 +32,7 @@ export function MobileProductInfo({
   >(null);
   const { name, productId, productCategory, productSubCategory } =
     useProductBasics({ product });
-  const { closeCart } = useCart((state) => state);
+  const { isOpen, closeCart } = useCart((state) => state);
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const {
     activeSizeId,
