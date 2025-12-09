@@ -5,7 +5,6 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { sendViewItemEvent } from "@/lib/analitycs/product";
 import { useElementHeight } from "@/lib/hooks/useBottomSheet";
-import { useCart } from "@/lib/stores/cart/store-provider";
 import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Text } from "@/components/ui/text";
@@ -32,7 +31,6 @@ export function MobileProductInfo({
   >(null);
   const { name, productId, productCategory, productSubCategory } =
     useProductBasics({ product });
-  const { isOpen, closeCart } = useCart((state) => state);
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const {
     activeSizeId,
@@ -59,10 +57,6 @@ export function MobileProductInfo({
   const mainAreaRef = useRef<HTMLDivElement>(null!);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
   const carouselHeight = useElementHeight(carouselContainerRef, 48);
-
-  useEffect(() => {
-    closeCart();
-  }, [closeCart]);
 
   useEffect(() => {
     if (product) {
