@@ -42,16 +42,6 @@
     --text-base: 12px;
   }
 
-  /* * {
-    @apply border-border;
-  } */
-
-  /* html {
-    font-family: "InterFace", system-ui, sans-serif;
-    font-optical-sizing: auto;
-    font-variation-settings: "slnt" 0;
-  } */
-
   * {
     @apply no-scroll-bar;
   }
@@ -64,6 +54,7 @@
   body {
     touch-action: manipulation;
     background-color: var(--background);
+
     ::selection {
       @apply bg-acidColor text-bgColor;
     }

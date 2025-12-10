@@ -16,7 +16,6 @@ import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartPro
 import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
 
 import { Button } from "./button";
-import { DialogBackgroundManager } from "./dialog-background-manager";
 import { Text } from "./text";
 import { SubmissionToaster } from "./toaster";
 
@@ -42,8 +41,6 @@ export function MobileNavCart({
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
-  const open = isMobile && isOpen;
   const t = useTranslations("navigation");
   const tCart = useTranslations("cart");
 
@@ -105,8 +102,7 @@ export function MobileNavCart({
 
   return (
     <>
-      <DialogBackgroundManager isOpen={open} backgroundColor="#000000" />
-      <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
+      <DialogPrimitives.Root open={isOpen} onOpenChange={closeCart}>
         <Button
           size={isProductInfo ? "default" : "lg"}
           onClick={openCart}
@@ -117,15 +113,18 @@ export function MobileNavCart({
           {t("cart")} {itemsQuantity ? itemsQuantity : ""}
         </Button>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-black" />
-          <DialogPrimitives.Content className="blackTheme fixed inset-0 z-50 flex min-h-dvh w-screen flex-col bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden">
+          <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen w-screen bg-overlay" />
+          <DialogPrimitives.Content
+            className="blackTheme fixed inset-x-2.5 bottom-2 z-50 flex max-h-[calc(100vh-5px)] flex-col overflow-hidden bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden"
+            style={{ top: "auto" }}
+          >
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>
-            <div className="flex h-full flex-col justify-between">
+            <div className="flex h-full min-h-0 flex-col">
               <div
                 className={cn(
-                  "relative mb-10 flex items-center justify-between",
+                  "relative mb-10 flex shrink-0 items-center justify-between",
                   {
                     "mb-0": itemsQuantity === 0,
                   },
@@ -138,10 +137,10 @@ export function MobileNavCart({
               </div>
               {itemsQuantity > 0 ? (
                 <>
-                  <div className="no-scroll-bar h-full overflow-y-scroll">
+                  <div className="no-scroll-bar min-h-0 flex-1 overflow-y-auto">
                     <CartProductsList />
                   </div>
-                  <div className="mt-auto space-y-6">
+                  <div className="mt-auto shrink-0 space-y-6 pt-6">
                     <CartTotalPrice />
                     <Button
                       variant="main"
@@ -156,7 +155,7 @@ export function MobileNavCart({
                   </div>
                 </>
               ) : (
-                <div className="flex h-full items-center justify-center">
+                <div className="flex flex-1 items-center justify-center">
                   <Text variant="uppercase">{tCart("empty")}</Text>
                 </div>
               )}

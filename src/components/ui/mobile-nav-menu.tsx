@@ -16,21 +16,22 @@ export function MobileNavMenu({
 }: {
   isBigMenuEnabled?: boolean;
 }) {
+  const [open, setOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<
     "men" | "women" | undefined
   >();
   const t = useTranslations("navigation");
 
   return (
-    <DialogPrimitives.Root>
+    <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitives.Trigger asChild>
         <Button size="lg" className="w-full text-left">
           {t("menu")}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-40 bg-bgColor" />
-        <DialogPrimitives.Content className="fixed inset-0 z-50 bg-bgColor px-2.5 pb-4 pt-5">
+        <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-screen bg-overlay" />
+        <DialogPrimitives.Content className="fixed inset-x-2.5 bottom-2 top-2.5 z-50 border border-textInactiveColor bg-bgColor px-2.5 pb-4 pt-5">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
