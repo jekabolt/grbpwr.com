@@ -81,80 +81,77 @@ export function NotifyMe({
   }
 
   return (
-    <>
-      {/* <DialogBackgroundManager isOpen={open} backgroundColor="#ffffff" /> */}
-      <DialogPrimitives.Root open={open} onOpenChange={onOpenChange}>
-        <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
-          <DialogPrimitives.Content className="fixed inset-x-2.5 top-1/2 z-50 flex h-auto w-auto -translate-y-1/2 flex-col border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:inset-x-auto lg:left-1/2 lg:w-80 lg:-translate-x-1/2">
-            <DialogPrimitives.Title className="sr-only">
-              grbpwr notify me
-            </DialogPrimitives.Title>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(handleSubmit)}
-                className="flex h-auto flex-col justify-between gap-10"
-              >
-                <div className="flex items-center justify-between">
-                  <Text variant="uppercase">notify me</Text>
-                  <DialogPrimitives.Close asChild>
-                    <Button>[x]</Button>
-                  </DialogPrimitives.Close>
-                </div>
-                <div className="flex h-full flex-col justify-center space-y-10">
-                  <Text className="leading-none">
-                    select your size and we will email you when this product is
-                    back in stock.
-                  </Text>
+    <DialogPrimitives.Root open={open} onOpenChange={onOpenChange}>
+      <DialogPrimitives.Portal>
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
+        <DialogPrimitives.Content className="fixed inset-x-2.5 top-1/2 z-50 flex h-auto w-auto -translate-y-1/2 flex-col border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:inset-x-auto lg:left-1/2 lg:w-80 lg:-translate-x-1/2">
+          <DialogPrimitives.Title className="sr-only">
+            grbpwr notify me
+          </DialogPrimitives.Title>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="flex h-auto flex-col justify-between gap-10"
+            >
+              <div className="flex items-center justify-between">
+                <Text variant="uppercase">notify me</Text>
+                <DialogPrimitives.Close asChild>
+                  <Button>[x]</Button>
+                </DialogPrimitives.Close>
+              </div>
+              <div className="flex h-full flex-col justify-center space-y-10">
+                <Text className="leading-none">
+                  select your size and we will email you when this product is
+                  back in stock.
+                </Text>
 
-                  <div className="space-y-16 lg:space-y-10">
-                    <div className="space-y-4">
-                      <Text>select size:</Text>
-                      <SizePicker
-                        sizeNames={outOfStockSizes}
-                        activeSizeId={selectedSizeId}
-                        handleSizeSelect={handleSizeSelect}
-                        view="grid"
-                      />
-                      {form.formState.errors.sizeId && (
-                        <Text className="text-errorColor">
-                          {form.formState.errors.sizeId.message}
-                        </Text>
-                      )}
-                    </div>
-                    <div className="space-y-4">
-                      <InputField
-                        name="email"
-                        label="email"
-                        type="email"
-                        variant="secondary"
-                      />
-                      <CheckboxGlobal
-                        name="newsLetter"
-                        label={t("agree")}
-                        checked={isChecked}
-                        onCheckedChange={(checked: boolean) =>
-                          setIsChecked(checked)
-                        }
-                      />
-                    </div>
+                <div className="space-y-16 lg:space-y-10">
+                  <div className="space-y-4">
+                    <Text>select size:</Text>
+                    <SizePicker
+                      sizeNames={outOfStockSizes}
+                      activeSizeId={selectedSizeId}
+                      handleSizeSelect={handleSizeSelect}
+                      view="grid"
+                    />
+                    {form.formState.errors.sizeId && (
+                      <Text className="text-errorColor">
+                        {form.formState.errors.sizeId.message}
+                      </Text>
+                    )}
+                  </div>
+                  <div className="space-y-4">
+                    <InputField
+                      name="email"
+                      label="email"
+                      type="email"
+                      variant="secondary"
+                    />
+                    <CheckboxGlobal
+                      name="newsLetter"
+                      label={t("agree")}
+                      checked={isChecked}
+                      onCheckedChange={(checked: boolean) =>
+                        setIsChecked(checked)
+                      }
+                    />
                   </div>
                 </div>
+              </div>
 
-                <Button
-                  variant="main"
-                  type="submit"
-                  size="lg"
-                  className="w-full uppercase"
-                  disabled={form.formState.isSubmitting}
-                >
-                  notify me
-                </Button>
-              </form>
-            </Form>
-          </DialogPrimitives.Content>
-        </DialogPrimitives.Portal>
-      </DialogPrimitives.Root>
-    </>
+              <Button
+                variant="main"
+                type="submit"
+                size="lg"
+                className="w-full uppercase"
+                disabled={form.formState.isSubmitting}
+              >
+                notify me
+              </Button>
+            </form>
+          </Form>
+        </DialogPrimitives.Content>
+      </DialogPrimitives.Portal>
+    </DialogPrimitives.Root>
   );
 }

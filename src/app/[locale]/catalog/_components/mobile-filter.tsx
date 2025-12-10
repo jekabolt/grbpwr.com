@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
@@ -36,18 +36,6 @@ export function MobileFilter() {
     !!saleValue ||
     !!collectionValue;
 
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
   const handleClearAll = () => {
     resetTotal();
     handleFilterChange(undefined, {
@@ -66,7 +54,7 @@ export function MobileFilter() {
           <Button className="uppercase">{t("filter")} +</Button>
         </DialogPrimitives.Trigger>
         <DialogPrimitives.Portal>
-          {/* <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-black" /> */}
+          <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
           <DialogPrimitives.Content className="blackTheme fixed inset-x-2.5 bottom-2 top-2.5 z-50 bg-bgColor p-2.5 text-textColor lg:hidden">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu

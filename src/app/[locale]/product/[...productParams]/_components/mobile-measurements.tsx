@@ -4,12 +4,11 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import { sendButtonEvent } from "@/lib/analitycs/button";
-import { Measurements } from "@/app/[locale]/product/[...productParams]/_components/measurements";
+import { Text } from "@/components/ui/text";
 
 import { Button } from "../../../../../components/ui/button";
-import { DialogBackgroundManager } from "../../../../../components/ui/dialog-background-manager";
-import { Text } from "../../../../../components/ui/text";
 import { LoadingButton } from "./loading-button";
+import { Measurements } from "./measurements";
 import { useProductBasics } from "./utils/useProductBasics";
 import { useProductPricing } from "./utils/useProductPricing";
 
@@ -38,27 +37,26 @@ export function MobileMeasurements({
   };
 
   return (
-    <>
-      <DialogBackgroundManager isOpen={open} backgroundColor="#ffffff" />
-      <DialogPrimitives.Root open={open} onOpenChange={handleOpenChange}>
-        <DialogPrimitives.Trigger asChild className="text-left">
-          <Button variant="underline" className="uppercase">
-            {t("size guide")}
-          </Button>
-        </DialogPrimitives.Trigger>
-        <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
-          <DialogPrimitives.Content className="fixed inset-x-2.5 bottom-2 top-2.5 z-40 flex flex-col gap-4 overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5">
-            <DialogPrimitives.Title className="sr-only">
-              grbpwr mobile menu
-            </DialogPrimitives.Title>
-            <div className="flex items-center justify-between">
+    <DialogPrimitives.Root open={open} onOpenChange={handleOpenChange}>
+      <DialogPrimitives.Trigger asChild className="text-left">
+        <Button variant="underline" className="uppercase">
+          {t("size guide")}
+        </Button>
+      </DialogPrimitives.Trigger>
+      <DialogPrimitives.Portal>
+        <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
+        <DialogPrimitives.Content className="fixed inset-x-2.5 bottom-2 top-2.5 z-40 flex flex-col gap-4 overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5">
+          <DialogPrimitives.Title className="sr-only">
+            grbpwr mobile menu
+          </DialogPrimitives.Title>
+          <div className="flex h-full flex-col">
+            <div className="relative mb-10 flex shrink-0 items-center justify-between">
               <Text variant="uppercase">{t("size guide")}</Text>
               <DialogPrimitives.Close asChild>
                 <Button>[x]</Button>
               </DialogPrimitives.Close>
             </div>
-            <div className="mb-10">
+            <div className="flex-1">
               <Measurements
                 product={product}
                 selectedSize={selectedSize}
@@ -67,29 +65,29 @@ export function MobileMeasurements({
                 handleSelectSize={handleSelectSize}
               />
             </div>
-            {/* <div className="fixed bottom-2.5 left-2.5 right-2.5"> */}
-            <LoadingButton
-              variant="simpleReverse"
-              size="lg"
-              onAction={() => handleAddToCart()}
-            >
-              <Text variant="inherit">
-                {preorder ? t("preorder") : t("add")}
-              </Text>
-              {isSaleApplied ? (
-                <Text variant="inactive">
-                  {priceMinusSale}
-                  <Text component="span">{priceWithSale}</Text>
+            <div className="mt-auto shrink-0 space-y-6 pt-6">
+              <LoadingButton
+                variant="simpleReverse"
+                size="lg"
+                onAction={() => handleAddToCart()}
+              >
+                <Text variant="inherit">
+                  {preorder ? t("preorder") : t("add")}
                 </Text>
-              ) : (
-                <Text variant="inherit">{price}</Text>
-              )}
-            </LoadingButton>
-            {/* </div> */}
-          </DialogPrimitives.Content>
-        </DialogPrimitives.Portal>
-      </DialogPrimitives.Root>
-    </>
+                {isSaleApplied ? (
+                  <Text variant="inactive">
+                    {priceMinusSale}
+                    <Text component="span">{priceWithSale}</Text>
+                  </Text>
+                ) : (
+                  <Text variant="inherit">{price}</Text>
+                )}
+              </LoadingButton>
+            </div>
+          </div>
+        </DialogPrimitives.Content>
+      </DialogPrimitives.Portal>
+    </DialogPrimitives.Root>
   );
 }
 

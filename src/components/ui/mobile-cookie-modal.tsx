@@ -6,7 +6,6 @@ import { Text } from "@/components/ui/text";
 import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
 
 import { Button } from "./button";
-import { DialogBackgroundManager } from "./dialog-background-manager";
 
 interface Props {
   isVisible: boolean;
@@ -33,7 +32,6 @@ export function MobileCookieModal({
 
   return (
     <>
-      <DialogBackgroundManager isOpen={open} backgroundColor="#000000" />
       <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
         <div className="flex flex-col items-start gap-6 p-2.5">
           <Text className="tracking-wider">
@@ -54,8 +52,8 @@ export function MobileCookieModal({
           </Button>
         </div>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-black" />
-          <DialogPrimitives.Content className="blackTheme fixed inset-0 z-30 flex flex-col gap-4 bg-bgColor py-4 text-textColor">
+          <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
+          <DialogPrimitives.Content className="blackTheme fixed inset-x-2.5 bottom-2 top-2.5 z-30 flex flex-col gap-4 bg-bgColor py-4 text-textColor">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>
