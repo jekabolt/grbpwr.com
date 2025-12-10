@@ -76,7 +76,7 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
       )}
       <header
         className={cn(
-          "fixed inset-x-2.5 bottom-2 z-30 h-12 py-2 lg:top-2 lg:gap-0 lg:px-5 lg:py-3",
+          "fixed inset-x-2.5 top-2 z-30 h-12 py-2 lg:gap-0 lg:px-5 lg:py-3",
           "flex items-center justify-between gap-1",
           "blackTheme border border-textInactiveColor bg-textColor text-bgColor lg:border-transparent lg:bg-bgColor lg:text-textColor",
           "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",

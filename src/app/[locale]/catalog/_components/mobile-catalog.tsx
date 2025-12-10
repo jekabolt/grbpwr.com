@@ -10,7 +10,6 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 import { InfinityScrollCatalog } from "@/app/[locale]/catalog/_components/infinity-scroll-catalog";
 
-import { Categories } from "./categories/categories";
 import { EmptyCatalog } from "./empty-catalog";
 import { MobileFilter } from "./mobile-filter";
 import { useRouteParams } from "./useRouteParams";
@@ -34,15 +33,9 @@ export function MobileCatalog({
   );
 
   return (
-    <div className="flex flex-col space-y-6 px-2.5 pb-10 pt-2">
-      <div className="sticky top-3 z-20 space-y-5 text-bgColor mix-blend-exclusion">
-        <div className="w-full overflow-x-auto">
-          <Categories />
-        </div>
-        <MobileFilter />
-      </div>
+    <div className="relative flex h-screen flex-col space-y-6 border border-blue-500 px-2.5 pb-10 pt-2">
       {total > 0 ? (
-        <div>
+        <div className="relative border border-red-500">
           <Text className="w-full lowercase">{categoryDescription}</Text>
           <InfinityScrollCatalog
             firstPageItems={firstPageItems}
@@ -54,6 +47,12 @@ export function MobileCatalog({
           <EmptyCatalog />
         </div>
       )}
+      <div className="sticky bottom-0 z-20 mt-6 text-bgColor mix-blend-exclusion">
+        {/* <div className="w-full overflow-x-auto">
+              <Categories />
+            </div> */}
+        <MobileFilter />
+      </div>
     </div>
   );
 }
