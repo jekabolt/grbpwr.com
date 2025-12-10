@@ -23,53 +23,51 @@ export function MobileNavMenu({
   const t = useTranslations("navigation");
 
   return (
-    <>
-      <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
-        <DialogPrimitives.Trigger asChild>
-          <Button size="lg" className="w-full text-left">
-            {t("menu")}
-          </Button>
-        </DialogPrimitives.Trigger>
-        <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-screen bg-overlay" />
-          <DialogPrimitives.Content className="fixed inset-x-2.5 bottom-2 top-2.5 z-50 border border-textInactiveColor bg-bgColor px-2.5 pb-4 pt-5">
-            <DialogPrimitives.Title className="sr-only">
-              grbpwr mobile menu
-            </DialogPrimitives.Title>
-            <div className="flex h-full flex-col">
-              <div className="mb-14">
-                {activeCategory ? (
-                  <div className="flex items-center justify-between">
-                    <Button onClick={() => setActiveCategory(undefined)}>
-                      {"<"}
-                    </Button>
-                    {isBigMenuEnabled && (
-                      <Text variant="uppercase">{activeCategory}</Text>
-                    )}
-                    <DialogPrimitives.Close asChild>
-                      <Button>[x]</Button>
-                    </DialogPrimitives.Close>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-end">
-                    <DialogPrimitives.Close>
-                      <Text>[x]</Text>
-                    </DialogPrimitives.Close>
-                  </div>
-                )}
-              </div>
-              {activeCategory === undefined || !isBigMenuEnabled ? (
-                <DefaultMobileMenuDialog
-                  setActiveCategory={setActiveCategory}
-                  isBigMenuEnabled={isBigMenuEnabled}
-                />
+    <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
+      <DialogPrimitives.Trigger asChild>
+        <Button size="lg" className="w-full text-left">
+          {t("menu")}
+        </Button>
+      </DialogPrimitives.Trigger>
+      <DialogPrimitives.Portal>
+        <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-screen bg-overlay" />
+        <DialogPrimitives.Content className="fixed inset-x-2.5 bottom-2 top-2.5 z-50 border border-textInactiveColor bg-bgColor px-2.5 pb-4 pt-5">
+          <DialogPrimitives.Title className="sr-only">
+            grbpwr mobile menu
+          </DialogPrimitives.Title>
+          <div className="flex h-full flex-col">
+            <div className="mb-14">
+              {activeCategory ? (
+                <div className="flex items-center justify-between">
+                  <Button onClick={() => setActiveCategory(undefined)}>
+                    {"<"}
+                  </Button>
+                  {isBigMenuEnabled && (
+                    <Text variant="uppercase">{activeCategory}</Text>
+                  )}
+                  <DialogPrimitives.Close asChild>
+                    <Button>[x]</Button>
+                  </DialogPrimitives.Close>
+                </div>
               ) : (
-                <ActiveCategoryMenuDialog activeCategory={activeCategory} />
+                <div className="flex items-center justify-end">
+                  <DialogPrimitives.Close>
+                    <Text>[x]</Text>
+                  </DialogPrimitives.Close>
+                </div>
               )}
             </div>
-          </DialogPrimitives.Content>
-        </DialogPrimitives.Portal>
-      </DialogPrimitives.Root>
-    </>
+            {activeCategory === undefined || !isBigMenuEnabled ? (
+              <DefaultMobileMenuDialog
+                setActiveCategory={setActiveCategory}
+                isBigMenuEnabled={isBigMenuEnabled}
+              />
+            ) : (
+              <ActiveCategoryMenuDialog activeCategory={activeCategory} />
+            )}
+          </div>
+        </DialogPrimitives.Content>
+      </DialogPrimitives.Portal>
+    </DialogPrimitives.Root>
   );
 }

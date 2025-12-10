@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   COUNTRIES_BY_REGION,
   currencySymbols,
@@ -43,18 +43,6 @@ export function MobileCountriesPopup() {
 
   const t = useTranslations("countries-popup");
   const f = useTranslations("footer");
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
 
   function toggleSection(index: number) {
     setOpenSection((prev) => (prev === index ? null : index));

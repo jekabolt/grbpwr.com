@@ -3,8 +3,6 @@
 import { type ReactNode } from "react";
 import { motion } from "framer-motion";
 
-import { useCart } from "@/lib/stores/cart/store-provider";
-
 import {
   useBottomSheet,
   type UseBottomSheetConfig,
@@ -17,7 +15,6 @@ export interface BottomSheetProps {
   isCarouselScrolling?: boolean;
   config?: UseBottomSheetConfig;
   contentAboveRef?: React.RefObject<HTMLDivElement>;
-  className?: string;
 }
 
 export function BottomSheet({
@@ -28,7 +25,6 @@ export function BottomSheet({
   config,
   contentAboveRef,
 }: BottomSheetProps) {
-  const { isOpen } = useCart((state) => state);
   const { containerHeight, canScrollInside } = useBottomSheet({
     mainAreaRef,
     containerRef,
