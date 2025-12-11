@@ -71,7 +71,7 @@ export default function MeasurementPopup({
         {t("size guide")}
       </Button>
       {isModalOpen && (
-        <div className="fixed inset-y-0 right-0 z-50 h-screen w-[600px] bg-bgColor p-2.5">
+        <div className="fixed inset-y-2 right-2 z-50 w-[600px] border border-textInactiveColor bg-bgColor p-2.5">
           <div className="flex h-full flex-col gap-12">
             <div className="flex items-center justify-between">
               <Text variant="uppercase">{t("size guide")}</Text>

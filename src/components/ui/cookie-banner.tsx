@@ -10,6 +10,7 @@ import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-conte
 import { Banner } from "./banner";
 import { Button } from "./button";
 import { MobileCookieModal } from "./mobile-cookie-modal";
+import { Overlay } from "./overlay";
 
 export const defaultCookiePreferences = {
   functional: true,
@@ -83,9 +84,19 @@ export function CookieBanner() {
           {t("accept")}
         </Button>
       </div>
+      {open && (
+        <div className="hidden lg:block">
+          <Overlay
+            cover="screen"
+            color="dark"
+            disablePointerEvents={false}
+            onClick={() => setOpenStatus(false)}
+          />
+        </div>
+      )}
       <div
         className={cn(
-          "fixed inset-y-2 right-2 z-30 hidden w-[459px] bg-bgColor p-2.5 mix-blend-normal",
+          "fixed inset-y-2 right-2 z-30 hidden w-[459px] border border-textInactiveColor bg-bgColor p-2.5 mix-blend-normal",
           {
             block: open,
           },

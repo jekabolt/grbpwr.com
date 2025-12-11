@@ -53,7 +53,7 @@ export function MobileCookieModal({
         </div>
         <DialogPrimitives.Portal>
           <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
-          <DialogPrimitives.Content className="blackTheme fixed inset-x-2.5 bottom-2 top-2.5 z-30 flex flex-col gap-4 bg-bgColor py-4 text-textColor">
+          <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-30 flex flex-col gap-4 border border-textInactiveColor bg-bgColor py-4 text-textColor">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>

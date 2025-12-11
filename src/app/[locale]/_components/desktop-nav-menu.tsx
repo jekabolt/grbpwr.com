@@ -84,7 +84,7 @@ export function DesktopNavigationMenu({
               </Link>
             </NavigationMenu.Trigger>
             {isBigMenuEnabled && (
-              <NavigationMenu.Content className="blackTheme absolute left-0 top-0 min-h-56 w-full bg-bgColor text-textColor">
+              <NavigationMenu.Content className="absolute left-0 top-0 min-h-56 w-full bg-bgColor text-textColor">
                 <LinksGroup
                   gender={gender}
                   links={processedCategories.map((item) => ({

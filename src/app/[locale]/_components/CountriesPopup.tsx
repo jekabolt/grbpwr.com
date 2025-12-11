@@ -20,7 +20,7 @@ export function CountriesPopup() {
               onClick={closeCurrencyPopup}
               disablePointerEvents={false}
             />
-            <div className="blackTheme fixed right-0 top-0 z-30 h-screen w-[460px] bg-bgColor p-2.5 text-textColor">
+            <div className="fixed inset-y-2 right-2 z-30 w-[460px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor">
               <CountriesContent />
             </div>
           </>

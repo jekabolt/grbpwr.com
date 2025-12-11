@@ -60,7 +60,7 @@ export function Filter({
             onClick={toggleModal}
             disablePointerEvents={false}
           />
-          <div className="blackTheme fixed right-0 top-0 z-30 h-screen w-[445px] bg-bgColor p-2.5 text-textColor">
+          <div className="fixed inset-y-2 right-2 z-30 w-[445px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor">
             <div className="flex h-full flex-col gap-y-6">
               <div className="flex items-center justify-between">
                 <Text variant="uppercase">{t("filter")}</Text>
@@ -68,9 +68,7 @@ export function Filter({
               </div>
               <div className="h-full space-y-10 overflow-y-scroll">
                 <div className="space-y-6">
-                  <Text variant="uppercase" className="text-textInactiveColor">
-                    {t("sort by")}
-                  </Text>
+                  <Text variant="uppercase">{t("sort by")}</Text>
                   <Sort />
                 </div>
                 <Collection />
