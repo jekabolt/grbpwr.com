@@ -12,6 +12,7 @@ import { Text } from "@/components/ui/text";
 
 import { EmptyCatalog } from "./empty-catalog";
 import { InfinityScrollCatalog } from "./infinity-scroll-catalog";
+import { MobileFilter } from "./mobile-filter";
 import { useRouteParams } from "./useRouteParams";
 
 export function MobileCatalog({
@@ -66,7 +67,7 @@ export function MobileCatalog({
     //     </div>
     //   )}
     // </div>
-    <div className="relative">
+    <div className="flex flex-col space-y-6 px-2.5 pb-10 pt-2">
       {total > 0 ? (
         <>
           <Text className="w-full lowercase">{categoryDescription}</Text>
@@ -80,11 +81,14 @@ export function MobileCatalog({
           <EmptyCatalog />
         </div>
       )}
-      {!isFooterVisible && (
+      {/* {!isFooterVisible && (
         <div className="bg-bgColor/80 fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 py-3 backdrop-blur">
           <Text className="uppercase">text</Text>
         </div>
-      )}
+      )} */}
+      <div className="sticky bottom-0 z-20 mt-auto flex justify-center text-bgColor mix-blend-exclusion">
+        <MobileFilter />
+      </div>
     </div>
   );
 }

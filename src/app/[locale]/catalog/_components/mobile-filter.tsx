@@ -48,7 +48,7 @@ export function MobileFilter() {
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
-      <DialogPrimitives.Trigger asChild className="w-full text-right">
+      <DialogPrimitives.Trigger asChild className="w-full text-center">
         <Button className="uppercase">{t("filter")} +</Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
