@@ -108,11 +108,7 @@ export default function FilterOptionButtons({
   if (!showSeparated) {
     return (
       <div className="space-y-6">
-        {title && (
-          <Text variant="uppercase" className="text-textInactiveColor">
-            {title}
-          </Text>
-        )}
+        {title && <Text variant="uppercase">{title}</Text>}
         <div className="grid grid-cols-4 gap-x-2 gap-y-5">
           {values.map(renderButton)}
         </div>
@@ -128,9 +124,7 @@ export default function FilterOptionButtons({
     >
       {showNonNumeric && (
         <div className="space-y-6">
-          <Text variant="uppercase" className="text-textInactiveColor">
-            {title || t("size")}
-          </Text>
+          <Text variant="uppercase">{title || t("size")}</Text>
           <div className="grid grid-cols-4 gap-x-2 gap-y-5">
             {nonNumericValues.map(renderButton)}
           </div>
@@ -138,9 +132,7 @@ export default function FilterOptionButtons({
       )}
       {showNumeric && (
         <div className="space-y-6">
-          <Text variant="uppercase" className="text-textInactiveColor">
-            {t("shoe size")}
-          </Text>
+          <Text variant="uppercase">{t("shoe size")}</Text>
           <div className="grid grid-cols-4 gap-x-2 gap-y-5">
             {numericValues.map(renderButton)}
           </div>

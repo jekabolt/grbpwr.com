@@ -56,7 +56,7 @@ export async function CatalogContent(props: CatalogContentProps) {
   });
 
   return (
-    <FlexibleLayout headerType="catalog">
+    <FlexibleLayout className="pt-16 lg:pt-0" headerType="catalog">
       <Catalog
         total={response.total || 0}
         firstPageItems={response.products || []}
