@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { common_GenderEnum, common_Product } from "@/api/proto-http/frontend";
 
 import {
@@ -22,7 +21,6 @@ export function MobileCatalog({
   firstPageItems: common_Product[];
   total: number;
 }) {
-  const [isFooterVisible, setIsFooterVisible] = useState(false);
   const { dictionary } = useDataContext();
   const { gender, topCategory } = useRouteParams();
   const activeTopCategory = getTopCategoryName(
@@ -34,39 +32,7 @@ export function MobileCatalog({
     gender as common_GenderEnum,
   );
 
-  useEffect(() => {
-    const footer = document.querySelector("footer");
-    if (!footer) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        setIsFooterVisible(entry?.isIntersecting || false);
-      },
-      { threshold: 0 },
-    );
-
-    observer.observe(footer);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    // <div className="flex flex-col space-y-6 border border-blue-500 px-2.5 pb-10 pt-2">
-    //   {total > 0 ? (
-    //     <div>
-    //       <Text className="w-full lowercase">{categoryDescription}</Text>
-    //       <InfinityScrollCatalog
-    //         firstPageItems={firstPageItems}
-    //         total={total}
-    //       />
-    //       <MobileFilter />
-    //     </div>
-    //   ) : (
-    //     <div className="h-screen w-full">
-    //       <EmptyCatalog />
-    //     </div>
-    //   )}
-    // </div>
     <div className="flex flex-col space-y-6 px-2.5 pb-10 pt-2">
       {total > 0 ? (
         <>
@@ -81,11 +47,6 @@ export function MobileCatalog({
           <EmptyCatalog />
         </div>
       )}
-      {/* {!isFooterVisible && (
-        <div className="bg-bgColor/80 fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 py-3 backdrop-blur">
-          <Text className="uppercase">text</Text>
-        </div>
-      )} */}
       <div className="sticky bottom-0 z-20 mt-auto flex justify-center text-bgColor mix-blend-exclusion">
         <MobileFilter />
       </div>
