@@ -152,7 +152,7 @@ export function MobileNavCart({
                   </div>
                 </>
               ) : (
-                <div className="flex flex-1 items-center justify-center">
+                <div className="flex h-[33.333vh] items-center justify-center">
                   <Text variant="uppercase">{tCart("empty")}</Text>
                 </div>
               )}
