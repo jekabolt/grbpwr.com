@@ -48,7 +48,9 @@ export function MobileFilter() {
   return (
     <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitives.Trigger asChild className="w-full text-center">
-        <Button className="uppercase">{t("filter")} +</Button>
+        <Button className="uppercase">
+          {t("filter")} {total > 0 ? `[${total}]` : ""}
+        </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
