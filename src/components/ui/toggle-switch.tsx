@@ -15,19 +15,21 @@ export function ToggleSwitch({
   onCheckedChange?: (checked: boolean) => void;
 }) {
   return (
-    <div className="flex items-center gap-5">
+    <div className="flex items-start gap-5">
       <Switch.Root
         id="toggle"
         checked={checked}
         disabled={disabled}
         onCheckedChange={onCheckedChange}
-        className="relative h-3 w-6 cursor-pointer border border-textColor bg-textColor outline-none data-[state=checked]:bg-bgColor"
+        className="relative mt-0.5 h-3 w-6 shrink-0 cursor-pointer border border-textColor bg-textColor outline-none data-[state=checked]:bg-bgColor"
       >
         <Switch.Thumb className="block h-2 w-2 translate-x-0.5 bg-bgColor data-[state=checked]:translate-x-3 data-[state=checked]:bg-textColor" />
       </Switch.Root>
       {label && (
-        <Label htmlFor="toggle">
-          <Text variant="uppercase">{label}</Text>
+        <Label htmlFor="toggle" className="min-w-0 flex-1">
+          <Text variant="uppercase" className="break-words">
+            {label}
+          </Text>
         </Label>
       )}
     </div>
