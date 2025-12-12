@@ -74,13 +74,13 @@ export function DesktopNavigationMenu({
         onNavOpenChange(isOpen);
       }}
     >
-      <NavigationMenu.List className="flex items-center gap-4">
-        {genderNavItems.map(({ gender, href, isActive }) => (
+      <NavigationMenu.List className="flex items-center">
+        {genderNavItems.map(({ gender, href, isActive }, index) => (
           <NavigationMenu.Item key={gender}>
             <NavigationMenu.Trigger
               className={cn(
-                "flex items-center text-textBaseSize data-[state=open]:underline",
-                { underline: isActive },
+                "flex items-center px-2 text-textBaseSize data-[state=open]:underline",
+                { underline: isActive, "pl-0": index === 0 },
               )}
             >
               <Link href={href} className="flex items-center">
@@ -107,7 +107,7 @@ export function DesktopNavigationMenu({
             <Link
               href={`/catalog/objects`}
               className={cn(
-                "flex items-center text-textBaseSize underline-offset-2 hover:underline",
+                "flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline",
                 { underline: isOnObjectsPage },
               )}
             >
@@ -120,7 +120,7 @@ export function DesktopNavigationMenu({
           <Button asChild>
             <Link
               href="/timeline"
-              className="flex items-center text-textBaseSize underline-offset-2 hover:underline"
+              className="flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline"
             >
               {t("timeline")}
             </Link>

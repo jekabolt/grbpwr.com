@@ -6,24 +6,16 @@ export function CatalogSkeleton() {
   return (
     <>
       <div className="block lg:hidden">
-        <div className="flex flex-col space-y-5 px-2.5 pb-10 pt-2">
-          <div className="sticky top-5 z-20 space-y-5 text-bgColor mix-blend-exclusion">
-            <div className="w-full overflow-x-auto">
-              <div className="flex gap-4">
-                <Skeleton className="h-8 w-24 shrink-0" />
-                <Skeleton className="h-8 w-24 shrink-0" />
-                <Skeleton className="h-8 w-24 shrink-0" />
-              </div>
-            </div>
-            <Skeleton className="h-10 w-full" />
-          </div>
-          <div>
-            <Skeleton className="mb-4 h-6 w-full" />
+        <div className="flex min-h-screen flex-col px-2.5 pt-2">
+          <div className="flex flex-1 flex-col space-y-6">
             <div className="grid grid-cols-2 gap-2">
               {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
                 <ProductSkeleton key={`skeleton-mobile-${index}`} />
               ))}
             </div>
+          </div>
+          <div className="sticky bottom-0 z-20 my-5 flex justify-center text-bgColor mix-blend-exclusion">
+            <Skeleton className="h-6 w-32" />
           </div>
         </div>
       </div>
