@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
@@ -33,6 +34,7 @@ export function DesktopNavigationMenu({
 }) {
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   const pathname = usePathname();
   const announceTranslation = dictionary?.announce?.translations?.find(
@@ -67,7 +69,9 @@ export function DesktopNavigationMenu({
     <NavigationMenu.Root
       className={cn("w-full", className)}
       onValueChange={(value) => {
-        onNavOpenChange(!!value);
+        const isOpen = !!value;
+        setIsNavOpen(isOpen);
+        onNavOpenChange(isOpen);
       }}
     >
       <NavigationMenu.List className="flex items-center gap-4">
@@ -126,6 +130,8 @@ export function DesktopNavigationMenu({
 
       <div
         className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
+          "border-x border-b border-textInactiveColor":
+            isNavOpen && isBigMenuEnabled,
           "top-16": open && showAnnounce,
           "border-none": !isBigMenuEnabled,
         })}
