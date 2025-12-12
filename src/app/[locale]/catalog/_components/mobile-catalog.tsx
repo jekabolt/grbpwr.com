@@ -33,21 +33,21 @@ export function MobileCatalog({
   );
 
   return (
-    <div className="flex flex-col space-y-6 px-2.5 pb-10 pt-2">
+    <div className="flex min-h-screen flex-col px-2.5 pt-2">
       {total > 0 ? (
-        <>
+        <div className="flex flex-1 flex-col space-y-6">
           <Text className="w-full lowercase">{categoryDescription}</Text>
           <InfinityScrollCatalog
             firstPageItems={firstPageItems}
             total={total}
           />
-        </>
+        </div>
       ) : (
-        <div className="h-screen w-full">
+        <div className="flex h-screen w-full items-center justify-center">
           <EmptyCatalog />
         </div>
       )}
-      <div className="sticky bottom-0 z-20 mt-auto flex justify-center text-bgColor mix-blend-exclusion">
+      <div className="sticky bottom-0 z-20 my-5 flex justify-center text-bgColor mix-blend-exclusion">
         <MobileFilter />
       </div>
     </div>
