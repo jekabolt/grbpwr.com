@@ -10,7 +10,7 @@ export function Banner({
   return (
     <div
       className={cn(
-        "fixed inset-x-2 top-2 z-30 border border-textInactiveColor bg-bgColor text-textColor lg:bottom-2 lg:left-auto lg:top-auto lg:w-96",
+        "fixed inset-x-2.5 bottom-2 z-30 border border-textInactiveColor bg-bgColor text-textColor lg:bottom-2 lg:left-auto lg:top-auto lg:w-96",
         className,
       )}
     >

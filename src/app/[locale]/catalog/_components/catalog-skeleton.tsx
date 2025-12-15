@@ -6,7 +6,7 @@ export function CatalogSkeleton() {
   return (
     <>
       <div className="block lg:hidden">
-        <div className="flex min-h-screen flex-col px-2.5 pt-2">
+        <div className="flex min-h-screen flex-col px-2.5 pt-16">
           <div className="flex flex-1 flex-col space-y-6">
             <div className="grid grid-cols-2 gap-2">
               {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (

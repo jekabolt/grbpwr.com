@@ -58,12 +58,16 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
   }, [scrollDirection, isAtTop, isMobile]);
 
   useEffect(() => {
-    if (scrollDirection === "down") {
-      setIsAnnounceVisible(false);
-    } else if (scrollDirection === "up" || isAtTop) {
+    if (isMobile) {
       setIsAnnounceVisible(true);
+    } else {
+      if (scrollDirection === "down") {
+        setIsAnnounceVisible(false);
+      } else if (scrollDirection === "up" || isAtTop) {
+        setIsAnnounceVisible(true);
+      }
     }
-  }, [scrollDirection, isAtTop]);
+  }, [scrollDirection, isAtTop, isMobile]);
 
   return (
     <>

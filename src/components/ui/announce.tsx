@@ -25,7 +25,7 @@ export function Announce({
   return (
     <div
       className={cn(
-        "fixed inset-x-0 top-0 z-30 flex h-8 w-full items-center justify-between bg-bgColor px-2.5 text-textColor lg:px-0",
+        "fixed inset-x-2.5 bottom-2 z-30 flex h-12 items-center justify-between bg-bgColor px-2.5 text-textColor lg:inset-x-0 lg:top-0 lg:h-8 lg:w-full lg:px-0",
         "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
         {
           "translate-y-0": isVisible,

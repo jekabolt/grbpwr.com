@@ -9,7 +9,7 @@ export default function AftersaleServicesPage() {
   const t = useTranslations("aftersale-services");
   return (
     <FlexibleLayout>
-      <div className="h-full space-y-12 px-2.5 pt-8 lg:space-y-16 lg:px-28 lg:pt-24">
+      <div className="h-full space-y-12 px-2.5 pt-24 lg:space-y-16 lg:px-28">
         <Text variant="uppercase">{t("aftersale services")}</Text>
         <AftersaleForm />
       </div>

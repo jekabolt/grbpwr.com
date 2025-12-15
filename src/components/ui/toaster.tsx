@@ -11,7 +11,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <Toast.Provider duration={4000}>
       {children}
-      <Toast.Viewport className="not-prose fixed inset-x-2.5 top-2.5 z-50 lg:top-2" />
+      <Toast.Viewport className="not-prose fixed inset-x-2.5 top-2 z-50 lg:top-2" />
     </Toast.Provider>
   );
 }
@@ -34,7 +34,7 @@ export function EmailToaster({
         {children}
       </Button>
       <Toast.Root
-        className="flex h-8 items-center justify-center bg-highlightColor"
+        className="flex h-12 items-center justify-center bg-highlightColor lg:h-8"
         open={open}
         onOpenChange={setOpen}
       >

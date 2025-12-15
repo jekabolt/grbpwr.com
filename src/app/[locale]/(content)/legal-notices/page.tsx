@@ -46,7 +46,7 @@ export default function LegalNotices() {
 
   return (
     <FlexibleLayout>
-      <div className="flex h-full flex-col space-y-20 px-2.5 pb-20 pt-10 lg:flex-row lg:justify-between lg:py-24">
+      <div className="flex h-full flex-col space-y-20 px-2.5 pb-20 pt-24 lg:flex-row lg:justify-between lg:py-24">
         <div className="flex w-full flex-col lg:w-1/2 lg:pl-8 lg:pt-56">
           <div className="space-y-10">
             <Text className="uppercase">{t("legal notices")}</Text>
