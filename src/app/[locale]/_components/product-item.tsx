@@ -77,7 +77,7 @@ export function ProductItem({
         onMouseDown={() => handleSelectItemEvent(product)}
         className={cn("group flex h-full w-full flex-col", className)}
       >
-        <div className="relative border border-blue-500">
+        <div className="relative">
           <Image
             src={
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
@@ -92,12 +92,9 @@ export function ProductItem({
           />
         </div>
         <div
-          className={cn(
-            "flex w-full flex-col gap-2 border border-red-500 pt-2",
-            {
-              hidden: !isInfoVisible,
-            },
-          )}
+          className={cn("flex w-full flex-col gap-2 pt-2", {
+            hidden: !isInfoVisible,
+          })}
         >
           <Text
             variant="undrleineWithColors"

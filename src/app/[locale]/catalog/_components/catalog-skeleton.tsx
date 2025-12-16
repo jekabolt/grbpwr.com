@@ -1,6 +1,12 @@
 "use client";
 
-import { CATALOG_LIMIT, TOP_CATEGORIES } from "@/constants";
+import { useMemo } from "react";
+import {
+  CATALOG_LIMIT,
+  FIT_OPTIONS,
+  PLURIAL_SINGLE_CATEGORY_MAP,
+  TOP_CATEGORIES,
+} from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
@@ -53,7 +59,7 @@ export function CatalogSkeleton() {
         </div>
       </div>
       <div className="hidden flex-col gap-6 px-7 pt-24 lg:flex">
-        <div className="sticky top-20 z-10 flex items-start justify-between border border-red-500 text-bgColor mix-blend-exclusion">
+        <div className="sticky top-20 z-10 flex items-start justify-between text-bgColor mix-blend-exclusion">
           <div className="flex items-center gap-2">
             {TOP_CATEGORIES.map(({ key, label }, index) => {
               const translated = t(key);
@@ -75,7 +81,7 @@ export function CatalogSkeleton() {
         </div>
         <div className="z-50 w-full" />
         <div className="mix-blend-normal">
-          <div className="border border-blue-500">
+          <div>
             <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16">
               {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
                 <ProductSkeleton key={`skeleton-desktop-${index}`} />
@@ -89,11 +95,42 @@ export function CatalogSkeleton() {
 }
 
 export function ProductSkeleton() {
+  const t = useTranslations("categories");
+  const scrambledPrice = useScrambleText("", undefined, {
+    scramblePrice: true,
+  });
+
+  // Generate array of translated categories
+  const categoryOptions = useMemo(() => {
+    return TOP_CATEGORIES.map(({ key }) => {
+      const categoryName = key.toLowerCase();
+      const singularCategory =
+        PLURIAL_SINGLE_CATEGORY_MAP[categoryName] || key || "";
+      return singularCategory ? t(singularCategory.toLowerCase()) : "";
+    }).filter(Boolean);
+  }, [t]);
+
+  // Scramble fit continuously
+  const scrambledFit = useScrambleText("", undefined, {
+    randomizeFrom: [...FIT_OPTIONS],
+    randomizeInterval: 3000, // Slowed down to 3 seconds for testing
+    continuous: true,
+  });
+
+  // Scramble category continuously
+  const scrambledCategory = useScrambleText("", undefined, {
+    randomizeFrom: categoryOptions,
+    randomizeInterval: 3000, // Slowed down to 3 seconds for testing
+    continuous: true,
+  });
+
+  const productName = `${scrambledFit} ${scrambledCategory}`;
+
   return (
     <div className="flex flex-col gap-2">
       <Skeleton className="aspect-[4/5] w-full" />
-      <ScrambleLabel length={12} />
-      <ScrambleLabel length={6} />
+      <Text className="text-highlightColor">{productName}</Text>
+      <Text>{scrambledPrice}</Text>
     </div>
   );
 }

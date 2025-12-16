@@ -573,3 +573,12 @@ export const TOP_CATEGORIES = [
   { key: "bags", label: "bags" },
 ] as const;
 
+export const FIT_OPTIONS = [
+  "regular",
+  "slim",
+  "loose",
+  "relaxed",
+  "skinny",
+  "cropped",
+  "tailored",
+] as const;

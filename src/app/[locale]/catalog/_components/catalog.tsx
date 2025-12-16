@@ -54,7 +54,7 @@ export default function Catalog({
         />
       </div>
       <div className="hidden flex-col gap-6 px-7 pt-24 lg:flex">
-        <div className="sticky top-20 z-10 flex items-start justify-between border border-red-500 text-bgColor mix-blend-exclusion">
+        <div className="sticky top-20 z-10 flex items-start justify-between text-bgColor mix-blend-exclusion">
           <Categories />
           <Button className="flex w-auto uppercase" onClick={toggleModal}>
             {t("filter")} +
@@ -62,7 +62,7 @@ export default function Catalog({
         </div>
         <Filter isModalOpen={isModalOpen} toggleModal={toggleModal} />
         {total > 0 ? (
-          <div className="border border-blue-500 mix-blend-normal">
+          <div className="mix-blend-normal">
             <Text className="w-2/3 lowercase">{categoryDescription}</Text>
             <InfinityScrollCatalog
               firstPageItems={firstPageItems}
