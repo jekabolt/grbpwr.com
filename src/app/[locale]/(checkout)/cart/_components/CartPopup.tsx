@@ -117,7 +117,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
       )}
       <div className="hidden lg:block">
         {isOpen && (
-          <div className="blackTheme fixed right-0 top-0 z-30 h-screen w-[500px] bg-bgColor p-2.5 text-textColor">
+          <div className="fixed inset-y-2 right-2 z-30 w-[500px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor">
             <div className="flex h-full flex-col gap-y-6">
               <div className="flex items-center justify-between">
                 <Text variant="uppercase">{`${t("shopping cart")} ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>

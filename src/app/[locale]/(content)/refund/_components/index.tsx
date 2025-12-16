@@ -119,7 +119,7 @@ export function RefundForm() {
               type="submit"
               variant="main"
               size="lg"
-              disabled={!form.formState.isValid}
+              disabled={form.formState.isSubmitting}
               className="uppercase lg:ml-14"
             >
               {t("submit")}

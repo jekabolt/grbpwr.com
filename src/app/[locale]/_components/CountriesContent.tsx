@@ -59,7 +59,21 @@ export function CountriesContent({ className }: { className?: string }) {
               <div className="space-y-2.5">
                 <Text className="uppercase">{t("language")}</Text>
                 <RadioGroup
-                  items={languagesForCurrentCountry}
+                  items={languagesForCurrentCountry.map((item, index) => {
+                    const isSelected =
+                      item.value === LANGUAGE_ID_TO_LOCALE[languageId];
+                    const borderColor = isSelected
+                      ? "border-textColor"
+                      : "border-textInactiveColor";
+                    return {
+                      ...item,
+                      className: cn(
+                        item.className,
+                        index === 0 && `border ${borderColor}`,
+                        index === 1 && `border-x border-b ${borderColor}`,
+                      ),
+                    };
+                  })}
                   name="language-selector"
                   value={LANGUAGE_ID_TO_LOCALE[languageId]}
                   onValueChange={(val: string) => handleChangeLocaleOnly(val)}

@@ -26,6 +26,9 @@ interface CatalogContentProps {
 }
 
 export async function CatalogContent(props: CatalogContentProps) {
+  // Small delay to show skeleton
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   const { hero, dictionary } = await serviceClient.GetHero({});
 
   const searchParams = await props.searchParams;
@@ -56,7 +59,7 @@ export async function CatalogContent(props: CatalogContentProps) {
   });
 
   return (
-    <FlexibleLayout headerType="catalog">
+    <FlexibleLayout className="pt-16 lg:pt-0" headerType="catalog">
       <Catalog
         total={response.total || 0}
         firstPageItems={response.products || []}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
@@ -33,6 +34,7 @@ export function DesktopNavigationMenu({
 }) {
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   const pathname = usePathname();
   const announceTranslation = dictionary?.announce?.translations?.find(
@@ -67,16 +69,18 @@ export function DesktopNavigationMenu({
     <NavigationMenu.Root
       className={cn("w-full", className)}
       onValueChange={(value) => {
-        onNavOpenChange(!!value);
+        const isOpen = !!value;
+        setIsNavOpen(isOpen);
+        onNavOpenChange(isOpen);
       }}
     >
-      <NavigationMenu.List className="flex items-center gap-4">
-        {genderNavItems.map(({ gender, href, isActive }) => (
+      <NavigationMenu.List className="flex items-center">
+        {genderNavItems.map(({ gender, href, isActive }, index) => (
           <NavigationMenu.Item key={gender}>
             <NavigationMenu.Trigger
               className={cn(
-                "flex items-center text-textBaseSize data-[state=open]:underline",
-                { underline: isActive },
+                "flex items-center px-2 text-textBaseSize data-[state=open]:underline",
+                { underline: isActive, "pl-0": index === 0 },
               )}
             >
               <Link href={href} className="flex items-center">
@@ -84,7 +88,7 @@ export function DesktopNavigationMenu({
               </Link>
             </NavigationMenu.Trigger>
             {isBigMenuEnabled && (
-              <NavigationMenu.Content className="blackTheme absolute left-0 top-0 min-h-56 w-full bg-bgColor text-textColor">
+              <NavigationMenu.Content className="absolute left-0 top-0 h-56 w-full bg-bgColor text-textColor">
                 <LinksGroup
                   gender={gender}
                   links={processedCategories.map((item) => ({
@@ -103,7 +107,7 @@ export function DesktopNavigationMenu({
             <Link
               href={`/catalog/objects`}
               className={cn(
-                "flex items-center text-textBaseSize underline-offset-2 hover:underline",
+                "flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline",
                 { underline: isOnObjectsPage },
               )}
             >
@@ -116,7 +120,7 @@ export function DesktopNavigationMenu({
           <Button asChild>
             <Link
               href="/timeline"
-              className="flex items-center text-textBaseSize underline-offset-2 hover:underline"
+              className="flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline"
             >
               {t("timeline")}
             </Link>
@@ -126,6 +130,8 @@ export function DesktopNavigationMenu({
 
       <div
         className={cn("fixed inset-x-2.5 top-12 flex justify-center", {
+          "border-x border-b border-textInactiveColor":
+            isNavOpen && isBigMenuEnabled,
           "top-16": open && showAnnounce,
           "border-none": !isBigMenuEnabled,
         })}

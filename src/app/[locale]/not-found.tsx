@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
-// export const dynamic = "force-static";
+export const dynamic = "force-static";
 
 export const metadata = generateCommonMetadata({
   title: "page not found".toUpperCase(),

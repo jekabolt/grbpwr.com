@@ -114,10 +114,7 @@ export function MobileNavCart({
         </Button>
         <DialogPrimitives.Portal>
           <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen w-screen bg-overlay" />
-          <DialogPrimitives.Content
-            className="blackTheme fixed inset-x-2.5 bottom-2 z-50 flex max-h-[calc(100vh-5px)] flex-col overflow-hidden bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden"
-            style={{ top: "auto" }}
-          >
+          <DialogPrimitives.Content className="fixed inset-x-2.5 bottom-auto top-2 z-50 flex max-h-[calc(100vh-5px)] flex-col overflow-hidden bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden">
             <DialogPrimitives.Title className="sr-only">
               grbpwr mobile menu
             </DialogPrimitives.Title>
@@ -155,7 +152,7 @@ export function MobileNavCart({
                   </div>
                 </>
               ) : (
-                <div className="flex flex-1 items-center justify-center">
+                <div className="flex h-[33.333vh] items-center justify-center">
                   <Text variant="uppercase">{tCart("empty")}</Text>
                 </div>
               )}

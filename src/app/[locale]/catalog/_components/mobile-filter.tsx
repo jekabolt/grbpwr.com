@@ -2,7 +2,6 @@ import { useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
@@ -48,12 +47,17 @@ export function MobileFilter() {
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
-      <DialogPrimitives.Trigger asChild className="w-full text-right">
-        <Button className="uppercase">{t("filter")} +</Button>
+      <DialogPrimitives.Trigger
+        asChild
+        className="w-auto px-9 pt-12 text-center"
+      >
+        <Button className="uppercase">
+          {t("filter")} {total > 0 ? `[${total}]` : ""}
+        </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="blackTheme fixed inset-x-2.5 bottom-2 top-2.5 z-50 bg-bgColor p-2.5 text-textColor lg:hidden">
+        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-50 border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
           </DialogPrimitives.Title>
@@ -66,9 +70,7 @@ export function MobileFilter() {
             </DialogPrimitives.Close>
             <div className="mt-10 h-full space-y-10 overflow-y-scroll">
               <div className="space-y-6">
-                <Text variant="uppercase" className="text-textInactiveColor">
-                  {t("sort by")}
-                </Text>
+                <Text variant="uppercase">{t("sort by")}</Text>
                 <Sort />
               </div>
               <Collection />
@@ -76,12 +78,11 @@ export function MobileFilter() {
             </div>
             <div className="flex items-center justify-end gap-2 bg-bgColor">
               <Button
-                className={cn("hidden w-1/2 uppercase", {
-                  block: hasActiveFilters,
-                })}
+                className="w-1/2 uppercase"
                 size="lg"
                 variant="simpleReverseWithBorder"
                 onClick={handleClearAll}
+                disabled={!hasActiveFilters}
               >
                 {t("clear all")}
               </Button>
