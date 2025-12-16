@@ -89,6 +89,8 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
             "lg:top-8": open && showAnnounce && isAnnounceVisible,
             "pointer-events-auto translate-y-0": isVisible,
             "pointer-events-none -translate-y-[120%]": !isVisible,
+            "bg-transparent text-bgColor mix-blend-exclusion":
+              isAtTop && isMobile,
             "mix-blend-hard-light": isNavOpen && isAtTop && showAnnounce,
             "border-none": isAtTop && showAnnounce && !isNavOpen,
             "lg:bg-transparent lg:text-bgColor lg:mix-blend-exclusion":
