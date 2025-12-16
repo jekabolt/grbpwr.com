@@ -23,9 +23,9 @@ interface CatalogPageProps {
   }>;
 }
 
-export async function generateStaticParams() {
-  return [{ params: [] }, { params: ["men"] }, { params: ["women"] }];
-}
+// export async function generateStaticParams() {
+//   return [{ params: [] }, { params: ["men"] }, { params: ["women"] }];
+// }
 
 export const dynamic = "force-static";
 export const dynamicParams = true;
