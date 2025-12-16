@@ -82,7 +82,7 @@ export function CatalogSkeleton() {
         <div className="z-50 w-full" />
         <div className="mix-blend-normal">
           <div>
-            <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16">
+            <div className="grid lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16">
               {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
                 <ProductSkeleton key={`skeleton-desktop-${index}`} />
               ))}
@@ -126,13 +126,20 @@ export function ProductSkeleton() {
     continuous: true,
   });
 
-  const productName = `${scrambledFit}_${scrambledCategory}`;
+  const productName = `${scrambledFit} ${scrambledCategory}`;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col">
       <Skeleton className="aspect-[4/5] w-full" />
-      <Text className="text-highlightColor">{productName}</Text>
-      <Text>{scrambledPrice}</Text>
+      <div className="flex flex-col gap-2 pt-2">
+        <Text
+          variant="undrleineWithColors"
+          className="leading-none text-highlightColor"
+        >
+          {productName}
+        </Text>
+        <Text>{scrambledPrice}</Text>
+      </div>
     </div>
   );
 }
