@@ -88,7 +88,7 @@ export function CatalogSkeleton() {
   );
 }
 
-function ProductSkeleton() {
+export function ProductSkeleton() {
   return (
     <div className="flex flex-col gap-2">
       <Skeleton className="aspect-[4/5] w-full" />
