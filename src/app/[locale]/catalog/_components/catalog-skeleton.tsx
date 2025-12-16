@@ -113,18 +113,20 @@ export function ProductSkeleton() {
   // Scramble fit continuously
   const scrambledFit = useScrambleText("", undefined, {
     randomizeFrom: [...FIT_OPTIONS],
-    randomizeInterval: 3000, // Slowed down to 3 seconds for testing
+    randomizeInterval: 3000, // How often to change the text (3 seconds)
+    animationSpeed: 80, // Speed of scrambling animation (50ms = slower, 10ms = faster)
     continuous: true,
   });
 
   // Scramble category continuously
   const scrambledCategory = useScrambleText("", undefined, {
     randomizeFrom: categoryOptions,
-    randomizeInterval: 3000, // Slowed down to 3 seconds for testing
+    randomizeInterval: 3000, // How often to change the text (3 seconds)
+    animationSpeed: 80, // Speed of scrambling animation (50ms = slower, 10ms = faster)
     continuous: true,
   });
 
-  const productName = `${scrambledFit} ${scrambledCategory}`;
+  const productName = `${scrambledFit}_${scrambledCategory}`;
 
   return (
     <div className="flex flex-col gap-2">

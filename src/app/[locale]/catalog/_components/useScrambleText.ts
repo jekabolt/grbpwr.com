@@ -9,6 +9,7 @@ type UseScrambleOptions = {
     scramblePrice?: boolean;
     randomizeFrom?: string[];
     randomizeInterval?: number;
+    animationSpeed?: number; // Speed of scrambling animation in ms (lower = faster)
 };
 
 export function useScrambleText(
@@ -23,12 +24,13 @@ export function useScrambleText(
         continuous = false,
         scramblePrice = false,
         randomizeFrom,
-        randomizeInterval = 500
+        randomizeInterval = 500,
+        animationSpeed = 50 // Default 10ms (100 updates per second)
     } = options;
 
     const allCurrencySymbols = Object.values(currencySymbols).join("");
     const chars = `ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*${allCurrencySymbols}`;
-    const letters = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`;
+    const letters = `abcdefghijklmnopqrstuvwxyz`;
 
     const getRandomChar = useCallback((charSet = chars) =>
         charSet[Math.floor(Math.random() * charSet.length)],
@@ -104,7 +106,7 @@ export function useScrambleText(
                         char === " " ? " " : Math.random() < 0.3 ? char : scrambleChar(char, i, true)
                     ).join("")
                 );
-            }, 10);
+            }, animationSpeed);
             return () => clearInterval(interval);
         }
 
@@ -129,12 +131,12 @@ export function useScrambleText(
                         return Math.random() < 0.3 ? char : getRandomLetter();
                     }).join("")
                 );
-            }, 10);
+            }, animationSpeed);
             return () => clearInterval(interval);
         }
 
         let frame = 0;
-        const totalFrames = duration / 10;
+        const totalFrames = duration / animationSpeed;
         const interval = setInterval(() => {
             const revealIndex = reveal ? Math.floor((frame / totalFrames) * baseText.length) : 0;
             setDisplayText(scramble(baseText, revealIndex));
@@ -143,10 +145,10 @@ export function useScrambleText(
                 setDisplayText(baseText);
                 clearInterval(interval);
             }
-        }, 10);
+        }, animationSpeed);
 
         return () => clearInterval(interval);
-    }, [baseText, duration, reveal, continuous, scramblePrice, basePrice, getRandomChar, getRandomLetter, scrambleChar, generatePriceBase]);
+    }, [baseText, duration, reveal, continuous, scramblePrice, basePrice, animationSpeed, getRandomChar, getRandomLetter, scrambleChar, generatePriceBase]);
 
     return displayText;
 }
