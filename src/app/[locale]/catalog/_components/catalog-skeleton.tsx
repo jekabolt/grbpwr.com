@@ -1,19 +1,36 @@
 "use client";
 
-import { CATALOG_LIMIT } from "@/constants";
+import { CATALOG_LIMIT, TOP_CATEGORIES } from "@/constants";
+import { useTranslations } from "next-intl";
 
+import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Text } from "@/components/ui/text";
 
 import { useScrambleText } from "./useScrambleText";
 
-function ScrambleLabel({ text = "product name" }: { text?: string }) {
-  const scrambled = useScrambleText(text, 1000);
+function ScrambleLabel({
+  text,
+  className,
+  length,
+}: {
+  text?: string;
+  className?: string;
+  length?: number;
+}) {
+  const scrambled = useScrambleText(text, undefined, {
+    randomOnEmpty: true,
+    length: length ?? 12,
+    reveal: !!text,
+  });
 
-  return <Text className="tracking-[0.2em]">{scrambled}</Text>;
+  return <Text className={cn("", className)}>{scrambled}</Text>;
 }
 
 export function CatalogSkeleton() {
+  const t = useTranslations("categories");
+  const tCatalog = useTranslations("catalog");
+
   return (
     <>
       <div className="block lg:hidden">
@@ -26,23 +43,39 @@ export function CatalogSkeleton() {
             </div>
           </div>
           <div className="sticky bottom-0 z-20 my-5 flex justify-center text-bgColor mix-blend-exclusion">
-            <Skeleton className="h-6 w-32" />
+            <div className="bg-fgColor rounded-full px-4 py-2 text-bgColor">
+              <ScrambleLabel
+                className="uppercase"
+                text={`${tCatalog("filter")} +`}
+              />
+            </div>
           </div>
         </div>
       </div>
       <div className="hidden flex-col gap-6 px-7 pt-24 lg:flex">
         <div className="sticky top-20 z-10 flex items-start justify-between border border-red-500 text-bgColor mix-blend-exclusion">
-          <div className="flex gap-4">
-            {Array.from({ length: 8 }).map((_, id) => (
-              <Skeleton key={`skeleton-${id}`} className="h-5 w-24" />
-            ))}
+          <div className="flex items-center gap-2">
+            {TOP_CATEGORIES.map(({ key, label }, index) => {
+              const translated = t(key);
+              const display =
+                key === "loungewear_sleepwear" ? label : translated;
+
+              return (
+                <div className="flex items-center gap-2" key={key}>
+                  <ScrambleLabel text={display} className="uppercase" />
+                  {index < TOP_CATEGORIES.length - 1 && <Text>/</Text>}
+                </div>
+              );
+            })}
           </div>
-          <Skeleton className="h-5 w-20" />
+          <ScrambleLabel
+            className="uppercase"
+            text={`${tCatalog("filter")} +`}
+          />
         </div>
         <div className="z-50 w-full" />
         <div className="mix-blend-normal">
           <div className="border border-blue-500">
-            <Skeleton className="mb-6 h-4 w-2/3" />
             <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16">
               {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
                 <ProductSkeleton key={`skeleton-desktop-${index}`} />
@@ -59,8 +92,8 @@ function ProductSkeleton() {
   return (
     <div className="flex flex-col gap-2">
       <Skeleton className="aspect-[4/5] w-full" />
-      <ScrambleLabel text="product name" />
-      <ScrambleLabel text="price" />
+      <ScrambleLabel length={12} />
+      <ScrambleLabel length={6} />
     </div>
   );
 }
