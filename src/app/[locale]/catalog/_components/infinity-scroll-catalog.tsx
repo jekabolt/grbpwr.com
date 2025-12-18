@@ -112,14 +112,12 @@ export function InfinityScrollCatalog({
   const isInitialLoading =
     (!data || data.pages.length === 0) && (isFetching || isLoading);
 
-  // Track analytics when filters change
   useEffect(() => {
     if (items.length > 0 && items.length === firstPageItems.length) {
       handleViewItemListEvent(firstPageItems);
     }
   }, [queryKey, firstPageItems, items.length, handleViewItemListEvent]);
 
-  // Load more when in view
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
