@@ -57,7 +57,8 @@
       "low to high": "安い順",
       "high to low": "高い順",
       "sale": "セール"
-    }
+    },
+    "sold out": "売り切れ"
   },
   "product": {
     "model is": "モデルは",
@@ -610,5 +611,14 @@
     "wedge": "ウェッジ",
     "flat": "フラット",
     "heeled": "ヒール付き"
+  },
+  "fit": {
+    "regular": "レギュラー",
+    "slim": "スリム",
+    "loose": "ルーズ",
+    "relaxed": "リラックス",
+    "skinny": "スキニー",
+    "cropped": "クロップド",
+    "tailored": "テーラード"
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { FIT_OPTIONS, TOP_CATEGORIES, currencySymbols } from "@/constants";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 const SCRAMBLE_INTERVAL_MS = 40;
@@ -10,12 +11,6 @@ const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 function getRandomItem<T>(array: readonly T[]): T {
     return array[Math.floor(Math.random() * array.length)];
-}
-
-function createRandomPhrase() {
-    const fit = getRandomItem(FIT_OPTIONS);
-    const category = getRandomItem(TOP_CATEGORIES).label;
-    return `${fit} ${category}`;
 }
 
 function createRandomCurrencyPhrase() {
@@ -91,6 +86,20 @@ function useAutoScrambleText(generatePhrase: () => string) {
 
 
 export function useScrambleText() {
+    const t = useTranslations("categories");
+    const tFit = useTranslations("fit");
+
+    const createRandomPhrase = () => {
+        const fit = getRandomItem(FIT_OPTIONS);
+        const category = getRandomItem(TOP_CATEGORIES);
+        const translatedFit = tFit(fit);
+        const translatedCategory =
+            category.key === "loungewear_sleepwear"
+                ? category.label
+                : t(category.key);
+        return `${translatedFit} ${translatedCategory}`;
+    };
+
     return useAutoScrambleText(createRandomPhrase);
 }
 

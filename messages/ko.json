@@ -57,7 +57,8 @@
       "low to high": "낮은 순",
       "high to low": "높은 순",
       "sale": "세일"
-    }
+    },
+    "sold out": "품절"
   },
   "product": {
     "model is": "모델은",
@@ -610,5 +611,14 @@
     "wedge": "웨지",
     "flat": "플랫",
     "heeled": "힐있는"
+  },
+  "fit": {
+    "regular": "레귤러핏",
+    "slim": "슬림핏",
+    "loose": "루즈핏",
+    "relaxed": "릴랙스핏",
+    "skinny": "스키니핏",
+    "cropped": "크롭핏",
+    "tailored": "테일러드핏"
   }
 }

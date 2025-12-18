@@ -57,7 +57,8 @@
       "low to high": "low to high",
       "high to low": "high to low",
       "sale": "sale"
-    }
+    },
+    "sold out": "sold out"
   },
   "product": {
     "model is": "model is",
@@ -610,5 +611,14 @@
     "wedge": "wedge",
     "flat": "flat",
     "heeled": "heeled"
+  },
+  "fit": {
+    "regular": "regular",
+    "slim": "slim",
+    "loose": "loose",
+    "relaxed": "relaxed",
+    "skinny": "skinny",
+    "cropped": "cropped",
+    "tailored": "tailored"
   }
 }

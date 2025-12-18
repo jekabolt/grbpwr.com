@@ -25,7 +25,9 @@ export function ProductItem({
   className: string;
   isInfoVisible?: boolean;
 }) {
+  const tCatalog = useTranslations("catalog");
   const t = useTranslations("categories");
+  const tFit = useTranslations("fit");
   const { dictionary } = useDataContext();
   const { selectedCurrency } = useCurrency((state) => state);
   const { handleSelectItemEvent } = useAnalytics();
@@ -36,7 +38,7 @@ export function ProductItem({
   const isSaleApplied = salePercentage && salePercentage !== "0";
   const isSoldOut = product.soldOut;
   const preorder = productBody?.preorder;
-  const fit = productBody?.fit || "";
+  const fit = productBody?.fit ? tFit(productBody.fit) : "";
   const topCategory = getTopCategoryName(
     dictionary?.categories || [],
     productBody?.topCategoryId || 0,
@@ -54,7 +56,7 @@ export function ProductItem({
   const translatedCategory = singularCategory
     ? t(singularCategory.toLowerCase())
     : "";
-  const name = `${fit} ${translatedCategory}`;
+  const name = fit ? `${fit} ${translatedCategory}` : translatedCategory;
 
   const productPrice =
     product.prices?.find(
@@ -104,7 +106,7 @@ export function ProductItem({
           </Text>
           <div className="flex gap-1 leading-none">
             {isSoldOut ? (
-              <Text>sold out</Text>
+              <Text>{tCatalog("sold out")}</Text>
             ) : (
               <>
                 <Text

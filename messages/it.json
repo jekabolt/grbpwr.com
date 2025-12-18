@@ -57,7 +57,8 @@
       "low to high": "dal basso all'alto",
       "high to low": "dall'alto al basso",
       "sale": "saldi"
-    }
+    },
+    "sold out": "esaurito"
   },
   "product": {
     "model is": "modello è",
@@ -611,5 +612,14 @@
     "wedge": "zeppa",
     "flat": "piatti",
     "heeled": "con_tacco"
+  },
+  "fit": {
+    "regular": "regolare",
+    "slim": "slim",
+    "loose": "largo",
+    "relaxed": "rilassato",
+    "skinny": "aderente",
+    "cropped": "corto",
+    "tailored": "sartoriale"
   }
 }
