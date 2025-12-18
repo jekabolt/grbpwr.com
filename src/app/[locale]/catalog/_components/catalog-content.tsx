@@ -26,7 +26,6 @@ interface CatalogContentProps {
 }
 
 export async function CatalogContent(props: CatalogContentProps) {
-  // await new Promise((resolve) => setTimeout(resolve, 6000));
   const { hero, dictionary } = await serviceClient.GetHero({});
 
   const searchParams = await props.searchParams;

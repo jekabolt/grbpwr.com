@@ -2,7 +2,7 @@
 
 import { FIT_OPTIONS, TOP_CATEGORIES, currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const SCRAMBLE_INTERVAL_MS = 40;
 const WORD_CHANGE_INTERVAL_MS = 1200;
@@ -89,7 +89,7 @@ export function useScrambleText() {
     const t = useTranslations("categories");
     const tFit = useTranslations("fit");
 
-    const createRandomPhrase = () => {
+    const createRandomPhrase = useCallback(() => {
         const fit = getRandomItem(FIT_OPTIONS);
         const category = getRandomItem(TOP_CATEGORIES);
         const translatedFit = tFit(fit);
@@ -98,7 +98,7 @@ export function useScrambleText() {
                 ? category.label
                 : t(category.key);
         return `${translatedFit} ${translatedCategory}`;
-    };
+    }, [t, tFit]);
 
     return useAutoScrambleText(createRandomPhrase);
 }
