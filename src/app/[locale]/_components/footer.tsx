@@ -52,10 +52,17 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
       <div className="flex justify-center pt-16 lg:py-52">
         <div className="flex w-full flex-col gap-y-16 lg:w-auto lg:flex-row lg:gap-x-20">
           <div className="flex justify-center lg:justify-end">
+            {/* Mobile: iframe */}
+            <iframe
+              src="https://art.grbpwr.com"
+              className="h-40 w-40 border-0 lg:hidden"
+              title="Art"
+            />
+            {/* Desktop: logo */}
             {theme === "dark" ? (
-              <Logo className="aspect-square h-full w-40" />
+              <Logo className="hidden aspect-square h-full w-40 lg:block" />
             ) : (
-              <WhiteLogo className="aspect-square h-full w-40" />
+              <WhiteLogo className="hidden aspect-square h-full w-40 lg:block" />
             )}
           </div>
           <div className="w-full lg:w-[346px]">
