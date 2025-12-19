@@ -50,7 +50,11 @@ export function BottomSheet({
           mass: 0.1,
         }}
       >
-        <div className="border-b-none pointer-events-auto h-full space-y-6 overflow-y-scroll border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5">
+        <div
+          className={`border-b-none pointer-events-auto h-full space-y-6 border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5 ${
+            canScrollInside ? "overflow-y-scroll" : "touch-none overflow-hidden"
+          }`}
+        >
           {children}
         </div>
       </motion.div>
