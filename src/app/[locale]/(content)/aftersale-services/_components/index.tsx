@@ -159,7 +159,7 @@ function PersonalInfoForm() {
         placeholder={t("enter notes")}
         showCharCount
         maxLength={1500}
-        className="placeholder:text-textColor"
+        className="placeholder:uppercase placeholder:text-textInactiveColor"
       />
     </div>
   );

@@ -17,7 +17,8 @@
     "help": "hilfe",
     "aftersale services": "kundenservice",
     "faqs": "häufig gestellte fragen",
-    "country": "land"
+    "country": "land",
+    "returns": "rückgaben"
   },
   "countries-popup": {
     "change country": "land ändern",
@@ -448,9 +449,9 @@
     "email_copied": "e-mail kopiert"
   },
   "refund": {
-    "return status": "rücksendestatus",
+    "return order": "bestellung retournieren",
     "text": "sie finden Ihre Rücksendungsnummer in der Bestätigungs-E-Mail der Rücksendung. Wenn Sie kürzlich eine Rücksendung beantragt haben, beachten Sie bitte, dass es einige Minuten dauern kann, bis Ihre Anfrage bearbeitet und die Bestätigungs-E-Mail gesendet wird. Wenn Sie die Bestätigungs-E-Mail nicht sehen, überprüfen Sie bitte Ihren Spam-Ordner.",
-    "check your return status": "rücksendestatus prüfen",
+    "submit return": "rückgabe einreichen",
     "email": "E-MAIL*",
     "return reference": "RÜCKSENDE-REFERENZ*",
     "submit": "absenden",

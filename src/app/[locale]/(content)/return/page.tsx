@@ -11,7 +11,7 @@ export default function Refund() {
     <FlexibleLayout>
       <div className="h-full space-y-12 px-2.5 pt-24 lg:space-y-16 lg:px-28">
         <div className="space-y-9">
-          <Text variant="uppercase">{t("return status")}</Text>
+          <Text variant="uppercase">{t("return order")}</Text>
           <Text>{t("text")}</Text>
         </div>
         <RefundForm />

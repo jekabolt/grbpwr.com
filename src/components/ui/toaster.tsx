@@ -4,6 +4,7 @@ import { useState } from "react";
 import * as Toast from "@radix-ui/react-toast";
 import { useTranslations } from "next-intl";
 
+import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import { Text } from "./text";
 
@@ -30,7 +31,7 @@ export function EmailToaster({
   const tToaster = useTranslations("toaster");
   return (
     <>
-      <Button className={className} onClick={() => setOpen(true)}>
+      <Button className={cn("outline-none", className)} onClick={() => setOpen(true)}>
         {children}
       </Button>
       <Toast.Root

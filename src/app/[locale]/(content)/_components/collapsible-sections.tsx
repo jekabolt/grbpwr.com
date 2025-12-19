@@ -79,7 +79,7 @@ export function CollapsibleSections({
                 title={heading}
                 isOpen={openSection === index}
                 onToggle={() => toggleSection(index)}
-                clickableAreaClassName="w-full"
+                clickableAreaClassName="w-full h-16"
               >
                 <Text
                   component="span"

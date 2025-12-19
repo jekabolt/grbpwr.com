@@ -17,7 +17,8 @@
     "help": "aide",
     "aftersale services": "services après-vente",
     "faqs": "faqs",
-    "country": "pays"
+    "country": "pays",
+    "returns": "retours"
   },
   "countries-popup": {
     "change country": "changer de pays",
@@ -448,9 +449,9 @@
     "email_copied": "email copié"
   },
   "refund": {
-    "return status": "statut du retour",
+    "return order": "retourner la commande",
     "text": "vous trouverez votre numéro de retour dans l'e-mail de confirmation de retour. Si vous avez récemment demandé un retour, veuillez noter qu'il peut falloir quelques minutes pour traiter votre demande et envoyer l'e-mail de confirmation. Si vous ne voyez pas l'e-mail de confirmation, veuillez vérifier votre dossier de courrier indésirable.",
-    "check your return status": "vérifiez le statut de votre retour",
+    "submit return": "soumettre le retour",
     "email": "E-MAIL*",
     "return reference": "RÉFÉRENCE DE RETOUR*",
     "submit": "envoyer",

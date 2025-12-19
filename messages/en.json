@@ -17,7 +17,8 @@
     "help": "help",
     "aftersale services": "aftersale services",
     "faqs": "faqs",
-    "country": "country"
+    "country": "country",
+    "returns": "returns"
   },
   "countries-popup": {
     "change country": "change country",
@@ -448,9 +449,9 @@
     "email_copied": "e-mail copied"
   },
   "refund": {
-    "return status": "return status",
+    "return order": "return order",
     "text": "you will find your return number in your return confirmation email. If you have recently requested a return, please note that it may take a few minutes to process your request and send the confirmation email. if you do not see the confirmation email, please check your spam folder.",
-    "check your return status": "check your return status",
+    "submit return": "submit return",
     "email": "EMAIL*",
     "return reference": "RETURN REFERENCE*",
     "submit": "submit",
@@ -467,7 +468,7 @@
     "reason": "reason"
   },
   "unsubscribe": {
-    "title": "unsubscribing from list \"grbpwr\". by clicking unsubscribe, you’ll no longer receive marketing emails.",
+    "title": "unsubscribing from list \"grbpwr\". by clicking unsubscribe, you will no longer receive marketing emails.",
     "unsubscribe": "unsubscribe",
     "success": "you have been unsubscribed from the newsletter.",
     "error": "an error occurred. please try again."
