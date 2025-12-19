@@ -60,57 +60,64 @@ export function InfinityScrollCatalog({
     [languageId, gender, topCategory?.id, subCategory?.id, searchParamsObj],
   );
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery<GetProductsPagedResponse>({
-      queryKey,
-      queryFn: ({ pageParam }) =>
-        GetProductsPaged({
-          limit: CATALOG_LIMIT,
-          offset: pageParam as number,
-          ...getProductsPagedQueryParams(
-            {
-              gender,
-              topCategoryIds: topCategory?.id?.toString(),
-              subCategoryIds: subCategory?.id?.toString(),
-              ...searchParamsObj,
-            },
-            dictionary,
-          ),
-        }),
-      initialPageParam: 0,
-      getNextPageParam: (lastPage, allPages) => {
-        const totalFetched = allPages.reduce(
-          (acc, page) => acc + (page.products?.length || 0),
-          0,
-        );
-        return totalFetched < (lastPage.total || 0) ? totalFetched : undefined;
-      },
-      // Only use initialData when there are no filters (base route)
-      initialData: !hasFilters
-        ? {
-            pages: [{ products: firstPageItems, total }],
-            pageParams: [0],
-          }
-        : undefined,
-      // Cache behavior: Never refetch unless queryKey changes
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      staleTime: Infinity, // Data is fresh until queryKey changes
-      gcTime: Infinity, // Keep in cache forever
-    });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetching,
+    isLoading,
+  } = useInfiniteQuery<GetProductsPagedResponse>({
+    queryKey,
+    queryFn: ({ pageParam }) =>
+      GetProductsPaged({
+        limit: CATALOG_LIMIT,
+        offset: pageParam as number,
+        ...getProductsPagedQueryParams(
+          {
+            gender,
+            topCategoryIds: topCategory?.id?.toString(),
+            subCategoryIds: subCategory?.id?.toString(),
+            ...searchParamsObj,
+          },
+          dictionary,
+        ),
+      }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      const totalFetched = allPages.reduce(
+        (acc, page) => acc + (page.products?.length || 0),
+        0,
+      );
+      return totalFetched < (lastPage.total || 0) ? totalFetched : undefined;
+    },
+    // Only use initialData when there are no filters (base route)
+    initialData: !hasFilters
+      ? {
+          pages: [{ products: firstPageItems, total }],
+          pageParams: [0],
+        }
+      : undefined,
+    // Cache behavior: Never refetch unless queryKey changes
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: Infinity, // Data is fresh until queryKey changes
+    gcTime: Infinity, // Keep in cache forever
+  });
 
   const items = data?.pages.flatMap((page) => page.products || []) || [];
   const currentTotal = data?.pages[data.pages.length - 1]?.total || total;
 
-  // Track analytics when filters change
+  const isInitialLoading =
+    (!data || data.pages.length === 0) && (isFetching || isLoading);
+
   useEffect(() => {
     if (items.length > 0 && items.length === firstPageItems.length) {
       handleViewItemListEvent(firstPageItems);
     }
   }, [queryKey, firstPageItems, items.length, handleViewItemListEvent]);
 
-  // Load more when in view
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -121,7 +128,7 @@ export function InfinityScrollCatalog({
     <div>
       <ProductsGrid
         products={items}
-        isLoading={isFetchingNextPage}
+        isLoading={isFetchingNextPage || isInitialLoading}
         total={currentTotal}
       />
       {hasNextPage && !isFetchingNextPage && <div ref={ref} />}

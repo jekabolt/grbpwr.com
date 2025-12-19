@@ -156,11 +156,19 @@ function CategoryButton({
   link: { title: string; id: string };
 }) {
   const { dictionary } = useDataContext();
+  const tCategories = useTranslations("categories");
 
-  const translatedName = getTopCategoryName(
+  const categoryName = getTopCategoryName(
     dictionary?.categories || [],
     parseInt(link.id),
   );
+  const categoryKey =
+    categoryName === "loungewear_sleepwear"
+      ? "loungewear_sleepwear"
+      : categoryName?.toLowerCase() || link.title.toLowerCase();
+  const translatedName = categoryKey
+    ? tCategories(categoryKey)
+    : getCategoryDisplayName(link.title);
 
   return (
     <AnimatedButton

@@ -561,3 +561,24 @@ export const PLURIAL_SINGLE_CATEGORY_MAP: Record<string, string> = {
   backpacks: "backpack",
 };
 
+
+export const TOP_CATEGORIES = [
+  { key: "outerwear", label: "outerwear" },
+  { key: "tops", label: "tops" },
+  { key: "bottoms", label: "bottoms" },
+  { key: "dresses", label: "dresses" },
+  { key: "loungewear_sleepwear", label: "loungewear" },
+  { key: "accessories", label: "accessories" },
+  { key: "shoes", label: "shoes" },
+  { key: "bags", label: "bags" },
+] as const;
+
+export const FIT_OPTIONS = [
+  "regular",
+  "slim",
+  "loose",
+  "relaxed",
+  "skinny",
+  "cropped",
+  "tailored",
+] as const;

@@ -1,8 +1,7 @@
 import type { common_Product } from "@/api/proto-http/frontend";
 import { CATALOG_LIMIT } from "@/constants";
 
-import { ProductSkeleton } from "@/components/ui/product-skeleton";
-
+import { ProductSkeleton } from "../catalog/_components/catalog-skeleton";
 import { ProductItem } from "./product-item";
 
 export default function ProductsGridSection({

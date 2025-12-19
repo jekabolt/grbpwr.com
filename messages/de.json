@@ -57,7 +57,8 @@
       "low to high": "niedrig zu hoch",
       "high to low": "hoch zu niedrig",
       "sale": "sale"
-    }
+    },
+    "sold out": "ausverkauft"
   },
   "product": {
     "model is": "modell ist",
@@ -610,5 +611,14 @@
     "wedge": "keil",
     "flat": "flach",
     "heeled": "mit_absatz"
+  },
+  "fit": {
+    "regular": "normal",
+    "slim": "schmal",
+    "loose": "locker",
+    "relaxed": "entspannt",
+    "skinny": "eng",
+    "cropped": "verkürzt",
+    "tailored": "maßgeschneidert"
   }
 }

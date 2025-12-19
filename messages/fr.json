@@ -57,7 +57,8 @@
       "low to high": "croissant",
       "high to low": "décroissant",
       "sale": "soldes"
-    }
+    },
+    "sold out": "rupture de stock"
   },
   "product": {
     "model is": "modèle est",
@@ -610,5 +611,14 @@
     "wedge": "compensées",
     "flat": "plates",
     "heeled": "à_talons"
+  },
+  "fit": {
+    "regular": "classique",
+    "slim": "ajusté",
+    "loose": "ample",
+    "relaxed": "décontracté",
+    "skinny": "moulant",
+    "cropped": "court",
+    "tailored": "sur mesure"
   }
 }

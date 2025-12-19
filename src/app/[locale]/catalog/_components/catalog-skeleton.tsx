@@ -1,38 +1,56 @@
-import { CATALOG_LIMIT } from "@/constants";
+"use client";
+
+import { CATALOG_LIMIT, TOP_CATEGORIES } from "@/constants";
+import { useTranslations } from "next-intl";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { Text } from "@/components/ui/text";
+
+import {
+  useScrambleCurrencyText,
+  useScrambleStaticText,
+  useScrambleText,
+} from "./useScrambleText";
 
 export function CatalogSkeleton() {
+  const t = useTranslations("categories");
+
   return (
     <>
       <div className="block lg:hidden">
         <div className="flex min-h-screen flex-col px-2.5 pt-16">
           <div className="flex flex-1 flex-col space-y-6">
-            <div className="grid grid-cols-2 gap-2">
-              {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
-                <ProductSkeleton key={`skeleton-mobile-${index}`} />
-              ))}
-            </div>
+            <ProductsSkeletonGrid variant="mobile" />
           </div>
           <div className="sticky bottom-0 z-20 my-5 flex justify-center text-bgColor mix-blend-exclusion">
-            <Skeleton className="h-6 w-32" />
+            <FilterSkeletonLabel />
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-6 px-7 pt-24">
+
+      <div className="hidden flex-col gap-6 px-7 pt-24 lg:flex">
         <div className="sticky top-20 z-10 flex items-start justify-between text-bgColor mix-blend-exclusion">
-          <div className="flex gap-4">
-            {Array.from({ length: 8 }).map((_, id) => (
-              <Skeleton key={`skeleton-${id}`} className="h-5 w-24" />
-            ))}
+          <div className="flex items-center gap-2">
+            {TOP_CATEGORIES.map(({ key, label }, index) => {
+              const translated = t(key);
+              const display =
+                key === "loungewear_sleepwear" ? label : translated;
+
+              return (
+                <CategorySkeletonItem
+                  key={key}
+                  display={display}
+                  isLast={index === TOP_CATEGORIES.length - 1}
+                />
+              );
+            })}
           </div>
-          <Skeleton className="h-5 w-20" />
+          <FilterSkeletonLabel />
         </div>
+        <div className="z-50 w-full" />
         <div className="mix-blend-normal">
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16">
-            {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
-              <ProductSkeleton key={`skeleton-desktop-${index}`} />
-            ))}
+          <div>
+            <ProductsSkeletonGrid variant="desktop" />
           </div>
         </div>
       </div>
@@ -40,12 +58,61 @@ export function CatalogSkeleton() {
   );
 }
 
-function ProductSkeleton() {
+function CategorySkeletonItem({
+  display,
+  isLast,
+}: {
+  display: string;
+  isLast: boolean;
+}) {
+  const scrambled = useScrambleStaticText(display);
+
   return (
-    <div className="flex flex-col gap-2">
-      <Skeleton className="aspect-[3/4] w-full" />
-      <Skeleton className="h-3 w-2/3" />
-      <Skeleton className="h-3 w-1/3" />
+    <div className="flex items-center gap-2">
+      <Text variant="uppercase">{scrambled}</Text>
+      {!isLast && <Text>/</Text>}
+    </div>
+  );
+}
+
+function FilterSkeletonLabel() {
+  const t = useTranslations("catalog");
+  const scrambled = useScrambleStaticText(`${t("filter")} +`);
+
+  return <Text className="uppercase">{scrambled}</Text>;
+}
+
+function ProductsSkeletonGrid({ variant }: { variant: "mobile" | "desktop" }) {
+  const isMobile = variant === "mobile";
+
+  const className = isMobile
+    ? "grid grid-cols-2 gap-2"
+    : "grid lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16";
+
+  const keyPrefix = isMobile ? "skeleton-mobile" : "skeleton-desktop";
+
+  return (
+    <div className={className}>
+      {Array.from({ length: CATALOG_LIMIT }).map((_, index) => (
+        <ProductSkeleton key={`${keyPrefix}-${index}`} />
+      ))}
+    </div>
+  );
+}
+
+export function ProductSkeleton() {
+  const scrambledText = useScrambleText();
+  const scrambledCurrency = useScrambleCurrencyText();
+
+  return (
+    <div className="flex flex-col">
+      <Skeleton className="aspect-[4/5] w-full" />
+      <div className="flex flex-col gap-2 pt-2">
+        <Text variant="undrleineWithColors" className="leading-none">
+          {scrambledText}
+        </Text>
+        <Text className="leading-none">{scrambledCurrency}</Text>
+      </div>
     </div>
   );
 }

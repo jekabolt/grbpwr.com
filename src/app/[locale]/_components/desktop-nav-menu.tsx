@@ -156,6 +156,7 @@ function LinksGroup({
   const { hero, dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
   const t = useTranslations("navigation");
+  const tCategories = useTranslations("categories");
 
   // Get English categories for URL generation
   const englishCategories = dictionary?.categories
@@ -192,10 +193,17 @@ function LinksGroup({
           </Button>
           <div className="space-y-4">
             {filteredLeftSideCategoryLinks.map((link) => {
-              const translatedName = getTopCategoryName(
+              const categoryName = getTopCategoryName(
                 dictionary?.categories || [],
                 parseInt(link.id),
               );
+              const categoryKey =
+                categoryName === "loungewear_sleepwear"
+                  ? "loungewear_sleepwear"
+                  : categoryName?.toLowerCase() || link.title.toLowerCase();
+              const translatedName = categoryKey
+                ? tCategories(categoryKey)
+                : link.title;
               return (
                 <div className="w-full" key={link.href}>
                   <Button className="uppercase hover:underline" asChild>
@@ -214,10 +222,17 @@ function LinksGroup({
           </Button>
           <div className="space-y-4">
             {rightSideCategoryLinks.map((link) => {
-              const translatedName = getTopCategoryName(
+              const categoryName = getTopCategoryName(
                 dictionary?.categories || [],
                 parseInt(link.id),
               );
+              const categoryKey =
+                categoryName === "loungewear_sleepwear"
+                  ? "loungewear_sleepwear"
+                  : categoryName?.toLowerCase() || link.title.toLowerCase();
+              const translatedName = categoryKey
+                ? tCategories(categoryKey)
+                : link.title;
               return (
                 <div className="w-full" key={link.id}>
                   <Button className="uppercase hover:underline" asChild>
