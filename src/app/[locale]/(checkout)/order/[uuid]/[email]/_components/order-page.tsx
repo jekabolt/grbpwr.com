@@ -7,7 +7,7 @@ import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { OrderProducts } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/order-products";
@@ -21,7 +21,7 @@ export function OrderPageComponent({
   orderPromise: Promise<{ order: common_OrderFull | undefined }>;
 }) {
   const { order: orderData } = use(orderPromise);
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { currentCountry } = useTranslationsStore((state) => state);
   const { clearCart } = useCart((state) => state);
   const router = useRouter();
 
@@ -41,7 +41,7 @@ export function OrderPageComponent({
 
   if (!orderData) return null;
 
-  const currentCurrency = currencySymbols[selectedCurrency];
+  const currentCurrency = currencySymbols[currentCountry.currencyKey || "EUR"];
 
   const {
     order,

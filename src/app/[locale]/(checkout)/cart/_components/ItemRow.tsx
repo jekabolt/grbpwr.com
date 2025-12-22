@@ -3,7 +3,6 @@ import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -19,11 +18,10 @@ export default function ItemRow({
   hideQuantityButtons,
   index,
 }: Props) {
-  const { selectedCurrency } = useCurrency((state) => state);
-  const { languageId } = useTranslationsStore((state) => state);
+  const { languageId, currentCountry } = useTranslationsStore((state) => state);
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
-  const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${product?.productPrice}`;
-  const priceWithSale = `${currencySymbols[selectedCurrency]} ${product?.productPriceWithSale}`;
+  const priceWithoutSale = `${currencySymbols[currentCountry.currencyKey || ""]}  ${product?.productPrice}`;
+  const priceWithSale = `${currencySymbols[currentCountry.currencyKey || ""]} ${product?.productPriceWithSale}`;
   const t = useTranslations("product");
   const tColors = useTranslations("colors");
 

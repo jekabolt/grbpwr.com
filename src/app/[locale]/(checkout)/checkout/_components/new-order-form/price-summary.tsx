@@ -3,7 +3,7 @@ import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
@@ -13,9 +13,9 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { currentCountry } = useTranslationsStore((state) => state);
 
-  const currency = selectedCurrency;
+  const currency = currentCountry.currencyKey || "EUR";
   const currencySymbol =
     currencySymbols[currency] ||
     currencySymbols[dictionary?.baseCurrency || "EUR"];

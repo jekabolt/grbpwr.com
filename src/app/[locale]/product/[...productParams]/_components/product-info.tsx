@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { sendViewItemEvent } from "@/lib/analitycs/product";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Text } from "@/components/ui/text";
 import Modal from "@/app/[locale]/product/[...productParams]/_components/MeasurementPopup";
 
@@ -24,7 +24,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     number | null
   >(null);
 
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { currentCountry } = useTranslationsStore((s) => s);
   const { name, productId, productCategory, productSubCategory } =
     useProductBasics({
       product,
@@ -51,7 +51,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
         product,
         productCategory || "",
         productSubCategory || "",
-        selectedCurrency,
+        currentCountry.currencyKey || "EUR",
       );
     }
   }, [product]);

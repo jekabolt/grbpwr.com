@@ -1,4 +1,6 @@
 
+import type { common_CurrencyRate } from "@/api/proto-http/frontend";
+
 export interface TranslationsState {
     languageId: number;
     currentCountry: {
@@ -14,6 +16,7 @@ export interface TranslationsState {
         currencyKey?: string;
     };
     isOpen: boolean;
+    rates?: { [key: string]: common_CurrencyRate } | undefined;
 }
 
 export interface TranslationsActions {
@@ -28,12 +31,12 @@ export interface TranslationsActions {
     }) => void;
     applyNextCountry: () => void;
     cancelNextCountry: () => void;
-    setCurrentCountry: (country: {
+    setCurrentCountry: (country: Partial<{
         name: string;
         countryCode: string;
         currency?: string;
         currencyKey?: string;
-    }) => void;
+    }>) => void;
 }
 
 export type TranslationsStore = TranslationsState & TranslationsActions;

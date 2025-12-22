@@ -11,7 +11,6 @@ import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -37,9 +36,9 @@ type NewOrderFormProps = {
 };
 
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
-  const { countryCode } = useTranslationsStore((state) => state.currentCountry);
+  const { currentCountry } = useTranslationsStore((state) => state);
   const { products, clearCart } = useCart((s) => s);
-  const { selectedCurrency } = useCurrency((state) => state);
+
   const { handlePurchaseEvent } = useCheckoutAnalytics({});
 
   const [loading, setLoading] = useState(false);
@@ -52,7 +51,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
 
   const form = useForm<CheckoutData>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: { ...defaultData, country: countryCode },
+    defaultValues: { ...defaultData, country: currentCountry.countryCode },
   });
 
   const { order, validateItems } = useValidatedOrder(form);
@@ -65,7 +64,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
       products,
       loading,
       form,
-      countryCode,
+      countryCode: currentCountry.countryCode || "",
       onAmountChange,
       handleFormChange,
     });
@@ -85,7 +84,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
       const newOrderData = mapFormFieldToOrderDataFormat(
         data,
         response?.validItems?.map((i) => i.orderItem!) || [],
-        selectedCurrency,
+        currentCountry.currencyKey || "",
       );
 
       const newOrderResponse = await submitNewOrder(
@@ -200,7 +199,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 loading={loading}
                 loadingType="order-processing"
               >
-                {`${t("place order")} ${currencySymbols[selectedCurrency || "EUR"]}${order?.totalSale?.value || ""}`}
+                {`${t("place order")} ${currencySymbols[currentCountry.currencyKey || "EUR"]}${order?.totalSale?.value || ""}`}
               </Button>
             </div>
           </div>

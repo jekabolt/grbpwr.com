@@ -16,10 +16,12 @@ export const TranslationsStoreProvider = ({
   children,
   initialCountry,
   initialLanguageId,
+  initialRates,
 }: {
   children: React.ReactNode;
   initialCountry?: { name: string; countryCode: string };
   initialLanguageId?: number;
+  initialRates?: TranslationsStore["rates"];
 }) => {
   const storeRef = useRef<TranslationsStoreApi>(null);
   if (!storeRef.current) {
@@ -27,6 +29,7 @@ export const TranslationsStoreProvider = ({
       ...defaultInitState,
       ...(initialCountry && { currentCountry: initialCountry }),
       ...(initialLanguageId && { languageId: initialLanguageId }),
+      ...(initialRates && { rates: initialRates }),
     };
     storeRef.current = createTranslationsStore(initState);
   }

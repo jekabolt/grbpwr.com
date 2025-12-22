@@ -3,7 +3,7 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { sendAddToCartEvent } from "@/lib/analitycs/cart";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 
 import { useProductBasics } from "./useProductBasics";
@@ -20,7 +20,7 @@ export function useHandlers({
   product?: common_ProductFull;
 }) {
   const { increaseQuantity, openCart } = useCart((state) => state);
-  const { selectedCurrency } = useCurrency((s) => s);
+  const { currentCountry } = useTranslationsStore((s) => s);
   const { dictionary } = useDataContext();
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +48,7 @@ export function useHandlers({
     }
 
     try {
-      const currency = selectedCurrency || "EUR";
+      const currency = currentCountry.currencyKey || "EUR";
       await increaseQuantity(
         id,
         activeSizeId?.toString() || "",
@@ -62,7 +62,7 @@ export function useHandlers({
           product,
           productCategory || "",
           productSubCategory || "",
-          selectedCurrency,
+          currentCountry.currencyKey || "EUR",
         );
       }
 
@@ -81,7 +81,7 @@ export function useHandlers({
 
     if (isMobileSizeDialogOpen) {
       try {
-        const currency = selectedCurrency || "EUR";
+        const currency = currentCountry.currencyKey || "EUR";
         await increaseQuantity(
           id,
           sizeId.toString(),
@@ -95,7 +95,7 @@ export function useHandlers({
             product,
             productCategory || "",
             productSubCategory || "",
-            selectedCurrency,
+            currentCountry.currencyKey || "EUR",
           );
         }
 

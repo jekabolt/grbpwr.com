@@ -2,7 +2,6 @@ import { useState } from "react";
 import { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, calculatePriceWithSale } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -17,10 +16,10 @@ export function SingleFeaturedItem({
   headline?: string;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { currentCountry } = useTranslationsStore((state) => state);
   const [isHovered, setIsHovered] = useState(false);
 
-  const currencyKey = selectedCurrency || "EUR";
+  const currencyKey = currentCountry.currencyKey || "EUR";
 
   return (
     <div>
@@ -64,10 +63,10 @@ export function SingleFeaturedItem({
                   <Text
                     variant={isSaleApplied ? "strileTroughInactive" : "default"}
                   >
-                    {`${currencySymbols[selectedCurrency]} ${price?.price?.value || ""}`}
+                    {`${currencySymbols[currentCountry.currencyKey || "EUR"]} ${price?.price?.value || ""}`}
                   </Text>
                   {isSaleApplied && (
-                    <Text>{`${currencySymbols[selectedCurrency]} ${priceWithSale.toString()}`}</Text>
+                    <Text>{`${currencySymbols[currentCountry.currencyKey || "EUR"]} ${priceWithSale.toString()}`}</Text>
                   )}
                 </div>
                 <Text

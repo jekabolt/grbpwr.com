@@ -17,6 +17,7 @@ export const defaultInitState: TranslationsState = {
         currencyKey: undefined,
     },
     isOpen: false,
+    rates: undefined,
 };
 
 export const createTranslationsStore = (initState: TranslationsState = defaultInitState) => {
@@ -44,7 +45,13 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                         });
                     }
                 },
-                setCurrentCountry: (country) => set({ currentCountry: country }),
+                setCurrentCountry: (country) =>
+                    set(({ currentCountry }) => ({
+                        currentCountry: {
+                            ...currentCountry,
+                            ...country,
+                        },
+                    })),
                 cancelNextCountry: () =>
                     set({
                         nextCountry: {
@@ -86,6 +93,7 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                     languageId: state.languageId,
                     currentCountry: state.currentCountry,
                     nextCountry: state.nextCountry,
+                    rates: state.rates,
                 }),
             },
         ),

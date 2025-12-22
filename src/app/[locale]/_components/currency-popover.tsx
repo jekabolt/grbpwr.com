@@ -2,7 +2,7 @@
 
 import { currencySymbols, getDisplayCurrencyKey } from "@/constants";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import GenericPopover from "@/components/ui/popover";
@@ -31,7 +31,7 @@ function Trigger({ defaultValue }: { defaultValue: string | undefined }) {
 }
 
 export default function CurrencyPopover({ title, theme = "light" }: Props) {
-  const { selectedCurrency, rates, setSelectedCurrency } = useCurrency(
+  const { currentCountry, rates, setCurrentCountry } = useTranslationsStore(
     (state) => state,
   );
 
@@ -45,7 +45,7 @@ export default function CurrencyPopover({ title, theme = "light" }: Props) {
           title={title}
           openElement={
             <Trigger
-              defaultValue={`${currencySymbols[getDisplayCurrencyKey(selectedCurrency)]} / ${getDisplayCurrencyKey(selectedCurrency)}`}
+              defaultValue={`${currencySymbols[currentCountry.currencyKey || "EUR"]} / ${currentCountry.currencyKey || "EUR"}`}
             />
           }
           className={cn({
@@ -64,10 +64,11 @@ export default function CurrencyPopover({ title, theme = "light" }: Props) {
                   <div key={k}>
                     <Button
                       onClick={() => {
-                        setSelectedCurrency(k);
+                        setCurrentCountry({ currencyKey: k });
                       }}
                       className={cn("flex w-full lowercase", {
-                        "underline underline-offset-2": k === selectedCurrency,
+                        "underline underline-offset-2":
+                          k === currentCountry.currencyKey,
                       })}
                     >
                       <Text

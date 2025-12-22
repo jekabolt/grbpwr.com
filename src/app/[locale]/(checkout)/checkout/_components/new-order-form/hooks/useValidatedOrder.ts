@@ -8,7 +8,7 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { validateCartItems } from "@/lib/cart/validate-cart-items";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { CheckoutData } from "../schema";
 
 export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
@@ -18,8 +18,8 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   const products = useCart((cart) => cart.products);
   const syncWithValidatedItems = useCart((cart) => cart.syncWithValidatedItems);
   const { dictionary } = useDataContext();
-  const { selectedCurrency } = useCurrency((state) => state);
-  const currency = selectedCurrency || dictionary?.baseCurrency || "EUR";
+  const { currentCountry } = useTranslationsStore((state) => state);
+  const currency = currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
 
   const validateItems = async (shipmentCarrierId?: string) => {
     const promoCode: string = form.getValues("promoCode") || "";

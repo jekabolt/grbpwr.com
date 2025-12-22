@@ -8,7 +8,6 @@ import { useTranslations } from "next-intl";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { validateCartItems } from "@/lib/cart/validate-cart-items";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -27,7 +26,6 @@ export function MobileNavCart({
   const router = useRouter();
   const { products, isOpen, openCart, closeCart, syncWithValidatedItems } =
     useCart((state) => state);
-  const { selectedCurrency } = useCurrency((state) => state);
   const { currentCountry } = useTranslationsStore((state) => state);
   const { dictionary } = useDataContext();
   const { handleBeginCheckoutEvent } = useCheckoutAnalytics({});
@@ -52,7 +50,8 @@ export function MobileNavCart({
     setIsValidating(true);
 
     try {
-      const currency = selectedCurrency || dictionary?.baseCurrency || "EUR";
+      const currency =
+        currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
 
       const result = await validateCartItems({
         products,

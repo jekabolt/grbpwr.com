@@ -3,7 +3,7 @@
 import { currencySymbols, getDisplayCurrencyKey } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function MobileCurrencyPopover({ theme }: Props) {
-  const { selectedCurrency, rates, setSelectedCurrency } = useCurrency(
+  const { currentCountry, rates, setCurrentCountry } = useTranslationsStore(
     (state) => state,
   );
 
@@ -25,8 +25,12 @@ export default function MobileCurrencyPopover({ theme }: Props) {
             currency:
           </Text>
           <Text component="span" variant="inactive">
-            {currencySymbols[getDisplayCurrencyKey(selectedCurrency)]} /{" "}
-            {getDisplayCurrencyKey(selectedCurrency)}
+            {
+              currencySymbols[
+                getDisplayCurrencyKey(currentCountry.currencyKey || "EUR")
+              ]
+            }{" "}
+            / {getDisplayCurrencyKey(currentCountry.currencyKey || "EUR")}
           </Text>
         </Button>
       </DialogPrimitives.Trigger>
@@ -57,12 +61,12 @@ export default function MobileCurrencyPopover({ theme }: Props) {
                   return (
                     <div className="w-full" key={k}>
                       <Button
-                        onClick={() => setSelectedCurrency(k)}
+                        onClick={() => setCurrentCountry({ currencyKey: k })}
                         className={cn(
                           "relative flex w-full py-2 leading-none",
                           {
                             "after:absolute after:bottom-1 after:left-0 after:h-[1px] after:w-full after:bg-current":
-                              k === selectedCurrency,
+                              k === currentCountry.currencyKey,
                           },
                         )}
                       >
