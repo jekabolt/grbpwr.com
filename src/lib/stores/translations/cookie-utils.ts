@@ -1,9 +1,11 @@
-import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from '@/constants';
-import { cookies } from 'next/headers';
+import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
+import { cookies } from "next/headers";
 
 export interface CountryInfo {
     name: string;
     countryCode: string;
+    currency?: string;
+    currencyKey?: string;
 }
 
 export interface InitialTranslationState {
@@ -13,8 +15,8 @@ export interface InitialTranslationState {
 
 export async function getInitialTranslationState(): Promise<InitialTranslationState> {
     const cookieStore = await cookies();
-    const countryCookie = cookieStore.get('NEXT_COUNTRY')?.value?.toLowerCase();
-    const localeCookie = cookieStore.get('NEXT_LOCALE')?.value;
+    const countryCookie = cookieStore.get("NEXT_COUNTRY")?.value?.toLowerCase();
+    const localeCookie = cookieStore.get("NEXT_LOCALE")?.value;
 
     if (!countryCookie || !localeCookie) {
         return {};
@@ -24,14 +26,16 @@ export async function getInitialTranslationState(): Promise<InitialTranslationSt
     let languageId: number | undefined;
 
     for (const [, countries] of Object.entries(COUNTRIES_BY_REGION)) {
-        const country = countries.find(c =>
-            c.countryCode.toLowerCase() === countryCookie && c.lng === localeCookie
+        const country = countries.find(
+            (c) => c.countryCode.toLowerCase() === countryCookie && c.lng === localeCookie,
         );
 
         if (country) {
             countryInfo = {
                 name: country.name,
                 countryCode: country.countryCode,
+                currency: country.currency,
+                currencyKey: country.currencyKey,
             };
             languageId = LANGUAGE_CODE_TO_ID[country.lng];
             break;

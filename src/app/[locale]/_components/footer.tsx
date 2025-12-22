@@ -2,14 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  currencySymbols,
-  FOOTER_YEAR,
-  FOOTER_LINKS as links,
-} from "@/constants";
+import { FOOTER_YEAR, FOOTER_LINKS as links } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { WhiteLogo } from "@/components/ui/icons/white-logo";
@@ -44,9 +39,10 @@ function LiveClock() {
 }
 
 export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
-  const { selectedCurrency, openCurrencyPopup } = useCurrency((state) => state);
-  const { currentCountry } = useTranslationsStore((state) => state);
   const t = useTranslations("footer");
+
+  const { currentCountry, openCountryPopup } = useTranslationsStore((s) => s);
+
   return (
     <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
       <div className="flex justify-center pt-16 lg:py-52">
@@ -97,10 +93,9 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
         <div className="order-2 flex lg:order-4">
           <Button
             className="hidden uppercase lg:block"
-            onClick={openCurrencyPopup}
+            onClick={openCountryPopup}
           >
-            {t("country")}: {currentCountry.name} /{" "}
-            {currencySymbols[selectedCurrency]}
+            {t("country")}: {currentCountry.name} / {currentCountry.currency}
           </Button>
           <CountriesPopup />
         </div>
