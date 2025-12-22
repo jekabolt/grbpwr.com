@@ -121,7 +121,7 @@ export function GeoSuggestBanner({
         <div className="flex items-center justify-between gap-2">
           <Button
             size="lg"
-            className="w-full uppercase"
+            className="w-full bg-textColor uppercase text-bgColor"
             variant="main"
             onClick={onAccept}
           >

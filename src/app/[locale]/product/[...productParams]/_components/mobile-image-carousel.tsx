@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
@@ -21,6 +24,36 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
     [WheelGesturesPlugin()],
   );
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [clickedImageIndex, setClickedImageIndex] = useState(0);
+  const [showFullGallery, setShowFullGallery] = useState(false);
+
+  useEffect(() => {
+    if (emblaApi) {
+      const updateIndex = () => {
+        const selectedIndex = emblaApi.selectedScrollSnap();
+        setClickedImageIndex(selectedIndex);
+      };
+      emblaApi.on("select", updateIndex);
+      updateIndex();
+      return () => {
+        emblaApi.off("select", updateIndex);
+      };
+    }
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShowFullGallery(false);
+      const timer = setTimeout(() => {
+        setShowFullGallery(true);
+      }, 400);
+      return () => clearTimeout(timer);
+    } else {
+      setShowFullGallery(false);
+    }
+  }, [isOpen]);
+
   function scrollNext() {
     emblaApi?.scrollNext(true);
   }
@@ -29,8 +62,10 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
     emblaApi?.scrollPrev(true);
   }
 
+  const clickedImage = media[clickedImageIndex];
+
   return (
-    <DialogPrimitives.Root modal>
+    <DialogPrimitives.Root modal open={isOpen} onOpenChange={setIsOpen}>
       <div ref={emblaRef} className="relative overflow-hidden">
         <div className="flex h-full w-full">
           {media.map((m, index) => (
@@ -71,7 +106,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
       </div>
 
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-50 bg-black/50" />
+        <DialogPrimitives.Overlay className="animate-overlay-fade-in fixed inset-0 z-50 bg-black/50" />
         <DialogPrimitives.Content className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-white">
           <DialogPrimitives.Title className="sr-only">
             grbpwr mobile menu
@@ -81,22 +116,44 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
             <Button className="fixed right-4 top-4 z-50">[x]</Button>
           </DialogPrimitives.Close>
 
-          <DialogPrimitives.Close asChild>
-            <div className="grid">
-              {media.map((item) => (
-                <div key={item.id} className="w-full">
-                  <ImageComponent
-                    src={item.media?.fullSize?.mediaUrl || ""}
-                    alt={item.media?.fullSize?.mediaUrl || "Product thumbnail"}
-                    aspectRatio={calculateAspectRatio(
-                      item.media?.fullSize?.width,
-                      item.media?.fullSize?.height,
-                    )}
-                  />
+          {!showFullGallery && clickedImage && (
+            <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-white">
+              <div className="relative h-full w-full">
+                <div className="animate-overlay-fade-in absolute inset-0 z-10 bg-highlightColor" />
+                <div className="relative flex h-full w-full items-center justify-center">
+                  <div className="animate-dialog-open h-full w-full origin-center">
+                    <ImageComponent
+                      src={clickedImage.media?.fullSize?.mediaUrl || ""}
+                      alt="Product image"
+                      aspectRatio={"9/16"}
+                      fit="cover"
+                    />
+                  </div>
                 </div>
-              ))}
+              </div>
             </div>
-          </DialogPrimitives.Close>
+          )}
+
+          {showFullGallery && (
+            <DialogPrimitives.Close asChild>
+              <div className="grid">
+                {media.map((item) => (
+                  <div key={item.id} className="w-full">
+                    <ImageComponent
+                      src={item.media?.fullSize?.mediaUrl || ""}
+                      alt={
+                        item.media?.fullSize?.mediaUrl || "Product thumbnail"
+                      }
+                      aspectRatio={calculateAspectRatio(
+                        item.media?.fullSize?.width,
+                        item.media?.fullSize?.height,
+                      )}
+                    />
+                  </div>
+                ))}
+              </div>
+            </DialogPrimitives.Close>
+          )}
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
