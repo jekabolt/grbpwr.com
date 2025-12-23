@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FOOTER_YEAR, FOOTER_LINKS as links } from "@/constants";
+import {
+  currencySymbols,
+  FOOTER_YEAR,
+  FOOTER_LINKS as links,
+} from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -95,7 +99,8 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
             className="hidden uppercase lg:block"
             onClick={openCountryPopup}
           >
-            {t("country")}: {currentCountry.name} / {currentCountry.currency}
+            {t("country")}: {currentCountry.name} /{" "}
+            {currencySymbols[currentCountry.currencyKey || "EUR"]}
           </Button>
           <CountriesPopup />
         </div>

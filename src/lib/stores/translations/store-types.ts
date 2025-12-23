@@ -6,13 +6,11 @@ export interface TranslationsState {
     currentCountry: {
         name: string;
         countryCode: string;
-        currency?: string;
         currencyKey?: string;
     };
     nextCountry: {
         name: string;
         countryCode: string;
-        currency?: string;
         currencyKey?: string;
     };
     isOpen: boolean;

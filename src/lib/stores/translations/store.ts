@@ -7,13 +7,11 @@ export const defaultInitState: TranslationsState = {
     currentCountry: {
         name: "united states",
         countryCode: "US",
-        currency: "$",
         currencyKey: "USD",
     },
     nextCountry: {
         name: "",
         countryCode: "",
-        currency: undefined,
         currencyKey: undefined,
     },
     isOpen: false,
@@ -39,7 +37,6 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                             nextCountry: {
                                 name: "",
                                 countryCode: "",
-                                currency: undefined,
                                 currencyKey: undefined,
                             },
                         });
@@ -57,7 +54,6 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                         nextCountry: {
                             name: "",
                             countryCode: "",
-                            currency: undefined,
                             currencyKey: undefined,
                         },
                     }),

@@ -48,7 +48,7 @@ export function CountriesContent({ className }: { className?: string }) {
           <Text className="uppercase">
             {t("text", {
               currentCountry: currentCountry.name,
-              currency: currentCountry.currency || "",
+              currency: currentCountry.currencyKey || "",
             })}
           </Text>
           {languagesForCurrentCountry &&
