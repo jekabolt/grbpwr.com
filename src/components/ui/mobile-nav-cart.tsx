@@ -30,6 +30,8 @@ export function MobileNavCart({
   const { dictionary } = useDataContext();
   const { handleBeginCheckoutEvent } = useCheckoutAnalytics({});
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const open = isMobile && isOpen;
   const [isValidating, setIsValidating] = useState(false);
   const [orderModifiedToastOpen, setOrderModifiedToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | undefined>(
@@ -101,7 +103,7 @@ export function MobileNavCart({
 
   return (
     <>
-      <DialogPrimitives.Root open={isOpen} onOpenChange={closeCart}>
+      <DialogPrimitives.Root open={open} onOpenChange={closeCart}>
         <Button
           size={isProductInfo ? "default" : "lg"}
           onClick={openCart}

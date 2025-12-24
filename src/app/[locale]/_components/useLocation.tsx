@@ -66,10 +66,10 @@ export function useLocation({
   };
 
   const handleCountrySelect = (country: any) => {
-    setCurrentCountry({ currencyKey: country.currencyKey });
     setNextCountry({
       name: country.name,
       countryCode: country.countryCode,
+      currencyKey: country.currencyKey,
     });
 
     const newLanguageId = LANGUAGE_CODE_TO_ID[country.lng];

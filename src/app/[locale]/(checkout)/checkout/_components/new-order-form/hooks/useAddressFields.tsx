@@ -1,21 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
-import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useLocation } from "@/app/[locale]/_components/useLocation";
 
 import { countryStatesMap } from "../constants";
-import { defaultData } from "../schema";
 import { findCountryByCode, getUniqueCountries } from "../utils";
 
 export function useAddressFields(prefix?: string) {
-  const { watch, setValue, getValues, reset } = useFormContext();
-  const { clearFormData } = useCheckoutStore((state) => state);
-  const { handleCountrySelect } = useLocation();
+  const { watch, setValue, getValues } = useFormContext();
   const { countryCode } = useTranslationsStore((state) => state.currentCountry);
+  const { nextCountry } = useTranslationsStore((state) => state);
+  const { handleCountrySelect } = useLocation();
+  const previousCountryRef = useRef<string | null>(null);
 
   const countryFieldName = prefix ? `${prefix}.country` : "country";
   const phoneFieldName = prefix ? `${prefix}.phone` : "phone";
@@ -57,50 +56,64 @@ export function useAddressFields(prefix?: string) {
     setValue,
   ]);
 
+  // Revert form country if UpdateLocation banner is cancelled
+  useEffect(() => {
+    if (isBillingAddress) return;
+
+    // If nextCountry was cleared (banner cancelled), revert to previous country
+    if (!nextCountry.countryCode && previousCountryRef.current) {
+      setValue(countryFieldName, previousCountryRef.current, {
+        shouldValidate: true,
+      });
+      previousCountryRef.current = null;
+    }
+  }, [nextCountry.countryCode, isBillingAddress, countryFieldName, setValue]);
+
   const handleCountryChange = (newCountryCode: string) => {
+    const currentFormCountry = getValues(countryFieldName);
+
+    // Don't do anything if the country hasn't actually changed
+    if (currentFormCountry === newCountryCode) {
+      return;
+    }
+
+    const selectedCountry = findCountryByCode(uniqueCountries, newCountryCode);
+    if (!selectedCountry) return;
+
     if (isBillingAddress) {
+      // For billing addresses, allow manual changes and update the form immediately
       setValue(countryFieldName, newCountryCode, { shouldValidate: true });
 
-      const selectedCountry = findCountryByCode(
-        uniqueCountries,
-        newCountryCode,
+      // Update phone code if needed
+      const currentPhone = getValues(phoneFieldName) || "";
+
+      const countriesByPhoneCodeLength = [...uniqueCountries].sort(
+        (a, b) => b.phoneCode.length - a.phoneCode.length,
       );
-      if (selectedCountry) {
-        const currentPhone = getValues(phoneFieldName) || "";
 
-        const countriesByPhoneCodeLength = [...uniqueCountries].sort(
-          (a, b) => b.phoneCode.length - a.phoneCode.length,
-        );
-
-        let numberPart = currentPhone;
-        for (const country of countriesByPhoneCodeLength) {
-          if (currentPhone.startsWith(country.phoneCode)) {
-            numberPart = currentPhone.slice(country.phoneCode.length);
-            break;
-          }
+      let numberPart = currentPhone;
+      for (const country of countriesByPhoneCodeLength) {
+        if (currentPhone.startsWith(country.phoneCode)) {
+          numberPart = currentPhone.slice(country.phoneCode.length);
+          break;
         }
-
-        const newPhoneValue =
-          numberPart && numberPart !== currentPhone
-            ? selectedCountry.phoneCode + numberPart
-            : selectedCountry.phoneCode;
-        setValue(phoneFieldName, newPhoneValue);
       }
+
+      const newPhoneValue =
+        numberPart && numberPart !== currentPhone
+          ? selectedCountry.phoneCode + numberPart
+          : selectedCountry.phoneCode;
+      setValue(phoneFieldName, newPhoneValue);
     } else {
-      clearFormData();
+      // For shipping addresses, update the form value so Select shows the selection
+      // Store the previous country to revert if banner is cancelled
+      previousCountryRef.current = currentFormCountry;
+      setValue(countryFieldName, newCountryCode, { shouldValidate: true });
 
-      reset({
-        ...defaultData,
-        country: newCountryCode,
-      });
-
-      const selectedCountry = findCountryByCode(
-        uniqueCountries,
-        newCountryCode,
-      );
-      if (selectedCountry) {
-        handleCountrySelect(selectedCountry);
-      }
+      // Show the UpdateLocation banner
+      // If user accepts, page reloads with new country
+      // If user cancels, we revert the form value in the useEffect above
+      handleCountrySelect(selectedCountry);
     }
   };
 

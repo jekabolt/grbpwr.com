@@ -5,16 +5,12 @@ import { usePathname } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
 import { Banner } from "./banner";
 import { Button } from "./button";
 import { Text } from "./text";
-
-// type Props = {
-//   selectedLocation: CountryOption;
-//   onCancel: () => void;
-// };
 
 export function UpdateLocation() {
   const {
@@ -24,24 +20,28 @@ export function UpdateLocation() {
     applyNextCountry,
     cancelNextCountry,
   } = useTranslationsStore((state) => state);
+  const { clearCart } = useCart((state) => state);
   // const { handleCountrySelect } = useLocation();
   const t = useTranslations("update_location");
   const pathname = usePathname();
   const initialCountryName = useRef(currentCountry.name);
 
   const handleApplyCountry = () => {
+    const targetCountryCode = nextCountry.countryCode;
+    const newLocale = LANGUAGE_ID_TO_LOCALE[languageId];
+
+    if (!targetCountryCode || !newLocale) return;
+
+    clearCart();
+
     applyNextCountry();
 
-    // Navigate to new country/locale URL
-    const newLocale = LANGUAGE_ID_TO_LOCALE[languageId];
-    if (newLocale && nextCountry.countryCode) {
-      const pathWithoutLocaleCountry =
-        pathname.replace(/^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/, "") ||
-        "/";
+    const pathWithoutLocaleCountry =
+      pathname.replace(/^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/, "") ||
+      "/";
 
-      const newPath = `/${nextCountry.countryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
-      window.location.href = newPath;
-    }
+    const newPath = `/${targetCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
+    window.location.href = newPath;
   };
 
   return (
