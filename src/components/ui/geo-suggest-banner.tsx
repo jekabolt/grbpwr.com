@@ -71,6 +71,8 @@ export function GeoSuggestBanner({
   }, []);
 
   const onDismiss = () => {
+    setVisible(false);
+
     const url = new URL(window.location.href);
     url.searchParams.set("geo", "dismiss");
     router.push(url.toString());
@@ -92,10 +94,8 @@ export function GeoSuggestBanner({
       }
 
       if (countryData) {
-        // Clear cart when country changes
         clearCart();
 
-        // Keep translations store in sync with suggested country incl. currency
         setCurrentCountry({
           name: countryData.name,
           countryCode: countryData.countryCode,
@@ -106,10 +106,19 @@ export function GeoSuggestBanner({
         if (newLanguageId !== undefined) {
           setLanguageId(newLanguageId);
         }
+
+        const pathWithoutLocaleCountry =
+          pathname.replace(
+            /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
+            "",
+          ) || "/";
+
+        const newPath = `/${suggestCountry.toLowerCase()}/${suggestLocale}${pathWithoutLocaleCountry}`;
+        const url = new URL(window.location.href);
+        url.pathname = newPath;
+        url.searchParams.set("geo", "accept");
+        window.location.href = url.toString();
       }
-      const url = new URL(window.location.href);
-      url.searchParams.set("geo", "accept");
-      window.location.href = url.toString();
     }
   };
 

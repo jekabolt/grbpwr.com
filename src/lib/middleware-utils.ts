@@ -94,7 +94,17 @@ export const handleGeoAction = (req: NextRequest): NextResponse | null => {
 
         const target = req.nextUrl.clone();
         target.searchParams.delete("geo");
-        target.pathname = `/${suggestCountry}/${suggestLocale}`;
+
+        // Preserve the path if it already has the correct country/locale
+        const parsedPath = parseCountryLocalePath(target.pathname);
+        if (parsedPath &&
+            parsedPath.country?.toLowerCase() === suggestCountry.toLowerCase() &&
+            parsedPath.locale === suggestLocale) {
+        } else {
+            // Path doesn't match, redirect to base path with correct country/locale
+            target.pathname = `/${suggestCountry}/${suggestLocale}`;
+        }
+
         const acceptRes = NextResponse.redirect(target, { status: 308 });
         clearSuggestCookies(acceptRes);
         return acceptRes;
