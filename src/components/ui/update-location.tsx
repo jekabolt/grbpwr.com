@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
 import { Banner } from "./banner";
@@ -20,8 +19,6 @@ export function UpdateLocation() {
     applyNextCountry,
     cancelNextCountry,
   } = useTranslationsStore((state) => state);
-  const { clearCart } = useCart((state) => state);
-  // const { handleCountrySelect } = useLocation();
   const t = useTranslations("update_location");
   const pathname = usePathname();
   const initialCountryName = useRef(currentCountry.name);
@@ -31,8 +28,6 @@ export function UpdateLocation() {
     const newLocale = LANGUAGE_ID_TO_LOCALE[languageId];
 
     if (!targetCountryCode || !newLocale) return;
-
-    clearCart();
 
     applyNextCountry();
 

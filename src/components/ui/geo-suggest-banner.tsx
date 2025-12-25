@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 import { useLocale, useTranslations } from "next-intl";
 
-import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { getCountryName } from "@/lib/utils";
 
@@ -36,7 +35,6 @@ export function GeoSuggestBanner({
   const { setCurrentCountry, setLanguageId } = useTranslationsStore(
     (state) => state,
   );
-  const { clearCart } = useCart((state) => state);
 
   const t =
     messages && messages["geo-suggest"]
@@ -94,8 +92,6 @@ export function GeoSuggestBanner({
       }
 
       if (countryData) {
-        clearCart();
-
         setCurrentCountry({
           name: countryData.name,
           countryCode: countryData.countryCode,
