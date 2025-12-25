@@ -60,7 +60,6 @@ export function useAddressFields(prefix?: string) {
   useEffect(() => {
     if (isBillingAddress) return;
 
-    // If nextCountry was cleared (banner cancelled), revert to previous country
     if (!nextCountry.countryCode && previousCountryRef.current) {
       setValue(countryFieldName, previousCountryRef.current, {
         shouldValidate: true,
