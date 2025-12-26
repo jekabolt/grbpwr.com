@@ -145,7 +145,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
                   )}
                 />
                 <div
-                  className={cn("relative h-full w-full", {
+                  className={cn("relative h-full", {
                     "animate-threshold": shouldAnimate,
                   })}
                 >

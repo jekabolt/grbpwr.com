@@ -53,7 +53,7 @@ export function ImageZoom({
         wrapperStyle={TRANSFORM_WRAPPER_STYLE}
         contentStyle={TRANSFORM_CONTENT_STYLE}
       >
-        <div onDoubleClick={onDoubleClick} className="h-full w-full">
+        <div onDoubleClick={onDoubleClick} className="h-full">
           {children}
         </div>
       </TransformComponent>
