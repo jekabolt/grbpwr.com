@@ -19,8 +19,9 @@ const TRANSFORM_CONFIG = {
     step: 10,
   },
   doubleClick: {
-    disabled: true,
+    disabled: false,
     step: 2,
+    mode: "toggle",
   },
 } as const;
 
