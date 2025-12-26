@@ -38,7 +38,13 @@ const TRANSFORM_CONTENT_STYLE = {
   justifyContent: "center",
 } as const;
 
-export function ImageZoom({ children }: { children: React.ReactNode }) {
+export function ImageZoom({
+  children,
+  onDoubleClick,
+}: {
+  children: React.ReactNode;
+  onDoubleClick?: () => void;
+}) {
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
 
   return (
@@ -47,7 +53,9 @@ export function ImageZoom({ children }: { children: React.ReactNode }) {
         wrapperStyle={TRANSFORM_WRAPPER_STYLE}
         contentStyle={TRANSFORM_CONTENT_STYLE}
       >
-        {children}
+        <div onDoubleClick={onDoubleClick} className="h-full w-full">
+          {children}
+        </div>
       </TransformComponent>
     </TransformWrapper>
   );
