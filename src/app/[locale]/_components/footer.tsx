@@ -54,7 +54,11 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
           <div className="flex justify-center lg:justify-end">
             {/* Mobile: iframe */}
             <iframe
-              src="https://art.grbpwr.com"
+              src={
+                theme === "dark"
+                  ? "https://art.grbpwr.com/invert"
+                  : "https://art.grbpwr.com"
+              }
               className="h-40 w-40 border-0 lg:hidden"
               title="Art"
             />

@@ -7,19 +7,19 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useLocation } from "@/app/[locale]/_components/useLocation";
 
 import { countryStatesMap } from "../constants";
-import { findCountryByCode, getUniqueCountries } from "../utils";
+import { findCountryByCode, getFieldName, getUniqueCountries } from "../utils";
 
 export function useAddressFields(prefix?: string) {
   const { watch, setValue, getValues } = useFormContext();
-  const { countryCode } = useTranslationsStore((state) => state.currentCountry);
-  const { nextCountry } = useTranslationsStore((state) => state);
+  const { currentCountry, nextCountry } = useTranslationsStore((s) => s);
   const { handleCountrySelect } = useLocation();
-  const previousCountryRef = useRef<string | null>(null);
 
-  const countryFieldName = prefix ? `${prefix}.country` : "country";
-  const phoneFieldName = prefix ? `${prefix}.phone` : "phone";
-  const selectedCountry = watch(countryFieldName);
+  const previousCountryRef = useRef<string | null>(null);
+  const countryFieldName = getFieldName(prefix, "country");
+  const phoneFieldName = getFieldName(prefix, "phone");
   const isBillingAddress = prefix === "billingAddress";
+
+  const selectedCountry = watch(countryFieldName);
 
   const uniqueCountries = getUniqueCountries();
   const phoneCodeItems = uniqueCountries
@@ -36,7 +36,7 @@ export function useAddressFields(prefix?: string) {
   useEffect(() => {
     const targetCountry = isBillingAddress
       ? selectedCountry
-      : countryCode || selectedCountry;
+      : currentCountry.countryCode || selectedCountry;
     if (!targetCountry) return;
 
     const found = findCountryByCode(uniqueCountries, targetCountry);
@@ -47,7 +47,7 @@ export function useAddressFields(prefix?: string) {
       setValue(phoneFieldName, found.phoneCode);
     }
   }, [
-    countryCode,
+    currentCountry.countryCode || "",
     selectedCountry,
     phoneFieldName,
     uniqueCountries,

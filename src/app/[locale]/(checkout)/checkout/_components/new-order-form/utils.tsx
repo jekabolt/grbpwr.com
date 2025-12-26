@@ -11,6 +11,13 @@ import { Text } from "@/components/ui/text";
 
 import { CheckoutData } from "./schema";
 
+export function getFieldName(
+  prefix: string | undefined,
+  field: string,
+): string {
+  return prefix ? `${prefix}.${field}` : field;
+}
+
 export function mapFormFieldToOrderDataFormat(
   data: CheckoutData,
   orderItems: common_OrderItemInsert[],

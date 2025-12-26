@@ -15,7 +15,7 @@ import { Text } from "@/components/ui/text";
 import AddressAutocomplete from "./address-autocomplete";
 import FieldsGroupContainer from "./fields-group-container";
 import { useAddressFields } from "./hooks/useAddressFields";
-import { createShipmentCarrierIcon } from "./utils";
+import { createShipmentCarrierIcon, getFieldName } from "./utils";
 
 type Props = {
   loading: boolean;
@@ -105,7 +105,7 @@ export function AddressFields({
           <InputField
             loading={loading}
             variant="secondary"
-            name={prefix ? `${prefix}.firstName` : "firstName"}
+            name={getFieldName(prefix, "firstName")}
             label={t("first name")}
             disabled={disabled}
             keyboardRestriction={keyboardRestrictions.nameFields}
@@ -115,7 +115,7 @@ export function AddressFields({
           <InputField
             loading={loading}
             variant="secondary"
-            name={prefix ? `${prefix}.lastName` : "lastName"}
+            name={getFieldName(prefix, "lastName")}
             label={t("last name")}
             disabled={disabled}
             keyboardRestriction={keyboardRestrictions.nameFields}
@@ -134,7 +134,7 @@ export function AddressFields({
         loading={loading}
         variant="secondary"
         fullWidth
-        name={prefix ? `${prefix}.country` : "country"}
+        name={getFieldName(prefix, "country")}
         label={t("country/region:")}
         items={countries.map((c) => ({
           label: c.name,
@@ -147,7 +147,7 @@ export function AddressFields({
       {stateItems.length > 0 && (
         <SelectField
           loading={loading}
-          name={prefix ? `${prefix}.state` : "state"}
+          name={getFieldName(prefix, "state")}
           label={t("state:")}
           items={stateItems}
           disabled={disabled}
@@ -157,7 +157,7 @@ export function AddressFields({
       <InputField
         loading={loading}
         variant="secondary"
-        name={prefix ? `${prefix}.city` : "city"}
+        name={getFieldName(prefix, "city")}
         label={t("city:")}
         disabled={disabled}
         keyboardRestriction={keyboardRestrictions.nameFields}
@@ -166,7 +166,7 @@ export function AddressFields({
       <InputField
         loading={loading}
         variant="secondary"
-        name={prefix ? `${prefix}.additionalAddress` : "additionalAddress"}
+        name={getFieldName(prefix, "additionalAddress")}
         label={t("additional address:")}
         disabled={disabled}
         keyboardRestriction={keyboardRestrictions.addressField}
@@ -174,7 +174,7 @@ export function AddressFields({
       <InputField
         loading={loading}
         variant="secondary"
-        name={prefix ? `${prefix}.company` : "company"}
+        name={getFieldName(prefix, "company")}
         label={t("company:")}
         disabled={disabled}
         keyboardRestriction={keyboardRestrictions.companyField}
@@ -183,7 +183,7 @@ export function AddressFields({
       <PhoneField
         loading={loading}
         variant="secondary"
-        name={prefix ? `${prefix}.phone` : "phone"}
+        name={getFieldName(prefix, "phone")}
         label={t("phone number:")}
         disabled={disabled}
         items={phoneCodeItems}
@@ -191,7 +191,7 @@ export function AddressFields({
       <InputField
         loading={loading}
         variant="secondary"
-        name={prefix ? `${prefix}.postalCode` : "postalCode"}
+        name={getFieldName(prefix, "postalCode")}
         label={t("postal code:")}
         disabled={disabled}
         keyboardRestriction={keyboardRestrictions.postalCodeField}
