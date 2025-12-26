@@ -6,7 +6,7 @@ import {
     sendViewItemListEvent,
 } from "@/lib/analitycs/product";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useRouteParams } from "./useRouteParams";
 
 function decodeUrlValue(value: string): string {
@@ -19,7 +19,7 @@ function decodeUrlValue(value: string): string {
 
 export function useAnalytics() {
     const searchParams = useSearchParams();
-    const { selectedCurrency } = useCurrency((state) => state);
+    const { currentCountry } = useTranslationsStore((s) => s);
     const { gender, categoryName, subCategoryName, topCategory, subCategory } =
         useRouteParams();
 
@@ -66,7 +66,7 @@ export function useAnalytics() {
             listId,
             decodedCategoryName,
             decodedSubCategoryName,
-            selectedCurrency,
+            currentCountry.currencyKey || "EUR",
         );
     }
 
@@ -77,7 +77,7 @@ export function useAnalytics() {
             listId,
             decodedCategoryName,
             decodedSubCategoryName,
-            selectedCurrency,
+            currentCountry.currencyKey || "EUR",
         );
     }
 

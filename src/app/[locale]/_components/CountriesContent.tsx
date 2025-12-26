@@ -4,7 +4,6 @@ import { useState } from "react";
 import { COUNTRIES_BY_REGION, LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -21,12 +20,10 @@ export function CountriesContent({ className }: { className?: string }) {
   const regionsWithCountries = Object.entries(COUNTRIES_BY_REGION);
   const t = useTranslations("countries-popup");
 
-  const { selectedCurrency, closeCurrencyPopup } = useCurrency(
-    (state) => state,
-  );
   const { filteredCountries, query, searchQuery, handleSearch } =
     useSearchCountries();
-  const { currentCountry, languageId } = useTranslationsStore((s) => s);
+  const { currentCountry, languageId, closeCountryPopup } =
+    useTranslationsStore((s) => s);
   const {
     languagesForCurrentCountry,
     handleChangeLocaleOnly,
@@ -44,14 +41,14 @@ export function CountriesContent({ className }: { className?: string }) {
       <div className="space-y-10 overflow-y-auto">
         <div className="sticky top-0 flex items-center justify-between bg-bgColor">
           <Text variant="uppercase">{t("change country")}</Text>
-          <Button onClick={closeCurrencyPopup}>[x]</Button>
+          <Button onClick={closeCountryPopup}>[x]</Button>
         </div>
 
         <div className="space-y-8">
           <Text className="uppercase">
             {t("text", {
               currentCountry: currentCountry.name,
-              currency: selectedCurrency,
+              currency: currentCountry.currencyKey || "",
             })}
           </Text>
           {languagesForCurrentCountry &&

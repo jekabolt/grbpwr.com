@@ -5,7 +5,7 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { sendViewItemEvent } from "@/lib/analitycs/product";
 import { useElementHeight } from "@/lib/hooks/useBottomSheet";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Text } from "@/components/ui/text";
 
@@ -45,7 +45,7 @@ export function MobileProductInfo({
     isOneSize,
     product,
   });
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { currentCountry } = useTranslationsStore((s) => s);
   const { outOfStock, isMaxQuantity } = useDisabled({
     id: productId,
     activeSizeId,
@@ -64,7 +64,7 @@ export function MobileProductInfo({
         product,
         productCategory || "",
         productSubCategory || "",
-        selectedCurrency,
+        currentCountry.currencyKey || "EUR",
       );
     }
   }, [product]);

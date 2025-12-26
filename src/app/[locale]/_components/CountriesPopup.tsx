@@ -1,13 +1,13 @@
 "use client";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Overlay } from "@/components/ui/overlay";
 
 import { CountriesContent } from "./CountriesContent";
 import { MobileCountriesPopup } from "./mobile-countries-popup";
 
 export function CountriesPopup() {
-  const { isOpen, closeCurrencyPopup } = useCurrency((state) => state);
+  const { isOpen, closeCountryPopup } = useTranslationsStore((s) => s);
 
   return (
     <>
@@ -17,7 +17,7 @@ export function CountriesPopup() {
           <>
             <Overlay
               cover="screen"
-              onClick={closeCurrencyPopup}
+              onClick={closeCountryPopup}
               disablePointerEvents={false}
             />
             <div className="fixed inset-y-2 right-2 z-30 w-[460px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor">

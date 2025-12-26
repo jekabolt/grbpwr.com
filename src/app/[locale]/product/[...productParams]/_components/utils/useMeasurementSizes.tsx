@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 
 import { useProductBasics } from "./useProductBasics";
@@ -18,7 +18,7 @@ export function useMeasurementSizes({
   const { productId } = useProductBasics({ product });
   const { sizes, sizeNames, isOneSize } = useProductSizes({ product });
   const { increaseQuantity } = useCart((state) => state);
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { currentCountry } = useTranslationsStore((s) => s);
   const { dictionary } = useDataContext();
   const [selectedSize, setSelectedSize] = useState<number | undefined>(
     sizes && sizes.length > 0 ? sizes[0].sizeId : undefined,
@@ -45,7 +45,7 @@ export function useMeasurementSizes({
     if (!selectedSize) return false;
 
     try {
-      const currency = selectedCurrency || "EUR";
+      const currency = currentCountry.currencyKey || "EUR";
       const success = await increaseQuantity(
         productId,
         selectedSize?.toString() || "",

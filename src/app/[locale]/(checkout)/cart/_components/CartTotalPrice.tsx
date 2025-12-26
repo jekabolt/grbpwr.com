@@ -4,11 +4,11 @@ import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Text } from "@/components/ui/text";
 
 export default function CartTotalPrice() {
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { currentCountry } = useTranslationsStore((state) => state);
   const { subTotalPrice } = useCart((state) => state);
   const t = useTranslations("cart");
 
@@ -16,7 +16,8 @@ export default function CartTotalPrice() {
     <div className="flex items-center justify-between border-t border-solid border-textInactiveColor pt-3">
       <Text variant="uppercase">{t("subtotal")}:</Text>
       <Text variant="uppercase" size="small">
-        {currencySymbols[selectedCurrency]} {subTotalPrice.toString()}
+        {currencySymbols[currentCountry.currencyKey || ""]}{" "}
+        {subTotalPrice.toString()}
       </Text>
     </div>
   );

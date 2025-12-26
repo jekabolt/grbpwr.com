@@ -5,7 +5,6 @@ import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { isDateTodayOrFuture } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,11 +14,10 @@ import CartItemSize from "@/app/[locale]/(checkout)/cart/_components/CartItemSiz
 import { getPreorderDate } from "@/app/[locale]/(checkout)/cart/_components/utils";
 
 function MobileOrderItemRow({ product }: { product: common_OrderItem }) {
-  const { selectedCurrency } = useCurrency((state) => state);
-  const { languageId } = useTranslationsStore((state) => state);
+  const { languageId, currentCountry } = useTranslationsStore((state) => state);
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
-  const priceWithoutSale = `${currencySymbols[selectedCurrency]}  ${product?.productPrice}`;
-  const priceWithSale = `${currencySymbols[selectedCurrency]} ${product?.productPriceWithSale}`;
+  const priceWithoutSale = `${currencySymbols[currentCountry.currencyKey || "EUR"]}  ${product?.productPrice}`;
+  const priceWithSale = `${currencySymbols[currentCountry.currencyKey || "EUR"]} ${product?.productPriceWithSale}`;
   const t = useTranslations("product");
   const tColors = useTranslations("colors");
 

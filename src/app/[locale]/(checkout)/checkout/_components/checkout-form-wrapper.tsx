@@ -5,7 +5,6 @@ import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 
@@ -21,10 +20,10 @@ interface ExtendedAppearance extends Appearance {
 
 export function CheckoutFormWrapper() {
   const { dictionary } = useDataContext();
-  const { languageId } = useTranslationsStore((state) => state);
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { languageId, currentCountry } = useTranslationsStore((state) => state);
 
-  const currency = selectedCurrency || dictionary?.baseCurrency || "EUR";
+  const currency =
+    currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
   const [orderAmount, setOrderAmount] = useState<number>(1000);
 
   const handleAmountChange = (amount: number) => {

@@ -9,7 +9,6 @@ import {
 } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { WhiteLogo } from "@/components/ui/icons/white-logo";
@@ -44,9 +43,10 @@ function LiveClock() {
 }
 
 export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
-  const { selectedCurrency, openCurrencyPopup } = useCurrency((state) => state);
-  const { currentCountry } = useTranslationsStore((state) => state);
   const t = useTranslations("footer");
+
+  const { currentCountry, openCountryPopup } = useTranslationsStore((s) => s);
+
   return (
     <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
       <div className="flex justify-center pt-16 lg:py-52">
@@ -54,7 +54,11 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
           <div className="flex justify-center lg:justify-end">
             {/* Mobile: iframe */}
             <iframe
-              src="https://art.grbpwr.com"
+              src={
+                theme === "dark"
+                  ? "https://art.grbpwr.com/invert"
+                  : "https://art.grbpwr.com"
+              }
               className="h-40 w-40 border-0 lg:hidden"
               title="Art"
             />
@@ -97,10 +101,10 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
         <div className="order-2 flex lg:order-4">
           <Button
             className="hidden uppercase lg:block"
-            onClick={openCurrencyPopup}
+            onClick={openCountryPopup}
           >
             {t("country")}: {currentCountry.name} /{" "}
-            {currencySymbols[selectedCurrency]}
+            {currencySymbols[currentCountry.currencyKey || "EUR"]}
           </Button>
           <CountriesPopup />
         </div>

@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 import { useLocale, useTranslations } from "next-intl";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { getCountryName } from "@/lib/utils";
 
@@ -36,7 +35,6 @@ export function GeoSuggestBanner({
   const { setCurrentCountry, setLanguageId } = useTranslationsStore(
     (state) => state,
   );
-  const { setSelectedCurrency } = useCurrency((state) => state);
 
   const t =
     messages && messages["geo-suggest"]
@@ -71,6 +69,8 @@ export function GeoSuggestBanner({
   }, []);
 
   const onDismiss = () => {
+    setVisible(false);
+
     const url = new URL(window.location.href);
     url.searchParams.set("geo", "dismiss");
     router.push(url.toString());
@@ -95,6 +95,7 @@ export function GeoSuggestBanner({
         setCurrentCountry({
           name: countryData.name,
           countryCode: countryData.countryCode,
+          currencyKey: countryData.currencyKey,
         });
 
         const newLanguageId = LANGUAGE_CODE_TO_ID[countryData.lng];
@@ -102,11 +103,18 @@ export function GeoSuggestBanner({
           setLanguageId(newLanguageId);
         }
 
-        setSelectedCurrency(countryData.currencyKey);
+        const pathWithoutLocaleCountry =
+          pathname.replace(
+            /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
+            "",
+          ) || "/";
+
+        const newPath = `/${suggestCountry.toLowerCase()}/${suggestLocale}${pathWithoutLocaleCountry}`;
+        const url = new URL(window.location.href);
+        url.pathname = newPath;
+        url.searchParams.set("geo", "accept");
+        window.location.href = url.toString();
       }
-      const url = new URL(window.location.href);
-      url.searchParams.set("geo", "accept");
-      window.location.href = url.toString();
     }
   };
 

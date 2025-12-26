@@ -1,19 +1,19 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
 export function useProductPricing({
   product,
 }: {
   product: common_ProductFull;
 }) {
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { currentCountry } = useTranslationsStore((s) => s);
   const productBody =
     product.product?.productDisplay?.productBody?.productBodyInsert;
   const salePercentage = productBody?.salePercentage?.value || "0";
 
-  const currencyKey = selectedCurrency || "EUR";
+  const currencyKey = currentCountry.currencyKey || "EUR";
   const productPrice =
     product.product?.prices?.find(
       (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),

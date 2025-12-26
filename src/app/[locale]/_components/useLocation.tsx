@@ -7,7 +7,6 @@ import {
   LANGUAGE_ID_TO_LOCALE,
 } from "@/constants";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 
@@ -18,11 +17,14 @@ export function useLocation({
 } = {}) {
   const pathname = usePathname();
 
-  const { languageId, currentCountry, setNextCountry, setLanguageId } =
-    useTranslationsStore((state) => state);
-  const { setSelectedCurrency, closeCurrencyPopup } = useCurrency(
-    (state) => state,
-  );
+  const {
+    languageId,
+    currentCountry,
+    setNextCountry,
+    setLanguageId,
+    closeCountryPopup,
+    setCurrentCountry,
+  } = useTranslationsStore((state) => state);
 
   const languagesForCurrentCountry = (() => {
     const langs: { label: string; value: string; className?: string }[] = [];
@@ -64,10 +66,10 @@ export function useLocation({
   };
 
   const handleCountrySelect = (country: any) => {
-    setSelectedCurrency(country.currencyKey);
     setNextCountry({
       name: country.name,
       countryCode: country.countryCode,
+      currencyKey: country.currencyKey,
     });
 
     const newLanguageId = LANGUAGE_CODE_TO_ID[country.lng];
@@ -75,7 +77,7 @@ export function useLocation({
       setLanguageId(newLanguageId);
     }
 
-    closeCurrencyPopup();
+    closeCountryPopup();
   };
 
   return {

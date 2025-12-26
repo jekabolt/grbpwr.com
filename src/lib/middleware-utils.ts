@@ -94,7 +94,15 @@ export const handleGeoAction = (req: NextRequest): NextResponse | null => {
 
         const target = req.nextUrl.clone();
         target.searchParams.delete("geo");
-        target.pathname = `/${suggestCountry}/${suggestLocale}`;
+
+        const parsedPath = parseCountryLocalePath(target.pathname);
+        if (parsedPath &&
+            parsedPath.country?.toLowerCase() === suggestCountry.toLowerCase() &&
+            parsedPath.locale === suggestLocale) {
+        } else {
+            target.pathname = `/${suggestCountry}/${suggestLocale}`;
+        }
+
         const acceptRes = NextResponse.redirect(target, { status: 308 });
         clearSuggestCookies(acceptRes);
         return acceptRes;

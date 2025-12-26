@@ -9,7 +9,7 @@ import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
@@ -27,12 +27,12 @@ export function MobileOrderSummary({ form, validatedProducts, order }: Props) {
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { currentCountry } = useTranslationsStore((state) => state);
 
   const [isOpen, setIsOpen] = useState(false);
 
   const currencySymbol =
-    currencySymbols[selectedCurrency] ||
+    currencySymbols[currentCountry.currencyKey || "EUR"] ||
     currencySymbols[dictionary?.baseCurrency || "EUR"];
 
   function handleToggle() {

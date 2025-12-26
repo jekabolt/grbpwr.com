@@ -1,26 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
-import { useFormContext } from "react-hook-form";
+import { useEffect, useRef } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 
-import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useLocation } from "@/app/[locale]/_components/useLocation";
 
 import { countryStatesMap } from "../constants";
-import { defaultData } from "../schema";
-import { findCountryByCode, getUniqueCountries } from "../utils";
+import { findCountryByCode, getFieldName, getUniqueCountries } from "../utils";
 
 export function useAddressFields(prefix?: string) {
-  const { watch, setValue, getValues, reset } = useFormContext();
-  const { clearFormData } = useCheckoutStore((state) => state);
+  const { setValue, getValues } = useFormContext();
+  const { currentCountry, nextCountry } = useTranslationsStore((s) => s);
   const { handleCountrySelect } = useLocation();
-  const { countryCode } = useTranslationsStore((state) => state.currentCountry);
 
-  const countryFieldName = prefix ? `${prefix}.country` : "country";
-  const phoneFieldName = prefix ? `${prefix}.phone` : "phone";
-  const selectedCountry = watch(countryFieldName);
+  const previousCountryRef = useRef<string | null>(null);
+  const countryFieldName = getFieldName(prefix, "country");
+  const phoneFieldName = getFieldName(prefix, "phone");
   const isBillingAddress = prefix === "billingAddress";
+
+  const selectedCountry = useWatch({ name: countryFieldName });
 
   const uniqueCountries = getUniqueCountries();
   const phoneCodeItems = uniqueCountries
@@ -37,7 +36,7 @@ export function useAddressFields(prefix?: string) {
   useEffect(() => {
     const targetCountry = isBillingAddress
       ? selectedCountry
-      : countryCode || selectedCountry;
+      : currentCountry.countryCode || selectedCountry;
     if (!targetCountry) return;
 
     const found = findCountryByCode(uniqueCountries, targetCountry);
@@ -48,7 +47,7 @@ export function useAddressFields(prefix?: string) {
       setValue(phoneFieldName, found.phoneCode);
     }
   }, [
-    countryCode,
+    currentCountry.countryCode,
     selectedCountry,
     phoneFieldName,
     uniqueCountries,
@@ -57,50 +56,53 @@ export function useAddressFields(prefix?: string) {
     setValue,
   ]);
 
+  useEffect(() => {
+    if (isBillingAddress) return;
+
+    if (!nextCountry.countryCode && previousCountryRef.current) {
+      setValue(countryFieldName, previousCountryRef.current, {
+        shouldValidate: true,
+      });
+      previousCountryRef.current = null;
+    }
+  }, [nextCountry.countryCode, isBillingAddress, countryFieldName, setValue]);
+
   const handleCountryChange = (newCountryCode: string) => {
+    const currentFormCountry = getValues(countryFieldName);
+
+    if (currentFormCountry === newCountryCode) {
+      return;
+    }
+
+    const selectedCountry = findCountryByCode(uniqueCountries, newCountryCode);
+    if (!selectedCountry) return;
+
     if (isBillingAddress) {
       setValue(countryFieldName, newCountryCode, { shouldValidate: true });
 
-      const selectedCountry = findCountryByCode(
-        uniqueCountries,
-        newCountryCode,
+      const currentPhone = getValues(phoneFieldName) || "";
+
+      const countriesByPhoneCodeLength = [...uniqueCountries].sort(
+        (a, b) => b.phoneCode.length - a.phoneCode.length,
       );
-      if (selectedCountry) {
-        const currentPhone = getValues(phoneFieldName) || "";
 
-        const countriesByPhoneCodeLength = [...uniqueCountries].sort(
-          (a, b) => b.phoneCode.length - a.phoneCode.length,
-        );
-
-        let numberPart = currentPhone;
-        for (const country of countriesByPhoneCodeLength) {
-          if (currentPhone.startsWith(country.phoneCode)) {
-            numberPart = currentPhone.slice(country.phoneCode.length);
-            break;
-          }
+      let numberPart = currentPhone;
+      for (const country of countriesByPhoneCodeLength) {
+        if (currentPhone.startsWith(country.phoneCode)) {
+          numberPart = currentPhone.slice(country.phoneCode.length);
+          break;
         }
-
-        const newPhoneValue =
-          numberPart && numberPart !== currentPhone
-            ? selectedCountry.phoneCode + numberPart
-            : selectedCountry.phoneCode;
-        setValue(phoneFieldName, newPhoneValue);
       }
+
+      const newPhoneValue =
+        numberPart && numberPart !== currentPhone
+          ? selectedCountry.phoneCode + numberPart
+          : selectedCountry.phoneCode;
+      setValue(phoneFieldName, newPhoneValue);
     } else {
-      clearFormData();
-
-      reset({
-        ...defaultData,
-        country: newCountryCode,
-      });
-
-      const selectedCountry = findCountryByCode(
-        uniqueCountries,
-        newCountryCode,
-      );
-      if (selectedCountry) {
-        handleCountrySelect(selectedCountry);
-      }
+      previousCountryRef.current = currentFormCountry;
+      setValue(countryFieldName, newCountryCode, { shouldValidate: true });
+      handleCountrySelect(selectedCountry);
     }
   };
 

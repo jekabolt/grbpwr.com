@@ -7,7 +7,7 @@ import {
 import { useTranslations } from "next-intl";
 
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
-import { useCurrency } from "@/lib/stores/currency/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -28,11 +28,12 @@ export function ProductItem({
   const tCatalog = useTranslations("catalog");
   const t = useTranslations("categories");
   const tFit = useTranslations("fit");
+
   const { dictionary } = useDataContext();
-  const { selectedCurrency } = useCurrency((state) => state);
+  const { currentCountry } = useTranslationsStore((s) => s);
   const { handleSelectItemEvent } = useAnalytics();
 
-  const currencyKey = selectedCurrency || "EUR";
+  const currencyKey = currentCountry.currencyKey || "EUR";
   const productBody = product.productDisplay?.productBody?.productBodyInsert;
   const salePercentage = productBody?.salePercentage?.value || "0";
   const isSaleApplied = salePercentage && salePercentage !== "0";

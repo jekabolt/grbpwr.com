@@ -2,12 +2,20 @@ import { createStore } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { TranslationsState, TranslationsStore } from "./store-types";
 
-
-
 export const defaultInitState: TranslationsState = {
     languageId: 1, // english
-    currentCountry: { name: "united states", countryCode: "US" },
-    nextCountry: { name: "", countryCode: "" },
+    currentCountry: {
+        name: "united states",
+        countryCode: "US",
+        currencyKey: "USD",
+    },
+    nextCountry: {
+        name: "",
+        countryCode: "",
+        currencyKey: undefined,
+    },
+    isOpen: false,
+    rates: undefined,
 };
 
 export const createTranslationsStore = (initState: TranslationsState = defaultInitState) => {
@@ -16,22 +24,58 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
             (set, get) => ({
                 ...initState,
 
+                openCountryPopup: () => set({ isOpen: true }),
+                closeCountryPopup: () => set({ isOpen: false }),
+
                 setLanguageId: (languageId: number) => set({ languageId }),
-                setNextCountry: (country: { name: string; countryCode: string }) =>
-                    set({ nextCountry: country }),
+                setNextCountry: (country) => set({ nextCountry: country }),
                 applyNextCountry: () => {
-                    const { nextCountry, languageId } = get();
+                    const { nextCountry } = get();
                     if (nextCountry.name && nextCountry.countryCode) {
                         set({
                             currentCountry: nextCountry,
-                            nextCountry: { name: "", countryCode: "" }
+                            nextCountry: {
+                                name: "",
+                                countryCode: "",
+                                currencyKey: undefined,
+                            },
                         });
                     }
                 },
-                setCurrentCountry: (country: { name: string; countryCode: string }) =>
-                    set({ currentCountry: country }),
+                setCurrentCountry: (country) =>
+                    set(({ currentCountry }) => ({
+                        currentCountry: {
+                            ...currentCountry,
+                            ...country,
+                        },
+                    })),
                 cancelNextCountry: () =>
-                    set({ nextCountry: { name: "", countryCode: "" } }),
+                    set({
+                        nextCountry: {
+                            name: "",
+                            countryCode: "",
+                            currencyKey: undefined,
+                        },
+                    }),
+
+                // Price conversion based on selected currency (moved from currency store, currently disabled)
+                // convertPrice: (amount: string) => {
+                //   const { rates, selectedCurrency } = get();
+                //
+                //   if (!amount || !rates || !selectedCurrency) {
+                //     return amount || "0";
+                //   }
+                //
+                //   const targetRate = rates[selectedCurrency];
+                //
+                //   if (!targetRate?.rate?.value) {
+                //     return amount;
+                //   }
+                //
+                //   const baseAmount = parseFloat(amount);
+                //   const rate = parseFloat(targetRate.rate.value);
+                //   return (baseAmount * rate).toFixed(2);
+                // },
             }),
             {
                 name: "translations-store",
@@ -45,8 +89,9 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                     languageId: state.languageId,
                     currentCountry: state.currentCountry,
                     nextCountry: state.nextCountry,
+                    rates: state.rates,
                 }),
-            }
-        )
-    )
-}
+            },
+        ),
+    );
+};
