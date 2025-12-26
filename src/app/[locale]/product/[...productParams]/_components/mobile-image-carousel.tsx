@@ -5,6 +5,11 @@ import { common_MediaFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
+import {
+  ReactZoomPanPinchRef,
+  TransformComponent,
+  TransformWrapper,
+} from "react-zoom-pan-pinch";
 
 import { calculateAspectRatio } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -14,9 +19,9 @@ import ImageComponent from "@/components/ui/image";
 export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const imageRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const dialogContentRef = useRef<HTMLDivElement>(null);
+  const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
@@ -46,73 +51,20 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
   }, [emblaApi]);
 
   useEffect(() => {
-    if (isOpen && selectedIndex !== null) {
+    if (isOpen && emblaApi) {
+      // Update selected index when dialog opens
+      setSelectedIndex(emblaApi.selectedScrollSnap());
       // Trigger animation when dialog opens
       setShouldAnimate(true);
-
-      // Scroll to the selected image
-      const scrollToSelected = () => {
-        const selectedElement = imageRefs.current.get(selectedIndex);
-        const scrollContainer = dialogContentRef.current;
-
-        if (selectedElement && scrollContainer) {
-          // Try scrollIntoView first (more reliable)
-          selectedElement.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-            inline: "nearest",
-          });
-
-          // Fallback: manual scroll calculation if scrollIntoView doesn't work well
-          // (Some browsers have issues with scrollIntoView in certain contexts)
-          setTimeout(() => {
-            const containerRect = scrollContainer.getBoundingClientRect();
-            const elementRect = selectedElement.getBoundingClientRect();
-
-            // Check if element is already centered
-            const elementCenter = elementRect.top + elementRect.height / 2;
-            const containerCenter =
-              containerRect.top + containerRect.height / 2;
-            const offset = Math.abs(elementCenter - containerCenter);
-
-            // If not well centered, use manual scroll
-            if (offset > 10) {
-              const currentScrollTop = scrollContainer.scrollTop;
-              const elementTopRelativeToContainer =
-                elementRect.top - containerRect.top + currentScrollTop;
-              const containerHeight = scrollContainer.clientHeight;
-              const elementHeight = elementRect.height;
-              const centerOffset = (containerHeight - elementHeight) / 2;
-              const targetScrollTop =
-                elementTopRelativeToContainer - centerOffset;
-
-              scrollContainer.scrollTo({
-                top: Math.max(0, targetScrollTop),
-                behavior: "smooth",
-              });
-            }
-          }, 50);
-        }
-      };
-
-      // Wait for dialog to be fully rendered
-      const scrollTimer = setTimeout(() => {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(scrollToSelected);
-        });
-      }, 100);
-
       // Reset animation state after animation completes
       const animationTimer = setTimeout(() => setShouldAnimate(false), 400);
-
       return () => {
-        clearTimeout(scrollTimer);
         clearTimeout(animationTimer);
       };
     } else {
       setShouldAnimate(false);
     }
-  }, [isOpen, selectedIndex]);
+  }, [isOpen, emblaApi]);
 
   function scrollNext() {
     emblaApi?.scrollNext(true);
@@ -177,56 +129,72 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
             <Button className="fixed right-4 top-4 z-50">[x]</Button>
           </DialogPrimitives.Close>
 
-          <div ref={dialogContentRef} className="flex-1 overflow-y-auto">
-            <DialogPrimitives.Close asChild>
-              <div className="relative grid">
-                {media.map((item, index) => {
-                  const isSelected = selectedIndex === index;
-                  return (
+          <div ref={dialogContentRef} className="flex flex-1 overflow-hidden">
+            {media[selectedIndex] && (
+              <TransformWrapper
+                ref={transformRef}
+                initialScale={1}
+                minScale={1}
+                maxScale={4}
+                limitToBounds={true}
+                wheel={{
+                  step: 0.1,
+                }}
+                pinch={{
+                  step: 10,
+                }}
+                doubleClick={{
+                  disabled: false,
+                  step: 2,
+                }}
+                key={media[selectedIndex].id}
+              >
+                <TransformComponent
+                  wrapperStyle={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  contentStyle={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "start",
+                    justifyContent: "center",
+                  }}
+                >
+                  <div className="relative h-full flex-[0_0_100%]">
+                    {/* Threshold overlay effect - blue overlay that fades out */}
                     <div
-                      key={item.id}
-                      ref={(el) => {
-                        if (el) {
-                          imageRefs.current.set(index, el);
-                        } else {
-                          imageRefs.current.delete(index);
-                        }
+                      className="pointer-events-none absolute inset-0 z-10 mix-blend-screen"
+                      style={{
+                        backgroundColor: "var(--highlight)",
+                        opacity: shouldAnimate ? 0.6 : 0,
+                        transition: "opacity 0.4s ease-out",
                       }}
-                      className="relative w-full"
+                    />
+                    <div
+                      className={`relative h-full w-full ${
+                        shouldAnimate ? "animate-threshold" : ""
+                      }`}
                     >
-                      {/* Threshold overlay effect - blue overlay that fades out, only for selected image */}
-                      {isSelected && (
-                        <div
-                          className="pointer-events-none absolute inset-0 z-10 mix-blend-screen"
-                          style={{
-                            backgroundColor: "var(--highlight)",
-                            opacity: shouldAnimate ? 0.6 : 0,
-                            transition: "opacity 0.4s ease-out",
-                          }}
-                        />
-                      )}
-                      <div
-                        className={`relative w-full ${
-                          shouldAnimate && isSelected ? "animate-threshold" : ""
-                        }`}
-                      >
-                        <ImageComponent
-                          src={item.media?.fullSize?.mediaUrl || ""}
-                          alt={
-                            item.media?.fullSize?.mediaUrl ||
-                            "Product thumbnail"
-                          }
-                          aspectRatio={calculateAspectRatio(
-                            item.media?.fullSize?.width,
-                            item.media?.fullSize?.height,
-                          )}
-                        />
-                      </div>
+                      <ImageComponent
+                        src={
+                          media[selectedIndex].media?.fullSize?.mediaUrl || ""
+                        }
+                        alt={
+                          media[selectedIndex].media?.fullSize?.mediaUrl ||
+                          "Product thumbnail"
+                        }
+                        aspectRatio={calculateAspectRatio(
+                          media[selectedIndex].media?.fullSize?.width,
+                          media[selectedIndex].media?.fullSize?.height,
+                        )}
+                      />
                     </div>
-                  );
-                })}
-              </div>
-            </DialogPrimitives.Close>
+                  </div>
+                </TransformComponent>
+              </TransformWrapper>
+            )}
           </div>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>

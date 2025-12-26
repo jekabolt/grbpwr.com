@@ -19,7 +19,7 @@ type ImageProps = {
   src: string;
   aspectRatio: string;
   sizes?: string;
-  fit?: "cover" | "contain";
+  fit?: "cover" | "contain" | "fill" | "scale-down";
 };
 
 export default function ImageComponent({
