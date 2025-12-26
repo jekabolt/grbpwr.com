@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useLocation } from "@/app/[locale]/_components/useLocation";
@@ -10,7 +10,7 @@ import { countryStatesMap } from "../constants";
 import { findCountryByCode, getFieldName, getUniqueCountries } from "../utils";
 
 export function useAddressFields(prefix?: string) {
-  const { watch, setValue, getValues } = useFormContext();
+  const { setValue, getValues } = useFormContext();
   const { currentCountry, nextCountry } = useTranslationsStore((s) => s);
   const { handleCountrySelect } = useLocation();
 
@@ -19,7 +19,7 @@ export function useAddressFields(prefix?: string) {
   const phoneFieldName = getFieldName(prefix, "phone");
   const isBillingAddress = prefix === "billingAddress";
 
-  const selectedCountry = watch(countryFieldName);
+  const selectedCountry = useWatch({ name: countryFieldName });
 
   const uniqueCountries = getUniqueCountries();
   const phoneCodeItems = uniqueCountries
@@ -47,7 +47,7 @@ export function useAddressFields(prefix?: string) {
       setValue(phoneFieldName, found.phoneCode);
     }
   }, [
-    currentCountry.countryCode || "",
+    currentCountry.countryCode,
     selectedCountry,
     phoneFieldName,
     uniqueCountries,
@@ -56,7 +56,6 @@ export function useAddressFields(prefix?: string) {
     setValue,
   ]);
 
-  // Revert form country if UpdateLocation banner is cancelled
   useEffect(() => {
     if (isBillingAddress) return;
 
@@ -71,7 +70,6 @@ export function useAddressFields(prefix?: string) {
   const handleCountryChange = (newCountryCode: string) => {
     const currentFormCountry = getValues(countryFieldName);
 
-    // Don't do anything if the country hasn't actually changed
     if (currentFormCountry === newCountryCode) {
       return;
     }
@@ -80,10 +78,8 @@ export function useAddressFields(prefix?: string) {
     if (!selectedCountry) return;
 
     if (isBillingAddress) {
-      // For billing addresses, allow manual changes and update the form immediately
       setValue(countryFieldName, newCountryCode, { shouldValidate: true });
 
-      // Update phone code if needed
       const currentPhone = getValues(phoneFieldName) || "";
 
       const countriesByPhoneCodeLength = [...uniqueCountries].sort(
@@ -104,14 +100,8 @@ export function useAddressFields(prefix?: string) {
           : selectedCountry.phoneCode;
       setValue(phoneFieldName, newPhoneValue);
     } else {
-      // For shipping addresses, update the form value so Select shows the selection
-      // Store the previous country to revert if banner is cancelled
       previousCountryRef.current = currentFormCountry;
       setValue(countryFieldName, newCountryCode, { shouldValidate: true });
-
-      // Show the UpdateLocation banner
-      // If user accepts, page reloads with new country
-      // If user cancels, we revert the form value in the useEffect above
       handleCountrySelect(selectedCountry);
     }
   };
