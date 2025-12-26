@@ -58,7 +58,7 @@ export default function TextareaField({
                 onChange={field.onChange}
               />
               {showCharCount && (
-                <div className="absolute bottom-2 right-2 text-xs text-textColor">
+                <div className="absolute bottom-2 right-2 text-xs text-textInactiveColor">
                   {value.length}
                   {maxLength && `/${maxLength}`}
                 </div>

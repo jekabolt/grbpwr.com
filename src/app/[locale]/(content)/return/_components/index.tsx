@@ -91,7 +91,7 @@ export function RefundForm() {
             <FieldsGroupContainer
               stage="1/1"
               collapsible={false}
-              title={t("check your return status")}
+              title={t("submit return")}
             >
               <InputField
                 name="email"

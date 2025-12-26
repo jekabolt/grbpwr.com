@@ -17,7 +17,8 @@
     "help": "帮助",
     "aftersale services": "售后服务",
     "faqs": "常见问题",
-    "country": "国家"
+    "country": "国家",
+    "returns": "退货"
   },
   "countries-popup": {
     "change country": "更改国家",
@@ -448,9 +449,9 @@
     "email_copied": "邮箱已复制"
   },
   "refund": {
-    "return status": "退货状态",
+    "return order": "退货订单",
     "text": "您可以在退货确认邮件中找到您的退货编号。如果您最近提交了退货请求，请注意，处理您的请求并发送确认邮件可能需要几分钟。如果没有看到确认邮件，请检查垃圾邮件文件夹。",
-    "check your return status": "查看退货状态",
+    "submit return": "提交退货",
     "email": "电子邮件*",
     "return reference": "退货参考号*",
     "submit": "提交",

@@ -17,7 +17,8 @@
     "help": "aiuto",
     "aftersale services": "servizi post vendita",
     "faqs": "domande frequenti",
-    "country": "paese"
+    "country": "paese",
+    "returns": "resi"
   },
   "countries-popup": {
     "change country": "cambia paese",
@@ -448,9 +449,9 @@
     "email_copied": "email copiata"
   },
   "refund": {
-    "return status": "stato del reso",
+    "return order": "restituisci ordine",
     "text": "troverai il numero di reso nell'e-mail di conferma del reso. Se hai recentemente richiesto un reso, ti informiamo che potrebbero volerci alcuni minuti per elaborare la richiesta e inviare l'e-mail di conferma. Se non vedi l'e-mail di conferma, controlla la cartella spam.",
-    "check your return status": "verifica lo stato del tuo reso",
+    "submit return": "invia reso",
     "email": "E-MAIL*",
     "return reference": "RIFERIMENTO RESO*",
     "submit": "invia",

@@ -17,7 +17,8 @@
     "help": "ヘルプ",
     "aftersale services": "アフターサービス",
     "faqs": "よくある質問",
-    "country": "国"
+    "country": "国",
+    "returns": "返品"
   },
   "countries-popup": {
     "change country": "国を変更",
@@ -448,9 +449,9 @@
     "email_copied": "メールアドレスがコピーされました"
   },
   "refund": {
-    "return status": "返品状況",
+    "return order": "注文返品",
     "text": "返品確認メールに返品番号が記載されています。最近返品をリクエストされた場合、リクエストが処理されて確認メールが送信されるまで数分かかることがあります。確認メールが見つからない場合は、迷惑メールフォルダを確認してください。",
-    "check your return status": "返品状況を確認する",
+    "submit return": "返品を送信",
     "email": "メールアドレス*",
     "return reference": "返品番号*",
     "submit": "送信",

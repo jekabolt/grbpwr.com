@@ -35,6 +35,17 @@ const config = {
           "50%": { transform: "translateX(100%)" },
           "100%": { transform: "translateX(-100%)" },
         },
+        threshold: {
+          "0%": {
+            filter: "grayscale(100%) contrast(200%) brightness(0.5)",
+          },
+          "100%": {
+            filter: "grayscale(0%) contrast(100%) brightness(1)",
+          },
+        },
+      },
+      animation: {
+        threshold: "threshold 0.4s ease-out forwards",
       },
     },
   },

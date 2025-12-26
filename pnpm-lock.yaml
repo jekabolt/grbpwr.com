@@ -120,6 +120,9 @@ importers:
       react-photo-view:
         specifier: ^1.2.4
         version: 1.2.4(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303)
+      react-zoom-pan-pinch:
+        specifier: ^3.7.0
+        version: 3.7.0(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303)
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303)(types-react-dom@19.0.0-rc.1)(types-react@19.0.0-rc.1)
@@ -3048,6 +3051,13 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
+
+  react-zoom-pan-pinch@3.7.0:
+    resolution: {integrity: sha512-UmReVZ0TxlKzxSbYiAj+LeGRW8s8LraAFTXRAxzMYnNRgGPsxCudwZKVkjvGmjtx7SW/hZamt69NUmGf4xrkXA==}
+    engines: {node: '>=8', npm: '>=5'}
+    peerDependencies:
+      react: '*'
+      react-dom: '*'
 
   react@0.0.0-experimental-443b7ff2-20250303:
     resolution: {integrity: sha512-E+nLcE/ownQTAKFo91EroI7mWE27IJ+eRIwQ9651zWs5Q0YGAH9uNGx02z5u9+4LoYottPW+ZtsuYP1M5sZ8cw==}
@@ -6633,6 +6643,11 @@ snapshots:
       tslib: 2.6.2
     optionalDependencies:
       '@types/react': types-react@19.0.0-rc.1
+
+  react-zoom-pan-pinch@3.7.0(react-dom@0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303))(react@0.0.0-experimental-443b7ff2-20250303):
+    dependencies:
+      react: 0.0.0-experimental-443b7ff2-20250303
+      react-dom: 0.0.0-experimental-443b7ff2-20250303(react@0.0.0-experimental-443b7ff2-20250303)
 
   react@0.0.0-experimental-443b7ff2-20250303: {}
 

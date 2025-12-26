@@ -38,6 +38,9 @@ export function FooterNavMobile() {
             <Link href="/aftersale-services">{t("aftersale services")}</Link>
           </Button>
           <Button asChild className="uppercase">
+            <Link href="/return">{t("returns")}</Link>
+          </Button>
+          <Button asChild className="uppercase">
             <Link href="/faq">{t("faqs")}</Link>
           </Button>
         </FieldsGroupContainer>
