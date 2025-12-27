@@ -4,7 +4,6 @@ import Link from "next/link";
 import type { common_ArchiveList } from "@/api/proto-http/frontend";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio } from "@/lib/utils";
 import ImageComponent from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
@@ -27,21 +26,25 @@ export function HorizontalGrid({
             <Link
               href={archive.slug || ""}
               key={archive.id}
-              className="group block space-y-2"
+              className="group block aspect-square space-y-2 border border-transparent hover:scale-105 hover:border-textColor"
             >
-              <div className="relative">
+              <div className="hidden justify-between px-2 pt-2 lowercase text-textColor group-hover:flex">
+                <Text>{archive.tag}</Text>
+                <Text>{archive.createdAt?.split("T")[0]}</Text>
+              </div>
+              <div className="relative group-hover:scale-75">
                 <ImageComponent
                   alt={currentTranslation?.heading + " " + index}
                   src={archive.thumbnail?.media?.fullSize?.mediaUrl || ""}
-                  aspectRatio={calculateAspectRatio(
-                    archive.thumbnail?.media?.fullSize?.width,
-                    archive.thumbnail?.media?.fullSize?.height,
-                  )}
+                  aspectRatio="1/1"
+                  fit="scale-down"
                 />
               </div>
-              <Text className="text-highlightColor group-hover:text-textColor">
-                {currentTranslation?.heading}
-              </Text>
+              <div>
+                <Text className="text-highlightColor group-hover:pb-2 group-hover:pl-2 group-hover:text-textColor">
+                  {currentTranslation?.heading}
+                </Text>
+              </div>
             </Link>
           );
         })}
