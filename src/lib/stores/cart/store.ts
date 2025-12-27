@@ -41,8 +41,11 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
         ): Promise<boolean> => {
           const { products } = get();
 
-          // Check against GLOBAL cart limit (total items in entire cart)
-          if (products.length + quantity > maxOrderItems) {
+          const existingItemCount = products.filter(
+            p => p.id === productId
+          ).length;
+
+          if (existingItemCount + quantity > maxOrderItems) {
             return false;
           }
 
@@ -80,15 +83,16 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
             const { response } = result;
 
-            // Calculate total items after validation
-            const totalValidatedItems = (response.validItems || []).reduce(
+            const validatedItemsForProduct = (response.validItems || []).filter(
+              item => item.orderItem?.productId === productId
+            );
+
+            const totalValidatedQuantity = validatedItemsForProduct.reduce(
               (sum, item) => sum + (item.orderItem?.quantity || 0),
               0
             );
 
-            // Check if total items exceed global cart limit
-            if (totalValidatedItems > maxOrderItems) {
-              // Global cart limit exceeded
+            if (totalValidatedQuantity > maxOrderItems) {
               return false;
             }
 
@@ -179,32 +183,48 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             return;
           }
 
-          // Rebuild products from validated items
           let rebuiltProducts: CartProduct[] = [];
-          let totalItemsCount = 0;
 
+          const itemsByProduct = new Map<number, typeof validItems>();
           for (const item of validItems) {
             const orderItem = item.orderItem;
             if (!orderItem?.productId || !orderItem.sizeId) continue;
 
-            const backendQty = orderItem.quantity || 0;
-            if (backendQty <= 0) continue;
+            const productId = orderItem.productId;
+            if (!itemsByProduct.has(productId)) {
+              itemsByProduct.set(productId, []);
+            }
+            itemsByProduct.get(productId)!.push(item);
+          }
 
-            // Add items up to global cart limit
-            const itemsToAdd = Math.min(backendQty, maxOrderItems - totalItemsCount);
-            if (itemsToAdd <= 0) break;
+          for (const [productId, productItems] of itemsByProduct) {
+            let totalItemsAdded = 0;
 
-            const newProducts = Array.from({ length: itemsToAdd }, () => ({
-              id: orderItem.productId as number,
-              size: String(orderItem.sizeId),
-              quantity: 1,
-              productData: item,
-            }));
+            for (const item of productItems) {
+              const orderItem = item.orderItem;
+              if (!orderItem?.sizeId) continue;
 
-            rebuiltProducts.push(...newProducts);
-            totalItemsCount += itemsToAdd;
+              const backendQty = orderItem.quantity || 0;
+              if (backendQty <= 0) continue;
 
-            if (totalItemsCount >= maxOrderItems) break;
+              const remainingLimit = maxOrderItems - totalItemsAdded;
+              if (remainingLimit <= 0) break;
+
+              const itemsToAdd = Math.min(backendQty, remainingLimit);
+              if (itemsToAdd <= 0) continue;
+
+              const newProducts = Array.from({ length: itemsToAdd }, () => ({
+                id: productId,
+                size: String(orderItem.sizeId),
+                quantity: 1,
+                productData: item,
+              }));
+
+              rebuiltProducts.push(...newProducts);
+              totalItemsAdded += itemsToAdd;
+
+              if (totalItemsAdded >= maxOrderItems) break;
+            }
           }
 
           set({

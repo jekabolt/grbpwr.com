@@ -54,7 +54,10 @@ export function AddToCartBtn({
     isOneSize,
     product,
   });
-  const { outOfStock: internalOutOfStock } = useDisabled({
+  const {
+    outOfStock: internalOutOfStock,
+    isMaxQuantity: internalIsMaxQuantity,
+  } = useDisabled({
     id: product.product?.id || 0,
     activeSizeId: internalHandlers.activeSizeId,
     product,
@@ -74,6 +77,7 @@ export function AddToCartBtn({
   } = { ...internalHandlers, ...handlers };
 
   const outOfStock = handlers?.outOfStock ?? internalOutOfStock;
+  const isMaxQuantityFinal = handlers?.isMaxQuantity ?? internalIsMaxQuantity;
   const sizeQuantity = handlers?.sizeQuantity ?? internalSizeQuantity;
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
   const isNoSizeSelected = !activeSizeId && isHovered;
@@ -148,7 +152,7 @@ export function AddToCartBtn({
           <LoadingButton
             variant="simpleReverse"
             size="lg"
-            disabled={isMaxQuantity}
+            disabled={isMaxQuantityFinal}
             onAction={handleAddToCartClick}
             isLoadingExternal={isLoading}
             className="border-none"
@@ -159,13 +163,13 @@ export function AddToCartBtn({
               <Text className="w-full text-center uppercase" variant="inherit">
                 notify me
               </Text>
+            ) : isMaxQuantityFinal ? (
+              <Text className="w-full text-center uppercase" variant="inherit">
+                order limit exceeded
+              </Text>
             ) : isNoSizeSelected ? (
               <Text className="w-full text-center" variant="inherit">
                 {t("select size")}
-              </Text>
-            ) : isMaxQuantity ? (
-              <Text className="w-full text-center uppercase" variant="inherit">
-                order limit exceeded
               </Text>
             ) : (
               <>

@@ -14,9 +14,8 @@ export function useDisabled({ id, activeSizeId, product }: Props) {
   const { products } = useCart((state) => state);
 
   const maxOrderItems = dictionary?.maxOrderItems || 3;
-
-  // Check if GLOBAL cart limit is reached (total items in entire cart)
-  const isMaxQuantity = products.length >= maxOrderItems;
+  const existingItemCount = products.filter((p) => p.id === id).length;
+  const isMaxQuantity = existingItemCount >= maxOrderItems;
 
   const outOfStock =
     product?.sizes?.reduce(
