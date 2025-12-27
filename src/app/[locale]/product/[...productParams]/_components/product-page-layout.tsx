@@ -18,7 +18,6 @@ function getCatalogGender(gender: string | undefined): string | undefined {
 export function ProductPageLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const params = useParams();
-  const locale = params.locale as string;
   const productParams = params.productParams as string[] | undefined;
   const genderFromUrl = productParams?.[0];
 
