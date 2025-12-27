@@ -29,8 +29,8 @@ export function ProductPageLayout({ children }: { children: React.ReactNode }) {
       router.back();
     } else {
       const catalogPath = catalogGender
-        ? `/${locale}/catalog/${catalogGender}`
-        : `/${locale}/catalog`;
+        ? `/catalog/${catalogGender}`
+        : `/catalog`;
       router.push(catalogPath);
     }
   };
