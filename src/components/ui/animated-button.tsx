@@ -76,7 +76,7 @@ export function AnimatedButton({
     if (isMobile && enableThresholdAnimation) {
       holdTimeoutRef.current = setTimeout(() => {
         setIsHeld(true);
-      }, 100);
+      }, 300);
     }
   };
 
@@ -85,7 +85,11 @@ export function AnimatedButton({
       clearTimeout(holdTimeoutRef.current);
       holdTimeoutRef.current = null;
     }
-    setTimeout(() => setIsHeld(false), 400);
+    if (isHeld) {
+      setTimeout(() => setIsHeld(false), 400);
+    } else {
+      setIsHeld(false);
+    }
   };
 
   const handleTouchCancel = () => {
