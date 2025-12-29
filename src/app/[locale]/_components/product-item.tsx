@@ -81,7 +81,7 @@ export function ProductItem({
         enableThresholdAnimation={true}
         className={cn("group flex h-full w-full flex-col", className)}
       >
-        <div className="group-data-[threshold-active=true]:animate-threshold relative">
+        <div className="group-data-[held=true]:animate-threshold-highlight relative">
           <Image
             src={
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
@@ -93,6 +93,13 @@ export function ProductItem({
               product.productDisplay?.thumbnail?.media?.thumbnail?.height,
             )}
             fit="contain"
+          />
+          <span
+            className={cn(
+              "duration-400 pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-0 mix-blend-screen transition-opacity ease-out",
+              "group-data-[held=true]:opacity-60",
+            )}
+            aria-hidden="true"
           />
         </div>
         <div

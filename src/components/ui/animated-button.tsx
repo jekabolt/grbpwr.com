@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -40,7 +40,8 @@ export function AnimatedButton({
 }: AnimatedButtonProps) {
   const [isPressed, setIsPressed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [showThreshold, setShowThreshold] = useState(false);
+  const [isHeld, setIsHeld] = useState(false);
+  const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -53,7 +54,12 @@ export function AnimatedButton({
 
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      if (holdTimeoutRef.current) {
+        clearTimeout(holdTimeoutRef.current);
+      }
+    };
   }, []);
 
   const handlePress = () => {
@@ -66,14 +72,26 @@ export function AnimatedButton({
 
   const handleTouchStart = () => {
     if (isMobile && enableThresholdAnimation) {
-      setShowThreshold(true);
+      holdTimeoutRef.current = setTimeout(() => {
+        setIsHeld(true);
+      }, 100);
     }
   };
 
   const handleTouchEnd = () => {
-    if (isMobile && enableThresholdAnimation) {
-      setShowThreshold(false);
+    if (holdTimeoutRef.current) {
+      clearTimeout(holdTimeoutRef.current);
+      holdTimeoutRef.current = null;
     }
+    setTimeout(() => setIsHeld(false), 400);
+  };
+
+  const handleTouchCancel = () => {
+    if (holdTimeoutRef.current) {
+      clearTimeout(holdTimeoutRef.current);
+      holdTimeoutRef.current = null;
+    }
+    setIsHeld(false);
   };
 
   const buttonClasses = cn(
@@ -98,9 +116,8 @@ export function AnimatedButton({
         disabled={isPressed}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        data-threshold-active={
-          showThreshold && isMobile && enableThresholdAnimation
-        }
+        onTouchCancel={handleTouchCancel}
+        data-held={isHeld}
       >
         <Link href={href || ""}>{children}</Link>
       </Button>
@@ -115,9 +132,8 @@ export function AnimatedButton({
       disabled={isPressed}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      data-threshold-active={
-        showThreshold && isMobile && enableThresholdAnimation
-      }
+      onTouchCancel={handleTouchCancel}
+      data-held={isHeld}
     >
       {children}
     </Button>
