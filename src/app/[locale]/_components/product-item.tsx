@@ -96,7 +96,7 @@ export function ProductItem({
           />
           <span
             className={cn(
-              "duration-400 pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-0 mix-blend-screen transition-opacity ease-out",
+              "pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-0 mix-blend-screen transition-opacity duration-[400ms] ease-out",
               "group-data-[held=true]:opacity-60",
             )}
             aria-hidden="true"
