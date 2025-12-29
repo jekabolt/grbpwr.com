@@ -97,7 +97,7 @@ export function AnimatedButton({
   };
 
   const buttonClasses = cn(
-    "transition-all duration-300 ease-in-out [-webkit-tap-highlight-color:transparent]",
+    "select-none transition-all duration-300 ease-in-out [-webkit-tap-highlight-color:transparent]",
     {
       "bg-bgColor opacity-50": isPressed && animationArea === "container",
       underline: isPressed && animationArea === "text",
