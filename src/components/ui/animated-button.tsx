@@ -42,6 +42,8 @@ export function AnimatedButton({
   const [isMobile, setIsMobile] = useState(false);
   const [isHeld, setIsHeld] = useState(false);
   const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const thresholdReachedRef = useRef(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -59,6 +61,9 @@ export function AnimatedButton({
       if (holdTimeoutRef.current) {
         clearTimeout(holdTimeoutRef.current);
       }
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -74,9 +79,11 @@ export function AnimatedButton({
 
   const handleTouchStart = () => {
     if (isMobile && enableThresholdAnimation) {
+      thresholdReachedRef.current = false;
       // iOS shows context menu at ~500ms
       holdTimeoutRef.current = setTimeout(() => {
         setIsHeld(true);
+        thresholdReachedRef.current = true;
       }, 500);
     }
   };
@@ -87,8 +94,16 @@ export function AnimatedButton({
       clearTimeout(holdTimeoutRef.current);
       holdTimeoutRef.current = null;
     }
-    // Reset animation state
-    setIsHeld(false);
+
+    // If threshold was reached, keep animation for a duration
+    if (thresholdReachedRef.current) {
+      animationTimeoutRef.current = setTimeout(() => {
+        setIsHeld(false);
+        thresholdReachedRef.current = false;
+      }, 1500); // Keep animation visible for 1.5s after context menu appears
+    } else {
+      setIsHeld(false);
+    }
   };
 
   const handleTouchCancel = () => {
@@ -96,7 +111,15 @@ export function AnimatedButton({
       clearTimeout(holdTimeoutRef.current);
       holdTimeoutRef.current = null;
     }
-    setIsHeld(false);
+
+    if (thresholdReachedRef.current) {
+      animationTimeoutRef.current = setTimeout(() => {
+        setIsHeld(false);
+        thresholdReachedRef.current = false;
+      }, 1500);
+    } else {
+      setIsHeld(false);
+    }
   };
 
   const buttonClasses = cn(
