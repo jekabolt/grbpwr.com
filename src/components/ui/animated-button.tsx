@@ -85,11 +85,8 @@ export function AnimatedButton({
       clearTimeout(holdTimeoutRef.current);
       holdTimeoutRef.current = null;
     }
-    if (isHeld) {
-      setTimeout(() => setIsHeld(false), 400);
-    } else {
-      setIsHeld(false);
-    }
+    // Immediately reset the held state
+    setIsHeld(false);
   };
 
   const handleTouchCancel = () => {
