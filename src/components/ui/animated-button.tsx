@@ -63,11 +63,13 @@ export function AnimatedButton({
   }, []);
 
   const handlePress = () => {
-    setIsPressed(true);
+    if (!enableThresholdAnimation) {
+      setIsPressed(true);
+      setTimeout(() => setIsPressed(false), animationDuration);
+    }
     if (onClick) {
       onClick();
     }
-    setTimeout(() => setIsPressed(false), animationDuration);
   };
 
   const handleTouchStart = () => {
@@ -113,7 +115,7 @@ export function AnimatedButton({
         asChild
         className={buttonClasses}
         onClick={handlePress}
-        disabled={isPressed}
+        disabled={!enableThresholdAnimation && isPressed}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onTouchCancel={handleTouchCancel}
@@ -129,7 +131,7 @@ export function AnimatedButton({
       {...props}
       className={buttonClasses}
       onClick={handlePress}
-      disabled={isPressed}
+      disabled={!enableThresholdAnimation && isPressed}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchCancel}
