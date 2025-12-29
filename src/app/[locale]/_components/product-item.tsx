@@ -78,9 +78,10 @@ export function ProductItem({
       <AnimatedButton
         href={product?.slug || ""}
         onMouseDown={() => handleSelectItemEvent(product)}
+        enableThresholdAnimation={true}
         className={cn("group flex h-full w-full flex-col", className)}
       >
-        <div className="relative">
+        <div className="group-data-[threshold-active=true]:animate-threshold relative">
           <Image
             src={
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
