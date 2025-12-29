@@ -43,9 +43,21 @@ const config = {
             filter: "grayscale(0%) contrast(100%) brightness(1)",
           },
         },
+        "threshold-with-highlight": {
+          "0%": {
+            filter: "grayscale(100%) contrast(200%) brightness(0.5)",
+          },
+          "50%": {
+            filter: "grayscale(50%) contrast(150%) brightness(0.75)",
+          },
+          "100%": {
+            filter: "grayscale(0%) contrast(100%) brightness(1)",
+          },
+        },
       },
       animation: {
         threshold: "threshold 0.4s ease-out forwards",
+        "threshold-highlight": "threshold-with-highlight 0.4s ease-out forwards",
       },
     },
   },
