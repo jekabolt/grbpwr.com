@@ -37,10 +37,10 @@ const config = {
         },
         threshold: {
           "0%": {
-            filter: "grayscale(100%) contrast(200%) brightness(0.5)",
+            filter: "grayscale(100%) contrast(200%) brightness(0.5) drop-shadow(0 0 0px transparent)",
           },
           "100%": {
-            filter: "grayscale(0%) contrast(100%) brightness(1)",
+            filter: "grayscale(0%) contrast(100%) brightness(1) drop-shadow(0 0 8px var(--highlight))",
           },
         },
       },

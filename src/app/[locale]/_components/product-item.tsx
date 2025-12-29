@@ -81,7 +81,7 @@ export function ProductItem({
         enableThresholdAnimation={true}
         className={cn("group flex h-full w-full flex-col", className)}
       >
-        <div className="group-data-[threshold-active=true]:animate-threshold relative group-data-[threshold-active=true]:[filter:drop-shadow(0_0_8px_var(--highlight))]">
+        <div className="group-data-[threshold-active=true]:animate-threshold relative">
           <Image
             src={
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
