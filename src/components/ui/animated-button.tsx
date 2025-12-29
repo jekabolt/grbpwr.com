@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -41,6 +41,7 @@ export function AnimatedButton({
   const [isPressed, setIsPressed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isHeld, setIsHeld] = useState(false);
+  const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -55,6 +56,9 @@ export function AnimatedButton({
     window.addEventListener("resize", checkMobile);
     return () => {
       window.removeEventListener("resize", checkMobile);
+      if (holdTimeoutRef.current) {
+        clearTimeout(holdTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -68,21 +72,31 @@ export function AnimatedButton({
     }
   };
 
+  const handleTouchStart = () => {
+    if (isMobile && enableThresholdAnimation) {
+      // iOS shows context menu at ~500ms
+      holdTimeoutRef.current = setTimeout(() => {
+        setIsHeld(true);
+      }, 500);
+    }
+  };
+
   const handleTouchEnd = () => {
-    // Reset the held state on touch end
+    // Clear timer if touch ends before threshold
+    if (holdTimeoutRef.current) {
+      clearTimeout(holdTimeoutRef.current);
+      holdTimeoutRef.current = null;
+    }
+    // Reset animation state
     setIsHeld(false);
   };
 
   const handleTouchCancel = () => {
-    setIsHeld(false);
-  };
-
-  const handleContextMenu = (e: React.MouseEvent | React.TouchEvent) => {
-    // This fires when native preview bar is actually opening
-    if (isMobile && enableThresholdAnimation) {
-      setIsHeld(true);
-      // Keep it visible while the context menu is open
+    if (holdTimeoutRef.current) {
+      clearTimeout(holdTimeoutRef.current);
+      holdTimeoutRef.current = null;
     }
+    setIsHeld(false);
   };
 
   const buttonClasses = cn(
@@ -105,9 +119,9 @@ export function AnimatedButton({
         className={buttonClasses}
         onClick={handlePress}
         disabled={!enableThresholdAnimation && isPressed}
+        onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onTouchCancel={handleTouchCancel}
-        onContextMenu={handleContextMenu}
         data-held={isHeld}
       >
         <Link href={href || ""}>{children}</Link>
@@ -121,9 +135,9 @@ export function AnimatedButton({
       className={buttonClasses}
       onClick={handlePress}
       disabled={!enableThresholdAnimation && isPressed}
+      onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchCancel}
-      onContextMenu={handleContextMenu}
       data-held={isHeld}
     >
       {children}
