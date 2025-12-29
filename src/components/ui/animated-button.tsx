@@ -76,7 +76,7 @@ export function AnimatedButton({
     if (isMobile && enableThresholdAnimation) {
       holdTimeoutRef.current = setTimeout(() => {
         setIsHeld(true);
-      }, 300);
+      }, 800);
     }
   };
 
