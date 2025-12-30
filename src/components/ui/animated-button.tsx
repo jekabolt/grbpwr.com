@@ -80,10 +80,8 @@ export function AnimatedButton({
   const handleTouchStart = () => {
     if (isMobile && enableThresholdAnimation) {
       thresholdReachedRef.current = false;
-      // iOS shows context menu at ~500ms
       holdTimeoutRef.current = setTimeout(() => {
         thresholdReachedRef.current = true;
-        // Don't set isHeld here yet - wait for touchcancel
       }, 500);
     }
   };
@@ -103,18 +101,13 @@ export function AnimatedButton({
       holdTimeoutRef.current = null;
     }
 
-    // Only show animation if threshold was reached (context menu opened)
-    // If user scrolled before 500ms, threshold is false, no animation
     if (thresholdReachedRef.current) {
       setIsHeld(true);
-
-      // Keep animation visible for duration
       animationTimeoutRef.current = setTimeout(() => {
         setIsHeld(false);
         thresholdReachedRef.current = false;
       }, 1500);
     } else {
-      // User scrolled before threshold - no animation
       setIsHeld(false);
     }
   };
