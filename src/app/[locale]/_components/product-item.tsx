@@ -12,6 +12,7 @@ import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
+import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 import { useAnalytics } from "../catalog/_components/useAnalytics";
@@ -94,13 +95,7 @@ export function ProductItem({
             )}
             fit="contain"
           />
-          <span
-            className={cn(
-              "pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-0 mix-blend-screen transition-opacity duration-[400ms] ease-out",
-              "group-data-[held=true]:opacity-60",
-            )}
-            aria-hidden="true"
-          />
+          <Overlay cover="container" color="highlight" trigger="held" />
         </div>
         <div
           className={cn("flex w-full flex-col gap-2 pt-2", {
