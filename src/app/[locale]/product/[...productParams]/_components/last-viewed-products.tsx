@@ -51,13 +51,13 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
               "hidden lg:block": index >= 2,
             })}
           >
-            <ProductItem
-              className="w-full"
-              product={product}
-              isInfoVisible={false}
-            />
-            <div className="pointer-events-none opacity-0 transition-opacity group-hover:opacity-100">
-              <Overlay cover="container" color="light" />
+            <div className="relative">
+              <ProductItem
+                className="w-full"
+                product={product}
+                isInfoVisible={false}
+              />
+              <Overlay cover="container" color="highlight" trigger="hover" />
             </div>
           </div>
         ))}
