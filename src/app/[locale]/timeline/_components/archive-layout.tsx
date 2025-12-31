@@ -20,9 +20,9 @@ export function ArchiveLayout({
   const [viewMode, setViewMode] = useState<ViewMode>("horizontal");
   const t = useTranslations("navigation");
 
-  const handleChangeView = () => {
-    setViewMode(viewMode === "horizontal" ? "vertical" : "horizontal");
-  };
+  // const handleChangeView = () => {
+  //   setViewMode(viewMode === "horizontal" ? "vertical" : "horizontal");
+  // };
 
   return (
     <FlexibleLayout

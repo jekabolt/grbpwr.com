@@ -26,6 +26,7 @@ export function HorizontalGrid({
     <div className="blackTheme bg-bgColor text-textColor">
       <ArchiveGrid
         items={archives}
+        languageId={languageId}
         onHover={(item, rect) =>
           setHoverState({
             item,
