@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
@@ -24,6 +25,7 @@ export default function ItemRow({
   const priceWithSale = `${currencySymbols[currentCountry.currencyKey || ""]} ${product?.productPriceWithSale}`;
   const t = useTranslations("product");
   const tColors = useTranslations("colors");
+  const [isRemoveButtonHeld, setIsRemoveButtonHeld] = useState(false);
 
   if (!product) return null;
 
@@ -37,13 +39,25 @@ export default function ItemRow({
     <Button asChild>
       <Link href={product.slug || ""}>
         <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
-          <div className="min-w-[90px]">
-            <Image
-              src={product.thumbnail || ""}
-              alt="product"
-              fit="contain"
-              aspectRatio="3/4"
+          <div className="relative min-w-[90px]">
+            <div
+              className={cn(
+                "duration-400 pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-0 mix-blend-screen transition-opacity ease-out",
+                { "opacity-60": isRemoveButtonHeld },
+              )}
             />
+            <div
+              className={cn("relative", {
+                "animate-threshold-highlight": isRemoveButtonHeld,
+              })}
+            >
+              <Image
+                src={product.thumbnail || ""}
+                alt="product"
+                fit="contain"
+                aspectRatio="3/4"
+              />
+            </div>
           </div>
           <div className="flex w-full justify-between">
             <div className="flex w-full flex-col justify-between">
@@ -84,6 +98,7 @@ export default function ItemRow({
                   id={product.orderItem?.productId || 0}
                   size={product.orderItem?.sizeId + "" || ""}
                   index={index}
+                  onHeldChange={setIsRemoveButtonHeld}
                 />
               )}
               <div className="flex items-center whitespace-nowrap">
