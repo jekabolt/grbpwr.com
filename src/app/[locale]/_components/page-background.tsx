@@ -99,6 +99,10 @@ export function PageBackground({
 
       if (splitBackground) {
         styleElementRef.current.textContent = `
+          html {
+            background: linear-gradient(to bottom, ${hexColor} 0%, ${hexColor} 50%, #fff 50%, #fff 100%);
+            background-attachment: fixed;
+          }
           html::before {
             content: "";
             position: fixed;
@@ -161,7 +165,8 @@ export function PageBackground({
         `;
       }
 
-      document.body.style.backgroundColor = hexColor;
+      // Set body background: white for split mode (iOS overscroll), color for full mode
+      document.body.style.backgroundColor = splitBackground ? "#fff" : hexColor;
 
       document.body.setAttribute("data-hero-bg-color", hexColor);
     };
