@@ -53,7 +53,7 @@ export function CountriesContent({ className }: { className?: string }) {
           </Text>
           {languagesForCurrentCountry &&
             languagesForCurrentCountry.length > 1 && (
-              <div className="space-y-2.5">
+              <div className="space-y-2.5 mb-4">
                 <Text className="uppercase">{t("language")}</Text>
                 <RadioGroup
                   items={languagesForCurrentCountry.map((item, index) => {
@@ -67,14 +67,14 @@ export function CountriesContent({ className }: { className?: string }) {
                       className: cn(
                         item.className,
                         index === 0 && `border ${borderColor}`,
-                        index === 1 && `border-x border-b ${borderColor}`,
+                        index === 1 && `border-t border-x border-b ${borderColor}`,
                       ),
                     };
                   })}
                   name="language-selector"
                   value={LANGUAGE_ID_TO_LOCALE[languageId]}
                   onValueChange={(val: string) => handleChangeLocaleOnly(val)}
-                  className="gap-0 uppercase lg:grid lg:grid-cols-1"
+                  className="gap-2 uppercase lg:grid lg:grid-cols-1"
                 />
               </div>
             )}

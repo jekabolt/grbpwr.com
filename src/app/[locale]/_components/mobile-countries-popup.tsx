@@ -80,7 +80,7 @@ export function MobileCountriesPopup() {
                 currency: currentCountry.currencyKey || "EUR",
               })}
             </Text>
-            <div className="space-y-2.5">
+            <div className="space-y-2.5 mb-4">
               <Text className="uppercase">{t("language")}</Text>
               {languagesForCurrentCountry &&
                 languagesForCurrentCountry.length > 1 && (
@@ -89,7 +89,7 @@ export function MobileCountriesPopup() {
                     name="language-selector"
                     value={LANGUAGE_ID_TO_LOCALE[languageId]}
                     onValueChange={(val: string) => handleChangeLocaleOnly(val)}
-                    className="flex flex-col gap-0 uppercase"
+                    className="flex flex-col gap-2 uppercase"
                   />
                 )}
             </div>

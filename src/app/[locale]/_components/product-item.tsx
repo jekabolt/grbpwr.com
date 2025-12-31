@@ -12,6 +12,7 @@ import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
+import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 import { useAnalytics } from "../catalog/_components/useAnalytics";
@@ -78,9 +79,10 @@ export function ProductItem({
       <AnimatedButton
         href={product?.slug || ""}
         onMouseDown={() => handleSelectItemEvent(product)}
+        enableThresholdAnimation={true}
         className={cn("group flex h-full w-full flex-col", className)}
       >
-        <div className="relative">
+        <div className="group-data-[held=true]:animate-threshold-highlight relative">
           <Image
             src={
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
@@ -93,6 +95,7 @@ export function ProductItem({
             )}
             fit="contain"
           />
+          <Overlay cover="container" color="highlight" trigger="held" />
         </div>
         <div
           className={cn("flex w-full flex-col gap-2 pt-2", {
