@@ -5,9 +5,13 @@ import { useEffect, useRef } from "react";
 interface HeroBackgroundProps {
   imageUrl?: string;
   backgroundColor?: string;
-  splitBackground?: boolean;
+  splitBackground?: boolean; // true = 50vh top color + 50vh white, false = full height
 }
 
+/**
+ * Extract average RGB color from top-left corner of an image.
+ * Applies a dark overlay blend to simulate CSS overlay effect.
+ */
 async function extractAverageColorWithOverlay(
   imageUrl: string,
   overlayAlpha = 0.4,
@@ -99,12 +103,6 @@ export function PageBackground({
 
       if (splitBackground) {
         styleElementRef.current.textContent = `
-          html {
-            background: linear-gradient(to bottom, ${hexColor} 0%, ${hexColor} 50%, #fff 50%, #fff 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            min-height: 100dvh;
-          }
           html::before {
             content: "";
             position: fixed;
@@ -115,7 +113,7 @@ export function PageBackground({
             height: 50vh;
             min-height: 50vh;
             background-color: ${hexColor};
-            z-index: -1;
+            z-index: -9999;
             pointer-events: none;
             display: block;
           }
@@ -129,7 +127,7 @@ export function PageBackground({
             height: 50vh;
             min-height: 50vh;
             background-color: #fff;
-            z-index: -1;
+            z-index: -9999;
             pointer-events: none;
             display: block;
           }
@@ -145,6 +143,7 @@ export function PageBackground({
           }
         `;
       } else {
+        // Full height background
         styleElementRef.current.textContent = `
           html::before {
             content: "";
@@ -154,7 +153,7 @@ export function PageBackground({
             height: 100vh;
             min-height: 100vh;
             background-color: ${hexColor};
-            z-index: -1;
+            z-index: -9999;
             pointer-events: none;
             display: block;
           }
@@ -167,16 +166,19 @@ export function PageBackground({
         `;
       }
 
-      document.body.style.backgroundColor = splitBackground ? "#fff" : hexColor;
-      document.documentElement.style.backgroundColor = splitBackground
-        ? "#fff"
-        : hexColor;
+      // Set body background for Safari bar coloring
+      document.body.style.backgroundColor = hexColor;
+
+      // Set data attribute for DialogBackgroundManager coordination
       document.body.setAttribute("data-hero-bg-color", hexColor);
     };
 
+    // Direct background color provided
     if (backgroundColor) {
       applyBackground(backgroundColor);
-    } else if (imageUrl) {
+    }
+    // Extract color from image
+    else if (imageUrl) {
       const nextImageUrl = `/_next/image?url=${encodeURIComponent(imageUrl)}&w=1920&q=75`;
 
       extractAverageColorWithOverlay(nextImageUrl)
