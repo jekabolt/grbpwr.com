@@ -7,8 +7,8 @@ import FlexibleLayout from "@/components/flexible-layout";
 import { EmptyHero } from "@/components/ui/empty-hero";
 
 import { Ads } from "./_components/ads";
-import { HeroBackground } from "./_components/hero-background";
 import { MainAds } from "./_components/main-ads";
+import { HeroBackground } from "./_components/page-background";
 
 export async function generateMetadata({
   params,
