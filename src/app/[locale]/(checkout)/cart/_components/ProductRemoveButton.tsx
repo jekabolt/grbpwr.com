@@ -3,11 +3,11 @@
 import { common_OrderItem } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
+import { Button } from "@/components/ui/button";
+import { Overlay } from "@/components/ui/overlay";
 import { useCartAnalytics } from "@/lib/analitycs/useCartAnalytics";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Overlay } from "@/components/ui/overlay";
 
 type Props = {
   id: number;
@@ -51,7 +51,7 @@ export default function ProductRemoveButton({
 
   return (
     <>
-      {isRemoveConfirmed && <Overlay color="dark" cover="container" />}
+      {isRemoveConfirmed && <Overlay color="highlight" cover="container" />}
       <Button
         type="button"
         onClick={handleRemove}
