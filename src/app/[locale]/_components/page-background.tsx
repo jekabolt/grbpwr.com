@@ -76,6 +76,7 @@ export function PageBackground({
 }: HeroBackgroundProps) {
   const styleElementRef = useRef<HTMLStyleElement | null>(null);
   const originalBodyBg = useRef<string | null>(null);
+  const originalHtmlBg = useRef<string | null>(null);
 
   useEffect(() => {
     if (!imageUrl && !backgroundColor) return;
@@ -86,6 +87,9 @@ export function PageBackground({
 
     originalBodyBg.current = window.getComputedStyle(
       document.body,
+    ).backgroundColor;
+    originalHtmlBg.current = window.getComputedStyle(
+      document.documentElement,
     ).backgroundColor;
 
     const applyBackground = (hexColor: string) => {
@@ -99,10 +103,6 @@ export function PageBackground({
 
       if (splitBackground) {
         styleElementRef.current.textContent = `
-          html {
-            background: linear-gradient(to bottom, ${hexColor} 0%, ${hexColor} 50%, #fff 50%, #fff 100%);
-            background-attachment: fixed;
-          }
           html::before {
             content: "";
             position: fixed;
@@ -142,6 +142,9 @@ export function PageBackground({
             }
           }
         `;
+        // For iOS overscroll: top = color, bottom = white
+        document.documentElement.style.background = `linear-gradient(to bottom, ${hexColor} 0%, ${hexColor} 50vh, #fff 50vh, #fff 100%)`;
+        document.body.style.backgroundColor = "#fff";
       } else {
         styleElementRef.current.textContent = `
           html::before {
@@ -163,10 +166,9 @@ export function PageBackground({
             }
           }
         `;
+        document.documentElement.style.backgroundColor = hexColor;
+        document.body.style.backgroundColor = hexColor;
       }
-
-      // Set body background: white for split mode (iOS overscroll), color for full mode
-      document.body.style.backgroundColor = splitBackground ? "#fff" : hexColor;
 
       document.body.setAttribute("data-hero-bg-color", hexColor);
     };
@@ -192,6 +194,9 @@ export function PageBackground({
         styleElementRef.current.remove();
         styleElementRef.current = null;
       }
+      document.documentElement.style.background = "";
+      document.documentElement.style.backgroundColor =
+        originalHtmlBg.current || "";
       document.body.style.backgroundColor = originalBodyBg.current || "";
       document.body.removeAttribute("data-hero-bg-color");
     };
