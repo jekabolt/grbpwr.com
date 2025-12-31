@@ -10,6 +10,7 @@ import {
 } from "next-intl/server";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { PageTransition } from "@/components/page-transition";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
 import { ToastProvider } from "@/components/ui/toaster";
@@ -61,7 +62,9 @@ export default async function RootLayout({ children, params }: Props) {
       <body className={FeatureMono.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ToastProvider>
-            <div className="relative min-h-screen">{children}</div>
+            <PageTransition>
+              <div className="relative min-h-screen">{children}</div>
+            </PageTransition>
             <GeoSuggestWrapper />
             <UpdateLocation />
             <CookieBanner />
