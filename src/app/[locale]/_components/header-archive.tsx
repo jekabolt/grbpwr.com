@@ -1,41 +1,36 @@
+"use client";
+
+import { cn } from "@/lib/utils";
 import { HeaderProps } from "@/components/flexible-layout";
 import { AnimatedButton } from "@/components/ui/animated-button";
 
-import { MobileArchiveHeader } from "./mobile-archive-header";
+import { useHeaderVisibility } from "./useHeaderVisibility";
 
-export function HeaderArchive({
-  left,
-  center,
-  right,
-  link,
-  onClick,
-}: HeaderProps) {
+export function HeaderArchive({ left, center, link }: HeaderProps) {
+  const { isVisible, isMobile, isAtTop } = useHeaderVisibility();
+
   return (
-    <>
-      <div className="block lg:hidden">
-        <MobileArchiveHeader
-          left={left}
-          center={center}
-          right={right}
-          onClick={onClick}
-        />
+    <header
+      className={cn(
+        "blackTheme fixed inset-x-2.5 top-2 z-30 flex h-12 items-center border border-textInactiveColor bg-bgColor px-4 py-2 text-textColor lg:gap-0 lg:border-transparent lg:px-5 lg:py-3 lg:text-textColor lg:mix-blend-exclusion",
+        "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
+        "lg:transform-none",
+        {
+          "pointer-events-auto translate-y-0": isVisible,
+          "pointer-events-none -translate-y-[120%]": !isVisible,
+          "border-none": isAtTop && isMobile,
+        },
+      )}
+    >
+      <div className="flex w-full items-center justify-between lg:justify-start lg:gap-3">
+        <AnimatedButton href={link ? link : "/"}>{left}</AnimatedButton>
+        <AnimatedButton
+          href="/timeline"
+          className="block lg:flex lg:grow lg:basis-0 lg:text-left"
+        >
+          {center}
+        </AnimatedButton>
       </div>
-      <header className="fixed inset-x-2.5 bottom-2 z-30 hidden h-12 items-center justify-between gap-1 border-textInactiveColor bg-transparent p-3 text-textColor mix-blend-exclusion lg:top-2 lg:flex lg:gap-0 lg:border-0 lg:px-2.5 lg:py-3">
-        <div className="flex gap-3">
-          <AnimatedButton className="lg:pl-2" href={link ? link : "/"}>
-            {left}
-          </AnimatedButton>
-          <AnimatedButton
-            href="/timeline"
-            className="flex grow basis-0 text-left"
-          >
-            {center}
-          </AnimatedButton>
-        </div>
-        {/* <AnimatedButton animationArea="text" onClick={onClick}>
-          {right}
-        </AnimatedButton> */}
-      </header>
-    </>
+    </header>
   );
 }

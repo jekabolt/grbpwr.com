@@ -8,6 +8,7 @@ import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
+import { PageBackground } from "../../_components/page-background";
 import PageComponent from "./_components/page-component";
 
 interface ArchivePageParams {
@@ -82,21 +83,24 @@ export default async function Page({ params }: ArchivePageParams) {
   // }
 
   return (
-    <FlexibleLayout
-      headerType="archive"
-      headerProps={{
-        left: "grbpwr.com",
-        center: t("timeline"),
-      }}
-      theme="dark"
-      className="pt-5 lg:pt-20"
-    >
-      <div className="space-y-20 px-2.5 pb-20 lg:space-y-10 lg:px-7 lg:pb-12">
-        <PageComponent archive={archive} />
-        {/* <div className="h-full lg:h-screen">
+    <>
+      <PageBackground backgroundColor="#000000" splitBackground={false} />
+      <FlexibleLayout
+        headerType="archive"
+        headerProps={{
+          left: "grbpwr.com",
+          center: t("timeline"),
+        }}
+        theme="dark"
+        className="pt-5 lg:pt-20"
+      >
+        <div className="space-y-20 px-2.5 pt-20 lg:space-y-10 lg:px-7 lg:pt-24">
+          <PageComponent archive={archive} />
+          {/* <div className="h-full lg:h-screen">
           <FullSizeItem archive={nextArchive} className="w-60 lg:w-[34rem]" />
         </div> */}
-      </div>
-    </FlexibleLayout>
+        </div>
+      </FlexibleLayout>
+    </>
   );
 }

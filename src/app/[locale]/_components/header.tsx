@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
@@ -14,7 +14,7 @@ import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
 import { HeaderLeftNav } from "./header-left-nav";
 import { useAnnounce } from "./useAnnounce";
-import { useHeaderScrollPosition } from "./useHeaderScrollPosition";
+import { useHeaderVisibility } from "./useHeaderVisibility";
 
 export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
   const { dictionary } = useDataContext();
@@ -23,51 +23,14 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
   const itemsQuantity = Object.keys(products).length;
-  const [isVisible, setIsVisible] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isAnnounceVisible, setIsAnnounceVisible] = useState(true);
-  const { scrollDirection, isAtTop } = useHeaderScrollPosition();
+  const { isVisible, isMobile, isAnnounceVisible, isAtTop } =
+    useHeaderVisibility();
   const { languageId } = useTranslationsStore((state) => state);
   const announceTranslation = dictionary?.announce?.translations?.find(
     (t) => t.languageId === languageId,
   );
   const { open, handleClose } = useAnnounce(announceTranslation?.text || "");
   const t = useTranslations("navigation");
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 1024);
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (isMobile) {
-      if (scrollDirection === "down") {
-        setIsVisible(false);
-      } else if (scrollDirection === "up" || isAtTop) {
-        setIsVisible(true);
-      }
-    } else {
-      setIsVisible(true);
-    }
-  }, [scrollDirection, isAtTop, isMobile]);
-
-  useEffect(() => {
-    if (isMobile) {
-      setIsAnnounceVisible(true);
-    } else {
-      if (scrollDirection === "down") {
-        setIsAnnounceVisible(false);
-      } else if (scrollDirection === "up" || isAtTop) {
-        setIsAnnounceVisible(true);
-      }
-    }
-  }, [scrollDirection, isAtTop, isMobile]);
 
   return (
     <>

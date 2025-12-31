@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 
 interface HeroBackgroundProps {
   imageUrl?: string;
+  backgroundColor?: string;
+  splitBackground?: boolean; // true = 50vh top color + 50vh white, false = full height
 }
 
 /**
@@ -71,39 +73,35 @@ async function extractAverageColorWithOverlay(
   });
 }
 
-export function HeroBackground({ imageUrl }: HeroBackgroundProps) {
+export function PageBackground({
+  imageUrl,
+  backgroundColor,
+  splitBackground = true,
+}: HeroBackgroundProps) {
   const styleElementRef = useRef<HTMLStyleElement | null>(null);
   const originalBodyBg = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!imageUrl) return;
+    if (!imageUrl && !backgroundColor) return;
 
-    const nextImageUrl = `/_next/image?url=${encodeURIComponent(imageUrl)}&w=1920&q=75`;
-
-    // Prevent duplicate style insertions
     if (styleElementRef.current) return;
 
     let isMounted = true;
 
-    // Save original body background for cleanup
     originalBodyBg.current = window.getComputedStyle(
       document.body,
     ).backgroundColor;
 
-    extractAverageColorWithOverlay(nextImageUrl)
-      .then((hexColor) => {
-        if (!isMounted || !hexColor) return;
+    const applyBackground = (hexColor: string) => {
+      if (!isMounted) return;
 
-        // Create and append style element if not already created
-        if (!styleElementRef.current) {
-          const styleEl = document.createElement("style");
-          styleElementRef.current = styleEl;
-          document.head.appendChild(styleEl);
-        }
+      if (!styleElementRef.current) {
+        const styleEl = document.createElement("style");
+        styleElementRef.current = styleEl;
+        document.head.appendChild(styleEl);
+      }
 
-        // html::before = top 50vh with extracted color
-        // html::after = bottom 50vh with white (covers the colored body)
-        // body = extracted color (for Safari bar/overscroll)
+      if (splitBackground) {
         styleElementRef.current.textContent = `
           html::before {
             content: "";
@@ -144,16 +142,53 @@ export function HeroBackground({ imageUrl }: HeroBackgroundProps) {
             }
           }
         `;
+      } else {
+        // Full height background
+        styleElementRef.current.textContent = `
+          html::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            min-height: 100vh;
+            background-color: ${hexColor};
+            z-index: -9999;
+            pointer-events: none;
+            display: block;
+          }
+          @supports (height: 100dvh) {
+            html::before {
+              height: 100dvh;
+              min-height: 100dvh;
+            }
+          }
+        `;
+      }
 
-        // Set body background for Safari bar coloring
-        document.body.style.backgroundColor = hexColor;
+      // Set body background for Safari bar coloring
+      document.body.style.backgroundColor = hexColor;
 
-        // Set data attribute for DialogBackgroundManager coordination
-        document.body.setAttribute("data-hero-bg-color", hexColor);
-      })
-      .catch((error) =>
-        console.error("HeroBackground color extraction error:", error),
-      );
+      // Set data attribute for DialogBackgroundManager coordination
+      document.body.setAttribute("data-hero-bg-color", hexColor);
+    };
+
+    // Direct background color provided
+    if (backgroundColor) {
+      applyBackground(backgroundColor);
+    }
+    // Extract color from image
+    else if (imageUrl) {
+      const nextImageUrl = `/_next/image?url=${encodeURIComponent(imageUrl)}&w=1920&q=75`;
+
+      extractAverageColorWithOverlay(nextImageUrl)
+        .then((hexColor) => {
+          if (hexColor) applyBackground(hexColor);
+        })
+        .catch((error) =>
+          console.error("HeroBackground color extraction error:", error),
+        );
+    }
 
     return () => {
       isMounted = false;
@@ -165,7 +200,7 @@ export function HeroBackground({ imageUrl }: HeroBackgroundProps) {
       document.body.style.backgroundColor = originalBodyBg.current || "";
       document.body.removeAttribute("data-hero-bg-color");
     };
-  }, [imageUrl]);
+  }, [imageUrl, backgroundColor, splitBackground]);
 
   return null;
 }

@@ -137,7 +137,15 @@ export function AnimatedButton({
         onTouchCancel={handleTouchCancel}
         data-held={isHeld}
       >
-        <Link href={href || ""}>{children}</Link>
+        <Link href={href || ""} className="relative">
+          {children}
+          {isHeld && (
+            <span
+              className="duration-400 pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-60 mix-blend-screen transition-opacity ease-out"
+              aria-hidden="true"
+            />
+          )}
+        </Link>
       </Button>
     );
   }
@@ -154,6 +162,12 @@ export function AnimatedButton({
       data-held={isHeld}
     >
       {children}
+      {isHeld && (
+        <span
+          className="duration-400 pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-60 mix-blend-screen transition-opacity ease-out"
+          aria-hidden="true"
+        />
+      )}
     </Button>
   );
 }
