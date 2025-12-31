@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
+import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartProductsList";
+import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { validateCartItems } from "@/lib/cart/validate-cart-items";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
-import { useDataContext } from "@/components/contexts/DataContext";
-import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartProductsList";
-import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
 
 import { Button } from "./button";
 import { Text } from "./text";
