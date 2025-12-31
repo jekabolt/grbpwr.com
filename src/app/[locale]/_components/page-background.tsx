@@ -144,6 +144,7 @@ export function PageBackground({
         `;
         // For iOS overscroll: top = color, bottom = white
         document.documentElement.style.background = `linear-gradient(to bottom, ${hexColor} 0%, ${hexColor} 50%, #fff 50%, #fff 100%)`;
+        document.documentElement.style.backgroundAttachment = "fixed";
         document.body.style.backgroundColor = "#fff";
       } else {
         styleElementRef.current.textContent = `
