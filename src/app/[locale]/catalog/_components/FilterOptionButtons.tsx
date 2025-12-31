@@ -50,18 +50,6 @@ export default function FilterOptionButtons({
   const isBottoms = category?.toLowerCase().includes("bottoms");
   const isTailored = category?.toLowerCase().includes("tailored");
 
-  // Debug logging
-  if (showSeparated) {
-    console.log("FilterOptionButtons Debug:", {
-      category,
-      topCategoryId,
-      isShoes,
-      isBottoms,
-      isTailored,
-      totalValues: values.length,
-      allValues: values.map((v) => getItemName(v)),
-    });
-  }
 
   // Regular non-numeric values (XS, S, M, L, etc.)
   const nonNumericValues = values.filter((factor) => {
@@ -91,19 +79,6 @@ export default function FilterOptionButtons({
     return /_\d+ta_[mf]$/.test(name);
   });
 
-  // Debug logging for filtered values
-  if (showSeparated) {
-    console.log("Filtered sizes:", {
-      nonNumeric: nonNumericValues.length,
-      numeric: numericValues.length,
-      bottoms: bottomsValues.length,
-      tailored: tailoredValues.length,
-      nonNumericSample: nonNumericValues.slice(0, 5).map((v) => getItemName(v)),
-      numericSample: numericValues.slice(0, 5).map((v) => getItemName(v)),
-      bottomsSample: bottomsValues.slice(0, 5).map((v) => getItemName(v)),
-      tailoredSample: tailoredValues.slice(0, 5).map((v) => getItemName(v)),
-    });
-  }
 
   const showNonNumeric = showSeparated
     ? nonNumericValues.length > 0
