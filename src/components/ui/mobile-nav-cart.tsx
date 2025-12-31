@@ -130,7 +130,9 @@ export function MobileNavCart({
               >
                 <Text variant="uppercase">{`${tCart("shopping cart")} ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
                 <DialogPrimitives.Close asChild>
-                  <Button onClick={closeCart}>[x]</Button>
+                  <Button onClick={closeCart} className="-m-2 p-3">
+                    [x]
+                  </Button>
                 </DialogPrimitives.Close>
               </div>
               {itemsQuantity > 0 ? (
