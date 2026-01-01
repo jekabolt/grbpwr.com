@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
-import { sendButtonEvent } from "@/lib/analitycs/button";
 import { Text } from "@/components/ui/text";
+import { sendButtonEvent } from "@/lib/analitycs/button";
 
 import { Button } from "../../../../../components/ui/button";
 import { LoadingButton } from "./loading-button";
@@ -27,7 +27,7 @@ export function MobileMeasurements({
     useProductPricing({ product });
   const t = useTranslations("product");
 
-  const isSelectedSizeOutOfStock = selectedSize && outOfStock?.[selectedSize];
+  const isSelectedSizeOutOfStock = selectedSize !== undefined && selectedSize !== null && outOfStock?.[selectedSize];
 
   const handleOpenChange = (isOpen: boolean) => {
     if (isOpen) {
@@ -47,7 +47,9 @@ export function MobileMeasurements({
       }, 100);
       return false;
     }
-    return handleAddToCart();
+    setOpen(false);
+    const success = await handleAddToCart();
+    return success;
   };
 
   return (

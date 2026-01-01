@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { useEffect, useRef, useState } from "react";
 
+import Modal from "@/app/[locale]/product/[...productParams]/_components/MeasurementPopup";
+import { Text } from "@/components/ui/text";
 import { sendViewItemEvent } from "@/lib/analitycs/product";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { Text } from "@/components/ui/text";
-import Modal from "@/app/[locale]/product/[...productParams]/_components/MeasurementPopup";
 
 import { GarmentDescription } from "./garmentDescription";
 import { Measurements } from "./measurements";

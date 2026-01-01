@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { useEffect, useState } from "react";
 
+import { useDataContext } from "@/components/contexts/DataContext";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { useDataContext } from "@/components/contexts/DataContext";
 
 import { useProductBasics } from "./useProductBasics";
 import { useProductSizes } from "./useProductSizes";
@@ -17,12 +17,28 @@ export function useMeasurementSizes({
 }) {
   const { productId } = useProductBasics({ product });
   const { sizes, sizeNames, isOneSize } = useProductSizes({ product });
-  const { increaseQuantity } = useCart((state) => state);
+  const { increaseQuantity, openCart } = useCart((state) => state);
   const { currentCountry } = useTranslationsStore((s) => s);
   const { dictionary } = useDataContext();
-  const [selectedSize, setSelectedSize] = useState<number | undefined>(
-    sizes && sizes.length > 0 ? sizes[0].sizeId : undefined,
-  );
+
+  // Calculate out of stock sizes
+  const outOfStock =
+    product?.sizes?.reduce(
+      (acc, size) => {
+        acc[size.sizeId || 0] = size.quantity?.value === "0";
+        return acc;
+      },
+      {} as Record<number, boolean>,
+    ) || {};
+
+  // Select first in-stock size, or first size if all are out of stock
+  const getInitialSize = () => {
+    if (!sizes || sizes.length === 0) return undefined;
+    const firstInStockSize = sizes.find(size => !outOfStock[size.sizeId || 0]);
+    return firstInStockSize ? firstInStockSize.sizeId : sizes[0].sizeId;
+  };
+
+  const [selectedSize, setSelectedSize] = useState<number | undefined>(getInitialSize());
   const maxOrderItems = dictionary?.maxOrderItems || 3;
 
   // Auto-select size for one-size products
@@ -53,6 +69,9 @@ export function useMeasurementSizes({
         currency,
         maxOrderItems,
       );
+      if (success) {
+        openCart();
+      }
       return success;
     } catch (error) {
       console.error(error);

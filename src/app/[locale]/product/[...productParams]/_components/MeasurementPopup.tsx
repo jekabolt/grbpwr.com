@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
-import { sendButtonEvent } from "@/lib/analitycs/button";
 import { LoadingButton } from "@/app/[locale]/product/[...productParams]/_components/loading-button";
 import { useProductBasics } from "@/app/[locale]/product/[...productParams]/_components/utils/useProductBasics";
 import { useProductPricing } from "@/app/[locale]/product/[...productParams]/_components/utils/useProductPricing";
+import { sendButtonEvent } from "@/lib/analitycs/button";
 
 import { Button } from "../../../../../components/ui/button";
 import { Overlay } from "../../../../../components/ui/overlay";
@@ -36,7 +36,7 @@ export default function MeasurementPopup({
   const t = useTranslations("product");
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const isSelectedSizeOutOfStock = selectedSize && outOfStock?.[selectedSize];
+  const isSelectedSizeOutOfStock = selectedSize !== undefined && selectedSize !== null && outOfStock?.[selectedSize];
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -71,10 +71,8 @@ export default function MeasurementPopup({
       }, 100);
       return false;
     }
+    setModalOpen(false);
     const success = await handleAddToCart();
-    if (success) {
-      toggleModal();
-    }
     return success;
   }
 
