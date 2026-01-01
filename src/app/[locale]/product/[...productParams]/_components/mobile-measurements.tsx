@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
-import { sendButtonEvent } from "@/lib/analitycs/button";
 import { Text } from "@/components/ui/text";
+import { sendButtonEvent } from "@/lib/analitycs/button";
 
 import { Button } from "../../../../../components/ui/button";
 import { LoadingButton } from "./loading-button";
@@ -19,12 +19,15 @@ export function MobileMeasurements({
   isOneSize,
   handleAddToCart,
   handleSelectSize,
+  onNotifyMeOpen,
 }: MobileMeasurementsProps) {
   const [open, setOpen] = useState(false);
   const { preorder, name } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
   const t = useTranslations("product");
+
+  const isSelectedSizeOutOfStock = selectedSize !== undefined && selectedSize !== null && outOfStock?.[selectedSize];
 
   const handleOpenChange = (isOpen: boolean) => {
     if (isOpen) {
@@ -34,6 +37,19 @@ export function MobileMeasurements({
       });
     }
     setOpen(isOpen);
+  };
+
+  const handleButtonClick = async () => {
+    if (isSelectedSizeOutOfStock) {
+      setOpen(false);
+      setTimeout(() => {
+        onNotifyMeOpen?.();
+      }, 100);
+      return false;
+    }
+    setOpen(false);
+    const success = await handleAddToCart();
+    return success;
   };
 
   return (
@@ -69,19 +85,24 @@ export function MobileMeasurements({
               <LoadingButton
                 variant="simpleReverse"
                 size="lg"
-                onAction={() => handleAddToCart()}
+                onAction={handleButtonClick}
               >
                 <Text variant="inherit">
-                  {preorder ? t("preorder") : t("add")}
+                  {isSelectedSizeOutOfStock
+                    ? t("notify me")
+                    : preorder
+                      ? t("preorder")
+                      : t("add")}
                 </Text>
-                {isSaleApplied ? (
-                  <Text variant="inactive">
-                    {priceMinusSale}
-                    <Text component="span">{priceWithSale}</Text>
-                  </Text>
-                ) : (
-                  <Text variant="inherit">{price}</Text>
-                )}
+                {!isSelectedSizeOutOfStock &&
+                  (isSaleApplied ? (
+                    <Text variant="inactive">
+                      {priceMinusSale}
+                      <Text component="span">{priceWithSale}</Text>
+                    </Text>
+                  ) : (
+                    <Text variant="inherit">{price}</Text>
+                  ))}
               </LoadingButton>
             </div>
           </div>
@@ -98,4 +119,5 @@ export type MobileMeasurementsProps = {
   isOneSize?: boolean;
   handleAddToCart: () => Promise<boolean>;
   handleSelectSize: (size: number) => void;
+  onNotifyMeOpen?: () => void;
 };

@@ -161,7 +161,7 @@ export function AddToCartBtn({
           >
             {isSoldOut || isSelectedSizeOutOfStock || isHoveringOutOfStock ? (
               <Text className="w-full text-center uppercase" variant="inherit">
-                notify me
+                {t("notify me")}
               </Text>
             ) : isMaxQuantityFinal ? (
               <Text className="w-full text-center uppercase" variant="inherit">

@@ -73,7 +73,8 @@
         "select size": "サイズを選択",
         "ship by": "発送日",
         "size guide": "サイズガイド",
-        "recently viewed": "最近見た商品"
+        "recently viewed": "最近見た商品",
+        "notify me": "通知する"
     },
     "checkout": {
         "contact": "連絡先",

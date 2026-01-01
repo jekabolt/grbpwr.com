@@ -73,7 +73,8 @@
         "select size": "사이즈 선택",
         "ship by": "배송 일",
         "size guide": "사이즈 가이드",
-        "recently viewed": "최근 본 상품"
+        "recently viewed": "최근 본 상품",
+        "notify me": "알림 받기"
     },
     "checkout": {
         "contact": "연락처",

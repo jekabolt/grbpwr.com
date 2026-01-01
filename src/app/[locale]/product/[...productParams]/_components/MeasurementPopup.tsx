@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
-import { sendButtonEvent } from "@/lib/analitycs/button";
 import { LoadingButton } from "@/app/[locale]/product/[...productParams]/_components/loading-button";
 import { useProductBasics } from "@/app/[locale]/product/[...productParams]/_components/utils/useProductBasics";
 import { useProductPricing } from "@/app/[locale]/product/[...productParams]/_components/utils/useProductPricing";
+import { sendButtonEvent } from "@/lib/analitycs/button";
 
 import { Button } from "../../../../../components/ui/button";
 import { Overlay } from "../../../../../components/ui/overlay";
@@ -17,12 +17,18 @@ interface ModalProps {
   children: React.ReactNode;
   product: common_ProductFull;
   handleAddToCart: () => Promise<boolean>;
+  selectedSize?: number;
+  outOfStock?: Record<number, boolean>;
+  onNotifyMeOpen?: () => void;
 }
 
 export default function MeasurementPopup({
   children,
   product,
   handleAddToCart,
+  selectedSize,
+  outOfStock,
+  onNotifyMeOpen,
 }: ModalProps) {
   const { preorder, name } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
@@ -30,6 +36,7 @@ export default function MeasurementPopup({
   const t = useTranslations("product");
 
   const [isModalOpen, setModalOpen] = useState(false);
+  const isSelectedSizeOutOfStock = selectedSize !== undefined && selectedSize !== null && outOfStock?.[selectedSize];
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -57,10 +64,15 @@ export default function MeasurementPopup({
   };
 
   async function handleAddToCartComplete() {
-    const success = await handleAddToCart();
-    if (success) {
-      toggleModal();
+    if (isSelectedSizeOutOfStock) {
+      setModalOpen(false);
+      setTimeout(() => {
+        onNotifyMeOpen?.();
+      }, 100);
+      return false;
     }
+    setModalOpen(false);
+    const success = await handleAddToCart();
     return success;
   }
 
@@ -84,16 +96,21 @@ export default function MeasurementPopup({
               onAction={() => handleAddToCartComplete()}
             >
               <Text variant="inherit">
-                {preorder ? t("preorder") : t("add")}
+                {isSelectedSizeOutOfStock
+                  ? t("notify me")
+                  : preorder
+                    ? t("preorder")
+                    : t("add")}
               </Text>
-              {isSaleApplied ? (
-                <Text variant="inactive">
-                  {priceMinusSale}
-                  <Text component="span">{priceWithSale}</Text>
-                </Text>
-              ) : (
-                <Text variant="inherit">{price}</Text>
-              )}
+              {!isSelectedSizeOutOfStock &&
+                (isSaleApplied ? (
+                  <Text variant="inactive">
+                    {priceMinusSale}
+                    <Text component="span">{priceWithSale}</Text>
+                  </Text>
+                ) : (
+                  <Text variant="inherit">{price}</Text>
+                ))}
             </LoadingButton>
           </div>
         </div>

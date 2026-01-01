@@ -73,7 +73,8 @@
         "select size": "sélectionner la taille",
         "ship by": "livraison le",
         "size guide": "guide de taille",
-        "recently viewed": "vue récente"
+        "recently viewed": "vue récente",
+        "notify me": "me notifier"
     },
     "checkout": {
         "contact": "contact",
