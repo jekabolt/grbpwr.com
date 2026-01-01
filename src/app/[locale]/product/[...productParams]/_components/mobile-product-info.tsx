@@ -13,6 +13,7 @@ import { GarmentDescription } from "./garmentDescription";
 import { LastViewedProducts } from "./last-viewed-products";
 import { MobileImageCarousel } from "./mobile-image-carousel";
 import { MobileMeasurements } from "./mobile-measurements";
+import { NotifyMe } from "./notify-me";
 import { AddToCartBtn } from "./select-size-add-to-cart/add-to-cart-btn";
 import { SizePicker } from "./size-picker";
 import { useDisabled } from "./utils/useDisabled";
@@ -29,6 +30,7 @@ export function MobileProductInfo({
   const [hoveredOutOfStockSizeId, setHoveredOutOfStockSizeId] = useState<
     number | null
   >(null);
+  const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
   const { name, productId, productCategory, productSubCategory } =
     useProductBasics({ product });
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
@@ -39,6 +41,7 @@ export function MobileProductInfo({
     handleDialogClose,
     handleSizeSelect,
     handleAddToCart,
+    setActiveSizeId,
   } = useHandlers({
     id: productId,
     sizeNames,
@@ -58,6 +61,13 @@ export function MobileProductInfo({
   const carouselContainerRef = useRef<HTMLDivElement>(null);
   const carouselHeight = useElementHeight(carouselContainerRef, 48);
 
+  const handleNotifyMeOpen = () => {
+    if (selectedSize) {
+      setActiveSizeId(selectedSize);
+    }
+    setIsNotifyMeOpen(true);
+  };
+
   useEffect(() => {
     if (product) {
       sendViewItemEvent(
@@ -71,6 +81,14 @@ export function MobileProductInfo({
 
   return (
     <div className="relative h-full overflow-y-hidden">
+      <NotifyMe
+        id={productId}
+        open={isNotifyMeOpen}
+        onOpenChange={setIsNotifyMeOpen}
+        sizeNames={sizeNames}
+        outOfStock={outOfStock}
+        activeSizeId={activeSizeId}
+      />
       <div ref={mainAreaRef} className="fixed inset-x-0 bottom-0 top-12">
         <div className="relative h-full">
           <div ref={carouselContainerRef} className="relative">
@@ -94,6 +112,7 @@ export function MobileProductInfo({
                   isOneSize={isOneSize}
                   handleAddToCart={handleMeasurementSizes}
                   handleSelectSize={handleSelectSize}
+                  onNotifyMeOpen={handleNotifyMeOpen}
                 />
                 <SizePicker
                   sizeNames={sizeNames || []}

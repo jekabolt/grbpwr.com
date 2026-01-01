@@ -19,12 +19,15 @@ export function MobileMeasurements({
   isOneSize,
   handleAddToCart,
   handleSelectSize,
+  onNotifyMeOpen,
 }: MobileMeasurementsProps) {
   const [open, setOpen] = useState(false);
   const { preorder, name } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
   const t = useTranslations("product");
+
+  const isSelectedSizeOutOfStock = selectedSize && outOfStock?.[selectedSize];
 
   const handleOpenChange = (isOpen: boolean) => {
     if (isOpen) {
@@ -34,6 +37,17 @@ export function MobileMeasurements({
       });
     }
     setOpen(isOpen);
+  };
+
+  const handleButtonClick = async () => {
+    if (isSelectedSizeOutOfStock) {
+      setOpen(false);
+      setTimeout(() => {
+        onNotifyMeOpen?.();
+      }, 100);
+      return false;
+    }
+    return handleAddToCart();
   };
 
   return (
@@ -69,19 +83,24 @@ export function MobileMeasurements({
               <LoadingButton
                 variant="simpleReverse"
                 size="lg"
-                onAction={() => handleAddToCart()}
+                onAction={handleButtonClick}
               >
                 <Text variant="inherit">
-                  {preorder ? t("preorder") : t("add")}
+                  {isSelectedSizeOutOfStock
+                    ? t("notify me")
+                    : preorder
+                      ? t("preorder")
+                      : t("add")}
                 </Text>
-                {isSaleApplied ? (
-                  <Text variant="inactive">
-                    {priceMinusSale}
-                    <Text component="span">{priceWithSale}</Text>
-                  </Text>
-                ) : (
-                  <Text variant="inherit">{price}</Text>
-                )}
+                {!isSelectedSizeOutOfStock &&
+                  (isSaleApplied ? (
+                    <Text variant="inactive">
+                      {priceMinusSale}
+                      <Text component="span">{priceWithSale}</Text>
+                    </Text>
+                  ) : (
+                    <Text variant="inherit">{price}</Text>
+                  ))}
               </LoadingButton>
             </div>
           </div>
@@ -98,4 +117,5 @@ export type MobileMeasurementsProps = {
   isOneSize?: boolean;
   handleAddToCart: () => Promise<boolean>;
   handleSelectSize: (size: number) => void;
+  onNotifyMeOpen?: () => void;
 };

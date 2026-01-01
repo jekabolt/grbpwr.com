@@ -17,12 +17,18 @@ interface ModalProps {
   children: React.ReactNode;
   product: common_ProductFull;
   handleAddToCart: () => Promise<boolean>;
+  selectedSize?: number;
+  outOfStock?: Record<number, boolean>;
+  onNotifyMeOpen?: () => void;
 }
 
 export default function MeasurementPopup({
   children,
   product,
   handleAddToCart,
+  selectedSize,
+  outOfStock,
+  onNotifyMeOpen,
 }: ModalProps) {
   const { preorder, name } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
@@ -30,6 +36,7 @@ export default function MeasurementPopup({
   const t = useTranslations("product");
 
   const [isModalOpen, setModalOpen] = useState(false);
+  const isSelectedSizeOutOfStock = selectedSize && outOfStock?.[selectedSize];
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -57,6 +64,13 @@ export default function MeasurementPopup({
   };
 
   async function handleAddToCartComplete() {
+    if (isSelectedSizeOutOfStock) {
+      setModalOpen(false);
+      setTimeout(() => {
+        onNotifyMeOpen?.();
+      }, 100);
+      return false;
+    }
     const success = await handleAddToCart();
     if (success) {
       toggleModal();
@@ -84,16 +98,21 @@ export default function MeasurementPopup({
               onAction={() => handleAddToCartComplete()}
             >
               <Text variant="inherit">
-                {preorder ? t("preorder") : t("add")}
+                {isSelectedSizeOutOfStock
+                  ? t("notify me")
+                  : preorder
+                    ? t("preorder")
+                    : t("add")}
               </Text>
-              {isSaleApplied ? (
-                <Text variant="inactive">
-                  {priceMinusSale}
-                  <Text component="span">{priceWithSale}</Text>
-                </Text>
-              ) : (
-                <Text variant="inherit">{price}</Text>
-              )}
+              {!isSelectedSizeOutOfStock &&
+                (isSaleApplied ? (
+                  <Text variant="inactive">
+                    {priceMinusSale}
+                    <Text component="span">{priceWithSale}</Text>
+                  </Text>
+                ) : (
+                  <Text variant="inherit">{price}</Text>
+                ))}
             </LoadingButton>
           </div>
         </div>

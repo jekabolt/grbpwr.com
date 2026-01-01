@@ -10,6 +10,7 @@ import Modal from "@/app/[locale]/product/[...productParams]/_components/Measure
 
 import { GarmentDescription } from "./garmentDescription";
 import { Measurements } from "./measurements";
+import { NotifyMe } from "./notify-me";
 import { AddToCartBtn } from "./select-size-add-to-cart/add-to-cart-btn";
 import { SizePicker } from "./size-picker";
 import { useDisabled } from "./utils/useDisabled";
@@ -23,6 +24,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
   const [hoveredOutOfStockSizeId, setHoveredOutOfStockSizeId] = useState<
     number | null
   >(null);
+  const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
 
   const { currentCountry } = useTranslationsStore((s) => s);
   const { name, productId, productCategory, productSubCategory } =
@@ -30,13 +32,18 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
       product,
     });
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
-  const { activeSizeId, isLoading, handleSizeSelect, handleAddToCart } =
-    useHandlers({
-      id: productId,
-      sizeNames,
-      isOneSize,
-      product,
-    });
+  const {
+    activeSizeId,
+    isLoading,
+    handleSizeSelect,
+    handleAddToCart,
+    setActiveSizeId,
+  } = useHandlers({
+    id: productId,
+    sizeNames,
+    isOneSize,
+    product,
+  });
   const { outOfStock, isMaxQuantity } = useDisabled({
     id: productId,
     activeSizeId,
@@ -44,6 +51,13 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
   });
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
+
+  const handleNotifyMeOpen = () => {
+    if (selectedSize) {
+      setActiveSizeId(selectedSize);
+    }
+    setIsNotifyMeOpen(true);
+  };
 
   useEffect(() => {
     if (product) {
@@ -58,12 +72,26 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
 
   return (
     <div className="relative">
+      <NotifyMe
+        id={productId}
+        open={isNotifyMeOpen}
+        onOpenChange={setIsNotifyMeOpen}
+        sizeNames={sizeNames}
+        outOfStock={outOfStock}
+        activeSizeId={activeSizeId}
+      />
       <div className="border-inactive absolute bottom-2.5 right-2.5 h-fit max-h-[566px] w-[300px] overflow-y-scroll border bg-bgColor p-2.5">
         <div className="flex flex-col justify-between gap-16">
           <Text variant="uppercase">{name}</Text>
           <GarmentDescription product={product} />
           <div className="space-y-5">
-            <Modal product={product} handleAddToCart={handleMeasurementSizes}>
+            <Modal
+              product={product}
+              handleAddToCart={handleMeasurementSizes}
+              selectedSize={selectedSize}
+              outOfStock={outOfStock}
+              onNotifyMeOpen={handleNotifyMeOpen}
+            >
               <Measurements
                 product={product}
                 selectedSize={selectedSize || 0}
