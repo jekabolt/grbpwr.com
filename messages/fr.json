@@ -300,6 +300,17 @@
         "submit": "soumettre",
         "order not found": "commande introuvable"
     },
+    "order-info": {
+        "order info": "informations de commande",
+        "order id": "numéro de commande",
+        "order date": "date de commande",
+        "status": "statut",
+        "tracking number": "numéro de suivi",
+        "delivery/payment info": "informations de livraison/paiement",
+        "shipping address": "adresse de livraison",
+        "discount code": "code de réduction",
+        "shipping": "livraison"
+    },
     "aftersale-services": {
         "aftersale services": "services après-vente",
         "topic": "sujet",

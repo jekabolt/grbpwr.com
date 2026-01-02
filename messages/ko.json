@@ -300,6 +300,17 @@
         "submit": "제출",
         "order not found": "주문을 찾을 수 없습니다"
     },
+    "order-info": {
+        "order info": "주문 정보",
+        "order id": "주문 번호",
+        "order date": "주문 날짜",
+        "status": "상태",
+        "tracking number": "추적 번호",
+        "delivery/payment info": "배송/결제 정보",
+        "shipping address": "배송 주소",
+        "discount code": "할인 코드",
+        "shipping": "배송"
+    },
     "aftersale-services": {
         "aftersale services": "애프터서비스",
         "topic": "주제",

@@ -1,9 +1,12 @@
+"use client";
+
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { paymentMethodNamesMap } from "@/constants";
+import { useTranslations } from "next-intl";
 
+import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
-import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
 export function OrderSecondaryInfo({
   shipping,
@@ -29,7 +32,7 @@ export function OrderSecondaryInfo({
           shipmentCarrierName={shipmentCarrierName}
         />
       </div>
-      <div className="block border-b border-textInactiveColor lg:hidden">
+      <div className="block lg:hidden">
         <MobileOrderSecondaryInfo
           shipping={shipping}
           billing={billing}
@@ -49,11 +52,14 @@ export function DesktopOrderSecondaryInfo({
   payment,
   shipmentCarrierName,
 }: DesktopMobileProps) {
+  const t = useTranslations("order-info");
+  const tCheckout = useTranslations("checkout");
+
   return (
     <div className="w-full space-y-6">
       <div className="flex flex-row items-center justify-between border-b border-textInactiveColor py-6">
         <div className="flex w-full flex-col gap-4">
-          <Text variant="uppercase">shipping address</Text>
+          <Text variant="uppercase">{t("shipping address")}</Text>
           {shipping && (
             <div>
               <Text>
@@ -69,7 +75,7 @@ export function DesktopOrderSecondaryInfo({
           )}
         </div>
         <div className="flex w-full flex-col gap-4">
-          <Text variant="uppercase">billing address</Text>
+          <Text variant="uppercase">{tCheckout("billing address")}</Text>
           {billing && (
             <div>
               <Text>
@@ -86,16 +92,16 @@ export function DesktopOrderSecondaryInfo({
         </div>
       </div>
       <div className="flex flex-col gap-4 border-b border-textInactiveColor pb-6">
-        <Text variant="uppercase">shipping method</Text>
+        <Text variant="uppercase">{tCheckout("shipping method")}</Text>
         <Text variant="default">{shipmentCarrierName}</Text>
       </div>
       <div className="flex flex-col gap-4">
-        <Text variant="uppercase">payment method</Text>
+        <Text variant="uppercase">{tCheckout("payment method")}</Text>
         <Text className="lowercase">
           {
             paymentMethodNamesMap[
-              payment?.paymentInsert
-                ?.paymentMethod as keyof typeof paymentMethodNamesMap
+            payment?.paymentInsert
+              ?.paymentMethod as keyof typeof paymentMethodNamesMap
             ]
           }
         </Text>
@@ -111,15 +117,21 @@ export function MobileOrderSecondaryInfo({
   payment,
   shipmentCarrierName,
 }: DesktopMobileProps) {
+  const t = useTranslations("order-info");
+  const tCheckout = useTranslations("checkout");
+
   return (
     <FieldsGroupContainer
-      title="delivery/payment info"
+      title={t("delivery/payment info")}
+      signType="plus-minus"
+      className="space-y-0 border-b border-l border-r border-textInactiveColor p-2.5"
+      signPosition="before"
       clickableAreaClassName="w-full"
     >
-      <div className="space-y-10">
+      <div className="mt-4 space-y-10">
         <div className="flex w-full justify-between">
           <Text variant="uppercase" className="w-full">
-            shipping address
+            {t("shipping address")}
           </Text>
           {shipping && (
             <div className="w-full">
@@ -137,7 +149,7 @@ export function MobileOrderSecondaryInfo({
         </div>
         <div className="flex w-full justify-between">
           <Text variant="uppercase" className="w-full">
-            billing address
+            {tCheckout("billing address")}
           </Text>
           {billing && (
             <div className="w-full">
@@ -155,19 +167,19 @@ export function MobileOrderSecondaryInfo({
         </div>
         <div className="flex w-full justify-between">
           <Text variant="uppercase" className="w-full">
-            shipping method
+            {tCheckout("shipping method")}
           </Text>
           <Text className="w-full">{shipmentCarrierName}</Text>
         </div>
-        <div className="flex w-full justify-between pb-6">
+        <div className="flex w-full justify-between">
           <Text variant="uppercase" className="w-full">
-            payment method
+            {tCheckout("payment method")}
           </Text>
           <Text className="w-full lowercase">
             {
               paymentMethodNamesMap[
-                payment?.paymentInsert
-                  ?.paymentMethod as keyof typeof paymentMethodNamesMap
+              payment?.paymentInsert
+                ?.paymentMethod as keyof typeof paymentMethodNamesMap
               ]
             }
           </Text>

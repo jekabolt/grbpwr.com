@@ -300,6 +300,17 @@
         "submit": "送信",
         "order not found": "注文が見つかりません"
     },
+    "order-info": {
+        "order info": "注文情報",
+        "order id": "注文番号",
+        "order date": "注文日",
+        "status": "ステータス",
+        "tracking number": "追跡番号",
+        "delivery/payment info": "配送/支払い情報",
+        "shipping address": "配送先住所",
+        "discount code": "割引コード",
+        "shipping": "配送"
+    },
     "aftersale-services": {
         "aftersale services": "アフターサービス",
         "topic": "トピック",

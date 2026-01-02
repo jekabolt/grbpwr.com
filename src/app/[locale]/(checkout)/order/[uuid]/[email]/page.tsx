@@ -1,8 +1,9 @@
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
-import { serviceClient } from "@/lib/api";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
+import { serviceClient } from "@/lib/api";
 
 import { OrderPageComponent } from "./_components/order-page";
 import { OrderPageSkeleton } from "./_components/order-page-skeleton";
@@ -17,6 +18,7 @@ interface Props {
 export default async function OrderPage(props: Props) {
   const params = await props.params;
   const { uuid, email } = params;
+  const t = await getTranslations("order-info");
 
   const orderPromise = serviceClient.GetOrderByUUIDAndEmail({
     orderUuid: uuid,
@@ -25,9 +27,9 @@ export default async function OrderPage(props: Props) {
 
   return (
     <FlexibleLayout>
-      <div className="space-y-10 px-2.5 pb-20 pt-10 lg:px-32 lg:pt-24">
+      <div className="space-y-10 px-2.5 pb-20 pt-24 lg:px-32 lg:py-24">
         <Text variant="uppercase" component="h1">
-          Order info
+          {t("order info")}
         </Text>
         <Suspense fallback={<OrderPageSkeleton />}>
           <OrderPageComponent orderPromise={orderPromise} />
