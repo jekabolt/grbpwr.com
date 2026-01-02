@@ -299,6 +299,17 @@
         "submit": "invia",
         "order not found": "ordine non trovato"
     },
+    "order-info": {
+        "order info": "informazioni ordine",
+        "order id": "numero ordine",
+        "order date": "data ordine",
+        "status": "stato",
+        "tracking number": "numero di tracciamento",
+        "delivery/payment info": "informazioni consegna/pagamento",
+        "shipping address": "indirizzo di spedizione",
+        "discount code": "codice sconto",
+        "shipping": "spedizione"
+    },
     "aftersale-services": {
         "aftersale services": "servizi post-vendita",
         "topic": "argomento",

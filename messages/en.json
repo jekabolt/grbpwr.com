@@ -300,6 +300,17 @@
         "submit": "submit",
         "order not found": "order not found"
     },
+    "order-info": {
+        "order info": "order info",
+        "order id": "order id",
+        "order date": "order date",
+        "status": "status",
+        "tracking number": "tracking number",
+        "delivery/payment info": "delivery/payment info",
+        "shipping address": "shipping address",
+        "discount code": "discount code",
+        "shipping": "shipping"
+    },
     "aftersale-services": {
         "aftersale services": "aftersale services",
         "topic": "topic",

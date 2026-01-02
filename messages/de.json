@@ -300,6 +300,17 @@
         "submit": "Absenden",
         "order not found": "Bestellung nicht gefunden"
     },
+    "order-info": {
+        "order info": "Bestellinformationen",
+        "order id": "Bestellnummer",
+        "order date": "Bestelldatum",
+        "status": "Status",
+        "tracking number": "Sendungsnummer",
+        "delivery/payment info": "Liefer-/Zahlungsinformationen",
+        "shipping address": "Lieferadresse",
+        "discount code": "Rabattcode",
+        "shipping": "Versand"
+    },
     "aftersale-services": {
         "aftersale services": "Kundendienst",
         "topic": "Thema",
