@@ -165,7 +165,7 @@ export function AddToCartBtn({
               </Text>
             ) : isMaxQuantityFinal ? (
               <Text className="w-full text-center uppercase" variant="inherit">
-                order limit exceeded
+                {t("order limit exceeded")}
               </Text>
             ) : isNoSizeSelected ? (
               <Text className="w-full text-center" variant="inherit">

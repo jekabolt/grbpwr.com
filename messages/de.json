@@ -74,7 +74,9 @@
         "ship by": "versand am",
         "size guide": "größenleitfaden",
         "recently viewed": "zuletzt angesehen",
-        "notify me": "benachrichtige mich"
+        "notify me": "benachrichtige mich",
+        "notify-description": "wählen sie ihre größe und wir benachrichtigen sie per e-mail, sobald dieses produkt wieder auf lager ist.",
+        "order limit exceeded": "bestelllimit überschritten"
     },
     "checkout": {
         "contact": "kontakt",
@@ -105,7 +107,7 @@
         "apply": "anwenden",
         "discard": "verwerfen",
         "enter promo code": "GUTSCHEINCODE EINGEBEN",
-        "pay": "bezahlen",
+        "place order": "Bestellung aufgeben",
         "subtotal": "zwischensumme",
         "promo discount": "gutscheinrabatt",
         "grand total": "gesamtsumme",
@@ -118,7 +120,10 @@
         "hide": "ausblenden",
         "show": "anzeigen",
         "incl": "inkl. MwSt.",
-        "redeem promo code": "Aktionscode einlösen"
+        "redeem promo code": "Aktionscode einlösen",
+        "placing order": "bestellung aufgeben",
+        "checking availability": "verfügbarkeit prüfen",
+        "stock reservation": "bestandsreservierung"
     },
     "not-found": {
         "title": "seite nicht gefunden",
@@ -289,7 +294,8 @@
         "description": "neueste Ready-to-Wear-Menswear, Womenswear und Accessoires",
         "catalog": "katalog",
         "timeline": "zeitleiste",
-        "timeline description": "archiv und updates entdecken"
+        "timeline description": "archiv und updates entdecken",
+        "main hero image": "hauptheldenbild"
     },
     "order-status": {
         "order status": "Bestellstatus",
@@ -309,7 +315,17 @@
         "delivery/payment info": "Liefer-/Zahlungsinformationen",
         "shipping address": "Lieferadresse",
         "discount code": "Rabattcode",
-        "shipping": "Versand"
+        "shipping": "Versand",
+        "placed": "aufgegeben",
+        "awaiting payment": "Zahlung ausstehend",
+        "confirmed": "bestätigt",
+        "shipped": "versandt",
+        "delivered": "zugestellt",
+        "cancelled": "storniert",
+        "refunded": "erstattet",
+        "pending return": "Rücksendung ausstehend",
+        "refund in progress": "Erstattung in Bearbeitung",
+        "unknown": "unbekannt"
     },
     "aftersale-services": {
         "aftersale services": "Kundendienst",
@@ -460,7 +476,9 @@
         "successfully_subscribed": "erfolgreich für Newsletter angemeldet!",
         "failed_to_subscribe": "anmeldung fehlgeschlagen. bitte versuchen Sie es erneut.",
         "invalid_email": "bitte geben Sie eine gültige E-Mail-Adresse ein",
-        "email_copied": "e-mail kopiert"
+        "email_copied": "e-mail kopiert",
+        "cart_outdated": "ihr warenkorb ist veraltet",
+        "cart_modified": "ihr warenkorb wurde geändert"
     },
     "refund": {
         "return order": "bestellung retournieren",
@@ -635,5 +653,20 @@
         "skinny": "eng",
         "cropped": "verkürzt",
         "tailored": "maßgeschneidert"
+    },
+    "client-services": {
+        "title": "kundenservice",
+        "welcome": "willkommen bei grbpwr.",
+        "description": "für anfragen oder hilfe zögern sie bitte nicht, uns zu kontaktieren. wir sind montags bis samstags von 9 bis 19 uhr geöffnet, außer an feiertagen.",
+        "faq title": "häufig gestellte fragen",
+        "faq description": "sie können diesen bereich nutzen, um die faq's zu konsultieren, ihre bestellung zu verfolgen und ihre rücksendung zu verfolgen.",
+        "after sales title": "after sales service",
+        "after sales description": "kontaktieren sie uns bei fragen zu unseren reparatur- und änderungsservices.",
+        "email": "e-mail"
+    },
+    "accessibility": {
+        "mobile menu": "grbpwr mobiles menü",
+        "notify me dialog": "grbpwr benachrichtige mich",
+        "reason label": "grund"
     }
 }

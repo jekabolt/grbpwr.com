@@ -73,7 +73,10 @@
         "select size": "seleziona taglia",
         "ship by": "consegna il",
         "size guide": "guida taglie",
-        "recently viewed": "recentemente visualizzato"
+        "recently viewed": "recentemente visualizzato",
+        "notify me": "avvisami",
+        "notify-description": "seleziona la tua taglia e ti invieremo un'email quando questo prodotto sarà di nuovo disponibile.",
+        "order limit exceeded": "limite ordine superato"
     },
     "checkout": {
         "contact": "contatto",
@@ -104,7 +107,7 @@
         "apply": "applica",
         "discard": "scarta",
         "enter promo code": "INSERISCI CODICE PROMO",
-        "pay": "paga",
+        "place order": "effettua ordine",
         "subtotal": "subtotale",
         "promo discount": "sconto promo",
         "grand total": "totale finale",
@@ -117,7 +120,10 @@
         "hide": "nascondi",
         "show": "mostra",
         "incl": "IVA incl.",
-        "redeem promo code": "riscatta codice promozionale"
+        "redeem promo code": "riscatta codice promozionale",
+        "placing order": "inserimento ordine",
+        "checking availability": "verifica disponibilità",
+        "stock reservation": "prenotazione magazzino"
     },
     "not-found": {
         "title": "pagina non trovata",
@@ -288,7 +294,8 @@
         "description": "ultima collezione di prêt-à-porter maschile, femminile e accessori",
         "catalog": "catalogo",
         "timeline": "cronologia",
-        "timeline description": "scopri l'archivio e le aggiornamenti"
+        "timeline description": "scopri l'archivio e le aggiornamenti",
+        "main hero image": "immagine hero principale"
     },
     "order-status": {
         "order status": "stato dell'ordine",
@@ -308,7 +315,17 @@
         "delivery/payment info": "informazioni consegna/pagamento",
         "shipping address": "indirizzo di spedizione",
         "discount code": "codice sconto",
-        "shipping": "spedizione"
+        "shipping": "spedizione",
+        "placed": "effettuato",
+        "awaiting payment": "in attesa di pagamento",
+        "confirmed": "confermato",
+        "shipped": "spedito",
+        "delivered": "consegnato",
+        "cancelled": "annullato",
+        "refunded": "rimborsato",
+        "pending return": "reso in sospeso",
+        "refund in progress": "rimborso in corso",
+        "unknown": "sconosciuto"
     },
     "aftersale-services": {
         "aftersale services": "servizi post-vendita",
@@ -459,7 +476,9 @@
         "successfully_subscribed": "iscrizione alla newsletter avvenuta con successo!",
         "failed_to_subscribe": "iscrizione fallita. riprova.",
         "invalid_email": "inserisci un indirizzo email valido",
-        "email_copied": "email copiata"
+        "email_copied": "email copiata",
+        "cart_outdated": "il tuo carrello è obsoleto",
+        "cart_modified": "il tuo carrello è stato modificato"
     },
     "refund": {
         "return order": "restituisci ordine",
@@ -492,7 +511,6 @@
         "bottoms": "pantaloni",
         "dresses": "vestiti",
         "loungewear_sleepwear": "loungewear",
-        "loungewear": "loungewear",
         "accessories": "accessori",
         "shoes": "scarpe",
         "bags": "borse",
@@ -635,5 +653,20 @@
         "skinny": "aderente",
         "cropped": "corto",
         "tailored": "sartoriale"
+    },
+    "client-services": {
+        "title": "servizio clienti",
+        "welcome": "benvenuti a grbpwr.",
+        "description": "per richieste o assistenza non esitate a contattarci. siamo aperti dal lunedì al sabato dalle 9 alle 19, esclusi i giorni festivi.",
+        "faq title": "domande frequenti",
+        "faq description": "puoi utilizzare questa area per consultare le faq, seguire il tuo ordine e tracciare il tuo reso.",
+        "after sales title": "servizio post-vendita",
+        "after sales description": "contattaci per qualsiasi domanda relativa ai nostri servizi di riparazione e alterazione.",
+        "email": "e-mail"
+    },
+    "accessibility": {
+        "mobile menu": "menu mobile grbpwr",
+        "notify me dialog": "dialogo avvisami grbpwr",
+        "reason label": "motivo"
     }
 }

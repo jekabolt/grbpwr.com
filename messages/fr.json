@@ -74,7 +74,9 @@
         "ship by": "livraison le",
         "size guide": "guide de taille",
         "recently viewed": "vue récente",
-        "notify me": "me notifier"
+        "notify me": "me notifier",
+        "notify-description": "sélectionnez votre taille et nous vous enverrons un e-mail lorsque ce produit sera de nouveau en stock.",
+        "order limit exceeded": "limite de commande dépassée"
     },
     "checkout": {
         "contact": "contact",
@@ -102,10 +104,10 @@
         "billing text": "sélectionnez l'adresse qui correspond à votre carte ou à votre méthode de paiement",
         "same as shipping address": "même adresse que l'adresse de livraison",
         "order summary": "récapitulatif de la commande",
-        "pay": "payer",
         "apply": "appliquer",
         "discard": "rejeter",
         "enter promo code": "ENTREZ LE CODE PROMO",
+        "place order": "passer commande",
         "subtotal": "total",
         "promo discount": "remise promo",
         "grand total": "total général",
@@ -118,7 +120,10 @@
         "hide": "masquer",
         "show": "afficher",
         "incl": "TVA incl.",
-        "redeem promo code": "utiliser le code promo"
+        "redeem promo code": "utiliser le code promo",
+        "placing order": "passer la commande",
+        "checking availability": "vérification de la disponibilité",
+        "stock reservation": "réservation de stock"
     },
     "not-found": {
         "title": "page non trouvée",
@@ -289,7 +294,8 @@
         "description": "dernière collection de prêt-à-porter homme, femme et accessoires",
         "catalog": "catalogue",
         "timeline": "chronologie",
-        "timeline description": "découvrir l'archive et les mises à jour"
+        "timeline description": "découvrir l'archive et les mises à jour",
+        "main hero image": "image héroïque principale"
     },
     "order-status": {
         "order status": "statut de commande",
@@ -309,7 +315,17 @@
         "delivery/payment info": "informations de livraison/paiement",
         "shipping address": "adresse de livraison",
         "discount code": "code de réduction",
-        "shipping": "livraison"
+        "shipping": "livraison",
+        "placed": "passée",
+        "awaiting payment": "en attente de paiement",
+        "confirmed": "confirmée",
+        "shipped": "expédiée",
+        "delivered": "livrée",
+        "cancelled": "annulée",
+        "refunded": "remboursée",
+        "pending return": "retour en attente",
+        "refund in progress": "remboursement en cours",
+        "unknown": "inconnu"
     },
     "aftersale-services": {
         "aftersale services": "services après-vente",
@@ -460,7 +476,9 @@
         "successfully_subscribed": "abonnement à la newsletter réussi !",
         "failed_to_subscribe": "échec de l'abonnement. veuillez réessayer.",
         "invalid_email": "veuillez saisir une adresse email valide",
-        "email_copied": "email copié"
+        "email_copied": "email copié",
+        "cart_outdated": "votre panier est obsolète",
+        "cart_modified": "votre panier a été modifié"
     },
     "refund": {
         "return order": "retourner la commande",
@@ -635,5 +653,20 @@
         "skinny": "moulant",
         "cropped": "court",
         "tailored": "sur mesure"
+    },
+    "client-services": {
+        "title": "service client",
+        "welcome": "bienvenue chez grbpwr.",
+        "description": "pour toute demande ou assistance, n'hésitez pas à nous contacter. nous sommes ouverts du lundi au samedi de 9h à 19h, sauf jours fériés.",
+        "faq title": "questions fréquemment posées",
+        "faq description": "vous pouvez utiliser cette zone pour consulter les faq, suivre votre commande et suivre votre retour.",
+        "after sales title": "service après-vente",
+        "after sales description": "contactez-nous pour toute question concernant nos services de réparation et de retouche.",
+        "email": "e-mail"
+    },
+    "accessibility": {
+        "mobile menu": "menu mobile grbpwr",
+        "notify me dialog": "dialogue me notifier grbpwr",
+        "reason label": "raison"
     }
 }

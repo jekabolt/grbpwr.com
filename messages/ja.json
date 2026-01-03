@@ -74,7 +74,9 @@
         "ship by": "発送日",
         "size guide": "サイズガイド",
         "recently viewed": "最近見た商品",
-        "notify me": "通知する"
+        "notify me": "通知する",
+        "notify-description": "サイズを選択すると、この商品が再入荷したときにメールでお知らせします。",
+        "order limit exceeded": "注文限度を超えました"
     },
     "checkout": {
         "contact": "連絡先",
@@ -105,7 +107,7 @@
         "apply": "適用",
         "discard": "破棄",
         "enter promo code": "プロモコードを入力",
-        "pay": "支払う",
+        "place order": "注文する",
         "subtotal": "小計",
         "promo discount": "プロモ割引",
         "grand total": "総合計",
@@ -118,7 +120,10 @@
         "hide": "非表示",
         "show": "表示",
         "incl": "税込",
-        "redeem promo code": "プロモコードを適用"
+        "redeem promo code": "プロモコードを適用",
+        "placing order": "注文処理中",
+        "checking availability": "在庫確認中",
+        "stock reservation": "在庫予約中"
     },
     "not-found": {
         "title": "ページが見つかりません",
@@ -289,7 +294,8 @@
         "description": "最新のメンズ、レディース、アクセサリーのコレクション",
         "catalog": "カタログ",
         "timeline": "タイムライン",
-        "timeline description": "アーカイブと更新を発見"
+        "timeline description": "アーカイブと更新を発見",
+        "main hero image": "メインヒーロー画像"
     },
     "order-status": {
         "order status": "注文状況",
@@ -309,7 +315,17 @@
         "delivery/payment info": "配送/支払い情報",
         "shipping address": "配送先住所",
         "discount code": "割引コード",
-        "shipping": "配送"
+        "shipping": "配送",
+        "placed": "注文完了",
+        "awaiting payment": "支払い待ち",
+        "confirmed": "確認済み",
+        "shipped": "発送済み",
+        "delivered": "配達完了",
+        "cancelled": "キャンセル済み",
+        "refunded": "返金済み",
+        "pending return": "返品処理待ち",
+        "refund in progress": "返金処理中",
+        "unknown": "不明"
     },
     "aftersale-services": {
         "aftersale services": "アフターサービス",
@@ -460,7 +476,9 @@
         "successfully_subscribed": "ニュースレターの購読が完了しました！",
         "failed_to_subscribe": "購読に失敗しました。もう一度お試しください。",
         "invalid_email": "有効なメールアドレスを入力してください",
-        "email_copied": "メールアドレスがコピーされました"
+        "email_copied": "メールアドレスがコピーされました",
+        "cart_outdated": "カートが古くなっています",
+        "cart_modified": "カートが変更されました"
     },
     "refund": {
         "return order": "注文返品",
@@ -635,5 +653,20 @@
         "skinny": "スキニー",
         "cropped": "クロップド",
         "tailored": "テーラード"
+    },
+    "client-services": {
+        "title": "カスタマーサービス",
+        "welcome": "grbpwrへようこそ。",
+        "description": "お問い合わせやサポートが必要な場合は、お気軽にご連絡ください。祝日を除く月曜日から土曜日の午前9時から午後7時まで営業しています。",
+        "faq title": "よくある質問",
+        "faq description": "このエリアを使用して、FAQを参照したり、ご注文を追跡したり、返品を追跡したりできます。",
+        "after sales title": "アフターサービス",
+        "after sales description": "修理および変更サービスに関するご質問は、お問い合わせください。",
+        "email": "メール"
+    },
+    "accessibility": {
+        "mobile menu": "grbpwrモバイルメニュー",
+        "notify me dialog": "grbpwr通知ダイアログ",
+        "reason label": "理由"
     }
 }

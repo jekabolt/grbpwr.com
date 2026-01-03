@@ -1,4 +1,5 @@
 import { Control, FieldPath, FieldValues } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -24,13 +25,15 @@ export default function AftersaleSelector<T extends FieldValues>({
   className,
   renderLabel,
 }: AftersaleSelectorProps<T>) {
+  const t = useTranslations("accessibility");
+  
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="sr-only">reason:</FormLabel>
+          <FormLabel className="sr-only">{t("reason label")}:</FormLabel>
           <FormControl>
             <div className={cn("flex flex-wrap gap-3", className)}>
               {list.map((l, i) => (

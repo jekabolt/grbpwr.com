@@ -74,7 +74,9 @@
         "ship by": "发货日期",
         "size guide": "尺码指南",
         "recently viewed": "最近浏览的商品",
-        "notify me": "通知我"
+        "notify me": "通知我",
+        "notify-description": "选择您的尺码，当此商品重新上架时，我们将通过电子邮件通知您。",
+        "order limit exceeded": "订单限制已超出"
     },
     "checkout": {
         "contact": "联系人",
@@ -105,7 +107,7 @@
         "apply": "应用",
         "discard": "取消",
         "enter promo code": "输入优惠码",
-        "pay": "支付",
+        "place order": "下订单",
         "subtotal": "小计",
         "promo discount": "优惠折扣",
         "grand total": "总计",
@@ -118,7 +120,10 @@
         "hide": "隐藏",
         "show": "显示",
         "incl": "含税",
-        "redeem promo code": "兑换优惠码"
+        "redeem promo code": "兑换优惠码",
+        "placing order": "正在下单",
+        "checking availability": "检查库存",
+        "stock reservation": "库存预留"
     },
     "not-found": {
         "title": "页面未找到",
@@ -289,7 +294,8 @@
         "description": "最新男士、女士和配饰系列",
         "catalog": "目录",
         "timeline": "时间轴",
-        "timeline description": "发现档案和更新"
+        "timeline description": "发现档案和更新",
+        "main hero image": "主英雄图片"
     },
     "order-status": {
         "order status": "订单状态",
@@ -309,7 +315,17 @@
         "delivery/payment info": "配送/支付信息",
         "shipping address": "配送地址",
         "discount code": "折扣码",
-        "shipping": "配送"
+        "shipping": "配送",
+        "placed": "已下单",
+        "awaiting payment": "等待付款",
+        "confirmed": "已确认",
+        "shipped": "已发货",
+        "delivered": "已送达",
+        "cancelled": "已取消",
+        "refunded": "已退款",
+        "pending return": "待退货",
+        "refund in progress": "退款处理中",
+        "unknown": "未知"
     },
     "aftersale-services": {
         "aftersale services": "售后服务",
@@ -460,7 +476,9 @@
         "successfully_subscribed": "成功订阅新闻通讯！",
         "failed_to_subscribe": "订阅失败，请重试。",
         "invalid_email": "请输入有效的邮箱地址",
-        "email_copied": "邮箱已复制"
+        "email_copied": "邮箱已复制",
+        "cart_outdated": "您的购物车已过期",
+        "cart_modified": "您的购物车已被修改"
     },
     "refund": {
         "return order": "退货订单",
@@ -635,5 +653,20 @@
         "skinny": "紧身版型",
         "cropped": "短款",
         "tailored": "修身剪裁"
+    },
+    "client-services": {
+        "title": "客户服务",
+        "welcome": "欢迎来到grbpwr.",
+        "description": "如需咨询或帮助，请随时与我们联系。我们周一至周六上午9点至下午7点营业，节假日除外。",
+        "faq title": "常见问题",
+        "faq description": "您可以使用此区域查询常见问题、跟踪订单和退货。",
+        "after sales title": "售后服务",
+        "after sales description": "如有任何关于维修和改制服务的问题，请与我们联系。",
+        "email": "电子邮件"
+    },
+    "accessibility": {
+        "mobile menu": "grbpwr移动菜单",
+        "notify me dialog": "grbpwr通知对话框",
+        "reason label": "原因"
     }
 }
