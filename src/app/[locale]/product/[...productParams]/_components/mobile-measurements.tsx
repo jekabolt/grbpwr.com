@@ -26,6 +26,7 @@ export function MobileMeasurements({
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
   const t = useTranslations("product");
+  const tAccessibility = useTranslations("accessibility");
 
   const isSelectedSizeOutOfStock = selectedSize !== undefined && selectedSize !== null && outOfStock?.[selectedSize];
 
@@ -63,7 +64,7 @@ export function MobileMeasurements({
         <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
         <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-40 flex flex-col gap-4 overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5">
           <DialogPrimitives.Title className="sr-only">
-            grbpwr mobile menu
+            {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
           <div className="flex h-full flex-col">
             <div className="relative mb-10 flex shrink-0 items-center justify-between">

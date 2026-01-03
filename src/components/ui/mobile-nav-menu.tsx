@@ -21,6 +21,7 @@ export function MobileNavMenu({
     "men" | "women" | undefined
   >();
   const t = useTranslations("navigation");
+  const tAccessibility = useTranslations("accessibility");
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
@@ -33,7 +34,7 @@ export function MobileNavMenu({
         <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-screen bg-overlay" />
         <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-50 border border-textInactiveColor bg-bgColor px-2.5 pb-4 pt-5">
           <DialogPrimitives.Title className="sr-only">
-            grbpwr mobile menu
+            {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
           <div className="flex h-full flex-col">
             <div className="mb-14">

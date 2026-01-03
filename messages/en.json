@@ -74,7 +74,9 @@
         "ship by": "ship by",
         "size guide": "size guide",
         "recently viewed": "recently viewed",
-        "notify me": "notify me"
+        "notify me": "notify me",
+        "notify-description": "select your size and we will email you when this product is back in stock.",
+        "order limit exceeded": "order limit exceeded"
     },
     "checkout": {
         "contact": "contact",
@@ -118,7 +120,10 @@
         "hide": "hide",
         "show": "show",
         "incl": "incl. vat",
-        "redeem promo code": "redeem promo code"
+        "redeem promo code": "redeem promo code",
+        "placing order": "placing order",
+        "checking availability": "checking availability",
+        "stock reservation": "stock reservation"
     },
     "not-found": {
         "title": "page not found",
@@ -289,7 +294,8 @@
         "description": "latest ready-to-wear menswear, womenswear, and accessories",
         "catalog": "catalog",
         "timeline": "timeline",
-        "timeline description": "discover archive and updates"
+        "timeline description": "discover archive and updates",
+        "main hero image": "main hero image"
     },
     "order-status": {
         "order status": "order status",
@@ -309,7 +315,17 @@
         "delivery/payment info": "delivery/payment info",
         "shipping address": "shipping address",
         "discount code": "discount code",
-        "shipping": "shipping"
+        "shipping": "shipping",
+        "placed": "placed",
+        "awaiting payment": "awaiting payment",
+        "confirmed": "confirmed",
+        "shipped": "shipped",
+        "delivered": "delivered",
+        "cancelled": "cancelled",
+        "refunded": "refunded",
+        "pending return": "pending return",
+        "refund in progress": "refund in progress",
+        "unknown": "unknown"
     },
     "aftersale-services": {
         "aftersale services": "aftersale services",
@@ -460,7 +476,9 @@
         "successfully_subscribed": "successfully subscribed to newsletter!",
         "failed_to_subscribe": "failed to subscribe. please try again.",
         "invalid_email": "please enter a valid email address",
-        "email_copied": "e-mail copied"
+        "email_copied": "e-mail copied",
+        "cart_outdated": "your cart is outdated",
+        "cart_modified": "your cart has been modified"
     },
     "refund": {
         "return order": "return order",
@@ -635,5 +653,20 @@
         "skinny": "skinny",
         "cropped": "cropped",
         "tailored": "tailored"
+    },
+    "client-services": {
+        "title": "client service",
+        "welcome": "welcome to grbpwr.",
+        "description": "for inquiries or assistance please do not hesitate to contact us. we are open monday through saturday 9 am until 7 pm, excluding holidays.",
+        "faq title": "frequently asked questions",
+        "faq description": "you can use this area to consult the faq's, follow your order and track your return.",
+        "after sales title": "after sales service",
+        "after sales description": "contact us for any questions pertaining to our repair and alteration services.",
+        "email": "email"
+    },
+    "accessibility": {
+        "mobile menu": "grbpwr mobile menu",
+        "notify me dialog": "grbpwr notify me",
+        "reason label": "reason"
     }
 }

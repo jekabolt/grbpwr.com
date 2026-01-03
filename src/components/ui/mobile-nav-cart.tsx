@@ -30,19 +30,21 @@ export function MobileNavCart({
   const { dictionary } = useDataContext();
   const { handleBeginCheckoutEvent } = useCheckoutAnalytics({});
 
+  const t = useTranslations("navigation");
+  const tCart = useTranslations("cart");
+  const tToaster = useTranslations("toaster");
+  const tAccessibility = useTranslations("accessibility");
+
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const open = isMobile && isOpen;
   const [isValidating, setIsValidating] = useState(false);
   const [orderModifiedToastOpen, setOrderModifiedToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | undefined>(
-    "you cart has been modified",
+    tToaster("cart_modified"),
   );
 
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
-
-  const t = useTranslations("navigation");
-  const tCart = useTranslations("cart");
 
   const handleProceedToCheckout = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -65,7 +67,7 @@ export function MobileNavCart({
       });
 
       if (!result) {
-        setToastMessage("your cart is outaded");
+        setToastMessage(tToaster("cart_outdated"));
         setOrderModifiedToastOpen(true);
         closeCart();
         return;
@@ -77,7 +79,7 @@ export function MobileNavCart({
 
       if (validItems.length === 0) {
         syncWithValidatedItems(response, maxOrderItems);
-        setToastMessage("your cart is outaded");
+        setToastMessage(tToaster("cart_outdated"));
         setOrderModifiedToastOpen(true);
         closeCart();
         return;
@@ -86,7 +88,7 @@ export function MobileNavCart({
       syncWithValidatedItems(response, maxOrderItems);
 
       if (hasItemsChanged) {
-        setToastMessage("you cart has been modified");
+        setToastMessage(tToaster("cart_modified"));
         setOrderModifiedToastOpen(true);
       }
 
@@ -117,7 +119,7 @@ export function MobileNavCart({
           <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen w-screen bg-overlay" />
           <DialogPrimitives.Content className="fixed inset-x-2.5 bottom-auto top-2 z-50 flex max-h-[calc(100vh-5px)] flex-col overflow-hidden bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden">
             <DialogPrimitives.Title className="sr-only">
-              grbpwr mobile menu
+              {tAccessibility("mobile menu")}
             </DialogPrimitives.Title>
             <div className="flex h-full min-h-0 flex-col">
               <div

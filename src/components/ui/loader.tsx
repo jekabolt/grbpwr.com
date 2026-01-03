@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
@@ -18,11 +19,12 @@ export function Loader({
   children,
 }: LoaderProps) {
   const [loadingTextIndex, setLoadingTextIndex] = useState<number>(0);
+  const t = useTranslations("checkout");
 
   const loadingTexts = [
-    "Placing order",
-    "Checking availability",
-    "Stock reservation",
+    t("placing order"),
+    t("checking availability"),
+    t("stock reservation"),
   ];
 
   useEffect(() => {

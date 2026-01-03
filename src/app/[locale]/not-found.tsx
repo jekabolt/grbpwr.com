@@ -12,10 +12,12 @@ import FlexibleLayout from "@/components/flexible-layout";
 
 export const dynamic = "force-static";
 
-export const metadata = generateCommonMetadata({
-  title: "page not found".toUpperCase(),
-  description: "page not found",
-});
+export function generateMetadata() {
+  return generateCommonMetadata({
+    title: "page not found".toUpperCase(),
+    description: "page not found",
+  });
+}
 
 export default function NotFoundPage() {
   const t = useTranslations("not-found");

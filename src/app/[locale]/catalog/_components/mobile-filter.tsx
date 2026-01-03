@@ -15,6 +15,7 @@ import { useTotalProducts } from "./useTotalProducts";
 export function MobileFilter() {
   const [open, setOpen] = useState(false);
   const t = useTranslations("catalog");
+  const tAccessibility = useTranslations("accessibility");
 
   const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
   const { defaultValue: sortValue } = useFilterQueryParams("sort");
@@ -59,7 +60,7 @@ export function MobileFilter() {
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
         <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-50 border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden">
           <DialogPrimitives.Title className="sr-only">
-            grbpwr mobile menu
+            {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
           <div className="flex h-full flex-col justify-between">
             <DialogPrimitives.Close asChild>

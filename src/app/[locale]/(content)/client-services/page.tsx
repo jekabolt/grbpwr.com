@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import FlexibleLayout from "@/components/flexible-layout";
 import { Button } from "@/components/ui/button";
@@ -6,16 +7,17 @@ import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";
 
 export default function ClientServices() {
+  const t = useTranslations("client-services");
+  const tContent = useTranslations("content");
+  
   return (
     <FlexibleLayout>
       <div className="h-full space-y-12 px-2.5 pt-8 lg:space-y-32 lg:px-28 lg:pt-32">
         <div className="space-y-8">
-          <Text variant="uppercase">client service</Text>
+          <Text variant="uppercase">{t("title")}</Text>
           <Text>
-            welcome to grbpwr.
-            <br /> for inquiries or assistance please do not hesitate to contact
-            us. we are open monday through saturday 9 am until 7 pm, excluding
-            holidays.
+            {t("welcome")}
+            <br /> {t("description")}
           </Text>
         </div>
         <div className="space-y-20">
@@ -26,11 +28,10 @@ export default function ClientServices() {
                 className="uppercase"
                 asChild
               >
-                <Link href="/faq">frequently asked questions</Link>
+                <Link href="/faq">{tContent("frequently asked questions")}</Link>
               </Button>
               <Text>
-                you can use this area to consult the faq&apos;s, follow your
-                order and track your return.
+                {t("faq description")}
               </Text>
             </div>
             <div className="space-y-8">
@@ -39,16 +40,15 @@ export default function ClientServices() {
                 className="uppercase"
                 asChild
               >
-                <Link href="/aftersale-services">after sales service</Link>
+                <Link href="/aftersale-services">{t("after sales title")}</Link>
               </Button>
               <Text>
-                contact us for any questions pertaining to our repair and
-                alteration services.
+                {t("after sales description")}
               </Text>
             </div>
           </div>
           <div className="space-y-8">
-            <Text className="uppercase">email</Text>
+            <Text className="uppercase">{t("email")}</Text>
             <CopyText variant="color" mode="toaster" text="info@grbpwr.com" />
           </div>
         </div>

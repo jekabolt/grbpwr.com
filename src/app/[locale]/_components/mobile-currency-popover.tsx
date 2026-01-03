@@ -2,6 +2,7 @@
 
 import { currencySymbols, getDisplayCurrencyKey } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
+import { useTranslations } from "next-intl";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,7 @@ export default function MobileCurrencyPopover({ theme }: Props) {
   const { currentCountry, rates, setCurrentCountry } = useTranslationsStore(
     (state) => state,
   );
+  const tAccessibility = useTranslations("accessibility");
 
   return (
     <DialogPrimitives.Root>
@@ -45,7 +47,7 @@ export default function MobileCurrencyPopover({ theme }: Props) {
           )}
         >
           <DialogPrimitives.Title className="sr-only">
-            grbpwr mobile menu
+            {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
           <div className="relative mb-4 flex items-center justify-between p-2.5">
             <Text variant="uppercase">currency:</Text>

@@ -2,6 +2,7 @@
 
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
@@ -32,6 +33,7 @@ export function MobileSelectSize({
     product,
     activeSizeId,
   });
+  const tAccessibility = useTranslations("accessibility");
 
   const handleSizeClick = (sizeId: number) => {
     const isOutOfStock = outOfStock?.[sizeId];
@@ -55,7 +57,7 @@ export function MobileSelectSize({
       <DialogPrimitives.Portal>
         <Overlay cover="screen" disablePointerEvents={false} />
         <DialogPrimitives.Title className="sr-only">
-          grbpwr mobile menu
+          {tAccessibility("mobile menu")}
         </DialogPrimitives.Title>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
         <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-auto z-50 flex flex-col gap-10 border border-textInactiveColor bg-bgColor p-2.5 pb-10 text-textColor">

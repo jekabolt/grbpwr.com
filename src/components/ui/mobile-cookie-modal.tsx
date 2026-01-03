@@ -26,6 +26,7 @@ export function MobileCookieModal({
   handlePreferenceChange,
 }: Props) {
   const t = useTranslations("cookies");
+  const tAccessibility = useTranslations("accessibility");
   const [open, setOpen] = useState(false);
 
   if (!isVisible) return null;
@@ -55,7 +56,7 @@ export function MobileCookieModal({
           <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
           <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-30 flex flex-col gap-4 border border-textInactiveColor bg-bgColor py-4 text-textColor">
             <DialogPrimitives.Title className="sr-only">
-              grbpwr mobile menu
+              {tAccessibility("mobile menu")}
             </DialogPrimitives.Title>
             <div className="flex items-center justify-between px-5">
               <Text variant="uppercase">{t("cookie preferences")}</Text>
