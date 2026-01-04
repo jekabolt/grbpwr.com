@@ -54,16 +54,16 @@ export function DesktopNavigationMenu({
     {
       gender: "men" as const,
       href: "/catalog/men",
-      isActive: pathname.startsWith("/catalog/men"),
+      isActive: pathname.includes("/catalog/men"),
     },
     {
       gender: "women" as const,
       href: "/catalog/women",
-      isActive: pathname.startsWith("/catalog/women"),
+      isActive: pathname.includes("/catalog/women"),
     },
   ];
 
-  const isOnObjectsPage = pathname.startsWith("/catalog/objects");
+  const isOnObjectsPage = pathname.includes("/catalog/objects");
 
   return (
     <NavigationMenu.Root
@@ -79,7 +79,7 @@ export function DesktopNavigationMenu({
           <NavigationMenu.Item key={gender}>
             <NavigationMenu.Trigger
               className={cn(
-                "flex items-center px-2 text-textBaseSize data-[state=open]:underline",
+                "flex items-center px-2 text-textBaseSize data-[state=open]:underline transition-colors hover:opacity-70 active:opacity-50",
                 { underline: isActive, "pl-0": index === 0 },
               )}
             >
@@ -107,7 +107,7 @@ export function DesktopNavigationMenu({
             <Link
               href={`/catalog/objects`}
               className={cn(
-                "flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline",
+                "flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline transition-colors hover:opacity-70 active:opacity-50",
                 { underline: isOnObjectsPage },
               )}
             >
@@ -120,7 +120,7 @@ export function DesktopNavigationMenu({
           <Button asChild>
             <Link
               href="/timeline"
-              className="flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline"
+              className="flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline transition-colors hover:opacity-70 active:opacity-50"
             >
               {t("timeline")}
             </Link>

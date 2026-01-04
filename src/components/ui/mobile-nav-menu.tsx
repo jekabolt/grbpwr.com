@@ -26,7 +26,7 @@ export function MobileNavMenu({
   return (
     <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitives.Trigger asChild>
-        <Button size="lg" className="w-full text-left">
+        <Button size="lg" className="w-full text-left transition-colors hover:opacity-70 active:opacity-50">
           {t("menu")}
         </Button>
       </DialogPrimitives.Trigger>

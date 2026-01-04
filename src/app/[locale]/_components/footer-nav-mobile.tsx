@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";
@@ -29,7 +29,7 @@ export function FooterNavMobile() {
           title={t("help")}
           isOpen={isOpen}
           clickableAreaClassName="h-8"
-          childrenSpacingClass="space-y-4 py-4"
+          childrenSpacingClass="space-y-4 pb-4"
           signType="plus-minus"
           onToggle={handleToggle}
         >
