@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -31,6 +32,41 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
   );
   const { open, handleClose } = useAnnounce(announceTranslation?.text || "");
   const t = useTranslations("navigation");
+  const pathname = usePathname();
+
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // Check if we're on the home page (e.g., /en, /fr, /de, etc.)
+    const isHomePage = pathname.match(/^\/[a-z]{2}$/);
+    
+    if (isHomePage) {
+      e.preventDefault();
+      
+      // Custom smooth scroll with easing
+      const startPosition = window.pageYOffset;
+      const duration = 800; // ms
+      const startTime = performance.now();
+      
+      const easeInOutCubic = (t: number): number => {
+        return t < 0.5
+          ? 4 * t * t * t
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      };
+      
+      const animateScroll = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = easeInOutCubic(progress);
+        
+        window.scrollTo(0, startPosition * (1 - easeProgress));
+        
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      };
+      
+      requestAnimationFrame(animateScroll);
+    }
+  };
 
   return (
     <>
@@ -70,7 +106,7 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
         />
 
         <Button asChild size="lg" className="w-1/3 text-center lg:w-auto transition-colors hover:opacity-70 active:opacity-50">
-          <Link href="/">grbpwr</Link>
+          <Link href="/" onClick={handleLogoClick}>grbpwr</Link>
         </Button>
 
         <div className="flex grow basis-0 items-center justify-end">
