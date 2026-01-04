@@ -104,7 +104,12 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
     {
       variant: "main",
       isLoading: true,
-      className: "disabled:bg-textColor disabled:border-textColor",
+      className: "disabled:!bg-textColor disabled:!border-textColor",
+    },
+    {
+      variant: "secondary",
+      isLoading: true,
+      className: "disabled:!bg-textColor disabled:!border-textColor disabled:!text-bgColor",
     },
   ],
   defaultVariants: {
@@ -148,7 +153,9 @@ export function Button({
       );
     }
 
-    return <Loader type={loadingType} reverse={loadingReverse} />;
+    // For secondary and main variants with loading, use white loader on black background
+    const shouldReverseLoader = variant === "secondary" || variant === "main";
+    return <Loader type={loadingType} reverse={shouldReverseLoader} />;
   };
 
   return (
