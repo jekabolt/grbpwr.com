@@ -24,15 +24,17 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   const { dictionary } = useDataContext();
   const { handleBeginCheckoutEvent } = useCheckoutAnalytics({});
 
+  const t = useTranslations("cart");
+  const tToaster = useTranslations("toaster");
+
   const [isValidating, setIsValidating] = useState(false);
   const [orderModifiedToastOpen, setOrderModifiedToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | undefined>(
-    "you cart has been modified",
+    tToaster("cart_modified"),
   );
 
   const itemsQuantity = products.length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
-  const t = useTranslations("cart");
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -70,7 +72,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
       });
 
       if (!result) {
-        setToastMessage("your cart is outaded");
+        setToastMessage(tToaster("cart_outdated"));
         setOrderModifiedToastOpen(true);
         closeCart();
         return;
@@ -82,7 +84,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
 
       if (validItems.length === 0) {
         syncWithValidatedItems(response, maxOrderItems);
-        setToastMessage("your cart is outaded");
+        setToastMessage(tToaster("cart_outdated"));
         setOrderModifiedToastOpen(true);
         closeCart();
         return;
@@ -91,7 +93,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
       syncWithValidatedItems(response, maxOrderItems);
 
       if (hasItemsChanged) {
-        setToastMessage("you cart has been modified");
+        setToastMessage(tToaster("cart_modified"));
         setOrderModifiedToastOpen(true);
       }
 

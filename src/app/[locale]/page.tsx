@@ -29,7 +29,7 @@ export async function generateMetadata({
     description,
     ogParams: {
       imageUrl: heroImage,
-      imageAlt: "main hero image",
+      imageAlt: t("main hero image"),
     },
   });
 }

@@ -5,6 +5,7 @@ import { common_MediaFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
+import { useTranslations } from "next-intl";
 
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -26,6 +27,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const tAccessibility = useTranslations("accessibility");
   const [emblaRef, emblaApi] = useEmblaCarousel(EMBLA_OPTIONS, [
     WheelGesturesPlugin(),
   ]);
@@ -128,7 +130,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <DialogPrimitives.Title className="sr-only">
-            grbpwr mobile menu
+            {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
 
           <DialogPrimitives.Close asChild>
