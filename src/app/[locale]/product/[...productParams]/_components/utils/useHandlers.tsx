@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { useEffect, useState } from "react";
 
+import { useDataContext } from "@/components/contexts/DataContext";
 import { sendAddToCartEvent } from "@/lib/analitycs/cart";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { useDataContext } from "@/components/contexts/DataContext";
 
 import { useProductBasics } from "./useProductBasics";
 
