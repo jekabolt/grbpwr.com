@@ -26,7 +26,6 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
         "border-textColor",
         "text-textBaseSize",
         "text-bgColor",
-        "disabled:bg-textInactiveColor",
         "bg-textColor",
         "hover:bg-bgColor",
         "hover:text-textColor",
@@ -101,6 +100,13 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
       ],
     },
   },
+  compoundVariants: [
+    {
+      variant: "main",
+      isLoading: true,
+      className: "disabled:bg-textColor disabled:border-textColor",
+    },
+  ],
   defaultVariants: {
     variant: "default",
     size: "default",
