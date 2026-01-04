@@ -38,10 +38,12 @@ export function MobileProductInfo({
     activeSizeId,
     isLoading,
     isMobileSizeDialogOpen,
+    shouldBlinkSizes,
     handleDialogClose,
     handleSizeSelect,
     handleAddToCart,
     setActiveSizeId,
+    triggerSizeBlink,
   } = useHandlers({
     id: productId,
     sizeNames,
@@ -123,6 +125,7 @@ export function MobileProductInfo({
                   handleSizeSelect={handleSizeSelect}
                   view={isOneSize ? "line" : "grid"}
                   onOutOfStockHover={setHoveredOutOfStockSizeId}
+                  shouldBlink={shouldBlinkSizes}
                 />
               </div>
               {product.product && (
@@ -141,10 +144,12 @@ export function MobileProductInfo({
           isMobileSizeDialogOpen,
           sizeQuantity,
           isMaxQuantity,
+          shouldBlinkSizes,
           handleDialogClose,
           handleSizeSelect,
           handleAddToCart,
           hoveredOutOfStockSizeId,
+          triggerSizeBlink,
         }}
       />
     </div>

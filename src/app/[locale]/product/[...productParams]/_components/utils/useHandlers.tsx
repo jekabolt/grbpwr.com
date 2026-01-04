@@ -25,6 +25,7 @@ export function useHandlers({
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const [isMobileSizeDialogOpen, setIsMobileSizeDialogOpen] = useState(false);
+  const [shouldBlinkSizes, setShouldBlinkSizes] = useState(false);
 
   const maxOrderItems = dictionary?.maxOrderItems || 3;
 
@@ -117,13 +118,22 @@ export function useHandlers({
     setIsMobileSizeDialogOpen(false);
   };
 
+  const triggerSizeBlink = () => {
+    setShouldBlinkSizes(true);
+    setTimeout(() => {
+      setShouldBlinkSizes(false);
+    }, 400);
+  };
+
   return {
     activeSizeId,
     isLoading,
     isMobileSizeDialogOpen,
+    shouldBlinkSizes,
     setActiveSizeId,
     handleAddToCart,
     handleSizeSelect,
     handleDialogClose,
+    triggerSizeBlink,
   };
 }

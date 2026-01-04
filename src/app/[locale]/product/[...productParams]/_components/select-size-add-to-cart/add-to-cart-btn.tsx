@@ -24,10 +24,12 @@ type Handlers = {
   sizeQuantity?: Record<number, number>;
   isMaxQuantity?: boolean;
   hoveredOutOfStockSizeId?: number | null;
+  shouldBlinkSizes?: boolean;
   setActiveSizeId?: (sizeId: number) => void;
   handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
   handleAddToCart?: () => Promise<boolean>;
   handleDialogClose?: () => void;
+  triggerSizeBlink?: () => void;
   toggleMeasurementPopup?: () => void; // New prop
 };
 
@@ -70,10 +72,12 @@ export function AddToCartBtn({
     isMobileSizeDialogOpen,
     isMaxQuantity,
     hoveredOutOfStockSizeId,
+    shouldBlinkSizes,
     setActiveSizeId,
     handleSizeSelect,
     handleAddToCart,
     handleDialogClose,
+    triggerSizeBlink,
   } = { ...internalHandlers, ...handlers };
 
   const outOfStock = handlers?.outOfStock ?? internalOutOfStock;
@@ -96,19 +100,24 @@ export function AddToCartBtn({
       return Promise.resolve(false);
     }
 
-    if (!activeSizeId && sizePickerRef?.current) {
-      const scrollableContainer = sizePickerRef.current.closest(
-        ".overflow-y-scroll",
-      ) as HTMLElement;
+    if (!activeSizeId) {
+      // Trigger the blink effect
+      triggerSizeBlink?.();
+      
+      if (sizePickerRef?.current) {
+        const scrollableContainer = sizePickerRef.current.closest(
+          ".overflow-y-scroll",
+        ) as HTMLElement;
 
-      if (scrollableContainer) {
-        const sizePickerElement = sizePickerRef.current as HTMLElement;
-        const offsetTop = sizePickerElement.offsetTop;
+        if (scrollableContainer) {
+          const sizePickerElement = sizePickerRef.current as HTMLElement;
+          const offsetTop = sizePickerElement.offsetTop;
 
-        scrollableContainer.scrollTo({
-          top: offsetTop - 16,
-          behavior: "smooth",
-        });
+          scrollableContainer.scrollTo({
+            top: offsetTop - 16,
+            behavior: "smooth",
+          });
+        }
       }
     }
     return handleAddToCart?.();
