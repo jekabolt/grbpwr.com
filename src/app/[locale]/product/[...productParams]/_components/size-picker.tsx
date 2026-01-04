@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { HoverText } from "@/components/ui/hover-text";
 import { Text } from "@/components/ui/text";
+import { Overlay } from "@/components/ui/overlay";
 
 type Props = {
   sizeNames: { name: string; id: number }[];
@@ -14,6 +15,7 @@ type Props = {
   className?: string;
   handleSizeSelect: (id: number) => void;
   onOutOfStockHover?: (sizeId: number | null) => void;
+  shouldBlink?: boolean;
 };
 
 export function SizePicker({
@@ -26,6 +28,7 @@ export function SizePicker({
   className,
   handleSizeSelect,
   onOutOfStockHover,
+  shouldBlink = false,
 }: Props) {
   const handleAnalytics = (sizeName: string, outOfStock: boolean) => {
     sendSizeSelectionEvent({
@@ -35,7 +38,8 @@ export function SizePicker({
   };
 
   return (
-    <div>
+    <div className="relative">
+      {shouldBlink && <Overlay color="highlight" cover="container" />}
       <div
         className={cn(
           {

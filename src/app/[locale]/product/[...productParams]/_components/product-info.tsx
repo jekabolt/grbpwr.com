@@ -35,9 +35,11 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
   const {
     activeSizeId,
     isLoading,
+    shouldBlinkSizes,
     handleSizeSelect,
     handleAddToCart,
     setActiveSizeId,
+    triggerSizeBlink,
   } = useHandlers({
     id: productId,
     sizeNames,
@@ -110,6 +112,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 handleSizeSelect={handleSizeSelect}
                 view={isOneSize ? "line" : "grid"}
                 onOutOfStockHover={setHoveredOutOfStockSizeId}
+                shouldBlink={shouldBlinkSizes}
               />
             </div>
           </div>
@@ -122,8 +125,10 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
               sizePickerRef,
               isMaxQuantity,
               hoveredOutOfStockSizeId,
+              shouldBlinkSizes,
               handleSizeSelect,
               handleAddToCart,
+              triggerSizeBlink,
             }}
           />
         </div>
