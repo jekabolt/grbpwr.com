@@ -74,7 +74,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-between gap-x-24 lg:flex-row lg:px-7">
+      <div className="flex flex-col justify-between gap-x-24 lg:flex-row lg:items-start lg:px-7">
         <div className="order-4 flex justify-center gap-2 lg:order-1 lg:justify-start">
           <Text variant="uppercase" className="uppercase transition-colors hover:text-textInactiveColor active:text-highlightColor">grbpwr</Text>
           <LiveClock />
@@ -86,7 +86,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
             </Button>
           ))}
         </div>
-        <div className="order-3 hidden gap-24 lg:flex">
+        <div className="order-3 hidden gap-24 lg:flex lg:items-start">
           <HelpPopover theme={theme} />
           <Button className="uppercase" asChild>
             <Link href="/legal-notices">{t("legal notices")}</Link>
