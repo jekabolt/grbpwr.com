@@ -13,7 +13,7 @@ export const FOOTER_YEAR = Math.floor(Date.now() / 1000);
 export const EMPTY_PREORDER = "0001-01-01T00:00:00Z";
 
 export const FOOTER_LINKS: { text: string; href: string }[] = [
-  { text: "x", href: "https://www.x.com/grbpwr/" },
+  { text: "ss", href: "https://substack.com/@grbpwr" },
   { text: "gh", href: "https://www.github.com/grbpwr/" },
   { text: "ig", href: "https://www.instagram.com/grb.pwr/" },
   { text: "tg", href: "https://www.t.me/grbpwr/" },
