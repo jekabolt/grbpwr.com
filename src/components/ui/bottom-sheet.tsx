@@ -37,10 +37,9 @@ export function BottomSheet({
     <div className="pointer-events-none absolute inset-0 scroll-smooth">
       <motion.div
         ref={containerRef}
-        className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col"
+        className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col overflow-hidden"
         style={{
           height: containerHeight,
-          overflowY: canScrollInside ? "auto" : "hidden",
         }}
         animate={{ height: containerHeight }}
         transition={{
@@ -52,7 +51,7 @@ export function BottomSheet({
       >
         <div
           className={`border-b-none pointer-events-auto h-full space-y-6 border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5 ${
-            canScrollInside ? "overflow-y-scroll" : "touch-none overflow-hidden"
+            canScrollInside ? "overflow-y-auto overscroll-contain" : "touch-none overflow-hidden"
           }`}
         >
           {children}

@@ -56,6 +56,8 @@ export function useBottomSheet({
         velocityHistory: [],
     });
 
+    const scrollPositionRef = useRef<number>(0);
+
     const canScrollInside = () => {
         if (typeof window === "undefined") return false;
 
@@ -128,13 +130,18 @@ export function useBottomSheet({
 
         if (containerRef.current && canScrollInside()) {
             const scrollableElement = containerRef.current.querySelector(
-                '[class*="overflow-y-scroll"]',
-            );
+                '[class*="overflow-y-auto"]',
+            ) as HTMLElement | null;
             if (scrollableElement) {
-                state.startedAtTop = scrollableElement.scrollTop <= 5;
+                scrollPositionRef.current = scrollableElement.scrollTop;
+                state.startedAtTop = scrollableElement.scrollTop <= 10;
+            } else {
+                state.startedAtTop = false;
+                scrollPositionRef.current = 0;
             }
         } else {
             state.startedAtTop = false;
+            scrollPositionRef.current = 0;
         }
     };
 
@@ -160,8 +167,20 @@ export function useBottomSheet({
                     state.isDragging = true;
                     e.preventDefault();
                 } else {
+                    const scrollableElement = containerRef.current?.querySelector(
+                        '[class*="overflow-y-auto"]',
+                    ) as HTMLElement | null;
+                    const currentScrollTop = scrollableElement?.scrollTop ?? 0;
                     const isSwipeDown = currentY > state.startY;
-                    if (isSwipeDown && state.startedAtTop) {
+
+                    if (scrollableElement) {
+                        scrollPositionRef.current = currentScrollTop;
+                    }
+
+                    if (isSwipeDown && currentScrollTop <= 10) {
+                        state.isDragging = true;
+                        e.preventDefault();
+                    } else if (isSwipeDown && state.startedAtTop) {
                         state.isDragging = true;
                         e.preventDefault();
                     }
@@ -245,6 +264,51 @@ export function useBottomSheet({
             mainArea.removeEventListener("touchstart", handleTouchStart);
             mainArea.removeEventListener("touchmove", handleTouchMove);
             mainArea.removeEventListener("touchend", handleTouchEnd);
+        };
+    }, [containerHeight]);
+
+    useEffect(() => {
+        if (!containerRef.current || touchState.current.isDragging) return;
+
+        const scrollableElement = containerRef.current.querySelector(
+            '[class*="overflow-y-auto"]',
+        ) as HTMLElement | null;
+
+        if (scrollableElement && canScrollInside()) {
+            const savedScroll = scrollPositionRef.current;
+            if (savedScroll > 0) {
+                requestAnimationFrame(() => {
+                    if (touchState.current.isDragging) return;
+                    const element = containerRef.current?.querySelector(
+                        '[class*="overflow-y-auto"]',
+                    ) as HTMLElement | null;
+                    if (element && Math.abs(element.scrollTop - savedScroll) > 5) {
+                        element.scrollTop = savedScroll;
+                    }
+                });
+            }
+        }
+    }, [containerHeight]);
+
+    useEffect(() => {
+        if (!containerRef.current) return;
+
+        const scrollableElement = containerRef.current.querySelector(
+            '[class*="overflow-y-auto"]',
+        ) as HTMLElement | null;
+
+        if (!scrollableElement) return;
+
+        const handleScroll = () => {
+            if (!touchState.current.isDragging) {
+                scrollPositionRef.current = scrollableElement.scrollTop;
+            }
+        };
+
+        scrollableElement.addEventListener('scroll', handleScroll, { passive: true });
+
+        return () => {
+            scrollableElement.removeEventListener('scroll', handleScroll);
         };
     }, [containerHeight]);
 
