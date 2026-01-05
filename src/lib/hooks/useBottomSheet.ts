@@ -57,7 +57,6 @@ export function useBottomSheet({
     });
 
     const scrollPositionRef = useRef<number>(0);
-    const wasDraggingRef = useRef<boolean>(false);
 
     const canScrollInside = () => {
         if (typeof window === "undefined") return false;
@@ -119,9 +118,6 @@ export function useBottomSheet({
         const state = touchState.current;
         const timestamp = Date.now();
 
-        // Reset drag flag at start of new touch
-        wasDraggingRef.current = false;
-
         state.startY = touch.clientY;
         state.startX = touch.clientX;
         state.lastY = touch.clientY;
@@ -132,10 +128,6 @@ export function useBottomSheet({
         state.lastTimestamp = timestamp;
         state.velocityHistory = [];
 
-        // Check if touch target is an interactive element (link, button)
-        const target = e.target as HTMLElement;
-        const isInteractiveElement = target.closest('a, button, [role="button"]') !== null;
-
         // Always check scroll position at touchstart for accurate detection
         if (containerRef.current && canScrollInside()) {
             const scrollableElement = containerRef.current.querySelector(
@@ -145,9 +137,7 @@ export function useBottomSheet({
                 const scrollTop = scrollableElement.scrollTop;
                 scrollPositionRef.current = scrollTop;
                 // Use a slightly larger threshold to account for sub-pixel scrolling
-                // If touching on interactive element, be more lenient with threshold
-                const threshold = isInteractiveElement ? 20 : 15;
-                state.startedAtTop = scrollTop <= threshold;
+                state.startedAtTop = scrollTop <= 15;
             } else {
                 state.startedAtTop = false;
                 scrollPositionRef.current = 0;
@@ -190,20 +180,13 @@ export function useBottomSheet({
                         scrollPositionRef.current = currentScrollTop;
                     }
 
-                    // Check if touch target is an interactive element
-                    const target = e.target as HTMLElement;
-                    const isInteractiveElement = target.closest('a, button, [role="button"]') !== null;
-                    const threshold = isInteractiveElement ? 20 : 15;
-
                     // Allow dragging if swiping down AND:
-                    // 1. Currently at/near top (within threshold), OR
+                    // 1. Currently at/near top (within 15px), OR
                     // 2. Started at top (even if scrolled slightly during gesture)
-                    const isAtTopNow = currentScrollTop <= threshold;
+                    const isAtTopNow = currentScrollTop <= 15;
                     if (isSwipeDown && (isAtTopNow || state.startedAtTop)) {
                         state.isDragging = true;
                         e.preventDefault();
-                        // Stop propagation to prevent link navigation if dragging
-                        e.stopPropagation();
                     }
                 }
             }
@@ -216,16 +199,12 @@ export function useBottomSheet({
                     '[class*="overflow-y-auto"]',
                 ) as HTMLElement | null;
                 const currentScrollTop = scrollableElement?.scrollTop ?? 0;
-                const target = e.target as HTMLElement;
-                const isInteractiveElement = target.closest('a, button, [role="button"]') !== null;
-                const threshold = isInteractiveElement ? 20 : 15;
                 // Allow collapsing if at top now OR started at top
-                isCollapsingFromExpanded = currentScrollTop <= threshold || state.startedAtTop;
+                isCollapsingFromExpanded = currentScrollTop <= 15 || state.startedAtTop;
             }
 
             if (!canScrollInside() || isCollapsingFromExpanded) {
                 e.preventDefault();
-                e.stopPropagation();
             }
 
             const deltaMove = state.lastY - currentY;
@@ -261,15 +240,11 @@ export function useBottomSheet({
                     '[class*="overflow-y-auto"]',
                 ) as HTMLElement | null;
                 const currentScrollTop = scrollableElement?.scrollTop ?? 0;
-                const target = e.target as HTMLElement;
-                const isInteractiveElement = target.closest('a, button, [role="button"]') !== null;
-                const threshold = isInteractiveElement ? 20 : 15;
-                wasCollapsingFromExpanded = currentScrollTop <= threshold || state.startedAtTop;
+                wasCollapsingFromExpanded = currentScrollTop <= 15 || state.startedAtTop;
             }
 
             if (!canScrollInside() || wasCollapsingFromExpanded) {
                 e.preventDefault();
-                e.stopPropagation();
             }
 
             const maxHeight = getMaxHeight();
@@ -287,55 +262,27 @@ export function useBottomSheet({
             }
         }
 
-        // Track if we were dragging to prevent link clicks
-        wasDraggingRef.current = state.isDragging && state.isVertical;
-
         state.hasMoved = false;
         state.isVertical = false;
         state.isDragging = false;
         state.velocityY = 0;
         state.velocityHistory = [];
-
-        // Prevent link navigation if we were dragging
-        if (wasDraggingRef.current) {
-            const target = e.target as HTMLElement;
-            const link = target.closest('a');
-            if (link) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-        }
     };
 
     useEffect(() => {
         const mainArea = mainAreaRef.current;
         if (!mainArea) return;
 
-        const handleClick = (e: MouseEvent) => {
-            // Prevent link navigation if we just finished dragging
-            if (wasDraggingRef.current) {
-                const target = e.target as HTMLElement;
-                const link = target.closest('a');
-                if (link) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    wasDraggingRef.current = false;
-                }
-            }
-        };
-
         mainArea.addEventListener("touchstart", handleTouchStart, {
             passive: false,
         });
         mainArea.addEventListener("touchmove", handleTouchMove, { passive: false });
         mainArea.addEventListener("touchend", handleTouchEnd, { passive: false });
-        mainArea.addEventListener("click", handleClick, { capture: true });
 
         return () => {
             mainArea.removeEventListener("touchstart", handleTouchStart);
             mainArea.removeEventListener("touchmove", handleTouchMove);
             mainArea.removeEventListener("touchend", handleTouchEnd);
-            mainArea.removeEventListener("click", handleClick, { capture: true });
         };
     }, [containerHeight]);
 
