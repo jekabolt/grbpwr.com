@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 
 import { useLastViewed } from "@/lib/stores/last-viewed/store-provider.";
 import { cn } from "@/lib/utils";
+import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 import { ProductItem } from "@/app/[locale]/_components/product-item";
 
@@ -59,7 +60,7 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
                 isInfoVisible={false}
                 disableAnimations={true}
               />
-              {/* <Overlay cover="container" color="highlight" trigger="hover" /> */}
+              <Overlay cover="container" color="highlight" trigger="hover" />
             </div>
           </div>
         ))}
