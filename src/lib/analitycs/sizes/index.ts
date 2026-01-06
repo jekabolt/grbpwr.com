@@ -22,6 +22,4 @@ export function sendSizeSelectionEvent(data: SizeSelectionEvent) {
     }
 
     window.dataLayer.push(eventData);
-
-    console.log('Size selection event sent to DataLayer:', eventData);
 }
