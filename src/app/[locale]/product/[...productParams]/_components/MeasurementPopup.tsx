@@ -20,6 +20,7 @@ interface ModalProps {
   selectedSize?: number;
   outOfStock?: Record<number, boolean>;
   onNotifyMeOpen?: () => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export default function MeasurementPopup({
@@ -29,6 +30,7 @@ export default function MeasurementPopup({
   selectedSize,
   outOfStock,
   onNotifyMeOpen,
+  onOpenChange,
 }: ModalProps) {
   const { preorder, name } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
@@ -54,24 +56,28 @@ export default function MeasurementPopup({
   }, [isModalOpen]);
 
   const toggleModal = () => {
-    if (!isModalOpen) {
+    const newState = !isModalOpen;
+    if (newState) {
       sendButtonEvent({
         buttonId: "size_guide",
         productName: name,
       });
     }
-    setModalOpen(!isModalOpen);
+    setModalOpen(newState);
+    onOpenChange?.(newState);
   };
 
   async function handleAddToCartComplete() {
     if (isSelectedSizeOutOfStock) {
       setModalOpen(false);
+      onOpenChange?.(false);
       setTimeout(() => {
         onNotifyMeOpen?.();
       }, 100);
       return false;
     }
     setModalOpen(false);
+    onOpenChange?.(false);
     const success = await handleAddToCart();
     return success;
   }
