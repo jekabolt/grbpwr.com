@@ -147,7 +147,7 @@ export function AddToCartBtn({
         }}
       />
       <div
-        className={cn("fixed inset-x-5 bottom-2.5 z-10 grid lg:sticky", {
+        className={cn("fixed inset-x-5 bottom-2.5 z-[150] grid lg:sticky", {
           "lg:hidden": openItem,
           "bg-bgColor": preorder,
         })}

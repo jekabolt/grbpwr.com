@@ -7,28 +7,22 @@ import { Text } from "@/components/ui/text";
 import { sendButtonEvent } from "@/lib/analitycs/button";
 
 import { Button } from "../../../../../components/ui/button";
-import { LoadingButton } from "./loading-button";
 import { Measurements } from "./measurements";
+import { AddToCartBtn } from "./select-size-add-to-cart/add-to-cart-btn";
 import { useProductBasics } from "./utils/useProductBasics";
-import { useProductPricing } from "./utils/useProductPricing";
 
 export function MobileMeasurements({
   product,
   selectedSize,
   outOfStock,
   isOneSize,
-  handleAddToCart,
   handleSelectSize,
-  onNotifyMeOpen,
+  addToCartHandlers,
 }: MobileMeasurementsProps) {
   const [open, setOpen] = useState(false);
-  const { preorder, name } = useProductBasics({ product });
-  const { isSaleApplied, price, priceMinusSale, priceWithSale } =
-    useProductPricing({ product });
+  const { name } = useProductBasics({ product });
   const t = useTranslations("product");
   const tAccessibility = useTranslations("accessibility");
-
-  const isSelectedSizeOutOfStock = selectedSize !== undefined && selectedSize !== null && outOfStock?.[selectedSize];
 
   const handleOpenChange = (isOpen: boolean) => {
     if (isOpen) {
@@ -40,19 +34,6 @@ export function MobileMeasurements({
     setOpen(isOpen);
   };
 
-  const handleButtonClick = async () => {
-    if (isSelectedSizeOutOfStock) {
-      setOpen(false);
-      setTimeout(() => {
-        onNotifyMeOpen?.();
-      }, 100);
-      return false;
-    }
-    setOpen(false);
-    const success = await handleAddToCart();
-    return success;
-  };
-
   return (
     <DialogPrimitives.Root open={open} onOpenChange={handleOpenChange}>
       <DialogPrimitives.Trigger asChild className="text-left">
@@ -61,51 +42,34 @@ export function MobileMeasurements({
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-40 flex flex-col gap-4 overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5">
+        <DialogPrimitives.Overlay className="fixed inset-0 z-50 h-screen bg-overlay" />
+        <DialogPrimitives.Content className="fixed inset-x-2 bottom-0 top-2 z-50 flex flex-col border border-b-0 border-textInactiveColor bg-bgColor text-textColor outline-none focus:outline-none">
           <DialogPrimitives.Title className="sr-only">
             {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
-          <div className="flex h-full flex-col">
-            <div className="relative mb-10 flex shrink-0 items-center justify-between">
-              <Text variant="uppercase">{t("size guide")}</Text>
-              <DialogPrimitives.Close asChild>
-                <Button>[x]</Button>
-              </DialogPrimitives.Close>
-            </div>
-            <div className="flex-1">
-              <Measurements
-                product={product}
-                selectedSize={selectedSize}
-                outOfStock={outOfStock}
-                isOneSize={isOneSize}
-                handleSelectSize={handleSelectSize}
-              />
-            </div>
-            <div className="mt-auto shrink-0 space-y-6 pt-6">
-              <LoadingButton
-                variant="simpleReverse"
-                size="lg"
-                onAction={handleButtonClick}
-              >
-                <Text variant="inherit">
-                  {isSelectedSizeOutOfStock
-                    ? t("notify me")
-                    : preorder
-                      ? t("preorder")
-                      : t("add")}
-                </Text>
-                {!isSelectedSizeOutOfStock &&
-                  (isSaleApplied ? (
-                    <Text variant="inactive">
-                      {priceMinusSale}
-                      <Text component="span">{priceWithSale}</Text>
-                    </Text>
-                  ) : (
-                    <Text variant="inherit">{price}</Text>
-                  ))}
-              </LoadingButton>
-            </div>
+
+          {/* Header */}
+          <div className="flex items-center justify-between p-2.5">
+            <Text variant="uppercase">{t("size guide")}</Text>
+            <DialogPrimitives.Close asChild>
+              <Button>[x]</Button>
+            </DialogPrimitives.Close>
+          </div>
+
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto px-2.5 pb-32">
+            <Measurements
+              product={product}
+              selectedSize={selectedSize}
+              outOfStock={outOfStock}
+              isOneSize={isOneSize}
+              handleSelectSize={handleSelectSize}
+            />
+          </div>
+
+          {/* Fixed Add to Cart Button at Bottom */}
+          <div className="border-t border-textInactiveColor">
+            <AddToCartBtn product={product} handlers={addToCartHandlers} />
           </div>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
@@ -118,7 +82,17 @@ export type MobileMeasurementsProps = {
   selectedSize: number;
   outOfStock?: Record<number, boolean>;
   isOneSize?: boolean;
-  handleAddToCart: () => Promise<boolean>;
   handleSelectSize: (size: number) => void;
-  onNotifyMeOpen?: () => void;
+  addToCartHandlers?: {
+    activeSizeId?: number;
+    isLoading?: boolean;
+    outOfStock?: Record<number, boolean>;
+    sizeQuantity?: Record<number, number>;
+    isMaxQuantity?: boolean;
+    hoveredOutOfStockSizeId?: number | null;
+    shouldBlinkSizes?: boolean;
+    handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
+    handleAddToCart?: () => Promise<boolean>;
+    triggerSizeBlink?: () => void;
+  };
 };

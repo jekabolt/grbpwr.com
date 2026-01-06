@@ -56,8 +56,7 @@ export function MobileProductInfo({
     activeSizeId,
     product,
   });
-  const { selectedSize, handleSelectSize, handleMeasurementSizes } =
-    useMeasurementSizes({ product });
+  const { selectedSize, handleSelectSize: handleMeasurementSizeChange } = useMeasurementSizes({ product });
   const containerRef = useRef<HTMLDivElement>(null!);
   const mainAreaRef = useRef<HTMLDivElement>(null!);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
@@ -68,6 +67,12 @@ export function MobileProductInfo({
       setActiveSizeId(selectedSize);
     }
     setIsNotifyMeOpen(true);
+  };
+
+  // Sync measurements dialog size selection with cart button
+  const handleMeasurementSizeSelect = (sizeId: number) => {
+    handleMeasurementSizeChange(sizeId); // Update measurements display
+    setActiveSizeId(sizeId); // Update cart button state
   };
 
   useEffect(() => {
@@ -112,9 +117,19 @@ export function MobileProductInfo({
                   selectedSize={selectedSize || 0}
                   outOfStock={outOfStock}
                   isOneSize={isOneSize}
-                  handleAddToCart={handleMeasurementSizes}
-                  handleSelectSize={handleSelectSize}
-                  onNotifyMeOpen={handleNotifyMeOpen}
+                  handleSelectSize={handleMeasurementSizeSelect}
+                  addToCartHandlers={{
+                    activeSizeId,
+                    isLoading,
+                    outOfStock,
+                    sizeQuantity,
+                    isMaxQuantity,
+                    shouldBlinkSizes,
+                    handleSizeSelect,
+                    handleAddToCart,
+                    hoveredOutOfStockSizeId,
+                    triggerSizeBlink,
+                  }}
                 />
                 <SizePicker
                   sizeNames={sizeNames || []}

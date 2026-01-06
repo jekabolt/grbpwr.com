@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { MEASUREMENT_DESCRIPTIONS } from "@/constants";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
-import { useMeasurementStore } from "@/lib/stores/measurement/store";
-import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { CategoryThumbnail } from "@/components/ui/categories-thumbnails/render_thumbnail";
 import { Text } from "@/components/ui/text";
+import { useMeasurementStore } from "@/lib/stores/measurement/store";
+import { cn } from "@/lib/utils";
 
 import { MeasurementsTable, Unit } from "./measurements-table";
 import { SizePicker } from "./size-picker";
@@ -72,14 +72,14 @@ export function Measurements({
       const key = `measurements-descriptions.${hoveredDescriptionKey}`;
       const translated = t(key as any) as string;
       if (translated && translated !== key) return translated;
-    } catch (_) {}
+    } catch (_) { }
     return MEASUREMENT_DESCRIPTIONS[hoveredDescriptionKey] || null;
   })();
 
   return (
     <div
-      className={cn("flex h-full flex-col overflow-y-hidden bg-bgColor", {
-        "overflow-y-auto": isRing || isShoe,
+      className={cn("flex flex-col bg-bgColor", {
+        "h-full overflow-y-auto": isRing || isShoe,
       })}
     >
       {hoveredDescription && (
