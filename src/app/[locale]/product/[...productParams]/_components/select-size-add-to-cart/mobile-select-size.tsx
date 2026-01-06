@@ -59,8 +59,8 @@ export function MobileSelectSize({
         <DialogPrimitives.Title className="sr-only">
           {tAccessibility("mobile menu")}
         </DialogPrimitives.Title>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-auto z-50 flex flex-col gap-10 border border-textInactiveColor bg-bgColor p-2.5 pb-10 text-textColor">
+        <DialogPrimitives.Overlay className="fixed inset-0 z-[160] h-screen bg-overlay" />
+        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-auto z-[170] flex flex-col gap-10 border border-textInactiveColor bg-bgColor p-2.5 pb-10 text-textColor">
           <DialogPrimitives.Close asChild>
             <div className="flex items-center justify-between">
               <Text variant="uppercase">select size</Text>

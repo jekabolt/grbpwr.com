@@ -31,6 +31,19 @@ export function MobileMeasurements({
         buttonId: "size_guide",
         productName: name,
       });
+
+      // Select first available (not out of stock) size when dialog opens
+      if (product.sizes && product.sizes.length > 0) {
+        const firstAvailableSize = product.sizes.find(
+          size => !outOfStock?.[size.sizeId || 0]
+        );
+        if (firstAvailableSize && firstAvailableSize.sizeId) {
+          handleSelectSize(firstAvailableSize.sizeId);
+        }
+      }
+    } else {
+      // Deselect all sizes when dialog closes
+      handleSelectSize(0);
     }
     setOpen(isOpen);
   };
@@ -45,11 +58,9 @@ export function MobileMeasurements({
 
       try {
         const result = await addToCartHandlers.handleAddToCart();
-        // Wait a moment to show the loading state completed before closing
+        // Close dialog after successful add
         if (result) {
-          setTimeout(() => {
-            setOpen(false); // Close measurements dialog after cart was updated
-          }, 300);
+          setOpen(false);
         }
         return result;
       } catch (error) {
@@ -77,8 +88,8 @@ export function MobileMeasurements({
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-50 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2 bottom-0 top-2 z-50 flex flex-col border border-b-0 border-textInactiveColor bg-bgColor text-textColor outline-none focus:outline-none">
+        <DialogPrimitives.Overlay className="fixed inset-0 z-[155] h-screen bg-overlay" />
+        <DialogPrimitives.Content className="fixed inset-x-2 bottom-0 top-2 z-[156] flex flex-col border border-b-0 border-textInactiveColor bg-bgColor text-textColor outline-none focus:outline-none">
           <DialogPrimitives.Title className="sr-only">
             {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
