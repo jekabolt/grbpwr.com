@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
-import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
+import { cn, isDateTodayOrFuture } from "@/lib/utils";
 
 import { LoadingButton } from "../loading-button";
 import { NotifyMe } from "../notify-me";
@@ -30,7 +30,9 @@ type Handlers = {
   handleAddToCart?: () => Promise<boolean>;
   handleDialogClose?: () => void;
   triggerSizeBlink?: () => void;
-  toggleMeasurementPopup?: () => void; // New prop
+  toggleMeasurementPopup?: () => void;
+  onDialogAction?: () => void; // Callback when a dialog opens (notify me, cart, etc)
+  onNotifyMeOpen?: () => void; // Callback to open parent's NotifyMe dialog
 };
 
 export function AddToCartBtn({
@@ -78,6 +80,8 @@ export function AddToCartBtn({
     handleAddToCart,
     handleDialogClose,
     triggerSizeBlink,
+    onDialogAction,
+    onNotifyMeOpen,
   } = { ...internalHandlers, ...handlers };
 
   const outOfStock = handlers?.outOfStock ?? internalOutOfStock;
@@ -92,7 +96,14 @@ export function AddToCartBtn({
 
   const handleAddToCartClick = () => {
     if (isSoldOut || isSelectedSizeOutOfStock) {
-      setIsNotifyMeOpen(true);
+      if (onNotifyMeOpen) {
+        // Use parent's NotifyMe dialog (which handles closing measurements)
+        onNotifyMeOpen();
+      } else {
+        // Fallback to internal NotifyMe dialog
+        onDialogAction?.(); // Close parent dialog (measurements) first
+        setTimeout(() => setIsNotifyMeOpen(true), 100);
+      }
       return Promise.resolve(false);
     }
 
@@ -103,7 +114,7 @@ export function AddToCartBtn({
     if (!activeSizeId) {
       // Trigger the blink effect
       triggerSizeBlink?.();
-      
+
       if (sizePickerRef?.current) {
         const scrollableContainer = sizePickerRef.current.closest(
           ".overflow-y-scroll",

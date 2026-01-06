@@ -118,6 +118,7 @@ export function MobileProductInfo({
                   outOfStock={outOfStock}
                   isOneSize={isOneSize}
                   handleSelectSize={handleMeasurementSizeSelect}
+                  onNotifyMeOpen={handleNotifyMeOpen}
                   addToCartHandlers={{
                     activeSizeId,
                     isLoading,

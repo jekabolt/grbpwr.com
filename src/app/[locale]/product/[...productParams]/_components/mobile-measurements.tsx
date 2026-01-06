@@ -18,6 +18,7 @@ export function MobileMeasurements({
   isOneSize,
   handleSelectSize,
   addToCartHandlers,
+  onNotifyMeOpen,
 }: MobileMeasurementsProps) {
   const [open, setOpen] = useState(false);
   const { name } = useProductBasics({ product });
@@ -33,6 +34,40 @@ export function MobileMeasurements({
     }
     setOpen(isOpen);
   };
+
+  // Wrap the handleAddToCart to close the dialog after button press
+  const wrappedHandlers = addToCartHandlers ? {
+    ...addToCartHandlers,
+    handleAddToCart: async () => {
+      if (!addToCartHandlers.handleAddToCart) {
+        return false;
+      }
+
+      try {
+        const result = await addToCartHandlers.handleAddToCart();
+        // Wait a moment to show the loading state completed before closing
+        if (result) {
+          setTimeout(() => {
+            setOpen(false); // Close measurements dialog after cart was updated
+          }, 300);
+        }
+        return result;
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        return false;
+      }
+    },
+    onDialogAction: () => {
+      setOpen(false); // Close measurements dialog when notify me or other dialog opens
+    },
+    onNotifyMeOpen: () => {
+      setOpen(false); // Close measurements dialog
+      // Delay opening NotifyMe to ensure measurements dialog closes first
+      setTimeout(() => {
+        onNotifyMeOpen?.(); // Open parent's NotifyMe dialog
+      }, 150);
+    },
+  } : undefined;
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={handleOpenChange}>
@@ -69,7 +104,7 @@ export function MobileMeasurements({
 
           {/* Fixed Add to Cart Button at Bottom */}
           <div className="border-t border-textInactiveColor">
-            <AddToCartBtn product={product} handlers={addToCartHandlers} />
+            <AddToCartBtn product={product} handlers={wrappedHandlers} />
           </div>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
@@ -83,6 +118,7 @@ export type MobileMeasurementsProps = {
   outOfStock?: Record<number, boolean>;
   isOneSize?: boolean;
   handleSelectSize: (size: number) => void;
+  onNotifyMeOpen?: () => void;
   addToCartHandlers?: {
     activeSizeId?: number;
     isLoading?: boolean;
@@ -94,5 +130,6 @@ export type MobileMeasurementsProps = {
     handleSizeSelect?: (sizeId: number) => void | Promise<boolean | void>;
     handleAddToCart?: () => Promise<boolean>;
     triggerSizeBlink?: () => void;
+    onDialogAction?: () => void;
   };
 };
