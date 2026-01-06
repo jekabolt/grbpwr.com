@@ -31,9 +31,12 @@ export function MobileProductInfo({
     number | null
   >(null);
   const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
+
   const { name, productId, productCategory, productSubCategory } =
     useProductBasics({ product });
+
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
+
   const {
     activeSizeId,
     isLoading,
@@ -50,14 +53,23 @@ export function MobileProductInfo({
     isOneSize,
     product,
   });
+
   const { currentCountry } = useTranslationsStore((s) => s);
+
   const { outOfStock, isMaxQuantity } = useDisabled({
     id: productId,
     activeSizeId,
     product,
   });
-  const { selectedSize, handleSelectSize, handleMeasurementSizes } =
-    useMeasurementSizes({ product });
+
+  const { selectedSize, handleSelectSize } = useMeasurementSizes({ product });
+
+  // Ensure selecting a size inside Measurements affects the main fixed AddToCart button state
+  const handleSelectSizeFromMeasurements = (size: number) => {
+    handleSelectSize(size);
+    setActiveSizeId(size);
+  };
+
   const containerRef = useRef<HTMLDivElement>(null!);
   const mainAreaRef = useRef<HTMLDivElement>(null!);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
@@ -91,11 +103,13 @@ export function MobileProductInfo({
         outOfStock={outOfStock}
         activeSizeId={activeSizeId}
       />
+
       <div ref={mainAreaRef} className="fixed inset-x-0 bottom-0 top-12">
         <div className="relative h-full">
           <div ref={carouselContainerRef} className="relative">
             <MobileImageCarousel media={product.media || []} />
           </div>
+
           <BottomSheet
             config={{
               minHeight: carouselHeight,
@@ -104,18 +118,19 @@ export function MobileProductInfo({
             containerRef={containerRef}
           >
             <Text variant="uppercase">{name}</Text>
+
             <div className="space-y-12">
               <GarmentDescription product={product} />
+
               <div className="space-y-12">
                 <MobileMeasurements
                   product={product}
                   selectedSize={selectedSize || 0}
                   outOfStock={outOfStock}
                   isOneSize={isOneSize}
-                  handleAddToCart={handleMeasurementSizes}
-                  handleSelectSize={handleSelectSize}
-                  onNotifyMeOpen={handleNotifyMeOpen}
+                  handleSelectSize={handleSelectSizeFromMeasurements}
                 />
+
                 <SizePicker
                   sizeNames={sizeNames || []}
                   activeSizeId={activeSizeId || 0}
@@ -128,6 +143,7 @@ export function MobileProductInfo({
                   shouldBlink={shouldBlinkSizes}
                 />
               </div>
+
               {product.product && (
                 <LastViewedProducts product={product.product} />
               )}
@@ -135,6 +151,7 @@ export function MobileProductInfo({
           </BottomSheet>
         </div>
       </div>
+
       <AddToCartBtn
         product={product}
         handlers={{
