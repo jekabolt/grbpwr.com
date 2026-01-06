@@ -25,6 +25,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     number | null
   >(null);
   const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
+  const [isMeasurementPopupOpen, setIsMeasurementPopupOpen] = useState(false);
 
   const { currentCountry } = useTranslationsStore((s) => s);
   const { name, productId, productCategory, productSubCategory } =
@@ -93,6 +94,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
               selectedSize={selectedSize}
               outOfStock={outOfStock}
               onNotifyMeOpen={handleNotifyMeOpen}
+              onOpenChange={setIsMeasurementPopupOpen}
             >
               <Measurements
                 product={product}
@@ -116,21 +118,23 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
               />
             </div>
           </div>
-          <AddToCartBtn
-            product={product}
-            handlers={{
-              activeSizeId,
-              isLoading,
-              outOfStock,
-              sizePickerRef,
-              isMaxQuantity,
-              hoveredOutOfStockSizeId,
-              shouldBlinkSizes,
-              handleSizeSelect,
-              handleAddToCart,
-              triggerSizeBlink,
-            }}
-          />
+          {!isMeasurementPopupOpen && (
+            <AddToCartBtn
+              product={product}
+              handlers={{
+                activeSizeId,
+                isLoading,
+                outOfStock,
+                sizePickerRef,
+                isMaxQuantity,
+                hoveredOutOfStockSizeId,
+                shouldBlinkSizes,
+                handleSizeSelect,
+                handleAddToCart,
+                triggerSizeBlink,
+              }}
+            />
+          )}
         </div>
       </div>
     </div>
