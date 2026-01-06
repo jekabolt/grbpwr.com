@@ -62,50 +62,48 @@ export function MobileMeasurements({
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-40 flex flex-col gap-4 overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5">
+        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-40 flex flex-col border border-textInactiveColor bg-bgColor">
           <DialogPrimitives.Title className="sr-only">
             {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
-          <div className="flex h-full flex-col">
-            <div className="relative mb-10 flex shrink-0 items-center justify-between">
-              <Text variant="uppercase">{t("size guide")}</Text>
-              <DialogPrimitives.Close asChild>
-                <Button>[x]</Button>
-              </DialogPrimitives.Close>
-            </div>
-            <div className="flex-1">
-              <Measurements
-                product={product}
-                selectedSize={selectedSize}
-                outOfStock={outOfStock}
-                isOneSize={isOneSize}
-                handleSelectSize={handleSelectSize}
-              />
-            </div>
-            <div className="mt-auto shrink-0 space-y-6 pt-6">
-              <LoadingButton
-                variant="simpleReverse"
-                size="lg"
-                onAction={handleButtonClick}
-              >
-                <Text variant="inherit">
-                  {isSelectedSizeOutOfStock
-                    ? t("notify me")
-                    : preorder
-                      ? t("preorder")
-                      : t("add")}
-                </Text>
-                {!isSelectedSizeOutOfStock &&
-                  (isSaleApplied ? (
-                    <Text variant="inactive">
-                      {priceMinusSale}
-                      <Text component="span">{priceWithSale}</Text>
-                    </Text>
-                  ) : (
-                    <Text variant="inherit">{price}</Text>
-                  ))}
-              </LoadingButton>
-            </div>
+          <div className="relative mb-10 flex shrink-0 items-center justify-between p-2.5 pb-0">
+            <Text variant="uppercase">{t("size guide")}</Text>
+            <DialogPrimitives.Close asChild>
+              <Button>[x]</Button>
+            </DialogPrimitives.Close>
+          </div>
+          <div className="flex-1 overflow-y-auto p-2.5 pb-24">
+            <Measurements
+              product={product}
+              selectedSize={selectedSize}
+              outOfStock={outOfStock}
+              isOneSize={isOneSize}
+              handleSelectSize={handleSelectSize}
+            />
+          </div>
+          <div className="fixed inset-x-7 bottom-4 z-50 shrink-0">
+            <LoadingButton
+              variant="simpleReverse"
+              size="lg"
+              onAction={handleButtonClick}
+            >
+              <Text variant="inherit">
+                {isSelectedSizeOutOfStock
+                  ? t("notify me")
+                  : preorder
+                    ? t("preorder")
+                    : t("add")}
+              </Text>
+              {!isSelectedSizeOutOfStock &&
+                (isSaleApplied ? (
+                  <Text variant="inactive">
+                    {priceMinusSale}
+                    <Text component="span">{priceWithSale}</Text>
+                  </Text>
+                ) : (
+                  <Text variant="inherit">{price}</Text>
+                ))}
+            </LoadingButton>
           </div>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
