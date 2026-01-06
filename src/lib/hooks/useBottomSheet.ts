@@ -155,6 +155,14 @@ export function useBottomSheet({
         const currentX = touch.clientX;
         const timestamp = Date.now();
 
+        // If the touch started in an area that should not control the sheet
+        // (e.g. last viewed products grid with its own visual overlays),
+        // skip all bottom-sheet drag logic and let the inner scroll behave normally.
+        const target = e.target as HTMLElement | null;
+        if (target && target.closest("[data-bottom-sheet-ignore-drag=\"true\"]")) {
+            return;
+        }
+
         const deltaY = Math.abs(currentY - state.startY);
         const deltaX = Math.abs(currentX - state.startX);
         const totalMovement = Math.max(deltaY, deltaX);
