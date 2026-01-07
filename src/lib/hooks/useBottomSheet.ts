@@ -11,6 +11,7 @@ export interface UseBottomSheetProps {
     isCarouselScrolling?: boolean;
     config?: UseBottomSheetConfig;
     contentAboveRef?: React.RefObject<HTMLDivElement>;
+    heightMotionValue?: any
 }
 
 export interface TouchState {
@@ -30,6 +31,7 @@ export function useBottomSheet({
     mainAreaRef,
     containerRef,
     config: userConfig = {},
+    heightMotionValue,
 }: UseBottomSheetProps) {
     const config = {
         minHeight: 150,
@@ -230,11 +232,18 @@ export function useBottomSheet({
                 newHeight = maxHeight + overshoot * (1 - resistance);
             }
 
+            // Update motion value directly during drag for instant response
+            if (heightMotionValue) {
+                heightMotionValue.set(newHeight);
+            }
+
+            // Still update state for internal logic
             setContainerHeight(newHeight);
             state.lastY = currentY;
             state.lastTimestamp = timestamp;
         }
     };
+
 
     const handleTouchEnd = (e: TouchEvent) => {
         const state = touchState.current;

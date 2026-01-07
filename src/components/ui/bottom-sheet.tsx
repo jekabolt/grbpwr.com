@@ -1,7 +1,7 @@
 "use client";
 
-import { type ReactNode } from "react";
-import { motion } from "framer-motion";
+import { useEffect, type ReactNode } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 import {
   useBottomSheet,
@@ -25,13 +25,30 @@ export function BottomSheet({
   config,
   contentAboveRef,
 }: BottomSheetProps) {
-  const { containerHeight, canScrollInside } = useBottomSheet({
+  const heightMotionValue = useMotionValue(config?.minHeight ?? 150);
+
+  const heightSpring = useSpring(heightMotionValue, {
+    stiffness: 600,
+    damping: 60,
+    mass: 1.2,
+    restDelta: 0.5,
+    restSpeed: 2,
+  });
+
+  const { containerHeight, canScrollInside, touchState } = useBottomSheet({
     mainAreaRef,
     containerRef,
     isCarouselScrolling,
     config,
     contentAboveRef,
+    heightMotionValue,
   });
+
+  useEffect(() => {
+    if (!touchState.isDragging) {
+      heightMotionValue.set(containerHeight);
+    }
+  }, [containerHeight, touchState.isDragging, heightMotionValue]);
 
   return (
     <div className="pointer-events-none absolute inset-0 scroll-smooth">
@@ -39,14 +56,7 @@ export function BottomSheet({
         ref={containerRef}
         className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col overflow-hidden"
         style={{
-          height: containerHeight,
-        }}
-        animate={{ height: containerHeight }}
-        transition={{
-          type: "spring",
-          stiffness: 2500,
-          damping: 100,
-          mass: 0.1,
+          height: heightSpring,
         }}
       >
         <div
