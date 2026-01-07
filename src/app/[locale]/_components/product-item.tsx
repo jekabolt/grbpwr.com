@@ -21,10 +21,12 @@ export function ProductItem({
   product,
   className,
   isInfoVisible = true,
+  disableAnimations = false,
 }: {
   product: common_Product;
   className: string;
   isInfoVisible?: boolean;
+  disableAnimations?: boolean;
 }) {
   const tCatalog = useTranslations("catalog");
   const t = useTranslations("categories");
@@ -79,10 +81,12 @@ export function ProductItem({
       <AnimatedButton
         href={product?.slug || ""}
         onMouseDown={() => handleSelectItemEvent(product)}
-        enableThresholdAnimation={true}
+        enableThresholdAnimation={!disableAnimations}
         className={cn("group flex h-full w-full flex-col", className)}
       >
-        <div className="group-data-[held=true]:animate-threshold-highlight relative">
+        <div className={cn("relative", {
+          "group-data-[held=true]:animate-threshold-highlight": !disableAnimations,
+        })}>
           <Image
             src={
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
@@ -95,7 +99,9 @@ export function ProductItem({
             )}
             fit="contain"
           />
-          <Overlay cover="container" color="highlight" trigger="held" />
+          {!disableAnimations && (
+            <Overlay cover="container" color="highlight" trigger="held" />
+          )}
         </div>
         <div
           className={cn("flex w-full flex-col gap-2 pt-2", {

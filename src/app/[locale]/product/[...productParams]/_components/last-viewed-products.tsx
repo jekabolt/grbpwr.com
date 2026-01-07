@@ -6,9 +6,10 @@ import { useTranslations } from "next-intl";
 
 import { useLastViewed } from "@/lib/stores/last-viewed/store-provider.";
 import { cn } from "@/lib/utils";
-import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 import { ProductItem } from "@/app/[locale]/_components/product-item";
+
+// import { Overlay } from "@/components/ui/overlay";
 
 interface LastViewedProductsProps {
   product: common_Product;
@@ -50,14 +51,16 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
             className={cn("group relative w-40 lg:w-52", {
               "hidden lg:block": index >= 2,
             })}
+            data-bottom-sheet-ignore-drag="true"
           >
             <div className="relative">
               <ProductItem
                 className="w-full"
                 product={product}
                 isInfoVisible={false}
+                disableAnimations={true}
               />
-              <Overlay cover="container" color="highlight" trigger="hover" />
+              {/* <Overlay cover="container" color="highlight" trigger="hover" /> */}
             </div>
           </div>
         ))}

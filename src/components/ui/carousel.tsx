@@ -1,18 +1,12 @@
 "use client";
 
-import { Children, forwardRef, useEffect, useImperativeHandle } from "react";
+import { Children, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 import { createTouchHandlers, createWheelHandler } from "@/lib/carousel-utils";
 import { cn } from "@/lib/utils";
-
-export interface CarouselRef {
-  scrollNext: () => void;
-  scrollPrev: () => void;
-  emblaApi?: ReturnType<typeof useEmblaCarousel>[1];
-  isDisabled?: boolean;
-}
+import { Text } from "@/components/ui/text";
 
 type CarouselProps = {
   className?: string;
@@ -30,128 +24,122 @@ type CarouselProps = {
   setSelectedIndex?: (index: number) => void;
 };
 
-export const Carousel = forwardRef<CarouselRef, CarouselProps>(
-  function Carousel(
+export function Carousel({
+  className,
+  children,
+  loop = false,
+  disabled = false,
+  align = "start",
+  axis = "x",
+  disableForItemCounts,
+  enablePageScroll = false,
+  startIndex = 0,
+  dragFree = true,
+  skipSnaps = true,
+  scrollOnClick = false,
+  setSelectedIndex,
+}: CarouselProps) {
+  const childrenCount = Children.count(children);
+  const isDisabled = disabled || disableForItemCounts?.includes(childrenCount);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
     {
-      className,
-      children,
-      loop = false,
-      disabled = false,
-      align = "start",
-      axis = "x",
-      disableForItemCounts,
-      enablePageScroll = false,
-      startIndex = 0,
-      dragFree = true,
-      skipSnaps = true,
-      scrollOnClick = false,
-      setSelectedIndex,
+      loop,
+      dragFree,
+      skipSnaps,
+      align,
+      axis,
+      startIndex,
     },
-    ref,
-  ) {
-    const childrenCount = Children.count(children);
-    const isDisabled =
-      disabled || disableForItemCounts?.includes(childrenCount);
+    isDisabled ? [] : [WheelGesturesPlugin()],
+  );
 
-    const [emblaRef, emblaApi] = useEmblaCarousel(
-      {
-        loop,
-        dragFree,
-        skipSnaps,
-        align,
-        axis,
-        startIndex,
-      },
-      isDisabled ? [] : [WheelGesturesPlugin()],
-    );
+  function onSelect() {
+    if (!emblaApi || !setSelectedIndex || isDisabled) return;
+    const currentIndex = emblaApi.selectedScrollSnap();
+    setSelectedIndex(currentIndex);
+  }
 
-    useImperativeHandle(ref, () => ({
-      scrollNext: () => emblaApi?.scrollNext(),
-      scrollPrev: () => emblaApi?.scrollPrev(),
-      emblaApi,
-      isDisabled,
-    }));
+  useEffect(() => {
+    if (!emblaApi || !enablePageScroll || isDisabled) return;
 
-    function onSelect() {
-      if (!emblaApi || !setSelectedIndex || isDisabled) return;
-      const currentIndex = emblaApi.selectedScrollSnap();
-      setSelectedIndex(currentIndex);
-    }
+    const viewport = emblaApi.rootNode();
 
-    useEffect(() => {
-      if (!emblaApi || !enablePageScroll || isDisabled) return;
+    const onWheel = createWheelHandler(emblaApi, {
+      enablePageScroll,
+      loop,
+    });
 
-      const viewport = emblaApi.rootNode();
+    const { onTouchStart, onTouchMove } = createTouchHandlers(emblaApi, {
+      loop,
+      bridgeToPageAtEdges: true,
+    });
 
-      const onWheel = createWheelHandler(emblaApi, {
-        enablePageScroll,
-        loop,
-      });
+    viewport.addEventListener("wheel", onWheel, {
+      passive: false,
+      capture: true,
+    });
+    viewport.addEventListener("touchstart", onTouchStart, {
+      passive: true,
+      capture: true,
+    });
+    viewport.addEventListener("touchmove", onTouchMove, {
+      passive: false,
+      capture: true,
+    });
 
-      const { onTouchStart, onTouchMove } = createTouchHandlers(emblaApi, {
-        loop,
-        bridgeToPageAtEdges: true,
-      });
-
-      viewport.addEventListener("wheel", onWheel, {
-        passive: false,
+    return () => {
+      viewport.removeEventListener("touchstart", onTouchStart, {
         capture: true,
       });
-      viewport.addEventListener("touchstart", onTouchStart, {
-        passive: true,
+      viewport.removeEventListener("touchmove", onTouchMove, {
         capture: true,
       });
-      viewport.addEventListener("touchmove", onTouchMove, {
-        passive: false,
-        capture: true,
-      });
+    };
+  }, [emblaApi, enablePageScroll, loop, isDisabled]);
 
-      return () => {
-        viewport.removeEventListener("touchstart", onTouchStart, {
-          capture: true,
-        });
-        viewport.removeEventListener("touchmove", onTouchMove, {
-          capture: true,
-        });
-      };
-    }, [emblaApi, enablePageScroll, loop, isDisabled]);
+  useEffect(() => {
+    if (!emblaApi || isDisabled) return;
 
-    useEffect(() => {
-      if (!emblaApi || isDisabled) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
 
-      onSelect();
-      emblaApi.on("select", onSelect);
-      emblaApi.on("reInit", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi, onSelect, isDisabled]);
 
-      return () => {
-        emblaApi.off("select", onSelect);
-        emblaApi.off("reInit", onSelect);
-      };
-    }, [emblaApi, onSelect, isDisabled]);
+  function scrollNext() {
+    emblaApi?.scrollNext();
+  }
 
-    function scrollNext() {
-      emblaApi?.scrollNext();
-    }
+  function scrollPrev() {
+    emblaApi?.scrollPrev();
+  }
 
-    function scrollPrev() {
-      emblaApi?.scrollPrev();
-    }
-
-    return (
-      <div
-        ref={emblaRef}
-        className={cn("relative overflow-hidden", {
-          relative: scrollOnClick,
-        })}
-      >
-        <div className={className}>{children}</div>
-        {scrollOnClick && (
-          <div className="absolute inset-0 flex h-full">
-            <div onClick={scrollPrev} className="h-full flex-1" />
-            <div onClick={scrollNext} className="h-full flex-1" />
+  return (
+    <div
+      ref={emblaRef}
+      className={cn("relative overflow-hidden", {
+        relative: scrollOnClick,
+      })}
+    >
+      <div className={className}>{children}</div>
+      {scrollOnClick && (
+        <div className="absolute inset-0 flex h-full">
+          <div
+            onClick={scrollPrev}
+            className="flex h-full flex-1 items-center justify-start"
+          >
+            <Text className="pl-8 leading-none text-bgColor mix-blend-exclusion">
+              {"<"}
+            </Text>
           </div>
-        )}
-      </div>
-    );
-  },
-);
+          <div onClick={scrollNext} className="h-full flex-1" />
+        </div>
+      )}
+    </div>
+  );
+}

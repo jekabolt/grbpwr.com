@@ -1,13 +1,13 @@
 "use client";
 
-import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useEffect, useRef, useState } from "react";
+import { common_ProductFull } from "@/api/proto-http/frontend";
 
-import { BottomSheet } from "@/components/ui/bottom-sheet";
-import { Text } from "@/components/ui/text";
 import { sendViewItemEvent } from "@/lib/analitycs/product";
 import { useElementHeight } from "@/lib/hooks/useBottomSheet";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { BottomSheet } from "@/components/ui/bottom-sheet";
+import { Text } from "@/components/ui/text";
 
 import { GarmentDescription } from "./garmentDescription";
 import { LastViewedProducts } from "./last-viewed-products";
