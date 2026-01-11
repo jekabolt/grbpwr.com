@@ -60,12 +60,12 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={locale}>
       <head>
-        <link rel="preconnect" href="https://files.grbpwr.com" />
+        <link rel="preconnect" href="https://files.grbpwr.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://files.grbpwr.com" />
-        <link rel="preconnect" href="https://art.grbpwr.com" />
+        <link rel="preconnect" href="https://art.grbpwr.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://art.grbpwr.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
       </head>
-      <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ToastProvider>
@@ -77,8 +77,9 @@ export default async function RootLayout({ children, params }: Props) {
             <CookieBanner />
           </ToastProvider>
         </NextIntlClientProvider>
-        <SpeedInsights />
       </body>
+      <GoogleTagManager gtmId="GTM-WFC98J99" />
+      <SpeedInsights />
     </html>
   );
 }

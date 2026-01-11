@@ -54,10 +54,19 @@
   body {
     touch-action: manipulation;
     background-color: var(--background);
+    /* Optimize rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 
     ::selection {
       @apply bg-acidColor text-bgColor;
     }
+  }
+
+  /* Optimize images for better LCP */
+  img {
+    content-visibility: auto;
   }
 }
 

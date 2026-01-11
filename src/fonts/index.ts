@@ -20,5 +20,7 @@ export const FeatureMono = localFont({
   ],
   display: "swap",
   preload: true,
-  fallback: ["system-ui", "sans-serif"],
+  fallback: ["ui-monospace", "Menlo", "Monaco", "Cascadia Mono", "Courier New", "monospace"],
+  adjustFontFallback: false,
+  variable: "--font-feature-mono",
 });

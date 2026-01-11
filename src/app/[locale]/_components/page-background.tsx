@@ -177,17 +177,26 @@ export function PageBackground({
     if (backgroundColor) {
       applyBackground(backgroundColor);
     }
-    // Extract color from image
+    // Extract color from image - defer to avoid blocking
     else if (imageUrl) {
-      const nextImageUrl = `/_next/image?url=${encodeURIComponent(imageUrl)}&w=1920&q=75`;
+      // Use requestIdleCallback to defer color extraction
+      const extractColor = () => {
+        const nextImageUrl = `/_next/image?url=${encodeURIComponent(imageUrl)}&w=128&q=50`;
 
-      extractAverageColorWithOverlay(nextImageUrl)
-        .then((hexColor) => {
-          if (hexColor) applyBackground(hexColor);
-        })
-        .catch((error) =>
-          console.error("HeroBackground color extraction error:", error),
-        );
+        extractAverageColorWithOverlay(nextImageUrl)
+          .then((hexColor) => {
+            if (hexColor) applyBackground(hexColor);
+          })
+          .catch((error) =>
+            console.error("HeroBackground color extraction error:", error),
+          );
+      };
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(extractColor, { timeout: 2000 });
+      } else {
+        setTimeout(extractColor, 100);
+      }
     }
 
     return () => {

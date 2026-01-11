@@ -18,8 +18,11 @@ export default async function Template({
 }: {
   children: React.ReactNode;
 }) {
-  const heroData = await serviceClient.GetHero({});
-  const initialTranslationState = await getInitialTranslationState();
+  // Fetch data in parallel for better performance
+  const [heroData, initialTranslationState] = await Promise.all([
+    serviceClient.GetHero({}),
+    getInitialTranslationState(),
+  ]);
 
   return (
     <QueryWrapper>
