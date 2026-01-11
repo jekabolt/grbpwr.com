@@ -1,7 +1,7 @@
-import { Metadata } from "next";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import {
   getMessages,
@@ -9,11 +9,11 @@ import {
   setRequestLocale,
 } from "next-intl/server";
 
-import { generateCommonMetadata } from "@/lib/common-metadata";
 import { PageTransition } from "@/components/page-transition";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
 import { ToastProvider } from "@/components/ui/toaster";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 
 import "../globals.css";
 
