@@ -1,12 +1,12 @@
-import { useState } from "react";
 import { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
+import { useState } from "react";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, calculatePriceWithSale } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { calculateAspectRatio, calculatePriceWithSale } from "@/lib/utils";
 
 export function SingleFeaturedItem({
   products,
@@ -94,6 +94,8 @@ export function SingleFeaturedItem({
                   p.productDisplay?.thumbnail?.media?.thumbnail?.height,
                 )}
                 fit="contain"
+                priority={true}
+                loading="eager"
               />
             </AnimatedButton>
           </div>

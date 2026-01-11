@@ -19,6 +19,6 @@ export const FeatureMono = localFont({
     },
   ],
   display: "swap",
-  preload: false,
+  preload: true,
   fallback: ["system-ui", "sans-serif"],
 });

@@ -22,6 +22,8 @@ export function Ads({
   return (
     <div>
       {entities?.map((e, i) => {
+        // Prioritize first ad for better LCP
+        const isPriorityAd = i === 0;
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
             const currentTranslation = e.single?.translations?.find(
@@ -48,6 +50,8 @@ export function Ads({
                         e.single?.mediaLandscape?.media?.fullSize?.height,
                       )}
                       fit="cover"
+                      priority={isPriorityAd}
+                      loading={isPriorityAd ? "eager" : "lazy"}
                     />
                   </div>
                   <div className="block h-full lg:hidden">
@@ -61,6 +65,8 @@ export function Ads({
                         e.single?.mediaPortrait?.media?.fullSize?.height,
                       )}
                       fit="cover"
+                      priority={isPriorityAd}
+                      loading={isPriorityAd ? "eager" : "lazy"}
                     />
                   </div>
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center">
@@ -112,6 +118,8 @@ export function Ads({
                       e.double?.left?.mediaLandscape?.media?.fullSize?.height,
                     )}
                     fit="contain"
+                    priority={isPriorityAd}
+                    loading={isPriorityAd ? "eager" : "lazy"}
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text
@@ -145,6 +153,8 @@ export function Ads({
                       e.double?.right?.mediaLandscape?.media?.fullSize?.height,
                     )}
                     fit="contain"
+                    priority={isPriorityAd}
+                    loading={isPriorityAd ? "eager" : "lazy"}
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
                     <Text

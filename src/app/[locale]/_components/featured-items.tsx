@@ -65,13 +65,14 @@ export function FeaturedItems({
               onHeroClick={onHeroClick}
             />
             <div className="flex flex-row gap-12">
-              {products?.map((p) => (
+              {products?.map((p, index) => (
                 <ProductItem
                   key={p.id}
                   className={cn("w-[28rem]", {
                     "w-72": itemsQuantity === 3,
                   })}
                   product={p}
+                  imagePriority={index === 0}
                 />
               ))}
             </div>
@@ -101,8 +102,13 @@ function FourFeaturedItems({
       <HeaderSection headline={headline} href={href} linkText={linkText} onHeroClick={onHeroClick} />
 
       <Carousel disableForItemCounts={[4]} loop className="flex w-full">
-        {products?.map((p) => (
-          <ProductItem key={p.id} className="flex-[0_0_25%] px-6" product={p} />
+        {products?.map((p, index) => (
+          <ProductItem
+            key={p.id}
+            className="flex-[0_0_25%] px-6"
+            product={p}
+            imagePriority={index < 2}
+          />
         ))}
       </Carousel>
     </div>
