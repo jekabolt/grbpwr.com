@@ -28,9 +28,9 @@ export function BottomSheet({
   const heightMotionValue = useMotionValue(config?.minHeight ?? 150);
 
   const heightSpring = useSpring(heightMotionValue, {
-    stiffness: 600,
+    stiffness: 800,
     damping: 60,
-    mass: 1.2,
+    mass: 0.1,
     restDelta: 0.5,
     restSpeed: 2,
   });

@@ -130,7 +130,6 @@ export function useBottomSheet({
         state.lastTimestamp = timestamp;
         state.velocityHistory = [];
 
-        // Always check scroll position at touchstart for accurate detection
         if (containerRef.current && canScrollInside()) {
             const scrollableElement = containerRef.current.querySelector(
                 '[class*="overflow-y-auto"]',
@@ -138,7 +137,6 @@ export function useBottomSheet({
             if (scrollableElement) {
                 const scrollTop = scrollableElement.scrollTop;
                 scrollPositionRef.current = scrollTop;
-                // Use a slightly larger threshold to account for sub-pixel scrolling
                 state.startedAtTop = scrollTop <= 15;
             } else {
                 state.startedAtTop = false;
@@ -157,9 +155,6 @@ export function useBottomSheet({
         const currentX = touch.clientX;
         const timestamp = Date.now();
 
-        // If the touch started in an area that should not control the sheet
-        // (e.g. last viewed products grid with its own visual overlays),
-        // skip all bottom-sheet drag logic and let the inner scroll behave normally.
         const target = e.target as HTMLElement | null;
         if (target && target.closest("[data-bottom-sheet-ignore-drag=\"true\"]")) {
             return;
@@ -190,9 +185,6 @@ export function useBottomSheet({
                         scrollPositionRef.current = currentScrollTop;
                     }
 
-                    // Allow dragging if swiping down AND:
-                    // 1. Currently at/near top (within 15px), OR
-                    // 2. Started at top (even if scrolled slightly during gesture)
                     const isAtTopNow = currentScrollTop <= 15;
                     if (isSwipeDown && (isAtTopNow || state.startedAtTop)) {
                         state.isDragging = true;
@@ -209,7 +201,6 @@ export function useBottomSheet({
                     '[class*="overflow-y-auto"]',
                 ) as HTMLElement | null;
                 const currentScrollTop = scrollableElement?.scrollTop ?? 0;
-                // Allow collapsing if at top now OR started at top
                 isCollapsingFromExpanded = currentScrollTop <= 15 || state.startedAtTop;
             }
 
@@ -232,12 +223,10 @@ export function useBottomSheet({
                 newHeight = maxHeight + overshoot * (1 - resistance);
             }
 
-            // Update motion value directly during drag for instant response
             if (heightMotionValue) {
                 heightMotionValue.set(newHeight);
             }
 
-            // Still update state for internal logic
             setContainerHeight(newHeight);
             state.lastY = currentY;
             state.lastTimestamp = timestamp;
@@ -338,7 +327,6 @@ export function useBottomSheet({
         const handleScroll = () => {
             if (!touchState.current.isDragging && !touchState.current.hasMoved) {
                 scrollPositionRef.current = scrollableElement.scrollTop;
-                // Update startedAtTop if user scrolls while not dragging
                 if (scrollableElement.scrollTop <= 10) {
                     touchState.current.startedAtTop = true;
                 } else if (scrollableElement.scrollTop > 10) {
