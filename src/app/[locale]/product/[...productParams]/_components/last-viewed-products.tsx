@@ -50,14 +50,18 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
             className={cn("group relative w-40 lg:w-52", {
               "hidden lg:block": index >= 2,
             })}
+            data-bottom-sheet-ignore-drag="true"
           >
             <div className="relative">
               <ProductItem
                 className="w-full"
                 product={product}
                 isInfoVisible={false}
+                disableAnimations={true}
               />
-              <Overlay cover="container" color="highlight" trigger="hover" />
+              <div className="hidden lg:block">
+                <Overlay cover="container" color="highlight" trigger="hover" />
+              </div>
             </div>
           </div>
         ))}
