@@ -1,6 +1,7 @@
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import {
@@ -76,6 +77,7 @@ export default async function RootLayout({ children, params }: Props) {
             <CookieBanner />
           </ToastProvider>
         </NextIntlClientProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
