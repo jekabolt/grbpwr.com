@@ -2,13 +2,13 @@
 
 import type { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
-import { sendHeroEvent } from "@/lib/analitycs/hero";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
+import { sendHeroEvent } from "@/lib/analitycs/hero";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { calculateAspectRatio, cn } from "@/lib/utils";
 
 import { FeaturedItems } from "./featured-items";
 import { HeroArchive } from "./hero-archive";
@@ -52,6 +52,7 @@ export function Ads({
                       fit="cover"
                       priority={isPriorityAd}
                       loading={isPriorityAd ? "eager" : "lazy"}
+                      blurhash={e.single?.mediaLandscape?.media?.blurhash}
                     />
                   </div>
                   <div className="block h-full lg:hidden">
@@ -67,6 +68,7 @@ export function Ads({
                       fit="cover"
                       priority={isPriorityAd}
                       loading={isPriorityAd ? "eager" : "lazy"}
+                      blurhash={e.single?.mediaPortrait?.media?.blurhash}
                     />
                   </div>
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center">
@@ -120,6 +122,7 @@ export function Ads({
                     fit="contain"
                     priority={isPriorityAd}
                     loading={isPriorityAd ? "eager" : "lazy"}
+                    blurhash={e.double?.left?.mediaLandscape?.media?.blurhash}
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text
@@ -155,6 +158,7 @@ export function Ads({
                     fit="contain"
                     priority={isPriorityAd}
                     loading={isPriorityAd ? "eager" : "lazy"}
+                    blurhash={e.double?.right?.mediaLandscape?.media?.blurhash}
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
                     <Text

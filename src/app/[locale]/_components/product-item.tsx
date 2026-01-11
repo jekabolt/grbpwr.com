@@ -100,6 +100,7 @@ export function ProductItem({
             fit="contain"
             priority={imagePriority}
             loading={imagePriority ? "eager" : "lazy"}
+            blurhash={product.productDisplay?.thumbnail?.media?.blurhash}
           />
           {!disableAnimations && (
             <Overlay cover="container" color="highlight" trigger="held" />

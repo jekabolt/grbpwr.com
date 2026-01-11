@@ -37,6 +37,7 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           priority={true}
           loading="eager"
           fetchPriority="high"
+          blurhash={main.single?.mediaLandscape?.media?.blurhash}
         />
       </div>
       <div className="block h-full lg:hidden">
@@ -51,6 +52,7 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           priority={true}
           loading="eager"
           fetchPriority="high"
+          blurhash={main.single?.mediaPortrait?.media?.blurhash}
         />
       </div>
       <Overlay cover="container" />
