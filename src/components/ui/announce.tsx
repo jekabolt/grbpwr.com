@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
 import { useDataContext } from "../contexts/DataContext";
+import { AnimatedButton } from "./animated-button";
 import { Button } from "./button";
 
 export function Announce({
@@ -19,6 +20,7 @@ export function Announce({
   const announce =
     dictionary?.announce?.translations?.find((t) => t.languageId === languageId)
       ?.text || "";
+  const announceLink = dictionary?.announce?.link;
 
   if (!open || !announce) return null;
 
@@ -34,7 +36,13 @@ export function Announce({
       )}
     >
       <div className="lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-center">
-        <Text variant="uppercase">{announce}</Text>
+        {announceLink ? (
+          <AnimatedButton href={announceLink}>
+            <Text variant="uppercase">{announce}</Text>
+          </AnimatedButton>
+        ) : (
+          <Text variant="uppercase">{announce}</Text>
+        )}
       </div>
       <Button
         onClick={onClose}

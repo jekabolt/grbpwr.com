@@ -6,14 +6,14 @@ import {
 } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
+import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 
 import { useAnalytics } from "../catalog/_components/useAnalytics";
 
@@ -81,10 +81,12 @@ export function ProductItem({
       <AnimatedButton
         href={product?.slug || ""}
         onMouseDown={() => handleSelectItemEvent(product)}
-        enableThresholdAnimation={true}
+        enableThresholdAnimation={!disableAnimations}
         className={cn("group flex h-full w-full flex-col", className)}
       >
-        <div className="group-data-[held=true]:animate-threshold-highlight relative">
+        <div className={cn("relative", {
+          "group-data-[held=true]:animate-threshold-highlight": !disableAnimations,
+        })}>
           <Image
             src={
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
@@ -99,7 +101,9 @@ export function ProductItem({
             priority={imagePriority}
             loading={imagePriority ? "eager" : "lazy"}
           />
-          <Overlay cover="container" color="highlight" trigger="held" />
+          {!disableAnimations && (
+            <Overlay cover="container" color="highlight" trigger="held" />
+          )}
         </div>
         <div
           className={cn("flex w-full flex-col gap-2 pt-2", {

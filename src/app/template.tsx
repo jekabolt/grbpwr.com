@@ -4,14 +4,14 @@ import type {
 } from "@/api/proto-http/frontend";
 import { QueryWrapper } from "@/providers/query-wrapper";
 
+import { DataContextProvider } from "@/components/contexts/DataContext";
+import { ServerActionsContextProvider } from "@/components/contexts/ServerActionsContext";
 import { serviceClient } from "@/lib/api";
 import { CartStoreProvider } from "@/lib/stores/cart/store-provider";
 import { CheckoutStoreProvider } from "@/lib/stores/checkout/store-provider";
 import { LastViewedStoreProvider } from "@/lib/stores/last-viewed/store-provider.";
 import { getInitialTranslationState } from "@/lib/stores/translations/cookie-utils";
 import { TranslationsStoreProvider } from "@/lib/stores/translations/store-provider";
-import { DataContextProvider } from "@/components/contexts/DataContext";
-import { ServerActionsContextProvider } from "@/components/contexts/ServerActionsContext";
 
 export default async function Template({
   children,

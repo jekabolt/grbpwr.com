@@ -2,13 +2,13 @@
 
 import { common_HeroMainWithTranslations } from "@/api/proto-http/frontend";
 
-import { sendHeroEvent } from "@/lib/analitycs/hero";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
+import { sendHeroEvent } from "@/lib/analitycs/hero";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { calculateAspectRatio } from "@/lib/utils";
 
 export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
   const { languageId } = useTranslationsStore((state) => state);
