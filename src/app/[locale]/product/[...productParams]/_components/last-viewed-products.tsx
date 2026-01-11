@@ -6,10 +6,9 @@ import { useTranslations } from "next-intl";
 
 import { useLastViewed } from "@/lib/stores/last-viewed/store-provider.";
 import { cn } from "@/lib/utils";
+import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 import { ProductItem } from "@/app/[locale]/_components/product-item";
-
-// import { Overlay } from "@/components/ui/overlay";
 
 interface LastViewedProductsProps {
   product: common_Product;
@@ -60,7 +59,9 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
                 isInfoVisible={false}
                 disableAnimations={true}
               />
-              {/* <Overlay cover="container" color="highlight" trigger="hover" /> */}
+              <div className="hidden lg:block">
+                <Overlay cover="container" color="highlight" trigger="hover" />
+              </div>
             </div>
           </div>
         ))}
