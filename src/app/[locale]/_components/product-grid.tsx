@@ -17,11 +17,19 @@ export default function ProductsGridSection({
 
   return (
     <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-16">
-      {products.map((v) => (
-        <div key={v.id}>
-          <ProductItem className="mx-auto" product={v} />
-        </div>
-      ))}
+      {products.map((v, index) => {
+        // Prioritize first 4 items (2 rows on mobile, 1 row on desktop)
+        const isPriority = index < 4;
+        return (
+          <div key={v.id}>
+            <ProductItem
+              className="mx-auto"
+              product={v}
+              imagePriority={isPriority}
+            />
+          </div>
+        );
+      })}
       {isLoading &&
         Array.from({
           length: Math.min(CATALOG_LIMIT, total - products.length),

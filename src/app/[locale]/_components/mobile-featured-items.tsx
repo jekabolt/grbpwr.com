@@ -46,7 +46,7 @@ export function MobileFeaturedItems({
           "grid grid-cols-2 gap-4": itemsQuantity === 4,
         })}
       >
-        {products?.map((p) => (
+        {products?.map((p, index) => (
           <ProductItem
             key={p.id}
             className={cn("w-44 px-2.5", {
@@ -55,6 +55,7 @@ export function MobileFeaturedItems({
               "w-44 px-0": itemsQuantity >= 3 && itemsQuantity !== 4,
             })}
             product={p}
+            imagePriority={index === 0}
           />
         ))}
       </Carousel>

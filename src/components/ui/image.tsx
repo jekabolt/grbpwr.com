@@ -20,6 +20,8 @@ type ImageProps = {
   aspectRatio: string;
   sizes?: string;
   fit?: "cover" | "contain" | "fill" | "scale-down";
+  priority?: boolean;
+  loading?: "lazy" | "eager";
 };
 
 export default function ImageComponent({
@@ -28,6 +30,8 @@ export default function ImageComponent({
   alt,
   sizes = "(max-width: 1280px) 100vw, 1280px",
   fit,
+  priority = false,
+  loading = "lazy",
 }: ImageProps) {
   return (
     <ImageContainer aspectRatio={fit !== "cover" ? aspectRatio : undefined}>
@@ -37,6 +41,8 @@ export default function ImageComponent({
         alt={alt}
         className="h-full w-full"
         sizes={sizes}
+        priority={priority}
+        loading={priority ? undefined : loading}
         style={{
           objectFit: fit,
         }}

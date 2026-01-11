@@ -60,6 +60,8 @@ export default function PageComponent({
                 archive?.mainMedia?.media?.thumbnail?.width,
                 archive?.mainMedia?.media?.thumbnail?.height,
               )}
+              priority={true}
+              loading="eager"
             />
           </div>
         )}
@@ -91,18 +93,24 @@ export default function PageComponent({
           </div>
         )}
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:gap-4">
-        {archive?.media?.map((item, id) => (
-          <div key={id}>
-            <ImageComponent
-              src={item.media?.fullSize?.mediaUrl || ""}
-              alt={`${currentTranslation?.heading || ""} image ${id + 1}`}
-              aspectRatio={calculateAspectRatio(
-                item.media?.fullSize?.width,
-                item.media?.fullSize?.height,
-              )}
-            />
-          </div>
-        ))}
+        {archive?.media?.map((item, id) => {
+          // Prioritize first 4 images in grid (above fold on desktop)
+          const isPriority = id < 4;
+          return (
+            <div key={id}>
+              <ImageComponent
+                src={item.media?.fullSize?.mediaUrl || ""}
+                alt={`${currentTranslation?.heading || ""} image ${id + 1}`}
+                aspectRatio={calculateAspectRatio(
+                  item.media?.fullSize?.width,
+                  item.media?.fullSize?.height,
+                )}
+                priority={isPriority}
+                loading={isPriority ? "eager" : "lazy"}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
-import { Metadata } from "next";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import {
   getMessages,
@@ -9,11 +9,11 @@ import {
   setRequestLocale,
 } from "next-intl/server";
 
-import { generateCommonMetadata } from "@/lib/common-metadata";
 import { PageTransition } from "@/components/page-transition";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
 import { ToastProvider } from "@/components/ui/toaster";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 
 import "../globals.css";
 
@@ -58,6 +58,12 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html lang={locale}>
+      <head>
+        <link rel="preconnect" href="https://files.grbpwr.com" />
+        <link rel="dns-prefetch" href="https://files.grbpwr.com" />
+        <link rel="preconnect" href="https://art.grbpwr.com" />
+        <link rel="dns-prefetch" href="https://art.grbpwr.com" />
+      </head>
       <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>

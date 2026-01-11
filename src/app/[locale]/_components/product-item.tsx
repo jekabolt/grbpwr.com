@@ -21,10 +21,12 @@ export function ProductItem({
   product,
   className,
   isInfoVisible = true,
+  imagePriority = false,
 }: {
   product: common_Product;
   className: string;
   isInfoVisible?: boolean;
+  imagePriority?: boolean;
 }) {
   const tCatalog = useTranslations("catalog");
   const t = useTranslations("categories");
@@ -94,6 +96,8 @@ export function ProductItem({
               product.productDisplay?.thumbnail?.media?.thumbnail?.height,
             )}
             fit="contain"
+            priority={imagePriority}
+            loading={imagePriority ? "eager" : "lazy"}
           />
           <Overlay cover="container" color="highlight" trigger="held" />
         </div>
