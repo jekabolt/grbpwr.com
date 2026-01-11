@@ -22,11 +22,13 @@ export function ProductItem({
   className,
   isInfoVisible = true,
   imagePriority = false,
+  disableAnimations = false,
 }: {
   product: common_Product;
   className: string;
   isInfoVisible?: boolean;
   imagePriority?: boolean;
+  disableAnimations?: boolean;
 }) {
   const tCatalog = useTranslations("catalog");
   const t = useTranslations("categories");

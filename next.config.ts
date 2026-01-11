@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     reactCompiler: {
       compilationMode: 'annotation'
     },
-    optimizePackageImports: ['framer-motion', '@radix-ui/react-dialog', '@radix-ui/react-popover'],
+    optimizePackageImports: ['@radix-ui/react-dialog', '@radix-ui/react-popover'],
   },
   images: {
     remotePatterns: [
