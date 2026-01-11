@@ -34,6 +34,8 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           )}
           alt="main hero image"
           fit="cover"
+          priority={true}
+          loading="eager"
         />
       </div>
       <div className="block h-full lg:hidden">
@@ -45,6 +47,8 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           )}
           alt="main hero image"
           fit="cover"
+          priority={true}
+          loading="eager"
         />
       </div>
       <Overlay cover="container" />

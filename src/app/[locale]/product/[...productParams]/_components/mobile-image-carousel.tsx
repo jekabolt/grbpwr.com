@@ -85,6 +85,8 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
         <div className="flex h-full w-full">
           {media.map((m, index) => {
             const fullSize = m?.media?.fullSize;
+            // Prioritize first image for mobile LCP
+            const isPriority = index === 0;
             return (
               <div key={`${m.id}-${index}`} className="h-full flex-[0_0_102%]">
                 <ImageComponent
@@ -95,6 +97,8 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
                     fullSize?.height,
                   )}
                   fit="contain"
+                  priority={isPriority}
+                  loading={isPriority ? "eager" : "lazy"}
                 />
               </div>
             );
