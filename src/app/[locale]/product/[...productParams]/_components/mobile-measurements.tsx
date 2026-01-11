@@ -85,7 +85,7 @@ export function MobileMeasurements({
               handleSelectSize={handleSelectSize}
             />
           </div>
-          <div className="shrink-0 space-y-6 pt-6">
+          <div className="shrink-0">
             <LoadingButton
               variant="simpleReverse"
               size="lg"
