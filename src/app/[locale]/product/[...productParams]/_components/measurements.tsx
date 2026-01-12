@@ -77,11 +77,7 @@ export function Measurements({
   })();
 
   return (
-    <div
-      className={cn("flex h-full flex-col overflow-y-hidden bg-bgColor", {
-        "overflow-y-auto": isRing || isShoe,
-      })}
-    >
+    <div className="flex flex-col bg-bgColor">
       {hoveredDescription && (
         <Text className="absolute left-0 top-0 z-10 w-full bg-highlightColor p-2.5 lowercase text-bgColor">
           {hoveredDescription}
