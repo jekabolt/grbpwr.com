@@ -74,6 +74,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
     id: parseInt(id),
   });
 
+  if (!product || !product.product) {
+    notFound();
+  }
+
   const productMedia = [...(product?.media || [])];
 
   return (
