@@ -1,4 +1,5 @@
 import { useDataContext } from "@/components/contexts/DataContext";
+import { formatSizeName } from "@/lib/utils";
 import { useRouteParams } from "./useRouteParams";
 
 export function useSizeFiltering() {
@@ -24,22 +25,18 @@ export function useSizeFiltering() {
         const isBottomsSize = /_\d+bo_[mf]$/.test(name);
         const isTailoredSize = /_\d+ta_[mf]$/.test(name);
 
-        // If it's a shoes category, only show numeric sizes
         if (isShoes) return isNumeric;
 
-        // If it's a bottoms category, only show bottoms sizes
         if (isBottoms) return isBottomsSize;
 
-        // If it's a tailored category, only show tailored sizes
         if (isTailored) return isTailoredSize;
 
-        // For other categories, show regular non-numeric sizes (exclude shoes, bottoms, and tailored)
         return !isNumeric && !isBottomsSize && !isTailoredSize;
     });
 
     const sizeOptions = filteredSizes
         ?.sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
-        ?.map((s) => ({ ...s, name: s.name ?? "" }));
+        ?.map((s) => ({ ...s, name: formatSizeName(s.name || "") }));
 
 
     return { sizeOptions, filteredSizes };

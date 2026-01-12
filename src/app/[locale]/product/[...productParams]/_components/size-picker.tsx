@@ -2,8 +2,8 @@ import { sendSizeSelectionEvent } from "@/lib/analitycs/sizes";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { HoverText } from "@/components/ui/hover-text";
-import { Text } from "@/components/ui/text";
 import { Overlay } from "@/components/ui/overlay";
+import { Text } from "@/components/ui/text";
 
 type Props = {
   sizeNames: { name: string; id: number }[];
@@ -26,9 +26,9 @@ export function SizePicker({
   isOneSize,
   view = "grid",
   className,
+  shouldBlink = false,
   handleSizeSelect,
   onOutOfStockHover,
-  shouldBlink = false,
 }: Props) {
   const handleAnalytics = (sizeName: string, outOfStock: boolean) => {
     sendSizeSelectionEvent({

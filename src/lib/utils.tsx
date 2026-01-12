@@ -252,3 +252,8 @@ export function getVatRateByCountryCode(
   );
   return country?.vatRate;
 }
+
+export function formatSizeName(name: string): string {
+  const match = name.match(/_(\d+)(?:ta|bo)_[mf]$/);
+  return match ? match[1] : name;
+}
