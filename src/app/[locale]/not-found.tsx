@@ -5,7 +5,7 @@ import { Text } from "@/components/ui/text";
 
 import "../globals.css";
 
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
@@ -19,8 +19,8 @@ export function generateMetadata() {
   });
 }
 
-export default function NotFoundPage() {
-  const t = useTranslations("not-found");
+export default async function NotFoundPage() {
+  const t = await getTranslations("not-found");
   return (
     <FlexibleLayout headerType="catalog">
       <div className="flex h-screen flex-col items-center justify-center gap-6">
