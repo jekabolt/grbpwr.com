@@ -61,12 +61,12 @@ export function Filter({
             disablePointerEvents={false}
           />
           <div className="fixed inset-y-2 right-2 z-30 w-[445px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor">
-            <div className="flex h-full flex-col gap-y-6">
+            <div className="flex h-full flex-col">
               <div className="flex items-center justify-between">
                 <Text variant="uppercase">{t("filter")}</Text>
                 <Button onClick={toggleModal}>[x]</Button>
               </div>
-              <div className="h-full space-y-10 overflow-y-scroll">
+              <div className="h-full space-y-10 overflow-y-scroll pt-6">
                 <div className="space-y-6">
                   <Text variant="uppercase">{t("sort by")}</Text>
                   <Sort />

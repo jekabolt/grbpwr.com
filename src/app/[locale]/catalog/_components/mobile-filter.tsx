@@ -69,7 +69,7 @@ export function MobileFilter() {
                 <Button>[x]</Button>
               </div>
             </DialogPrimitives.Close>
-            <div className="mt-10 h-full space-y-10 overflow-y-scroll">
+            <div className="h-full space-y-10 overflow-y-scroll pt-10">
               <div className="space-y-6">
                 <Text variant="uppercase">{t("sort by")}</Text>
                 <Sort />
