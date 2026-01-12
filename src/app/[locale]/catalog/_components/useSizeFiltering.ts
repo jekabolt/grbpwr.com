@@ -1,5 +1,4 @@
 import { useDataContext } from "@/components/contexts/DataContext";
-import { formatSizeName } from "@/lib/utils";
 import { useRouteParams } from "./useRouteParams";
 
 export function useSizeFiltering() {
@@ -36,7 +35,7 @@ export function useSizeFiltering() {
 
     const sizeOptions = filteredSizes
         ?.sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
-        ?.map((s) => ({ ...s, name: formatSizeName(s.name || "") }));
+        ?.map((s) => ({ ...s, name: s.name || "" }));
 
 
     return { sizeOptions, filteredSizes };
