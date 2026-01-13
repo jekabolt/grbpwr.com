@@ -75,7 +75,7 @@ export function MobileFilter() {
                 <Sort />
               </div>
               <Collection />
-              <Sizes topCategoryId={topCategory?.id} gender={gender} />
+              <Sizes gender={gender} />
             </div>
             <div className="flex items-center justify-end gap-2 bg-bgColor">
               <Button

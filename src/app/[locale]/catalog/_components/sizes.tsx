@@ -2,7 +2,7 @@ import FilterOptionButtons from "./FilterOptionButtons";
 import { useFilterSelection } from "./useFilterSelection";
 import { useSizeFiltering } from "./useSizeFiltering";
 
-export function Sizes({ topCategoryId, gender }: Props) {
+export function Sizes({ gender }: { gender: string }) {
   const { sizeOptions } = useSizeFiltering();
   const { selectedValues, handleToggle } = useFilterSelection({
     filterKey: "size",
@@ -14,14 +14,8 @@ export function Sizes({ topCategoryId, gender }: Props) {
       selectedValues={selectedValues}
       handleFilterChange={handleToggle}
       values={sizeOptions || []}
-      topCategoryId={topCategoryId?.toString()}
       showSeparated={true}
       gender={gender}
     />
   );
-}
-
-interface Props {
-  topCategoryId?: number;
-  gender: string;
 }
