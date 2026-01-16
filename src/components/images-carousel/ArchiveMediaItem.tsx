@@ -3,8 +3,8 @@
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import { PhotoView } from "react-photo-view";
 
-import { calculateAspectRatio } from "@/lib/utils";
 import GlobalImage from "@/components/ui/image";
+import { calculateAspectRatio } from "@/lib/utils";
 
 export function ArchiveMediaItem({
   singleMedia,
@@ -22,6 +22,7 @@ export function ArchiveMediaItem({
             singleMedia?.media?.fullSize?.height,
           )}
           fit="contain"
+          blurhash={singleMedia?.media?.blurhash}
         />
       </div>
     </PhotoView>

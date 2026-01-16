@@ -96,6 +96,8 @@ export function SingleFeaturedItem({
                 fit="contain"
                 priority={true}
                 loading="eager"
+                fetchPriority="high"
+                blurhash={p.productDisplay?.thumbnail?.media?.blurhash}
               />
             </AnimatedButton>
           </div>

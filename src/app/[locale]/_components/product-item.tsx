@@ -6,14 +6,14 @@ import {
 } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
+import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 
 import { useAnalytics } from "../catalog/_components/useAnalytics";
 
@@ -21,14 +21,14 @@ export function ProductItem({
   product,
   className,
   isInfoVisible = true,
-  disableAnimations = false,
   imagePriority = false,
+  disableAnimations = false,
 }: {
   product: common_Product;
   className: string;
   isInfoVisible?: boolean;
-  disableAnimations?: boolean;
   imagePriority?: boolean;
+  disableAnimations?: boolean;
 }) {
   const tCatalog = useTranslations("catalog");
   const t = useTranslations("categories");
@@ -102,6 +102,7 @@ export function ProductItem({
             fit="contain"
             priority={imagePriority}
             loading={imagePriority ? "eager" : "lazy"}
+            blurhash={product.productDisplay?.thumbnail?.media?.blurhash}
           />
           {!disableAnimations && (
             <Overlay cover="container" color="highlight" trigger="held" />

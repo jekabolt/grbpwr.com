@@ -1,6 +1,7 @@
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import {
@@ -59,12 +60,12 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={locale}>
       <head>
-        <link rel="preconnect" href="https://files.grbpwr.com" />
+        <link rel="preconnect" href="https://files.grbpwr.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://files.grbpwr.com" />
-        <link rel="preconnect" href="https://art.grbpwr.com" />
+        <link rel="preconnect" href="https://art.grbpwr.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://art.grbpwr.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
       </head>
-      <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ToastProvider>
@@ -77,6 +78,8 @@ export default async function RootLayout({ children, params }: Props) {
           </ToastProvider>
         </NextIntlClientProvider>
       </body>
+      <GoogleTagManager gtmId="GTM-WFC98J99" />
+      <SpeedInsights />
     </html>
   );
 }

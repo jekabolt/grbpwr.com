@@ -1,11 +1,10 @@
 "use client";
 
 import { common_MediaFull } from "@/api/proto-http/frontend";
-import { useRef } from "react";
 
-import { calculateAspectRatio } from "@/lib/utils";
 import { Carousel } from "@/components/ui/carousel";
 import ImageComponent from "@/components/ui/image";
+import { calculateAspectRatio } from "@/lib/utils";
 
 export function ProductImagesCarousel({ productMedia }: Props) {
   const oneMedia = productMedia.length === 1;

@@ -1,10 +1,10 @@
-import Link from "next/link";
 import type { common_ArchiveFull } from "@/api/proto-http/frontend";
+import Link from "next/link";
 
-import { calculateAspectRatio, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
+import { calculateAspectRatio, cn } from "@/lib/utils";
 
 export function ArchiveItem({
   archive,
@@ -30,6 +30,7 @@ export function ArchiveItem({
                   m.media?.fullSize?.height,
                 )}
                 fit="contain"
+                blurhash={m.media?.blurhash}
               />
               <Text className="absolute right-4 top-1/2 block -translate-y-1/2 md:hidden md:group-hover:block">
                 {id}
