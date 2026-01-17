@@ -75,7 +75,7 @@ export function Categories() {
           (c) => c.id === subCategory.id,
         ) as common_Category;
 
-        const isDisabled = isCategoryDisabled(findSubCategory, gender);
+        // const isDisabled = isCategoryDisabled(findSubCategory, gender);
         const subCatName = getSubCategoryName(categories, subCategory.id);
 
         // Build subcategory href with or without gender
@@ -92,7 +92,7 @@ export function Categories() {
                   ? "underline"
                   : "default"
               }
-              disabled={isDisabled}
+              // disabled={isDisabled}
             >
               {subCatName ? t(subCatName.toLowerCase()) : ""}
             </CategoryButton>
