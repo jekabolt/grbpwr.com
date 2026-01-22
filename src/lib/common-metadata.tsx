@@ -13,7 +13,7 @@ type GenerateOgParams = {
 
 export function generateOpenGraph({
   title = "grbpwr.com",
-  description = "latest ready-to-wear menswear, womenswear, and accessories",
+  description = "GRBPWR discusses difficult topics by imperfect language and master this imperfect language. Shop latest ready-to-wear.",
   imageUrl = logo.src,
   imageWidth = 512,
   imageHeight = 512,
@@ -37,7 +37,7 @@ export function generateOpenGraph({
 
 export function generateCommonMetadata({
   title = "grbpwr.com",
-  description = "latest ready-to-wear menswear, womenswear, and accessories",
+  description = "GRBPWR discusses difficult topics by imperfect language and master this imperfect language. Shop latest ready-to-wear.",
   ogParams = {},
 }: {
   title?: string;

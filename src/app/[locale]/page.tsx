@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import { serviceClient } from "@/lib/api";
-import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 import { EmptyHero } from "@/components/ui/empty-hero";
+import { serviceClient } from "@/lib/api";
+import { generateCommonMetadata } from "@/lib/common-metadata";
 
 import { Ads } from "./_components/ads";
 import { MainAds } from "./_components/main-ads";
@@ -20,16 +20,13 @@ export async function generateMetadata({
 
   const description = t("description");
 
-  const { hero } = await serviceClient.GetHero({});
-  const heroImage =
-    hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.thumbnail
-      ?.mediaUrl;
-
   return generateCommonMetadata({
     description,
     ogParams: {
-      imageUrl: heroImage,
-      imageAlt: t("main hero image"),
+      imageUrl: "/app-logo.webp",
+      imageWidth: 512,
+      imageHeight: 512,
+      imageAlt: "GRBPWR",
     },
   });
 }
