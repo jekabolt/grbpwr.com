@@ -23,9 +23,9 @@ export async function generateMetadata({
   return generateCommonMetadata({
     description,
     ogParams: {
-      imageUrl: "/og.png",
-      imageWidth: 1200,
-      imageHeight: 630,
+      imageUrl: "/app-logo.webp",
+      imageWidth: 512,
+      imageHeight: 512,
       imageAlt: "GRBPWR",
     },
   });
