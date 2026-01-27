@@ -92,10 +92,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
                 <ImageComponent
                   src={fullSize?.mediaUrl!}
                   alt="Product image"
-                  aspectRatio={calculateAspectRatio(
-                    fullSize?.width,
-                    fullSize?.height,
-                  )}
+                  aspectRatio="4/5"
                   fit="contain"
                   priority={isPriority}
                   loading={isPriority ? "eager" : "lazy"}
