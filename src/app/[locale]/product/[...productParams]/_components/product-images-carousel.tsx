@@ -31,7 +31,7 @@ export function ProductImagesCarousel({ productMedia }: Props) {
               className="h-full w-full flex-[0_0_48%] border border-red-500"
             >
               <ImageComponent
-                src={m?.media?.fullSize?.mediaUrl!}
+                src={m?.media?.compressed?.mediaUrl!}
                 alt="Product image"
                 aspectRatio="4/5"
                 fit="contain"
