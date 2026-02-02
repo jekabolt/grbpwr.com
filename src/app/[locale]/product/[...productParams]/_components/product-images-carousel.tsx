@@ -1,9 +1,7 @@
 "use client";
 
 import { common_MediaFull } from "@/api/proto-http/frontend";
-import { useRef } from "react";
 
-import { calculateAspectRatio } from "@/lib/utils";
 import { Carousel } from "@/components/ui/carousel";
 import ImageComponent from "@/components/ui/image";
 
@@ -33,12 +31,9 @@ export function ProductImagesCarousel({ productMedia }: Props) {
               className="h-full w-full flex-[0_0_48%]"
             >
               <ImageComponent
-                src={m?.media?.fullSize?.mediaUrl!}
+                src={m?.media?.compressed?.mediaUrl!}
                 alt="Product image"
-                aspectRatio={calculateAspectRatio(
-                  m?.media?.fullSize?.width,
-                  m?.media?.fullSize?.height,
-                )}
+                aspectRatio="4/5"
                 fit="contain"
                 priority={isPriority}
                 loading={isPriority ? "eager" : "lazy"}

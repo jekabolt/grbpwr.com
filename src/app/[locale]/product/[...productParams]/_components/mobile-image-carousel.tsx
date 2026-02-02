@@ -84,18 +84,15 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
       <div ref={emblaRef} className="relative overflow-hidden">
         <div className="flex h-full w-full">
           {media.map((m, index) => {
-            const fullSize = m?.media?.fullSize;
+            const compressed = m?.media?.compressed;
             // Prioritize first image for mobile LCP
             const isPriority = index === 0;
             return (
               <div key={`${m.id}-${index}`} className="h-full flex-[0_0_102%]">
                 <ImageComponent
-                  src={fullSize?.mediaUrl!}
+                  src={compressed?.mediaUrl!}
                   alt="Product image"
-                  aspectRatio={calculateAspectRatio(
-                    fullSize?.width,
-                    fullSize?.height,
-                  )}
+                  aspectRatio="4/5"
                   fit="contain"
                   priority={isPriority}
                   loading={isPriority ? "eager" : "lazy"}
