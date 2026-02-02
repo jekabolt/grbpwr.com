@@ -28,7 +28,7 @@ export function ProductImagesCarousel({ productMedia }: Props) {
           return (
             <div
               key={`${m.id}-${index}`}
-              className="h-full w-full flex-[0_0_48%] border border-red-500"
+              className="h-full w-full flex-[0_0_48%]"
             >
               <ImageComponent
                 src={m?.media?.compressed?.mediaUrl!}
