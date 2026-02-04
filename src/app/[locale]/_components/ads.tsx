@@ -1,10 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import type { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
 import { sendHeroEvent } from "@/lib/analitycs/hero";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, cn } from "@/lib/utils";
+import { calculateAspectRatio, cn, isVideo } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -19,6 +20,14 @@ export function Ads({
   entities: common_HeroEntityWithTranslations[];
 }) {
   const { languageId } = useTranslationsStore((state) => state);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const [hoveredSingleIndex, setHoveredSingleIndex] = useState<number | null>(
+    null,
+  );
+  const [hoveredDouble, setHoveredDouble] = useState<{
+    i: number;
+    side: "left" | "right";
+  } | null>(null);
   return (
     <div>
       {entities?.map((e, i) => {
@@ -37,8 +46,10 @@ export function Ads({
                   onClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_SINGLE" })
                   }
+                  onMouseEnter={() => setHoveredSingleIndex(i)}
+                  onMouseLeave={() => setHoveredSingleIndex(null)}
                 >
-                  <div className="hidden h-full lg:block">
+                  {/* <div className="hidden h-full lg:block">
                     <Image
                       src={
                         e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
@@ -53,6 +64,31 @@ export function Ads({
                       priority={isPriorityAd}
                       loading={isPriorityAd ? "eager" : "lazy"}
                     />
+                  </div> */}
+                  <div className="hidden h-full lg:block">
+                    <Image
+                      src={
+                        e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
+                        ""
+                      }
+                      alt="ad hero image"
+                      aspectRatio={calculateAspectRatio(
+                        e.single?.mediaLandscape?.media?.fullSize?.width,
+                        e.single?.mediaLandscape?.media?.fullSize?.height,
+                      )}
+                      fit="cover"
+                      priority={isPriorityAd}
+                      loading={isPriorityAd ? "eager" : "lazy"}
+                      type={
+                        isVideo(
+                          e.single?.mediaLandscape?.media?.fullSize?.mediaUrl,
+                        )
+                          ? "video"
+                          : "image"
+                      }
+                      playOnHover={hoveredSingleIndex === i}
+                      preload={isPriorityAd ? "auto" : "metadata"}
+                    />
                   </div>
                   <div className="block h-full lg:hidden">
                     <Image
@@ -64,9 +100,18 @@ export function Ads({
                         e.single?.mediaPortrait?.media?.fullSize?.width,
                         e.single?.mediaPortrait?.media?.fullSize?.height,
                       )}
+                      type={
+                        isVideo(
+                          e.single?.mediaPortrait?.media?.fullSize?.mediaUrl,
+                        )
+                          ? "video"
+                          : "image"
+                      }
                       fit="cover"
                       priority={isPriorityAd}
                       loading={isPriorityAd ? "eager" : "lazy"}
+                      preload={isPriorityAd ? "auto" : "metadata"}
+                      autoPlay={true}
                     />
                   </div>
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center">
@@ -88,13 +133,19 @@ export function Ads({
                 <Overlay cover="container" disablePointerEvents />
               </div>
             );
-          case "HERO_TYPE_DOUBLE":
+          case "HERO_TYPE_DOUBLE": {
+            const leftUrl =
+              e.double?.left?.mediaLandscape?.media?.fullSize?.mediaUrl || "";
+            const rightUrl =
+              e.double?.right?.mediaLandscape?.media?.fullSize?.mediaUrl || "";
             const leftTranslation = e.double?.left?.translations?.find(
               (t) => t.languageId === languageId,
             );
             const rightTranslation = e.double?.right?.translations?.find(
               (t) => t.languageId === languageId,
             );
+            const isLeftVideo = isVideo(leftUrl);
+            const isRightVideo = isVideo(rightUrl);
             return (
               <div
                 key={i}
@@ -106,12 +157,11 @@ export function Ads({
                   onClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_DOUBLE_LEFT" })
                   }
+                  onMouseEnter={() => setHoveredDouble({ i, side: "left" })}
+                  onMouseLeave={() => setHoveredDouble(null)}
                 >
                   <Image
-                    src={
-                      e.double?.left?.mediaLandscape?.media?.fullSize
-                        ?.mediaUrl || ""
-                    }
+                    src={leftUrl}
                     alt="ad hero image"
                     aspectRatio={calculateAspectRatio(
                       e.double?.left?.mediaLandscape?.media?.fullSize?.width,
@@ -120,6 +170,9 @@ export function Ads({
                     fit="contain"
                     priority={isPriorityAd}
                     loading={isPriorityAd ? "eager" : "lazy"}
+                    type={isLeftVideo ? "video" : "image"}
+                    playOnHover={hoveredDouble?.i === i && hoveredDouble?.side === "left"}
+                    autoPlay={isMobile && isLeftVideo}
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text
@@ -141,12 +194,11 @@ export function Ads({
                   onClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_DOUBLE_RIGHT" })
                   }
+                  onMouseEnter={() => setHoveredDouble({ i, side: "right" })}
+                  onMouseLeave={() => setHoveredDouble(null)}
                 >
                   <Image
-                    src={
-                      e.double?.right?.mediaLandscape?.media?.fullSize
-                        ?.mediaUrl || ""
-                    }
+                    src={rightUrl}
                     alt="ad hero image"
                     aspectRatio={calculateAspectRatio(
                       e.double?.right?.mediaLandscape?.media?.fullSize?.width,
@@ -155,6 +207,9 @@ export function Ads({
                     fit="contain"
                     priority={isPriorityAd}
                     loading={isPriorityAd ? "eager" : "lazy"}
+                    type={isRightVideo ? "video" : "image"}
+                    playOnHover={hoveredDouble?.i === i && hoveredDouble?.side === "right"}
+                    autoPlay={isMobile && isRightVideo}
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
                     <Text
@@ -173,6 +228,7 @@ export function Ads({
                 <Overlay cover="container" disablePointerEvents />
               </div>
             );
+          }
           case "HERO_TYPE_FEATURED_PRODUCTS":
             const itemsQuantity = e.featuredProducts?.products?.length || 0;
             const productsTranslation = e.featuredProducts?.translations?.find(
