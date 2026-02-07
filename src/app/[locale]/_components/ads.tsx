@@ -49,22 +49,6 @@ export function Ads({
                   onMouseEnter={() => setHoveredSingleIndex(i)}
                   onMouseLeave={() => setHoveredSingleIndex(null)}
                 >
-                  {/* <div className="hidden h-full lg:block">
-                    <Image
-                      src={
-                        e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
-                        ""
-                      }
-                      alt="ad hero image"
-                      aspectRatio={calculateAspectRatio(
-                        e.single?.mediaLandscape?.media?.fullSize?.width,
-                        e.single?.mediaLandscape?.media?.fullSize?.height,
-                      )}
-                      fit="cover"
-                      priority={isPriorityAd}
-                      loading={isPriorityAd ? "eager" : "lazy"}
-                    />
-                  </div> */}
                   <div className="hidden h-full lg:block">
                     <Image
                       src={
@@ -171,7 +155,9 @@ export function Ads({
                     priority={isPriorityAd}
                     loading={isPriorityAd ? "eager" : "lazy"}
                     type={isLeftVideo ? "video" : "image"}
-                    playOnHover={hoveredDouble?.i === i && hoveredDouble?.side === "left"}
+                    playOnHover={
+                      hoveredDouble?.i === i && hoveredDouble?.side === "left"
+                    }
                     autoPlay={isMobile && isLeftVideo}
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
@@ -208,7 +194,9 @@ export function Ads({
                     priority={isPriorityAd}
                     loading={isPriorityAd ? "eager" : "lazy"}
                     type={isRightVideo ? "video" : "image"}
-                    playOnHover={hoveredDouble?.i === i && hoveredDouble?.side === "right"}
+                    playOnHover={
+                      hoveredDouble?.i === i && hoveredDouble?.side === "right"
+                    }
                     autoPlay={isMobile && isRightVideo}
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
