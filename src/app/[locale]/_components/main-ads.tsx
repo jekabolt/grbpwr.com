@@ -1,10 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { common_HeroMainWithTranslations } from "@/api/proto-http/frontend";
 
 import { sendHeroEvent } from "@/lib/analitycs/hero";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio } from "@/lib/utils";
+import { calculateAspectRatio, isVideo } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -12,6 +13,7 @@ import { Text } from "@/components/ui/text";
 
 export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
   const { languageId } = useTranslationsStore((state) => state);
+  const [isHovered, setIsHovered] = useState(false);
 
   if (!main) return null;
 
@@ -24,10 +26,17 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
       href={main.single?.exploreLink || ""}
       className="relative h-screen w-full"
       onClick={() => sendHeroEvent({ heroType: "HERO_TYPE_MAIN" })}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="hidden h-full lg:block">
         <Image
           src={main.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""}
+          type={
+            isVideo(main.single?.mediaLandscape?.media?.fullSize?.mediaUrl)
+              ? "video"
+              : "image"
+          }
           aspectRatio={calculateAspectRatio(
             main.single?.mediaLandscape?.media?.fullSize?.width,
             main.single?.mediaLandscape?.media?.fullSize?.height,
@@ -36,11 +45,17 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           fit="cover"
           priority={true}
           loading="eager"
+          playOnHover={isHovered}
         />
       </div>
       <div className="block h-full lg:hidden">
         <Image
           src={main.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""}
+          type={
+            isVideo(main.single?.mediaPortrait?.media?.fullSize?.mediaUrl)
+              ? "video"
+              : "image"
+          }
           aspectRatio={calculateAspectRatio(
             main.single?.mediaPortrait?.media?.fullSize?.width,
             main.single?.mediaPortrait?.media?.fullSize?.height,
@@ -49,6 +64,7 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           fit="cover"
           priority={true}
           loading="eager"
+          autoPlay
         />
       </div>
       <Overlay cover="container" />
