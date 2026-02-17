@@ -7,16 +7,11 @@ import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
-import { Tron } from "@/components/ui/icons/tron";
 import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "./fields-group-container";
 import PromoCode from "./PromoCode";
 import { AddressFields } from "./shipping-fields-group";
-
-export const paymentMethodIcons: Record<string, React.ReactNode> = {
-  PAYMENT_METHOD_NAME_ENUM_USDT_TRON: <Tron />,
-};
 
 type Props = {
   loading: boolean;

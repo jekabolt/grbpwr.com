@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
+import { refreshIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -120,6 +121,8 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
           handlePurchaseEvent(paymentResult.orderUuid);
           clearCart();
           clearFormData();
+          // Refresh idempotency key for next checkout session
+          refreshIdempotencyKey();
           window.location.href = `/order/${paymentResult.orderUuid}/${window.btoa(data.email)}`;
           return;
         }

@@ -7,7 +7,6 @@ export type GetHeroRequest = {
 export type GetHeroResponse = {
   hero: common_HeroFullWithTranslations | undefined;
   dictionary: common_Dictionary | undefined;
-  rates: common_CurrencyMap | undefined;
 };
 
 // Extended hero structures with translations
@@ -302,6 +301,7 @@ export type common_Dictionary = {
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
   announce: common_Announce | undefined;
+  orderExpirationSeconds: number | undefined;
 };
 
 // Category represents a hierarchical category structure
@@ -335,7 +335,8 @@ export type common_OrderStatusEnum =
   | "ORDER_STATUS_ENUM_CANCELLED"
   | "ORDER_STATUS_ENUM_PENDING_RETURN"
   | "ORDER_STATUS_ENUM_REFUND_IN_PROGRESS"
-  | "ORDER_STATUS_ENUM_REFUNDED";
+  | "ORDER_STATUS_ENUM_REFUNDED"
+  | "ORDER_STATUS_ENUM_PARTIALLY_REFUNDED";
 // PaymentMethod represents the payment_method table
 export type common_PaymentMethod = {
   id: number | undefined;
@@ -346,21 +347,20 @@ export type common_PaymentMethod = {
 export type common_PaymentMethodNameEnum =
   | "PAYMENT_METHOD_NAME_ENUM_UNKNOWN"
   | "PAYMENT_METHOD_NAME_ENUM_CARD"
-  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
-  | "PAYMENT_METHOD_NAME_ENUM_ETH"
-  | "PAYMENT_METHOD_NAME_ENUM_ETH_TEST"
-  | "PAYMENT_METHOD_NAME_ENUM_USDT_TRON"
-  | "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA";
+  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST";
 export type common_ShipmentCarrier = {
   id: number | undefined;
   shipmentCarrier: common_ShipmentCarrierInsert | undefined;
   prices: common_ShipmentCarrierPrice[] | undefined;
+  allowedRegions: common_ShippingRegion[] | undefined;
 };
 
 export type common_ShipmentCarrierInsert = {
   carrier: string | undefined;
   allowed: boolean | undefined;
   description: string | undefined;
+  trackingUrl: string | undefined;
+  expectedDeliveryTime: string | undefined;
 };
 
 export type common_ShipmentCarrierPrice = {
@@ -368,6 +368,13 @@ export type common_ShipmentCarrierPrice = {
   price: googletype_Decimal | undefined;
 };
 
+export type common_ShippingRegion =
+  | "SHIPPING_REGION_UNKNOWN"
+  | "SHIPPING_REGION_AFRICA"
+  | "SHIPPING_REGION_AMERICAS"
+  | "SHIPPING_REGION_ASIA_PACIFIC"
+  | "SHIPPING_REGION_EUROPE"
+  | "SHIPPING_REGION_MIDDLE_EAST";
 export type common_Size = {
   id: number | undefined;
   name: string | undefined;
@@ -397,17 +404,6 @@ export type common_Announce = {
 export type common_AnnounceTranslation = {
   languageId: number | undefined;
   text: string | undefined;
-};
-
-// CurrencyMap represents a map of currency codes to their rates.
-export type common_CurrencyMap = {
-  currencies: { [key: string]: common_CurrencyRate } | undefined;
-};
-
-// CurrencyRate represents the rate of a currency with a description.
-export type common_CurrencyRate = {
-  description: string | undefined;
-  rate: googletype_Decimal | undefined;
 };
 
 export type GetProductRequest = {
@@ -544,8 +540,6 @@ export type common_PaymentInsert = {
   transactionId: string | undefined;
   transactionAmount: googletype_Decimal | undefined;
   transactionAmountPaymentCurrency: googletype_Decimal | undefined;
-  payer: string | undefined;
-  payee: string | undefined;
   clientSecret: string | undefined;
   isTransactionDone: boolean | undefined;
   expiredAt: wellKnownTimestamp | undefined;
@@ -563,12 +557,14 @@ export type GetOrderByUUIDAndEmailResponse = {
 export type common_OrderFull = {
   order: common_Order | undefined;
   orderItems: common_OrderItem[] | undefined;
+  refundedOrderItems: common_OrderItem[] | undefined;
   payment: common_Payment | undefined;
   shipment: common_Shipment | undefined;
   promoCode: common_PromoCode | undefined;
   buyer: common_Buyer | undefined;
   billing: common_Address | undefined;
   shipping: common_Address | undefined;
+  statusHistory: common_OrderStatusHistory[] | undefined;
 };
 
 export type common_Order = {
@@ -582,6 +578,7 @@ export type common_Order = {
   promoId: number | undefined;
   refundReason: string | undefined;
   orderComment: string | undefined;
+  refundedAmount: googletype_Decimal | undefined;
 };
 
 export type common_OrderItem = {
@@ -646,6 +643,15 @@ export type common_Address = {
   addressInsert: common_AddressInsert | undefined;
 };
 
+export type common_OrderStatusHistory = {
+  id: number | undefined;
+  orderId: number | undefined;
+  status: common_OrderStatusEnum | undefined;
+  changedAt: wellKnownTimestamp | undefined;
+  changedBy: string | undefined;
+  notes: string | undefined;
+};
+
 export type ValidateOrderItemsInsertRequest = {
   items: common_OrderItemInsert[] | undefined;
   promoCode: string | undefined;
@@ -653,6 +659,7 @@ export type ValidateOrderItemsInsertRequest = {
   country: string | undefined;
   paymentMethod: common_PaymentMethodNameEnum | undefined;
   currency: string | undefined;
+  idempotencyKey: string | undefined;
 };
 
 export type ValidateOrderItemsInsertResponse = {
@@ -663,8 +670,23 @@ export type ValidateOrderItemsInsertResponse = {
   promo: common_PromoCodeInsert | undefined;
   clientSecret: string | undefined;
   paymentIntentId: string | undefined;
+  itemAdjustments: common_OrderItemAdjustment[] | undefined;
 };
 
+// OrderItemAdjustment describes a change made during order item validation.
+export type common_OrderItemAdjustment = {
+  productId: number | undefined;
+  sizeId: number | undefined;
+  requestedQuantity: googletype_Decimal | undefined;
+  adjustedQuantity: googletype_Decimal | undefined;
+  reason: common_OrderItemAdjustmentReasonEnum | undefined;
+};
+
+export type common_OrderItemAdjustmentReasonEnum =
+  | "ORDER_ITEM_ADJUSTMENT_REASON_ENUM_UNKNOWN"
+  | "ORDER_ITEM_ADJUSTMENT_REASON_ENUM_OUT_OF_STOCK"
+  | "ORDER_ITEM_ADJUSTMENT_REASON_ENUM_QUANTITY_REDUCED"
+  | "ORDER_ITEM_ADJUSTMENT_REASON_ENUM_QUANTITY_CAPPED";
 export type ValidateOrderByUUIDRequest = {
   orderUuid: string | undefined;
 };

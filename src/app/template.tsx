@@ -1,7 +1,9 @@
 import type {
   GetArchivesPagedRequest,
+  GetHeroResponse,
   GetProductsPagedRequest,
 } from "@/api/proto-http/frontend";
+import type { CurrencyRate } from "@/lib/stores/translations/store-types";
 import { QueryWrapper } from "@/providers/query-wrapper";
 
 import { serviceClient } from "@/lib/api";
@@ -40,7 +42,7 @@ export default async function Template({
               <TranslationsStoreProvider
                 initialCountry={initialTranslationState.country}
                 initialLanguageId={initialTranslationState.languageId}
-                initialRates={heroData.rates?.currencies}
+                initialRates={((heroData as GetHeroResponse & { rates?: { currencies?: Record<string, CurrencyRate> } }).rates?.currencies) as Record<string, CurrencyRate> | undefined}
               >
                 <DataContextProvider {...heroData}>
                   {children}

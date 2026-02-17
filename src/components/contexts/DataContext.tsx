@@ -1,12 +1,11 @@
 "use client";
 
-import { createContext, ReactNode, useContext } from "react";
 import type { GetHeroResponse } from "@/api/proto-http/frontend";
+import { createContext, ReactNode, useContext } from "react";
 
 const DataContext = createContext<GetHeroResponse>({
   hero: undefined,
   dictionary: undefined,
-  rates: undefined,
 });
 
 export function DataContextProvider({
