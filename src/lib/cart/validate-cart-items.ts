@@ -5,6 +5,7 @@ import type {
 } from "@/api/proto-http/frontend";
 
 import { serviceClient } from "@/lib/api";
+import { getOrCreateIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import type { CartProduct } from "@/lib/stores/cart/store-types";
 
 export type CartValidationParams = {
@@ -37,6 +38,9 @@ export async function validateCartItems({
 
     if (!items.length) return null;
 
+    // Get or create idempotency key for this checkout session
+    const idempotencyKey = getOrCreateIdempotencyKey();
+
     const response = await serviceClient.ValidateOrderItemsInsert({
         items,
         promoCode: promoCode ?? undefined,
@@ -47,6 +51,7 @@ export async function validateCartItems({
         country,
         paymentMethod,
         currency,
+        idempotencyKey,
     });
 
     const requestedQuantity = items.reduce(

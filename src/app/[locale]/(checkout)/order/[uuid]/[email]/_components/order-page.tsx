@@ -10,6 +10,7 @@ import { use, useEffect } from "react";
 import { OrderProducts } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/order-products";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { refreshIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
@@ -37,6 +38,8 @@ export function OrderPageComponent({
 
     if (redirectStatus === "succeeded") {
       clearCart();
+      // Refresh idempotency key for next checkout session
+      refreshIdempotencyKey();
     } else if (redirectStatus === "failed" || redirectStatus === "canceled") {
       console.error("Payment failed or canceled");
       router.push("/checkout");

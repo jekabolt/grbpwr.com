@@ -156,6 +156,15 @@ export type GenderEnum =
   | "GENDER_ENUM_MALE"
   | "GENDER_ENUM_FEMALE"
   | "GENDER_ENUM_UNISEX";
+export type StockChangeSource =
+  | "STOCK_CHANGE_SOURCE_UNSPECIFIED"
+  | "STOCK_CHANGE_SOURCE_ADMIN_ADD_PRODUCT"
+  | "STOCK_CHANGE_SOURCE_ADMIN_UPDATE_PRODUCT"
+  | "STOCK_CHANGE_SOURCE_ADMIN_UPDATE_SIZE_STOCK"
+  | "STOCK_CHANGE_SOURCE_ORDER_PLACED"
+  | "STOCK_CHANGE_SOURCE_ORDER_CANCELLED"
+  | "STOCK_CHANGE_SOURCE_ORDER_EXPIRED"
+  | "STOCK_CHANGE_SOURCE_ORDER_REFUNDED";
 // Category represents a hierarchical category structure
 export type Category = {
   id: number | undefined;
@@ -361,6 +370,20 @@ export type SizeWithMeasurement = {
   measurements: ProductMeasurement[] | undefined;
 };
 
+export type StockChange = {
+  id: number | undefined;
+  productId: number | undefined;
+  sizeId: number | undefined;
+  quantityDelta: googletype_Decimal | undefined;
+  quantityBefore: googletype_Decimal | undefined;
+  quantityAfter: googletype_Decimal | undefined;
+  source: StockChangeSource | undefined;
+  orderId: number | undefined;
+  orderUuid: string | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  adminUsername: string | undefined;
+};
+
 export type OrderFactor =
   | "ORDER_FACTOR_UNKNOWN"
   | "ORDER_FACTOR_ASC"
@@ -390,11 +413,7 @@ export type FilterConditions = {
 export type PaymentMethodNameEnum =
   | "PAYMENT_METHOD_NAME_ENUM_UNKNOWN"
   | "PAYMENT_METHOD_NAME_ENUM_CARD"
-  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
-  | "PAYMENT_METHOD_NAME_ENUM_ETH"
-  | "PAYMENT_METHOD_NAME_ENUM_ETH_TEST"
-  | "PAYMENT_METHOD_NAME_ENUM_USDT_TRON"
-  | "PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA";
+  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST";
 // Payment represents the payment table
 export type Payment = {
   createdAt: wellKnownTimestamp | undefined;
@@ -407,8 +426,6 @@ export type PaymentInsert = {
   transactionId: string | undefined;
   transactionAmount: googletype_Decimal | undefined;
   transactionAmountPaymentCurrency: googletype_Decimal | undefined;
-  payer: string | undefined;
-  payee: string | undefined;
   clientSecret: string | undefined;
   isTransactionDone: boolean | undefined;
   expiredAt: wellKnownTimestamp | undefined;
@@ -437,6 +454,13 @@ export type PromoCode = {
   promoCodeInsert: PromoCodeInsert | undefined;
 };
 
+export type ShippingRegion =
+  | "SHIPPING_REGION_UNKNOWN"
+  | "SHIPPING_REGION_AFRICA"
+  | "SHIPPING_REGION_AMERICAS"
+  | "SHIPPING_REGION_ASIA_PACIFIC"
+  | "SHIPPING_REGION_EUROPE"
+  | "SHIPPING_REGION_MIDDLE_EAST";
 export type ShipmentCarrierPrice = {
   currency: string | undefined;
   price: googletype_Decimal | undefined;
@@ -446,12 +470,15 @@ export type ShipmentCarrierInsert = {
   carrier: string | undefined;
   allowed: boolean | undefined;
   description: string | undefined;
+  trackingUrl: string | undefined;
+  expectedDeliveryTime: string | undefined;
 };
 
 export type ShipmentCarrier = {
   id: number | undefined;
   shipmentCarrier: ShipmentCarrierInsert | undefined;
   prices: ShipmentCarrierPrice[] | undefined;
+  allowedRegions: ShippingRegion[] | undefined;
 };
 
 // Shipment represents the shipment table
@@ -465,6 +492,11 @@ export type Shipment = {
   estimatedArrivalDate: wellKnownTimestamp | undefined;
 };
 
+export type OrderItemAdjustmentReasonEnum =
+  | "ORDER_ITEM_ADJUSTMENT_REASON_ENUM_UNKNOWN"
+  | "ORDER_ITEM_ADJUSTMENT_REASON_ENUM_OUT_OF_STOCK"
+  | "ORDER_ITEM_ADJUSTMENT_REASON_ENUM_QUANTITY_REDUCED"
+  | "ORDER_ITEM_ADJUSTMENT_REASON_ENUM_QUANTITY_CAPPED";
 export type OrderStatusEnum =
   | "ORDER_STATUS_ENUM_UNKNOWN"
   | "ORDER_STATUS_ENUM_PLACED"
@@ -475,7 +507,8 @@ export type OrderStatusEnum =
   | "ORDER_STATUS_ENUM_CANCELLED"
   | "ORDER_STATUS_ENUM_PENDING_RETURN"
   | "ORDER_STATUS_ENUM_REFUND_IN_PROGRESS"
-  | "ORDER_STATUS_ENUM_REFUNDED";
+  | "ORDER_STATUS_ENUM_REFUNDED"
+  | "ORDER_STATUS_ENUM_PARTIALLY_REFUNDED";
 export type OrderNew = {
   items: OrderItemInsert[] | undefined;
   shippingAddress: AddressInsert | undefined;
@@ -496,12 +529,14 @@ export type OrderItemInsert = {
 export type OrderFull = {
   order: Order | undefined;
   orderItems: OrderItem[] | undefined;
+  refundedOrderItems: OrderItem[] | undefined;
   payment: Payment | undefined;
   shipment: Shipment | undefined;
   promoCode: PromoCode | undefined;
   buyer: Buyer | undefined;
   billing: Address | undefined;
   shipping: Address | undefined;
+  statusHistory: OrderStatusHistory[] | undefined;
 };
 
 export type Order = {
@@ -515,6 +550,7 @@ export type Order = {
   promoId: number | undefined;
   refundReason: string | undefined;
   orderComment: string | undefined;
+  refundedAmount: googletype_Decimal | undefined;
 };
 
 export type OrderItem = {
@@ -537,6 +573,24 @@ export type OrderItem = {
   translations: ProductInsertTranslation[] | undefined;
 };
 
+export type OrderStatusHistory = {
+  id: number | undefined;
+  orderId: number | undefined;
+  status: OrderStatusEnum | undefined;
+  changedAt: wellKnownTimestamp | undefined;
+  changedBy: string | undefined;
+  notes: string | undefined;
+};
+
+// OrderItemAdjustment describes a change made during order item validation.
+export type OrderItemAdjustment = {
+  productId: number | undefined;
+  sizeId: number | undefined;
+  requestedQuantity: googletype_Decimal | undefined;
+  adjustedQuantity: googletype_Decimal | undefined;
+  reason: OrderItemAdjustmentReasonEnum | undefined;
+};
+
 export type OrderStatus = {
   id: number | undefined;
   name: OrderStatusEnum | undefined;
@@ -556,6 +610,7 @@ export type Dictionary = {
   baseCurrency: string | undefined;
   bigMenu: boolean | undefined;
   announce: Announce | undefined;
+  orderExpirationSeconds: number | undefined;
 };
 
 export type Collection = {
