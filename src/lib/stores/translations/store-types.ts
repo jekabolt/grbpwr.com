@@ -1,5 +1,7 @@
-
-import type { common_CurrencyRate } from "@/api/proto-http/frontend";
+export interface CurrencyRate {
+    description?: string;
+    rate?: { value?: string };
+}
 
 export interface TranslationsState {
     languageId: number;
@@ -14,7 +16,7 @@ export interface TranslationsState {
         currencyKey?: string;
     };
     isOpen: boolean;
-    rates?: { [key: string]: common_CurrencyRate } | undefined;
+    rates?: Record<string, CurrencyRate> | undefined;
 }
 
 export interface TranslationsActions {

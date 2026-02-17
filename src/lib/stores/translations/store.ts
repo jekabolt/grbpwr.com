@@ -15,7 +15,6 @@ export const defaultInitState: TranslationsState = {
         currencyKey: undefined,
     },
     isOpen: false,
-    rates: undefined,
 };
 
 export const createTranslationsStore = (initState: TranslationsState = defaultInitState) => {
