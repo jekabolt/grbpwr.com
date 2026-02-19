@@ -61,9 +61,6 @@ const baseCheckoutSchema = z.object({
 
   rememberMe: z.boolean().optional(),
   paymentMethod: z.union([
-    z.literal("PAYMENT_METHOD_NAME_ENUM_ETH"),
-    z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_TRON"),
-    z.literal("PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA"),
     z.literal("PAYMENT_METHOD_NAME_ENUM_CARD_TEST"),
     z.literal("PAYMENT_METHOD_NAME_ENUM_CARD"),
   ]),

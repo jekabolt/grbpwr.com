@@ -57,12 +57,8 @@ export const SORT_MAP_URL: Record<string, common_SortFactor> = {
 };
 
 export const paymentMethodNamesMap = {
-  // PAYMENT_METHOD_NAME_ENUM_CARD: "card",
+  PAYMENT_METHOD_NAME_ENUM_CARD: "card",
   PAYMENT_METHOD_NAME_ENUM_CARD_TEST: "card (Test)",
-  // PAYMENT_METHOD_NAME_ENUM_ETH: "Ethereum (ETH)",
-  // PAYMENT_METHOD_NAME_ENUM_ETH_TEST: "Ethereum (ETH) Test",
-  // PAYMENT_METHOD_NAME_ENUM_USDT_TRON: "tron usdt",
-  // PAYMENT_METHOD_NAME_ENUM_USDT_SHASTA: "tron usdt (Test)",
 };
 
 export const currencyKeyMap: Record<string, string> = {
