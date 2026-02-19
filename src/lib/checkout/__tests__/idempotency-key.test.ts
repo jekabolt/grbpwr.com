@@ -1,6 +1,6 @@
 /**
  * Tests for idempotency key management
- * 
+ *
  * Note: These tests use a mock localStorage since the actual implementation
  * runs in a browser environment.
  */
@@ -10,6 +10,9 @@ import {
     getOrCreateIdempotencyKey,
     refreshIdempotencyKey,
 } from "../idempotency-key";
+
+const STORAGE_KEY = "checkout-idempotency-key";
+const MAX_AGE_MS = 15 * 60 * 1000;
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -41,6 +44,13 @@ Object.defineProperty(global, "crypto", {
     },
 });
 
+function storeKey(key: string, createdAt: number) {
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ key, createdAt }),
+    );
+}
+
 describe("Idempotency Key Management", () => {
     beforeEach(() => {
         localStorageMock.clear();
@@ -50,12 +60,14 @@ describe("Idempotency Key Management", () => {
         it("should create a new key if none exists", () => {
             const key = getOrCreateIdempotencyKey();
             expect(key).toBe(mockUUID);
-            expect(localStorage.getItem("checkout-idempotency-key")).toBe(mockUUID);
+            const stored = JSON.parse(localStorage.getItem(STORAGE_KEY)!);
+            expect(stored.key).toBe(mockUUID);
+            expect(typeof stored.createdAt).toBe("number");
         });
 
-        it("should return existing key if one exists", () => {
+        it("should return existing key if one exists and is not expired", () => {
             const existingKey = "existing-key-123";
-            localStorage.setItem("checkout-idempotency-key", existingKey);
+            storeKey(existingKey, Date.now());
 
             const key = getOrCreateIdempotencyKey();
             expect(key).toBe(existingKey);
@@ -66,15 +78,31 @@ describe("Idempotency Key Management", () => {
             const key2 = getOrCreateIdempotencyKey();
             expect(key1).toBe(key2);
         });
+
+        it("should create new key if existing key is older than 15 minutes", () => {
+            const oldKey = "old-key-123";
+            storeKey(oldKey, Date.now() - MAX_AGE_MS - 1);
+
+            const key = getOrCreateIdempotencyKey();
+            expect(key).toBe(mockUUID);
+            expect(key).not.toBe(oldKey);
+        });
+
+        it("should treat legacy plain-string format as expired", () => {
+            localStorage.setItem(STORAGE_KEY, "legacy-key");
+
+            const key = getOrCreateIdempotencyKey();
+            expect(key).toBe(mockUUID);
+        });
     });
 
     describe("clearIdempotencyKey", () => {
         it("should remove the key from storage", () => {
-            localStorage.setItem("checkout-idempotency-key", mockUUID);
-            expect(localStorage.getItem("checkout-idempotency-key")).toBe(mockUUID);
+            storeKey(mockUUID, Date.now());
+            expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
 
             clearIdempotencyKey();
-            expect(localStorage.getItem("checkout-idempotency-key")).toBeNull();
+            expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
         });
 
         it("should not throw if no key exists", () => {
@@ -85,18 +113,20 @@ describe("Idempotency Key Management", () => {
     describe("refreshIdempotencyKey", () => {
         it("should replace existing key with a new one", () => {
             const oldKey = "old-key-123";
-            localStorage.setItem("checkout-idempotency-key", oldKey);
+            storeKey(oldKey, Date.now());
 
             const newKey = refreshIdempotencyKey();
             expect(newKey).toBe(mockUUID);
             expect(newKey).not.toBe(oldKey);
-            expect(localStorage.getItem("checkout-idempotency-key")).toBe(mockUUID);
+            const stored = JSON.parse(localStorage.getItem(STORAGE_KEY)!);
+            expect(stored.key).toBe(mockUUID);
         });
 
         it("should create a new key if none exists", () => {
             const key = refreshIdempotencyKey();
             expect(key).toBe(mockUUID);
-            expect(localStorage.getItem("checkout-idempotency-key")).toBe(mockUUID);
+            const stored = JSON.parse(localStorage.getItem(STORAGE_KEY)!);
+            expect(stored.key).toBe(mockUUID);
         });
     });
 });

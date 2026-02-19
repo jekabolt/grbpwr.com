@@ -10,11 +10,11 @@ The idempotency key is used to associate pre-orders with payment intent IDs on t
 
 Created a utility module to manage idempotency keys in localStorage:
 
-- **`getOrCreateIdempotencyKey()`**: Retrieves existing key or generates a new UUID v4
-- **`clearIdempotencyKey()`**: Removes the key from storage
+- **`getOrCreateIdempotencyKey()`**: Retrieves existing key or generates a new UUID v4. Keys older than 15 minutes are treated as expired and replaced.
+- **`clearIdempotencyKey()`**: Removes the key from storage (called after successful payment)
 - **`refreshIdempotencyKey()`**: Replaces the current key with a new one
 
-The key is stored in localStorage under the key `"checkout-idempotency-key"`.
+The key is stored in localStorage under `"checkout-idempotency-key"` as JSON: `{ key: string, createdAt: number }`. Legacy plain-string format is treated as expired.
 
 ### 2. Validation Flow (`src/lib/cart/validate-cart-items.ts`)
 
@@ -26,22 +26,23 @@ This ensures every validation request includes a consistent idempotency key for 
 
 ### 3. Order Completion Flows
 
-Updated two locations where orders are successfully completed to refresh the idempotency key:
+Updated two locations where orders are successfully completed to **clear** the idempotency key (not refresh):
 
 #### a. Direct Payment Flow (`src/app/[locale]/(checkout)/checkout/_components/new-order-form/index.tsx`)
 - After successful Stripe card payment confirmation
 - Called alongside `clearCart()` and `clearFormData()`
 
 #### b. Redirect Payment Flow (`src/app/[locale]/(checkout)/order/[uuid]/[email]/_components/order-page.tsx`)
-- When returning from Stripe with `redirect_status=succeeded`
+- When returning from Stripe with `redirect_status=succeeded` (e.g. 3DS)
 - Called alongside `clearCart()`
 
 ## Lifecycle
 
-1. **First Validation**: When user first validates cart items, a new idempotency key is generated and stored
-2. **Subsequent Validations**: Same key is reused throughout the checkout session
-3. **Order Success**: Key is refreshed (old one cleared, new one generated) for the next checkout session
-4. **Payment Failure**: Key is retained, allowing retry with the same payment intent
+1. **First Validation**: When user first validates cart items, a new idempotency key is generated and stored with a timestamp
+2. **Subsequent Validations**: Same key is reused until it expires (15 min) or payment completes
+3. **Order Success**: Key is **cleared** from localStorage; next checkout gets a fresh key
+4. **Key Expiry**: Keys older than 15 minutes are automatically invalidated on next `getOrCreateIdempotencyKey()` call
+5. **Payment Failure**: Key is retained, allowing retry with the same payment intent
 
 ## Benefits
 
