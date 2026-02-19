@@ -4,6 +4,12 @@
  */
 
 const STORAGE_KEY = "checkout-idempotency-key";
+const MAX_AGE_MS = 15 * 60 * 1000; // 15 minutes
+
+interface StoredKey {
+    key: string;
+    createdAt: number;
+}
 
 /**
  * Generates a new UUID v4 idempotency key
@@ -13,7 +19,32 @@ function generateIdempotencyKey(): string {
 }
 
 /**
- * Gets the current idempotency key from storage, or creates a new one if it doesn't exist
+ * Parses stored value. Returns null if invalid or expired.
+ * Handles legacy format (plain string) by treating it as expired.
+ */
+function parseStoredKey(raw: string | null): StoredKey | null {
+    if (!raw) return null;
+
+    try {
+        const parsed = JSON.parse(raw) as StoredKey;
+        if (
+            typeof parsed?.key !== "string" ||
+            typeof parsed?.createdAt !== "number"
+        ) {
+            return null; // Invalid format
+        }
+        if (Date.now() - parsed.createdAt > MAX_AGE_MS) {
+            return null; // Expired
+        }
+        return parsed;
+    } catch {
+        // Legacy format (plain string) - treat as expired
+        return null;
+    }
+}
+
+/**
+ * Gets the current idempotency key from storage, or creates a new one if it doesn't exist or is expired (>15 min)
  */
 export function getOrCreateIdempotencyKey(): string {
     if (typeof window === "undefined") {
@@ -22,13 +53,17 @@ export function getOrCreateIdempotencyKey(): string {
     }
 
     try {
-        const existingKey = localStorage.getItem(STORAGE_KEY);
-        if (existingKey) {
-            return existingKey;
+        const stored = parseStoredKey(localStorage.getItem(STORAGE_KEY));
+        if (stored) {
+            return stored.key;
         }
 
         const newKey = generateIdempotencyKey();
-        localStorage.setItem(STORAGE_KEY, newKey);
+        const toStore: StoredKey = {
+            key: newKey,
+            createdAt: Date.now(),
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(toStore));
         return newKey;
     } catch (error) {
         console.error("Error accessing localStorage for idempotency key:", error);
