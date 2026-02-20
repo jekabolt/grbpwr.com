@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
@@ -9,13 +9,16 @@ import { validateCartItems } from "@/lib/cart/validate-cart-items";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import {
+  hasCheckoutInitialValidationRun,
+  setCheckoutInitialValidationDone,
+} from "@/lib/checkout/checkout-validation-state";
 import { CheckoutData } from "../schema";
 
 export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   const [validatedOrder, setValidatedOrder] = useState<
     ValidateOrderItemsInsertResponse | undefined
   >(undefined);
-  const validationStartedRef = useRef(false);
   const products = useCart((cart) => cart.products);
   const syncWithValidatedItems = useCart((cart) => cart.syncWithValidatedItems);
   const { dictionary } = useDataContext();
@@ -61,9 +64,9 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
     if (
       products.length !== 0 &&
       !validatedOrder &&
-      !validationStartedRef.current
+      !hasCheckoutInitialValidationRun()
     ) {
-      validationStartedRef.current = true;
+      setCheckoutInitialValidationDone();
       validateItems();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

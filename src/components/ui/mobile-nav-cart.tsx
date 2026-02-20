@@ -20,7 +20,7 @@ export function MobileNavCart({
 }) {
   const router = useRouter();
   const { products, isOpen, openCart, closeCart } = useCart((state) => state);
-  const { handleBeginCheckoutEvent } = useCheckoutAnalytics({});
+  const { handleBeginCheckoutEvent } = useCheckoutAnalytics();
 
   const t = useTranslations("navigation");
   const tCart = useTranslations("cart");

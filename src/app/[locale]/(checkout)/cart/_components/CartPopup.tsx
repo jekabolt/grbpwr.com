@@ -14,7 +14,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { products, isOpen, closeCart } = useCart((state) => state);
 
-  const { handleBeginCheckoutEvent } = useCheckoutAnalytics({});
+  const { handleBeginCheckoutEvent } = useCheckoutAnalytics();
 
   const t = useTranslations("cart");
 
