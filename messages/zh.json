@@ -478,7 +478,10 @@
         "invalid_email": "请输入有效的邮箱地址",
         "email_copied": "邮箱已复制",
         "cart_outdated": "您的购物车已过期",
-        "cart_modified": "您的购物车已被修改"
+        "cart_modified": "您的购物车已被修改",
+        "payment_already_completed": "此会话的支付已完成。请清空购物车并开始新订单。",
+        "payment_unavailable": "支付暂时不可用。请稍后再试。",
+        "validation_error": "出了点问题。请重试。"
     },
     "refund": {
         "return order": "退货订单",

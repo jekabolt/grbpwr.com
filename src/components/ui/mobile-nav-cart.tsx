@@ -3,20 +3,15 @@
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartProductsList";
 import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
-import { useDataContext } from "@/components/contexts/DataContext";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
-import { validateCartItems } from "@/lib/cart/validate-cart-items";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 
 import { Button } from "./button";
 import { Text } from "./text";
-import { SubmissionToaster } from "./toaster";
 
 export function MobileNavCart({
   isProductInfo = false,
@@ -24,83 +19,26 @@ export function MobileNavCart({
   isProductInfo?: boolean;
 }) {
   const router = useRouter();
-  const { products, isOpen, openCart, closeCart, syncWithValidatedItems } =
-    useCart((state) => state);
-  const { currentCountry } = useTranslationsStore((state) => state);
-  const { dictionary } = useDataContext();
+  const { products, isOpen, openCart, closeCart } = useCart((state) => state);
   const { handleBeginCheckoutEvent } = useCheckoutAnalytics({});
 
   const t = useTranslations("navigation");
   const tCart = useTranslations("cart");
-  const tToaster = useTranslations("toaster");
   const tAccessibility = useTranslations("accessibility");
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const open = isMobile && isOpen;
-  const [isValidating, setIsValidating] = useState(false);
-  const [orderModifiedToastOpen, setOrderModifiedToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | undefined>(
-    tToaster("cart_modified"),
-  );
-
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
 
-  const handleProceedToCheckout = async (e: React.MouseEvent) => {
+  const handleProceedToCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
 
     if (products.length === 0) return;
 
-    setIsValidating(true);
-
-    try {
-      const currency =
-        currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
-
-      const result = await validateCartItems({
-        products,
-        currency,
-        promoCode: undefined,
-        shipmentCarrierId: undefined,
-        country: currentCountry?.countryCode,
-        paymentMethod: undefined,
-      });
-
-      if (!result) {
-        setToastMessage(tToaster("cart_outdated"));
-        setOrderModifiedToastOpen(true);
-        closeCart();
-        return;
-      }
-
-      const { response, hasItemsChanged } = result;
-      const validItems = response.validItems || [];
-      const maxOrderItems = dictionary?.maxOrderItems || 3;
-
-      if (validItems.length === 0) {
-        syncWithValidatedItems(response, maxOrderItems);
-        setToastMessage(tToaster("cart_outdated"));
-        setOrderModifiedToastOpen(true);
-        closeCart();
-        return;
-      }
-
-      syncWithValidatedItems(response, maxOrderItems);
-
-      if (hasItemsChanged) {
-        setToastMessage(tToaster("cart_modified"));
-        setOrderModifiedToastOpen(true);
-      }
-
-      if (validItems.length > 0) {
-        handleBeginCheckoutEvent();
-        router.push("/checkout");
-      }
-    } catch (error) {
-      console.error("Failed to validate items before checkout:", error);
-    } finally {
-      setIsValidating(false);
-    }
+    handleBeginCheckoutEvent();
+    closeCart();
+    router.push("/checkout");
   };
 
   return (
@@ -149,8 +87,6 @@ export function MobileNavCart({
                       size="lg"
                       className="w-full uppercase"
                       onClick={handleProceedToCheckout}
-                      disabled={isValidating}
-                      loading={isValidating}
                     >
                       {tCart("proceed to checkout")}
                     </Button>
@@ -165,11 +101,6 @@ export function MobileNavCart({
           </DialogPrimitives.Content>
         </DialogPrimitives.Portal>
       </DialogPrimitives.Root>
-      <SubmissionToaster
-        open={orderModifiedToastOpen}
-        message={toastMessage}
-        onOpenChange={setOrderModifiedToastOpen}
-      />
     </>
   );
 }

@@ -478,7 +478,10 @@
         "invalid_email": "veuillez saisir une adresse email valide",
         "email_copied": "email copié",
         "cart_outdated": "votre panier est obsolète",
-        "cart_modified": "votre panier a été modifié"
+        "cart_modified": "votre panier a été modifié",
+        "payment_already_completed": "Le paiement de cette session est déjà terminé. Veuillez vider votre panier et créer une nouvelle commande.",
+        "payment_unavailable": "Le paiement est temporairement indisponible. Veuillez réessayer plus tard.",
+        "validation_error": "Une erreur s'est produite. Veuillez réessayer."
     },
     "refund": {
         "return order": "retourner la commande",

@@ -478,7 +478,10 @@
         "invalid_email": "有効なメールアドレスを入力してください",
         "email_copied": "メールアドレスがコピーされました",
         "cart_outdated": "カートが古くなっています",
-        "cart_modified": "カートが変更されました"
+        "cart_modified": "カートが変更されました",
+        "payment_already_completed": "このセッションの支払いは既に完了しています。カートを空にして新しい注文を開始してください。",
+        "payment_unavailable": "支払いは一時的に利用できません。後でもう一度お試しください。",
+        "validation_error": "問題が発生しました。もう一度お試しください。"
     },
     "refund": {
         "return order": "注文返品",

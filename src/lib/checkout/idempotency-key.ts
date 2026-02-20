@@ -1,79 +1,47 @@
 /**
  * Manages idempotency keys for checkout sessions.
- * The key associates pre-orders with payment intent IDs on the backend.
+ * Keys are server-generated and returned in ValidateOrderItemsInsert responses.
+ * The client stores and sends them for retries and refreshes.
  */
 
 const STORAGE_KEY = "checkout-idempotency-key";
-const MAX_AGE_MS = 15 * 60 * 1000; // 15 minutes
-
-interface StoredKey {
-    key: string;
-    createdAt: number;
-}
 
 /**
- * Generates a new UUID v4 idempotency key
+ * Gets the stored idempotency key from localStorage, or null if none exists.
  */
-function generateIdempotencyKey(): string {
-    return crypto.randomUUID();
-}
-
-/**
- * Parses stored value. Returns null if invalid or expired.
- * Handles legacy format (plain string) by treating it as expired.
- */
-function parseStoredKey(raw: string | null): StoredKey | null {
-    if (!raw) return null;
+export function getStoredIdempotencyKey(): string | null {
+    if (typeof window === "undefined") {
+        return null;
+    }
 
     try {
-        const parsed = JSON.parse(raw) as StoredKey;
-        if (
-            typeof parsed?.key !== "string" ||
-            typeof parsed?.createdAt !== "number"
-        ) {
-            return null; // Invalid format
-        }
-        if (Date.now() - parsed.createdAt > MAX_AGE_MS) {
-            return null; // Expired
-        }
-        return parsed;
-    } catch {
-        // Legacy format (plain string) - treat as expired
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return typeof stored === "string" && stored.length > 0 ? stored : null;
+    } catch (error) {
+        console.error("Error accessing localStorage for idempotency key:", error);
         return null;
     }
 }
 
 /**
- * Gets the current idempotency key from storage, or creates a new one if it doesn't exist or is expired (>15 min)
+ * Stores the idempotency key from the server response.
+ * Call when ValidateOrderItemsInsert returns idempotency_key for CARD/CARD_TEST.
  */
-export function getOrCreateIdempotencyKey(): string {
+export function setIdempotencyKey(key: string): void {
     if (typeof window === "undefined") {
-        // Server-side: generate a temporary key (won't be persisted)
-        return generateIdempotencyKey();
+        return;
     }
 
     try {
-        const stored = parseStoredKey(localStorage.getItem(STORAGE_KEY));
-        if (stored) {
-            return stored.key;
-        }
-
-        const newKey = generateIdempotencyKey();
-        const toStore: StoredKey = {
-            key: newKey,
-            createdAt: Date.now(),
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(toStore));
-        return newKey;
+        localStorage.setItem(STORAGE_KEY, key);
     } catch (error) {
-        console.error("Error accessing localStorage for idempotency key:", error);
-        // Fallback to generating a temporary key
-        return generateIdempotencyKey();
+        console.error("Error storing idempotency key in localStorage:", error);
     }
 }
 
 /**
- * Clears the current idempotency key from storage
+ * Clears the idempotency key from storage.
+ * Call after successful payment or when "Payment already completed" error occurs.
  */
 export function clearIdempotencyKey(): void {
     if (typeof window === "undefined") {
@@ -85,12 +53,4 @@ export function clearIdempotencyKey(): void {
     } catch (error) {
         console.error("Error clearing idempotency key from localStorage:", error);
     }
-}
-
-/**
- * Replaces the current idempotency key with a new one
- */
-export function refreshIdempotencyKey(): string {
-    clearIdempotencyKey();
-    return getOrCreateIdempotencyKey();
 }

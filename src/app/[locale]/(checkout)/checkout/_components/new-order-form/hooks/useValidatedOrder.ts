@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
@@ -15,6 +15,7 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   const [validatedOrder, setValidatedOrder] = useState<
     ValidateOrderItemsInsertResponse | undefined
   >(undefined);
+  const validationStartedRef = useRef(false);
   const products = useCart((cart) => cart.products);
   const syncWithValidatedItems = useCart((cart) => cart.syncWithValidatedItems);
   const { dictionary } = useDataContext();
@@ -24,8 +25,9 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   const validateItems = async (shipmentCarrierId?: string) => {
     const promoCode: string = form.getValues("promoCode") || "";
     const carrierId = shipmentCarrierId || form.getValues("shipmentCarrierId") || "";
-    const country = form.getValues("country") || undefined;
-    const paymentMethod = form.getValues("paymentMethod") || undefined;
+    const country = form.getValues("country") || currentCountry.countryCode || undefined;
+    const paymentMethod =
+      form.getValues("paymentMethod") || "PAYMENT_METHOD_NAME_ENUM_CARD_TEST";
 
     console.log("validating products ⌛️");
     const result = await validateCartItems({
@@ -56,7 +58,14 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   };
 
   useEffect(() => {
-    if (products.length !== 0 && !validatedOrder) validateItems();
+    if (
+      products.length !== 0 &&
+      !validatedOrder &&
+      !validationStartedRef.current
+    ) {
+      validationStartedRef.current = true;
+      validateItems();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 

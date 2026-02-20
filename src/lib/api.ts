@@ -60,7 +60,18 @@ const requestHandler = async (
 
   console.log("[BE] response: ", response.status, response.statusText);
 
-  return await response.json();
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = new Error(
+      (data?.message as string) || response.statusText || "Request failed",
+    ) as Error & { code?: number; details?: unknown };
+    error.code = data?.code;
+    error.details = data;
+    throw error;
+  }
+
+  return data;
 };
 
 export const serviceClient = createFrontendServiceClient(requestHandler);

@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
+import { getValidationErrorToastKey } from "@/lib/cart/validate-cart-items";
 import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -47,6 +48,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     useState(false);
 
   const t = useTranslations("checkout");
+  const tToaster = useTranslations("toaster");
   const stripe = useStripe();
   const elements = useElements();
 
@@ -59,8 +61,12 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { clearFormData } = useOrderPersistence(form);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
-  const { orderModifiedToastOpen, setOrderModifiedToastOpen, toastMessage } =
-    useCheckoutEffects({
+  const {
+    orderModifiedToastOpen,
+    setOrderModifiedToastOpen,
+    setToastMessage,
+    toastMessage,
+  } = useCheckoutEffects({
       order,
       products,
       loading,
@@ -133,6 +139,9 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
       setLoading(false);
     } catch (error) {
       console.error("Error submitting new order:", error);
+      const toastKey = getValidationErrorToastKey(error);
+      setToastMessage(tToaster(toastKey));
+      setOrderModifiedToastOpen(true);
       setLoading(false);
     }
   };

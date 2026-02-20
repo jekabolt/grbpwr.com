@@ -2,31 +2,40 @@
 
 ## Overview
 
-The idempotency key is used to associate pre-orders with payment intent IDs on the backend. This ensures that different customers get different PaymentIntents even with identical carts, and prevents duplicate payment intents for the same checkout session.
+The idempotency key associates pre-orders with payment intent IDs on the backend. Keys are **server-generated** and returned in `ValidateOrderItemsInsert` responses. The client stores and sends them for retries and refreshes to ensure idempotent behavior.
 
 ## Implementation Details
 
 ### 1. Storage Management (`src/lib/checkout/idempotency-key.ts`)
 
-Created a utility module to manage idempotency keys in localStorage:
+Utilities for server-generated idempotency keys in localStorage:
 
-- **`getOrCreateIdempotencyKey()`**: Retrieves existing key or generates a new UUID v4. Keys older than 15 minutes are treated as expired and replaced.
-- **`clearIdempotencyKey()`**: Removes the key from storage (called after successful payment)
-- **`refreshIdempotencyKey()`**: Replaces the current key with a new one
+- **`getStoredIdempotencyKey()`**: Returns the stored key, or `null` if none exists
+- **`setIdempotencyKey(key)`**: Stores the key from the server response (called when `ValidateOrderItemsInsert` returns `idempotency_key` for CARD/CARD_TEST)
+- **`clearIdempotencyKey()`**: Removes the key (called after successful payment or "Payment already completed" error)
 
-The key is stored in localStorage under `"checkout-idempotency-key"` as JSON: `{ key: string, createdAt: number }`. Legacy plain-string format is treated as expired.
+Storage key: `"checkout-idempotency-key"`. Plain string value (no expiry – server owns lifecycle).
 
 ### 2. Validation Flow (`src/lib/cart/validate-cart-items.ts`)
 
-Updated `validateCartItems()` to:
-- Automatically get or create an idempotency key before validation
-- Include the key in the `ValidateOrderItemsInsert` API request
+`validateCartItems()` implements:
 
-This ensures every validation request includes a consistent idempotency key for the current checkout session.
+1. **First validation**: Omit `idempotency_key` from the request
+2. **Retry / page refresh**: Send stored `idempotency_key` from previous response
+3. **Response handling**: If `response.idempotency_key` is present (for CARD/CARD_TEST), store it via `setIdempotencyKey()`. If it differs from the stored value (session rotation), overwrite.
+4. **Error "Payment already completed for this session..."**: Clear stored key, retry once without `idempotency_key`
 
-### 3. Order Completion Flows
+### 3. Error Handling
 
-Updated two locations where orders are successfully completed to **clear** the idempotency key (not refresh):
+| Error message | Cause | Action |
+|---------------|-------|--------|
+| "Payment already completed for this session. Please clear your checkout and start a new order." | PaymentIntent for this session was already paid | Clear stored key, retry validation without key; on repeated failure, show toast |
+| "payment unavailable" / "failed to create payment intent" | Stripe problem or misconfiguration | Show error toast, optionally retry later |
+| Other validation errors | Various | Show generic "Something went wrong" toast |
+
+### 4. Order Completion Flows
+
+Two locations clear the idempotency key after successful payment:
 
 #### a. Direct Payment Flow (`src/app/[locale]/(checkout)/checkout/_components/new-order-form/index.tsx`)
 - After successful Stripe card payment confirmation
@@ -38,31 +47,26 @@ Updated two locations where orders are successfully completed to **clear** the i
 
 ## Lifecycle
 
-1. **First Validation**: When user first validates cart items, a new idempotency key is generated and stored with a timestamp
-2. **Subsequent Validations**: Same key is reused until it expires (15 min) or payment completes
-3. **Order Success**: Key is **cleared** from localStorage; next checkout gets a fresh key
-4. **Key Expiry**: Keys older than 15 minutes are automatically invalidated on next `getOrCreateIdempotencyKey()` call
-5. **Payment Failure**: Key is retained, allowing retry with the same payment intent
-
-## Benefits
-
-- Prevents duplicate payment intents for the same user session
-- Allows backend to associate validation requests with payment intents
-- Supports payment retry scenarios (failed payments keep the same key)
-- Automatic cleanup after successful orders
+1. **First validation**: User adds items, clicks checkout → call `ValidateOrderItemsInsert` without `idempotency_key` → store `response.idempotency_key` (CARD/CARD_TEST only)
+2. **Retries / refreshes**: Send stored key; if response returns a new key, update stored value
+3. **Order success**: Clear key from localStorage; next checkout starts fresh
+4. **"Payment already completed" error**: Clear key, retry without key; if retry fails, show toast
 
 ## Proto Definition
 
-The `idempotency_key` field was added to `ValidateOrderItemsInsertRequest` in the proto definition:
-
 ```protobuf
 message ValidateOrderItemsInsertRequest {
-  repeated common.OrderItemInsert items = 1;
-  string promo_code = 2;
-  int32 shipment_carrier_id = 3;
-  string country = 4;
-  common.PaymentMethodNameEnum payment_method = 5;
-  string currency = 6;
-  string idempotency_key = 7; // Client-generated UUID per checkout session
+  ...
+  string idempotency_key = 7; // Optional: key from previous response; same key = same payment session
+}
+
+message ValidateOrderItemsInsertResponse {
+  ...
+  string idempotency_key = 9; // Server-generated key; client stores and sends on subsequent requests
 }
 ```
+
+## Compatibility
+
+- Clients that never send `idempotency_key` continue to work; each request creates a new session
+- Clients that do not store or send the key do not get idempotent behavior across retries or rotation
