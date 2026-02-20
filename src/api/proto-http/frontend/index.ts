@@ -671,6 +671,7 @@ export type ValidateOrderItemsInsertResponse = {
   clientSecret: string | undefined;
   paymentIntentId: string | undefined;
   itemAdjustments: common_OrderItemAdjustment[] | undefined;
+  idempotencyKey: string | undefined;
 };
 
 // OrderItemAdjustment describes a change made during order item validation.

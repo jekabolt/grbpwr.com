@@ -35,9 +35,7 @@ export default function ShippingFieldsGroup({
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
-  const { handleShippingCarrierChange } = useCheckoutAnalytics({
-    validateItems,
-  });
+  const { handleShippingCarrierChange } = useCheckoutAnalytics();
 
   return (
     <FieldsGroupContainer

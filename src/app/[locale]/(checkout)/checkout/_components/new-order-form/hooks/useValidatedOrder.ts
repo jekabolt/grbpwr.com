@@ -9,6 +9,10 @@ import { validateCartItems } from "@/lib/cart/validate-cart-items";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import {
+  hasCheckoutInitialValidationRun,
+  setCheckoutInitialValidationDone,
+} from "@/lib/checkout/checkout-validation-state";
 import { CheckoutData } from "../schema";
 
 export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
@@ -24,8 +28,9 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   const validateItems = async (shipmentCarrierId?: string) => {
     const promoCode: string = form.getValues("promoCode") || "";
     const carrierId = shipmentCarrierId || form.getValues("shipmentCarrierId") || "";
-    const country = form.getValues("country") || undefined;
-    const paymentMethod = form.getValues("paymentMethod") || undefined;
+    const country = form.getValues("country") || currentCountry.countryCode || undefined;
+    const paymentMethod =
+      form.getValues("paymentMethod") || "PAYMENT_METHOD_NAME_ENUM_CARD_TEST";
 
     console.log("validating products ⌛️");
     const result = await validateCartItems({
@@ -56,7 +61,14 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   };
 
   useEffect(() => {
-    if (products.length !== 0 && !validatedOrder) validateItems();
+    if (
+      products.length !== 0 &&
+      !validatedOrder &&
+      !hasCheckoutInitialValidationRun()
+    ) {
+      setCheckoutInitialValidationDone();
+      validateItems();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 

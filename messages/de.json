@@ -478,7 +478,10 @@
         "invalid_email": "bitte geben Sie eine gültige E-Mail-Adresse ein",
         "email_copied": "e-mail kopiert",
         "cart_outdated": "ihr warenkorb ist veraltet",
-        "cart_modified": "ihr warenkorb wurde geändert"
+        "cart_modified": "ihr warenkorb wurde geändert",
+        "payment_already_completed": "Zahlung für diese Sitzung bereits abgeschlossen. Bitte leeren Sie Ihren Warenkorb und starten Sie eine neue Bestellung.",
+        "payment_unavailable": "Zahlung vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.",
+        "validation_error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
     },
     "refund": {
         "return order": "bestellung retournieren",
