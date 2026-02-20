@@ -1,37 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
-import { validateCartItems } from "@/lib/cart/validate-cart-items";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
-import { SubmissionToaster } from "@/components/ui/toaster";
 
 export default function CartPopup({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { products, isOpen, closeCart, syncWithValidatedItems } = useCart(
-    (state) => state,
-  );
+  const { products, isOpen, closeCart } = useCart((state) => state);
 
-  const { currentCountry } = useTranslationsStore((state) => state);
-  const { dictionary } = useDataContext();
-  const { handleBeginCheckoutEvent } = useCheckoutAnalytics({});
+  const { handleBeginCheckoutEvent } = useCheckoutAnalytics();
 
   const t = useTranslations("cart");
-  const tToaster = useTranslations("toaster");
-
-  const [isValidating, setIsValidating] = useState(false);
-  const [orderModifiedToastOpen, setOrderModifiedToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | undefined>(
-    tToaster("cart_modified"),
-  );
 
   const itemsQuantity = products.length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
@@ -51,61 +36,14 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
     };
   }, [isOpen, closeCart]);
 
-  const handleProceedToCheckout = async (e: React.MouseEvent) => {
+  const handleProceedToCheckout = (e: React.MouseEvent) => {
     e.preventDefault();
 
     if (products.length === 0) return;
 
-    setIsValidating(true);
-
-    try {
-      const currency =
-        currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
-
-      const result = await validateCartItems({
-        products,
-        currency,
-        promoCode: undefined,
-        shipmentCarrierId: undefined,
-        country: currentCountry?.countryCode,
-        paymentMethod: undefined,
-      });
-
-      if (!result) {
-        setToastMessage(tToaster("cart_outdated"));
-        setOrderModifiedToastOpen(true);
-        closeCart();
-        return;
-      }
-
-      const { response, hasItemsChanged } = result;
-      const validItems = response.validItems || [];
-      const maxOrderItems = dictionary?.maxOrderItems || 3;
-
-      if (validItems.length === 0) {
-        syncWithValidatedItems(response, maxOrderItems);
-        setToastMessage(tToaster("cart_outdated"));
-        setOrderModifiedToastOpen(true);
-        closeCart();
-        return;
-      }
-
-      syncWithValidatedItems(response, maxOrderItems);
-
-      if (hasItemsChanged) {
-        setToastMessage(tToaster("cart_modified"));
-        setOrderModifiedToastOpen(true);
-      }
-
-      if (validItems.length > 0) {
-        handleBeginCheckoutEvent();
-        router.push("/checkout");
-      }
-    } catch (error) {
-      console.error("Failed to validate items before checkout:", error);
-    } finally {
-      setIsValidating(false);
-    }
+    handleBeginCheckoutEvent();
+    closeCart();
+    router.push("/checkout");
   };
 
   return (
@@ -138,8 +76,6 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
                   size="lg"
                   className="block w-full uppercase"
                   onClick={handleProceedToCheckout}
-                  disabled={isValidating}
-                  loading={isValidating}
                 >
                   {t("proceed to checkout")}
                 </Button>
@@ -148,11 +84,6 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
           </div>
         )}
       </div>
-      <SubmissionToaster
-        open={orderModifiedToastOpen}
-        message={toastMessage}
-        onOpenChange={setOrderModifiedToastOpen}
-      />
     </div>
   );
 }

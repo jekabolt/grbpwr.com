@@ -12,11 +12,7 @@ import {
     sendPurchaseEvent
 } from "./checkout";
 
-export function useCheckoutAnalytics({
-    validateItems,
-}: {
-    validateItems?: (shipmentCarrierId: string) => Promise<any>;
-}) {
+export function useCheckoutAnalytics() {
     const { dictionary } = useDataContext();
     const items = useCart((state) => state.products).map((v) => v.productData);
 
@@ -32,9 +28,7 @@ export function useCheckoutAnalytics({
         subCategoryId,
     );
 
-    const handleShippingCarrierChange = async (carrierId: string) => {
-        const response = validateItems ? await validateItems(carrierId) : null;
-
+    const handleShippingCarrierChange = (carrierId: string) => {
         const selectedCarrier = dictionary?.shipmentCarriers?.find(
             (c) => c.id?.toString() === carrierId,
         );
@@ -48,8 +42,6 @@ export function useCheckoutAnalytics({
                 subCategoryName || "",
             );
         }
-
-        return response;
     };
 
     const handlePaymentMethodChange = (paymentMethodName: string) => {

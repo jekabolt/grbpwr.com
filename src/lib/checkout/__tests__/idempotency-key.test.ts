@@ -1,19 +1,21 @@
 /**
  * Tests for idempotency key management
- * 
+ *
  * Note: These tests use a mock localStorage since the actual implementation
  * runs in a browser environment.
  */
 
 import {
     clearIdempotencyKey,
-    getOrCreateIdempotencyKey,
-    refreshIdempotencyKey,
+    getStoredIdempotencyKey,
+    setIdempotencyKey,
 } from "../idempotency-key";
+
+const STORAGE_KEY = "checkout-idempotency-key";
 
 // Mock localStorage
 const localStorageMock = (() => {
-    let store: Record<string, string> = {};
+    const store: Record<string, string> = {};
 
     return {
         getItem: (key: string) => store[key] || null,
@@ -24,7 +26,7 @@ const localStorageMock = (() => {
             delete store[key];
         },
         clear: () => {
-            store = {};
+            Object.keys(store).forEach((k) => delete store[k]);
         },
     };
 })();
@@ -33,70 +35,53 @@ Object.defineProperty(global, "localStorage", {
     value: localStorageMock,
 });
 
-// Mock crypto.randomUUID
-const mockUUID = "123e4567-e89b-12d3-a456-426614174000";
-Object.defineProperty(global, "crypto", {
-    value: {
-        randomUUID: () => mockUUID,
-    },
-});
-
 describe("Idempotency Key Management", () => {
     beforeEach(() => {
         localStorageMock.clear();
     });
 
-    describe("getOrCreateIdempotencyKey", () => {
-        it("should create a new key if none exists", () => {
-            const key = getOrCreateIdempotencyKey();
-            expect(key).toBe(mockUUID);
-            expect(localStorage.getItem("checkout-idempotency-key")).toBe(mockUUID);
+    describe("getStoredIdempotencyKey", () => {
+        it("should return null if no key exists", () => {
+            expect(getStoredIdempotencyKey()).toBeNull();
         });
 
-        it("should return existing key if one exists", () => {
-            const existingKey = "existing-key-123";
-            localStorage.setItem("checkout-idempotency-key", existingKey);
-
-            const key = getOrCreateIdempotencyKey();
-            expect(key).toBe(existingKey);
+        it("should return the stored key", () => {
+            const key = "server-generated-key-123";
+            setIdempotencyKey(key);
+            expect(getStoredIdempotencyKey()).toBe(key);
         });
 
-        it("should persist the key across multiple calls", () => {
-            const key1 = getOrCreateIdempotencyKey();
-            const key2 = getOrCreateIdempotencyKey();
-            expect(key1).toBe(key2);
+        it("should return null for empty string", () => {
+            localStorageMock.setItem(STORAGE_KEY, "");
+            expect(getStoredIdempotencyKey()).toBeNull();
+        });
+    });
+
+    describe("setIdempotencyKey", () => {
+        it("should store the key", () => {
+            const key = "server-generated-key-456";
+            setIdempotencyKey(key);
+            expect(localStorage.getItem(STORAGE_KEY)).toBe(key);
+        });
+
+        it("should overwrite existing key", () => {
+            setIdempotencyKey("old-key");
+            setIdempotencyKey("new-key");
+            expect(getStoredIdempotencyKey()).toBe("new-key");
         });
     });
 
     describe("clearIdempotencyKey", () => {
         it("should remove the key from storage", () => {
-            localStorage.setItem("checkout-idempotency-key", mockUUID);
-            expect(localStorage.getItem("checkout-idempotency-key")).toBe(mockUUID);
+            setIdempotencyKey("key-to-clear");
+            expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
 
             clearIdempotencyKey();
-            expect(localStorage.getItem("checkout-idempotency-key")).toBeNull();
+            expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
         });
 
         it("should not throw if no key exists", () => {
             expect(() => clearIdempotencyKey()).not.toThrow();
-        });
-    });
-
-    describe("refreshIdempotencyKey", () => {
-        it("should replace existing key with a new one", () => {
-            const oldKey = "old-key-123";
-            localStorage.setItem("checkout-idempotency-key", oldKey);
-
-            const newKey = refreshIdempotencyKey();
-            expect(newKey).toBe(mockUUID);
-            expect(newKey).not.toBe(oldKey);
-            expect(localStorage.getItem("checkout-idempotency-key")).toBe(mockUUID);
-        });
-
-        it("should create a new key if none exists", () => {
-            const key = refreshIdempotencyKey();
-            expect(key).toBe(mockUUID);
-            expect(localStorage.getItem("checkout-idempotency-key")).toBe(mockUUID);
         });
     });
 });

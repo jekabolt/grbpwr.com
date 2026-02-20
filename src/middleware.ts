@@ -9,6 +9,14 @@ const intlMiddleware = createMiddleware(routing);
 export default function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
+    // Permanent redirect www → non-www (308)
+    const host = req.headers.get("host") || req.nextUrl.host;
+    if (host?.startsWith("www.")) {
+        const url = req.nextUrl.clone();
+        url.host = host.replace(/^www\./, "");
+        return NextResponse.redirect(url, { status: 308 });
+    }
+
     // get existing cookies
     const countryCookie = req.cookies.get("NEXT_COUNTRY")?.value;
     const localeCookie = req.cookies.get("NEXT_LOCALE")?.value;

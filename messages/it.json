@@ -478,7 +478,10 @@
         "invalid_email": "inserisci un indirizzo email valido",
         "email_copied": "email copiata",
         "cart_outdated": "il tuo carrello è obsoleto",
-        "cart_modified": "il tuo carrello è stato modificato"
+        "cart_modified": "il tuo carrello è stato modificato",
+        "payment_already_completed": "Pagamento già completato per questa sessione. Svuota il carrello e inizia un nuovo ordine.",
+        "payment_unavailable": "Il pagamento non è temporaneamente disponibile. Riprova più tardi.",
+        "validation_error": "Qualcosa è andato storto. Riprova."
     },
     "refund": {
         "return order": "restituisci ordine",

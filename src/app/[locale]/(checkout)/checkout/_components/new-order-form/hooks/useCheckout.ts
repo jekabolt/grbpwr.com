@@ -136,5 +136,6 @@ export const useCheckoutEffects = ({
         orderModifiedToastOpen,
         toastMessage,
         setOrderModifiedToastOpen,
+        setToastMessage,
     };
 };
