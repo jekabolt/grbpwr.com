@@ -1,6 +1,6 @@
 /**
  * Builds tracking URL from carrier's trackingUrl template and tracking code.
- * Supports placeholders: {tracking_code}, {tracking_number} (case insensitive).
+ * Supports placeholders: {tracking_code}, {tracking_number} (case insensitive), %s (printf-style).
  * If no placeholder, appends tracking code to the base URL.
  * Returns undefined if both template and code are not provided.
  */
@@ -17,10 +17,11 @@ export function buildTrackingUrl(
   if (trackingUrlTemplate?.trim()) {
     const template = trackingUrlTemplate.trim();
 
-    // Replace common placeholders (case insensitive)
+    // Replace common placeholders (case insensitive) and %s (printf-style, e.g. DHL)
     const withPlaceholder = template
       .replace(/\{tracking_code\}/gi, code)
-      .replace(/\{tracking_number\}/gi, code);
+      .replace(/\{tracking_number\}/gi, code)
+      .replace(/%s/g, encodeURIComponent(code));
 
     if (withPlaceholder !== template) {
       return withPlaceholder;

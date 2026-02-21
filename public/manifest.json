@@ -1,18 +1,16 @@
 {
-  "name": "GRBPWR",
-  "short_name": "GRBPWR",
-  "description": "GRBPWR discusses difficult topics by imperfect language and master this imperfect language. Shop latest ready-to-wear.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "orientation": "portrait-primary",
-  "icons": [
-    {
-      "src": "/app-logo.webp",
-      "sizes": "512x512",
-      "type": "image/webp",
-      "purpose": "any maskable"
-    }
-  ]
-} 
+    "name": "GRBPWR",
+    "short_name": "GRBPWR",
+    "description": "GRBPWR discusses difficult topics by imperfect language and master this imperfect language. Shop latest ready-to-wear.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "orientation": "portrait-primary",
+    "icons": [{
+        "src": "/app-logo.webp",
+        "sizes": "512x512",
+        "type": "image/webp",
+        "purpose": "any maskable"
+    }]
+}
