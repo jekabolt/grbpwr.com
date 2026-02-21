@@ -5,6 +5,7 @@ import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { isDateTodayOrFuture } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -20,9 +21,10 @@ function MobileOrderItemRow({
   product: common_OrderItem;
   currencyKey?: string;
 }) {
-  const { languageId, currentCountry } = useTranslationsStore((state) => state);
+  const { languageId } = useTranslationsStore((state) => state);
+  const validatedCurrency = useCart((state) => state.validatedCurrency);
   const currencyKey =
-    currencyKeyProp || currentCountry.currencyKey?.toUpperCase() || "EUR";
+    currencyKeyProp || validatedCurrency?.toUpperCase() || "EUR";
   const currencySymbol = currencySymbols[currencyKey] || currencySymbols.EUR;
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
   const priceWithoutSale = `${currencySymbol}  ${product?.productPrice}`;

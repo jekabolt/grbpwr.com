@@ -58,7 +58,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     defaultValues: { ...defaultData, country: currentCountry.countryCode },
   });
 
-  const { order, validateItems } = useValidatedOrder(form);
+  const { order, validateItems, orderCurrency } = useValidatedOrder(form);
   const { clearFormData } = useOrderPersistence(form);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
@@ -160,6 +160,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 form={form}
                 order={order}
                 validatedProducts={order?.validItems}
+                orderCurrency={orderCurrency}
               />
             </div>
             <div className="space-y-10 lg:space-y-16">
@@ -190,7 +191,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               <div className="hidden space-y-8 lg:block">
                 <Text variant="uppercase">{t("order summary")}</Text>
 
-                <OrderProducts validatedProducts={order?.validItems} />
+                <OrderProducts validatedProducts={order?.validItems} currencyKey={orderCurrency} />
 
                 <div className="space-y-8">
                   <PromoCode
@@ -199,7 +200,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                     loading={loading}
                     validateItems={validateItems}
                   />
-                  <PriceSummary form={form} order={order} />
+                  <PriceSummary form={form} order={order} orderCurrency={orderCurrency} />
                 </div>
               </div>
               <Button
@@ -212,7 +213,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 loading={loading}
                 loadingType="order-processing"
               >
-                {`${t("place order")} ${currencySymbols[currentCountry.currencyKey || "EUR"]}${order?.totalSale?.value || ""}`}
+                {`${t("place order")} ${currencySymbols[orderCurrency || "EUR"]}${order?.totalSale?.value || ""}`}
               </Button>
             </div>
           </div>

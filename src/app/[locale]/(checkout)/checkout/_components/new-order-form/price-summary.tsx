@@ -3,19 +3,17 @@ import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 import { useVatCalculation } from "./hooks/useVatCalculation";
 
-export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
+export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSummaryProps) {
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
-  const { currentCountry } = useTranslationsStore((state) => state);
 
-  const currency = currentCountry.currencyKey || "EUR";
+  const currency = orderCurrency || "EUR";
   const currencySymbol =
     currencySymbols[currency] ||
     currencySymbols[dictionary?.baseCurrency || "EUR"];
@@ -87,4 +85,5 @@ interface PriceSummaryProps {
   form: UseFormReturn<any>;
   order?: ValidateOrderItemsInsertResponse;
   vatRate?: number;
+  orderCurrency?: string;
 }

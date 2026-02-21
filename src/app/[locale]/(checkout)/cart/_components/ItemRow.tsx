@@ -21,10 +21,11 @@ export default function ItemRow({
   index,
   currencyKey: currencyKeyProp,
 }: Props) {
-  const { languageId, currentCountry } = useTranslationsStore((state) => state);
+  const { languageId } = useTranslationsStore((state) => state);
   const closeCart = useCart((state) => state.closeCart);
+  const validatedCurrency = useCart((state) => state.validatedCurrency);
   const currencyKey =
-    currencyKeyProp || currentCountry.currencyKey?.toUpperCase() || "EUR";
+    currencyKeyProp || validatedCurrency?.toUpperCase() || "EUR";
   const currencySymbol = currencySymbols[currencyKey] || currencySymbols.EUR;
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
   const priceWithoutSale = `${currencySymbol}  ${product?.productPrice}`;

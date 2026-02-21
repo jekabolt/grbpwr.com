@@ -16,6 +16,9 @@ export interface CartState {
   subTotalPrice: number;
   isOpen: boolean;
   productToRemove: { id: number; size: string; index: number } | null;
+  /** Currency code used for the last successful validation (keeps symbol in sync with prices) */
+  validatedCurrency: string;
+  isRevalidating: boolean;
 }
 
 export interface CartActions {
@@ -31,6 +34,7 @@ export interface CartActions {
     validationResponse: ValidateOrderItemsInsertResponse,
     maxOrderItems?: number,
   ) => void;
+  revalidateCart: (currency: string) => Promise<void>;
   clearCart: () => void;
   openCart: () => void;
   closeCart: () => void;

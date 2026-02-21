@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
@@ -19,11 +19,13 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   const [validatedOrder, setValidatedOrder] = useState<
     ValidateOrderItemsInsertResponse | undefined
   >(undefined);
+  const [orderCurrency, setOrderCurrency] = useState<string>("EUR");
   const products = useCart((cart) => cart.products);
   const syncWithValidatedItems = useCart((cart) => cart.syncWithValidatedItems);
   const { dictionary } = useDataContext();
   const { currentCountry } = useTranslationsStore((state) => state);
   const currency = currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
+  const prevCurrencyRef = useRef(currency);
 
   const validateItems = async (shipmentCarrierId?: string) => {
     const promoCode: string = form.getValues("promoCode") || "";
@@ -52,7 +54,7 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
 
     if (normalizedResponse.validItems) {
       setValidatedOrder(normalizedResponse);
-      // Sync cart with validated items (remove invalid/unavailable items)
+      setOrderCurrency(currency);
       const maxOrderItems = dictionary?.maxOrderItems || 3;
       syncWithValidatedItems(normalizedResponse, maxOrderItems);
     }
@@ -72,5 +74,13 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 
-  return { order: validatedOrder, validateItems };
+  useEffect(() => {
+    if (prevCurrencyRef.current !== currency && validatedOrder && products.length > 0) {
+      validateItems();
+    }
+    prevCurrencyRef.current = currency;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currency]);
+
+  return { order: validatedOrder, validateItems, orderCurrency };
 }
