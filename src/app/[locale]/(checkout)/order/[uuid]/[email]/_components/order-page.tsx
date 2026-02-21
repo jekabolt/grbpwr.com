@@ -76,20 +76,6 @@ export function OrderPageComponent({
       <div className="w-full">
         <div className="block space-y-4 lg:hidden">
           <MobileOrderSummary orderData={orderData} />
-          {shipment?.trackingCode && trackingUrl && (
-            <div className="flex flex-row items-baseline justify-between gap-4 border-b border-textInactiveColor py-6">
-              <Text variant="uppercase">{t("tracking number")}</Text>
-              <Button variant="underlineWithColors" size="default" asChild>
-                <Link
-                  href={trackingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {shipment.trackingCode}
-                </Link>
-              </Button>
-            </div>
-          )}
           <OrderSecondaryInfo
             shipping={shipping}
             billing={billing}
@@ -146,8 +132,8 @@ export function OrderPageComponent({
           />
         </div>
       </div>
-      <div className="hidden w-full space-y-20 md:block">
-        <div className="space-y-8">
+      <div className="hidden w-full space-y-3 md:block">
+        <div className="space-y-2">
           <Text variant="uppercase">{tCheckout("order summary")}</Text>
           <div className="space-y-3">
             {promoCode?.promoCodeInsert?.code && (

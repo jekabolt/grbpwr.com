@@ -190,20 +190,7 @@ export function MobileOrderSecondaryInfo({
             {tCheckout("shipping method")}
           </Text>
           <div className="w-full flex flex-col gap-1">
-            {shipmentCarrierName && (
-              <Text>{shipmentCarrierName}</Text>
-            )}
-            {trackingUrl && trackingCode && (
-              <Button variant="underlineWithColors" size="default" asChild>
-                <Link
-                  href={trackingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t("tracking number")}: {trackingCode}
-                </Link>
-              </Button>
-            )}
+            {shipmentCarrierName && <Text>{shipmentCarrierName}</Text>}
           </div>
         </div>
         <div className="flex w-full justify-between">
