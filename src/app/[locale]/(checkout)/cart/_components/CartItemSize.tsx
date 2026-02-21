@@ -2,6 +2,7 @@
 
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
+import { formatSizeName } from "@/lib/utils";
 
 export default function CartItemSize({ sizeId }: { sizeId: string }) {
   const { dictionary } = useDataContext();
@@ -11,10 +12,7 @@ export default function CartItemSize({ sizeId }: { sizeId: string }) {
 
   if (!sizeName) return null;
 
-  return (
-    <Text variant="uppercase">
-      {dictionary?.sizes?.find((dictS) => dictS.id === Number(sizeId))?.name ||
-        ""}
-    </Text>
-  );
+  const formattedSizeName = formatSizeName(sizeName);
+
+  return <Text variant="uppercase">{formattedSizeName}</Text>;
 }
