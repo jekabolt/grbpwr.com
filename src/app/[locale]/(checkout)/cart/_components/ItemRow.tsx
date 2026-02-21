@@ -3,7 +3,7 @@ import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import { useCart } from "@/lib/stores/cart/store-provider";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -22,6 +22,7 @@ export default function ItemRow({
   currencyKey: currencyKeyProp,
 }: Props) {
   const { languageId, currentCountry } = useTranslationsStore((state) => state);
+  const closeCart = useCart((state) => state.closeCart);
   const currencyKey =
     currencyKeyProp || currentCountry.currencyKey?.toUpperCase() || "EUR";
   const currencySymbol = currencySymbols[currencyKey] || currencySymbols.EUR;
@@ -44,10 +45,15 @@ export default function ItemRow({
       <Link
         href={product.slug || ""}
         className="absolute inset-0 hidden lg:block"
+        onClick={closeCart}
       >
         <Overlay cover="container" color="highlight" trigger="hover" />
       </Link>
-      <Link href={product.slug || ""} className="relative min-w-[90px]">
+      <Link
+        href={product.slug || ""}
+        className="relative min-w-[90px]"
+        onClick={closeCart}
+      >
         <Image
           src={product.thumbnail || ""}
           alt="product"
@@ -59,6 +65,7 @@ export default function ItemRow({
         <Link
           href={product.slug || ""}
           className="flex w-full flex-col justify-between"
+          onClick={closeCart}
         >
           <div className="space-y-3">
             <Text
