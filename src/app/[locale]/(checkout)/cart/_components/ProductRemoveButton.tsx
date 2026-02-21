@@ -2,6 +2,7 @@
 
 import { common_OrderItem } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
+import { useEffect, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
@@ -29,12 +30,31 @@ export default function ProductRemoveButton({
   const { handleRemoveFromCartEvent } = useCartAnalytics({
     finalProducts: [product],
   });
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const isRemoveConfirmed =
     productToRemove &&
     productToRemove.id === id &&
     productToRemove.size === size &&
     productToRemove.index === index;
+
+  useEffect(() => {
+    if (!isRemoveConfirmed) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setProductToRemove(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isRemoveConfirmed, setProductToRemove]);
 
   const handleRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -50,16 +70,14 @@ export default function ProductRemoveButton({
   };
 
   return (
-    <>
-      {isRemoveConfirmed && <Overlay color="highlight" cover="container" />}
-      <Button
-        type="button"
-        onClick={handleRemove}
-        variant="underline"
-        className={cn("uppercase", { "z-20": isRemoveConfirmed })}
-      >
-        {isRemoveConfirmed ? t("sure?") : t("remove")}
-      </Button>
-    </>
+    <Button
+      ref={buttonRef}
+      type="button"
+      onClick={handleRemove}
+      variant="underline"
+      className="uppercase"
+    >
+      {isRemoveConfirmed ? t("sure?") : t("remove")}
+    </Button>
   );
 }
