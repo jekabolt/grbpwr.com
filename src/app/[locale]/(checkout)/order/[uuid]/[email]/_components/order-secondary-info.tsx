@@ -192,9 +192,7 @@ export function MobileOrderSecondaryInfo({
 type Props = Pick<
   common_OrderFull,
   "shipping" | "billing" | "shipment" | "buyer" | "payment"
-> & {
-  shipmentCarrierName?: string;
-};
+>;
 
 type DesktopMobileProps = Pick<
   common_OrderFull,

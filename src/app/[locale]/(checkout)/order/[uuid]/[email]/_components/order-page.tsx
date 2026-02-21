@@ -10,8 +10,8 @@ import { use, useEffect } from "react";
 import { OrderProducts } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/order-products";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
+import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { MobileOrderSummary } from "./mobile-order-summary";
 import { OrderSecondaryInfo } from "./order-secondary-info";
@@ -61,7 +61,7 @@ export function OrderPageComponent({
     currencySymbols[order?.currency?.toUpperCase() || "EUR"];
 
   return (
-    <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-52">
+    <div className="flex flex-col gap-12 md:flex-row md:justify-between md:gap-12 lg:gap-52">
       <div className="w-full">
         <div className="block space-y-4 lg:hidden">
           <MobileOrderSummary orderData={orderData} />
@@ -111,7 +111,7 @@ export function OrderPageComponent({
           />
         </div>
       </div>
-      <div className="hidden w-full space-y-20 lg:block">
+      <div className="hidden w-full space-y-20 md:block">
         <div className="space-y-8">
           <Text variant="uppercase">{tCheckout("order summary")}</Text>
           <div className="space-y-3">
@@ -127,21 +127,21 @@ export function OrderPageComponent({
                 <Text>{promoCode?.promoCodeInsert?.discount?.value} %</Text>
               </div>
             )}
-            {promoCode?.promoCodeInsert?.code && (
-              <div className="flex justify-between">
-                <Text variant="uppercase">{t("shipping")}:</Text>
-                <Text>{`${orderCurrency} ${shipment?.cost?.value}`}</Text>
-              </div>
-            )}
           </div>
         </div>
         <OrderProducts
           validatedProducts={orderItems || []}
           currencyKey={order?.currency?.toUpperCase()}
         />
-        <div className="flex justify-between border-t border-textInactiveColor pt-3">
-          <Text variant="uppercase">{tCheckout("grand total")}:</Text>
-          <Text>{`${orderCurrency} ${order?.totalPrice?.value}`}</Text>
+        <div className="space-y-3 pt-3">
+          <div className="flex justify-between">
+            <Text variant="uppercase">{t("shipping")}:</Text>
+            <Text>{`${orderCurrency} ${shipment?.cost?.value ?? "0"}`}</Text>
+          </div>
+          <div className="flex justify-between border-t border-textInactiveColor pt-3">
+            <Text variant="uppercase">{tCheckout("grand total")}:</Text>
+            <Text>{`${orderCurrency} ${order?.totalPrice?.value}`}</Text>
+          </div>
         </div>
       </div>
     </div>
