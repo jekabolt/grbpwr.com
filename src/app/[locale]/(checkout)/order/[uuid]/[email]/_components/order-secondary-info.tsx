@@ -124,7 +124,7 @@ export function MobileOrderSecondaryInfo({
     <FieldsGroupContainer
       title={t("delivery/payment info")}
       signType="plus-minus"
-      className="space-y-0 border-b border-l border-r border-textInactiveColor p-2.5"
+      className="space-y-0 border border-textInactiveColor p-2.5"
       signPosition="before"
       clickableAreaClassName="w-full"
     >

@@ -65,15 +65,22 @@ export function OrderPageComponent({
   return (
     <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-52">
       <div className="w-full">
-        <div className="block lg:hidden">
+        <div className="block space-y-4 lg:hidden">
           <MobileOrderSummary orderData={orderData} />
+          <OrderSecondaryInfo
+            shipping={shipping}
+            billing={billing}
+            shipment={shipment}
+            buyer={buyer}
+            payment={payment}
+          />
         </div>
         <div className="flex flex-col items-center justify-between gap-y-6 border-b border-textInactiveColor py-6 lg:flex-row">
-          <div className="flex w-full flex-row justify-between gap-4 lg:flex-col">
+          <div className="flex w-full flex-row items-baseline justify-between gap-4 lg:flex-col">
             <Text variant="uppercase">{t("order id")}</Text>
-            <Text className="select-all break-all py-2">{order?.uuid}</Text>
+            <Text className="select-all break-all">{order?.uuid}</Text>
           </div>
-          <div className="flex w-full flex-row justify-between gap-4 lg:flex-col">
+          <div className="flex w-full flex-row items-baseline justify-between gap-4 lg:flex-col">
             <Text variant="uppercase">{t("order date")}</Text>
             {order?.placed && (
               <Text>{new Date(order.placed).toLocaleDateString()}</Text>
@@ -81,14 +88,14 @@ export function OrderPageComponent({
           </div>
         </div>
         <div className="flex flex-col items-center justify-between gap-y-6 border-b border-textInactiveColor py-6 lg:flex-row">
-          <div className="flex w-full flex-row justify-between gap-4 lg:flex-col">
+          <div className="flex w-full flex-row items-baseline justify-between gap-4 lg:flex-col">
             <Text variant="uppercase">{t("status")}</Text>
             {order?.orderStatusId && (
               <StatusBadge statusId={order.orderStatusId} />
             )}
           </div>
           {shipment && shipment.trackingCode && (
-            <div className="flex w-full flex-row gap-4 lg:flex-col">
+            <div className="flex w-full flex-row items-baseline justify-between gap-4 lg:flex-col">
               <Text variant="uppercase">{t("tracking number")}</Text>
               <Button variant="underlineWithColors" size="default" asChild>
                 <Link href={"/some-page"}>{shipment.trackingCode}</Link>
@@ -96,13 +103,15 @@ export function OrderPageComponent({
             </div>
           )}
         </div>
-        <OrderSecondaryInfo
-          shipping={shipping}
-          billing={billing}
-          shipment={shipment}
-          buyer={buyer}
-          payment={payment}
-        />
+        <div className="hidden lg:block">
+          <OrderSecondaryInfo
+            shipping={shipping}
+            billing={billing}
+            shipment={shipment}
+            buyer={buyer}
+            payment={payment}
+          />
+        </div>
       </div>
       <div className="hidden w-full space-y-20 lg:block">
         <div className="space-y-8">

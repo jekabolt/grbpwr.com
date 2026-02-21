@@ -41,6 +41,7 @@ export function MobileOrderSummary({ orderData }: Props) {
             onToggle={handleToggle}
         >
             <div className="mt-4 space-y-3">
+                <OrderProducts validatedProducts={orderItems || []} />
                 <div className="space-y-3">
                     {promoCode?.promoCodeInsert?.code && (
                         <div className="flex justify-between">
@@ -61,12 +62,11 @@ export function MobileOrderSummary({ orderData }: Props) {
                         </div>
                     )}
                 </div>
-            </div>
-            <OrderProducts validatedProducts={orderItems || []} />
-            <div className="pt-5">
-                <div className="flex justify-between border-t border-textInactiveColor pt-3">
-                    <Text variant="uppercase">{t("grand total")}:</Text>
-                    <Text>{`${currentCurrency} ${order?.totalPrice?.value}`}</Text>
+                <div className="border-t border-textInactiveColor pt-3">
+                    <div className="flex justify-between">
+                        <Text variant="uppercase">{t("grand total")}:</Text>
+                        <Text>{`${currentCurrency} ${order?.totalPrice?.value}`}</Text>
+                    </div>
                 </div>
             </div>
         </FieldsGroupContainer>
