@@ -2,6 +2,7 @@
 
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
+import { formatCurrencyAmount } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -60,8 +61,9 @@ export function OrderPageComponent({
     payment,
   } = orderData;
 
+  const orderCurrencyKey = order?.currency?.toUpperCase() || "EUR";
   const orderCurrency =
-    currencySymbols[order?.currency?.toUpperCase() || "EUR"];
+    currencySymbols[orderCurrencyKey];
 
   const carrier = dictionary?.shipmentCarriers?.find(
     (c) => String(c.id) === String(shipment?.carrierId),
@@ -157,11 +159,11 @@ export function OrderPageComponent({
         <div className="space-y-3 pt-3">
           <div className="flex justify-between">
             <Text variant="uppercase">{t("shipping")}:</Text>
-            <Text>{`${orderCurrency} ${shipment?.cost?.value ?? "0"}`}</Text>
+            <Text>{`${orderCurrency} ${formatCurrencyAmount(shipment?.cost?.value ?? "0", orderCurrencyKey)}`}</Text>
           </div>
           <div className="flex justify-between border-t border-textInactiveColor pt-3">
             <Text variant="uppercase">{tCheckout("grand total")}:</Text>
-            <Text>{`${orderCurrency} ${order?.totalPrice?.value}`}</Text>
+            <Text>{`${orderCurrency} ${formatCurrencyAmount(order?.totalPrice?.value || "0", orderCurrencyKey)}`}</Text>
           </div>
         </div>
       </div>

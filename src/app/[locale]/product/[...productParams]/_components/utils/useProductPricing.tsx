@@ -1,5 +1,6 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
+import { formatCurrencyAmount } from "@/lib/currency";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
@@ -24,12 +25,15 @@ export function useProductPricing({
 
   const isSaleApplied = salePercentage !== "0";
 
-  const formattedPrice = parseFloat(priceValue).toFixed(2);
+  const formattedPrice = formatCurrencyAmount(priceValue, currencyKey);
   const price = `${currencySymbol} ${formattedPrice}`;
 
   const priceWithSaleValue =
     (parseFloat(priceValue) * (100 - parseInt(salePercentage || "0"))) / 100;
-  const formattedPriceWithSale = priceWithSaleValue.toFixed(2);
+  const formattedPriceWithSale = formatCurrencyAmount(
+    priceWithSaleValue,
+    currencyKey,
+  );
   const priceWithSale = `${currencySymbol} ${formattedPriceWithSale}`;
 
   const priceMinusSale = `${price} - ${salePercentage}% = `;

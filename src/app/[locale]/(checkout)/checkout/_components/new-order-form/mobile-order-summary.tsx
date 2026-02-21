@@ -6,6 +6,7 @@ import {
   ValidateOrderItemsInsertResponse,
 } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
+import { formatCurrencyAmount } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
@@ -45,8 +46,8 @@ export function MobileOrderSummary({ form, validatedProducts, order, orderCurren
       className="space-y-0 border border-textInactiveColor p-2.5"
       signPosition="before"
       title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
-      preview={
-        <Text>{`${currencySymbol} ${order?.totalSale?.value || ""}`}</Text>
+        preview={
+        <Text>{`${currencySymbol} ${formatCurrencyAmount(order?.totalSale?.value || "0", currency)}`}</Text>
       }
       isOpen={isOpen}
       onToggle={handleToggle}

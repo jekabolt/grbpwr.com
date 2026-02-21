@@ -1,4 +1,5 @@
 import type { common_Product } from "@/api/proto-http/frontend";
+import { formatCurrencyAmount } from "@/lib/currency";
 import {
   currencySymbols,
   EMPTY_PREORDER,
@@ -75,8 +76,8 @@ export function ProductItem({
   const priceWithSale =
     (parseFloat(priceValue) * (100 - parseInt(salePercentage || "0"))) / 100;
 
-  const formattedPrice = parseFloat(priceValue).toFixed(2);
-  const formattedPriceWithSale = priceWithSale.toFixed(2);
+  const formattedPrice = formatCurrencyAmount(priceValue, currencyKey);
+  const formattedPriceWithSale = formatCurrencyAmount(priceWithSale, currencyKey);
 
   return (
     <div className={cn("relative", className)}>

@@ -1,5 +1,6 @@
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
+import { formatCurrencyAmount } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
@@ -41,7 +42,7 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
       <div className="mt-4 space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t("subtotal")}:</Text>
-          <Text>{`${currencySymbol} ${order?.subtotal?.value || ""}`}</Text>
+          <Text>{`${currencySymbol} ${formatCurrencyAmount(order?.subtotal?.value || "0", currency)}`}</Text>
         </div>
         {(selectedShipmentCarrierPrice || promoFreeShipping) && (
           <div className="flex justify-between">
@@ -49,7 +50,7 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
             <Text>
               {promoFreeShipping
                 ? t("free by promo")
-                : `${currencySymbol} ${selectedShipmentCarrierPrice}`}
+                : `${currencySymbol} ${formatCurrencyAmount(selectedShipmentCarrierPrice || "0", currency)}`}
             </Text>
           </div>
         )}
@@ -62,7 +63,7 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
 
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t(taxLabel)}:</Text>
-          <Text>{`${currencySymbol} ${vatAmount.toFixed(2)}`}</Text>
+          <Text>{`${currencySymbol} ${formatCurrencyAmount(vatAmount, currency)}`}</Text>
         </div>
 
         <div className="pt-5">
@@ -72,7 +73,7 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
               <Text variant="uppercase" className="text-textInactiveColor">
                 {t("incl")}
               </Text>
-              <Text>{`${currencySymbol} ${order.totalSale?.value || ""}`}</Text>
+              <Text>{`${currencySymbol} ${formatCurrencyAmount(order.totalSale?.value || "0", currency)}`}</Text>
             </div>
           </div>
         </div>

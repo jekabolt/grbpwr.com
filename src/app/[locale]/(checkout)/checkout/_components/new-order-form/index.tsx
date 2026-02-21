@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { currencySymbols } from "@/constants";
+import { formatCurrencyAmount } from "@/lib/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
@@ -213,7 +214,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 loading={loading}
                 loadingType="order-processing"
               >
-                {`${t("place order")} ${currencySymbols[orderCurrency || "EUR"]}${order?.totalSale?.value || ""}`}
+                {`${t("place order")} ${currencySymbols[orderCurrency || "EUR"]}${formatCurrencyAmount(order?.totalSale?.value || "0", orderCurrency || "EUR")}`}
               </Button>
             </div>
           </div>

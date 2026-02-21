@@ -2,6 +2,7 @@
 
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
+import { formatCurrencyAmount } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -18,8 +19,9 @@ export function MobileOrderSummary({ orderData }: Props) {
     const [isOpen, setIsOpen] = useState(false);
 
     const { order, orderItems, shipment, promoCode } = orderData;
+    const orderCurrencyKey = order?.currency?.toUpperCase() || "EUR";
     const orderCurrency =
-      currencySymbols[order?.currency?.toUpperCase() || "EUR"];
+      currencySymbols[orderCurrencyKey];
 
     function handleToggle() {
         setIsOpen((prev) => !prev);
@@ -32,7 +34,7 @@ export function MobileOrderSummary({ orderData }: Props) {
             signPosition="before"
             title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
             preview={
-                <Text>{`${orderCurrency} ${order?.totalPrice?.value || ""}`}</Text>
+                <Text>{`${orderCurrency} ${formatCurrencyAmount(order?.totalPrice?.value || "0", orderCurrencyKey)}`}</Text>
             }
             isOpen={isOpen}
             onToggle={handleToggle}
@@ -58,14 +60,14 @@ export function MobileOrderSummary({ orderData }: Props) {
                     {shipment?.cost?.value && (
                         <div className="flex justify-between">
                             <Text variant="uppercase">{tOrder("shipping")}:</Text>
-                            <Text>{`${orderCurrency} ${shipment?.cost?.value}`}</Text>
+                            <Text>{`${orderCurrency} ${formatCurrencyAmount(shipment?.cost?.value, orderCurrencyKey)}`}</Text>
                         </div>
                     )}
                 </div>
                 <div className="border-t border-textInactiveColor pt-3">
                     <div className="flex justify-between">
                         <Text variant="uppercase">{t("grand total")}:</Text>
-                        <Text>{`${orderCurrency} ${order?.totalPrice?.value}`}</Text>
+                        <Text>{`${orderCurrency} ${formatCurrencyAmount(order?.totalPrice?.value || "0", orderCurrencyKey)}`}</Text>
                     </div>
                 </div>
             </div>
