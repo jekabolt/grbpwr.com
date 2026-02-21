@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 
@@ -19,8 +21,26 @@ interface ExtendedAppearance extends Appearance {
 }
 
 export function CheckoutFormWrapper() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const products = useCart((s) => s.products);
   const { dictionary } = useDataContext();
   const { languageId, currentCountry } = useTranslationsStore((state) => state);
+
+  // Redirect to home when landing on checkout with empty cart (e.g. direct link)
+  const productsRef = useRef(products);
+  productsRef.current = products;
+  useEffect(() => {
+    if (products.length > 0) return;
+
+    const t = setTimeout(() => {
+      if (productsRef.current.length === 0) {
+        const home = pathname?.replace(/\/checkout\/?$/, "") || "/";
+        router.replace(home);
+      }
+    }, 100); // brief delay for cart persist rehydration
+    return () => clearTimeout(t);
+  }, [products.length, pathname, router]);
 
   const currency =
     currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";

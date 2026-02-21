@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { currencySymbols } from "@/constants";
-import { formatCurrencyAmount } from "@/lib/currency";
+import { formatPrice } from "@/lib/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
@@ -60,7 +60,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   });
 
   const { order, validateItems, orderCurrency } = useValidatedOrder(form);
-  const { clearFormData } = useOrderPersistence(form);
+  const { clearFormData } = useOrderPersistence(form, currentCountry.countryCode);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
   const {
@@ -214,7 +214,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 loading={loading}
                 loadingType="order-processing"
               >
-                {`${t("place order")} ${currencySymbols[orderCurrency || "EUR"]}${formatCurrencyAmount(order?.totalSale?.value || "0", orderCurrency || "EUR")}`}
+                {`${t("place order")} ${formatPrice(order?.totalSale?.value || "0", orderCurrency || "EUR", currencySymbols[orderCurrency || "EUR"])}`}
               </Button>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
-import { formatCurrencyAmount } from "@/lib/currency";
+import { formatPrice } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
@@ -42,7 +42,7 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
       <div className="mt-4 space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t("subtotal")}:</Text>
-          <Text>{`${currencySymbol} ${formatCurrencyAmount(order?.subtotal?.value || "0", currency)}`}</Text>
+          <Text>{formatPrice(order?.subtotal?.value || "0", currency, currencySymbol)}</Text>
         </div>
         {(selectedShipmentCarrierPrice || promoFreeShipping) && (
           <div className="flex justify-between">
@@ -50,7 +50,7 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
             <Text>
               {promoFreeShipping
                 ? t("free by promo")
-                : `${currencySymbol} ${formatCurrencyAmount(selectedShipmentCarrierPrice || "0", currency)}`}
+                : formatPrice(selectedShipmentCarrierPrice || "0", currency, currencySymbol)}
             </Text>
           </div>
         )}
@@ -63,7 +63,7 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
 
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t(taxLabel)}:</Text>
-          <Text>{`${currencySymbol} ${formatCurrencyAmount(vatAmount, currency)}`}</Text>
+          <Text>{formatPrice(vatAmount, currency, currencySymbol)}</Text>
         </div>
 
         <div className="pt-5">
@@ -73,7 +73,7 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
               <Text variant="uppercase" className="text-textInactiveColor">
                 {t("incl")}
               </Text>
-              <Text>{`${currencySymbol} ${formatCurrencyAmount(order.totalSale?.value || "0", currency)}`}</Text>
+              <Text>{formatPrice(order.totalSale?.value || "0", currency, currencySymbol)}</Text>
             </div>
           </div>
         </div>

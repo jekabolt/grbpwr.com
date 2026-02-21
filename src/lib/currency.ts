@@ -4,6 +4,9 @@
  */
 const ZERO_DECIMAL_CURRENCIES = new Set(["JPY", "KRW"]);
 
+/** Currencies where symbol comes before the amount (e.g. $100). */
+const SYMBOL_BEFORE_CURRENCIES = new Set(["USD"]);
+
 /**
  * Formats a numeric amount for display based on currency.
  * Zero-decimal currencies (JPY, KRW) show no trailing .00.
@@ -19,4 +22,21 @@ export function formatCurrencyAmount(
     return Math.round(num).toString();
   }
   return num.toFixed(2);
+}
+
+/**
+ * Formats a price with currency symbol. USD/GBP: symbol before (e.g. $100);
+ * others: symbol after (e.g. 100€).
+ */
+export function formatPrice(
+  value: number | string,
+  currencyKey: string,
+  symbol: string,
+): string {
+  const formatted = formatCurrencyAmount(value, currencyKey);
+  const key = currencyKey?.toUpperCase() || "EUR";
+  if (SYMBOL_BEFORE_CURRENCIES.has(key)) {
+    return `${symbol}${formatted}`;
+  }
+  return `${formatted} ${symbol}`;
 }

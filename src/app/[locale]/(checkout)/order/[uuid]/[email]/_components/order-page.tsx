@@ -2,7 +2,7 @@
 
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
-import { formatCurrencyAmount } from "@/lib/currency";
+import { formatPrice } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -159,11 +159,11 @@ export function OrderPageComponent({
         <div className="space-y-3 pt-3">
           <div className="flex justify-between">
             <Text variant="uppercase">{t("shipping")}:</Text>
-            <Text>{`${orderCurrency} ${formatCurrencyAmount(shipment?.cost?.value ?? "0", orderCurrencyKey)}`}</Text>
+            <Text>{formatPrice(shipment?.cost?.value ?? "0", orderCurrencyKey, orderCurrency)}</Text>
           </div>
           <div className="flex justify-between border-t border-textInactiveColor pt-3">
             <Text variant="uppercase">{tCheckout("grand total")}:</Text>
-            <Text>{`${orderCurrency} ${formatCurrencyAmount(order?.totalPrice?.value || "0", orderCurrencyKey)}`}</Text>
+            <Text>{formatPrice(order?.totalPrice?.value || "0", orderCurrencyKey, orderCurrency)}</Text>
           </div>
         </div>
       </div>

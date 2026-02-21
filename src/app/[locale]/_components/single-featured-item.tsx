@@ -1,6 +1,6 @@
 import { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
-import { formatCurrencyAmount } from "@/lib/currency";
+import { formatPrice } from "@/lib/currency";
 import { useState } from "react";
 
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -64,10 +64,10 @@ export function SingleFeaturedItem({
                   <Text
                     variant={isSaleApplied ? "strileTroughInactive" : "default"}
                   >
-                    {`${currencySymbols[currentCountry.currencyKey || "EUR"]} ${formatCurrencyAmount(price?.price?.value || "0", currencyKey)}`}
+                    {formatPrice(price?.price?.value || "0", currencyKey, currencySymbols[currentCountry.currencyKey || "EUR"])}
                   </Text>
                   {isSaleApplied && (
-                    <Text>{`${currencySymbols[currentCountry.currencyKey || "EUR"]} ${formatCurrencyAmount(priceWithSale, currencyKey)}`}</Text>
+                    <Text>{formatPrice(priceWithSale, currencyKey, currencySymbols[currentCountry.currencyKey || "EUR"])}</Text>
                   )}
                 </div>
                 <Text

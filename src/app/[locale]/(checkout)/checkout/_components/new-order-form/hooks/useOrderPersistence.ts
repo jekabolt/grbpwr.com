@@ -3,7 +3,10 @@ import { useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { CheckoutData, defaultData } from "../schema";
 
-export const useOrderPersistence = (form: UseFormReturn<CheckoutData>) => {
+export const useOrderPersistence = (
+    form: UseFormReturn<CheckoutData>,
+    currentCountryCode?: string,
+) => {
     const {
         formData,
         hasPersistedData,
@@ -25,6 +28,7 @@ export const useOrderPersistence = (form: UseFormReturn<CheckoutData>) => {
                 form.reset({
                     ...defaultData,
                     ...formData,
+                    ...(currentCountryCode && { country: currentCountryCode }),
                 });
             }, 0);
         }

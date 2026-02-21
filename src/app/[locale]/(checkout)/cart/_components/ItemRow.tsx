@@ -1,6 +1,6 @@
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
-import { formatCurrencyAmount } from "@/lib/currency";
+import { formatPrice } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
@@ -29,8 +29,8 @@ export default function ItemRow({
     currencyKeyProp || validatedCurrency?.toUpperCase() || "EUR";
   const currencySymbol = currencySymbols[currencyKey] || currencySymbols.EUR;
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
-  const priceWithoutSale = `${currencySymbol}  ${formatCurrencyAmount(product?.productPrice || "0", currencyKey)}`;
-  const priceWithSale = `${currencySymbol} ${formatCurrencyAmount(product?.productPriceWithSale || "0", currencyKey)}`;
+  const priceWithoutSale = formatPrice(product?.productPrice || "0", currencyKey, currencySymbol);
+  const priceWithSale = formatPrice(product?.productPriceWithSale || "0", currencyKey, currencySymbol);
   const t = useTranslations("product");
   const tColors = useTranslations("colors");
 

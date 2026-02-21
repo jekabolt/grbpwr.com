@@ -1,7 +1,7 @@
 "use client";
 
 import { currencySymbols } from "@/constants";
-import { formatCurrencyAmount } from "@/lib/currency";
+import { formatPrice } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -15,8 +15,7 @@ export default function CartTotalPrice() {
     <div className="flex items-center justify-between border-t border-solid border-textInactiveColor pt-3">
       <Text variant="uppercase">{t("subtotal")}:</Text>
       <Text variant="uppercase" size="small">
-        {currencySymbols[validatedCurrency || "EUR"]}{" "}
-        {formatCurrencyAmount(subTotalPrice, validatedCurrency || "EUR")}
+        {formatPrice(subTotalPrice, validatedCurrency || "EUR", currencySymbols[validatedCurrency || "EUR"])}
       </Text>
     </div>
   );
