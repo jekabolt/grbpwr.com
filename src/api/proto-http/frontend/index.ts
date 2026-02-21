@@ -723,6 +723,16 @@ export type CancelOrderByUserResponse = {
   order: common_OrderFull | undefined;
 };
 
+export type RequestRefundByUserRequest = {
+  orderUuid: string | undefined;
+  b64Email: string | undefined;
+  reason: string | undefined;
+};
+
+export type RequestRefundByUserResponse = {
+  order: common_OrderFull | undefined;
+};
+
 export type SubscribeNewsletterRequest = {
   email: string | undefined;
 };
@@ -804,6 +814,8 @@ export interface FrontendService {
   CancelOrderInvoice(request: CancelOrderInvoiceRequest): Promise<CancelOrderInvoiceResponse>;
   // Cancel order by user with reason
   CancelOrderByUser(request: CancelOrderByUserRequest): Promise<CancelOrderByUserResponse>;
+  // Request refund by user (for return/refund flow)
+  RequestRefundByUser(request: RequestRefundByUserRequest): Promise<RequestRefundByUserResponse>;
   // Subscribe to the newsletter
   SubscribeNewsletter(request: SubscribeNewsletterRequest): Promise<SubscribeNewsletterResponse>;
   // Unsubscribe from the newsletter
@@ -1100,6 +1112,29 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "CancelOrderByUser",
       }) as Promise<CancelOrderByUserResponse>;
+    },
+    RequestRefundByUser(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.orderUuid) {
+        throw new Error("missing required field request.order_uuid");
+      }
+      if (!request.b64Email) {
+        throw new Error("missing required field request.b64_email");
+      }
+      const path = `api/frontend/order/${request.orderUuid}/${request.b64Email}/refund`; // eslint-disable-line quotes
+      const body = JSON.stringify(request);
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return handler({
+        path: uri,
+        method: "POST",
+        body,
+      }, {
+        service: "FrontendService",
+        method: "RequestRefundByUser",
+      }) as Promise<RequestRefundByUserResponse>;
     },
     SubscribeNewsletter(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/newsletter/subscribe`; // eslint-disable-line quotes

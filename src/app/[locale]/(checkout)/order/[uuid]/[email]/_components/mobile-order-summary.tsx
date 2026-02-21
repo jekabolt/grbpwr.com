@@ -61,15 +61,14 @@ export function MobileOrderSummary({ orderData }: Props) {
                         </div>
                     )}
                 </div>
-
-                <div className="pt-5">
-                    <div className="flex justify-between border-t border-textInactiveColor pt-3">
-                        <Text variant="uppercase">{t("grand total")}:</Text>
-                        <Text>{`${currentCurrency} ${order?.totalPrice?.value}`}</Text>
-                    </div>
-                </div>
             </div>
             <OrderProducts validatedProducts={orderItems || []} />
+            <div className="pt-5">
+                <div className="flex justify-between border-t border-textInactiveColor pt-3">
+                    <Text variant="uppercase">{t("grand total")}:</Text>
+                    <Text>{`${currentCurrency} ${order?.totalPrice?.value}`}</Text>
+                </div>
+            </div>
         </FieldsGroupContainer>
     );
 }

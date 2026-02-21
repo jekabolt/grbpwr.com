@@ -127,13 +127,12 @@ export function OrderPageComponent({
               </div>
             )}
           </div>
-
-          <div className="flex justify-between border-t border-textInactiveColor pt-3">
-            <Text variant="uppercase">{tCheckout("grand total")}:</Text>
-            <Text>{`${currentCurrency} ${order?.totalPrice?.value}`}</Text>
-          </div>
         </div>
         <OrderProducts validatedProducts={orderItems || []} />
+        <div className="flex justify-between border-t border-textInactiveColor pt-3">
+          <Text variant="uppercase">{tCheckout("grand total")}:</Text>
+          <Text>{`${currentCurrency} ${order?.totalPrice?.value}`}</Text>
+        </div>
       </div>
     </div>
   );

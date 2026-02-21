@@ -82,10 +82,6 @@ export function OrderPageSkeleton() {
               <Skeleton className="h-5 w-20" />
             </div>
           </div>
-          <div className="flex justify-between border-t border-textInactiveColor pt-3">
-            <Text variant="uppercase">grand total:</Text>
-            <Skeleton className="h-5 w-24" />
-          </div>
         </div>
 
         {/* Order Products */}
@@ -100,6 +96,10 @@ export function OrderPageSkeleton() {
               </div>
             </div>
           ))}
+        </div>
+        <div className="flex justify-between border-t border-textInactiveColor pt-3">
+          <Text variant="uppercase">grand total:</Text>
+          <Skeleton className="h-5 w-24" />
         </div>
       </div>
     </div>
