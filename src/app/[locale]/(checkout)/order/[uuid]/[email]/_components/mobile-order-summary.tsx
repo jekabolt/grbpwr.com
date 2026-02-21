@@ -8,8 +8,6 @@ import { useState } from "react";
 import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 import { OrderProducts } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/order-products";
 import { Text } from "@/components/ui/text";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-
 type Props = {
     orderData: common_OrderFull;
 };
@@ -17,12 +15,11 @@ type Props = {
 export function MobileOrderSummary({ orderData }: Props) {
     const t = useTranslations("checkout");
     const tOrder = useTranslations("order-info");
-    const { currentCountry } = useTranslationsStore((state) => state);
     const [isOpen, setIsOpen] = useState(false);
 
-    const currentCurrency = currencySymbols[currentCountry.currencyKey || "EUR"];
-
     const { order, orderItems, shipment, promoCode } = orderData;
+    const orderCurrency =
+      currencySymbols[order?.currency?.toUpperCase() || "EUR"];
 
     function handleToggle() {
         setIsOpen((prev) => !prev);
@@ -35,13 +32,16 @@ export function MobileOrderSummary({ orderData }: Props) {
             signPosition="before"
             title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
             preview={
-                <Text>{`${currentCurrency} ${order?.totalPrice?.value || ""}`}</Text>
+                <Text>{`${orderCurrency} ${order?.totalPrice?.value || ""}`}</Text>
             }
             isOpen={isOpen}
             onToggle={handleToggle}
         >
             <div className="mt-4 space-y-3">
-                <OrderProducts validatedProducts={orderItems || []} />
+                <OrderProducts
+                validatedProducts={orderItems || []}
+                currencyKey={order?.currency?.toUpperCase()}
+              />
                 <div className="space-y-3">
                     {promoCode?.promoCodeInsert?.code && (
                         <div className="flex justify-between">
@@ -58,14 +58,14 @@ export function MobileOrderSummary({ orderData }: Props) {
                     {shipment?.cost?.value && (
                         <div className="flex justify-between">
                             <Text variant="uppercase">{tOrder("shipping")}:</Text>
-                            <Text>{`${currentCurrency} ${shipment?.cost?.value}`}</Text>
+                            <Text>{`${orderCurrency} ${shipment?.cost?.value}`}</Text>
                         </div>
                     )}
                 </div>
                 <div className="border-t border-textInactiveColor pt-3">
                     <div className="flex justify-between">
                         <Text variant="uppercase">{t("grand total")}:</Text>
-                        <Text>{`${currentCurrency} ${order?.totalPrice?.value}`}</Text>
+                        <Text>{`${orderCurrency} ${order?.totalPrice?.value}`}</Text>
                     </div>
                 </div>
             </div>

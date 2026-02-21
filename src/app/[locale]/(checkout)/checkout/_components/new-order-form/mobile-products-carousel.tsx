@@ -13,11 +13,20 @@ import { Text } from "@/components/ui/text";
 import CartItemSize from "@/app/[locale]/(checkout)/cart/_components/CartItemSize";
 import { getPreorderDate } from "@/app/[locale]/(checkout)/cart/_components/utils";
 
-function MobileOrderItemRow({ product }: { product: common_OrderItem }) {
+function MobileOrderItemRow({
+  product,
+  currencyKey: currencyKeyProp,
+}: {
+  product: common_OrderItem;
+  currencyKey?: string;
+}) {
   const { languageId, currentCountry } = useTranslationsStore((state) => state);
+  const currencyKey =
+    currencyKeyProp || currentCountry.currencyKey?.toUpperCase() || "EUR";
+  const currencySymbol = currencySymbols[currencyKey] || currencySymbols.EUR;
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
-  const priceWithoutSale = `${currencySymbols[currentCountry.currencyKey || "EUR"]}  ${product?.productPrice}`;
-  const priceWithSale = `${currencySymbols[currentCountry.currencyKey || "EUR"]} ${product?.productPriceWithSale}`;
+  const priceWithoutSale = `${currencySymbol}  ${product?.productPrice}`;
+  const priceWithSale = `${currencySymbol} ${product?.productPriceWithSale}`;
   const t = useTranslations("product");
   const tColors = useTranslations("colors");
 
@@ -87,11 +96,18 @@ function MobileOrderItemRow({ product }: { product: common_OrderItem }) {
   );
 }
 
-export function MobileProductsCarousel({ validatedProducts }: Props) {
+export function MobileProductsCarousel({
+  validatedProducts,
+  currencyKey,
+}: Props) {
   return (
     <div>
       {validatedProducts?.map((p, i) => (
-        <MobileOrderItemRow key={p?.id + "" + p?.orderId + i} product={p} />
+        <MobileOrderItemRow
+          key={p?.id + "" + p?.orderId + i}
+          product={p}
+          currencyKey={currencyKey}
+        />
       ))}
     </div>
   );
@@ -99,4 +115,6 @@ export function MobileProductsCarousel({ validatedProducts }: Props) {
 
 interface Props {
   validatedProducts?: common_OrderItem[];
+  /** When provided (e.g. order confirmation), use this currency instead of user's current locale */
+  currencyKey?: string;
 }

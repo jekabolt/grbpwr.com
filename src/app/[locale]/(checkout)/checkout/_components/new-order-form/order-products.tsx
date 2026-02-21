@@ -4,7 +4,10 @@ import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartPro
 
 import { MobileProductsCarousel } from "./mobile-products-carousel";
 
-export function OrderProducts({ validatedProducts }: Props) {
+export function OrderProducts({
+  validatedProducts,
+  currencyKey,
+}: Props) {
   const expandedProducts =
     validatedProducts?.flatMap((item) =>
       Array.from({ length: item.orderItem?.quantity || 1 }, () => ({
@@ -23,11 +26,15 @@ export function OrderProducts({ validatedProducts }: Props) {
         <CartProductsList
           hideQuantityButtons
           validatedProducts={expandedProducts}
+          currencyKey={currencyKey}
         />
       </div>
 
       <div className="block lg:hidden">
-        <MobileProductsCarousel validatedProducts={expandedProducts} />
+        <MobileProductsCarousel
+          validatedProducts={expandedProducts}
+          currencyKey={currencyKey}
+        />
       </div>
     </div>
   );
@@ -35,4 +42,6 @@ export function OrderProducts({ validatedProducts }: Props) {
 
 type Props = {
   validatedProducts?: common_OrderItem[];
+  /** When provided (e.g. order confirmation), use this currency instead of user's current locale */
+  currencyKey?: string;
 };

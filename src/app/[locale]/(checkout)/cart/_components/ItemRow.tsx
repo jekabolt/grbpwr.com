@@ -17,11 +17,15 @@ export default function ItemRow({
   product,
   hideQuantityButtons,
   index,
+  currencyKey: currencyKeyProp,
 }: Props) {
   const { languageId, currentCountry } = useTranslationsStore((state) => state);
+  const currencyKey =
+    currencyKeyProp || currentCountry.currencyKey?.toUpperCase() || "EUR";
+  const currencySymbol = currencySymbols[currencyKey] || currencySymbols.EUR;
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
-  const priceWithoutSale = `${currencySymbols[currentCountry.currencyKey || ""]}  ${product?.productPrice}`;
-  const priceWithSale = `${currencySymbols[currentCountry.currencyKey || ""]} ${product?.productPriceWithSale}`;
+  const priceWithoutSale = `${currencySymbol}  ${product?.productPrice}`;
+  const priceWithSale = `${currencySymbol} ${product?.productPriceWithSale}`;
   const t = useTranslations("product");
   const tColors = useTranslations("colors");
 
@@ -110,4 +114,6 @@ type Props = {
   product?: common_OrderItem;
   hideQuantityButtons?: boolean;
   index?: number;
+  /** When provided (e.g. order confirmation), use this currency instead of user's current locale */
+  currencyKey?: string;
 };

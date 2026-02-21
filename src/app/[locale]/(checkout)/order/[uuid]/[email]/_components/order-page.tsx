@@ -13,8 +13,6 @@ import { Text } from "@/components/ui/text";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-
 import { MobileOrderSummary } from "./mobile-order-summary";
 import { OrderSecondaryInfo } from "./order-secondary-info";
 import { StatusBadge } from "./status-badge";
@@ -25,7 +23,6 @@ export function OrderPageComponent({
   orderPromise: Promise<{ order: common_OrderFull | undefined }>;
 }) {
   const { order: orderData } = use(orderPromise);
-  const { currentCountry } = useTranslationsStore((state) => state);
   const { clearCart } = useCart((state) => state);
   const router = useRouter();
   const t = useTranslations("order-info");
@@ -49,8 +46,6 @@ export function OrderPageComponent({
 
   if (!orderData) return null;
 
-  const currentCurrency = currencySymbols[currentCountry.currencyKey || "EUR"];
-
   const {
     order,
     orderItems,
@@ -61,6 +56,9 @@ export function OrderPageComponent({
     buyer,
     payment,
   } = orderData;
+
+  const orderCurrency =
+    currencySymbols[order?.currency?.toUpperCase() || "EUR"];
 
   return (
     <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-52">
@@ -132,15 +130,18 @@ export function OrderPageComponent({
             {promoCode?.promoCodeInsert?.code && (
               <div className="flex justify-between">
                 <Text variant="uppercase">{t("shipping")}:</Text>
-                <Text>{`${currentCurrency} ${shipment?.cost?.value}`}</Text>
+                <Text>{`${orderCurrency} ${shipment?.cost?.value}`}</Text>
               </div>
             )}
           </div>
         </div>
-        <OrderProducts validatedProducts={orderItems || []} />
+        <OrderProducts
+          validatedProducts={orderItems || []}
+          currencyKey={order?.currency?.toUpperCase()}
+        />
         <div className="flex justify-between border-t border-textInactiveColor pt-3">
           <Text variant="uppercase">{tCheckout("grand total")}:</Text>
-          <Text>{`${currentCurrency} ${order?.totalPrice?.value}`}</Text>
+          <Text>{`${orderCurrency} ${order?.totalPrice?.value}`}</Text>
         </div>
       </div>
     </div>
