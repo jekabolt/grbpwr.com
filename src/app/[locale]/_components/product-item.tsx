@@ -1,4 +1,5 @@
 import type { common_Product } from "@/api/proto-http/frontend";
+import { formatPrice } from "@/lib/currency";
 import {
   currencySymbols,
   EMPTY_PREORDER,
@@ -75,8 +76,8 @@ export function ProductItem({
   const priceWithSale =
     (parseFloat(priceValue) * (100 - parseInt(salePercentage || "0"))) / 100;
 
-  const formattedPrice = parseFloat(priceValue).toFixed(2);
-  const formattedPriceWithSale = priceWithSale.toFixed(2);
+  const formattedPrice = formatPrice(priceValue, currencyKey, currencySymbol);
+  const formattedPriceWithSale = formatPrice(priceWithSale, currencyKey, currencySymbol);
 
   return (
     <div className={cn("relative", className)}>
@@ -126,10 +127,10 @@ export function ProductItem({
                 <Text
                   variant={isSaleApplied ? "strileTroughInactive" : "default"}
                 >
-                  {`${currencySymbol} ${formattedPrice}`}
+                  {formattedPrice}
                 </Text>
                 {isSaleApplied && (
-                  <Text>{`${currencySymbol} ${formattedPriceWithSale}`}</Text>
+                  <Text>{formattedPriceWithSale}</Text>
                 )}
                 {preorder !== EMPTY_PREORDER &&
                   isDateTodayOrFuture(preorder || "") && (

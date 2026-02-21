@@ -1,20 +1,21 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { useLocation } from "@/app/[locale]/_components/useLocation";
 
 import { countryStatesMap } from "../constants";
 import { findCountryByCode, getFieldName, getUniqueCountries } from "../utils";
 
 export function useAddressFields(prefix?: string) {
   const { setValue, getValues } = useFormContext();
-  const { currentCountry, nextCountry } = useTranslationsStore((s) => s);
-  const { handleCountrySelect } = useLocation();
+  const pathname = usePathname();
+  const { setCurrentCountry, cancelNextCountry, languageId } =
+    useTranslationsStore((s) => s);
 
-  const previousCountryRef = useRef<string | null>(null);
   const countryFieldName = getFieldName(prefix, "country");
   const phoneFieldName = getFieldName(prefix, "phone");
   const isBillingAddress = prefix === "billingAddress";
@@ -34,12 +35,9 @@ export function useAddressFields(prefix?: string) {
     countryStatesMap[selectedCountry as keyof typeof countryStatesMap] || [];
 
   useEffect(() => {
-    const targetCountry = isBillingAddress
-      ? selectedCountry
-      : currentCountry.countryCode || selectedCountry;
-    if (!targetCountry) return;
+    if (!selectedCountry) return;
 
-    const found = findCountryByCode(uniqueCountries, targetCountry);
+    const found = findCountryByCode(uniqueCountries, selectedCountry);
     if (!found) return;
 
     const currentPhone = getValues(phoneFieldName) || "";
@@ -47,25 +45,37 @@ export function useAddressFields(prefix?: string) {
       setValue(phoneFieldName, found.phoneCode);
     }
   }, [
-    currentCountry.countryCode,
     selectedCountry,
     phoneFieldName,
     uniqueCountries,
-    isBillingAddress,
     getValues,
     setValue,
   ]);
 
-  useEffect(() => {
-    if (isBillingAddress) return;
+  const updatePhoneCode = (newCountryCode: string) => {
+    const country = findCountryByCode(uniqueCountries, newCountryCode);
+    if (!country) return;
 
-    if (!nextCountry.countryCode && previousCountryRef.current) {
-      setValue(countryFieldName, previousCountryRef.current, {
-        shouldValidate: true,
-      });
-      previousCountryRef.current = null;
+    const currentPhone = getValues(phoneFieldName) || "";
+
+    const countriesByPhoneCodeLength = [...uniqueCountries].sort(
+      (a, b) => b.phoneCode.length - a.phoneCode.length,
+    );
+
+    let numberPart = currentPhone;
+    for (const c of countriesByPhoneCodeLength) {
+      if (currentPhone.startsWith(c.phoneCode)) {
+        numberPart = currentPhone.slice(c.phoneCode.length);
+        break;
+      }
     }
-  }, [nextCountry.countryCode, isBillingAddress, countryFieldName, setValue]);
+
+    const newPhoneValue =
+      numberPart && numberPart !== currentPhone
+        ? country.phoneCode + numberPart
+        : country.phoneCode;
+    setValue(phoneFieldName, newPhoneValue);
+  };
 
   const handleCountryChange = (newCountryCode: string) => {
     const currentFormCountry = getValues(countryFieldName);
@@ -74,35 +84,29 @@ export function useAddressFields(prefix?: string) {
       return;
     }
 
-    const selectedCountry = findCountryByCode(uniqueCountries, newCountryCode);
-    if (!selectedCountry) return;
+    const country = findCountryByCode(uniqueCountries, newCountryCode);
+    if (!country) return;
 
-    if (isBillingAddress) {
-      setValue(countryFieldName, newCountryCode, { shouldValidate: true });
+    setValue(countryFieldName, newCountryCode, { shouldValidate: true });
+    updatePhoneCode(newCountryCode);
 
-      const currentPhone = getValues(phoneFieldName) || "";
+    if (!isBillingAddress) {
+      cancelNextCountry();
+      setCurrentCountry({
+        name: country.name,
+        countryCode: country.countryCode,
+        currencyKey: country.currencyKey,
+      });
 
-      const countriesByPhoneCodeLength = [...uniqueCountries].sort(
-        (a, b) => b.phoneCode.length - a.phoneCode.length,
-      );
-
-      let numberPart = currentPhone;
-      for (const country of countriesByPhoneCodeLength) {
-        if (currentPhone.startsWith(country.phoneCode)) {
-          numberPart = currentPhone.slice(country.phoneCode.length);
-          break;
-        }
+      const newLocale = LANGUAGE_ID_TO_LOCALE[languageId];
+      if (newLocale) {
+        const pathWithoutLocaleCountry =
+          pathname.replace(
+            /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
+            "",
+          ) || "/";
+        window.location.href = `/${newCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
       }
-
-      const newPhoneValue =
-        numberPart && numberPart !== currentPhone
-          ? selectedCountry.phoneCode + numberPart
-          : selectedCountry.phoneCode;
-      setValue(phoneFieldName, newPhoneValue);
-    } else {
-      previousCountryRef.current = currentFormCountry;
-      setValue(countryFieldName, newCountryCode, { shouldValidate: true });
-      handleCountrySelect(selectedCountry);
     }
   };
 

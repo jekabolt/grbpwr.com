@@ -1,21 +1,20 @@
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
+import { formatPrice } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 import { useVatCalculation } from "./hooks/useVatCalculation";
 
-export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
+export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSummaryProps) {
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
-  const { currentCountry } = useTranslationsStore((state) => state);
 
-  const currency = currentCountry.currencyKey || "EUR";
+  const currency = orderCurrency || "EUR";
   const currencySymbol =
     currencySymbols[currency] ||
     currencySymbols[dictionary?.baseCurrency || "EUR"];
@@ -43,7 +42,7 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
       <div className="mt-4 space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t("subtotal")}:</Text>
-          <Text>{`${currencySymbol} ${order?.subtotal?.value || ""}`}</Text>
+          <Text>{formatPrice(order?.subtotal?.value || "0", currency, currencySymbol)}</Text>
         </div>
         {(selectedShipmentCarrierPrice || promoFreeShipping) && (
           <div className="flex justify-between">
@@ -51,7 +50,7 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
             <Text>
               {promoFreeShipping
                 ? t("free by promo")
-                : `${currencySymbol} ${selectedShipmentCarrierPrice}`}
+                : formatPrice(selectedShipmentCarrierPrice || "0", currency, currencySymbol)}
             </Text>
           </div>
         )}
@@ -64,7 +63,7 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
 
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t(taxLabel)}:</Text>
-          <Text>{`${currencySymbol} ${vatAmount.toFixed(2)}`}</Text>
+          <Text>{formatPrice(vatAmount, currency, currencySymbol)}</Text>
         </div>
 
         <div className="pt-5">
@@ -74,7 +73,7 @@ export function PriceSummary({ order, form, vatRate }: PriceSummaryProps) {
               <Text variant="uppercase" className="text-textInactiveColor">
                 {t("incl")}
               </Text>
-              <Text>{`${currencySymbol} ${order.totalSale?.value || ""}`}</Text>
+              <Text>{formatPrice(order.totalSale?.value || "0", currency, currencySymbol)}</Text>
             </div>
           </div>
         </div>
@@ -87,4 +86,5 @@ interface PriceSummaryProps {
   form: UseFormReturn<any>;
   order?: ValidateOrderItemsInsertResponse;
   vatRate?: number;
+  orderCurrency?: string;
 }

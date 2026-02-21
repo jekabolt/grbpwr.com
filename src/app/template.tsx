@@ -8,6 +8,7 @@ import { QueryWrapper } from "@/providers/query-wrapper";
 
 import { serviceClient } from "@/lib/api";
 import { CartStoreProvider } from "@/lib/stores/cart/store-provider";
+import { CartCurrencySyncWrapper } from "@/lib/stores/cart/cart-currency-sync-wrapper";
 import { CheckoutStoreProvider } from "@/lib/stores/checkout/store-provider";
 import { LastViewedStoreProvider } from "@/lib/stores/last-viewed/store-provider.";
 import { getInitialTranslationState } from "@/lib/stores/translations/cookie-utils";
@@ -44,9 +45,11 @@ export default async function Template({
                 initialLanguageId={initialTranslationState.languageId}
                 initialRates={((heroData as GetHeroResponse & { rates?: { currencies?: Record<string, CurrencyRate> } }).rates?.currencies) as Record<string, CurrencyRate> | undefined}
               >
-                <DataContextProvider {...heroData}>
-                  {children}
-                </DataContextProvider>
+                <CartCurrencySyncWrapper>
+                  <DataContextProvider {...heroData}>
+                    {children}
+                  </DataContextProvider>
+                </CartCurrencySyncWrapper>
               </TranslationsStoreProvider>
             </LastViewedStoreProvider>
           </CheckoutStoreProvider>

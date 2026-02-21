@@ -13,6 +13,8 @@ export const defaultInitState: CartState = {
   subTotalPrice: 0,
   isOpen: false,
   productToRemove: null,
+  validatedCurrency: "EUR",
+  isRevalidating: false,
 };
 
 export const createCartStore = (initState: CartState = defaultInitState) => {
@@ -110,6 +112,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
               totalItems: validatedProducts.length,
               totalPrice: Number(response.totalSale?.value || 0),
               subTotalPrice: Number(response.subtotal?.value || 0),
+              validatedCurrency: currencyToUse,
             });
             return true;
           } catch (error) {
@@ -235,6 +238,52 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           });
         },
 
+        revalidateCart: async (currency: string) => {
+          const { products } = get();
+
+          if (products.length === 0) {
+            set({ validatedCurrency: currency });
+            return;
+          }
+
+          set({ isRevalidating: true });
+
+          try {
+            const result = await validateCartItems({
+              products,
+              currency,
+            });
+
+            if (!result) {
+              set({ isRevalidating: false });
+              return;
+            }
+
+            const { response } = result;
+
+            const validatedProducts = products.map(product => ({
+              ...product,
+              productData: response.validItems?.find(
+                item =>
+                  item.orderItem?.productId === product.id &&
+                  item.orderItem?.sizeId === Number(product.size)
+              )
+            }));
+
+            set({
+              products: validatedProducts,
+              totalItems: validatedProducts.length,
+              totalPrice: Number(response.totalSale?.value || 0),
+              subTotalPrice: Number(response.subtotal?.value || 0),
+              validatedCurrency: currency,
+              isRevalidating: false,
+            });
+          } catch (error) {
+            console.error("revalidateCart failed 💩:", error);
+            set({ isRevalidating: false });
+          }
+        },
+
         clearCart: () => {
           set(defaultInitState);
         },
@@ -247,6 +296,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           totalItems: state.totalItems,
           totalPrice: state.totalPrice,
           subTotalPrice: state.subTotalPrice,
+          validatedCurrency: state.validatedCurrency,
         }),
       },
     ),

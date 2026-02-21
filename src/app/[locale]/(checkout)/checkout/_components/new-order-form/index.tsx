@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { currencySymbols } from "@/constants";
+import { formatPrice } from "@/lib/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
@@ -58,8 +59,8 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     defaultValues: { ...defaultData, country: currentCountry.countryCode },
   });
 
-  const { order, validateItems } = useValidatedOrder(form);
-  const { clearFormData } = useOrderPersistence(form);
+  const { order, validateItems, orderCurrency } = useValidatedOrder(form);
+  const { clearFormData } = useOrderPersistence(form, currentCountry.countryCode);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
   const {
@@ -160,6 +161,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 form={form}
                 order={order}
                 validatedProducts={order?.validItems}
+                orderCurrency={orderCurrency}
               />
             </div>
             <div className="space-y-10 lg:space-y-16">
@@ -190,7 +192,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               <div className="hidden space-y-8 lg:block">
                 <Text variant="uppercase">{t("order summary")}</Text>
 
-                <OrderProducts validatedProducts={order?.validItems} />
+                <OrderProducts validatedProducts={order?.validItems} currencyKey={orderCurrency} />
 
                 <div className="space-y-8">
                   <PromoCode
@@ -199,7 +201,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                     loading={loading}
                     validateItems={validateItems}
                   />
-                  <PriceSummary form={form} order={order} />
+                  <PriceSummary form={form} order={order} orderCurrency={orderCurrency} />
                 </div>
               </div>
               <Button
@@ -212,7 +214,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 loading={loading}
                 loadingType="order-processing"
               >
-                {`${t("place order")} ${currencySymbols[currentCountry.currencyKey || "EUR"]}${order?.totalSale?.value || ""}`}
+                {`${t("place order")} ${formatPrice(order?.totalSale?.value || "0", orderCurrency || "EUR", currencySymbols[orderCurrency || "EUR"])}`}
               </Button>
             </div>
           </div>

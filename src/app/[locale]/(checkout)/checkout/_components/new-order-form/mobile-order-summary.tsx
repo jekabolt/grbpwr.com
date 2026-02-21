@@ -6,10 +6,10 @@ import {
   ValidateOrderItemsInsertResponse,
 } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
+import { formatPrice } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
@@ -21,18 +21,19 @@ type Props = {
   validatedProducts?: common_OrderItem[];
   form: UseFormReturn<any>;
   order?: ValidateOrderItemsInsertResponse;
+  orderCurrency?: string;
 };
 
-export function MobileOrderSummary({ form, validatedProducts, order }: Props) {
+export function MobileOrderSummary({ form, validatedProducts, order, orderCurrency }: Props) {
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
-  const { currentCountry } = useTranslationsStore((state) => state);
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const currency = orderCurrency || "EUR";
   const currencySymbol =
-    currencySymbols[currentCountry.currencyKey || "EUR"] ||
+    currencySymbols[currency] ||
     currencySymbols[dictionary?.baseCurrency || "EUR"];
 
   function handleToggle() {
@@ -45,14 +46,14 @@ export function MobileOrderSummary({ form, validatedProducts, order }: Props) {
       className="space-y-0 border border-textInactiveColor p-2.5"
       signPosition="before"
       title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
-      preview={
-        <Text>{`${currencySymbol} ${order?.totalSale?.value || ""}`}</Text>
+        preview={
+        <Text>{formatPrice(order?.totalSale?.value || "0", currency, currencySymbol)}</Text>
       }
       isOpen={isOpen}
       onToggle={handleToggle}
     >
-      <PriceSummary form={form} order={order} />
-      <OrderProducts validatedProducts={validatedProducts} />
+      <PriceSummary form={form} order={order} orderCurrency={orderCurrency} />
+      <OrderProducts validatedProducts={validatedProducts} currencyKey={orderCurrency} />
     </FieldsGroupContainer>
   );
 }
