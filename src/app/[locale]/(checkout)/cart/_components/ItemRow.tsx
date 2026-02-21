@@ -1,13 +1,15 @@
-import Link from "next/link";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn, isDateTodayOrFuture } from "@/lib/utils";
+
+import { Overlay } from "@/components/ui/overlay";
 
 import CartItemSize from "./CartItemSize";
 import ProductRemoveButton from "./ProductRemoveButton";
@@ -40,8 +42,11 @@ export default function ItemRow({
   return (
     <Button asChild>
       <Link href={product.slug || ""}>
-        <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
-          <div className="min-w-[90px]">
+        <div className="group relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
+          <div className="absolute inset-0 hidden lg:block">
+            <Overlay cover="container" color="highlight" trigger="hover" />
+          </div>
+          <div className="relative min-w-[90px]">
             <Image
               src={product.thumbnail || ""}
               alt="product"
