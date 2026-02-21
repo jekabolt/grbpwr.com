@@ -3,10 +3,13 @@
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { paymentMethodNamesMap } from "@/constants";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
 import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { buildTrackingUrl } from "@/lib/shipment/tracking-url";
 
 export function OrderSecondaryInfo({
   shipping,
@@ -17,9 +20,14 @@ export function OrderSecondaryInfo({
 }: Props) {
   const { dictionary } = useDataContext();
 
-  const shipmentCarrierName = dictionary?.shipmentCarriers?.find(
-    (carrier) => carrier.id === shipment?.carrierId,
-  )?.shipmentCarrier?.carrier;
+  const carrier = dictionary?.shipmentCarriers?.find(
+    (c) => String(c.id) === String(shipment?.carrierId),
+  );
+  const shipmentCarrierName = carrier?.shipmentCarrier?.carrier;
+  const trackingUrl = buildTrackingUrl(
+    carrier?.shipmentCarrier?.trackingUrl,
+    shipment?.trackingCode,
+  );
 
   return (
     <>
@@ -30,6 +38,8 @@ export function OrderSecondaryInfo({
           buyer={buyer}
           payment={payment}
           shipmentCarrierName={shipmentCarrierName}
+          trackingUrl={trackingUrl}
+          trackingCode={shipment?.trackingCode}
         />
       </div>
       <div className="block lg:hidden">
@@ -39,6 +49,8 @@ export function OrderSecondaryInfo({
           buyer={buyer}
           payment={payment}
           shipmentCarrierName={shipmentCarrierName}
+          trackingUrl={trackingUrl}
+          trackingCode={shipment?.trackingCode}
         />
       </div>
     </>
@@ -51,6 +63,8 @@ export function DesktopOrderSecondaryInfo({
   buyer,
   payment,
   shipmentCarrierName,
+  trackingUrl,
+  trackingCode,
 }: DesktopMobileProps) {
   const t = useTranslations("order-info");
   const tCheckout = useTranslations("checkout");
@@ -93,7 +107,11 @@ export function DesktopOrderSecondaryInfo({
       </div>
       <div className="flex flex-col gap-4 border-b border-textInactiveColor pb-6">
         <Text variant="uppercase">{tCheckout("shipping method")}</Text>
-        <Text variant="default">{shipmentCarrierName}</Text>
+        <div className="flex flex-col gap-1">
+          {shipmentCarrierName && (
+            <Text variant="default">{shipmentCarrierName}</Text>
+          )}
+        </div>
       </div>
       <div className="flex flex-col gap-4">
         <Text variant="uppercase">{tCheckout("payment method")}</Text>
@@ -116,6 +134,8 @@ export function MobileOrderSecondaryInfo({
   buyer,
   payment,
   shipmentCarrierName,
+  trackingUrl,
+  trackingCode,
 }: DesktopMobileProps) {
   const t = useTranslations("order-info");
   const tCheckout = useTranslations("checkout");
@@ -169,7 +189,22 @@ export function MobileOrderSecondaryInfo({
           <Text variant="uppercase" className="w-full">
             {tCheckout("shipping method")}
           </Text>
-          <Text className="w-full">{shipmentCarrierName}</Text>
+          <div className="w-full flex flex-col gap-1">
+            {shipmentCarrierName && (
+              <Text>{shipmentCarrierName}</Text>
+            )}
+            {trackingUrl && trackingCode && (
+              <Button variant="underlineWithColors" size="default" asChild>
+                <Link
+                  href={trackingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("tracking number")}: {trackingCode}
+                </Link>
+              </Button>
+            )}
+          </div>
         </div>
         <div className="flex w-full justify-between">
           <Text variant="uppercase" className="w-full">
@@ -199,4 +234,6 @@ type DesktopMobileProps = Pick<
   "shipping" | "billing" | "buyer" | "payment"
 > & {
   shipmentCarrierName?: string;
+  trackingUrl?: string;
+  trackingCode?: string;
 };

@@ -8,10 +8,12 @@ import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 
 import { OrderProducts } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/order-products";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
+import { buildTrackingUrl } from "@/lib/shipment/tracking-url";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { MobileOrderSummary } from "./mobile-order-summary";
 import { OrderSecondaryInfo } from "./order-secondary-info";
@@ -23,6 +25,7 @@ export function OrderPageComponent({
   orderPromise: Promise<{ order: common_OrderFull | undefined }>;
 }) {
   const { order: orderData } = use(orderPromise);
+  const { dictionary } = useDataContext();
   const { clearCart } = useCart((state) => state);
   const router = useRouter();
   const t = useTranslations("order-info");
@@ -60,11 +63,33 @@ export function OrderPageComponent({
   const orderCurrency =
     currencySymbols[order?.currency?.toUpperCase() || "EUR"];
 
+  const carrier = dictionary?.shipmentCarriers?.find(
+    (c) => String(c.id) === String(shipment?.carrierId),
+  );
+  const trackingUrl = buildTrackingUrl(
+    carrier?.shipmentCarrier?.trackingUrl,
+    shipment?.trackingCode,
+  );
+
   return (
     <div className="flex flex-col gap-12 md:flex-row md:justify-between md:gap-12 lg:gap-52">
       <div className="w-full">
         <div className="block space-y-4 lg:hidden">
           <MobileOrderSummary orderData={orderData} />
+          {shipment?.trackingCode && trackingUrl && (
+            <div className="flex flex-row items-baseline justify-between gap-4 border-b border-textInactiveColor py-6">
+              <Text variant="uppercase">{t("tracking number")}</Text>
+              <Button variant="underlineWithColors" size="default" asChild>
+                <Link
+                  href={trackingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {shipment.trackingCode}
+                </Link>
+              </Button>
+            </div>
+          )}
           <OrderSecondaryInfo
             shipping={shipping}
             billing={billing}
@@ -92,12 +117,22 @@ export function OrderPageComponent({
               <StatusBadge statusId={order.orderStatusId} />
             )}
           </div>
-          {shipment && shipment.trackingCode && (
+          {shipment && (
             <div className="flex w-full flex-row items-baseline justify-between gap-4 lg:flex-col">
               <Text variant="uppercase">{t("tracking number")}</Text>
-              <Button variant="underlineWithColors" size="default" asChild>
-                <Link href={"/some-page"}>{shipment.trackingCode}</Link>
-              </Button>
+              {shipment.trackingCode && trackingUrl ? (
+                <Button variant="underlineWithColors" size="default" asChild>
+                  <Link
+                    href={trackingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {shipment.trackingCode}
+                  </Link>
+                </Button>
+              ) : (
+                <Text className="text-textInactiveColor">—</Text>
+              )}
             </div>
           )}
         </div>
