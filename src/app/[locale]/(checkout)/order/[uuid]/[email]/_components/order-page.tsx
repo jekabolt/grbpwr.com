@@ -1,21 +1,22 @@
 "use client";
 
-import type { common_OrderFull } from "@/api/proto-http/frontend";
-import { currencySymbols } from "@/constants";
-import { formatPrice } from "@/lib/currency";
-import { useTranslations } from "next-intl";
+import { use, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { use, useEffect } from "react";
+import type { common_OrderFull } from "@/api/proto-http/frontend";
+import { currencySymbols } from "@/constants";
+import { useTranslations } from "next-intl";
 
-import { OrderProducts } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/order-products";
+import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
+import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
+import { formatPrice } from "@/lib/currency";
+import { buildTrackingUrl } from "@/lib/shipment/tracking-url";
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
-import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
-import { buildTrackingUrl } from "@/lib/shipment/tracking-url";
-import { useCart } from "@/lib/stores/cart/store-provider";
+import { OrderProducts } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/order-products";
+
 import { MobileOrderSummary } from "./mobile-order-summary";
 import { OrderSecondaryInfo } from "./order-secondary-info";
 import { StatusBadge } from "./status-badge";
@@ -62,8 +63,7 @@ export function OrderPageComponent({
   } = orderData;
 
   const orderCurrencyKey = order?.currency?.toUpperCase() || "EUR";
-  const orderCurrency =
-    currencySymbols[orderCurrencyKey];
+  const orderCurrency = currencySymbols[orderCurrencyKey];
 
   const carrier = dictionary?.shipmentCarriers?.find(
     (c) => String(c.id) === String(shipment?.carrierId),
@@ -86,7 +86,7 @@ export function OrderPageComponent({
             payment={payment}
           />
         </div>
-        <div className="flex flex-col items-center justify-between gap-y-6 border-b border-textInactiveColor py-6 lg:flex-row">
+        <div className="flex flex-col items-center justify-between gap-y-6 border-b border-textInactiveColor pb-6 lg:flex-row">
           <div className="flex w-full flex-row items-baseline justify-between gap-4 lg:flex-col">
             <Text variant="uppercase">{t("order id")}</Text>
             <Text className="select-all break-all">{order?.uuid}</Text>
@@ -159,11 +159,23 @@ export function OrderPageComponent({
         <div className="space-y-3 pt-3">
           <div className="flex justify-between">
             <Text variant="uppercase">{t("shipping")}:</Text>
-            <Text>{formatPrice(shipment?.cost?.value ?? "0", orderCurrencyKey, orderCurrency)}</Text>
+            <Text>
+              {formatPrice(
+                shipment?.cost?.value ?? "0",
+                orderCurrencyKey,
+                orderCurrency,
+              )}
+            </Text>
           </div>
           <div className="flex justify-between border-t border-textInactiveColor pt-3">
             <Text variant="uppercase">{tCheckout("grand total")}:</Text>
-            <Text>{formatPrice(order?.totalPrice?.value || "0", orderCurrencyKey, orderCurrency)}</Text>
+            <Text>
+              {formatPrice(
+                order?.totalPrice?.value || "0",
+                orderCurrencyKey,
+                orderCurrency,
+              )}
+            </Text>
           </div>
         </div>
       </div>
