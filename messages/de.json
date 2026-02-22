@@ -488,7 +488,7 @@
         "text": "sie finden Ihre Rücksendungsnummer in der Bestätigungs-E-Mail der Rücksendung. Wenn Sie kürzlich eine Rücksendung beantragt haben, beachten Sie bitte, dass es einige Minuten dauern kann, bis Ihre Anfrage bearbeitet und die Bestätigungs-E-Mail gesendet wird. Wenn Sie die Bestätigungs-E-Mail nicht sehen, überprüfen Sie bitte Ihren Spam-Ordner.",
         "submit return": "rückgabe einreichen",
         "email": "E-MAIL*",
-        "return reference": "RÜCKSENDE-REFERENZ*",
+        "return reference": "BESTELLREFERENZ*",
         "submit": "absenden",
         "size issues": "größenprobleme",
         "damaged or defective": "beschädigt oder defekt",
