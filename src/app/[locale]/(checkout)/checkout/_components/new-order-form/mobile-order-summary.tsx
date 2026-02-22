@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   common_OrderItem,
   ValidateOrderItemsInsertResponse,
@@ -8,6 +7,7 @@ import {
 import { currencySymbols } from "@/constants";
 import { formatPrice } from "@/lib/currency";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -46,14 +46,16 @@ export function MobileOrderSummary({ form, validatedProducts, order, orderCurren
       className="space-y-0 border border-textInactiveColor p-2.5"
       signPosition="before"
       title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
-        preview={
+      preview={
         <Text>{formatPrice(order?.totalSale?.value || "0", currency, currencySymbol)}</Text>
       }
       isOpen={isOpen}
       onToggle={handleToggle}
     >
+      <div className="pt-6">
+        <OrderProducts validatedProducts={validatedProducts} currencyKey={orderCurrency} />
+      </div>
       <PriceSummary form={form} order={order} orderCurrency={orderCurrency} />
-      <OrderProducts validatedProducts={validatedProducts} currencyKey={orderCurrency} />
     </FieldsGroupContainer>
   );
 }
