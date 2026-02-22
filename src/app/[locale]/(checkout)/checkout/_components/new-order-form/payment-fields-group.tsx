@@ -101,7 +101,7 @@ export default function PaymentFieldsGroup({
             />
           </FieldsGroupContainer>
         </div>
-        <div>
+        <div className={disabled || loading ? "pointer-events-none opacity-50" : ""}>
           {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
             <PaymentElement
               onChange={handlePaymentElementChange}

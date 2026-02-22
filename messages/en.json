@@ -98,6 +98,8 @@
         "phone number:": "phone number:",
         "postal code:": "postal code:",
         "shipping method": "shipping method",
+        "no shipping options for location": "No shipping options available for your selected location.",
+        "select country to see shipping options": "Select your country to see available shipping options.",
         "shipping summary": "shipping",
         "payment method": "payment method",
         "billing address": "billing address",
@@ -484,7 +486,8 @@
         "cart_modified": "your cart has been modified",
         "payment_already_completed": "Payment already completed for this session. Please clear your checkout and start a new order.",
         "payment_unavailable": "Payment is temporarily unavailable. Please try again later.",
-        "validation_error": "Something went wrong. Please try again."
+        "validation_error": "Something went wrong. Please try again.",
+        "fill_required_fields": "Please fill in all required fields"
     },
     "refund": {
         "return order": "return order",

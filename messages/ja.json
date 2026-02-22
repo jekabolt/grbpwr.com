@@ -98,6 +98,8 @@
         "phone number:": "電話番号：",
         "postal code:": "郵便番号：",
         "shipping method": "配送方法",
+        "no shipping options for location": "選択した地域には配送オプションがありません。",
+        "select country to see shipping options": "国を選択して配送オプションを表示してください。",
         "shipping summary": "配送",
         "payment method": "支払い方法",
         "billing address": "請求先住所",
@@ -484,7 +486,8 @@
         "cart_modified": "カートが変更されました",
         "payment_already_completed": "このセッションの支払いは既に完了しています。カートを空にして新しい注文を開始してください。",
         "payment_unavailable": "支払いは一時的に利用できません。後でもう一度お試しください。",
-        "validation_error": "問題が発生しました。もう一度お試しください。"
+        "validation_error": "問題が発生しました。もう一度お試しください。",
+        "fill_required_fields": "必須項目をすべて入力してください"
     },
     "refund": {
         "return order": "注文返品",

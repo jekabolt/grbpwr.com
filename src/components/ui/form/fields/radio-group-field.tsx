@@ -13,6 +13,7 @@ import {
 type Props = RadioGroupsProps & {
   description?: string;
   loading?: boolean;
+  disabled?: boolean;
 };
 
 export default function RadioGroupField({
@@ -21,6 +22,7 @@ export default function RadioGroupField({
   description,
   view,
   onChange,
+  disabled,
   ...props
 }: Props) {
   const { control } = useFormContext();
@@ -34,7 +36,7 @@ export default function RadioGroupField({
           <FormControl>
             <RadioGroup
               view={view}
-              disabled={loading}
+              disabled={loading || disabled}
               {...field}
               onValueChange={(v: string) => {
                 if (onChange) {

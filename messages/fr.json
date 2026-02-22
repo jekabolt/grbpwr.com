@@ -98,6 +98,8 @@
         "phone number:": "numéro de téléphone:",
         "postal code:": "code postal:",
         "shipping method": "méthode d'expédition",
+        "no shipping options for location": "Aucune option d'expédition disponible pour votre emplacement.",
+        "select country to see shipping options": "Sélectionnez votre pays pour voir les options d'expédition disponibles.",
         "shipping summary": "méthode d'expédition",
         "payment method": "méthode de paiement",
         "billing address": "adresse de facturation",
@@ -484,7 +486,8 @@
         "cart_modified": "votre panier a été modifié",
         "payment_already_completed": "Le paiement de cette session est déjà terminé. Veuillez vider votre panier et créer une nouvelle commande.",
         "payment_unavailable": "Le paiement est temporairement indisponible. Veuillez réessayer plus tard.",
-        "validation_error": "Une erreur s'est produite. Veuillez réessayer."
+        "validation_error": "Une erreur s'est produite. Veuillez réessayer.",
+        "fill_required_fields": "Veuillez remplir tous les champs obligatoires"
     },
     "refund": {
         "return order": "retourner la commande",

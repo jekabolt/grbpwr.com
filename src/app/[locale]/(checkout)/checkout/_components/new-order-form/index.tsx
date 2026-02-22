@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { currencySymbols } from "@/constants";
 import { formatPrice } from "@/lib/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -49,6 +49,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const [isPaymentElementComplete, setIsPaymentElementComplete] =
     useState(false);
 
+  const contactRef = useRef<HTMLDivElement>(null);
+  const shippingRef = useRef<HTMLDivElement>(null);
+  const paymentRef = useRef<HTMLDivElement>(null);
+
   const t = useTranslations("checkout");
   const tToaster = useTranslations("toaster");
   const stripe = useStripe();
@@ -82,6 +86,69 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const isPaymentFieldsValid =
     paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" ||
     isPaymentElementComplete;
+
+  const handlePlaceOrderClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    // Check if form is valid and payment element is complete
+    const isValid = form.formState.isValid && isPaymentFieldsValid;
+    
+    if (!isValid) {
+      e.preventDefault();
+      
+      // Trigger validation on all fields to show errors
+      await form.trigger();
+
+      // Show toast notification
+      setToastMessage(tToaster("fill_required_fields"));
+      setOrderModifiedToastOpen(true);
+
+      // Find first error field and scroll to its section
+      const errors = form.formState.errors;
+      
+      // Check contact fields
+      if (errors.email || errors.termsOfService || errors.subscribe) {
+        contactRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (!isGroupOpen("contact")) {
+          handleGroupToggle("contact");
+        }
+        return;
+      }
+
+      // Check shipping fields
+      if (
+        errors.firstName ||
+        errors.lastName ||
+        errors.address ||
+        errors.country ||
+        errors.state ||
+        errors.city ||
+        errors.additionalAddress ||
+        errors.company ||
+        errors.phone ||
+        errors.postalCode ||
+        errors.shipmentCarrierId
+      ) {
+        shippingRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (!isGroupOpen("shipping")) {
+          handleGroupToggle("shipping");
+        }
+        return;
+      }
+
+      // Check payment fields
+      if (
+        errors.paymentMethod ||
+        errors.billingAddressIsSameAsAddress ||
+        errors.billingAddress ||
+        !isPaymentFieldsValid
+      ) {
+        paymentRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (!isGroupOpen("payment")) {
+          handleGroupToggle("payment");
+        }
+        return;
+      }
+    }
+  };
 
   const onSubmit = async (data: CheckoutData) => {
     if (!stripe || !elements) return;
@@ -165,28 +232,34 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               />
             </div>
             <div className="space-y-10 lg:space-y-16">
-              <ContactFieldsGroup
-                loading={loading}
-                isOpen={isGroupOpen("contact")}
-                onToggle={() => handleGroupToggle("contact")}
-                disabled={isGroupDisabled("contact")}
-              />
-              <ShippingFieldsGroup
-                loading={loading}
-                validateItems={validateItems}
-                isOpen={isGroupOpen("shipping")}
-                onToggle={() => handleGroupToggle("shipping")}
-                disabled={isGroupDisabled("shipping")}
-              />
-              <PaymentFieldsGroup
-                loading={loading}
-                form={form}
-                validateItems={validateItems}
-                isOpen={isGroupOpen("payment")}
-                onToggle={() => handleGroupToggle("payment")}
-                disabled={isGroupDisabled("payment")}
-                onPaymentElementChange={setIsPaymentElementComplete}
-              />
+              <div ref={contactRef}>
+                <ContactFieldsGroup
+                  loading={loading}
+                  isOpen={isGroupOpen("contact")}
+                  onToggle={() => handleGroupToggle("contact")}
+                  disabled={isGroupDisabled("contact") || loading}
+                />
+              </div>
+              <div ref={shippingRef}>
+                <ShippingFieldsGroup
+                  loading={loading}
+                  validateItems={validateItems}
+                  isOpen={isGroupOpen("shipping")}
+                  onToggle={() => handleGroupToggle("shipping")}
+                  disabled={isGroupDisabled("shipping") || loading}
+                />
+              </div>
+              <div ref={paymentRef}>
+                <PaymentFieldsGroup
+                  loading={loading}
+                  form={form}
+                  validateItems={validateItems}
+                  isOpen={isGroupOpen("payment")}
+                  onToggle={() => handleGroupToggle("payment")}
+                  disabled={isGroupDisabled("payment") || loading}
+                  onPaymentElementChange={setIsPaymentElementComplete}
+                />
+              </div>
             </div>
             <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
               <div className="hidden space-y-8 lg:block">
@@ -208,11 +281,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 variant="main"
                 size="lg"
                 className="w-full uppercase"
-                disabled={
-                  !form.formState.isValid || !isPaymentFieldsValid || loading
-                }
+                disabled={loading}
                 loading={loading}
                 loadingType="order-processing"
+                onClick={handlePlaceOrderClick}
               >
                 {`${t("place order")} ${formatPrice(order?.totalSale?.value || "0", orderCurrency || "EUR", currencySymbols[orderCurrency || "EUR"])}`}
               </Button>

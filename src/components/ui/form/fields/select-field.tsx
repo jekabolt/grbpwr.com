@@ -22,6 +22,7 @@ export default function SelectField({
   name,
   label,
   className,
+  disabled,
   ...props
 }: Props) {
   const { control, trigger } = useFormContext();
@@ -42,6 +43,7 @@ export default function SelectField({
             items={items}
             {...field}
             {...props}
+            disabled={loading || disabled}
             onBlur={onBlur}
           />
           <FormMessage />

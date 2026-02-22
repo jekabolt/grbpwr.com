@@ -26,6 +26,7 @@ export default function InputField({
   type = "text",
   srLabel,
   keyboardRestriction,
+  disabled,
   ...props
 }: Props) {
   const { control, trigger, setValue } = useFormContext();
@@ -68,7 +69,7 @@ export default function InputField({
           <FormControl>
             <Input
               type={type}
-              disabled={loading}
+              disabled={loading || disabled}
               {...field}
               value={field.value || ""}
               {...props}

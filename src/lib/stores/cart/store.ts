@@ -1,10 +1,51 @@
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist, type PersistStorage, type StorageValue } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { validateCartItems } from "@/lib/cart/validate-cart-items";
 
 import { CartProduct, CartState, CartStore } from "./store-types";
+
+const CART_TTL_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
+
+type CartPersistedState = Pick<
+  CartStore,
+  "products" | "totalItems" | "totalPrice" | "subTotalPrice" | "validatedCurrency"
+>;
+
+const cartStorageWithTTL: PersistStorage<CartPersistedState> = {
+  getItem: (name: string): StorageValue<CartPersistedState> | null => {
+    if (typeof window === "undefined") return null;
+    try {
+      const raw = localStorage.getItem(name);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw) as { state: unknown; timestamp?: number };
+      if (parsed.timestamp && Date.now() - parsed.timestamp > CART_TTL_MS) {
+        localStorage.removeItem(name);
+        return null;
+      }
+      return (parsed.state ?? parsed) as StorageValue<CartPersistedState>;
+    } catch {
+      return null;
+    }
+  },
+  setItem: (name: string, value: StorageValue<CartPersistedState>): void => {
+    if (typeof window === "undefined") return;
+    try {
+      const wrapped = JSON.stringify({
+        state: value,
+        timestamp: Date.now(),
+      });
+      localStorage.setItem(name, wrapped);
+    } catch {
+      // ignore
+    }
+  },
+  removeItem: (name: string): void => {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem(name);
+  },
+};
 
 export const defaultInitState: CartState = {
   products: [],
@@ -290,7 +331,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
       }),
       {
         name: "cart-storage",
-        storage: createJSONStorage(() => localStorage),
+        storage: cartStorageWithTTL,
         partialize: (state) => ({
           products: state.products,
           totalItems: state.totalItems,

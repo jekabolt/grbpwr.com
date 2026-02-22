@@ -98,6 +98,8 @@
         "phone number:": "电话号码：",
         "postal code:": "邮政编码：",
         "shipping method": "配送方式",
+        "no shipping options for location": "您所选地区暂无配送选项。",
+        "select country to see shipping options": "请选择您的国家/地区以查看可用的配送选项。",
         "shipping summary": "配送",
         "payment method": "支付方式",
         "billing address": "账单地址",
@@ -484,7 +486,8 @@
         "cart_modified": "您的购物车已被修改",
         "payment_already_completed": "此会话的支付已完成。请清空购物车并开始新订单。",
         "payment_unavailable": "支付暂时不可用。请稍后再试。",
-        "validation_error": "出了点问题。请重试。"
+        "validation_error": "出了点问题。请重试。",
+        "fill_required_fields": "请填写所有必填项"
     },
     "refund": {
         "return order": "退货订单",

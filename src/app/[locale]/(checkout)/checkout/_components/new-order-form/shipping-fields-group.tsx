@@ -1,10 +1,13 @@
 "use client";
 
-import { keyboardRestrictions } from "@/constants";
+import { useEffect, useMemo } from "react";
+import { keyboardRestrictions, currencySymbols } from "@/constants";
+import { formatPrice } from "@/lib/currency";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
 import { PhoneField } from "@/components/ui/form/fields/phone-field";
@@ -15,7 +18,12 @@ import { Text } from "@/components/ui/text";
 import AddressAutocomplete from "./address-autocomplete";
 import FieldsGroupContainer from "./fields-group-container";
 import { useAddressFields } from "./hooks/useAddressFields";
-import { createShipmentCarrierIcon, getFieldName } from "./utils";
+import {
+  getCarrierPriceForCurrency,
+  getFieldName,
+  getShippingRegionForCountry,
+  isCarrierEligibleForRegion,
+} from "./utils";
 
 type Props = {
   loading: boolean;
@@ -33,9 +41,40 @@ export default function ShippingFieldsGroup({
   validateItems,
 }: Props) {
   const t = useTranslations("checkout");
-
+  const { watch, setValue } = useFormContext();
   const { dictionary } = useDataContext();
+  const { currentCountry } = useTranslationsStore((s) => s);
   const { handleShippingCarrierChange } = useCheckoutAnalytics();
+
+  const currency =
+    currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
+  const selectedCountry = watch("country");
+  const selectedShipmentCarrierId = watch("shipmentCarrierId");
+  const region = getShippingRegionForCountry(selectedCountry || "");
+
+  const eligibleCarriers = useMemo(
+    () =>
+      dictionary?.shipmentCarriers?.filter(
+        (c) =>
+          c.shipmentCarrier?.allowed &&
+          isCarrierEligibleForRegion(c, region),
+      ) ?? [],
+    [dictionary?.shipmentCarriers, region],
+  );
+
+  const eligibleCarrierIds = useMemo(
+    () => eligibleCarriers.map((c) => c.id + ""),
+    [eligibleCarriers],
+  );
+
+  useEffect(() => {
+    if (
+      selectedShipmentCarrierId &&
+      !eligibleCarrierIds.includes(selectedShipmentCarrierId)
+    ) {
+      setValue("shipmentCarrierId", "");
+    }
+  }, [selectedCountry, selectedShipmentCarrierId, eligibleCarrierIds, setValue]);
 
   return (
     <FieldsGroupContainer
@@ -50,29 +89,41 @@ export default function ShippingFieldsGroup({
         <div className="space-y-4">
           <Text variant="uppercase">{t("shipping method")}</Text>
 
-          <RadioGroupField
-            view="card"
-            loading={loading}
-            name="shipmentCarrierId"
-            onChange={handleShippingCarrierChange}
-            disabled={disabled}
-            // label="shippingMethod"
-            // @ts-ignore
-            items={dictionary?.shipmentCarriers
-              ?.filter((c) => c.shipmentCarrier?.allowed)
-              ?.map((c) => ({
-                label:
-                  t(c.shipmentCarrier?.carrier || "") ||
-                  c.shipmentCarrier?.carrier ||
-                  "",
-                value: c.id + "" || "",
-                icon: createShipmentCarrierIcon(
-                  c.shipmentCarrier?.carrier || "",
-                  Number(c.prices?.[0]?.price?.value) || 0,
-                  dictionary.baseCurrency || "",
-                ),
-              }))}
-          />
+          {eligibleCarriers.length === 0 ? (
+            <Text variant="inactive">
+              {region
+                ? t("no shipping options for location")
+                : t("select country to see shipping options")}
+            </Text>
+          ) : (
+            <RadioGroupField
+              view="card"
+              loading={loading}
+              name="shipmentCarrierId"
+              onChange={handleShippingCarrierChange}
+              disabled={disabled}
+              // @ts-ignore
+              items={eligibleCarriers.map((c) => {
+                const carrierName = c.shipmentCarrier?.carrier || "";
+                const eta = c.shipmentCarrier?.expectedDeliveryTime;
+                const price = getCarrierPriceForCurrency(c, currency);
+                const symbol = currencySymbols[currency] || currency;
+                const formattedPrice = price
+                  ? formatPrice(Number(price), currency, symbol)
+                  : "";
+                const namePart = eta
+                  ? `${t(carrierName) || carrierName} (${eta})`
+                  : t(carrierName) || carrierName;
+                const label = formattedPrice
+                  ? `${namePart} — ${formattedPrice}`
+                  : namePart;
+                return {
+                  label,
+                  value: c.id + "" || "",
+                };
+              })}
+            />
+          )}
         </div>
       </div>
     </FieldsGroupContainer>

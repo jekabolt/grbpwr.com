@@ -19,11 +19,15 @@ export function OrderSecondaryInfo({
   payment,
 }: Props) {
   const { dictionary } = useDataContext();
+  const tCheckout = useTranslations("checkout");
 
   const carrier = dictionary?.shipmentCarriers?.find(
     (c) => String(c.id) === String(shipment?.carrierId),
   );
-  const shipmentCarrierName = carrier?.shipmentCarrier?.carrier;
+  const rawCarrierName = carrier?.shipmentCarrier?.carrier;
+  const shipmentCarrierName = rawCarrierName
+    ? tCheckout(rawCarrierName) || rawCarrierName
+    : undefined;
   const trackingUrl = buildTrackingUrl(
     carrier?.shipmentCarrier?.trackingUrl,
     shipment?.trackingCode,
