@@ -63,7 +63,7 @@ export default function ItemRow({
           aspectRatio="3/4"
         />
       </Link>
-      <div className="flex w-full justify-between">
+      <div className="relative z-10 flex w-full items-stretch justify-between">
         <Link
           href={product.slug || ""}
           className="flex w-full flex-col justify-between"
@@ -92,7 +92,7 @@ export default function ItemRow({
         </Link>
         <div
           className={cn(
-            "relative z-10 flex w-full flex-col items-end justify-between gap-3",
+            "relative z-10 flex w-full flex-col items-end justify-between self-stretch",
             {
               "justify-end": hideQuantityButtons,
             },
@@ -106,18 +106,18 @@ export default function ItemRow({
               index={index}
             />
           )}
-          <div className="flex items-center whitespace-nowrap">
-            {isSaleApplied ? (
-              <div className="flex items-center gap-x-2">
-                <Text variant="strileTroughInactive">
-                  {priceWithoutSale}
-                </Text>
-                <Text>{priceWithSale}</Text>
-              </div>
-            ) : (
-              <Text>{priceWithoutSale}</Text>
-            )}
-          </div>
+          <div className="flex items-center justify-end whitespace-nowrap text-right">
+              {isSaleApplied ? (
+                <div className="flex items-center gap-x-2">
+                  <Text variant="strileTroughInactive">
+                    {priceWithoutSale}
+                  </Text>
+                  <Text>{priceWithSale}</Text>
+                </div>
+              ) : (
+                <Text>{priceWithoutSale}</Text>
+              )}
+            </div>
         </div>
       </div>
     </div>

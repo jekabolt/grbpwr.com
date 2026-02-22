@@ -28,7 +28,7 @@ export default function ProductRemoveButton({
   const { handleRemoveFromCartEvent } = useCartAnalytics({
     finalProducts: [product],
   });
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const isRemoveConfirmed =
     productToRemove &&
@@ -41,21 +41,20 @@ export default function ProductRemoveButton({
 
     const handleClickOutside = (event: PointerEvent) => {
       if (
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target as Node)
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
       ) {
         setProductToRemove(null);
       }
     };
 
-    // pointerdown fires for both touch and mouse - more reliable on mobile
     document.addEventListener("pointerdown", handleClickOutside);
     return () => {
       document.removeEventListener("pointerdown", handleClickOutside);
     };
   }, [isRemoveConfirmed, setProductToRemove]);
 
-  const handleRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRemove = (event: React.PointerEvent) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -69,14 +68,15 @@ export default function ProductRemoveButton({
   };
 
   return (
-    <Button
-      ref={buttonRef}
-      type="button"
-      onClick={handleRemove}
-      variant="underline"
-      className="min-h-[44px] min-w-[4.5rem] touch-manipulation uppercase"
-    >
-      {isRemoveConfirmed ? t("sure?") : t("remove")}
-    </Button>
+    <div ref={wrapperRef} className="flex justify-end">
+      <Button
+        type="button"
+        onPointerDown={handleRemove}
+        variant="underline"
+        className="min-h-0 min-w-[4.5rem] touch-manipulation self-start p-0 text-right uppercase"
+      >
+        {isRemoveConfirmed ? t("sure?") : t("remove")}
+      </Button>
+    </div>
   );
 }
