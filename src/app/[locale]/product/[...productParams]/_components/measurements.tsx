@@ -50,6 +50,13 @@ export function Measurements({
   const isShoe = measurementType === "shoe";
   const t = useTranslations();
 
+  const hasMeasurementsTableData =
+    measurementType === "clothing" &&
+    selectedProductSizeId != null &&
+    (product.measurements ?? []).some(
+      (m) => m.productSizeId === selectedProductSizeId,
+    );
+
   const hoveredDescriptionKey = (() => {
     if (!hoveredMeasurement) return null;
 
@@ -110,21 +117,23 @@ export function Measurements({
               className={cn({ "flex justify-center": isOneSize })}
             />
           </div>
-          <div className="flex items-center justify-center gap-x-2">
-            <Button
-              variant={unit === Unit.CM ? "underline" : undefined}
-              onClick={() => setUnit(Unit.CM)}
-            >
-              CM
-            </Button>
-            <Text>/</Text>
-            <Button
-              variant={unit === Unit.INCHES ? "underline" : undefined}
-              onClick={() => setUnit(Unit.INCHES)}
-            >
-              INCHES
-            </Button>
-          </div>
+          {hasMeasurementsTableData && (
+            <div className="flex items-center justify-center gap-x-2">
+              <Button
+                variant={unit === Unit.CM ? "underline" : undefined}
+                onClick={() => setUnit(Unit.CM)}
+              >
+                CM
+              </Button>
+              <Text>/</Text>
+              <Button
+                variant={unit === Unit.INCHES ? "underline" : undefined}
+                onClick={() => setUnit(Unit.INCHES)}
+              >
+                INCHES
+              </Button>
+            </div>
+          )}
         </div>
 
         <MeasurementsTable
