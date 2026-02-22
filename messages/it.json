@@ -484,7 +484,8 @@
         "cart_modified": "il tuo carrello è stato modificato",
         "payment_already_completed": "Pagamento già completato per questa sessione. Svuota il carrello e inizia un nuovo ordine.",
         "payment_unavailable": "Il pagamento non è temporaneamente disponibile. Riprova più tardi.",
-        "validation_error": "Qualcosa è andato storto. Riprova."
+        "validation_error": "Qualcosa è andato storto. Riprova.",
+        "fill_required_fields": "Compila tutti i campi obbligatori"
     },
     "refund": {
         "return order": "restituisci ordine",

@@ -484,7 +484,8 @@
         "cart_modified": "votre panier a été modifié",
         "payment_already_completed": "Le paiement de cette session est déjà terminé. Veuillez vider votre panier et créer une nouvelle commande.",
         "payment_unavailable": "Le paiement est temporairement indisponible. Veuillez réessayer plus tard.",
-        "validation_error": "Une erreur s'est produite. Veuillez réessayer."
+        "validation_error": "Une erreur s'est produite. Veuillez réessayer.",
+        "fill_required_fields": "Veuillez remplir tous les champs obligatoires"
     },
     "refund": {
         "return order": "retourner la commande",

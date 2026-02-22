@@ -484,7 +484,8 @@
         "cart_modified": "ihr warenkorb wurde geändert",
         "payment_already_completed": "Zahlung für diese Sitzung bereits abgeschlossen. Bitte leeren Sie Ihren Warenkorb und starten Sie eine neue Bestellung.",
         "payment_unavailable": "Zahlung vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.",
-        "validation_error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+        "validation_error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+        "fill_required_fields": "Bitte füllen Sie alle erforderlichen Felder aus"
     },
     "refund": {
         "return order": "bestellung retournieren",
