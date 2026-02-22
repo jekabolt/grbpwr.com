@@ -339,6 +339,7 @@
         "first name": "VORNAME*",
         "last name": "NACHNAME*",
         "order reference": "BESTELLREFERENZ",
+        "order reference optional": "BESTELLREFERENZ (OPTIONAL)",
         "product information": "Produktinformationen",
         "purchase": "Kauf",
         "return & exchange": "Rückgabe & Umtausch",
@@ -353,6 +354,8 @@
         "mr": "Hr.",
         "i'd rather not say": "möchte ich nicht angeben",
         "form submitted successfully": "formular erfolgreich abgeschickt",
+        "support_request_success": "Ihre Support-Anfrage wurde erfolgreich übermittelt. Wir melden uns in Kürze bei Ihnen.",
+        "submission_error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
         "order status": "Bestellstatus",
         "delivery": "Lieferung",
         "cancellation request": "Stornierungsanfrage",
@@ -500,6 +503,8 @@
         "other": "anderes",
         "order already in refund progress": "bestellung bereits in erstattungsbearbeitung",
         "refund request submitted successfully": "rückerstattungsanfrage erfolgreich eingereicht",
+        "return_request_success": "Sie haben Ihre Rückgabebitte für Bestellung #{orderNumber} erfolgreich eingereicht. Sie erhalten in Kürze eine Bestätigungs-E-Mail mit den nächsten Schritten.",
+        "submission_error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
         "reason": "grund"
     },
     "unsubscribe": {

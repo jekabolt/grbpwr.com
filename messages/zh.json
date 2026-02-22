@@ -339,6 +339,7 @@
         "first name": "名*",
         "last name": "姓*",
         "order reference": "订单号",
+        "order reference optional": "订单号（选填）",
         "product information": "产品信息",
         "purchase": "购买",
         "return & exchange": "退换货",
@@ -353,6 +354,8 @@
         "mr": "先生",
         "i'd rather not say": "不愿透露",
         "form submitted successfully": "表单提交成功",
+        "support_request_success": "您的支持请求已成功提交。我们会尽快与您联系。",
+        "submission_error": "出了点问题，请重试。",
         "order status": "订单状态",
         "delivery": "配送",
         "cancellation request": "取消申请",
@@ -500,6 +503,8 @@
         "other": "其他",
         "order already in refund progress": "订单已在退款处理中",
         "refund request submitted successfully": "退款请求提交成功",
+        "return_request_success": "您已成功提交订单 #{orderNumber} 的退货申请。您将很快收到确认邮件及后续步骤说明。",
+        "submission_error": "出了点问题，请重试。",
         "reason": "原因"
     },
     "unsubscribe": {

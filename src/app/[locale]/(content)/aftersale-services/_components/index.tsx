@@ -28,6 +28,7 @@ export default function AftersaleForm() {
   });
 
   const [open, setOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
 
   const selectedTopic = form.watch("topic");
@@ -51,8 +52,8 @@ export default function AftersaleForm() {
       await serviceClient.SubmitSupportTicket({
         ticket: {
           ...data,
-          orderReference: data.orderReference || "",
-          notes: data.notes || "",
+          orderReference: data.orderReference?.trim() || undefined,
+          notes: data.notes?.trim() || undefined,
         },
       });
 
@@ -61,13 +62,14 @@ export default function AftersaleForm() {
         formId: "aftersale-services",
       });
 
+      setToastMessage(t("support_request_success"));
+      form.reset(defaultValues);
       setOpen(true);
-      setTimeout(() => {
-        form.reset(defaultValues);
-        router.push("/success");
-      }, 2100);
+      setTimeout(() => router.push("/"), 2500);
     } catch (error) {
       console.error("Form submission failed:", error);
+      setToastMessage(t("submission_error"));
+      setOpen(true);
     }
   };
 
@@ -114,7 +116,7 @@ export default function AftersaleForm() {
       <SubmissionToaster
         open={open}
         onOpenChange={setOpen}
-        message={t("form submitted successfully")}
+        message={toastMessage}
       />
     </>
   );
@@ -151,7 +153,7 @@ function PersonalInfoForm() {
       <InputField
         variant="secondary"
         name="orderReference"
-        label={t("order reference")}
+        label={t("order reference optional")}
       />
       <TextareaField
         variant="secondary"

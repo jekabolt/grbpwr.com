@@ -339,6 +339,7 @@
         "first name": "이름*",
         "last name": "성*",
         "order reference": "주문 번호",
+        "order reference optional": "주문 번호 (선택)",
         "product information": "제품 정보",
         "purchase": "구매",
         "return & exchange": "반품 및 교환",
@@ -353,6 +354,8 @@
         "mr": "님",
         "i'd rather not say": "답변하지 않음",
         "form submitted successfully": "양식 제출 성공",
+        "support_request_success": "지원 요청이 성공적으로 제출되었습니다. 곧 연락드리겠습니다.",
+        "submission_error": "문제가 발생했습니다. 다시 시도해 주세요.",
         "order status": "주문 상태",
         "delivery": "배송",
         "cancellation request": "취소 요청",
@@ -500,6 +503,8 @@
         "other": "기타",
         "order already in refund progress": "주문이 이미 환불 진행 중임",
         "refund request submitted successfully": "환불 요청이 성공적으로 제출되었습니다",
+        "return_request_success": "주문 #{orderNumber}에 대한 반품 요청이 성공적으로 제출되었습니다. 곧 확인 이메일과 다음 단계를 받으실 수 있습니다.",
+        "submission_error": "문제가 발생했습니다. 다시 시도해 주세요.",
         "reason": "사유"
     },
     "unsubscribe": {

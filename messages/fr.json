@@ -339,6 +339,7 @@
         "first name": "PRÉNOM*",
         "last name": "NOM*",
         "order reference": "RÉFÉRENCE DE COMMANDE",
+        "order reference optional": "RÉFÉRENCE DE COMMANDE (OPTIONNEL)",
         "product information": "informations produit",
         "purchase": "achat",
         "return & exchange": "retour et échange",
@@ -353,6 +354,8 @@
         "mr": "m.",
         "i'd rather not say": "je préfère ne pas le dire",
         "form submitted successfully": "formulaire soumis avec succès",
+        "support_request_success": "Votre demande d'assistance a été soumise avec succès. Nous vous répondrons sous peu.",
+        "submission_error": "Une erreur s'est produite. Veuillez réessayer.",
         "order status": "statut de commande",
         "delivery": "livraison",
         "cancellation request": "demande d'annulation",
@@ -500,6 +503,8 @@
         "other": "autre",
         "order already in refund progress": "commande déjà en cours de remboursement",
         "refund request submitted successfully": "demande de remboursement soumise avec succès",
+        "return_request_success": "Votre demande de retour pour la commande #{orderNumber} a été soumise avec succès. Vous recevrez un e-mail de confirmation avec les prochaines étapes sous peu.",
+        "submission_error": "Une erreur s'est produite. Veuillez réessayer.",
         "reason": "raison"
     },
     "unsubscribe": {

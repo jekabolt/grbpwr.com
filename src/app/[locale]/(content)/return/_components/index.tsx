@@ -29,7 +29,7 @@ export function RefundForm() {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
 
   const form = useForm<RefundSchema>({
     resolver: zodResolver(refundForm),
@@ -61,25 +61,28 @@ export function RefundForm() {
 
       const errorResponse = response as any;
       if (errorResponse.error) {
-        setErrorMessage(t("order already in refund progress"));
+        setToastMessage(t("order already in refund progress"));
         setOpen(true);
         return;
       }
 
       if (response.order) {
-        setErrorMessage(t("refund request submitted successfully"));
-        setOpen(true);
         handleRefundEvent(response.order);
         sendFormEvent({
           email: data.email,
           formId: "refund",
         });
-        router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
+        setToastMessage(t("return_request_success", { orderNumber: data.orderUuid }));
+        form.reset(defaultData);
+        setOpen(true);
+        setTimeout(() => {
+          router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
+        }, 2500);
       }
-
-      console.log("Refund request submitted successfully:", data);
     } catch (e) {
       console.error("Form submission failed:", e);
+      setToastMessage(t("submission_error"));
+      setOpen(true);
     }
   }
 
@@ -130,7 +133,7 @@ export function RefundForm() {
       <SubmissionToaster
         open={open}
         onOpenChange={setOpen}
-        message={errorMessage}
+        message={toastMessage}
       />
     </>
   );

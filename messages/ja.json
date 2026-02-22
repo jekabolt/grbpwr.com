@@ -339,6 +339,7 @@
         "first name": "名*",
         "last name": "姓*",
         "order reference": "注文番号",
+        "order reference optional": "注文番号（任意）",
         "product information": "商品情報",
         "purchase": "購入",
         "return & exchange": "返品・交換",
@@ -353,6 +354,8 @@
         "mr": "様",
         "i'd rather not say": "回答しない",
         "form submitted successfully": "フォームが正常に送信されました",
+        "support_request_success": "サポートリクエストが正常に送信されました。まもなくご連絡いたします。",
+        "submission_error": "問題が発生しました。もう一度お試しください。",
         "order status": "注文状況",
         "delivery": "配送",
         "cancellation request": "キャンセル依頼",
@@ -500,6 +503,8 @@
         "other": "その他",
         "order already in refund progress": "注文はすでに返金処理中です",
         "refund request submitted successfully": "返金リクエストが正常に送信されました",
+        "return_request_success": "注文 #{orderNumber} の返品リクエストが正常に送信されました。まもなく確認メールと次のステップをお送りします。",
+        "submission_error": "問題が発生しました。もう一度お試しください。",
         "reason": "理由"
     },
     "unsubscribe": {

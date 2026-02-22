@@ -339,6 +339,7 @@
         "first name": "NOME*",
         "last name": "COGNOME*",
         "order reference": "RIFERIMENTO ORDINE",
+        "order reference optional": "RIFERIMENTO ORDINE (OPZIONALE)",
         "product information": "informazioni prodotto",
         "purchase": "acquisto",
         "return & exchange": "reso e cambio",
@@ -353,6 +354,8 @@
         "mr": "sig.",
         "i'd rather not say": "preferisco non dirlo",
         "form submitted successfully": "modulo inviato con successo",
+        "support_request_success": "La tua richiesta di assistenza è stata inviata con successo. Ti risponderemo a breve.",
+        "submission_error": "Qualcosa è andato storto. Riprova.",
         "order status": "stato dell'ordine",
         "delivery": "consegna",
         "cancellation request": "richiesta di cancellazione",
@@ -500,6 +503,8 @@
         "other": "altro",
         "order already in refund progress": "ordine già in corso di rimborso",
         "refund request submitted successfully": "richiesta di rimborso inviata con successo",
+        "return_request_success": "Hai inviato con successo la richiesta di reso per l'ordine #{orderNumber}. Riceverai a breve un'email di conferma con i prossimi passaggi.",
+        "submission_error": "Qualcosa è andato storto. Riprova.",
         "reason": "motivo"
     },
     "unsubscribe": {

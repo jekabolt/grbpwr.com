@@ -339,6 +339,7 @@
         "first name": "FIRST NAME*",
         "last name": "LAST NAME*",
         "order reference": "ORDER REFERENCE",
+        "order reference optional": "ORDER REFERENCE (OPTIONAL)",
         "product information": "product information",
         "purchase": "purchase",
         "return & exchange": "return & exchange",
@@ -353,6 +354,8 @@
         "mr": "mr",
         "i'd rather not say": "i'd rather not say",
         "form submitted successfully": "form submitted successfully",
+        "support_request_success": "Your support request has been submitted successfully. We'll get back to you shortly.",
+        "submission_error": "Something went wrong. Please try again.",
         "order status": "order status",
         "delivery": "delivery",
         "cancellation request": "cancellation request",
@@ -500,6 +503,8 @@
         "other": "other",
         "order already in refund progress": "order already in refund progress",
         "refund request submitted successfully": "refund request submitted successfully",
+        "return_request_success": "You've successfully submitted your return request for Order #{orderNumber}. You'll receive a confirmation email with next steps shortly.",
+        "submission_error": "Something went wrong. Please try again.",
         "reason": "reason"
     },
     "unsubscribe": {
