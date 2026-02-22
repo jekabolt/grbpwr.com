@@ -44,7 +44,8 @@ export function SizePicker({
         className={cn(
           {
             "grid grid-cols-4 gap-x-3 gap-y-7": view === "grid",
-            "flex w-full items-center justify-between": view === "line",
+            "flex w-full flex-row items-center justify-center gap-5":
+              view === "line",
           },
           className,
         )}
@@ -64,8 +65,8 @@ export function SizePicker({
               className={cn("border-b border-transparent leading-none", {
                 "border-textColor": isActive && !isOutOfStock,
                 "hover:border-textColor": !isActive && !isOutOfStock,
-                "w-full": view === "line",
-                "w-auto": view === "line" && isOneSize,
+                "px-3 py-0.5": view === "line" && !isOneSize,
+                // "w-auto": view === "line" && isOneSize,
                 "!text-textColor": isOutOfStock && isActive,
                 "hover:!text-textColor": isOutOfStock && !isActive,
               })}
