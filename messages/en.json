@@ -488,7 +488,7 @@
         "text": "you will find your return number in your return confirmation email. If you have recently requested a return, please note that it may take a few minutes to process your request and send the confirmation email. if you do not see the confirmation email, please check your spam folder.",
         "submit return": "submit return",
         "email": "EMAIL*",
-        "return reference": "RETURN REFERENCE*",
+        "return reference": "ORDER REFERENCE*",
         "submit": "submit",
         "size issues": "size issues",
         "damaged or defective": "damaged or defective",

@@ -488,7 +488,7 @@
         "text": "您可以在退货确认邮件中找到您的退货编号。如果您最近提交了退货请求，请注意，处理您的请求并发送确认邮件可能需要几分钟。如果没有看到确认邮件，请检查垃圾邮件文件夹。",
         "submit return": "提交退货",
         "email": "电子邮件*",
-        "return reference": "退货参考号*",
+        "return reference": "订单参考号*",
         "submit": "提交",
         "size issues": "尺码问题",
         "damaged or defective": "损坏或有缺陷",
