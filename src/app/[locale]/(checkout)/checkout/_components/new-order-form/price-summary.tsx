@@ -8,6 +8,7 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 import { useVatCalculation } from "./hooks/useVatCalculation";
+import { getCarrierPriceForCurrency } from "./utils";
 
 export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSummaryProps) {
   const t = useTranslations("checkout");
@@ -33,9 +34,12 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
   const promoPercentageOff = parseInt(order.promo?.discount?.value || "0");
   const promoFreeShipping = !!order.promo?.freeShipping;
 
-  const selectedShipmentCarrierPrice = dictionary?.shipmentCarriers?.find(
+  const selectedCarrier = dictionary?.shipmentCarriers?.find(
     (c) => c.id + "" === selectedShipmentCarrierId,
-  )?.prices?.[0]?.price?.value;
+  );
+  const selectedShipmentCarrierPrice = selectedCarrier
+    ? getCarrierPriceForCurrency(selectedCarrier, currency)
+    : undefined;
 
   return (
     <>

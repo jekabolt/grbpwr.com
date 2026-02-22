@@ -3,13 +3,67 @@ import {
   common_BuyerInsert,
   common_OrderItemInsert,
   common_OrderNew,
+  common_ShipmentCarrier,
+  common_ShipmentCarrierPrice,
+  common_ShippingRegion,
 } from "@/api/proto-http/frontend";
 import { COUNTRIES_BY_REGION } from "@/constants";
 
-import { Dhl } from "@/components/ui/icons/dhl";
-import { Text } from "@/components/ui/text";
-
 import { CheckoutData } from "./schema";
+
+const REGION_TO_SHIPPING_REGION: Record<string, common_ShippingRegion> = {
+  AFRICA: "SHIPPING_REGION_AFRICA",
+  AMERICAS: "SHIPPING_REGION_AMERICAS",
+  "ASIA PACIFIC": "SHIPPING_REGION_ASIA_PACIFIC",
+  EUROPE: "SHIPPING_REGION_EUROPE",
+  "MIDDLE EAST": "SHIPPING_REGION_MIDDLE_EAST",
+};
+
+const COUNTRY_TO_SHIPPING_REGION = (() => {
+  const map = new Map<string, common_ShippingRegion>();
+  for (const [regionKey, countries] of Object.entries(COUNTRIES_BY_REGION)) {
+    const shippingRegion = REGION_TO_SHIPPING_REGION[regionKey];
+    if (shippingRegion) {
+      for (const c of countries) {
+        map.set(c.countryCode.toLowerCase(), shippingRegion);
+      }
+    }
+  }
+  return map;
+})();
+
+export function getShippingRegionForCountry(
+  countryCode: string,
+): common_ShippingRegion | undefined {
+  return countryCode
+    ? COUNTRY_TO_SHIPPING_REGION.get(countryCode.toLowerCase())
+    : undefined;
+}
+
+export function isCarrierEligibleForRegion(
+  carrier: common_ShipmentCarrier,
+  region: common_ShippingRegion | undefined,
+): boolean {
+  const allowedRegions = carrier.allowedRegions;
+  if (!allowedRegions || allowedRegions.length === 0) return false; // not set = not eligible
+  if (!region) return false; // country not in map
+  return allowedRegions.includes(region);
+}
+
+/** Get carrier price for given currency. Falls back to first price if no match. */
+export function getCarrierPriceForCurrency(
+  carrier: common_ShipmentCarrier,
+  currency: string,
+): string | undefined {
+  const prices = carrier.prices;
+  if (!prices?.length) return undefined;
+  const key = currency?.toUpperCase() || "";
+  const match = prices.find(
+    (p: common_ShipmentCarrierPrice) =>
+      p.currency?.toUpperCase() === key,
+  );
+  return match?.price?.value ?? prices[0]?.price?.value;
+}
 
 export function getFieldName(
   prefix: string | undefined,
@@ -71,26 +125,6 @@ export function mapFormFieldToOrderDataFormat(
 
   return newOrderData;
 }
-
-export const createShipmentCarrierIcon = (
-  carrier: string,
-  price: number,
-  currency: string,
-): React.ReactNode => {
-  const carrierName = carrier.toLowerCase();
-
-  switch (carrierName) {
-    case "dhl":
-      return (
-        <div className="flex items-center justify-between gap-x-2">
-          <Dhl className="h-6" />
-          <Text>{`${price} ${currency}`}</Text>
-        </div>
-      );
-    default:
-      return null;
-  }
-};
 
 export function getUniqueCountries() {
   const countries = Object.values(COUNTRIES_BY_REGION).flat();

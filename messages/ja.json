@@ -98,6 +98,8 @@
         "phone number:": "電話番号：",
         "postal code:": "郵便番号：",
         "shipping method": "配送方法",
+        "no shipping options for location": "選択した地域には配送オプションがありません。",
+        "select country to see shipping options": "国を選択して配送オプションを表示してください。",
         "shipping summary": "配送",
         "payment method": "支払い方法",
         "billing address": "請求先住所",

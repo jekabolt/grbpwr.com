@@ -98,6 +98,8 @@
         "phone number:": "telefonnummer:",
         "postal code:": "postleitzahl:",
         "shipping method": "versandmethode",
+        "no shipping options for location": "Keine Versandoptionen für Ihren Standort verfügbar.",
+        "select country to see shipping options": "Wählen Sie Ihr Land, um verfügbare Versandoptionen zu sehen.",
         "shipping summary": "versand",
         "payment method": "zahlungsmethode",
         "billing address": "rechnungsadresse",

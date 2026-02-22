@@ -98,6 +98,8 @@
         "phone number:": "전화번호:",
         "postal code:": "우편번호:",
         "shipping method": "배송 방법",
+        "no shipping options for location": "선택한 지역에 배송 옵션이 없습니다.",
+        "select country to see shipping options": "국가를 선택하여 사용 가능한 배송 옵션을 확인하세요.",
         "shipping summary": "배송",
         "payment method": "결제 수단",
         "billing address": "청구지 주소",
