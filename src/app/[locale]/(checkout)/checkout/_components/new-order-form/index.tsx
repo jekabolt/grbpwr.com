@@ -237,7 +237,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                   loading={loading}
                   isOpen={isGroupOpen("contact")}
                   onToggle={() => handleGroupToggle("contact")}
-                  disabled={isGroupDisabled("contact")}
+                  disabled={isGroupDisabled("contact") || loading}
                 />
               </div>
               <div ref={shippingRef}>
@@ -246,7 +246,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                   validateItems={validateItems}
                   isOpen={isGroupOpen("shipping")}
                   onToggle={() => handleGroupToggle("shipping")}
-                  disabled={isGroupDisabled("shipping")}
+                  disabled={isGroupDisabled("shipping") || loading}
                 />
               </div>
               <div ref={paymentRef}>
@@ -256,7 +256,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                   validateItems={validateItems}
                   isOpen={isGroupOpen("payment")}
                   onToggle={() => handleGroupToggle("payment")}
-                  disabled={isGroupDisabled("payment")}
+                  disabled={isGroupDisabled("payment") || loading}
                   onPaymentElementChange={setIsPaymentElementComplete}
                 />
               </div>
