@@ -5,10 +5,8 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Overlay } from "@/components/ui/overlay";
 import { useCartAnalytics } from "@/lib/analitycs/useCartAnalytics";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { cn } from "@/lib/utils";
 
 type Props = {
   id: number;
@@ -41,7 +39,7 @@ export default function ProductRemoveButton({
   useEffect(() => {
     if (!isRemoveConfirmed) return;
 
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: PointerEvent) => {
       if (
         buttonRef.current &&
         !buttonRef.current.contains(event.target as Node)
@@ -50,9 +48,10 @@ export default function ProductRemoveButton({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    // pointerdown fires for both touch and mouse - more reliable on mobile
+    document.addEventListener("pointerdown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("pointerdown", handleClickOutside);
     };
   }, [isRemoveConfirmed, setProductToRemove]);
 
@@ -75,7 +74,7 @@ export default function ProductRemoveButton({
       type="button"
       onClick={handleRemove}
       variant="underline"
-      className="uppercase"
+      className="min-h-[44px] min-w-[4.5rem] touch-manipulation uppercase"
     >
       {isRemoveConfirmed ? t("sure?") : t("remove")}
     </Button>
