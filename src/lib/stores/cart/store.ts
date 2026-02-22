@@ -1,4 +1,4 @@
-import { persist } from "zustand/middleware";
+import { persist, type PersistStorage, type StorageValue } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
@@ -8,8 +8,13 @@ import { CartProduct, CartState, CartStore } from "./store-types";
 
 const CART_TTL_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
 
-const cartStorageWithTTL = {
-  getItem: (name: string): unknown => {
+type CartPersistedState = Pick<
+  CartStore,
+  "products" | "totalItems" | "totalPrice" | "subTotalPrice" | "validatedCurrency"
+>;
+
+const cartStorageWithTTL: PersistStorage<CartPersistedState> = {
+  getItem: (name: string): StorageValue<CartPersistedState> | null => {
     if (typeof window === "undefined") return null;
     try {
       const raw = localStorage.getItem(name);
@@ -19,12 +24,12 @@ const cartStorageWithTTL = {
         localStorage.removeItem(name);
         return null;
       }
-      return parsed.state ?? parsed;
+      return (parsed.state ?? parsed) as StorageValue<CartPersistedState>;
     } catch {
       return null;
     }
   },
-  setItem: (name: string, value: unknown): void => {
+  setItem: (name: string, value: StorageValue<CartPersistedState>): void => {
     if (typeof window === "undefined") return;
     try {
       const wrapped = JSON.stringify({
