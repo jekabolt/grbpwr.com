@@ -79,7 +79,7 @@ export function DesktopNavigationMenu({
           <NavigationMenu.Item key={gender}>
             <NavigationMenu.Trigger
               className={cn(
-                "flex items-center px-2 text-textBaseSize data-[state=open]:underline transition-colors hover:opacity-70 active:opacity-50",
+                "flex items-center px-2 text-textBaseSize transition-colors hover:opacity-70 active:opacity-50 data-[state=open]:underline",
                 { underline: isActive, "pl-0": index === 0 },
               )}
             >
@@ -107,7 +107,7 @@ export function DesktopNavigationMenu({
             <Link
               href={`/catalog/objects`}
               className={cn(
-                "flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline transition-colors hover:opacity-70 active:opacity-50",
+                "flex items-center px-2 text-textBaseSize underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50",
                 { underline: isOnObjectsPage },
               )}
             >
@@ -120,7 +120,7 @@ export function DesktopNavigationMenu({
           <Button asChild>
             <Link
               href="/timeline"
-              className="flex items-center px-2 text-textBaseSize underline-offset-2 hover:underline transition-colors hover:opacity-70 active:opacity-50"
+              className="flex items-center px-2 text-textBaseSize underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
             >
               {t("timeline")}
             </Link>
@@ -158,7 +158,6 @@ function LinksGroup({
   const t = useTranslations("navigation");
   const tCategories = useTranslations("categories");
 
-  // Get English categories for URL generation
   const englishCategories = dictionary?.categories
     ? processCategories(dictionary.categories).filter(
         (category) => category.name.toLowerCase() !== "objects",
