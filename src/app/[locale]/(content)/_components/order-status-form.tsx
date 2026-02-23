@@ -30,6 +30,7 @@ export default function OrderStatusForm() {
   const t = useTranslations("order-status");
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
 
   const form = useForm<OrderStatusData>({
@@ -55,10 +56,17 @@ export default function OrderStatusForm() {
       if (response.order) {
         router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
       } else {
+        setToastMessage(t("order not found"));
         setOpen(true);
       }
     } catch (error) {
       console.error(error);
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : t("order not found");
+      setToastMessage(message);
+      setOpen(true);
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +107,7 @@ export default function OrderStatusForm() {
       <SubmissionToaster
         open={open}
         onOpenChange={setOpen}
-        message={t("order not found")}
+        message={toastMessage}
       />
     </>
   );

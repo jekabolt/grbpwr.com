@@ -208,8 +208,11 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
       setLoading(false);
     } catch (error) {
       console.error("Error submitting new order:", error);
-      const toastKey = getValidationErrorToastKey(error);
-      setToastMessage(tToaster(toastKey));
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : tToaster(getValidationErrorToastKey(error));
+      setToastMessage(message);
       setOrderModifiedToastOpen(true);
       setLoading(false);
     }

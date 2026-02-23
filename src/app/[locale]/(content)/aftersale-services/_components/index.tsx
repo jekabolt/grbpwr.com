@@ -68,7 +68,11 @@ export default function AftersaleForm() {
       setTimeout(() => router.push("/"), 2500);
     } catch (error) {
       console.error("Form submission failed:", error);
-      setToastMessage(t("submission_error"));
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : t("submission_error");
+      setToastMessage(message);
       setOpen(true);
     }
   };
