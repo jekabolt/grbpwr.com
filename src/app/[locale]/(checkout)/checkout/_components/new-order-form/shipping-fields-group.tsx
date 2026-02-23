@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { keyboardRestrictions, currencySymbols } from "@/constants";
-import { formatPrice } from "@/lib/currency";
+import { currencySymbols, keyboardRestrictions } from "@/constants";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
+import { formatPrice } from "@/lib/currency";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -56,8 +56,7 @@ export default function ShippingFieldsGroup({
     () =>
       dictionary?.shipmentCarriers?.filter(
         (c) =>
-          c.shipmentCarrier?.allowed &&
-          isCarrierEligibleForRegion(c, region),
+          c.shipmentCarrier?.allowed && isCarrierEligibleForRegion(c, region),
       ) ?? [],
     [dictionary?.shipmentCarriers, region],
   );
@@ -74,7 +73,12 @@ export default function ShippingFieldsGroup({
     ) {
       setValue("shipmentCarrierId", "");
     }
-  }, [selectedCountry, selectedShipmentCarrierId, eligibleCarrierIds, setValue]);
+  }, [
+    selectedCountry,
+    selectedShipmentCarrierId,
+    eligibleCarrierIds,
+    setValue,
+  ]);
 
   return (
     <FieldsGroupContainer
@@ -106,14 +110,16 @@ export default function ShippingFieldsGroup({
               items={eligibleCarriers.map((c) => {
                 const carrierName = c.shipmentCarrier?.carrier || "";
                 const eta = c.shipmentCarrier?.expectedDeliveryTime;
+                const displayCarrierName =
+                  carrierName === "FREE" ? t("FREE") : carrierName;
                 const price = getCarrierPriceForCurrency(c, currency);
                 const symbol = currencySymbols[currency] || currency;
                 const formattedPrice = price
                   ? formatPrice(Number(price), currency, symbol)
                   : "";
                 const namePart = eta
-                  ? `${t(carrierName) || carrierName} (${eta})`
-                  : t(carrierName) || carrierName;
+                  ? `${displayCarrierName} (${eta})`
+                  : displayCarrierName;
                 const label = formattedPrice
                   ? `${namePart} — ${formattedPrice}`
                   : namePart;

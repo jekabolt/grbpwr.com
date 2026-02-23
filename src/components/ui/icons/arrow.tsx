@@ -12,7 +12,7 @@ export function Arrow(props: SVGProps<SVGSVGElement>) {
     >
       <path
         d="M12 10L8 6L4 10"
-        stroke="black"
+        stroke="currentColor"
         strokeWidth="1.33333"
         strokeLinecap="round"
         strokeLinejoin="round"
