@@ -158,7 +158,6 @@ function LinksGroup({
   const t = useTranslations("navigation");
   const tCategories = useTranslations("categories");
 
-  // Get English categories for URL generation
   const englishCategories = dictionary?.categories
     ? processCategories(dictionary.categories).filter(
         (category) => category.name.toLowerCase() !== "objects",
