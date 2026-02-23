@@ -63,7 +63,7 @@ export default function FieldsGroupContainer({
       <div
         className={cn(
           "flex items-center justify-between",
-          { "h-20 cursor-pointer opacity-50": disabled },
+          { "h-20 cursor-pointer": disabled },
           { "cursor-pointer": collapsible && !disabled },
           clickableAreaClassName,
         )}
@@ -71,7 +71,12 @@ export default function FieldsGroupContainer({
       >
         <div className="flex flex-1 items-center gap-x-6">
           {stage && (
-            <Text variant="uppercase" className="w-8 text-textColor">
+            <Text
+              variant="uppercase"
+              className={cn("w-8 text-textColor", {
+                "text-textInactiveColor": disabled,
+              })}
+            >
               {stage}
             </Text>
           )}
@@ -88,9 +93,15 @@ export default function FieldsGroupContainer({
                   sign={signType}
                   isOpen={localIsOpen}
                   position={signPosition}
+                  disabled={disabled}
                 />
               )}
-              <Text variant="uppercase" className="text-textColor">
+              <Text
+                variant="uppercase"
+                className={cn("text-textColor", {
+                  "text-textInactiveColor": disabled,
+                })}
+              >
                 {title}
               </Text>
             </div>
@@ -103,6 +114,7 @@ export default function FieldsGroupContainer({
             sign={signType}
             isOpen={localIsOpen}
             position={signPosition}
+            disabled={disabled}
           />
         )}
       </div>
@@ -123,10 +135,12 @@ function CollapsibleSign({
   sign,
   isOpen,
   position,
+  disabled,
 }: {
   sign: "arrow" | "plus-minus";
   isOpen: boolean;
   position: "before" | "after";
+  disabled?: boolean;
 }) {
   const signContent =
     sign === "arrow" ? (
@@ -136,12 +150,20 @@ function CollapsibleSign({
           "rotate-180": !isOpen,
         })}
       >
-        <Arrow className="text-textColor" />
+        <Arrow
+          className={cn("text-textColor", {
+            "text-textInactiveColor": disabled,
+          })}
+        />
       </div>
     ) : isOpen ? (
-      <MinusIcon />
+      <MinusIcon
+        className={cn("text-textColor", { "text-textInactiveColor": disabled })}
+      />
     ) : (
-      <PlusIcon />
+      <PlusIcon
+        className={cn("text-textColor", { "text-textInactiveColor": disabled })}
+      />
     );
 
   return (
