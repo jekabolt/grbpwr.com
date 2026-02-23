@@ -81,7 +81,11 @@ export function RefundForm() {
       }
     } catch (e) {
       console.error("Form submission failed:", e);
-      setToastMessage(t("submission_error"));
+      const message =
+        e instanceof Error && e.message
+          ? e.message
+          : t("submission_error");
+      setToastMessage(message);
       setOpen(true);
     }
   }

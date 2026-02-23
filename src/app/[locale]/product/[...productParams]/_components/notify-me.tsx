@@ -13,6 +13,8 @@ import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
 import { Text } from "@/components/ui/text";
 
+import { SubmissionToaster } from "@/components/ui/toaster";
+
 import { SizePicker } from "./size-picker";
 import { defaultData, notifySchema, NotifySchema } from "./utils/notify-schema";
 
@@ -34,8 +36,11 @@ export function NotifyMe({
   activeSizeId,
 }: NotifyMeProps) {
   const [isChecked, setIsChecked] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const t = useTranslations("newslatter");
   const tProduct = useTranslations("product");
+  const tToaster = useTranslations("toaster");
   const tAccessibility = useTranslations("accessibility");
 
   const outOfStockSizes =
@@ -74,11 +79,16 @@ export function NotifyMe({
         productId: data.productId,
         sizeId: data.sizeId,
       });
-      console.log("NotifyMe request submitted successfully:", data);
       onOpenChange(false);
       form.reset();
     } catch (e) {
       console.error("Form submission failed:", e);
+      const message =
+        e instanceof Error && e.message
+          ? e.message
+          : tToaster("failed_to_subscribe");
+      setToastMessage(message);
+      setToastOpen(true);
     }
   }
 
@@ -153,6 +163,11 @@ export function NotifyMe({
           </Form>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
+      <SubmissionToaster
+        open={toastOpen}
+        onOpenChange={setToastOpen}
+        message={toastMessage}
+      />
     </DialogPrimitives.Root>
   );
 }

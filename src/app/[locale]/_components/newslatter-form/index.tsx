@@ -44,7 +44,11 @@ export default function NewslatterForm() {
       setToastOpen(true);
     } catch (error) {
       console.error("Failed to subscribe to newsletter:", error);
-      setToastMessage(tToaster("failed_to_subscribe"));
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : tToaster("failed_to_subscribe");
+      setToastMessage(message);
       setToastOpen(true);
     } finally {
       setIsLoading(false);
