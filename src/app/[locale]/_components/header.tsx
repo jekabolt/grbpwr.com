@@ -1,16 +1,16 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Announce } from "@/components/ui/announce";
 import { Button } from "@/components/ui/button";
 import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
-import { useCart } from "@/lib/stores/cart/store-provider";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { cn } from "@/lib/utils";
 
 import { HeaderLeftNav } from "./header-left-nav";
 import { useAnnounce } from "./useAnnounce";
@@ -69,7 +69,11 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
           isBigMenuEnabled={isBigMenuEnabled}
         />
 
-        <Button asChild size="lg" className="w-1/3 text-center lg:w-auto transition-colors hover:opacity-70 active:opacity-50">
+        <Button
+          asChild
+          size="lg"
+          className="w-1/3 text-center transition-colors hover:opacity-70 active:opacity-50 lg:w-auto"
+        >
           <Link href="/">grbpwr</Link>
         </Button>
 
@@ -83,7 +87,7 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
                 onClick={toggleCart}
                 variant={isOpen ? "underline" : "default"}
                 size="sm"
-                className="underline-offset-2 hover:underline transition-colors hover:opacity-70 active:opacity-50"
+                className="underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
               >
                 {t("cart")} {itemsQuantity ? itemsQuantity : ""}
               </Button>

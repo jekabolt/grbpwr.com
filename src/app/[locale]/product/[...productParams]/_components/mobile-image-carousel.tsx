@@ -127,7 +127,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-50 bg-black/50" />
         <DialogPrimitives.Content
-          className="fixed inset-0 z-50 flex flex-col bg-white pt-12"
+          className="fixed inset-0 z-50 flex flex-col bg-bgColor"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <DialogPrimitives.Title className="sr-only">
@@ -140,15 +140,15 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
 
           {currentMedia && (
             <ImageZoom onDoubleClick={handleDoubleClick}>
-              <div className="relative h-full">
+              <div className="relative h-full pt-12 mix-blend-screen">
                 <div
                   className={cn(
-                    "duration-400 pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-0 mix-blend-screen transition-opacity ease-out",
+                    "duration-400 pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-0 transition-opacity ease-out",
                     { "opacity-60": shouldAnimate },
                   )}
                 />
                 <div
-                  className={cn("relative h-full", {
+                  className={cn("relative h-full mix-blend-screen", {
                     "animate-threshold": shouldAnimate,
                   })}
                 >
