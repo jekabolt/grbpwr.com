@@ -34,6 +34,8 @@ export function Filter({
     isModalOpen,
   });
 
+  const isObjectsCategory = topCategory?.name?.toLowerCase() === "objects";
+
   const hasActiveFilters =
     !!defaultValue ||
     !!sortValue ||
@@ -72,7 +74,7 @@ export function Filter({
                   <Sort />
                 </div>
                 <Collection />
-                <Sizes gender={gender} />
+                {!isObjectsCategory && <Sizes gender={gender} />}
               </div>
               <div className="flex items-center justify-end gap-2 bg-bgColor">
                 <Button
