@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import FlexibleLayout from "@/components/flexible-layout";
-import { EmptyHero } from "@/components/ui/empty-hero";
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import FlexibleLayout from "@/components/flexible-layout";
+import { Disabled } from "@/components/ui/disabled";
+import { EmptyHero } from "@/components/ui/empty-hero";
 
 import { Ads } from "./_components/ads";
 import { MainAds } from "./_components/main-ads";
@@ -32,25 +33,27 @@ export async function generateMetadata({
 }
 
 export default async function Page() {
-  const { hero } = await serviceClient.GetHero({});
+  const { hero, dictionary } = await serviceClient.GetHero({});
   const isHero = hero?.entities?.length;
+  const isWebsiteEnabled = dictionary?.siteEnabled;
 
   // Get the hero image URL for background color extraction
   const heroImageUrl =
     hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.thumbnail
       ?.mediaUrl;
 
+  if (!isWebsiteEnabled) {
+    return <Disabled />;
+  }
+  if (!isHero) {
+    return <EmptyHero />;
+  }
+
   return (
-    <FlexibleLayout theme={isHero ? "light" : "dark"} showAnnounce={true}>
+    <FlexibleLayout showAnnounce={true}>
       <PageBackground imageUrl={heroImageUrl} />
-      {isHero ? (
-        <>
-          <MainAds main={hero?.entities?.[0]?.main} />
-          <Ads entities={hero?.entities || []} />
-        </>
-      ) : (
-        <EmptyHero />
-      )}
+      <MainAds main={hero?.entities?.[0]?.main} />
+      <Ads entities={hero?.entities || []} />
     </FlexibleLayout>
   );
 }

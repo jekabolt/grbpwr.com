@@ -51,6 +51,10 @@
     background-color: var(--background);
   }
 
+  html:has(.blackTheme) {
+    background-color: #000;
+  }
+
   body {
     touch-action: manipulation;
     background-color: var(--background);
@@ -58,6 +62,10 @@
     ::selection {
       @apply bg-acidColor text-bgColor;
     }
+  }
+
+  body:has(.blackTheme) {
+    background-color: #000;
   }
 }
 

@@ -35,6 +35,7 @@ export function DesktopNavigationMenu({
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const isWebsiteEnabled = dictionary?.siteEnabled;
 
   const pathname = usePathname();
   const announceTranslation = dictionary?.announce?.translations?.find(
@@ -75,46 +76,49 @@ export function DesktopNavigationMenu({
       }}
     >
       <NavigationMenu.List className="flex items-center">
-        {genderNavItems.map(({ gender, href, isActive }, index) => (
-          <NavigationMenu.Item key={gender}>
-            <NavigationMenu.Trigger
-              className={cn(
-                "flex items-center px-2 text-textBaseSize transition-colors hover:opacity-70 active:opacity-50 data-[state=open]:underline",
-                { underline: isActive, "pl-0": index === 0 },
+        {isBigMenuEnabled &&
+          genderNavItems.map(({ gender, href, isActive }, index) => (
+            <NavigationMenu.Item key={gender}>
+              <NavigationMenu.Trigger
+                className={cn(
+                  "flex items-center px-2 text-textBaseSize transition-colors hover:opacity-70 active:opacity-50 data-[state=open]:underline",
+                  { underline: isActive, "pl-0": index === 0 },
+                )}
+              >
+                <Link href={href} className="flex items-center">
+                  {t(gender)}
+                </Link>
+              </NavigationMenu.Trigger>
+              {isBigMenuEnabled && (
+                <NavigationMenu.Content className="absolute left-0 top-0 h-56 w-full bg-bgColor text-textColor">
+                  <LinksGroup
+                    gender={gender}
+                    links={processedCategories.map((item) => ({
+                      href: `/catalog/${gender}/${item.name.toLowerCase()}`,
+                      title: item.name,
+                      id: item.id.toString(),
+                    }))}
+                  />
+                </NavigationMenu.Content>
               )}
-            >
-              <Link href={href} className="flex items-center">
-                {t(gender)}
-              </Link>
-            </NavigationMenu.Trigger>
-            {isBigMenuEnabled && (
-              <NavigationMenu.Content className="absolute left-0 top-0 h-56 w-full bg-bgColor text-textColor">
-                <LinksGroup
-                  gender={gender}
-                  links={processedCategories.map((item) => ({
-                    href: `/catalog/${gender}/${item.name.toLowerCase()}`,
-                    title: item.name,
-                    id: item.id.toString(),
-                  }))}
-                />
-              </NavigationMenu.Content>
-            )}
-          </NavigationMenu.Item>
-        ))}
+            </NavigationMenu.Item>
+          ))}
 
-        <NavigationMenu.Item>
-          <Button asChild>
-            <Link
-              href={`/catalog/objects`}
-              className={cn(
-                "flex items-center px-2 text-textBaseSize underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50",
-                { underline: isOnObjectsPage },
-              )}
-            >
-              {t("objects")}
-            </Link>
-          </Button>
-        </NavigationMenu.Item>
+        {isWebsiteEnabled && (
+          <NavigationMenu.Item>
+            <Button asChild>
+              <Link
+                href={`/catalog/objects`}
+                className={cn(
+                  "flex items-center px-2 text-textBaseSize underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50",
+                  { underline: isOnObjectsPage },
+                )}
+              >
+                {t("objects")}
+              </Link>
+            </Button>
+          </NavigationMenu.Item>
+        )}
 
         <NavigationMenu.Item>
           <Button asChild>

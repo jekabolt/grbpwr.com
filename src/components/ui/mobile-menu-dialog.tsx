@@ -21,6 +21,7 @@ type Gender = "men" | "women" | undefined;
 
 interface DefaultMenuProps {
   isBigMenuEnabled: boolean | undefined;
+  isWebsiteEnabled?: boolean;
   setActiveCategory: (category: Gender) => void;
 }
 
@@ -31,8 +32,11 @@ interface ActiveCategoryMenuProps {
 export function DefaultMobileMenuDialog({
   setActiveCategory,
   isBigMenuEnabled,
+  isWebsiteEnabled = true,
 }: DefaultMenuProps) {
-  const defaultMenuItems = createMenuItems(isBigMenuEnabled, setActiveCategory);
+  const defaultMenuItems = isWebsiteEnabled
+    ? createMenuItems(isBigMenuEnabled, setActiveCategory)
+    : [{ label: "timeline", showArrow: false, href: "/timeline" }];
   const t = useTranslations("navigation");
 
   return (
