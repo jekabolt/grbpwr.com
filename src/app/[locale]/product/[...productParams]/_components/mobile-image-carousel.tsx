@@ -7,11 +7,12 @@ import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import { useTranslations } from "next-intl";
 
-import { calculateAspectRatio, cn } from "@/lib/utils";
+import { calculateAspectRatio } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
 import { ImageZoom } from "@/components/ui/image-zoom";
+import { Overlay } from "@/components/ui/overlay";
 
 const EMBLA_OPTIONS = {
   loop: true,
@@ -139,19 +140,16 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
           </DialogPrimitives.Close>
 
           {currentMedia && (
-            <ImageZoom onDoubleClick={handleDoubleClick}>
-              <div className="relative h-full pt-12 mix-blend-screen">
-                <div
-                  className={cn(
-                    "duration-400 pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-0 transition-opacity ease-out",
-                    { "opacity-60": shouldAnimate },
-                  )}
-                />
-                <div
-                  className={cn("relative h-full mix-blend-screen", {
-                    "animate-threshold": shouldAnimate,
-                  })}
-                >
+            <div className="flex min-h-0 flex-1 flex-col pt-12">
+              <ImageZoom onDoubleClick={handleDoubleClick}>
+                <div className="relative h-full">
+                  <Overlay
+                    cover="container"
+                    color="highlight"
+                    trigger="active"
+                    active={shouldAnimate}
+                    maskImage={currentMedia.mediaUrl || undefined}
+                  />
                   <ImageComponent
                     src={currentMedia.mediaUrl || ""}
                     alt={currentMedia.mediaUrl || "Product thumbnail"}
@@ -161,8 +159,8 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
                     )}
                   />
                 </div>
-              </div>
-            </ImageZoom>
+              </ImageZoom>
+            </div>
           )}
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
