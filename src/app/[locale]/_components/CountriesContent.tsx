@@ -53,7 +53,7 @@ export function CountriesContent({ className }: { className?: string }) {
           </Text>
           {languagesForCurrentCountry &&
             languagesForCurrentCountry.length > 1 && (
-              <div className="space-y-2.5 mb-4">
+              <div className="mb-4 space-y-2.5">
                 <Text className="uppercase">{t("language")}</Text>
                 <RadioGroup
                   items={languagesForCurrentCountry.map((item, index) => {
@@ -67,7 +67,8 @@ export function CountriesContent({ className }: { className?: string }) {
                       className: cn(
                         item.className,
                         index === 0 && `border ${borderColor}`,
-                        index === 1 && `border-t border-x border-b ${borderColor}`,
+                        index === 1 &&
+                          `border-t border-x border-b ${borderColor}`,
                       ),
                     };
                   })}
@@ -128,7 +129,7 @@ export function CountriesContent({ className }: { className?: string }) {
                     {countries.map((country) => (
                       <Button
                         key={`${region}-${country.name}-${country.lng}`}
-                        className="flex w-full items-center justify-between px-4"
+                        className="flex w-full items-center justify-between border-b border-transparent px-4 hover:border-textColor"
                         onClick={() => handleCountrySelect(country)}
                       >
                         <div className="flex items-center gap-2">
