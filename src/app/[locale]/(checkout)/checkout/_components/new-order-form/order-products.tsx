@@ -8,17 +8,19 @@ export function OrderProducts({
   validatedProducts,
   currencyKey,
 }: Props) {
-  const expandedProducts =
-    validatedProducts?.flatMap((item) =>
-      Array.from({ length: item.orderItem?.quantity || 1 }, () => ({
-        ...item,
-        orderItem: {
-          productId: item.orderItem?.productId!,
-          quantity: 1,
-          sizeId: item.orderItem?.sizeId!,
-        },
-      })),
-    ) || [];
+  // Pass undefined (not []) when validation hasn't completed — CartProductsList/MobileProductsCarousel fall back to cart
+  const expandedProducts = validatedProducts
+    ? validatedProducts.flatMap((item) =>
+        Array.from({ length: item.orderItem?.quantity || 1 }, () => ({
+          ...item,
+          orderItem: {
+            productId: item.orderItem?.productId!,
+            quantity: 1,
+            sizeId: item.orderItem?.sizeId!,
+          },
+        })),
+      )
+    : undefined;
 
   return (
     <div>

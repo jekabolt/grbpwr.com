@@ -93,12 +93,14 @@ export default function MeasurementPopup({
       </Button>
       {isModalOpen && (
         <div className="fixed inset-y-2 right-2 z-50 w-[600px] border border-textInactiveColor bg-bgColor p-2.5">
-          <div className="flex h-full flex-col gap-12">
-            <div className="flex items-center justify-between">
-              <Text variant="uppercase">{t("size guide")}</Text>
-              <Button onClick={toggleModal}>[x]</Button>
+          <div className="flex h-full flex-col gap-y-2">
+            <div className="flex h-full flex-col gap-y-12">
+              <div className="flex items-center justify-between">
+                <Text variant="uppercase">{t("size guide")}</Text>
+                <Button onClick={toggleModal}>[x]</Button>
+              </div>
+              <div className="min-h-0 flex-1 overflow-auto">{children}</div>
             </div>
-            <div className="min-h-0 flex-1 overflow-auto">{children}</div>
             <div className="mt-auto shrink-0">
               <LoadingButton
                 variant="simpleReverse"

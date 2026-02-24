@@ -41,7 +41,7 @@ type NewOrderFormProps = {
 
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
-  const { products, clearCart } = useCart((s) => s);
+  const { products, clearCart, totalPrice, validatedCurrency } = useCart((s) => s);
 
   const { handlePurchaseEvent } = useCheckoutAnalytics();
 
@@ -308,7 +308,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 loadingType="order-processing"
                 onClick={handlePlaceOrderClick}
               >
-                {`${t("place order")} ${formatPrice(order?.totalSale?.value || "0", orderCurrency || "EUR", currencySymbols[orderCurrency || "EUR"])}`}
+                {`${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`}
               </Button>
             </div>
           </div>
