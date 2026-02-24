@@ -5,7 +5,8 @@ interface Props {
   color?: "dark" | "light" | "highlight";
   disablePointerEvents?: boolean;
   onClick?: () => void;
-  trigger?: "hover" | "held" | "none";
+  trigger?: "hover" | "held" | "active" | "none";
+  active?: boolean;
 }
 
 export function Overlay({
@@ -13,6 +14,7 @@ export function Overlay({
   color = "dark",
   disablePointerEvents = true,
   trigger = "none",
+  active = false,
   onClick,
 }: Props) {
   return (
@@ -24,10 +26,11 @@ export function Overlay({
         "bg-highlightColor mix-blend-screen": color === "highlight",
         fixed: cover === "screen",
         "absolute h-full": cover === "container",
-        "opacity-0 transition-opacity duration-[400ms] ease-out group-hover:opacity-60":
-          trigger === "hover",
-        "opacity-0 transition-opacity duration-[400ms] ease-out group-data-[held=true]:opacity-60":
-          trigger === "held",
+        "transition-opacity duration-[400ms] ease-out": trigger !== "none",
+        "opacity-0 group-hover:opacity-60": trigger === "hover",
+        "opacity-0 group-data-[held=true]:opacity-60": trigger === "held",
+        "opacity-0": trigger === "active" && !active,
+        "opacity-60": trigger === "active" && active,
       })}
       onClick={onClick}
       aria-hidden="true"

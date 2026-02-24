@@ -1,16 +1,15 @@
+import Link from "next/link";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
-import { formatPrice } from "@/lib/currency";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 
+import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import Image from "@/components/ui/image";
-import { Text } from "@/components/ui/text";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
-
+import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
+import { Text } from "@/components/ui/text";
 
 import CartItemSize from "./CartItemSize";
 import ProductRemoveButton from "./ProductRemoveButton";
@@ -29,8 +28,16 @@ export default function ItemRow({
     currencyKeyProp || validatedCurrency?.toUpperCase() || "EUR";
   const currencySymbol = currencySymbols[currencyKey] || currencySymbols.EUR;
   const isSaleApplied = parseInt(product?.productSalePercentage || "0");
-  const priceWithoutSale = formatPrice(product?.productPrice || "0", currencyKey, currencySymbol);
-  const priceWithSale = formatPrice(product?.productPriceWithSale || "0", currencyKey, currencySymbol);
+  const priceWithoutSale = formatPrice(
+    product?.productPrice || "0",
+    currencyKey,
+    currencySymbol,
+  );
+  const priceWithSale = formatPrice(
+    product?.productPriceWithSale || "0",
+    currencyKey,
+    currencySymbol,
+  );
   const t = useTranslations("product");
   const tColors = useTranslations("colors");
 
@@ -43,25 +50,21 @@ export default function ItemRow({
   )?.name;
 
   return (
-    <div className="group relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
+    <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
       <Link
         href={product.slug || ""}
-        className="absolute inset-0 hidden lg:block"
-        onClick={closeCart}
-      >
-        <Overlay cover="container" color="highlight" trigger="hover" />
-      </Link>
-      <Link
-        href={product.slug || ""}
-        className="relative min-w-[90px]"
+        className="group relative h-full min-w-[90px] shrink-0"
         onClick={closeCart}
       >
         <Image
           src={product.thumbnail || ""}
           alt="product"
           fit="contain"
-          aspectRatio="3/4"
+          aspectRatio="4/5"
         />
+        <div className="absolute inset-0 hidden lg:block">
+          <Overlay cover="container" color="highlight" trigger="hover" />
+        </div>
       </Link>
       <div className="relative z-10 flex w-full items-stretch justify-between">
         <Link
@@ -107,17 +110,15 @@ export default function ItemRow({
             />
           )}
           <div className="flex items-center justify-end whitespace-nowrap text-right">
-              {isSaleApplied ? (
-                <div className="flex items-center gap-x-2">
-                  <Text variant="strileTroughInactive">
-                    {priceWithoutSale}
-                  </Text>
-                  <Text>{priceWithSale}</Text>
-                </div>
-              ) : (
-                <Text>{priceWithoutSale}</Text>
-              )}
-            </div>
+            {isSaleApplied ? (
+              <div className="flex items-center gap-x-2">
+                <Text variant="strileTroughInactive">{priceWithoutSale}</Text>
+                <Text>{priceWithSale}</Text>
+              </div>
+            ) : (
+              <Text>{priceWithoutSale}</Text>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -281,12 +281,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
             <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
               <div className="hidden space-y-8 lg:block">
                 <Text variant="uppercase">{t("order summary")}</Text>
-
                 <OrderProducts
                   validatedProducts={order?.validItems}
                   currencyKey={orderCurrency}
                 />
-
                 <div className="space-y-8">
                   <PromoCode
                     freeShipmentCarrierId={2}
