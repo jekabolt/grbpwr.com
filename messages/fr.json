@@ -294,6 +294,10 @@
   "meta": {
     "description": "GRBPWR discute de sujets difficiles par un langage imparfait et maîtrise ce langage imparfait. Achetez la dernière collection de prêt-à-porter.",
     "catalog": "catalogue",
+    "catalog description": "parcourez la collection complète GRBPWR. découvrez le prêt-à-porter, les accessoires et les pièces sélectionnées.",
+    "men description": "shoppez la mode et les accessoires homme. pièces sur mesure, manteaux et essentiels GRBPWR.",
+    "women description": "shoppez la mode et les accessoires femme. collections sélectionnées et pièces statement GRBPWR.",
+    "objects description": "explorez les objets et accessoires GRBPWR. sacs, maroquinerie et pièces lifestyle.",
     "timeline": "chronologie",
     "timeline description": "découvrir l'archive et les mises à jour",
     "main hero image": "image héroïque principale"

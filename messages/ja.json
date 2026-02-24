@@ -294,6 +294,10 @@
   "meta": {
     "description": "GRBPWRは不完全な言葉で難しいトピックを議論し、この不完全な言葉を習得します。最新のレディ・トゥ・ウェアをご購入ください。",
     "catalog": "カタログ",
+    "catalog description": "GRBPWRコレクション全体をご覧ください。レディ・トゥ・ウェア、アクセサリー、厳選アイテムをお探しください。",
+    "men description": "メンズレディ・トゥ・ウェアとアクセサリーをお買い求めください。GRBPWRのテーラード、アウター、エッセンシャル。",
+    "women description": "レディースレディ・トゥ・ウェアとアクセサリーをお買い求めください。GRBPWRの厳選コレクションとスタートメントピース。",
+    "objects description": "GRBPWRのオブジェクトとアクセサリーをご覧ください。バッグ、革小物、ライフスタイルアイテム。",
     "timeline": "タイムライン",
     "timeline description": "アーカイブと更新を発見",
     "main hero image": "メインヒーロー画像"

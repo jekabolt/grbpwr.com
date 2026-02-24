@@ -294,6 +294,10 @@
   "meta": {
     "description": "GRBPWR은 불완전한 언어로 어려운 주제를 논의하고 이 불완전한 언어를 마스터합니다. 최신 레디-투-웨어를 쇼핑하세요.",
     "catalog": "카탈로그",
+    "catalog description": "전체 GRBPWR 컬렉션을 둘러보세요. 레디-투-웨어, 악세서리, 큐레이션된 피스를 발견하세요.",
+    "men description": "남성 레디-투-웨어와 악세서리를 쇼핑하세요. GRBPWR의 테일러드, 아우터, 에센셜.",
+    "women description": "여성 레디-투-웨어와 악세서리를 쇼핑하세요. GRBPWR의 큐레이션된 컬렉션과 스테이트먼트 피스.",
+    "objects description": "GRBPWR 오브젝트와 악세서리를 탐색하세요. 가방, 소가죽 제품, 라이프스타일 피스.",
     "timeline": "타임라인",
     "timeline description": "아카이브와 업데이트 발견",
     "main hero image": "메인 히어로 이미지"

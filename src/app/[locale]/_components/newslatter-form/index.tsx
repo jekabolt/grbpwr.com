@@ -56,7 +56,7 @@ export default function NewslatterForm() {
   };
 
   return (
-    <>
+    <div data-nosnippet>
       <form
         onSubmit={handleSubmit}
         className="flex w-full flex-col items-start gap-6"
@@ -99,6 +99,6 @@ export default function NewslatterForm() {
         onOpenChange={setToastOpen}
         message={toastMessage}
       />
-    </>
+    </div>
   );
 }

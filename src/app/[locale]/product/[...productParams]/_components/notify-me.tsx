@@ -131,7 +131,7 @@ export function NotifyMe({
                       </Text>
                     )}
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-4" data-nosnippet>
                     <InputField
                       name="email"
                       label={t("email")}

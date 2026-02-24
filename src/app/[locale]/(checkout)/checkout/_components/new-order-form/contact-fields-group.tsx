@@ -54,7 +54,7 @@ export default function ContactFieldsGroup({
         type="email"
         disabled={disabled}
       />
-      <div className="space-y-4">
+      <div className="space-y-4" data-nosnippet>
         <CheckboxField
           name="subscribe"
           label={t("accept")}

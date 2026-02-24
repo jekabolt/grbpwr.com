@@ -24,7 +24,12 @@ interface CatalogPageProps {
 }
 
 export async function generateStaticParams() {
-  return [{ params: [] }, { params: ["men"] }, { params: ["women"] }];
+  return [
+    { params: [] },
+    { params: ["men"] },
+    { params: ["women"] },
+    { params: ["objects"] },
+  ];
 }
 
 export const dynamic = "force-static";
@@ -33,17 +38,33 @@ export const dynamicParams = true;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string; params?: string[] }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale, params: routeParams } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
 
-  const title = t("catalog");
-  const description = t("description");
+  const firstParam = routeParams?.[0]?.toLowerCase();
+  const descriptionKey =
+    firstParam === "men"
+      ? "men description"
+      : firstParam === "women"
+        ? "women description"
+        : firstParam === "objects"
+          ? "objects description"
+          : "catalog description";
+
+  const title =
+    firstParam === "men"
+      ? "men"
+      : firstParam === "women"
+        ? "women"
+        : firstParam === "objects"
+          ? "objects"
+          : t("catalog");
 
   return generateCommonMetadata({
     title: title.toUpperCase(),
-    description,
+    description: t(descriptionKey),
   });
 }
 

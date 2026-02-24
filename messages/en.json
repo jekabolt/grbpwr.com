@@ -29,7 +29,7 @@
   },
   "newslatter": {
     "mailing list": "mailing list",
-    "agree": "i agree to recieve emails. read our privacy policy for more information.",
+    "agree": "i agree to receive emails. read our privacy policy for more information.",
     "subscribe": "subscribe",
     "email": "email"
   },
@@ -294,6 +294,10 @@
   "meta": {
     "description": "GRBPWR discusses difficult topics by imperfect language and master this imperfect language. Shop latest ready-to-wear.",
     "catalog": "catalog",
+    "catalog description": "browse the full GRBPWR collection. discover ready-to-wear, accessories, and curated pieces.",
+    "men description": "shop men's ready-to-wear and accessories. tailored pieces, outerwear, and essentials from GRBPWR.",
+    "women description": "shop women's ready-to-wear and accessories. curated collections and statement pieces from GRBPWR.",
+    "objects description": "explore GRBPWR objects and accessories. bags, small leather goods, and lifestyle pieces.",
     "timeline": "timeline",
     "timeline description": "discover archive and updates",
     "main hero image": "main hero image"
