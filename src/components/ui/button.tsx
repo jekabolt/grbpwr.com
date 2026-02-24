@@ -104,12 +104,12 @@ export const buttonVariants = cva("disabled:cursor-not-allowed block", {
     {
       variant: "main",
       isLoading: true,
-      className: "disabled:!bg-textColor disabled:!border-textColor",
     },
     {
       variant: "secondary",
       isLoading: true,
-      className: "disabled:!bg-textColor disabled:!border-textColor disabled:!text-bgColor",
+      className:
+        "disabled:!bg-textColor disabled:!border-textColor disabled:!text-bgColor",
     },
   ],
   defaultVariants: {
