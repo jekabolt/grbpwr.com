@@ -103,9 +103,12 @@ export function MobileProductsCarousel({
   validatedProducts,
   currencyKey,
 }: Props) {
+  const cartProducts = useCart((s) => s.products).map((v) => v.productData).filter(Boolean) as common_OrderItem[];
+  const products = validatedProducts ?? cartProducts;
+
   return (
     <div>
-      {validatedProducts?.map((p, i) => (
+      {products?.map((p, i) => (
         <MobileOrderItemRow
           key={p?.id + "" + p?.orderId + i}
           product={p}
