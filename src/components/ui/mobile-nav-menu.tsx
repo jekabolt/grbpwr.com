@@ -4,6 +4,7 @@ import { useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
+import { useDataContext } from "../contexts/DataContext";
 import { Button } from "./button";
 import {
   ActiveCategoryMenuDialog,
@@ -16,12 +17,14 @@ export function MobileNavMenu({
 }: {
   isBigMenuEnabled?: boolean;
 }) {
+  const { dictionary } = useDataContext();
   const [open, setOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<
     "men" | "women" | undefined
   >();
   const t = useTranslations("navigation");
   const tAccessibility = useTranslations("accessibility");
+  const isWebsiteEnabled = dictionary?.siteEnabled;
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
@@ -61,10 +64,13 @@ export function MobileNavMenu({
                 </div>
               )}
             </div>
-            {activeCategory === undefined || !isBigMenuEnabled ? (
+            {activeCategory === undefined ||
+            !isBigMenuEnabled ||
+            !isWebsiteEnabled ? (
               <DefaultMobileMenuDialog
                 setActiveCategory={setActiveCategory}
                 isBigMenuEnabled={isBigMenuEnabled}
+                isWebsiteEnabled={isWebsiteEnabled}
               />
             ) : (
               <ActiveCategoryMenuDialog activeCategory={activeCategory} />

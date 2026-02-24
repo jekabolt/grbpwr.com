@@ -16,7 +16,13 @@ import { HeaderLeftNav } from "./header-left-nav";
 import { useAnnounce } from "./useAnnounce";
 import { useHeaderVisibility } from "./useHeaderVisibility";
 
-export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
+export function Header({
+  showAnnounce = false,
+  theme,
+}: {
+  showAnnounce?: boolean;
+  theme?: "light" | "dark";
+}) {
   const { dictionary } = useDataContext();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
@@ -31,6 +37,7 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
   );
   const { open, handleClose } = useAnnounce(announceTranslation?.text || "");
   const t = useTranslations("navigation");
+  const isWebsiteEnabled = dictionary?.siteEnabled;
 
   return (
     <>
@@ -53,10 +60,14 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
             "pointer-events-auto translate-y-0": isVisible,
             "pointer-events-none -translate-y-[120%]": !isVisible,
             "border-none bg-transparent text-bgColor mix-blend-exclusion":
-              isAtTop && isMobile,
+              isAtTop && isMobile && theme !== "dark",
+            "border-none bg-transparent text-textColor mix-blend-exclusion":
+              isAtTop && isMobile && theme === "dark",
             "border-none": isAtTop && showAnnounce && !isNavOpen,
             "lg:bg-transparent lg:text-bgColor lg:mix-blend-exclusion":
-              !isNavOpen || !isBigMenuEnabled,
+              (!isNavOpen || !isBigMenuEnabled) && theme !== "dark",
+            "lg:bg-transparent lg:text-textColor lg:mix-blend-exclusion":
+              (!isNavOpen || !isBigMenuEnabled) && theme === "dark",
             "lg:border-textInactiveColor lg:bg-bgColor lg:text-textColor lg:mix-blend-normal":
               isNavOpen && isBigMenuEnabled,
             "lg:border-none": !isBigMenuEnabled,
@@ -78,21 +89,23 @@ export function Header({ showAnnounce = false }: { showAnnounce?: boolean }) {
         </Button>
 
         <div className="flex grow basis-0 items-center justify-end">
-          <div className="relative w-full lg:w-auto">
-            <div className="block w-full lg:hidden">
-              <MobileNavCart />
+          {isWebsiteEnabled && (
+            <div className="relative w-full lg:w-auto">
+              <div className="block w-full lg:hidden">
+                <MobileNavCart />
+              </div>
+              <div className="hidden lg:block">
+                <Button
+                  onClick={toggleCart}
+                  variant={isOpen ? "underline" : "default"}
+                  size="sm"
+                  className="underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
+                >
+                  {t("cart")} {itemsQuantity ? itemsQuantity : ""}
+                </Button>
+              </div>
             </div>
-            <div className="hidden lg:block">
-              <Button
-                onClick={toggleCart}
-                variant={isOpen ? "underline" : "default"}
-                size="sm"
-                className="underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
-              >
-                {t("cart")} {itemsQuantity ? itemsQuantity : ""}
-              </Button>
-            </div>
-          </div>
+          )}
         </div>
       </header>
     </>
