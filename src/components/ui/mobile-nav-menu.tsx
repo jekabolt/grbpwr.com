@@ -26,13 +26,16 @@ export function MobileNavMenu({
   return (
     <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitives.Trigger asChild>
-        <Button size="lg" className="w-full text-left transition-colors hover:opacity-70 active:opacity-50">
+        <Button
+          size="lg"
+          className="w-full text-left transition-colors hover:opacity-70 active:opacity-50"
+        >
           {t("menu")}
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-50 border border-textInactiveColor bg-bgColor px-2.5 pb-4 pt-5">
+        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-40 border border-textInactiveColor bg-bgColor px-2.5 pb-4 pt-5">
           <DialogPrimitives.Title className="sr-only">
             {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
