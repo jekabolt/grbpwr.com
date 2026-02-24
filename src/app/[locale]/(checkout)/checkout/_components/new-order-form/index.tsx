@@ -2,18 +2,18 @@
 
 import { useRef, useState } from "react";
 import { currencySymbols } from "@/constants";
-import { formatPrice } from "@/lib/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
-import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
-import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
 import { getValidationErrorToastKey } from "@/lib/cart/validate-cart-items";
+import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
+import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
+import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
@@ -64,7 +64,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   });
 
   const { order, validateItems, orderCurrency } = useValidatedOrder(form);
-  const { clearFormData } = useOrderPersistence(form, currentCountry.countryCode);
+  const { clearFormData } = useOrderPersistence(
+    form,
+    currentCountry.countryCode,
+  );
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
   const {
@@ -73,27 +76,29 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     setToastMessage,
     toastMessage,
   } = useCheckoutEffects({
-      order,
-      products,
-      loading,
-      form,
-      countryCode: currentCountry.countryCode || "",
-      onAmountChange,
-      handleFormChange,
-    });
+    order,
+    products,
+    loading,
+    form,
+    countryCode: currentCountry.countryCode || "",
+    onAmountChange,
+    handleFormChange,
+  });
 
   const paymentMethod = form.watch("paymentMethod");
   const isPaymentFieldsValid =
     paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" ||
     isPaymentElementComplete;
 
-  const handlePlaceOrderClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePlaceOrderClick = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     // Check if form is valid and payment element is complete
     const isValid = form.formState.isValid && isPaymentFieldsValid;
-    
+
     if (!isValid) {
       e.preventDefault();
-      
+
       // Trigger validation on all fields to show errors
       await form.trigger();
 
@@ -103,10 +108,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
 
       // Find first error field and scroll to its section
       const errors = form.formState.errors;
-      
+
       // Check contact fields
       if (errors.email || errors.termsOfService || errors.subscribe) {
-        contactRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        contactRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         if (!isGroupOpen("contact")) {
           handleGroupToggle("contact");
         }
@@ -127,7 +135,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         errors.postalCode ||
         errors.shipmentCarrierId
       ) {
-        shippingRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        shippingRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         if (!isGroupOpen("shipping")) {
           handleGroupToggle("shipping");
         }
@@ -141,7 +152,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         errors.billingAddress ||
         !isPaymentFieldsValid
       ) {
-        paymentRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        paymentRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         if (!isGroupOpen("payment")) {
           handleGroupToggle("payment");
         }
@@ -267,9 +281,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
             <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
               <div className="hidden space-y-8 lg:block">
                 <Text variant="uppercase">{t("order summary")}</Text>
-
-                <OrderProducts validatedProducts={order?.validItems} currencyKey={orderCurrency} />
-
+                <OrderProducts
+                  validatedProducts={order?.validItems}
+                  currencyKey={orderCurrency}
+                />
                 <div className="space-y-8">
                   <PromoCode
                     freeShipmentCarrierId={2}
@@ -277,7 +292,11 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                     loading={loading}
                     validateItems={validateItems}
                   />
-                  <PriceSummary form={form} order={order} orderCurrency={orderCurrency} />
+                  <PriceSummary
+                    form={form}
+                    order={order}
+                    orderCurrency={orderCurrency}
+                  />
                 </div>
               </div>
               <Button

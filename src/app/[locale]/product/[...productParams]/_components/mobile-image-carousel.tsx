@@ -148,7 +148,6 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
                     color="highlight"
                     trigger="active"
                     active={shouldAnimate}
-                    maskImage={currentMedia.mediaUrl || undefined}
                   />
                   <ImageComponent
                     src={currentMedia.mediaUrl || ""}

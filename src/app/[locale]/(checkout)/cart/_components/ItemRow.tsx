@@ -60,7 +60,7 @@ export default function ItemRow({
           src={product.thumbnail || ""}
           alt="product"
           fit="contain"
-          aspectRatio="3/4"
+          aspectRatio="4/5"
         />
         <div className="absolute inset-0 hidden lg:block">
           <Overlay cover="container" color="highlight" trigger="hover" />
