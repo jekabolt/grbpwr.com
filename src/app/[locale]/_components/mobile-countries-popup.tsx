@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   COUNTRIES_BY_REGION,
   currencySymbols,
@@ -8,13 +7,14 @@ import {
 } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import RadioGroup from "@/components/ui/radio-group";
 import { Searchbar } from "@/components/ui/searchbar";
 import { Text } from "@/components/ui/text";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 
 import FieldsGroupContainer from "../(checkout)/checkout/_components/new-order-form/fields-group-container";
 import { useLocation } from "./useLocation";
@@ -65,7 +65,7 @@ export function MobileCountriesPopup() {
       </Button>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-50 border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden">
+        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-50 overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden">
           <div className="flex items-center justify-between">
             <Text variant="uppercase">{t("change country")}</Text>
             <DialogPrimitives.Close asChild>
@@ -80,7 +80,7 @@ export function MobileCountriesPopup() {
                 currency: currentCountry.currencyKey || "EUR",
               })}
             </Text>
-            <div className="space-y-2.5 mb-4">
+            <div className="mb-4 space-y-2.5">
               <Text className="uppercase">{t("language")}</Text>
               {languagesForCurrentCountry &&
                 languagesForCurrentCountry.length > 1 && (
