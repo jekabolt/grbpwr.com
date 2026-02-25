@@ -34,7 +34,11 @@ export function AdditionalHeader({
         "blackTheme bg-transparent text-textColor mix-blend-exclusion",
       )}
     >
-      <AnimatedButton animationArea="text" onClick={handleLeftClick}>
+      <AnimatedButton
+        animationArea="text"
+        className="py-3 pr-8"
+        onClick={handleLeftClick}
+      >
         {left}
       </AnimatedButton>
       <div className="flex-none text-center text-textBaseSize">{center}</div>
