@@ -15,8 +15,8 @@ export function Disabled() {
       ?.text || "";
   const announceLink = dictionary?.announce?.link;
   return (
-    <FlexibleLayout>
-      <div className="absolute inset-0 flex h-screen w-full items-center justify-center">
+    <FlexibleLayout theme="dark">
+      <div className="blackTheme absolute inset-0 flex h-screen w-full items-center justify-center bg-bgColor text-textColor">
         {announceLink ? (
           <AnimatedButton href={announceLink}>
             <Text variant="uppercase">{announce}</Text>

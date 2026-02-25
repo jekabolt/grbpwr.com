@@ -78,22 +78,38 @@ export function Header({
           showAnnounce={showAnnounce}
           onNavOpenChange={setIsNavOpen}
           isBigMenuEnabled={isBigMenuEnabled}
+          isWebsiteEnabled={isWebsiteEnabled}
+          isMobile={isMobile}
         />
 
-        <Button
-          asChild
-          size="lg"
-          className="w-1/3 text-center transition-colors hover:opacity-70 active:opacity-50 lg:w-auto"
-        >
-          <Link href="/">grbpwr</Link>
-        </Button>
+        {!(isWebsiteEnabled === false && isMobile) && (
+          <Button
+            asChild
+            size="lg"
+            className={cn(
+              "w-1/3 text-center transition-colors hover:opacity-70 active:opacity-50 lg:w-auto",
+            )}
+          >
+            <Link href="/">grbpwr</Link>
+          </Button>
+        )}
 
         <div className="flex grow basis-0 items-center justify-end">
-          {isWebsiteEnabled && (
-            <div className="relative w-full lg:w-auto">
-              <div className="block w-full lg:hidden">
+          <div className="relative w-full lg:w-auto">
+            <div className="block w-full lg:hidden">
+              {isWebsiteEnabled ? (
                 <MobileNavCart />
-              </div>
+              ) : (
+                <Button
+                  asChild
+                  size="lg"
+                  className="w-full bg-transparent text-right"
+                >
+                  <Link href="/timeline">{t("timeline")}</Link>
+                </Button>
+              )}
+            </div>
+            {isWebsiteEnabled && (
               <div className="hidden lg:block">
                 <Button
                   onClick={toggleCart}
@@ -104,8 +120,8 @@ export function Header({
                   {t("cart")} {itemsQuantity ? itemsQuantity : ""}
                 </Button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </header>
     </>
