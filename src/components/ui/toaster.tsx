@@ -44,7 +44,7 @@ export function EmailToaster({
         onOpenChange={setOpen}
       >
         <Toast.Title>
-          <Text className="text-bgColor">
+          <Text className="lowercase text-bgColor">
             {isEmail && tToaster("email_copied")}
           </Text>
         </Toast.Title>
@@ -69,7 +69,7 @@ export function SubmissionToaster({
       onOpenChange={onOpenChange}
     >
       <Toast.Title>
-        <Text className="text-center text-bgColor">{message}</Text>
+        <Text className="text-center lowercase text-bgColor">{message}</Text>
       </Toast.Title>
     </Toast.Root>
   );
