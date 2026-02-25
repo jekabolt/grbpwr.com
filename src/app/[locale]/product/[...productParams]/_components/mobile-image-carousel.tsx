@@ -27,7 +27,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tAccessibility = useTranslations("accessibility");
   const [emblaRef, emblaApi] = useEmblaCarousel(EMBLA_OPTIONS, [
     WheelGesturesPlugin(),
@@ -47,38 +47,33 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
   useEffect(() => {
     if (!isOpen || !emblaApi) {
       setShouldAnimate(false);
-      if (animationTimerRef.current) {
-        clearTimeout(animationTimerRef.current);
-        animationTimerRef.current = null;
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
       }
       return;
     }
     setSelectedIndex(emblaApi.selectedScrollSnap());
-    setShouldAnimate(true);
-    const timer = setTimeout(() => setShouldAnimate(false), 400);
-    return () => clearTimeout(timer);
-  }, [isOpen, emblaApi]);
-
-  useEffect(() => {
+    // Defer so overlay mounts with opacity-0, then transitions to opacity-60 (smooth fade-in)
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setShouldAnimate(true);
+        timerRef.current = setTimeout(() => {
+          setShouldAnimate(false);
+          timerRef.current = null;
+        }, 400);
+      });
+    });
     return () => {
-      if (animationTimerRef.current) {
-        clearTimeout(animationTimerRef.current);
+      cancelAnimationFrame(raf);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
       }
     };
-  }, []);
+  }, [isOpen, emblaApi]);
 
   const currentMedia = media[selectedIndex]?.media?.fullSize;
-
-  const handleDoubleClick = () => {
-    if (animationTimerRef.current) {
-      clearTimeout(animationTimerRef.current);
-    }
-    setShouldAnimate(true);
-    animationTimerRef.current = setTimeout(() => {
-      setShouldAnimate(false);
-      animationTimerRef.current = null;
-    }, 400);
-  };
 
   return (
     <DialogPrimitives.Root modal open={isOpen} onOpenChange={setIsOpen}>
@@ -141,7 +136,7 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
 
           {currentMedia && (
             <div className="flex min-h-0 flex-1 flex-col pt-12">
-              <ImageZoom onDoubleClick={handleDoubleClick}>
+              <ImageZoom>
                 <div className="relative h-full">
                   <Overlay
                     cover="container"
