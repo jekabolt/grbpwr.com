@@ -5,6 +5,7 @@ import * as Toast from "@radix-ui/react-toast";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
+
 import { Button } from "./button";
 import { Text } from "./text";
 
@@ -12,7 +13,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <Toast.Provider duration={4000}>
       {children}
-      <Toast.Viewport className="not-prose fixed inset-x-2.5 top-2 z-50 lg:top-2" />
+      <Toast.Viewport className="not-prose fixed inset-x-2 top-2 z-50 lg:top-2" />
     </Toast.Provider>
   );
 }
@@ -31,7 +32,10 @@ export function EmailToaster({
   const tToaster = useTranslations("toaster");
   return (
     <>
-      <Button className={cn("outline-none", className)} onClick={() => setOpen(true)}>
+      <Button
+        className={cn("outline-none", className)}
+        onClick={() => setOpen(true)}
+      >
         {children}
       </Button>
       <Toast.Root
