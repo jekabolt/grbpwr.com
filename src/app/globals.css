@@ -51,6 +51,8 @@
     background-color: var(--background);
   }
 
+  /* Black background only for black-theme pages (timeline, disabled, empty-hero) */
+  html.blackTheme,
   html:has(.blackTheme) {
     background-color: #000;
   }

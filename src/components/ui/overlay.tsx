@@ -1,4 +1,10 @@
+"use client";
+
+import { useEffect } from "react";
+
 import { cn } from "@/lib/utils";
+
+let overflowLockCount = 0;
 
 interface Props {
   cover: "screen" | "container";
@@ -17,6 +23,19 @@ export function Overlay({
   active = false,
   onClick,
 }: Props) {
+  useEffect(() => {
+    if (cover !== "screen") return;
+    overflowLockCount++;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      overflowLockCount--;
+      if (overflowLockCount === 0) {
+        document.body.style.overflow = prevOverflow;
+      }
+    };
+  }, [cover]);
+
   return (
     <div
       className={cn("inset-0 z-30 h-screen", {

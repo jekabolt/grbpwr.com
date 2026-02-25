@@ -18,6 +18,7 @@ import { generateCommonMetadata } from "@/lib/common-metadata";
 
 import "../globals.css";
 
+import { HtmlThemeSync } from "@/components/html-theme-sync";
 import { UpdateLocation } from "@/components/ui/update-location";
 
 export function generateStaticParams() {
@@ -60,6 +61,11 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={locale}>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var p=window.location.pathname;if(/\\/timeline(\\/|$)/.test(p))document.documentElement.classList.add("blackTheme");})();`,
+          }}
+        />
         <link rel="preconnect" href="https://files.grbpwr.com" />
         <link rel="dns-prefetch" href="https://files.grbpwr.com" />
         <link rel="preconnect" href="https://art.grbpwr.com" />
@@ -68,6 +74,7 @@ export default async function RootLayout({ children, params }: Props) {
       <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>
+          <HtmlThemeSync />
           <ToastProvider>
             <PageTransition>
               <SiteGuard>
