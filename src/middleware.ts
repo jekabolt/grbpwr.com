@@ -35,8 +35,9 @@ export default async function middleware(req: NextRequest) {
     if (parsedPath) {
         const { country, locale, rest } = parsedPath;
 
-        // Redirect to home when site is disabled and user navigates to non-home URL
-        if (rest?.trim()) {
+        // Redirect to home when site is disabled and user navigates to non-home, non-timeline URL
+        const isTimelinePath = rest === "/timeline" || rest?.startsWith("/timeline/");
+        if (rest?.trim() && !isTimelinePath) {
             try {
                 const siteStatusUrl = new URL("/api/site-status", req.url);
                 const res = await fetch(siteStatusUrl);
@@ -91,9 +92,10 @@ export default async function middleware(req: NextRequest) {
 
         const targetLocale = localeCookie || getLocaleFromCountry(targetCountry);
 
-        // Redirect to home when site is disabled (path is not just / or /locale)
+        // Redirect to home when site is disabled (path is not just /, /locale, or timeline)
         const isHomePath = pathname === "/" || /^\/[a-z]{2}\/?$/.test(pathname);
-        if (!isHomePath) {
+        const isTimelinePath = /\/timeline(\/|$)/.test(pathname);
+        if (!isHomePath && !isTimelinePath) {
             try {
                 const siteStatusUrl = new URL("/api/site-status", req.url);
                 const siteRes = await fetch(siteStatusUrl);

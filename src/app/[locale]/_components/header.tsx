@@ -101,9 +101,9 @@ export function Header({
                 <MobileNavCart />
               ) : (
                 <Button
-                  asChild
                   size="lg"
-                  className="w-full bg-transparent text-right"
+                  className="z-50 w-full bg-transparent text-right transition-colors hover:opacity-70 active:opacity-50"
+                  asChild
                 >
                   <Link href="/timeline">{t("timeline")}</Link>
                 </Button>

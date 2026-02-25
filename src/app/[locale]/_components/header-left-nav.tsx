@@ -1,21 +1,21 @@
 import Link from "next/link";
 
-import { MobileNavMenu } from "@/components/ui/mobile-nav-menu";
 import { Button } from "@/components/ui/button";
+import { MobileNavMenu } from "@/components/ui/mobile-nav-menu";
 import { DesktopNavigationMenu } from "@/app/[locale]/_components/desktop-nav-menu";
 
 export function HeaderLeftNav({
   showAnnounce,
   isBigMenuEnabled,
-  onNavOpenChange,
   isWebsiteEnabled,
   isMobile,
+  onNavOpenChange,
 }: {
   showAnnounce?: boolean;
   isBigMenuEnabled?: boolean;
-  onNavOpenChange: (isOpen: boolean) => void;
   isWebsiteEnabled?: boolean;
   isMobile?: boolean;
+  onNavOpenChange: (isOpen: boolean) => void;
 }) {
   const showGrbpwrOnLeft = isWebsiteEnabled === false && isMobile;
 
