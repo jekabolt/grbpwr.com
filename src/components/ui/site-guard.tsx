@@ -12,6 +12,11 @@ function isHomePath(pathname: string | null): boolean {
   return false;
 }
 
+function isTimelinePath(pathname: string | null): boolean {
+  if (!pathname) return false;
+  return /\/timeline(\/|$)/.test(pathname);
+}
+
 export function SiteGuard({ children }: { children: React.ReactNode }) {
   const { dictionary } = useDataContext();
   const pathname = usePathname();
@@ -20,7 +25,7 @@ export function SiteGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isWebsiteEnabled !== false) return;
-    if (isHomePath(pathname)) return;
+    if (isHomePath(pathname) || isTimelinePath(pathname)) return;
 
     const homePath =
       pathname?.match(/^(\/[A-Za-z]{2}\/[a-z]{2}|\/[a-z]{2})/)?.[1] || "/en";

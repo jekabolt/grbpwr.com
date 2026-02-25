@@ -1,6 +1,8 @@
 "use client";
 
 import * as DialogPrimitives from "@radix-ui/react-dialog";
+import { useEffect } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
@@ -28,18 +30,14 @@ export function MobileNavCart({
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const open = isMobile && isOpen;
+
+  useEffect(() => {
+    if (open && products.length > 0) {
+      router.prefetch("/checkout");
+    }
+  }, [open, products.length, router]);
   const itemsQuantity = Object.keys(products).length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
-
-  const handleProceedToCheckout = (e: React.MouseEvent) => {
-    e.preventDefault();
-
-    if (products.length === 0) return;
-
-    handleBeginCheckoutEvent();
-    closeCart();
-    router.push("/checkout");
-  };
 
   return (
     <>
@@ -83,12 +81,21 @@ export function MobileNavCart({
                   <div className="mt-auto shrink-0 space-y-6 pt-6">
                     <CartTotalPrice />
                     <Button
+                      asChild
                       variant="main"
                       size="lg"
                       className="w-full uppercase"
-                      onClick={handleProceedToCheckout}
                     >
-                      {tCart("proceed to checkout")}
+                      <Link
+                        href="/checkout"
+                        prefetch
+                        onClick={() => {
+                          handleBeginCheckoutEvent();
+                          closeCart();
+                        }}
+                      >
+                        {tCart("proceed to checkout")}
+                      </Link>
                     </Button>
                   </div>
                 </>

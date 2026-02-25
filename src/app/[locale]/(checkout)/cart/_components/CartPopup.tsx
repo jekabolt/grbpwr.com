@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -30,21 +31,12 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
 
     if (isOpen) {
       window.addEventListener("keydown", handleKeyDown);
+      if (products.length > 0) router.prefetch("/checkout");
     }
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, closeCart]);
-
-  const handleProceedToCheckout = (e: React.MouseEvent) => {
-    e.preventDefault();
-
-    if (products.length === 0) return;
-
-    handleBeginCheckoutEvent();
-    closeCart();
-    router.push("/checkout");
-  };
+  }, [isOpen, closeCart, products.length, router]);
 
   return (
     <div className="z-50 w-full">
@@ -72,12 +64,18 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
               )}
               {itemsQuantity > 0 && (
                 <Button
+                  asChild
                   variant="secondary"
                   size="lg"
                   className="block w-full uppercase"
-                  onClick={handleProceedToCheckout}
                 >
-                  {t("proceed to checkout")}
+                  <Link
+                    href="/checkout"
+                    prefetch
+                    onClick={() => handleBeginCheckoutEvent()}
+                  >
+                    {t("proceed to checkout")}
+                  </Link>
                 </Button>
               )}
             </div>
