@@ -136,34 +136,36 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
 
           {currentMedia && (
             <div className="flex min-h-0 flex-1 flex-col pt-12">
-              <ImageZoom>
-                <div className="flex h-full w-full justify-center">
-                  <div
-                    className="relative h-full w-auto max-w-full"
-                    style={{
-                      aspectRatio: calculateAspectRatio(
-                        currentMedia.width,
-                        currentMedia.height,
-                      ),
-                    }}
-                  >
-                    <Overlay
-                      cover="container"
-                      color="highlight"
-                      trigger="active"
-                      active={shouldAnimate}
-                    />
-                    <ImageComponent
-                      src={currentMedia.mediaUrl || ""}
-                      alt={currentMedia.mediaUrl || "Product thumbnail"}
-                      aspectRatio={calculateAspectRatio(
-                        currentMedia.width,
-                        currentMedia.height,
-                      )}
-                    />
+              <div className="min-h-0 flex-1">
+                <ImageZoom>
+                  <div className="relative h-full w-full flex items-center justify-center">
+                    <div
+                      className="relative w-full max-h-full shrink-0"
+                      style={{
+                        aspectRatio: calculateAspectRatio(
+                          currentMedia.width,
+                          currentMedia.height,
+                        ),
+                      }}
+                    >
+                      <Overlay
+                        cover="container"
+                        color="highlight"
+                        trigger="active"
+                        active={shouldAnimate}
+                      />
+                      <ImageComponent
+                        src={currentMedia.mediaUrl || ""}
+                        alt={currentMedia.mediaUrl || "Product thumbnail"}
+                        aspectRatio={calculateAspectRatio(
+                          currentMedia.width,
+                          currentMedia.height,
+                        )}
+                      />
+                    </div>
                   </div>
-                </div>
-              </ImageZoom>
+                </ImageZoom>
+              </div>
             </div>
           )}
         </DialogPrimitives.Content>
