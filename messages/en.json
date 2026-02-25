@@ -682,5 +682,8 @@
     "mobile menu": "grbpwr mobile menu",
     "notify me dialog": "grbpwr notify me",
     "reason label": "reason"
+  },
+  "empty-hero": {
+    "shop now": "shop now"
   }
 }

@@ -682,5 +682,8 @@
     "mobile menu": "grbpwr 모바일 메뉴",
     "notify me dialog": "grbpwr 알림 대화상자",
     "reason label": "이유"
+  },
+  "empty-hero": {
+    "shop now": "지금 쇼핑하기"
   }
 }
