@@ -12,6 +12,7 @@ import {
 import { PageTransition } from "@/components/page-transition";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
+import { SiteGuard } from "@/components/ui/site-guard";
 import { ToastProvider } from "@/components/ui/toaster";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 
@@ -69,7 +70,9 @@ export default async function RootLayout({ children, params }: Props) {
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ToastProvider>
             <PageTransition>
-              <div className="relative min-h-screen">{children}</div>
+              <SiteGuard>
+                <div className="relative min-h-screen">{children}</div>
+              </SiteGuard>
             </PageTransition>
             <GeoSuggestWrapper />
             <UpdateLocation />

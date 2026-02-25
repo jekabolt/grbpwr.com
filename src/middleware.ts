@@ -6,7 +6,7 @@ import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handle
 
 const intlMiddleware = createMiddleware(routing);
 
-export default function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
     // Permanent redirect www → non-www (308)
@@ -34,6 +34,22 @@ export default function middleware(req: NextRequest) {
     const parsedPath = parseCountryLocalePath(pathname);
     if (parsedPath) {
         const { country, locale, rest } = parsedPath;
+
+        // Redirect to home when site is disabled and user navigates to non-home URL
+        if (rest?.trim()) {
+            try {
+                const siteStatusUrl = new URL("/api/site-status", req.url);
+                const res = await fetch(siteStatusUrl);
+                const { siteEnabled } = (await res.json()) as { siteEnabled?: boolean };
+                if (siteEnabled === false) {
+                    const url = req.nextUrl.clone();
+                    url.pathname = `/${country}/${locale}`;
+                    return NextResponse.redirect(url, { status: 307 });
+                }
+            } catch {
+                // Allow through on fetch error
+            }
+        }
 
         if (!supportedCountries.includes(country!)) {
             const url = req.nextUrl.clone();
@@ -69,13 +85,33 @@ export default function middleware(req: NextRequest) {
 
     //handle paths without country/locale
     if (!/^\/[A-Za-z]{2}\/[a-z]{2}(?=\/|$)/.test(pathname)) {
-        // redirect to country/locale
         const targetCountry = (countryCookie && supportedCountries.includes(countryCookie))
             ? countryCookie
             : getNormalizedCountry(detectedCountry);
 
         const targetLocale = localeCookie || getLocaleFromCountry(targetCountry);
 
+        // Redirect to home when site is disabled (path is not just / or /locale)
+        const isHomePath = pathname === "/" || /^\/[a-z]{2}\/?$/.test(pathname);
+        if (!isHomePath) {
+            try {
+                const siteStatusUrl = new URL("/api/site-status", req.url);
+                const siteRes = await fetch(siteStatusUrl);
+                const { siteEnabled } = (await siteRes.json()) as { siteEnabled?: boolean };
+                if (siteEnabled === false) {
+                    const url = req.nextUrl.clone();
+                    url.pathname = `/${targetCountry}/${targetLocale}`;
+                    const res = NextResponse.redirect(url, { status: 307 });
+                    setMainCookies(res, targetCountry, targetLocale);
+                    clearSuggestCookies(res);
+                    return res;
+                }
+            } catch {
+                // Allow through on fetch error
+            }
+        }
+
+        // redirect to country/locale
         const url = req.nextUrl.clone();
         url.pathname = `/${targetCountry}/${targetLocale}${pathname}`;
         const res = NextResponse.redirect(url, { status: 308 });
