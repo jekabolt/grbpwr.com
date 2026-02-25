@@ -44,7 +44,7 @@ export function SizePicker({
         className={cn(
           {
             "grid grid-cols-4 gap-x-3 gap-y-7": view === "grid",
-            "flex w-full flex-row items-center justify-center gap-5":
+            "flex w-full flex-row flex-wrap items-center justify-center gap-5":
               view === "line",
           },
           className,
