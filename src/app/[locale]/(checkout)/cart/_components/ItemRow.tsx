@@ -50,10 +50,10 @@ export default function ItemRow({
   )?.name;
 
   return (
-    <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
+    <div className="group relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
       <Link
         href={product.slug || ""}
-        className="group relative h-full min-w-[90px] shrink-0"
+        className="relative h-full min-w-[90px] shrink-0"
         onClick={closeCart}
       >
         <Image
