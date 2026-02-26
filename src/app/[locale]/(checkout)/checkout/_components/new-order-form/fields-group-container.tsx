@@ -21,6 +21,7 @@ interface FieldsGroupContainerProps {
   signPosition?: "before" | "after";
   clickableAreaClassName?: string;
   childrenSpacingClass?: string;
+  headerContentGapClass?: string;
   titleWrapperClassName?: string;
   onToggle?: () => void;
 }
@@ -38,6 +39,7 @@ export default function FieldsGroupContainer({
   signPosition = "after",
   clickableAreaClassName,
   childrenSpacingClass = "space-y-8",
+  headerContentGapClass = "space-y-4 lg:space-y-8",
   titleWrapperClassName,
   onToggle,
 }: FieldsGroupContainerProps) {
@@ -56,7 +58,8 @@ export default function FieldsGroupContainer({
   return (
     <div
       className={cn(
-        "space-y-4 bg-bgColor text-textColor lg:space-y-8",
+        "bg-bgColor text-textColor",
+        headerContentGapClass,
         className,
       )}
     >

@@ -121,6 +121,7 @@ export function CountriesContent({ className }: { className?: string }) {
                   signType="plus-minus"
                   clickableAreaClassName="h-9 items-start"
                   childrenSpacingClass="pb-4"
+                  headerContentGapClass="space-y-2 lg:space-y-1"
                   title={region}
                   isOpen={openSection === index}
                   onToggle={() => toggleSection(index)}
@@ -129,14 +130,16 @@ export function CountriesContent({ className }: { className?: string }) {
                     {countries.map((country) => (
                       <Button
                         key={`${region}-${country.name}-${country.lng}`}
-                        className="flex w-full items-center justify-between border-b border-transparent px-4 hover:border-textColor"
+                        className="group flex w-full items-center justify-between px-4"
                         onClick={() => handleCountrySelect(country)}
                       >
-                        <div className="flex items-center gap-2">
-                          <Text className="uppercase">{country.name}</Text>
-                          <Text>{`[${country.currency}]`}</Text>
+                        <div className="flex min-w-0 flex-1 items-center justify-between border-b border-transparent group-hover:border-textColor">
+                          <div className="flex items-center gap-2">
+                            <Text className="uppercase">{country.name}</Text>
+                            <Text>{`[${country.currency}]`}</Text>
+                          </div>
+                          <Text className="uppercase">{country.displayLng}</Text>
                         </div>
-                        <Text className="uppercase">{country.displayLng}</Text>
                       </Button>
                     ))}
                   </div>
