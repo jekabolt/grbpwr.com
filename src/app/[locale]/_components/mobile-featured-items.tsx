@@ -23,8 +23,24 @@ export function MobileFeaturedItems({
 }) {
   const isMultipleItems = itemsQuantity > 1;
   const itemSlug = products?.[0]?.slug || "";
-  const nonScrollable =
-    itemsQuantity === 1 || itemsQuantity === 2 || itemsQuantity === 4;
+  const needsCarousel = itemsQuantity === 3 || itemsQuantity > 4;
+
+  const productList = (
+    <>
+      {products?.map((p, index) => (
+        <ProductItem
+          key={p.id}
+          className={cn("w-44 px-2.5", {
+            "w-full": !isMultipleItems,
+            "flex-[0_0_50%]": isMultipleItems,
+            "w-44 px-0": itemsQuantity >= 3 && itemsQuantity !== 4,
+          })}
+          product={p}
+          imagePriority={index === 0}
+        />
+      ))}
+    </>
+  );
 
   return (
     <div className="space-y-10 py-16">
@@ -36,29 +52,24 @@ export function MobileFeaturedItems({
           onHeroClick={onHeroClick}
         />
       </div>
-      <Carousel
-        loop={!nonScrollable}
-        align="center"
-        startIndex={0}
-        disableForItemCounts={[1, 2, 4]}
-        className={cn("flex", {
-          "gap-0": itemsQuantity >= 3 && itemsQuantity !== 4,
-          "grid grid-cols-2 gap-4": itemsQuantity === 4,
-        })}
-      >
-        {products?.map((p, index) => (
-          <ProductItem
-            key={p.id}
-            className={cn("w-44 px-2.5", {
-              "w-full": !isMultipleItems,
-              "flex-[0_0_50%]": isMultipleItems,
-              "w-44 px-0": itemsQuantity >= 3 && itemsQuantity !== 4,
-            })}
-            product={p}
-            imagePriority={index === 0}
-          />
-        ))}
-      </Carousel>
+      {needsCarousel ? (
+        <Carousel
+          loop
+          align="center"
+          startIndex={0}
+          className={cn("flex", { "gap-0": itemsQuantity >= 3 })}
+        >
+          {productList}
+        </Carousel>
+      ) : (
+        <div
+          className={
+            itemsQuantity === 4 ? "grid grid-cols-2 gap-4" : "flex flex-wrap"
+          }
+        >
+          {productList}
+        </div>
+      )}
     </div>
   );
 }
