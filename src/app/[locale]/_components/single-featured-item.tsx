@@ -1,13 +1,15 @@
+import { useState } from "react";
+import Link from "next/link";
 import { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
-import { formatPrice } from "@/lib/currency";
-import { useState } from "react";
 
-import { AnimatedButton } from "@/components/ui/animated-button";
-import Image from "@/components/ui/image";
-import { Text } from "@/components/ui/text";
+import { formatPrice } from "@/lib/currency";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, calculatePriceWithSale } from "@/lib/utils";
+import { AnimatedButton } from "@/components/ui/animated-button";
+import { Button } from "@/components/ui/button";
+import Image from "@/components/ui/image";
+import { Text } from "@/components/ui/text";
 
 export function SingleFeaturedItem({
   products,
@@ -45,18 +47,19 @@ export function SingleFeaturedItem({
           );
         return (
           <div key={p.id} className="relative flex h-screen w-full justify-end">
-            <div className="absolute inset-x-2.5 top-1/2 z-40 flex -translate-y-1/2 text-bgColor mix-blend-exclusion selection:bg-inverted selection:text-textColor">
-              <div className="flex w-1/2 selection:bg-acidColor">
-                <div className="flex w-full flex-row gap-3 whitespace-nowrap">
+            <div className="absolute inset-x-2.5 top-1/2 z-40 flex -translate-y-1/2 items-start text-bgColor mix-blend-exclusion selection:bg-inverted selection:text-textColor">
+              <div className="flex w-1/2 items-start selection:bg-acidColor">
+                <div className="flex w-full flex-row gap-3 whitespace-nowrap leading-none">
                   <Text variant="uppercase">{headline}</Text>
                 </div>
 
-                <Text
-                  variant="undrleineWithColors"
-                  className="w-full overflow-hidden leading-none text-inverted group-[:visited]:text-visitedLinkColor"
+                <Button
+                  variant="underlineWithColors"
+                  className="w-full overflow-hidden pb-5 leading-none text-inverted group-[:visited]:text-visitedLinkColor"
+                  asChild
                 >
-                  {currentTranslation?.name}
-                </Text>
+                  <Link href={p.slug || ""}>{currentTranslation?.name}</Link>
+                </Button>
               </div>
 
               <div className="flex w-1/2 pl-24">
@@ -64,10 +67,20 @@ export function SingleFeaturedItem({
                   <Text
                     variant={isSaleApplied ? "strileTroughInactive" : "default"}
                   >
-                    {formatPrice(price?.price?.value || "0", currencyKey, currencySymbols[currentCountry.currencyKey || "EUR"])}
+                    {formatPrice(
+                      price?.price?.value || "0",
+                      currencyKey,
+                      currencySymbols[currentCountry.currencyKey || "EUR"],
+                    )}
                   </Text>
                   {isSaleApplied && (
-                    <Text>{formatPrice(priceWithSale, currencyKey, currencySymbols[currentCountry.currencyKey || "EUR"])}</Text>
+                    <Text>
+                      {formatPrice(
+                        priceWithSale,
+                        currencyKey,
+                        currencySymbols[currentCountry.currencyKey || "EUR"],
+                      )}
+                    </Text>
                   )}
                 </div>
                 <Text
