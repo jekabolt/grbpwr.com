@@ -124,7 +124,8 @@
     "redeem promo code": "兑换优惠码",
     "placing order": "正在下单",
     "checking availability": "检查库存",
-    "stock reservation": "库存预留"
+    "stock reservation": "库存预留",
+    "business days": "工作日"
   },
   "not-found": {
     "title": "页面未找到",
@@ -408,6 +409,9 @@
     },
     "country": {
       "min": "国家名称至少需要包含2个字符"
+    },
+    "shipmentCarrierId": {
+      "min": "请选择配送方式"
     },
     "company": {
       "min": "公司名称至少需要包含1个字符",

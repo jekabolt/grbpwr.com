@@ -34,7 +34,7 @@ const baseCheckoutSchema = z.object({
     message: "you must accept the terms & conditions",
   }),
   ...addressFields,
-  shipmentCarrierId: z.string().min(1),
+  shipmentCarrierId: z.string().min(1, errorMessages.shipmentCarrierId.min),
   promoCode: z.string().optional(),
 
   billingAddressIsSameAsAddress: z.boolean(),

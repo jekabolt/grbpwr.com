@@ -141,10 +141,18 @@ function FormMessage({
   fieldName,
   ...props
 }: any) {
-  const { error, formMessageId } = useFormField();
+  const { error, formMessageId, isTouched } = useFormField();
+  const { formState } = useFormContext();
+  // Only show errors for touched fields or after form submit attempt - avoids showing
+  // errors on untouched fields when trigger() validates the whole form (e.g. zodResolver)
+  const submitAttempted =
+    formState.isSubmitted || (formState.submitCount ?? 0) > 0;
+  const shouldShowError = !!error && (!!isTouched || submitAttempted);
   let body;
 
-  if (error && translateError && fieldName) {
+  if (!shouldShowError && !children) return null;
+
+  if (shouldShowError && translateError && fieldName) {
     const errorMessage = String(error.message || "");
     const errorType =
       Object.entries(errorMap).find(([key]) =>
@@ -160,7 +168,7 @@ function FormMessage({
     const translated = translateError(errorKey);
     body = translated === errorKey ? errorMessage : translated;
   } else {
-    body = error ? String(error?.message) : children;
+    body = shouldShowError ? String(error?.message) : children;
   }
 
   if (!body) {
@@ -172,7 +180,7 @@ function FormMessage({
       ref={ref}
       id={formMessageId}
       className={cn("text-xs", className, {
-        "text-errorColor": error,
+        "text-errorColor": shouldShowError,
       })}
       {...props}
     >

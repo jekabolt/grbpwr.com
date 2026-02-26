@@ -25,9 +25,10 @@ export async function getInitialTranslationState(): Promise<InitialTranslationSt
     let countryInfo: CountryInfo | undefined;
     let languageId: number | undefined;
 
+    // Find country by countryCode (locale can differ from country's default, e.g. /us/de)
     for (const [, countries] of Object.entries(COUNTRIES_BY_REGION)) {
         const country = countries.find(
-            (c) => c.countryCode.toLowerCase() === countryCookie && c.lng === localeCookie,
+            (c) => c.countryCode.toLowerCase() === countryCookie,
         );
 
         if (country) {
@@ -37,7 +38,11 @@ export async function getInitialTranslationState(): Promise<InitialTranslationSt
                 currency: country.currency,
                 currencyKey: country.currencyKey,
             };
-            languageId = LANGUAGE_CODE_TO_ID[country.lng];
+            // Use locale from cookie, not country's default (preserves user's language choice)
+            languageId = LANGUAGE_CODE_TO_ID[localeCookie];
+            if (languageId === undefined) {
+                languageId = LANGUAGE_CODE_TO_ID[country.lng];
+            }
             break;
         }
     }

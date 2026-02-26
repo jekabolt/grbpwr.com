@@ -124,7 +124,8 @@
     "redeem promo code": "riscatta codice promozionale",
     "placing order": "inserimento ordine",
     "checking availability": "verifica disponibilità",
-    "stock reservation": "prenotazione magazzino"
+    "stock reservation": "prenotazione magazzino",
+    "business days": "giorni lavorativi"
   },
   "not-found": {
     "title": "pagina non trovata",
@@ -408,6 +409,9 @@
     },
     "country": {
       "min": "il paese deve contenere almeno 2 caratteri"
+    },
+    "shipmentCarrierId": {
+      "min": "seleziona un metodo di spedizione"
     },
     "company": {
       "min": "l'azienda deve contenere almeno 1 carattere",

@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import RadioGroup, { RadioGroupsProps } from "@/components/ui/radio-group";
@@ -26,6 +27,7 @@ export default function RadioGroupField({
   ...props
 }: Props) {
   const { control } = useFormContext();
+  const t = useTranslations("errors");
 
   return (
     <FormField
@@ -49,7 +51,7 @@ export default function RadioGroupField({
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
+          <FormMessage translateError={t} fieldName={name} />
         </FormItem>
       )}
     />

@@ -124,7 +124,8 @@
     "redeem promo code": "프로모션 코드 사용",
     "placing order": "주문 중",
     "checking availability": "재고 확인 중",
-    "stock reservation": "재고 예약 중"
+    "stock reservation": "재고 예약 중",
+    "business days": "영업일"
   },
   "not-found": {
     "title": "페이지를 찾을 수 없습니다",
@@ -408,6 +409,9 @@
     },
     "country": {
       "min": "국가명은 최소 2자 이상이어야 합니다"
+    },
+    "shipmentCarrierId": {
+      "min": "배송 방법을 선택해 주세요"
     },
     "company": {
       "min": "회사명은 최소 1자 이상이어야 합니다",

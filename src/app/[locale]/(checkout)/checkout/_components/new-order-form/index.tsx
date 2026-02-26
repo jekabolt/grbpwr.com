@@ -90,78 +90,75 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" ||
     isPaymentElementComplete;
 
-  const handlePlaceOrderClick = async (
-    e: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    // Check if form is valid and payment element is complete
-    const isValid = form.formState.isValid && isPaymentFieldsValid;
-
-    if (!isValid) {
-      e.preventDefault();
-
-      // Trigger validation on all fields to show errors
-      await form.trigger();
-
-      // Show toast notification
-      setToastMessage(tToaster("fill_required_fields"));
-      setOrderModifiedToastOpen(true);
-
-      // Find first error field and scroll to its section
-      const errors = form.formState.errors;
-
-      // Check contact fields
-      if (errors.email || errors.termsOfService || errors.subscribe) {
-        contactRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        if (!isGroupOpen("contact")) {
-          handleGroupToggle("contact");
-        }
-        return;
+  const scrollToFirstError = (errors: typeof form.formState.errors) => {
+    if (errors.email || errors.termsOfService || errors.subscribe) {
+      contactRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      if (!isGroupOpen("contact")) {
+        handleGroupToggle("contact");
       }
-
-      // Check shipping fields
-      if (
-        errors.firstName ||
-        errors.lastName ||
-        errors.address ||
-        errors.country ||
-        errors.state ||
-        errors.city ||
-        errors.additionalAddress ||
-        errors.company ||
-        errors.phone ||
-        errors.postalCode ||
-        errors.shipmentCarrierId
-      ) {
-        shippingRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        if (!isGroupOpen("shipping")) {
-          handleGroupToggle("shipping");
-        }
-        return;
+      return;
+    }
+    if (
+      errors.firstName ||
+      errors.lastName ||
+      errors.address ||
+      errors.country ||
+      errors.state ||
+      errors.city ||
+      errors.additionalAddress ||
+      errors.company ||
+      errors.phone ||
+      errors.postalCode ||
+      errors.shipmentCarrierId
+    ) {
+      shippingRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      if (!isGroupOpen("shipping")) {
+        handleGroupToggle("shipping");
       }
-
-      // Check payment fields
-      if (
-        errors.paymentMethod ||
-        errors.billingAddressIsSameAsAddress ||
-        errors.billingAddress ||
-        !isPaymentFieldsValid
-      ) {
-        paymentRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        if (!isGroupOpen("payment")) {
-          handleGroupToggle("payment");
-        }
-        return;
+      return;
+    }
+    if (
+      errors.paymentMethod ||
+      errors.billingAddressIsSameAsAddress ||
+      errors.billingAddress ||
+      !isPaymentFieldsValid
+    ) {
+      paymentRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      if (!isGroupOpen("payment")) {
+        handleGroupToggle("payment");
       }
     }
+  };
+
+  const handleSubmitInvalid = (errors: typeof form.formState.errors) => {
+    setToastMessage(tToaster("fill_required_fields"));
+    setOrderModifiedToastOpen(true);
+    scrollToFirstError(errors);
+  };
+
+  const handleValidSubmit = (data: CheckoutData) => {
+    if (!isPaymentFieldsValid) {
+      setToastMessage(tToaster("fill_required_fields"));
+      setOrderModifiedToastOpen(true);
+      paymentRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      if (!isGroupOpen("payment")) {
+        handleGroupToggle("payment");
+      }
+      return;
+    }
+    onSubmit(data);
   };
 
   const onSubmit = async (data: CheckoutData) => {
@@ -236,7 +233,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     <>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(handleValidSubmit, handleSubmitInvalid)}
           className="relative space-y-14 lg:space-y-0"
         >
           <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
@@ -300,13 +297,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 </div>
               </div>
               <Button
+                type="submit"
                 variant="main"
                 size="lg"
                 className="w-full uppercase"
                 disabled={loading}
                 loading={loading}
                 loadingType="order-processing"
-                onClick={handlePlaceOrderClick}
               >
                 {`${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`}
               </Button>

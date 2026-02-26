@@ -124,7 +124,8 @@
     "redeem promo code": "プロモコードを適用",
     "placing order": "注文処理中",
     "checking availability": "在庫確認中",
-    "stock reservation": "在庫予約中"
+    "stock reservation": "在庫予約中",
+    "business days": "営業日"
   },
   "not-found": {
     "title": "ページが見つかりません",
@@ -408,6 +409,9 @@
     },
     "country": {
       "min": "国名は最低2文字以上必要です"
+    },
+    "shipmentCarrierId": {
+      "min": "配送方法を選択してください"
     },
     "company": {
       "min": "会社名は最低1文字以上必要です",
