@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Text } from "@/components/ui/text";
 import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
 
+import { ModalTransition } from "../modal-transition";
 import { Button } from "./button";
 
 interface Props {
@@ -54,47 +55,54 @@ export function MobileCookieModal({
         </div>
         <DialogPrimitives.Portal>
           <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
-          <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-30 flex flex-col gap-4 border border-textInactiveColor bg-bgColor py-4 text-textColor">
-            <DialogPrimitives.Title className="sr-only">
-              {tAccessibility("mobile menu")}
-            </DialogPrimitives.Title>
-            <div className="flex items-center justify-between px-5">
-              <Text variant="uppercase">{t("cookie preferences")}</Text>
-              <DialogPrimitives.Close asChild>
-                <Button>[x]</Button>
-              </DialogPrimitives.Close>
-            </div>
+          <ModalTransition
+            isOpen={open}
+            contentSlideFrom="bottom"
+            contentClassName="fixed inset-x-2 bottom-2 top-2 z-30 flex flex-col gap-4 border border-textInactiveColor bg-bgColor py-4 text-textColor"
+            content={
+              <DialogPrimitives.Content className="flex h-full flex-col gap-4">
+                <DialogPrimitives.Title className="sr-only">
+                  {tAccessibility("mobile menu")}
+                </DialogPrimitives.Title>
+                <div className="flex items-center justify-between px-5">
+                  <Text variant="uppercase">{t("cookie preferences")}</Text>
+                  <DialogPrimitives.Close asChild>
+                    <Button>[x]</Button>
+                  </DialogPrimitives.Close>
+                </div>
 
-            <div className="overflow-y-auto px-5">
-              <CookieContent
-                preferences={preferences}
-                onPreferenceChange={handlePreferenceChange}
-              />
-            </div>
+                <div className="overflow-y-auto px-5">
+                  <CookieContent
+                    preferences={preferences}
+                    onPreferenceChange={handlePreferenceChange}
+                  />
+                </div>
 
-            <div className="flex flex-col gap-2 px-2.5">
-              <DialogPrimitives.Close asChild>
-                <Button
-                  variant="main"
-                  onClick={handleSaveCookies}
-                  size="lg"
-                  className="w-full uppercase"
-                >
-                  {t("accept all cookies")}
-                </Button>
-              </DialogPrimitives.Close>
-              <DialogPrimitives.Close asChild>
-                <Button
-                  variant="simpleReverse"
-                  onClick={handleSaveCookies}
-                  size="lg"
-                  className="w-full uppercase"
-                >
-                  {t("save preferences")}
-                </Button>
-              </DialogPrimitives.Close>
-            </div>
-          </DialogPrimitives.Content>
+                <div className="flex flex-col gap-2 px-2.5">
+                  <DialogPrimitives.Close asChild>
+                    <Button
+                      variant="main"
+                      onClick={handleSaveCookies}
+                      size="lg"
+                      className="w-full uppercase"
+                    >
+                      {t("accept all cookies")}
+                    </Button>
+                  </DialogPrimitives.Close>
+                  <DialogPrimitives.Close asChild>
+                    <Button
+                      variant="simpleReverse"
+                      onClick={handleSaveCookies}
+                      size="lg"
+                      className="w-full uppercase"
+                    >
+                      {t("save preferences")}
+                    </Button>
+                  </DialogPrimitives.Close>
+                </div>
+              </DialogPrimitives.Content>
+            }
+          />
         </DialogPrimitives.Portal>
       </DialogPrimitives.Root>
     </>

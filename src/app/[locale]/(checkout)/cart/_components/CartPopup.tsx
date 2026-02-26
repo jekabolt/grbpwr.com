@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
@@ -40,46 +41,53 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="z-50 w-full">
-      {isOpen && (
-        <Overlay
-          cover="screen"
-          onClick={closeCart}
-          disablePointerEvents={false}
-        />
-      )}
       <div className="hidden lg:block">
         {isOpen && (
-          <div className="fixed inset-y-2 right-2 z-30 w-[500px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor">
-            <div className="flex h-full flex-col gap-y-6">
-              <div className="flex items-center justify-between">
-                <Text variant="uppercase">{`${t("shopping cart")} ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
-                <Button onClick={closeCart}>[x]</Button>
-              </div>
-              {!itemsQuantity ? (
-                <div className="flex h-full items-center justify-center">
-                  <Text>{t("empty")}</Text>
-                </div>
-              ) : (
-                <>{children}</>
-              )}
-              {itemsQuantity > 0 && (
-                <Button
-                  asChild
-                  variant="secondary"
-                  size="lg"
-                  className="block w-full uppercase"
-                >
-                  <Link
-                    href="/checkout"
-                    prefetch
-                    onClick={() => handleBeginCheckoutEvent()}
-                  >
-                    {t("proceed to checkout")}
-                  </Link>
-                </Button>
-              )}
+          <>
+            <div key="modal-overlay" className="fixed inset-0 z-30">
+              <Overlay
+                cover="screen"
+                onClick={closeCart}
+                disablePointerEvents={false}
+              />
             </div>
-          </div>
+            <ModalTransition
+              isOpen={isOpen}
+              contentClassName="fixed inset-y-2 right-2 z-30 w-[500px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor"
+              contentSlideFrom="right"
+              content={
+                <div className="flex h-full flex-col gap-y-6">
+                  <div className="flex items-center justify-between">
+                    <Text variant="uppercase">{`${t("shopping cart")} ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
+                    <Button onClick={closeCart}>[x]</Button>
+                  </div>
+                  {!itemsQuantity ? (
+                    <div className="flex h-full items-center justify-center">
+                      <Text>{t("empty")}</Text>
+                    </div>
+                  ) : (
+                    <>{children}</>
+                  )}
+                  {itemsQuantity > 0 && (
+                    <Button
+                      asChild
+                      variant="secondary"
+                      size="lg"
+                      className="block w-full uppercase"
+                    >
+                      <Link
+                        href="/checkout"
+                        prefetch
+                        onClick={() => handleBeginCheckoutEvent()}
+                      >
+                        {t("proceed to checkout")}
+                      </Link>
+                    </Button>
+                  )}
+                </div>
+              }
+            />
+          </>
         )}
       </div>
     </div>

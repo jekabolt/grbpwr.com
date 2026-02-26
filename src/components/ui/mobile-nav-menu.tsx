@@ -4,6 +4,7 @@ import { useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
+import { ModalTransition } from "@/components/modal-transition";
 import { useDataContext } from "../contexts/DataContext";
 import { Button } from "./button";
 import {
@@ -38,7 +39,12 @@ export function MobileNavMenu({
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-40 border border-textInactiveColor bg-bgColor px-2.5 pb-4 pt-5">
+        <ModalTransition
+          isOpen={open}
+          contentSlideFrom="top"
+          contentClassName="fixed inset-x-2 bottom-2 top-2 z-40 border border-textInactiveColor bg-bgColor px-2.5 pb-4 pt-5"
+          content={
+        <DialogPrimitives.Content className="flex h-full flex-col">
           <DialogPrimitives.Title className="sr-only">
             {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
@@ -77,6 +83,8 @@ export function MobileNavMenu({
             )}
           </div>
         </DialogPrimitives.Content>
+          }
+        />
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
   );

@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { currencySymbols, getDisplayCurrencyKey } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
+import { ModalTransition } from "@/components/modal-transition";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -14,13 +16,14 @@ interface Props {
 }
 
 export default function MobileCurrencyPopover({ theme }: Props) {
+  const [open, setOpen] = useState(false);
   const { currentCountry, rates, setCurrentCountry } = useTranslationsStore(
     (state) => state,
   );
   const tAccessibility = useTranslations("accessibility");
 
   return (
-    <DialogPrimitives.Root>
+    <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitives.Trigger asChild>
         <Button className="flex w-full items-center justify-between uppercase">
           <Text component="span" variant="uppercase">
@@ -37,15 +40,18 @@ export default function MobileCurrencyPopover({ theme }: Props) {
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-50 bg-black/50" />
-        <DialogPrimitives.Content
-          className={cn(
+        <DialogPrimitives.Overlay className="fixed inset-0 z-50 h-screen bg-overlay" />
+        <ModalTransition
+          isOpen={open}
+          contentSlideFrom="bottom"
+          contentClassName={cn(
             "fixed inset-0 z-50 flex h-dvh flex-col bg-bgColor p-2.5 text-textColor",
             {
               "blackTheme bg-bgColor text-textColor": theme === "dark",
             },
           )}
-        >
+          content={
+        <DialogPrimitives.Content className="flex h-full flex-col">
           <DialogPrimitives.Title className="sr-only">
             {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
@@ -80,6 +86,8 @@ export default function MobileCurrencyPopover({ theme }: Props) {
             </div>
           </div>
         </DialogPrimitives.Content>
+          }
+        />
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
   );

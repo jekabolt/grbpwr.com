@@ -4,6 +4,7 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import { sendButtonEvent } from "@/lib/analitycs/button";
+import { ModalTransition } from "@/components/modal-transition";
 import { Text } from "@/components/ui/text";
 
 import { Button } from "../../../../../components/ui/button";
@@ -65,7 +66,12 @@ export function MobileMeasurements({
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-2 z-40 flex flex-col gap-4 overflow-hidden border border-textInactiveColor bg-bgColor p-2.5">
+        <ModalTransition
+          isOpen={open}
+          contentSlideFrom="bottom"
+          contentClassName="fixed inset-2 z-40 flex flex-col gap-4 overflow-hidden border border-textInactiveColor bg-bgColor p-2.5"
+          content={
+        <DialogPrimitives.Content className="flex h-full flex-col gap-4">
           <DialogPrimitives.Title className="sr-only">
             {tAccessibility("mobile menu")}
           </DialogPrimitives.Title>
@@ -110,6 +116,8 @@ export function MobileMeasurements({
             </LoadingButton>
           </div>
         </DialogPrimitives.Content>
+          }
+        />
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
   );
