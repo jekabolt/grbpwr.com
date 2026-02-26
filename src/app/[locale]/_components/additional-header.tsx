@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { HeaderProps } from "@/components/flexible-layout";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -15,15 +17,21 @@ export function AdditionalHeader({
 }: HeaderProps) {
   const router = useRouter();
   const { openCart, closeCart } = useCart((s) => s);
+  const { currentCountry, languageId } = useTranslationsStore((s) => s);
+
+  // Preserve current locale when closing (don't switch to country's default)
+  const country = currentCountry.countryCode?.toLowerCase() || "us";
+  const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
+  const homePath = `/${country}/${locale}`;
 
   const handleLeftClick = () => {
     closeCart();
-    router.push("/");
+    router.push(homePath);
   };
 
   const handleRightClick = () => {
     openCart();
-    router.push("/");
+    router.push(homePath);
   };
 
   return (

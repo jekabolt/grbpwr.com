@@ -85,13 +85,16 @@ export const useCheckoutEffects = ({
     // Initialize country from store only on mount, don't update when store changes
     // This prevents geo-suggest banner from changing the form before user accepts
     const countryInitializedRef = useRef(false);
+    const skipCountryWatchRef = useRef(false);
     useEffect(() => {
         if (!countryInitializedRef.current && countryCode) {
             const currentFormCountry = form.getValues("country");
             // Update country if form doesn't have one, or if it differs from store (e.g., after geo-suggest accept)
             // This ensures the form country matches the store after page reload
+            // Use shouldValidate: false to avoid showing errors on untouched fields (e.g. empty email) on fresh load
             if (!currentFormCountry || currentFormCountry !== countryCode) {
-                form.setValue("country", countryCode, { shouldValidate: true });
+                skipCountryWatchRef.current = true;
+                form.setValue("country", countryCode, { shouldValidate: false });
             }
             countryInitializedRef.current = true;
         }
@@ -99,11 +102,13 @@ export const useCheckoutEffects = ({
 
     // Also update country after form persistence is restored, in case persisted data had old country
     // This ensures country is synced with store even if useOrderPersistence restores old data
+    // Use shouldValidate: false to avoid showing errors on untouched fields on rehydration
     useEffect(() => {
         if (rehydrated && countryCode) {
             const formCountry = form.getValues("country");
             if (formCountry !== countryCode) {
-                form.setValue("country", countryCode, { shouldValidate: true });
+                skipCountryWatchRef.current = true;
+                form.setValue("country", countryCode, { shouldValidate: false });
             }
         }
     }, [rehydrated, countryCode, form]);
@@ -127,6 +132,13 @@ export const useCheckoutEffects = ({
 
     useEffect(() => {
         const subscription = form.watch((_: any, { name }: { name?: string }) => {
+            // Skip handleFormChange when country was just set by initial sync/rehydration.
+            // handleFormChange calls form.trigger() which validates the whole form and would
+            // show errors (e.g. invalid email) on untouched fields after cache clear.
+            if (name === "country" && skipCountryWatchRef.current) {
+                skipCountryWatchRef.current = false;
+                return;
+            }
             handleFormChange(name);
         });
         return () => subscription.unsubscribe();

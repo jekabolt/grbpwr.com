@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
+
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -22,12 +23,12 @@ interface ExtendedAppearance extends Appearance {
 
 export function CheckoutFormWrapper() {
   const router = useRouter();
-  const pathname = usePathname();
   const products = useCart((s) => s.products);
   const { dictionary } = useDataContext();
-  const { languageId, currentCountry } = useTranslationsStore((state) => state);
+  const { currentCountry, languageId } = useTranslationsStore((state) => state);
 
   // Redirect to home when landing on checkout with empty cart (e.g. direct link)
+  // Preserve current locale
   const productsRef = useRef(products);
   productsRef.current = products;
   useEffect(() => {
@@ -35,12 +36,13 @@ export function CheckoutFormWrapper() {
 
     const t = setTimeout(() => {
       if (productsRef.current.length === 0) {
-        const home = pathname?.replace(/\/checkout\/?$/, "") || "/";
-        router.replace(home);
+        const country = currentCountry.countryCode?.toLowerCase() || "us";
+        const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
+        router.replace(`/${country}/${locale}`);
       }
     }, 100); // brief delay for cart persist rehydration
     return () => clearTimeout(t);
-  }, [products.length, pathname, router]);
+  }, [products.length, languageId, currentCountry.countryCode, router]);
 
   const currency =
     currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
@@ -107,7 +109,7 @@ export function CheckoutFormWrapper() {
         currency: currency?.toLowerCase(),
         appearance,
         paymentMethodCreation: "manual",
-        locale: LANGUAGE_ID_TO_LOCALE[languageId] as StripeElementLocale,
+        locale: (LANGUAGE_ID_TO_LOCALE[languageId] || "en") as StripeElementLocale,
       }}
     >
       <NewOrderForm onAmountChange={handleAmountChange} />

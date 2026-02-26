@@ -124,7 +124,8 @@
     "redeem promo code": "redeem promo code",
     "placing order": "placing order",
     "checking availability": "checking availability",
-    "stock reservation": "stock reservation"
+    "stock reservation": "stock reservation",
+    "business days": "business days"
   },
   "not-found": {
     "title": "page not found",
@@ -408,6 +409,9 @@
     },
     "country": {
       "min": "country must contain at least 2 characters"
+    },
+    "shipmentCarrierId": {
+      "min": "please select a shipping method"
     },
     "company": {
       "min": "company must contain at least 1 character",

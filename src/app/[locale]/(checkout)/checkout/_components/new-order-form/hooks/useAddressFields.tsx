@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -13,7 +12,7 @@ import { findCountryByCode, getFieldName, getUniqueCountries } from "../utils";
 export function useAddressFields(prefix?: string) {
   const { setValue, getValues } = useFormContext();
   const pathname = usePathname();
-  const { setCurrentCountry, cancelNextCountry, languageId } =
+  const { setCurrentCountry, cancelNextCountry } =
     useTranslationsStore((s) => s);
 
   const countryFieldName = getFieldName(prefix, "country");
@@ -98,15 +97,14 @@ export function useAddressFields(prefix?: string) {
         currencyKey: country.currencyKey,
       });
 
-      const newLocale = LANGUAGE_ID_TO_LOCALE[languageId];
-      if (newLocale) {
-        const pathWithoutLocaleCountry =
-          pathname.replace(
-            /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
-            "",
-          ) || "/";
-        window.location.href = `/${newCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
-      }
+      // Use country's default locale when changing country in checkout
+      const newLocale = country.lng;
+      const pathWithoutLocaleCountry =
+        pathname.replace(
+          /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
+          "",
+        ) || "/";
+      window.location.href = `/${newCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
     }
   };
 

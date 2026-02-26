@@ -118,7 +118,7 @@ export default function ShippingFieldsGroup({
                   ? formatPrice(Number(price), currency, symbol)
                   : "";
                 const namePart = eta
-                  ? `${displayCarrierName} (${eta})`
+                  ? `${displayCarrierName} (${eta} ${t("business days")})`
                   : displayCarrierName;
                 const label = formattedPrice
                   ? `${namePart} — ${formattedPrice}`

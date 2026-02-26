@@ -79,10 +79,11 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
             {
                 name: "translations-store",
                 storage: createJSONStorage(() => localStorage),
+                // Prefer current (from server/cookies) over persisted so URL reflects correctly on load
                 merge: (persistedState, currentState) => {
                     const persisted = persistedState as Partial<TranslationsState> | undefined;
                     const current = currentState as TranslationsStore;
-                    return { ...current, ...(persisted || {}) } as TranslationsStore;
+                    return { ...(persisted || {}), ...current } as TranslationsStore;
                 },
                 partialize: (state) => ({
                     languageId: state.languageId,

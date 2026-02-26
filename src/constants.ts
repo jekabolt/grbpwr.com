@@ -358,6 +358,9 @@ export const errorMessages = {
   country: {
     min: "country must contain at least 2 characters",
   },
+  shipmentCarrierId: {
+    min: "please select a shipping method",
+  },
   company: {
     min: "company must contain at least 1 character",
     max: "company must contain at most 40 characters",
@@ -535,6 +538,7 @@ export const errorMap: Record<string, string> = {
   format: "regex",
   "you must accept the terms & conditions": "required",
   "you must accept the terms and conditions": "required",
+  "please select a shipping method": "min",
 };
 
 export const PLURIAL_SINGLE_CATEGORY_MAP: Record<string, string> = {
