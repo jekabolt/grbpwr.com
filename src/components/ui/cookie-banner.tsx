@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { cn } from "@/lib/utils";
+import { ModalTransition } from "@/components/modal-transition";
+import { Overlay } from "./overlay";
 import { Text } from "@/components/ui/text";
 import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
 
 import { Banner } from "./banner";
 import { Button } from "./button";
 import { MobileCookieModal } from "./mobile-cookie-modal";
-import { Overlay } from "./overlay";
 
 export const defaultCookiePreferences = {
   functional: true,
@@ -88,40 +88,34 @@ export function CookieBanner() {
         <div className="hidden lg:block">
           <Overlay
             cover="screen"
-            color="dark"
-            disablePointerEvents={false}
             onClick={() => setOpenStatus(false)}
+            disablePointerEvents={false}
           />
-        </div>
-      )}
-      <div
-        className={cn(
-          "fixed inset-y-2 right-2 z-30 hidden w-[459px] border border-textInactiveColor bg-bgColor p-2.5 mix-blend-normal",
-          {
-            block: open,
-          },
-        )}
-      >
-        <div className="flex h-full flex-col gap-y-6">
-          <div className="flex items-center justify-between">
-            <Text variant="uppercase">{t("cookie preferences")}</Text>
-            <Button onClick={() => setOpenStatus((v) => !v)}>[x]</Button>
-          </div>
-          <div className="h-full overflow-y-scroll border-b">
-            <CookieContent
-              preferences={preferences}
-              onPreferenceChange={handlePreferenceChange}
-            />
-          </div>
-          <div className="flex gap-x-6">
-            <Button
-              variant="main"
-              onClick={handleSaveCookies}
-              size="lg"
-              className="w-1/2 uppercase"
-            >
-              {t("accept all cookies")}
-            </Button>
+          <ModalTransition
+            isOpen={open}
+            contentSlideFrom="right"
+            contentClassName="fixed inset-y-2 right-2 z-30 w-[459px] border border-textInactiveColor bg-bgColor p-2.5 mix-blend-normal"
+            content={
+              <div className="flex h-full flex-col gap-y-6">
+                <div className="flex items-center justify-between">
+                  <Text variant="uppercase">{t("cookie preferences")}</Text>
+                  <Button onClick={() => setOpenStatus(false)}>[x]</Button>
+                </div>
+                <div className="h-full overflow-y-scroll border-b">
+                  <CookieContent
+                    preferences={preferences}
+                    onPreferenceChange={handlePreferenceChange}
+                  />
+                </div>
+                <div className="flex gap-x-6">
+                  <Button
+                    variant="main"
+                    onClick={handleSaveCookies}
+                    size="lg"
+                    className="w-1/2 uppercase"
+                  >
+                    {t("accept all cookies")}
+                  </Button>
             <Button
               variant="simpleReverse"
               onClick={handleSavePreferences}
@@ -131,8 +125,11 @@ export function CookieBanner() {
               {t("save preferences")}
             </Button>
           </div>
+              </div>
+            }
+          />
         </div>
-      </div>
+      )}
     </Banner>
   );
 }

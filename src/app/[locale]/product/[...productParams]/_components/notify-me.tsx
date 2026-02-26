@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
+import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
 import { Form } from "@/components/ui/form";
@@ -96,7 +97,12 @@ export function NotifyMe({
     <DialogPrimitives.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2.5 top-1/2 z-50 flex h-auto w-auto -translate-y-1/2 flex-col border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:inset-x-auto lg:left-1/2 lg:w-80 lg:-translate-x-1/2">
+        <ModalTransition
+          isOpen={open}
+          contentSlideFrom="none"
+          contentClassName="fixed inset-x-2.5 top-1/2 z-50 flex h-auto w-auto -translate-y-1/2 flex-col border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:inset-x-auto lg:left-1/2 lg:w-80 lg:-translate-x-1/2"
+          content={
+        <DialogPrimitives.Content className="flex h-auto flex-col">
           <DialogPrimitives.Title className="sr-only">
             {tAccessibility("notify me dialog")}
           </DialogPrimitives.Title>
@@ -162,6 +168,8 @@ export function NotifyMe({
             </form>
           </Form>
         </DialogPrimitives.Content>
+          }
+        />
       </DialogPrimitives.Portal>
       <SubmissionToaster
         open={toastOpen}

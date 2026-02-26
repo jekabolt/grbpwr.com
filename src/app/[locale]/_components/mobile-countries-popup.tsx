@@ -9,6 +9,7 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import RadioGroup from "@/components/ui/radio-group";
 import { Searchbar } from "@/components/ui/searchbar";
@@ -65,7 +66,12 @@ export function MobileCountriesPopup() {
       </Button>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-50 overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden">
+        <ModalTransition
+          isOpen={open}
+          contentSlideFrom="top"
+          contentClassName="fixed inset-x-2 bottom-2 top-2 z-50 overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden"
+          content={
+        <DialogPrimitives.Content className="flex h-full flex-col">
           <div className="flex items-center justify-between">
             <Text variant="uppercase">{t("change country")}</Text>
             <DialogPrimitives.Close asChild>
@@ -163,6 +169,8 @@ export function MobileCountriesPopup() {
             )}
           </div>
         </DialogPrimitives.Content>
+          }
+        />
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
   );

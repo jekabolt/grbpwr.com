@@ -4,8 +4,8 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
+import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
-import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 import { useActiveSizeInfo } from "../utils/useActiveSizeInfo";
@@ -55,12 +55,16 @@ export function MobileSelectSize({
       onOpenChange={onOpenChange}
     >
       <DialogPrimitives.Portal>
-        <Overlay cover="screen" disablePointerEvents={false} />
-        <DialogPrimitives.Title className="sr-only">
-          {tAccessibility("mobile menu")}
-        </DialogPrimitives.Title>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-auto z-50 flex flex-col gap-10 border border-textInactiveColor bg-bgColor p-2.5 pb-10 text-textColor">
+        <ModalTransition
+          isOpen={open}
+          contentSlideFrom="bottom"
+          contentClassName="fixed inset-x-2 bottom-2 top-auto z-50 flex flex-col gap-10 border border-textInactiveColor bg-bgColor p-2.5 pb-10 text-textColor"
+          content={
+        <DialogPrimitives.Content className="flex h-full flex-col gap-10">
+          <DialogPrimitives.Title className="sr-only">
+            {tAccessibility("mobile menu")}
+          </DialogPrimitives.Title>
           <DialogPrimitives.Close asChild>
             <div className="flex items-center justify-between">
               <Text variant="uppercase">select size</Text>
@@ -85,6 +89,8 @@ export function MobileSelectSize({
             })}
           </div>
         </DialogPrimitives.Content>
+          }
+        />
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
   );

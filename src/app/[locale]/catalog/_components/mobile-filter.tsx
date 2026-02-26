@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
+import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
@@ -29,8 +30,7 @@ export function MobileFilter() {
     subCategoryId: subCategory?.id,
   });
 
-  const isObjectsCategory =
-    topCategory?.name?.toLowerCase() === "objects";
+  const isObjectsCategory = topCategory?.name?.toLowerCase() === "objects";
 
   const hasActiveFilters =
     !!defaultValue ||
@@ -61,43 +61,54 @@ export function MobileFilter() {
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
-        <DialogPrimitives.Content className="fixed inset-x-2 bottom-2 top-2 z-50 border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden">
-          <DialogPrimitives.Title className="sr-only">
-            {tAccessibility("mobile menu")}
-          </DialogPrimitives.Title>
-          <div className="flex h-full flex-col justify-between">
-            <DialogPrimitives.Close asChild>
-              <div className="flex items-center justify-between">
-                <Text variant="uppercase">{t("filter")}</Text>
-                <Button>[x]</Button>
+        <ModalTransition
+          isOpen={open}
+          contentSlideFrom="bottom"
+          contentClassName="fixed inset-x-2 bottom-2 top-2 z-50 border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden"
+          content={
+            <DialogPrimitives.Content className="flex h-full flex-col">
+              <DialogPrimitives.Title className="sr-only">
+                {tAccessibility("mobile menu")}
+              </DialogPrimitives.Title>
+              <div className="flex h-full flex-col justify-between">
+                <DialogPrimitives.Close asChild>
+                  <div className="flex items-center justify-between">
+                    <Text variant="uppercase">{t("filter")}</Text>
+                    <Button>[x]</Button>
+                  </div>
+                </DialogPrimitives.Close>
+                <div className="h-full space-y-10 overflow-y-scroll pt-10">
+                  <div className="space-y-6">
+                    <Text variant="uppercase">{t("sort by")}</Text>
+                    <Sort />
+                  </div>
+                  <Collection />
+                  {!isObjectsCategory && <Sizes gender={gender} />}
+                </div>
+                <div className="flex items-center justify-end gap-2 bg-bgColor">
+                  <Button
+                    className="w-1/2 uppercase"
+                    size="lg"
+                    variant="simpleReverseWithBorder"
+                    onClick={handleClearAll}
+                    disabled={!hasActiveFilters}
+                  >
+                    {t("clear all")}
+                  </Button>
+                  <DialogPrimitives.Close asChild>
+                    <Button
+                      className="w-1/2 uppercase"
+                      size="lg"
+                      variant="main"
+                    >
+                      {t("show")} {total > 0 ? `[${total}]` : ""}
+                    </Button>
+                  </DialogPrimitives.Close>
+                </div>
               </div>
-            </DialogPrimitives.Close>
-            <div className="h-full space-y-10 overflow-y-scroll pt-10">
-              <div className="space-y-6">
-                <Text variant="uppercase">{t("sort by")}</Text>
-                <Sort />
-              </div>
-              <Collection />
-              {!isObjectsCategory && <Sizes gender={gender} />}
-            </div>
-            <div className="flex items-center justify-end gap-2 bg-bgColor">
-              <Button
-                className="w-1/2 uppercase"
-                size="lg"
-                variant="simpleReverseWithBorder"
-                onClick={handleClearAll}
-                disabled={!hasActiveFilters}
-              >
-                {t("clear all")}
-              </Button>
-              <DialogPrimitives.Close asChild>
-                <Button className="w-1/2 uppercase" size="lg" variant="main">
-                  {t("show")} {total > 0 ? `[${total}]` : ""}
-                </Button>
-              </DialogPrimitives.Close>
-            </div>
-          </div>
-        </DialogPrimitives.Content>
+            </DialogPrimitives.Content>
+          }
+        />
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
   );

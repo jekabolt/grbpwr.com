@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
+import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
@@ -62,42 +63,47 @@ export function Filter({
             onClick={toggleModal}
             disablePointerEvents={false}
           />
-          <div className="fixed inset-y-2 right-2 z-30 w-[445px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor">
-            <div className="flex h-full flex-col">
-              <div className="flex items-center justify-between">
-                <Text variant="uppercase">{t("filter")}</Text>
-                <Button onClick={toggleModal}>[x]</Button>
-              </div>
-              <div className="h-full space-y-10 overflow-y-scroll pt-6">
-                <div className="space-y-6">
-                  <Text variant="uppercase">{t("sort by")}</Text>
-                  <Sort />
+          <ModalTransition
+            isOpen={isModalOpen}
+            contentSlideFrom="right"
+            contentClassName="fixed inset-y-2 right-2 z-30 w-[445px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor"
+            content={
+              <div className="flex h-full flex-col">
+                <div className="flex items-center justify-between">
+                  <Text variant="uppercase">{t("filter")}</Text>
+                  <Button onClick={toggleModal}>[x]</Button>
                 </div>
-                <Collection />
-                {!isObjectsCategory && <Sizes gender={gender} />}
+                <div className="h-full space-y-10 overflow-y-scroll pt-6">
+                  <div className="space-y-6">
+                    <Text variant="uppercase">{t("sort by")}</Text>
+                    <Sort />
+                  </div>
+                  <Collection />
+                  {!isObjectsCategory && <Sizes gender={gender} />}
+                </div>
+                <div className="flex items-center justify-end gap-2 bg-bgColor">
+                  <Button
+                    className={cn("hidden w-1/2 uppercase", {
+                      block: hasActiveFilters,
+                    })}
+                    size="lg"
+                    variant="simpleReverseWithBorder"
+                    onClick={handleClearAll}
+                  >
+                    {t("clear all")}
+                  </Button>
+                  <Button
+                    className="w-1/2 uppercase"
+                    size="lg"
+                    variant="main"
+                    onClick={() => toggleModal()}
+                  >
+                    {t("show")} {total > 0 ? `[${total}]` : ""}
+                  </Button>
+                </div>
               </div>
-              <div className="flex items-center justify-end gap-2 bg-bgColor">
-                <Button
-                  className={cn("hidden w-1/2 uppercase", {
-                    block: hasActiveFilters,
-                  })}
-                  size="lg"
-                  variant="simpleReverseWithBorder"
-                  onClick={handleClearAll}
-                >
-                  {t("clear all")}
-                </Button>
-                <Button
-                  className="w-1/2 uppercase"
-                  size="lg"
-                  variant="main"
-                  onClick={() => toggleModal()}
-                >
-                  {t("show")} {total > 0 ? `[${total}]` : ""}
-                </Button>
-              </div>
-            </div>
-          </div>
+            }
+          />
         </div>
       )}
     </div>
