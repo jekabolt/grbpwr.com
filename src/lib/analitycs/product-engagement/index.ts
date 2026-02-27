@@ -30,6 +30,9 @@ interface ProductZoomEvent {
   product_category: string;
 }
 
+let lastImageViewTime = 0;
+const IMAGE_VIEW_THROTTLE_MS = 500;
+
 export function sendSizeGuideViewEvent(data: SizeGuideViewEvent): void {
   pushCustomEvent("size_guide_view", {
     product_id: data.product_id,
@@ -46,12 +49,18 @@ export function sendOutOfStockClickEvent(data: OutOfStockClickEvent): void {
     size_id: data.size_id,
     size_name: data.size_name,
     product_category: data.product_category,
-    product_price: data.product_price,
+    product_price: Math.max(0, data.product_price || 0),
     currency: data.currency,
   });
 }
 
 export function sendProductImageViewEvent(data: ProductImageViewEvent): void {
+  const now = Date.now();
+  if (now - lastImageViewTime < IMAGE_VIEW_THROTTLE_MS) {
+    return;
+  }
+  lastImageViewTime = now;
+  
   pushCustomEvent("product_image_view", {
     product_id: data.product_id,
     image_index: data.image_index,

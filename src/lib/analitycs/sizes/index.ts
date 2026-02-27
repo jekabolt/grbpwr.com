@@ -10,6 +10,11 @@ interface SizeSelectedEvent {
 }
 
 export function sendSizeSelectedEvent(data: SizeSelectedEvent): void {
+  if (!data.product_id || !data.product_name) {
+    console.warn("sendSizeSelectedEvent: Missing required product data");
+    return;
+  }
+  
   pushCustomEvent("size_selected", {
     product_id: data.product_id,
     product_name: data.product_name,

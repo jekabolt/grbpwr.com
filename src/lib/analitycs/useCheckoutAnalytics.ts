@@ -5,6 +5,7 @@ import { useDataContext } from "@/components/contexts/DataContext";
 
 import { getSubCategoryName, getTopCategoryName } from "../categories-map";
 import { useCart } from "../stores/cart/store-provider";
+import { useTranslationsStore } from "../stores/translations/store-provider";
 import {
     sendAddPaymentInfoEvent,
     sendAddShippingInfoEvent,
@@ -14,7 +15,9 @@ import {
 
 export function useCheckoutAnalytics() {
     const { dictionary } = useDataContext();
+    const { currentCountry } = useTranslationsStore((state) => state);
     const items = useCart((state) => state.products).map((v) => v.productData);
+    const currency = currentCountry.currencyKey || "EUR";
 
     const topCategoryId = items.find((v) => v?.topCategoryId)?.topCategoryId || 0;
     const subCategoryId = items.find((v) => v?.subCategoryId)?.subCategoryId || 0;
@@ -40,6 +43,7 @@ export function useCheckoutAnalytics() {
                 carrierName,
                 topCategoryName || "",
                 subCategoryName || "",
+                currency,
             );
         }
     };
@@ -56,6 +60,7 @@ export function useCheckoutAnalytics() {
                 paymentMethodDisplayName,
                 topCategoryName || "",
                 subCategoryName || "",
+                currency,
             );
         }
     };
@@ -65,6 +70,7 @@ export function useCheckoutAnalytics() {
             items as common_OrderItem[],
             topCategoryName || "",
             subCategoryName || "",
+            currency,
         );
     }
 
@@ -74,6 +80,7 @@ export function useCheckoutAnalytics() {
             uuid,
             topCategoryName || "",
             subCategoryName || "",
+            currency,
         );
     }
 

@@ -46,7 +46,10 @@ export function SizePicker({
     sizeName: string,
     isOutOfStock: boolean,
   ) => {
-    if (!productContext) return;
+    if (!productContext) {
+      console.warn("SizePicker: productContext is required for analytics");
+      return;
+    }
 
     if (isOutOfStock) {
       sendOutOfStockClickEvent({

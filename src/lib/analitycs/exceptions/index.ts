@@ -1,17 +1,17 @@
 import { pushCustomEvent } from "../utils";
 
-export function initExceptionTracking(): void {
-  if (typeof window === "undefined") return;
+export function initExceptionTracking(): () => void {
+  if (typeof window === "undefined") return () => {};
 
-  window.addEventListener("error", (e) => {
+  const errorHandler = (e: ErrorEvent) => {
     pushCustomEvent("exception", {
       description: e.message || "Unknown error",
       fatal: false,
       page_path: window.location.pathname,
     });
-  });
+  };
 
-  window.addEventListener("unhandledrejection", (e) => {
+  const rejectionHandler = (e: PromiseRejectionEvent) => {
     const message =
       e.reason instanceof Error ? e.reason.message : String(e.reason);
     pushCustomEvent("exception", {
@@ -19,5 +19,13 @@ export function initExceptionTracking(): void {
       fatal: false,
       page_path: window.location.pathname,
     });
-  });
+  };
+
+  window.addEventListener("error", errorHandler);
+  window.addEventListener("unhandledrejection", rejectionHandler);
+
+  return () => {
+    window.removeEventListener("error", errorHandler);
+    window.removeEventListener("unhandledrejection", rejectionHandler);
+  };
 }

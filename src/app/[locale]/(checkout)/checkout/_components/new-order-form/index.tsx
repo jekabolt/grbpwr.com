@@ -58,7 +58,6 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const shippingRef = useRef<HTMLDivElement>(null);
   const paymentRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const formStartFiredRef = useRef(false);
 
   const t = useTranslations("checkout");
   const tToaster = useTranslations("toaster");
@@ -96,8 +95,6 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     const el = formRef.current;
     if (!el) return;
     const handler = () => {
-      if (formStartFiredRef.current) return;
-      formStartFiredRef.current = true;
       sendFormStartEvent({
         form_id: "checkout_form",
         form_name: "Checkout",
@@ -105,7 +102,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
           typeof window !== "undefined" ? window.location.pathname : "",
       });
     };
-    el.addEventListener("focusin", handler);
+    el.addEventListener("focusin", handler, { once: true });
     return () => el.removeEventListener("focusin", handler);
   }, []);
 

@@ -7,8 +7,12 @@ import { initWebVitals } from "@/lib/analitycs/web-vitals";
 
 export function AnalyticsInit() {
   useEffect(() => {
-    initExceptionTracking();
+    const cleanupExceptions = initExceptionTracking();
     initWebVitals();
+    
+    return () => {
+      cleanupExceptions();
+    };
   }, []);
 
   return null;

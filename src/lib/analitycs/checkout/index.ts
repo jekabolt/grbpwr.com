@@ -33,13 +33,14 @@ export function sendBeginCheckoutEvent(
   items: common_OrderItem[],
   topCategory: string,
   subCategory: string,
+  currency: string = "EUR",
 ): void {
   if (!items || !items?.length) return;
 
   const event: EcommerceEvent = {
     event: "begin_checkout",
     ecommerce: {
-      currency: "EUR",
+      currency: currency.toUpperCase(),
       value: calculateTotalValue(items),
       items: items.map((item) =>
         mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
@@ -55,13 +56,14 @@ export function sendAddShippingInfoEvent(
   shippingCarrier: string,
   topCategory: string,
   subCategory: string,
+  currency: string = "EUR",
 ): void {
   if (!items || !items?.length) return;
 
   const event: EcommerceEvent = {
     event: "add_shipping_info",
     ecommerce: {
-      currency: "EUR",
+      currency: currency.toUpperCase(),
       value: calculateTotalValue(items),
       shipping_tier: shippingCarrier,
       items: items.map((item) =>
@@ -78,13 +80,14 @@ export function sendAddPaymentInfoEvent(
   paymentMethod: string,
   topCategory: string,
   subCategory: string,
+  currency: string = "EUR",
 ): void {
   if (!items || !items?.length) return;
 
   const event: EcommerceEvent = {
     event: "add_payment_info",
     ecommerce: {
-      currency: "EUR",
+      currency: currency.toUpperCase(),
       value: calculateTotalValue(items),
       payment_type: paymentMethod,
       items: items.map((item) =>
@@ -101,13 +104,14 @@ export function sendPurchaseEvent(
   transactionId: string,
   topCategory: string,
   subCategory: string,
+  currency: string = "EUR",
 ): void {
   if (!items || !items?.length) return;
 
   const event: EcommerceEvent = {
     event: "purchase",
     ecommerce: {
-      currency: "EUR",
+      currency: currency.toUpperCase(),
       value: calculateTotalValue(items),
       transaction_id: transactionId,
       items: items.map((item) =>
@@ -123,13 +127,14 @@ export function sendRefundEvent(
   orderData: common_OrderFull,
   topCategory: string,
   subCategory: string,
+  currency: string = "EUR",
 ) {
   if (!orderData || !orderData.order) return;
 
   const event: EcommerceEvent = {
     event: "refund",
     ecommerce: {
-      currency: "EUR",
+      currency: currency.toUpperCase(),
       value: calculateTotalValue(orderData.orderItems || []),
       transaction_id: orderData.order.uuid,
       coupon: orderData.promoCode?.promoCodeInsert?.code || "not set",

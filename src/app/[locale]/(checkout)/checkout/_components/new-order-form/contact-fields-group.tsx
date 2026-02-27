@@ -9,6 +9,7 @@ import {
   sendGenerateLeadEvent,
   sendNewsletterSignupEvent,
 } from "@/lib/analitycs/form";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import InputField from "@/components/ui/form/fields/input-field";
 
@@ -26,6 +27,7 @@ export default function ContactFieldsGroup({
   onToggle: () => void;
 }) {
   const { watch } = useFormContext();
+  const { currentCountry } = useTranslationsStore((state) => state);
   const email = watch("email");
   const subscribe = watch("subscribe");
   const prevSubscribeRef = useRef<boolean>(false);
@@ -34,7 +36,7 @@ export default function ContactFieldsGroup({
   useEffect(() => {
     if (subscribe && !prevSubscribeRef.current && email) {
       sendGenerateLeadEvent({
-        currency: "EUR",
+        currency: currentCountry.currencyKey || "EUR",
         value: 0,
         lead_source: "newsletter_checkout",
       });
@@ -45,7 +47,7 @@ export default function ContactFieldsGroup({
       });
     }
     prevSubscribeRef.current = subscribe;
-  }, [subscribe, email]);
+  }, [subscribe, email, currentCountry.currencyKey]);
 
   return (
     <FieldsGroupContainer
