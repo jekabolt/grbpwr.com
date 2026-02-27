@@ -54,6 +54,19 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
   const { selectedSize, handleSelectSize, handleMeasurementSizes } =
     useMeasurementSizes({ product });
 
+  const currencyKey = currentCountry.currencyKey || "EUR";
+  const productPrice =
+    product.product?.prices?.find(
+      (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
+    ) || product.product?.prices?.[0];
+  const sizePickerProductContext = {
+    productId: product.product?.sku || "",
+    productName: name,
+    productCategory: productCategory || "",
+    productPrice: parseFloat(productPrice?.price?.value || "0"),
+    currency: currencyKey,
+  };
+
   const handleNotifyMeOpen = () => {
     if (selectedSize) {
       setActiveSizeId(selectedSize);
@@ -113,6 +126,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 view={isOneSize ? "line" : "grid"}
                 onOutOfStockHover={setHoveredOutOfStockSizeId}
                 shouldBlink={shouldBlinkSizes}
+                productContext={sizePickerProductContext}
               />
             </div>
           </div>

@@ -61,6 +61,17 @@ export function getTotalProductValue(product: common_ProductFull, selectedCurren
     }, 0);
 }
 
+export function pushCustomEvent(event: string, params: Record<string, unknown>): void {
+    try {
+        if (typeof window === "undefined") return;
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event, ...params });
+    } catch (error) {
+        console.warn("Analytics tracking failed:", error);
+    }
+}
+
 export const calculateTotalValue = (items: common_OrderItem[]): number => {
     return items.reduce((sum, item) => {
         const price = parseFloat(item.productPrice || "0");

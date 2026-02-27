@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { sendFormEvent } from "@/lib/analitycs/form";
+import {
+  sendGenerateLeadEvent,
+  sendNewsletterSignupEvent,
+} from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
 import { validateEmail } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -34,9 +37,15 @@ export default function NewslatterForm() {
 
     try {
       await serviceClient.SubscribeNewsletter({ email });
-      sendFormEvent({
-        email,
-        formId: "newsletter_subscription",
+      sendGenerateLeadEvent({
+        currency: "EUR",
+        value: 0,
+        lead_source: "newsletter_footer",
+      });
+      sendNewsletterSignupEvent({
+        signup_location: "footer",
+        page_path:
+          typeof window !== "undefined" ? window.location.pathname : "",
       });
       setEmail("");
       setIsChecked(false);

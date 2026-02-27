@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
-import { sendButtonEvent } from "@/lib/analitycs/button";
+import { sendSizeGuideViewEvent } from "@/lib/analitycs/product-engagement";
 import { ModalTransition } from "@/components/modal-transition";
 import { LoadingButton } from "@/app/[locale]/product/[...productParams]/_components/loading-button";
 import { useProductBasics } from "@/app/[locale]/product/[...productParams]/_components/utils/useProductBasics";
@@ -31,7 +31,7 @@ export default function MeasurementPopup({
   outOfStock,
   onNotifyMeOpen,
 }: ModalProps) {
-  const { preorder, name } = useProductBasics({ product });
+  const { preorder, name, productCategory } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
   const t = useTranslations("product");
@@ -59,9 +59,11 @@ export default function MeasurementPopup({
 
   const toggleModal = () => {
     if (!isModalOpen) {
-      sendButtonEvent({
-        buttonId: "size_guide",
-        productName: name,
+      sendSizeGuideViewEvent({
+        product_id: product.product?.sku || "",
+        product_name: name,
+        product_category: productCategory || "",
+        page_location: typeof window !== "undefined" ? window.location.href : "",
       });
     }
     setModalOpen(!isModalOpen);

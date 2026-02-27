@@ -63,6 +63,19 @@ export function MobileProductInfo({
   const carouselContainerRef = useRef<HTMLDivElement>(null);
   const carouselHeight = useElementHeight(carouselContainerRef, 48);
 
+  const currencyKey = currentCountry.currencyKey || "EUR";
+  const productPrice =
+    product.product?.prices?.find(
+      (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
+    ) || product.product?.prices?.[0];
+  const sizePickerProductContext = {
+    productId: product.product?.sku || "",
+    productName: name,
+    productCategory: productCategory || "",
+    productPrice: parseFloat(productPrice?.price?.value || "0"),
+    currency: currencyKey,
+  };
+
   const handleNotifyMeOpen = () => {
     if (selectedSize) {
       setActiveSizeId(selectedSize);
@@ -94,7 +107,12 @@ export function MobileProductInfo({
       <div ref={mainAreaRef} className="fixed inset-x-0 bottom-0 top-12">
         <div className="relative h-full">
           <div ref={carouselContainerRef} className="relative">
-            <MobileImageCarousel media={product.media || []} />
+            <MobileImageCarousel
+              media={product.media || []}
+              productId={product.product?.sku || ""}
+              productName={name}
+              productCategory={productCategory || ""}
+            />
           </div>
           <BottomSheet
             config={{
@@ -126,6 +144,7 @@ export function MobileProductInfo({
                   view={isOneSize ? "line" : "grid"}
                   onOutOfStockHover={setHoveredOutOfStockSizeId}
                   shouldBlink={shouldBlinkSizes}
+                  productContext={sizePickerProductContext}
                 />
               </div>
               {product.product && (
