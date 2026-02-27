@@ -1,27 +1,26 @@
+import { pushCustomEvent } from "../utils";
 
-interface SizeSelectionEvent {
-    sizeName: string;
-    outOfStock: boolean;
+interface SizeSelectedEvent {
+  product_id: string;
+  product_name: string;
+  size_id: number;
+  size_name: string;
+  product_category: string;
+  in_stock: boolean;
 }
 
-
-export function sendSizeSelectionEvent(data: SizeSelectionEvent) {
-    if (typeof window === 'undefined' || !window.dataLayer) {
-        console.warn('DataLayer is not available');
-        return;
-    }
-
-    window.dataLayer = window.dataLayer || [];
-
-    window.dataLayer.push({ ecommerce: null });
-
-    const eventData = {
-        event: 'size_selection',
-        size_name: data.sizeName,
-        size_status: data.outOfStock ? "out of stock" : "in stock",
-    }
-
-    window.dataLayer.push(eventData);
-
-    console.log('Size selection event sent to DataLayer:', eventData);
+export function sendSizeSelectedEvent(data: SizeSelectedEvent): void {
+  if (!data.product_id || !data.product_name) {
+    console.warn("sendSizeSelectedEvent: Missing required product data");
+    return;
+  }
+  
+  pushCustomEvent("size_selected", {
+    product_id: data.product_id,
+    product_name: data.product_name,
+    size_id: data.size_id,
+    size_name: data.size_name,
+    product_category: data.product_category,
+    in_stock: data.in_stock,
+  });
 }

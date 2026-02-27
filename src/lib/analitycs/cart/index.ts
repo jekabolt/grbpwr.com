@@ -37,6 +37,7 @@ export function sendRemoveFromCartEvent(
     item: common_OrderItem,
     topCategory: string,
     subCategory: string,
+    currency: string = "EUR",
 ) {
     const totalValue = parseFloat(item.productPrice || "0");
 
@@ -45,8 +46,8 @@ export function sendRemoveFromCartEvent(
     const event: EcommerceEvent = {
         event: "remove_from_cart",
         ecommerce: {
-            currency: "EUR",
-            value: totalValue,
+            currency: currency.toUpperCase(),
+            value: Math.max(0, totalValue),
             items: [mapItemsToAnalyticsItems(item, 1, topCategory, subCategory)],
         },
     };
@@ -58,6 +59,7 @@ export function sendViewCartEvent(
     items: common_OrderItem[],
     topCategory: string,
     subCategory: string,
+    currency: string = "EUR",
 ) {
     const totalValue = calculateTotalValue(items);
 
@@ -66,8 +68,8 @@ export function sendViewCartEvent(
     const event: EcommerceEvent = {
         event: "view_cart",
         ecommerce: {
-            currency: "EUR",
-            value: totalValue,
+            currency: currency.toUpperCase(),
+            value: Math.max(0, totalValue),
             items: items.map((item) =>
                 mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
             ),

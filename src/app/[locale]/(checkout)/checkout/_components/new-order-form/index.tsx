@@ -1,12 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
+import {
+  sendFormStartEvent,
+  sendFormSubmitEvent,
+  sendPaymentFailedEvent,
+} from "@/lib/analitycs/checkout-custom";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { getValidationErrorToastKey } from "@/lib/cart/validate-cart-items";
 import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
@@ -52,6 +57,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const contactRef = useRef<HTMLDivElement>(null);
   const shippingRef = useRef<HTMLDivElement>(null);
   const paymentRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const t = useTranslations("checkout");
   const tToaster = useTranslations("toaster");
@@ -84,6 +90,21 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     onAmountChange,
     handleFormChange,
   });
+
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el) return;
+    const handler = () => {
+      sendFormStartEvent({
+        form_id: "checkout_form",
+        form_name: "Checkout",
+        page_path:
+          typeof window !== "undefined" ? window.location.pathname : "",
+      });
+    };
+    el.addEventListener("focusin", handler, { once: true });
+    return () => el.removeEventListener("focusin", handler);
+  }, []);
 
   const paymentMethod = form.watch("paymentMethod");
   const isPaymentFieldsValid =
@@ -164,6 +185,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const onSubmit = async (data: CheckoutData) => {
     if (!stripe || !elements) return;
 
+    sendFormSubmitEvent({
+      form_id: "checkout_form",
+      form_name: "Checkout",
+      page_path:
+        typeof window !== "undefined" ? window.location.pathname : "",
+    });
+
     setLoading(true);
 
     try {
@@ -213,6 +241,14 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
           return;
         }
 
+        sendPaymentFailedEvent({
+          error_code: paymentResult.error || "unknown",
+          payment_type: "credit_card",
+          order_value: parseFloat(order?.totalSale?.value || "0"),
+          currency: orderCurrency || currentCountry.currencyKey || "EUR",
+          page_path:
+            typeof window !== "undefined" ? window.location.pathname : "",
+        });
         console.error("Payment confirmation failed:", paymentResult.error);
       }
 
@@ -233,6 +269,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     <>
       <Form {...form}>
         <form
+          ref={formRef}
           onSubmit={form.handleSubmit(handleValidSubmit, handleSubmitInvalid)}
           className="relative space-y-14 lg:space-y-0"
         >

@@ -7,6 +7,10 @@ import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import { useTranslations } from "next-intl";
 
+import {
+  sendProductImageViewEvent,
+  sendProductZoomEvent,
+} from "@/lib/analitycs/product-engagement";
 import { calculateAspectRatio } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Button } from "@/components/ui/button";
@@ -23,7 +27,19 @@ const EMBLA_OPTIONS = {
   startIndex: 0,
 };
 
-export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
+type MobileImageCarouselProps = {
+  media: common_MediaFull[];
+  productId?: string;
+  productName?: string;
+  productCategory?: string;
+};
+
+export function MobileImageCarousel({
+  media,
+  productId,
+  productName,
+  productCategory,
+}: MobileImageCarouselProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -35,14 +51,23 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
 
   useEffect(() => {
     if (!emblaApi) return;
-    const updateSelectedIndex = () =>
-      setSelectedIndex(emblaApi.selectedScrollSnap());
+    const updateSelectedIndex = () => {
+      const idx = emblaApi.selectedScrollSnap();
+      setSelectedIndex(idx);
+      if (productId) {
+        sendProductImageViewEvent({
+          product_id: productId,
+          image_index: idx + 1,
+          image_total: media.length,
+          product_name: productName || "",
+        });
+      }
+    };
     emblaApi.on("select", updateSelectedIndex);
-    updateSelectedIndex();
     return () => {
       emblaApi.off("select", updateSelectedIndex);
     };
-  }, [emblaApi]);
+  }, [emblaApi, productId, productName, media.length]);
 
   useEffect(() => {
     if (!isOpen || !emblaApi) {
@@ -70,6 +95,13 @@ export function MobileImageCarousel({ media }: { media: common_MediaFull[] }) {
   const currentMedia = media[selectedIndex]?.media?.fullSize;
 
   const handleDoubleClick = () => {
+    if (productId) {
+      sendProductZoomEvent({
+        product_id: productId,
+        product_name: productName || "",
+        product_category: productCategory || "",
+      });
+    }
     if (animationTimerRef.current) {
       clearTimeout(animationTimerRef.current);
     }

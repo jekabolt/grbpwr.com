@@ -1,10 +1,13 @@
 import { common_OrderItem } from "@/api/proto-http/frontend";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { getSubCategoryName, getTopCategoryName } from "../categories-map";
+import { useTranslationsStore } from "../stores/translations/store-provider";
 import { sendRemoveFromCartEvent, sendViewCartEvent } from "./cart";
 
 export function useCartAnalytics({ finalProducts }: { finalProducts: (common_OrderItem | undefined)[] }) {
     const { dictionary } = useDataContext();
+    const { currentCountry } = useTranslationsStore((state) => state);
+    const currency = currentCountry.currencyKey || "EUR";
 
     const validProducts = finalProducts.filter((p): p is common_OrderItem => p !== undefined);
 
@@ -15,7 +18,7 @@ export function useCartAnalytics({ finalProducts }: { finalProducts: (common_Ord
     const subCategoryName = getSubCategoryName(dictionary?.categories || [], subCategoryId) || "";
 
     function handleViewCartEvent() {
-        sendViewCartEvent(validProducts, topCategoryName, subCategoryName);
+        sendViewCartEvent(validProducts, topCategoryName, subCategoryName, currency);
     }
 
     function handleRemoveFromCartEvent(product: common_OrderItem) {
@@ -29,7 +32,7 @@ export function useCartAnalytics({ finalProducts }: { finalProducts: (common_Ord
             product.subCategoryId || 0,
         ) || "";
 
-        sendRemoveFromCartEvent(product, topCategory, subCategory);
+        sendRemoveFromCartEvent(product, topCategory, subCategory, currency);
     }
 
     return {

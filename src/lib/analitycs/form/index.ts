@@ -1,30 +1,33 @@
+import { pushToDataLayer } from "../utils";
 
-interface NewsletterFormData {
-    email: string;
-    formId?: string;
+interface GenerateLeadData {
+  currency: string;
+  value: number;
+  lead_source: string;
 }
 
+interface NewsletterSignupData {
+  signup_location: string;
+  page_path: string;
+}
 
-export function sendFormEvent(data: NewsletterFormData) {
-    if (typeof window === 'undefined' || !window.dataLayer) {
-        console.warn('DataLayer is not available');
-        return;
-    }
+export function sendGenerateLeadEvent(data: GenerateLeadData) {
+  pushToDataLayer({
+    event: "generate_lead",
+    ecommerce: {
+      currency: data.currency,
+      value: Math.max(0, data.value),
+      lead_source: data.lead_source,
+    },
+  });
+}
 
-    window.dataLayer = window.dataLayer || [];
-
-    window.dataLayer.push({ ecommerce: null });
-
-    const eventData = {
-        event: 'form_submission',
-        form_id: data.formId,
-        form_data: {
-            email: data.email,
-            email_domain: data.email.split('@')[1] || '',
-        },
-    };
-
-    window.dataLayer.push(eventData);
-
-    console.log('Newsletter subscription event sent to DataLayer:', eventData);
+export function sendNewsletterSignupEvent(data: NewsletterSignupData) {
+  pushToDataLayer({
+    event: "newsletter_signup",
+    ecommerce: {
+      signup_location: data.signup_location,
+      page_path: data.page_path,
+    },
+  });
 }

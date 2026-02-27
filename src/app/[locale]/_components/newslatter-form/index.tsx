@@ -3,8 +3,12 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { sendFormEvent } from "@/lib/analitycs/form";
+import {
+  sendGenerateLeadEvent,
+  sendNewsletterSignupEvent,
+} from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { validateEmail } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
@@ -13,6 +17,7 @@ import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
 export default function NewslatterForm() {
+  const { currentCountry } = useTranslationsStore((state) => state);
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -34,9 +39,15 @@ export default function NewslatterForm() {
 
     try {
       await serviceClient.SubscribeNewsletter({ email });
-      sendFormEvent({
-        email,
-        formId: "newsletter_subscription",
+      sendGenerateLeadEvent({
+        currency: currentCountry.currencyKey || "EUR",
+        value: 0,
+        lead_source: "newsletter_footer",
+      });
+      sendNewsletterSignupEvent({
+        signup_location: "footer",
+        page_path:
+          typeof window !== "undefined" ? window.location.pathname : "",
       });
       setEmail("");
       setIsChecked(false);

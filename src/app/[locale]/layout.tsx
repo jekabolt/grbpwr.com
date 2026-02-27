@@ -9,6 +9,7 @@ import {
   setRequestLocale,
 } from "next-intl/server";
 
+import { AnalyticsInit } from "@/components/analytics-init";
 import { PageTransition } from "@/components/page-transition";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
@@ -84,6 +85,7 @@ export default async function RootLayout({ children, params }: Props) {
             <GeoSuggestWrapper />
             <UpdateLocation />
             <CookieBanner />
+            <AnalyticsInit />
           </ToastProvider>
         </NextIntlClientProvider>
       </body>

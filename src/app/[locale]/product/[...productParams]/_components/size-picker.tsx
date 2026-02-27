@@ -1,9 +1,18 @@
-import { sendSizeSelectionEvent } from "@/lib/analitycs/sizes";
+import { sendOutOfStockClickEvent } from "@/lib/analitycs/product-engagement";
+import { sendSizeSelectedEvent } from "@/lib/analitycs/sizes";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { HoverText } from "@/components/ui/hover-text";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
+
+type ProductContext = {
+  productId: string;
+  productName: string;
+  productCategory: string;
+  productPrice: number;
+  currency: string;
+};
 
 type Props = {
   sizeNames: { name: string; id: number }[];
@@ -16,6 +25,7 @@ type Props = {
   handleSizeSelect: (id: number) => void;
   onOutOfStockHover?: (sizeId: number | null) => void;
   shouldBlink?: boolean;
+  productContext?: ProductContext;
 };
 
 export function SizePicker({
@@ -29,12 +39,38 @@ export function SizePicker({
   shouldBlink = false,
   handleSizeSelect,
   onOutOfStockHover,
+  productContext,
 }: Props) {
-  const handleAnalytics = (sizeName: string, outOfStock: boolean) => {
-    sendSizeSelectionEvent({
-      sizeName: sizeName,
-      outOfStock: outOfStock,
-    });
+  const handleAnalytics = (
+    sizeId: number,
+    sizeName: string,
+    isOutOfStock: boolean,
+  ) => {
+    if (!productContext) {
+      console.warn("SizePicker: productContext is required for analytics");
+      return;
+    }
+
+    if (isOutOfStock) {
+      sendOutOfStockClickEvent({
+        product_id: productContext.productId,
+        product_name: productContext.productName,
+        size_id: sizeId,
+        size_name: sizeName,
+        product_category: productContext.productCategory,
+        product_price: productContext.productPrice,
+        currency: productContext.currency,
+      });
+    } else {
+      sendSizeSelectedEvent({
+        product_id: productContext.productId,
+        product_name: productContext.productName,
+        size_id: sizeId,
+        size_name: sizeName,
+        product_category: productContext.productCategory,
+        in_stock: true,
+      });
+    }
   };
 
   return (
@@ -66,13 +102,12 @@ export function SizePicker({
                 "border-textColor": isActive && !isOutOfStock,
                 "hover:border-textColor": !isActive && !isOutOfStock,
                 "px-3 py-0.5": view === "line" && !isOneSize,
-                // "w-auto": view === "line" && isOneSize,
                 "!text-textColor": isOutOfStock && isActive,
                 "hover:!text-textColor": isOutOfStock && !isActive,
               })}
               key={id}
               onClick={() => handleSizeSelect(id)}
-              onPointerDown={() => handleAnalytics(name, isOutOfStock)}
+              onPointerDown={() => handleAnalytics(id, name, isOutOfStock)}
               onMouseEnter={() => isOutOfStock && onOutOfStockHover?.(id)}
               onMouseLeave={() => isOutOfStock && onOutOfStockHover?.(null)}
             >
