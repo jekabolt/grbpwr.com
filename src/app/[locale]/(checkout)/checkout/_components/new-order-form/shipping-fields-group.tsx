@@ -117,15 +117,13 @@ export default function ShippingFieldsGroup({
                 const formattedPrice = price
                   ? formatPrice(Number(price), currency, symbol)
                   : "";
-                const namePart = eta
+                const label = eta
                   ? `${displayCarrierName} (${eta} ${t("business days")})`
                   : displayCarrierName;
-                const label = formattedPrice
-                  ? `${namePart} — ${formattedPrice}`
-                  : namePart;
                 return {
                   label,
                   value: c.id + "" || "",
+                  priceLabel: formattedPrice || undefined,
                 };
               })}
             />
