@@ -239,15 +239,26 @@ export function calculateVatFromInclusivePrice(
 }
 
 /**
- * Get VAT rate for a country by its country code
+ * Check if a country is in Europe (VAT applies only to European countries)
+ */
+export function isEuropeanCountry(countryCode: string): boolean {
+  const codeLc = countryCode.toLowerCase();
+  return COUNTRIES_BY_REGION.EUROPE.some(
+    (c) => c.countryCode.toLowerCase() === codeLc,
+  );
+}
+
+/**
+ * Get VAT rate for a country by its country code.
+ * VAT is applied only for European countries.
  * @param countryCode - ISO country code (e.g., "de", "fr", "us")
- * @returns VAT rate as percentage (e.g., 19 for 19%) or undefined if not found
+ * @returns VAT rate as percentage (e.g., 19 for 19%) or undefined if not European
  */
 export function getVatRateByCountryCode(
   countryCode: string,
 ): number | undefined {
-  const allCountries = Object.values(COUNTRIES_BY_REGION).flat();
-  const country = allCountries.find(
+  if (!isEuropeanCountry(countryCode)) return undefined;
+  const country = COUNTRIES_BY_REGION.EUROPE.find(
     (c) => c.countryCode.toLowerCase() === countryCode.toLowerCase(),
   );
   return country?.vatRate;
