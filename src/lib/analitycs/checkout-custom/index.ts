@@ -58,3 +58,20 @@ export function sendPaymentFailedEvent(data: PaymentFailedEvent): void {
     page_path: data.page_path,
   });
 }
+
+interface FormErrorEvent {
+  form_id: string;
+  form_name: string;
+  error_fields: string[];
+  page_path: string;
+}
+
+export function sendFormErrorEvent(data: FormErrorEvent): void {
+  pushCustomEvent("form_error", {
+    form_id: data.form_id,
+    form_name: data.form_name,
+    error_fields: data.error_fields.join(","),
+    error_count: data.error_fields.length,
+    page_path: data.page_path,
+  });
+}

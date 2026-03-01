@@ -7,6 +7,7 @@ import {
   sendGenerateLeadEvent,
   sendNewsletterSignupEvent,
 } from "@/lib/analitycs/form";
+import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { validateEmail } from "@/lib/utils";
@@ -39,6 +40,7 @@ export default function NewslatterForm() {
 
     try {
       await serviceClient.SubscribeNewsletter({ email });
+      await pushUserIdToDataLayer(email);
       sendGenerateLeadEvent({
         currency: currentCountry.currencyKey || "EUR",
         value: 0,

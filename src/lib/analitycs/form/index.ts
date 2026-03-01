@@ -1,4 +1,10 @@
+import { pushCustomEvent } from "../utils";
 import { pushToDataLayer } from "../utils";
+
+interface FormEventData {
+  formId: string;
+  email?: string;
+}
 
 interface GenerateLeadData {
   currency: string;
@@ -23,11 +29,19 @@ export function sendGenerateLeadEvent(data: GenerateLeadData) {
 }
 
 export function sendNewsletterSignupEvent(data: NewsletterSignupData) {
-  pushToDataLayer({
-    event: "newsletter_signup",
-    ecommerce: {
-      signup_location: data.signup_location,
-      page_path: data.page_path,
-    },
+  pushCustomEvent("newsletter_signup", {
+    signup_location: data.signup_location,
+    page_path: data.page_path,
+  });
+}
+
+export function sendFormEvent(data: FormEventData) {
+  if (typeof window === "undefined") return;
+
+  pushCustomEvent("form_submit", {
+    form_id: data.formId,
+    form_name: data.formId,
+    page_path: window.location.pathname,
+    ...(data.email && { email: data.email }),
   });
 }

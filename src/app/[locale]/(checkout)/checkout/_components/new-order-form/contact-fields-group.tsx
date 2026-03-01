@@ -9,6 +9,7 @@ import {
   sendGenerateLeadEvent,
   sendNewsletterSignupEvent,
 } from "@/lib/analitycs/form";
+import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -35,16 +36,19 @@ export default function ContactFieldsGroup({
 
   useEffect(() => {
     if (subscribe && !prevSubscribeRef.current && email) {
-      sendGenerateLeadEvent({
-        currency: currentCountry.currencyKey || "EUR",
-        value: 0,
-        lead_source: "newsletter_checkout",
-      });
-      sendNewsletterSignupEvent({
-        signup_location: "checkout",
-        page_path:
-          typeof window !== "undefined" ? window.location.pathname : "",
-      });
+      void (async () => {
+        await pushUserIdToDataLayer(email);
+        sendGenerateLeadEvent({
+          currency: currentCountry.currencyKey || "EUR",
+          value: 0,
+          lead_source: "newsletter_checkout",
+        });
+        sendNewsletterSignupEvent({
+          signup_location: "checkout",
+          page_path:
+            typeof window !== "undefined" ? window.location.pathname : "",
+        });
+      })();
     }
     prevSubscribeRef.current = subscribe;
   }, [subscribe, email, currentCountry.currencyKey]);

@@ -10,6 +10,8 @@ import { useTranslations } from "next-intl";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 
+import { NotFoundTracker } from "./_components/not-found-tracker";
+
 export const dynamic = "force-static";
 
 export function generateMetadata() {
@@ -23,6 +25,7 @@ export default function NotFoundPage() {
   const t = useTranslations("not-found");
   return (
     <FlexibleLayout headerType="catalog">
+      <NotFoundTracker />
       <div className="flex h-screen flex-col items-center justify-center gap-6">
         <Text variant="uppercase" component="h1">
           {t("title")}
