@@ -5,6 +5,7 @@ import {
   calculateTotalValue,
   EcommerceEvent,
   pushToDataLayer,
+  SizeMap,
 } from "../utils";
 
 export function mapItemsToAnalyticsItems(
@@ -12,9 +13,12 @@ export function mapItemsToAnalyticsItems(
   quantity: number,
   topCategory: string,
   subCategory: string,
+  sizeMap?: SizeMap,
 ): AnalyticsItem {
   const originalPrice = parseFloat(item.productPrice || "0");
   const salePercentage = parseFloat(item.productSalePercentage || "0");
+  const sizeId = item.orderItem?.sizeId;
+  const sizeName = sizeId != null && sizeMap ? (sizeMap[sizeId] || "") : "";
 
   return {
     item_id: item.sku || "",
@@ -22,7 +26,7 @@ export function mapItemsToAnalyticsItems(
     item_brand: item.productBrand || "",
     item_category: topCategory || "",
     item_category2: subCategory || "",
-    item_variant: item.orderItem?.productId?.toString() || "",
+    item_variant: sizeName,
     discount: (originalPrice * salePercentage) / 100,
     price: originalPrice,
     quantity: quantity || 1,
@@ -34,6 +38,7 @@ export function sendBeginCheckoutEvent(
   topCategory: string,
   subCategory: string,
   currency: string = "EUR",
+  sizeMap?: SizeMap,
 ): void {
   if (!items || !items?.length) return;
 
@@ -43,7 +48,7 @@ export function sendBeginCheckoutEvent(
       currency: currency.toUpperCase(),
       value: calculateTotalValue(items),
       items: items.map((item) =>
-        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
       ),
     },
   };
@@ -57,6 +62,7 @@ export function sendAddShippingInfoEvent(
   topCategory: string,
   subCategory: string,
   currency: string = "EUR",
+  sizeMap?: SizeMap,
 ): void {
   if (!items || !items?.length) return;
 
@@ -67,7 +73,7 @@ export function sendAddShippingInfoEvent(
       value: calculateTotalValue(items),
       shipping_tier: shippingCarrier,
       items: items.map((item) =>
-        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
       ),
     },
   };
@@ -81,6 +87,7 @@ export function sendAddPaymentInfoEvent(
   topCategory: string,
   subCategory: string,
   currency: string = "EUR",
+  sizeMap?: SizeMap,
 ): void {
   if (!items || !items?.length) return;
 
@@ -91,12 +98,17 @@ export function sendAddPaymentInfoEvent(
       value: calculateTotalValue(items),
       payment_type: paymentMethod,
       items: items.map((item) =>
-        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
       ),
     },
   };
 
   pushToDataLayer(event);
+}
+
+export interface PurchaseOptions {
+  coupon?: string;
+  shipping?: number;
 }
 
 export function sendPurchaseEvent(
@@ -105,6 +117,8 @@ export function sendPurchaseEvent(
   topCategory: string,
   subCategory: string,
   currency: string = "EUR",
+  sizeMap?: SizeMap,
+  options?: PurchaseOptions,
 ): void {
   if (!items || !items?.length) return;
 
@@ -114,8 +128,10 @@ export function sendPurchaseEvent(
       currency: currency.toUpperCase(),
       value: calculateTotalValue(items),
       transaction_id: transactionId,
+      ...(options?.coupon && { coupon: options.coupon }),
+      ...(options?.shipping != null && { shipping: options.shipping }),
       items: items.map((item) =>
-        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
       ),
     },
   };
@@ -128,6 +144,8 @@ export function sendRefundEvent(
   topCategory: string,
   subCategory: string,
   currency: string = "EUR",
+  sizeMap?: SizeMap,
+  returnReason?: string,
 ) {
   if (!orderData || !orderData.order) return;
 
@@ -139,8 +157,9 @@ export function sendRefundEvent(
       transaction_id: orderData.order.uuid,
       coupon: orderData.promoCode?.promoCodeInsert?.code || "not set",
       shipping: parseFloat(orderData.shipment?.cost?.value || "0") || 0,
+      ...(returnReason && { return_reason: returnReason }),
       items: orderData.orderItems?.map((item) =>
-        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+        mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
       ),
     },
   };

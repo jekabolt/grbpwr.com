@@ -3,6 +3,8 @@ import {
     common_ProductFull,
 } from "@/api/proto-http/frontend";
 
+import { getStoredCampaignParams } from "./campaign";
+
 export interface EcommerceEvent {
     event: string;
     ecommerce: {
@@ -27,9 +29,12 @@ export function pushToDataLayer(event: EcommerceEvent): void {
     try {
         if (typeof window === "undefined") return;
 
+        const campaignParams = getCampaignParamsForEvents();
+        const eventWithCampaign = { ...campaignParams, ...event };
+
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ ecommerce: null });
-        window.dataLayer.push(event);
+        window.dataLayer.push(eventWithCampaign);
     } catch (error) {
         console.warn("Analytics tracking failed:", error);
     }
@@ -61,16 +66,48 @@ export function getTotalProductValue(product: common_ProductFull, selectedCurren
     }, 0);
 }
 
+export function getCampaignParamsForEvents(): Record<string, unknown> {
+    const campaign = getStoredCampaignParams();
+    if (!campaign || Object.keys(campaign).length === 0) return {};
+    return {
+        first_user_campaign: [campaign.utm_source, campaign.utm_medium, campaign.utm_campaign]
+            .filter(Boolean)
+            .join("|") || undefined,
+        ...campaign,
+    };
+}
+
 export function pushCustomEvent(event: string, params: Record<string, unknown>): void {
     try {
         if (typeof window === "undefined") return;
 
+        const campaignParams = getCampaignParamsForEvents();
+
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event, ...params });
+        window.dataLayer.push({ event, ...campaignParams, ...params });
     } catch (error) {
         console.warn("Analytics tracking failed:", error);
     }
 }
+
+export async function pushUserIdToDataLayer(email: string): Promise<void> {
+    try {
+        if (typeof window === "undefined" || !email) return;
+
+        const encoder = new TextEncoder();
+        const data = encoder.encode(email.toLowerCase().trim());
+        const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashedId = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ user_id: hashedId });
+    } catch (error) {
+        console.warn("Analytics user_id tracking failed:", error);
+    }
+}
+
+export type SizeMap = Record<number, string>;
 
 export const calculateTotalValue = (items: common_OrderItem[]): number => {
     return items.reduce((sum, item) => {
