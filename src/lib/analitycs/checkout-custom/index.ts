@@ -24,12 +24,12 @@ const FORM_START_KEY = "ga4_form_started";
 
 export function sendFormStartEvent(data: FormStartEvent): void {
   if (typeof window === "undefined") return;
-  
+
   const storageKey = `${FORM_START_KEY}_${data.form_id}`;
   if (sessionStorage.getItem(storageKey)) return;
-  
+
   sessionStorage.setItem(storageKey, "true");
-  
+
   pushCustomEvent("form_start", {
     form_id: data.form_id,
     form_name: data.form_name,
@@ -46,10 +46,10 @@ export function sendFormSubmitEvent(data: FormSubmitEvent): void {
 }
 
 export function sendPaymentFailedEvent(data: PaymentFailedEvent): void {
-  const errorCode = typeof data.error_code === "object" 
+  const errorCode = typeof data.error_code === "object"
     ? (data.error_code as any)?.message || JSON.stringify(data.error_code)
     : String(data.error_code || "unknown");
-    
+
   pushCustomEvent("payment_failed", {
     error_code: errorCode,
     payment_type: data.payment_type,

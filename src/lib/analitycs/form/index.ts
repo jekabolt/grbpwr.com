@@ -1,5 +1,4 @@
-import { pushCustomEvent } from "../utils";
-import { pushToDataLayer } from "../utils";
+import { pushCustomEvent, pushToDataLayer } from "../utils";
 
 interface FormEventData {
   formId: string;

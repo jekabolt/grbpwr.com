@@ -1,6 +1,6 @@
-import { useMemo } from "react";
 import { common_OrderItem } from "@/api/proto-http/frontend";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { useMemo } from "react";
 import { getSubCategoryName, getTopCategoryName } from "../categories-map";
 import { useTranslationsStore } from "../stores/translations/store-provider";
 import { sendRemoveFromCartEvent, sendViewCartEvent } from "./cart";

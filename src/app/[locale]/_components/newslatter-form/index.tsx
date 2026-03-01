@@ -1,8 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
+import { Button } from "@/components/ui/button";
+import CheckboxGlobal from "@/components/ui/checkbox";
+import Input from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 import {
   sendGenerateLeadEvent,
   sendNewsletterSignupEvent,
@@ -11,11 +16,6 @@ import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { validateEmail } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import CheckboxGlobal from "@/components/ui/checkbox";
-import Input from "@/components/ui/input";
-import { Text } from "@/components/ui/text";
-import { SubmissionToaster } from "@/components/ui/toaster";
 
 export default function NewslatterForm() {
   const { currentCountry } = useTranslationsStore((state) => state);

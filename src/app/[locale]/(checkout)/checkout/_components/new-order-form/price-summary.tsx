@@ -1,6 +1,7 @@
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { formatPrice } from "@/lib/currency";
+import { isEuropeanCountry } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
@@ -74,9 +75,11 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
           <div className="flex justify-between border-t border-textInactiveColor pt-3">
             <Text variant={"uppercase"}>{t("grand total")}:</Text>
             <div className="flex items-center gap-x-2">
-              <Text variant="uppercase" className="text-textInactiveColor">
-                {t("incl")}
-              </Text>
+              {isEuropeanCountry(selectedCountry || "") && (
+                <Text variant="uppercase" className="text-textInactiveColor">
+                  {t("incl")}
+                </Text>
+              )}
               <Text>{formatPrice(order.totalSale?.value || "0", currency, currencySymbol)}</Text>
             </div>
           </div>

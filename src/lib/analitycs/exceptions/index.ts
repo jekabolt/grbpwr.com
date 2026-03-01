@@ -16,7 +16,7 @@ function getExceptionParams(description: string) {
 }
 
 export function initExceptionTracking(): () => void {
-  if (typeof window === "undefined") return () => {};
+  if (typeof window === "undefined") return () => { };
 
   const errorHandler = (e: ErrorEvent) => {
     pushCustomEvent("exception", getExceptionParams(e.message || "Unknown error"));

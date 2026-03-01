@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
+import CheckboxField from "@/components/ui/form/fields/checkbox-field";
+import InputField from "@/components/ui/form/fields/input-field";
 import {
   sendGenerateLeadEvent,
   sendNewsletterSignupEvent,
 } from "@/lib/analitycs/form";
 import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import CheckboxField from "@/components/ui/form/fields/checkbox-field";
-import InputField from "@/components/ui/form/fields/input-field";
 
 import FieldsGroupContainer from "./fields-group-container";
 
