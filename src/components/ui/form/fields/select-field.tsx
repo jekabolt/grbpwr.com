@@ -37,7 +37,9 @@ export default function SelectField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className={disabled ? "text-textInactiveColor" : ""}>
+            {label}
+          </FormLabel>
           <Select
             onValueChange={field.onChange}
             items={items}

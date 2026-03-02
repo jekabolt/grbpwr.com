@@ -9,6 +9,7 @@ import { useFormContext } from "react-hook-form";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { formatPrice } from "@/lib/currency";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
 import { PhoneField } from "@/components/ui/form/fields/phone-field";
@@ -31,8 +32,8 @@ type Props = {
   isOpen: boolean;
   disabled?: boolean;
   order?: ValidateOrderItemsInsertResponse;
-  onToggle: () => void;
   validateItems: (shipmentCarrierId: string) => Promise<any>;
+  onToggle: () => void;
 };
 
 export default function ShippingFieldsGroup({
@@ -40,8 +41,8 @@ export default function ShippingFieldsGroup({
   isOpen,
   disabled = false,
   order,
-  onToggle,
   validateItems,
+  onToggle,
 }: Props) {
   const t = useTranslations("checkout");
   const { watch, setValue } = useFormContext();
@@ -94,7 +95,14 @@ export default function ShippingFieldsGroup({
       <AddressFields loading={loading} disabled={disabled} />
       <div>
         <div className="space-y-4">
-          <Text variant="uppercase">{t("shipping method")}</Text>
+          <Text
+            variant="uppercase"
+            className={cn("", {
+              "text-textInactiveColor": disabled || loading,
+            })}
+          >
+            {t("shipping method")}
+          </Text>
 
           {eligibleCarriers.length === 0 ? (
             <Text variant="inactive">

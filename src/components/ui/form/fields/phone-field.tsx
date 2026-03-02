@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
+import { cn } from "@/lib/utils";
+
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "..";
 import Input from "../../input";
 import Select from "../../select";
@@ -100,7 +102,11 @@ export function PhoneField({ name, label, items, ...props }: Props) {
 
         return (
           <FormItem>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel
+              className={cn("", { "text-textInactiveColor": props.disabled })}
+            >
+              {label}
+            </FormLabel>
             <FormControl>
               <div className="flex items-end" ref={containerRef}>
                 <div className="flex items-end">
@@ -111,7 +117,9 @@ export function PhoneField({ name, label, items, ...props }: Props) {
                     items={items}
                     disabled={props.disabled}
                     variant="secondary"
-                    className="flex-row-reverse"
+                    className={cn("flex-row-reverse text-textBaseSize", {
+                      // "text-textInactiveColor": props.disabled,
+                    })}
                     customWidth={containerWidth}
                     renderValue={handleSelectChange}
                   />

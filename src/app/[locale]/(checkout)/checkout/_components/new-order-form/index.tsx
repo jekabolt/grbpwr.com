@@ -1,16 +1,12 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { Text } from "@/components/ui/text";
-import { SubmissionToaster } from "@/components/ui/toaster";
 import {
   sendFormErrorEvent,
   sendFormStartEvent,
@@ -27,6 +23,11 @@ import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
@@ -49,7 +50,9 @@ type NewOrderFormProps = {
 
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
-  const { products, clearCart, totalPrice, validatedCurrency } = useCart((s) => s);
+  const { products, clearCart, totalPrice, validatedCurrency } = useCart(
+    (s) => s,
+  );
 
   const { handlePurchaseEvent, handlePaymentElementComplete } =
     useCheckoutAnalytics();
@@ -218,8 +221,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     sendFormSubmitEvent({
       form_id: "checkout_form",
       form_name: "Checkout",
-      page_path:
-        typeof window !== "undefined" ? window.location.pathname : "",
+      page_path: typeof window !== "undefined" ? window.location.pathname : "",
     });
 
     setLoading(true);
@@ -315,6 +317,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 order={order}
                 validatedProducts={order?.validItems}
                 orderCurrency={orderCurrency}
+                disabled={loading}
               />
             </div>
             <div className="space-y-10 lg:space-y-16">
@@ -350,12 +353,24 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
             </div>
             <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
               <div className="hidden space-y-8 lg:block">
-                <Text variant="uppercase">{t("order summary")}</Text>
+                <Text
+                  variant="uppercase"
+                  className={cn("", {
+                    "text-textInactiveColor": loading,
+                  })}
+                >
+                  {t("order summary")}
+                </Text>
                 <OrderProducts
                   validatedProducts={order?.validItems}
                   currencyKey={orderCurrency}
+                  disabled={loading}
                 />
-                <div className="space-y-8">
+                <div
+                  className={cn("space-y-8", {
+                    "text-textInactiveColor": loading,
+                  })}
+                >
                   <PromoCode
                     freeShipmentCarrierId={2}
                     form={form}

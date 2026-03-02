@@ -47,12 +47,14 @@ export default function CheckboxField({
                 {...field}
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                disabled={props.disabled || props.loading}
                 onBlur={onBlur}
                 {...props}
               />
             </FormControl>
             <div
               className={cn("leading-none", {
+                "text-textInactiveColor": props.disabled || props.loading,
                 "space-y-1": description,
               })}
             >

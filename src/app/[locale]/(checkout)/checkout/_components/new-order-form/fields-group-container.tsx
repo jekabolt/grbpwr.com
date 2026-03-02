@@ -66,7 +66,7 @@ export default function FieldsGroupContainer({
       <div
         className={cn(
           "flex items-center justify-between",
-          { "h-20 cursor-pointer": disabled },
+          { "h-auto cursor-pointer lg:h-20": disabled },
           { "cursor-pointer": collapsible && !disabled },
           clickableAreaClassName,
         )}
@@ -87,6 +87,7 @@ export default function FieldsGroupContainer({
           <div
             className={cn(
               "flex flex-1 items-center justify-between",
+              { "text-textInactiveColor": disabled },
               titleWrapperClassName,
             )}
           >

@@ -16,7 +16,6 @@ export interface RadioGroupsProps {
     priceLabelStrikethrough?: boolean;
     className?: string;
   }[];
-  // todo: add disabled
   view?: "card" | "default";
   disabled?: boolean;
   [k: string]: any;
@@ -65,13 +64,13 @@ export default function RadioGroupComponent({
                 key={value}
                 className={cn(
                   "flex w-full cursor-pointer gap-3",
-
                   itemClassName,
                   {
                     "h-28 border border-textInactiveColor p-3": isCardView,
                     "w-40 min-w-40 flex-shrink-0 lg:w-full":
                       isCardView && hasManyItems,
                     "border-textColor": value === props.value && isCardView,
+                    "border-textInactiveColor": props.disabled,
                   },
                 )}
                 htmlFor={`${value}-r`}
@@ -79,13 +78,31 @@ export default function RadioGroupComponent({
                 <div className="flex h-full w-full flex-col justify-between">
                   <div className="flex items-start gap-x-2">
                     <RadioGroup.Item
-                      className="h-3 min-h-3 w-3 min-w-3 shrink-0 cursor-pointer rounded-full border border-textColor"
+                      className={cn(
+                        "h-3 min-h-3 w-3 min-w-3 shrink-0 cursor-pointer rounded-full border border-textColor",
+                        {
+                          "border-textInactiveColor": props.disabled,
+                        },
+                      )}
                       value={value}
                       id={`${value}-r`}
                     >
-                      <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-2 after:w-2 after:rounded-full after:bg-textColor after:content-['']" />
+                      <RadioGroup.Indicator
+                        className={cn(
+                          "relative flex h-full w-full items-center justify-center after:block after:h-2 after:w-2 after:rounded-full after:bg-textColor after:content-['']",
+                          {
+                            "after:bg-textInactiveColor": props.disabled,
+                          },
+                        )}
+                      />
                     </RadioGroup.Item>
-                    <Text className="min-w-0 flex-1 leading-none">{label}</Text>
+                    <Text
+                      className={cn("min-w-0 flex-1 leading-none", {
+                        "text-textInactiveColor": props.disabled,
+                      })}
+                    >
+                      {label}
+                    </Text>
                   </div>
                   {(icon || showPrice) && (
                     <div className="flex items-end justify-between gap-2">
@@ -99,6 +116,9 @@ export default function RadioGroupComponent({
                                   ? "strileTroughInactive"
                                   : "default"
                               }
+                              className={cn({
+                                "text-textInactiveColor": props.disabled,
+                              })}
                             >
                               {priceLabel}
                             </Text>

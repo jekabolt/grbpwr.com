@@ -7,8 +7,8 @@ import { MobileProductsCarousel } from "./mobile-products-carousel";
 export function OrderProducts({
   validatedProducts,
   currencyKey,
+  disabled = false,
 }: Props) {
-  // Pass undefined (not []) when validation hasn't completed — CartProductsList/MobileProductsCarousel fall back to cart
   const expandedProducts = validatedProducts
     ? validatedProducts.flatMap((item) =>
         Array.from({ length: item.orderItem?.quantity || 1 }, () => ({
@@ -29,6 +29,7 @@ export function OrderProducts({
           hideQuantityButtons
           validatedProducts={expandedProducts}
           currencyKey={currencyKey}
+          disabled={disabled}
         />
       </div>
 
@@ -36,6 +37,7 @@ export function OrderProducts({
         <MobileProductsCarousel
           validatedProducts={expandedProducts}
           currencyKey={currencyKey}
+          disabled={disabled}
         />
       </div>
     </div>
@@ -46,4 +48,5 @@ type Props = {
   validatedProducts?: common_OrderItem[];
   /** When provided (e.g. order confirmation), use this currency instead of user's current locale */
   currencyKey?: string;
+  disabled?: boolean;
 };

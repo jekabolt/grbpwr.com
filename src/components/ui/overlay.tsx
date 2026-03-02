@@ -10,9 +10,10 @@ interface Props {
   cover: "screen" | "container";
   color?: "dark" | "light" | "highlight";
   disablePointerEvents?: boolean;
-  onClick?: () => void;
   trigger?: "hover" | "held" | "active" | "none";
   active?: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
 }
 
 export function Overlay({
@@ -21,6 +22,7 @@ export function Overlay({
   disablePointerEvents = true,
   trigger = "none",
   active = false,
+  disabled = false,
   onClick,
 }: Props) {
   useEffect(() => {
@@ -50,6 +52,7 @@ export function Overlay({
         "opacity-0 group-data-[held=true]:opacity-60": trigger === "held",
         "opacity-0": trigger === "active" && !active,
         "opacity-60": trigger === "active" && active,
+        "bg-textInactiveColor": disabled,
       })}
       onClick={onClick}
       aria-hidden="true"
