@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
-
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -27,8 +26,6 @@ export function CheckoutFormWrapper() {
   const { dictionary } = useDataContext();
   const { currentCountry, languageId } = useTranslationsStore((state) => state);
 
-  // Redirect to home when landing on checkout with empty cart (e.g. direct link)
-  // Preserve current locale
   const productsRef = useRef(products);
   productsRef.current = products;
   useEffect(() => {
@@ -40,7 +37,7 @@ export function CheckoutFormWrapper() {
         const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
         router.replace(`/${country}/${locale}`);
       }
-    }, 100); // brief delay for cart persist rehydration
+    }, 100);
     return () => clearTimeout(t);
   }, [products.length, languageId, currentCountry.countryCode, router]);
 
@@ -109,7 +106,8 @@ export function CheckoutFormWrapper() {
         currency: currency?.toLowerCase(),
         appearance,
         paymentMethodCreation: "manual",
-        locale: (LANGUAGE_ID_TO_LOCALE[languageId] || "en") as StripeElementLocale,
+        locale: (LANGUAGE_ID_TO_LOCALE[languageId] ||
+          "en") as StripeElementLocale,
       }}
     >
       <NewOrderForm onAmountChange={handleAmountChange} />
