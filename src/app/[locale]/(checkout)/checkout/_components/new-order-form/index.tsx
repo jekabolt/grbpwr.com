@@ -21,6 +21,7 @@ import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
@@ -46,7 +47,9 @@ type NewOrderFormProps = {
 
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
-  const { products, clearCart, totalPrice, validatedCurrency } = useCart((s) => s);
+  const { products, clearCart, totalPrice, validatedCurrency } = useCart(
+    (s) => s,
+  );
 
   const { handlePurchaseEvent } = useCheckoutAnalytics();
 
@@ -188,8 +191,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     sendFormSubmitEvent({
       form_id: "checkout_form",
       form_name: "Checkout",
-      page_path:
-        typeof window !== "undefined" ? window.location.pathname : "",
+      page_path: typeof window !== "undefined" ? window.location.pathname : "",
     });
 
     setLoading(true);
@@ -280,6 +282,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 order={order}
                 validatedProducts={order?.validItems}
                 orderCurrency={orderCurrency}
+                disabled={loading}
               />
             </div>
             <div className="space-y-10 lg:space-y-16">
@@ -294,7 +297,6 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               <div ref={shippingRef}>
                 <ShippingFieldsGroup
                   loading={loading}
-                  validateItems={validateItems}
                   isOpen={isGroupOpen("shipping")}
                   onToggle={() => handleGroupToggle("shipping")}
                   disabled={isGroupDisabled("shipping") || loading}
@@ -314,12 +316,24 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
             </div>
             <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
               <div className="hidden space-y-8 lg:block">
-                <Text variant="uppercase">{t("order summary")}</Text>
+                <Text
+                  variant="uppercase"
+                  className={cn("", {
+                    "text-textInactiveColor": loading,
+                  })}
+                >
+                  {t("order summary")}
+                </Text>
                 <OrderProducts
                   validatedProducts={order?.validItems}
                   currencyKey={orderCurrency}
+                  disabled={loading}
                 />
-                <div className="space-y-8">
+                <div
+                  className={cn("space-y-8", {
+                    "text-textInactiveColor": loading,
+                  })}
+                >
                   <PromoCode
                     freeShipmentCarrierId={2}
                     form={form}

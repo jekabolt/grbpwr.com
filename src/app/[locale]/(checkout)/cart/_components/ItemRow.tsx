@@ -20,6 +20,7 @@ export default function ItemRow({
   hideQuantityButtons,
   index,
   currencyKey: currencyKeyProp,
+  disabled = false,
 }: Props) {
   const { languageId } = useTranslationsStore((state) => state);
   const closeCart = useCart((state) => state.closeCart);
@@ -50,7 +51,14 @@ export default function ItemRow({
   )?.name;
 
   return (
-    <div className="group relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
+    <div
+      className={cn(
+        "group relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0",
+        {
+          "text-textInactiveColor": disabled,
+        },
+      )}
+    >
       <Link
         href={product.slug || ""}
         className="relative h-full min-w-[90px] shrink-0"
@@ -63,7 +71,12 @@ export default function ItemRow({
           aspectRatio="4/5"
         />
         <div className="absolute inset-0 hidden lg:block">
-          <Overlay cover="container" color="highlight" trigger="hover" />
+          <Overlay
+            cover="container"
+            color="highlight"
+            trigger={disabled ? "none" : "hover"}
+            disabled={disabled}
+          />
         </div>
       </Link>
       <div className="relative z-10 flex w-full items-stretch justify-between">
@@ -131,4 +144,5 @@ type Props = {
   index?: number;
   /** When provided (e.g. order confirmation), use this currency instead of user's current locale */
   currencyKey?: string;
+  disabled?: boolean;
 };

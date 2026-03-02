@@ -1,15 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import {
   common_OrderItem,
   ValidateOrderItemsInsertResponse,
 } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
-import { formatPrice } from "@/lib/currency";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
+import { formatPrice } from "@/lib/currency";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
@@ -22,9 +23,16 @@ type Props = {
   form: UseFormReturn<any>;
   order?: ValidateOrderItemsInsertResponse;
   orderCurrency?: string;
+  disabled?: boolean;
 };
 
-export function MobileOrderSummary({ form, validatedProducts, order, orderCurrency }: Props) {
+export function MobileOrderSummary({
+  form,
+  validatedProducts,
+  order,
+  orderCurrency,
+  disabled = false,
+}: Props) {
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
@@ -43,17 +51,34 @@ export function MobileOrderSummary({ form, validatedProducts, order, orderCurren
   return (
     <FieldsGroupContainer
       signType="plus-minus"
-      className="space-y-0 border border-textInactiveColor p-2.5"
+      className={cn("space-y-0 border border-textInactiveColor p-2.5", {
+        "text-textInactiveColor": disabled,
+      })}
       signPosition="before"
       title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
       preview={
-        <Text>{formatPrice(order?.totalSale?.value || "0", currency, currencySymbol)}</Text>
+        <Text
+          className={cn({
+            "text-textInactiveColor": disabled,
+          })}
+        >
+          {formatPrice(
+            order?.totalSale?.value || "0",
+            currency,
+            currencySymbol,
+          )}
+        </Text>
       }
       isOpen={isOpen}
+      disabled={disabled}
       onToggle={handleToggle}
     >
       <div className="pt-6">
-        <OrderProducts validatedProducts={validatedProducts} currencyKey={orderCurrency} />
+        <OrderProducts
+          validatedProducts={validatedProducts}
+          currencyKey={orderCurrency}
+          disabled={disabled}
+        />
       </div>
       <PriceSummary form={form} order={order} orderCurrency={orderCurrency} />
     </FieldsGroupContainer>
