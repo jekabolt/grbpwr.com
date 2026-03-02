@@ -1,8 +1,10 @@
 import { common_OrderItem } from "@/api/proto-http/frontend";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { useMemo } from "react";
 import { getSubCategoryName, getTopCategoryName } from "../categories-map";
 import { useTranslationsStore } from "../stores/translations/store-provider";
 import { sendRemoveFromCartEvent, sendViewCartEvent } from "./cart";
+import { SizeMap } from "./utils";
 
 export function useCartAnalytics({ finalProducts }: { finalProducts: (common_OrderItem | undefined)[] }) {
     const { dictionary } = useDataContext();
@@ -17,8 +19,18 @@ export function useCartAnalytics({ finalProducts }: { finalProducts: (common_Ord
     const topCategoryName = getTopCategoryName(dictionary?.categories || [], topCategoryId) || "";
     const subCategoryName = getSubCategoryName(dictionary?.categories || [], subCategoryId) || "";
 
+    const sizeMap: SizeMap = useMemo(() => {
+        const sizes = dictionary?.sizes || [];
+        return sizes.reduce<SizeMap>((acc, s) => {
+            if (s.id != null && s.name) {
+                acc[s.id] = s.name.trim();
+            }
+            return acc;
+        }, {});
+    }, [dictionary?.sizes]);
+
     function handleViewCartEvent() {
-        sendViewCartEvent(validProducts, topCategoryName, subCategoryName, currency);
+        sendViewCartEvent(validProducts, topCategoryName, subCategoryName, currency, sizeMap);
     }
 
     function handleRemoveFromCartEvent(product: common_OrderItem) {
@@ -32,7 +44,7 @@ export function useCartAnalytics({ finalProducts }: { finalProducts: (common_Ord
             product.subCategoryId || 0,
         ) || "";
 
-        sendRemoveFromCartEvent(product, topCategory, subCategory, currency);
+        sendRemoveFromCartEvent(product, topCategory, subCategory, currency, sizeMap);
     }
 
     return {

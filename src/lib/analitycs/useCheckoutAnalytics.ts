@@ -1,5 +1,6 @@
 import { common_OrderItem } from "@/api/proto-http/frontend";
 import { paymentMethodNamesMap } from "@/constants";
+import { useMemo } from "react";
 
 import { useDataContext } from "@/components/contexts/DataContext";
 
@@ -7,11 +8,13 @@ import { getSubCategoryName, getTopCategoryName } from "../categories-map";
 import { useCart } from "../stores/cart/store-provider";
 import { useTranslationsStore } from "../stores/translations/store-provider";
 import {
+    PurchaseOptions,
     sendAddPaymentInfoEvent,
     sendAddShippingInfoEvent,
     sendBeginCheckoutEvent,
-    sendPurchaseEvent
+    sendPurchaseEvent,
 } from "./checkout";
+import { SizeMap } from "./utils";
 
 export function useCheckoutAnalytics() {
     const { dictionary } = useDataContext();
@@ -31,6 +34,16 @@ export function useCheckoutAnalytics() {
         subCategoryId,
     );
 
+    const sizeMap: SizeMap = useMemo(() => {
+        const sizes = dictionary?.sizes || [];
+        return sizes.reduce<SizeMap>((acc, s) => {
+            if (s.id != null && s.name) {
+                acc[s.id] = s.name.trim();
+            }
+            return acc;
+        }, {});
+    }, [dictionary?.sizes]);
+
     const handleShippingCarrierChange = (carrierId: string) => {
         const selectedCarrier = dictionary?.shipmentCarriers?.find(
             (c) => c.id?.toString() === carrierId,
@@ -44,6 +57,7 @@ export function useCheckoutAnalytics() {
                 topCategoryName || "",
                 subCategoryName || "",
                 currency,
+                sizeMap,
             );
         }
     };
@@ -61,6 +75,20 @@ export function useCheckoutAnalytics() {
                 topCategoryName || "",
                 subCategoryName || "",
                 currency,
+                sizeMap,
+            );
+        }
+    };
+
+    const handlePaymentElementComplete = () => {
+        if (items.length > 0) {
+            sendAddPaymentInfoEvent(
+                items as common_OrderItem[],
+                "credit_card",
+                topCategoryName || "",
+                subCategoryName || "",
+                currency,
+                sizeMap,
             );
         }
     };
@@ -71,25 +99,30 @@ export function useCheckoutAnalytics() {
             topCategoryName || "",
             subCategoryName || "",
             currency,
+            sizeMap,
         );
     }
 
-    function handlePurchaseEvent(uuid: string) {
+    function handlePurchaseEvent(uuid: string, options?: PurchaseOptions) {
         sendPurchaseEvent(
             items as common_OrderItem[],
             uuid,
             topCategoryName || "",
             subCategoryName || "",
             currency,
+            sizeMap,
+            options,
         );
     }
 
     return {
+        sizeMap,
         topCategoryName,
         subCategoryName,
         handleBeginCheckoutEvent,
         handleShippingCarrierChange,
         handlePaymentMethodChange,
+        handlePaymentElementComplete,
         handlePurchaseEvent,
     };
 }
