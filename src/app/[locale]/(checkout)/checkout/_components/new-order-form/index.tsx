@@ -1,18 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 import {
+  sendFormErrorEvent,
   sendFormStartEvent,
   sendFormSubmitEvent,
   sendPaymentFailedEvent,
 } from "@/lib/analitycs/checkout-custom";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
+import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
 import { getValidationErrorToastKey } from "@/lib/cart/validate-cart-items";
 import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
@@ -30,6 +36,7 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
 import { useCheckoutEffects } from "./hooks/useCheckout";
+import { useComplimentaryShippingToast } from "./hooks/useComplimentaryShippingToast";
 import { useOrderPersistence } from "./hooks/useOrderPersistence";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { MobileOrderSummary } from "./mobile-order-summary";
@@ -51,11 +58,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     (s) => s,
   );
 
-  const { handlePurchaseEvent } = useCheckoutAnalytics();
+  const { handlePurchaseEvent, handlePaymentElementComplete } =
+    useCheckoutAnalytics();
 
   const [loading, setLoading] = useState(false);
   const [isPaymentElementComplete, setIsPaymentElementComplete] =
     useState(false);
+  const paymentInfoSentRef = useRef(false);
 
   const contactRef = useRef<HTMLDivElement>(null);
   const shippingRef = useRef<HTMLDivElement>(null);
@@ -79,6 +88,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   );
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
+  const {
+    showComplimentaryToast,
+    complimentaryToastMessage,
+    complimentaryToastOpen,
+    setComplimentaryToastOpen,
+  } = useComplimentaryShippingToast(order, orderCurrency);
+
   const {
     orderModifiedToastOpen,
     setOrderModifiedToastOpen,
@@ -108,6 +124,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     el.addEventListener("focusin", handler, { once: true });
     return () => el.removeEventListener("focusin", handler);
   }, []);
+
+  useEffect(() => {
+    if (isPaymentElementComplete && !paymentInfoSentRef.current) {
+      paymentInfoSentRef.current = true;
+      handlePaymentElementComplete();
+    }
+  }, [isPaymentElementComplete, handlePaymentElementComplete]);
 
   const paymentMethod = form.watch("paymentMethod");
   const isPaymentFieldsValid =
@@ -167,6 +190,17 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     setToastMessage(tToaster("fill_required_fields"));
     setOrderModifiedToastOpen(true);
     scrollToFirstError(errors);
+
+    const errorFields = Object.keys(errors);
+    if (errorFields.length > 0) {
+      sendFormErrorEvent({
+        form_id: "checkout_form",
+        form_name: "Checkout",
+        error_fields: errorFields,
+        page_path:
+          typeof window !== "undefined" ? window.location.pathname : "",
+      });
+    }
   };
 
   const handleValidSubmit = (data: CheckoutData) => {
@@ -234,7 +268,12 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         });
 
         if (paymentResult.success) {
-          handlePurchaseEvent(paymentResult.orderUuid);
+          const promoCode = data.promoCode || response?.promo?.code;
+          handlePurchaseEvent(paymentResult.orderUuid, {
+            coupon: promoCode || undefined,
+            shipping: undefined,
+          });
+          pushUserIdToDataLayer(data.email);
           clearCart();
           clearFormData();
           clearIdempotencyKey();
@@ -297,6 +336,8 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               <div ref={shippingRef}>
                 <ShippingFieldsGroup
                   loading={loading}
+                  order={order}
+                  validateItems={validateItems}
                   isOpen={isGroupOpen("shipping")}
                   onToggle={() => handleGroupToggle("shipping")}
                   disabled={isGroupDisabled("shipping") || loading}
@@ -355,6 +396,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 disabled={loading}
                 loading={loading}
                 loadingType="order-processing"
+                analyticsButtonId="place_order"
               >
                 {`${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`}
               </Button>
@@ -367,6 +409,14 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         message={toastMessage}
         onOpenChange={setOrderModifiedToastOpen}
       />
+      {showComplimentaryToast && complimentaryToastMessage && (
+        <SubmissionToaster
+          open={complimentaryToastOpen}
+          message={complimentaryToastMessage}
+          onOpenChange={(open) => !open && setComplimentaryToastOpen(false)}
+          duration={Infinity}
+        />
+      )}
     </>
   );
 }

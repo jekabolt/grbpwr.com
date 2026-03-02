@@ -74,8 +74,8 @@ export function OrderPageComponent({
   );
 
   return (
-    <div className="flex flex-col gap-12 md:flex-row md:justify-between md:gap-12 lg:gap-52">
-      <div className="w-full">
+    <div className="flex flex-col gap-6 md:flex-row md:justify-between lg:gap-52">
+      <div className="w-full space-y-10">
         <div className="block space-y-4 lg:hidden">
           <MobileOrderSummary orderData={orderData} />
           <OrderSecondaryInfo
@@ -86,7 +86,7 @@ export function OrderPageComponent({
             payment={payment}
           />
         </div>
-        <div className="flex flex-col items-center justify-between gap-y-6 border-b border-textInactiveColor pb-6 lg:flex-row">
+        <div className="flex flex-col items-center justify-between gap-y-6 border-b border-transparent pb-6 lg:flex-row lg:border-textInactiveColor">
           <div className="flex w-full flex-row items-baseline justify-between gap-4 lg:flex-col">
             <Text variant="uppercase">{t("order id")}</Text>
             <Text className="select-all break-all">{order?.uuid}</Text>
@@ -98,7 +98,7 @@ export function OrderPageComponent({
             )}
           </div>
         </div>
-        <div className="flex flex-col items-center justify-between gap-y-6 border-b border-textInactiveColor py-6 lg:flex-row">
+        <div className="flex flex-col items-center justify-between gap-y-6 border-b border-transparent py-6 lg:flex-row lg:border-textInactiveColor">
           <div className="flex w-full flex-row items-baseline justify-between gap-4 lg:flex-col">
             <Text variant="uppercase">{t("status")}</Text>
             {order?.orderStatusId && (
@@ -134,6 +134,7 @@ export function OrderPageComponent({
           />
         </div>
       </div>
+
       <div className="hidden w-full space-y-3 md:block">
         <div className="space-y-2">
           <Text variant="uppercase">{tCheckout("order summary")}</Text>
@@ -160,11 +161,13 @@ export function OrderPageComponent({
           <div className="flex justify-between">
             <Text variant="uppercase">{t("shipping")}:</Text>
             <Text>
-              {formatPrice(
-                shipment?.cost?.value ?? "0",
-                orderCurrencyKey,
-                orderCurrency,
-              )}
+              {shipment?.freeShipping
+                ? tCheckout("FREE")
+                : formatPrice(
+                    shipment?.cost?.value ?? "0",
+                    orderCurrencyKey,
+                    orderCurrency,
+                  )}
             </Text>
           </div>
           <div className="flex justify-between border-t border-textInactiveColor pt-3">

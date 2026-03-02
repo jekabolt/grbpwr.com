@@ -3,13 +3,11 @@
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { paymentMethodNamesMap } from "@/constants";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 
-import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
-import { useDataContext } from "@/components/contexts/DataContext";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
 import { buildTrackingUrl } from "@/lib/shipment/tracking-url";
+import { useDataContext } from "@/components/contexts/DataContext";
+import { Text } from "@/components/ui/text";
+import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
 export function OrderSecondaryInfo({
   shipping,
@@ -25,9 +23,8 @@ export function OrderSecondaryInfo({
     (c) => String(c.id) === String(shipment?.carrierId),
   );
   const rawCarrierName = carrier?.shipmentCarrier?.carrier;
-  const shipmentCarrierName = rawCarrierName
-    ? tCheckout(rawCarrierName) || rawCarrierName
-    : undefined;
+  const shipmentCarrierName =
+    rawCarrierName === "FREE" ? tCheckout("free") : rawCarrierName;
   const trackingUrl = buildTrackingUrl(
     carrier?.shipmentCarrier?.trackingUrl,
     shipment?.trackingCode,
@@ -122,8 +119,8 @@ export function DesktopOrderSecondaryInfo({
         <Text className="lowercase">
           {
             paymentMethodNamesMap[
-            payment?.paymentInsert
-              ?.paymentMethod as keyof typeof paymentMethodNamesMap
+              payment?.paymentInsert
+                ?.paymentMethod as keyof typeof paymentMethodNamesMap
             ]
           }
         </Text>
@@ -193,7 +190,7 @@ export function MobileOrderSecondaryInfo({
           <Text variant="uppercase" className="w-full">
             {tCheckout("shipping method")}
           </Text>
-          <div className="w-full flex flex-col gap-1">
+          <div className="flex w-full flex-col gap-1">
             {shipmentCarrierName && <Text>{shipmentCarrierName}</Text>}
           </div>
         </div>
@@ -204,8 +201,8 @@ export function MobileOrderSecondaryInfo({
           <Text className="w-full lowercase">
             {
               paymentMethodNamesMap[
-              payment?.paymentInsert
-                ?.paymentMethod as keyof typeof paymentMethodNamesMap
+                payment?.paymentInsert
+                  ?.paymentMethod as keyof typeof paymentMethodNamesMap
               ]
             }
           </Text>

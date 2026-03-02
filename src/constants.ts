@@ -408,48 +408,48 @@ const country = (
 });
 
 export const COUNTRIES_BY_REGION = {
-  AFRICA: [country("south africa", "za", "27", { vatRate: 15 })],
-  //remove vat
+  AFRICA: [country("south africa", "za", "27")],
   AMERICAS: [
-    country("canada", "ca", "1", { currency: "$", currencyKey: "USD", vatRate: 0, taxType: "GST" }), // GST/HST varies by province
-    country("chile", "cl", "56", { currency: "$", currencyKey: "USD", vatRate: 19 }),
-    country("mexico", "mx", "52", { currency: "$", currencyKey: "USD", vatRate: 16 }),
-    country("united states", "us", "1", { currency: "$", currencyKey: "USD", vatRate: 0, taxType: "Sales Tax" }), // Sales tax varies by state
+    country("canada", "ca", "1", { currency: "$", currencyKey: "USD" }),
+    country("chile", "cl", "56", { currency: "$", currencyKey: "USD" }),
+    country("mexico", "mx", "52", { currency: "$", currencyKey: "USD" }),
+    country("united states", "us", "1", { currency: "$", currencyKey: "USD" }),
   ],
-  // remove vat
   "ASIA PACIFIC": [
-    country("australia", "au", "61", { vatRate: 10, taxType: "GST" }),
-    country("hong kong sar", "hk", "852", { vatRate: 0 }),
-    country("india", "in", "91", { vatRate: 18, taxType: "GST" }),
-    country("japan", "jp", "81", { currency: "¥", currencyKey: "JPY", vatRate: 10 }),
+    country("australia", "au", "61"),
+    country("hong kong sar", "hk", "852"),
+    country("india", "in", "91"),
+    country("japan", "jp", "81", { currency: "¥", currencyKey: "JPY" }),
     country("日本", "jp", "81", {
       currency: "¥",
       currencyKey: "JPY",
       lng: "ja",
       displayLng: "日本語",
-      vatRate: 10,
     }),
-    country("macau sar", "mo", "853", { vatRate: 0 }),
+    country("macau sar", "mo", "853"),
     country("mainland china", "cn", "86", {
       currency: "¥",
       currencyKey: "CNY",
-      vatRate: 13,
     }),
     country("中国大陆", "cn", "86", {
       currency: "¥",
       currencyKey: "CNY",
       lng: "zh",
       displayLng: "简体中文",
-      vatRate: 13,
     }),
-    country("malaysia", "my", "60", { vatRate: 6 }), // SST (Sales and Service Tax)
-    country("new zealand", "nz", "64", { vatRate: 15, taxType: "GST" }),
-    country("singapore", "sg", "65", { vatRate: 8, taxType: "GST" }),
-    country("south korea", "kr", "82", { currency: "₩", currencyKey: "KRW", vatRate: 10 }),
-    country("대한민국", "kr", "82", { currency: "₩", currencyKey: "KRW", lng: "ko", displayLng: "한국인", vatRate: 10 }),
-    country("taiwan", "tw", "886", { vatRate: 5 }),
-    country("台湾地区", "tw", "886", { lng: "zh", displayLng: "繁體中文", vatRate: 5 }),
-    country("thailand", "th", "66", { vatRate: 7 }),
+    country("malaysia", "my", "60"),
+    country("new zealand", "nz", "64"),
+    country("singapore", "sg", "65"),
+    country("south korea", "kr", "82", { currency: "₩", currencyKey: "KRW" }),
+    country("대한민국", "kr", "82", {
+      currency: "₩",
+      currencyKey: "KRW",
+      lng: "ko",
+      displayLng: "한국인",
+    }),
+    country("taiwan", "tw", "886"),
+    country("台湾地区", "tw", "886", { lng: "zh", displayLng: "繁體中文" }),
+    country("thailand", "th", "66"),
   ],
   EUROPE: [
     country("aland islands", "ax", "358", { vatRate: 0 }),
@@ -496,14 +496,13 @@ export const COUNTRIES_BY_REGION = {
     country("turkey", "tr", "90", { vatRate: 20 }),
     country("united kingdom", "gb", "44", { currency: "£", currencyKey: "GBP", vatRate: 20 }),
   ],
-  // remove vat
   "MIDDLE EAST": [
-    country("bahrain", "bh", "973", { vatRate: 10 }),
-    country("israel", "il", "972", { vatRate: 17 }),
-    country("kuwait", "kw", "965", { vatRate: 0 }), // VAT not implemented yet
-    country("qatar", "qa", "974", { vatRate: 0 }), // VAT not implemented yet
-    country("saudi arabia", "sa", "966", { vatRate: 15 }),
-    country("united arab emirates", "ae", "971", { vatRate: 5 }),
+    country("bahrain", "bh", "973"),
+    country("israel", "il", "972"),
+    country("kuwait", "kw", "965"),
+    country("qatar", "qa", "974"),
+    country("saudi arabia", "sa", "966"),
+    country("united arab emirates", "ae", "971"),
   ],
 } satisfies Record<string, CountryOption[]>;
 

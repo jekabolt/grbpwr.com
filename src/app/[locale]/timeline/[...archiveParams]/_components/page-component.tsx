@@ -50,48 +50,53 @@ export default function PageComponent({
         >{`${archive?.archiveList?.tag || ""} / ${currentYear}`}</Text>
       </div>
 
-      {archive?.mainMedia &&
-        !isVideo(archive?.mainMedia?.media?.fullSize?.mediaUrl) && (
-          <div className="relative h-full w-full lg:h-[80vh]">
+      {archive?.mainMedia?.map((item) => {
+        const isVideoItem = isVideo(item.media?.thumbnail?.mediaUrl);
+        if (isVideoItem) {
+          return (
+            <div
+              key={item.id}
+              className="relative aspect-video h-full w-full overflow-hidden lg:h-[80vh]"
+            >
+              <video
+                src={item.media?.thumbnail?.mediaUrl || ""}
+                className="h-full w-full object-cover"
+                poster={item.media?.thumbnail?.mediaUrl}
+                autoPlay
+                playsInline
+                controls={false}
+                muted
+                loop
+                preload="metadata"
+                ref={videoRef}
+              >
+                Your browser does not support the video tag.
+              </video>
+              <Button
+                onClick={toggleSound}
+                className="absolute bottom-2.5 right-2.5 uppercase text-white mix-blend-difference transition-all"
+                aria-label={isMuted ? "unmute" : "mute"}
+              >
+                {isMuted ? "sound on" : "sound off"}
+              </Button>
+            </div>
+          );
+        }
+        return (
+          <div key={item.id} className="relative h-full w-full lg:h-[80vh]">
             <ImageComponent
-              src={archive.mainMedia.media?.thumbnail?.mediaUrl || ""}
+              src={item.media?.thumbnail?.mediaUrl || ""}
               alt={currentTranslation?.heading || "Featured archive image"}
               aspectRatio={calculateAspectRatio(
-                archive?.mainMedia?.media?.thumbnail?.width,
-                archive?.mainMedia?.media?.thumbnail?.height,
+                item.media?.thumbnail?.width,
+                item.media?.thumbnail?.height,
               )}
               priority={true}
               loading="eager"
             />
           </div>
-        )}
-
-      {archive?.mainMedia &&
-        isVideo(archive?.mainMedia?.media?.thumbnail?.mediaUrl) && (
-          <div className="relative aspect-video h-full w-full overflow-hidden lg:h-[80vh]">
-            <video
-              src={archive?.mainMedia?.media?.thumbnail?.mediaUrl || ""}
-              className="h-full w-full object-cover"
-              poster={archive?.mainMedia?.media?.thumbnail?.mediaUrl}
-              autoPlay
-              playsInline
-              controls={false}
-              muted
-              loop
-              preload="metadata"
-              ref={videoRef}
-            >
-              Your browser does not support the video tag.
-            </video>
-            <Button
-              onClick={toggleSound}
-              className="absolute bottom-2.5 right-2.5 uppercase text-white mix-blend-difference transition-all"
-              aria-label={isMuted ? "unmute" : "mute"}
-            >
-              {isMuted ? "sound on" : "sound off"}
-            </Button>
-          </div>
-        )}
+        );
+      })}
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:gap-4">
         {archive?.media?.map((item, id) => {
           // Prioritize first 4 images in grid (above fold on desktop)

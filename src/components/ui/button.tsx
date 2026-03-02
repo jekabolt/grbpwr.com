@@ -1,6 +1,8 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 
+import { sendButtonEvent } from "@/lib/analitycs/button";
+
 import { Loader } from "./loader";
 
 export const buttonVariants = cva("disabled:cursor-not-allowed block", {
@@ -126,6 +128,11 @@ interface Props extends VariantProps<typeof buttonVariants> {
   loadingType?: "default" | "order-processing" | "overlay";
   loadingReverse?: boolean;
   className?: string;
+  /** When set, fires button_click analytics event on click */
+  analyticsButtonId?: string;
+  /** Optional product name for button_click context */
+  analyticsProductName?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   [k: string]: unknown;
 }
 
@@ -138,9 +145,22 @@ export function Button({
   size,
   variant,
   className,
+  analyticsButtonId,
+  analyticsProductName,
+  onClick,
   ...props
 }: Props) {
   const Component = asChild ? Slot : "button";
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (analyticsButtonId) {
+      sendButtonEvent({
+        buttonId: analyticsButtonId,
+        productName: analyticsProductName,
+      });
+    }
+    onClick?.(e);
+  };
 
   const renderContent = () => {
     if (!loading) return children;
@@ -158,9 +178,12 @@ export function Button({
     return <Loader type={loadingType} reverse={shouldReverseLoader} />;
   };
 
+  const hasClickHandler = onClick !== undefined || analyticsButtonId;
+
   return (
     <Component
       {...props}
+      {...(hasClickHandler && { onClick: handleClick })}
       className={buttonVariants({
         variant,
         isLoading: loading,

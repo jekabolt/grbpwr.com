@@ -5,7 +5,7 @@ import {
 
 import { mapItemsToAnalyticsItems } from "../checkout";
 import { mapItemsToDataLayer } from "../product";
-import { calculateTotalValue, EcommerceEvent, pushToDataLayer } from "../utils";
+import { calculateTotalValue, EcommerceEvent, pushToDataLayer, SizeMap } from "../utils";
 
 export function sendAddToCartEvent(
     item: common_ProductFull,
@@ -38,6 +38,7 @@ export function sendRemoveFromCartEvent(
     topCategory: string,
     subCategory: string,
     currency: string = "EUR",
+    sizeMap?: SizeMap,
 ) {
     const totalValue = parseFloat(item.productPrice || "0");
 
@@ -48,7 +49,7 @@ export function sendRemoveFromCartEvent(
         ecommerce: {
             currency: currency.toUpperCase(),
             value: Math.max(0, totalValue),
-            items: [mapItemsToAnalyticsItems(item, 1, topCategory, subCategory)],
+            items: [mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap)],
         },
     };
 
@@ -60,6 +61,7 @@ export function sendViewCartEvent(
     topCategory: string,
     subCategory: string,
     currency: string = "EUR",
+    sizeMap?: SizeMap,
 ) {
     const totalValue = calculateTotalValue(items);
 
@@ -71,7 +73,7 @@ export function sendViewCartEvent(
             currency: currency.toUpperCase(),
             value: Math.max(0, totalValue),
             items: items.map((item) =>
-                mapItemsToAnalyticsItems(item, 1, topCategory, subCategory),
+                mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
             ),
         },
     };

@@ -163,6 +163,8 @@ export function AddToCartBtn({
             size="lg"
             disabled={isMaxQuantityFinal}
             onAction={handleAddToCartClick}
+            analyticsButtonId="add_to_cart"
+            analyticsProductName={product.product?.productDisplay?.productBody?.translations?.[0]?.name}
             isLoadingExternal={isLoading}
             className="border-none"
             onMouseEnter={() => setIsHovered(true)}

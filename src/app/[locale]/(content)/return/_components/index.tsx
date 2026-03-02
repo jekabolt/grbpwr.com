@@ -16,6 +16,7 @@ import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
 import { sendRefundEvent } from "@/lib/analitycs/checkout";
 import { sendFormEvent } from "@/lib/analitycs/form";
+import { SizeMap } from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 
@@ -36,7 +37,7 @@ export function RefundForm() {
     defaultValues: defaultData,
   });
 
-  function handleRefundEvent(order: common_OrderFull) {
+  function handleRefundEvent(order: common_OrderFull, reason: string) {
     const categories = dictionary?.categories || [];
     const items = order.orderItems || [];
 
@@ -48,7 +49,22 @@ export function RefundForm() {
     const topCategoryName = getTopCategoryName(categories, topCategoryId) || "";
     const subCategoryName = getSubCategoryName(categories, subCategoryId) || "";
 
-    sendRefundEvent(order, topCategoryName, subCategoryName);
+    const sizeMap: SizeMap = (dictionary?.sizes || []).reduce<SizeMap>(
+      (acc, s) => {
+        if (s.id != null && s.name) acc[s.id] = s.name.trim();
+        return acc;
+      },
+      {},
+    );
+
+    sendRefundEvent(
+      order,
+      topCategoryName,
+      subCategoryName,
+      undefined,
+      sizeMap,
+      reason,
+    );
   }
 
   async function handleSubmit(data: RefundSchema) {
@@ -67,7 +83,7 @@ export function RefundForm() {
       }
 
       if (response.order) {
-        handleRefundEvent(response.order);
+        handleRefundEvent(response.order, data.reason);
         sendFormEvent({
           email: data.email,
           formId: "refund",

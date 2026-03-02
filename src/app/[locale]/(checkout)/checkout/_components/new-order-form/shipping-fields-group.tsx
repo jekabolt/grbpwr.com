@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
+import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { currencySymbols, keyboardRestrictions } from "@/constants";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
@@ -30,6 +31,7 @@ type Props = {
   loading: boolean;
   isOpen: boolean;
   disabled?: boolean;
+  order?: ValidateOrderItemsInsertResponse;
   onToggle: () => void;
 };
 
@@ -37,6 +39,7 @@ export default function ShippingFieldsGroup({
   loading,
   isOpen,
   disabled = false,
+  order,
   onToggle,
 }: Props) {
   const t = useTranslations("checkout");
@@ -126,10 +129,14 @@ export default function ShippingFieldsGroup({
                 const label = eta
                   ? `${displayCarrierName} (${eta} ${t("business days")})`
                   : displayCarrierName;
+                const promoFreeShipping = !!order?.promo?.freeShipping;
+                const orderFreeShipping = !!order?.freeShipping;
+                const freeShipping = promoFreeShipping || orderFreeShipping;
                 return {
                   label,
                   value: c.id + "" || "",
                   priceLabel: formattedPrice || undefined,
+                  priceLabelStrikethrough: freeShipping && !!formattedPrice,
                 };
               })}
             />
