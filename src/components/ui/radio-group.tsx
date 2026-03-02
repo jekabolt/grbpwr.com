@@ -13,6 +13,7 @@ export interface RadioGroupsProps {
     value: string;
     icon?: React.ReactNode;
     priceLabel?: string;
+    priceLabelStrikethrough?: boolean;
     className?: string;
   }[];
   // todo: add disabled
@@ -49,7 +50,16 @@ export default function RadioGroupComponent({
         )}
       >
         {items.map(
-          ({ value, label, icon, priceLabel, className: itemClassName }) => {
+          ({
+            value,
+            label,
+            icon,
+            priceLabel,
+            priceLabelStrikethrough,
+            className: itemClassName,
+          }) => {
+            const showPrice =
+              isCardView && (priceLabel || priceLabelStrikethrough);
             return (
               <Label
                 key={value}
@@ -77,13 +87,23 @@ export default function RadioGroupComponent({
                     </RadioGroup.Item>
                     <Text className="min-w-0 flex-1 leading-none">{label}</Text>
                   </div>
-                  {(icon || (isCardView && priceLabel)) && (
+                  {(icon || showPrice) && (
                     <div className="flex items-end justify-between gap-2">
                       {icon && <div>{icon}</div>}
-                      {isCardView && priceLabel && (
-                        <Text className="ml-auto shrink-0 leading-none">
-                          {priceLabel}
-                        </Text>
+                      {showPrice && (
+                        <div className="ml-auto flex shrink-0 items-center gap-x-2 leading-none">
+                          {priceLabel && (
+                            <Text
+                              variant={
+                                priceLabelStrikethrough
+                                  ? "strileTroughInactive"
+                                  : "default"
+                              }
+                            >
+                              {priceLabel}
+                            </Text>
+                          )}
+                        </div>
                       )}
                     </div>
                   )}

@@ -114,6 +114,7 @@
     "promo discount": "优惠折扣",
     "grand total": "总计",
     "free by promo": "优惠免费",
+    "free by order": "订单免运费",
     "vat": "增值税",
     "sales tax": "销售税",
     "gst": "GST",
@@ -125,7 +126,8 @@
     "placing order": "正在下单",
     "checking availability": "检查库存",
     "stock reservation": "库存预留",
-    "business days": "工作日"
+    "business days": "工作日",
+    "complimentary shipping available for": "订单满{amount}免运费"
   },
   "not-found": {
     "title": "页面未找到",

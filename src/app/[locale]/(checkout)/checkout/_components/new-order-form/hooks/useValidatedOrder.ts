@@ -8,11 +8,11 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { validateCartItems } from "@/lib/cart/validate-cart-items";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
   hasCheckoutInitialValidationRun,
   setCheckoutInitialValidationDone,
 } from "@/lib/checkout/checkout-validation-state";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { CheckoutData } from "../schema";
 
 export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
@@ -81,6 +81,23 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
     prevCurrencyRef.current = currency;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currency]);
+
+  const shipmentCarrierId = form.watch("shipmentCarrierId");
+  const country = form.watch("country");
+  const lastValidatedParamsRef = useRef<string | null>(null);
+  useEffect(() => {
+    const paramsKey = `${shipmentCarrierId}:${country}`;
+    if (
+      validatedOrder &&
+      products.length > 0 &&
+      shipmentCarrierId &&
+      country &&
+      lastValidatedParamsRef.current !== paramsKey
+    ) {
+      lastValidatedParamsRef.current = paramsKey;
+      validateItems(shipmentCarrierId);
+    }
+  }, [shipmentCarrierId, country, validatedOrder]);
 
   return { order: validatedOrder, validateItems, orderCurrency };
 }

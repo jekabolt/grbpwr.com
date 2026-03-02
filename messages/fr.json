@@ -114,6 +114,7 @@
     "promo discount": "remise promo",
     "grand total": "total général",
     "free by promo": "gratuit par promo",
+    "free by order": "offert",
     "vat": "TVA",
     "sales tax": "Taxe de vente",
     "gst": "TPS",
@@ -125,7 +126,8 @@
     "placing order": "passer la commande",
     "checking availability": "vérification de la disponibilité",
     "stock reservation": "réservation de stock",
-    "business days": "jours ouvrables"
+    "business days": "jours ouvrables",
+    "complimentary shipping available for": "livraison offerte à partir de {amount}"
   },
   "not-found": {
     "title": "page non trouvée",
