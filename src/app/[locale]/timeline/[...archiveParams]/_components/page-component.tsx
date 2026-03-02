@@ -54,7 +54,10 @@ export default function PageComponent({
         const isVideoItem = isVideo(item.media?.thumbnail?.mediaUrl);
         if (isVideoItem) {
           return (
-            <div className="relative aspect-video h-full w-full overflow-hidden lg:h-[80vh]">
+            <div
+              key={item.id}
+              className="relative aspect-video h-full w-full overflow-hidden lg:h-[80vh]"
+            >
               <video
                 src={item.media?.thumbnail?.mediaUrl || ""}
                 className="h-full w-full object-cover"
@@ -80,7 +83,7 @@ export default function PageComponent({
           );
         }
         return (
-          <div className="relative h-full w-full lg:h-[80vh]">
+          <div key={item.id} className="relative h-full w-full lg:h-[80vh]">
             <ImageComponent
               src={item.media?.thumbnail?.mediaUrl || ""}
               alt={currentTranslation?.heading || "Featured archive image"}
