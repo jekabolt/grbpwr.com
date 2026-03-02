@@ -1,17 +1,22 @@
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
-import { formatPrice } from "@/lib/currency";
-import { isEuropeanCountry } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 
+import { formatPrice } from "@/lib/currency";
+import { isEuropeanCountry } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 import { useVatCalculation } from "./hooks/useVatCalculation";
 import { getCarrierPriceForCurrency } from "./utils";
 
-export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSummaryProps) {
+export function PriceSummary({
+  order,
+  form,
+  vatRate,
+  orderCurrency,
+}: PriceSummaryProps) {
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
@@ -24,7 +29,7 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
   const selectedShipmentCarrierId = form.watch("shipmentCarrierId");
   const selectedCountry = form.watch("country");
 
-  const { vatAmount, taxLabel } = useVatCalculation({
+  const { vatAmount } = useVatCalculation({
     countryCode: selectedCountry,
     subtotal: order?.subtotal?.value || "0",
     vatRate,
@@ -47,16 +52,40 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
       <div className="mt-4 space-y-3">
         <div className="flex justify-between">
           <Text variant={"uppercase"}>{t("subtotal")}:</Text>
-          <Text>{formatPrice(order?.subtotal?.value || "0", currency, currencySymbol)}</Text>
+          <Text>
+            {formatPrice(
+              order?.subtotal?.value || "0",
+              currency,
+              currencySymbol,
+            )}
+          </Text>
         </div>
-        {(selectedShipmentCarrierPrice || promoFreeShipping) && (
+        {(selectedShipmentCarrierPrice ||
+          promoFreeShipping ||
+          order.freeShipping) && (
           <div className="flex justify-between">
             <Text variant={"uppercase"}>{t("shipping summary")}:</Text>
-            <Text>
-              {promoFreeShipping
-                ? t("free by promo")
-                : formatPrice(selectedShipmentCarrierPrice || "0", currency, currencySymbol)}
-            </Text>
+            {promoFreeShipping ? (
+              <Text>{t("free by promo")}</Text>
+            ) : order.freeShipping && selectedShipmentCarrierPrice ? (
+              <div className="flex items-center gap-x-2">
+                <Text variant="strileTroughInactive">
+                  {formatPrice(
+                    selectedShipmentCarrierPrice,
+                    currency,
+                    currencySymbol,
+                  )}
+                </Text>
+              </div>
+            ) : (
+              <Text>
+                {formatPrice(
+                  selectedShipmentCarrierPrice || "0",
+                  currency,
+                  currencySymbol,
+                )}
+              </Text>
+            )}
           </div>
         )}
         {!!promoPercentageOff && (
@@ -66,10 +95,12 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
           </div>
         )}
 
-        <div className="flex justify-between">
-          <Text variant={"uppercase"}>{t(taxLabel)}:</Text>
-          <Text>{formatPrice(vatAmount, currency, currencySymbol)}</Text>
-        </div>
+        {isEuropeanCountry(selectedCountry || "") && vatAmount > 0 && (
+          <div className="flex justify-between">
+            <Text variant={"uppercase"}>{t("vat")}:</Text>
+            <Text>{formatPrice(vatAmount, currency, currencySymbol)}</Text>
+          </div>
+        )}
 
         <div className="pt-5">
           <div className="flex justify-between border-t border-textInactiveColor pt-3">
@@ -80,7 +111,13 @@ export function PriceSummary({ order, form, vatRate, orderCurrency }: PriceSumma
                   {t("incl")}
                 </Text>
               )}
-              <Text>{formatPrice(order.totalSale?.value || "0", currency, currencySymbol)}</Text>
+              <Text>
+                {formatPrice(
+                  order.totalSale?.value || "0",
+                  currency,
+                  currencySymbol,
+                )}
+              </Text>
             </div>
           </div>
         </div>

@@ -57,20 +57,38 @@ export function SubmissionToaster({
   open,
   message,
   onOpenChange,
+  duration,
 }: {
   open: boolean;
   message?: string;
   onOpenChange: (open: boolean) => void;
+  /** Duration in ms before auto-close. Use Infinity to persist until user closes. */
+  duration?: number;
 }) {
+  const persistUntilClosed = duration === Infinity;
   return (
     <Toast.Root
-      className="flex h-12 items-center justify-center bg-highlightColor lg:h-8"
+      className={cn(
+        "flex h-12 items-center justify-between bg-highlightColor lg:h-8 lg:justify-center",
+        persistUntilClosed && "px-2.5 lg:relative",
+      )}
       open={open}
       onOpenChange={onOpenChange}
+      duration={duration}
     >
       <Toast.Title>
         <Text className="text-center lowercase text-bgColor">{message}</Text>
       </Toast.Title>
+      {persistUntilClosed && (
+        <Toast.Close asChild>
+          <Button
+            className="text-bgColor lg:absolute lg:right-2 lg:top-1/2 lg:shrink-0 lg:-translate-y-1/2"
+            aria-label="Close"
+          >
+            [x]
+          </Button>
+        </Toast.Close>
+      )}
     </Toast.Root>
   );
 }

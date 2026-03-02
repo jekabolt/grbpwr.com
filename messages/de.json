@@ -114,6 +114,7 @@
     "promo discount": "gutscheinrabatt",
     "grand total": "gesamtsumme",
     "free by promo": "kostenlos durch gutschein",
+    "free by order": "kostenlos (Bestellwert)",
     "vat": "MwSt",
     "sales tax": "Umsatzsteuer",
     "gst": "GST",
@@ -125,7 +126,9 @@
     "placing order": "bestellung aufgeben",
     "checking availability": "verfügbarkeit prüfen",
     "stock reservation": "bestandsreservierung",
-    "business days": "werktage"
+    "business days": "werktage",
+    "complimentary shipping available for": "kostenloser versand ab {amount}",
+    "complimentary shipping announcement body": "fügen sie weitere artikel hinzu, um kostenlosen versand zu erhalten"
   },
   "not-found": {
     "title": "seite nicht gefunden",

@@ -31,6 +31,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
 import { useCheckoutEffects } from "./hooks/useCheckout";
+import { useComplimentaryShippingToast } from "./hooks/useComplimentaryShippingToast";
 import { useOrderPersistence } from "./hooks/useOrderPersistence";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { MobileOrderSummary } from "./mobile-order-summary";
@@ -80,6 +81,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   );
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
+  const {
+    showComplimentaryToast,
+    complimentaryToastMessage,
+    complimentaryToastOpen,
+    setComplimentaryToastOpen,
+  } = useComplimentaryShippingToast(order, orderCurrency);
+
   const {
     orderModifiedToastOpen,
     setOrderModifiedToastOpen,
@@ -321,6 +329,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               <div ref={shippingRef}>
                 <ShippingFieldsGroup
                   loading={loading}
+                  order={order}
                   validateItems={validateItems}
                   isOpen={isGroupOpen("shipping")}
                   onToggle={() => handleGroupToggle("shipping")}
@@ -381,6 +390,14 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         message={toastMessage}
         onOpenChange={setOrderModifiedToastOpen}
       />
+      {showComplimentaryToast && complimentaryToastMessage && (
+        <SubmissionToaster
+          open={complimentaryToastOpen}
+          message={complimentaryToastMessage}
+          onOpenChange={(open) => !open && setComplimentaryToastOpen(false)}
+          duration={Infinity}
+        />
+      )}
     </>
   );
 }

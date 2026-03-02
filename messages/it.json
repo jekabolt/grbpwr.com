@@ -114,6 +114,7 @@
     "promo discount": "sconto promo",
     "grand total": "totale finale",
     "free by promo": "gratuito con promo",
+    "free by order": "gratuito",
     "vat": "IVA",
     "sales tax": "Imposta sulle vendite",
     "gst": "GST",
@@ -125,7 +126,8 @@
     "placing order": "inserimento ordine",
     "checking availability": "verifica disponibilità",
     "stock reservation": "prenotazione magazzino",
-    "business days": "giorni lavorativi"
+    "business days": "giorni lavorativi",
+    "complimentary shipping available for": "spedizione gratuita da {amount}"
   },
   "not-found": {
     "title": "pagina non trovata",
