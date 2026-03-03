@@ -36,14 +36,14 @@ export function MobileCookieModal({
     <>
       <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
         <div className="flex flex-col items-start gap-6 p-2.5">
-          <div className="tracking-wider">
+          <span className="tracking-wider">
             <Text component="span">{t("cookies title")}</Text>
             <DialogPrimitives.Trigger asChild>
               <Button variant="underline" className="inline">
                 {t("cookie preferences")}
               </Button>
             </DialogPrimitives.Trigger>
-          </div>
+          </span>
           <Button
             variant="secondary"
             onClick={handleSaveCookies}

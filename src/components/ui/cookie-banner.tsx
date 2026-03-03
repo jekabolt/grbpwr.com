@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { ModalTransition } from "@/components/modal-transition";
-import { Overlay } from "./overlay";
 import { Text } from "@/components/ui/text";
 import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
 
 import { Banner } from "./banner";
 import { Button } from "./button";
 import { MobileCookieModal } from "./mobile-cookie-modal";
+import { Overlay } from "./overlay";
 
 export const defaultCookiePreferences = {
   functional: true,
@@ -116,15 +116,15 @@ export function CookieBanner() {
                   >
                     {t("accept all cookies")}
                   </Button>
-            <Button
-              variant="simpleReverse"
-              onClick={handleSavePreferences}
-              size="lg"
-              className="uppercase"
-            >
-              {t("save preferences")}
-            </Button>
-          </div>
+                  <Button
+                    variant="simpleReverse"
+                    onClick={handleSavePreferences}
+                    size="lg"
+                    className="uppercase"
+                  >
+                    {t("save preferences")}
+                  </Button>
+                </div>
               </div>
             }
           />
