@@ -11,7 +11,13 @@ import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
-export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
+export function MainAds({
+  main,
+  children,
+}: {
+  main?: common_HeroMainWithTranslations;
+  children?: React.ReactNode;
+}) {
   const { languageId } = useTranslationsStore((state) => state);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -32,6 +38,7 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
       <div className="hidden h-full lg:block">
         <Image
           src={main.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""}
+          blurhash={main.single?.mediaLandscape?.media?.blurhash}
           type={
             isVideo(main.single?.mediaLandscape?.media?.fullSize?.mediaUrl)
               ? "video"
@@ -48,25 +55,7 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           playOnHover={isHovered}
         />
       </div>
-      <div className="block h-full lg:hidden">
-        <Image
-          src={main.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""}
-          type={
-            isVideo(main.single?.mediaPortrait?.media?.fullSize?.mediaUrl)
-              ? "video"
-              : "image"
-          }
-          aspectRatio={calculateAspectRatio(
-            main.single?.mediaPortrait?.media?.fullSize?.width,
-            main.single?.mediaPortrait?.media?.fullSize?.height,
-          )}
-          alt="main hero image"
-          fit="cover"
-          priority={true}
-          loading="eager"
-          autoPlay
-        />
-      </div>
+      <div className="block h-full lg:hidden">{children}</div>
       <Overlay cover="container" />
       <div className="absolute inset-x-0 top-32 z-20 flex h-screen items-center lg:top-20">
         <div className="flex w-full flex-col items-start gap-6 p-2 text-bgColor md:flex-row md:justify-between">
