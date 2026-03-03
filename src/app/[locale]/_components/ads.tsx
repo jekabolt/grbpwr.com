@@ -52,21 +52,21 @@ export function Ads({
                   <div className="hidden h-full lg:block">
                     <Image
                       src={
-                        e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
+                        e.single?.mediaLandscape?.media?.thumbnail?.mediaUrl ||
                         ""
                       }
                       blurhash={e.single?.mediaLandscape?.media?.blurhash}
                       alt="ad hero image"
                       aspectRatio={calculateAspectRatio(
-                        e.single?.mediaLandscape?.media?.fullSize?.width,
-                        e.single?.mediaLandscape?.media?.fullSize?.height,
+                        e.single?.mediaLandscape?.media?.thumbnail?.width,
+                        e.single?.mediaLandscape?.media?.thumbnail?.height,
                       )}
                       fit="cover"
                       priority={isPriorityAd}
                       loading={isPriorityAd ? "eager" : "lazy"}
                       type={
                         isVideo(
-                          e.single?.mediaLandscape?.media?.fullSize?.mediaUrl,
+                          e.single?.mediaLandscape?.media?.thumbnail?.mediaUrl,
                         )
                           ? "video"
                           : "image"
@@ -121,9 +121,9 @@ export function Ads({
             );
           case "HERO_TYPE_DOUBLE": {
             const leftUrl =
-              e.double?.left?.mediaLandscape?.media?.fullSize?.mediaUrl || "";
+              e.double?.left?.mediaLandscape?.media?.thumbnail?.mediaUrl || "";
             const rightUrl =
-              e.double?.right?.mediaLandscape?.media?.fullSize?.mediaUrl || "";
+              e.double?.right?.mediaLandscape?.media?.thumbnail?.mediaUrl || "";
             const leftTranslation = e.double?.left?.translations?.find(
               (t) => t.languageId === languageId,
             );
@@ -151,8 +151,8 @@ export function Ads({
                     blurhash={e.double?.left?.mediaLandscape?.media?.blurhash}
                     alt="ad hero image"
                     aspectRatio={calculateAspectRatio(
-                      e.double?.left?.mediaLandscape?.media?.fullSize?.width,
-                      e.double?.left?.mediaLandscape?.media?.fullSize?.height,
+                      e.double?.left?.mediaLandscape?.media?.thumbnail?.width,
+                      e.double?.left?.mediaLandscape?.media?.thumbnail?.height,
                     )}
                     fit="contain"
                     priority={isPriorityAd}
