@@ -1,3 +1,4 @@
+import { blurhashToBase64 } from "blurhash-base64";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 
@@ -19,6 +20,7 @@ type ImageProps = {
   alt: string;
   src: string;
   aspectRatio: string;
+  blurhash?: string;
   sizes?: string;
   fit?: "cover" | "contain" | "fill" | "scale-down";
   priority?: boolean;
@@ -37,6 +39,7 @@ export default function ImageComponent({
   aspectRatio,
   src,
   alt,
+  blurhash,
   sizes = "(max-width: 1280px) 100vw, 1280px",
   fit,
   priority = false,
@@ -69,6 +72,8 @@ export default function ImageComponent({
           sizes={sizes}
           priority={priority}
           loading={priority ? undefined : loading}
+          placeholder={blurhash ? "blur" : undefined}
+          blurDataURL={blurhash ? blurhashToBase64(blurhash) : undefined}
           style={{
             objectFit: fit,
           }}

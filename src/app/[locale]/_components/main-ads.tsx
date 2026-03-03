@@ -32,6 +32,7 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
       <div className="hidden h-full lg:block">
         <Image
           src={main.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""}
+          blurhash={main.single?.mediaLandscape?.media?.blurhash}
           type={
             isVideo(main.single?.mediaLandscape?.media?.fullSize?.mediaUrl)
               ? "video"
@@ -51,6 +52,7 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
       <div className="block h-full lg:hidden">
         <Image
           src={main.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""}
+          blurhash={main.single?.mediaPortrait?.media?.blurhash}
           type={
             isVideo(main.single?.mediaPortrait?.media?.fullSize?.mediaUrl)
               ? "video"

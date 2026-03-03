@@ -55,6 +55,7 @@ export function Ads({
                         e.single?.mediaLandscape?.media?.fullSize?.mediaUrl ||
                         ""
                       }
+                      blurhash={e.single?.mediaLandscape?.media?.blurhash}
                       alt="ad hero image"
                       aspectRatio={calculateAspectRatio(
                         e.single?.mediaLandscape?.media?.fullSize?.width,
@@ -79,6 +80,7 @@ export function Ads({
                       src={
                         e.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""
                       }
+                      blurhash={e.single?.mediaPortrait?.media?.blurhash}
                       alt="ad hero image"
                       aspectRatio={calculateAspectRatio(
                         e.single?.mediaPortrait?.media?.fullSize?.width,
@@ -146,6 +148,7 @@ export function Ads({
                 >
                   <Image
                     src={leftUrl}
+                    blurhash={e.double?.left?.mediaLandscape?.media?.blurhash}
                     alt="ad hero image"
                     aspectRatio={calculateAspectRatio(
                       e.double?.left?.mediaLandscape?.media?.fullSize?.width,
@@ -185,6 +188,7 @@ export function Ads({
                 >
                   <Image
                     src={rightUrl}
+                    blurhash={e.double?.right?.mediaLandscape?.media?.blurhash}
                     alt="ad hero image"
                     aspectRatio={calculateAspectRatio(
                       e.double?.right?.mediaLandscape?.media?.fullSize?.width,
