@@ -23,8 +23,6 @@ interface CookieBannerProps {
   defaultVisible?: boolean;
 }
 
-export function CookieBanner({ defaultVisible = false }: CookieBannerProps) {
-  const [isVisible, setIsVisible] = useState(defaultVisible);
 function updateConsentMode(prefs: typeof defaultCookiePreferences) {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;
   window.gtag("consent", "update", {
@@ -35,8 +33,8 @@ function updateConsentMode(prefs: typeof defaultCookiePreferences) {
   });
 }
 
-export function CookieBanner() {
-  const [isVisible, setIsVisible] = useState(false);
+export function CookieBanner({ defaultVisible = false }: CookieBannerProps) {
+  const [isVisible, setIsVisible] = useState(defaultVisible);
   const [open, setOpenStatus] = useState(false);
   const [preferences, setPreferences] = useState(defaultCookiePreferences);
   const t = useTranslations("cookies");
