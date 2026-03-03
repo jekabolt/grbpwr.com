@@ -114,6 +114,7 @@
     "promo discount": "プロモ割引",
     "grand total": "総合計",
     "free by promo": "プロモで無料",
+    "free by order": "購入金額で無料",
     "vat": "消費税",
     "sales tax": "売上税",
     "gst": "GST",
@@ -125,7 +126,8 @@
     "placing order": "注文処理中",
     "checking availability": "在庫確認中",
     "stock reservation": "在庫予約中",
-    "business days": "営業日"
+    "business days": "営業日",
+    "complimentary shipping available for": "ご注文が{amount}以上で無料配送"
   },
   "not-found": {
     "title": "ページが見つかりません",

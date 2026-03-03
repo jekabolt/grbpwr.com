@@ -37,7 +37,11 @@ export default function SelectComponent({
         items={items}
         isOpen={open}
       >
-        <Arrow />
+        <Arrow
+          className={cn("text-textColor", {
+            "text-textInactiveColor": props.disabled,
+          })}
+        />
       </SelectTrigger>
       <SelectContent fullWidth={fullWidth} customWidth={customWidth}>
         {items.map((item) => (
@@ -74,21 +78,21 @@ export function SelectTrigger({
   children,
   placeholder,
   className,
-  renderValue,
   value,
   items,
   isOpen,
+  renderValue,
 }: {
   children: React.ReactNode;
   placeholder: string;
   className?: string;
+  value?: string;
+  items?: { label: string; value: string }[];
+  isOpen?: boolean;
   renderValue?: (
     selectedValue: string,
     selectedItem: { label: string; value: string } | undefined,
   ) => React.ReactNode;
-  value?: string;
-  items?: { label: string; value: string }[];
-  isOpen?: boolean;
 }) {
   let displayValue = null;
   if (renderValue && value && items) {
@@ -99,7 +103,7 @@ export function SelectTrigger({
   return (
     <Select.Trigger
       className={cn(
-        "flex w-full items-center justify-between gap-2 border-b border-b-textColor bg-bgColor text-textBaseSize focus:outline-none focus:ring-0",
+        "flex w-full items-center justify-between gap-2 border-b border-textColor bg-bgColor text-textBaseSize focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
         className,
       )}
       aria-label={placeholder}

@@ -114,6 +114,7 @@
     "promo discount": "promo discount",
     "grand total": "grand total",
     "free by promo": "free by promo",
+    "free by order": "complimentary",
     "vat": "VAT",
     "sales tax": "Sales Tax",
     "gst": "GST",
@@ -125,7 +126,8 @@
     "placing order": "placing order",
     "checking availability": "checking availability",
     "stock reservation": "stock reservation",
-    "business days": "business days"
+    "business days": "business days",
+    "complimentary shipping available for": "complimentary shipping on orders over {amount}"
   },
   "not-found": {
     "title": "page not found",

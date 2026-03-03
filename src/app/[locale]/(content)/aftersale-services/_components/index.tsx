@@ -54,6 +54,8 @@ export default function AftersaleForm() {
           ...data,
           orderReference: data.orderReference?.trim() || undefined,
           notes: data.notes?.trim() || undefined,
+          category: data.topic,
+          priority: "SUPPORT_TICKET_PRIORITY_MEDIUM",
         },
       });
 

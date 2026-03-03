@@ -6,6 +6,7 @@ import { PaymentElement } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
+import { cn } from "@/lib/utils";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import { Text } from "@/components/ui/text";
 
@@ -101,7 +102,11 @@ export default function PaymentFieldsGroup({
             />
           </FieldsGroupContainer>
         </div>
-        <div className={disabled || loading ? "pointer-events-none opacity-50" : ""}>
+        <div
+          className={
+            disabled || loading ? "pointer-events-none opacity-50" : ""
+          }
+        >
           {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
             <PaymentElement
               onChange={handlePaymentElementChange}
@@ -120,12 +125,24 @@ export default function PaymentFieldsGroup({
         </div>
       </div>
 
-      <Text variant="uppercase" component="h2">
+      <Text
+        variant="uppercase"
+        component="h2"
+        className={cn("", {
+          "text-textInactiveColor": disabled || loading,
+        })}
+      >
         {t("billing address")}
       </Text>
 
       <div className="space-y-2">
-        <Text size="small">{t("billing text")}</Text>
+        <Text
+          className={cn("", {
+            "text-textInactiveColor": disabled || loading,
+          })}
+        >
+          {t("billing text")}
+        </Text>
         <CheckboxField
           name="billingAddressIsSameAsAddress"
           label={t("same as shipping address")}

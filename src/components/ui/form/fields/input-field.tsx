@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
+import { cn } from "@/lib/utils";
 import Input, { InputProps } from "@/components/ui/input";
 
 import {
@@ -64,15 +65,22 @@ export default function InputField({
       render={({ field }) => (
         <FormItem>
           {label && (
-            <FormLabel className={srLabel ? "sr-only" : ""}>{label}</FormLabel>
+            <FormLabel
+              className={cn(
+                srLabel ? "sr-only" : "",
+                disabled ? "text-textInactiveColor" : "",
+              )}
+            >
+              {label}
+            </FormLabel>
           )}
           <FormControl>
             <Input
               type={type}
-              disabled={loading || disabled}
               {...field}
               value={field.value || ""}
               {...props}
+              disabled={disabled}
               onBlur={onBlur}
               onKeyDown={handleKeyDown}
               onChange={keyboardRestriction ? handleChange : field.onChange}

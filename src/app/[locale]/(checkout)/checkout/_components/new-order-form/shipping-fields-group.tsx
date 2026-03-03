@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
+import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { currencySymbols, keyboardRestrictions } from "@/constants";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
@@ -8,6 +9,7 @@ import { useFormContext } from "react-hook-form";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { formatPrice } from "@/lib/currency";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
 import { PhoneField } from "@/components/ui/form/fields/phone-field";
@@ -29,16 +31,18 @@ type Props = {
   loading: boolean;
   isOpen: boolean;
   disabled?: boolean;
-  onToggle: () => void;
+  order?: ValidateOrderItemsInsertResponse;
   validateItems: (shipmentCarrierId: string) => Promise<any>;
+  onToggle: () => void;
 };
 
 export default function ShippingFieldsGroup({
   loading,
   isOpen,
   disabled = false,
-  onToggle,
+  order,
   validateItems,
+  onToggle,
 }: Props) {
   const t = useTranslations("checkout");
   const { watch, setValue } = useFormContext();
@@ -91,7 +95,14 @@ export default function ShippingFieldsGroup({
       <AddressFields loading={loading} disabled={disabled} />
       <div>
         <div className="space-y-4">
-          <Text variant="uppercase">{t("shipping method")}</Text>
+          <Text
+            variant="uppercase"
+            className={cn("", {
+              "text-textInactiveColor": disabled || loading,
+            })}
+          >
+            {t("shipping method")}
+          </Text>
 
           {eligibleCarriers.length === 0 ? (
             <Text variant="inactive">
@@ -120,10 +131,14 @@ export default function ShippingFieldsGroup({
                 const label = eta
                   ? `${displayCarrierName} (${eta} ${t("business days")})`
                   : displayCarrierName;
+                const promoFreeShipping = !!order?.promo?.freeShipping;
+                const orderFreeShipping = !!order?.freeShipping;
+                const freeShipping = promoFreeShipping || orderFreeShipping;
                 return {
                   label,
                   value: c.id + "" || "",
                   priceLabel: formattedPrice || undefined,
+                  priceLabelStrikethrough: freeShipping && !!formattedPrice,
                 };
               })}
             />

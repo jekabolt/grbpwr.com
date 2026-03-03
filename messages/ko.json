@@ -114,6 +114,7 @@
     "promo discount": "프로모 할인",
     "grand total": "총합계",
     "free by promo": "프로모로 무료",
+    "free by order": "주문 금액 무료",
     "vat": "부가세",
     "sales tax": "판매세",
     "gst": "GST",
@@ -125,7 +126,8 @@
     "placing order": "주문 중",
     "checking availability": "재고 확인 중",
     "stock reservation": "재고 예약 중",
-    "business days": "영업일"
+    "business days": "영업일",
+    "complimentary shipping available for": "주문 금액 {amount} 이상 무료 배송"
   },
   "not-found": {
     "title": "페이지를 찾을 수 없습니다",
