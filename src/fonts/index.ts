@@ -20,5 +20,6 @@ export const FeatureMono = localFont({
   ],
   display: "swap",
   preload: true,
-  fallback: ["system-ui", "sans-serif"],
+  fallback: ["ui-monospace", "monospace"],
+  adjustFontFallback: "Arial",
 });

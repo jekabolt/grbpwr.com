@@ -1,0 +1,1 @@
+import{useFormatter as r,useTranslations as t}from"use-intl";export*from"use-intl";function o(r,t){return(...r)=>{try{return t(...r)}catch{throw new Error(void 0)}}}const e=o(0,t),n=o(0,r);export{n as useFormatter,e as useTranslations};

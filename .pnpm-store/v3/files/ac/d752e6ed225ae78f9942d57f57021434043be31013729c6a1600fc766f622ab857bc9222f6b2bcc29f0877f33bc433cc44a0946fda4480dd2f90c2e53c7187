@@ -1,0 +1,21 @@
+/**
+ * Convert Blurhash to Base64
+ *
+ * @param {string} hash - Pass the hash
+ * @returns {string} base64/dataURL
+ * @example
+ * ```js
+ * import { blurhashToBase64 } from "blurhash-base64";
+ *
+ * const base64 = blurhashToBase64("U25EI7[k0]1D=*RzA8XA9WBEj]^BS%be,^$O");
+ * console.log(base64)
+ * ```
+ * -------
+ * Others:
+ *
+ * ✨ URL to Blurhash - https://www.npmjs.com/package/blurhash-from-url
+ *
+ * ✨ Generate Blurhash in CLI: https://www.npmjs.com/package/blurhash-cli
+ *
+ */
+export declare function blurhashToBase64(hash: string): string;

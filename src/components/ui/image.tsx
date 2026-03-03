@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 
+import { blurhashToDataURL } from "@/lib/blurhash";
+
 function ImageContainer({
   aspectRatio,
   children,
@@ -24,6 +26,8 @@ type ImageProps = {
   priority?: boolean;
   loading?: "lazy" | "eager";
   type?: "image" | "video";
+  blurhash?: string;
+  blurDataURL?: string;
   autoPlay?: boolean;
   muted?: boolean;
   loop?: boolean;
@@ -42,6 +46,8 @@ export default function ImageComponent({
   priority = false,
   loading = "lazy",
   type = "image",
+  blurhash,
+  blurDataURL,
   autoPlay = false,
   muted = true,
   loop = true,
@@ -51,6 +57,9 @@ export default function ImageComponent({
   ...props
 }: ImageProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const placeholderDataUrl =
+    blurDataURL ?? (blurhash ? blurhashToDataURL(blurhash) : undefined);
 
   useEffect(() => {
     if (type !== "video" || !videoRef.current) return;
@@ -69,6 +78,8 @@ export default function ImageComponent({
           sizes={sizes}
           priority={priority}
           loading={priority ? undefined : loading}
+          placeholder={placeholderDataUrl ? "blur" : undefined}
+          blurDataURL={placeholderDataUrl}
           style={{
             objectFit: fit,
           }}

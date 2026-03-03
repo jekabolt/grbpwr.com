@@ -72,6 +72,13 @@ export function Ads({
                       }
                       playOnHover={hoveredSingleIndex === i}
                       preload={isPriorityAd ? "auto" : "metadata"}
+                      blurhash={
+                        !isVideo(
+                          e.single?.mediaLandscape?.media?.fullSize?.mediaUrl,
+                        )
+                          ? e.single?.mediaLandscape?.media?.blurhash
+                          : undefined
+                      }
                     />
                   </div>
                   <div className="block h-full lg:hidden">
@@ -96,6 +103,13 @@ export function Ads({
                       loading={isPriorityAd ? "eager" : "lazy"}
                       preload={isPriorityAd ? "auto" : "metadata"}
                       autoPlay={true}
+                      blurhash={
+                        !isVideo(
+                          e.single?.mediaPortrait?.media?.fullSize?.mediaUrl,
+                        )
+                          ? e.single?.mediaPortrait?.media?.blurhash
+                          : undefined
+                      }
                     />
                   </div>
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center">
@@ -159,6 +173,11 @@ export function Ads({
                       hoveredDouble?.i === i && hoveredDouble?.side === "left"
                     }
                     autoPlay={isMobile && isLeftVideo}
+                    blurhash={
+                      !isLeftVideo
+                        ? e.double?.left?.mediaLandscape?.media?.blurhash
+                        : undefined
+                    }
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text
@@ -198,6 +217,11 @@ export function Ads({
                       hoveredDouble?.i === i && hoveredDouble?.side === "right"
                     }
                     autoPlay={isMobile && isRightVideo}
+                    blurhash={
+                      !isRightVideo
+                        ? e.double?.right?.mediaLandscape?.media?.blurhash
+                        : undefined
+                    }
                   />
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
                     <Text

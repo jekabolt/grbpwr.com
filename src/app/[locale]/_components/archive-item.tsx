@@ -30,6 +30,7 @@ export function ArchiveItem({
                   m.media?.fullSize?.height,
                 )}
                 fit="contain"
+                blurhash={m.media?.blurhash}
               />
               <Text className="absolute right-4 top-1/2 block -translate-y-1/2 md:hidden md:group-hover:block">
                 {id}

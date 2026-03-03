@@ -1,0 +1,1 @@
+import{getAcceptLanguageLocale as e}from"./resolveLocale.js";function o(o,a,l,s,t){if(!s.localeCookie)return;const{name:c,...i}=s.localeCookie,r=e(o.headers,t?.locales||s.locales,s.defaultLocale),n=o.cookies.has(c),f=n&&o.cookies.get(c)?.value!==l;(n?f:r!==l)&&a.cookies.set(c,l,{path:o.nextUrl.basePath||void 0,...i})}export{o as default};

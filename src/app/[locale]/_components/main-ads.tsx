@@ -46,6 +46,11 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           priority={true}
           loading="eager"
           playOnHover={isHovered}
+          blurhash={
+            !isVideo(main.single?.mediaLandscape?.media?.fullSize?.mediaUrl)
+              ? main.single?.mediaLandscape?.media?.blurhash
+              : undefined
+          }
         />
       </div>
       <div className="block h-full lg:hidden">
@@ -65,6 +70,11 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           priority={true}
           loading="eager"
           autoPlay
+          blurhash={
+            !isVideo(main.single?.mediaPortrait?.media?.fullSize?.mediaUrl)
+              ? main.single?.mediaPortrait?.media?.blurhash
+              : undefined
+          }
         />
       </div>
       <Overlay cover="container" />
