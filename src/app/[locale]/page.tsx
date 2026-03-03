@@ -36,11 +36,6 @@ export default async function Page() {
   const isHero = hero?.entities?.length;
   const isWebsiteEnabled = dictionary?.siteEnabled;
 
-  // // Get the hero image URL for background color extraction
-  // const heroImageUrl =
-  //   hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.thumbnail
-  //     ?.mediaUrl;
-
   if (!isWebsiteEnabled) {
     return <Disabled />;
   }
