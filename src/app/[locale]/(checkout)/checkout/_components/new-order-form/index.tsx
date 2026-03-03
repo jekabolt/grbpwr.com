@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 import {
   sendFormErrorEvent,
   sendFormStartEvent,
@@ -14,20 +18,16 @@ import {
   sendPaymentFailedEvent,
 } from "@/lib/analitycs/checkout-custom";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
-import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
+import { pushUserIdToDataLayer, waitForAnalytics } from "@/lib/analitycs/utils";
 import { getValidationErrorToastKey } from "@/lib/cart/validate-cart-items";
 import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { formatPrice } from "@/lib/currency";
+import { cn } from "@/lib/utils";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { Text } from "@/components/ui/text";
-import { SubmissionToaster } from "@/components/ui/toaster";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
@@ -269,11 +269,12 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
             coupon: promoCode || undefined,
             shipping: undefined,
           });
-          pushUserIdToDataLayer(data.email);
+          await pushUserIdToDataLayer(data.email);
           clearCart();
           clearFormData();
           clearIdempotencyKey();
           resetCheckoutValidationState();
+          await waitForAnalytics();
           window.location.href = `/order/${paymentResult.orderUuid}/${window.btoa(data.email)}`;
           return;
         }

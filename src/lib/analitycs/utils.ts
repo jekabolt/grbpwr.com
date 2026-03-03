@@ -5,6 +5,12 @@ import {
 
 import { getStoredCampaignParams } from "./campaign";
 
+declare global {
+    interface Window {
+        gtag?: (...args: unknown[]) => void;
+    }
+}
+
 export interface EcommerceEvent {
     event: string;
     ecommerce: {
@@ -23,6 +29,24 @@ export interface AnalyticsItem {
     discount: number;
     price: number;
     quantity: number;
+}
+
+function ensureGtag(): void {
+    if (typeof window === "undefined") return;
+    window.dataLayer = window.dataLayer || [];
+    if (typeof window.gtag !== "function") {
+        const dl = window.dataLayer;
+        window.gtag = function () {
+            // eslint-disable-next-line prefer-rest-params
+            dl.push(arguments);
+        };
+    }
+}
+
+const ANALYTICS_FLUSH_MS = 800;
+
+export function waitForAnalytics(): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ANALYTICS_FLUSH_MS));
 }
 
 export function pushToDataLayer(event: EcommerceEvent): void {
@@ -81,10 +105,9 @@ export function pushCustomEvent(event: string, params: Record<string, unknown>):
     try {
         if (typeof window === "undefined") return;
 
+        ensureGtag();
         const campaignParams = getCampaignParamsForEvents();
-
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event, ...campaignParams, ...params });
+        window.gtag!("event", event, { ...campaignParams, ...params });
     } catch (error) {
         console.warn("Analytics tracking failed:", error);
     }
@@ -99,6 +122,9 @@ export async function pushUserIdToDataLayer(email: string): Promise<void> {
         const hashBuffer = await crypto.subtle.digest("SHA-256", data);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         const hashedId = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+
+        ensureGtag();
+        window.gtag!("set", { user_id: hashedId });
 
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ user_id: hashedId });

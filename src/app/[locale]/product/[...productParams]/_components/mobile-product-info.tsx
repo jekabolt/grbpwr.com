@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
-import { sendViewItemEvent } from "@/lib/analitycs/product";
 import { useElementHeight } from "@/lib/hooks/useBottomSheet";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
@@ -82,17 +81,6 @@ export function MobileProductInfo({
     }
     setIsNotifyMeOpen(true);
   };
-
-  useEffect(() => {
-    if (product) {
-      sendViewItemEvent(
-        product,
-        productCategory || "",
-        productSubCategory || "",
-        currentCountry.currencyKey || "EUR",
-      );
-    }
-  }, [product]);
 
   return (
     <div className="relative h-full overflow-y-hidden">

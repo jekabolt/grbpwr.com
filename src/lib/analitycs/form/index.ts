@@ -1,4 +1,4 @@
-import { pushCustomEvent, pushToDataLayer } from "../utils";
+import { pushCustomEvent } from "../utils";
 
 interface FormEventData {
   formId: string;
@@ -17,13 +17,10 @@ interface NewsletterSignupData {
 }
 
 export function sendGenerateLeadEvent(data: GenerateLeadData) {
-  pushToDataLayer({
-    event: "generate_lead",
-    ecommerce: {
-      currency: data.currency,
-      value: Math.max(0, data.value),
-      lead_source: data.lead_source,
-    },
+  pushCustomEvent("generate_lead", {
+    currency: data.currency,
+    value: Math.max(0, data.value),
+    lead_source: data.lead_source,
   });
 }
 
