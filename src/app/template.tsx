@@ -21,8 +21,10 @@ export default async function Template({
 }: {
   children: React.ReactNode;
 }) {
-  const heroData = await serviceClient.GetHero({});
-  const initialTranslationState = await getInitialTranslationState();
+  const [heroData, initialTranslationState] = await Promise.all([
+    serviceClient.GetHero({}),
+    getInitialTranslationState(),
+  ]);
 
   return (
     <QueryWrapper>

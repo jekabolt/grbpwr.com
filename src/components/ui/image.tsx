@@ -68,6 +68,7 @@ export default function ImageComponent({
           className="h-full w-full"
           sizes={sizes}
           priority={priority}
+          fetchPriority={priority ? "high" : undefined}
           loading={priority ? undefined : loading}
           style={{
             objectFit: fit,

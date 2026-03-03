@@ -35,6 +35,10 @@ const config = {
           "50%": { transform: "translateX(100%)" },
           "100%": { transform: "translateX(-100%)" },
         },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
         threshold: {
           "0%": {
             filter: "grayscale(100%) contrast(200%) brightness(0.5)",
@@ -58,6 +62,7 @@ const config = {
       animation: {
         threshold: "threshold 0.4s ease-out forwards",
         "threshold-highlight": "threshold-with-highlight 0.4s ease-out forwards",
+        "fade-in": "fade-in 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards",
       },
     },
   },
