@@ -18,7 +18,7 @@ import {
   sendPaymentFailedEvent,
 } from "@/lib/analitycs/checkout-custom";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
-import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
+import { pushUserIdToDataLayer, waitForAnalytics } from "@/lib/analitycs/utils";
 import { getValidationErrorToastKey } from "@/lib/cart/validate-cart-items";
 import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
@@ -259,11 +259,12 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
             coupon: promoCode || undefined,
             shipping: undefined,
           });
-          pushUserIdToDataLayer(data.email);
+          await pushUserIdToDataLayer(data.email);
           clearCart();
           clearFormData();
           clearIdempotencyKey();
           resetCheckoutValidationState();
+          await waitForAnalytics();
           window.location.href = `/order/${paymentResult.orderUuid}/${window.btoa(data.email)}`;
           return;
         }

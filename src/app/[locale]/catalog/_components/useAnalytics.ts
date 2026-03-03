@@ -1,4 +1,5 @@
 import { common_Product } from "@/api/proto-http/frontend";
+import { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
 import {
@@ -23,63 +24,63 @@ export function useAnalytics() {
     const { gender, categoryName, subCategoryName, topCategory, subCategory } =
         useRouteParams();
 
-    const hasFilters = Array.from(searchParams.entries()).length > 0;
-    const filterPrefix = hasFilters ? "Filtered " : "";
-
-    let listName = "";
-    if (subCategory) {
-        const decodedName = decodeUrlValue(subCategoryName);
-        listName = `${filterPrefix}${decodedName}`;
-    } else if (topCategory) {
-        const decodedName = decodeUrlValue(categoryName);
-        listName = `${filterPrefix}${decodedName}`;
-    } else if (gender) {
-        const decodedGender = decodeUrlValue(gender);
-        listName = `${filterPrefix}${decodedGender} Products`;
-    } else {
-        listName = `${filterPrefix}Product Catalog`;
-    }
-
     const searchParamsString = searchParams.toString();
-    const filterSuffix = searchParamsString
-        ? `_filtered_${searchParamsString.replace(/[^a-zA-Z0-9]/g, "_")}`
-        : "";
 
-    let listId = "";
-    if (subCategory) {
-        listId = `subcategory_${subCategoryName}${filterSuffix}`;
-    } else if (topCategory) {
-        listId = `category_${categoryName}${filterSuffix}`;
-    } else if (gender) {
-        listId = `gender_${gender}${filterSuffix}`;
-    } else {
-        listId = `catalog${filterSuffix}`;
-    }
+    const { listName, listId } = useMemo(() => {
+        const hasFilters = searchParamsString.length > 0;
+        const filterPrefix = hasFilters ? "Filtered " : "";
+        const filterSuffix = searchParamsString
+            ? `_filtered_${searchParamsString.replace(/[^a-zA-Z0-9]/g, "_")}`
+            : "";
 
-    const decodedCategoryName = decodeUrlValue(categoryName);
-    const decodedSubCategoryName = decodeUrlValue(subCategoryName);
+        let name = "";
+        let id = "";
 
-    function handleSelectItemEvent(product: common_Product) {
+        if (subCategory) {
+            const decodedName = decodeUrlValue(subCategoryName);
+            name = `${filterPrefix}${decodedName}`;
+            id = `subcategory_${subCategoryName}${filterSuffix}`;
+        } else if (topCategory) {
+            const decodedName = decodeUrlValue(categoryName);
+            name = `${filterPrefix}${decodedName}`;
+            id = `category_${categoryName}${filterSuffix}`;
+        } else if (gender) {
+            const decodedGender = decodeUrlValue(gender);
+            name = `${filterPrefix}${decodedGender} Products`;
+            id = `gender_${gender}${filterSuffix}`;
+        } else {
+            name = `${filterPrefix}Product Catalog`;
+            id = `catalog${filterSuffix}`;
+        }
+
+        return { listName: name, listId: id };
+    }, [searchParamsString, subCategory, topCategory, gender, categoryName, subCategoryName]);
+
+    const decodedCategoryName = useMemo(() => decodeUrlValue(categoryName), [categoryName]);
+    const decodedSubCategoryName = useMemo(() => decodeUrlValue(subCategoryName), [subCategoryName]);
+    const currencyKey = currentCountry.currencyKey || "EUR";
+
+    const handleSelectItemEvent = useCallback((product: common_Product) => {
         sendSelectItemEvent(
             product,
             listName,
             listId,
             decodedCategoryName,
             decodedSubCategoryName,
-            currentCountry.currencyKey || "EUR",
+            currencyKey,
         );
-    }
+    }, [listName, listId, decodedCategoryName, decodedSubCategoryName, currencyKey]);
 
-    function handleViewItemListEvent(products: common_Product[]) {
+    const handleViewItemListEvent = useCallback((products: common_Product[]) => {
         sendViewItemListEvent(
             products,
             listName,
             listId,
             decodedCategoryName,
             decodedSubCategoryName,
-            currentCountry.currencyKey || "EUR",
+            currencyKey,
         );
-    }
+    }, [listName, listId, decodedCategoryName, decodedSubCategoryName, currencyKey]);
 
     return {
         listName,

@@ -19,6 +19,16 @@ export const defaultCookiePreferences = {
   experience: true,
 };
 
+function updateConsentMode(prefs: typeof defaultCookiePreferences) {
+  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+  window.gtag("consent", "update", {
+    analytics_storage: prefs.statistical ? "granted" : "denied",
+    ad_storage: prefs.advertising_social_media ? "granted" : "denied",
+    ad_user_data: prefs.advertising_social_media ? "granted" : "denied",
+    ad_personalization: prefs.advertising_social_media ? "granted" : "denied",
+  });
+}
+
 export function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const [open, setOpenStatus] = useState(false);
@@ -34,6 +44,7 @@ export function CookieBanner() {
 
   const handleSaveCookies = () => {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    updateConsentMode(preferences);
     window.dispatchEvent(new Event("cookie-consent-accepted"));
     setIsVisible(false);
   };
@@ -47,6 +58,7 @@ export function CookieBanner() {
 
   const handleSavePreferences = () => {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    updateConsentMode(preferences);
     setIsVisible(false);
     setOpenStatus(false);
     window.dispatchEvent(new Event("cookie-consent-accepted"));
