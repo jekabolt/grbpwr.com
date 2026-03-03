@@ -41,6 +41,7 @@ export function ArchiveGrid({
                   src={item.thumbnail?.media?.fullSize?.mediaUrl || ""}
                   aspectRatio="1/1"
                   fit="cover"
+                  blurhash={item.thumbnail?.media?.blurhash}
                 />
               </div>
               <Text className="text-highlightColor">

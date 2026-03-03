@@ -45,6 +45,7 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           fit="cover"
           priority={true}
           loading="eager"
+          blurhash={main.single?.mediaLandscape?.media?.blurhash}
           playOnHover={isHovered}
         />
       </div>
@@ -64,6 +65,7 @@ export function MainAds({ main }: { main?: common_HeroMainWithTranslations }) {
           fit="cover"
           priority={true}
           loading="eager"
+          blurhash={main.single?.mediaPortrait?.media?.blurhash}
           autoPlay
         />
       </div>

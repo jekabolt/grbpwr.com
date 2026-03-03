@@ -129,6 +129,7 @@ export function MobileImageCarousel({
                   fit="contain"
                   priority={isPriority}
                   loading={isPriority ? "eager" : "lazy"}
+                  blurhash={m?.media?.blurhash}
                 />
               </div>
             );
@@ -188,6 +189,7 @@ export function MobileImageCarousel({
                       currentMedia.width,
                       currentMedia.height,
                     )}
+                    blurhash={media[selectedIndex]?.media?.blurhash}
                   />
                 </div>
               </ImageZoom>

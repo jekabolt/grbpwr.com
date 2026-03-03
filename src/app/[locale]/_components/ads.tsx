@@ -63,6 +63,7 @@ export function Ads({
                       fit="cover"
                       priority={isPriorityAd}
                       loading={isPriorityAd ? "eager" : "lazy"}
+                      blurhash={e.single?.mediaLandscape?.media?.blurhash}
                       type={
                         isVideo(
                           e.single?.mediaLandscape?.media?.fullSize?.mediaUrl,
@@ -94,6 +95,7 @@ export function Ads({
                       fit="cover"
                       priority={isPriorityAd}
                       loading={isPriorityAd ? "eager" : "lazy"}
+                      blurhash={e.single?.mediaPortrait?.media?.blurhash}
                       preload={isPriorityAd ? "auto" : "metadata"}
                       autoPlay={true}
                     />
@@ -154,6 +156,7 @@ export function Ads({
                     fit="contain"
                     priority={isPriorityAd}
                     loading={isPriorityAd ? "eager" : "lazy"}
+                    blurhash={e.double?.left?.mediaLandscape?.media?.blurhash}
                     type={isLeftVideo ? "video" : "image"}
                     playOnHover={
                       hoveredDouble?.i === i && hoveredDouble?.side === "left"
@@ -193,6 +196,7 @@ export function Ads({
                     fit="contain"
                     priority={isPriorityAd}
                     loading={isPriorityAd ? "eager" : "lazy"}
+                    blurhash={e.double?.right?.mediaLandscape?.media?.blurhash}
                     type={isRightVideo ? "video" : "image"}
                     playOnHover={
                       hoveredDouble?.i === i && hoveredDouble?.side === "right"

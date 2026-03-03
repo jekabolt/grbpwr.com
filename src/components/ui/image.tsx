@@ -1,5 +1,15 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { blurhashToBase64 } from "blurhash-base64";
+
+function getBlurDataURL(hash: string | undefined): string | undefined {
+  if (!hash) return undefined;
+  try {
+    return blurhashToBase64(hash);
+  } catch {
+    return undefined;
+  }
+}
 
 function ImageContainer({
   aspectRatio,
@@ -19,6 +29,7 @@ type ImageProps = {
   alt: string;
   src: string;
   aspectRatio: string;
+  blurhash?: string;
   sizes?: string;
   fit?: "cover" | "contain" | "fill" | "scale-down";
   priority?: boolean;
@@ -37,6 +48,7 @@ export default function ImageComponent({
   aspectRatio,
   src,
   alt,
+  blurhash,
   sizes = "(max-width: 1280px) 100vw, 1280px",
   fit,
   priority = false,
@@ -51,6 +63,7 @@ export default function ImageComponent({
   ...props
 }: ImageProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const blurDataURL = getBlurDataURL(blurhash);
 
   useEffect(() => {
     if (type !== "video" || !videoRef.current) return;
@@ -69,6 +82,8 @@ export default function ImageComponent({
           sizes={sizes}
           priority={priority}
           loading={priority ? undefined : loading}
+          placeholder={blurDataURL ? "blur" : undefined}
+          blurDataURL={blurDataURL}
           style={{
             objectFit: fit,
           }}

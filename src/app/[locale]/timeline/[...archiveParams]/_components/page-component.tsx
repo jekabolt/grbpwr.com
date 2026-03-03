@@ -93,6 +93,7 @@ export default function PageComponent({
               )}
               priority={true}
               loading="eager"
+              blurhash={item.media?.blurhash}
             />
           </div>
         );
@@ -112,6 +113,7 @@ export default function PageComponent({
                 )}
                 priority={isPriority}
                 loading={isPriority ? "eager" : "lazy"}
+                blurhash={item.media?.blurhash}
               />
             </div>
           );

@@ -25,6 +25,7 @@ export function ProductMediaItem({
           singleMedia?.media?.fullSize?.height,
         )}
         fit="contain"
+        blurhash={singleMedia?.media?.blurhash}
       />
       {/* </div> */}
       {/* </PhotoView> */}

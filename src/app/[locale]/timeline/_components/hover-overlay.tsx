@@ -71,6 +71,7 @@ export function HoverOverlay({ item, rect, languageId }: HoverOverlayProps) {
               alt={item.tag || ""}
               aspectRatio="1/1"
               fit="contain"
+              blurhash={item.thumbnail?.media?.blurhash}
             />
           </div>
           <div className="absolute bottom-0 left-0 right-0 z-10 p-2">

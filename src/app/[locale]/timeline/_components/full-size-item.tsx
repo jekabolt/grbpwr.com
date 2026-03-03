@@ -31,6 +31,7 @@ export function FullSizeItem({ className, archive, highlightedItem }: Props) {
               archive?.thumbnail?.media?.fullSize?.width,
               archive?.thumbnail?.media?.fullSize?.height,
             )}
+            blurhash={archive?.thumbnail?.media?.blurhash}
           />
         </Link>
       </div>

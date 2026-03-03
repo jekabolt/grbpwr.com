@@ -68,6 +68,7 @@ export function ProductImagesCarousel({
                 fit="contain"
                 priority={isPriority}
                 loading={isPriority ? "eager" : "lazy"}
+                blurhash={m?.media?.blurhash}
               />
             </div>
           );
