@@ -19,21 +19,30 @@ export const defaultCookiePreferences = {
   experience: true,
 };
 
-export function CookieBanner() {
-  const [isVisible, setIsVisible] = useState(false);
+interface CookieBannerProps {
+  defaultVisible?: boolean;
+}
+
+export function CookieBanner({ defaultVisible = false }: CookieBannerProps) {
+  const [isVisible, setIsVisible] = useState(defaultVisible);
   const [open, setOpenStatus] = useState(false);
   const [preferences, setPreferences] = useState(defaultCookiePreferences);
   const t = useTranslations("cookies");
 
   useEffect(() => {
     const savedConsent = localStorage.getItem("cookieConsent");
-    if (!savedConsent) {
-      setIsVisible(true);
+    if (savedConsent) {
+      setIsVisible(false);
     }
   }, []);
 
+  const setConsentCookie = () => {
+    document.cookie = "cookieConsent=1;path=/;max-age=31536000;SameSite=Lax";
+  };
+
   const handleSaveCookies = () => {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    setConsentCookie();
     window.dispatchEvent(new Event("cookie-consent-accepted"));
     setIsVisible(false);
   };
@@ -47,6 +56,7 @@ export function CookieBanner() {
 
   const handleSavePreferences = () => {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    setConsentCookie();
     setIsVisible(false);
     setOpenStatus(false);
     window.dispatchEvent(new Event("cookie-consent-accepted"));
@@ -65,8 +75,8 @@ export function CookieBanner() {
         />
       </div>
       <div className="hidden space-y-6 p-2.5 lg:block">
-        <Text variant="inherit" className="tracking-wider">
-          {t("cookies title")}
+        <span className="inline-flex flex-nowrap items-baseline gap-x-1 tracking-wider">
+          <Text component="span" variant="inherit">{t("cookies title")}</Text>
           <Button
             variant="underline"
             className="inline"
@@ -74,7 +84,7 @@ export function CookieBanner() {
           >
             {t("cookie preferences")}
           </Button>
-        </Text>
+        </span>
         <Button
           variant="secondary"
           size="lg"

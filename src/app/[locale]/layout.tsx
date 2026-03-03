@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { cookies } from "next/headers";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
@@ -53,11 +54,15 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+const CONSENT_COOKIE = "cookieConsent";
+
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const cookieStore = await cookies();
+  const hasConsent = !!cookieStore.get(CONSENT_COOKIE)?.value;
 
   return (
     <html lang={locale}>
@@ -74,8 +79,6 @@ export default async function RootLayout({ children, params }: Props) {
         />
         <link rel="preconnect" href="https://files.grbpwr.com" />
         <link rel="dns-prefetch" href="https://files.grbpwr.com" />
-        {/* <link rel="preconnect" href="https://art.grbpwr.com" />
-        <link rel="dns-prefetch" href="https://art.grbpwr.com" /> */}
         <link rel="preconnect" href="https://backend.grbpwr.com" />
         <link rel="dns-prefetch" href="https://backend.grbpwr.com" />
       </head>
@@ -83,6 +86,7 @@ export default async function RootLayout({ children, params }: Props) {
       <body className={FeatureMono.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <HtmlThemeSync />
+          <CookieBanner defaultVisible={!hasConsent} />
           <ToastProvider>
             <PageTransition>
               <SiteGuard>
@@ -91,7 +95,6 @@ export default async function RootLayout({ children, params }: Props) {
             </PageTransition>
             <GeoSuggestWrapper />
             <UpdateLocation />
-            <CookieBanner />
             <AnalyticsInit />
           </ToastProvider>
         </NextIntlClientProvider>
