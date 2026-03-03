@@ -62,6 +62,11 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={locale}>
       <head>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `html{background-color:#fff}body{background-color:#fff;touch-action:manipulation}html.blackTheme,html.blackTheme body{background-color:#000}`,
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){var p=window.location.pathname;if(/\\/timeline(\\/|$)/.test(p))document.documentElement.classList.add("blackTheme");})();`,
@@ -71,6 +76,8 @@ export default async function RootLayout({ children, params }: Props) {
         <link rel="dns-prefetch" href="https://files.grbpwr.com" />
         <link rel="preconnect" href="https://art.grbpwr.com" />
         <link rel="dns-prefetch" href="https://art.grbpwr.com" />
+        <link rel="preconnect" href="https://backend.grbpwr.com" />
+        <link rel="dns-prefetch" href="https://backend.grbpwr.com" />
       </head>
       <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
