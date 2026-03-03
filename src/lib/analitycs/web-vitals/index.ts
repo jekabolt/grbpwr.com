@@ -16,11 +16,15 @@ function sendToDataLayer(metric: Metric): void {
 export function initWebVitals(): void {
   if (typeof window === "undefined") return;
 
-  import("web-vitals").then(({ onLCP, onINP, onCLS, onFCP, onTTFB }) => {
-    onLCP(sendToDataLayer);
-    onINP(sendToDataLayer);
-    onCLS(sendToDataLayer);
-    onFCP(sendToDataLayer);
-    onTTFB(sendToDataLayer);
-  });
+  import("web-vitals")
+    .then(({ onLCP, onINP, onCLS, onFCP, onTTFB }) => {
+      onLCP(sendToDataLayer);
+      onINP(sendToDataLayer);
+      onCLS(sendToDataLayer);
+      onFCP(sendToDataLayer);
+      onTTFB(sendToDataLayer);
+    })
+    .catch((err) => {
+      console.warn("Failed to load web-vitals:", err);
+    });
 }

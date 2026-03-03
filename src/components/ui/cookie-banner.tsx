@@ -25,6 +25,18 @@ interface CookieBannerProps {
 
 export function CookieBanner({ defaultVisible = false }: CookieBannerProps) {
   const [isVisible, setIsVisible] = useState(defaultVisible);
+function updateConsentMode(prefs: typeof defaultCookiePreferences) {
+  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+  window.gtag("consent", "update", {
+    analytics_storage: prefs.statistical ? "granted" : "denied",
+    ad_storage: prefs.advertising_social_media ? "granted" : "denied",
+    ad_user_data: prefs.advertising_social_media ? "granted" : "denied",
+    ad_personalization: prefs.advertising_social_media ? "granted" : "denied",
+  });
+}
+
+export function CookieBanner() {
+  const [isVisible, setIsVisible] = useState(false);
   const [open, setOpenStatus] = useState(false);
   const [preferences, setPreferences] = useState(defaultCookiePreferences);
   const t = useTranslations("cookies");
@@ -43,6 +55,7 @@ export function CookieBanner({ defaultVisible = false }: CookieBannerProps) {
   const handleSaveCookies = () => {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
     setConsentCookie();
+    updateConsentMode(preferences);
     window.dispatchEvent(new Event("cookie-consent-accepted"));
     setIsVisible(false);
   };
@@ -57,6 +70,7 @@ export function CookieBanner({ defaultVisible = false }: CookieBannerProps) {
   const handleSavePreferences = () => {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
     setConsentCookie();
+    updateConsentMode(preferences);
     setIsVisible(false);
     setOpenStatus(false);
     window.dispatchEvent(new Event("cookie-consent-accepted"));
