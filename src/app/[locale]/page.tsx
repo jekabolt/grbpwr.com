@@ -9,8 +9,6 @@ import { EmptyHero } from "@/components/ui/empty-hero";
 
 import { Ads } from "./_components/ads";
 import { MainAds } from "./_components/main-ads";
-import { MainAdsHeroImageMobile } from "./_components/main-ads-hero-image";
-import { PageBackground } from "./_components/page-background";
 
 export async function generateMetadata({
   params,
@@ -39,9 +37,9 @@ export default async function Page() {
   const isWebsiteEnabled = dictionary?.siteEnabled;
 
   // Get the hero image URL for background color extraction
-  const heroImageUrl =
-    hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.thumbnail
-      ?.mediaUrl;
+  // const heroImageUrl =
+  //   hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.thumbnail
+  //     ?.mediaUrl;
 
   if (!isWebsiteEnabled) {
     return <Disabled />;
@@ -52,10 +50,8 @@ export default async function Page() {
 
   return (
     <FlexibleLayout showAnnounce={true}>
-      <PageBackground imageUrl={heroImageUrl} />
-      <MainAds main={hero?.entities?.[0]?.main}>
-        <MainAdsHeroImageMobile main={hero?.entities?.[0]?.main} />
-      </MainAds>
+      {/* <PageBackground imageUrl={heroImageUrl} /> */}
+      <MainAds main={hero?.entities?.[0]?.main} />
       <Ads entities={hero?.entities || []} />
     </FlexibleLayout>
   );
