@@ -59,6 +59,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
                   ? "https://art.grbpwr.com/invert"
                   : "https://art.grbpwr.com"
               }
+              loading="lazy"
               className="h-40 w-40 border-0 lg:hidden"
               title="Art"
             />

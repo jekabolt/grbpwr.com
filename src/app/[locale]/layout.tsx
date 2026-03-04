@@ -2,13 +2,14 @@ import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { Metadata } from "next";
-import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import {
   getMessages,
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
+import { cookies } from "next/headers";
+import Script from "next/script";
 
 import { AnalyticsInit } from "@/components/analytics-init";
 import { PageTransition } from "@/components/page-transition";
@@ -54,15 +55,24 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+const CONSENT_COOKIE = "cookieConsent";
+
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const cookieStore = await cookies();
+  const hasConsent = !!cookieStore.get(CONSENT_COOKIE)?.value;
 
   return (
     <html lang={locale}>
       <head>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `html{background-color:#fff}body{background-color:#fff;touch-action:manipulation}html.blackTheme,html.blackTheme body{background-color:#000}`,
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){var p=window.location.pathname;if(/\\/timeline(\\/|$)/.test(p))document.documentElement.classList.add("blackTheme");})();`,
@@ -70,8 +80,8 @@ export default async function RootLayout({ children, params }: Props) {
         />
         <link rel="preconnect" href="https://files.grbpwr.com" />
         <link rel="dns-prefetch" href="https://files.grbpwr.com" />
-        <link rel="preconnect" href="https://art.grbpwr.com" />
-        <link rel="dns-prefetch" href="https://art.grbpwr.com" />
+        <link rel="preconnect" href="https://backend.grbpwr.com" />
+        <link rel="dns-prefetch" href="https://backend.grbpwr.com" />
       </head>
       <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
@@ -84,6 +94,7 @@ export default async function RootLayout({ children, params }: Props) {
         </Script>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <HtmlThemeSync />
+          <CookieBanner defaultVisible={!hasConsent} />
           <ToastProvider>
             <PageTransition>
               <SiteGuard>
@@ -92,7 +103,6 @@ export default async function RootLayout({ children, params }: Props) {
             </PageTransition>
             <GeoSuggestWrapper />
             <UpdateLocation />
-            <CookieBanner />
             <AnalyticsInit />
           </ToastProvider>
         </NextIntlClientProvider>

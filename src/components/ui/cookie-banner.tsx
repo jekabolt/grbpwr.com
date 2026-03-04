@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
-import { ModalTransition } from "@/components/modal-transition";
-import { Overlay } from "./overlay";
-import { Text } from "@/components/ui/text";
 import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
+import { ModalTransition } from "@/components/modal-transition";
+import { Text } from "@/components/ui/text";
 
 import { Banner } from "./banner";
 import { Button } from "./button";
 import { MobileCookieModal } from "./mobile-cookie-modal";
+import { Overlay } from "./overlay";
 
 export const defaultCookiePreferences = {
   functional: true,
@@ -18,6 +18,10 @@ export const defaultCookiePreferences = {
   advertising_social_media: true,
   experience: true,
 };
+
+interface CookieBannerProps {
+  defaultVisible?: boolean;
+}
 
 function updateConsentMode(prefs: typeof defaultCookiePreferences) {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;
@@ -29,21 +33,26 @@ function updateConsentMode(prefs: typeof defaultCookiePreferences) {
   });
 }
 
-export function CookieBanner() {
-  const [isVisible, setIsVisible] = useState(false);
+export function CookieBanner({ defaultVisible = false }: CookieBannerProps) {
+  const [isVisible, setIsVisible] = useState(defaultVisible);
   const [open, setOpenStatus] = useState(false);
   const [preferences, setPreferences] = useState(defaultCookiePreferences);
   const t = useTranslations("cookies");
 
   useEffect(() => {
     const savedConsent = localStorage.getItem("cookieConsent");
-    if (!savedConsent) {
-      setIsVisible(true);
+    if (savedConsent) {
+      setIsVisible(false);
     }
   }, []);
 
+  const setConsentCookie = () => {
+    document.cookie = "cookieConsent=1;path=/;max-age=31536000;SameSite=Lax";
+  };
+
   const handleSaveCookies = () => {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    setConsentCookie();
     updateConsentMode(preferences);
     window.dispatchEvent(new Event("cookie-consent-accepted"));
     setIsVisible(false);
@@ -58,6 +67,7 @@ export function CookieBanner() {
 
   const handleSavePreferences = () => {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    setConsentCookie();
     updateConsentMode(preferences);
     setIsVisible(false);
     setOpenStatus(false);
@@ -77,8 +87,8 @@ export function CookieBanner() {
         />
       </div>
       <div className="hidden space-y-6 p-2.5 lg:block">
-        <Text variant="inherit" className="tracking-wider">
-          {t("cookies title")}
+        <span className="inline-flex flex-nowrap items-baseline gap-x-1 tracking-wider">
+          <Text component="span" variant="inherit">{t("cookies title")}</Text>
           <Button
             variant="underline"
             className="inline"
@@ -86,7 +96,7 @@ export function CookieBanner() {
           >
             {t("cookie preferences")}
           </Button>
-        </Text>
+        </span>
         <Button
           variant="secondary"
           size="lg"
@@ -128,15 +138,15 @@ export function CookieBanner() {
                   >
                     {t("accept all cookies")}
                   </Button>
-            <Button
-              variant="simpleReverse"
-              onClick={handleSavePreferences}
-              size="lg"
-              className="uppercase"
-            >
-              {t("save preferences")}
-            </Button>
-          </div>
+                  <Button
+                    variant="simpleReverse"
+                    onClick={handleSavePreferences}
+                    size="lg"
+                    className="uppercase"
+                  >
+                    {t("save preferences")}
+                  </Button>
+                </div>
               </div>
             }
           />

@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "art.grbpwr.com",
+      },
+      {
+        protocol: "https",
         hostname: "cdn.builder.io",
       },
     ],
