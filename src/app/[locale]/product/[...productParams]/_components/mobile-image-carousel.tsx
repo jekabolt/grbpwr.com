@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
@@ -41,9 +41,9 @@ export function MobileImageCarousel({
   productCategory,
 }: MobileImageCarouselProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
   const tAccessibility = useTranslations("accessibility");
   const [emblaRef, emblaApi] = useEmblaCarousel(EMBLA_OPTIONS, [
     WheelGesturesPlugin(),
@@ -72,27 +72,35 @@ export function MobileImageCarousel({
   useEffect(() => {
     if (!isOpen || !emblaApi) {
       setShouldAnimate(false);
-      if (animationTimerRef.current) {
-        clearTimeout(animationTimerRef.current);
-        animationTimerRef.current = null;
-      }
       return;
     }
     setSelectedIndex(emblaApi.selectedScrollSnap());
     setShouldAnimate(true);
-    const timer = setTimeout(() => setShouldAnimate(false), 400);
-    return () => clearTimeout(timer);
   }, [isOpen, emblaApi]);
 
-  useEffect(() => {
-    return () => {
-      if (animationTimerRef.current) {
-        clearTimeout(animationTimerRef.current);
-      }
-    };
+  const currentMedia = media[selectedIndex]?.media?.fullSize;
+
+  const requestClose = useCallback(() => {
+    if (isClosing) return;
+    setIsClosing(true);
+  }, [isClosing]);
+
+  const handleCloseComplete = useCallback(() => {
+    setIsOpen(false);
+    setIsClosing(false);
   }, []);
 
-  const currentMedia = media[selectedIndex]?.media?.fullSize;
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      if (open) {
+        setIsOpen(true);
+        setIsClosing(false);
+      } else {
+        requestClose();
+      }
+    },
+    [requestClose],
+  );
 
   const handleDoubleClick = () => {
     if (productId) {
@@ -102,18 +110,12 @@ export function MobileImageCarousel({
         product_category: productCategory || "",
       });
     }
-    if (animationTimerRef.current) {
-      clearTimeout(animationTimerRef.current);
-    }
-    setShouldAnimate(true);
-    animationTimerRef.current = setTimeout(() => {
-      setShouldAnimate(false);
-      animationTimerRef.current = null;
-    }, 400);
+    setShouldAnimate(false);
+    requestAnimationFrame(() => setShouldAnimate(true));
   };
 
   return (
-    <DialogPrimitives.Root modal open={isOpen} onOpenChange={setIsOpen}>
+    <DialogPrimitives.Root modal open={isOpen} onOpenChange={handleOpenChange}>
       <div ref={emblaRef} className="relative overflow-hidden">
         <div className="flex h-full w-full">
           {media.map((m, index) => {
@@ -158,29 +160,37 @@ export function MobileImageCarousel({
       </div>
 
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-50 bg-black/50" />
-        <DialogPrimitives.Content
-          className="fixed inset-0 z-50 flex flex-col bg-bgColor"
-          onOpenAutoFocus={(e) => e.preventDefault()}
+        <div
+          className="fixed inset-0 z-50 flex flex-col transition-all duration-200 ease-out data-[closing]:scale-95 data-[closing]:opacity-0"
+          data-closing={isClosing || undefined}
+          onTransitionEnd={(e) => {
+            if (e.propertyName === "opacity" && isClosing)
+              handleCloseComplete();
+          }}
         >
-          <DialogPrimitives.Title className="sr-only">
-            {tAccessibility("mobile menu")}
-          </DialogPrimitives.Title>
+          <DialogPrimitives.Overlay className="fixed inset-0 bg-black/50" />
+          <DialogPrimitives.Content
+            className="fixed inset-0 flex flex-col bg-bgColor"
+            onOpenAutoFocus={(e) => e.preventDefault()}
+          >
+            <DialogPrimitives.Title className="sr-only">
+              {tAccessibility("mobile menu")}
+            </DialogPrimitives.Title>
 
-          <DialogPrimitives.Close asChild>
-            <Button className="fixed right-4 top-4 z-50">[x]</Button>
-          </DialogPrimitives.Close>
+            <Button
+              className="fixed right-4 top-4 z-50"
+              onClick={requestClose}
+              type="button"
+            >
+              [x]
+            </Button>
 
-          {currentMedia && (
-            <div className="flex min-h-0 flex-1 flex-col pt-12">
-              <ImageZoom onDoubleClick={handleDoubleClick}>
-                <div className="relative h-full">
-                  <Overlay
-                    cover="container"
-                    color="highlight"
-                    trigger="active"
-                    active={shouldAnimate}
-                  />
+            {currentMedia && (
+              <div className="flex min-h-0 flex-1 flex-col">
+                <ImageZoom
+                  onDoubleClick={handleDoubleClick}
+                  onClose={requestClose}
+                >
                   <ImageComponent
                     src={currentMedia.mediaUrl || ""}
                     alt={currentMedia.mediaUrl || "Product thumbnail"}
@@ -189,11 +199,19 @@ export function MobileImageCarousel({
                       currentMedia.height,
                     )}
                   />
-                </div>
-              </ImageZoom>
-            </div>
-          )}
-        </DialogPrimitives.Content>
+                  <div className="absolute inset-0">
+                    <Overlay
+                      cover="container"
+                      color="highlight"
+                      trigger="active"
+                      active={shouldAnimate}
+                    />
+                  </div>
+                </ImageZoom>
+              </div>
+            )}
+          </DialogPrimitives.Content>
+        </div>
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
   );

@@ -54,10 +54,15 @@ const config = {
             filter: "grayscale(0%) contrast(100%) brightness(1)",
           },
         },
+        "highlight-flash": {
+          "0%, 100%": { opacity: "0" },
+          "50%": { opacity: "0.6" },
+        },
       },
       animation: {
         threshold: "threshold 0.4s ease-out forwards",
         "threshold-highlight": "threshold-with-highlight 0.4s ease-out forwards",
+        "highlight-flash": "highlight-flash 0.6s ease-out forwards",
       },
     },
   },

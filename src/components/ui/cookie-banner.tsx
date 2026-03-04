@@ -24,7 +24,8 @@ interface CookieBannerProps {
 }
 
 function updateConsentMode(prefs: typeof defaultCookiePreferences) {
-  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+  if (typeof window === "undefined" || typeof window.gtag !== "function")
+    return;
   window.gtag("consent", "update", {
     analytics_storage: prefs.statistical ? "granted" : "denied",
     ad_storage: prefs.advertising_social_media ? "granted" : "denied",
@@ -87,8 +88,10 @@ export function CookieBanner({ defaultVisible = false }: CookieBannerProps) {
         />
       </div>
       <div className="hidden space-y-6 p-2.5 lg:block">
-        <span className="inline-flex flex-nowrap items-baseline gap-x-1 tracking-wider">
-          <Text component="span" variant="inherit">{t("cookies title")}</Text>
+        <span>
+          <Text component="span" variant="inherit">
+            {t("cookies title")}
+          </Text>
           <Button
             variant="underline"
             className="inline"
