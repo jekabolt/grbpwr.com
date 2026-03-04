@@ -6,14 +6,18 @@ import { cn } from "@/lib/utils";
 
 let overflowLockCount = 0;
 
+const REPEAT_ANIMATION_DURATION_MS = 1200;
+
 interface Props {
   cover: "screen" | "container";
   color?: "dark" | "light" | "highlight";
   disablePointerEvents?: boolean;
   trigger?: "hover" | "held" | "active" | "none";
   active?: boolean;
+  repeat?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  onAnimationComplete?: () => void;
 }
 
 export function Overlay({
@@ -22,9 +26,18 @@ export function Overlay({
   disablePointerEvents = true,
   trigger = "none",
   active = false,
+  repeat = false,
   disabled = false,
   onClick,
+  onAnimationComplete,
 }: Props) {
+  useEffect(() => {
+    if (trigger !== "active" || !active || !repeat || !onAnimationComplete)
+      return;
+    const t = setTimeout(onAnimationComplete, REPEAT_ANIMATION_DURATION_MS);
+    return () => clearTimeout(t);
+  }, [trigger, active, repeat, onAnimationComplete]);
+
   useEffect(() => {
     if (cover !== "screen") return;
     overflowLockCount++;
@@ -47,11 +60,14 @@ export function Overlay({
         "bg-highlightColor mix-blend-screen": color === "highlight",
         fixed: cover === "screen",
         "absolute h-full": cover === "container",
-        "transition-opacity duration-[400ms] ease-out": trigger !== "none",
+        "transition-opacity duration-[400ms] ease-out":
+          trigger !== "none" && !(trigger === "active" && repeat),
         "opacity-0 group-hover:opacity-60": trigger === "hover",
         "opacity-0 group-data-[held=true]:opacity-60": trigger === "held",
         "opacity-0": trigger === "active" && !active,
-        "opacity-60": trigger === "active" && active,
+        "opacity-60": trigger === "active" && active && !repeat,
+        "animate-highlight-pulse-repeat opacity-0":
+          trigger === "active" && active && repeat,
         "bg-textInactiveColor": disabled,
       })}
       onClick={onClick}
