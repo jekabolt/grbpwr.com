@@ -275,7 +275,9 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
           clearIdempotencyKey();
           resetCheckoutValidationState();
           await waitForAnalytics();
-          window.location.href = `/order/${paymentResult.orderUuid}/${window.btoa(data.email)}`;
+          // redirect_status=succeeded ensures order page fires purchase event
+          // as a safety net — GA4 deduplicates by transaction_id
+          window.location.href = `/order/${paymentResult.orderUuid}/${window.btoa(data.email)}?redirect_status=succeeded`;
           return;
         }
 

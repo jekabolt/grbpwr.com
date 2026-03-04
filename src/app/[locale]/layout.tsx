@@ -2,6 +2,7 @@ import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { Metadata } from "next";
+import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import {
   getMessages,
@@ -74,6 +75,13 @@ export default async function RootLayout({ children, params }: Props) {
       </head>
       <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-YX09JT9HVC"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YX09JT9HVC',{send_page_view:false});`}
+        </Script>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <HtmlThemeSync />
           <ToastProvider>

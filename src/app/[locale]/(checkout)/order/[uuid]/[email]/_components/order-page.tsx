@@ -1,12 +1,15 @@
 "use client";
 
-import { use, useEffect } from "react";
+import { use, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
+import { sendPurchaseEvent } from "@/lib/analitycs/checkout";
+import { SizeMap, pushUserIdToDataLayer, ensureGtag } from "@/lib/analitycs/utils";
+import { getTopCategoryName, getSubCategoryName } from "@/lib/categories-map";
 import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { formatPrice } from "@/lib/currency";
@@ -32,9 +35,20 @@ export function OrderPageComponent({
   const router = useRouter();
   const t = useTranslations("order-info");
   const tCheckout = useTranslations("checkout");
+  const purchaseFiredRef = useRef(false);
+
+  const sizeMap: SizeMap = useMemo(() => {
+    const sizes = dictionary?.sizes || [];
+    return sizes.reduce<SizeMap>((acc, s) => {
+      if (s.id != null && s.name) acc[s.id] = s.name.trim();
+      return acc;
+    }, {});
+  }, [dictionary?.sizes]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    ensureGtag();
 
     const params = new URLSearchParams(window.location.search);
     const redirectStatus = params.get("redirect_status");
@@ -43,11 +57,48 @@ export function OrderPageComponent({
       clearCart();
       clearIdempotencyKey();
       resetCheckoutValidationState();
+
+      if (
+        !purchaseFiredRef.current &&
+        orderData?.orderItems?.length &&
+        orderData.order?.uuid
+      ) {
+        purchaseFiredRef.current = true;
+
+        const items = orderData.orderItems;
+        const topCategoryId =
+          items.find((v) => v?.topCategoryId)?.topCategoryId || 0;
+        const subCategoryId =
+          items.find((v) => v?.subCategoryId)?.subCategoryId || 0;
+
+        sendPurchaseEvent(
+          items,
+          orderData.order.uuid,
+          getTopCategoryName(dictionary?.categories || [], topCategoryId) || "",
+          getSubCategoryName(dictionary?.categories || [], subCategoryId) || "",
+          orderData.order.currency?.toUpperCase() || "EUR",
+          sizeMap,
+          {
+            coupon: orderData.promoCode?.promoCodeInsert?.code || undefined,
+            shipping:
+              parseFloat(orderData.shipment?.cost?.value || "0") || undefined,
+          },
+        );
+
+        const buyerEmail = orderData.buyer?.buyerInsert?.email;
+        if (buyerEmail) {
+          void pushUserIdToDataLayer(buyerEmail);
+        }
+      }
+
+      // Clean URL params to prevent re-firing on soft navigation
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, "", cleanUrl);
     } else if (redirectStatus === "failed" || redirectStatus === "canceled") {
       console.error("Payment failed or canceled");
       router.push("/checkout");
     }
-  }, [clearCart, router, orderData]);
+  }, [clearCart, router, orderData, dictionary?.categories, sizeMap]);
 
   if (!orderData) return null;
 
