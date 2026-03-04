@@ -45,8 +45,7 @@ export function ImageZoom({
   onClose?: () => void;
 }) {
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
-  const touchStartY = useRef<number | null>(null);
-  const wasSingleTouch = useRef(true);
+  const panStartY = useRef<number | null>(null);
 
   const handlePinchingStop = useCallback(
     (ref: ReactZoomPanPinchRef) => {
@@ -57,37 +56,29 @@ export function ImageZoom({
     [onClose]
   );
 
-  const handleTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      if (!onClose || e.touches.length !== 1) return;
-      touchStartY.current = e.touches[0].clientY;
-      wasSingleTouch.current = true;
+  const handlePanningStart = useCallback(
+    (_ref: ReactZoomPanPinchRef, e: TouchEvent | MouseEvent) => {
+      if (!onClose) return;
+      const y = "touches" in e ? e.touches[0]?.clientY : (e as MouseEvent).clientY;
+      if (y != null) panStartY.current = y;
     },
     [onClose]
   );
 
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (touchStartY.current !== null && e.touches.length > 1) {
-      wasSingleTouch.current = false;
-    }
-  }, []);
+  const handlePanningStop = useCallback(
+    (ref: ReactZoomPanPinchRef, e: TouchEvent | MouseEvent) => {
+      const startY = panStartY.current;
+      panStartY.current = null;
+      if (!onClose || startY === null) return;
 
-  const handleTouchEnd = useCallback(
-    (e: React.TouchEvent) => {
-      if (
-        !onClose ||
-        touchStartY.current === null ||
-        e.touches.length !== 0 ||
-        !wasSingleTouch.current
-      ) {
-        touchStartY.current = null;
-        return;
-      }
-      const endY = e.changedTouches[0].clientY;
-      const deltaY = endY - touchStartY.current;
-      touchStartY.current = null;
+      const endY =
+        "changedTouches" in e
+          ? (e as TouchEvent).changedTouches[0]?.clientY
+          : (e as MouseEvent).clientY;
+      if (endY == null) return;
 
-      const scale = transformRef.current?.state.scale ?? 1;
+      const deltaY = endY - startY;
+      const scale = ref.state.scale;
       if (scale <= 1 && deltaY > SWIPE_DOWN_THRESHOLD) {
         onClose();
       }
@@ -99,6 +90,8 @@ export function ImageZoom({
     ...TRANSFORM_CONFIG_BASE,
     minScale: onClose ? 0.5 : 1,
     onPinchingStop: onClose ? handlePinchingStop : undefined,
+    onPanningStart: onClose ? handlePanningStart : undefined,
+    onPanningStop: onClose ? handlePanningStop : undefined,
   };
 
   return (
@@ -107,13 +100,7 @@ export function ImageZoom({
         wrapperStyle={TRANSFORM_WRAPPER_STYLE}
         contentStyle={TRANSFORM_CONTENT_STYLE}
       >
-        <div
-          onDoubleClick={onDoubleClick}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          className="h-full"
-        >
+        <div onDoubleClick={onDoubleClick} className="h-full">
           {children}
         </div>
       </TransformComponent>
