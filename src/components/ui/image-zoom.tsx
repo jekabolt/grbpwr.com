@@ -33,6 +33,7 @@ const TRANSFORM_CONTENT_STYLE = {
   display: "flex",
   alignItems: "start",
   justifyContent: "center",
+  paddingTop: "48px",
 } as const;
 
 export function ImageZoom({
