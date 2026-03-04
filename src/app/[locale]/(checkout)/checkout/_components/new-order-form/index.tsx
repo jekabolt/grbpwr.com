@@ -25,9 +25,9 @@ import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { formatPrice } from "@/lib/currency";
-import { cn } from "@/lib/utils";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
@@ -275,7 +275,9 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
           clearIdempotencyKey();
           resetCheckoutValidationState();
           await waitForAnalytics();
-          window.location.href = `/order/${paymentResult.orderUuid}/${window.btoa(data.email)}`;
+          // redirect_status=succeeded ensures order page fires purchase event
+          // as a safety net — GA4 deduplicates by transaction_id
+          window.location.href = `/order/${paymentResult.orderUuid}/${window.btoa(data.email)}?redirect_status=succeeded`;
           return;
         }
 

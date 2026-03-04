@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
+import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
 import { ModalTransition } from "@/components/modal-transition";
 import { Text } from "@/components/ui/text";
-import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
 
 import { Banner } from "./banner";
 import { Button } from "./button";

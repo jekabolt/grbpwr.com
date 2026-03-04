@@ -8,6 +8,7 @@ import { getStoredCampaignParams } from "./campaign";
 declare global {
     interface Window {
         gtag?: (...args: unknown[]) => void;
+        dataLayer?: any[];
     }
 }
 
@@ -31,7 +32,7 @@ export interface AnalyticsItem {
     quantity: number;
 }
 
-function ensureGtag(): void {
+export function ensureGtag(): void {
     if (typeof window === "undefined") return;
     window.dataLayer = window.dataLayer || [];
     if (typeof window.gtag !== "function") {
@@ -43,7 +44,7 @@ function ensureGtag(): void {
     }
 }
 
-const ANALYTICS_FLUSH_MS = 800;
+const ANALYTICS_FLUSH_MS = 1500;
 
 export function waitForAnalytics(): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ANALYTICS_FLUSH_MS));
@@ -53,12 +54,18 @@ export function pushToDataLayer(event: EcommerceEvent): void {
     try {
         if (typeof window === "undefined") return;
 
+        ensureGtag();
         const campaignParams = getCampaignParamsForEvents();
-        const eventWithCampaign = { ...campaignParams, ...event };
 
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ ecommerce: null });
-        window.dataLayer.push(eventWithCampaign);
+
+        // Send via gtag command — processed by the direct GA4 script (G-YX09JT9HVC)
+        // loaded in layout.tsx. Does NOT depend on GTM Custom Event triggers.
+        window.gtag!("event", event.event, {
+            ...event.ecommerce,
+            ...campaignParams,
+        });
     } catch (error) {
         console.warn("Analytics tracking failed:", error);
     }
@@ -107,7 +114,13 @@ export function pushCustomEvent(event: string, params: Record<string, unknown>):
 
         ensureGtag();
         const campaignParams = getCampaignParamsForEvents();
-        window.gtag!("event", event, { ...campaignParams, ...params });
+
+        // Send via gtag command — processed by the direct GA4 script (G-YX09JT9HVC)
+        // loaded in layout.tsx. Does NOT depend on GTM Custom Event triggers.
+        window.gtag!("event", event, {
+            ...campaignParams,
+            ...params,
+        });
     } catch (error) {
         console.warn("Analytics tracking failed:", error);
     }
