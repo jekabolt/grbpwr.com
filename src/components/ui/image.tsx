@@ -1,8 +1,8 @@
 "use client";
 
-import { blurhashToBase64 } from "blurhash-base64";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { blurhashToBase64 } from "blurhash-base64";
 
 function ImageContainer({
   aspectRatio,

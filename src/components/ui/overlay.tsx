@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 let overflowLockCount = 0;
 
-const REPEAT_ANIMATION_DURATION_MS = 1200;
+const REPEAT_ANIMATION_DURATION_MS = 200;
 
 interface Props {
   cover: "screen" | "container";
@@ -26,17 +26,15 @@ export function Overlay({
   disablePointerEvents = true,
   trigger = "none",
   active = false,
-  repeat = false,
   disabled = false,
   onClick,
   onAnimationComplete,
 }: Props) {
   useEffect(() => {
-    if (trigger !== "active" || !active || !repeat || !onAnimationComplete)
-      return;
+    if (trigger !== "active" || !active || !onAnimationComplete) return;
     const t = setTimeout(onAnimationComplete, REPEAT_ANIMATION_DURATION_MS);
     return () => clearTimeout(t);
-  }, [trigger, active, repeat, onAnimationComplete]);
+  }, [trigger, active, onAnimationComplete]);
 
   useEffect(() => {
     if (cover !== "screen") return;

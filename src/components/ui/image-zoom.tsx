@@ -7,8 +7,6 @@ import {
   TransformWrapper,
 } from "react-zoom-pan-pinch";
 
-import { Overlay } from "@/components/ui/overlay";
-
 const SWIPE_CLOSE_THRESHOLD = 80;
 
 const TRANSFORM_CONFIG_BASE = {
@@ -39,21 +37,21 @@ const TRANSFORM_CONTENT_STYLE = {
 
 export function ImageZoom({
   children,
+  showHighlightOnOpen = true,
   onDoubleClick,
   onClose,
-  showHighlightOnOpen = true,
 }: {
   children: React.ReactNode;
+  showHighlightOnOpen?: boolean;
   onDoubleClick?: () => void;
   onClose?: () => void;
-  showHighlightOnOpen?: boolean;
 }) {
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
   const panStart = useRef<{ x: number; y: number } | null>(null);
-  const [highlightActive, setHighlightActive] = useState(false);
+  const [highlightKey, setHighlightKey] = useState(0);
 
   useEffect(() => {
-    if (showHighlightOnOpen) setHighlightActive(true);
+    if (showHighlightOnOpen) setHighlightKey((k) => k + 1);
   }, [showHighlightOnOpen]);
 
   const handlePinchingStop = useCallback(
@@ -113,8 +111,7 @@ export function ImageZoom({
   };
 
   const handleDoubleClick = useCallback(() => {
-    setHighlightActive(false);
-    requestAnimationFrame(() => setHighlightActive(true));
+    setHighlightKey((k) => k + 1);
     onDoubleClick?.();
   }, [onDoubleClick]);
 
@@ -126,19 +123,16 @@ export function ImageZoom({
       >
         <div
           onDoubleClick={handleDoubleClick}
-          className="relative mx-auto h-full max-w-full w-fit shrink-0"
+          className="relative h-full shrink-0"
         >
           {children}
-          <div className="absolute inset-0">
-            <Overlay
-              cover="container"
-              color="highlight"
-              trigger="active"
-              active={highlightActive}
-              repeat
-              onAnimationComplete={() => setHighlightActive(false)}
+          {highlightKey > 0 && (
+            <div
+              key={highlightKey}
+              className="absolute inset-0 pointer-events-none z-10 bg-highlightColor mix-blend-screen animate-highlight-flash"
+              aria-hidden="true"
             />
-          </div>
+          )}
         </div>
       </TransformComponent>
     </TransformWrapper>
