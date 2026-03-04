@@ -173,7 +173,10 @@ export function MobileImageCarousel({
 
           {currentMedia && (
             <div className="flex min-h-0 flex-1 flex-col pt-12">
-              <ImageZoom onDoubleClick={handleDoubleClick}>
+              <ImageZoom
+                onDoubleClick={handleDoubleClick}
+                onClose={() => setIsOpen(false)}
+              >
                 <div className="relative h-full">
                   <Overlay
                     cover="container"
