@@ -60,14 +60,11 @@ export function Overlay({
         "bg-highlightColor mix-blend-screen": color === "highlight",
         fixed: cover === "screen",
         "absolute h-full": cover === "container",
-        "transition-opacity duration-[400ms] ease-out":
-          trigger !== "none" && !(trigger === "active" && repeat),
+        "transition-opacity duration-[400ms] ease-out": trigger !== "none",
         "opacity-0 group-hover:opacity-60": trigger === "hover",
         "opacity-0 group-data-[held=true]:opacity-60": trigger === "held",
         "opacity-0": trigger === "active" && !active,
-        "opacity-60": trigger === "active" && active && !repeat,
-        "animate-highlight-pulse-repeat opacity-0":
-          trigger === "active" && active && repeat,
+        "opacity-60": trigger === "active" && active,
         "bg-textInactiveColor": disabled,
       })}
       onClick={onClick}
