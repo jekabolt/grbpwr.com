@@ -205,8 +205,6 @@ export function MobileImageCarousel({
                       color="highlight"
                       trigger="active"
                       active={shouldAnimate}
-                      repeat
-                      onAnimationComplete={() => setShouldAnimate(false)}
                     />
                   </div>
                 </ImageZoom>
