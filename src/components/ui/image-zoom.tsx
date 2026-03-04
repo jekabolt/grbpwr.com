@@ -7,7 +7,7 @@ import {
   TransformWrapper,
 } from "react-zoom-pan-pinch";
 
-const SWIPE_DOWN_THRESHOLD = 80;
+const SWIPE_CLOSE_THRESHOLD = 80;
 
 const TRANSFORM_CONFIG_BASE = {
   initialScale: 1,
@@ -45,7 +45,7 @@ export function ImageZoom({
   onClose?: () => void;
 }) {
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
-  const panStartY = useRef<number | null>(null);
+  const panStart = useRef<{ x: number; y: number } | null>(null);
 
   const handlePinchingStop = useCallback(
     (ref: ReactZoomPanPinchRef) => {
@@ -59,27 +59,34 @@ export function ImageZoom({
   const handlePanningStart = useCallback(
     (_ref: ReactZoomPanPinchRef, e: TouchEvent | MouseEvent) => {
       if (!onClose) return;
+      const x = "touches" in e ? e.touches[0]?.clientX : (e as MouseEvent).clientX;
       const y = "touches" in e ? e.touches[0]?.clientY : (e as MouseEvent).clientY;
-      if (y != null) panStartY.current = y;
+      if (x != null && y != null) panStart.current = { x, y };
     },
     [onClose]
   );
 
   const handlePanningStop = useCallback(
     (ref: ReactZoomPanPinchRef, e: TouchEvent | MouseEvent) => {
-      const startY = panStartY.current;
-      panStartY.current = null;
-      if (!onClose || startY === null) return;
+      const start = panStart.current;
+      panStart.current = null;
+      if (!onClose || start === null) return;
 
+      const endX =
+        "changedTouches" in e
+          ? (e as TouchEvent).changedTouches[0]?.clientX
+          : (e as MouseEvent).clientX;
       const endY =
         "changedTouches" in e
           ? (e as TouchEvent).changedTouches[0]?.clientY
           : (e as MouseEvent).clientY;
-      if (endY == null) return;
+      if (endX == null || endY == null) return;
 
-      const deltaY = endY - startY;
+      const deltaX = Math.abs(endX - start.x);
+      const deltaY = Math.abs(endY - start.y);
       const scale = ref.state.scale;
-      if (scale <= 1 && deltaY > SWIPE_DOWN_THRESHOLD) {
+      const swipeDistance = Math.max(deltaX, deltaY);
+      if (scale <= 1 && swipeDistance > SWIPE_CLOSE_THRESHOLD) {
         onClose();
       }
     },
