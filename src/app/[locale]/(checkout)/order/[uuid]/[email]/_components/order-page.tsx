@@ -2,7 +2,7 @@
 
 import { use, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
@@ -33,6 +33,7 @@ export function OrderPageComponent({
   const { dictionary } = useDataContext();
   const { clearCart } = useCart((state) => state);
   const router = useRouter();
+  const pathname = usePathname();
   const t = useTranslations("order-info");
   const tCheckout = useTranslations("checkout");
   const purchaseFiredRef = useRef(false);
@@ -96,9 +97,13 @@ export function OrderPageComponent({
       window.history.replaceState({}, "", cleanUrl);
     } else if (redirectStatus === "failed" || redirectStatus === "canceled") {
       console.error("Payment failed or canceled");
-      router.push("/checkout");
+      // Preserve locale from current path (e.g. /de/de/order/...) — path carries locale from return_url
+      const parts = pathname?.split("/").filter(Boolean) ?? [];
+      const country = parts[0] || "us";
+      const locale = parts[1] || "en";
+      router.push(`/${country}/${locale}/checkout`);
     }
-  }, [clearCart, router, orderData, dictionary?.categories, sizeMap]);
+  }, [clearCart, router, orderData, dictionary?.categories, sizeMap, pathname]);
 
   if (!orderData) return null;
 

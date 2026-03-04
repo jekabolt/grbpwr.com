@@ -26,6 +26,7 @@ import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 
@@ -49,7 +50,7 @@ type NewOrderFormProps = {
 };
 
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
-  const { currentCountry } = useTranslationsStore((state) => state);
+  const { currentCountry, languageId } = useTranslationsStore((state) => state);
   const { products, clearCart, totalPrice, validatedCurrency } = useCart(
     (s) => s,
   );
@@ -254,6 +255,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         clientSecret &&
         orderUuid
       ) {
+        const country = currentCountry.countryCode?.toLowerCase() || "us";
+        const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
+        const returnUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/${country}/${locale}/order/${orderUuid}/${window.btoa(data.email)}`;
+
         const paymentResult = await confirmStripePayment({
           stripe,
           elements,
@@ -261,6 +266,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
           orderUuid,
           email: data.email,
           country: data.country,
+          returnUrl,
         });
 
         if (paymentResult.success) {
@@ -277,7 +283,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
           await waitForAnalytics();
           // redirect_status=succeeded ensures order page fires purchase event
           // as a safety net — GA4 deduplicates by transaction_id
-          window.location.href = `/order/${paymentResult.orderUuid}/${window.btoa(data.email)}?redirect_status=succeeded`;
+          window.location.href = `/${country}/${locale}/order/${paymentResult.orderUuid}/${window.btoa(data.email)}?redirect_status=succeeded`;
           return;
         }
 
