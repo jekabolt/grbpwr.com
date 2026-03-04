@@ -192,14 +192,16 @@ export function MobileImageCarousel({
                   onClose={requestClose}
                 >
                   <div className="relative h-full">
-                    <Overlay
-                      cover="container"
-                      color="highlight"
-                      trigger="active"
-                      active={shouldAnimate}
-                      repeat
-                      onAnimationComplete={() => setShouldAnimate(false)}
-                    />
+                    <div className="absolute inset-0">
+                      <Overlay
+                        cover="container"
+                        color="highlight"
+                        trigger="active"
+                        active={shouldAnimate}
+                        repeat
+                        onAnimationComplete={() => setShouldAnimate(false)}
+                      />
+                    </div>
                     <ImageComponent
                       src={currentMedia.mediaUrl || ""}
                       alt={currentMedia.mediaUrl || "Product thumbnail"}
