@@ -16,6 +16,7 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
 import { ImageZoom } from "@/components/ui/image-zoom";
+import { Overlay } from "@/components/ui/overlay";
 
 const EMBLA_OPTIONS = {
   loop: true,
@@ -41,6 +42,7 @@ export function MobileImageCarousel({
 }: MobileImageCarouselProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const tAccessibility = useTranslations("accessibility");
   const [emblaRef, emblaApi] = useEmblaCarousel(EMBLA_OPTIONS, [
@@ -68,8 +70,12 @@ export function MobileImageCarousel({
   }, [emblaApi, productId, productName, media.length]);
 
   useEffect(() => {
-    if (!isOpen || !emblaApi) return;
+    if (!isOpen || !emblaApi) {
+      setShouldAnimate(false);
+      return;
+    }
     setSelectedIndex(emblaApi.selectedScrollSnap());
+    setShouldAnimate(true);
   }, [isOpen, emblaApi]);
 
   const currentMedia = media[selectedIndex]?.media?.fullSize;
@@ -104,6 +110,8 @@ export function MobileImageCarousel({
         product_category: productCategory || "",
       });
     }
+    setShouldAnimate(false);
+    requestAnimationFrame(() => setShouldAnimate(true));
   };
 
   return (
@@ -178,11 +186,10 @@ export function MobileImageCarousel({
             </Button>
 
             {currentMedia && (
-              <div className="flex min-h-0 flex-1 flex-col">
+              <div className="flex min-h-0 flex-1 flex-col pt-12">
                 <ImageZoom
                   onDoubleClick={handleDoubleClick}
                   onClose={requestClose}
-                  showHighlightOnOpen
                 >
                   <ImageComponent
                     src={currentMedia.mediaUrl || ""}
@@ -192,6 +199,16 @@ export function MobileImageCarousel({
                       currentMedia.height,
                     )}
                   />
+                  <div className="absolute inset-0">
+                    <Overlay
+                      cover="container"
+                      color="highlight"
+                      trigger="active"
+                      active={shouldAnimate}
+                      repeat
+                      onAnimationComplete={() => setShouldAnimate(false)}
+                    />
+                  </div>
                 </ImageZoom>
               </div>
             )}
