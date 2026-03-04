@@ -27,13 +27,14 @@ const TRANSFORM_WRAPPER_STYLE = {
   height: "100%",
 } as const;
 
-const TRANSFORM_CONTENT_STYLE = {
+const TRANSFORM_CONTENT_STYLE: React.CSSProperties = {
   width: "100%",
   height: "100%",
   display: "flex",
   alignItems: "start",
   justifyContent: "center",
-} as const;
+  paddingTop: "48px",
+};
 
 export function ImageZoom({
   children,
@@ -123,13 +124,13 @@ export function ImageZoom({
       >
         <div
           onDoubleClick={handleDoubleClick}
-          className="relative h-full shrink-0"
+          className="relative h-full shrink-0 mix-blend-screen"
         >
           {children}
           {highlightKey > 0 && (
             <div
               key={highlightKey}
-              className="absolute inset-0 pointer-events-none z-10 bg-highlightColor mix-blend-screen animate-highlight-flash"
+              className="animate-highlight-flash pointer-events-none absolute inset-0 z-10 bg-highlightColor mix-blend-screen"
               aria-hidden="true"
             />
           )}
