@@ -7,6 +7,7 @@ export type ConfirmPaymentParams = {
     orderUuid: string;
     email: string;
     country: string;
+    returnUrl: string;
 };
 
 export type ConfirmPaymentResult =
@@ -20,6 +21,7 @@ export async function confirmStripePayment({
     orderUuid,
     email,
     country,
+    returnUrl,
 }: ConfirmPaymentParams): Promise<ConfirmPaymentResult> {
     if (
         !clientSecret ||
@@ -46,7 +48,7 @@ export async function confirmStripePayment({
         clientSecret,
         elements,
         confirmParams: {
-            return_url: `${window.location.origin}/order/${orderUuid}/${window.btoa(email)}`,
+            return_url: returnUrl,
             payment_method_data: {
                 billing_details: {
                     address: {
