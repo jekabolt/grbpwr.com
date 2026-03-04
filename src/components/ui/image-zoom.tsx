@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ReactZoomPanPinchRef,
   TransformComponent,
   TransformWrapper,
 } from "react-zoom-pan-pinch";
+
+import { Overlay } from "@/components/ui/overlay";
 
 const SWIPE_CLOSE_THRESHOLD = 80;
 
@@ -39,13 +41,20 @@ export function ImageZoom({
   children,
   onDoubleClick,
   onClose,
+  showHighlightOnOpen = true,
 }: {
   children: React.ReactNode;
   onDoubleClick?: () => void;
   onClose?: () => void;
+  showHighlightOnOpen?: boolean;
 }) {
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
   const panStart = useRef<{ x: number; y: number } | null>(null);
+  const [highlightActive, setHighlightActive] = useState(false);
+
+  useEffect(() => {
+    if (showHighlightOnOpen) setHighlightActive(true);
+  }, [showHighlightOnOpen]);
 
   const handlePinchingStop = useCallback(
     (ref: ReactZoomPanPinchRef) => {
@@ -103,14 +112,33 @@ export function ImageZoom({
     onPanningStop: onClose ? handlePanningStop : undefined,
   };
 
+  const handleDoubleClick = useCallback(() => {
+    setHighlightActive(false);
+    requestAnimationFrame(() => setHighlightActive(true));
+    onDoubleClick?.();
+  }, [onDoubleClick]);
+
   return (
     <TransformWrapper ref={transformRef} {...transformConfig}>
       <TransformComponent
         wrapperStyle={TRANSFORM_WRAPPER_STYLE}
         contentStyle={TRANSFORM_CONTENT_STYLE}
       >
-        <div onDoubleClick={onDoubleClick} className="relative h-full">
+        <div
+          onDoubleClick={handleDoubleClick}
+          className="relative mx-auto h-full max-w-full w-fit shrink-0"
+        >
           {children}
+          <div className="absolute inset-0">
+            <Overlay
+              cover="container"
+              color="highlight"
+              trigger="active"
+              active={highlightActive}
+              repeat
+              onAnimationComplete={() => setHighlightActive(false)}
+            />
+          </div>
         </div>
       </TransformComponent>
     </TransformWrapper>
