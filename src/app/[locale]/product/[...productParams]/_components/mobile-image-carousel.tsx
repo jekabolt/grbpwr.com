@@ -191,24 +191,22 @@ export function MobileImageCarousel({
                   onDoubleClick={handleDoubleClick}
                   onClose={requestClose}
                 >
-                  <div className="relative h-full">
-                    <div className="absolute inset-0">
-                      <Overlay
-                        cover="container"
-                        color="highlight"
-                        trigger="active"
-                        active={shouldAnimate}
-                        repeat
-                        onAnimationComplete={() => setShouldAnimate(false)}
-                      />
-                    </div>
-                    <ImageComponent
-                      src={currentMedia.mediaUrl || ""}
-                      alt={currentMedia.mediaUrl || "Product thumbnail"}
-                      aspectRatio={calculateAspectRatio(
-                        currentMedia.width,
-                        currentMedia.height,
-                      )}
+                  <ImageComponent
+                    src={currentMedia.mediaUrl || ""}
+                    alt={currentMedia.mediaUrl || "Product thumbnail"}
+                    aspectRatio={calculateAspectRatio(
+                      currentMedia.width,
+                      currentMedia.height,
+                    )}
+                  />
+                  <div className="absolute inset-0">
+                    <Overlay
+                      cover="container"
+                      color="highlight"
+                      trigger="active"
+                      active={shouldAnimate}
+                      repeat
+                      onAnimationComplete={() => setShouldAnimate(false)}
                     />
                   </div>
                 </ImageZoom>

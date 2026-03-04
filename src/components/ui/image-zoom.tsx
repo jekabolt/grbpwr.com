@@ -53,17 +53,19 @@ export function ImageZoom({
         onClose();
       }
     },
-    [onClose]
+    [onClose],
   );
 
   const handlePanningStart = useCallback(
     (_ref: ReactZoomPanPinchRef, e: TouchEvent | MouseEvent) => {
       if (!onClose) return;
-      const x = "touches" in e ? e.touches[0]?.clientX : (e as MouseEvent).clientX;
-      const y = "touches" in e ? e.touches[0]?.clientY : (e as MouseEvent).clientY;
+      const x =
+        "touches" in e ? e.touches[0]?.clientX : (e as MouseEvent).clientX;
+      const y =
+        "touches" in e ? e.touches[0]?.clientY : (e as MouseEvent).clientY;
       if (x != null && y != null) panStart.current = { x, y };
     },
-    [onClose]
+    [onClose],
   );
 
   const handlePanningStop = useCallback(
@@ -90,7 +92,7 @@ export function ImageZoom({
         onClose();
       }
     },
-    [onClose]
+    [onClose],
   );
 
   const transformConfig = {
@@ -107,7 +109,7 @@ export function ImageZoom({
         wrapperStyle={TRANSFORM_WRAPPER_STYLE}
         contentStyle={TRANSFORM_CONTENT_STYLE}
       >
-        <div onDoubleClick={onDoubleClick} className="h-full">
+        <div onDoubleClick={onDoubleClick} className="relative h-full">
           {children}
         </div>
       </TransformComponent>
