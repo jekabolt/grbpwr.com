@@ -127,7 +127,8 @@
     "checking availability": "检查库存",
     "stock reservation": "库存预留",
     "business days": "工作日",
-    "complimentary shipping available for": "订单满{amount}免运费"
+    "complimentary shipping available for": "订单满{amount}免运费",
+    "card_details_required": "请填写您的卡信息"
   },
   "not-found": {
     "title": "页面未找到",

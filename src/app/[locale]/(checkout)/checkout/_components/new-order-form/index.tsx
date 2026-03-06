@@ -357,6 +357,11 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                   onToggle={() => handleGroupToggle("payment")}
                   disabled={isGroupDisabled("payment") || loading}
                   onPaymentElementChange={setIsPaymentElementComplete}
+                  showPaymentError={
+                    (form.formState.isSubmitted || form.formState.submitCount > 0) &&
+                    !isPaymentFieldsValid &&
+                    paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
+                  }
                 />
               </div>
             </div>

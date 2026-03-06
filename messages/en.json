@@ -127,7 +127,8 @@
     "checking availability": "checking availability",
     "stock reservation": "stock reservation",
     "business days": "business days",
-    "complimentary shipping available for": "complimentary shipping on orders over {amount}"
+    "complimentary shipping available for": "complimentary shipping on orders over {amount}",
+    "card_details_required": "Please fill in your card details"
   },
   "not-found": {
     "title": "page not found",
