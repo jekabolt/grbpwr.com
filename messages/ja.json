@@ -127,7 +127,8 @@
     "checking availability": "在庫確認中",
     "stock reservation": "在庫予約中",
     "business days": "営業日",
-    "complimentary shipping available for": "ご注文が{amount}以上で無料配送"
+    "complimentary shipping available for": "ご注文が{amount}以上で無料配送",
+    "card_details_required": "カード情報を入力してください"
   },
   "not-found": {
     "title": "ページが見つかりません",

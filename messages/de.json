@@ -128,6 +128,7 @@
     "stock reservation": "bestandsreservierung",
     "business days": "werktage",
     "complimentary shipping available for": "kostenloser versand ab {amount}",
+    "card_details_required": "Bitte geben Sie Ihre Kartendaten ein",
     "complimentary shipping announcement body": "fügen sie weitere artikel hinzu, um kostenlosen versand zu erhalten"
   },
   "not-found": {

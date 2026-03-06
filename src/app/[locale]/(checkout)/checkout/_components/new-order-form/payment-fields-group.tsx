@@ -19,6 +19,7 @@ type Props = {
   isOpen: boolean;
   disabled?: boolean;
   form: UseFormReturn<any>;
+  showPaymentError?: boolean;
   validateItems: () => Promise<ValidateOrderItemsInsertResponse | null>;
   onToggle: () => void;
   onPaymentElementChange?: (isComplete: boolean) => void;
@@ -29,6 +30,7 @@ export default function PaymentFieldsGroup({
   isOpen,
   disabled = false,
   form,
+  showPaymentError = false,
   validateItems,
   onToggle,
   onPaymentElementChange,
@@ -76,15 +78,6 @@ export default function PaymentFieldsGroup({
       disabled={disabled}
       onToggle={onToggle}
     >
-      {/* <RadioGroupField
-        view="card"
-        loading={loading}
-        name="paymentMethod"
-        onChange={handlePaymentMethodChange}
-        items={paymentMethodsItems as any}
-        disabled={disabled}
-      /> */}
-
       <div className="space-y-6 lg:space-y-0">
         <div className="block lg:hidden">
           <FieldsGroupContainer
@@ -108,19 +101,26 @@ export default function PaymentFieldsGroup({
           }
         >
           {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
-            <PaymentElement
-              onChange={handlePaymentElementChange}
-              options={{
-                layout: "tabs",
-                fields: {
-                  billingDetails: {
-                    address: {
-                      country: "never",
+            <>
+              <PaymentElement
+                onChange={handlePaymentElementChange}
+                options={{
+                  layout: "tabs",
+                  fields: {
+                    billingDetails: {
+                      address: {
+                        country: "never",
+                      },
                     },
                   },
-                },
-              }}
-            />
+                }}
+              />
+              {showPaymentError && (
+                <Text className="mt-2 text-xs text-errorColor">
+                  {t("card_details_required")}
+                </Text>
+              )}
+            </>
           )}
         </div>
       </div>

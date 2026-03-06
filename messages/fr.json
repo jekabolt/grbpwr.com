@@ -127,7 +127,8 @@
     "checking availability": "vérification de la disponibilité",
     "stock reservation": "réservation de stock",
     "business days": "jours ouvrables",
-    "complimentary shipping available for": "livraison offerte à partir de {amount}"
+    "complimentary shipping available for": "livraison offerte à partir de {amount}",
+    "card_details_required": "Veuillez renseigner les informations de votre carte"
   },
   "not-found": {
     "title": "page non trouvée",

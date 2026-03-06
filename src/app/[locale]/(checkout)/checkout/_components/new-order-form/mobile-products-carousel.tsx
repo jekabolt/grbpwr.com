@@ -8,13 +8,14 @@ import { useTranslations } from "next-intl";
 import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { cn, isDateTodayOrFuture } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
-import CartItemSize from "@/app/[locale]/(checkout)/cart/_components/CartItemSize";
 import { getPreorderDate } from "@/app/[locale]/(checkout)/cart/_components/utils";
+
+import CartItemSize from "../../../cart/_components/CartItemSize";
 
 function MobileOrderItemRow({
   product,
@@ -74,46 +75,38 @@ function MobileOrderItemRow({
             )}
           </div>
           <div
-            className={cn("flex w-full justify-between", {
+            className={cn("flex min-w-0 flex-1 justify-between gap-x-3", {
               "text-textInactiveColor": disabled,
             })}
           >
-            <div className="flex w-full flex-col justify-between">
-              <div className="space-y-3">
-                <Text
-                  className="line-clamp-1 overflow-hidden text-ellipsis"
-                  variant="uppercase"
-                >
-                  {productName}
-                </Text>
-                <div>
+            <div className="flex w-full flex-col gap-3">
+              <Text
+                className="line-clamp-1 overflow-hidden text-ellipsis"
+                variant="uppercase"
+              >
+                {productName}
+              </Text>
+              <div className="flex h-full flex-row">
+                <div className="w-full">
                   <Text variant="uppercase">
                     {tColors(product.color || "")}
                   </Text>
                   <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
                 </div>
-              </div>
-              {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
-                <Text
-                  variant="uppercase"
-                  className="whitespace-nowrap text-textInactiveColor"
-                >
-                  {preorderDate}
-                </Text>
-              )}
-            </div>
-            <div className="flex w-full flex-col items-end justify-end gap-3">
-              <div className="flex items-center whitespace-nowrap">
-                {isSaleApplied ? (
-                  <div className="flex items-center gap-x-2">
-                    <Text variant="strileTroughInactive">
-                      {priceWithoutSale}
-                    </Text>
-                    <Text>{priceWithSale}</Text>
+                <div className="flex w-full flex-col items-end justify-end gap-3">
+                  <div className="flex items-center whitespace-nowrap">
+                    {isSaleApplied ? (
+                      <div className="flex items-center gap-x-2">
+                        <Text variant="strileTroughInactive">
+                          {priceWithoutSale}
+                        </Text>
+                        <Text>{priceWithSale}</Text>
+                      </div>
+                    ) : (
+                      <Text>{priceWithoutSale}</Text>
+                    )}
                   </div>
-                ) : (
-                  <Text>{priceWithoutSale}</Text>
-                )}
+                </div>
               </div>
             </div>
           </div>

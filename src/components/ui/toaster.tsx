@@ -56,21 +56,21 @@ export function EmailToaster({
 export function SubmissionToaster({
   open,
   message,
-  onOpenChange,
   duration,
+  onOpenChange,
 }: {
   open: boolean;
   message?: string;
-  onOpenChange: (open: boolean) => void;
-  /** Duration in ms before auto-close. Use Infinity to persist until user closes. */
   duration?: number;
+  onOpenChange: (open: boolean) => void;
 }) {
   const persistUntilClosed = duration === Infinity;
   return (
     <Toast.Root
       className={cn(
-        "flex h-12 items-center justify-between bg-highlightColor lg:h-8 lg:justify-center",
-        persistUntilClosed && "px-2.5 lg:relative",
+        "flex h-12 items-center justify-center bg-highlightColor lg:h-8",
+        persistUntilClosed &&
+          "justify-between px-2.5 lg:relative lg:justify-center",
       )}
       open={open}
       onOpenChange={onOpenChange}
