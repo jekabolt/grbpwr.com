@@ -42,7 +42,7 @@ export function AddToCartBtn({
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
-  const { preorder, preorderRaw } = useProductBasics({ product });
+  const { preorder, preorderRaw, name, productCategory } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
   const {
@@ -132,6 +132,8 @@ export function AddToCartBtn({
         sizeNames={sizeNames}
         outOfStock={outOfStock}
         activeSizeId={activeSizeId}
+        productName={name}
+        productCategory={productCategory || ""}
       />
       <MobileSelectSize
         product={product}

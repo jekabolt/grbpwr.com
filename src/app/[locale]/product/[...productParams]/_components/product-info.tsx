@@ -94,6 +94,8 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
         sizeNames={sizeNames}
         outOfStock={outOfStock}
         activeSizeId={activeSizeId}
+        productName={name}
+        productCategory={productCategory || ""}
       />
       <div className="border-inactive absolute bottom-2.5 right-2.5 h-fit max-h-[566px] w-[300px] overflow-y-scroll border bg-bgColor p-2.5">
         <div className="flex flex-col justify-between gap-16">

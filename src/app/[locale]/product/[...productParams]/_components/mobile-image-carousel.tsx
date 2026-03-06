@@ -8,6 +8,7 @@ import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import { useTranslations } from "next-intl";
 
 import {
+  sendProductImageSwipeEvent,
   sendProductImageViewEvent,
   sendProductZoomEvent,
 } from "@/lib/analitycs/product-engagement";
@@ -51,9 +52,27 @@ export function MobileImageCarousel({
 
   useEffect(() => {
     if (!emblaApi) return;
+    let prevIndex = emblaApi.selectedScrollSnap();
+    
     const updateSelectedIndex = () => {
       const idx = emblaApi.selectedScrollSnap();
+      
+      if (idx !== prevIndex && productId) {
+        const direction = idx > prevIndex ? "next" : "previous";
+        sendProductImageSwipeEvent({
+          product_id: productId,
+          product_name: productName || "",
+          product_category: productCategory || "",
+          from_index: prevIndex + 1,
+          to_index: idx + 1,
+          total_images: media.length,
+          swipe_direction: direction,
+        });
+      }
+      
+      prevIndex = idx;
       setSelectedIndex(idx);
+      
       if (productId) {
         sendProductImageViewEvent({
           product_id: productId,
@@ -67,7 +86,7 @@ export function MobileImageCarousel({
     return () => {
       emblaApi.off("select", updateSelectedIndex);
     };
-  }, [emblaApi, productId, productName, media.length]);
+  }, [emblaApi, productId, productName, productCategory, media.length]);
 
   useEffect(() => {
     if (!isOpen || !emblaApi) {
@@ -108,10 +127,22 @@ export function MobileImageCarousel({
         product_id: productId,
         product_name: productName || "",
         product_category: productCategory || "",
+        zoom_method: "double_click",
       });
     }
     setShouldAnimate(false);
     requestAnimationFrame(() => setShouldAnimate(true));
+  };
+
+  const handlePinchZoom = () => {
+    if (productId) {
+      sendProductZoomEvent({
+        product_id: productId,
+        product_name: productName || "",
+        product_category: productCategory || "",
+        zoom_method: "pinch",
+      });
+    }
   };
 
   return (
@@ -190,6 +221,7 @@ export function MobileImageCarousel({
                 <ImageZoom
                   onDoubleClick={handleDoubleClick}
                   onClose={requestClose}
+                  onPinchZoom={handlePinchZoom}
                 >
                   <ImageComponent
                     src={currentMedia.mediaUrl || ""}
