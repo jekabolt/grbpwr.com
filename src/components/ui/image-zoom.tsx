@@ -40,21 +40,29 @@ export function ImageZoom({
   children,
   onDoubleClick,
   onClose,
+  onPinchZoom,
 }: {
   children: React.ReactNode;
   onDoubleClick?: () => void;
   onClose?: () => void;
+  onPinchZoom?: () => void;
 }) {
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
   const panStart = useRef<{ x: number; y: number } | null>(null);
+  const lastScale = useRef<number>(1);
 
   const handlePinchingStop = useCallback(
     (ref: ReactZoomPanPinchRef) => {
+      if (onPinchZoom && ref.state.scale > 1 && lastScale.current <= 1) {
+        onPinchZoom();
+      }
+      lastScale.current = ref.state.scale;
+      
       if (onClose && ref.state.scale < 1) {
         onClose();
       }
     },
-    [onClose],
+    [onClose, onPinchZoom],
   );
 
   const handlePanningStart = useCallback(
@@ -99,7 +107,7 @@ export function ImageZoom({
   const transformConfig = {
     ...TRANSFORM_CONFIG_BASE,
     minScale: onClose ? 0.5 : 1,
-    onPinchingStop: onClose ? handlePinchingStop : undefined,
+    onPinchingStop: (onClose || onPinchZoom) ? handlePinchingStop : undefined,
     onPanningStart: onClose ? handlePanningStart : undefined,
     onPanningStop: onClose ? handlePanningStop : undefined,
   };

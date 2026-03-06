@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
+import { sendNotifyMeIntentEvent } from "@/lib/analitycs/product-engagement";
 import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
@@ -26,6 +27,8 @@ interface NotifyMeProps {
   outOfStock?: Record<number, boolean>;
   activeSizeId?: number;
   onOpenChange: (open: boolean) => void;
+  productName?: string;
+  productCategory?: string;
 }
 
 export function NotifyMe({
@@ -35,10 +38,13 @@ export function NotifyMe({
   sizeNames,
   outOfStock,
   activeSizeId,
+  productName = "",
+  productCategory = "",
 }: NotifyMeProps) {
   const [isChecked, setIsChecked] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [hasInteracted, setHasInteracted] = useState(false);
   const t = useTranslations("newslatter");
   const tProduct = useTranslations("product");
   const tToaster = useTranslations("toaster");
@@ -66,11 +72,38 @@ export function NotifyMe({
         sizeId: activeSizeId,
         productId: id,
       });
+      setHasInteracted(false);
+      
+      const sizeName = sizeNames?.find((s) => s.id === activeSizeId)?.name;
+      sendNotifyMeIntentEvent({
+        product_id: id.toString(),
+        product_name: productName,
+        product_category: productCategory,
+        size_id: activeSizeId,
+        size_name: sizeName,
+        action: "opened",
+      });
     }
-  }, [open, activeSizeId, id, form]);
+  }, [open, activeSizeId, id, sizeNames, productName, productCategory, form]);
 
   const handleSizeSelect = (sizeId: number) => {
     form.setValue("sizeId", sizeId);
+    setHasInteracted(true);
+  };
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen && open && !hasInteracted) {
+      const sizeName = sizeNames?.find((s) => s.id === selectedSizeId)?.name;
+      sendNotifyMeIntentEvent({
+        product_id: id.toString(),
+        product_name: productName,
+        product_category: productCategory,
+        size_id: selectedSizeId,
+        size_name: sizeName,
+        action: "closed_without_submit",
+      });
+    }
+    onOpenChange(isOpen);
   };
 
   async function handleSubmit(data: NotifySchema) {
@@ -80,6 +113,17 @@ export function NotifyMe({
         productId: data.productId,
         sizeId: data.sizeId,
       });
+      
+      const sizeName = sizeNames?.find((s) => s.id === data.sizeId)?.name;
+      sendNotifyMeIntentEvent({
+        product_id: id.toString(),
+        product_name: productName,
+        product_category: productCategory,
+        size_id: data.sizeId,
+        size_name: sizeName,
+        action: "submitted",
+      });
+      
       onOpenChange(false);
       form.reset();
     } catch (e) {
@@ -94,7 +138,7 @@ export function NotifyMe({
   }
 
   return (
-    <DialogPrimitives.Root open={open} onOpenChange={onOpenChange}>
+    <DialogPrimitives.Root open={open} onOpenChange={handleOpenChange}>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
         <ModalTransition

@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { defaultCookiePreferences } from "@/components/ui/cookie-banner";
 import { captureCampaignOnLoad } from "@/lib/analitycs/campaign";
 import { initExceptionTracking } from "@/lib/analitycs/exceptions";
-import { initScrollDepthTracking } from "@/lib/analitycs/scroll-depth";
+import { initTimeOnPageTracking } from "@/lib/analitycs/time-on-page";
 import { ensureGtag } from "@/lib/analitycs/utils";
 import { initWebVitals } from "@/lib/analitycs/web-vitals";
 
@@ -32,12 +32,12 @@ export function AnalyticsInit() {
     applyStoredConsent();
     captureCampaignOnLoad();
     const cleanupExceptions = initExceptionTracking();
-    const cleanupScrollDepth = initScrollDepthTracking();
+    const cleanupTimeOnPage = initTimeOnPageTracking();
     initWebVitals();
 
     return () => {
       cleanupExceptions();
-      cleanupScrollDepth();
+      cleanupTimeOnPage();
     };
   }, []);
 
