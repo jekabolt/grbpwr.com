@@ -33,7 +33,7 @@ export function MobileCookieModal({
   if (!isVisible) return null;
 
   return (
-    <>
+    <div data-nosnippet>
       <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
         <div className="flex flex-col items-start gap-6 p-2.5">
           <span>
@@ -105,6 +105,6 @@ export function MobileCookieModal({
           />
         </DialogPrimitives.Portal>
       </DialogPrimitives.Root>
-    </>
+    </div>
   );
 }
