@@ -2,6 +2,7 @@ import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { resolveCategories } from "@/lib/categories-map";
+import { getInitialTranslationState } from "@/lib/stores/translations/cookie-utils";
 import { cn } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 
@@ -27,6 +28,7 @@ interface CatalogContentProps {
 
 export async function CatalogContent(props: CatalogContentProps) {
   const { hero, dictionary } = await serviceClient.GetHero({});
+  const { country } = await getInitialTranslationState();
 
   const searchParams = await props.searchParams;
   const params = await props.params;
@@ -50,6 +52,7 @@ export async function CatalogContent(props: CatalogContentProps) {
         gender,
         topCategoryIds: !subCategory ? topCategory?.id?.toString() : undefined,
         subCategoryIds: subCategory?.id?.toString(),
+        currency: country?.currencyKey ?? "EUR",
       },
       dictionary,
     ),
@@ -66,9 +69,6 @@ export async function CatalogContent(props: CatalogContentProps) {
           hidden: !response.total,
         })}
       >
-        {/* <div className="flex justify-center pb-5 pt-16">
-          <NextCategoryButton />
-        </div> */}
         <div>
           {hero?.entities
             ?.filter((e) => e.type === "HERO_TYPE_FEATURED_ARCHIVE")

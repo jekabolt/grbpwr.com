@@ -2,6 +2,7 @@ import { CATALOG_LIMIT } from "@/constants";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useDataContext } from "@/components/contexts/DataContext";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useServerActionsContext } from "@/components/contexts/ServerActionsContext";
 
 import useFilterQueryParams from "./useFilterQueryParams";
@@ -15,6 +16,7 @@ export const useTotalProducts = ({
 }: Props) => {
     const { dictionary } = useDataContext();
     const { GetProductsPaged } = useServerActionsContext();
+    const currencyKey = useTranslationsStore((s) => s.currentCountry.currencyKey) || "EUR";
     const queryClient = useQueryClient();
     const { defaultValue: sizeValue } = useFilterQueryParams("size");
     const { defaultValue: collectionValue } = useFilterQueryParams("collection");
@@ -29,6 +31,7 @@ export const useTotalProducts = ({
             gender,
             topCategoryId,
             subCategoryId,
+            currency: currencyKey,
             size: sizeValue,
             collection: collectionValue,
             sort: sortValue,
@@ -48,6 +51,7 @@ export const useTotalProducts = ({
                         topCategoryIds: topCategoryId?.toString(),
                         subCategoryIds: subCategoryId?.toString(),
                         gender: gender,
+                        currency: currencyKey,
                         ...(sizeValue && { size: sizeValue }),
                         ...(collectionValue && { collection: collectionValue }),
                         ...(sortValue && { sort: sortValue }),
