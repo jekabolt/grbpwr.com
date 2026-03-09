@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
@@ -42,6 +44,10 @@ export async function CatalogContent(props: CatalogContentProps) {
     categoryName,
     subCategoryName,
   );
+
+  // Invalid category name in URL → 404
+  if (categoryName && !topCategory) notFound();
+  if (subCategoryName && topCategory && !subCategory) notFound();
 
   const response = await serviceClient.GetProductsPaged({
     limit: CATALOG_LIMIT,

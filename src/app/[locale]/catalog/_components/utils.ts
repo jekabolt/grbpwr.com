@@ -64,6 +64,16 @@ export function getEnumFromUrl(urlKey: string | null | undefined, map: MapType):
   return map[urlKey.toLowerCase()];
 }
 
+function parsePositiveIntArray(value: string | null | undefined): number[] | undefined {
+  if (value == null || value === "") return undefined;
+  const ids = value.split(",").map((s) => parseInt(s.trim(), 10));
+  const valid = ids.filter((id) => Number.isFinite(id) && id > 0);
+  return valid.length > 0 ? valid : undefined;
+}
+
+const MAX_TAG_LENGTH = 100;
+const MAX_COLLECTION_LENGTH = 50;
+
 export function getProductsPagedQueryParams(
   {
     sort,
@@ -95,7 +105,13 @@ export function getProductsPagedQueryParams(
 > {
   const sortFactor = getEnumFromUrl(sort, SORT_MAP_URL) as common_SortFactor | undefined;
   const orderFactor = getEnumFromUrl(order, ORDER_MAP) as common_OrderFactor | undefined;
-  const genderEnums = getEnumFromUrl(gender, GENDER_MAP) as common_GenderEnum | undefined;
+  const primaryGender = getEnumFromUrl(gender, GENDER_MAP) as common_GenderEnum | undefined;
+  const unisexEnum = GENDER_MAP.unisex as common_GenderEnum;
+  const genderEnums: common_GenderEnum[] | undefined = primaryGender
+    ? primaryGender === unisexEnum
+      ? [primaryGender]
+      : [primaryGender, unisexEnum]
+    : undefined;
 
   const sizeIds = size
     ? size
@@ -105,16 +121,24 @@ export function getProductsPagedQueryParams(
     : undefined;
 
   const collections = collection
-    ? collection.split(",").map(c => c.trim()).filter(Boolean)
+    ? collection
+      .split(",")
+      .map((c) => c.trim())
+      .filter((c) => c.length > 0 && c.length <= MAX_COLLECTION_LENGTH)
     : undefined;
 
-  // todo: validate params before make a request
+  const validatedTopCategoryIds = parsePositiveIntArray(topCategoryIds ?? "");
+  const validatedSubCategoryIds = parsePositiveIntArray(subCategoryIds ?? "");
+
+  const validatedTag =
+    tag && tag.length > 0 && tag.length <= MAX_TAG_LENGTH ? tag : undefined;
+
   return {
     sortFactors: sortFactor ? [sortFactor] : undefined,
     orderFactor: orderFactor,
     filterConditions: {
-      topCategoryIds: topCategoryIds ? [parseInt(topCategoryIds)] : undefined,
-      subCategoryIds: subCategoryIds ? [parseInt(subCategoryIds)] : undefined,
+      topCategoryIds: validatedTopCategoryIds,
+      subCategoryIds: validatedSubCategoryIds,
       typeIds: undefined,
       sizesIds: sizeIds && sizeIds.length > 0 ? sizeIds : undefined,
       from: undefined,
@@ -122,8 +146,8 @@ export function getProductsPagedQueryParams(
       onSale: sale ? sale === "true" : undefined,
       color: undefined,
       preorder: undefined,
-      byTag: tag ? tag : undefined,
-      gender: genderEnums ? [genderEnums] : undefined,
+      byTag: validatedTag,
+      gender: genderEnums,
       collections: collections && collections.length > 0 ? collections : undefined,
       currency: currency?.toUpperCase() || undefined,
     },

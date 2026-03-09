@@ -59,7 +59,6 @@ export function Categories() {
     ? getTopCategoryName(categories, topCategory.id || 0)
     : categoryName;
 
-  // Build base href based on whether gender exists
   const baseHref = gender ? `/catalog/${gender}` : "/catalog";
 
   return (
@@ -78,7 +77,6 @@ export function Categories() {
         const isDisabled = isCategoryDisabled(findSubCategory, gender);
         const subCatName = getSubCategoryName(categories, subCategory.id);
 
-        // Build subcategory href with or without gender
         const subCategoryHref = gender
           ? `/catalog/${gender}/${categoryName}/${subCategory.name?.toLowerCase()}`
           : `/catalog/${categoryName}/${subCategory.name?.toLowerCase()}`;
