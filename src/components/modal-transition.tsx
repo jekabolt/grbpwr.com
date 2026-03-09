@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export const modalTransition = {
@@ -16,12 +16,17 @@ const slide = (axis: "x" | "y", from: number) => ({
   exit: { opacity: 0, [axis]: from },
 });
 
-const slideVariants = {
-  left: slide("x", -20),
-  right: slide("x", 20),
-  top: slide("y", -20),
-  bottom: slide("y", 20),
-  none: { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } },
+const getSlideAnimation = (from: SlideFrom) => {
+  if (from === "none") {
+    return {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      exit: { opacity: 0 },
+    };
+  }
+  const axis = from === "top" || from === "bottom" ? "y" : "x";
+  const offset = from === "left" || from === "top" ? -20 : 20;
+  return slide(axis, offset);
 };
 
 interface ModalTransitionProps {
@@ -37,18 +42,19 @@ export function ModalTransition({
   contentSlideFrom = "right",
   contentClassName,
 }: ModalTransitionProps) {
-  const contentVariants = slideVariants[contentSlideFrom];
+  const animation = getSlideAnimation(contentSlideFrom);
   return (
     <AnimatePresence>
       {isOpen && content != null && (
         <motion.div
           key="modal-content"
-          variants={contentVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={modalTransition}
-          className={contentClassName}
+          {...({
+            initial: animation.initial,
+            animate: animation.animate,
+            exit: animation.exit,
+            transition: modalTransition,
+            className: contentClassName,
+          } as React.ComponentProps<typeof motion.div>)}
         >
           {content}
         </motion.div>

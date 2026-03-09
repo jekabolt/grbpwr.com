@@ -75,6 +75,7 @@ export function getProductsPagedQueryParams(
     sale,
     tag,
     collection,
+    currency,
   }: {
     sort?: string | null;
     order?: string | null;
@@ -85,6 +86,7 @@ export function getProductsPagedQueryParams(
     sale?: string | null;
     tag?: string | null;
     collection?: string | null;
+    currency?: string | null;
   },
   dictionary?: common_Dictionary
 ): Pick<
@@ -123,7 +125,7 @@ export function getProductsPagedQueryParams(
       byTag: tag ? tag : undefined,
       gender: genderEnums ? [genderEnums] : undefined,
       collections: collections && collections.length > 0 ? collections : undefined,
-      currency: undefined,
+      currency: currency?.toUpperCase() || undefined,
     },
   };
 }

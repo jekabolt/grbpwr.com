@@ -29,7 +29,7 @@ export function InfinityScrollCatalog({
   const searchParams = useSearchParams();
   const { dictionary } = useDataContext();
   const { GetProductsPaged } = useServerActionsContext();
-  const { languageId } = useTranslationsStore((state) => state);
+  const { languageId, currentCountry } = useTranslationsStore((state) => state);
   const { gender, topCategory, subCategory } = useRouteParams();
   const { handleViewItemListEvent } = useAnalytics();
   const { ref, inView } = useInView();
@@ -45,6 +45,8 @@ export function InfinityScrollCatalog({
     [searchParamsObj],
   );
 
+  const currencyKey = currentCountry.currencyKey || "EUR";
+
   const queryKey = useMemo(
     () => [
       "products",
@@ -54,10 +56,11 @@ export function InfinityScrollCatalog({
         gender,
         topCategoryId: topCategory?.id,
         subCategoryId: subCategory?.id,
+        currency: currencyKey,
         ...searchParamsObj,
       },
     ],
-    [languageId, gender, topCategory?.id, subCategory?.id, searchParamsObj],
+    [languageId, gender, topCategory?.id, subCategory?.id, currencyKey, searchParamsObj],
   );
 
   const {
@@ -78,6 +81,7 @@ export function InfinityScrollCatalog({
             gender,
             topCategoryIds: topCategory?.id?.toString(),
             subCategoryIds: subCategory?.id?.toString(),
+            currency: currencyKey,
             ...searchParamsObj,
           },
           dictionary,
