@@ -63,7 +63,8 @@ export default function MeasurementPopup({
         product_id: product.product?.sku || "",
         product_name: name,
         product_category: productCategory || "",
-        page_location: typeof window !== "undefined" ? window.location.href : "",
+        page_location:
+          typeof window !== "undefined" ? window.location.href : "",
       });
     }
     setModalOpen(!isModalOpen);
@@ -101,37 +102,33 @@ export default function MeasurementPopup({
           contentClassName="fixed inset-y-2 right-2 z-50 w-[600px] border border-textInactiveColor bg-bgColor p-2.5"
           content={
             <div className="flex h-full flex-col gap-y-2">
-              <div className="flex h-full flex-col gap-y-12">
-                <div className="flex items-center justify-between">
-                  <Text variant="uppercase">{t("size guide")}</Text>
-                  <Button onClick={toggleModal}>[x]</Button>
-                </div>
-                <div className="min-h-0 flex-1 overflow-auto">{children}</div>
+              <div className="flex items-center justify-between">
+                <Text variant="uppercase">{t("size guide")}</Text>
+                <Button onClick={toggleModal}>[x]</Button>
               </div>
-              <div className="mt-auto shrink-0">
-                <LoadingButton
-                  variant="simpleReverse"
-                  size="lg"
-                  onAction={() => handleAddToCartComplete()}
-                >
-                  <Text variant="inherit">
-                    {isSelectedSizeOutOfStock
-                      ? t("notify me")
-                      : preorder
-                        ? t("preorder")
-                        : t("add")}
-                  </Text>
-                  {!isSelectedSizeOutOfStock &&
-                    (isSaleApplied ? (
-                      <Text variant="inactive">
-                        {priceMinusSale}
-                        <Text component="span">{priceWithSale}</Text>
-                      </Text>
-                    ) : (
-                      <Text variant="inherit">{price}</Text>
-                    ))}
-                </LoadingButton>
-              </div>
+              <div className="h-full overflow-y-scroll">{children}</div>
+              <LoadingButton
+                variant="simpleReverse"
+                size="lg"
+                onAction={() => handleAddToCartComplete()}
+              >
+                <Text variant="inherit">
+                  {isSelectedSizeOutOfStock
+                    ? t("notify me")
+                    : preorder
+                      ? t("preorder")
+                      : t("add")}
+                </Text>
+                {!isSelectedSizeOutOfStock &&
+                  (isSaleApplied ? (
+                    <Text variant="inactive">
+                      {priceMinusSale}
+                      <Text component="span">{priceWithSale}</Text>
+                    </Text>
+                  ) : (
+                    <Text variant="inherit">{price}</Text>
+                  ))}
+              </LoadingButton>
             </div>
           }
         />
