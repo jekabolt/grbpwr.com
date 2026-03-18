@@ -2,6 +2,7 @@ import { cookies, headers } from "next/headers";
 import { getMessages } from "next-intl/server";
 
 import { GeoSuggestBanner } from "./geo-suggest-banner";
+import { GeoSuggestClientFallback } from "./geo-suggest-client-fallback";
 
 export async function GeoSuggestWrapper() {
   const cookieStore = await cookies();
@@ -20,17 +21,19 @@ export async function GeoSuggestWrapper() {
     headersList.get("x-geo-suggest-current") ??
     undefined;
 
-  if (!suggestCountry || !suggestLocale) return null;
+  if (suggestCountry && suggestLocale) {
+    const suggestedMessages = await getMessages({ locale: suggestLocale });
+    return (
+      <GeoSuggestBanner
+        suggestCountry={suggestCountry}
+        suggestLocale={suggestLocale}
+        currentCountry={currentCountry}
+        messages={suggestedMessages}
+      />
+    );
+  }
 
-  // Get suggested locale messages for banner text
-  const suggestedMessages = await getMessages({ locale: suggestLocale });
-
-  return (
-    <GeoSuggestBanner
-      suggestCountry={suggestCountry}
-      suggestLocale={suggestLocale}
-      currentCountry={currentCountry}
-      messages={suggestedMessages}
-    />
-  );
+  // Fallback: headers may not reach server (Vercel edge, cache). Client reads
+  // suggest cookies set by middleware response after hydration.
+  return <GeoSuggestClientFallback />;
 }
