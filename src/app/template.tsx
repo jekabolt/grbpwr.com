@@ -15,6 +15,7 @@ import { getInitialTranslationState } from "@/lib/stores/translations/cookie-uti
 import { TranslationsStoreProvider } from "@/lib/stores/translations/store-provider";
 import { DataContextProvider } from "@/components/contexts/DataContext";
 import { ServerActionsContextProvider } from "@/components/contexts/ServerActionsContext";
+import { UrlCountrySync } from "@/components/url-country-sync";
 
 export default async function Template({
   children,
@@ -45,6 +46,7 @@ export default async function Template({
                 initialLanguageId={initialTranslationState.languageId}
                 initialRates={((heroData as GetHeroResponse & { rates?: { currencies?: Record<string, CurrencyRate> } }).rates?.currencies) as Record<string, CurrencyRate> | undefined}
               >
+                <UrlCountrySync />
                 <CartCurrencySyncWrapper>
                   <DataContextProvider {...heroData}>
                     {children}
