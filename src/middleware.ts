@@ -77,29 +77,27 @@ export default async function middleware(req: NextRequest) {
         const newReq = new NextRequest(url, { headers: req.headers });
         const intlRes = intlMiddleware(newReq);
 
-        setMainCookies(intlRes, country!, locale!);
+        const reqHeaders = new Headers(req.headers);
+        reqHeaders.set("x-nextjs-country", country!);
+        reqHeaders.set("x-nextjs-locale", locale!);
         if (shouldSuggest) {
-            setSuggestedCookies(intlRes, geoCountry, geoLocale, country!);
-        } else {
-            clearSuggestCookies(intlRes);
-        }
-
-        // Pass suggest data via request headers so GeoSuggestWrapper can read on first request
-        // (cookies are set in response, not visible to server component until next request)
-        if (shouldSuggest) {
-            const reqHeaders = new Headers(req.headers);
             reqHeaders.set("x-geo-suggest-country", geoCountry);
             reqHeaders.set("x-geo-suggest-locale", geoLocale);
             reqHeaders.set("x-geo-suggest-current", country!);
-            const rewriteUrl = new URL(url.pathname + url.search, req.url);
-            const res = NextResponse.rewrite(rewriteUrl, {
-                request: { headers: reqHeaders },
-            });
-            intlRes.cookies.getAll().forEach((c) => res.cookies.set(c.name, c.value));
-            return res;
         }
 
-        return intlRes;
+        const rewriteUrl = new URL(url.pathname + url.search, req.url);
+        const res = NextResponse.rewrite(rewriteUrl, {
+            request: { headers: reqHeaders },
+        });
+        intlRes.cookies.getAll().forEach((c) => res.cookies.set(c.name, c.value));
+        setMainCookies(res, country!, locale!);
+        if (shouldSuggest) {
+            setSuggestedCookies(res, geoCountry, geoLocale, country!);
+        } else {
+            clearSuggestCookies(res);
+        }
+        return res;
     }
 
     //handle paths without country/locale (e.g. /, /en, /en/products)

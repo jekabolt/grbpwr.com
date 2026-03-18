@@ -1,5 +1,5 @@
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export interface CountryInfo {
     name: string;
@@ -15,8 +15,16 @@ export interface InitialTranslationState {
 
 export async function getInitialTranslationState(): Promise<InitialTranslationState> {
     const cookieStore = await cookies();
-    const countryCookie = cookieStore.get("NEXT_COUNTRY")?.value?.toLowerCase();
-    const localeCookie = cookieStore.get("NEXT_LOCALE")?.value;
+    const headersList = await headers();
+    let countryCookie = cookieStore.get("NEXT_COUNTRY")?.value?.toLowerCase();
+    let localeCookie = cookieStore.get("NEXT_LOCALE")?.value;
+
+    // Fallback: middleware sets x-nextjs-country/locale from URL path when cookies
+    // are empty (e.g. static catalog RSC cache, template remount on navigation)
+    if (!countryCookie || !localeCookie) {
+        countryCookie = countryCookie ?? headersList.get("x-nextjs-country")?.toLowerCase() ?? undefined;
+        localeCookie = localeCookie ?? headersList.get("x-nextjs-locale") ?? undefined;
+    }
 
     if (!countryCookie || !localeCookie) {
         return {};
