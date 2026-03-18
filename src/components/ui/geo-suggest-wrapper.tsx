@@ -1,13 +1,24 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { getMessages } from "next-intl/server";
 
 import { GeoSuggestBanner } from "./geo-suggest-banner";
 
 export async function GeoSuggestWrapper() {
   const cookieStore = await cookies();
-  const suggestCountry = cookieStore.get("NEXT_SUGGEST_COUNTRY")?.value;
-  const suggestLocale = cookieStore.get("NEXT_SUGGEST_LOCALE")?.value;
-  const currentCountry = cookieStore.get("NEXT_SUGGEST_CURRENT_COUNTRY")?.value;
+  const headersList = await headers();
+
+  // Cookies are set in response on first visit, so read from request headers
+  // (middleware passes x-geo-suggest-* when geo differs and user has no cookies yet)
+  const suggestCountry =
+    cookieStore.get("NEXT_SUGGEST_COUNTRY")?.value ??
+    headersList.get("x-geo-suggest-country");
+  const suggestLocale =
+    cookieStore.get("NEXT_SUGGEST_LOCALE")?.value ??
+    headersList.get("x-geo-suggest-locale");
+  const currentCountry =
+    cookieStore.get("NEXT_SUGGEST_CURRENT_COUNTRY")?.value ??
+    headersList.get("x-geo-suggest-current") ??
+    undefined;
 
   if (!suggestCountry || !suggestLocale) return null;
 

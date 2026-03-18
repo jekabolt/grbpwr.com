@@ -90,20 +90,25 @@ export const handleGeoAction = (req: NextRequest): NextResponse | null => {
     const suggestLocale = req.cookies.get("NEXT_SUGGEST_LOCALE")?.value;
 
     if (suggestCountry && suggestLocale) {
-        setMainCookies(res, suggestCountry, suggestLocale);
-
         const target = req.nextUrl.clone();
         target.searchParams.delete("geo");
 
         const parsedPath = parseCountryLocalePath(target.pathname);
-        if (parsedPath &&
+        const localeOnly = parseLocaleOnlyPath(target.pathname);
+        const rest = parsedPath?.rest ?? localeOnly?.rest ?? "";
+
+        if (
+            parsedPath &&
             parsedPath.country?.toLowerCase() === suggestCountry.toLowerCase() &&
-            parsedPath.locale === suggestLocale) {
+            parsedPath.locale === suggestLocale
+        ) {
+            // Already on suggested country/locale, just clear suggest cookies
         } else {
-            target.pathname = `/${suggestCountry}/${suggestLocale}`;
+            target.pathname = `/${suggestCountry}/${suggestLocale}${rest}`;
         }
 
         const acceptRes = NextResponse.redirect(target, { status: 308 });
+        setMainCookies(acceptRes, suggestCountry, suggestLocale);
         clearSuggestCookies(acceptRes);
         return acceptRes;
     }
