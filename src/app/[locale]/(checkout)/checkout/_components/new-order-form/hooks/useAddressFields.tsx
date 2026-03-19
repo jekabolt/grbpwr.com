@@ -104,7 +104,10 @@ export function useAddressFields(prefix?: string) {
           /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
           "",
         ) || "/";
-      window.location.href = `/${newCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
+      const newPath = `/${newCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
+      const url = new URL(newPath, window.location.origin);
+      url.searchParams.set("from_picker", "1");
+      window.location.href = url.toString();
     }
   };
 

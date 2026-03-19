@@ -73,6 +73,21 @@ export const setMainCookies = (
     res.cookies.set("NEXT_LOCALE", locale, PERSISTENT_COOKIE_OPTIONS);
 };
 
+export const handleFromPickerAction = (req: NextRequest): NextResponse | null => {
+    if (req.nextUrl.searchParams.get("from_picker") !== "1") return null;
+
+    const parsedPath = parseCountryLocalePath(req.nextUrl.pathname);
+    if (!parsedPath || !parsedPath.country || !parsedPath.locale) return null;
+    if (!supportedCountries.includes(parsedPath.country)) return null;
+
+    const url = req.nextUrl.clone();
+    url.searchParams.delete("from_picker");
+    const res = NextResponse.redirect(url, { status: 308 });
+    setMainCookies(res, parsedPath.country, parsedPath.locale);
+    clearSuggestCookies(res);
+    return res;
+};
+
 export const handleGeoAction = (req: NextRequest): NextResponse | null => {
     const action = req.nextUrl.searchParams.get("geo");
     if (action !== "dismiss" && action !== "accept") return null;

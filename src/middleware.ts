@@ -2,7 +2,7 @@ import createMiddleware from "next-intl/middleware";
 
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
-import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
+import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -30,6 +30,10 @@ export default async function middleware(req: NextRequest) {
     const geoResponse = handleGeoAction(req);
     if (geoResponse) return geoResponse;
 
+    //handle country picker / update-location redirects (legitimate country switch)
+    const fromPickerResponse = handleFromPickerAction(req);
+    if (fromPickerResponse) return fromPickerResponse;
+
     //handle country/locale paths
     const parsedPath = parseCountryLocalePath(pathname);
     if (parsedPath) {
@@ -55,6 +59,16 @@ export default async function middleware(req: NextRequest) {
         if (!supportedCountries.includes(country!)) {
             const url = req.nextUrl.clone();
             url.pathname = `/us/en${rest}`;
+            return NextResponse.redirect(url, { status: 308 });
+        }
+
+        // Block manual URL country changes – only Country Picker or geo banner may change it
+        const allowedCountry = (countryCookie && supportedCountries.includes(countryCookie))
+            ? countryCookie
+            : getNormalizedCountry(detectedCountry);
+        if (country !== allowedCountry) {
+            const url = req.nextUrl.clone();
+            url.pathname = `/${allowedCountry}/${locale}${rest}`;
             return NextResponse.redirect(url, { status: 308 });
         }
 
