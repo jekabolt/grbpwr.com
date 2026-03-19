@@ -12,8 +12,9 @@ import { findCountryByCode, getFieldName, getUniqueCountries } from "../utils";
 export function useAddressFields(prefix?: string) {
   const { setValue, getValues } = useFormContext();
   const pathname = usePathname();
-  const { setCurrentCountry, cancelNextCountry } =
-    useTranslationsStore((s) => s);
+  const { setCurrentCountry, cancelNextCountry } = useTranslationsStore(
+    (s) => s,
+  );
 
   const countryFieldName = getFieldName(prefix, "country");
   const phoneFieldName = getFieldName(prefix, "phone");
@@ -43,13 +44,7 @@ export function useAddressFields(prefix?: string) {
     if (!currentPhone || !/^\d/.test(currentPhone)) {
       setValue(phoneFieldName, found.phoneCode);
     }
-  }, [
-    selectedCountry,
-    phoneFieldName,
-    uniqueCountries,
-    getValues,
-    setValue,
-  ]);
+  }, [selectedCountry, phoneFieldName, uniqueCountries, getValues, setValue]);
 
   const updatePhoneCode = (newCountryCode: string) => {
     const country = findCountryByCode(uniqueCountries, newCountryCode);
@@ -97,13 +92,19 @@ export function useAddressFields(prefix?: string) {
         currencyKey: country.currencyKey,
       });
 
-      // Use country's default locale when changing country in checkout
+      const email = getValues("email");
+      const promoCode = getValues("promoCode");
+      if (email || promoCode) {
+        sessionStorage.setItem(
+          "checkout-country-change-stash",
+          JSON.stringify({ email: email || "", promoCode: promoCode || "" }),
+        );
+      }
+
       const newLocale = country.lng;
       const pathWithoutLocaleCountry =
-        pathname.replace(
-          /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
-          "",
-        ) || "/";
+        pathname.replace(/^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/, "") ||
+        "/";
       const newPath = `/${newCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
       const url = new URL(newPath, window.location.origin);
       url.searchParams.set("from_picker", "1");
