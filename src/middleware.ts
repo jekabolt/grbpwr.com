@@ -2,7 +2,7 @@ import createMiddleware from "next-intl/middleware";
 
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
-import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
+import { getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -113,10 +113,15 @@ export default async function middleware(req: NextRequest) {
         });
         intlRes.cookies.getAll().forEach((c) => res.cookies.set(c.name, c.value));
         setMainCookies(res, country!, locale!);
+        const suggestCountryCookie = req.cookies.get("NEXT_SUGGEST_COUNTRY")?.value;
+        const suggestLocaleCookie = req.cookies.get("NEXT_SUGGEST_LOCALE")?.value;
+        const suggestCurrentCookie = req.cookies.get("NEXT_SUGGEST_CURRENT_COUNTRY")?.value;
+
         if (shouldSuggest) {
             setSuggestedCookies(res, geoCountry, geoLocale, country!);
-        } else {
-            clearSuggestCookies(res);
+        } else if (suggestCountryCookie && suggestLocaleCookie && suggestCurrentCookie) {
+            // Refresh suggest cookies so they persist across navigation until user chooses
+            setSuggestedCookies(res, suggestCountryCookie, suggestLocaleCookie, suggestCurrentCookie);
         }
         return res;
     }
@@ -146,7 +151,6 @@ export default async function middleware(req: NextRequest) {
                     url.pathname = `/${targetCountry}/${targetLocale}`;
                     const res = NextResponse.redirect(url, { status: 307 });
                     setMainCookies(res, targetCountry, targetLocale);
-                    clearSuggestCookies(res);
                     return res;
                 }
             } catch {
@@ -160,7 +164,6 @@ export default async function middleware(req: NextRequest) {
         const res = NextResponse.redirect(url, { status: 308 });
         // Ensure defaults are persisted for subsequent requests
         setMainCookies(res, targetCountry, targetLocale);
-        clearSuggestCookies(res);
         return res;
     }
     return intlMiddleware(req);

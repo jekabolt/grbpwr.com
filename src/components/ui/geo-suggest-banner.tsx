@@ -150,7 +150,7 @@ export function GeoSuggestBanner({
           </Button>
           <Button
             size="lg"
-            className="w-full uppercase"
+            className="w-full border border-transparent uppercase hover:border-textColor"
             variant="simpleReverse"
             onClick={onDismiss}
           >
