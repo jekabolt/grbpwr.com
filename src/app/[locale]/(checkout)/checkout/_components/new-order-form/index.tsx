@@ -341,7 +341,6 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                 <ShippingFieldsGroup
                   loading={loading}
                   order={order}
-                  validateItems={validateItems}
                   isOpen={isGroupOpen("shipping")}
                   onToggle={() => handleGroupToggle("shipping")}
                   disabled={isGroupDisabled("shipping") || loading}

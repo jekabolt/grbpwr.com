@@ -16,10 +16,17 @@ type Props = {
     value: string;
     phoneCode?: string;
   }[];
+  selectedCountry?: string;
   [k: string]: any;
 };
 
-export function PhoneField({ name, label, items, ...props }: Props) {
+export function PhoneField({
+  name,
+  label,
+  items,
+  selectedCountry,
+  ...props
+}: Props) {
   const { control, trigger } = useFormContext();
   const t = useTranslations("errors");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,11 +62,18 @@ export function PhoneField({ name, label, items, ...props }: Props) {
       return { code: "", number: value };
     }
 
-    const foundByPhoneCode = items.find(
+    const matches = items.filter(
       (item) => item.phoneCode && value.startsWith(item.phoneCode),
     );
 
-    if (foundByPhoneCode) {
+    if (matches.length > 0) {
+      const preferredMatch = selectedCountry
+        ? matches.find((item) =>
+            item.value.startsWith(`${selectedCountry.toLowerCase()}-`),
+          )
+        : undefined;
+      const foundByPhoneCode = preferredMatch ?? matches[0];
+
       return {
         code: foundByPhoneCode.value,
         number: value.slice(foundByPhoneCode.phoneCode!.length),
