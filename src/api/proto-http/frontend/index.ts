@@ -143,6 +143,7 @@ export type common_ProductBodyInsert = {
   composition: string | undefined;
   hidden: boolean | undefined;
   targetGender: common_GenderEnum | undefined;
+  season: common_SeasonEnum | undefined;
   version: string | undefined;
   collection: string | undefined;
   fit: string | undefined;
@@ -207,6 +208,12 @@ export type common_GenderEnum =
   | "GENDER_ENUM_MALE"
   | "GENDER_ENUM_FEMALE"
   | "GENDER_ENUM_UNISEX";
+export type common_SeasonEnum =
+  | "SEASON_ENUM_UNKNOWN"
+  | "SEASON_ENUM_SS"
+  | "SEASON_ENUM_FW"
+  | "SEASON_ENUM_PF"
+  | "SEASON_ENUM_RC";
 export type common_ProductInsertTranslation = {
   languageId: number | undefined;
   name: string | undefined;
@@ -350,7 +357,9 @@ export type common_PaymentMethod = {
 export type common_PaymentMethodNameEnum =
   | "PAYMENT_METHOD_NAME_ENUM_UNKNOWN"
   | "PAYMENT_METHOD_NAME_ENUM_CARD"
-  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST";
+  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
+  | "PAYMENT_METHOD_NAME_ENUM_BANK_INVOICE"
+  | "PAYMENT_METHOD_NAME_ENUM_CASH";
 export type common_ShipmentCarrier = {
   id: number | undefined;
   shipmentCarrier: common_ShipmentCarrierInsert | undefined;
@@ -485,6 +494,7 @@ export type common_FilterConditions = {
   preorder: boolean | undefined;
   byTag: string | undefined;
   collections: string[] | undefined;
+  seasons: common_SeasonEnum[] | undefined;
 };
 
 export type GetProductsPagedResponse = {
@@ -799,6 +809,56 @@ export type common_SupportTicketPriority =
 export type SubmitSupportTicketResponse = {
 };
 
+export type SubmitOrderReviewRequest = {
+  orderUuid: string | undefined;
+  b64Email: string | undefined;
+  orderReview: common_OrderReviewInsert | undefined;
+  itemReviews: common_OrderItemReviewInsert[] | undefined;
+};
+
+export type common_OrderReviewInsert = {
+  deliveryRating: common_DeliverySpeedEnum | undefined;
+  packagingRating: common_PackagingConditionEnum | undefined;
+};
+
+export type common_DeliverySpeedEnum =
+  | "DELIVERY_SPEED_ENUM_UNKNOWN"
+  | "DELIVERY_SPEED_ENUM_MUCH_FASTER_THAN_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_FASTER_THAN_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_AS_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_SLOWER_THAN_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_MUCH_SLOWER_THAN_EXPECTED";
+export type common_PackagingConditionEnum =
+  | "PACKAGING_CONDITION_ENUM_UNKNOWN"
+  | "PACKAGING_CONDITION_ENUM_DAMAGED"
+  | "PACKAGING_CONDITION_ENUM_ACCEPTABLE"
+  | "PACKAGING_CONDITION_ENUM_GOOD"
+  | "PACKAGING_CONDITION_ENUM_EXCELLENT";
+export type common_OrderItemReviewInsert = {
+  orderItemId: number | undefined;
+  rating: common_ProductRatingEnum | undefined;
+  fitRating: common_FitScaleEnum | undefined;
+  recommend: boolean | undefined;
+  text: string | undefined;
+};
+
+export type common_ProductRatingEnum =
+  | "PRODUCT_RATING_ENUM_UNKNOWN"
+  | "PRODUCT_RATING_ENUM_POOR"
+  | "PRODUCT_RATING_ENUM_FAIR"
+  | "PRODUCT_RATING_ENUM_GOOD"
+  | "PRODUCT_RATING_ENUM_VERY_GOOD"
+  | "PRODUCT_RATING_ENUM_EXCELLENT";
+export type common_FitScaleEnum =
+  | "FIT_SCALE_ENUM_UNKNOWN"
+  | "FIT_SCALE_ENUM_RUNS_SMALL"
+  | "FIT_SCALE_ENUM_SLIGHTLY_SMALL"
+  | "FIT_SCALE_ENUM_TRUE_TO_SIZE"
+  | "FIT_SCALE_ENUM_SLIGHTLY_LARGE"
+  | "FIT_SCALE_ENUM_RUNS_LARGE";
+export type SubmitOrderReviewResponse = {
+};
+
 export interface FrontendService {
   // Get hero information
   GetHero(request: GetHeroRequest): Promise<GetHeroResponse>;
@@ -830,6 +890,8 @@ export interface FrontendService {
   GetArchive(request: GetArchiveRequest): Promise<GetArchiveResponse>;
   // Submit a support ticket
   SubmitSupportTicket(request: SubmitSupportTicketRequest): Promise<SubmitSupportTicketResponse>;
+  // Submit reviews for a delivered order (order-level + per-item, requires delivered order + buyer email)
+  SubmitOrderReview(request: SubmitOrderReviewRequest): Promise<SubmitOrderReviewResponse>;
 }
 
 type RequestType = {
@@ -957,6 +1019,11 @@ export function createFrontendServiceClient(
       if (request.filterConditions?.collections) {
         request.filterConditions.collections.forEach((x) => {
           queryParams.push(`filterConditions.collections=${encodeURIComponent(x.toString())}`)
+        })
+      }
+      if (request.filterConditions?.seasons) {
+        request.filterConditions.seasons.forEach((x) => {
+          queryParams.push(`filterConditions.seasons=${encodeURIComponent(x.toString())}`)
         })
       }
       let uri = path;
@@ -1234,6 +1301,26 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "SubmitSupportTicket",
       }) as Promise<SubmitSupportTicketResponse>;
+    },
+    SubmitOrderReview(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.orderUuid) {
+        throw new Error("missing required field request.order_uuid");
+      }
+      const path = `api/frontend/order/${request.orderUuid}/review`; // eslint-disable-line quotes
+      const body = JSON.stringify(request);
+      const queryParams: string[] = [];
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return handler({
+        path: uri,
+        method: "POST",
+        body,
+      }, {
+        service: "FrontendService",
+        method: "SubmitOrderReview",
+      }) as Promise<SubmitOrderReviewResponse>;
     },
   };
 }
