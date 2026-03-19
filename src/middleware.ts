@@ -62,13 +62,16 @@ export default async function middleware(req: NextRequest) {
             return NextResponse.redirect(url, { status: 308 });
         }
 
-        // Block manual URL country changes – only Country Picker or geo banner may change it
+        // Block manual URL country/locale changes – only Country Picker or geo banner may change them
         const allowedCountry = (countryCookie && supportedCountries.includes(countryCookie))
             ? countryCookie
             : getNormalizedCountry(detectedCountry);
-        if (country !== allowedCountry) {
+        const allowedLocale = (localeCookie && (routing.locales as readonly string[]).includes(localeCookie))
+            ? localeCookie
+            : getLocaleFromCountry(allowedCountry);
+        if (country !== allowedCountry || locale !== allowedLocale) {
             const url = req.nextUrl.clone();
-            url.pathname = `/${allowedCountry}/${locale}${rest}`;
+            url.pathname = `/${allowedCountry}/${allowedLocale}${rest}`;
             return NextResponse.redirect(url, { status: 308 });
         }
 
