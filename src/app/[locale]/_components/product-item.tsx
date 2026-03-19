@@ -1,5 +1,4 @@
 import type { common_Product } from "@/api/proto-http/frontend";
-import { formatPrice } from "@/lib/currency";
 import {
   currencySymbols,
   EMPTY_PREORDER,
@@ -8,6 +7,7 @@ import {
 import { useTranslations } from "next-intl";
 
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
+import { formatPrice } from "@/lib/currency";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -77,7 +77,11 @@ export function ProductItem({
     (parseFloat(priceValue) * (100 - parseInt(salePercentage || "0"))) / 100;
 
   const formattedPrice = formatPrice(priceValue, currencyKey, currencySymbol);
-  const formattedPriceWithSale = formatPrice(priceWithSale, currencyKey, currencySymbol);
+  const formattedPriceWithSale = formatPrice(
+    priceWithSale,
+    currencyKey,
+    currencySymbol,
+  );
 
   return (
     <div className={cn("relative", className)}>
@@ -87,9 +91,12 @@ export function ProductItem({
         enableThresholdAnimation={!disableAnimations}
         className={cn("group flex h-full w-full flex-col", className)}
       >
-        <div className={cn("relative", {
-          "group-data-[held=true]:animate-threshold-highlight": !disableAnimations,
-        })}>
+        <div
+          className={cn("relative", {
+            "group-data-[held=true]:animate-threshold-highlight":
+              !disableAnimations,
+          })}
+        >
           <Image
             src={
               product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
@@ -100,6 +107,7 @@ export function ProductItem({
               product.productDisplay?.thumbnail?.media?.thumbnail?.width,
               product.productDisplay?.thumbnail?.media?.thumbnail?.height,
             )}
+            blurhash={product.productDisplay?.thumbnail?.media?.blurhash}
             fit="contain"
             priority={imagePriority}
             loading={imagePriority ? "eager" : "lazy"}
@@ -129,9 +137,7 @@ export function ProductItem({
                 >
                   {formattedPrice}
                 </Text>
-                {isSaleApplied && (
-                  <Text>{formattedPriceWithSale}</Text>
-                )}
+                {isSaleApplied && <Text>{formattedPriceWithSale}</Text>}
                 {preorder !== EMPTY_PREORDER &&
                   isDateTodayOrFuture(preorder || "") && (
                     <Text variant="inactive">preorder</Text>

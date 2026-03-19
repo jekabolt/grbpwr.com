@@ -3,7 +3,10 @@
 import { useCallback, useRef } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 
-import { sendProductImageSwipeEvent, sendProductImageViewEvent } from "@/lib/analitycs/product-engagement";
+import {
+  sendProductImageSwipeEvent,
+  sendProductImageViewEvent,
+} from "@/lib/analitycs/product-engagement";
 import { Carousel } from "@/components/ui/carousel";
 import ImageComponent from "@/components/ui/image";
 
@@ -30,11 +33,11 @@ export function ProductImagesCarousel({
   const handleSelectedIndex = useCallback(
     (index: number) => {
       if (index === prevIndexRef.current) return;
-      
+
       const prevIndex = prevIndexRef.current;
       prevIndexRef.current = index;
       const realIndex = index % productMedia.length;
-      
+
       if (productId) {
         if (prevIndex !== -1) {
           const prevRealIndex = prevIndex % productMedia.length;
@@ -49,7 +52,7 @@ export function ProductImagesCarousel({
             swipe_direction: direction,
           });
         }
-        
+
         sendProductImageViewEvent({
           product_id: productId,
           image_index: realIndex + 1,
@@ -85,6 +88,7 @@ export function ProductImagesCarousel({
                 fit="contain"
                 priority={isPriority}
                 loading={isPriority ? "eager" : "lazy"}
+                blurhash={m?.media?.blurhash}
               />
             </div>
           );

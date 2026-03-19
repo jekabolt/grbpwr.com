@@ -53,10 +53,10 @@ export function MobileImageCarousel({
   useEffect(() => {
     if (!emblaApi) return;
     let prevIndex = emblaApi.selectedScrollSnap();
-    
+
     const updateSelectedIndex = () => {
       const idx = emblaApi.selectedScrollSnap();
-      
+
       if (idx !== prevIndex && productId) {
         const direction = idx > prevIndex ? "next" : "previous";
         sendProductImageSwipeEvent({
@@ -69,10 +69,10 @@ export function MobileImageCarousel({
           swipe_direction: direction,
         });
       }
-      
+
       prevIndex = idx;
       setSelectedIndex(idx);
-      
+
       if (productId) {
         sendProductImageViewEvent({
           product_id: productId,
@@ -162,6 +162,7 @@ export function MobileImageCarousel({
                   fit="contain"
                   priority={isPriority}
                   loading={isPriority ? "eager" : "lazy"}
+                  blurhash={media?.[selectedIndex]?.media?.blurhash}
                 />
               </div>
             );
@@ -230,6 +231,7 @@ export function MobileImageCarousel({
                       currentMedia.width,
                       currentMedia.height,
                     )}
+                    blurhash={media?.[selectedIndex]?.media?.blurhash}
                   />
                   <div className="absolute inset-0">
                     <Overlay
