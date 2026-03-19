@@ -2,7 +2,7 @@ import createMiddleware from "next-intl/middleware";
 
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
-import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleGeoAction, parseCountryLocalePath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
+import { getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -23,12 +23,16 @@ export default async function middleware(req: NextRequest) {
 
     //define detected country
     const detectedCountry = process.env.NODE_ENV === "development"
-        ? "de"
-        : req.headers.get("x-vercel-ip-country") || "us";
+        ? "gb"
+        : req.headers.get("x-vercel-ip-country") || "gb";
 
     //handle geo actions
     const geoResponse = handleGeoAction(req);
     if (geoResponse) return geoResponse;
+
+    //handle country picker / update-location redirects (legitimate country switch)
+    const fromPickerResponse = handleFromPickerAction(req);
+    if (fromPickerResponse) return fromPickerResponse;
 
     //handle country/locale paths
     const parsedPath = parseCountryLocalePath(pathname);
@@ -54,43 +58,85 @@ export default async function middleware(req: NextRequest) {
 
         if (!supportedCountries.includes(country!)) {
             const url = req.nextUrl.clone();
-            url.pathname = `/us/en${rest}`;
+            url.pathname = `/gb/en${rest}`;
             return NextResponse.redirect(url, { status: 308 });
+        }
+
+        // Block manual URL country/locale changes – only Country Picker or geo banner may change them.
+        // Skip for new users (no cookies) so they can land on the page and see the geo banner.
+        const hadChoice = countryCookie || localeCookie;
+        if (hadChoice) {
+            const allowedCountry = (countryCookie && supportedCountries.includes(countryCookie))
+                ? countryCookie
+                : getNormalizedCountry(detectedCountry);
+            const allowedLocale = (localeCookie && (routing.locales as readonly string[]).includes(localeCookie))
+                ? localeCookie
+                : getLocaleFromCountry(allowedCountry);
+            if (country !== allowedCountry || locale !== allowedLocale) {
+                const url = req.nextUrl.clone();
+                url.pathname = `/${allowedCountry}/${allowedLocale}${rest}`;
+                return NextResponse.redirect(url, { status: 308 });
+            }
         }
 
         const url = req.nextUrl.clone();
         url.pathname = `/${locale}${rest}` || "/";
-        const newReq = new NextRequest(url, { headers: req.headers });
-        const res = intlMiddleware(newReq);
 
-        // persist only country; let next-intl own NEXT_LOCALE
-        setMainCookies(res, country!, locale!);
-
-        //suggest cookies control - only for new users (no cookies)
+        // suggest cookies control - only for new users (no cookies)
         const hadCountry = Boolean(countryCookie);
         const hadLocale = Boolean(localeCookie);
+        let geoCountry = "";
+        let geoLocale = "";
+        let shouldSuggest = false;
 
         if (!hadCountry || !hadLocale) {
-            const geoCountry = getNormalizedCountry(detectedCountry);
-            const geoLocale = getLocaleFromCountry(geoCountry);
-            const differs = geoCountry !== country || geoLocale !== locale;
+            geoCountry = getNormalizedCountry(detectedCountry);
+            geoLocale = getLocaleFromCountry(geoCountry);
+            shouldSuggest = geoCountry !== country || geoLocale !== locale;
+        }
 
-            if (differs) {
-                setSuggestedCookies(res, geoCountry, geoLocale, country!);
-            }
-        } else {
-            clearSuggestCookies(res);
+        const newReq = new NextRequest(url, { headers: req.headers });
+        const intlRes = intlMiddleware(newReq);
+
+        const reqHeaders = new Headers(req.headers);
+        reqHeaders.set("x-nextjs-country", country!);
+        reqHeaders.set("x-nextjs-locale", locale!);
+        if (shouldSuggest) {
+            reqHeaders.set("x-geo-suggest-country", geoCountry);
+            reqHeaders.set("x-geo-suggest-locale", geoLocale);
+            reqHeaders.set("x-geo-suggest-current", country!);
+        }
+
+        const rewriteUrl = new URL(url.pathname + url.search, req.url);
+        const res = NextResponse.rewrite(rewriteUrl, {
+            request: { headers: reqHeaders },
+        });
+        intlRes.cookies.getAll().forEach((c) => res.cookies.set(c.name, c.value));
+        setMainCookies(res, country!, locale!);
+        const suggestCountryCookie = req.cookies.get("NEXT_SUGGEST_COUNTRY")?.value;
+        const suggestLocaleCookie = req.cookies.get("NEXT_SUGGEST_LOCALE")?.value;
+        const suggestCurrentCookie = req.cookies.get("NEXT_SUGGEST_CURRENT_COUNTRY")?.value;
+
+        if (shouldSuggest) {
+            setSuggestedCookies(res, geoCountry, geoLocale, country!);
+        } else if (suggestCountryCookie && suggestLocaleCookie && suggestCurrentCookie) {
+            // Refresh suggest cookies so they persist across navigation until user chooses
+            setSuggestedCookies(res, suggestCountryCookie, suggestLocaleCookie, suggestCurrentCookie);
         }
         return res;
     }
 
-    //handle paths without country/locale
+    //handle paths without country/locale (e.g. /, /en, /en/products)
     if (!/^\/[A-Za-z]{2}\/[a-z]{2}(?=\/|$)/.test(pathname)) {
         const targetCountry = (countryCookie && supportedCountries.includes(countryCookie))
             ? countryCookie
             : getNormalizedCountry(detectedCountry);
 
-        const targetLocale = localeCookie || getLocaleFromCountry(targetCountry);
+        const localeOnly = parseLocaleOnlyPath(pathname);
+        const targetLocale = localeOnly
+            ? ((routing.locales as readonly string[]).includes(localeOnly.locale) ? localeOnly.locale : localeCookie || getLocaleFromCountry(targetCountry))
+            : localeCookie || getLocaleFromCountry(targetCountry);
+        const pathRest = pathname === "/" ? "" : (localeOnly?.rest ?? pathname);
 
         // Redirect to home when site is disabled (path is not just /, /locale, or timeline)
         const isHomePath = pathname === "/" || /^\/[a-z]{2}\/?$/.test(pathname);
@@ -105,7 +151,6 @@ export default async function middleware(req: NextRequest) {
                     url.pathname = `/${targetCountry}/${targetLocale}`;
                     const res = NextResponse.redirect(url, { status: 307 });
                     setMainCookies(res, targetCountry, targetLocale);
-                    clearSuggestCookies(res);
                     return res;
                 }
             } catch {
@@ -113,13 +158,12 @@ export default async function middleware(req: NextRequest) {
             }
         }
 
-        // redirect to country/locale
+        // redirect to country/locale (preserve path when locale-only e.g. /en/products -> /us/en/products)
         const url = req.nextUrl.clone();
-        url.pathname = `/${targetCountry}/${targetLocale}${pathname}`;
+        url.pathname = `/${targetCountry}/${targetLocale}${pathRest}`;
         const res = NextResponse.redirect(url, { status: 308 });
         // Ensure defaults are persisted for subsequent requests
         setMainCookies(res, targetCountry, targetLocale);
-        clearSuggestCookies(res);
         return res;
     }
     return intlMiddleware(req);

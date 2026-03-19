@@ -59,8 +59,7 @@ export function getCarrierPriceForCurrency(
   if (!prices?.length) return undefined;
   const key = currency?.toUpperCase() || "";
   const match = prices.find(
-    (p: common_ShipmentCarrierPrice) =>
-      p.currency?.toUpperCase() === key,
+    (p: common_ShipmentCarrierPrice) => p.currency?.toUpperCase() === key,
   );
   return match?.price?.value ?? prices[0]?.price?.value;
 }
@@ -149,4 +148,12 @@ export function findCountryByCode(
   return countries.find(
     (c) => c.countryCode.toLowerCase() === countryCode.toLowerCase(),
   );
+}
+
+export function getSortedCountries(): { label: string; value: string }[] {
+  return getUniqueCountries()
+    .sort((a, b) =>
+      a.name.localeCompare(b.name, undefined, { sensitivity: "base" }),
+    )
+    .map((c) => ({ label: c.name, value: c.countryCode }));
 }

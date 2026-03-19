@@ -20,7 +20,7 @@ export function AdditionalHeader({
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
 
   // Preserve current locale when closing (don't switch to country's default)
-  const country = currentCountry.countryCode?.toLowerCase() || "us";
+  const country = currentCountry.countryCode?.toLowerCase() || "gb";
   const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
   const homePath = `/${country}/${locale}`;
 

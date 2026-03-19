@@ -23,7 +23,7 @@ export function useLocation({
     setNextCountry,
     setLanguageId,
     closeCountryPopup,
-    setCurrentCountry,
+    // setCurrentCountry,
   } = useTranslationsStore((state) => state);
 
   const languagesForCurrentCountry = (() => {
@@ -62,7 +62,9 @@ export function useLocation({
       "/";
 
     const newPath = `/${currentCountry.countryCode.toLowerCase()}/${lng}${pathWithoutLocaleCountry}`;
-    window.location.href = newPath;
+    const url = new URL(newPath, window.location.origin);
+    url.searchParams.set("from_picker", "1");
+    window.location.href = url.toString();
   };
 
   const handleCountrySelect = (country: any) => {

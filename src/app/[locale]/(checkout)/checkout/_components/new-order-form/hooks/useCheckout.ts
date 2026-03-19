@@ -51,7 +51,7 @@ export const useCheckoutEffects = ({
                 setTimeout(() => {
                     // Redirect to home page with current country/locale to preserve the selected country
                     const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
-                    const country = currentCountry.countryCode?.toLowerCase() || "us";
+                    const country = currentCountry.countryCode?.toLowerCase() || "gb";
                     router.push(`/${country}/${locale}`);
                 }, 2000);
             }

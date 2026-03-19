@@ -23,15 +23,35 @@ export const useOrderPersistence = (
     }, [form.watch, updateFormData]);
 
     useEffect(() => {
-        if (rehydrated && hasPersistedData && Object.keys(formData).length > 0) {
-            setTimeout(() => {
-                form.reset({
-                    ...defaultData,
-                    ...formData,
-                    ...(currentCountryCode && { country: currentCountryCode }),
-                });
-            }, 0);
-        }
+        if (!rehydrated) return;
+        const hasStash =
+            typeof sessionStorage !== "undefined" &&
+            sessionStorage.getItem("checkout-country-change-stash");
+        const hasFormData =
+            hasPersistedData && Object.keys(formData).length > 0;
+        if (!hasStash && !hasFormData) return;
+
+        setTimeout(() => {
+            let data = {
+                ...defaultData,
+                ...formData,
+                ...(currentCountryCode && { country: currentCountryCode }),
+            };
+            try {
+                const stash = sessionStorage.getItem("checkout-country-change-stash");
+                if (stash) {
+                    const { email, promoCode } = JSON.parse(stash);
+                    data = {
+                        ...data,
+                        email: email ?? data.email,
+                        promoCode: promoCode ?? data.promoCode,
+                    };
+                    sessionStorage.removeItem("checkout-country-change-stash");
+                }
+            } catch {
+            }
+            form.reset(data);
+        }, 0);
     }, [rehydrated]);
 
     return {

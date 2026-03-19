@@ -22,7 +22,7 @@ export const getLocaleFromCountry = (country: string): string => {
 
 export const getNormalizedCountry = (detectedCountry: string): string => {
     const countryCode = detectedCountry.toLowerCase();
-    return supportedCountries.includes(countryCode) ? countryCode : "us";
+    return supportedCountries.includes(countryCode) ? countryCode : "gb";
 };
 
 const getCookieOptions = (maxAge: number) => {
@@ -73,6 +73,21 @@ export const setMainCookies = (
     res.cookies.set("NEXT_LOCALE", locale, PERSISTENT_COOKIE_OPTIONS);
 };
 
+export const handleFromPickerAction = (req: NextRequest): NextResponse | null => {
+    if (req.nextUrl.searchParams.get("from_picker") !== "1") return null;
+
+    const parsedPath = parseCountryLocalePath(req.nextUrl.pathname);
+    if (!parsedPath || !parsedPath.country || !parsedPath.locale) return null;
+    if (!supportedCountries.includes(parsedPath.country)) return null;
+
+    const url = req.nextUrl.clone();
+    url.searchParams.delete("from_picker");
+    const res = NextResponse.redirect(url, { status: 308 });
+    setMainCookies(res, parsedPath.country, parsedPath.locale);
+    clearSuggestCookies(res);
+    return res;
+};
+
 export const handleGeoAction = (req: NextRequest): NextResponse | null => {
     const action = req.nextUrl.searchParams.get("geo");
     if (action !== "dismiss" && action !== "accept") return null;
@@ -90,20 +105,25 @@ export const handleGeoAction = (req: NextRequest): NextResponse | null => {
     const suggestLocale = req.cookies.get("NEXT_SUGGEST_LOCALE")?.value;
 
     if (suggestCountry && suggestLocale) {
-        setMainCookies(res, suggestCountry, suggestLocale);
-
         const target = req.nextUrl.clone();
         target.searchParams.delete("geo");
 
         const parsedPath = parseCountryLocalePath(target.pathname);
-        if (parsedPath &&
+        const localeOnly = parseLocaleOnlyPath(target.pathname);
+        const rest = parsedPath?.rest ?? localeOnly?.rest ?? "";
+
+        if (
+            parsedPath &&
             parsedPath.country?.toLowerCase() === suggestCountry.toLowerCase() &&
-            parsedPath.locale === suggestLocale) {
+            parsedPath.locale === suggestLocale
+        ) {
+            // Already on suggested country/locale, just clear suggest cookies
         } else {
-            target.pathname = `/${suggestCountry}/${suggestLocale}`;
+            target.pathname = `/${suggestCountry}/${suggestLocale}${rest}`;
         }
 
         const acceptRes = NextResponse.redirect(target, { status: 308 });
+        setMainCookies(acceptRes, suggestCountry, suggestLocale);
         clearSuggestCookies(acceptRes);
         return acceptRes;
     }

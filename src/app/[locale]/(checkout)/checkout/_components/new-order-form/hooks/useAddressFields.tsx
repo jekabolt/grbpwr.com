@@ -12,8 +12,9 @@ import { findCountryByCode, getFieldName, getUniqueCountries } from "../utils";
 export function useAddressFields(prefix?: string) {
   const { setValue, getValues } = useFormContext();
   const pathname = usePathname();
-  const { setCurrentCountry, cancelNextCountry } =
-    useTranslationsStore((s) => s);
+  const { setCurrentCountry, cancelNextCountry } = useTranslationsStore(
+    (s) => s,
+  );
 
   const countryFieldName = getFieldName(prefix, "country");
   const phoneFieldName = getFieldName(prefix, "phone");
@@ -32,24 +33,6 @@ export function useAddressFields(prefix?: string) {
 
   const stateItems =
     countryStatesMap[selectedCountry as keyof typeof countryStatesMap] || [];
-
-  useEffect(() => {
-    if (!selectedCountry) return;
-
-    const found = findCountryByCode(uniqueCountries, selectedCountry);
-    if (!found) return;
-
-    const currentPhone = getValues(phoneFieldName) || "";
-    if (!currentPhone || !/^\d/.test(currentPhone)) {
-      setValue(phoneFieldName, found.phoneCode);
-    }
-  }, [
-    selectedCountry,
-    phoneFieldName,
-    uniqueCountries,
-    getValues,
-    setValue,
-  ]);
 
   const updatePhoneCode = (newCountryCode: string) => {
     const country = findCountryByCode(uniqueCountries, newCountryCode);
@@ -76,6 +59,19 @@ export function useAddressFields(prefix?: string) {
     setValue(phoneFieldName, newPhoneValue);
   };
 
+  useEffect(() => {
+    if (!selectedCountry) return;
+
+    const found = findCountryByCode(uniqueCountries, selectedCountry);
+    if (!found) return;
+
+    const currentPhone = getValues(phoneFieldName) || "";
+    const phoneMatchesCountry = currentPhone.startsWith(found.phoneCode);
+    if (!currentPhone || !phoneMatchesCountry) {
+      updatePhoneCode(selectedCountry);
+    }
+  }, [selectedCountry, phoneFieldName, uniqueCountries, getValues, setValue]);
+
   const handleCountryChange = (newCountryCode: string) => {
     const currentFormCountry = getValues(countryFieldName);
 
@@ -97,14 +93,23 @@ export function useAddressFields(prefix?: string) {
         currencyKey: country.currencyKey,
       });
 
-      // Use country's default locale when changing country in checkout
+      const email = getValues("email");
+      const promoCode = getValues("promoCode");
+      if (email || promoCode) {
+        sessionStorage.setItem(
+          "checkout-country-change-stash",
+          JSON.stringify({ email: email || "", promoCode: promoCode || "" }),
+        );
+      }
+
       const newLocale = country.lng;
       const pathWithoutLocaleCountry =
-        pathname.replace(
-          /^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/,
-          "",
-        ) || "/";
-      window.location.href = `/${newCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
+        pathname.replace(/^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/, "") ||
+        "/";
+      const newPath = `/${newCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
+      const url = new URL(newPath, window.location.origin);
+      url.searchParams.set("from_picker", "1");
+      window.location.href = url.toString();
     }
   };
 

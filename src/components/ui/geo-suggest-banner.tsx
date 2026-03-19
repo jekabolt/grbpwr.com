@@ -26,7 +26,14 @@ export function GeoSuggestBanner({
   messages,
 }: Props) {
   const [visible, setVisible] = useState(false);
-  const [isCookiesAccepted, setIsCookiesAccepted] = useState(false);
+  const [isCookiesAccepted, setIsCookiesAccepted] = useState(() =>
+    typeof window !== "undefined"
+      ? !!(
+          localStorage.getItem("cookieConsent") ||
+          document.cookie.includes("cookieConsent=")
+        )
+      : false,
+  );
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
@@ -62,6 +69,12 @@ export function GeoSuggestBanner({
 
   useEffect(() => {
     const onConsentAccepted = () => setIsCookiesAccepted(true);
+    if (
+      localStorage.getItem("cookieConsent") ||
+      document.cookie.includes("cookieConsent=")
+    ) {
+      setIsCookiesAccepted(true);
+    }
     window.addEventListener("cookie-consent-accepted", onConsentAccepted);
     return () => {
       window.removeEventListener("cookie-consent-accepted", onConsentAccepted);
@@ -137,7 +150,7 @@ export function GeoSuggestBanner({
           </Button>
           <Button
             size="lg"
-            className="w-full uppercase"
+            className="w-full border border-transparent uppercase hover:border-textColor"
             variant="simpleReverse"
             onClick={onDismiss}
           >

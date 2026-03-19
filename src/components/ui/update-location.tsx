@@ -36,7 +36,9 @@ export function UpdateLocation() {
       "/";
 
     const newPath = `/${targetCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
-    window.location.href = newPath;
+    const url = new URL(newPath, window.location.origin);
+    url.searchParams.set("from_picker", "1");
+    window.location.href = url.toString();
   };
 
   return (

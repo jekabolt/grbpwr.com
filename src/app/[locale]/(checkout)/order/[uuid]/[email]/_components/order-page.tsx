@@ -2,7 +2,8 @@
 
 import { use, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { parseCountryLocalePath } from "@/lib/middleware-utils";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
@@ -37,7 +38,6 @@ export function OrderPageComponent({
   const { dictionary } = useDataContext();
   const { clearCart } = useCart((state) => state);
   const router = useRouter();
-  const pathname = usePathname();
   const t = useTranslations("order-info");
   const tCheckout = useTranslations("checkout");
   const purchaseFiredRef = useRef(false);
@@ -100,12 +100,12 @@ export function OrderPageComponent({
       window.history.replaceState({}, "", cleanUrl);
     } else if (redirectStatus === "failed" || redirectStatus === "canceled") {
       console.error("Payment failed or canceled");
-      const parts = pathname?.split("/").filter(Boolean) ?? [];
-      const country = parts[0] || "us";
-      const locale = parts[1] || "en";
+      const parsed = parseCountryLocalePath(window.location.pathname);
+      const country = parsed?.country || "gb";
+      const locale = parsed?.locale || "en";
       router.push(`/${country}/${locale}/checkout`);
     }
-  }, [clearCart, router, orderData, dictionary?.categories, sizeMap, pathname]);
+  }, [clearCart, router, orderData, dictionary?.categories, sizeMap]);
 
   if (!orderData) return null;
 
