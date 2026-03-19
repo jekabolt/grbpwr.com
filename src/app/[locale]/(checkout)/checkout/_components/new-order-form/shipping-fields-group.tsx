@@ -24,6 +24,7 @@ import {
   getCarrierPriceForCurrency,
   getFieldName,
   getShippingRegionForCountry,
+  getSortedCountries,
   isCarrierEligibleForRegion,
 } from "./utils";
 
@@ -149,6 +150,8 @@ export default function ShippingFieldsGroup({
   );
 }
 
+const sortedCountries = getSortedCountries();
+
 export function AddressFields({
   loading,
   prefix,
@@ -158,7 +161,7 @@ export function AddressFields({
   prefix?: string;
   disabled?: boolean;
 }) {
-  const { phoneCodeItems, stateItems, countries, handleCountryChange } =
+  const { phoneCodeItems, stateItems, handleCountryChange } =
     useAddressFields(prefix);
   const { watch } = useFormContext();
   const t = useTranslations("checkout");
@@ -204,10 +207,7 @@ export function AddressFields({
         fullWidth
         name={getFieldName(prefix, "country")}
         label={t("country/region:")}
-        items={countries.map((c) => ({
-          label: c.name,
-          value: c.countryCode,
-        }))}
+        items={sortedCountries}
         disabled={disabled}
         onValueChange={handleCountryChange}
       />

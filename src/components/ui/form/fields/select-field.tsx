@@ -9,10 +9,7 @@ type Props = {
   placeholder?: string;
   loading?: boolean;
   className?: string;
-  items: {
-    label: string;
-    value: string;
-  }[];
+  items: { label: string; value: string }[];
   [k: string]: any;
 };
 

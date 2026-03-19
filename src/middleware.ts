@@ -23,8 +23,8 @@ export default async function middleware(req: NextRequest) {
 
     //define detected country
     const detectedCountry = process.env.NODE_ENV === "development"
-        ? "de"
-        : req.headers.get("x-vercel-ip-country") || "us";
+        ? "gb"
+        : req.headers.get("x-vercel-ip-country") || "gb";
 
     //handle geo actions
     const geoResponse = handleGeoAction(req);
@@ -58,7 +58,7 @@ export default async function middleware(req: NextRequest) {
 
         if (!supportedCountries.includes(country!)) {
             const url = req.nextUrl.clone();
-            url.pathname = `/us/en${rest}`;
+            url.pathname = `/gb/en${rest}`;
             return NextResponse.redirect(url, { status: 308 });
         }
 

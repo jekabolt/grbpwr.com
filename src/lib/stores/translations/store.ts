@@ -5,9 +5,9 @@ import { TranslationsState, TranslationsStore } from "./store-types";
 export const defaultInitState: TranslationsState = {
     languageId: 1, // english
     currentCountry: {
-        name: "united states",
-        countryCode: "US",
-        currencyKey: "USD",
+        name: "united kingdom",
+        countryCode: "GB",
+        currencyKey: "GBP",
     },
     nextCountry: {
         name: "",

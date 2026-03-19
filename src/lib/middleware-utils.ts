@@ -22,7 +22,7 @@ export const getLocaleFromCountry = (country: string): string => {
 
 export const getNormalizedCountry = (detectedCountry: string): string => {
     const countryCode = detectedCountry.toLowerCase();
-    return supportedCountries.includes(countryCode) ? countryCode : "us";
+    return supportedCountries.includes(countryCode) ? countryCode : "gb";
 };
 
 const getCookieOptions = (maxAge: number) => {

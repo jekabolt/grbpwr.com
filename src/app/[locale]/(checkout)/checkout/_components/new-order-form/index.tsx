@@ -1,16 +1,12 @@
 "use client";
 
-import { currencySymbols } from "@/constants";
+import { useEffect, useRef, useState } from "react";
+import { currencySymbols, LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { Text } from "@/components/ui/text";
-import { SubmissionToaster } from "@/components/ui/toaster";
 import {
   sendFormErrorEvent,
   sendFormStartEvent,
@@ -26,9 +22,12 @@ import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
@@ -94,9 +93,9 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
 
   const {
     orderModifiedToastOpen,
+    toastMessage,
     setOrderModifiedToastOpen,
     setToastMessage,
-    toastMessage,
   } = useCheckoutEffects({
     order,
     products,
@@ -255,7 +254,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         clientSecret &&
         orderUuid
       ) {
-        const country = currentCountry.countryCode?.toLowerCase() || "us";
+        const country = currentCountry.countryCode?.toLowerCase() || "gb";
         const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
         const returnUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/${country}/${locale}/order/${orderUuid}/${window.btoa(data.email)}`;
 
@@ -358,7 +357,8 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                   disabled={isGroupDisabled("payment") || loading}
                   onPaymentElementChange={setIsPaymentElementComplete}
                   showPaymentError={
-                    (form.formState.isSubmitted || form.formState.submitCount > 0) &&
+                    (form.formState.isSubmitted ||
+                      form.formState.submitCount > 0) &&
                     !isPaymentFieldsValid &&
                     paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
                   }

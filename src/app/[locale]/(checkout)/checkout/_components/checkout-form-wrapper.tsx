@@ -33,7 +33,7 @@ export function CheckoutFormWrapper() {
 
     const t = setTimeout(() => {
       if (productsRef.current.length === 0) {
-        const country = currentCountry.countryCode?.toLowerCase() || "us";
+        const country = currentCountry.countryCode?.toLowerCase() || "gb";
         const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
         router.replace(`/${country}/${locale}`);
       }

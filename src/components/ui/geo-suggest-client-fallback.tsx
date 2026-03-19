@@ -34,7 +34,8 @@ function parseSuggestCookies(): {
  * (e.g. Vercel edge, static cache). Reads suggest cookies set by middleware.
  */
 export function GeoSuggestClientFallback() {
-  const [data, setData] = useState<ReturnType<typeof parseSuggestCookies>>(null);
+  const [data, setData] =
+    useState<ReturnType<typeof parseSuggestCookies>>(null);
 
   useEffect(() => {
     setData(parseSuggestCookies());

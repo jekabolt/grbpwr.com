@@ -34,18 +34,6 @@ export function useAddressFields(prefix?: string) {
   const stateItems =
     countryStatesMap[selectedCountry as keyof typeof countryStatesMap] || [];
 
-  useEffect(() => {
-    if (!selectedCountry) return;
-
-    const found = findCountryByCode(uniqueCountries, selectedCountry);
-    if (!found) return;
-
-    const currentPhone = getValues(phoneFieldName) || "";
-    if (!currentPhone || !/^\d/.test(currentPhone)) {
-      setValue(phoneFieldName, found.phoneCode);
-    }
-  }, [selectedCountry, phoneFieldName, uniqueCountries, getValues, setValue]);
-
   const updatePhoneCode = (newCountryCode: string) => {
     const country = findCountryByCode(uniqueCountries, newCountryCode);
     if (!country) return;
@@ -70,6 +58,19 @@ export function useAddressFields(prefix?: string) {
         : country.phoneCode;
     setValue(phoneFieldName, newPhoneValue);
   };
+
+  useEffect(() => {
+    if (!selectedCountry) return;
+
+    const found = findCountryByCode(uniqueCountries, selectedCountry);
+    if (!found) return;
+
+    const currentPhone = getValues(phoneFieldName) || "";
+    const phoneMatchesCountry = currentPhone.startsWith(found.phoneCode);
+    if (!currentPhone || !phoneMatchesCountry) {
+      updatePhoneCode(selectedCountry);
+    }
+  }, [selectedCountry, phoneFieldName, uniqueCountries, getValues, setValue]);
 
   const handleCountryChange = (newCountryCode: string) => {
     const currentFormCountry = getValues(countryFieldName);
