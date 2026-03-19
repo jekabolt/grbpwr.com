@@ -33,7 +33,6 @@ type Props = {
   isOpen: boolean;
   disabled?: boolean;
   order?: ValidateOrderItemsInsertResponse;
-  validateItems: (shipmentCarrierId: string) => Promise<any>;
   onToggle: () => void;
 };
 
@@ -42,7 +41,6 @@ export default function ShippingFieldsGroup({
   isOpen,
   disabled = false,
   order,
-  validateItems,
   onToggle,
 }: Props) {
   const t = useTranslations("checkout");
@@ -255,6 +253,7 @@ export function AddressFields({
         label={t("phone number:")}
         disabled={disabled}
         items={phoneCodeItems}
+        selectedCountry={selectedCountry}
       />
       <InputField
         loading={loading}
