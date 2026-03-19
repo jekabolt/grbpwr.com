@@ -22,10 +22,10 @@ type Props = {
   isOneSize?: boolean;
   view?: "grid" | "line";
   className?: string;
-  handleSizeSelect: (id: number) => void;
-  onOutOfStockHover?: (sizeId: number | null) => void;
   shouldBlink?: boolean;
   productContext?: ProductContext;
+  handleSizeSelect: (id: number) => void;
+  onOutOfStockHover?: (sizeId: number | null) => void;
 };
 
 export function SizePicker({
@@ -82,6 +82,7 @@ export function SizePicker({
             "grid grid-cols-4 gap-x-3 gap-y-7": view === "grid",
             "flex w-full flex-row flex-wrap items-center justify-center gap-5":
               view === "line",
+            "flex items-center justify-start": isOneSize,
           },
           className,
         )}
@@ -113,7 +114,7 @@ export function SizePicker({
             >
               {sizeQuantity?.[id] && sizeQuantity?.[id] > 0 ? (
                 <HoverText
-                  defaultText={isOneSize ? "one size" : name}
+                  defaultText={name}
                   hoveredText={`${sizeQuantity?.[id]} left`}
                   hoverTextCondition={sizeQuantity?.[id] > 5}
                 />
