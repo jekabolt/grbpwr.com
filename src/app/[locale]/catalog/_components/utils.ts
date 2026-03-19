@@ -150,6 +150,7 @@ export function getProductsPagedQueryParams(
       gender: genderEnums,
       collections: collections && collections.length > 0 ? collections : undefined,
       currency: currency?.toUpperCase() || undefined,
+      seasons: undefined,
     },
   };
 }

@@ -157,15 +157,48 @@ export type GenderEnum =
   | "GENDER_ENUM_MALE"
   | "GENDER_ENUM_FEMALE"
   | "GENDER_ENUM_UNISEX";
+export type SeasonEnum =
+  | "SEASON_ENUM_UNKNOWN"
+  | "SEASON_ENUM_SS"
+  | "SEASON_ENUM_FW"
+  | "SEASON_ENUM_PF"
+  | "SEASON_ENUM_RC";
 export type StockChangeSource =
   | "STOCK_CHANGE_SOURCE_UNSPECIFIED"
-  | "STOCK_CHANGE_SOURCE_ADMIN_ADD_PRODUCT"
-  | "STOCK_CHANGE_SOURCE_ADMIN_UPDATE_PRODUCT"
-  | "STOCK_CHANGE_SOURCE_ADMIN_UPDATE_SIZE_STOCK"
-  | "STOCK_CHANGE_SOURCE_ORDER_PLACED"
-  | "STOCK_CHANGE_SOURCE_ORDER_CANCELLED"
-  | "STOCK_CHANGE_SOURCE_ORDER_EXPIRED"
-  | "STOCK_CHANGE_SOURCE_ORDER_REFUNDED";
+  | "STOCK_CHANGE_SOURCE_ADMIN_NEW_PRODUCT"
+  | "STOCK_CHANGE_SOURCE_MANUAL_ADJUSTMENT"
+  | "STOCK_CHANGE_SOURCE_ORDER_PAID"
+  | "STOCK_CHANGE_SOURCE_ORDER_CUSTOM"
+  | "STOCK_CHANGE_SOURCE_ORDER_RETURNED"
+  | "STOCK_CHANGE_SOURCE_ORDER_CANCELLED";
+export type StockChangeReason =
+  | "STOCK_CHANGE_REASON_UNSPECIFIED"
+  // admin_new_product reasons
+  | "STOCK_CHANGE_REASON_INITIAL_STOCK"
+  // manual_adjustment reasons
+  | "STOCK_CHANGE_REASON_STOCK_COUNT"
+  | "STOCK_CHANGE_REASON_DAMAGE"
+  | "STOCK_CHANGE_REASON_LOSS"
+  | "STOCK_CHANGE_REASON_FOUND"
+  | "STOCK_CHANGE_REASON_CORRECTION"
+  | "STOCK_CHANGE_REASON_RESERVED_RELEASE"
+  | "STOCK_CHANGE_REASON_OTHER"
+  // order_reserved reasons
+  | "STOCK_CHANGE_REASON_ORDER"
+  // order_custom_reserved reasons
+  | "STOCK_CHANGE_REASON_CUSTOM_ORDER"
+  // order_returned reasons
+  | "STOCK_CHANGE_REASON_RETURN_TO_STOCK"
+  // order_cancelled reasons
+  | "STOCK_CHANGE_REASON_ORDER_CANCELLED";
+export type StockAdjustmentMode =
+  | "STOCK_ADJUSTMENT_MODE_UNSPECIFIED"
+  | "STOCK_ADJUSTMENT_MODE_SET"
+  | "STOCK_ADJUSTMENT_MODE_ADJUST";
+export type StockAdjustmentDirection =
+  | "STOCK_ADJUSTMENT_DIRECTION_UNSPECIFIED"
+  | "STOCK_ADJUSTMENT_DIRECTION_INCREASE"
+  | "STOCK_ADJUSTMENT_DIRECTION_DECREASE";
 // Category represents a hierarchical category structure
 export type Category = {
   id: number | undefined;
@@ -221,6 +254,7 @@ export type ProductBodyInsert = {
   composition: string | undefined;
   hidden: boolean | undefined;
   targetGender: GenderEnum | undefined;
+  season: SeasonEnum | undefined;
   version: string | undefined;
   collection: string | undefined;
   fit: string | undefined;
@@ -383,6 +417,9 @@ export type StockChange = {
   orderUuid: string | undefined;
   createdAt: wellKnownTimestamp | undefined;
   adminUsername: string | undefined;
+  referenceId: string | undefined;
+  reason?: StockChangeReason;
+  comment?: string;
 };
 
 export type OrderFactor =
@@ -409,12 +446,15 @@ export type FilterConditions = {
   preorder: boolean | undefined;
   byTag: string | undefined;
   collections: string[] | undefined;
+  seasons: SeasonEnum[] | undefined;
 };
 
 export type PaymentMethodNameEnum =
   | "PAYMENT_METHOD_NAME_ENUM_UNKNOWN"
   | "PAYMENT_METHOD_NAME_ENUM_CARD"
-  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST";
+  | "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
+  | "PAYMENT_METHOD_NAME_ENUM_BANK_INVOICE"
+  | "PAYMENT_METHOD_NAME_ENUM_CASH";
 // Payment represents the payment table
 export type Payment = {
   createdAt: wellKnownTimestamp | undefined;
@@ -511,6 +551,33 @@ export type OrderStatusEnum =
   | "ORDER_STATUS_ENUM_REFUND_IN_PROGRESS"
   | "ORDER_STATUS_ENUM_REFUNDED"
   | "ORDER_STATUS_ENUM_PARTIALLY_REFUNDED";
+export type ProductRatingEnum =
+  | "PRODUCT_RATING_ENUM_UNKNOWN"
+  | "PRODUCT_RATING_ENUM_POOR"
+  | "PRODUCT_RATING_ENUM_FAIR"
+  | "PRODUCT_RATING_ENUM_GOOD"
+  | "PRODUCT_RATING_ENUM_VERY_GOOD"
+  | "PRODUCT_RATING_ENUM_EXCELLENT";
+export type FitScaleEnum =
+  | "FIT_SCALE_ENUM_UNKNOWN"
+  | "FIT_SCALE_ENUM_RUNS_SMALL"
+  | "FIT_SCALE_ENUM_SLIGHTLY_SMALL"
+  | "FIT_SCALE_ENUM_TRUE_TO_SIZE"
+  | "FIT_SCALE_ENUM_SLIGHTLY_LARGE"
+  | "FIT_SCALE_ENUM_RUNS_LARGE";
+export type DeliverySpeedEnum =
+  | "DELIVERY_SPEED_ENUM_UNKNOWN"
+  | "DELIVERY_SPEED_ENUM_MUCH_FASTER_THAN_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_FASTER_THAN_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_AS_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_SLOWER_THAN_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_MUCH_SLOWER_THAN_EXPECTED";
+export type PackagingConditionEnum =
+  | "PACKAGING_CONDITION_ENUM_UNKNOWN"
+  | "PACKAGING_CONDITION_ENUM_DAMAGED"
+  | "PACKAGING_CONDITION_ENUM_ACCEPTABLE"
+  | "PACKAGING_CONDITION_ENUM_GOOD"
+  | "PACKAGING_CONDITION_ENUM_EXCELLENT";
 export type OrderNew = {
   items: OrderItemInsert[] | undefined;
   shippingAddress: AddressInsert | undefined;
@@ -584,6 +651,14 @@ export type OrderStatusHistory = {
   notes: string | undefined;
 };
 
+// CustomOrderItemInsert allows custom pricing per item (admin-only).
+export type CustomOrderItemInsert = {
+  productId: number | undefined;
+  quantity: number | undefined;
+  sizeId: number | undefined;
+  customPrice: googletype_Decimal | undefined;
+};
+
 // OrderItemAdjustment describes a change made during order item validation.
 export type OrderItemAdjustment = {
   productId: number | undefined;
@@ -596,6 +671,45 @@ export type OrderItemAdjustment = {
 export type OrderStatus = {
   id: number | undefined;
   name: OrderStatusEnum | undefined;
+};
+
+// Order-level review (delivery & packaging)
+export type OrderReview = {
+  id: number | undefined;
+  orderId: number | undefined;
+  deliveryRating: DeliverySpeedEnum | undefined;
+  packagingRating: PackagingConditionEnum | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+};
+
+export type OrderReviewInsert = {
+  deliveryRating: DeliverySpeedEnum | undefined;
+  packagingRating: PackagingConditionEnum | undefined;
+};
+
+// Item-level review (product rating, fit, recommendation, text)
+export type OrderItemReview = {
+  id: number | undefined;
+  orderItemId: number | undefined;
+  rating: ProductRatingEnum | undefined;
+  fitRating: FitScaleEnum | undefined;
+  recommend: boolean | undefined;
+  text: string | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+};
+
+export type OrderItemReviewInsert = {
+  orderItemId: number | undefined;
+  rating: ProductRatingEnum | undefined;
+  fitRating: FitScaleEnum | undefined;
+  recommend: boolean | undefined;
+  text: string | undefined;
+};
+
+// Combined review for an order (order-level + item-level)
+export type OrderReviewFull = {
+  orderReview: OrderReview | undefined;
+  itemReviews: OrderItemReview[] | undefined;
 };
 
 export type Dictionary = {
