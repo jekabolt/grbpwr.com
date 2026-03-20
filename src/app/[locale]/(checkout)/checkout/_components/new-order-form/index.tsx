@@ -31,6 +31,7 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
+import { useDisableScrollUntilGroupsExpanded } from "./hooks/useDisableScrollUntilGroupsExpanded";
 import { useCheckoutEffects } from "./hooks/useCheckout";
 import { useComplimentaryShippingToast } from "./hooks/useComplimentaryShippingToast";
 import { useOrderPersistence } from "./hooks/useOrderPersistence";
@@ -84,6 +85,12 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   );
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
+
+  const allGroupsOpen =
+    isGroupOpen("contact") &&
+    isGroupOpen("shipping") &&
+    isGroupOpen("payment");
+  useDisableScrollUntilGroupsExpanded(allGroupsOpen);
   const {
     showComplimentaryToast,
     complimentaryToastMessage,
