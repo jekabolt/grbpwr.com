@@ -56,7 +56,7 @@ export function MobileNavCart({
           <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
           <ModalTransition
             isOpen={open}
-            contentClassName="fixed inset-x-2.5 bottom-auto top-2 z-50 flex max-h-[calc(100vh-5px)] flex-col overflow-hidden bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden"
+            contentClassName="fixed inset-x-2.5 bottom-auto top-2 z-50 flex max-h-[calc(100vh-1rem)] flex-col overflow-hidden bg-bgColor px-2.5 pb-2.5 pt-4 text-textColor lg:hidden"
             contentSlideFrom="top"
             content={
               <DialogPrimitives.Content className="flex h-full min-h-0 flex-col">
