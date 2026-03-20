@@ -95,8 +95,11 @@ export function MobileProductInfo({
         productName={name}
         productCategory={productCategory || ""}
       />
-      <div ref={mainAreaRef} className="fixed inset-x-0 bottom-0 top-12">
-        <div className="relative h-full">
+      <div
+        ref={mainAreaRef}
+        className="fixed inset-x-0 bottom-0 top-12 h-screen border border-red-500 bg-bgColor"
+      >
+        <div className="relative h-screen">
           <div ref={carouselContainerRef} className="relative">
             <MobileImageCarousel
               media={product.media || []}
