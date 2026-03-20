@@ -78,7 +78,7 @@ export function BottomSheet({
           className={`border-b-none pointer-events-auto h-full space-y-6 border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5 ${
             scrollDisabled || !canScrollInside
               ? "touch-none overflow-hidden"
-              : "overflow-y-auto overscroll-contain"
+              : "overflow-y-auto overscroll-y-contain"
           }`}
         >
           {children}
