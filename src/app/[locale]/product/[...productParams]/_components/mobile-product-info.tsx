@@ -156,10 +156,10 @@ export function MobileProductInfo({
           sizeQuantity,
           isMaxQuantity,
           shouldBlinkSizes,
+          hoveredOutOfStockSizeId,
           handleDialogClose,
           handleSizeSelect,
           handleAddToCart,
-          hoveredOutOfStockSizeId,
           triggerSizeBlink,
           onCollapseSheet: () => collapseSheetRef.current?.(),
         }}
