@@ -84,7 +84,7 @@ export function MobileProductInfo({
   };
 
   return (
-    <div className="relative h-screen overflow-y-hidden border border-red-500">
+    <div className="relative h-full overflow-y-hidden">
       <NotifyMe
         id={productId}
         open={isNotifyMeOpen}
