@@ -55,6 +55,27 @@ export function MainAds({
           playOnHover={isHovered}
         />
       </div>
+      <div className="block h-full lg:hidden">
+        <Image
+          src={main.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""}
+          blurhash={main.single?.mediaLandscape?.media?.blurhash}
+          type={
+            isVideo(main.single?.mediaLandscape?.media?.fullSize?.mediaUrl)
+              ? "video"
+              : "image"
+          }
+          aspectRatio={calculateAspectRatio(
+            main.single?.mediaLandscape?.media?.fullSize?.width,
+            main.single?.mediaLandscape?.media?.fullSize?.height,
+          )}
+          alt="main hero image"
+          fit="cover"
+          priority={true}
+          loading="eager"
+          playOnHover={isHovered}
+          autoPlay={true}
+        />
+      </div>
       <div className="block h-full lg:hidden">{children}</div>
       <Overlay cover="container" />
       <div className="absolute inset-x-0 top-32 z-20 flex h-screen items-center lg:top-20">
