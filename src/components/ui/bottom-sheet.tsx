@@ -16,6 +16,7 @@ export interface BottomSheetProps {
   config?: UseBottomSheetConfig;
   contentAboveRef?: React.RefObject<HTMLDivElement>;
   collapseRef?: React.RefObject<(() => void) | null>;
+  scrollDisabled?: boolean;
 }
 
 export function BottomSheet({
@@ -26,6 +27,7 @@ export function BottomSheet({
   config,
   contentAboveRef,
   collapseRef,
+  scrollDisabled = false,
 }: BottomSheetProps) {
   const heightMotionValue = useMotionValue(config?.minHeight ?? 150);
 
@@ -45,6 +47,7 @@ export function BottomSheet({
       config,
       contentAboveRef,
       heightMotionValue,
+      scrollDisabled,
     });
 
   useEffect(() => {
@@ -73,9 +76,9 @@ export function BottomSheet({
       >
         <div
           className={`border-b-none pointer-events-auto h-full space-y-6 border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5 ${
-            canScrollInside
-              ? "overflow-y-auto overscroll-contain"
-              : "touch-none overflow-hidden"
+            scrollDisabled || !canScrollInside
+              ? "touch-none overflow-hidden"
+              : "overflow-y-auto overscroll-contain"
           }`}
         >
           {children}

@@ -103,6 +103,7 @@ export function MobileProductInfo({
               productId={product.product?.sku || ""}
               productName={name}
               productCategory={productCategory || ""}
+              scrollDisabled={isMobileSizeDialogOpen}
             />
           </div>
           <BottomSheet
@@ -112,6 +113,7 @@ export function MobileProductInfo({
             mainAreaRef={mainAreaRef}
             containerRef={containerRef}
             collapseRef={collapseSheetRef}
+            scrollDisabled={isMobileSizeDialogOpen}
           >
             <Text variant="uppercase">{name}</Text>
             <div className="space-y-12">
