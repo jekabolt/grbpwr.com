@@ -30,7 +30,8 @@ type Handlers = {
   handleAddToCart?: () => Promise<boolean>;
   handleDialogClose?: () => void;
   triggerSizeBlink?: () => void;
-  toggleMeasurementPopup?: () => void; // New prop
+  toggleMeasurementPopup?: () => void;
+  onCollapseSheet?: () => void;
 };
 
 export function AddToCartBtn({
@@ -42,7 +43,9 @@ export function AddToCartBtn({
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
-  const { preorder, preorderRaw, name, productCategory } = useProductBasics({ product });
+  const { preorder, preorderRaw, name, productCategory } = useProductBasics({
+    product,
+  });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
   const {
@@ -78,6 +81,7 @@ export function AddToCartBtn({
     handleAddToCart,
     handleDialogClose,
     triggerSizeBlink,
+    onCollapseSheet,
   } = { ...internalHandlers, ...handlers };
 
   const outOfStock = handlers?.outOfStock ?? internalOutOfStock;
@@ -101,9 +105,9 @@ export function AddToCartBtn({
     }
 
     if (!activeSizeId) {
-      // Trigger the blink effect
+      onCollapseSheet?.();
       triggerSizeBlink?.();
-      
+
       if (sizePickerRef?.current) {
         const scrollableContainer = sizePickerRef.current.closest(
           ".overflow-y-scroll",
@@ -166,7 +170,10 @@ export function AddToCartBtn({
             disabled={isMaxQuantityFinal}
             onAction={handleAddToCartClick}
             analyticsButtonId="add_to_cart"
-            analyticsProductName={product.product?.productDisplay?.productBody?.translations?.[0]?.name}
+            analyticsProductName={
+              product.product?.productDisplay?.productBody?.translations?.[0]
+                ?.name
+            }
             isLoadingExternal={isLoading}
             className="border-none"
             onMouseEnter={() => setIsHovered(true)}

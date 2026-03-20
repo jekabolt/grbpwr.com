@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 export interface UseBottomSheetConfig {
     minHeight?: number;
@@ -342,11 +342,22 @@ export function useBottomSheet({
         };
     }, [containerHeight]);
 
+    const collapseToMin = useCallback(() => {
+        const minH = getMinHeight();
+        setContainerHeight(minH);
+        heightMotionValue?.set(minH);
+        const scrollableElement = containerRef.current?.querySelector(
+            '[class*="overflow-y-auto"]',
+        ) as HTMLElement | null;
+        if (scrollableElement) scrollableElement.scrollTop = 0;
+    }, [config.minHeight]);
+
     return {
         containerHeight,
         canScrollInside: canScrollInside(),
         isAtMinHeight: isAtMinHeight(),
         touchState: touchState.current,
+        collapseToMin,
     };
 }
 

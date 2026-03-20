@@ -59,6 +59,7 @@ export function MobileProductInfo({
     useMeasurementSizes({ product });
   const containerRef = useRef<HTMLDivElement>(null!);
   const mainAreaRef = useRef<HTMLDivElement>(null!);
+  const collapseSheetRef = useRef<(() => void) | null>(null);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
   const carouselHeight = useElementHeight(carouselContainerRef, 48);
 
@@ -110,6 +111,7 @@ export function MobileProductInfo({
             }}
             mainAreaRef={mainAreaRef}
             containerRef={containerRef}
+            collapseRef={collapseSheetRef}
           >
             <Text variant="uppercase">{name}</Text>
             <div className="space-y-12">
@@ -159,6 +161,7 @@ export function MobileProductInfo({
           handleAddToCart,
           hoveredOutOfStockSizeId,
           triggerSizeBlink,
+          onCollapseSheet: () => collapseSheetRef.current?.(),
         }}
       />
     </div>

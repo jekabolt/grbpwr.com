@@ -15,6 +15,7 @@ export interface BottomSheetProps {
   isCarouselScrolling?: boolean;
   config?: UseBottomSheetConfig;
   contentAboveRef?: React.RefObject<HTMLDivElement>;
+  collapseRef?: React.RefObject<(() => void) | null>;
 }
 
 export function BottomSheet({
@@ -24,6 +25,7 @@ export function BottomSheet({
   isCarouselScrolling = false,
   config,
   contentAboveRef,
+  collapseRef,
 }: BottomSheetProps) {
   const heightMotionValue = useMotionValue(config?.minHeight ?? 150);
 
@@ -35,20 +37,30 @@ export function BottomSheet({
     restSpeed: 2,
   });
 
-  const { containerHeight, canScrollInside, touchState } = useBottomSheet({
-    mainAreaRef,
-    containerRef,
-    isCarouselScrolling,
-    config,
-    contentAboveRef,
-    heightMotionValue,
-  });
+  const { containerHeight, canScrollInside, touchState, collapseToMin } =
+    useBottomSheet({
+      mainAreaRef,
+      containerRef,
+      isCarouselScrolling,
+      config,
+      contentAboveRef,
+      heightMotionValue,
+    });
 
   useEffect(() => {
     if (!touchState.isDragging) {
       heightMotionValue.set(containerHeight);
     }
   }, [containerHeight, touchState.isDragging, heightMotionValue]);
+
+  useEffect(() => {
+    if (collapseRef) {
+      collapseRef.current = collapseToMin;
+      return () => {
+        collapseRef.current = null;
+      };
+    }
+  }, [collapseRef, collapseToMin]);
 
   return (
     <div className="pointer-events-none absolute inset-0 scroll-smooth">
