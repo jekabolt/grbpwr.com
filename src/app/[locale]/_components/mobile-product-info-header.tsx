@@ -6,7 +6,7 @@ import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
 export function MobileProductInfoHeader({ left, link, onClick }: HeaderProps) {
   return (
-    <header className="fixed inset-x-2.5 top-2.5 z-10 flex items-center justify-between">
+    <header className="fixed inset-x-2.5 top-2.5 z-10 flex items-center justify-between bg-bgColor">
       {onClick ? (
         <AnimatedButton
           onClick={onClick}
