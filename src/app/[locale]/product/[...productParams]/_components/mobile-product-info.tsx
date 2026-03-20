@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 
 import { useElementHeight } from "@/lib/hooks/useBottomSheet";
@@ -10,6 +10,7 @@ import { Text } from "@/components/ui/text";
 
 import { GarmentDescription } from "./garmentDescription";
 import { LastViewedProducts } from "./last-viewed-products";
+import type { CarouselNavApi } from "./mobile-image-carousel";
 import { MobileImageCarousel } from "./mobile-image-carousel";
 import { MobileMeasurements } from "./mobile-measurements";
 import { NotifyMe } from "./notify-me";
@@ -62,6 +63,15 @@ export function MobileProductInfo({
   const collapseSheetRef = useRef<(() => void) | null>(null);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
   const carouselHeight = useElementHeight(carouselContainerRef, 48);
+  const carouselApiRef = useRef<CarouselNavApi | null>(null);
+  const handleCarouselApiReady = useCallback((api: CarouselNavApi) => {
+    carouselApiRef.current = api;
+  }, []);
+
+  const carouselOverlayHeight =
+    typeof window !== "undefined"
+      ? Math.max(0, window.innerHeight - 48 - carouselHeight)
+      : 0;
 
   const currencyKey = currentCountry.currencyKey || "EUR";
   const productPrice =
@@ -104,16 +114,27 @@ export function MobileProductInfo({
               productName={name}
               productCategory={productCategory || ""}
               scrollDisabled={isMobileSizeDialogOpen}
+              onCarouselApiReady={handleCarouselApiReady}
             />
           </div>
           <BottomSheet
             config={{
               minHeight: carouselHeight,
+              initialState: 150,
             }}
             mainAreaRef={mainAreaRef}
             containerRef={containerRef}
             collapseRef={collapseSheetRef}
             scrollDisabled={isMobileSizeDialogOpen}
+            carouselNav={
+              carouselOverlayHeight > 0
+                ? {
+                    onPrev: () => carouselApiRef.current?.scrollPrev(),
+                    onNext: () => carouselApiRef.current?.scrollNext(),
+                    overlayHeight: carouselOverlayHeight,
+                  }
+                : undefined
+            }
           >
             <Text variant="uppercase">{name}</Text>
             <div className="space-y-12">

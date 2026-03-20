@@ -6,13 +6,7 @@ import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
 export function MobileProductInfoHeader({ left, link, onClick }: HeaderProps) {
   return (
-    <>
-      {/* Safari dynamic island tint: fixed element with explicit bg so Safari uses it for toolbar tinting. Transparent = black. */}
-      <div
-        className="pointer-events-none fixed inset-x-0 top-0 z-[100] min-h-[4px] bg-bgColor [height:env(safe-area-inset-top)]"
-        aria-hidden
-      />
-      <header className="fixed inset-x-2.5 top-2.5 z-[100] flex items-center justify-between">
+    <header className="fixed inset-x-2.5 top-2.5 z-[100] flex items-center justify-between">
       {onClick ? (
         <AnimatedButton
           onClick={onClick}
@@ -32,6 +26,5 @@ export function MobileProductInfoHeader({ left, link, onClick }: HeaderProps) {
       )}
       <MobileNavCart isProductInfo />
     </header>
-    </>
   );
 }

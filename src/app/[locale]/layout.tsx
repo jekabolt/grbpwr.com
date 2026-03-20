@@ -1,27 +1,26 @@
+import { Metadata } from "next";
+import { cookies } from "next/headers";
+import Script from "next/script";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { GoogleTagManager } from "@next/third-parties/google";
-import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import {
   getMessages,
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
-import { cookies } from "next/headers";
-import Script from "next/script";
 
+import { generateCommonMetadata } from "@/lib/common-metadata";
 import { AnalyticsInit } from "@/components/analytics-init";
 import { PageTransition } from "@/components/page-transition";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
 import { SiteGuard } from "@/components/ui/site-guard";
 import { ToastProvider } from "@/components/ui/toaster";
-import { generateCommonMetadata } from "@/lib/common-metadata";
 
 import "../globals.css";
 
-import { HtmlThemeSync } from "@/components/html-theme-sync";
 import { UpdateLocation } from "@/components/ui/update-location";
 
 export function generateStaticParams() {
@@ -48,6 +47,7 @@ export const viewport = {
   maximumScale: 1.0,
   userScalable: false,
   viewportFit: "cover",
+  themeColor: "#ffffff",
 };
 
 interface Props {
@@ -93,7 +93,6 @@ export default async function RootLayout({ children, params }: Props) {
           {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YX09JT9HVC',{send_page_view:false});`}
         </Script>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <HtmlThemeSync />
           <CookieBanner defaultVisible={!hasConsent} />
           <ToastProvider>
             <PageTransition>

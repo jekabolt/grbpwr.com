@@ -7,6 +7,12 @@ import {
   useBottomSheet,
   type UseBottomSheetConfig,
 } from "../../lib/hooks/useBottomSheet";
+import { AnimatedButton } from "./animated-button";
+
+export type CarouselNavProps = {
+  onPrev: () => void;
+  onNext: () => void;
+};
 
 export interface BottomSheetProps {
   children: ReactNode;
@@ -17,6 +23,8 @@ export interface BottomSheetProps {
   contentAboveRef?: React.RefObject<HTMLDivElement>;
   collapseRef?: React.RefObject<(() => void) | null>;
   scrollDisabled?: boolean;
+  /** Renders prev/next buttons over the carousel. overlayHeight = carousel area height to overlap */
+  carouselNav?: CarouselNavProps & { overlayHeight: number };
 }
 
 export function BottomSheet({
@@ -28,8 +36,10 @@ export function BottomSheet({
   contentAboveRef,
   collapseRef,
   scrollDisabled = false,
+  carouselNav,
 }: BottomSheetProps) {
-  const heightMotionValue = useMotionValue(config?.minHeight ?? 150);
+  const initialHeight = config?.initialState ?? config?.minHeight ?? 150;
+  const heightMotionValue = useMotionValue(initialHeight);
 
   const heightSpring = useSpring(heightMotionValue, {
     stiffness: 800,
@@ -69,13 +79,41 @@ export function BottomSheet({
     <div className="pointer-events-none absolute inset-0 scroll-smooth">
       <motion.div
         ref={containerRef}
-        className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col overflow-hidden"
+        className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col overflow-visible"
         style={{
           height: heightSpring,
         }}
       >
+        {carouselNav && (
+          <div
+            className="absolute left-0 right-0 flex text-bgColor mix-blend-exclusion"
+            style={{
+              bottom: "100%",
+              height: carouselNav.overlayHeight,
+            }}
+            data-bottom-sheet-ignore-drag="true"
+          >
+            <AnimatedButton
+              animationDuration={300}
+              animationArea="text-no-underline"
+              onClick={carouselNav.onPrev}
+              className="flex w-20 flex-col items-start justify-end pl-2.5 text-bgColor"
+            >
+              {"<"}
+            </AnimatedButton>
+            <div className="pointer-events-none flex-1" />
+            <AnimatedButton
+              animationArea="text-no-underline"
+              animationDuration={300}
+              onClick={carouselNav.onNext}
+              className="z-50 flex w-20 flex-col items-end justify-end pr-2.5 text-bgColor"
+            >
+              {">"}
+            </AnimatedButton>
+          </div>
+        )}
         <div
-          className={`border-b-none pointer-events-auto h-full space-y-6 border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5 ${
+          className={`border-b-none pointer-events-auto h-full space-y-6 overflow-hidden border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5 ${
             scrollDisabled || !canScrollInside
               ? "touch-none overflow-hidden"
               : "overflow-y-auto overscroll-y-contain"

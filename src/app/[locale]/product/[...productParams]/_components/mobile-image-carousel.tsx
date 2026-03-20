@@ -13,7 +13,6 @@ import {
   sendProductZoomEvent,
 } from "@/lib/analitycs/product-engagement";
 import { calculateAspectRatio } from "@/lib/utils";
-import { AnimatedButton } from "@/components/ui/animated-button";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
 import { ImageZoom } from "@/components/ui/image-zoom";
@@ -28,12 +27,18 @@ const EMBLA_OPTIONS = {
   startIndex: 0,
 };
 
+export type CarouselNavApi = {
+  scrollPrev: () => void;
+  scrollNext: () => void;
+};
+
 type MobileImageCarouselProps = {
   media: common_MediaFull[];
   productId?: string;
   productName?: string;
   productCategory?: string;
   scrollDisabled?: boolean;
+  onCarouselApiReady?: (api: CarouselNavApi) => void;
 };
 
 export function MobileImageCarousel({
@@ -42,6 +47,7 @@ export function MobileImageCarousel({
   productName,
   productCategory,
   scrollDisabled = false,
+  onCarouselApiReady,
 }: MobileImageCarouselProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -103,6 +109,15 @@ export function MobileImageCarousel({
     setSelectedIndex(emblaApi.selectedScrollSnap());
     setShouldAnimate(true);
   }, [isOpen, emblaApi]);
+
+  useEffect(() => {
+    if (emblaApi && onCarouselApiReady) {
+      onCarouselApiReady({
+        scrollPrev: () => emblaApi.scrollPrev(true),
+        scrollNext: () => emblaApi.scrollNext(true),
+      });
+    }
+  }, [emblaApi, onCarouselApiReady]);
 
   const currentMedia = media[selectedIndex]?.media?.fullSize;
 
@@ -175,25 +190,9 @@ export function MobileImageCarousel({
           })}
         </div>
         <div className="absolute inset-0 flex text-bgColor mix-blend-exclusion">
-          <AnimatedButton
-            animationDuration={300}
-            animationArea="text-no-underline"
-            onClick={() => emblaApi?.scrollPrev(true)}
-            className="flex w-20 flex-col items-start justify-end pl-2.5 text-bgColor"
-          >
-            {"<"}
-          </AnimatedButton>
           <DialogPrimitives.Trigger asChild>
             <div className="flex-1" />
           </DialogPrimitives.Trigger>
-          <AnimatedButton
-            animationArea="text-no-underline"
-            animationDuration={300}
-            onClick={() => emblaApi?.scrollNext(true)}
-            className="z-50 flex w-20 flex-col items-end justify-end pr-2.5 text-bgColor"
-          >
-            {">"}
-          </AnimatedButton>
         </div>
       </div>
 

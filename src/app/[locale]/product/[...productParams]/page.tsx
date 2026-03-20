@@ -89,7 +89,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <ProductImagesCarousel
           productMedia={productMedia}
           productId={product?.product?.sku || ""}
-          productName={product?.product?.productDisplay?.productBody?.translations?.[0]?.name || ""}
+          productName={
+            product?.product?.productDisplay?.productBody?.translations?.[0]
+              ?.name || ""
+          }
         />
         {product && <ProductInfo product={product} />}
         {product?.product && <LastViewedProducts product={product.product} />}
