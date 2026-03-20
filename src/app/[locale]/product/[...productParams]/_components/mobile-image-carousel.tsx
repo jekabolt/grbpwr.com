@@ -33,6 +33,7 @@ type MobileImageCarouselProps = {
   productId?: string;
   productName?: string;
   productCategory?: string;
+  scrollDisabled?: boolean;
 };
 
 export function MobileImageCarousel({
@@ -40,6 +41,7 @@ export function MobileImageCarousel({
   productId,
   productName,
   productCategory,
+  scrollDisabled = false,
 }: MobileImageCarouselProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -49,6 +51,11 @@ export function MobileImageCarousel({
   const [emblaRef, emblaApi] = useEmblaCarousel(EMBLA_OPTIONS, [
     WheelGesturesPlugin(),
   ]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.reInit({ ...EMBLA_OPTIONS, watchDrag: !scrollDisabled });
+  }, [emblaApi, scrollDisabled]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -151,7 +158,6 @@ export function MobileImageCarousel({
         <div className="flex h-full w-full">
           {media.map((m, index) => {
             const compressed = m?.media?.compressed;
-            // Prioritize first image for mobile LCP
             const isPriority = index === 0;
             return (
               <div key={`${m.id}-${index}`} className="h-full flex-[0_0_102%]">

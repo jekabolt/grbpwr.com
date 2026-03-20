@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 export interface UseBottomSheetConfig {
     minHeight?: number;
@@ -11,7 +11,8 @@ export interface UseBottomSheetProps {
     isCarouselScrolling?: boolean;
     config?: UseBottomSheetConfig;
     contentAboveRef?: React.RefObject<HTMLDivElement>;
-    heightMotionValue?: any
+    heightMotionValue?: any;
+    scrollDisabled?: boolean;
 }
 
 export interface TouchState {
@@ -32,6 +33,7 @@ export function useBottomSheet({
     containerRef,
     config: userConfig = {},
     heightMotionValue,
+    scrollDisabled = false,
 }: UseBottomSheetProps) {
     const config = {
         minHeight: 150,
@@ -116,6 +118,7 @@ export function useBottomSheet({
     };
 
     const handleTouchStart = (e: TouchEvent) => {
+        if (scrollDisabled) return;
         const touch = e.touches[0];
         const state = touchState.current;
         const timestamp = Date.now();
@@ -149,6 +152,7 @@ export function useBottomSheet({
     };
 
     const handleTouchMove = (e: TouchEvent) => {
+        if (scrollDisabled) return;
         const touch = e.touches[0];
         const state = touchState.current;
         const currentY = touch.clientY;
@@ -235,6 +239,7 @@ export function useBottomSheet({
 
 
     const handleTouchEnd = (e: TouchEvent) => {
+        if (scrollDisabled) return;
         const state = touchState.current;
 
         if (!state.hasMoved) return;
@@ -290,7 +295,7 @@ export function useBottomSheet({
             mainArea.removeEventListener("touchmove", handleTouchMove);
             mainArea.removeEventListener("touchend", handleTouchEnd);
         };
-    }, [containerHeight]);
+    }, [containerHeight, scrollDisabled]);
 
     useEffect(() => {
         if (!containerRef.current || touchState.current.isDragging) return;
@@ -342,11 +347,22 @@ export function useBottomSheet({
         };
     }, [containerHeight]);
 
+    const collapseToMin = useCallback(() => {
+        const minH = getMinHeight();
+        setContainerHeight(minH);
+        heightMotionValue?.set(minH);
+        const scrollableElement = containerRef.current?.querySelector(
+            '[class*="overflow-y-auto"]',
+        ) as HTMLElement | null;
+        if (scrollableElement) scrollableElement.scrollTop = 0;
+    }, [config.minHeight]);
+
     return {
         containerHeight,
         canScrollInside: canScrollInside(),
         isAtMinHeight: isAtMinHeight(),
         touchState: touchState.current,
+        collapseToMin,
     };
 }
 

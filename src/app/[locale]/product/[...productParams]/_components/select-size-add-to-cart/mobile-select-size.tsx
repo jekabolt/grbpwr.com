@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
@@ -34,6 +35,16 @@ export function MobileSelectSize({
     activeSizeId,
   });
   const tAccessibility = useTranslations("accessibility");
+
+  useEffect(() => {
+    if (open) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [open]);
 
   const handleSizeClick = (sizeId: number) => {
     const isOutOfStock = outOfStock?.[sizeId];

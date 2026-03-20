@@ -15,6 +15,8 @@ export interface BottomSheetProps {
   isCarouselScrolling?: boolean;
   config?: UseBottomSheetConfig;
   contentAboveRef?: React.RefObject<HTMLDivElement>;
+  collapseRef?: React.RefObject<(() => void) | null>;
+  scrollDisabled?: boolean;
 }
 
 export function BottomSheet({
@@ -24,6 +26,8 @@ export function BottomSheet({
   isCarouselScrolling = false,
   config,
   contentAboveRef,
+  collapseRef,
+  scrollDisabled = false,
 }: BottomSheetProps) {
   const heightMotionValue = useMotionValue(config?.minHeight ?? 150);
 
@@ -35,20 +39,31 @@ export function BottomSheet({
     restSpeed: 2,
   });
 
-  const { containerHeight, canScrollInside, touchState } = useBottomSheet({
-    mainAreaRef,
-    containerRef,
-    isCarouselScrolling,
-    config,
-    contentAboveRef,
-    heightMotionValue,
-  });
+  const { containerHeight, canScrollInside, touchState, collapseToMin } =
+    useBottomSheet({
+      mainAreaRef,
+      containerRef,
+      isCarouselScrolling,
+      config,
+      contentAboveRef,
+      heightMotionValue,
+      scrollDisabled,
+    });
 
   useEffect(() => {
     if (!touchState.isDragging) {
       heightMotionValue.set(containerHeight);
     }
   }, [containerHeight, touchState.isDragging, heightMotionValue]);
+
+  useEffect(() => {
+    if (collapseRef) {
+      collapseRef.current = collapseToMin;
+      return () => {
+        collapseRef.current = null;
+      };
+    }
+  }, [collapseRef, collapseToMin]);
 
   return (
     <div className="pointer-events-none absolute inset-0 scroll-smooth">
@@ -61,9 +76,9 @@ export function BottomSheet({
       >
         <div
           className={`border-b-none pointer-events-auto h-full space-y-6 border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5 ${
-            canScrollInside
-              ? "overflow-y-auto overscroll-contain"
-              : "touch-none overflow-hidden"
+            scrollDisabled || !canScrollInside
+              ? "touch-none overflow-hidden"
+              : "overflow-y-auto overscroll-contain"
           }`}
         >
           {children}
