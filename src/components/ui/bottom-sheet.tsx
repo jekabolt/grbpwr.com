@@ -23,7 +23,6 @@ export interface BottomSheetProps {
   contentAboveRef?: React.RefObject<HTMLDivElement>;
   collapseRef?: React.RefObject<(() => void) | null>;
   scrollDisabled?: boolean;
-  /** Renders prev/next buttons over the carousel. overlayHeight = carousel area height to overlap */
   carouselNav?: CarouselNavProps & { overlayHeight: number };
 }
 
@@ -86,7 +85,7 @@ export function BottomSheet({
       >
         {carouselNav && (
           <div
-            className="absolute left-0 right-0 flex text-bgColor mix-blend-exclusion"
+            className="absolute left-0 right-0 flex items-end border-x border-t border-textInactiveColor bg-bgColor"
             style={{
               bottom: "100%",
               height: carouselNav.overlayHeight,
@@ -97,7 +96,7 @@ export function BottomSheet({
               animationDuration={300}
               animationArea="text-no-underline"
               onClick={carouselNav.onPrev}
-              className="flex w-20 flex-col items-start justify-end pl-2.5 text-bgColor"
+              className="flex w-20 flex-col items-start justify-end pl-2.5"
             >
               {"<"}
             </AnimatedButton>
@@ -106,14 +105,14 @@ export function BottomSheet({
               animationArea="text-no-underline"
               animationDuration={300}
               onClick={carouselNav.onNext}
-              className="z-50 flex w-20 flex-col items-end justify-end pr-2.5 text-bgColor"
+              className="z-50 flex w-20 flex-col items-end justify-end pr-2.5"
             >
               {">"}
             </AnimatedButton>
           </div>
         )}
         <div
-          className={`border-b-none pointer-events-auto h-full space-y-6 overflow-hidden border-x border-t border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5 ${
+          className={`border-b-none border-t-none pointer-events-auto h-full space-y-6 overflow-hidden border-x border-textInactiveColor bg-bgColor px-2.5 pb-32 pt-2.5 mix-blend-normal ${
             scrollDisabled || !canScrollInside
               ? "touch-none overflow-hidden"
               : "overflow-y-auto overscroll-y-contain"

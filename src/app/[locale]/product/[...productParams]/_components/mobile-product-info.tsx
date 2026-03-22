@@ -68,9 +68,13 @@ export function MobileProductInfo({
     carouselApiRef.current = api;
   }, []);
 
+  const carouselNavStripPx = 25;
   const carouselOverlayHeight =
     typeof window !== "undefined"
-      ? Math.max(0, window.innerHeight - 48 - carouselHeight)
+      ? Math.min(
+          carouselNavStripPx,
+          Math.max(0, window.innerHeight - 48 - carouselHeight),
+        )
       : 0;
 
   const currencyKey = currentCountry.currencyKey || "EUR";
