@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
@@ -53,6 +53,7 @@ export function MobileImageCarousel({
   const [isClosing, setIsClosing] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const highlightEndTimeoutRef = useRef<number | null>(null);
   const tAccessibility = useTranslations("accessibility");
   const [emblaRef, emblaApi] = useEmblaCarousel(EMBLA_OPTIONS, [
     WheelGesturesPlugin(),
@@ -102,15 +103,45 @@ export function MobileImageCarousel({
   }, [emblaApi, productId, productName, productCategory, media.length]);
 
   useEffect(() => {
-    if (!isOpen || !emblaApi) {
+    if (!isOpen || !emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [isOpen, emblaApi]);
+
+  // Only [isOpen] — emblaApi in deps was re-running this, resetting the flash and cancelling the timeout
+  useEffect(() => {
+    if (!isOpen) {
       setShouldAnimate(false);
+      if (highlightEndTimeoutRef.current) {
+        clearTimeout(highlightEndTimeoutRef.current);
+        highlightEndTimeoutRef.current = null;
+      }
       return;
     }
-    setSelectedIndex(emblaApi.selectedScrollSnap());
     setShouldAnimate(true);
-    const t = window.setTimeout(() => setShouldAnimate(false), 400);
-    return () => clearTimeout(t);
-  }, [isOpen, emblaApi]);
+    if (highlightEndTimeoutRef.current) {
+      clearTimeout(highlightEndTimeoutRef.current);
+    }
+    highlightEndTimeoutRef.current = window.setTimeout(() => {
+      setShouldAnimate(false);
+      highlightEndTimeoutRef.current = null;
+    }, 400);
+    return () => {
+      if (highlightEndTimeoutRef.current) {
+        clearTimeout(highlightEndTimeoutRef.current);
+        highlightEndTimeoutRef.current = null;
+      }
+    };
+  }, [isOpen]);
+
+  const scheduleHighlightEnd = useCallback(() => {
+    if (highlightEndTimeoutRef.current) {
+      clearTimeout(highlightEndTimeoutRef.current);
+    }
+    highlightEndTimeoutRef.current = window.setTimeout(() => {
+      setShouldAnimate(false);
+      highlightEndTimeoutRef.current = null;
+    }, 400);
+  }, []);
 
   useEffect(() => {
     if (emblaApi && onCarouselApiReady) {
@@ -155,7 +186,10 @@ export function MobileImageCarousel({
       });
     }
     setShouldAnimate(false);
-    requestAnimationFrame(() => setShouldAnimate(true));
+    requestAnimationFrame(() => {
+      setShouldAnimate(true);
+      scheduleHighlightEnd();
+    });
   };
 
   const handlePinchZoom = () => {
