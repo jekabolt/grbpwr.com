@@ -87,7 +87,7 @@ export function BottomSheet({
     carouselNavPortalReady &&
     createPortal(
       <motion.div
-        className="pointer-events-none fixed z-[100] flex w-full items-end justify-between text-bgColor mix-blend-difference"
+        className="pointer-events-none fixed z-30 flex w-full items-end justify-between text-bgColor mix-blend-difference"
         style={{
           bottom: heightSpring,
           height: carouselNav.overlayHeight,

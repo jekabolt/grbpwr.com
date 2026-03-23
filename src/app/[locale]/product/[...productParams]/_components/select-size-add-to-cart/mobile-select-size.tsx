@@ -60,46 +60,43 @@ export function MobileSelectSize({
   };
 
   return (
-    <DialogPrimitives.Root
-      modal={false}
-      open={open}
-      onOpenChange={onOpenChange}
-    >
+    <DialogPrimitives.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
+        <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-screen bg-overlay" />
         <ModalTransition
           isOpen={open}
           contentSlideFrom="bottom"
           contentClassName="fixed inset-x-2 bottom-2 top-auto z-50 flex flex-col gap-10 border border-textInactiveColor bg-bgColor p-2.5 pb-10 text-textColor"
           content={
-        <DialogPrimitives.Content className="flex h-full flex-col gap-10">
-          <DialogPrimitives.Title className="sr-only">
-            {tAccessibility("mobile menu")}
-          </DialogPrimitives.Title>
-          <DialogPrimitives.Close asChild>
-            <div className="flex items-center justify-between">
-              <Text variant="uppercase">select size</Text>
-              <Text variant="uppercase">[x]</Text>
-            </div>
-          </DialogPrimitives.Close>
-          <div className="grid grid-cols-4 gap-x-2 gap-y-7">
-            {sizeNames?.map(({ name, id }) => {
-              const isOutOfStock = outOfStock?.[id] || sizeQuantity?.[id] === 0;
+            <DialogPrimitives.Content className="flex h-full flex-col gap-10">
+              <DialogPrimitives.Title className="sr-only">
+                {tAccessibility("mobile menu")}
+              </DialogPrimitives.Title>
+              <DialogPrimitives.Close asChild>
+                <div className="flex items-center justify-between">
+                  <Text variant="uppercase">select size</Text>
+                  <Text variant="uppercase">[x]</Text>
+                </div>
+              </DialogPrimitives.Close>
+              <div className="grid grid-cols-4 gap-x-2 gap-y-7">
+                {sizeNames?.map(({ name, id }) => {
+                  const isOutOfStock =
+                    outOfStock?.[id] || sizeQuantity?.[id] === 0;
 
-              return (
-                <Button
-                  disabled={!!isOutOfStock}
-                  variant={isOutOfStock ? "strikeThrough" : "default"}
-                  className="uppercase"
-                  key={id}
-                  onClick={() => handleSizeClick(id)}
-                >
-                  {name}
-                </Button>
-              );
-            })}
-          </div>
-        </DialogPrimitives.Content>
+                  return (
+                    <Button
+                      disabled={!!isOutOfStock}
+                      variant={isOutOfStock ? "strikeThrough" : "default"}
+                      className="uppercase"
+                      key={id}
+                      onClick={() => handleSizeClick(id)}
+                    >
+                      {name}
+                    </Button>
+                  );
+                })}
+              </div>
+            </DialogPrimitives.Content>
           }
         />
       </DialogPrimitives.Portal>

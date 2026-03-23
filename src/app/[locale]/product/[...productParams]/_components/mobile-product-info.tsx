@@ -121,56 +121,58 @@ export function MobileProductInfo({
               onCarouselApiReady={handleCarouselApiReady}
             />
           </div>
-          <BottomSheet
-            config={{
-              minHeight: carouselHeight,
-              initialState: 200,
-            }}
-            mainAreaRef={mainAreaRef}
-            containerRef={containerRef}
-            collapseRef={collapseSheetRef}
-            scrollDisabled={isMobileSizeDialogOpen}
-            carouselNav={
-              carouselOverlayHeight > 0
-                ? {
-                    onPrev: () => carouselApiRef.current?.scrollPrev(),
-                    onNext: () => carouselApiRef.current?.scrollNext(),
-                    overlayHeight: carouselOverlayHeight,
-                  }
-                : undefined
-            }
-          >
-            <Text variant="uppercase">{name}</Text>
-            <div className="space-y-12">
-              <GarmentDescription product={product} />
+          {!isMobileSizeDialogOpen && (
+            <BottomSheet
+              config={{
+                minHeight: carouselHeight,
+                initialState: 200,
+              }}
+              mainAreaRef={mainAreaRef}
+              containerRef={containerRef}
+              collapseRef={collapseSheetRef}
+              scrollDisabled={isMobileSizeDialogOpen}
+              carouselNav={
+                carouselOverlayHeight > 0
+                  ? {
+                      onPrev: () => carouselApiRef.current?.scrollPrev(),
+                      onNext: () => carouselApiRef.current?.scrollNext(),
+                      overlayHeight: carouselOverlayHeight,
+                    }
+                  : undefined
+              }
+            >
+              <Text variant="uppercase">{name}</Text>
               <div className="space-y-12">
-                <MobileMeasurements
-                  product={product}
-                  selectedSize={selectedSize || 0}
-                  outOfStock={outOfStock}
-                  isOneSize={isOneSize}
-                  handleAddToCart={handleMeasurementSizes}
-                  handleSelectSize={handleSelectSize}
-                  onNotifyMeOpen={handleNotifyMeOpen}
-                />
-                <SizePicker
-                  sizeNames={sizeNames || []}
-                  activeSizeId={activeSizeId || 0}
-                  outOfStock={outOfStock}
-                  sizeQuantity={sizeQuantity}
-                  isOneSize={isOneSize}
-                  handleSizeSelect={handleSizeSelect}
-                  view={isOneSize ? "line" : "grid"}
-                  onOutOfStockHover={setHoveredOutOfStockSizeId}
-                  shouldBlink={shouldBlinkSizes}
-                  productContext={sizePickerProductContext}
-                />
+                <GarmentDescription product={product} />
+                <div className="space-y-12">
+                  <MobileMeasurements
+                    product={product}
+                    selectedSize={selectedSize || 0}
+                    outOfStock={outOfStock}
+                    isOneSize={isOneSize}
+                    handleAddToCart={handleMeasurementSizes}
+                    handleSelectSize={handleSelectSize}
+                    onNotifyMeOpen={handleNotifyMeOpen}
+                  />
+                  <SizePicker
+                    sizeNames={sizeNames || []}
+                    activeSizeId={activeSizeId || 0}
+                    outOfStock={outOfStock}
+                    sizeQuantity={sizeQuantity}
+                    isOneSize={isOneSize}
+                    handleSizeSelect={handleSizeSelect}
+                    view={isOneSize ? "line" : "grid"}
+                    onOutOfStockHover={setHoveredOutOfStockSizeId}
+                    shouldBlink={shouldBlinkSizes}
+                    productContext={sizePickerProductContext}
+                  />
+                </div>
+                {product.product && (
+                  <LastViewedProducts product={product.product} />
+                )}
               </div>
-              {product.product && (
-                <LastViewedProducts product={product.product} />
-              )}
-            </div>
-          </BottomSheet>
+            </BottomSheet>
+          )}
         </div>
       </div>
       <AddToCartBtn
