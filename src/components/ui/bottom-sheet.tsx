@@ -78,7 +78,7 @@ export function BottomSheet({
     <div className="pointer-events-none absolute inset-0 scroll-smooth">
       {carouselNav && (
         <motion.div
-          className="pointer-events-auto absolute inset-x-2.5 z-[100] flex items-end justify-between bg-transparent text-bgColor mix-blend-difference"
+          className="pointer-events-auto absolute inset-x-2.5 z-[100] flex items-end justify-between bg-transparent text-bgColor mix-blend-exclusion"
           style={{
             bottom: heightSpring,
             height: carouselNav.overlayHeight,
