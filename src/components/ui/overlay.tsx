@@ -40,14 +40,17 @@ export function Overlay({
 
   return (
     <div
-      className={cn("inset-0 z-30 h-screen", {
+      className={cn("inset-0", {
         "pointer-events-none z-10": disablePointerEvents,
         "bg-overlay": color === "dark",
         "bg-white/50": color === "light",
         "bg-highlightColor mix-blend-screen": color === "highlight",
         "transform-gpu": color === "highlight" && cover === "container",
         fixed: cover === "screen",
-        "absolute h-full": cover === "container",
+        "z-30 h-screen": cover === "screen",
+        // Container-sized overlay must NOT use h-screen — that ties height to the viewport
+        // and breaks absolute positioning inside small relative parents (cart thumb, lightbox).
+        "absolute h-full w-full min-h-0": cover === "container",
         "transition-opacity duration-[400ms] ease-out": trigger !== "none",
         "opacity-0 group-hover:opacity-60": trigger === "hover",
         "opacity-0 group-data-[held=true]:opacity-60": trigger === "held",
