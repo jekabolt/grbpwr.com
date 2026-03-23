@@ -37,9 +37,9 @@ export function SizePicker({
   view = "grid",
   className,
   shouldBlink = false,
+  productContext,
   handleSizeSelect,
   onOutOfStockHover,
-  productContext,
 }: Props) {
   const handleAnalytics = (
     sizeId: number,
