@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ReactZoomPanPinchRef,
   TransformComponent,
   TransformWrapper,
 } from "react-zoom-pan-pinch";
+
+import { Overlay } from "@/components/ui/overlay";
 
 const SWIPE_CLOSE_THRESHOLD = 80;
 
@@ -39,11 +41,14 @@ const TRANSFORM_CONTENT_STYLE = {
 
 export function ImageZoom({
   children,
+  isOpen,
   onDoubleClick,
   onClose,
   onPinchZoom,
 }: {
   children: React.ReactNode;
+  /** When false (e.g. dialog closed), clears the zoom pulse overlay — no pulse on open from effects. */
+  isOpen?: boolean;
   onDoubleClick?: () => void;
   onClose?: () => void;
   onPinchZoom?: () => void;
@@ -51,6 +56,17 @@ export function ImageZoom({
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
   const panStart = useRef<{ x: number; y: number } | null>(null);
   const lastScale = useRef<number>(1);
+  const [pulseActive, setPulseActive] = useState(false);
+
+  useEffect(() => {
+    if (isOpen === false) setPulseActive(false);
+  }, [isOpen]);
+
+  const handleDoubleClick = useCallback(() => {
+    onDoubleClick?.();
+    setPulseActive(false);
+    requestAnimationFrame(() => setPulseActive(true));
+  }, [onDoubleClick]);
 
   const handlePinchingStop = useCallback(
     (ref: ReactZoomPanPinchRef) => {
@@ -58,7 +74,7 @@ export function ImageZoom({
         onPinchZoom();
       }
       lastScale.current = ref.state.scale;
-      
+
       if (onClose && ref.state.scale < 1) {
         onClose();
       }
@@ -108,7 +124,7 @@ export function ImageZoom({
   const transformConfig = {
     ...TRANSFORM_CONFIG_BASE,
     minScale: onClose ? 0.5 : 1,
-    onPinchingStop: (onClose || onPinchZoom) ? handlePinchingStop : undefined,
+    onPinchingStop: onClose || onPinchZoom ? handlePinchingStop : undefined,
     onPanningStart: onClose ? handlePanningStart : undefined,
     onPanningStop: onClose ? handlePanningStop : undefined,
   };
@@ -119,11 +135,16 @@ export function ImageZoom({
         wrapperStyle={TRANSFORM_WRAPPER_STYLE}
         contentStyle={TRANSFORM_CONTENT_STYLE}
       >
-        <div
-          onDoubleClick={onDoubleClick}
-          className="relative h-full min-h-0 w-full min-w-0"
-        >
+        <div onDoubleClick={handleDoubleClick} className="relative h-full">
           {children}
+          <div className="pointer-events-none absolute inset-0">
+            <Overlay
+              cover="container"
+              color="highlight"
+              trigger="active"
+              active={pulseActive}
+            />
+          </div>
         </div>
       </TransformComponent>
     </TransformWrapper>
