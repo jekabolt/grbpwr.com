@@ -131,11 +131,9 @@ export function Carousel({
         <div className="absolute inset-0 flex h-full">
           <div
             onClick={scrollPrev}
-            className="flex h-full flex-1 items-center justify-start"
+            className="flex h-full flex-1 items-center justify-start text-bgColor mix-blend-exclusion"
           >
-            <Text className="pl-8 leading-none text-bgColor mix-blend-exclusion">
-              {"<"}
-            </Text>
+            <Text className="pl-8 leading-none">{"<"}</Text>
           </div>
           <div onClick={scrollNext} className="h-full flex-1" />
         </div>

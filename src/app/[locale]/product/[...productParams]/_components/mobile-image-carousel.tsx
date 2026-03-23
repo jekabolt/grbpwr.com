@@ -169,7 +169,7 @@ export function MobileImageCarousel({
 
   return (
     <DialogPrimitives.Root modal open={isOpen} onOpenChange={handleOpenChange}>
-      <div ref={emblaRef} className="relative overflow-hidden">
+      <div ref={emblaRef} className="relative overflow-hidden bg-bgColor">
         <div className="flex h-full w-full">
           {media.map((m, index) => {
             const compressed = m?.media?.compressed;
