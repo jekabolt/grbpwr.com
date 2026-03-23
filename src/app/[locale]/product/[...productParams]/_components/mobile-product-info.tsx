@@ -124,7 +124,7 @@ export function MobileProductInfo({
           <BottomSheet
             config={{
               minHeight: carouselHeight,
-              initialState: 150,
+              initialState: 200,
             }}
             mainAreaRef={mainAreaRef}
             containerRef={containerRef}
