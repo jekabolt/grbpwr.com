@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
@@ -53,7 +53,6 @@ export function MobileImageCarousel({
   const [isClosing, setIsClosing] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const highlightEndTimeoutRef = useRef<number | null>(null);
   const tAccessibility = useTranslations("accessibility");
   const [emblaRef, emblaApi] = useEmblaCarousel(EMBLA_OPTIONS, [
     WheelGesturesPlugin(),
@@ -103,19 +102,15 @@ export function MobileImageCarousel({
   }, [emblaApi, productId, productName, productCategory, media.length]);
 
   useEffect(() => {
-    if (!isOpen || !emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [isOpen, emblaApi]);
-
-  const scheduleHighlightEnd = useCallback(() => {
-    if (highlightEndTimeoutRef.current) {
-      clearTimeout(highlightEndTimeoutRef.current);
-    }
-    highlightEndTimeoutRef.current = window.setTimeout(() => {
+    if (!isOpen || !emblaApi) {
       setShouldAnimate(false);
-      highlightEndTimeoutRef.current = null;
-    }, 400);
-  }, []);
+      return;
+    }
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+    setShouldAnimate(true);
+    const t = window.setTimeout(() => setShouldAnimate(false), 400);
+    return () => clearTimeout(t);
+  }, [isOpen, emblaApi]);
 
   useEffect(() => {
     if (emblaApi && onCarouselApiReady) {
@@ -134,11 +129,6 @@ export function MobileImageCarousel({
   }, [isClosing]);
 
   const handleCloseComplete = useCallback(() => {
-    setShouldAnimate(false);
-    if (highlightEndTimeoutRef.current) {
-      clearTimeout(highlightEndTimeoutRef.current);
-      highlightEndTimeoutRef.current = null;
-    }
     setIsOpen(false);
     setIsClosing(false);
   }, []);
@@ -148,7 +138,6 @@ export function MobileImageCarousel({
       if (open) {
         setIsOpen(true);
         setIsClosing(false);
-        setShouldAnimate(false);
       } else {
         requestClose();
       }
@@ -166,10 +155,7 @@ export function MobileImageCarousel({
       });
     }
     setShouldAnimate(false);
-    requestAnimationFrame(() => {
-      setShouldAnimate(true);
-      scheduleHighlightEnd();
-    });
+    requestAnimationFrame(() => setShouldAnimate(true));
   };
 
   const handlePinchZoom = () => {
@@ -185,46 +171,43 @@ export function MobileImageCarousel({
 
   return (
     <DialogPrimitives.Root modal open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogPrimitives.Trigger asChild>
-        <div
-          ref={emblaRef}
-          className="relative overflow-hidden border border-red-500 bg-transparent"
-        >
-          <div className="flex h-full w-full">
-            {media.map((m, index) => {
-              const compressed = m?.media?.compressed;
-              const isPriority = index === 0;
-              return (
-                <div
-                  key={`${m.id}-${index}`}
-                  className="h-full flex-[0_0_102%]"
-                >
-                  <ImageComponent
-                    src={compressed?.mediaUrl!}
-                    alt="Product image"
-                    aspectRatio="4/5"
-                    fit="contain"
-                    priority={isPriority}
-                    loading={isPriority ? "eager" : "lazy"}
-                    blurhash={media?.[selectedIndex]?.media?.blurhash}
-                  />
-                </div>
-              );
-            })}
-          </div>
+      <div ref={emblaRef} className="relative overflow-hidden bg-bgColor">
+        <div className="flex h-full w-full">
+          {media.map((m, index) => {
+            const compressed = m?.media?.compressed;
+            const isPriority = index === 0;
+            return (
+              <div key={`${m.id}-${index}`} className="h-full flex-[0_0_102%]">
+                <ImageComponent
+                  src={compressed?.mediaUrl!}
+                  alt="Product image"
+                  aspectRatio="4/5"
+                  fit="contain"
+                  priority={isPriority}
+                  loading={isPriority ? "eager" : "lazy"}
+                  blurhash={media?.[selectedIndex]?.media?.blurhash}
+                />
+              </div>
+            );
+          })}
         </div>
-      </DialogPrimitives.Trigger>
+        <div className="absolute inset-0 flex text-bgColor mix-blend-exclusion">
+          <DialogPrimitives.Trigger asChild>
+            <div className="flex-1" />
+          </DialogPrimitives.Trigger>
+        </div>
+      </div>
 
       <DialogPrimitives.Portal>
         <div
-          className="fixed inset-0 z-[100] flex flex-col transition-all duration-200 ease-out data-[closing]:scale-95 data-[closing]:opacity-0"
+          className="fixed inset-0 z-50 flex flex-col transition-all duration-200 ease-out data-[closing]:scale-95 data-[closing]:opacity-0"
           data-closing={isClosing || undefined}
           onTransitionEnd={(e) => {
             if (e.propertyName === "opacity" && isClosing)
               handleCloseComplete();
           }}
         >
-          <DialogPrimitives.Overlay className="fixed inset-0 bg-overlay" />
+          <DialogPrimitives.Overlay className="fixed inset-0 bg-black/50" />
           <DialogPrimitives.Content
             className="fixed inset-0 flex flex-col bg-bgColor"
             onOpenAutoFocus={(e) => e.preventDefault()}
@@ -232,6 +215,7 @@ export function MobileImageCarousel({
             <DialogPrimitives.Title className="sr-only">
               {tAccessibility("mobile menu")}
             </DialogPrimitives.Title>
+
             <Button
               className="fixed right-4 top-4 z-50"
               onClick={requestClose}
@@ -239,6 +223,7 @@ export function MobileImageCarousel({
             >
               [x]
             </Button>
+
             {currentMedia && (
               <div className="flex min-h-0 flex-1 flex-col">
                 <ImageZoom
