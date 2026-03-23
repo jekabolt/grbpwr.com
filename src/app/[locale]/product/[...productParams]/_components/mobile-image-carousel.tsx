@@ -108,6 +108,8 @@ export function MobileImageCarousel({
     }
     setSelectedIndex(emblaApi.selectedScrollSnap());
     setShouldAnimate(true);
+    const t = window.setTimeout(() => setShouldAnimate(false), 400);
+    return () => clearTimeout(t);
   }, [isOpen, emblaApi]);
 
   useEffect(() => {
@@ -198,7 +200,7 @@ export function MobileImageCarousel({
 
       <DialogPrimitives.Portal>
         <div
-          className="fixed inset-0 z-50 flex flex-col transition-all duration-200 ease-out data-[closing]:scale-95 data-[closing]:opacity-0"
+          className="fixed inset-0 z-[100] flex flex-col transition-all duration-200 ease-out data-[closing]:scale-95 data-[closing]:opacity-0"
           data-closing={isClosing || undefined}
           onTransitionEnd={(e) => {
             if (e.propertyName === "opacity" && isClosing)
