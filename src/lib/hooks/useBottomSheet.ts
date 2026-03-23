@@ -3,6 +3,8 @@ import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 export interface UseBottomSheetConfig {
     minHeight?: number;
     topOffset?: number;
+    /** Initial height in px. Defaults to minHeight if not set */
+    initialState?: number;
 }
 
 export interface UseBottomSheetProps {
@@ -41,11 +43,14 @@ export function useBottomSheet({
         ...userConfig,
     };
 
-    const [containerHeight, setContainerHeight] = useState(config.minHeight);
+    const [containerHeight, setContainerHeight] = useState(
+        () => config.initialState ?? config.minHeight ?? 150
+    );
 
     useEffect(() => {
-        setContainerHeight(config.minHeight);
-    }, [config.minHeight]);
+        if (config.initialState != null) return;
+        setContainerHeight(config.minHeight ?? 150);
+    }, [config.minHeight, config.initialState]);
 
     const touchState = useRef<TouchState>({
         startY: 0,

@@ -52,5 +52,6 @@ export function useProductBasics({ product }: { product: common_ProductFull }) {
     color: productBody?.color,
     productCategory,
     productSubCategory,
+    collection: productBody?.collection,
   };
 }

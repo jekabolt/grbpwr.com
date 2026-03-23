@@ -45,6 +45,7 @@ export function Overlay({
         "bg-overlay": color === "dark",
         "bg-white/50": color === "light",
         "bg-highlightColor mix-blend-screen": color === "highlight",
+        "transform-gpu": color === "highlight" && cover === "container",
         fixed: cover === "screen",
         "absolute h-full": cover === "container",
         "transition-opacity duration-[400ms] ease-out": trigger !== "none",

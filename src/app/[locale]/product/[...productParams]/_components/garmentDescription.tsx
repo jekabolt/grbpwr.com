@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
@@ -17,7 +17,9 @@ export function GarmentDescription({
 }: {
   product: common_ProductFull;
 }) {
-  const { description, isComposition, isCare } = useProductBasics({ product });
+  const { description, isComposition, isCare, collection } = useProductBasics({
+    product,
+  });
   const { composition, compositionStructured, care, careCodes } =
     useGarmentInfo({
       product,
@@ -29,7 +31,8 @@ export function GarmentDescription({
 
   const [infoOpenItem, setInfoOpenItem] = useState<string>("");
   const productId = product.product?.sku || "";
-  const productName = product.product?.productDisplay?.productBody?.translations?.[0]?.name || "";
+  const productName =
+    product.product?.productDisplay?.productBody?.translations?.[0]?.name || "";
 
   const handleValueChange = (value: string) => {
     const sectionMap: Record<string, "description" | "composition" | "care"> = {
@@ -85,7 +88,11 @@ export function GarmentDescription({
           ))}
           {modelWear && <Text variant="uppercase">{modelWear}</Text>}
         </div>
+        <div>
+          <Text variant="uppercase">collection: {collection}</Text>
+        </div>
       </AccordionSection>
+
       {isComposition && (
         <AccordionSection
           value="item-2"

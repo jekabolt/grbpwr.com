@@ -1,13 +1,17 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ReactZoomPanPinchRef,
   TransformComponent,
   TransformWrapper,
 } from "react-zoom-pan-pinch";
 
+import { Overlay } from "@/components/ui/overlay";
+
 const SWIPE_CLOSE_THRESHOLD = 80;
+/** Matches `Overlay` `duration-[400ms]` — visible pulse then fade out. */
+const PULSE_DURATION_MS = 400;
 
 const TRANSFORM_CONFIG_BASE = {
   initialScale: 1,
@@ -31,7 +35,7 @@ const TRANSFORM_CONTENT_STYLE = {
   width: "100%",
   height: "100%",
   display: "flex",
-  alignItems: "start",
+  alignItems: "stretch",
   justifyContent: "center",
   paddingTop: "48px",
 } as const;
@@ -50,6 +54,33 @@ export function ImageZoom({
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
   const panStart = useRef<{ x: number; y: number } | null>(null);
   const lastScale = useRef<number>(1);
+  const [pulseActive, setPulseActive] = useState(false);
+  const pulseEndTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (pulseEndTimeoutRef.current) {
+        clearTimeout(pulseEndTimeoutRef.current);
+        pulseEndTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleDoubleClick = useCallback(() => {
+    onDoubleClick?.();
+    if (pulseEndTimeoutRef.current) {
+      clearTimeout(pulseEndTimeoutRef.current);
+      pulseEndTimeoutRef.current = null;
+    }
+    setPulseActive(false);
+    requestAnimationFrame(() => {
+      setPulseActive(true);
+      pulseEndTimeoutRef.current = setTimeout(() => {
+        setPulseActive(false);
+        pulseEndTimeoutRef.current = null;
+      }, PULSE_DURATION_MS);
+    });
+  }, [onDoubleClick]);
 
   const handlePinchingStop = useCallback(
     (ref: ReactZoomPanPinchRef) => {
@@ -57,7 +88,7 @@ export function ImageZoom({
         onPinchZoom();
       }
       lastScale.current = ref.state.scale;
-      
+
       if (onClose && ref.state.scale < 1) {
         onClose();
       }
@@ -107,7 +138,7 @@ export function ImageZoom({
   const transformConfig = {
     ...TRANSFORM_CONFIG_BASE,
     minScale: onClose ? 0.5 : 1,
-    onPinchingStop: (onClose || onPinchZoom) ? handlePinchingStop : undefined,
+    onPinchingStop: onClose || onPinchZoom ? handlePinchingStop : undefined,
     onPanningStart: onClose ? handlePanningStart : undefined,
     onPanningStop: onClose ? handlePanningStop : undefined,
   };
@@ -118,8 +149,16 @@ export function ImageZoom({
         wrapperStyle={TRANSFORM_WRAPPER_STYLE}
         contentStyle={TRANSFORM_CONTENT_STYLE}
       >
-        <div onDoubleClick={onDoubleClick} className="relative h-full">
+        <div onDoubleClick={handleDoubleClick} className="relative h-full">
           {children}
+          <div className="pointer-events-none absolute inset-0">
+            <Overlay
+              cover="container"
+              color="highlight"
+              trigger="active"
+              active={pulseActive}
+            />
+          </div>
         </div>
       </TransformComponent>
     </TransformWrapper>
