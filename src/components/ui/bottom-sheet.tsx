@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useState, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { createPortal } from "react-dom";
 
 import {
   useBottomSheet,
@@ -37,6 +38,12 @@ export function BottomSheet({
   scrollDisabled = false,
   carouselNav,
 }: BottomSheetProps) {
+  const [carouselNavPortalReady, setCarouselNavPortalReady] = useState(false);
+
+  useLayoutEffect(() => {
+    setCarouselNavPortalReady(true);
+  }, []);
+
   const initialHeight = config?.initialState ?? config?.minHeight ?? 150;
   const heightMotionValue = useMotionValue(initialHeight);
 
@@ -74,35 +81,42 @@ export function BottomSheet({
     }
   }, [collapseRef, collapseToMin]);
 
+  const carouselNavPortal =
+    carouselNav &&
+    !canScrollInside &&
+    carouselNavPortalReady &&
+    createPortal(
+      <motion.div
+        className="pointer-events-none fixed z-[100] flex w-full items-end justify-between text-bgColor mix-blend-difference"
+        style={{
+          bottom: heightSpring,
+          height: carouselNav.overlayHeight,
+        }}
+        data-bottom-sheet-ignore-drag="true"
+      >
+        <AnimatedButton
+          animationDuration={300}
+          animationArea="text-no-underline"
+          onClick={carouselNav.onPrev}
+          className="pointer-events-auto flex w-20 flex-col items-start justify-end pl-2.5"
+        >
+          {"<"}
+        </AnimatedButton>
+        <AnimatedButton
+          animationArea="text-no-underline"
+          animationDuration={300}
+          onClick={carouselNav.onNext}
+          className="pointer-events-auto z-50 flex w-20 flex-col items-end justify-end pr-2.5"
+        >
+          {">"}
+        </AnimatedButton>
+      </motion.div>,
+      document.body,
+    );
+
   return (
     <div className="pointer-events-none absolute inset-0 scroll-smooth">
-      {carouselNav && (
-        <motion.div
-          className="pointer-events-auto absolute inset-x-2.5 z-[100] flex items-end justify-between bg-transparent text-bgColor mix-blend-exclusion"
-          style={{
-            bottom: heightSpring,
-            height: carouselNav.overlayHeight,
-          }}
-          data-bottom-sheet-ignore-drag="true"
-        >
-          <AnimatedButton
-            animationDuration={300}
-            animationArea="text-no-underline"
-            onClick={carouselNav.onPrev}
-            className="flex w-20 flex-col items-start justify-end pl-2.5"
-          >
-            {"<"}
-          </AnimatedButton>
-          <AnimatedButton
-            animationArea="text-no-underline"
-            animationDuration={300}
-            onClick={carouselNav.onNext}
-            className="z-50 flex w-20 flex-col items-end justify-end pr-2.5"
-          >
-            {">"}
-          </AnimatedButton>
-        </motion.div>
-      )}
+      {carouselNavPortal}
       <motion.div
         ref={containerRef}
         className="absolute inset-x-2.5 bottom-0 z-30 flex flex-col overflow-visible"

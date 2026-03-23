@@ -10,6 +10,8 @@ import {
 import { Overlay } from "@/components/ui/overlay";
 
 const SWIPE_CLOSE_THRESHOLD = 80;
+/** Matches `Overlay` `duration-[400ms]` — visible pulse then fade out. */
+const PULSE_DURATION_MS = 400;
 
 const TRANSFORM_CONFIG_BASE = {
   initialScale: 1,
@@ -33,7 +35,6 @@ const TRANSFORM_CONTENT_STYLE = {
   width: "100%",
   height: "100%",
   display: "flex",
-  // stretch so the relative h-full child gets a real height (alignItems:start left it at 0 in some flex chains)
   alignItems: "stretch",
   justifyContent: "center",
   paddingTop: "48px",
@@ -41,14 +42,11 @@ const TRANSFORM_CONTENT_STYLE = {
 
 export function ImageZoom({
   children,
-  isOpen,
   onDoubleClick,
   onClose,
   onPinchZoom,
 }: {
   children: React.ReactNode;
-  /** When false (e.g. dialog closed), clears the zoom pulse overlay — no pulse on open from effects. */
-  isOpen?: boolean;
   onDoubleClick?: () => void;
   onClose?: () => void;
   onPinchZoom?: () => void;
@@ -57,15 +55,31 @@ export function ImageZoom({
   const panStart = useRef<{ x: number; y: number } | null>(null);
   const lastScale = useRef<number>(1);
   const [pulseActive, setPulseActive] = useState(false);
+  const pulseEndTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (isOpen === false) setPulseActive(false);
-  }, [isOpen]);
+    return () => {
+      if (pulseEndTimeoutRef.current) {
+        clearTimeout(pulseEndTimeoutRef.current);
+        pulseEndTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   const handleDoubleClick = useCallback(() => {
     onDoubleClick?.();
+    if (pulseEndTimeoutRef.current) {
+      clearTimeout(pulseEndTimeoutRef.current);
+      pulseEndTimeoutRef.current = null;
+    }
     setPulseActive(false);
-    requestAnimationFrame(() => setPulseActive(true));
+    requestAnimationFrame(() => {
+      setPulseActive(true);
+      pulseEndTimeoutRef.current = setTimeout(() => {
+        setPulseActive(false);
+        pulseEndTimeoutRef.current = null;
+      }, PULSE_DURATION_MS);
+    });
   }, [onDoubleClick]);
 
   const handlePinchingStop = useCallback(

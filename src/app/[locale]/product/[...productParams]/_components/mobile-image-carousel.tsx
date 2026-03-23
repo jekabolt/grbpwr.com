@@ -177,7 +177,6 @@ export function MobileImageCarousel({
 
           {currentMedia && (
             <ImageZoom
-              isOpen={isOpen}
               onDoubleClick={handleDoubleClick}
               onClose={() => setIsOpen(false)}
               onPinchZoom={handlePinchZoom}
