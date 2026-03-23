@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
@@ -34,66 +26,6 @@ const EMBLA_OPTIONS = {
   axis: "x" as const,
   startIndex: 0,
 };
-
-function parseAspectRatioString(s: string): number | null {
-  const parts = s.split("/").map((p) => Number(p.trim()));
-  if (parts.length !== 2 || !parts[0] || !parts[1]) return null;
-  return parts[0] / parts[1];
-}
-
-/** Same box the browser uses for object-fit: contain with intrinsic aspect ratio r in cw×ch */
-function containRectSize(cw: number, ch: number, r: number) {
-  if (cw <= 0 || ch <= 0) return { w: 0, h: 0 };
-  const w = Math.min(cw, ch * r);
-  const h = Math.min(ch, cw / r);
-  return { w, h };
-}
-
-/** Centers a box matching the visible media rect so overlay + image share one positioning context */
-function LightboxMediaFrame({
-  aspectRatio,
-  children,
-}: {
-  aspectRatio: string;
-  children: ReactNode;
-}) {
-  const measureRef = useRef<HTMLDivElement>(null);
-  const [box, setBox] = useState<{ w: number; h: number } | null>(null);
-  const ratio = useMemo(
-    () => parseAspectRatioString(aspectRatio),
-    [aspectRatio],
-  );
-
-  useLayoutEffect(() => {
-    if (!ratio || !measureRef.current) return;
-    const el = measureRef.current;
-    const measure = () => {
-      setBox(containRectSize(el.clientWidth, el.clientHeight, ratio));
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [ratio, aspectRatio]);
-
-  return (
-    <div
-      ref={measureRef}
-      className="flex h-full min-h-0 w-full items-center justify-center"
-    >
-      <div
-        className="relative min-h-0 min-w-0 shrink-0"
-        style={
-          box && box.w > 0 && box.h > 0
-            ? { width: box.w, height: box.h }
-            : { aspectRatio, width: "100%", maxHeight: "100%" }
-        }
-      >
-        {children}
-      </div>
-    </div>
-  );
-}
 
 export type CarouselNavApi = {
   scrollPrev: () => void;
@@ -185,34 +117,6 @@ export function MobileImageCarousel({
     }, 400);
   }, []);
 
-  /** Same sequence as double-click: false → rAF → true so opacity transition runs, then clear after 400ms */
-  const pulseHighlight = useCallback(() => {
-    setShouldAnimate(false);
-    requestAnimationFrame(() => {
-      setShouldAnimate(true);
-      scheduleHighlightEnd();
-    });
-  }, [scheduleHighlightEnd]);
-
-  // Only [isOpen] — emblaApi in deps was re-running this, resetting the flash and cancelling the timeout
-  useEffect(() => {
-    if (!isOpen) {
-      setShouldAnimate(false);
-      if (highlightEndTimeoutRef.current) {
-        clearTimeout(highlightEndTimeoutRef.current);
-        highlightEndTimeoutRef.current = null;
-      }
-      return;
-    }
-    pulseHighlight();
-    return () => {
-      if (highlightEndTimeoutRef.current) {
-        clearTimeout(highlightEndTimeoutRef.current);
-        highlightEndTimeoutRef.current = null;
-      }
-    };
-  }, [isOpen, pulseHighlight]);
-
   useEffect(() => {
     if (emblaApi && onCarouselApiReady) {
       onCarouselApiReady({
@@ -223,9 +127,6 @@ export function MobileImageCarousel({
   }, [emblaApi, onCarouselApiReady]);
 
   const currentMedia = media[selectedIndex]?.media?.fullSize;
-  const lightboxAspectRatio = currentMedia
-    ? calculateAspectRatio(currentMedia.width, currentMedia.height)
-    : "4/3";
 
   const requestClose = useCallback(() => {
     if (isClosing) return;
@@ -233,6 +134,11 @@ export function MobileImageCarousel({
   }, [isClosing]);
 
   const handleCloseComplete = useCallback(() => {
+    setShouldAnimate(false);
+    if (highlightEndTimeoutRef.current) {
+      clearTimeout(highlightEndTimeoutRef.current);
+      highlightEndTimeoutRef.current = null;
+    }
     setIsOpen(false);
     setIsClosing(false);
   }, []);
@@ -242,6 +148,7 @@ export function MobileImageCarousel({
       if (open) {
         setIsOpen(true);
         setIsClosing(false);
+        setShouldAnimate(false);
       } else {
         requestClose();
       }
@@ -258,7 +165,11 @@ export function MobileImageCarousel({
         zoom_method: "double_click",
       });
     }
-    pulseHighlight();
+    setShouldAnimate(false);
+    requestAnimationFrame(() => {
+      setShouldAnimate(true);
+      scheduleHighlightEnd();
+    });
   };
 
   const handlePinchZoom = () => {
@@ -274,32 +185,35 @@ export function MobileImageCarousel({
 
   return (
     <DialogPrimitives.Root modal open={isOpen} onOpenChange={handleOpenChange}>
-      <div ref={emblaRef} className="relative overflow-hidden bg-bgColor">
-        <div className="flex h-full w-full">
-          {media.map((m, index) => {
-            const compressed = m?.media?.compressed;
-            const isPriority = index === 0;
-            return (
-              <div key={`${m.id}-${index}`} className="h-full flex-[0_0_102%]">
-                <ImageComponent
-                  src={compressed?.mediaUrl!}
-                  alt="Product image"
-                  aspectRatio="4/5"
-                  fit="contain"
-                  priority={isPriority}
-                  loading={isPriority ? "eager" : "lazy"}
-                  blurhash={media?.[selectedIndex]?.media?.blurhash}
-                />
-              </div>
-            );
-          })}
+      <DialogPrimitives.Trigger asChild>
+        <div
+          ref={emblaRef}
+          className="relative overflow-hidden border border-red-500 bg-transparent"
+        >
+          <div className="flex h-full w-full">
+            {media.map((m, index) => {
+              const compressed = m?.media?.compressed;
+              const isPriority = index === 0;
+              return (
+                <div
+                  key={`${m.id}-${index}`}
+                  className="h-full flex-[0_0_102%]"
+                >
+                  <ImageComponent
+                    src={compressed?.mediaUrl!}
+                    alt="Product image"
+                    aspectRatio="4/5"
+                    fit="contain"
+                    priority={isPriority}
+                    loading={isPriority ? "eager" : "lazy"}
+                    blurhash={media?.[selectedIndex]?.media?.blurhash}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className="absolute inset-0 flex text-bgColor mix-blend-exclusion">
-          <DialogPrimitives.Trigger asChild>
-            <div className="flex-1" />
-          </DialogPrimitives.Trigger>
-        </div>
-      </div>
+      </DialogPrimitives.Trigger>
 
       <DialogPrimitives.Portal>
         <div
@@ -318,7 +232,6 @@ export function MobileImageCarousel({
             <DialogPrimitives.Title className="sr-only">
               {tAccessibility("mobile menu")}
             </DialogPrimitives.Title>
-
             <Button
               className="fixed right-4 top-4 z-50"
               onClick={requestClose}
@@ -326,7 +239,6 @@ export function MobileImageCarousel({
             >
               [x]
             </Button>
-
             {currentMedia && (
               <div className="flex min-h-0 flex-1 flex-col">
                 <ImageZoom
@@ -334,22 +246,23 @@ export function MobileImageCarousel({
                   onClose={requestClose}
                   onPinchZoom={handlePinchZoom}
                 >
-                  <LightboxMediaFrame aspectRatio={lightboxAspectRatio}>
-                    <ImageComponent
-                      fit="contain"
-                      src={currentMedia.mediaUrl || ""}
-                      alt={currentMedia.mediaUrl || "Product thumbnail"}
-                      aspectRatio={lightboxAspectRatio}
+                  <ImageComponent
+                    src={currentMedia.mediaUrl || ""}
+                    alt={currentMedia.mediaUrl || "Product thumbnail"}
+                    aspectRatio={calculateAspectRatio(
+                      currentMedia.width,
+                      currentMedia.height,
+                    )}
+                    blurhash={media?.[selectedIndex]?.media?.blurhash}
+                  />
+                  <div className="absolute inset-0">
+                    <Overlay
+                      cover="container"
+                      color="highlight"
+                      trigger="active"
+                      active={shouldAnimate}
                     />
-                    <div className="pointer-events-none absolute inset-0 z-10">
-                      <Overlay
-                        cover="container"
-                        color="highlight"
-                        trigger="active"
-                        active={shouldAnimate}
-                      />
-                    </div>
-                  </LightboxMediaFrame>
+                  </div>
                 </ImageZoom>
               </div>
             )}

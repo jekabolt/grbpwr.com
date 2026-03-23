@@ -31,7 +31,8 @@ const TRANSFORM_CONTENT_STYLE = {
   width: "100%",
   height: "100%",
   display: "flex",
-  alignItems: "start",
+  // stretch so the relative h-full child gets a real height (alignItems:start left it at 0 in some flex chains)
+  alignItems: "stretch",
   justifyContent: "center",
   paddingTop: "48px",
 } as const;
@@ -118,7 +119,10 @@ export function ImageZoom({
         wrapperStyle={TRANSFORM_WRAPPER_STYLE}
         contentStyle={TRANSFORM_CONTENT_STYLE}
       >
-        <div onDoubleClick={onDoubleClick} className="relative h-full">
+        <div
+          onDoubleClick={onDoubleClick}
+          className="relative h-full min-h-0 w-full min-w-0"
+        >
           {children}
         </div>
       </TransformComponent>
