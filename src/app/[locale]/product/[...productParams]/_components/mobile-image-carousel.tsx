@@ -107,6 +107,25 @@ export function MobileImageCarousel({
     setSelectedIndex(emblaApi.selectedScrollSnap());
   }, [isOpen, emblaApi]);
 
+  const scheduleHighlightEnd = useCallback(() => {
+    if (highlightEndTimeoutRef.current) {
+      clearTimeout(highlightEndTimeoutRef.current);
+    }
+    highlightEndTimeoutRef.current = window.setTimeout(() => {
+      setShouldAnimate(false);
+      highlightEndTimeoutRef.current = null;
+    }, 400);
+  }, []);
+
+  /** Same sequence as double-click: false → rAF → true so opacity transition runs, then clear after 400ms */
+  const pulseHighlight = useCallback(() => {
+    setShouldAnimate(false);
+    requestAnimationFrame(() => {
+      setShouldAnimate(true);
+      scheduleHighlightEnd();
+    });
+  }, [scheduleHighlightEnd]);
+
   // Only [isOpen] — emblaApi in deps was re-running this, resetting the flash and cancelling the timeout
   useEffect(() => {
     if (!isOpen) {
@@ -117,31 +136,14 @@ export function MobileImageCarousel({
       }
       return;
     }
-    setShouldAnimate(true);
-    if (highlightEndTimeoutRef.current) {
-      clearTimeout(highlightEndTimeoutRef.current);
-    }
-    highlightEndTimeoutRef.current = window.setTimeout(() => {
-      setShouldAnimate(false);
-      highlightEndTimeoutRef.current = null;
-    }, 400);
+    pulseHighlight();
     return () => {
       if (highlightEndTimeoutRef.current) {
         clearTimeout(highlightEndTimeoutRef.current);
         highlightEndTimeoutRef.current = null;
       }
     };
-  }, [isOpen]);
-
-  const scheduleHighlightEnd = useCallback(() => {
-    if (highlightEndTimeoutRef.current) {
-      clearTimeout(highlightEndTimeoutRef.current);
-    }
-    highlightEndTimeoutRef.current = window.setTimeout(() => {
-      setShouldAnimate(false);
-      highlightEndTimeoutRef.current = null;
-    }, 400);
-  }, []);
+  }, [isOpen, pulseHighlight]);
 
   useEffect(() => {
     if (emblaApi && onCarouselApiReady) {
@@ -185,11 +187,7 @@ export function MobileImageCarousel({
         zoom_method: "double_click",
       });
     }
-    setShouldAnimate(false);
-    requestAnimationFrame(() => {
-      setShouldAnimate(true);
-      scheduleHighlightEnd();
-    });
+    pulseHighlight();
   };
 
   const handlePinchZoom = () => {
