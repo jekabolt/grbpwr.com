@@ -272,7 +272,7 @@ export function MobileImageCarousel({
                       currentMedia.width,
                       currentMedia.height,
                     )}
-                    blurhash={media?.[selectedIndex]?.media?.blurhash}
+                    // blurhash={media?.[selectedIndex]?.media?.blurhash}
                   />
                   <div className="absolute inset-0">
                     <Overlay
