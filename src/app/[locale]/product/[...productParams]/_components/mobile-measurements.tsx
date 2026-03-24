@@ -40,7 +40,8 @@ export function MobileMeasurements({
         product_id: product.product?.sku || "",
         product_name: name,
         product_category: productCategory || "",
-        page_location: typeof window !== "undefined" ? window.location.href : "",
+        page_location:
+          typeof window !== "undefined" ? window.location.href : "",
       });
     }
     setOpen(isOpen);
@@ -71,53 +72,53 @@ export function MobileMeasurements({
         <ModalTransition
           isOpen={open}
           contentSlideFrom="bottom"
-          contentClassName="fixed inset-2 z-40 flex flex-col gap-4 overflow-hidden border border-textInactiveColor bg-bgColor p-2.5"
+          contentClassName="fixed inset-2 z-50 flex flex-col gap-4 overflow-hidden border border-textInactiveColor bg-bgColor p-2.5"
           content={
-        <DialogPrimitives.Content className="flex h-full flex-col gap-4">
-          <DialogPrimitives.Title className="sr-only">
-            {tAccessibility("mobile menu")}
-          </DialogPrimitives.Title>
+            <DialogPrimitives.Content className="flex h-full flex-col gap-4">
+              <DialogPrimitives.Title className="sr-only">
+                {tAccessibility("mobile menu")}
+              </DialogPrimitives.Title>
 
-          <div className="relative flex shrink-0 items-center justify-between">
-            <Text variant="uppercase">{t("size guide")}</Text>
-            <DialogPrimitives.Close asChild>
-              <Button>[x]</Button>
-            </DialogPrimitives.Close>
-          </div>
-          <div className="min-h-0 grow overflow-y-auto">
-            <Measurements
-              product={product}
-              selectedSize={selectedSize}
-              outOfStock={outOfStock}
-              isOneSize={isOneSize}
-              handleSelectSize={handleSelectSize}
-            />
-          </div>
-          <div className="shrink-0">
-            <LoadingButton
-              variant="simpleReverse"
-              size="lg"
-              onAction={handleButtonClick}
-            >
-              <Text variant="inherit">
-                {isSelectedSizeOutOfStock
-                  ? t("notify me")
-                  : preorder
-                    ? t("preorder")
-                    : t("add")}
-              </Text>
-              {!isSelectedSizeOutOfStock &&
-                (isSaleApplied ? (
-                  <Text variant="inactive">
-                    {priceMinusSale}
-                    <Text component="span">{priceWithSale}</Text>
+              <div className="relative flex shrink-0 items-center justify-between">
+                <Text variant="uppercase">{t("size guide")}</Text>
+                <DialogPrimitives.Close asChild>
+                  <Button>[x]</Button>
+                </DialogPrimitives.Close>
+              </div>
+              <div className="min-h-0 grow overflow-y-auto">
+                <Measurements
+                  product={product}
+                  selectedSize={selectedSize}
+                  outOfStock={outOfStock}
+                  isOneSize={isOneSize}
+                  handleSelectSize={handleSelectSize}
+                />
+              </div>
+              <div className="shrink-0">
+                <LoadingButton
+                  variant="simpleReverse"
+                  size="lg"
+                  onAction={handleButtonClick}
+                >
+                  <Text variant="inherit">
+                    {isSelectedSizeOutOfStock
+                      ? t("notify me")
+                      : preorder
+                        ? t("preorder")
+                        : t("add")}
                   </Text>
-                ) : (
-                  <Text variant="inherit">{price}</Text>
-                ))}
-            </LoadingButton>
-          </div>
-        </DialogPrimitives.Content>
+                  {!isSelectedSizeOutOfStock &&
+                    (isSaleApplied ? (
+                      <Text variant="inactive">
+                        {priceMinusSale}
+                        <Text component="span">{priceWithSale}</Text>
+                      </Text>
+                    ) : (
+                      <Text variant="inherit">{price}</Text>
+                    ))}
+                </LoadingButton>
+              </div>
+            </DialogPrimitives.Content>
           }
         />
       </DialogPrimitives.Portal>

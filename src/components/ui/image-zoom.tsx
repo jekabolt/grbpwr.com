@@ -10,7 +10,6 @@ import {
 import { Overlay } from "@/components/ui/overlay";
 
 const SWIPE_CLOSE_THRESHOLD = 80;
-/** Matches `Overlay` `duration-[400ms]` — visible pulse then fade out. */
 const PULSE_DURATION_MS = 400;
 
 const TRANSFORM_CONFIG_BASE = {
