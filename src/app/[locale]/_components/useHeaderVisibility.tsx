@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useHeaderScrollPosition } from "./useHeaderScrollPosition";
 
@@ -7,6 +7,7 @@ export function useHeaderVisibility() {
   const [isMobile, setIsMobile] = useState(false);
   const [isAnnounceVisible, setIsAnnounceVisible] = useState(true);
   const { scrollDirection, isAtTop } = useHeaderScrollPosition();
+  const showTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 1024);
@@ -20,14 +21,21 @@ export function useHeaderVisibility() {
   }, []);
 
   useEffect(() => {
-    if (isMobile) {
-      if (scrollDirection === "down") {
-        setIsVisible(false);
-      } else if (scrollDirection === "up" || isAtTop) {
-        setIsVisible(true);
-      }
-    } else {
+    clearTimeout(showTimerRef.current);
+
+    if (!isMobile) {
       setIsVisible(true);
+      return;
+    }
+
+    if (scrollDirection === "down") {
+      setIsVisible(false);
+      return;
+    }
+
+    if (scrollDirection === "up" || isAtTop) {
+      showTimerRef.current = setTimeout(() => setIsVisible(true), 100);
+      return () => clearTimeout(showTimerRef.current);
     }
   }, [scrollDirection, isAtTop, isMobile]);
 
