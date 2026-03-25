@@ -1,8 +1,8 @@
 "use client";
 
 import { ReactNode, useLayoutEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { modalTransition } from "@/components/modal-transition";
 
@@ -11,9 +11,9 @@ interface PageTransitionProps {
 }
 
 const variants = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -8 },
+  initial: { opacity: 0, x: -24 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 24 },
 };
 
 export function PageTransition({ children }: PageTransitionProps) {
