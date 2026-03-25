@@ -423,7 +423,8 @@
     },
     "email": {
       "invalid": "无效的邮箱",
-      "max": "邮箱最多只能包含40个字符"
+      "max": "邮箱最多只能包含40个字符",
+      "required": "邮箱为必填项"
     },
     "additionalAddress": {
       "min": "附加地址至少需要包含3个字符",
@@ -432,6 +433,9 @@
     },
     "termsOfService": {
       "required": "您必须接受条款和条件才能继续"
+    },
+    "acceptTerms": {
+      "required": "订阅需要同意"
     },
     "orderUuid": {
       "required": "订单号是必需的"
@@ -497,7 +501,9 @@
     "payment_already_completed": "此会话的支付已完成。请清空购物车并开始新订单。",
     "payment_unavailable": "支付暂时不可用。请稍后再试。",
     "validation_error": "出了点问题。请重试。",
-    "fill_required_fields": "请填写所有必填项"
+    "fill_required_fields": "请填写所有必填项",
+    "email_required": "邮箱为必填项",
+    "required_terms": "订阅需要同意"
   },
   "refund": {
     "return order": "退货订单",

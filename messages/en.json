@@ -423,7 +423,8 @@
     },
     "email": {
       "invalid": "invalid email",
-      "max": "email must contain at most 40 characters"
+      "max": "email must contain at most 40 characters",
+      "required": "email is required"
     },
     "additionalAddress": {
       "min": "additional address must contain at least 3 characters",
@@ -432,6 +433,9 @@
     },
     "termsOfService": {
       "required": "you must accept the terms and conditions to proceed"
+    },
+    "acceptTerms": {
+      "required": "consent required to subscribe"
     },
     "orderUuid": {
       "required": "order reference is required"
@@ -494,10 +498,12 @@
     "email_copied": "e-mail copied",
     "cart_outdated": "your cart is outdated",
     "cart_modified": "your cart has been modified",
-    "payment_already_completed": "Payment already completed for this session. Please clear your checkout and start a new order.",
-    "payment_unavailable": "Payment is temporarily unavailable. Please try again later.",
-    "validation_error": "Something went wrong. Please try again.",
-    "fill_required_fields": "Please fill in all required fields"
+    "payment_already_completed": "payment already completed for this session. please clear your checkout and start a new order.",
+    "payment_unavailable": "payment is temporarily unavailable. please try again later.",
+    "validation_error": "something went wrong. please try again.",
+    "fill_required_fields": "please fill in all required fields",
+    "email_required": "email is required",
+    "required_terms": "consent required to subscribe"
   },
   "refund": {
     "return order": "return order",
