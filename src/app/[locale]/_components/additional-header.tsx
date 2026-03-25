@@ -19,7 +19,6 @@ export function AdditionalHeader({
   const { openCart, closeCart } = useCart((s) => s);
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
 
-  // Preserve current locale when closing (don't switch to country's default)
   const country = currentCountry.countryCode?.toLowerCase() || "gb";
   const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
   const homePath = `/${country}/${locale}`;
@@ -37,14 +36,14 @@ export function AdditionalHeader({
   return (
     <header
       className={cn(
-        "fixed inset-x-2.5 top-2 z-30 h-12 py-2 lg:gap-0 lg:px-5 lg:py-3",
+        "fixed inset-x-2.5 top-2.5 z-30 h-12 py-2 lg:top-2 lg:gap-0 lg:px-5 lg:py-3",
         "flex items-center justify-between gap-1",
         "blackTheme bg-transparent text-textColor mix-blend-exclusion",
       )}
     >
       <AnimatedButton
         animationArea="text"
-        className="py-3 pr-8"
+        className="py-3 pl-2.5 pr-8 lg:pl-0"
         onClick={handleLeftClick}
       >
         {left}
@@ -60,7 +59,7 @@ export function AdditionalHeader({
       <AnimatedButton
         onClick={handleRightClick}
         animationArea="text"
-        className={cn("block lg:hidden", {
+        className={cn("block pr-2.5 lg:hidden", {
           hidden: hidden,
         })}
       >
