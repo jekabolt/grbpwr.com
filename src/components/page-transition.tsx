@@ -1,20 +1,44 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface PageTransitionProps {
   children: ReactNode;
 }
 
+const pageTransition = {
+  duration: 0.1,
+  ease: [0.4, 0, 0.2, 1] as const,
+};
+
+const variants = {
+  initial: { opacity: 0, x: -24 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 24 },
+};
+
 export function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  // Plain wrapper (no motion transform): transformed ancestors break
-  // `position: fixed` (e.g. checkout CTA + `AdditionalHeader`) on mobile Safari.
-  return <div key={pathname}>{children}</div>;
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={pathname}
+        className="min-h-0 w-full"
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={variants}
+        transition={pageTransition}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  );
 }
