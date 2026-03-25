@@ -3,8 +3,15 @@ import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 export interface UseBottomSheetConfig {
     minHeight?: number;
     topOffset?: number;
-    /** Initial height in px. Defaults to minHeight if not set */
     initialState?: number;
+}
+
+export function resolveHeight(value: number, topOffset: number): number {
+    if (value > 0 && value <= 1) {
+        if (typeof window === "undefined") return 150;
+        return (window.innerHeight - topOffset) * value;
+    }
+    return value;
 }
 
 export interface UseBottomSheetProps {
@@ -44,7 +51,10 @@ export function useBottomSheet({
     };
 
     const [containerHeight, setContainerHeight] = useState(
-        () => config.initialState ?? config.minHeight ?? 150
+        () => {
+            const raw = config.initialState ?? config.minHeight ?? 150;
+            return resolveHeight(raw, config.topOffset);
+        }
     );
 
     useEffect(() => {
@@ -79,13 +89,7 @@ export function useBottomSheet({
         return window.innerHeight - config.topOffset;
     };
 
-    const getMinHeight = () => {
-        if (typeof window === "undefined") return 150;
-        if (config.minHeight > 0 && config.minHeight <= 1) {
-            return (window.innerHeight - config.topOffset) * config.minHeight;
-        }
-        return config.minHeight;
-    };
+    const getMinHeight = () => resolveHeight(config.minHeight, config.topOffset);
 
     const isAtMinHeight = () => containerHeight <= getMinHeight() + 10;
 

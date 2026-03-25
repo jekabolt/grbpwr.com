@@ -68,15 +68,13 @@ export function MobileNavCart({
                 </DialogPrimitives.Title>
                 <div
                   className={cn(
-                    "relative mb-10 flex shrink-0 items-center justify-between",
+                    "relative mb-5 flex shrink-0 items-center justify-between",
                     { "mb-0": itemsQuantity === 0 },
                   )}
                 >
                   <Text variant="uppercase">{`${tCart("shopping cart")} ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
                   <DialogPrimitives.Close asChild>
-                    <Button onClick={closeCart} className="-m-2 p-3">
-                      [x]
-                    </Button>
+                    <Button onClick={closeCart}>[x]</Button>
                   </DialogPrimitives.Close>
                 </div>
                 {itemsQuantity > 0 ? (
@@ -84,7 +82,7 @@ export function MobileNavCart({
                     <div className="no-scroll-bar min-h-0 flex-1 overflow-y-auto">
                       <CartProductsList />
                     </div>
-                    <div className="mt-auto shrink-0 space-y-6 pb-[env(safe-area-inset-bottom)] pt-6">
+                    <div className="mt-auto shrink-0 space-y-6 pb-[env(safe-area-inset-bottom)]">
                       <CartTotalPrice />
                       <Button
                         asChild

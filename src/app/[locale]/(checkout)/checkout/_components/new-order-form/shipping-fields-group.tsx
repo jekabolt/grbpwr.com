@@ -127,9 +127,10 @@ export default function ShippingFieldsGroup({
                 const formattedPrice = price
                   ? formatPrice(Number(price), currency, symbol)
                   : "";
-                const label = eta
-                  ? `${displayCarrierName} (${eta} ${t("business days")})`
-                  : displayCarrierName;
+                const label =
+                  eta && eta !== "-"
+                    ? `${displayCarrierName} (${eta} ${t("business days")})`
+                    : displayCarrierName;
                 const promoFreeShipping = !!order?.promo?.freeShipping;
                 const orderFreeShipping = !!order?.freeShipping;
                 const freeShipping = promoFreeShipping || orderFreeShipping;

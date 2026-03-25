@@ -57,7 +57,12 @@ export function MobileImageCarousel({
 
   useEffect(() => {
     if (!emblaApi) return;
-    emblaApi.reInit({ ...EMBLA_OPTIONS, watchDrag: !scrollDisabled });
+    const currentIndex = emblaApi.selectedScrollSnap();
+    emblaApi.reInit({
+      ...EMBLA_OPTIONS,
+      startIndex: currentIndex,
+      watchDrag: !scrollDisabled,
+    });
   }, [emblaApi, scrollDisabled]);
 
   useEffect(() => {

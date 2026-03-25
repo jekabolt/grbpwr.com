@@ -33,7 +33,6 @@ export function useHandlers({
     product: product as common_ProductFull,
   });
 
-  // Auto-select size for one-size products
   useEffect(() => {
     if (isOneSize && sizeNames && sizeNames.length === 1 && !activeSizeId) {
       setActiveSizeId(sizeNames[0].id);
@@ -41,10 +40,12 @@ export function useHandlers({
   }, [isOneSize, sizeNames, activeSizeId]);
 
   const handleAddToCart = async () => {
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setIsMobileSizeDialogOpen(true);
+      return false;
+    }
+
     if (!activeSizeId) {
-      if (typeof window !== "undefined" && window.innerWidth < 1024) {
-        setIsMobileSizeDialogOpen(true);
-      }
       return false;
     }
 

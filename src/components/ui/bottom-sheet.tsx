@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 
 import {
   useBottomSheet,
+  resolveHeight,
   type UseBottomSheetConfig,
 } from "../../lib/hooks/useBottomSheet";
 import { AnimatedButton } from "./animated-button";
@@ -44,7 +45,11 @@ export function BottomSheet({
     setCarouselNavPortalReady(true);
   }, []);
 
-  const initialHeight = config?.initialState ?? config?.minHeight ?? 150;
+  const topOffset = config?.topOffset ?? 48;
+  const initialHeight = resolveHeight(
+    config?.initialState ?? config?.minHeight ?? 150,
+    topOffset,
+  );
   const heightMotionValue = useMotionValue(initialHeight);
 
   const heightSpring = useSpring(heightMotionValue, {
@@ -87,7 +92,7 @@ export function BottomSheet({
     carouselNavPortalReady &&
     createPortal(
       <motion.div
-        className="pointer-events-none fixed z-[100] flex w-full items-end justify-between text-bgColor mix-blend-difference"
+        className="pointer-events-none fixed z-30 flex w-full items-end justify-between text-bgColor mix-blend-difference"
         style={{
           bottom: heightSpring,
           height: carouselNav.overlayHeight,

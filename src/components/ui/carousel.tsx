@@ -128,10 +128,10 @@ export function Carousel({
     >
       <div className={className}>{children}</div>
       {scrollOnClick && (
-        <div className="absolute inset-0 flex h-full">
+        <div className="absolute inset-0 flex h-full text-bgColor mix-blend-exclusion">
           <div
             onClick={scrollPrev}
-            className="flex h-full flex-1 items-center justify-start text-bgColor mix-blend-exclusion"
+            className="flex h-full flex-1 items-center justify-start"
           >
             <Text className="pl-8 leading-none">{"<"}</Text>
           </div>

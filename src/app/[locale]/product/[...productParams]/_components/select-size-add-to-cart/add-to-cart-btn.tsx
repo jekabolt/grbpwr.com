@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 
 import { LoadingButton } from "../loading-button";
 import { NotifyMe } from "../notify-me";
@@ -43,6 +44,11 @@ export function AddToCartBtn({
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | undefined>(
+    undefined,
+  );
+  const [maxOrderLimitExceededToastOpen, setMaxOrderLimitExceededToastOpen] =
+    useState(false);
   const { preorder, preorderRaw, name, productCategory } = useProductBasics({
     product,
   });
@@ -95,6 +101,12 @@ export function AddToCartBtn({
   const handleAddToCartClick = () => {
     if (isSoldOut || isSelectedSizeOutOfStock) {
       setIsNotifyMeOpen(true);
+      return Promise.resolve(false);
+    }
+
+    if (isMaxQuantityFinal) {
+      setToastMessage(t("order limit exceeded"));
+      setMaxOrderLimitExceededToastOpen(true);
       return Promise.resolve(false);
     }
 
@@ -165,7 +177,6 @@ export function AddToCartBtn({
           <LoadingButton
             variant="simpleReverse"
             size="lg"
-            disabled={isMaxQuantityFinal}
             onAction={handleAddToCartClick}
             analyticsButtonId="add_to_cart"
             analyticsProductName={
@@ -207,6 +218,11 @@ export function AddToCartBtn({
           </LoadingButton>
         </div>
       </div>
+      <SubmissionToaster
+        open={maxOrderLimitExceededToastOpen}
+        message={toastMessage}
+        onOpenChange={setMaxOrderLimitExceededToastOpen}
+      />
     </>
   );
 }
