@@ -8,10 +8,6 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { validateCartItems } from "@/lib/cart/validate-cart-items";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
-import {
-  hasCheckoutInitialValidationRun,
-  setCheckoutInitialValidationDone,
-} from "@/lib/checkout/checkout-validation-state";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { CheckoutData } from "../schema";
 
@@ -26,6 +22,7 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   const { currentCountry } = useTranslationsStore((state) => state);
   const currency = currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
   const prevCurrencyRef = useRef(currency);
+  const initialValidationStartedRef = useRef(false);
 
   const validateItems = async (shipmentCarrierId?: string) => {
     const promoCode: string = form.getValues("promoCode") || "";
@@ -63,14 +60,12 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   };
 
   useEffect(() => {
-    if (
-      products.length !== 0 &&
-      !validatedOrder &&
-      !hasCheckoutInitialValidationRun()
-    ) {
-      setCheckoutInitialValidationDone();
-      validateItems();
+    if (products.length === 0 || validatedOrder || initialValidationStartedRef.current) {
+      return;
     }
+    initialValidationStartedRef.current = true;
+    validateItems();
+    // validatedOrder intentionally omitted: only products should re-trigger this gate
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 
