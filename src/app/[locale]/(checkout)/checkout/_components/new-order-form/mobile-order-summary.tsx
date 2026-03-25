@@ -78,6 +78,7 @@ export function MobileOrderSummary({
           validatedProducts={validatedProducts}
           currencyKey={orderCurrency}
           disabled={disabled}
+          disableProductLinks
         />
       </div>
       <PriceSummary form={form} order={order} orderCurrency={orderCurrency} />

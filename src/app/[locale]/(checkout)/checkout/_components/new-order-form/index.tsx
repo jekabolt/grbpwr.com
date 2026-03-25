@@ -378,6 +378,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                   validatedProducts={order?.validItems}
                   currencyKey={orderCurrency}
                   disabled={loading}
+                  disableProductLinks
                 />
                 <div
                   className={cn("space-y-8", {

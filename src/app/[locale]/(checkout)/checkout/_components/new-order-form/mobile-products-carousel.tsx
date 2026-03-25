@@ -21,10 +21,12 @@ function MobileOrderItemRow({
   product,
   currencyKey: currencyKeyProp,
   disabled = false,
+  disableProductLinks = false,
 }: {
   product: common_OrderItem;
   currencyKey?: string;
   disabled?: boolean;
+  disableProductLinks?: boolean;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
   const validatedCurrency = useCart((state) => state.validatedCurrency);
@@ -53,65 +55,65 @@ function MobileOrderItemRow({
     (t) => t.languageId === languageId,
   )?.name;
 
-  return (
-    <Button asChild>
-      <Link href={product.slug || ""}>
-        <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
-          <div className="relative min-w-[90px]">
-            <Image
-              src={product.thumbnail || ""}
-              alt="product"
-              fit="contain"
-              aspectRatio="3/4"
-            />
-            {disabled && (
-              <div className="absolute inset-0">
-                <Overlay
-                  cover="container"
-                  color="highlight"
-                  disabled={disabled}
-                />
-              </div>
-            )}
+  const row = (
+    <div className="relative flex gap-x-3 border-b border-solid border-textInactiveColor py-6 text-textColor first:pt-0 last:border-b-0">
+      <div className="relative min-w-[90px]">
+        <Image
+          src={product.thumbnail || ""}
+          alt="product"
+          fit="contain"
+          aspectRatio="3/4"
+        />
+        {disabled && (
+          <div className="absolute inset-0">
+            <Overlay cover="container" color="highlight" disabled={disabled} />
           </div>
-          <div
-            className={cn("flex min-w-0 flex-1 justify-between gap-x-3", {
-              "text-textInactiveColor": disabled,
-            })}
+        )}
+      </div>
+      <div
+        className={cn("flex min-w-0 flex-1 justify-between gap-x-3", {
+          "text-textInactiveColor": disabled,
+        })}
+      >
+        <div className="flex w-full flex-col gap-3">
+          <Text
+            className="line-clamp-1 overflow-hidden text-ellipsis"
+            variant="uppercase"
           >
-            <div className="flex w-full flex-col gap-3">
-              <Text
-                className="line-clamp-1 overflow-hidden text-ellipsis"
-                variant="uppercase"
-              >
-                {productName}
-              </Text>
-              <div className="flex h-full flex-row">
-                <div className="w-full">
-                  <Text variant="uppercase">
-                    {tColors(product.color || "")}
-                  </Text>
-                  <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
-                </div>
-                <div className="flex w-full flex-col items-end justify-end gap-3">
-                  <div className="flex items-center whitespace-nowrap">
-                    {isSaleApplied ? (
-                      <div className="flex items-center gap-x-2">
-                        <Text variant="strileTroughInactive">
-                          {priceWithoutSale}
-                        </Text>
-                        <Text>{priceWithSale}</Text>
-                      </div>
-                    ) : (
-                      <Text>{priceWithoutSale}</Text>
-                    )}
+            {productName}
+          </Text>
+          <div className="flex h-full flex-row">
+            <div className="w-full">
+              <Text variant="uppercase">{tColors(product.color || "")}</Text>
+              <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+            </div>
+            <div className="flex w-full flex-col items-end justify-end gap-3">
+              <div className="flex items-center whitespace-nowrap">
+                {isSaleApplied ? (
+                  <div className="flex items-center gap-x-2">
+                    <Text variant="strileTroughInactive">
+                      {priceWithoutSale}
+                    </Text>
+                    <Text>{priceWithSale}</Text>
                   </div>
-                </div>
+                ) : (
+                  <Text>{priceWithoutSale}</Text>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </Link>
+      </div>
+    </div>
+  );
+
+  if (disableProductLinks) {
+    return row;
+  }
+
+  return (
+    <Button asChild>
+      <Link href={product.slug || ""}>{row}</Link>
     </Button>
   );
 }
@@ -120,6 +122,7 @@ export function MobileProductsCarousel({
   validatedProducts,
   currencyKey,
   disabled = false,
+  disableProductLinks = false,
 }: Props) {
   const cartProducts = useCart((s) => s.products)
     .map((v) => v.productData)
@@ -134,6 +137,7 @@ export function MobileProductsCarousel({
           product={p}
           currencyKey={currencyKey}
           disabled={disabled}
+          disableProductLinks={disableProductLinks}
         />
       ))}
     </div>
@@ -142,7 +146,7 @@ export function MobileProductsCarousel({
 
 interface Props {
   validatedProducts?: common_OrderItem[];
-  /** When provided (e.g. order confirmation), use this currency instead of user's current locale */
   currencyKey?: string;
   disabled?: boolean;
+  disableProductLinks?: boolean;
 }

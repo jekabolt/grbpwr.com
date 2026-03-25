@@ -8,6 +8,7 @@ export function OrderProducts({
   validatedProducts,
   currencyKey,
   disabled = false,
+  disableProductLinks = false,
 }: Props) {
   const expandedProducts = validatedProducts
     ? validatedProducts.flatMap((item) =>
@@ -30,14 +31,15 @@ export function OrderProducts({
           validatedProducts={expandedProducts}
           currencyKey={currencyKey}
           disabled={disabled}
+          disableProductLinks={disableProductLinks}
         />
       </div>
-
       <div className="block lg:hidden">
         <MobileProductsCarousel
           validatedProducts={expandedProducts}
           currencyKey={currencyKey}
           disabled={disabled}
+          disableProductLinks={disableProductLinks}
         />
       </div>
     </div>
@@ -46,7 +48,7 @@ export function OrderProducts({
 
 type Props = {
   validatedProducts?: common_OrderItem[];
-  /** When provided (e.g. order confirmation), use this currency instead of user's current locale */
   currencyKey?: string;
   disabled?: boolean;
+  disableProductLinks?: boolean;
 };
