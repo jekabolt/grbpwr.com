@@ -4,11 +4,14 @@ import { ReactNode, useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { modalTransition } from "@/components/modal-transition";
-
 interface PageTransitionProps {
   children: ReactNode;
 }
+
+const pageTransition = {
+  duration: 0.1,
+  ease: [0.4, 0, 0.2, 1] as const,
+};
 
 const variants = {
   initial: { opacity: 0, x: -24 },
@@ -32,7 +35,7 @@ export function PageTransition({ children }: PageTransitionProps) {
         animate="animate"
         exit="exit"
         variants={variants}
-        transition={modalTransition}
+        transition={pageTransition}
       >
         {children}
       </motion.div>
