@@ -8,6 +8,7 @@ import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
+import { sendPaymentFailedEvent } from "@/lib/analitycs/checkout-custom";
 import { sendPurchaseEvent } from "@/lib/analitycs/checkout";
 import {
   ensureGtag,
@@ -40,6 +41,7 @@ export function OrderPageComponent({
   const t = useTranslations("order-info");
   const tCheckout = useTranslations("checkout");
   const purchaseFiredRef = useRef(false);
+  const paymentFailedRedirectRef = useRef(false);
 
   const sizeMap: SizeMap = useMemo(() => {
     const sizes = dictionary?.sizes || [];
@@ -98,6 +100,20 @@ export function OrderPageComponent({
       window.history.replaceState({}, "", cleanUrl);
     } else if (redirectStatus === "failed" || redirectStatus === "canceled") {
       console.error("Payment failed or canceled");
+      if (!paymentFailedRedirectRef.current && orderData?.order?.uuid) {
+        paymentFailedRedirectRef.current = true;
+        sendPaymentFailedEvent({
+          error_code:
+            redirectStatus === "canceled"
+              ? "stripe_redirect_canceled"
+              : "stripe_redirect_failed",
+          payment_type: "credit_card",
+          order_value: parseFloat(orderData.order?.totalPrice?.value || "0"),
+          currency: orderData.order?.currency?.toUpperCase() || "EUR",
+          page_path: window.location.pathname,
+          transaction_id: orderData.order.uuid,
+        });
+      }
       const parsed = parseCountryLocalePath(window.location.pathname);
       const country = parsed?.country || "gb";
       const locale = parsed?.locale || "en";

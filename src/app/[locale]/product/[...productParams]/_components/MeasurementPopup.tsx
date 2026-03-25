@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
-import { sendSizeGuideViewEvent } from "@/lib/analitycs/product-engagement";
+import {
+  sendSizeGuideClickEvent,
+  sendSizeGuideViewEvent,
+} from "@/lib/analitycs/product-engagement";
 import { ModalTransition } from "@/components/modal-transition";
 import { LoadingButton } from "@/app/[locale]/product/[...productParams]/_components/loading-button";
 import { useProductBasics } from "@/app/[locale]/product/[...productParams]/_components/utils/useProductBasics";
@@ -59,8 +62,15 @@ export default function MeasurementPopup({
 
   const toggleModal = () => {
     if (!isModalOpen) {
+      const productId = product.product?.sku || "";
+      const pageLocation =
+        typeof window !== "undefined" ? window.location.pathname : "";
+      sendSizeGuideClickEvent({
+        product_id: productId,
+        page_location: pageLocation,
+      });
       sendSizeGuideViewEvent({
-        product_id: product.product?.sku || "",
+        product_id: productId,
         product_name: name,
         product_category: productCategory || "",
         page_location:

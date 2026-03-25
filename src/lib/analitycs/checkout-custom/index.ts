@@ -18,6 +18,8 @@ interface PaymentFailedEvent {
   order_value: number;
   currency: string;
   page_path: string;
+  /** Order UUID for joining with purchase / recovery funnels */
+  transaction_id?: string;
 }
 
 const FORM_START_KEY = "ga4_form_started";
@@ -56,6 +58,7 @@ export function sendPaymentFailedEvent(data: PaymentFailedEvent): void {
     order_value: Math.max(0, data.order_value || 0),
     currency: data.currency,
     page_path: data.page_path,
+    ...(data.transaction_id && { transaction_id: data.transaction_id }),
   });
 }
 

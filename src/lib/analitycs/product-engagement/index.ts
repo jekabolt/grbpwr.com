@@ -69,6 +69,18 @@ export function sendSizeGuideViewEvent(data: SizeGuideViewEvent): void {
   });
 }
 
+/** BQ / GA4 custom event `size_guide_click` (product_id, page_location). */
+export function sendSizeGuideClickEvent(data: {
+  product_id: string;
+  page_location: string;
+}): void {
+  if (!data.product_id) return;
+  pushCustomEvent("size_guide_click", {
+    product_id: data.product_id,
+    page_location: data.page_location,
+  });
+}
+
 export function sendOutOfStockClickEvent(data: OutOfStockClickEvent): void {
   pushCustomEvent("out_of_stock_click", {
     product_id: data.product_id,
@@ -118,21 +130,21 @@ export function sendProductZoomEvent(data: ProductZoomEvent): void {
 }
 
 export function sendProductDetailsExpansionEvent(data: ProductDetailsExpansionEvent): void {
-  pushCustomEvent("product_details_expansion", {
-    product_id: data.product_id,
-    product_name: data.product_name,
-    section_name: data.section_name,
-    action: data.action,
-  });
+  if (data.action === "expand") {
+    pushCustomEvent("details_expand", {
+      product_id: data.product_id,
+      section_name: data.section_name,
+    });
+  }
 }
 
 export function sendNotifyMeIntentEvent(data: NotifyMeIntentEvent): void {
-  pushCustomEvent("notify_me_intent", {
+  pushCustomEvent("notify_me_action", {
     product_id: data.product_id,
+    action: data.action,
     product_name: data.product_name,
     product_category: data.product_category,
     size_id: data.size_id,
     size_name: data.size_name,
-    action: data.action,
   });
 }

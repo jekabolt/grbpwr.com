@@ -3,7 +3,10 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
-import { sendSizeGuideViewEvent } from "@/lib/analitycs/product-engagement";
+import {
+  sendSizeGuideClickEvent,
+  sendSizeGuideViewEvent,
+} from "@/lib/analitycs/product-engagement";
 import { ModalTransition } from "@/components/modal-transition";
 import { Text } from "@/components/ui/text";
 
@@ -36,8 +39,15 @@ export function MobileMeasurements({
 
   const handleOpenChange = (isOpen: boolean) => {
     if (isOpen) {
+      const productId = product.product?.sku || "";
+      const pageLocation =
+        typeof window !== "undefined" ? window.location.pathname : "";
+      sendSizeGuideClickEvent({
+        product_id: productId,
+        page_location: pageLocation,
+      });
       sendSizeGuideViewEvent({
-        product_id: product.product?.sku || "",
+        product_id: productId,
         product_name: name,
         product_category: productCategory || "",
         page_location:
