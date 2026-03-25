@@ -291,6 +291,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
           currency: orderCurrency || currentCountry.currencyKey || "EUR",
           page_path:
             typeof window !== "undefined" ? window.location.pathname : "",
+          transaction_id: orderUuid,
         });
         console.error("Payment confirmation failed:", paymentResult.error);
       }
