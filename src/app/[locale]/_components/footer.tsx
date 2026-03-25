@@ -1,19 +1,19 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   currencySymbols,
   FOOTER_YEAR,
   FOOTER_LINKS as links,
 } from "@/constants";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { WhiteLogo } from "@/components/ui/icons/white-logo";
 import { Logo } from "@/components/ui/logo";
 import { Text } from "@/components/ui/text";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
 import { CountriesPopup } from "./CountriesPopup";
 import { FooterNavMobile } from "./footer-nav-mobile";
@@ -52,7 +52,6 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
       <div className="flex justify-center pt-16 lg:py-52">
         <div className="flex w-full flex-col gap-y-16 lg:w-auto lg:flex-row lg:gap-x-20">
           <div className="flex justify-center lg:justify-end">
-            {/* Mobile: iframe */}
             <iframe
               src={
                 theme === "dark"
@@ -63,7 +62,6 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
               className="h-40 w-40 border-0 lg:hidden"
               title="Art"
             />
-            {/* Desktop: logo */}
             {theme === "dark" ? (
               <Logo className="hidden aspect-square h-full w-40 lg:block" />
             ) : (
@@ -77,7 +75,12 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
       </div>
       <div className="flex flex-col justify-between gap-x-24 lg:flex-row lg:items-start lg:px-7">
         <div className="order-4 flex justify-center gap-2 lg:order-1 lg:justify-start">
-          <Text variant="uppercase" className="uppercase transition-colors hover:text-textInactiveColor active:text-highlightColor">grbpwr</Text>
+          <Text
+            variant="uppercase"
+            className="uppercase transition-colors hover:text-textInactiveColor active:text-highlightColor"
+          >
+            grbpwr
+          </Text>
           <LiveClock />
         </div>
         <div className="order-3 flex justify-center gap-24 py-16 lg:order-2 lg:py-0">

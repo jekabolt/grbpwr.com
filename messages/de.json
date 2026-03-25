@@ -424,7 +424,8 @@
     },
     "email": {
       "invalid": "ungültige email",
-      "max": "email darf höchstens 40 zeichen enthalten"
+      "max": "email darf höchstens 40 zeichen enthalten",
+      "required": "e-mail ist erforderlich"
     },
     "additionalAddress": {
       "min": "zusätzliche adresse muss mindestens 3 zeichen enthalten",
@@ -433,6 +434,9 @@
     },
     "termsOfService": {
       "required": "sie müssen den allgemeinen geschäftsbedingungen zustimmen, um fortzufahren"
+    },
+    "acceptTerms": {
+      "required": "zustimmung zum abonnieren erforderlich"
     },
     "orderUuid": {
       "required": "bestellnummer ist erforderlich"
@@ -489,16 +493,18 @@
     "hot pink": "knallrosa"
   },
   "toaster": {
-    "successfully_subscribed": "erfolgreich für Newsletter angemeldet!",
-    "failed_to_subscribe": "anmeldung fehlgeschlagen. bitte versuchen Sie es erneut.",
-    "invalid_email": "bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "successfully_subscribed": "erfolgreich für newsletter angemeldet!",
+    "failed_to_subscribe": "anmeldung fehlgeschlagen. bitte versuchen sie es erneut.",
+    "invalid_email": "bitte geben sie eine gültige e-mail-adresse ein",
     "email_copied": "e-mail kopiert",
     "cart_outdated": "ihr warenkorb ist veraltet",
     "cart_modified": "ihr warenkorb wurde geändert",
-    "payment_already_completed": "Zahlung für diese Sitzung bereits abgeschlossen. Bitte leeren Sie Ihren Warenkorb und starten Sie eine neue Bestellung.",
-    "payment_unavailable": "Zahlung vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.",
-    "validation_error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
-    "fill_required_fields": "Bitte füllen Sie alle erforderlichen Felder aus"
+    "payment_already_completed": "zahlung für diese sitzung bereits abgeschlossen. bitte leeren sie ihren warenkorb und starten sie eine neue bestellung.",
+    "payment_unavailable": "zahlung vorübergehend nicht verfügbar. bitte versuchen sie es später erneut.",
+    "validation_error": "etwas ist schiefgelaufen. bitte versuchen sie es erneut.",
+    "fill_required_fields": "bitte füllen sie alle erforderlichen felder aus",
+    "email_required": "e-mail ist erforderlich",
+    "required_terms": "zustimmung zum abonnieren erforderlich"
   },
   "refund": {
     "return order": "bestellung retournieren",

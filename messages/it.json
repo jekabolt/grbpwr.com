@@ -423,7 +423,8 @@
     },
     "email": {
       "invalid": "email non valida",
-      "max": "l'email può contenere al massimo 40 caratteri"
+      "max": "l'email può contenere al massimo 40 caratteri",
+      "required": "l'email è obbligatoria"
     },
     "additionalAddress": {
       "min": "l'indirizzo aggiuntivo deve contenere almeno 3 caratteri",
@@ -432,6 +433,9 @@
     },
     "termsOfService": {
       "required": "devi accettare i termini e le condizioni per procedere"
+    },
+    "acceptTerms": {
+      "required": "consenso richiesto per l'iscrizione"
     },
     "orderUuid": {
       "required": "la riferimento dell'ordine è obbligatorio"
@@ -494,10 +498,12 @@
     "email_copied": "email copiata",
     "cart_outdated": "il tuo carrello è obsoleto",
     "cart_modified": "il tuo carrello è stato modificato",
-    "payment_already_completed": "Pagamento già completato per questa sessione. Svuota il carrello e inizia un nuovo ordine.",
-    "payment_unavailable": "Il pagamento non è temporaneamente disponibile. Riprova più tardi.",
-    "validation_error": "Qualcosa è andato storto. Riprova.",
-    "fill_required_fields": "Compila tutti i campi obbligatori"
+    "payment_already_completed": "pagamento già completato per questa sessione. svuota il carrello e inizia un nuovo ordine.",
+    "payment_unavailable": "il pagamento non è temporaneamente disponibile. riprova più tardi.",
+    "validation_error": "qualcosa è andato storto. riprova.",
+    "fill_required_fields": "compila tutti i campi obbligatori",
+    "email_required": "l'email è obbligatoria",
+    "required_terms": "consenso richiesto per l'iscrizione"
   },
   "refund": {
     "return order": "restituisci ordine",
