@@ -10,6 +10,8 @@ import {
 import { Overlay } from "@/components/ui/overlay";
 
 const SWIPE_CLOSE_THRESHOLD = 80;
+/** At scale 1, dominant horizontal swipe changes carousel slide instead of closing. */
+const SWIPE_MEDIA_THRESHOLD = 64;
 const PULSE_DURATION_MS = 400;
 
 const TRANSFORM_CONFIG_BASE = {
@@ -44,11 +46,14 @@ export function ImageZoom({
   onDoubleClick,
   onClose,
   onPinchZoom,
+  onSwipeMedia,
 }: {
   children: React.ReactNode;
   onDoubleClick?: () => void;
   onClose?: () => void;
   onPinchZoom?: () => void;
+  /** When zoomed to 1x; swipe left → next, swipe right → prev (LTR). */
+  onSwipeMedia?: (direction: "next" | "prev") => void;
 }) {
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
   const panStart = useRef<{ x: number; y: number } | null>(null);
@@ -97,21 +102,21 @@ export function ImageZoom({
 
   const handlePanningStart = useCallback(
     (_ref: ReactZoomPanPinchRef, e: TouchEvent | MouseEvent) => {
-      if (!onClose) return;
+      if (!onClose && !onSwipeMedia) return;
       const x =
         "touches" in e ? e.touches[0]?.clientX : (e as MouseEvent).clientX;
       const y =
         "touches" in e ? e.touches[0]?.clientY : (e as MouseEvent).clientY;
       if (x != null && y != null) panStart.current = { x, y };
     },
-    [onClose],
+    [onClose, onSwipeMedia],
   );
 
   const handlePanningStop = useCallback(
     (ref: ReactZoomPanPinchRef, e: TouchEvent | MouseEvent) => {
       const start = panStart.current;
       panStart.current = null;
-      if (!onClose || start === null) return;
+      if (start === null) return;
 
       const endX =
         "changedTouches" in e
@@ -123,23 +128,42 @@ export function ImageZoom({
           : (e as MouseEvent).clientY;
       if (endX == null || endY == null) return;
 
-      const deltaX = Math.abs(endX - start.x);
-      const deltaY = Math.abs(endY - start.y);
+      const signedDx = endX - start.x;
+      const signedDy = endY - start.y;
+      const absDx = Math.abs(signedDx);
+      const absDy = Math.abs(signedDy);
       const scale = ref.state.scale;
-      const swipeDistance = Math.max(deltaX, deltaY);
-      if (scale <= 1 && swipeDistance > SWIPE_CLOSE_THRESHOLD) {
+
+      if (
+        scale <= 1 &&
+        onSwipeMedia &&
+        absDx >= SWIPE_MEDIA_THRESHOLD &&
+        absDx > absDy
+      ) {
+        if (signedDx < 0) onSwipeMedia("next");
+        else onSwipeMedia("prev");
+        return;
+      }
+
+      if (
+        onClose &&
+        scale <= 1 &&
+        Math.max(absDx, absDy) > SWIPE_CLOSE_THRESHOLD
+      ) {
         onClose();
       }
     },
-    [onClose],
+    [onClose, onSwipeMedia],
   );
+
+  const trackPanGestures = Boolean(onClose || onSwipeMedia);
 
   const transformConfig = {
     ...TRANSFORM_CONFIG_BASE,
     minScale: onClose ? 0.5 : 1,
     onPinchingStop: onClose || onPinchZoom ? handlePinchingStop : undefined,
-    onPanningStart: onClose ? handlePanningStart : undefined,
-    onPanningStop: onClose ? handlePanningStop : undefined,
+    onPanningStart: trackPanGestures ? handlePanningStart : undefined,
+    onPanningStop: trackPanGestures ? handlePanningStop : undefined,
   };
 
   return (

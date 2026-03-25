@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
@@ -136,6 +136,15 @@ export function MobileImageCarousel({
     }
   };
 
+  const handleSwipeMedia = useCallback(
+    (direction: "next" | "prev") => {
+      if (!emblaApi || media.length < 2) return;
+      if (direction === "next") emblaApi.scrollNext(true);
+      else emblaApi.scrollPrev(true);
+    },
+    [emblaApi, media.length],
+  );
+
   return (
     <DialogPrimitives.Root modal open={isOpen} onOpenChange={setIsOpen}>
       <DialogPrimitives.Trigger asChild>
@@ -182,9 +191,13 @@ export function MobileImageCarousel({
 
           {currentMedia && (
             <ImageZoom
+              key={selectedIndex}
               onDoubleClick={handleDoubleClick}
               onClose={() => setIsOpen(false)}
               onPinchZoom={handlePinchZoom}
+              onSwipeMedia={
+                media.length > 1 ? handleSwipeMedia : undefined
+              }
             >
               <ImageComponent
                 src={currentMedia.mediaUrl || ""}
