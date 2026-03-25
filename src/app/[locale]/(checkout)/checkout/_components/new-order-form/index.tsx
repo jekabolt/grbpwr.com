@@ -16,7 +16,6 @@ import {
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { pushUserIdToDataLayer, waitForAnalytics } from "@/lib/analitycs/utils";
 import { getValidationErrorToastKey } from "@/lib/cart/validate-cart-items";
-import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
@@ -278,7 +277,6 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
           clearCart();
           clearFormData();
           clearIdempotencyKey();
-          resetCheckoutValidationState();
           await waitForAnalytics();
           // redirect_status=succeeded ensures order page fires purchase event
           // as a safety net — GA4 deduplicates by transaction_id

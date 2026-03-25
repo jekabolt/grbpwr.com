@@ -15,7 +15,6 @@ import {
   SizeMap,
 } from "@/lib/analitycs/utils";
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
-import { resetCheckoutValidationState } from "@/lib/checkout/checkout-validation-state";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { formatPrice } from "@/lib/currency";
 import { buildTrackingUrl } from "@/lib/shipment/tracking-url";
@@ -61,7 +60,6 @@ export function OrderPageComponent({
     if (redirectStatus === "succeeded") {
       clearCart();
       clearIdempotencyKey();
-      resetCheckoutValidationState();
 
       if (
         !purchaseFiredRef.current &&
