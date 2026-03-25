@@ -21,6 +21,7 @@ export default function ItemRow({
   index,
   currencyKey: currencyKeyProp,
   disabled = false,
+  disableProductLinks = false,
 }: Props) {
   const { languageId } = useTranslationsStore((state) => state);
   const closeCart = useCart((state) => state.closeCart);
@@ -59,53 +60,97 @@ export default function ItemRow({
         },
       )}
     >
-      <Link
-        href={product.slug || ""}
-        className="relative h-full min-w-[90px] shrink-0"
-        onClick={closeCart}
-      >
-        <Image
-          src={product.thumbnail || ""}
-          alt="product"
-          fit="contain"
-          aspectRatio="4/5"
-        />
-        <div className="absolute inset-0 hidden lg:block">
-          <Overlay
-            cover="container"
-            color="highlight"
-            trigger={disabled ? "none" : "hover"}
-            disabled={disabled}
+      {disableProductLinks ? (
+        <div className="relative h-full min-w-[90px] shrink-0">
+          <Image
+            src={product.thumbnail || ""}
+            alt="product"
+            fit="contain"
+            aspectRatio="4/5"
           />
+          <div className="absolute inset-0 hidden lg:block">
+            <Overlay
+              cover="container"
+              color="highlight"
+              trigger={disabled ? "none" : "hover"}
+              disabled={disabled}
+            />
+          </div>
         </div>
-      </Link>
-      <div className="relative z-10 flex w-full items-stretch justify-between">
+      ) : (
         <Link
           href={product.slug || ""}
-          className="flex w-full flex-col justify-between"
+          className="relative h-full min-w-[90px] shrink-0"
           onClick={closeCart}
         >
-          <div className="space-y-3">
-            <Text
-              className="line-clamp-1 overflow-hidden text-ellipsis"
-              variant="uppercase"
-            >
-              {productName}
-            </Text>
-            <div>
-              <Text variant="uppercase">{tColors(product.color || "")}</Text>
-              <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
-            </div>
+          <Image
+            src={product.thumbnail || ""}
+            alt="product"
+            fit="contain"
+            aspectRatio="4/5"
+          />
+          <div className="absolute inset-0 hidden lg:block">
+            <Overlay
+              cover="container"
+              color="highlight"
+              trigger={disabled ? "none" : "hover"}
+              disabled={disabled}
+            />
           </div>
-          {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
-            <Text
-              variant="uppercase"
-              className="whitespace-nowrap text-textInactiveColor"
-            >
-              {preorderDate}
-            </Text>
-          )}
         </Link>
+      )}
+      <div className="relative z-10 flex w-full items-stretch justify-between">
+        {disableProductLinks ? (
+          <div className="flex w-full flex-col justify-between">
+            <div className="space-y-3">
+              <Text
+                className="line-clamp-1 overflow-hidden text-ellipsis"
+                variant="uppercase"
+              >
+                {productName}
+              </Text>
+              <div>
+                <Text variant="uppercase">{tColors(product.color || "")}</Text>
+                <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+              </div>
+            </div>
+            {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
+              <Text
+                variant="uppercase"
+                className="whitespace-nowrap text-textInactiveColor"
+              >
+                {preorderDate}
+              </Text>
+            )}
+          </div>
+        ) : (
+          <Link
+            href={product.slug || ""}
+            className="flex w-full flex-col justify-between"
+            onClick={closeCart}
+          >
+            <div className="space-y-3">
+              <Text
+                className="line-clamp-1 overflow-hidden text-ellipsis"
+                variant="uppercase"
+              >
+                {productName}
+              </Text>
+              <div>
+                <Text variant="uppercase">{tColors(product.color || "")}</Text>
+                <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+              </div>
+            </div>
+            {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
+              <Text
+                variant="uppercase"
+                className="whitespace-nowrap text-textInactiveColor"
+              >
+                {preorderDate}
+              </Text>
+            )}
+          </Link>
+        )}
         <div
           className={cn(
             "relative z-10 flex w-full flex-col items-end justify-between self-stretch",
@@ -142,7 +187,7 @@ type Props = {
   product?: common_OrderItem;
   hideQuantityButtons?: boolean;
   index?: number;
-  /** When provided (e.g. order confirmation), use this currency instead of user's current locale */
   currencyKey?: string;
   disabled?: boolean;
+  disableProductLinks?: boolean;
 };

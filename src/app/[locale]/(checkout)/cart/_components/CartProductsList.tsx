@@ -12,6 +12,7 @@ export default function CartProductsList({
   validatedProducts,
   currencyKey,
   disabled = false,
+  disableProductLinks = false,
 }: Props) {
   const { isOpen } = useCart((state) => state);
   const products = useCart((state) => state.products).map((v) => v.productData);
@@ -34,6 +35,7 @@ export default function CartProductsList({
           hideQuantityButtons={hideQuantityButtons}
           currencyKey={currencyKey}
           disabled={disabled}
+          disableProductLinks={disableProductLinks}
         />
       ))}
     </>
@@ -46,4 +48,5 @@ type Props = {
   /** When provided (e.g. order confirmation), use this currency instead of user's current locale */
   currencyKey?: string;
   disabled?: boolean;
+  disableProductLinks?: boolean;
 };
