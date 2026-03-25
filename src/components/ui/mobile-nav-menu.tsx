@@ -5,6 +5,7 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import { ModalTransition } from "@/components/modal-transition";
+
 import { useDataContext } from "../contexts/DataContext";
 import { Button } from "./button";
 import {
@@ -42,47 +43,47 @@ export function MobileNavMenu({
         <ModalTransition
           isOpen={open}
           contentSlideFrom="top"
-          contentClassName="fixed inset-x-2 bottom-2 top-2 z-40 border border-textInactiveColor bg-bgColor px-2.5 pb-4 pt-5"
+          contentClassName="fixed inset-x-2 bottom-2 top-2 z-40 border border-textInactiveColor bg-bgColor p-2.5"
           content={
-        <DialogPrimitives.Content className="flex h-full flex-col">
-          <DialogPrimitives.Title className="sr-only">
-            {tAccessibility("mobile menu")}
-          </DialogPrimitives.Title>
-          <div className="flex h-full flex-col">
-            <div className="mb-14">
-              {activeCategory ? (
-                <div className="flex items-center justify-between">
-                  <Button onClick={() => setActiveCategory(undefined)}>
-                    {"<"}
-                  </Button>
-                  {isBigMenuEnabled && (
-                    <Text variant="uppercase">{activeCategory}</Text>
+            <DialogPrimitives.Content className="flex h-full flex-col">
+              <DialogPrimitives.Title className="sr-only">
+                {tAccessibility("mobile menu")}
+              </DialogPrimitives.Title>
+              <div className="flex h-full flex-col">
+                <div className="mb-14">
+                  {activeCategory ? (
+                    <div className="flex items-center justify-between">
+                      <Button onClick={() => setActiveCategory(undefined)}>
+                        {"<"}
+                      </Button>
+                      {isBigMenuEnabled && (
+                        <Text variant="uppercase">{activeCategory}</Text>
+                      )}
+                      <DialogPrimitives.Close asChild>
+                        <Button>[x]</Button>
+                      </DialogPrimitives.Close>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-end">
+                      <DialogPrimitives.Close>
+                        <Text>[x]</Text>
+                      </DialogPrimitives.Close>
+                    </div>
                   )}
-                  <DialogPrimitives.Close asChild>
-                    <Button>[x]</Button>
-                  </DialogPrimitives.Close>
                 </div>
-              ) : (
-                <div className="flex items-center justify-end">
-                  <DialogPrimitives.Close>
-                    <Text>[x]</Text>
-                  </DialogPrimitives.Close>
-                </div>
-              )}
-            </div>
-            {activeCategory === undefined ||
-            !isBigMenuEnabled ||
-            !isWebsiteEnabled ? (
-              <DefaultMobileMenuDialog
-                setActiveCategory={setActiveCategory}
-                isBigMenuEnabled={isBigMenuEnabled}
-                isWebsiteEnabled={isWebsiteEnabled}
-              />
-            ) : (
-              <ActiveCategoryMenuDialog activeCategory={activeCategory} />
-            )}
-          </div>
-        </DialogPrimitives.Content>
+                {activeCategory === undefined ||
+                !isBigMenuEnabled ||
+                !isWebsiteEnabled ? (
+                  <DefaultMobileMenuDialog
+                    setActiveCategory={setActiveCategory}
+                    isBigMenuEnabled={isBigMenuEnabled}
+                    isWebsiteEnabled={isWebsiteEnabled}
+                  />
+                ) : (
+                  <ActiveCategoryMenuDialog activeCategory={activeCategory} />
+                )}
+              </div>
+            </DialogPrimitives.Content>
           }
         />
       </DialogPrimitives.Portal>
