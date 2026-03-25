@@ -15,7 +15,6 @@ export function useHeaderScrollPosition() {
   useEffect(() => {
     const updateScrollDirection = () => {
       const scrollY = window.scrollY;
-      // iOS / subpixel: strict === 0 misses “essentially at top”
       const atTop = scrollY <= 1;
       setIsAtTop(atTop);
 
