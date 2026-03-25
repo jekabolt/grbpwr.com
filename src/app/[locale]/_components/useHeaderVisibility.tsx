@@ -21,10 +21,10 @@ export function useHeaderVisibility() {
 
   useEffect(() => {
     if (isMobile) {
-      if (scrollDirection === "down") {
-        setIsVisible(false);
-      } else if (scrollDirection === "up" || isAtTop) {
+      if (isAtTop || scrollDirection === "up") {
         setIsVisible(true);
+      } else if (scrollDirection === "down") {
+        setIsVisible(false);
       }
     } else {
       setIsVisible(true);

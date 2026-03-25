@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function useHeaderScrollPosition() {
   const [scrollDirection, setScrollDirection] = useState<"up" | "down" | null>(
@@ -6,57 +6,62 @@ export function useHeaderScrollPosition() {
   );
   const [isAtTop, setIsAtTop] = useState(true);
 
+  const scrollDirectionRef = useRef<"up" | "down" | null>(null);
+  const lastScrollYRef = useRef(0);
+  const downAccumulatorRef = useRef(0);
+  const upAccumulatorRef = useRef(0);
+  const tickingRef = useRef(false);
+
   useEffect(() => {
-    let lastScrollY = window.pageYOffset;
-    let downAccumulator = 0;
-    let upAccumulator = 0;
-
     const updateScrollDirection = () => {
-      const scrollY = window.pageYOffset;
+      const scrollY = window.scrollY;
+      // iOS / subpixel: strict === 0 misses “essentially at top”
+      const atTop = scrollY <= 1;
+      setIsAtTop(atTop);
 
-      setIsAtTop(scrollY === 0);
-
+      const lastScrollY = lastScrollYRef.current;
       if (scrollY === lastScrollY) return;
 
       const delta = scrollY - lastScrollY;
+      lastScrollYRef.current = scrollY;
+
+      const dir = scrollDirectionRef.current;
 
       if (delta > 0) {
-        downAccumulator += delta;
-        upAccumulator = 0;
-
-        if (downAccumulator >= 250 && scrollDirection !== "down") {
+        downAccumulatorRef.current += delta;
+        upAccumulatorRef.current = 0;
+        if (downAccumulatorRef.current >= 250 && dir !== "down") {
+          scrollDirectionRef.current = "down";
           setScrollDirection("down");
         }
       } else {
-        upAccumulator += Math.abs(delta);
-        downAccumulator = 0;
-
-        if (upAccumulator >= 10 && scrollDirection !== "up") {
+        upAccumulatorRef.current += Math.abs(delta);
+        downAccumulatorRef.current = 0;
+        if (upAccumulatorRef.current >= 10 && dir !== "up") {
+          scrollDirectionRef.current = "up";
           setScrollDirection("up");
         }
       }
-
-      lastScrollY = scrollY;
     };
 
-    let ticking = false;
     const handleScroll = () => {
-      if (!ticking) {
+      if (!tickingRef.current) {
+        tickingRef.current = true;
         requestAnimationFrame(() => {
           updateScrollDirection();
-          ticking = false;
+          tickingRef.current = false;
         });
-        ticking = true;
       }
     };
 
+    lastScrollYRef.current = window.scrollY;
     window.addEventListener("scroll", handleScroll, { passive: true });
     updateScrollDirection();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [scrollDirection]);
+  }, []);
 
   return { scrollDirection, isAtTop };
 }
