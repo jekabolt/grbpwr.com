@@ -16,6 +16,7 @@ import { useProductPricing } from "@/app/[locale]/product/[...productParams]/_co
 import { Button } from "../../../../../components/ui/button";
 import { Overlay } from "../../../../../components/ui/overlay";
 import { Text } from "../../../../../components/ui/text";
+import { SubmissionToaster } from "../../../../../components/ui/toaster";
 
 interface ModalProps {
   children: React.ReactNode;
@@ -23,6 +24,7 @@ interface ModalProps {
   handleAddToCart: () => Promise<boolean>;
   selectedSize?: number;
   outOfStock?: Record<number, boolean>;
+  isMaxQuantity?: boolean;
   onNotifyMeOpen?: () => void;
 }
 
@@ -32,6 +34,7 @@ export default function MeasurementPopup({
   handleAddToCart,
   selectedSize,
   outOfStock,
+  isMaxQuantity,
   onNotifyMeOpen,
 }: ModalProps) {
   const { preorder, name, productCategory } = useProductBasics({ product });
@@ -40,6 +43,11 @@ export default function MeasurementPopup({
   const t = useTranslations("product");
 
   const [isModalOpen, setModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | undefined>(
+    undefined,
+  );
+  const [maxOrderLimitExceededToastOpen, setMaxOrderLimitExceededToastOpen] =
+    useState(false);
   const isSelectedSizeOutOfStock =
     selectedSize !== undefined &&
     selectedSize !== null &&
@@ -88,6 +96,13 @@ export default function MeasurementPopup({
       }, 100);
       return false;
     }
+
+    if (isMaxQuantity) {
+      setToastMessage(t("order limit exceeded"));
+      setMaxOrderLimitExceededToastOpen(true);
+      return false;
+    }
+
     setModalOpen(false);
     const success = await handleAddToCart();
     return success;
@@ -120,16 +135,25 @@ export default function MeasurementPopup({
               <LoadingButton
                 variant="simpleReverse"
                 size="lg"
+                className={isMaxQuantity ? "justify-center" : undefined}
                 onAction={() => handleAddToCartComplete()}
               >
-                <Text variant="inherit">
+                <Text
+                  variant="inherit"
+                  className={
+                    isMaxQuantity ? "w-full text-center uppercase" : undefined
+                  }
+                >
                   {isSelectedSizeOutOfStock
                     ? t("notify me")
-                    : preorder
-                      ? t("preorder")
-                      : t("add")}
+                    : isMaxQuantity
+                      ? t("order limit exceeded")
+                      : preorder
+                        ? t("preorder")
+                        : t("add")}
                 </Text>
                 {!isSelectedSizeOutOfStock &&
+                  !isMaxQuantity &&
                   (isSaleApplied ? (
                     <Text variant="inactive">
                       {priceMinusSale}
@@ -143,6 +167,11 @@ export default function MeasurementPopup({
           }
         />
       )}
+      <SubmissionToaster
+        open={maxOrderLimitExceededToastOpen}
+        message={toastMessage}
+        onOpenChange={setMaxOrderLimitExceededToastOpen}
+      />
     </div>
   );
 }
