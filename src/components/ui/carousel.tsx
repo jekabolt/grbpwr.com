@@ -1,6 +1,6 @@
 "use client";
 
-import { Children, useEffect } from "react";
+import { Children, useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
@@ -22,6 +22,7 @@ type CarouselProps = {
   skipSnaps?: boolean;
   scrollOnClick?: boolean;
   setSelectedIndex?: (index: number) => void;
+  onSettle?: (index: number) => void;
 };
 
 export function Carousel({
@@ -38,6 +39,7 @@ export function Carousel({
   skipSnaps = true,
   scrollOnClick = false,
   setSelectedIndex,
+  onSettle,
 }: CarouselProps) {
   const childrenCount = Children.count(children);
   const isDisabled = disabled || disableForItemCounts?.includes(childrenCount);
@@ -54,11 +56,15 @@ export function Carousel({
     isDisabled ? [] : [WheelGesturesPlugin()],
   );
 
-  function onSelect() {
+  const onSelect = useCallback(() => {
     if (!emblaApi || !setSelectedIndex || isDisabled) return;
-    const currentIndex = emblaApi.selectedScrollSnap();
-    setSelectedIndex(currentIndex);
-  }
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi, setSelectedIndex, isDisabled]);
+
+  const onSettleCallback = useCallback(() => {
+    if (!emblaApi || !onSettle || isDisabled) return;
+    onSettle(emblaApi.selectedScrollSnap());
+  }, [emblaApi, onSettle, isDisabled]);
 
   useEffect(() => {
     if (!emblaApi || !enablePageScroll || isDisabled) return;
@@ -104,12 +110,14 @@ export function Carousel({
     onSelect();
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
+    emblaApi.on("settle", onSettleCallback);
 
     return () => {
       emblaApi.off("select", onSelect);
       emblaApi.off("reInit", onSelect);
+      emblaApi.off("settle", onSettleCallback);
     };
-  }, [emblaApi, onSelect, isDisabled]);
+  }, [emblaApi, onSelect, onSettleCallback, isDisabled]);
 
   function scrollNext() {
     emblaApi?.scrollNext();

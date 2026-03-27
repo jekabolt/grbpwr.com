@@ -33,31 +33,38 @@ export function ProductImagesCarousel({
   const handleSelectedIndex = useCallback(
     (index: number) => {
       if (index === prevIndexRef.current) return;
-
-      const prevIndex = prevIndexRef.current;
       prevIndexRef.current = index;
       const realIndex = index % productMedia.length;
 
       if (productId) {
-        if (prevIndex !== -1) {
-          const prevRealIndex = prevIndex % productMedia.length;
-          const direction = realIndex > prevRealIndex ? "next" : "previous";
-          sendProductImageSwipeEvent({
-            product_id: productId,
-            product_name: productName || "",
-            product_category: "",
-            from_index: prevRealIndex + 1,
-            to_index: realIndex + 1,
-            total_images: productMedia.length,
-            swipe_direction: direction,
-          });
-        }
-
         sendProductImageViewEvent({
           product_id: productId,
           image_index: realIndex + 1,
           image_total: productMedia.length,
           product_name: productName || "",
+        });
+      }
+    },
+    [productId, productName, productMedia.length],
+  );
+
+  const swipePrevIndexRef = useRef<number>(-1);
+
+  const handleSettledIndex = useCallback(
+    (index: number) => {
+      const realIndex = index % productMedia.length;
+      const prevReal = swipePrevIndexRef.current;
+      swipePrevIndexRef.current = realIndex;
+
+      if (productId && prevReal !== -1 && prevReal !== realIndex) {
+        sendProductImageSwipeEvent({
+          product_id: productId,
+          product_name: productName || "",
+          product_category: "",
+          from_index: prevReal + 1,
+          to_index: realIndex + 1,
+          total_images: productMedia.length,
+          swipe_direction: realIndex > prevReal ? "next" : "previous",
         });
       }
     },
@@ -72,7 +79,9 @@ export function ProductImagesCarousel({
         startIndex={oneMedia ? 0 : 2}
         className="flex h-screen w-full pt-14"
         scrollOnClick={true}
+        dragFree={false}
         setSelectedIndex={handleSelectedIndex}
+        onSettle={handleSettledIndex}
       >
         {mediaForCarousel.map((m, index) => {
           const isPriority = index < 2;
