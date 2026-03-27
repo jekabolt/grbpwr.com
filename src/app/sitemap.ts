@@ -1,23 +1,19 @@
 import { MetadataRoute } from "next";
 
 import { routing } from "@/i18n/routing";
-import {
-    getLocaleFromCountry,
-    supportedCountries,
-} from "@/lib/middleware-utils";
 
 const baseUrl = "https://grbpwr.com";
 
-const defaultLocaleForCountry = (country: string): string => {
-    const lng = getLocaleFromCountry(country);
-    return routing.locales.includes(lng as (typeof routing.locales)[number])
-        ? lng
-        : routing.defaultLocale;
-};
+const CANONICAL_COUNTRY_BY_LOCALE = {
+    en: "gb",
+    fr: "fr",
+    de: "de",
+    it: "it",
+    ja: "jp",
+    zh: "cn",
+    ko: "kr",
+} satisfies Record<(typeof routing.locales)[number], string>;
 
-/**
- * Locale-agnostic path segments after /{country}/{locale}
- */
 const STATIC_PATHS = [
     "",
     "/catalog",
@@ -32,16 +28,11 @@ const STATIC_PATHS = [
     "/order-status",
 ] as const;
 
-/**
- * One entry per supported country × static path, using that country’s default
- * locale (same mapping as middleware). Pricing/VAT/currency differ by country,
- * so crawlers should see real market URLs — not a single gb-only slice.
- */
 export default function sitemap(): MetadataRoute.Sitemap {
     const entries: MetadataRoute.Sitemap = [];
 
-    for (const country of supportedCountries) {
-        const locale = defaultLocaleForCountry(country);
+    for (const locale of routing.locales) {
+        const country = CANONICAL_COUNTRY_BY_LOCALE[locale];
         for (const path of STATIC_PATHS) {
             const urlPath = `/${country}/${locale}${path}`;
             const isHome = path === "";
