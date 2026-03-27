@@ -153,6 +153,7 @@ export function MobileProductInfo({
                     handleAddToCart={handleMeasurementSizes}
                     handleSelectSize={handleSelectSize}
                     onNotifyMeOpen={handleNotifyMeOpen}
+                    isMaxQuantity={isMaxQuantity}
                   />
                   <SizePicker
                     sizeNames={sizeNames || []}

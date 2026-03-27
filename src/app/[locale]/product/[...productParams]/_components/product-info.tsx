@@ -107,6 +107,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
               handleAddToCart={handleMeasurementSizes}
               selectedSize={selectedSize}
               outOfStock={outOfStock}
+              isMaxQuantity={isMaxQuantity}
               onNotifyMeOpen={handleNotifyMeOpen}
             >
               <Measurements
