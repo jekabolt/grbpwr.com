@@ -128,7 +128,9 @@
     "stock reservation": "在庫予約中",
     "business days": "営業日",
     "complimentary shipping available for": "ご注文が{amount}以上で無料配送",
-    "card_details_required": "カード情報を入力してください"
+    "card_details_required": "カード情報を入力してください",
+    "select country for city": "先に国を選択してください。",
+    "city must match country": "選択した国の候補から都市を選んでください。"
   },
   "not-found": {
     "title": "ページが見つかりません",
@@ -398,7 +400,8 @@
     },
     "city": {
       "min": "都市名は最低2文字以上必要です",
-      "regex": "少なくとも1つの文字を含む必要があり、文字、スペース、ハイフン、アポストロフィ、ピリオドのみ使用できます"
+      "regex": "少なくとも1つの文字を含む必要があり、文字、スペース、ハイフン、アポストロフィ、ピリオドのみ使用できます",
+      "countryMismatch": "選択した国の候補から都市を選んでください。"
     },
     "address": {
       "min": "住所は最低3文字以上必要です",
@@ -500,6 +503,7 @@
     "cart_modified": "カートが変更されました",
     "payment_already_completed": "このセッションの支払いは既に完了しています。カートを空にして新しい注文を開始してください。",
     "payment_unavailable": "支払いは一時的に利用できません。後でもう一度お試しください。",
+    "payment_failed": "お支払いを完了できませんでした。もう一度お試しください。",
     "validation_error": "問題が発生しました。もう一度お試しください。",
     "fill_required_fields": "必須項目をすべて入力してください",
     "email_required": "メールアドレスは必須です",

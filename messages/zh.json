@@ -128,7 +128,9 @@
     "stock reservation": "库存预留",
     "business days": "工作日",
     "complimentary shipping available for": "订单满{amount}免运费",
-    "card_details_required": "请填写您的卡信息"
+    "card_details_required": "请填写您的卡信息",
+    "select country for city": "请先选择国家。",
+    "city must match country": "请从所选国家对应的城市建议中选择。"
   },
   "not-found": {
     "title": "页面未找到",
@@ -398,7 +400,8 @@
     },
     "city": {
       "min": "城市名称至少需要包含2个字符",
-      "regex": "必须至少包含一个字母，只允许字母、空格、连字符、撇号和句号"
+      "regex": "必须至少包含一个字母，只允许字母、空格、连字符、撇号和句号",
+      "countryMismatch": "请从所选国家对应的城市建议中选择。"
     },
     "address": {
       "min": "地址至少需要包含3个字符",
@@ -500,6 +503,7 @@
     "cart_modified": "您的购物车已被修改",
     "payment_already_completed": "此会话的支付已完成。请清空购物车并开始新订单。",
     "payment_unavailable": "支付暂时不可用。请稍后再试。",
+    "payment_failed": "我们无法完成您的付款。请重试。",
     "validation_error": "出了点问题。请重试。",
     "fill_required_fields": "请填写所有必填项",
     "email_required": "邮箱为必填项",

@@ -128,7 +128,9 @@
     "stock reservation": "réservation de stock",
     "business days": "jours ouvrables",
     "complimentary shipping available for": "livraison offerte à partir de {amount}",
-    "card_details_required": "Veuillez renseigner les informations de votre carte"
+    "card_details_required": "Veuillez renseigner les informations de votre carte",
+    "select country for city": "Sélectionnez d'abord un pays.",
+    "city must match country": "Choisissez une ville parmi les suggestions pour le pays sélectionné."
   },
   "not-found": {
     "title": "page non trouvée",
@@ -398,7 +400,8 @@
     },
     "city": {
       "min": "la ville doit contenir au moins 2 caractères",
-      "regex": "doit contenir au moins une lettre et seules les lettres, espaces, tirets, apostrophes et points sont autorisés"
+      "regex": "doit contenir au moins une lettre et seules les lettres, espaces, tirets, apostrophes et points sont autorisés",
+      "countryMismatch": "Choisissez une ville parmi les suggestions pour le pays sélectionné."
     },
     "address": {
       "min": "l'adresse doit contenir au moins 3 caractères",
@@ -500,6 +503,7 @@
     "cart_modified": "votre panier a été modifié",
     "payment_already_completed": "le paiement de cette session est déjà terminé. veuillez vider votre panier et créer une nouvelle commande.",
     "payment_unavailable": "le paiement est temporairement indisponible. veuillez réessayer plus tard.",
+    "payment_failed": "nous n'avons pas pu finaliser votre paiement. veuillez réessayer.",
     "validation_error": "une erreur s'est produite. veuillez réessayer.",
     "fill_required_fields": "veuillez remplir tous les champs obligatoires",
     "email_required": "l'e-mail est obligatoire",

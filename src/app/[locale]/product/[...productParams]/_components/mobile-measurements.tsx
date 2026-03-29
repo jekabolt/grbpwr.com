@@ -11,6 +11,7 @@ import { ModalTransition } from "@/components/modal-transition";
 import { Text } from "@/components/ui/text";
 
 import { Button } from "../../../../../components/ui/button";
+import { SubmissionToaster } from "../../../../../components/ui/toaster";
 import { LoadingButton } from "./loading-button";
 import { Measurements } from "./measurements";
 import { useProductBasics } from "./utils/useProductBasics";
@@ -24,8 +25,14 @@ export function MobileMeasurements({
   handleAddToCart,
   handleSelectSize,
   onNotifyMeOpen,
+  isMaxQuantity,
 }: MobileMeasurementsProps) {
   const [open, setOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | undefined>(
+    undefined,
+  );
+  const [maxOrderLimitExceededToastOpen, setMaxOrderLimitExceededToastOpen] =
+    useState(false);
   const { preorder, name, productCategory } = useProductBasics({ product });
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
@@ -65,6 +72,13 @@ export function MobileMeasurements({
       }, 100);
       return false;
     }
+
+    if (isMaxQuantity) {
+      setToastMessage(t("order limit exceeded"));
+      setMaxOrderLimitExceededToastOpen(true);
+      return false;
+    }
+
     setOpen(false);
     const success = await handleAddToCart();
     return success;
@@ -108,16 +122,25 @@ export function MobileMeasurements({
                 <LoadingButton
                   variant="simpleReverse"
                   size="lg"
+                  className={isMaxQuantity ? "justify-center" : undefined}
                   onAction={handleButtonClick}
                 >
-                  <Text variant="inherit">
+                  <Text
+                    variant="inherit"
+                    className={
+                      isMaxQuantity ? "w-full text-center uppercase" : undefined
+                    }
+                  >
                     {isSelectedSizeOutOfStock
                       ? t("notify me")
-                      : preorder
-                        ? t("preorder")
-                        : t("add")}
+                      : isMaxQuantity
+                        ? t("order limit exceeded")
+                        : preorder
+                          ? t("preorder")
+                          : t("add")}
                   </Text>
                   {!isSelectedSizeOutOfStock &&
+                    !isMaxQuantity &&
                     (isSaleApplied ? (
                       <Text variant="inactive">
                         {priceMinusSale}
@@ -132,6 +155,11 @@ export function MobileMeasurements({
           }
         />
       </DialogPrimitives.Portal>
+      <SubmissionToaster
+        open={maxOrderLimitExceededToastOpen}
+        message={toastMessage}
+        onOpenChange={setMaxOrderLimitExceededToastOpen}
+      />
     </DialogPrimitives.Root>
   );
 }
@@ -144,4 +172,5 @@ export type MobileMeasurementsProps = {
   handleAddToCart: () => Promise<boolean>;
   handleSelectSize: (size: number) => void;
   onNotifyMeOpen?: () => void;
+  isMaxQuantity?: boolean;
 };

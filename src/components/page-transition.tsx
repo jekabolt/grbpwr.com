@@ -9,14 +9,14 @@ interface PageTransitionProps {
 }
 
 const pageTransition = {
-  duration: 0.1,
-  ease: [0.4, 0, 0.2, 1] as const,
+  duration: 0.28,
+  ease: [0.22, 1, 0.36, 1] as const,
 };
 
 const variants = {
-  initial: { opacity: 0, x: -24 },
-  animate: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: 24 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
 };
 
 export function PageTransition({ children }: PageTransitionProps) {

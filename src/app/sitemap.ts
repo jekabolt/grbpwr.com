@@ -21,11 +21,6 @@ const STATIC_PATHS = [
     "/catalog/women",
     "/catalog/objects",
     "/timeline",
-    "/faq",
-    "/return",
-    "/legal-notices",
-    "/aftersale-services",
-    "/order-status",
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

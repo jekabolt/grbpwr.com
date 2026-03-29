@@ -526,6 +526,8 @@ export const LANGUAGE_ID_TO_LOCALE: Record<number, string> = {
   7: "ko",
 };
 
+export const CHECKOUT_ERROR_CITY_COUNTRY = "__checkout_city_country__";
+
 // Map validation messages to translation keys
 export const errorMap: Record<string, string> = {
   "invalid email": "invalid",
@@ -538,6 +540,7 @@ export const errorMap: Record<string, string> = {
   "you must accept the terms & conditions": "required",
   "you must accept the terms and conditions": "required",
   "please select a shipping method": "min",
+  [CHECKOUT_ERROR_CITY_COUNTRY]: "countryMismatch",
 };
 
 export const PLURIAL_SINGLE_CATEGORY_MAP: Record<string, string> = {

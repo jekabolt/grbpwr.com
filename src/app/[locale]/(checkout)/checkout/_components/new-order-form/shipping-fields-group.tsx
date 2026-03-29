@@ -18,6 +18,7 @@ import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
 
 import AddressAutocomplete from "./address-autocomplete";
+import CityAutocomplete from "./city-autocomplete";
 import FieldsGroupContainer from "./fields-group-container";
 import { useAddressFields } from "./hooks/useAddressFields";
 import {
@@ -221,13 +222,11 @@ export function AddressFields({
         />
       )}
 
-      <InputField
+      <CityAutocomplete
         loading={loading}
-        variant="secondary"
-        name={getFieldName(prefix, "city")}
-        label={t("city:")}
         disabled={disabled}
-        keyboardRestriction={keyboardRestrictions.nameFields}
+        prefix={prefix}
+        countryCode={selectedCountry}
       />
 
       <InputField

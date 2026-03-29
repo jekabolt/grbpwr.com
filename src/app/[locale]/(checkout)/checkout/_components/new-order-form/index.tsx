@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { currencySymbols, LANGUAGE_ID_TO_LOCALE } from "@/constants";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  CHECKOUT_ERROR_CITY_COUNTRY,
+  currencySymbols,
+  LANGUAGE_ID_TO_LOCALE,
+} from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
@@ -42,6 +47,7 @@ import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
 import { mapFormFieldToOrderDataFormat } from "./utils";
+import { verifyCityInCountry } from "./verify-city";
 
 type NewOrderFormProps = {
   onAmountChange: (amount: number) => void;
@@ -68,6 +74,9 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
 
   const t = useTranslations("checkout");
   const tToaster = useTranslations("toaster");
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -104,6 +113,26 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     onAmountChange,
     handleFormChange,
   });
+
+  useEffect(() => {
+    if (searchParams.get("payment_failed") !== "1") return;
+
+    setToastMessage(tToaster("payment_failed"));
+    setOrderModifiedToastOpen(true);
+
+    const stripQueryTimer = window.setTimeout(() => {
+      router.replace(pathname);
+    }, 400);
+
+    return () => window.clearTimeout(stripQueryTimer);
+  }, [
+    searchParams,
+    pathname,
+    router,
+    tToaster,
+    setToastMessage,
+    setOrderModifiedToastOpen,
+  ]);
 
   useEffect(() => {
     const el = formRef.current;
@@ -198,7 +227,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     }
   };
 
-  const handleValidSubmit = (data: CheckoutData) => {
+  const handleValidSubmit = async (data: CheckoutData) => {
     if (!isPaymentFieldsValid) {
       setToastMessage(tToaster("fill_required_fields"));
       setOrderModifiedToastOpen(true);
@@ -211,6 +240,56 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
       }
       return;
     }
+
+    if (typeof window !== "undefined") {
+      const shipOk = await verifyCityInCountry(data.city, data.country);
+      if (!shipOk) {
+        form.setError("city", {
+          type: "manual",
+          message: CHECKOUT_ERROR_CITY_COUNTRY,
+        });
+        setToastMessage(tToaster("fill_required_fields"));
+        setOrderModifiedToastOpen(true);
+        scrollToFirstError({
+          city: { type: "manual", message: CHECKOUT_ERROR_CITY_COUNTRY },
+        } as typeof form.formState.errors);
+        sendFormErrorEvent({
+          form_id: "checkout_form",
+          form_name: "Checkout",
+          error_fields: ["city"],
+          page_path: window.location.pathname,
+        });
+        return;
+      }
+
+      if (!data.billingAddressIsSameAsAddress && data.billingAddress) {
+        const billOk = await verifyCityInCountry(
+          data.billingAddress.city,
+          data.billingAddress.country,
+        );
+        if (!billOk) {
+          form.setError("billingAddress.city", {
+            type: "manual",
+            message: CHECKOUT_ERROR_CITY_COUNTRY,
+          });
+          setToastMessage(tToaster("fill_required_fields"));
+          setOrderModifiedToastOpen(true);
+          scrollToFirstError({
+            billingAddress: {
+              city: { type: "manual", message: CHECKOUT_ERROR_CITY_COUNTRY },
+            },
+          } as typeof form.formState.errors);
+          sendFormErrorEvent({
+            form_id: "checkout_form",
+            form_name: "Checkout",
+            error_fields: ["billingAddress.city"],
+            page_path: window.location.pathname,
+          });
+          return;
+        }
+      }
+    }
+
     onSubmit(data);
   };
 
@@ -293,6 +372,9 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
             typeof window !== "undefined" ? window.location.pathname : "",
           transaction_id: orderUuid,
         });
+
+        setToastMessage(tToaster("payment_failed"));
+        setOrderModifiedToastOpen(true);
         console.error("Payment confirmation failed:", paymentResult.error);
       }
 

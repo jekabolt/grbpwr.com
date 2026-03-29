@@ -3,13 +3,12 @@
 import { use, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { parseCountryLocalePath } from "@/lib/middleware-utils";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { sendPaymentFailedEvent } from "@/lib/analitycs/checkout-custom";
 import { sendPurchaseEvent } from "@/lib/analitycs/checkout";
+import { sendPaymentFailedEvent } from "@/lib/analitycs/checkout-custom";
 import {
   ensureGtag,
   pushUserIdToDataLayer,
@@ -18,6 +17,7 @@ import {
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { formatPrice } from "@/lib/currency";
+import { parseCountryLocalePath } from "@/lib/middleware-utils";
 import { buildTrackingUrl } from "@/lib/shipment/tracking-url";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -117,7 +117,7 @@ export function OrderPageComponent({
       const parsed = parseCountryLocalePath(window.location.pathname);
       const country = parsed?.country || "gb";
       const locale = parsed?.locale || "en";
-      router.push(`/${country}/${locale}/checkout`);
+      router.push(`/${country}/${locale}/checkout?payment_failed=1`);
     }
   }, [clearCart, router, orderData, dictionary?.categories, sizeMap]);
 

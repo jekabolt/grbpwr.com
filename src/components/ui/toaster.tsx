@@ -13,7 +13,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <Toast.Provider duration={4000}>
       {children}
-      <Toast.Viewport className="not-prose fixed inset-x-2 top-2 z-50 lg:top-2" />
+      <Toast.Viewport className="not-prose fixed inset-x-2 top-2 z-[60] lg:top-2" />
     </Toast.Provider>
   );
 }
