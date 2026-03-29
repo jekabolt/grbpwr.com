@@ -63,7 +63,6 @@ export default function CityAutocomplete({
         name={cityFieldName}
         label={t("city:")}
         disabled={true}
-        placeholder={t("select country for city")}
       />
     );
   }
