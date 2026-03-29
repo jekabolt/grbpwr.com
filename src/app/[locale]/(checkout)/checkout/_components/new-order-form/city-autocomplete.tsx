@@ -50,6 +50,7 @@ export default function CityAutocomplete({
         variant="secondary"
         name={cityFieldName}
         label={t("city:")}
+        placeholder=""
         disabled={true}
       />
     );
@@ -62,8 +63,8 @@ export default function CityAutocomplete({
         variant="secondary"
         name={cityFieldName}
         label={t("city:")}
+        placeholder=""
         disabled={true}
-        placeholder={t("select country for city")}
       />
     );
   }
@@ -79,6 +80,10 @@ export default function CityAutocomplete({
         autocompleteRef.current = ac;
         ac.setFields(["address_components", "name", "formatted_address"]);
         ac.setComponentRestrictions({ country: cc as any });
+        queueMicrotask(() => {
+          const el = document.getElementById(cityFieldName);
+          if (el instanceof HTMLInputElement) el.placeholder = "";
+        });
       }}
       onPlaceChanged={() => {
         const ac = autocompleteRef.current;
@@ -97,6 +102,7 @@ export default function CityAutocomplete({
         variant="secondary"
         name={cityFieldName}
         label={t("city:")}
+        placeholder=""
         disabled={disabled}
         keyboardRestriction={keyboardRestrictions.nameFields}
       />
