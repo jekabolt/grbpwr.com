@@ -29,6 +29,7 @@ export function AdditionalHeader({
       router.push(homePath);
       return;
     }
+
     if (window.history.length > 1) {
       router.back();
       return;
@@ -38,9 +39,7 @@ export function AdditionalHeader({
       if (ref) {
         const refUrl = new URL(ref);
         if (refUrl.origin === window.location.origin) {
-          router.push(
-            `${refUrl.pathname}${refUrl.search}${refUrl.hash}`,
-          );
+          router.push(`${refUrl.pathname}${refUrl.search}${refUrl.hash}`);
           return;
         }
       }

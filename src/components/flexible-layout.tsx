@@ -76,4 +76,6 @@ export type HeaderProps = {
   link?: string;
   hidden?: boolean;
   onClick?: () => void;
+  /** When "home", left button always goes to localized home (e.g. checkout opened via direct URL). */
+  leftNav?: "default" | "home";
 };
