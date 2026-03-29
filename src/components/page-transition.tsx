@@ -9,8 +9,8 @@ interface PageTransitionProps {
 }
 
 const pageTransition = {
-  duration: 0.1,
-  ease: [0.4, 0, 0.2, 1] as const,
+  duration: 0.28,
+  ease: [0.22, 1, 0.36, 1] as const,
 };
 
 const variants = {
