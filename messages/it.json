@@ -128,7 +128,9 @@
     "stock reservation": "prenotazione magazzino",
     "business days": "giorni lavorativi",
     "complimentary shipping available for": "spedizione gratuita da {amount}",
-    "card_details_required": "Inserisci i dati della tua carta"
+    "card_details_required": "Inserisci i dati della tua carta",
+    "select country for city": "Seleziona prima un paese.",
+    "city must match country": "Scegli una città tra i suggerimenti per il paese selezionato."
   },
   "not-found": {
     "title": "pagina non trovata",
@@ -398,7 +400,8 @@
     },
     "city": {
       "min": "la città deve contenere almeno 2 caratteri",
-      "regex": "deve contenere almeno una lettera e sono consentiti solo lettere, spazi, trattini, apostrofi e punti"
+      "regex": "deve contenere almeno una lettera e sono consentiti solo lettere, spazi, trattini, apostrofi e punti",
+      "countryMismatch": "Scegli una città tra i suggerimenti per il paese selezionato."
     },
     "address": {
       "min": "l'indirizzo deve contenere almeno 3 caratteri",
@@ -500,6 +503,7 @@
     "cart_modified": "il tuo carrello è stato modificato",
     "payment_already_completed": "pagamento già completato per questa sessione. svuota il carrello e inizia un nuovo ordine.",
     "payment_unavailable": "il pagamento non è temporaneamente disponibile. riprova più tardi.",
+    "payment_failed": "non siamo riusciti a completare il pagamento. riprova.",
     "validation_error": "qualcosa è andato storto. riprova.",
     "fill_required_fields": "compila tutti i campi obbligatori",
     "email_required": "l'email è obbligatoria",

@@ -25,6 +25,28 @@ export function AdditionalHeader({
 
   const handleLeftClick = () => {
     closeCart();
+    if (typeof window === "undefined") {
+      router.push(homePath);
+      return;
+    }
+    if (window.history.length > 1) {
+      router.back();
+      return;
+    }
+    try {
+      const ref = document.referrer;
+      if (ref) {
+        const refUrl = new URL(ref);
+        if (refUrl.origin === window.location.origin) {
+          router.push(
+            `${refUrl.pathname}${refUrl.search}${refUrl.hash}`,
+          );
+          return;
+        }
+      }
+    } catch {
+      /* invalid referrer */
+    }
     router.push(homePath);
   };
 

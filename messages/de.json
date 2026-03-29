@@ -129,6 +129,8 @@
     "business days": "werktage",
     "complimentary shipping available for": "kostenloser versand ab {amount}",
     "card_details_required": "Bitte geben Sie Ihre Kartendaten ein",
+    "select country for city": "Bitte wählen Sie zuerst ein Land.",
+    "city must match country": "Wählen Sie eine Stadt aus den Vorschlägen für das gewählte Land.",
     "complimentary shipping announcement body": "fügen sie weitere artikel hinzu, um kostenlosen versand zu erhalten"
   },
   "not-found": {
@@ -399,7 +401,8 @@
     },
     "city": {
       "min": "stadt muss mindestens 2 zeichen enthalten",
-      "regex": "muss mindestens einen buchstaben enthalten und nur buchstaben, leerzeichen, bindestriche, apostrophe und punkte sind erlaubt"
+      "regex": "muss mindestens einen buchstaben enthalten und nur buchstaben, leerzeichen, bindestriche, apostrophe und punkte sind erlaubt",
+      "countryMismatch": "Wählen Sie eine Stadt aus den Vorschlägen für das gewählte Land."
     },
     "address": {
       "min": "adresse muss mindestens 3 zeichen enthalten",
@@ -501,6 +504,7 @@
     "cart_modified": "ihr warenkorb wurde geändert",
     "payment_already_completed": "zahlung für diese sitzung bereits abgeschlossen. bitte leeren sie ihren warenkorb und starten sie eine neue bestellung.",
     "payment_unavailable": "zahlung vorübergehend nicht verfügbar. bitte versuchen sie es später erneut.",
+    "payment_failed": "wir konnten ihre zahlung nicht abschließen. bitte versuchen sie es erneut.",
     "validation_error": "etwas ist schiefgelaufen. bitte versuchen sie es erneut.",
     "fill_required_fields": "bitte füllen sie alle erforderlichen felder aus",
     "email_required": "e-mail ist erforderlich",

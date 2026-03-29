@@ -128,7 +128,9 @@
     "stock reservation": "stock reservation",
     "business days": "business days",
     "complimentary shipping available for": "complimentary shipping on orders over {amount}",
-    "card_details_required": "Please fill in your card details"
+    "card_details_required": "Please fill in your card details",
+    "select country for city": "Select a country first.",
+    "city must match country": "Choose a city from the suggestions for the selected country."
   },
   "not-found": {
     "title": "page not found",
@@ -398,7 +400,8 @@
     },
     "city": {
       "min": "city must contain at least 2 characters",
-      "regex": "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed"
+      "regex": "must contain at least one letter and only letters, spaces, hyphens, apostrophes, and periods are allowed",
+      "countryMismatch": "Choose a city from the suggestions for the selected country."
     },
     "address": {
       "min": "address must contain at least 3 characters",
@@ -500,6 +503,7 @@
     "cart_modified": "your cart has been modified",
     "payment_already_completed": "payment already completed for this session. please clear your checkout and start a new order.",
     "payment_unavailable": "payment is temporarily unavailable. please try again later.",
+    "payment_failed": "we couldn't complete your payment. please try again.",
     "validation_error": "something went wrong. please try again.",
     "fill_required_fields": "please fill in all required fields",
     "email_required": "email is required",

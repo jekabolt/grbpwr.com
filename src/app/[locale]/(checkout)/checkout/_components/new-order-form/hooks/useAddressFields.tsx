@@ -85,6 +85,11 @@ export function useAddressFields(prefix?: string) {
     setValue(countryFieldName, newCountryCode, { shouldValidate: true });
     updatePhoneCode(newCountryCode);
 
+    if (isBillingAddress) {
+      setValue(getFieldName(prefix, "state"), "", { shouldValidate: false });
+      setValue(getFieldName(prefix, "city"), "", { shouldValidate: false });
+    }
+
     if (!isBillingAddress) {
       cancelNextCountry();
       setCurrentCountry({
