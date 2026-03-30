@@ -61,7 +61,7 @@ export function SizePicker({
         product_price: productContext.productPrice,
         currency: productContext.currency,
       });
-    } else {
+    } else if (sizeId !== activeSizeId) {
       sendSizeSelectedEvent({
         product_id: productContext.productId,
         product_name: productContext.productName,

@@ -18,6 +18,7 @@ export const dynamic = "force-dynamic";
 export default function CartPage() {
   const products = useCart((state) => state.products);
   const itemsQuantity = Object.keys(products).length;
+
   return (
     <FlexibleLayout headerType="flexible" headerProps={{ right: "close" }}>
       <div className="relative flex h-full flex-col gap-10 py-24 sm:flex-row lg:px-32">
@@ -44,7 +45,9 @@ export default function CartPage() {
           <div className="sticky top-20 space-y-6">
             <TotalPrice />
             <Button asChild size="lg" variant="main" className="uppercase">
-              <Link href="/checkout">proceed to checkout</Link>
+              <Link href="/checkout">
+                proceed to checkout
+              </Link>
             </Button>
           </div>
         </div>

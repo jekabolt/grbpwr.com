@@ -3,8 +3,6 @@ import { common_Product, common_ProductFull } from "@/api/proto-http/frontend";
 import {
     AnalyticsItem,
     EcommerceEvent,
-    getTotalProductQuantity,
-    getTotalProductValue,
     pushToDataLayer,
 } from "../utils";
 
@@ -94,21 +92,23 @@ export function sendViewItemEvent(
     subCategory: string,
     selectedCurrency: string,
 ) {
-    const currencyKey = selectedCurrency || "EUR";
-    const totalValue = getTotalProductValue(product, currencyKey);
-    const totalQuantity = getTotalProductQuantity(product);
-
     if (!product || !product?.product) return;
+
+    const currencyKey = selectedCurrency || "EUR";
+    const price = product.product.prices?.find(
+        (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
+    ) || product.product.prices?.[0];
+    const priceValue = parseFloat(price?.price?.value || "0");
 
     const event: EcommerceEvent = {
         event: "view_item",
         ecommerce: {
             currency: currencyKey.toUpperCase(),
-            value: totalValue,
+            value: priceValue,
             items: [
                 mapItemsToDataLayer(
                     product.product,
-                    totalQuantity,
+                    1,
                     topCategory,
                     subCategory,
                     selectedCurrency,

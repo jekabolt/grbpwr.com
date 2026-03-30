@@ -1,11 +1,11 @@
 import { common_OrderItem } from "@/api/proto-http/frontend";
 import { paymentMethodNamesMap } from "@/constants";
-import { useMemo } from "react";
+import { useMemo, useContext, useRef, useEffect } from "react";
 
 import { useDataContext } from "@/components/contexts/DataContext";
 
 import { getSubCategoryName, getTopCategoryName } from "../categories-map";
-import { useCart } from "../stores/cart/store-provider";
+import { useCart, CartStoreContext } from "../stores/cart/store-provider";
 import { useTranslationsStore } from "../stores/translations/store-provider";
 import {
     PurchaseOptions,
@@ -14,14 +14,27 @@ import {
     sendBeginCheckoutEvent,
     sendPurchaseEvent,
 } from "./checkout";
-import { SizeMap } from "./utils";
+import { refreshGa4ClientIdToStorage, SizeMap } from "./utils";
 
 export function useCheckoutAnalytics() {
     const { dictionary } = useDataContext();
     const { currentCountry } = useTranslationsStore((state) => state);
-    const items = useCart((state) => state.products).map((v) => v.productData);
+    const cartStore = useContext(CartStoreContext);
     const currency = currentCountry.currencyKey || "EUR";
+    
+    const shippingEventFiredRef = useRef<string | null>(null);
+    const paymentEventFiredRef = useRef<string | null>(null);
 
+    useEffect(() => {
+        refreshGa4ClientIdToStorage();
+    }, []);
+
+    const getItems = () => {
+        if (!cartStore) return [];
+        return cartStore.getState().products.map((v) => v.productData);
+    };
+
+    const items = getItems();
     const topCategoryId = items.find((v) => v?.topCategoryId)?.topCategoryId || 0;
     const subCategoryId = items.find((v) => v?.subCategoryId)?.subCategoryId || 0;
 
@@ -45,14 +58,20 @@ export function useCheckoutAnalytics() {
     }, [dictionary?.sizes]);
 
     const handleShippingCarrierChange = (carrierId: string) => {
+        if (shippingEventFiredRef.current === carrierId) {
+            return;
+        }
+        
         const selectedCarrier = dictionary?.shipmentCarriers?.find(
             (c) => c.id?.toString() === carrierId,
         );
         const carrierName = selectedCarrier?.shipmentCarrier?.carrier || "";
+        const freshItems = getItems();
 
-        if (carrierName && items.length > 0) {
+        if (carrierName && freshItems.length > 0) {
+            shippingEventFiredRef.current = carrierId;
             sendAddShippingInfoEvent(
-                items as common_OrderItem[],
+                freshItems as common_OrderItem[],
                 carrierName,
                 topCategoryName || "",
                 subCategoryName || "",
@@ -63,14 +82,20 @@ export function useCheckoutAnalytics() {
     };
 
     const handlePaymentMethodChange = (paymentMethodName: string) => {
+        if (paymentEventFiredRef.current === paymentMethodName) {
+            return;
+        }
+        
         const paymentMethodDisplayName =
             paymentMethodNamesMap[
             paymentMethodName as keyof typeof paymentMethodNamesMap
             ];
+        const freshItems = getItems();
 
-        if (paymentMethodDisplayName && items.length > 0) {
+        if (paymentMethodDisplayName && freshItems.length > 0) {
+            paymentEventFiredRef.current = paymentMethodName;
             sendAddPaymentInfoEvent(
-                items as common_OrderItem[],
+                freshItems as common_OrderItem[],
                 paymentMethodDisplayName,
                 topCategoryName || "",
                 subCategoryName || "",
@@ -81,9 +106,15 @@ export function useCheckoutAnalytics() {
     };
 
     const handlePaymentElementComplete = () => {
-        if (items.length > 0) {
+        if (paymentEventFiredRef.current === "credit_card") {
+            return;
+        }
+        
+        const freshItems = getItems();
+        if (freshItems.length > 0) {
+            paymentEventFiredRef.current = "credit_card";
             sendAddPaymentInfoEvent(
-                items as common_OrderItem[],
+                freshItems as common_OrderItem[],
                 "credit_card",
                 topCategoryName || "",
                 subCategoryName || "",
@@ -94,8 +125,9 @@ export function useCheckoutAnalytics() {
     };
 
     function handleBeginCheckoutEvent() {
+        const freshItems = getItems();
         sendBeginCheckoutEvent(
-            items as common_OrderItem[],
+            freshItems as common_OrderItem[],
             topCategoryName || "",
             subCategoryName || "",
             currency,
@@ -104,8 +136,9 @@ export function useCheckoutAnalytics() {
     }
 
     function handlePurchaseEvent(uuid: string, options?: PurchaseOptions) {
+        const freshItems = getItems();
         sendPurchaseEvent(
-            items as common_OrderItem[],
+            freshItems as common_OrderItem[],
             uuid,
             topCategoryName || "",
             subCategoryName || "",

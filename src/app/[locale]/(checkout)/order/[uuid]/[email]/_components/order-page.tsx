@@ -42,6 +42,7 @@ export function OrderPageComponent({
   const tCheckout = useTranslations("checkout");
   const purchaseFiredRef = useRef(false);
   const paymentFailedRedirectRef = useRef(false);
+  const redirectStatusRef = useRef<string | null>(null);
 
   const sizeMap: SizeMap = useMemo(() => {
     const sizes = dictionary?.sizes || [];
@@ -51,15 +52,23 @@ export function OrderPageComponent({
     }, {});
   }, [dictionary?.sizes]);
 
+  const sizeMapRef = useRef(sizeMap);
+  sizeMapRef.current = sizeMap;
+
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (redirectStatusRef.current !== null) return;
 
     ensureGtag();
 
     const params = new URLSearchParams(window.location.search);
     const redirectStatus = params.get("redirect_status");
+    redirectStatusRef.current = redirectStatus;
 
     if (redirectStatus === "succeeded") {
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, "", cleanUrl);
+
       clearCart();
       clearIdempotencyKey();
 
@@ -76,17 +85,27 @@ export function OrderPageComponent({
         const subCategoryId =
           items.find((v) => v?.subCategoryId)?.subCategoryId || 0;
 
+        const totalPrice = parseFloat(orderData.order.totalPrice?.value || "0");
+        const shippingCost = parseFloat(orderData.shipment?.cost?.value || "0");
+        const itemsSubtotal = items.reduce((sum, item) => {
+          const price = parseFloat(item.productPrice || "0");
+          const quantity = item.orderItem?.quantity || 1;
+          return sum + price * quantity;
+        }, 0);
+        const taxAmount = totalPrice - itemsSubtotal - shippingCost;
+
         sendPurchaseEvent(
           items,
           orderData.order.uuid,
           getTopCategoryName(dictionary?.categories || [], topCategoryId) || "",
           getSubCategoryName(dictionary?.categories || [], subCategoryId) || "",
           orderData.order.currency?.toUpperCase() || "EUR",
-          sizeMap,
+          sizeMapRef.current,
           {
             coupon: orderData.promoCode?.promoCodeInsert?.code || undefined,
-            shipping:
-              parseFloat(orderData.shipment?.cost?.value || "0") || undefined,
+            shipping: shippingCost || undefined,
+            tax: taxAmount > 0 ? taxAmount : undefined,
+            totalValue: totalPrice,
           },
         );
 
@@ -95,9 +114,6 @@ export function OrderPageComponent({
           void pushUserIdToDataLayer(buyerEmail);
         }
       }
-
-      const cleanUrl = window.location.pathname;
-      window.history.replaceState({}, "", cleanUrl);
     } else if (redirectStatus === "failed" || redirectStatus === "canceled") {
       console.error("Payment failed or canceled");
       if (!paymentFailedRedirectRef.current && orderData?.order?.uuid) {
@@ -119,7 +135,7 @@ export function OrderPageComponent({
       const locale = parsed?.locale || "en";
       router.push(`/${country}/${locale}/checkout`);
     }
-  }, [clearCart, router, orderData, dictionary?.categories, sizeMap]);
+  }, [clearCart, router, orderData, dictionary?.categories]);
 
   if (!orderData) return null;
 

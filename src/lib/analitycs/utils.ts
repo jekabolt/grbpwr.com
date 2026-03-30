@@ -5,11 +5,82 @@ import {
 
 import { getStoredCampaignParams } from "./campaign";
 
+/** Single source of truth — must match gtag `config` / script `id` in layout. */
+export const GA4_MEASUREMENT_ID = "G-YX09JT9HVC";
+
+const GA4_CLIENT_ID_SESSION_KEY = "grbpwr_ga4_client_id";
+
 declare global {
     interface Window {
         gtag?: (...args: unknown[]) => void;
         dataLayer?: any[];
     }
+}
+
+export function isLikelyGa4ClientId(value: unknown): value is string {
+    return typeof value === "string" && /^\d+\.\d+$/.test(value.trim());
+}
+
+/** gtag `get` passes the field value; tolerate edge shapes. */
+export function normalizeGtagClientIdField(raw: unknown): string | undefined {
+    if (isLikelyGa4ClientId(raw)) return raw.trim();
+    if (raw && typeof raw === "object" && "client_id" in raw) {
+        const v = (raw as { client_id?: unknown }).client_id;
+        if (isLikelyGa4ClientId(v)) return v.trim();
+    }
+    return undefined;
+}
+
+export function readStoredGa4ClientId(): string | undefined {
+    try {
+        if (typeof sessionStorage === "undefined") return undefined;
+        const v = sessionStorage.getItem(GA4_CLIENT_ID_SESSION_KEY)?.trim();
+        return isLikelyGa4ClientId(v) ? v : undefined;
+    } catch {
+        return undefined;
+    }
+}
+
+export function writeStoredGa4ClientId(clientId: string): void {
+    try {
+        if (!isLikelyGa4ClientId(clientId)) return;
+        sessionStorage.setItem(GA4_CLIENT_ID_SESSION_KEY, clientId.trim());
+    } catch {
+        // private mode / disabled storage
+    }
+}
+
+/** Ask gtag for client_id and cache when available (safe to call often). */
+export function refreshGa4ClientIdToStorage(): void {
+    if (typeof window === "undefined") return;
+    ensureGtag();
+    try {
+        window.gtag!("get", GA4_MEASUREMENT_ID, "client_id", (raw: unknown) => {
+            const id = normalizeGtagClientIdField(raw);
+            if (id) writeStoredGa4ClientId(id);
+        });
+    } catch {
+        // ignore
+    }
+}
+
+export function parseClientIdFromGaCookieString(cookieValue: string): string | undefined {
+    const parts = cookieValue.split(".");
+    if (parts.length < 4) return undefined;
+    const id = `${parts[parts.length - 2]}.${parts[parts.length - 1]}`;
+    return isLikelyGa4ClientId(id) ? id : undefined;
+}
+
+export function readGa4ClientIdFromDocumentCookie(): string | undefined {
+    if (typeof document === "undefined") return undefined;
+    const cookies = document.cookie.split(";").map((c) => c.trim());
+    for (const row of cookies) {
+        if (!row.startsWith("_ga=")) continue;
+        const value = row.slice(4);
+        const id = parseClientIdFromGaCookieString(value);
+        if (id) return id;
+    }
+    return undefined;
 }
 
 export interface EcommerceEvent {
@@ -60,8 +131,7 @@ export function pushToDataLayer(event: EcommerceEvent): void {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ ecommerce: null });
 
-        // Send via gtag command — processed by the direct GA4 script (G-YX09JT9HVC)
-        // loaded in layout.tsx. Does NOT depend on GTM Custom Event triggers.
+        // Send via gtag command — processed by the direct GA4 script in layout.tsx.
         window.gtag!("event", event.event, {
             ...event.ecommerce,
             ...campaignParams,
@@ -71,31 +141,6 @@ export function pushToDataLayer(event: EcommerceEvent): void {
     }
 }
 
-export function getTotalProductQuantity(product: common_ProductFull): number {
-    if (!product?.sizes || product.sizes.length === 0) {
-        return 0;
-    }
-
-    return product.sizes.reduce((total, size) => {
-        const quantity = parseInt(size.quantity?.value || "0");
-        return total + quantity;
-    }, 0);
-}
-
-export function getTotalProductValue(product: common_ProductFull, selectedCurrency: string): number {
-    if (!product?.sizes || product.sizes.length === 0) {
-        return 0;
-    }
-
-    const price = product.product?.prices?.find(
-        (p) => p.currency?.toUpperCase() === selectedCurrency.toUpperCase(),
-    ) || product.product?.prices?.[0];
-    const priceValue = parseFloat(price?.price?.value || "0");
-    return product.sizes.reduce((total, size) => {
-        const quantity = parseInt(size.quantity?.value || "0");
-        return total + quantity * priceValue;
-    }, 0);
-}
 
 export function getCampaignParamsForEvents(): Record<string, unknown> {
     const campaign = getStoredCampaignParams();
@@ -115,8 +160,7 @@ export function pushCustomEvent(event: string, params: Record<string, unknown>):
         ensureGtag();
         const campaignParams = getCampaignParamsForEvents();
 
-        // Send via gtag command — processed by the direct GA4 script (G-YX09JT9HVC)
-        // loaded in layout.tsx. Does NOT depend on GTM Custom Event triggers.
+        // Send via gtag command — processed by the direct GA4 script in layout.tsx.
         window.gtag!("event", event, {
             ...campaignParams,
             ...params,

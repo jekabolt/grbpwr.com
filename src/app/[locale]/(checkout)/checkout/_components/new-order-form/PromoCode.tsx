@@ -5,6 +5,7 @@ import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend
 import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
+import { sendCouponAppliedEvent } from "@/lib/analitycs/promo";
 import { Button } from "@/components/ui/button";
 import InputField from "@/components/ui/form/fields/input-field";
 
@@ -13,6 +14,7 @@ type Props = {
   form: UseFormReturn<any>;
   freeShipmentCarrierId?: number;
   validateItems: () => Promise<ValidateOrderItemsInsertResponse | null>;
+  currency?: string;
 };
 
 export default function PromoCode({
@@ -20,6 +22,7 @@ export default function PromoCode({
   form,
   validateItems,
   freeShipmentCarrierId,
+  currency = "EUR",
 }: Props) {
   const [isApplied, setIsApplied] = useState(false);
   const [promoLoading, setPromoLoading] = useState(false);
@@ -50,6 +53,11 @@ export default function PromoCode({
 
       if (response?.promo?.freeShipping) {
         setValue("shipmentCarrierId", freeShipmentCarrierId + "");
+      }
+
+      if (response?.promo) {
+        const discountAmount = parseFloat(response.promo.discount?.value || "0");
+        sendCouponAppliedEvent(promoCode, discountAmount, currency);
       }
 
       setIsApplied(true);
