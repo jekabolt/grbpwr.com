@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import type {
   common_Product,
@@ -33,6 +33,7 @@ export function InfinityScrollCatalog({
   const { gender, topCategory, subCategory } = useRouteParams();
   const { handleViewItemListEvent } = useAnalytics();
   const { ref, inView } = useInView();
+  const reportedCountRef = useRef(0);
 
   const searchParamsObj = useMemo(
     () => Object.fromEntries(searchParams.entries()),
@@ -117,10 +118,18 @@ export function InfinityScrollCatalog({
     (!data || data.pages.length === 0) && (isFetching || isLoading);
 
   useEffect(() => {
-    if (items.length > 0 && items.length === firstPageItems.length) {
-      handleViewItemListEvent(firstPageItems);
+    reportedCountRef.current = 0;
+  }, [queryKey]);
+
+  useEffect(() => {
+    if (items.length > reportedCountRef.current) {
+      const newItems = items.slice(reportedCountRef.current);
+      if (newItems.length > 0) {
+        handleViewItemListEvent(newItems);
+        reportedCountRef.current = items.length;
+      }
     }
-  }, [queryKey, firstPageItems, items.length, handleViewItemListEvent]);
+  }, [items.length, handleViewItemListEvent]);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {

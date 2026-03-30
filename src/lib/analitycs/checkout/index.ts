@@ -40,14 +40,15 @@ export function sendBeginCheckoutEvent(
   currency: string = "EUR",
   sizeMap?: SizeMap,
 ): void {
-  if (!items || !items?.length) return;
+  const validItems = items.filter(Boolean);
+  if (!validItems.length) return;
 
   const event: EcommerceEvent = {
     event: "begin_checkout",
     ecommerce: {
       currency: currency.toUpperCase(),
-      value: calculateTotalValue(items),
-      items: items.map((item) =>
+      value: calculateTotalValue(validItems),
+      items: validItems.map((item) =>
         mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
       ),
     },
@@ -64,15 +65,16 @@ export function sendAddShippingInfoEvent(
   currency: string = "EUR",
   sizeMap?: SizeMap,
 ): void {
-  if (!items || !items?.length) return;
+  const validItems = items.filter(Boolean);
+  if (!validItems.length) return;
 
   const event: EcommerceEvent = {
     event: "add_shipping_info",
     ecommerce: {
       currency: currency.toUpperCase(),
-      value: calculateTotalValue(items),
+      value: calculateTotalValue(validItems),
       shipping_tier: shippingCarrier,
-      items: items.map((item) =>
+      items: validItems.map((item) =>
         mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
       ),
     },
@@ -89,15 +91,16 @@ export function sendAddPaymentInfoEvent(
   currency: string = "EUR",
   sizeMap?: SizeMap,
 ): void {
-  if (!items || !items?.length) return;
+  const validItems = items.filter(Boolean);
+  if (!validItems.length) return;
 
   const event: EcommerceEvent = {
     event: "add_payment_info",
     ecommerce: {
       currency: currency.toUpperCase(),
-      value: calculateTotalValue(items),
+      value: calculateTotalValue(validItems),
       payment_type: paymentMethod,
-      items: items.map((item) =>
+      items: validItems.map((item) =>
         mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
       ),
     },
@@ -109,6 +112,8 @@ export function sendAddPaymentInfoEvent(
 export interface PurchaseOptions {
   coupon?: string;
   shipping?: number;
+  tax?: number;
+  totalValue?: number;
 }
 
 export function sendPurchaseEvent(
@@ -120,17 +125,23 @@ export function sendPurchaseEvent(
   sizeMap?: SizeMap,
   options?: PurchaseOptions,
 ): void {
-  if (!items || !items?.length) return;
+  const validItems = items.filter(Boolean);
+  if (!validItems.length) return;
+  if (!transactionId || transactionId === "false" || transactionId === "undefined") {
+    console.error("sendPurchaseEvent: Invalid transaction_id", transactionId);
+    return;
+  }
 
   const event: EcommerceEvent = {
     event: "purchase",
     ecommerce: {
       currency: currency.toUpperCase(),
-      value: calculateTotalValue(items),
+      value: options?.totalValue ?? calculateTotalValue(validItems),
       transaction_id: transactionId,
       ...(options?.coupon && { coupon: options.coupon }),
       ...(options?.shipping != null && { shipping: options.shipping }),
-      items: items.map((item) =>
+      ...(options?.tax != null && { tax: options.tax }),
+      items: validItems.map((item) =>
         mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
       ),
     },

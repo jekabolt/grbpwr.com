@@ -59,13 +59,14 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     (s) => s,
   );
 
-  const { handlePurchaseEvent, handlePaymentElementComplete } =
+  const { handlePurchaseEvent, handlePaymentElementComplete, handlePaymentMethodChange, handleBeginCheckoutEvent } =
     useCheckoutAnalytics();
 
   const [loading, setLoading] = useState(false);
   const [isPaymentElementComplete, setIsPaymentElementComplete] =
     useState(false);
   const paymentInfoSentRef = useRef(false);
+  const checkoutEventFiredRef = useRef(false);
 
   const contactRef = useRef<HTMLDivElement>(null);
   const shippingRef = useRef<HTMLDivElement>(null);
@@ -150,6 +151,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   }, []);
 
   useEffect(() => {
+    if (!checkoutEventFiredRef.current && products.length > 0) {
+      checkoutEventFiredRef.current = true;
+      handleBeginCheckoutEvent();
+    }
+  }, [products, handleBeginCheckoutEvent]);
+
+  useEffect(() => {
     if (isPaymentElementComplete && !paymentInfoSentRef.current) {
       paymentInfoSentRef.current = true;
       handlePaymentElementComplete();
@@ -157,6 +165,12 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   }, [isPaymentElementComplete, handlePaymentElementComplete]);
 
   const paymentMethod = form.watch("paymentMethod");
+
+  useEffect(() => {
+    if (paymentMethod && paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") {
+      handlePaymentMethodChange(paymentMethod);
+    }
+  }, [paymentMethod, handlePaymentMethodChange]);
   const isPaymentFieldsValid =
     paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" ||
     isPaymentElementComplete;
@@ -347,18 +361,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         });
 
         if (paymentResult.success) {
-          const promoCode = data.promoCode || response?.promo?.code;
-          handlePurchaseEvent(paymentResult.orderUuid, {
-            coupon: promoCode || undefined,
-            shipping: undefined,
-          });
+          // Purchase event will fire on order confirmation page after order data is loaded
+          // This ensures order exists in DB before event fires in GA4
           await pushUserIdToDataLayer(data.email);
           clearCart();
           clearFormData();
           clearIdempotencyKey();
           await waitForAnalytics();
-          // redirect_status=succeeded ensures order page fires purchase event
-          // as a safety net — GA4 deduplicates by transaction_id
           window.location.href = `/${country}/${locale}/order/${paymentResult.orderUuid}/${window.btoa(data.email)}?redirect_status=succeeded`;
           return;
         }
@@ -376,6 +385,17 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
         setToastMessage(tToaster("payment_failed"));
         setOrderModifiedToastOpen(true);
         console.error("Payment confirmation failed:", paymentResult.error);
+      } else if (orderUuid) {
+        // Purchase event will fire on order confirmation page
+        await pushUserIdToDataLayer(data.email);
+        clearCart();
+        clearFormData();
+        clearIdempotencyKey();
+        await waitForAnalytics();
+        const country = currentCountry.countryCode?.toLowerCase() || "gb";
+        const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
+        window.location.href = `/${country}/${locale}/order/${orderUuid}/${window.btoa(data.email)}`;
+        return;
       }
 
       setLoading(false);
@@ -471,6 +491,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                     form={form}
                     loading={loading}
                     validateItems={validateItems}
+                    currency={orderCurrency || currentCountry.currencyKey || "EUR"}
                   />
                   <PriceSummary
                     form={form}

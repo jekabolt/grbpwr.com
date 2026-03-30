@@ -20,10 +20,10 @@ export default function CartProductsList({
   const { handleViewCartEvent } = useCartAnalytics({ finalProducts });
 
   useEffect(() => {
-    if (isOpen && finalProducts.length > 0) {
+    if (!validatedProducts && isOpen && finalProducts.length > 0) {
       handleViewCartEvent();
     }
-  }, [isOpen, finalProducts.length]);
+  }, [isOpen, finalProducts.length, validatedProducts]);
 
   return (
     <>

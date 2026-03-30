@@ -11,6 +11,7 @@ import {
   setRequestLocale,
 } from "next-intl/server";
 
+import { GA4_MEASUREMENT_ID } from "@/lib/analitycs/utils";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { AnalyticsInit } from "@/components/analytics-init";
 import { PageTransition } from "@/components/page-transition";
@@ -86,11 +87,11 @@ export default async function RootLayout({ children, params }: Props) {
       <GoogleTagManager gtmId="GTM-WFC98J99" />
       <body className={FeatureMono.className}>
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-YX09JT9HVC"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`}
           strategy="afterInteractive"
         />
         <Script id="gtag-init" strategy="afterInteractive">
-          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YX09JT9HVC',{send_page_view:false});`}
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA4_MEASUREMENT_ID}',{send_page_view:false});`}
         </Script>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <CookieBanner defaultVisible={!hasConsent} />
