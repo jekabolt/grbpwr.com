@@ -319,6 +319,8 @@
     "order not found": "Bestellung nicht gefunden"
   },
   "order-info": {
+    "order navigation": "Bestellbereiche",
+    "review order": "Bestellung bewerten",
     "order info": "Bestellinformationen",
     "order id": "Bestellnummer",
     "order date": "Bestelldatum",
@@ -703,5 +705,53 @@
   },
   "empty-hero": {
     "shop now": "Jetzt einkaufen"
+  },
+  "order-review": {
+    "field required": "This field is required",
+    "order section": "Your order",
+    "delivery speed": "Delivery speed",
+    "packaging": "Packaging condition",
+    "sophistication": "Sophistication",
+    "overall experience": "Overall experience",
+    "comments": "Comments (optional)",
+    "submit": "Submit review",
+    "submitting": "Submitting…",
+    "success": "Thank you for your review.",
+    "error": "We couldn’t submit your review. Please try again.",
+    "item heading": "Your items",
+    "product quality": "Product quality",
+    "fit": "Fit",
+    "fit select": "How did it fit?",
+    "recommend": "Recommend",
+    "yes": "yes",
+    "no": "no",
+    "placeholder select": "Select…",
+    "dSpeed": {
+      "MUCH_FASTER_THAN_EXPECTED": "Much faster than expected",
+      "FASTER_THAN_EXPECTED": "Faster than expected",
+      "AS_EXPECTED": "As expected",
+      "SLOWER_THAN_EXPECTED": "Slower than expected",
+      "MUCH_SLOWER_THAN_EXPECTED": "Much slower than expected"
+    },
+    "pPackaging": {
+      "DAMAGED": "Damaged",
+      "ACCEPTABLE": "Acceptable",
+      "GOOD": "Good",
+      "EXCELLENT": "Excellent"
+    },
+    "pRating": {
+      "POOR": "Poor",
+      "FAIR": "Fair",
+      "GOOD": "Good",
+      "VERY_GOOD": "Very good",
+      "EXCELLENT": "Excellent"
+    },
+    "fFit": {
+      "RUNS_SMALL": "Runs small",
+      "SLIGHTLY_SMALL": "Slightly small",
+      "TRUE_TO_SIZE": "True to size",
+      "SLIGHTLY_LARGE": "Slightly large",
+      "RUNS_LARGE": "Runs large"
+    }
   }
 }

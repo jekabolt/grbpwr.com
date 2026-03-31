@@ -16,6 +16,7 @@ export interface AftersaleSelectorProps<T extends FieldValues> {
   list: string[];
   className?: string;
   renderLabel?: (value: string) => string;
+  disabled?: boolean;
 }
 
 export default function AftersaleSelector<T extends FieldValues>({
@@ -24,6 +25,7 @@ export default function AftersaleSelector<T extends FieldValues>({
   list,
   className,
   renderLabel,
+  disabled = false,
 }: AftersaleSelectorProps<T>) {
   const t = useTranslations("accessibility");
   
@@ -41,6 +43,7 @@ export default function AftersaleSelector<T extends FieldValues>({
                   key={i}
                   type="button"
                   size="lg"
+                  disabled={disabled}
                   onClick={() => field.onChange(l)}
                   className={cn(
                     "border border-textColor uppercase",
