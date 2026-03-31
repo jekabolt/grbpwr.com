@@ -55,8 +55,8 @@ function RecommendCheckboxes({
             <Text className="text-right" variant="uppercase">
               {t("recommend")}
             </Text>
-            <div className="flex items-center gap-x-6">
-              <div className="flex items-center gap-x-4">
+            <div className="flex items-center gap-x-2">
+              <div className="flex items-center gap-1">
                 <FormControl>
                   <Checkbox
                     name={yesId}
@@ -80,7 +80,7 @@ function RecommendCheckboxes({
                   {t("yes")}
                 </Text>
               </div>
-              <div className="flex items-center gap-x-4">
+              <div className="flex items-center gap-1">
                 <FormControl>
                   <Checkbox
                     name={noId}
@@ -144,7 +144,7 @@ export function OrderReviewProductRow({
     t(`pRating.${value.replace(REVIEW_ENUM_PREFIX.productRating, "")}`);
 
   return (
-    <div className="space-y-6 border-b border-textColor py-6 last:border-b-0">
+    <div className="space-y-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0">
       <div className="flex items-stretch gap-x-3">
         <div className="relative h-full min-w-[90px] shrink-0 self-start">
           <Image
@@ -161,18 +161,19 @@ export function OrderReviewProductRow({
           >
             {productName}
           </Text>
-          <div className="mt-auto flex w-full min-w-0 flex-row flex-nowrap items-end gap-x-4 overflow-x-auto pb-1 pt-8 md:gap-x-6">
-            <div className="shrink-0">
-              <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
-            </div>
-            <div className="min-w-0 flex-1 basis-[12rem]">
-              <SelectField
-                name={`itemReviews.${itemIndex}.fitRating`}
-                label={""}
-                items={fitItems}
-                placeholder={t("placeholder select")}
-                loading={disabled}
-              />
+          <div className="mt-auto flex w-full min-w-0 items-end justify-between gap-3">
+            <div className="flex min-w-0 flex-1 items-end gap-3">
+              <div className="shrink-0">
+                <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+              </div>
+              <div className="w-32 shrink-0">
+                <SelectField
+                  name={`itemReviews.${itemIndex}.fitRating`}
+                  label={""}
+                  items={fitItems}
+                  loading={disabled}
+                />
+              </div>
             </div>
             <RecommendCheckboxes
               className="shrink-0"
@@ -186,7 +187,7 @@ export function OrderReviewProductRow({
         control={control}
         name={`itemReviews.${itemIndex}.rating`}
         list={[...PRODUCT_RATING_VALUES]}
-        className="w-full gap-4 overflow-x-auto pb-1 md:flex-wrap"
+        className="flex items-center gap-4 lg:justify-between"
         renderLabel={labelProductRating}
         disabled={disabled}
       />

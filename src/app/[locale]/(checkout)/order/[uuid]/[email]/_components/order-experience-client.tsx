@@ -19,7 +19,9 @@ export function OrderExperienceClient({
   orderUuid: string;
   b64Email: string;
 }) {
-  const [section, setSection] = useState<OrderViewSection>("order");
+  const [section, setSection] = useState<OrderViewSection>(() =>
+    isDelivered ? "review" : "order",
+  );
 
   return (
     <>

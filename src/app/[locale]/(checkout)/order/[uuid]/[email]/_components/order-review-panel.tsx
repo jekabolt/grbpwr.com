@@ -15,14 +15,15 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 import AftersaleSelector from "@/app/[locale]/(content)/_components/aftersale-selector";
 
+import { MobileOrderReviewSummary } from "./mobile-order-review-summary";
 import { OrderReviewProductRow } from "./order-review-product-row";
 import {
   buildOrderReviewFormSchema,
   DELIVERY_SPEED_VALUES,
+  ORDER_REVIEW_DEFAULT_FIT_RATING,
   PACKAGING_VALUES,
   PRODUCT_RATING_VALUES,
   REVIEW_ENUM_PREFIX,
-  type OrderReviewFormInput,
   type OrderReviewFormValues,
 } from "./order-review-schema";
 
@@ -54,6 +55,29 @@ export function OrderReviewPanel({
     [orderData?.orderItems],
   );
 
+  const expandedReviewRows = useMemo(
+    () =>
+      validItems.flatMap((item, lineItemIndex) =>
+        Array.from(
+          { length: item.orderItem?.quantity || 1 },
+          (_, unitIndex) => ({
+            key: `${item.id ?? lineItemIndex}-${unitIndex}`,
+            product: {
+              ...item,
+              orderItem: {
+                productId: item.orderItem?.productId!,
+                quantity: 1,
+                sizeId: item.orderItem?.sizeId!,
+              },
+            },
+            lineItemIndex,
+            showReviewFields: unitIndex === 0,
+          }),
+        ),
+      ),
+    [validItems],
+  );
+
   const formSchema = useMemo(
     () => buildOrderReviewFormSchema(t("field required"), validItems.length),
     [t, validItems.length],
@@ -70,7 +94,7 @@ export function OrderReviewPanel({
       itemReviews: validItems.map((it) => ({
         orderItemId: it.id as number,
         rating: "",
-        fitRating: "",
+        fitRating: ORDER_REVIEW_DEFAULT_FIT_RATING,
         recommend: undefined,
       })),
     };
@@ -119,6 +143,14 @@ export function OrderReviewPanel({
     ];
   }, [t, validItems.length]);
 
+  const reviewSubmitB64Email = useMemo(() => {
+    const email = orderData?.buyer?.buyerInsert?.email?.trim();
+    if (email && typeof window !== "undefined") {
+      return window.btoa(email);
+    }
+    return b64Email;
+  }, [orderData?.buyer?.buyerInsert?.email, b64Email]);
+
   if (!orderData) {
     return null;
   }
@@ -129,7 +161,7 @@ export function OrderReviewPanel({
     try {
       await serviceClient.SubmitOrderReview({
         orderUuid,
-        b64Email,
+        b64Email: reviewSubmitB64Email,
         orderReview: {
           deliveryRating: validated.orderReview.deliveryRating,
           packagingRating: validated.orderReview.packagingRating,
@@ -158,7 +190,7 @@ export function OrderReviewPanel({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-          <div className="flex justify-between lg:gap-52">
+          <div className="flex flex-col gap-y-10 lg:flex-row lg:justify-between lg:gap-52">
             <div className="w-full space-y-10">
               {formSteps.map((config, i) => (
                 <FieldsGroupContainer
@@ -179,8 +211,7 @@ export function OrderReviewPanel({
                 </FieldsGroupContainer>
               ))}
             </div>
-
-            <div className="w-full">
+            <div className="w-full space-y-10">
               {validItems.length > 0 && (
                 <FieldsGroupContainer
                   stage="4/4"
@@ -188,35 +219,46 @@ export function OrderReviewPanel({
                   collapsible={false}
                   childrenOffset="stage"
                 >
-                  <div className="w-full space-y-3">
-                    {validItems.map((item, index) => (
+                  <div className="block lg:hidden">
+                    <MobileOrderReviewSummary
+                      orderData={orderData}
+                      expandedReviewRows={expandedReviewRows}
+                      itemsTitle={t("item heading")}
+                      disabled={submitting}
+                    />
+                  </div>
+                  <div className="hidden max-h-[50vh] w-full space-y-3 overflow-y-auto lg:block">
+                    {expandedReviewRows.map((row) => (
                       <OrderReviewProductRow
-                        key={item.id ?? index}
-                        product={item}
-                        itemIndex={index}
+                        key={row.key}
+                        product={row.product}
+                        itemIndex={row.lineItemIndex}
                         disabled={submitting}
                       />
                     ))}
                   </div>
                 </FieldsGroupContainer>
               )}
-              <TextareaField
-                name="orderReview.reviewText"
-                loading={submitting}
-                rows={1}
-                maxLength={1500}
-                showCharCount
-              />
-              <Button
-                type="submit"
-                variant="main"
-                size="lg"
-                loading={submitting}
-                disabled={submitting || !form.formState.isValid}
-                className="uppercase md:ml-14"
-              >
-                {submitting ? t("submitting") : t("submit")}
-              </Button>
+              <div className="space-y-6">
+                <TextareaField
+                  name="orderReview.reviewText"
+                  loading={submitting}
+                  rows={16}
+                  className="max-h-32 min-h-32"
+                  maxLength={1500}
+                  showCharCount
+                />
+                <Button
+                  type="submit"
+                  variant="main"
+                  size="lg"
+                  loading={submitting}
+                  disabled={submitting || !form.formState.isValid}
+                  className="fixed inset-x-2.5 bottom-2.5 z-50 w-full uppercase lg:static"
+                >
+                  {submitting ? t("submitting") : t("submit")}
+                </Button>
+              </div>
             </div>
           </div>
         </form>

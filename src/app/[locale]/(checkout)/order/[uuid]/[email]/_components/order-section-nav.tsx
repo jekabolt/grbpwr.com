@@ -18,42 +18,29 @@ export function OrderSectionNav({
 }) {
   const t = useTranslations("order-info");
 
-  const tabBtn = (label: string, section: OrderViewSection) => {
-    const isActive = activeSection === section;
-    return (
+  return (
+    <div className="flex flex-wrap items-baseline gap-6">
       <Button
         type="button"
-        tabIndex={isActive ? 0 : -1}
         className={cn("uppercase !leading-none text-textInactiveColor", {
-          "text-textColor underline": isActive,
+          "text-textColor underline": activeSection === "order",
+          "order-2": isDelivered,
         })}
-        onClick={() => onSectionChange(section)}
+        onClick={() => onSectionChange("order")}
       >
-        {label}
+        {t("order info")}
       </Button>
-    );
-  };
-
-  const orderTab = tabBtn(t("order info"), "order");
-  const reviewTab = tabBtn(t("review order"), "review");
-
-  return (
-    <div
-      role="tablist"
-      aria-label={t("order navigation")}
-      className="flex flex-wrap items-baseline gap-6"
-    >
-      {isDelivered ? (
-        <>
-          {reviewTab}
-          {orderTab}
-        </>
-      ) : (
-        <>
-          {orderTab}
-          {reviewTab}
-        </>
-      )}
+      <Button
+        type="button"
+        disabled={!isDelivered}
+        className={cn("uppercase !leading-none text-textInactiveColor", {
+          "text-textColor underline": activeSection === "review",
+          "order-1": isDelivered,
+        })}
+        onClick={() => onSectionChange("review")}
+      >
+        {t("review order")}
+      </Button>
     </div>
   );
 }

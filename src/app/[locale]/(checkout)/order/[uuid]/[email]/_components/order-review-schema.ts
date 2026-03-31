@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-/** Strip these to match `order-review` message keys (e.g. dSpeed.MUCH_FASTER_THAN_EXPECTED). */
 export const REVIEW_ENUM_PREFIX = {
   delivery: "DELIVERY_SPEED_ENUM_",
   packaging: "PACKAGING_CONDITION_ENUM_",
@@ -39,6 +38,9 @@ export const FIT_SCALE_VALUES = [
   "FIT_SCALE_ENUM_RUNS_LARGE",
 ] as const;
 
+export const ORDER_REVIEW_DEFAULT_FIT_RATING =
+  "FIT_SCALE_ENUM_TRUE_TO_SIZE" satisfies (typeof FIT_SCALE_VALUES)[number];
+
 function inConst<T extends readonly string[]>(values: T, v: string): v is T[number] {
   return (values as readonly string[]).includes(v);
 }
@@ -57,7 +59,6 @@ export function buildOrderReviewFormSchema(
     orderItemId: z.number().int().positive(),
     rating: enumString(PRODUCT_RATING_VALUES),
     fitRating: enumString(FIT_SCALE_VALUES),
-    /** Optional in UI until shopper taps YES/NO; omitted → false on submit. */
     recommend: z.boolean().optional(),
   });
 
