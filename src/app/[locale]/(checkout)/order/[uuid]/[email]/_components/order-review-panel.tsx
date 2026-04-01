@@ -232,7 +232,7 @@ export function OrderReviewPanel({
                       disabled={submitting}
                     />
                   </div>
-                  <div className="hidden w-full space-y-3 overflow-y-auto lg:block lg:min-h-0 lg:flex-1">
+                  <div className="hidden w-full space-y-3 overflow-y-auto lg:block lg:max-h-[50vh] lg:min-h-0 lg:flex-1">
                     {orderItemReviewRows.map((row) => (
                       <OrderReviewProductRow
                         key={row.key}

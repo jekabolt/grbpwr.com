@@ -177,9 +177,9 @@ export function OrderPageComponent({
         />
       </div>
       <div className="hidden justify-between md:flex lg:gap-52">
-        <div className="w-full space-y-10">
+        <div className="w-full">
           <OrderIdDateRow orderUuid={order?.uuid} placedAt={order?.placed} />
-          <div className="flex items-center justify-between gap-y-6 border-b border-textInactiveColor py-6">
+          <div className="flex items-center justify-between border-b border-textInactiveColor py-6">
             <div className="flex w-full flex-col items-baseline justify-between gap-4">
               <Text variant="uppercase">{t("status")}</Text>
               {order?.orderStatusId && (

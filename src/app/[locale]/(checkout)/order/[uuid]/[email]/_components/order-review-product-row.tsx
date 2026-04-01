@@ -197,9 +197,10 @@ export function OrderReviewProductRow({
         control={control}
         name={`itemReviews.${itemIndex}.rating`}
         list={[...PRODUCT_RATING_VALUES]}
-        className="flex items-center gap-4 lg:justify-between"
+        className="w-full lg:justify-between"
         renderLabel={labelProductRating}
         disabled={disabled}
+        fiveOptionMobileGrid
       />
       <div className="block lg:hidden">
         <RecommendCheckboxes

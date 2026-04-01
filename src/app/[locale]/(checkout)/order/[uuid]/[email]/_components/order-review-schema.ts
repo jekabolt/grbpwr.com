@@ -16,18 +16,18 @@ export const DELIVERY_SPEED_VALUES = [
 ] as const;
 
 export const PACKAGING_VALUES = [
-  "PACKAGING_CONDITION_ENUM_DAMAGED",
-  "PACKAGING_CONDITION_ENUM_ACCEPTABLE",
-  "PACKAGING_CONDITION_ENUM_GOOD",
   "PACKAGING_CONDITION_ENUM_EXCELLENT",
+  "PACKAGING_CONDITION_ENUM_GOOD",
+  "PACKAGING_CONDITION_ENUM_ACCEPTABLE",
+  "PACKAGING_CONDITION_ENUM_DAMAGED",
 ] as const;
 
 export const PRODUCT_RATING_VALUES = [
-  "PRODUCT_RATING_ENUM_POOR",
-  "PRODUCT_RATING_ENUM_FAIR",
-  "PRODUCT_RATING_ENUM_GOOD",
-  "PRODUCT_RATING_ENUM_VERY_GOOD",
   "PRODUCT_RATING_ENUM_EXCELLENT",
+  "PRODUCT_RATING_ENUM_VERY_GOOD",
+  "PRODUCT_RATING_ENUM_GOOD",
+  "PRODUCT_RATING_ENUM_FAIR",
+  "PRODUCT_RATING_ENUM_POOR",
 ] as const;
 
 export const FIT_SCALE_VALUES = [
@@ -73,9 +73,29 @@ export function buildOrderReviewFormSchema(
   });
 }
 
+export function buildOrderReviewDefaultValues(
+  items: readonly { id: number }[],
+): OrderReviewFormInput {
+  return {
+    orderReview: {
+      deliveryRating: "",
+      packagingRating: "",
+      sophisticationRating: "",
+      reviewText: "",
+    },
+    itemReviews: items.map((it) => ({
+      orderItemId: it.id,
+      rating: "",
+      fitRating: ORDER_REVIEW_DEFAULT_FIT_RATING,
+      recommend: undefined,
+    })),
+  };
+}
+
 export type OrderReviewFormInput = z.input<
   ReturnType<typeof buildOrderReviewFormSchema>
 >;
 export type OrderReviewFormValues = z.infer<
   ReturnType<typeof buildOrderReviewFormSchema>
 >;
+
