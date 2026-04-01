@@ -713,6 +713,7 @@
     "sophistication": "마감·품질 인상",
     "overall experience": "전체 경험",
     "comments": "코멘트(선택)",
+    "enter review": "리뷰를 입력하세요",
     "submit": "리뷰 제출",
     "submitting": "제출 중…",
     "success": "리뷰를 남겨 주셔서 감사합니다.",
@@ -726,11 +727,11 @@
     "no": "아니오",
     "placeholder select": "선택…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "예상보다 훨씬 빠름",
-      "FASTER_THAN_EXPECTED": "예상보다 빠름",
-      "AS_EXPECTED": "예상과 비슷함",
-      "SLOWER_THAN_EXPECTED": "예상보다 느림",
-      "MUCH_SLOWER_THAN_EXPECTED": "예상보다 훨씬 느림"
+      "MUCH_FASTER_THAN_EXPECTED": "훨씬 일찍 도착",
+      "FASTER_THAN_EXPECTED": "일정보다 빠름",
+      "AS_EXPECTED": "일정대로 도착",
+      "SLOWER_THAN_EXPECTED": "약간 지연",
+      "MUCH_SLOWER_THAN_EXPECTED": "지연"
     },
     "pPackaging": {
       "DAMAGED": "파손됨",
@@ -744,6 +745,13 @@
       "GOOD": "좋음",
       "VERY_GOOD": "매우 좋음",
       "EXCELLENT": "최고"
+    },
+    "pSophistication": {
+      "POOR": "실망스러움",
+      "FAIR": "애매함",
+      "GOOD": "탄탄함",
+      "VERY_GOOD": "고급스러움",
+      "EXCELLENT": "특출함"
     },
     "fFit": {
       "RUNS_SMALL": "작게 맞음",

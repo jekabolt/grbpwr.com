@@ -163,7 +163,7 @@ export function OrderReviewProductRow({
           >
             {productName}
           </Text>
-            <div className="mt-auto flex w-full min-w-0 items-end justify-between gap-3">
+          <div className="mt-auto flex w-full min-w-0 items-end justify-between gap-3">
             <div className="flex min-w-0 flex-1 items-end gap-3">
               <div className="flex shrink-0 items-end gap-2">
                 <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
@@ -179,6 +179,7 @@ export function OrderReviewProductRow({
                   label={""}
                   items={fitItems}
                   loading={disabled}
+                  fullWidth
                 />
               </div>
             </div>

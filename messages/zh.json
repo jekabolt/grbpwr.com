@@ -713,6 +713,7 @@
     "sophistication": "品质与做工印象",
     "overall experience": "整体体验",
     "comments": "留言（选填）",
+    "enter review": "请填写评价内容",
     "submit": "提交评价",
     "submitting": "提交中…",
     "success": "感谢您的评价。",
@@ -726,11 +727,11 @@
     "no": "否",
     "placeholder select": "请选择…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "远快于预期",
-      "FASTER_THAN_EXPECTED": "快于预期",
-      "AS_EXPECTED": "符合预期",
-      "SLOWER_THAN_EXPECTED": "慢于预期",
-      "MUCH_SLOWER_THAN_EXPECTED": "远慢于预期"
+      "MUCH_FASTER_THAN_EXPECTED": "提早很多送达",
+      "FASTER_THAN_EXPECTED": "比预定早",
+      "AS_EXPECTED": "按预定时间",
+      "SLOWER_THAN_EXPECTED": "略有延迟",
+      "MUCH_SLOWER_THAN_EXPECTED": "延迟"
     },
     "pPackaging": {
       "DAMAGED": "有损坏",
@@ -744,6 +745,13 @@
       "GOOD": "好",
       "VERY_GOOD": "很好",
       "EXCELLENT": "极好"
+    },
+    "pSophistication": {
+      "POOR": "令人失望",
+      "FAIR": "中规中矩",
+      "GOOD": "扎实",
+      "VERY_GOOD": "高级",
+      "EXCELLENT": "出众"
     },
     "fFit": {
       "RUNS_SMALL": "偏小",

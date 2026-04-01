@@ -25,28 +25,30 @@ export function OrderExperienceClient({
   );
 
   return (
-    <>
-      <div className="space-y-2">
+    <div className="flex min-h-0 flex-1 flex-col gap-10">
+      <div className="shrink-0 space-y-2">
         <OrderSectionNav
           isDelivered={isDelivered}
           activeSection={section}
           onSectionChange={setSection}
         />
       </div>
-      {section === "order" && (
-        <Suspense fallback={<OrderPageSkeleton />}>
-          <OrderPageComponent orderPromise={orderPromise} />
-        </Suspense>
-      )}
-      {section === "review" && (
-        <Suspense fallback={<OrderReviewPanelSkeleton />}>
-          <OrderReviewPanel
-            orderUuid={orderUuid}
-            b64Email={b64Email}
-            orderPromise={orderPromise}
-          />
-        </Suspense>
-      )}
-    </>
+      <div className="flex min-h-0 flex-1 flex-col">
+        {section === "order" && (
+          <Suspense fallback={<OrderPageSkeleton />}>
+            <OrderPageComponent orderPromise={orderPromise} />
+          </Suspense>
+        )}
+        {section === "review" && (
+          <Suspense fallback={<OrderReviewPanelSkeleton />}>
+            <OrderReviewPanel
+              orderUuid={orderUuid}
+              b64Email={b64Email}
+              orderPromise={orderPromise}
+            />
+          </Suspense>
+        )}
+      </div>
+    </div>
   );
 }

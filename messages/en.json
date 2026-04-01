@@ -348,6 +348,7 @@
     "sophistication": "Sophistication",
     "overall experience": "Overall experience",
     "comments": "Comments (optional)",
+    "enter review": "enter review",
     "submit": "Submit review",
     "submitting": "Submitting…",
     "success": "Thank you for your review.",
@@ -361,11 +362,11 @@
     "no": "no",
     "placeholder select": "Select…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "Much faster than expected",
-      "FASTER_THAN_EXPECTED": "Faster than expected",
-      "AS_EXPECTED": "As expected",
-      "SLOWER_THAN_EXPECTED": "Slower than expected",
-      "MUCH_SLOWER_THAN_EXPECTED": "Much slower than expected"
+      "MUCH_FASTER_THAN_EXPECTED": "Arrived early",
+      "FASTER_THAN_EXPECTED": "Ahead of schedule",
+      "AS_EXPECTED": "On schedule",
+      "SLOWER_THAN_EXPECTED": "Slightly delayed",
+      "MUCH_SLOWER_THAN_EXPECTED": "Delayed"
     },
     "pPackaging": {
       "DAMAGED": "Damaged",
@@ -379,6 +380,13 @@
       "GOOD": "Good",
       "VERY_GOOD": "Very good",
       "EXCELLENT": "Excellent"
+    },
+    "pSophistication": {
+      "POOR": "Disappointing",
+      "FAIR": "Neutral",
+      "GOOD": "Solid",
+      "VERY_GOOD": "High-end",
+      "EXCELLENT": "Exceptional"
     },
     "fFit": {
       "RUNS_SMALL": "Runs small",

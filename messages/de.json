@@ -714,6 +714,7 @@
     "sophistication": "Raffinesse",
     "overall experience": "Gesamterlebnis",
     "comments": "Kommentar (optional)",
+    "enter review": "Schreiben Sie hier Ihre Bewertung…",
     "submit": "Bewertung absenden",
     "submitting": "Wird gesendet…",
     "success": "Vielen Dank für Ihre Bewertung.",
@@ -727,11 +728,11 @@
     "no": "nein",
     "placeholder select": "Auswählen…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "Viel schneller als erwartet",
-      "FASTER_THAN_EXPECTED": "Schneller als erwartet",
-      "AS_EXPECTED": "Wie erwartet",
-      "SLOWER_THAN_EXPECTED": "Langsamer als erwartet",
-      "MUCH_SLOWER_THAN_EXPECTED": "Viel langsamer als erwartet"
+      "MUCH_FASTER_THAN_EXPECTED": "Früh angekommen",
+      "FASTER_THAN_EXPECTED": "Vor dem geplanten Zeitpunkt",
+      "AS_EXPECTED": "Termingerecht",
+      "SLOWER_THAN_EXPECTED": "Leicht verspätet",
+      "MUCH_SLOWER_THAN_EXPECTED": "Verspätet"
     },
     "pPackaging": {
       "DAMAGED": "Beschädigt",
@@ -745,6 +746,13 @@
       "GOOD": "Gut",
       "VERY_GOOD": "Sehr gut",
       "EXCELLENT": "Ausgezeichnet"
+    },
+    "pSophistication": {
+      "POOR": "Enttäuschend",
+      "FAIR": "Neutral",
+      "GOOD": "Solide",
+      "VERY_GOOD": "Hochwertig",
+      "EXCELLENT": "Außergewöhnlich"
     },
     "fFit": {
       "RUNS_SMALL": "Fällt klein aus",

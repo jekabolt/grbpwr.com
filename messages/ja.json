@@ -713,6 +713,7 @@
     "sophistication": "仕上がり・品格",
     "overall experience": "総合的な体験",
     "comments": "コメント（任意）",
+    "enter review": "レビューをご記入ください",
     "submit": "レビューを送信",
     "submitting": "送信中…",
     "success": "レビューありがとうございます。",
@@ -726,11 +727,11 @@
     "no": "いいえ",
     "placeholder select": "選択…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "思ったよりずっと早い",
-      "FASTER_THAN_EXPECTED": "思ったより早い",
-      "AS_EXPECTED": "予想どおり",
-      "SLOWER_THAN_EXPECTED": "思ったより遅い",
-      "MUCH_SLOWER_THAN_EXPECTED": "思ったよりずっと遅い"
+      "MUCH_FASTER_THAN_EXPECTED": "かなり早く到着",
+      "FASTER_THAN_EXPECTED": "予定より早く到着",
+      "AS_EXPECTED": "予定どおりに到着",
+      "SLOWER_THAN_EXPECTED": "やや遅延",
+      "MUCH_SLOWER_THAN_EXPECTED": "遅延"
     },
     "pPackaging": {
       "DAMAGED": "破損あり",
@@ -744,6 +745,13 @@
       "GOOD": "良い",
       "VERY_GOOD": "とても良い",
       "EXCELLENT": "最高"
+    },
+    "pSophistication": {
+      "POOR": "期待外れ",
+      "FAIR": "どちらともいえない",
+      "GOOD": "しっかりしている",
+      "VERY_GOOD": "上質",
+      "EXCELLENT": "際立っている"
     },
     "fFit": {
       "RUNS_SMALL": "小さめ",

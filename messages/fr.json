@@ -713,6 +713,7 @@
     "sophistication": "Finition",
     "overall experience": "Expérience globale",
     "comments": "Commentaire (facultatif)",
+    "enter review": "Rédigez votre avis…",
     "submit": "Envoyer l’avis",
     "submitting": "Envoi en cours…",
     "success": "Merci pour votre avis.",
@@ -726,11 +727,11 @@
     "no": "non",
     "placeholder select": "Choisir…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "Beaucoup plus rapide que prévu",
-      "FASTER_THAN_EXPECTED": "Plus rapide que prévu",
-      "AS_EXPECTED": "Comme prévu",
-      "SLOWER_THAN_EXPECTED": "Plus lent que prévu",
-      "MUCH_SLOWER_THAN_EXPECTED": "Beaucoup plus lent que prévu"
+      "MUCH_FASTER_THAN_EXPECTED": "Arrivé tôt",
+      "FASTER_THAN_EXPECTED": "En avance sur le planning",
+      "AS_EXPECTED": "Dans les délais",
+      "SLOWER_THAN_EXPECTED": "Légèrement en retard",
+      "MUCH_SLOWER_THAN_EXPECTED": "En retard"
     },
     "pPackaging": {
       "DAMAGED": "Abîmé",
@@ -744,6 +745,13 @@
       "GOOD": "Bon",
       "VERY_GOOD": "Très bon",
       "EXCELLENT": "Excellent"
+    },
+    "pSophistication": {
+      "POOR": "Décevant",
+      "FAIR": "Neutre",
+      "GOOD": "Solide",
+      "VERY_GOOD": "Haut de gamme",
+      "EXCELLENT": "Exceptionnel"
     },
     "fFit": {
       "RUNS_SMALL": "Taille petit",

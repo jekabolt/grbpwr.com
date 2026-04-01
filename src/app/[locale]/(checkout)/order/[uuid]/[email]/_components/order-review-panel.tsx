@@ -16,7 +16,6 @@ import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components
 import AftersaleSelector from "@/app/[locale]/(content)/_components/aftersale-selector";
 
 import { MobileOrderReviewSummary } from "./mobile-order-review-summary";
-import { OrderIdDateRow } from "./order-id-date-row";
 import { OrderReviewProductRow } from "./order-review-product-row";
 import {
   buildOrderReviewFormSchema,
@@ -51,8 +50,6 @@ export function OrderReviewPanel({
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [mobileOrderSummaryOpen, setMobileOrderSummaryOpen] = useState(false);
-
   const validItems = useMemo(
     () => orderData?.orderItems?.filter((i) => i.id != null) ?? [],
     [orderData?.orderItems],
@@ -105,8 +102,10 @@ export function OrderReviewPanel({
       t(`dSpeed.${value.replace(REVIEW_ENUM_PREFIX.delivery, "")}`);
     const labelPackaging = (value: string) =>
       t(`pPackaging.${value.replace(REVIEW_ENUM_PREFIX.packaging, "")}`);
-    const labelProductRating = (value: string) =>
-      t(`pRating.${value.replace(REVIEW_ENUM_PREFIX.productRating, "")}`);
+    const labelSophistication = (value: string) =>
+      t(
+        `pSophistication.${value.replace(REVIEW_ENUM_PREFIX.productRating, "")}`,
+      );
 
     return [
       {
@@ -128,7 +127,7 @@ export function OrderReviewPanel({
         title: t("sophistication"),
         name: "orderReview.sophisticationRating",
         list: [...PRODUCT_RATING_VALUES],
-        renderLabel: labelProductRating,
+        renderLabel: labelSophistication,
       },
     ];
   }, [t, validItems.length]);
@@ -179,13 +178,12 @@ export function OrderReviewPanel({
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-          <div className="relative flex flex-col gap-y-10 lg:flex-row lg:justify-between lg:gap-52">
-            <div className="w-full space-y-10">
-              <OrderIdDateRow
-                orderUuid={orderData.order?.uuid}
-                placedAt={orderData.order?.placed}
-              />
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex h-full min-h-0 w-full flex-1 flex-col"
+        >
+          <div className="relative flex min-h-0 flex-1 flex-col gap-y-10 lg:flex-row lg:justify-between lg:gap-52">
+            <div className="w-full space-y-10 lg:min-h-0 lg:flex-1">
               {formSteps.map((config, i) => (
                 <FieldsGroupContainer
                   key={`${config.name}-${i}`}
@@ -204,16 +202,29 @@ export function OrderReviewPanel({
                   />
                 </FieldsGroupContainer>
               ))}
+              <div className="hidden lg:block">
+                <TextareaField
+                  name="orderReview.reviewText"
+                  loading={submitting}
+                  rows={16}
+                  className="max-h-32 min-h-32 placeholder:uppercase"
+                  placeholder={t("enter review")}
+                  maxLength={1500}
+                  showCharCount
+                />
+              </div>
             </div>
-            <div className="w-full space-y-10">
+            <div className="flex w-full flex-col space-y-10 lg:min-h-0 lg:flex-1">
               {validItems.length > 0 && (
                 <FieldsGroupContainer
                   stage="4/4"
                   title={t("item heading")}
                   collapsible={false}
                   childrenOffset="stage"
+                  className="flex min-h-0 flex-col lg:flex-1"
+                  childrenSpacingClass="flex min-h-0 flex-1 flex-col space-y-8"
                 >
-                  <div className="block lg:hidden">
+                  <div className="block shrink-0 lg:hidden">
                     <MobileOrderReviewSummary
                       orderData={orderData}
                       orderItemReviewRows={orderItemReviewRows}
@@ -221,7 +232,7 @@ export function OrderReviewPanel({
                       disabled={submitting}
                     />
                   </div>
-                  <div className="hidden max-h-[50vh] w-full space-y-3 overflow-y-auto lg:block">
+                  <div className="hidden w-full space-y-3 overflow-y-auto lg:block lg:min-h-0 lg:flex-1">
                     {orderItemReviewRows.map((row) => (
                       <OrderReviewProductRow
                         key={row.key}
@@ -233,15 +244,18 @@ export function OrderReviewPanel({
                   </div>
                 </FieldsGroupContainer>
               )}
-              <div className="space-y-6">
-                <TextareaField
-                  name="orderReview.reviewText"
-                  loading={submitting}
-                  rows={16}
-                  className="max-h-32 min-h-32"
-                  maxLength={1500}
-                  showCharCount
-                />
+              <div className="shrink-0 space-y-6">
+                <div className="block lg:hidden">
+                  <TextareaField
+                    name="orderReview.reviewText"
+                    loading={submitting}
+                    rows={16}
+                    className="max-h-32 min-h-32 placeholder:uppercase"
+                    placeholder={t("enter review")}
+                    maxLength={1500}
+                    showCharCount
+                  />
+                </div>
                 <div className="hidden w-full lg:block">
                   <Button
                     type="submit"
@@ -257,7 +271,7 @@ export function OrderReviewPanel({
               </div>
             </div>
           </div>
-          <div className="sticky bottom-2.5 z-50 mt-10 block lg:hidden">
+          <div className="sticky bottom-2.5 z-50 mt-10 block shrink-0 lg:hidden">
             <Button
               type="submit"
               variant="main"

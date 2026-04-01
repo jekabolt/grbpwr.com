@@ -713,6 +713,7 @@
     "sophistication": "Raffinatezza",
     "overall experience": "Esperienza complessiva",
     "comments": "Commento (facoltativo)",
+    "enter review": "Scrivi la tua recensione…",
     "submit": "Invia recensione",
     "submitting": "Invio in corso…",
     "success": "Grazie per la tua recensione.",
@@ -726,11 +727,11 @@
     "no": "no",
     "placeholder select": "Seleziona…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "Molto più veloce del previsto",
-      "FASTER_THAN_EXPECTED": "Più veloce del previsto",
-      "AS_EXPECTED": "Come previsto",
-      "SLOWER_THAN_EXPECTED": "Più lento del previsto",
-      "MUCH_SLOWER_THAN_EXPECTED": "Molto più lento del previsto"
+      "MUCH_FASTER_THAN_EXPECTED": "Arrivato in anticipo",
+      "FASTER_THAN_EXPECTED": "In anticipo sulla consegna",
+      "AS_EXPECTED": "Nei tempi previsti",
+      "SLOWER_THAN_EXPECTED": "Leggermente in ritardo",
+      "MUCH_SLOWER_THAN_EXPECTED": "In ritardo"
     },
     "pPackaging": {
       "DAMAGED": "Danneggiato",
@@ -744,6 +745,13 @@
       "GOOD": "Buono",
       "VERY_GOOD": "Molto buono",
       "EXCELLENT": "Eccellente"
+    },
+    "pSophistication": {
+      "POOR": "Deludente",
+      "FAIR": "Neutro",
+      "GOOD": "Solido",
+      "VERY_GOOD": "Di alto livello",
+      "EXCELLENT": "Eccezionale"
     },
     "fFit": {
       "RUNS_SMALL": "Veste stretto",
