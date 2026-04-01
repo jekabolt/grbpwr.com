@@ -16,6 +16,7 @@ import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components
 import AftersaleSelector from "@/app/[locale]/(content)/_components/aftersale-selector";
 
 import { MobileOrderReviewSummary } from "./mobile-order-review-summary";
+import { OrderIdDateRow } from "./order-id-date-row";
 import { OrderReviewProductRow } from "./order-review-product-row";
 import {
   buildOrderReviewFormSchema,
@@ -50,32 +51,20 @@ export function OrderReviewPanel({
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [mobileOrderSummaryOpen, setMobileOrderSummaryOpen] = useState(false);
 
   const validItems = useMemo(
     () => orderData?.orderItems?.filter((i) => i.id != null) ?? [],
     [orderData?.orderItems],
   );
 
-  const expandedReviewRows = useMemo(
+  const orderItemReviewRows = useMemo(
     () =>
-      validItems.flatMap((item, lineItemIndex) =>
-        Array.from(
-          { length: item.orderItem?.quantity || 1 },
-          (_, unitIndex) => ({
-            key: `${item.id ?? lineItemIndex}-${unitIndex}`,
-            product: {
-              ...item,
-              orderItem: {
-                productId: item.orderItem?.productId!,
-                quantity: 1,
-                sizeId: item.orderItem?.sizeId!,
-              },
-            },
-            lineItemIndex,
-            showReviewFields: unitIndex === 0,
-          }),
-        ),
-      ),
+      validItems.map((item, lineItemIndex) => ({
+        key: `${item.id ?? lineItemIndex}`,
+        product: item,
+        lineItemIndex,
+      })),
     [validItems],
   );
 
@@ -191,8 +180,12 @@ export function OrderReviewPanel({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-          <div className="flex flex-col gap-y-10 lg:flex-row lg:justify-between lg:gap-52">
+          <div className="relative flex flex-col gap-y-10 lg:flex-row lg:justify-between lg:gap-52">
             <div className="w-full space-y-10">
+              <OrderIdDateRow
+                orderUuid={orderData.order?.uuid}
+                placedAt={orderData.order?.placed}
+              />
               {formSteps.map((config, i) => (
                 <FieldsGroupContainer
                   key={`${config.name}-${i}`}
@@ -223,13 +216,13 @@ export function OrderReviewPanel({
                   <div className="block lg:hidden">
                     <MobileOrderReviewSummary
                       orderData={orderData}
-                      expandedReviewRows={expandedReviewRows}
+                      orderItemReviewRows={orderItemReviewRows}
                       itemsTitle={t("item heading")}
                       disabled={submitting}
                     />
                   </div>
                   <div className="hidden max-h-[50vh] w-full space-y-3 overflow-y-auto lg:block">
-                    {expandedReviewRows.map((row) => (
+                    {orderItemReviewRows.map((row) => (
                       <OrderReviewProductRow
                         key={row.key}
                         product={row.product}
@@ -249,18 +242,32 @@ export function OrderReviewPanel({
                   maxLength={1500}
                   showCharCount
                 />
-                <Button
-                  type="submit"
-                  variant="main"
-                  size="lg"
-                  loading={submitting}
-                  disabled={submitting || !form.formState.isValid}
-                  className="fixed inset-x-2.5 bottom-2.5 z-50 w-full uppercase lg:static"
-                >
-                  {submitting ? t("submitting") : t("submit")}
-                </Button>
+                <div className="hidden w-full lg:block">
+                  <Button
+                    type="submit"
+                    variant="main"
+                    size="lg"
+                    loading={submitting}
+                    disabled={submitting || !form.formState.isValid}
+                    className="w-full uppercase"
+                  >
+                    {submitting ? t("submitting") : t("submit")}
+                  </Button>
+                </div>
               </div>
             </div>
+          </div>
+          <div className="sticky bottom-2.5 z-50 mt-10 block lg:hidden">
+            <Button
+              type="submit"
+              variant="main"
+              size="lg"
+              loading={submitting}
+              disabled={submitting || !form.formState.isValid}
+              className="w-full uppercase"
+            >
+              {submitting ? t("submitting") : t("submit")}
+            </Button>
           </div>
         </form>
       </Form>

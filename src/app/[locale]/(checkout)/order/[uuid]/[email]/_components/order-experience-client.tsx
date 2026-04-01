@@ -6,6 +6,7 @@ import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { OrderPageComponent } from "./order-page";
 import { OrderPageSkeleton } from "./order-page-skeleton";
 import { OrderReviewPanel } from "./order-review-panel";
+import { OrderReviewPanelSkeleton } from "./order-review-panel-skeleton";
 import { OrderSectionNav, type OrderViewSection } from "./order-section-nav";
 
 export function OrderExperienceClient({
@@ -38,7 +39,7 @@ export function OrderExperienceClient({
         </Suspense>
       )}
       {section === "review" && (
-        <Suspense fallback={<></>}>
+        <Suspense fallback={<OrderReviewPanelSkeleton />}>
           <OrderReviewPanel
             orderUuid={orderUuid}
             b64Email={b64Email}

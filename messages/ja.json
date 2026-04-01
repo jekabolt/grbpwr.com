@@ -706,51 +706,51 @@
     "shop now": "今すぐ買う"
   },
   "order-review": {
-    "field required": "This field is required",
-    "order section": "Your order",
-    "delivery speed": "Delivery speed",
-    "packaging": "Packaging condition",
-    "sophistication": "Sophistication",
-    "overall experience": "Overall experience",
-    "comments": "Comments (optional)",
-    "submit": "Submit review",
-    "submitting": "Submitting…",
-    "success": "Thank you for your review.",
-    "error": "We couldn’t submit your review. Please try again.",
-    "item heading": "Your items",
-    "product quality": "Product quality",
-    "fit": "Fit",
-    "fit select": "How did it fit?",
-    "recommend": "Recommend",
-    "yes": "yes",
-    "no": "no",
-    "placeholder select": "Select…",
+    "field required": "この項目は必須です",
+    "order section": "ご注文",
+    "delivery speed": "配送の速さ",
+    "packaging": "梱包状態",
+    "sophistication": "仕上がり・品格",
+    "overall experience": "総合的な体験",
+    "comments": "コメント（任意）",
+    "submit": "レビューを送信",
+    "submitting": "送信中…",
+    "success": "レビューありがとうございます。",
+    "error": "送信できませんでした。もう一度お試しください。",
+    "item heading": "ご購入商品",
+    "product quality": "品質",
+    "fit": "サイズ感",
+    "fit select": "サイズ感はいかがでしたか？",
+    "recommend": "おすすめ",
+    "yes": "はい",
+    "no": "いいえ",
+    "placeholder select": "選択…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "Much faster than expected",
-      "FASTER_THAN_EXPECTED": "Faster than expected",
-      "AS_EXPECTED": "As expected",
-      "SLOWER_THAN_EXPECTED": "Slower than expected",
-      "MUCH_SLOWER_THAN_EXPECTED": "Much slower than expected"
+      "MUCH_FASTER_THAN_EXPECTED": "思ったよりずっと早い",
+      "FASTER_THAN_EXPECTED": "思ったより早い",
+      "AS_EXPECTED": "予想どおり",
+      "SLOWER_THAN_EXPECTED": "思ったより遅い",
+      "MUCH_SLOWER_THAN_EXPECTED": "思ったよりずっと遅い"
     },
     "pPackaging": {
-      "DAMAGED": "Damaged",
-      "ACCEPTABLE": "Acceptable",
-      "GOOD": "Good",
-      "EXCELLENT": "Excellent"
+      "DAMAGED": "破損あり",
+      "ACCEPTABLE": "許容範囲",
+      "GOOD": "良い",
+      "EXCELLENT": "非常に良い"
     },
     "pRating": {
-      "POOR": "Poor",
-      "FAIR": "Fair",
-      "GOOD": "Good",
-      "VERY_GOOD": "Very good",
-      "EXCELLENT": "Excellent"
+      "POOR": "悪い",
+      "FAIR": "普通",
+      "GOOD": "良い",
+      "VERY_GOOD": "とても良い",
+      "EXCELLENT": "最高"
     },
     "fFit": {
-      "RUNS_SMALL": "Runs small",
-      "SLIGHTLY_SMALL": "Slightly small",
-      "TRUE_TO_SIZE": "True to size",
-      "SLIGHTLY_LARGE": "Slightly large",
-      "RUNS_LARGE": "Runs large"
+      "RUNS_SMALL": "小さめ",
+      "SLIGHTLY_SMALL": "やや小さめ",
+      "TRUE_TO_SIZE": "表記どおり",
+      "SLIGHTLY_LARGE": "やや大きめ",
+      "RUNS_LARGE": "大きめ"
     }
   }
 }

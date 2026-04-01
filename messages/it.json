@@ -706,51 +706,51 @@
     "shop now": "Acquista ora"
   },
   "order-review": {
-    "field required": "This field is required",
-    "order section": "Your order",
-    "delivery speed": "Delivery speed",
-    "packaging": "Packaging condition",
-    "sophistication": "Sophistication",
-    "overall experience": "Overall experience",
-    "comments": "Comments (optional)",
-    "submit": "Submit review",
-    "submitting": "Submitting…",
-    "success": "Thank you for your review.",
-    "error": "We couldn’t submit your review. Please try again.",
-    "item heading": "Your items",
-    "product quality": "Product quality",
-    "fit": "Fit",
-    "fit select": "How did it fit?",
-    "recommend": "Recommend",
-    "yes": "yes",
+    "field required": "Questo campo è obbligatorio",
+    "order section": "Il tuo ordine",
+    "delivery speed": "Velocità di consegna",
+    "packaging": "Stato dell’imballaggio",
+    "sophistication": "Raffinatezza",
+    "overall experience": "Esperienza complessiva",
+    "comments": "Commento (facoltativo)",
+    "submit": "Invia recensione",
+    "submitting": "Invio in corso…",
+    "success": "Grazie per la tua recensione.",
+    "error": "Impossibile inviare la recensione. Riprova.",
+    "item heading": "I tuoi articoli",
+    "product quality": "Qualità del prodotto",
+    "fit": "Vestibilità",
+    "fit select": "Com’era la vestibilità?",
+    "recommend": "Consigli",
+    "yes": "sì",
     "no": "no",
-    "placeholder select": "Select…",
+    "placeholder select": "Seleziona…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "Much faster than expected",
-      "FASTER_THAN_EXPECTED": "Faster than expected",
-      "AS_EXPECTED": "As expected",
-      "SLOWER_THAN_EXPECTED": "Slower than expected",
-      "MUCH_SLOWER_THAN_EXPECTED": "Much slower than expected"
+      "MUCH_FASTER_THAN_EXPECTED": "Molto più veloce del previsto",
+      "FASTER_THAN_EXPECTED": "Più veloce del previsto",
+      "AS_EXPECTED": "Come previsto",
+      "SLOWER_THAN_EXPECTED": "Più lento del previsto",
+      "MUCH_SLOWER_THAN_EXPECTED": "Molto più lento del previsto"
     },
     "pPackaging": {
-      "DAMAGED": "Damaged",
-      "ACCEPTABLE": "Acceptable",
-      "GOOD": "Good",
-      "EXCELLENT": "Excellent"
+      "DAMAGED": "Danneggiato",
+      "ACCEPTABLE": "Accettabile",
+      "GOOD": "Buono",
+      "EXCELLENT": "Eccellente"
     },
     "pRating": {
-      "POOR": "Poor",
-      "FAIR": "Fair",
-      "GOOD": "Good",
-      "VERY_GOOD": "Very good",
-      "EXCELLENT": "Excellent"
+      "POOR": "Scarso",
+      "FAIR": "Discreto",
+      "GOOD": "Buono",
+      "VERY_GOOD": "Molto buono",
+      "EXCELLENT": "Eccellente"
     },
     "fFit": {
-      "RUNS_SMALL": "Runs small",
-      "SLIGHTLY_SMALL": "Slightly small",
-      "TRUE_TO_SIZE": "True to size",
-      "SLIGHTLY_LARGE": "Slightly large",
-      "RUNS_LARGE": "Runs large"
+      "RUNS_SMALL": "Veste stretto",
+      "SLIGHTLY_SMALL": "Leggermente stretto",
+      "TRUE_TO_SIZE": "Fedele alla taglia",
+      "SLIGHTLY_LARGE": "Leggermente largo",
+      "RUNS_LARGE": "Veste largo"
     }
   }
 }

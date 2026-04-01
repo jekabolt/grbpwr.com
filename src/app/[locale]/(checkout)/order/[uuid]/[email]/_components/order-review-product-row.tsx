@@ -131,6 +131,8 @@ export function OrderReviewProductRow({
     product.sku ||
     "";
 
+  const lineQty = product.orderItem?.quantity ?? 1;
+
   const fitItems = useMemo(
     () =>
       FIT_SCALE_VALUES.map((value) => ({
@@ -161,10 +163,15 @@ export function OrderReviewProductRow({
           >
             {productName}
           </Text>
-          <div className="mt-auto flex w-full min-w-0 items-end justify-between gap-3">
+            <div className="mt-auto flex w-full min-w-0 items-end justify-between gap-3">
             <div className="flex min-w-0 flex-1 items-end gap-3">
-              <div className="shrink-0">
+              <div className="flex shrink-0 items-end gap-2">
                 <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+                {lineQty > 1 && (
+                  <Text variant="uppercase" className="text-textInactiveColor">
+                    ×{lineQty}
+                  </Text>
+                )}
               </div>
               <div className="w-32 shrink-0">
                 <SelectField

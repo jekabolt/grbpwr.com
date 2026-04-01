@@ -11,7 +11,7 @@ import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components
 
 import { OrderReviewProductRow } from "./order-review-product-row";
 
-export type MobileOrderReviewExpandedRow = {
+export type OrderItemReviewRow = {
   key: string;
   product: common_OrderItem;
   lineItemIndex: number;
@@ -19,13 +19,13 @@ export type MobileOrderReviewExpandedRow = {
 
 type Props = {
   orderData: common_OrderFull;
-  expandedReviewRows: MobileOrderReviewExpandedRow[];
+  orderItemReviewRows: OrderItemReviewRow[];
   itemsTitle: string;
   disabled?: boolean;
 };
 
 export function MobileOrderReviewSummary({
-  expandedReviewRows,
+  orderItemReviewRows,
   disabled,
 }: Props) {
   const t = useTranslations("checkout");
@@ -41,7 +41,7 @@ export function MobileOrderReviewSummary({
       onToggle={() => setIsOpen((prev) => !prev)}
     >
       <div className="mt-6 w-full space-y-3">
-        {expandedReviewRows.map((row) => (
+        {orderItemReviewRows.map((row) => (
           <OrderReviewProductRow
             key={row.key}
             product={row.product}

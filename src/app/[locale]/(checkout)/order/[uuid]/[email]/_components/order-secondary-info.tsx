@@ -24,7 +24,7 @@ export function OrderSecondaryInfo({
   );
   const rawCarrierName = carrier?.shipmentCarrier?.carrier;
   const shipmentCarrierName =
-    rawCarrierName === "FREE" ? tCheckout("free") : rawCarrierName;
+    rawCarrierName === "FREE" ? tCheckout("FREE") : rawCarrierName;
   const trackingUrl = buildTrackingUrl(
     carrier?.shipmentCarrier?.trackingUrl,
     shipment?.trackingCode,

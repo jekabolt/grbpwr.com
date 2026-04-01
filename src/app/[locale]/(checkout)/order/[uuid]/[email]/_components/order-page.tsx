@@ -26,6 +26,7 @@ import { Text } from "@/components/ui/text";
 import { OrderProducts } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/order-products";
 
 import { MobileOrderPage } from "./mobile-order-page";
+import { OrderIdDateRow } from "./order-id-date-row";
 import { OrderSecondaryInfo } from "./order-secondary-info";
 import { StatusBadge } from "./status-badge";
 
@@ -177,27 +178,16 @@ export function OrderPageComponent({
       </div>
       <div className="hidden justify-between md:flex lg:gap-52">
         <div className="w-full space-y-10">
-          <div className="flex items-center justify-between gap-y-6 border-b border-textInactiveColor pb-6">
-            <div className="flex w-full items-baseline justify-between gap-4">
-              <Text variant="uppercase">{t("order id")}</Text>
-              <Text className="select-all break-all">{order?.uuid}</Text>
-            </div>
-            <div className="flex w-full items-baseline justify-between gap-4">
-              <Text variant="uppercase">{t("order date")}</Text>
-              {order?.placed && (
-                <Text>{new Date(order.placed).toLocaleDateString()}</Text>
-              )}
-            </div>
-          </div>
+          <OrderIdDateRow orderUuid={order?.uuid} placedAt={order?.placed} />
           <div className="flex items-center justify-between gap-y-6 border-b border-textInactiveColor py-6">
-            <div className="flex w-full items-baseline justify-between gap-4">
+            <div className="flex w-full flex-col items-baseline justify-between gap-4">
               <Text variant="uppercase">{t("status")}</Text>
               {order?.orderStatusId && (
                 <StatusBadge statusId={order.orderStatusId} />
               )}
             </div>
             {shipment && (
-              <div className="flex w-full items-baseline justify-between gap-4">
+              <div className="flex w-full flex-col items-baseline justify-between gap-4">
                 <Text variant="uppercase">{t("tracking number")}</Text>
                 {shipment.trackingCode && trackingUrl ? (
                   <Button variant="underlineWithColors" size="default" asChild>

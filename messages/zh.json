@@ -706,51 +706,51 @@
     "shop now": "立即购买"
   },
   "order-review": {
-    "field required": "This field is required",
-    "order section": "Your order",
-    "delivery speed": "Delivery speed",
-    "packaging": "Packaging condition",
-    "sophistication": "Sophistication",
-    "overall experience": "Overall experience",
-    "comments": "Comments (optional)",
-    "submit": "Submit review",
-    "submitting": "Submitting…",
-    "success": "Thank you for your review.",
-    "error": "We couldn’t submit your review. Please try again.",
-    "item heading": "Your items",
-    "product quality": "Product quality",
-    "fit": "Fit",
-    "fit select": "How did it fit?",
-    "recommend": "Recommend",
-    "yes": "yes",
-    "no": "no",
-    "placeholder select": "Select…",
+    "field required": "此项为必填",
+    "order section": "您的订单",
+    "delivery speed": "配送速度",
+    "packaging": "包装状况",
+    "sophistication": "品质与做工印象",
+    "overall experience": "整体体验",
+    "comments": "留言（选填）",
+    "submit": "提交评价",
+    "submitting": "提交中…",
+    "success": "感谢您的评价。",
+    "error": "提交失败，请重试。",
+    "item heading": "所购商品",
+    "product quality": "产品质量",
+    "fit": "尺码合身度",
+    "fit select": "合身度如何？",
+    "recommend": "是否推荐",
+    "yes": "是",
+    "no": "否",
+    "placeholder select": "请选择…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "Much faster than expected",
-      "FASTER_THAN_EXPECTED": "Faster than expected",
-      "AS_EXPECTED": "As expected",
-      "SLOWER_THAN_EXPECTED": "Slower than expected",
-      "MUCH_SLOWER_THAN_EXPECTED": "Much slower than expected"
+      "MUCH_FASTER_THAN_EXPECTED": "远快于预期",
+      "FASTER_THAN_EXPECTED": "快于预期",
+      "AS_EXPECTED": "符合预期",
+      "SLOWER_THAN_EXPECTED": "慢于预期",
+      "MUCH_SLOWER_THAN_EXPECTED": "远慢于预期"
     },
     "pPackaging": {
-      "DAMAGED": "Damaged",
-      "ACCEPTABLE": "Acceptable",
-      "GOOD": "Good",
-      "EXCELLENT": "Excellent"
+      "DAMAGED": "有损坏",
+      "ACCEPTABLE": "尚可",
+      "GOOD": "良好",
+      "EXCELLENT": "非常好"
     },
     "pRating": {
-      "POOR": "Poor",
-      "FAIR": "Fair",
-      "GOOD": "Good",
-      "VERY_GOOD": "Very good",
-      "EXCELLENT": "Excellent"
+      "POOR": "差",
+      "FAIR": "一般",
+      "GOOD": "好",
+      "VERY_GOOD": "很好",
+      "EXCELLENT": "极好"
     },
     "fFit": {
-      "RUNS_SMALL": "Runs small",
-      "SLIGHTLY_SMALL": "Slightly small",
-      "TRUE_TO_SIZE": "True to size",
-      "SLIGHTLY_LARGE": "Slightly large",
-      "RUNS_LARGE": "Runs large"
+      "RUNS_SMALL": "偏小",
+      "SLIGHTLY_SMALL": "略偏小",
+      "TRUE_TO_SIZE": "尺码标准",
+      "SLIGHTLY_LARGE": "略偏大",
+      "RUNS_LARGE": "偏大"
     }
   }
 }

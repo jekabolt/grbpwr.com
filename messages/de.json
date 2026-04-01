@@ -707,51 +707,51 @@
     "shop now": "Jetzt einkaufen"
   },
   "order-review": {
-    "field required": "This field is required",
-    "order section": "Your order",
-    "delivery speed": "Delivery speed",
-    "packaging": "Packaging condition",
-    "sophistication": "Sophistication",
-    "overall experience": "Overall experience",
-    "comments": "Comments (optional)",
-    "submit": "Submit review",
-    "submitting": "Submitting…",
-    "success": "Thank you for your review.",
-    "error": "We couldn’t submit your review. Please try again.",
-    "item heading": "Your items",
-    "product quality": "Product quality",
-    "fit": "Fit",
-    "fit select": "How did it fit?",
-    "recommend": "Recommend",
-    "yes": "yes",
-    "no": "no",
-    "placeholder select": "Select…",
+    "field required": "Dieses Feld ist erforderlich",
+    "order section": "Ihre Bestellung",
+    "delivery speed": "Liefergeschwindigkeit",
+    "packaging": "Verpackungszustand",
+    "sophistication": "Raffinesse",
+    "overall experience": "Gesamterlebnis",
+    "comments": "Kommentar (optional)",
+    "submit": "Bewertung absenden",
+    "submitting": "Wird gesendet…",
+    "success": "Vielen Dank für Ihre Bewertung.",
+    "error": "Die Bewertung konnte nicht gesendet werden. Bitte erneut versuchen.",
+    "item heading": "Ihre Artikel",
+    "product quality": "Produktqualität",
+    "fit": "Passform",
+    "fit select": "Wie hat die Passform gepasst?",
+    "recommend": "Empfehlung",
+    "yes": "ja",
+    "no": "nein",
+    "placeholder select": "Auswählen…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "Much faster than expected",
-      "FASTER_THAN_EXPECTED": "Faster than expected",
-      "AS_EXPECTED": "As expected",
-      "SLOWER_THAN_EXPECTED": "Slower than expected",
-      "MUCH_SLOWER_THAN_EXPECTED": "Much slower than expected"
+      "MUCH_FASTER_THAN_EXPECTED": "Viel schneller als erwartet",
+      "FASTER_THAN_EXPECTED": "Schneller als erwartet",
+      "AS_EXPECTED": "Wie erwartet",
+      "SLOWER_THAN_EXPECTED": "Langsamer als erwartet",
+      "MUCH_SLOWER_THAN_EXPECTED": "Viel langsamer als erwartet"
     },
     "pPackaging": {
-      "DAMAGED": "Damaged",
-      "ACCEPTABLE": "Acceptable",
-      "GOOD": "Good",
-      "EXCELLENT": "Excellent"
+      "DAMAGED": "Beschädigt",
+      "ACCEPTABLE": "Akzeptabel",
+      "GOOD": "Gut",
+      "EXCELLENT": "Ausgezeichnet"
     },
     "pRating": {
-      "POOR": "Poor",
-      "FAIR": "Fair",
-      "GOOD": "Good",
-      "VERY_GOOD": "Very good",
-      "EXCELLENT": "Excellent"
+      "POOR": "Schlecht",
+      "FAIR": "Ausreichend",
+      "GOOD": "Gut",
+      "VERY_GOOD": "Sehr gut",
+      "EXCELLENT": "Ausgezeichnet"
     },
     "fFit": {
-      "RUNS_SMALL": "Runs small",
-      "SLIGHTLY_SMALL": "Slightly small",
-      "TRUE_TO_SIZE": "True to size",
-      "SLIGHTLY_LARGE": "Slightly large",
-      "RUNS_LARGE": "Runs large"
+      "RUNS_SMALL": "Fällt klein aus",
+      "SLIGHTLY_SMALL": "Etwas klein",
+      "TRUE_TO_SIZE": "Entspricht der Größe",
+      "SLIGHTLY_LARGE": "Etwas groß",
+      "RUNS_LARGE": "Fällt groß aus"
     }
   }
 }

@@ -706,51 +706,51 @@
     "shop now": "지금 쇼핑하기"
   },
   "order-review": {
-    "field required": "This field is required",
-    "order section": "Your order",
-    "delivery speed": "Delivery speed",
-    "packaging": "Packaging condition",
-    "sophistication": "Sophistication",
-    "overall experience": "Overall experience",
-    "comments": "Comments (optional)",
-    "submit": "Submit review",
-    "submitting": "Submitting…",
-    "success": "Thank you for your review.",
-    "error": "We couldn’t submit your review. Please try again.",
-    "item heading": "Your items",
-    "product quality": "Product quality",
-    "fit": "Fit",
-    "fit select": "How did it fit?",
-    "recommend": "Recommend",
-    "yes": "yes",
-    "no": "no",
-    "placeholder select": "Select…",
+    "field required": "필수 항목입니다",
+    "order section": "주문 정보",
+    "delivery speed": "배송 속도",
+    "packaging": "포장 상태",
+    "sophistication": "마감·품질 인상",
+    "overall experience": "전체 경험",
+    "comments": "코멘트(선택)",
+    "submit": "리뷰 제출",
+    "submitting": "제출 중…",
+    "success": "리뷰를 남겨 주셔서 감사합니다.",
+    "error": "제출하지 못했습니다. 다시 시도해 주세요.",
+    "item heading": "주문 상품",
+    "product quality": "제품 품질",
+    "fit": "핏",
+    "fit select": "핏은 어떠셨나요?",
+    "recommend": "추천",
+    "yes": "예",
+    "no": "아니오",
+    "placeholder select": "선택…",
     "dSpeed": {
-      "MUCH_FASTER_THAN_EXPECTED": "Much faster than expected",
-      "FASTER_THAN_EXPECTED": "Faster than expected",
-      "AS_EXPECTED": "As expected",
-      "SLOWER_THAN_EXPECTED": "Slower than expected",
-      "MUCH_SLOWER_THAN_EXPECTED": "Much slower than expected"
+      "MUCH_FASTER_THAN_EXPECTED": "예상보다 훨씬 빠름",
+      "FASTER_THAN_EXPECTED": "예상보다 빠름",
+      "AS_EXPECTED": "예상과 비슷함",
+      "SLOWER_THAN_EXPECTED": "예상보다 느림",
+      "MUCH_SLOWER_THAN_EXPECTED": "예상보다 훨씬 느림"
     },
     "pPackaging": {
-      "DAMAGED": "Damaged",
-      "ACCEPTABLE": "Acceptable",
-      "GOOD": "Good",
-      "EXCELLENT": "Excellent"
+      "DAMAGED": "파손됨",
+      "ACCEPTABLE": "양호",
+      "GOOD": "좋음",
+      "EXCELLENT": "매우 좋음"
     },
     "pRating": {
-      "POOR": "Poor",
-      "FAIR": "Fair",
-      "GOOD": "Good",
-      "VERY_GOOD": "Very good",
-      "EXCELLENT": "Excellent"
+      "POOR": "별로",
+      "FAIR": "보통",
+      "GOOD": "좋음",
+      "VERY_GOOD": "매우 좋음",
+      "EXCELLENT": "최고"
     },
     "fFit": {
-      "RUNS_SMALL": "Runs small",
-      "SLIGHTLY_SMALL": "Slightly small",
-      "TRUE_TO_SIZE": "True to size",
-      "SLIGHTLY_LARGE": "Slightly large",
-      "RUNS_LARGE": "Runs large"
+      "RUNS_SMALL": "작게 맞음",
+      "SLIGHTLY_SMALL": "약간 작음",
+      "TRUE_TO_SIZE": "사이즈에 맞음",
+      "SLIGHTLY_LARGE": "약간 큼",
+      "RUNS_LARGE": "크게 맞음"
     }
   }
 }
