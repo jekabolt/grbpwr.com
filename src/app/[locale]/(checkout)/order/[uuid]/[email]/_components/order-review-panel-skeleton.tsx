@@ -55,7 +55,7 @@ function ProductRowSkeleton() {
 export function OrderReviewPanelSkeleton() {
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-y-10 lg:flex-row lg:justify-between lg:gap-52">
+      <div className="flex flex-col gap-y-10 lg:flex-row lg:gap-52">
         <div className="w-full space-y-10">
           <div className="flex items-center justify-between gap-y-6 border-b border-textInactiveColor pb-6">
             <div className="flex w-full flex-col items-baseline justify-between gap-4">

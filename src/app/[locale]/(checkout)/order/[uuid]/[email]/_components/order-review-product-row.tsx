@@ -51,7 +51,7 @@ function RecommendCheckboxes({
       name={name}
       render={({ field }) => (
         <FormItem className={cn("flex flex-col gap-1", className)}>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-row justify-between gap-2 lg:flex-col">
             <Text className="text-right" variant="uppercase">
               {t("recommend")}
             </Text>
@@ -164,7 +164,7 @@ export function OrderReviewProductRow({
             {productName}
           </Text>
           <div className="mt-auto flex w-full min-w-0 items-end justify-between gap-3">
-            <div className="flex min-w-0 flex-1 items-end gap-3">
+            <div className="flex min-w-0 flex-1 items-end justify-between gap-3 lg:justify-start">
               <div className="flex shrink-0 items-end gap-2">
                 <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
                 {lineQty > 1 && (
@@ -173,7 +173,7 @@ export function OrderReviewProductRow({
                   </Text>
                 )}
               </div>
-              <div className="w-32 shrink-0">
+              <div className="min-w-32 shrink-0">
                 <SelectField
                   name={`itemReviews.${itemIndex}.fitRating`}
                   label={""}
@@ -183,11 +183,13 @@ export function OrderReviewProductRow({
                 />
               </div>
             </div>
-            <RecommendCheckboxes
-              className="shrink-0"
-              name={`itemReviews.${itemIndex}.recommend`}
-              disabled={disabled}
-            />
+            <div className="hidden lg:block">
+              <RecommendCheckboxes
+                className="shrink-0"
+                name={`itemReviews.${itemIndex}.recommend`}
+                disabled={disabled}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -199,6 +201,13 @@ export function OrderReviewProductRow({
         renderLabel={labelProductRating}
         disabled={disabled}
       />
+      <div className="block lg:hidden">
+        <RecommendCheckboxes
+          className="shrink-0"
+          name={`itemReviews.${itemIndex}.recommend`}
+          disabled={disabled}
+        />
+      </div>
     </div>
   );
 }

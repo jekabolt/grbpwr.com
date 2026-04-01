@@ -182,7 +182,7 @@ export function OrderReviewPanel({
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex h-full min-h-0 w-full flex-1 flex-col"
         >
-          <div className="relative flex min-h-0 flex-1 flex-col gap-y-10 lg:flex-row lg:justify-between lg:gap-52">
+          <div className="relative flex min-h-0 flex-1 flex-col gap-y-10 lg:flex-row lg:gap-52">
             <div className="w-full space-y-10 lg:min-h-0 lg:flex-1">
               {formSteps.map((config, i) => (
                 <FieldsGroupContainer

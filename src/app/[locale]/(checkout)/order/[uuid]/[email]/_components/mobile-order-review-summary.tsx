@@ -29,7 +29,7 @@ export function MobileOrderReviewSummary({
   disabled,
 }: Props) {
   const t = useTranslations("checkout");
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <FieldsGroupContainer
