@@ -14,6 +14,12 @@ import {
     sendBeginCheckoutEvent,
     sendPurchaseEvent,
 } from "./checkout";
+import {
+    sendFormErrorEvent,
+    sendFormStartEvent,
+    sendFormSubmitEvent,
+    sendPaymentFailedEvent,
+} from "./checkout-custom";
 import { refreshGa4ClientIdToStorage, SizeMap } from "./utils";
 
 export function useCheckoutAnalytics() {
@@ -148,6 +154,47 @@ export function useCheckoutAnalytics() {
         );
     }
 
+    const pagePath = () =>
+        typeof window !== "undefined" ? window.location.pathname : "";
+
+    function handleFormStart() {
+        sendFormStartEvent({
+            form_id: "checkout_form",
+            form_name: "Checkout",
+            page_path: pagePath(),
+        });
+    }
+
+    function handleFormSubmit() {
+        sendFormSubmitEvent({
+            form_id: "checkout_form",
+            form_name: "Checkout",
+            page_path: pagePath(),
+        });
+    }
+
+    function handleFormError(errorFields: string[]) {
+        sendFormErrorEvent({
+            form_id: "checkout_form",
+            form_name: "Checkout",
+            error_fields: errorFields,
+            page_path: pagePath(),
+        });
+    }
+
+    function handlePaymentFailed(params: {
+        error_code: string;
+        order_value: number;
+        currency: string;
+        transaction_id?: string;
+    }) {
+        sendPaymentFailedEvent({
+            ...params,
+            payment_type: "credit_card",
+            page_path: pagePath(),
+        });
+    }
+
     return {
         sizeMap,
         topCategoryName,
@@ -157,5 +204,9 @@ export function useCheckoutAnalytics() {
         handlePaymentMethodChange,
         handlePaymentElementComplete,
         handlePurchaseEvent,
+        handleFormStart,
+        handleFormSubmit,
+        handleFormError,
+        handlePaymentFailed,
     };
 }

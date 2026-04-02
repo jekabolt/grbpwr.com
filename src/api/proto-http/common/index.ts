@@ -606,6 +606,7 @@ export type OrderFull = {
   billing: Address | undefined;
   shipping: Address | undefined;
   statusHistory: OrderStatusHistory[] | undefined;
+  orderReview?: OrderReviewFull;
 };
 
 export type Order = {
@@ -651,6 +652,33 @@ export type OrderStatusHistory = {
   notes: string | undefined;
 };
 
+// Combined review for an order (order-level + item-level)
+export type OrderReviewFull = {
+  orderReview: OrderReview | undefined;
+  itemReviews: OrderItemReview[] | undefined;
+};
+
+// Order-level review (delivery & packaging)
+export type OrderReview = {
+  id: number | undefined;
+  orderId: number | undefined;
+  deliveryRating: DeliverySpeedEnum | undefined;
+  packagingRating: PackagingConditionEnum | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  reviewText: string | undefined;
+  sophisticationRating: ProductRatingEnum | undefined;
+};
+
+// Item-level review (product rating, fit, recommendation)
+export type OrderItemReview = {
+  id: number | undefined;
+  orderItemId: number | undefined;
+  rating: ProductRatingEnum | undefined;
+  fitRating: FitScaleEnum | undefined;
+  recommend: boolean | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+};
+
 // CustomOrderItemInsert allows custom pricing per item (admin-only).
 export type CustomOrderItemInsert = {
   productId: number | undefined;
@@ -673,17 +701,6 @@ export type OrderStatus = {
   name: OrderStatusEnum | undefined;
 };
 
-// Order-level review (delivery & packaging)
-export type OrderReview = {
-  id: number | undefined;
-  orderId: number | undefined;
-  deliveryRating: DeliverySpeedEnum | undefined;
-  packagingRating: PackagingConditionEnum | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  reviewText: string | undefined;
-  sophisticationRating: ProductRatingEnum | undefined;
-};
-
 export type OrderReviewInsert = {
   deliveryRating: DeliverySpeedEnum | undefined;
   packagingRating: PackagingConditionEnum | undefined;
@@ -691,27 +708,11 @@ export type OrderReviewInsert = {
   sophisticationRating: ProductRatingEnum | undefined;
 };
 
-// Item-level review (product rating, fit, recommendation)
-export type OrderItemReview = {
-  id: number | undefined;
-  orderItemId: number | undefined;
-  rating: ProductRatingEnum | undefined;
-  fitRating: FitScaleEnum | undefined;
-  recommend: boolean | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-};
-
 export type OrderItemReviewInsert = {
   orderItemId: number | undefined;
   rating: ProductRatingEnum | undefined;
   fitRating: FitScaleEnum | undefined;
   recommend: boolean | undefined;
-};
-
-// Combined review for an order (order-level + item-level)
-export type OrderReviewFull = {
-  orderReview: OrderReview | undefined;
-  itemReviews: OrderItemReview[] | undefined;
 };
 
 export type Dictionary = {

@@ -1,11 +1,7 @@
 "use client";
 
-import type { RefObject } from "react";
 import { useState } from "react";
-import type {
-  common_OrderFull,
-  common_OrderItem,
-} from "@/api/proto-http/frontend";
+import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
@@ -19,16 +15,15 @@ export type OrderItemReviewRow = {
 };
 
 type Props = {
-  orderData: common_OrderFull;
   orderItemReviewRows: OrderItemReviewRow[];
   itemsTitle: string;
   disabled?: boolean;
-  itemsListRef?: RefObject<HTMLDivElement | null>;
   fitBlinkingIndices?: number[];
 };
 
 export function MobileOrderReviewSummary({
   orderItemReviewRows,
+  itemsTitle,
   disabled,
   fitBlinkingIndices = [],
 }: Props) {
@@ -40,7 +35,7 @@ export function MobileOrderReviewSummary({
       signType="plus-minus"
       className="space-y-0 border border-textInactiveColor p-2.5"
       signPosition="before"
-      title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
+      title={`${isOpen ? t("hide") : t("show")} ${itemsTitle}`}
       isOpen={isOpen}
       onToggle={() => setIsOpen((prev) => !prev)}
     >

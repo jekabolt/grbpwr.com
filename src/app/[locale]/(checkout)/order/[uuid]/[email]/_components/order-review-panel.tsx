@@ -1,13 +1,10 @@
 "use client";
 
-import { use, useCallback, useMemo, useState } from "react";
+import { use, useCallback, useMemo } from "react";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import type { Path, SubmitErrorHandler } from "react-hook-form";
-import { useForm } from "react-hook-form";
+import type { SubmitErrorHandler } from "react-hook-form";
 
-import { serviceClient } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import TextareaField from "@/components/ui/form/fields/textarea-field";
@@ -15,28 +12,12 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 import AftersaleSelector from "@/app/[locale]/(content)/_components/aftersale-selector";
 
+import type { OrderReviewFormInput } from "../utils/order-review-schema";
+import { useFitRatingBlink } from "../utils/use-fit-rating-blink";
+import { useOrderReviewForm } from "../utils/use-order-review-form";
+import { useOrderReviewSubmit } from "../utils/use-order-review-submit";
 import { MobileOrderReviewSummary } from "./mobile-order-review-summary";
 import { OrderReviewProductRow } from "./order-review-product-row";
-import {
-  buildOrderReviewDefaultValues,
-  buildOrderReviewFormSchema,
-  DELIVERY_SPEED_VALUES,
-  PACKAGING_VALUES,
-  PRODUCT_RATING_VALUES,
-  REVIEW_ENUM_PREFIX,
-  type OrderReviewFormInput,
-  type OrderReviewFormValues,
-} from "./order-review-schema";
-
-const FIT_RATING_BLINK_MS = 400;
-
-type ReviewFormStep = {
-  step: string;
-  title: string;
-  name: Path<OrderReviewFormInput>;
-  list: string[];
-  renderLabel: (value: string) => string;
-};
 
 export function OrderReviewPanel({
   orderUuid,
@@ -49,9 +30,6 @@ export function OrderReviewPanel({
 }) {
   const { order: orderData } = use(orderPromise);
   const t = useTranslations("order-review");
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [submitting, setSubmitting] = useState(false);
   const validItems = useMemo(
     () => orderData?.orderItems?.filter((i) => i.id != null) ?? [],
     [orderData?.orderItems],
@@ -67,39 +45,28 @@ export function OrderReviewPanel({
     [validItems],
   );
 
-  const formSchema = useMemo(
-    () => buildOrderReviewFormSchema(t("field required"), validItems.length),
-    [t, validItems.length],
-  );
+  const { form, formSteps, itemStageLabel, orderSectionsComplete } =
+    useOrderReviewForm({
+      validItems,
+      orderReviewFull: orderData?.orderReview,
+      t,
+    });
 
-  const defaultValues = useMemo(
-    (): OrderReviewFormInput =>
-      buildOrderReviewDefaultValues(
-        validItems.map((it) => ({ id: it.id as number })),
-      ),
-    [validItems],
-  );
-
-  const form = useForm<OrderReviewFormInput, unknown, OrderReviewFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues,
-    mode: "onChange",
+  const {
+    submitting,
+    toastOpen,
+    toastMessage,
+    setToastOpen,
+    submitReview,
+    showToast,
+  } = useOrderReviewSubmit({
+    orderUuid,
+    b64Email,
+    orderData,
+    t,
   });
 
-  const reviewSubmitB64Email = useMemo(() => {
-    const email = orderData?.buyer?.buyerInsert?.email?.trim();
-    if (email && typeof window !== "undefined") {
-      return window.btoa(email);
-    }
-    return b64Email;
-  }, [orderData?.buyer?.buyerInsert?.email, b64Email]);
-
-  const [fitBlinkingIndices, setFitBlinkingIndices] = useState<number[]>([]);
-
-  const triggerFitBlink = useCallback((indices: number[]) => {
-    setFitBlinkingIndices(indices);
-    setTimeout(() => setFitBlinkingIndices([]), FIT_RATING_BLINK_MS);
-  }, []);
+  const { fitBlinkingIndices, triggerFitBlink } = useFitRatingBlink();
 
   const onSubmitInvalid: SubmitErrorHandler<OrderReviewFormInput> = useCallback(
     (errors) => {
@@ -111,86 +78,12 @@ export function OrderReviewPanel({
         });
       }
       if (indices.length > 0) {
-        setToastMessage(t("select fit before submit"));
-        setToastOpen(true);
+        showToast(t("select fit before submit"));
         triggerFitBlink(indices);
       }
     },
-    [t, triggerFitBlink],
+    [showToast, t, triggerFitBlink],
   );
-
-  const submitReview = useCallback(
-    async (data: OrderReviewFormValues) => {
-      const validated = data;
-      setSubmitting(true);
-      try {
-        await serviceClient.SubmitOrderReview({
-          orderUuid,
-          b64Email: reviewSubmitB64Email,
-          orderReview: {
-            deliveryRating: validated.orderReview.deliveryRating,
-            packagingRating: validated.orderReview.packagingRating,
-            sophisticationRating: validated.orderReview.sophisticationRating,
-            reviewText: validated.orderReview.reviewText?.trim() || undefined,
-          },
-          itemReviews: validated.itemReviews.map((r) => ({
-            orderItemId: r.orderItemId,
-            rating: r.rating,
-            fitRating: r.fitRating ?? undefined,
-            recommend: r.recommend ?? false,
-          })),
-        });
-        setToastMessage(t("success"));
-        setToastOpen(true);
-      } catch (e) {
-        console.error(e);
-        setToastMessage(t("error"));
-        setToastOpen(true);
-      } finally {
-        setSubmitting(false);
-      }
-    },
-    [orderUuid, reviewSubmitB64Email, t],
-  );
-
-  const formSteps = useMemo((): ReviewFormStep[] => {
-    const total = validItems.length > 0 ? 4 : 3;
-    let n = 0;
-    const step = () => `${++n}/${total}`;
-
-    const labelDelivery = (value: string) =>
-      t(`dSpeed.${value.replace(REVIEW_ENUM_PREFIX.delivery, "")}`);
-    const labelPackaging = (value: string) =>
-      t(`pPackaging.${value.replace(REVIEW_ENUM_PREFIX.packaging, "")}`);
-    const labelSophistication = (value: string) =>
-      t(
-        `pSophistication.${value.replace(REVIEW_ENUM_PREFIX.productRating, "")}`,
-      );
-
-    return [
-      {
-        step: step(),
-        title: t("delivery speed"),
-        name: "orderReview.deliveryRating",
-        list: [...DELIVERY_SPEED_VALUES],
-        renderLabel: labelDelivery,
-      },
-      {
-        step: step(),
-        title: t("packaging"),
-        name: "orderReview.packagingRating",
-        list: [...PACKAGING_VALUES],
-        renderLabel: labelPackaging,
-      },
-      {
-        step: step(),
-        title: t("sophistication"),
-        name: "orderReview.sophisticationRating",
-        list: [...PRODUCT_RATING_VALUES],
-        renderLabel: labelSophistication,
-      },
-    ];
-  }, [t, validItems.length]);
 
   if (!orderData) {
     return null;
@@ -236,9 +129,9 @@ export function OrderReviewPanel({
               </div>
             </div>
             <div className="flex w-full flex-col space-y-10 lg:min-h-0 lg:flex-1">
-              {validItems.length > 0 && (
+              {validItems.length > 0 && itemStageLabel && (
                 <FieldsGroupContainer
-                  stage="4/4"
+                  stage={itemStageLabel}
                   title={t("item heading")}
                   collapsible={false}
                   childrenOffset="stage"
@@ -247,7 +140,6 @@ export function OrderReviewPanel({
                 >
                   <div className="block shrink-0 lg:hidden">
                     <MobileOrderReviewSummary
-                      orderData={orderData}
                       orderItemReviewRows={orderItemReviewRows}
                       itemsTitle={t("item heading")}
                       disabled={submitting}
@@ -287,7 +179,7 @@ export function OrderReviewPanel({
                     variant="main"
                     size="lg"
                     loading={submitting}
-                    disabled={submitting || !form.formState.isValid}
+                    disabled={submitting || !orderSectionsComplete}
                     className="w-full uppercase"
                   >
                     {submitting ? t("submitting") : t("submit")}
@@ -296,13 +188,13 @@ export function OrderReviewPanel({
               </div>
             </div>
           </div>
-          <div className="sticky bottom-2.5 z-50 mt-10 block shrink-0 lg:hidden">
+          <div className="sticky bottom-2.5 mt-10 block shrink-0 lg:hidden">
             <Button
               type="submit"
               variant="main"
               size="lg"
               loading={submitting}
-              disabled={submitting || !form.formState.isValid}
+              disabled={submitting || !orderSectionsComplete}
               className="w-full uppercase"
             >
               {submitting ? t("submitting") : t("submit")}

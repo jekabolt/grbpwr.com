@@ -1,34 +1,24 @@
 "use client";
 
-import { use, useEffect, useMemo, useRef } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { use, useMemo, useRef } from "react";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
-import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { sendPurchaseEvent } from "@/lib/analitycs/checkout";
-import { sendPaymentFailedEvent } from "@/lib/analitycs/checkout-custom";
-import {
-  ensureGtag,
-  pushUserIdToDataLayer,
-  SizeMap,
-} from "@/lib/analitycs/utils";
-import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
-import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
-import { formatPrice } from "@/lib/currency";
-import { parseCountryLocalePath } from "@/lib/middleware-utils";
+import type { SizeMap } from "@/lib/analitycs/utils";
 import { buildTrackingUrl } from "@/lib/shipment/tracking-url";
-import { useCart } from "@/lib/stores/cart/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { OrderProducts } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/order-products";
 
+import { useOrderRedirectAnalytics } from "../utils/use-order-redirect-analytics";
 import { MobileOrderPage } from "./mobile-order-page";
 import { OrderIdDateRow } from "./order-id-date-row";
 import { OrderSecondaryInfo } from "./order-secondary-info";
-import { StatusBadge } from "./status-badge";
+import { OrderStatusAndTracking } from "./order-status-and-tracking";
+import {
+  OrderSummaryPromoRows,
+  OrderSummaryShippingAndTotal,
+} from "./order-summary-shared";
 
 export function OrderPageComponent({
   orderPromise,
@@ -37,13 +27,7 @@ export function OrderPageComponent({
 }) {
   const { order: orderData } = use(orderPromise);
   const { dictionary } = useDataContext();
-  const { clearCart } = useCart((state) => state);
-  const router = useRouter();
-  const t = useTranslations("order-info");
   const tCheckout = useTranslations("checkout");
-  const purchaseFiredRef = useRef(false);
-  const paymentFailedRedirectRef = useRef(false);
-  const redirectStatusRef = useRef<string | null>(null);
 
   const sizeMap: SizeMap = useMemo(() => {
     const sizes = dictionary?.sizes || [];
@@ -56,87 +40,22 @@ export function OrderPageComponent({
   const sizeMapRef = useRef(sizeMap);
   sizeMapRef.current = sizeMap;
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (redirectStatusRef.current !== null) return;
+  const trackingUrl = useMemo(() => {
+    if (!orderData?.shipment || !dictionary?.shipmentCarriers) return undefined;
+    const carrier = dictionary.shipmentCarriers.find(
+      (c) => String(c.id) === String(orderData.shipment?.carrierId),
+    );
+    return buildTrackingUrl(
+      carrier?.shipmentCarrier?.trackingUrl,
+      orderData.shipment.trackingCode,
+    );
+  }, [dictionary?.shipmentCarriers, orderData?.shipment]);
 
-    ensureGtag();
-
-    const params = new URLSearchParams(window.location.search);
-    const redirectStatus = params.get("redirect_status");
-    redirectStatusRef.current = redirectStatus;
-
-    if (redirectStatus === "succeeded") {
-      const cleanUrl = window.location.pathname;
-      window.history.replaceState({}, "", cleanUrl);
-
-      clearCart();
-      clearIdempotencyKey();
-
-      if (
-        !purchaseFiredRef.current &&
-        orderData?.orderItems?.length &&
-        orderData.order?.uuid
-      ) {
-        purchaseFiredRef.current = true;
-
-        const items = orderData.orderItems;
-        const topCategoryId =
-          items.find((v) => v?.topCategoryId)?.topCategoryId || 0;
-        const subCategoryId =
-          items.find((v) => v?.subCategoryId)?.subCategoryId || 0;
-
-        const totalPrice = parseFloat(orderData.order.totalPrice?.value || "0");
-        const shippingCost = parseFloat(orderData.shipment?.cost?.value || "0");
-        const itemsSubtotal = items.reduce((sum, item) => {
-          const price = parseFloat(item.productPrice || "0");
-          const quantity = item.orderItem?.quantity || 1;
-          return sum + price * quantity;
-        }, 0);
-        const taxAmount = totalPrice - itemsSubtotal - shippingCost;
-
-        sendPurchaseEvent(
-          items,
-          orderData.order.uuid,
-          getTopCategoryName(dictionary?.categories || [], topCategoryId) || "",
-          getSubCategoryName(dictionary?.categories || [], subCategoryId) || "",
-          orderData.order.currency?.toUpperCase() || "EUR",
-          sizeMapRef.current,
-          {
-            coupon: orderData.promoCode?.promoCodeInsert?.code || undefined,
-            shipping: shippingCost || undefined,
-            tax: taxAmount > 0 ? taxAmount : undefined,
-            totalValue: totalPrice,
-          },
-        );
-
-        const buyerEmail = orderData.buyer?.buyerInsert?.email;
-        if (buyerEmail) {
-          void pushUserIdToDataLayer(buyerEmail);
-        }
-      }
-    } else if (redirectStatus === "failed" || redirectStatus === "canceled") {
-      console.error("Payment failed or canceled");
-      if (!paymentFailedRedirectRef.current && orderData?.order?.uuid) {
-        paymentFailedRedirectRef.current = true;
-        sendPaymentFailedEvent({
-          error_code:
-            redirectStatus === "canceled"
-              ? "stripe_redirect_canceled"
-              : "stripe_redirect_failed",
-          payment_type: "credit_card",
-          order_value: parseFloat(orderData.order?.totalPrice?.value || "0"),
-          currency: orderData.order?.currency?.toUpperCase() || "EUR",
-          page_path: window.location.pathname,
-          transaction_id: orderData.order.uuid,
-        });
-      }
-      const parsed = parseCountryLocalePath(window.location.pathname);
-      const country = parsed?.country || "gb";
-      const locale = parsed?.locale || "en";
-      router.push(`/${country}/${locale}/checkout?payment_failed=1`);
-    }
-  }, [clearCart, router, orderData, dictionary?.categories]);
+  useOrderRedirectAnalytics({
+    orderData,
+    dictionaryCategories: dictionary?.categories,
+    sizeMapRef,
+  });
 
   if (!orderData) return null;
 
@@ -150,17 +69,6 @@ export function OrderPageComponent({
     buyer,
     payment,
   } = orderData;
-
-  const orderCurrencyKey = order?.currency?.toUpperCase() || "EUR";
-  const orderCurrency = currencySymbols[orderCurrencyKey];
-
-  const carrier = dictionary?.shipmentCarriers?.find(
-    (c) => String(c.id) === String(shipment?.carrierId),
-  );
-  const trackingUrl = buildTrackingUrl(
-    carrier?.shipmentCarrier?.trackingUrl,
-    shipment?.trackingCode,
-  );
 
   return (
     <>
@@ -179,32 +87,11 @@ export function OrderPageComponent({
       <div className="hidden justify-between md:flex lg:gap-52">
         <div className="w-full">
           <OrderIdDateRow orderUuid={order?.uuid} placedAt={order?.placed} />
-          <div className="flex items-center justify-between border-b border-textInactiveColor py-6">
-            <div className="flex w-full flex-col items-baseline justify-between gap-4">
-              <Text variant="uppercase">{t("status")}</Text>
-              {order?.orderStatusId && (
-                <StatusBadge statusId={order.orderStatusId} />
-              )}
-            </div>
-            {shipment && (
-              <div className="flex w-full flex-col items-baseline justify-between gap-4">
-                <Text variant="uppercase">{t("tracking number")}</Text>
-                {shipment.trackingCode && trackingUrl ? (
-                  <Button variant="underlineWithColors" size="default" asChild>
-                    <Link
-                      href={trackingUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {shipment.trackingCode}
-                    </Link>
-                  </Button>
-                ) : (
-                  <Text className="text-textInactiveColor">—</Text>
-                )}
-              </div>
-            )}
-          </div>
+          <OrderStatusAndTracking
+            order={order}
+            shipment={shipment}
+            trackingUrl={trackingUrl}
+          />
           <OrderSecondaryInfo
             shipping={shipping}
             billing={billing}
@@ -216,49 +103,13 @@ export function OrderPageComponent({
         <div className="w-full space-y-3">
           <div className="space-y-2">
             <Text variant="uppercase">{tCheckout("order summary")}</Text>
-            <div className="space-y-3">
-              {promoCode?.promoCodeInsert?.code && (
-                <div className="flex justify-between">
-                  <Text variant="uppercase">{t("discount code")}</Text>
-                  <Text>{promoCode?.promoCodeInsert?.code}</Text>
-                </div>
-              )}
-              {promoCode?.promoCodeInsert?.code && (
-                <div className="flex justify-between">
-                  <Text variant="uppercase">{tCheckout("promo discount")}</Text>
-                  <Text>{promoCode?.promoCodeInsert?.discount?.value} %</Text>
-                </div>
-              )}
-            </div>
+            <OrderSummaryPromoRows promoCode={promoCode} />
           </div>
           <OrderProducts
             validatedProducts={orderItems || []}
             currencyKey={order?.currency?.toUpperCase()}
           />
-          <div className="space-y-3 pt-3">
-            <div className="flex justify-between">
-              <Text variant="uppercase">{t("shipping")}:</Text>
-              <Text>
-                {shipment?.freeShipping
-                  ? tCheckout("FREE")
-                  : formatPrice(
-                      shipment?.cost?.value ?? "0",
-                      orderCurrencyKey,
-                      orderCurrency,
-                    )}
-              </Text>
-            </div>
-            <div className="flex justify-between border-t border-textInactiveColor pt-3">
-              <Text variant="uppercase">{tCheckout("grand total")}:</Text>
-              <Text>
-                {formatPrice(
-                  order?.totalPrice?.value || "0",
-                  orderCurrencyKey,
-                  orderCurrency,
-                )}
-              </Text>
-            </div>
-          </div>
+          <OrderSummaryShippingAndTotal order={order} shipment={shipment} />
         </div>
       </div>
     </>

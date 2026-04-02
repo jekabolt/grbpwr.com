@@ -2,10 +2,15 @@
 
 import { useMemo } from "react";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
+import {
+  FIT_SCALE_VALUES,
+  PRODUCT_RATING_VALUES,
+  REVIEW_ENUM_PREFIX,
+} from "@/constants";
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import { useTranslations } from "next-intl";
 import type { Path } from "react-hook-form";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useFormState } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
@@ -23,21 +28,18 @@ import { Text } from "@/components/ui/text";
 import CartItemSize from "@/app/[locale]/(checkout)/cart/_components/CartItemSize";
 import AftersaleSelector from "@/app/[locale]/(content)/_components/aftersale-selector";
 
-import {
-  FIT_SCALE_VALUES,
-  PRODUCT_RATING_VALUES,
-  REVIEW_ENUM_PREFIX,
-  type OrderReviewFormInput,
-} from "./order-review-schema";
+import { type OrderReviewFormInput } from "../utils/order-review-schema";
 
 function RecommendCheckboxes({
   name,
   disabled,
   className,
+  formMessageGate,
 }: {
   name: Path<OrderReviewFormInput>;
   disabled?: boolean;
   className?: string;
+  formMessageGate?: boolean;
 }) {
   const t = useTranslations("order-review");
   const te = useTranslations("errors");
@@ -107,7 +109,11 @@ function RecommendCheckboxes({
               </div>
             </div>
           </div>
-          <FormMessage translateError={te} fieldName={nameStr} />
+          <FormMessage
+            translateError={te}
+            fieldName={nameStr}
+            gate={formMessageGate}
+          />
         </FormItem>
       )}
     />
@@ -126,6 +132,12 @@ export function OrderReviewProductRow({
   shouldBlinkFit?: boolean;
 }) {
   const { control } = useFormContext<OrderReviewFormInput>();
+  const { dirtyFields } = useFormState({ control });
+  const itemRowDirty = Boolean(
+    dirtyFields.itemReviews?.[itemIndex]?.rating ||
+      dirtyFields.itemReviews?.[itemIndex]?.fitRating ||
+      dirtyFields.itemReviews?.[itemIndex]?.recommend,
+  );
   const { languageId } = useTranslationsStore((s) => s);
   const t = useTranslations("order-review");
 
@@ -177,7 +189,7 @@ export function OrderReviewProductRow({
                 )}
               </div>
               <div className="relative">
-                {shouldBlinkFit && (
+                {shouldBlinkFit && itemRowDirty && (
                   <Overlay color="highlight" cover="container" />
                 )}
                 <div className="min-w-32">
@@ -204,11 +216,13 @@ export function OrderReviewProductRow({
         renderLabel={labelProductRating}
         disabled={disabled}
         fiveOptionMobileGrid
+        formMessageGate={itemRowDirty}
       />
       <RecommendCheckboxes
         className="shrink-0"
         name={`itemReviews.${itemIndex}.recommend`}
         disabled={disabled}
+        formMessageGate={itemRowDirty}
       />
     </div>
   );

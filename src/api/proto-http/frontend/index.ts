@@ -587,6 +587,7 @@ export type common_OrderFull = {
   billing: common_Address | undefined;
   shipping: common_Address | undefined;
   statusHistory: common_OrderStatusHistory[] | undefined;
+  orderReview?: common_OrderReviewFull;
 };
 
 export type common_Order = {
@@ -675,6 +676,60 @@ export type common_OrderStatusHistory = {
   notes: string | undefined;
 };
 
+// Combined review for an order (order-level + item-level)
+export type common_OrderReviewFull = {
+  orderReview: common_OrderReview | undefined;
+  itemReviews: common_OrderItemReview[] | undefined;
+};
+
+// Order-level review (delivery & packaging)
+export type common_OrderReview = {
+  id: number | undefined;
+  orderId: number | undefined;
+  deliveryRating: common_DeliverySpeedEnum | undefined;
+  packagingRating: common_PackagingConditionEnum | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  reviewText: string | undefined;
+  sophisticationRating: common_ProductRatingEnum | undefined;
+};
+
+export type common_DeliverySpeedEnum =
+  | "DELIVERY_SPEED_ENUM_UNKNOWN"
+  | "DELIVERY_SPEED_ENUM_MUCH_FASTER_THAN_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_FASTER_THAN_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_AS_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_SLOWER_THAN_EXPECTED"
+  | "DELIVERY_SPEED_ENUM_MUCH_SLOWER_THAN_EXPECTED";
+export type common_PackagingConditionEnum =
+  | "PACKAGING_CONDITION_ENUM_UNKNOWN"
+  | "PACKAGING_CONDITION_ENUM_DAMAGED"
+  | "PACKAGING_CONDITION_ENUM_ACCEPTABLE"
+  | "PACKAGING_CONDITION_ENUM_GOOD"
+  | "PACKAGING_CONDITION_ENUM_EXCELLENT";
+export type common_ProductRatingEnum =
+  | "PRODUCT_RATING_ENUM_UNKNOWN"
+  | "PRODUCT_RATING_ENUM_POOR"
+  | "PRODUCT_RATING_ENUM_FAIR"
+  | "PRODUCT_RATING_ENUM_GOOD"
+  | "PRODUCT_RATING_ENUM_VERY_GOOD"
+  | "PRODUCT_RATING_ENUM_EXCELLENT";
+// Item-level review (product rating, fit, recommendation)
+export type common_OrderItemReview = {
+  id: number | undefined;
+  orderItemId: number | undefined;
+  rating: common_ProductRatingEnum | undefined;
+  fitRating: common_FitScaleEnum | undefined;
+  recommend: boolean | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+};
+
+export type common_FitScaleEnum =
+  | "FIT_SCALE_ENUM_UNKNOWN"
+  | "FIT_SCALE_ENUM_RUNS_SMALL"
+  | "FIT_SCALE_ENUM_SLIGHTLY_SMALL"
+  | "FIT_SCALE_ENUM_TRUE_TO_SIZE"
+  | "FIT_SCALE_ENUM_SLIGHTLY_LARGE"
+  | "FIT_SCALE_ENUM_RUNS_LARGE";
 export type ValidateOrderItemsInsertRequest = {
   items: common_OrderItemInsert[] | undefined;
   promoCode: string | undefined;
@@ -832,26 +887,6 @@ export type common_OrderReviewInsert = {
   sophisticationRating: common_ProductRatingEnum | undefined;
 };
 
-export type common_DeliverySpeedEnum =
-  | "DELIVERY_SPEED_ENUM_UNKNOWN"
-  | "DELIVERY_SPEED_ENUM_MUCH_FASTER_THAN_EXPECTED"
-  | "DELIVERY_SPEED_ENUM_FASTER_THAN_EXPECTED"
-  | "DELIVERY_SPEED_ENUM_AS_EXPECTED"
-  | "DELIVERY_SPEED_ENUM_SLOWER_THAN_EXPECTED"
-  | "DELIVERY_SPEED_ENUM_MUCH_SLOWER_THAN_EXPECTED";
-export type common_PackagingConditionEnum =
-  | "PACKAGING_CONDITION_ENUM_UNKNOWN"
-  | "PACKAGING_CONDITION_ENUM_DAMAGED"
-  | "PACKAGING_CONDITION_ENUM_ACCEPTABLE"
-  | "PACKAGING_CONDITION_ENUM_GOOD"
-  | "PACKAGING_CONDITION_ENUM_EXCELLENT";
-export type common_ProductRatingEnum =
-  | "PRODUCT_RATING_ENUM_UNKNOWN"
-  | "PRODUCT_RATING_ENUM_POOR"
-  | "PRODUCT_RATING_ENUM_FAIR"
-  | "PRODUCT_RATING_ENUM_GOOD"
-  | "PRODUCT_RATING_ENUM_VERY_GOOD"
-  | "PRODUCT_RATING_ENUM_EXCELLENT";
 export type common_OrderItemReviewInsert = {
   orderItemId: number | undefined;
   rating: common_ProductRatingEnum | undefined;
@@ -859,13 +894,6 @@ export type common_OrderItemReviewInsert = {
   recommend: boolean | undefined;
 };
 
-export type common_FitScaleEnum =
-  | "FIT_SCALE_ENUM_UNKNOWN"
-  | "FIT_SCALE_ENUM_RUNS_SMALL"
-  | "FIT_SCALE_ENUM_SLIGHTLY_SMALL"
-  | "FIT_SCALE_ENUM_TRUE_TO_SIZE"
-  | "FIT_SCALE_ENUM_SLIGHTLY_LARGE"
-  | "FIT_SCALE_ENUM_RUNS_LARGE";
 export type SubmitOrderReviewResponse = {
 };
 

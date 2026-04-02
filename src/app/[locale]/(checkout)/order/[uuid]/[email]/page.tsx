@@ -1,3 +1,4 @@
+import { ORDER_STATUS_DELIVERED_ID } from "@/constants";
 import { serviceClient } from "@/lib/api";
 import FlexibleLayout from "@/components/flexible-layout";
 
@@ -19,7 +20,8 @@ export default async function OrderPage(props: PageProps) {
     b64Email: email,
   });
   const orderPromise = Promise.resolve(orderResponse);
-  const isDelivered = orderResponse.order?.order?.orderStatusId === 5;
+  const isDelivered =
+    orderResponse.order?.order?.orderStatusId === ORDER_STATUS_DELIVERED_ID;
 
   return (
     <FlexibleLayout>

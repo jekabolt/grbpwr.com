@@ -19,6 +19,8 @@ export interface AftersaleSelectorProps<T extends FieldValues> {
   renderLabel?: (value: string) => string;
   disabled?: boolean;
   fiveOptionMobileGrid?: boolean;
+  /** When false, hide validation message (e.g. optional row until user edits it). */
+  formMessageGate?: boolean;
 }
 
 export default function AftersaleSelector<T extends FieldValues>({
@@ -29,6 +31,7 @@ export default function AftersaleSelector<T extends FieldValues>({
   renderLabel,
   disabled = false,
   fiveOptionMobileGrid = false,
+  formMessageGate,
 }: AftersaleSelectorProps<T>) {
   const t = useTranslations("accessibility");
   const te = useTranslations("errors");
@@ -73,7 +76,11 @@ export default function AftersaleSelector<T extends FieldValues>({
               ))}
             </div>
           </FormControl>
-          <FormMessage translateError={te} fieldName={String(name)} />
+          <FormMessage
+            translateError={te}
+            fieldName={String(name)}
+            gate={formMessageGate}
+          />
         </FormItem>
       )}
     />

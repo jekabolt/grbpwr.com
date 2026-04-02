@@ -30,6 +30,8 @@ export const MAX_LIMIT = 9999999;
 
 export const GRBPWR_CART = "grbpwr-cart";
 
+export const ORDER_STATUS_DELIVERED_ID = 5;
+
 export const GENDER_MAP: Record<string, common_GenderEnum> = {
   men: "GENDER_ENUM_MALE",
   women: "GENDER_ENUM_FEMALE",
@@ -55,6 +57,46 @@ export const SORT_MAP_URL: Record<string, common_SortFactor> = {
   name: "SORT_FACTOR_NAME",
   price: "SORT_FACTOR_PRICE",
 };
+
+/** Proto enum name prefixes → strip for order-review i18n keys. */
+export const REVIEW_ENUM_PREFIX = {
+  delivery: "DELIVERY_SPEED_ENUM_",
+  packaging: "PACKAGING_CONDITION_ENUM_",
+  productRating: "PRODUCT_RATING_ENUM_",
+  fit: "FIT_SCALE_ENUM_",
+} as const;
+
+/** Storefront-visible values only (excludes *_UNKNOWN). */
+export const DELIVERY_SPEED_VALUES = [
+  "DELIVERY_SPEED_ENUM_MUCH_FASTER_THAN_EXPECTED",
+  "DELIVERY_SPEED_ENUM_FASTER_THAN_EXPECTED",
+  "DELIVERY_SPEED_ENUM_AS_EXPECTED",
+  "DELIVERY_SPEED_ENUM_SLOWER_THAN_EXPECTED",
+  "DELIVERY_SPEED_ENUM_MUCH_SLOWER_THAN_EXPECTED",
+] as const;
+
+export const PACKAGING_VALUES = [
+  "PACKAGING_CONDITION_ENUM_EXCELLENT",
+  "PACKAGING_CONDITION_ENUM_GOOD",
+  "PACKAGING_CONDITION_ENUM_ACCEPTABLE",
+  "PACKAGING_CONDITION_ENUM_DAMAGED",
+] as const;
+
+export const PRODUCT_RATING_VALUES = [
+  "PRODUCT_RATING_ENUM_EXCELLENT",
+  "PRODUCT_RATING_ENUM_VERY_GOOD",
+  "PRODUCT_RATING_ENUM_GOOD",
+  "PRODUCT_RATING_ENUM_FAIR",
+  "PRODUCT_RATING_ENUM_POOR",
+] as const;
+
+export const FIT_SCALE_VALUES = [
+  "FIT_SCALE_ENUM_RUNS_SMALL",
+  "FIT_SCALE_ENUM_SLIGHTLY_SMALL",
+  "FIT_SCALE_ENUM_TRUE_TO_SIZE",
+  "FIT_SCALE_ENUM_SLIGHTLY_LARGE",
+  "FIT_SCALE_ENUM_RUNS_LARGE",
+] as const;
 
 export const paymentMethodNamesMap = {
   PAYMENT_METHOD_NAME_ENUM_CARD: "card",

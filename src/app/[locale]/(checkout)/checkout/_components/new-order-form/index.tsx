@@ -1,29 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  CHECKOUT_ERROR_CITY_COUNTRY,
-  currencySymbols,
-  LANGUAGE_ID_TO_LOCALE,
-} from "@/constants";
+import React, { useRef } from "react";
+import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
-import {
-  sendFormErrorEvent,
-  sendFormStartEvent,
-  sendFormSubmitEvent,
-  sendPaymentFailedEvent,
-} from "@/lib/analitycs/checkout-custom";
-import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
-import { pushUserIdToDataLayer, waitForAnalytics } from "@/lib/analitycs/utils";
-import { getValidationErrorToastKey } from "@/lib/cart/validate-cart-items";
-import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
-import { submitNewOrder } from "@/lib/checkout/order-service";
-import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -36,8 +19,11 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
 import { useCheckoutEffects } from "./hooks/useCheckout";
+import { useCheckoutFormAnalytics } from "./hooks/useCheckoutFormAnalytics";
+import { useCheckoutSubmit } from "./hooks/useCheckoutSubmit";
 import { useComplimentaryShippingToast } from "./hooks/useComplimentaryShippingToast";
 import { useOrderPersistence } from "./hooks/useOrderPersistence";
+import { useStripeRedirect } from "./hooks/useStripeRedirect";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { MobileOrderSummary } from "./mobile-order-summary";
 import { OrderProducts } from "./order-products";
@@ -46,38 +32,22 @@ import { PriceSummary } from "./price-summary";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
-import { mapFormFieldToOrderDataFormat } from "./utils";
-import { verifyCityInCountry } from "./verify-city";
 
 type NewOrderFormProps = {
   onAmountChange: (amount: number) => void;
 };
 
 export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
-  const { currentCountry, languageId } = useTranslationsStore((state) => state);
-  const { products, clearCart, totalPrice, validatedCurrency } = useCart(
-    (s) => s,
-  );
+  const { currentCountry } = useTranslationsStore((state) => state);
+  const { products, totalPrice, validatedCurrency } = useCart((s) => s);
 
-  const { handlePurchaseEvent, handlePaymentElementComplete, handlePaymentMethodChange, handleBeginCheckoutEvent } =
-    useCheckoutAnalytics();
-
-  const [loading, setLoading] = useState(false);
-  const [isPaymentElementComplete, setIsPaymentElementComplete] =
-    useState(false);
-  const paymentInfoSentRef = useRef(false);
-  const checkoutEventFiredRef = useRef(false);
-
+  const formRef = useRef<HTMLFormElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
   const shippingRef = useRef<HTMLDivElement>(null);
   const paymentRef = useRef<HTMLDivElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
 
   const t = useTranslations("checkout");
   const tToaster = useTranslations("toaster");
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -87,10 +57,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   });
 
   const { order, validateItems, orderCurrency } = useValidatedOrder(form);
-  const { clearFormData } = useOrderPersistence(
-    form,
-    currentCountry.countryCode,
-  );
+  const { clearFormData } = useOrderPersistence(form, currentCountry.countryCode);
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
   const {
@@ -108,308 +75,52 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   } = useCheckoutEffects({
     order,
     products,
-    loading,
     form,
     countryCode: currentCountry.countryCode || "",
     onAmountChange,
     handleFormChange,
   });
 
-  useEffect(() => {
-    if (searchParams.get("payment_failed") !== "1") return;
-
-    setToastMessage(tToaster("payment_failed"));
-    setOrderModifiedToastOpen(true);
-
-    const stripQueryTimer = window.setTimeout(() => {
-      router.replace(pathname);
-    }, 400);
-
-    return () => window.clearTimeout(stripQueryTimer);
-  }, [
-    searchParams,
-    pathname,
-    router,
-    tToaster,
+  useStripeRedirect({
     setToastMessage,
     setOrderModifiedToastOpen,
-  ]);
+    paymentFailedMessage: tToaster("payment_failed"),
+  });
 
-  useEffect(() => {
-    const el = formRef.current;
-    if (!el) return;
-    const handler = () => {
-      sendFormStartEvent({
-        form_id: "checkout_form",
-        form_name: "Checkout",
-        page_path:
-          typeof window !== "undefined" ? window.location.pathname : "",
-      });
-    };
-    el.addEventListener("focusin", handler, { once: true });
-    return () => el.removeEventListener("focusin", handler);
-  }, []);
+  const {
+    loading,
+    isPaymentElementComplete,
+    setIsPaymentElementComplete,
+    paymentMethod,
+    isPaymentFieldsValid,
+    handleValidSubmit,
+    handleSubmitInvalid,
+  } = useCheckoutSubmit({
+    form,
+    order,
+    orderCurrency,
+    stripe,
+    elements,
+    contactRef: contactRef as React.RefObject<HTMLDivElement | null>,
+    shippingRef: shippingRef as React.RefObject<HTMLDivElement | null>,
+    paymentRef: paymentRef as React.RefObject<HTMLDivElement | null>,
+    isGroupOpen,
+    handleGroupToggle,
+    validateItems,
+    clearFormData,
+    setToastMessage,
+    setOrderModifiedToastOpen,
+    fillRequiredFieldsMessage: tToaster("fill_required_fields"),
+    paymentFailedMessage: tToaster("payment_failed"),
+    resolveToasterMessage: tToaster,
+  });
 
-  useEffect(() => {
-    if (!checkoutEventFiredRef.current && products.length > 0) {
-      checkoutEventFiredRef.current = true;
-      handleBeginCheckoutEvent();
-    }
-  }, [products, handleBeginCheckoutEvent]);
-
-  useEffect(() => {
-    if (isPaymentElementComplete && !paymentInfoSentRef.current) {
-      paymentInfoSentRef.current = true;
-      handlePaymentElementComplete();
-    }
-  }, [isPaymentElementComplete, handlePaymentElementComplete]);
-
-  const paymentMethod = form.watch("paymentMethod");
-
-  useEffect(() => {
-    if (paymentMethod && paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") {
-      handlePaymentMethodChange(paymentMethod);
-    }
-  }, [paymentMethod, handlePaymentMethodChange]);
-  const isPaymentFieldsValid =
-    paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" ||
-    isPaymentElementComplete;
-
-  const scrollToFirstError = (errors: typeof form.formState.errors) => {
-    if (errors.email || errors.termsOfService || errors.subscribe) {
-      contactRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-      if (!isGroupOpen("contact")) {
-        handleGroupToggle("contact");
-      }
-      return;
-    }
-    if (
-      errors.firstName ||
-      errors.lastName ||
-      errors.address ||
-      errors.country ||
-      errors.state ||
-      errors.city ||
-      errors.additionalAddress ||
-      errors.company ||
-      errors.phone ||
-      errors.postalCode ||
-      errors.shipmentCarrierId
-    ) {
-      shippingRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-      if (!isGroupOpen("shipping")) {
-        handleGroupToggle("shipping");
-      }
-      return;
-    }
-    if (
-      errors.paymentMethod ||
-      errors.billingAddressIsSameAsAddress ||
-      errors.billingAddress ||
-      !isPaymentFieldsValid
-    ) {
-      paymentRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-      if (!isGroupOpen("payment")) {
-        handleGroupToggle("payment");
-      }
-    }
-  };
-
-  const handleSubmitInvalid = (errors: typeof form.formState.errors) => {
-    setToastMessage(tToaster("fill_required_fields"));
-    setOrderModifiedToastOpen(true);
-    scrollToFirstError(errors);
-
-    const errorFields = Object.keys(errors);
-    if (errorFields.length > 0) {
-      sendFormErrorEvent({
-        form_id: "checkout_form",
-        form_name: "Checkout",
-        error_fields: errorFields,
-        page_path:
-          typeof window !== "undefined" ? window.location.pathname : "",
-      });
-    }
-  };
-
-  const handleValidSubmit = async (data: CheckoutData) => {
-    if (!isPaymentFieldsValid) {
-      setToastMessage(tToaster("fill_required_fields"));
-      setOrderModifiedToastOpen(true);
-      paymentRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-      if (!isGroupOpen("payment")) {
-        handleGroupToggle("payment");
-      }
-      return;
-    }
-
-    if (typeof window !== "undefined") {
-      const shipOk = await verifyCityInCountry(data.city, data.country);
-      if (!shipOk) {
-        form.setError("city", {
-          type: "manual",
-          message: CHECKOUT_ERROR_CITY_COUNTRY,
-        });
-        setToastMessage(tToaster("fill_required_fields"));
-        setOrderModifiedToastOpen(true);
-        scrollToFirstError({
-          city: { type: "manual", message: CHECKOUT_ERROR_CITY_COUNTRY },
-        } as typeof form.formState.errors);
-        sendFormErrorEvent({
-          form_id: "checkout_form",
-          form_name: "Checkout",
-          error_fields: ["city"],
-          page_path: window.location.pathname,
-        });
-        return;
-      }
-
-      if (!data.billingAddressIsSameAsAddress && data.billingAddress) {
-        const billOk = await verifyCityInCountry(
-          data.billingAddress.city,
-          data.billingAddress.country,
-        );
-        if (!billOk) {
-          form.setError("billingAddress.city", {
-            type: "manual",
-            message: CHECKOUT_ERROR_CITY_COUNTRY,
-          });
-          setToastMessage(tToaster("fill_required_fields"));
-          setOrderModifiedToastOpen(true);
-          scrollToFirstError({
-            billingAddress: {
-              city: { type: "manual", message: CHECKOUT_ERROR_CITY_COUNTRY },
-            },
-          } as typeof form.formState.errors);
-          sendFormErrorEvent({
-            form_id: "checkout_form",
-            form_name: "Checkout",
-            error_fields: ["billingAddress.city"],
-            page_path: window.location.pathname,
-          });
-          return;
-        }
-      }
-    }
-
-    onSubmit(data);
-  };
-
-  const onSubmit = async (data: CheckoutData) => {
-    if (!stripe || !elements) return;
-
-    sendFormSubmitEvent({
-      form_id: "checkout_form",
-      form_name: "Checkout",
-      page_path: typeof window !== "undefined" ? window.location.pathname : "",
-    });
-
-    setLoading(true);
-
-    try {
-      const response = await validateItems();
-      const newOrderData = mapFormFieldToOrderDataFormat(
-        data,
-        response?.validItems?.map((i) => i.orderItem!) || [],
-        currentCountry.currencyKey || "",
-      );
-
-      const newOrderResponse = await submitNewOrder(
-        newOrderData,
-        response?.paymentIntentId || "",
-      );
-
-      if (!newOrderResponse.ok) {
-        setLoading(false);
-        return;
-      }
-
-      const paymentType = newOrderResponse.order?.payment?.paymentMethod;
-      const clientSecret =
-        response?.clientSecret || newOrderResponse.order?.payment?.clientSecret;
-      const orderUuid = newOrderResponse.order?.orderUuid;
-
-      if (
-        paymentType === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" &&
-        clientSecret &&
-        orderUuid
-      ) {
-        const country = currentCountry.countryCode?.toLowerCase() || "gb";
-        const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
-        const returnUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/${country}/${locale}/order/${orderUuid}/${window.btoa(data.email)}`;
-
-        const paymentResult = await confirmStripePayment({
-          stripe,
-          elements,
-          clientSecret,
-          orderUuid,
-          email: data.email,
-          country: data.country,
-          returnUrl,
-        });
-
-        if (paymentResult.success) {
-          // Purchase event will fire on order confirmation page after order data is loaded
-          // This ensures order exists in DB before event fires in GA4
-          await pushUserIdToDataLayer(data.email);
-          clearCart();
-          clearFormData();
-          clearIdempotencyKey();
-          await waitForAnalytics();
-          window.location.href = `/${country}/${locale}/order/${paymentResult.orderUuid}/${window.btoa(data.email)}?redirect_status=succeeded`;
-          return;
-        }
-
-        sendPaymentFailedEvent({
-          error_code: paymentResult.error || "unknown",
-          payment_type: "credit_card",
-          order_value: parseFloat(order?.totalSale?.value || "0"),
-          currency: orderCurrency || currentCountry.currencyKey || "EUR",
-          page_path:
-            typeof window !== "undefined" ? window.location.pathname : "",
-          transaction_id: orderUuid,
-        });
-
-        setToastMessage(tToaster("payment_failed"));
-        setOrderModifiedToastOpen(true);
-        console.error("Payment confirmation failed:", paymentResult.error);
-      } else if (orderUuid) {
-        // Purchase event will fire on order confirmation page
-        await pushUserIdToDataLayer(data.email);
-        clearCart();
-        clearFormData();
-        clearIdempotencyKey();
-        await waitForAnalytics();
-        const country = currentCountry.countryCode?.toLowerCase() || "gb";
-        const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
-        window.location.href = `/${country}/${locale}/order/${orderUuid}/${window.btoa(data.email)}`;
-        return;
-      }
-
-      setLoading(false);
-    } catch (error) {
-      console.error("Error submitting new order:", error);
-      const message =
-        error instanceof Error && error.message
-          ? error.message
-          : tToaster(getValidationErrorToastKey(error));
-      setToastMessage(message);
-      setOrderModifiedToastOpen(true);
-      setLoading(false);
-    }
-  };
+  useCheckoutFormAnalytics({
+    formRef,
+    products,
+    isPaymentElementComplete,
+    paymentMethod,
+  });
 
   return (
     <>
@@ -469,9 +180,7 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
               <div className="hidden space-y-8 lg:block">
                 <Text
                   variant="uppercase"
-                  className={cn("", {
-                    "text-textInactiveColor": loading,
-                  })}
+                  className={cn("", { "text-textInactiveColor": loading })}
                 >
                   {t("order summary")}
                 </Text>
