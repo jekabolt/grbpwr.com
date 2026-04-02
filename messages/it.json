@@ -444,6 +444,21 @@
     },
     "orderUuid": {
       "required": "la riferimento dell'ordine è obbligatorio"
+    },
+    "deliveryRating": {
+      "required": "Seleziona la velocità di consegna."
+    },
+    "packagingRating": {
+      "required": "Seleziona le condizioni dell’imballaggio."
+    },
+    "sophisticationRating": {
+      "required": "Valuta la sofisticatezza."
+    },
+    "rating": {
+      "required": "Valuta questo articolo."
+    },
+    "fitRating": {
+      "required": "Seleziona la vestibilità."
     }
   },
   "content": {
@@ -726,6 +741,7 @@
     "yes": "sì",
     "no": "no",
     "placeholder select": "Seleziona",
+    "select fit before submit": "Seleziona la vestibilità per ogni articolo prima di inviare.",
     "dSpeed": {
       "MUCH_FASTER_THAN_EXPECTED": "Arrivato in anticipo",
       "FASTER_THAN_EXPECTED": "In anticipo sulla consegna",

@@ -444,6 +444,21 @@
     },
     "orderUuid": {
       "required": "주문 참조가 필요합니다"
+    },
+    "deliveryRating": {
+      "required": "배송 속도를 선택해 주세요."
+    },
+    "packagingRating": {
+      "required": "포장 상태를 선택해 주세요."
+    },
+    "sophisticationRating": {
+      "required": "세련됨을 평가해 주세요."
+    },
+    "rating": {
+      "required": "이 상품을 평가해 주세요."
+    },
+    "fitRating": {
+      "required": "핏을 선택해 주세요."
     }
   },
   "content": {
@@ -726,6 +741,7 @@
     "yes": "예",
     "no": "아니오",
     "placeholder select": "선택",
+    "select fit before submit": "제출하기 전에 각 상품의 핏을 선택해 주세요.",
     "dSpeed": {
       "MUCH_FASTER_THAN_EXPECTED": "훨씬 일찍 도착",
       "FASTER_THAN_EXPECTED": "일정보다 빠름",

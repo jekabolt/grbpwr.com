@@ -444,6 +444,21 @@
     },
     "orderUuid": {
       "required": "订单号是必需的"
+    },
+    "deliveryRating": {
+      "required": "请选择配送速度。"
+    },
+    "packagingRating": {
+      "required": "请选择包装状况。"
+    },
+    "sophisticationRating": {
+      "required": "请为精致度评分。"
+    },
+    "rating": {
+      "required": "请为该商品评分。"
+    },
+    "fitRating": {
+      "required": "请选择合身度。"
     }
   },
   "content": {
@@ -726,6 +741,7 @@
     "yes": "是",
     "no": "否",
     "placeholder select": "请选择",
+    "select fit before submit": "提交前请为每件商品选择合身度。",
     "dSpeed": {
       "MUCH_FASTER_THAN_EXPECTED": "提早很多送达",
       "FASTER_THAN_EXPECTED": "比预定早",

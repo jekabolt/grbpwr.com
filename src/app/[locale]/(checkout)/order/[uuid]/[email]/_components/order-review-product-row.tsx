@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import SelectField from "@/components/ui/form/fields/select-field";
 import Image from "@/components/ui/image";
+import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 import CartItemSize from "@/app/[locale]/(checkout)/cart/_components/CartItemSize";
 import AftersaleSelector from "@/app/[locale]/(content)/_components/aftersale-selector";
@@ -117,10 +118,12 @@ export function OrderReviewProductRow({
   product,
   itemIndex,
   disabled,
+  shouldBlinkFit,
 }: {
   product: common_OrderItem;
   itemIndex: number;
   disabled?: boolean;
+  shouldBlinkFit?: boolean;
 }) {
   const { control } = useFormContext<OrderReviewFormInput>();
   const { languageId } = useTranslationsStore((s) => s);
@@ -164,7 +167,7 @@ export function OrderReviewProductRow({
             {productName}
           </Text>
           <div className="mt-auto flex w-full min-w-0 items-end justify-between gap-3">
-            <div className="flex min-w-0 flex-1 items-end justify-between gap-3 lg:justify-start">
+            <div className="flex min-w-0 flex-1 items-end justify-between gap-3">
               <div className="flex shrink-0 items-end gap-2">
                 <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
                 {lineQty > 1 && (
@@ -173,16 +176,21 @@ export function OrderReviewProductRow({
                   </Text>
                 )}
               </div>
-              <div className="min-w-32 shrink-0">
-                <SelectField
-                  name={`itemReviews.${itemIndex}.fitRating`}
-                  label={""}
-                  items={fitItems}
-                  placeholder={t("placeholder select")}
-                  className="[&[data-placeholder]]:uppercase"
-                  loading={disabled}
-                  fullWidth
-                />
+              <div className="relative">
+                {shouldBlinkFit && (
+                  <Overlay color="highlight" cover="container" />
+                )}
+                <div className="min-w-32">
+                  <SelectField
+                    name={`itemReviews.${itemIndex}.fitRating`}
+                    items={fitItems}
+                    placeholder={t("placeholder select")}
+                    className="[&[data-placeholder]]:uppercase"
+                    hideFormMessage
+                    loading={disabled}
+                    fullWidth
+                  />
+                </div>
               </div>
             </div>
           </div>

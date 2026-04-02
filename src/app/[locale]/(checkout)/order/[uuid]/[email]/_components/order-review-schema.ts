@@ -55,7 +55,7 @@ export function buildOrderReviewFormSchema(
   const itemRow = z.object({
     orderItemId: z.number().int().positive(),
     rating: enumString(PRODUCT_RATING_VALUES),
-    fitRating: enumString(FIT_SCALE_VALUES),
+    fitRating: enumString(FIT_SCALE_VALUES).optional().nullable(),
     recommend: z.boolean().optional(),
   });
 

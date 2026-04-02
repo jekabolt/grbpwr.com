@@ -444,6 +444,21 @@
     },
     "orderUuid": {
       "required": "la référence de commande est requise"
+    },
+    "deliveryRating": {
+      "required": "Veuillez choisir la rapidité de livraison."
+    },
+    "packagingRating": {
+      "required": "Veuillez choisir l’état de l’emballage."
+    },
+    "sophisticationRating": {
+      "required": "Veuillez noter le raffinement."
+    },
+    "rating": {
+      "required": "Veuillez noter cet article."
+    },
+    "fitRating": {
+      "required": "Veuillez indiquer la coupe."
     }
   },
   "content": {
@@ -726,6 +741,7 @@
     "yes": "oui",
     "no": "non",
     "placeholder select": "Choisir",
+    "select fit before submit": "Veuillez indiquer la coupe pour chaque article avant d’envoyer.",
     "dSpeed": {
       "MUCH_FASTER_THAN_EXPECTED": "Arrivé tôt",
       "FASTER_THAN_EXPECTED": "En avance sur le planning",

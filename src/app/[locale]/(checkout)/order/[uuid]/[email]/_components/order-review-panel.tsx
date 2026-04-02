@@ -1,10 +1,10 @@
 "use client";
 
-import { use, useMemo, useState } from "react";
+import { use, useCallback, useMemo, useRef, useState } from "react";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import type { Path } from "react-hook-form";
+import type { Path, SubmitErrorHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 
 import { serviceClient } from "@/lib/api";
@@ -27,6 +27,8 @@ import {
   type OrderReviewFormInput,
   type OrderReviewFormValues,
 } from "./order-review-schema";
+
+const FIT_RATING_BLINK_MS = 400;
 
 type ReviewFormStep = {
   step: string;
@@ -78,11 +80,92 @@ export function OrderReviewPanel({
     [validItems],
   );
 
-  const form = useForm<OrderReviewFormInput>({
+  const form = useForm<OrderReviewFormInput, unknown, OrderReviewFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
     mode: "onChange",
   });
+
+  const reviewSubmitB64Email = useMemo(() => {
+    const email = orderData?.buyer?.buyerInsert?.email?.trim();
+    if (email && typeof window !== "undefined") {
+      return window.btoa(email);
+    }
+    return b64Email;
+  }, [orderData?.buyer?.buyerInsert?.email, b64Email]);
+
+  const desktopItemsScrollRef = useRef<HTMLDivElement>(null);
+  const mobileItemsListRef = useRef<HTMLDivElement>(null);
+  const [fitBlinkingIndices, setFitBlinkingIndices] = useState<number[]>([]);
+
+  const triggerFitBlink = useCallback((indices: number[]) => {
+    setFitBlinkingIndices(indices);
+    setTimeout(() => setFitBlinkingIndices([]), FIT_RATING_BLINK_MS);
+  }, []);
+
+  const scrollToFirstReviewRow = useCallback((index: number) => {
+    if (typeof window === "undefined") return;
+    const desktop = window.matchMedia("(min-width: 1024px)").matches;
+    const root = desktop
+      ? desktopItemsScrollRef.current
+      : mobileItemsListRef.current;
+    root
+      ?.querySelector(`[data-order-review-row="${index}"]`)
+      ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, []);
+
+  const onSubmitInvalid: SubmitErrorHandler<OrderReviewFormInput> = useCallback(
+    (errors) => {
+      const indices: number[] = [];
+      const rows = errors.itemReviews;
+      if (Array.isArray(rows)) {
+        rows.forEach((row, i) => {
+          if (row?.fitRating) indices.push(i);
+        });
+      }
+      if (indices.length > 0) {
+        setToastMessage(t("select fit before submit"));
+        setToastOpen(true);
+        triggerFitBlink(indices);
+        scrollToFirstReviewRow(indices[0]!);
+      }
+    },
+    [scrollToFirstReviewRow, t, triggerFitBlink],
+  );
+
+  const submitReview = useCallback(
+    async (data: OrderReviewFormValues) => {
+      const validated = data;
+      setSubmitting(true);
+      try {
+        await serviceClient.SubmitOrderReview({
+          orderUuid,
+          b64Email: reviewSubmitB64Email,
+          orderReview: {
+            deliveryRating: validated.orderReview.deliveryRating,
+            packagingRating: validated.orderReview.packagingRating,
+            sophisticationRating: validated.orderReview.sophisticationRating,
+            reviewText: validated.orderReview.reviewText?.trim() || undefined,
+          },
+          itemReviews: validated.itemReviews.map((r) => ({
+            orderItemId: r.orderItemId,
+            rating: r.rating,
+            fitRating: r.fitRating ?? undefined,
+            recommend: r.recommend ?? false,
+          })),
+        });
+        setToastMessage(t("success"));
+        setToastOpen(true);
+      } catch (e) {
+        console.error(e);
+        setToastMessage(t("error"));
+        setToastOpen(true);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [orderUuid, reviewSubmitB64Email, t],
+  );
 
   const formSteps = useMemo((): ReviewFormStep[] => {
     const total = validItems.length > 0 ? 4 : 3;
@@ -123,54 +206,15 @@ export function OrderReviewPanel({
     ];
   }, [t, validItems.length]);
 
-  const reviewSubmitB64Email = useMemo(() => {
-    const email = orderData?.buyer?.buyerInsert?.email?.trim();
-    if (email && typeof window !== "undefined") {
-      return window.btoa(email);
-    }
-    return b64Email;
-  }, [orderData?.buyer?.buyerInsert?.email, b64Email]);
-
   if (!orderData) {
     return null;
-  }
-
-  async function onSubmit(data: OrderReviewFormInput) {
-    const validated = data as unknown as OrderReviewFormValues;
-    setSubmitting(true);
-    try {
-      await serviceClient.SubmitOrderReview({
-        orderUuid,
-        b64Email: reviewSubmitB64Email,
-        orderReview: {
-          deliveryRating: validated.orderReview.deliveryRating,
-          packagingRating: validated.orderReview.packagingRating,
-          sophisticationRating: validated.orderReview.sophisticationRating,
-          reviewText: validated.orderReview.reviewText?.trim() || undefined,
-        },
-        itemReviews: validated.itemReviews.map((r) => ({
-          orderItemId: r.orderItemId,
-          rating: r.rating,
-          fitRating: r.fitRating,
-          recommend: r.recommend ?? false,
-        })),
-      });
-      setToastMessage(t("success"));
-      setToastOpen(true);
-    } catch (e) {
-      console.error(e);
-      setToastMessage(t("error"));
-      setToastOpen(true);
-    } finally {
-      setSubmitting(false);
-    }
   }
 
   return (
     <>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(submitReview, onSubmitInvalid)}
           className="flex h-full min-h-0 w-full flex-1 flex-col"
         >
           <div className="relative flex min-h-0 flex-1 flex-col gap-y-10 lg:flex-row lg:gap-52">
@@ -221,6 +265,7 @@ export function OrderReviewPanel({
                       orderItemReviewRows={orderItemReviewRows}
                       itemsTitle={t("item heading")}
                       disabled={submitting}
+                      fitBlinkingIndices={fitBlinkingIndices}
                     />
                   </div>
                   <div className="hidden w-full space-y-3 overflow-y-auto lg:block lg:max-h-[50vh] lg:min-h-0 lg:flex-1">
@@ -230,6 +275,9 @@ export function OrderReviewPanel({
                         product={row.product}
                         itemIndex={row.lineItemIndex}
                         disabled={submitting}
+                        shouldBlinkFit={fitBlinkingIndices.includes(
+                          row.lineItemIndex,
+                        )}
                       />
                     ))}
                   </div>

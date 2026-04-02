@@ -444,6 +444,21 @@
     },
     "orderUuid": {
       "required": "注文番号は必須です"
+    },
+    "deliveryRating": {
+      "required": "配送の速さを選択してください。"
+    },
+    "packagingRating": {
+      "required": "梱包状態を選択してください。"
+    },
+    "sophisticationRating": {
+      "required": "洗練さを評価してください。"
+    },
+    "rating": {
+      "required": "この商品を評価してください。"
+    },
+    "fitRating": {
+      "required": "フィット感を選択してください。"
     }
   },
   "content": {
@@ -726,6 +741,7 @@
     "yes": "はい",
     "no": "いいえ",
     "placeholder select": "選択",
+    "select fit before submit": "送信する前に、各商品のフィット感を選択してください。",
     "dSpeed": {
       "MUCH_FASTER_THAN_EXPECTED": "かなり早く到着",
       "FASTER_THAN_EXPECTED": "予定より早く到着",

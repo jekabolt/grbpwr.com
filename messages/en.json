@@ -361,6 +361,7 @@
     "yes": "yes",
     "no": "no",
     "placeholder select": "Select",
+    "select fit before submit": "Please select a fit rating for each item before submitting.",
     "dSpeed": {
       "MUCH_FASTER_THAN_EXPECTED": "Arrived early",
       "FASTER_THAN_EXPECTED": "Ahead of schedule",
@@ -500,6 +501,21 @@
     },
     "orderUuid": {
       "required": "order reference is required"
+    },
+    "deliveryRating": {
+      "required": "Please select delivery speed."
+    },
+    "packagingRating": {
+      "required": "Please select packaging condition."
+    },
+    "sophisticationRating": {
+      "required": "Please rate sophistication."
+    },
+    "rating": {
+      "required": "Please rate this item."
+    },
+    "fitRating": {
+      "required": "Please select how this item fits."
     }
   },
   "content": {

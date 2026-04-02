@@ -1,5 +1,6 @@
 "use client";
 
+import type { RefObject } from "react";
 import { useState } from "react";
 import type {
   common_OrderFull,
@@ -22,11 +23,14 @@ type Props = {
   orderItemReviewRows: OrderItemReviewRow[];
   itemsTitle: string;
   disabled?: boolean;
+  itemsListRef?: RefObject<HTMLDivElement | null>;
+  fitBlinkingIndices?: number[];
 };
 
 export function MobileOrderReviewSummary({
   orderItemReviewRows,
   disabled,
+  fitBlinkingIndices = [],
 }: Props) {
   const t = useTranslations("checkout");
   const [isOpen, setIsOpen] = useState(true);
@@ -47,6 +51,7 @@ export function MobileOrderReviewSummary({
             product={row.product}
             itemIndex={row.lineItemIndex}
             disabled={disabled}
+            shouldBlinkFit={fitBlinkingIndices.includes(row.lineItemIndex)}
           />
         ))}
       </div>

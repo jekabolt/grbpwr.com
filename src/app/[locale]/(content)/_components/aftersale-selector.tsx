@@ -8,6 +8,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 
 export interface AftersaleSelectorProps<T extends FieldValues> {
@@ -30,6 +31,7 @@ export default function AftersaleSelector<T extends FieldValues>({
   fiveOptionMobileGrid = false,
 }: AftersaleSelectorProps<T>) {
   const t = useTranslations("accessibility");
+  const te = useTranslations("errors");
   const useFiveGrid = fiveOptionMobileGrid && list.length === 5;
 
   return (
@@ -71,6 +73,7 @@ export default function AftersaleSelector<T extends FieldValues>({
               ))}
             </div>
           </FormControl>
+          <FormMessage translateError={te} fieldName={String(name)} />
         </FormItem>
       )}
     />
