@@ -137,7 +137,7 @@ export function SelectContent({
   return (
     <Select.Portal>
       <Select.Content
-        className="z-[100] w-full overflow-hidden bg-bgColor shadow-md"
+        className="z-[100] w-full overflow-hidden border border-textInactiveColor bg-bgColor"
         position="popper"
         style={{
           width: getWidth(),

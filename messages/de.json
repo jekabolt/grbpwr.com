@@ -319,6 +319,8 @@
     "order not found": "Bestellung nicht gefunden"
   },
   "order-info": {
+    "order navigation": "Bestellbereiche",
+    "review order": "Bestellung bewerten",
     "order info": "Bestellinformationen",
     "order id": "Bestellnummer",
     "order date": "Bestelldatum",
@@ -443,6 +445,21 @@
     },
     "orderUuid": {
       "required": "bestellnummer ist erforderlich"
+    },
+    "deliveryRating": {
+      "required": "Bitte Liefergeschwindigkeit wählen."
+    },
+    "packagingRating": {
+      "required": "Bitte Verpackungszustand wählen."
+    },
+    "sophisticationRating": {
+      "required": "Bitte Raffinesse bewerten."
+    },
+    "rating": {
+      "required": "Bitte diesen Artikel bewerten."
+    },
+    "fitRating": {
+      "required": "Bitte Passform wählen."
     }
   },
   "content": {
@@ -703,5 +720,62 @@
   },
   "empty-hero": {
     "shop now": "Jetzt einkaufen"
+  },
+  "order-review": {
+    "field required": "Dieses Feld ist erforderlich",
+    "order section": "Ihre Bestellung",
+    "delivery speed": "Liefergeschwindigkeit",
+    "packaging": "Verpackungszustand",
+    "sophistication": "Raffinesse",
+    "overall experience": "Gesamterlebnis",
+    "comments": "Kommentar (optional)",
+    "enter review": "Schreiben Sie hier Ihre Bewertung…",
+    "submit": "Bewertung absenden",
+    "submitting": "Wird gesendet…",
+    "success": "Vielen Dank für Ihre Bewertung.",
+    "error": "Die Bewertung konnte nicht gesendet werden. Bitte erneut versuchen.",
+    "item heading": "Ihre Artikel",
+    "product quality": "Produktqualität",
+    "fit": "Passform",
+    "fit select": "Wie hat die Passform gepasst?",
+    "recommend": "Empfehlung",
+    "yes": "ja",
+    "no": "nein",
+    "placeholder select": "Auswählen",
+    "select fit before submit": "Bitte wählen Sie vor dem Absenden für jeden Artikel eine Passform.",
+    "dSpeed": {
+      "MUCH_FASTER_THAN_EXPECTED": "Früh angekommen",
+      "FASTER_THAN_EXPECTED": "Vor dem geplanten Zeitpunkt",
+      "AS_EXPECTED": "Termingerecht",
+      "SLOWER_THAN_EXPECTED": "Leicht verspätet",
+      "MUCH_SLOWER_THAN_EXPECTED": "Verspätet"
+    },
+    "pPackaging": {
+      "DAMAGED": "Beschädigt",
+      "ACCEPTABLE": "Akzeptabel",
+      "GOOD": "Gut",
+      "EXCELLENT": "Ausgezeichnet"
+    },
+    "pRating": {
+      "POOR": "Schlecht",
+      "FAIR": "Ausreichend",
+      "GOOD": "Gut",
+      "VERY_GOOD": "Sehr gut",
+      "EXCELLENT": "Ausgezeichnet"
+    },
+    "pSophistication": {
+      "POOR": "Enttäuschend",
+      "FAIR": "Neutral",
+      "GOOD": "Solide",
+      "VERY_GOOD": "Hochwertig",
+      "EXCELLENT": "Außergewöhnlich"
+    },
+    "fFit": {
+      "RUNS_SMALL": "Fällt klein aus",
+      "SLIGHTLY_SMALL": "Etwas klein",
+      "TRUE_TO_SIZE": "Entspricht der Größe",
+      "SLIGHTLY_LARGE": "Etwas groß",
+      "RUNS_LARGE": "Fällt groß aus"
+    }
   }
 }

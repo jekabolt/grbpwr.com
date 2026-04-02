@@ -4,10 +4,11 @@ import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { paymentMethodNamesMap } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { buildTrackingUrl } from "@/lib/shipment/tracking-url";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
+
+import { OrderAddressLines } from "./order-address-lines";
 
 export function OrderSecondaryInfo({
   shipping,
@@ -24,12 +25,7 @@ export function OrderSecondaryInfo({
   );
   const rawCarrierName = carrier?.shipmentCarrier?.carrier;
   const shipmentCarrierName =
-    rawCarrierName === "FREE" ? tCheckout("free") : rawCarrierName;
-  const trackingUrl = buildTrackingUrl(
-    carrier?.shipmentCarrier?.trackingUrl,
-    shipment?.trackingCode,
-  );
-
+    rawCarrierName === "FREE" ? tCheckout("FREE") : rawCarrierName;
   return (
     <>
       <div className="hidden lg:block">
@@ -39,8 +35,6 @@ export function OrderSecondaryInfo({
           buyer={buyer}
           payment={payment}
           shipmentCarrierName={shipmentCarrierName}
-          trackingUrl={trackingUrl}
-          trackingCode={shipment?.trackingCode}
         />
       </div>
       <div className="block lg:hidden">
@@ -50,8 +44,6 @@ export function OrderSecondaryInfo({
           buyer={buyer}
           payment={payment}
           shipmentCarrierName={shipmentCarrierName}
-          trackingUrl={trackingUrl}
-          trackingCode={shipment?.trackingCode}
         />
       </div>
     </>
@@ -64,8 +56,6 @@ export function DesktopOrderSecondaryInfo({
   buyer,
   payment,
   shipmentCarrierName,
-  trackingUrl,
-  trackingCode,
 }: DesktopMobileProps) {
   const t = useTranslations("order-info");
   const tCheckout = useTranslations("checkout");
@@ -76,33 +66,13 @@ export function DesktopOrderSecondaryInfo({
         <div className="flex w-full flex-col gap-4">
           <Text variant="uppercase">{t("shipping address")}</Text>
           {shipping && (
-            <div>
-              <Text>
-                {`${buyer?.buyerInsert?.firstName} ${buyer?.buyerInsert?.lastName}`}
-              </Text>
-              <Text>{shipping.addressInsert?.addressLineOne}</Text>
-              {shipping.addressInsert?.addressLineTwo && (
-                <Text>{shipping.addressInsert?.addressLineTwo}</Text>
-              )}
-              <Text>{shipping.addressInsert?.city}</Text>
-              <Text>{shipping.addressInsert?.postalCode}</Text>
-            </div>
+            <OrderAddressLines buyer={buyer} addressSource={shipping} />
           )}
         </div>
         <div className="flex w-full flex-col gap-4">
           <Text variant="uppercase">{tCheckout("billing address")}</Text>
           {billing && (
-            <div>
-              <Text>
-                {`${buyer?.buyerInsert?.firstName} ${buyer?.buyerInsert?.lastName}`}
-              </Text>
-              <Text>{billing.addressInsert?.addressLineOne}</Text>
-              {billing.addressInsert?.addressLineTwo && (
-                <Text>{billing.addressInsert?.addressLineTwo}</Text>
-              )}
-              <Text>{billing.addressInsert?.city}</Text>
-              <Text>{billing.addressInsert?.postalCode}</Text>
-            </div>
+            <OrderAddressLines buyer={buyer} addressSource={billing} />
           )}
         </div>
       </div>
@@ -135,8 +105,6 @@ export function MobileOrderSecondaryInfo({
   buyer,
   payment,
   shipmentCarrierName,
-  trackingUrl,
-  trackingCode,
 }: DesktopMobileProps) {
   const t = useTranslations("order-info");
   const tCheckout = useTranslations("checkout");
@@ -156,15 +124,7 @@ export function MobileOrderSecondaryInfo({
           </Text>
           {shipping && (
             <div className="w-full">
-              <Text>
-                {`${buyer?.buyerInsert?.firstName} ${buyer?.buyerInsert?.lastName}`}
-              </Text>
-              <Text>{shipping.addressInsert?.addressLineOne}</Text>
-              {shipping.addressInsert?.addressLineTwo && (
-                <Text>{shipping.addressInsert?.addressLineTwo}</Text>
-              )}
-              <Text>{shipping.addressInsert?.city}</Text>
-              <Text>{shipping.addressInsert?.postalCode}</Text>
+              <OrderAddressLines buyer={buyer} addressSource={shipping} />
             </div>
           )}
         </div>
@@ -174,15 +134,7 @@ export function MobileOrderSecondaryInfo({
           </Text>
           {billing && (
             <div className="w-full">
-              <Text>
-                {`${buyer?.buyerInsert?.firstName} ${buyer?.buyerInsert?.lastName}`}
-              </Text>
-              <Text>{billing.addressInsert?.addressLineOne}</Text>
-              {billing.addressInsert?.addressLineTwo && (
-                <Text>{billing.addressInsert?.addressLineTwo}</Text>
-              )}
-              <Text>{billing.addressInsert?.city}</Text>
-              <Text>{billing.addressInsert?.postalCode}</Text>
+              <OrderAddressLines buyer={buyer} addressSource={billing} />
             </div>
           )}
         </div>
@@ -222,6 +174,4 @@ type DesktopMobileProps = Pick<
   "shipping" | "billing" | "buyer" | "payment"
 > & {
   shipmentCarrierName?: string;
-  trackingUrl?: string;
-  trackingCode?: string;
 };

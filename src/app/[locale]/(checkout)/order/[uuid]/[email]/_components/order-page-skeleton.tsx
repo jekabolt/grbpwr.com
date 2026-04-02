@@ -4,9 +4,7 @@ import { Text } from "@/components/ui/text";
 export function OrderPageSkeleton() {
   return (
     <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-52">
-      {/* Left Section */}
       <div className="w-full">
-        {/* Order ID and Date */}
         <div className="flex flex-col items-center justify-between gap-y-6 border-b border-textInactiveColor py-6 lg:flex-row">
           <div className="flex w-full flex-row justify-between gap-4 lg:flex-col">
             <Text variant="uppercase">order id</Text>
@@ -17,8 +15,6 @@ export function OrderPageSkeleton() {
             <Skeleton className="h-6 w-32" />
           </div>
         </div>
-
-        {/* Status and Tracking */}
         <div className="flex flex-col items-center justify-between gap-y-6 border-b border-textInactiveColor py-6 lg:flex-row">
           <div className="flex w-full flex-row justify-between gap-4 lg:flex-col">
             <Text variant="uppercase">status</Text>
@@ -29,8 +25,6 @@ export function OrderPageSkeleton() {
             <Skeleton className="h-6 w-32" />
           </div>
         </div>
-
-        {/* Secondary Info */}
         <div className="w-full space-y-6">
           <div className="flex flex-row items-center justify-between border-b border-textInactiveColor py-6">
             <div className="flex w-full flex-col gap-4">
@@ -62,10 +56,7 @@ export function OrderPageSkeleton() {
           </div>
         </div>
       </div>
-
-      {/* Right Section */}
       <div className="w-full space-y-20">
-        {/* Order Summary */}
         <div className="space-y-8">
           <Text variant="uppercase">order summary</Text>
           <div className="space-y-3">
@@ -83,8 +74,6 @@ export function OrderPageSkeleton() {
             </div>
           </div>
         </div>
-
-        {/* Order Products */}
         <div className="space-y-6">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="flex gap-4">

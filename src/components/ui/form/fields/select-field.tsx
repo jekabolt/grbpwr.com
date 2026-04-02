@@ -5,10 +5,11 @@ import Select from "../../select";
 
 type Props = {
   name: string;
-  label: string;
+  label?: string;
   placeholder?: string;
   loading?: boolean;
   className?: string;
+  hideFormMessage?: boolean;
   items: { label: string; value: string }[];
   [k: string]: any;
 };
@@ -20,6 +21,7 @@ export default function SelectField({
   label,
   className,
   disabled,
+  hideFormMessage,
   ...props
 }: Props) {
   const { control, trigger } = useFormContext();
@@ -34,18 +36,21 @@ export default function SelectField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className={disabled ? "text-textInactiveColor" : ""}>
-            {label}
-          </FormLabel>
+          {label && (
+            <FormLabel className={disabled ? "text-textInactiveColor" : ""}>
+              {label}
+            </FormLabel>
+          )}
           <Select
             onValueChange={field.onChange}
             items={items}
             {...field}
             {...props}
+            className={className}
             disabled={loading || disabled}
             onBlur={onBlur}
           />
-          <FormMessage />
+          {!hideFormMessage && <FormMessage />}
         </FormItem>
       )}
     />

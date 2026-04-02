@@ -318,6 +318,8 @@
     "order not found": "commande introuvable"
   },
   "order-info": {
+    "order navigation": "sections commande",
+    "review order": "noter la commande",
     "order info": "informations de commande",
     "order id": "numéro de commande",
     "order date": "date de commande",
@@ -442,6 +444,21 @@
     },
     "orderUuid": {
       "required": "la référence de commande est requise"
+    },
+    "deliveryRating": {
+      "required": "Veuillez choisir la rapidité de livraison."
+    },
+    "packagingRating": {
+      "required": "Veuillez choisir l’état de l’emballage."
+    },
+    "sophisticationRating": {
+      "required": "Veuillez noter le raffinement."
+    },
+    "rating": {
+      "required": "Veuillez noter cet article."
+    },
+    "fitRating": {
+      "required": "Veuillez indiquer la coupe."
     }
   },
   "content": {
@@ -702,5 +719,62 @@
   },
   "empty-hero": {
     "shop now": "Acheter maintenant"
+  },
+  "order-review": {
+    "field required": "Ce champ est obligatoire",
+    "order section": "Votre commande",
+    "delivery speed": "Délai de livraison",
+    "packaging": "État de l’emballage",
+    "sophistication": "Finition",
+    "overall experience": "Expérience globale",
+    "comments": "Commentaire (facultatif)",
+    "enter review": "Rédigez votre avis…",
+    "submit": "Envoyer l’avis",
+    "submitting": "Envoi en cours…",
+    "success": "Merci pour votre avis.",
+    "error": "Envoi impossible. Veuillez réessayer.",
+    "item heading": "Vos articles",
+    "product quality": "Qualité du produit",
+    "fit": "Coupe",
+    "fit select": "Comment était la coupe ?",
+    "recommend": "Recommander",
+    "yes": "oui",
+    "no": "non",
+    "placeholder select": "Choisir",
+    "select fit before submit": "Veuillez indiquer la coupe pour chaque article avant d’envoyer.",
+    "dSpeed": {
+      "MUCH_FASTER_THAN_EXPECTED": "Arrivé tôt",
+      "FASTER_THAN_EXPECTED": "En avance sur le planning",
+      "AS_EXPECTED": "Dans les délais",
+      "SLOWER_THAN_EXPECTED": "Légèrement en retard",
+      "MUCH_SLOWER_THAN_EXPECTED": "En retard"
+    },
+    "pPackaging": {
+      "DAMAGED": "Abîmé",
+      "ACCEPTABLE": "Acceptable",
+      "GOOD": "Bon",
+      "EXCELLENT": "Excellent"
+    },
+    "pRating": {
+      "POOR": "Médiocre",
+      "FAIR": "Moyen",
+      "GOOD": "Bon",
+      "VERY_GOOD": "Très bon",
+      "EXCELLENT": "Excellent"
+    },
+    "pSophistication": {
+      "POOR": "Décevant",
+      "FAIR": "Neutre",
+      "GOOD": "Solide",
+      "VERY_GOOD": "Haut de gamme",
+      "EXCELLENT": "Exceptionnel"
+    },
+    "fFit": {
+      "RUNS_SMALL": "Taille petit",
+      "SLIGHTLY_SMALL": "Légèrement petit",
+      "TRUE_TO_SIZE": "Taille fidèle",
+      "SLIGHTLY_LARGE": "Légèrement grand",
+      "RUNS_LARGE": "Taille grand"
+    }
   }
 }

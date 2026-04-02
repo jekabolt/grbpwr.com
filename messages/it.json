@@ -318,6 +318,8 @@
     "order not found": "ordine non trovato"
   },
   "order-info": {
+    "order navigation": "sezioni ordine",
+    "review order": "recensione ordine",
     "order info": "informazioni ordine",
     "order id": "numero ordine",
     "order date": "data ordine",
@@ -442,6 +444,21 @@
     },
     "orderUuid": {
       "required": "la riferimento dell'ordine è obbligatorio"
+    },
+    "deliveryRating": {
+      "required": "Seleziona la velocità di consegna."
+    },
+    "packagingRating": {
+      "required": "Seleziona le condizioni dell’imballaggio."
+    },
+    "sophisticationRating": {
+      "required": "Valuta la sofisticatezza."
+    },
+    "rating": {
+      "required": "Valuta questo articolo."
+    },
+    "fitRating": {
+      "required": "Seleziona la vestibilità."
     }
   },
   "content": {
@@ -702,5 +719,62 @@
   },
   "empty-hero": {
     "shop now": "Acquista ora"
+  },
+  "order-review": {
+    "field required": "Questo campo è obbligatorio",
+    "order section": "Il tuo ordine",
+    "delivery speed": "Velocità di consegna",
+    "packaging": "Stato dell’imballaggio",
+    "sophistication": "Raffinatezza",
+    "overall experience": "Esperienza complessiva",
+    "comments": "Commento (facoltativo)",
+    "enter review": "Scrivi la tua recensione…",
+    "submit": "Invia recensione",
+    "submitting": "Invio in corso…",
+    "success": "Grazie per la tua recensione.",
+    "error": "Impossibile inviare la recensione. Riprova.",
+    "item heading": "I tuoi articoli",
+    "product quality": "Qualità del prodotto",
+    "fit": "Vestibilità",
+    "fit select": "Com’era la vestibilità?",
+    "recommend": "Consigli",
+    "yes": "sì",
+    "no": "no",
+    "placeholder select": "Seleziona",
+    "select fit before submit": "Seleziona la vestibilità per ogni articolo prima di inviare.",
+    "dSpeed": {
+      "MUCH_FASTER_THAN_EXPECTED": "Arrivato in anticipo",
+      "FASTER_THAN_EXPECTED": "In anticipo sulla consegna",
+      "AS_EXPECTED": "Nei tempi previsti",
+      "SLOWER_THAN_EXPECTED": "Leggermente in ritardo",
+      "MUCH_SLOWER_THAN_EXPECTED": "In ritardo"
+    },
+    "pPackaging": {
+      "DAMAGED": "Danneggiato",
+      "ACCEPTABLE": "Accettabile",
+      "GOOD": "Buono",
+      "EXCELLENT": "Eccellente"
+    },
+    "pRating": {
+      "POOR": "Scarso",
+      "FAIR": "Discreto",
+      "GOOD": "Buono",
+      "VERY_GOOD": "Molto buono",
+      "EXCELLENT": "Eccellente"
+    },
+    "pSophistication": {
+      "POOR": "Deludente",
+      "FAIR": "Neutro",
+      "GOOD": "Solido",
+      "VERY_GOOD": "Di alto livello",
+      "EXCELLENT": "Eccezionale"
+    },
+    "fFit": {
+      "RUNS_SMALL": "Veste stretto",
+      "SLIGHTLY_SMALL": "Leggermente stretto",
+      "TRUE_TO_SIZE": "Fedele alla taglia",
+      "SLIGHTLY_LARGE": "Leggermente largo",
+      "RUNS_LARGE": "Veste largo"
+    }
   }
 }

@@ -318,6 +318,8 @@
     "order not found": "주문을 찾을 수 없습니다"
   },
   "order-info": {
+    "order navigation": "주문 섹션",
+    "review order": "주문 리뷰",
     "order info": "주문 정보",
     "order id": "주문 번호",
     "order date": "주문 날짜",
@@ -442,6 +444,21 @@
     },
     "orderUuid": {
       "required": "주문 참조가 필요합니다"
+    },
+    "deliveryRating": {
+      "required": "배송 속도를 선택해 주세요."
+    },
+    "packagingRating": {
+      "required": "포장 상태를 선택해 주세요."
+    },
+    "sophisticationRating": {
+      "required": "세련됨을 평가해 주세요."
+    },
+    "rating": {
+      "required": "이 상품을 평가해 주세요."
+    },
+    "fitRating": {
+      "required": "핏을 선택해 주세요."
     }
   },
   "content": {
@@ -702,5 +719,62 @@
   },
   "empty-hero": {
     "shop now": "지금 쇼핑하기"
+  },
+  "order-review": {
+    "field required": "필수 항목입니다",
+    "order section": "주문 정보",
+    "delivery speed": "배송 속도",
+    "packaging": "포장 상태",
+    "sophistication": "마감·품질 인상",
+    "overall experience": "전체 경험",
+    "comments": "코멘트(선택)",
+    "enter review": "리뷰를 입력하세요",
+    "submit": "리뷰 제출",
+    "submitting": "제출 중…",
+    "success": "리뷰를 남겨 주셔서 감사합니다.",
+    "error": "제출하지 못했습니다. 다시 시도해 주세요.",
+    "item heading": "주문 상품",
+    "product quality": "제품 품질",
+    "fit": "핏",
+    "fit select": "핏은 어떠셨나요?",
+    "recommend": "추천",
+    "yes": "예",
+    "no": "아니오",
+    "placeholder select": "선택",
+    "select fit before submit": "제출하기 전에 각 상품의 핏을 선택해 주세요.",
+    "dSpeed": {
+      "MUCH_FASTER_THAN_EXPECTED": "훨씬 일찍 도착",
+      "FASTER_THAN_EXPECTED": "일정보다 빠름",
+      "AS_EXPECTED": "일정대로 도착",
+      "SLOWER_THAN_EXPECTED": "약간 지연",
+      "MUCH_SLOWER_THAN_EXPECTED": "지연"
+    },
+    "pPackaging": {
+      "DAMAGED": "파손됨",
+      "ACCEPTABLE": "양호",
+      "GOOD": "좋음",
+      "EXCELLENT": "매우 좋음"
+    },
+    "pRating": {
+      "POOR": "별로",
+      "FAIR": "보통",
+      "GOOD": "좋음",
+      "VERY_GOOD": "매우 좋음",
+      "EXCELLENT": "최고"
+    },
+    "pSophistication": {
+      "POOR": "실망스러움",
+      "FAIR": "애매함",
+      "GOOD": "탄탄함",
+      "VERY_GOOD": "고급스러움",
+      "EXCELLENT": "특출함"
+    },
+    "fFit": {
+      "RUNS_SMALL": "작게 맞음",
+      "SLIGHTLY_SMALL": "약간 작음",
+      "TRUE_TO_SIZE": "사이즈에 맞음",
+      "SLIGHTLY_LARGE": "약간 큼",
+      "RUNS_LARGE": "크게 맞음"
+    }
   }
 }

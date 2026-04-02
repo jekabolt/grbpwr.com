@@ -318,6 +318,8 @@
     "order not found": "order not found"
   },
   "order-info": {
+    "order navigation": "order sections",
+    "review order": "review order",
     "order info": "order info",
     "order id": "order id",
     "order date": "order date",
@@ -337,6 +339,63 @@
     "pending return": "pending return",
     "refund in progress": "refund in progress",
     "unknown": "unknown"
+  },
+  "order-review": {
+    "field required": "This field is required",
+    "order section": "Your order",
+    "delivery speed": "Delivery speed",
+    "packaging": "Packaging condition",
+    "sophistication": "Sophistication",
+    "overall experience": "Overall experience",
+    "comments": "Comments (optional)",
+    "enter review": "enter review",
+    "submit": "Submit review",
+    "submitting": "Submitting…",
+    "success": "Thank you for your review.",
+    "error": "We couldn’t submit your review. Please try again.",
+    "item heading": "Your items",
+    "product quality": "Product quality",
+    "fit": "Fit",
+    "fit select": "How did it fit?",
+    "recommend": "Recommend",
+    "yes": "yes",
+    "no": "no",
+    "placeholder select": "Select",
+    "select fit before submit": "Please select a fit rating for each item before submitting.",
+    "dSpeed": {
+      "MUCH_FASTER_THAN_EXPECTED": "Arrived early",
+      "FASTER_THAN_EXPECTED": "Ahead of schedule",
+      "AS_EXPECTED": "On schedule",
+      "SLOWER_THAN_EXPECTED": "Slightly delayed",
+      "MUCH_SLOWER_THAN_EXPECTED": "Delayed"
+    },
+    "pPackaging": {
+      "DAMAGED": "Damaged",
+      "ACCEPTABLE": "Acceptable",
+      "GOOD": "Good",
+      "EXCELLENT": "Excellent"
+    },
+    "pRating": {
+      "POOR": "Poor",
+      "FAIR": "Fair",
+      "GOOD": "Good",
+      "VERY_GOOD": "Very good",
+      "EXCELLENT": "Excellent"
+    },
+    "pSophistication": {
+      "POOR": "Disappointing",
+      "FAIR": "Neutral",
+      "GOOD": "Solid",
+      "VERY_GOOD": "High-end",
+      "EXCELLENT": "Exceptional"
+    },
+    "fFit": {
+      "RUNS_SMALL": "Runs small",
+      "SLIGHTLY_SMALL": "Slightly small",
+      "TRUE_TO_SIZE": "True to size",
+      "SLIGHTLY_LARGE": "Slightly large",
+      "RUNS_LARGE": "Runs large"
+    }
   },
   "aftersale-services": {
     "aftersale services": "aftersale services",
@@ -442,6 +501,21 @@
     },
     "orderUuid": {
       "required": "order reference is required"
+    },
+    "deliveryRating": {
+      "required": "Please select delivery speed."
+    },
+    "packagingRating": {
+      "required": "Please select packaging condition."
+    },
+    "sophisticationRating": {
+      "required": "Please rate sophistication."
+    },
+    "rating": {
+      "required": "Please rate this item."
+    },
+    "fitRating": {
+      "required": "Please select how this item fits."
     }
   },
   "content": {

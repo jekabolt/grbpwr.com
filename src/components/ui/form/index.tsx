@@ -139,10 +139,15 @@ function FormMessage({
   ref,
   translateError,
   fieldName,
+  /** When false, never show validation output (e.g. optional groups until dirty). */
+  gate,
   ...props
 }: any) {
   const { error, formMessageId, isTouched } = useFormField();
   const { formState } = useFormContext();
+  if (gate === false) {
+    return null;
+  }
   // Only show errors for touched fields or after form submit attempt - avoids showing
   // errors on untouched fields when trigger() validates the whole form (e.g. zodResolver)
   const submitAttempted =

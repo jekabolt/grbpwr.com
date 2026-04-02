@@ -318,6 +318,8 @@
     "order not found": "注文が見つかりません"
   },
   "order-info": {
+    "order navigation": "注文セクション",
+    "review order": "注文をレビュー",
     "order info": "注文情報",
     "order id": "注文番号",
     "order date": "注文日",
@@ -442,6 +444,21 @@
     },
     "orderUuid": {
       "required": "注文番号は必須です"
+    },
+    "deliveryRating": {
+      "required": "配送の速さを選択してください。"
+    },
+    "packagingRating": {
+      "required": "梱包状態を選択してください。"
+    },
+    "sophisticationRating": {
+      "required": "洗練さを評価してください。"
+    },
+    "rating": {
+      "required": "この商品を評価してください。"
+    },
+    "fitRating": {
+      "required": "フィット感を選択してください。"
     }
   },
   "content": {
@@ -702,5 +719,62 @@
   },
   "empty-hero": {
     "shop now": "今すぐ買う"
+  },
+  "order-review": {
+    "field required": "この項目は必須です",
+    "order section": "ご注文",
+    "delivery speed": "配送の速さ",
+    "packaging": "梱包状態",
+    "sophistication": "仕上がり・品格",
+    "overall experience": "総合的な体験",
+    "comments": "コメント（任意）",
+    "enter review": "レビューをご記入ください",
+    "submit": "レビューを送信",
+    "submitting": "送信中…",
+    "success": "レビューありがとうございます。",
+    "error": "送信できませんでした。もう一度お試しください。",
+    "item heading": "ご購入商品",
+    "product quality": "品質",
+    "fit": "サイズ感",
+    "fit select": "サイズ感はいかがでしたか？",
+    "recommend": "おすすめ",
+    "yes": "はい",
+    "no": "いいえ",
+    "placeholder select": "選択",
+    "select fit before submit": "送信する前に、各商品のフィット感を選択してください。",
+    "dSpeed": {
+      "MUCH_FASTER_THAN_EXPECTED": "かなり早く到着",
+      "FASTER_THAN_EXPECTED": "予定より早く到着",
+      "AS_EXPECTED": "予定どおりに到着",
+      "SLOWER_THAN_EXPECTED": "やや遅延",
+      "MUCH_SLOWER_THAN_EXPECTED": "遅延"
+    },
+    "pPackaging": {
+      "DAMAGED": "破損あり",
+      "ACCEPTABLE": "許容範囲",
+      "GOOD": "良い",
+      "EXCELLENT": "非常に良い"
+    },
+    "pRating": {
+      "POOR": "悪い",
+      "FAIR": "普通",
+      "GOOD": "良い",
+      "VERY_GOOD": "とても良い",
+      "EXCELLENT": "最高"
+    },
+    "pSophistication": {
+      "POOR": "期待外れ",
+      "FAIR": "どちらともいえない",
+      "GOOD": "しっかりしている",
+      "VERY_GOOD": "上質",
+      "EXCELLENT": "際立っている"
+    },
+    "fFit": {
+      "RUNS_SMALL": "小さめ",
+      "SLIGHTLY_SMALL": "やや小さめ",
+      "TRUE_TO_SIZE": "表記どおり",
+      "SLIGHTLY_LARGE": "やや大きめ",
+      "RUNS_LARGE": "大きめ"
+    }
   }
 }

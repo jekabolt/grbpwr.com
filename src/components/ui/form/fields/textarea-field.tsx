@@ -28,6 +28,7 @@ export default function TextareaField({
   srLabel,
   maxLength,
   showCharCount = false,
+  rows = 4,
   ...props
 }: Props) {
   const { control, trigger, watch } = useFormContext();

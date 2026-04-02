@@ -5,12 +5,15 @@ import { useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
+import { useTranslations } from "next-intl";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { SubmissionToaster } from "@/components/ui/toaster";
 
 import NewOrderForm from "./new-order-form";
+import { useStripeRedirect } from "./new-order-form/hooks/useStripeRedirect";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
@@ -25,6 +28,11 @@ export function CheckoutFormWrapper() {
   const products = useCart((s) => s.products);
   const { dictionary } = useDataContext();
   const { currentCountry, languageId } = useTranslationsStore((state) => state);
+  const tToaster = useTranslations("toaster");
+
+  const { toastOpen, toastMessage, setToastOpen } = useStripeRedirect({
+    paymentFailedMessage: tToaster("payment_failed"),
+  });
 
   const productsRef = useRef(products);
   productsRef.current = products;
@@ -98,19 +106,26 @@ export function CheckoutFormWrapper() {
   };
 
   return (
-    <Elements
-      stripe={stripePromise}
-      options={{
-        mode: "payment",
-        amount: orderAmount,
-        currency: currency?.toLowerCase(),
-        appearance,
-        paymentMethodCreation: "manual",
-        locale: (LANGUAGE_ID_TO_LOCALE[languageId] ||
-          "en") as StripeElementLocale,
-      }}
-    >
-      <NewOrderForm onAmountChange={handleAmountChange} />
-    </Elements>
+    <>
+      <Elements
+        stripe={stripePromise}
+        options={{
+          mode: "payment",
+          amount: orderAmount,
+          currency: currency?.toLowerCase(),
+          appearance,
+          paymentMethodCreation: "manual",
+          locale: (LANGUAGE_ID_TO_LOCALE[languageId] ||
+            "en") as StripeElementLocale,
+        }}
+      >
+        <NewOrderForm onAmountChange={handleAmountChange} />
+      </Elements>
+      <SubmissionToaster
+        open={toastOpen}
+        message={toastMessage}
+        onOpenChange={setToastOpen}
+      />
+    </>
   );
 }

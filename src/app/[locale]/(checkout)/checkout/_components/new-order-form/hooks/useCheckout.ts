@@ -8,7 +8,6 @@ import { useEffect, useRef, useState } from "react";
 interface UseCheckoutEffectsProps {
     order: any;
     products: any[];
-    loading: boolean;
     form: any;
     countryCode: string;
     onAmountChange: (amount: number) => void;
@@ -18,7 +17,6 @@ interface UseCheckoutEffectsProps {
 export const useCheckoutEffects = ({
     order,
     products,
-    loading,
     form,
     countryCode,
     onAmountChange,
@@ -34,8 +32,6 @@ export const useCheckoutEffects = ({
     const { currentCountry, languageId } = useTranslationsStore((state) => state);
 
     useEffect(() => {
-        if (loading) return;
-
         const shouldRedirect =
             products.length === 0 ||
             (order?.validItems?.length === 0 && lastValidatedCountRef.current !== null);
@@ -74,7 +70,7 @@ export const useCheckoutEffects = ({
         }
 
         lastValidatedCountRef.current = currentCount;
-    }, [order?.validItems, products.length, router, loading]);
+    }, [order?.validItems, products.length, router]);
 
     useEffect(() => {
         if (order?.totalSale?.value) {

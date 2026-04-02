@@ -318,6 +318,8 @@
     "order not found": "未找到订单"
   },
   "order-info": {
+    "order navigation": "订单版块",
+    "review order": "评价订单",
     "order info": "订单信息",
     "order id": "订单号",
     "order date": "订单日期",
@@ -442,6 +444,21 @@
     },
     "orderUuid": {
       "required": "订单号是必需的"
+    },
+    "deliveryRating": {
+      "required": "请选择配送速度。"
+    },
+    "packagingRating": {
+      "required": "请选择包装状况。"
+    },
+    "sophisticationRating": {
+      "required": "请为精致度评分。"
+    },
+    "rating": {
+      "required": "请为该商品评分。"
+    },
+    "fitRating": {
+      "required": "请选择合身度。"
     }
   },
   "content": {
@@ -702,5 +719,62 @@
   },
   "empty-hero": {
     "shop now": "立即购买"
+  },
+  "order-review": {
+    "field required": "此项为必填",
+    "order section": "您的订单",
+    "delivery speed": "配送速度",
+    "packaging": "包装状况",
+    "sophistication": "品质与做工印象",
+    "overall experience": "整体体验",
+    "comments": "留言（选填）",
+    "enter review": "请填写评价内容",
+    "submit": "提交评价",
+    "submitting": "提交中…",
+    "success": "感谢您的评价。",
+    "error": "提交失败，请重试。",
+    "item heading": "所购商品",
+    "product quality": "产品质量",
+    "fit": "尺码合身度",
+    "fit select": "合身度如何？",
+    "recommend": "是否推荐",
+    "yes": "是",
+    "no": "否",
+    "placeholder select": "请选择",
+    "select fit before submit": "提交前请为每件商品选择合身度。",
+    "dSpeed": {
+      "MUCH_FASTER_THAN_EXPECTED": "提早很多送达",
+      "FASTER_THAN_EXPECTED": "比预定早",
+      "AS_EXPECTED": "按预定时间",
+      "SLOWER_THAN_EXPECTED": "略有延迟",
+      "MUCH_SLOWER_THAN_EXPECTED": "延迟"
+    },
+    "pPackaging": {
+      "DAMAGED": "有损坏",
+      "ACCEPTABLE": "尚可",
+      "GOOD": "良好",
+      "EXCELLENT": "非常好"
+    },
+    "pRating": {
+      "POOR": "差",
+      "FAIR": "一般",
+      "GOOD": "好",
+      "VERY_GOOD": "很好",
+      "EXCELLENT": "极好"
+    },
+    "pSophistication": {
+      "POOR": "令人失望",
+      "FAIR": "中规中矩",
+      "GOOD": "扎实",
+      "VERY_GOOD": "高级",
+      "EXCELLENT": "出众"
+    },
+    "fFit": {
+      "RUNS_SMALL": "偏小",
+      "SLIGHTLY_SMALL": "略偏小",
+      "TRUE_TO_SIZE": "尺码标准",
+      "SLIGHTLY_LARGE": "略偏大",
+      "RUNS_LARGE": "偏大"
+    }
   }
 }
