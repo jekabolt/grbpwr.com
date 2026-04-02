@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useCallback, useMemo, useRef, useState } from "react";
+import { use, useCallback, useMemo, useState } from "react";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -94,24 +94,11 @@ export function OrderReviewPanel({
     return b64Email;
   }, [orderData?.buyer?.buyerInsert?.email, b64Email]);
 
-  const desktopItemsScrollRef = useRef<HTMLDivElement>(null);
-  const mobileItemsListRef = useRef<HTMLDivElement>(null);
   const [fitBlinkingIndices, setFitBlinkingIndices] = useState<number[]>([]);
 
   const triggerFitBlink = useCallback((indices: number[]) => {
     setFitBlinkingIndices(indices);
     setTimeout(() => setFitBlinkingIndices([]), FIT_RATING_BLINK_MS);
-  }, []);
-
-  const scrollToFirstReviewRow = useCallback((index: number) => {
-    if (typeof window === "undefined") return;
-    const desktop = window.matchMedia("(min-width: 1024px)").matches;
-    const root = desktop
-      ? desktopItemsScrollRef.current
-      : mobileItemsListRef.current;
-    root
-      ?.querySelector(`[data-order-review-row="${index}"]`)
-      ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, []);
 
   const onSubmitInvalid: SubmitErrorHandler<OrderReviewFormInput> = useCallback(
@@ -127,10 +114,9 @@ export function OrderReviewPanel({
         setToastMessage(t("select fit before submit"));
         setToastOpen(true);
         triggerFitBlink(indices);
-        scrollToFirstReviewRow(indices[0]!);
       }
     },
-    [scrollToFirstReviewRow, t, triggerFitBlink],
+    [t, triggerFitBlink],
   );
 
   const submitReview = useCallback(
