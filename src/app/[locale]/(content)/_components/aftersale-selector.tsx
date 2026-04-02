@@ -43,7 +43,7 @@ export default function AftersaleSelector<T extends FieldValues>({
             <div
               className={cn(
                 useFiveGrid
-                  ? "grid w-full grid-cols-6 gap-2 sm:gap-3 lg:flex lg:flex-wrap lg:gap-3"
+                  ? "grid w-full grid-cols-6 gap-3"
                   : "flex flex-wrap gap-3",
                 className,
               )}

@@ -51,7 +51,7 @@ function RecommendCheckboxes({
       name={name}
       render={({ field }) => (
         <FormItem className={cn("flex flex-col gap-1", className)}>
-          <div className="flex flex-row justify-between gap-2 lg:flex-col">
+          <div className="flex flex-row justify-between gap-2">
             <Text className="text-right" variant="uppercase">
               {t("recommend")}
             </Text>
@@ -178,17 +178,12 @@ export function OrderReviewProductRow({
                   name={`itemReviews.${itemIndex}.fitRating`}
                   label={""}
                   items={fitItems}
+                  placeholder={t("placeholder select")}
+                  className="[&[data-placeholder]]:uppercase"
                   loading={disabled}
                   fullWidth
                 />
               </div>
-            </div>
-            <div className="hidden lg:block">
-              <RecommendCheckboxes
-                className="shrink-0"
-                name={`itemReviews.${itemIndex}.recommend`}
-                disabled={disabled}
-              />
             </div>
           </div>
         </div>
@@ -202,13 +197,11 @@ export function OrderReviewProductRow({
         disabled={disabled}
         fiveOptionMobileGrid
       />
-      <div className="block lg:hidden">
-        <RecommendCheckboxes
-          className="shrink-0"
-          name={`itemReviews.${itemIndex}.recommend`}
-          disabled={disabled}
-        />
-      </div>
+      <RecommendCheckboxes
+        className="shrink-0"
+        name={`itemReviews.${itemIndex}.recommend`}
+        disabled={disabled}
+      />
     </div>
   );
 }

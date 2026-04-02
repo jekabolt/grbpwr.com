@@ -18,9 +18,9 @@ import AftersaleSelector from "@/app/[locale]/(content)/_components/aftersale-se
 import { MobileOrderReviewSummary } from "./mobile-order-review-summary";
 import { OrderReviewProductRow } from "./order-review-product-row";
 import {
+  buildOrderReviewDefaultValues,
   buildOrderReviewFormSchema,
   DELIVERY_SPEED_VALUES,
-  ORDER_REVIEW_DEFAULT_FIT_RATING,
   PACKAGING_VALUES,
   PRODUCT_RATING_VALUES,
   REVIEW_ENUM_PREFIX,
@@ -70,22 +70,13 @@ export function OrderReviewPanel({
     [t, validItems.length],
   );
 
-  const defaultValues = useMemo((): OrderReviewFormInput => {
-    return {
-      orderReview: {
-        deliveryRating: "",
-        packagingRating: "",
-        sophisticationRating: "",
-        reviewText: "",
-      },
-      itemReviews: validItems.map((it) => ({
-        orderItemId: it.id as number,
-        rating: "",
-        fitRating: ORDER_REVIEW_DEFAULT_FIT_RATING,
-        recommend: undefined,
-      })),
-    };
-  }, [validItems]);
+  const defaultValues = useMemo(
+    (): OrderReviewFormInput =>
+      buildOrderReviewDefaultValues(
+        validItems.map((it) => ({ id: it.id as number })),
+      ),
+    [validItems],
+  );
 
   const form = useForm<OrderReviewFormInput>({
     resolver: zodResolver(formSchema),

@@ -42,6 +42,7 @@ export default function SelectField({
             items={items}
             {...field}
             {...props}
+            className={className}
             disabled={loading || disabled}
             onBlur={onBlur}
           />

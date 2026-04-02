@@ -38,9 +38,6 @@ export const FIT_SCALE_VALUES = [
   "FIT_SCALE_ENUM_RUNS_LARGE",
 ] as const;
 
-export const ORDER_REVIEW_DEFAULT_FIT_RATING =
-  "FIT_SCALE_ENUM_TRUE_TO_SIZE" satisfies (typeof FIT_SCALE_VALUES)[number];
-
 function inConst<T extends readonly string[]>(values: T, v: string): v is T[number] {
   return (values as readonly string[]).includes(v);
 }
@@ -86,7 +83,7 @@ export function buildOrderReviewDefaultValues(
     itemReviews: items.map((it) => ({
       orderItemId: it.id,
       rating: "",
-      fitRating: ORDER_REVIEW_DEFAULT_FIT_RATING,
+      fitRating: "",
       recommend: undefined,
     })),
   };
