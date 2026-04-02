@@ -7,7 +7,7 @@ import {
   common_ShipmentCarrierPrice,
   common_ShippingRegion,
 } from "@/api/proto-http/frontend";
-import { COUNTRIES_BY_REGION } from "@/constants";
+import { COUNTRIES_BY_REGION, LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
 import { CheckoutData } from "./schema";
 
@@ -50,7 +50,6 @@ export function isCarrierEligibleForRegion(
   return allowedRegions.includes(region);
 }
 
-/** Get carrier price for given currency. Falls back to first price if no match. */
 export function getCarrierPriceForCurrency(
   carrier: common_ShipmentCarrier,
   currency: string,
@@ -69,6 +68,47 @@ export function getFieldName(
   field: string,
 ): string {
   return prefix ? `${prefix}.${field}` : field;
+}
+
+export function getCheckoutLocalePath(
+  countryCode: string | undefined,
+  languageId: number,
+): { country: string; locale: string } {
+  return {
+    country: countryCode?.toLowerCase() || "gb",
+    locale: LANGUAGE_ID_TO_LOCALE[languageId] || "en",
+  };
+}
+
+export function buildStripeCheckoutReturnUrl(params: {
+  origin: string;
+  countryCode: string | undefined;
+  languageId: number;
+  orderUuid: string;
+  emailBase64: string;
+}): string {
+  const { country, locale } = getCheckoutLocalePath(
+    params.countryCode,
+    params.languageId,
+  );
+  return `${params.origin}/${country}/${locale}/checkout?order_uuid=${params.orderUuid}&email=${params.emailBase64}`;
+}
+
+export function buildOrderConfirmationUrl(params: {
+  countryCode: string | undefined;
+  languageId: number;
+  orderUuid: string;
+  emailBase64: string;
+  redirectStatus?: "succeeded";
+}): string {
+  const { country, locale } = getCheckoutLocalePath(
+    params.countryCode,
+    params.languageId,
+  );
+  const suffix = params.redirectStatus
+    ? `?redirect_status=${params.redirectStatus}`
+    : "";
+  return `/${country}/${locale}/order/${params.orderUuid}/${params.emailBase64}${suffix}`;
 }
 
 export function mapFormFieldToOrderDataFormat(

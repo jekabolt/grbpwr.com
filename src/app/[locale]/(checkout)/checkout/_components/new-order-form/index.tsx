@@ -23,7 +23,6 @@ import { useCheckoutFormAnalytics } from "./hooks/useCheckoutFormAnalytics";
 import { useCheckoutSubmit } from "./hooks/useCheckoutSubmit";
 import { useComplimentaryShippingToast } from "./hooks/useComplimentaryShippingToast";
 import { useOrderPersistence } from "./hooks/useOrderPersistence";
-import { useStripeRedirect } from "./hooks/useStripeRedirect";
 import { useValidatedOrder } from "./hooks/useValidatedOrder";
 import { MobileOrderSummary } from "./mobile-order-summary";
 import { OrderProducts } from "./order-products";
@@ -57,7 +56,10 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   });
 
   const { order, validateItems, orderCurrency } = useValidatedOrder(form);
-  const { clearFormData } = useOrderPersistence(form, currentCountry.countryCode);
+  const { clearFormData } = useOrderPersistence(
+    form,
+    currentCountry.countryCode,
+  );
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
   const {
@@ -81,18 +83,12 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     handleFormChange,
   });
 
-  useStripeRedirect({
-    setToastMessage,
-    setOrderModifiedToastOpen,
-    paymentFailedMessage: tToaster("payment_failed"),
-  });
-
   const {
     loading,
     isPaymentElementComplete,
-    setIsPaymentElementComplete,
     paymentMethod,
     isPaymentFieldsValid,
+    setIsPaymentElementComplete,
     handleValidSubmit,
     handleSubmitInvalid,
   } = useCheckoutSubmit({
@@ -104,15 +100,15 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     contactRef: contactRef as React.RefObject<HTMLDivElement | null>,
     shippingRef: shippingRef as React.RefObject<HTMLDivElement | null>,
     paymentRef: paymentRef as React.RefObject<HTMLDivElement | null>,
+    fillRequiredFieldsMessage: tToaster("fill_required_fields"),
+    paymentFailedMessage: tToaster("payment_failed"),
+    resolveToasterMessage: tToaster,
     isGroupOpen,
     handleGroupToggle,
     validateItems,
     clearFormData,
     setToastMessage,
     setOrderModifiedToastOpen,
-    fillRequiredFieldsMessage: tToaster("fill_required_fields"),
-    paymentFailedMessage: tToaster("payment_failed"),
-    resolveToasterMessage: tToaster,
   });
 
   useCheckoutFormAnalytics({
@@ -200,7 +196,9 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                     form={form}
                     loading={loading}
                     validateItems={validateItems}
-                    currency={orderCurrency || currentCountry.currencyKey || "EUR"}
+                    currency={
+                      orderCurrency || currentCountry.currencyKey || "EUR"
+                    }
                   />
                   <PriceSummary
                     form={form}

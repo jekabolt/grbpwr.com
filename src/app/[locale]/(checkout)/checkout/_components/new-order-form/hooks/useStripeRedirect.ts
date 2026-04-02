@@ -1,26 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
+import { buildOrderConfirmationUrl } from "../utils";
+
 interface UseStripeRedirectProps {
-  setToastMessage: (msg: string) => void;
-  setOrderModifiedToastOpen: (open: boolean) => void;
   paymentFailedMessage: string;
 }
 
-export function useStripeRedirect({
-  setToastMessage,
-  setOrderModifiedToastOpen,
-  paymentFailedMessage,
-}: UseStripeRedirectProps) {
+export function useStripeRedirect({ paymentFailedMessage }: UseStripeRedirectProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
   const { currentCountry, languageId } = useTranslationsStore((state) => state);
   const { handlePaymentFailed } = useCheckoutAnalytics();
+
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     const redirectStatus = searchParams.get("redirect_status");
@@ -30,9 +28,13 @@ export function useStripeRedirect({
     if (!redirectStatus) return;
 
     if (redirectStatus === "succeeded" && orderUuid && email) {
-      const country = currentCountry.countryCode?.toLowerCase() || "gb";
-      const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
-      window.location.href = `/${country}/${locale}/order/${orderUuid}/${email}?redirect_status=succeeded`;
+      window.location.href = buildOrderConfirmationUrl({
+        countryCode: currentCountry.countryCode,
+        languageId,
+        orderUuid,
+        emailBase64: email,
+        redirectStatus: "succeeded",
+      });
       return;
     }
 
@@ -61,7 +63,7 @@ export function useStripeRedirect({
       }
 
       setToastMessage(paymentFailedMessage);
-      setOrderModifiedToastOpen(true);
+      setToastOpen(true);
 
       const timer = window.setTimeout(() => {
         router.replace(pathname);
@@ -74,10 +76,10 @@ export function useStripeRedirect({
     pathname,
     router,
     paymentFailedMessage,
-    setToastMessage,
-    setOrderModifiedToastOpen,
     currentCountry.countryCode,
     languageId,
     handlePaymentFailed,
   ]);
+
+  return { toastOpen, toastMessage, setToastOpen };
 }
