@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type RefCallback } from "react";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import {
   FIT_SCALE_VALUES,
@@ -125,11 +125,13 @@ export function OrderReviewProductRow({
   itemIndex,
   disabled,
   shouldBlinkFit,
+  rowRef,
 }: {
   product: common_OrderItem;
   itemIndex: number;
   disabled?: boolean;
   shouldBlinkFit?: boolean;
+  rowRef?: RefCallback<HTMLDivElement>;
 }) {
   const { control } = useFormContext<OrderReviewFormInput>();
   const { dirtyFields } = useFormState({ control });
@@ -161,7 +163,7 @@ export function OrderReviewProductRow({
     t(`pRating.${value.replace(REVIEW_ENUM_PREFIX.productRating, "")}`);
 
   return (
-    <div className="space-y-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0">
+    <div ref={rowRef} className="space-y-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0">
       <div className="flex items-stretch gap-x-3">
         <div className="relative h-full min-w-[90px] shrink-0 self-start">
           <Image

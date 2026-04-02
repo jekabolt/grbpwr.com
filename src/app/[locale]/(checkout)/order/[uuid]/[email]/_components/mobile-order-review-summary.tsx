@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type RefCallback } from "react";
 import type { common_OrderItem } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
@@ -19,6 +19,10 @@ type Props = {
   itemsTitle: string;
   disabled?: boolean;
   fitBlinkingIndices?: number[];
+  /** When set with `onItemsSectionOpenChange`, collapsible open state is controlled by the parent. */
+  itemsSectionOpen?: boolean;
+  onItemsSectionOpenChange?: (open: boolean) => void;
+  rowRef?: (lineItemIndex: number) => RefCallback<HTMLDivElement> | undefined;
 };
 
 export function MobileOrderReviewSummary({
@@ -26,9 +30,23 @@ export function MobileOrderReviewSummary({
   itemsTitle,
   disabled,
   fitBlinkingIndices = [],
+  itemsSectionOpen,
+  onItemsSectionOpenChange,
+  rowRef,
 }: Props) {
   const t = useTranslations("checkout");
-  const [isOpen, setIsOpen] = useState(true);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(true);
+  const controlled = itemsSectionOpen !== undefined;
+  const isOpen = controlled ? itemsSectionOpen : uncontrolledOpen;
+
+  const handleToggle = () => {
+    const next = !isOpen;
+    if (controlled) {
+      onItemsSectionOpenChange?.(next);
+    } else {
+      setUncontrolledOpen(next);
+    }
+  };
 
   return (
     <FieldsGroupContainer
@@ -37,7 +55,7 @@ export function MobileOrderReviewSummary({
       signPosition="before"
       title={`${isOpen ? t("hide") : t("show")} ${itemsTitle}`}
       isOpen={isOpen}
-      onToggle={() => setIsOpen((prev) => !prev)}
+      onToggle={handleToggle}
     >
       <div className="mt-6 w-full space-y-3">
         {orderItemReviewRows.map((row) => (
@@ -47,6 +65,7 @@ export function MobileOrderReviewSummary({
             itemIndex={row.lineItemIndex}
             disabled={disabled}
             shouldBlinkFit={fitBlinkingIndices.includes(row.lineItemIndex)}
+            rowRef={rowRef?.(row.lineItemIndex)}
           />
         ))}
       </div>

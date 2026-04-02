@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useCallback, useMemo } from "react";
+import { use, useCallback, useMemo, useState } from "react";
 import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 import type { SubmitErrorHandler } from "react-hook-form";
@@ -15,6 +15,7 @@ import AftersaleSelector from "@/app/[locale]/(content)/_components/aftersale-se
 import type { OrderReviewFormInput } from "../utils/order-review-schema";
 import { useFitRatingBlink } from "../utils/use-fit-rating-blink";
 import { useOrderReviewForm } from "../utils/use-order-review-form";
+import { useOrderReviewItemRowScroll } from "../utils/use-order-review-item-row-scroll";
 import { useOrderReviewSubmit } from "../utils/use-order-review-submit";
 import { MobileOrderReviewSummary } from "./mobile-order-review-summary";
 import { OrderReviewProductRow } from "./order-review-product-row";
@@ -67,6 +68,10 @@ export function OrderReviewPanel({
   });
 
   const { fitBlinkingIndices, triggerFitBlink } = useFitRatingBlink();
+  const [mobileItemsSectionOpen, setMobileItemsSectionOpen] = useState(true);
+
+  const { mobileRowRefByIndex, desktopRowRefByIndex } =
+    useOrderReviewItemRowScroll(orderItemReviewRows, fitBlinkingIndices);
 
   const onSubmitInvalid: SubmitErrorHandler<OrderReviewFormInput> = useCallback(
     (errors) => {
@@ -78,6 +83,7 @@ export function OrderReviewPanel({
         });
       }
       if (indices.length > 0) {
+        setMobileItemsSectionOpen(true);
         showToast(t("select fit before submit"));
         triggerFitBlink(indices);
       }
@@ -144,6 +150,9 @@ export function OrderReviewPanel({
                       itemsTitle={t("item heading")}
                       disabled={submitting}
                       fitBlinkingIndices={fitBlinkingIndices}
+                      itemsSectionOpen={mobileItemsSectionOpen}
+                      onItemsSectionOpenChange={setMobileItemsSectionOpen}
+                      rowRef={(idx) => mobileRowRefByIndex.get(idx)}
                     />
                   </div>
                   <div className="hidden w-full space-y-3 overflow-y-auto lg:block lg:max-h-[50vh] lg:min-h-0 lg:flex-1">
@@ -156,6 +165,7 @@ export function OrderReviewPanel({
                         shouldBlinkFit={fitBlinkingIndices.includes(
                           row.lineItemIndex,
                         )}
+                        rowRef={desktopRowRefByIndex.get(row.lineItemIndex)}
                       />
                     ))}
                   </div>
