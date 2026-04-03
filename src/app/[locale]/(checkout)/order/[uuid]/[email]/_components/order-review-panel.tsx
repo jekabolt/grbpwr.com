@@ -198,7 +198,7 @@ export function OrderReviewPanel({
               </div>
             </div>
           </div>
-          <div className="sticky bottom-2.5 mt-10 block shrink-0 lg:hidden">
+          <div className="sticky bottom-2.5 z-10 mt-10 block shrink-0 lg:hidden">
             <Button
               type="submit"
               variant="main"
