@@ -163,7 +163,10 @@ export function OrderReviewProductRow({
     t(`pRating.${value.replace(REVIEW_ENUM_PREFIX.productRating, "")}`);
 
   return (
-    <div ref={rowRef} className="space-y-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0">
+    <div
+      ref={rowRef}
+      className="space-y-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0"
+    >
       <div className="flex items-stretch gap-x-3">
         <div className="relative h-full min-w-[90px] shrink-0 self-start">
           <Image
@@ -190,10 +193,11 @@ export function OrderReviewProductRow({
                   </Text>
                 )}
               </div>
-              <div className="relative">
+              <div className="relative flex items-start gap-3 bg-bgColor">
                 {shouldBlinkFit && itemRowDirty && (
                   <Overlay color="highlight" cover="container" />
                 )}
+                <Text variant="uppercase">{t("fit")}:</Text>
                 <div className="min-w-32">
                   <SelectField
                     name={`itemReviews.${itemIndex}.fitRating`}
