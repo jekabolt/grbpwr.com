@@ -25,6 +25,7 @@ export function useOrderReviewSubmit({
   t: Translations;
 }) {
   const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
@@ -63,10 +64,11 @@ export function useOrderReviewSubmit({
                 orderItemId: r.orderItemId,
                 rating: r.rating as common_ProductRatingEnum,
                 fitRating: r.fitRating as common_FitScaleEnum,
-                recommend: r.recommend ?? undefined,
+                recommend: r.recommend,
               }))
               : undefined,
         });
+        setSubmitted(true);
         showToast(t("success"));
       } catch (e) {
         console.error(e);
@@ -80,6 +82,7 @@ export function useOrderReviewSubmit({
 
   return {
     submitting,
+    submitted,
     toastOpen,
     toastMessage,
     setToastOpen,

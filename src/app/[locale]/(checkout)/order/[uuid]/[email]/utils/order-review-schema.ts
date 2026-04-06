@@ -49,6 +49,9 @@ export function buildOrderReviewFormSchema(required: string, itemCount: number) 
             if (!inConst(FIT_SCALE_VALUES, data.fitRating)) {
               ctx.addIssue({ code: z.ZodIssueCode.custom, message: required, path: ["fitRating"] });
             }
+            if (data.recommend === undefined) {
+              ctx.addIssue({ code: z.ZodIssueCode.custom, message: required, path: ["recommend"] });
+            }
           }),
       )
       .length(itemCount),

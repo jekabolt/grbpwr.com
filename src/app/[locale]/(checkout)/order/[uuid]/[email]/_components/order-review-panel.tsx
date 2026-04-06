@@ -57,6 +57,7 @@ export function OrderReviewPanel({
 
   const {
     submitting,
+    submitted,
     toastOpen,
     toastMessage,
     setToastOpen,
@@ -70,6 +71,7 @@ export function OrderReviewPanel({
   });
 
   const { fitBlinkingIndices, triggerFitBlink } = useFitRatingBlink();
+  const { fitBlinkingIndices: recommendBlinkingIndices, triggerFitBlink: triggerRecommendBlink } = useFitRatingBlink();
   const [mobileItemsSectionOpen, setMobileItemsSectionOpen] = useState(true);
 
   const { mobileRowRefByIndex, desktopRowRefByIndex } =
@@ -83,23 +85,26 @@ export function OrderReviewPanel({
 
   const onSubmitInvalid: SubmitErrorHandler<OrderReviewFormInput> = useCallback(
     (errors) => {
-      const indices: number[] = [];
+      const fitIndices: number[] = [];
+      const recommendIndices: number[] = [];
       const rows = errors.itemReviews;
       if (Array.isArray(rows)) {
         rows.forEach((row, i) => {
-          if (row?.fitRating) indices.push(i);
+          if (row?.fitRating) fitIndices.push(i);
+          if (row?.recommend) recommendIndices.push(i);
         });
       }
-      if (indices.length > 0) {
+      if (fitIndices.length > 0 || recommendIndices.length > 0) {
         setMobileItemsSectionOpen(true);
         showToast(t("select fit before submit"));
-        triggerFitBlink(indices);
+        if (fitIndices.length > 0) triggerFitBlink(fitIndices);
+        if (recommendIndices.length > 0) triggerRecommendBlink(recommendIndices);
       }
     },
-    [showToast, t, triggerFitBlink],
+    [showToast, t, triggerFitBlink, triggerRecommendBlink],
   );
 
-  const alreadyReviewed = !!orderData?.orderReview?.orderReview;
+  const alreadyReviewed = !!orderData?.orderReview?.orderReview || submitted;
 
   if (!orderData) {
     return null;
@@ -175,6 +180,7 @@ export function OrderReviewPanel({
                       itemsTitle={t("item heading")}
                       disabled={submitting || alreadyReviewed}
                       fitBlinkingIndices={fitBlinkingIndices}
+                      recommendBlinkingIndices={recommendBlinkingIndices}
                       itemsSectionOpen={mobileItemsSectionOpen}
                       onItemsSectionOpenChange={setMobileItemsSectionOpen}
                       rowRef={(idx) => mobileRowRefByIndex.get(idx)}
@@ -188,9 +194,8 @@ export function OrderReviewPanel({
                         itemIndex={row.lineItemIndex}
                         disabled={submitting || alreadyReviewed}
                         length={orderItemReviewRows.length}
-                        shouldBlinkFit={fitBlinkingIndices.includes(
-                          row.lineItemIndex,
-                        )}
+                        shouldBlinkFit={fitBlinkingIndices.includes(row.lineItemIndex)}
+                        shouldBlinkRecommend={recommendBlinkingIndices.includes(row.lineItemIndex)}
                         rowRef={desktopRowRefByIndex.get(row.lineItemIndex)}
                       />
                     ))}

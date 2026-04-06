@@ -15,12 +15,7 @@ import { useFormContext, useFormState } from "react-hook-form";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import Checkbox from "@/components/ui/checkbox";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import SelectField from "@/components/ui/form/fields/select-field";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -34,15 +29,15 @@ function RecommendCheckboxes({
   name,
   disabled,
   className,
-  formMessageGate,
+  shouldBlink,
 }: {
   name: Path<OrderReviewFormInput>;
   disabled?: boolean;
   className?: string;
   formMessageGate?: boolean;
+  shouldBlink?: boolean;
 }) {
   const t = useTranslations("order-review");
-  const te = useTranslations("errors");
   const { control, trigger } = useFormContext<OrderReviewFormInput>();
   const nameStr = String(name);
   const yesId = `${nameStr}__yes`;
@@ -53,8 +48,9 @@ function RecommendCheckboxes({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={cn("flex flex-col gap-1", className)}>
+        <FormItem className={cn("relative flex flex-col gap-1", className)}>
           <div className="flex flex-row justify-between gap-2">
+            {shouldBlink && <Overlay color="highlight" cover="container" />}
             <Text className="text-right" variant="uppercase">
               {t("recommend")}
             </Text>
@@ -109,11 +105,6 @@ function RecommendCheckboxes({
               </div>
             </div>
           </div>
-          <FormMessage
-            translateError={te}
-            fieldName={nameStr}
-            gate={formMessageGate}
-          />
         </FormItem>
       )}
     />
@@ -125,6 +116,7 @@ export function OrderReviewProductRow({
   itemIndex,
   disabled,
   shouldBlinkFit,
+  shouldBlinkRecommend,
   mobileSummaryFitSelect = false,
   length,
   rowRef,
@@ -133,6 +125,7 @@ export function OrderReviewProductRow({
   itemIndex: number;
   disabled?: boolean;
   shouldBlinkFit?: boolean;
+  shouldBlinkRecommend?: boolean;
   mobileSummaryFitSelect?: boolean;
   length?: number;
   rowRef?: RefCallback<HTMLDivElement>;
@@ -258,7 +251,8 @@ export function OrderReviewProductRow({
         className="shrink-0"
         name={`itemReviews.${itemIndex}.recommend`}
         disabled={disabled}
-        formMessageGate={itemRowDirty}
+        // formMessageGate={itemRowDirty}
+        shouldBlink={shouldBlinkRecommend}
       />
     </div>
   );
