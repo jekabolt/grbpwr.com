@@ -19,6 +19,7 @@ type Props = {
   itemsTitle: string;
   disabled?: boolean;
   fitBlinkingIndices?: number[];
+  recommendBlinkingIndices?: number[];
   itemsSectionOpen?: boolean;
   onItemsSectionOpenChange?: (open: boolean) => void;
   rowRef?: (lineItemIndex: number) => RefCallback<HTMLDivElement> | undefined;
@@ -29,6 +30,7 @@ export function MobileOrderReviewSummary({
   itemsTitle,
   disabled,
   fitBlinkingIndices = [],
+  recommendBlinkingIndices = [],
   itemsSectionOpen,
   onItemsSectionOpenChange,
   rowRef,
@@ -64,6 +66,7 @@ export function MobileOrderReviewSummary({
             itemIndex={row.lineItemIndex}
             disabled={disabled}
             shouldBlinkFit={fitBlinkingIndices.includes(row.lineItemIndex)}
+            shouldBlinkRecommend={recommendBlinkingIndices.includes(row.lineItemIndex)}
             mobileSummaryFitSelect
             rowRef={rowRef?.(row.lineItemIndex)}
           />
