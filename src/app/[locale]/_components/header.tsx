@@ -14,6 +14,7 @@ import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
 
 import { HeaderLeftNav } from "./header-left-nav";
 import { useAnnounce } from "./useAnnounce";
+import { useAnnounceVisibility } from "./useAnnounceVisibility";
 import { useHeaderVisibility } from "./useHeaderVisibility";
 
 export function Header({
@@ -29,8 +30,8 @@ export function Header({
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
   const itemsQuantity = Object.keys(products).length;
-  const { isVisible, isMobile, isAnnounceVisible, isAtTop } =
-    useHeaderVisibility();
+  const { isVisible, isMobile, isAtTop } = useHeaderVisibility();
+  const { isVisible: isAnnounceVisible } = useAnnounceVisibility();
   const { languageId } = useTranslationsStore((state) => state);
   const announceTranslation = dictionary?.announce?.translations?.find(
     (t) => t.languageId === languageId,

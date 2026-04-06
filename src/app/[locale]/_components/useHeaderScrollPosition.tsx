@@ -36,7 +36,7 @@ export function useHeaderScrollPosition() {
       } else {
         upAccumulatorRef.current += Math.abs(delta);
         downAccumulatorRef.current = 0;
-        if (upAccumulatorRef.current >= 10 && dir !== "up") {
+        if (upAccumulatorRef.current >= 60 && dir !== "up") {
           scrollDirectionRef.current = "up";
           setScrollDirection("up");
         }
