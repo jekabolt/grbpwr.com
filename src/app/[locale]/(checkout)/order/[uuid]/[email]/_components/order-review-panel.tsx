@@ -145,7 +145,7 @@ export function OrderReviewPanel({
               </div>
             </div>
             <div
-              className="flex min-h-0 w-full flex-1 flex-col space-y-10 lg:min-h-0 lg:flex-1 lg:space-y-4 lg:overflow-hidden lg:self-start"
+              className="flex min-h-0 w-full flex-1 flex-col space-y-10 lg:min-h-0 lg:flex-1 lg:space-y-4 lg:self-start lg:overflow-hidden"
               style={
                 rightColHeightPx != null
                   ? { height: rightColHeightPx }
