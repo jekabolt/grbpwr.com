@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { cookies } from "next/headers";
 import Script from "next/script";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
@@ -56,15 +55,11 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
-const CONSENT_COOKIE = "cookieConsent";
-
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
 
   setRequestLocale(locale);
   const messages = await getMessages();
-  const cookieStore = await cookies();
-  const hasConsent = !!cookieStore.get(CONSENT_COOKIE)?.value;
 
   return (
     <html lang={locale}>
@@ -94,7 +89,7 @@ export default async function RootLayout({ children, params }: Props) {
           {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA4_MEASUREMENT_ID}',{send_page_view:false});`}
         </Script>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <CookieBanner defaultVisible={!hasConsent} />
+          <CookieBanner />
           <ToastProvider>
             <PageTransition>
               <SiteGuard>

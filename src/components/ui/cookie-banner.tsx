@@ -42,9 +42,7 @@ export function CookieBanner({ defaultVisible = false }: CookieBannerProps) {
 
   useEffect(() => {
     const savedConsent = localStorage.getItem("cookieConsent");
-    if (savedConsent) {
-      setIsVisible(false);
-    }
+    setIsVisible(!savedConsent);
   }, []);
 
   const setConsentCookie = () => {
