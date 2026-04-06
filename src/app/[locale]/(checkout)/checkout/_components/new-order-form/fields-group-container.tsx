@@ -24,11 +24,6 @@ interface FieldsGroupContainerProps {
   headerContentGapClass?: string;
   titleWrapperClassName?: string;
   onToggle?: () => void;
-  /**
-   * When `stage` is set and the group is not collapsible, controls horizontal offset of `children`.
-   * - `title` (default): applies `lg:ml-14` so content lines up under the title (past the stage column).
-   * - `stage`: no left inset on large screens so content aligns from the left edge (under the stage digits).
-   */
   childrenOffset?: "title" | "stage";
 }
 
@@ -133,8 +128,7 @@ export default function FieldsGroupContainer({
       <div
         className={cn(childrenSpacingClass, {
           hidden: collapsible && !localIsOpen,
-          "lg:ml-14":
-            !collapsible && !!stage && childrenOffset !== "stage",
+          "lg:ml-14": !collapsible && !!stage && childrenOffset !== "stage",
         })}
       >
         {children}

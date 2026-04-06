@@ -63,7 +63,7 @@ export function useOrderReviewSubmit({
                 orderItemId: r.orderItemId,
                 rating: r.rating as common_ProductRatingEnum,
                 fitRating: r.fitRating as common_FitScaleEnum,
-                recommend: r.recommend ?? false,
+                recommend: r.recommend ?? undefined,
               }))
               : undefined,
         });

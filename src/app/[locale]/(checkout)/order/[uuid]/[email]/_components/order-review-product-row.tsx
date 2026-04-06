@@ -125,16 +125,16 @@ export function OrderReviewProductRow({
   itemIndex,
   disabled,
   shouldBlinkFit,
-  fillScrollAreaOnDesktop = false,
   mobileSummaryFitSelect = false,
+  length,
   rowRef,
 }: {
   product: common_OrderItem;
   itemIndex: number;
   disabled?: boolean;
   shouldBlinkFit?: boolean;
-  fillScrollAreaOnDesktop?: boolean;
   mobileSummaryFitSelect?: boolean;
+  length?: number;
   rowRef?: RefCallback<HTMLDivElement>;
 }) {
   const { control } = useFormContext<OrderReviewFormInput>();
@@ -170,8 +170,11 @@ export function OrderReviewProductRow({
     <div
       ref={rowRef}
       className={cn(
-        "flex min-h-0 flex-1 flex-col gap-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0",
-        fillScrollAreaOnDesktop ? "lg:min-h-0 lg:flex-1" : "lg:flex-none",
+        "group flex min-h-0 flex-1 flex-col gap-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0",
+        "lg:flex-none [&:last-child:not(:only-child)]:lg:min-h-0 [&:last-child:not(:only-child)]:lg:flex-1",
+        {
+          "lg:pb-0": length === 1,
+        },
       )}
     >
       <div className="flex items-stretch gap-x-3">
@@ -248,10 +251,7 @@ export function OrderReviewProductRow({
         formMessageGate={itemRowDirty}
       />
       <div
-        className={cn(
-          "min-h-0 flex-1",
-          !fillScrollAreaOnDesktop && "lg:hidden",
-        )}
+        className="hidden min-h-0 flex-1 group-[&:last-child:not(:only-child)]:lg:block"
         aria-hidden
       />
       <RecommendCheckboxes

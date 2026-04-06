@@ -5,6 +5,7 @@ import type { common_OrderFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 import type { SubmitErrorHandler } from "react-hook-form";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import TextareaField from "@/components/ui/form/fields/textarea-field";
@@ -98,6 +99,8 @@ export function OrderReviewPanel({
     [showToast, t, triggerFitBlink],
   );
 
+  const alreadyReviewed = !!orderData?.orderReview?.orderReview;
+
   if (!orderData) {
     return null;
   }
@@ -128,14 +131,14 @@ export function OrderReviewPanel({
                     list={config.list}
                     className="w-full"
                     renderLabel={config.renderLabel}
-                    disabled={submitting}
+                    disabled={submitting || alreadyReviewed}
                   />
                 </FieldsGroupContainer>
               ))}
               <div className="hidden lg:block">
                 <TextareaField
                   name="orderReview.reviewText"
-                  loading={submitting}
+                  loading={submitting || alreadyReviewed}
                   rows={16}
                   className="max-h-32 min-h-32 placeholder:uppercase"
                   placeholder={t("enter review")}
@@ -145,7 +148,12 @@ export function OrderReviewPanel({
               </div>
             </div>
             <div
-              className="flex min-h-0 w-full flex-1 flex-col space-y-10 lg:min-h-0 lg:flex-1 lg:space-y-4 lg:self-start lg:overflow-hidden"
+              className={cn(
+                "flex min-h-0 w-full flex-1 flex-col space-y-10 lg:min-h-0 lg:space-y-4 lg:self-start lg:overflow-hidden",
+                {
+                  "lg:space-y-0": alreadyReviewed,
+                },
+              )}
               style={
                 rightColHeightPx != null
                   ? { height: rightColHeightPx }
@@ -158,30 +166,28 @@ export function OrderReviewPanel({
                   title={t("item heading")}
                   collapsible={false}
                   childrenOffset="stage"
-                  className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden lg:min-h-0 lg:flex-1"
-                  childrenSpacingClass="flex min-h-0 min-w-0 flex-1 flex-col space-y-8 overflow-hidden lg:min-h-0 lg:flex-1 lg:space-y-0"
+                  className="flex min-h-0 min-w-0 flex-col overflow-hidden"
+                  childrenSpacingClass="flex min-h-0 min-w-0 flex-col space-y-8 overflow-hidden lg:space-y-0"
                 >
                   <div className="flex min-h-0 flex-1 flex-col lg:hidden">
                     <MobileOrderReviewSummary
                       orderItemReviewRows={orderItemReviewRows}
                       itemsTitle={t("item heading")}
-                      disabled={submitting}
+                      disabled={submitting || alreadyReviewed}
                       fitBlinkingIndices={fitBlinkingIndices}
                       itemsSectionOpen={mobileItemsSectionOpen}
                       onItemsSectionOpenChange={setMobileItemsSectionOpen}
                       rowRef={(idx) => mobileRowRefByIndex.get(idx)}
                     />
                   </div>
-                  <div className="hidden min-h-0 w-full flex-1 flex-col gap-3 overflow-y-auto lg:flex lg:min-h-0 lg:overflow-y-auto">
+                  <div className="hidden min-h-0 w-full flex-col gap-3 overflow-y-auto lg:flex">
                     {orderItemReviewRows.map((row) => (
                       <OrderReviewProductRow
                         key={row.key}
                         product={row.product}
                         itemIndex={row.lineItemIndex}
-                        disabled={submitting}
-                        fillScrollAreaOnDesktop={
-                          row.lineItemIndex === orderItemReviewRows.length - 1
-                        }
+                        disabled={submitting || alreadyReviewed}
+                        length={orderItemReviewRows.length}
                         shouldBlinkFit={fitBlinkingIndices.includes(
                           row.lineItemIndex,
                         )}
@@ -195,7 +201,7 @@ export function OrderReviewPanel({
                 <div className="block lg:hidden">
                   <TextareaField
                     name="orderReview.reviewText"
-                    loading={submitting}
+                    loading={submitting || alreadyReviewed}
                     rows={16}
                     className="max-h-32 min-h-32 placeholder:uppercase"
                     placeholder={t("enter review")}
@@ -203,33 +209,37 @@ export function OrderReviewPanel({
                     showCharCount
                   />
                 </div>
-                <div className="hidden w-full lg:block">
-                  <Button
-                    type="submit"
-                    variant="main"
-                    size="lg"
-                    loading={submitting}
-                    disabled={submitting || !orderSectionsComplete}
-                    className="w-full uppercase"
-                  >
-                    {submitting ? t("submitting") : t("submit")}
-                  </Button>
-                </div>
+                {!alreadyReviewed && (
+                  <div className="hidden lg:block">
+                    <Button
+                      type="submit"
+                      variant="main"
+                      size="lg"
+                      loading={submitting}
+                      disabled={submitting || !orderSectionsComplete}
+                      className="w-full uppercase"
+                    >
+                      {submitting ? t("submitting") : t("submit")}
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          <div className="sticky bottom-2.5 z-10 mt-10 block shrink-0 lg:hidden">
-            <Button
-              type="submit"
-              variant="main"
-              size="lg"
-              loading={submitting}
-              disabled={submitting || !orderSectionsComplete}
-              className="w-full uppercase"
-            >
-              {submitting ? t("submitting") : t("submit")}
-            </Button>
-          </div>
+          {!alreadyReviewed && (
+            <div className="sticky bottom-2.5 z-10 mt-10 block shrink-0 lg:hidden">
+              <Button
+                type="submit"
+                variant="main"
+                size="lg"
+                loading={submitting}
+                disabled={submitting || !orderSectionsComplete}
+                className="w-full uppercase"
+              >
+                {submitting ? t("submitting") : t("submit")}
+              </Button>
+            </div>
+          )}
         </form>
       </Form>
       <SubmissionToaster
