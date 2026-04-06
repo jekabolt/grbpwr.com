@@ -1,53 +1,34 @@
 import { useEffect, useState } from "react";
 
-import { useHeaderScrollPosition } from "./useHeaderScrollPosition";
-
 export function useHeaderVisibility() {
   const [isVisible, setIsVisible] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isAnnounceVisible, setIsAnnounceVisible] = useState(true);
-  const { scrollDirection, isAtTop } = useHeaderScrollPosition();
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    setIsMobile(window.innerWidth < 1024);
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) return;
 
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
+    const handleScroll = () => {
+      setTick(window.scrollY);
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    if (isMobile) {
-      if (isAtTop || scrollDirection === "up") {
-        setIsVisible(true);
-      } else if (scrollDirection === "down") {
-        setIsVisible(false);
-      }
-    } else {
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) return;
+
+    if (tick > lastScrollY && tick > 50) {
+      setIsVisible(false);
+    } else if (tick < lastScrollY) {
       setIsVisible(true);
     }
-  }, [scrollDirection, isAtTop, isMobile]);
 
-  useEffect(() => {
-    if (isMobile) {
-      setIsAnnounceVisible(true);
-    } else {
-      if (scrollDirection === "down") {
-        setIsAnnounceVisible(false);
-      } else if (scrollDirection === "up" || isAtTop) {
-        setIsAnnounceVisible(true);
-      }
-    }
-  }, [scrollDirection, isAtTop, isMobile]);
+    setLastScrollY(tick);
+  }, [tick, lastScrollY]);
 
-  return {
-    isVisible,
-    isMobile,
-    isAnnounceVisible,
-    scrollDirection,
-    isAtTop,
-  };
+  return { isVisible };
 }

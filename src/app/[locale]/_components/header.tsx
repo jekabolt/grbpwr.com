@@ -29,8 +29,7 @@ export function Header({
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
   const itemsQuantity = Object.keys(products).length;
-  const { isVisible, isMobile, isAnnounceVisible, isAtTop } =
-    useHeaderVisibility();
+  const { isVisible } = useHeaderVisibility();
   const { languageId } = useTranslationsStore((state) => state);
   const announceTranslation = dictionary?.announce?.translations?.find(
     (t) => t.languageId === languageId,
@@ -45,7 +44,7 @@ export function Header({
         <Announce
           open={open}
           onClose={handleClose}
-          isVisible={isAnnounceVisible}
+          // isVisible={isAnnounceVisible}
         />
       )}
       <header
@@ -53,17 +52,11 @@ export function Header({
           "fixed inset-x-2.5 top-2 z-30 h-12 py-2 lg:gap-0 lg:px-5 lg:py-3",
           "flex items-center justify-between gap-1",
           "border border-textInactiveColor bg-bgColor text-textColor lg:border-transparent",
-          "transform-gpu transition-transform duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
-          "lg:transform-none lg:transition-[top] lg:duration-150 lg:ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
+          "transition-transform duration-300 lg:translate-y-0",
+
           {
-            "lg:top-8": open && showAnnounce && isAnnounceVisible,
-            "pointer-events-auto translate-y-0": isVisible,
-            "pointer-events-none -translate-y-[120%]": !isVisible,
-            "border-none bg-transparent text-bgColor mix-blend-exclusion":
-              isAtTop && isMobile && theme !== "dark",
-            "border-none bg-transparent text-textColor mix-blend-exclusion":
-              isAtTop && isMobile && theme === "dark",
-            "border-none": isAtTop && showAnnounce && !isNavOpen,
+            "lg:top-8": open && showAnnounce, // && isAnnounceVisible,
+            "-translate-y-[calc(100%+0.5rem)]": !isVisible,
             "lg:bg-transparent lg:text-bgColor lg:mix-blend-exclusion":
               (!isNavOpen || !isBigMenuEnabled) && theme !== "dark",
             "lg:bg-transparent lg:text-textColor lg:mix-blend-exclusion":
@@ -79,10 +72,13 @@ export function Header({
           onNavOpenChange={setIsNavOpen}
           isBigMenuEnabled={isBigMenuEnabled}
           isWebsiteEnabled={isWebsiteEnabled}
-          isMobile={isMobile}
+          // isMobile={isMobile}
         />
 
-        {!(isWebsiteEnabled === false && isMobile) && (
+        {!(
+          (isWebsiteEnabled === false)
+          // && isMobile
+        ) && (
           <Button
             asChild
             size="lg"

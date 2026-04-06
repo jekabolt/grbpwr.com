@@ -13,7 +13,7 @@ export function Announce({
 }: {
   open: boolean;
   onClose: () => void;
-  isVisible: boolean;
+  isVisible?: boolean;
 }) {
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
