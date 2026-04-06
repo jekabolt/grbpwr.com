@@ -8,12 +8,12 @@ import { Button } from "./button";
 
 export function Announce({
   open,
-  onClose,
   isVisible,
+  onClose,
 }: {
   open: boolean;
+  isVisible: boolean;
   onClose: () => void;
-  isVisible?: boolean;
 }) {
   const { dictionary } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
