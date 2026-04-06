@@ -19,7 +19,6 @@ type Props = {
   itemsTitle: string;
   disabled?: boolean;
   fitBlinkingIndices?: number[];
-  /** When set with `onItemsSectionOpenChange`, collapsible open state is controlled by the parent. */
   itemsSectionOpen?: boolean;
   onItemsSectionOpenChange?: (open: boolean) => void;
   rowRef?: (lineItemIndex: number) => RefCallback<HTMLDivElement> | undefined;
@@ -57,7 +56,7 @@ export function MobileOrderReviewSummary({
       isOpen={isOpen}
       onToggle={handleToggle}
     >
-      <div className="mt-4 w-full space-y-0">
+      <div className="mt-6 w-full space-y-3">
         {orderItemReviewRows.map((row) => (
           <OrderReviewProductRow
             key={row.key}
