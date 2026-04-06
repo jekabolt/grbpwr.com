@@ -36,7 +36,7 @@ export default async function OrderPage(props: PageProps) {
 
   return (
     <FlexibleLayout>
-      <div className="flex min-h-[calc(100dvh-10rem)] flex-col gap-10 px-2.5 pb-20 pt-24 lg:min-h-[calc(100dvh-12rem)] lg:px-32 lg:py-24">
+      <div className="px-2.5 pb-20 pt-24 lg:px-32 lg:py-24">
         <OrderExperienceClient
           isDelivered={isDelivered}
           orderPromise={orderPromise}
