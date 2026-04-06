@@ -25,7 +25,7 @@ export function OrderExperienceClient({
   );
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-10">
+    <div className="flex h-full min-h-0 flex-1 flex-col gap-10">
       <div className="shrink-0 space-y-2">
         <OrderSectionNav
           isDelivered={isDelivered}
@@ -33,7 +33,7 @@ export function OrderExperienceClient({
           onSectionChange={setSection}
         />
       </div>
-      <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex h-full min-h-0 flex-1 flex-col">
         {section === "order" && (
           <Suspense fallback={<OrderPageSkeleton />}>
             <OrderPageComponent orderPromise={orderPromise} />

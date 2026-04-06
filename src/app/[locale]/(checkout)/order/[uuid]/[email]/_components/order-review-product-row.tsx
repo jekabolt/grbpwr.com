@@ -125,6 +125,7 @@ export function OrderReviewProductRow({
   itemIndex,
   disabled,
   shouldBlinkFit,
+  fillScrollAreaOnDesktop = false,
   rowRef,
 }: {
   product: common_OrderItem;
@@ -132,6 +133,7 @@ export function OrderReviewProductRow({
   disabled?: boolean;
   shouldBlinkFit?: boolean;
   rowRef?: RefCallback<HTMLDivElement>;
+  fillScrollAreaOnDesktop?: boolean;
 }) {
   const { control } = useFormContext<OrderReviewFormInput>();
   const { dirtyFields } = useFormState({ control });
@@ -165,7 +167,10 @@ export function OrderReviewProductRow({
   return (
     <div
       ref={rowRef}
-      className="space-y-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0"
+      className={cn(
+        "flex min-h-0 flex-1 flex-col gap-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0",
+        fillScrollAreaOnDesktop ? "lg:min-h-0 lg:flex-1" : "lg:flex-none",
+      )}
     >
       <div className="flex items-stretch gap-x-3">
         <div className="relative h-full min-w-[90px] shrink-0 self-start">
@@ -223,6 +228,13 @@ export function OrderReviewProductRow({
         disabled={disabled}
         fiveOptionMobileGrid
         formMessageGate={itemRowDirty}
+      />
+      <div
+        className={cn(
+          "min-h-0 flex-1",
+          !fillScrollAreaOnDesktop && "lg:hidden",
+        )}
+        aria-hidden
       />
       <RecommendCheckboxes
         className="shrink-0"
