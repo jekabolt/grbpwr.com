@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import { ORDER_STATUS_DELIVERED_ID } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
@@ -16,10 +18,19 @@ export default async function OrderPage(props: PageProps) {
   const params = await props.params;
   const { uuid, email } = params;
 
-  const orderResponse = await serviceClient.GetOrderByUUIDAndEmail({
-    orderUuid: uuid,
-    b64Email: email,
-  });
+  const orderResponse = await serviceClient
+    .GetOrderByUUIDAndEmail({
+      orderUuid: uuid,
+      b64Email: email,
+    })
+    .catch(() => {
+      notFound();
+    });
+
+  if (!orderResponse.order) {
+    notFound();
+  }
+
   const orderPromise = Promise.resolve(orderResponse);
   const isDelivered =
     orderResponse.order?.order?.orderStatusId === ORDER_STATUS_DELIVERED_ID;
