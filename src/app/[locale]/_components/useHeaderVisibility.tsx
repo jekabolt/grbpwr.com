@@ -1,53 +1,49 @@
-import { useEffect, useState } from "react";
-
-import { useHeaderScrollPosition } from "./useHeaderScrollPosition";
+import { useEffect, useRef, useState } from "react";
 
 export function useHeaderVisibility() {
   const [isVisible, setIsVisible] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
   const [isAnnounceVisible, setIsAnnounceVisible] = useState(true);
-  const { scrollDirection, isAtTop } = useHeaderScrollPosition();
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    setIsMobile(window.innerWidth < 1024);
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
-    if (isMobile) {
-      if (isAtTop || scrollDirection === "up") {
-        setIsVisible(true);
-      } else if (scrollDirection === "down") {
-        setIsVisible(false);
-      }
-    } else {
-      setIsVisible(true);
-    }
-  }, [scrollDirection, isAtTop, isMobile]);
+    const handleScroll = () => {
+      const current = window.scrollY;
+      const prev = lastScrollY.current;
+      const isDown = current > prev;
+      const atTop = current <= 50;
+      setIsAtTop(atTop);
 
-  useEffect(() => {
-    if (isMobile) {
-      setIsAnnounceVisible(true);
-    } else {
-      if (scrollDirection === "down") {
-        setIsAnnounceVisible(false);
-      } else if (scrollDirection === "up" || isAtTop) {
+      if (isMobile) {
+        if (isDown && current > 50) {
+          setIsVisible(false);
+        } else if (!isDown) {
+          setIsVisible(true);
+        }
         setIsAnnounceVisible(true);
+      } else {
+        setIsVisible(true);
+        if (isDown) {
+          setIsAnnounceVisible(false);
+        } else if (!isDown || atTop) {
+          setIsAnnounceVisible(true);
+        }
       }
-    }
-  }, [scrollDirection, isAtTop, isMobile]);
 
-  return {
-    isVisible,
-    isMobile,
-    isAnnounceVisible,
-    scrollDirection,
-    isAtTop,
-  };
+      lastScrollY.current = current;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMobile]);
+
+  return { isVisible, isAnnounceVisible, isAtTop, isMobile };
 }
