@@ -37,16 +37,16 @@ export function MainAds({
     >
       <div className="hidden h-full lg:block">
         <Image
-          src={main.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""}
+          src={main.single?.mediaLandscape?.media?.compressed?.mediaUrl || ""}
           blurhash={main.single?.mediaLandscape?.media?.blurhash}
           type={
-            isVideo(main.single?.mediaLandscape?.media?.fullSize?.mediaUrl)
+            isVideo(main.single?.mediaLandscape?.media?.compressed?.mediaUrl)
               ? "video"
               : "image"
           }
           aspectRatio={calculateAspectRatio(
-            main.single?.mediaLandscape?.media?.fullSize?.width,
-            main.single?.mediaLandscape?.media?.fullSize?.height,
+            main.single?.mediaLandscape?.media?.compressed?.width,
+            main.single?.mediaLandscape?.media?.compressed?.height,
           )}
           alt="main hero image"
           fit="cover"
@@ -57,16 +57,16 @@ export function MainAds({
       </div>
       <div className="block h-full lg:hidden">
         <Image
-          src={main.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""}
-          blurhash={main.single?.mediaLandscape?.media?.blurhash}
+          src={main.single?.mediaPortrait?.media?.compressed?.mediaUrl || ""}
+          blurhash={main.single?.mediaPortrait?.media?.blurhash}
           type={
-            isVideo(main.single?.mediaLandscape?.media?.fullSize?.mediaUrl)
+            isVideo(main.single?.mediaPortrait?.media?.compressed?.mediaUrl)
               ? "video"
               : "image"
           }
           aspectRatio={calculateAspectRatio(
-            main.single?.mediaLandscape?.media?.fullSize?.width,
-            main.single?.mediaLandscape?.media?.fullSize?.height,
+            main.single?.mediaPortrait?.media?.compressed?.width,
+            main.single?.mediaPortrait?.media?.compressed?.height,
           )}
           alt="main hero image"
           fit="cover"

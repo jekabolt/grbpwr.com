@@ -48,10 +48,29 @@ export default async function Page() {
     return <EmptyHero />;
   }
 
+  const main = hero?.entities?.[0]?.main;
+  const preloadDesktop = main?.single?.mediaLandscape?.media?.compressed?.mediaUrl;
+  const preloadMobile = main?.single?.mediaPortrait?.media?.compressed?.mediaUrl;
+
   return (
     <FlexibleLayout showAnnounce={true}>
-      {/* <PageBackground imageUrl={heroImageUrl} /> */}
-      <MainAds main={hero?.entities?.[0]?.main} />
+      {preloadMobile && (
+        <link
+          rel="preload"
+          as="image"
+          href={preloadMobile}
+          media="(max-width: 1023px)"
+        />
+      )}
+      {preloadDesktop && (
+        <link
+          rel="preload"
+          as="image"
+          href={preloadDesktop}
+          media="(min-width: 1024px)"
+        />
+      )}
+      <MainAds main={main} />
       <Ads entities={hero?.entities || []} />
     </FlexibleLayout>
   );
