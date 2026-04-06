@@ -36,11 +36,6 @@ export default async function Page() {
   const isHero = hero?.entities?.length;
   const isWebsiteEnabled = dictionary?.siteEnabled;
 
-  // Get the hero image URL for background color extraction
-  // const heroImageUrl =
-  //   hero?.entities?.[0]?.main?.single?.mediaPortrait?.media?.thumbnail
-  //     ?.mediaUrl;
-
   if (!isWebsiteEnabled) {
     return <Disabled />;
   }
@@ -48,29 +43,9 @@ export default async function Page() {
     return <EmptyHero />;
   }
 
-  const main = hero?.entities?.[0]?.main;
-  const preloadDesktop = main?.single?.mediaLandscape?.media?.compressed?.mediaUrl;
-  const preloadMobile = main?.single?.mediaPortrait?.media?.compressed?.mediaUrl;
-
   return (
     <FlexibleLayout showAnnounce={true}>
-      {preloadMobile && (
-        <link
-          rel="preload"
-          as="image"
-          href={preloadMobile}
-          media="(max-width: 1023px)"
-        />
-      )}
-      {preloadDesktop && (
-        <link
-          rel="preload"
-          as="image"
-          href={preloadDesktop}
-          media="(min-width: 1024px)"
-        />
-      )}
-      <MainAds main={main} />
+      <MainAds main={hero?.entities?.[0]?.main} />
       <Ads entities={hero?.entities || []} />
     </FlexibleLayout>
   );
