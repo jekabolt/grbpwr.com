@@ -57,7 +57,7 @@ export function MobileOrderReviewSummary({
       isOpen={isOpen}
       onToggle={handleToggle}
     >
-      <div className="mt-6 w-full space-y-3">
+      <div className="mt-4 w-full space-y-0">
         {orderItemReviewRows.map((row) => (
           <OrderReviewProductRow
             key={row.key}
@@ -65,6 +65,7 @@ export function MobileOrderReviewSummary({
             itemIndex={row.lineItemIndex}
             disabled={disabled}
             shouldBlinkFit={fitBlinkingIndices.includes(row.lineItemIndex)}
+            mobileSummaryFitSelect
             rowRef={rowRef?.(row.lineItemIndex)}
           />
         ))}

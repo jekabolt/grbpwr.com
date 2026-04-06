@@ -12,6 +12,7 @@ export default function SelectComponent({
   customWidth,
   fullWidth,
   renderValue,
+  singleLineSelectedValue,
   ...props
 }: {
   name: string;
@@ -19,6 +20,7 @@ export default function SelectComponent({
   className?: string;
   customWidth?: number;
   fullWidth?: boolean;
+  singleLineSelectedValue?: boolean;
   renderValue?: (
     selectedValue: string,
     selectedItem: { label: string; value: string } | undefined,
@@ -36,6 +38,7 @@ export default function SelectComponent({
         value={props.value}
         items={items}
         isOpen={open}
+        singleLineSelectedValue={singleLineSelectedValue}
       >
         <Arrow
           className={cn("text-textColor", {
@@ -82,6 +85,7 @@ export function SelectTrigger({
   items,
   isOpen,
   renderValue,
+  singleLineSelectedValue,
 }: {
   children: React.ReactNode;
   placeholder: string;
@@ -89,6 +93,7 @@ export function SelectTrigger({
   value?: string;
   items?: { label: string; value: string }[];
   isOpen?: boolean;
+  singleLineSelectedValue?: boolean;
   renderValue?: (
     selectedValue: string,
     selectedItem: { label: string; value: string } | undefined,
@@ -100,18 +105,28 @@ export function SelectTrigger({
     displayValue = renderValue(value, selectedItem);
   }
 
+  const valueNode = displayValue ?? <Select.Value placeholder={placeholder} />;
+
   return (
     <Select.Trigger
       className={cn(
         "flex w-full items-center justify-between gap-2 border-b border-textColor bg-bgColor text-textBaseSize focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
+        singleLineSelectedValue && "min-w-0",
         className,
       )}
       aria-label={placeholder}
     >
-      {displayValue ?? <Select.Value placeholder={placeholder} />}
+      {singleLineSelectedValue ? (
+        <span className="min-w-0 flex-1 truncate text-left [&_[data-placeholder]]:truncate">
+          {valueNode}
+        </span>
+      ) : (
+        valueNode
+      )}
       <Select.Icon
         className={cn("rotate-180 text-textColor", {
           "rotate-0": isOpen,
+          "shrink-0": singleLineSelectedValue,
         })}
       >
         {children}

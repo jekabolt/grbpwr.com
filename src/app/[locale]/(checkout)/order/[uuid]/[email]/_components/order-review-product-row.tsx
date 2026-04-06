@@ -125,12 +125,16 @@ export function OrderReviewProductRow({
   itemIndex,
   disabled,
   shouldBlinkFit,
+  fillScrollAreaOnDesktop = false,
+  mobileSummaryFitSelect = false,
   rowRef,
 }: {
   product: common_OrderItem;
   itemIndex: number;
   disabled?: boolean;
   shouldBlinkFit?: boolean;
+  fillScrollAreaOnDesktop?: boolean;
+  mobileSummaryFitSelect?: boolean;
   rowRef?: RefCallback<HTMLDivElement>;
 }) {
   const { control } = useFormContext<OrderReviewFormInput>();
@@ -165,7 +169,10 @@ export function OrderReviewProductRow({
   return (
     <div
       ref={rowRef}
-      className="space-y-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0"
+      className={cn(
+        "flex min-h-0 flex-1 flex-col gap-6 border-b border-textInactiveColor py-6 first:pt-0 last:border-b-0",
+        fillScrollAreaOnDesktop ? "lg:min-h-0 lg:flex-1" : "lg:flex-none",
+      )}
     >
       <div className="flex items-stretch gap-x-3">
         <div className="relative h-full min-w-[90px] shrink-0 self-start">
@@ -185,7 +192,7 @@ export function OrderReviewProductRow({
           </Text>
           <div className="mt-auto flex w-full min-w-0 items-end justify-between gap-3">
             <div className="flex min-w-0 flex-1 items-end justify-between gap-3">
-              <div className="flex shrink-0 items-end gap-2">
+              <div className="flex shrink-0 items-start gap-2">
                 <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
                 {lineQty > 1 && (
                   <Text variant="uppercase" className="text-textInactiveColor">
@@ -193,12 +200,27 @@ export function OrderReviewProductRow({
                   </Text>
                 )}
               </div>
-              <div className="relative flex items-start gap-3 bg-bgColor">
+              <div
+                className={cn(
+                  "relative flex items-start gap-3 bg-bgColor",
+                  mobileSummaryFitSelect &&
+                    "min-w-0 flex-1 flex-nowrap items-start",
+                )}
+              >
                 {shouldBlinkFit && itemRowDirty && (
                   <Overlay color="highlight" cover="container" />
                 )}
-                <Text variant="uppercase">{t("fit")}:</Text>
-                <div className="min-w-32">
+                <Text
+                  variant="uppercase"
+                  className={cn(mobileSummaryFitSelect && "shrink-0")}
+                >
+                  {t("fit")}:
+                </Text>
+                <div
+                  className={cn(
+                    mobileSummaryFitSelect ? "min-w-0 flex-1" : "min-w-32",
+                  )}
+                >
                   <SelectField
                     name={`itemReviews.${itemIndex}.fitRating`}
                     items={fitItems}
@@ -207,6 +229,7 @@ export function OrderReviewProductRow({
                     hideFormMessage
                     loading={disabled}
                     fullWidth
+                    singleLineSelectedValue={mobileSummaryFitSelect}
                   />
                 </div>
               </div>
@@ -223,6 +246,13 @@ export function OrderReviewProductRow({
         disabled={disabled}
         fiveOptionMobileGrid
         formMessageGate={itemRowDirty}
+      />
+      <div
+        className={cn(
+          "min-h-0 flex-1",
+          !fillScrollAreaOnDesktop && "lg:hidden",
+        )}
+        aria-hidden
       />
       <RecommendCheckboxes
         className="shrink-0"
