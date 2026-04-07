@@ -59,7 +59,7 @@ export default async function middleware(req: NextRequest) {
         if (!supportedCountries.includes(country!)) {
             const url = req.nextUrl.clone();
             url.pathname = `/gb/en${rest}`;
-            return NextResponse.redirect(url, { status: 308 });
+            return NextResponse.redirect(url, { status: 307 });
         }
 
         // Block manual URL country/locale changes – only Country Picker or geo banner may change them.
@@ -75,7 +75,7 @@ export default async function middleware(req: NextRequest) {
             if (country !== allowedCountry || locale !== allowedLocale) {
                 const url = req.nextUrl.clone();
                 url.pathname = `/${allowedCountry}/${allowedLocale}${rest}`;
-                return NextResponse.redirect(url, { status: 308 });
+                return NextResponse.redirect(url, { status: 307 });
             }
         }
 
@@ -149,7 +149,7 @@ export default async function middleware(req: NextRequest) {
                 if (siteEnabled === false) {
                     const url = req.nextUrl.clone();
                     url.pathname = `/${targetCountry}/${targetLocale}`;
-                    const res = NextResponse.redirect(url, { status: 308 });
+                    const res = NextResponse.redirect(url, { status: 307 });
                     setMainCookies(res, targetCountry, targetLocale);
                     return res;
                 }
@@ -161,7 +161,7 @@ export default async function middleware(req: NextRequest) {
         // redirect to country/locale (preserve path when locale-only e.g. /en/products -> /us/en/products)
         const url = req.nextUrl.clone();
         url.pathname = `/${targetCountry}/${targetLocale}${pathRest}`;
-        const res = NextResponse.redirect(url, { status: 308 });
+        const res = NextResponse.redirect(url, { status: 307 });
         setMainCookies(res, targetCountry, targetLocale);
         return res;
     }

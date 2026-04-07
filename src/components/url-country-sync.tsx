@@ -2,7 +2,11 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
+import {
+  COUNTRIES_BY_REGION,
+  LANGUAGE_CODE_TO_ID,
+  LANGUAGE_ID_TO_LOCALE,
+} from "@/constants";
 
 import { parseCountryLocalePath } from "@/lib/middleware-utils";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -13,7 +17,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
  */
 export function UrlCountrySync() {
   const pathname = usePathname();
-  const { currentCountry, setCurrentCountry, setLanguageId } =
+  const { currentCountry, languageId, setCurrentCountry, setLanguageId } =
     useTranslationsStore((s) => s);
 
   useEffect(() => {
@@ -23,8 +27,12 @@ export function UrlCountrySync() {
     const urlCountry = parsed.country.toLowerCase();
     const urlLocale = parsed.locale;
     const storeCountry = currentCountry.countryCode?.toLowerCase();
+    const storeLocale = LANGUAGE_ID_TO_LOCALE[languageId];
 
-    if (storeCountry === urlCountry) return;
+    // Country must match URL country; locale must match URL segment (/fr/en → store "en").
+    // Previously we bailed when country matched, so /fr/en + store fr never updated languageId
+    // (localStorage could stay French while next-intl used en, or UI stayed inconsistent).
+    if (storeCountry === urlCountry && storeLocale === urlLocale) return;
 
     for (const [, list] of Object.entries(COUNTRIES_BY_REGION)) {
       const c = list.find(
@@ -59,7 +67,13 @@ export function UrlCountrySync() {
         return;
       }
     }
-  }, [pathname, currentCountry.countryCode, setCurrentCountry, setLanguageId]);
+  }, [
+    pathname,
+    currentCountry.countryCode,
+    languageId,
+    setCurrentCountry,
+    setLanguageId,
+  ]);
 
   return null;
 }
