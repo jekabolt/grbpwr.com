@@ -16,7 +16,6 @@ export function useLocation({
   regionsWithCountries?: [string, CountryOption[]][];
 } = {}) {
   const pathname = usePathname();
-  const router = useRouter();
 
   const {
     languageId,
@@ -59,13 +58,15 @@ export function useLocation({
     setLanguageId(newLanguageId);
     closeCountryPopup();
 
+    // Full navigation only: `router.push('/de/faq')` gets 308 → `/fr/de/faq`, but the client
+    // route tree matches `/fr` as [locale] and `de` hits [...rest] → notFound / redirect churn (ERR_TOO_MANY_REDIRECTS).
     const pathWithoutLocaleCountry =
       pathname.replace(/^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/, "") ||
       "/";
-    const rest =
-      pathWithoutLocaleCountry === "/" ? "" : pathWithoutLocaleCountry;
-    const search = typeof window !== "undefined" ? window.location.search : "";
-    router.push(`/${lng}${rest}${search}`);
+    const newPath = `/${currentCountry.countryCode.toLowerCase()}/${lng}${pathWithoutLocaleCountry}`;
+    const url = new URL(newPath, window.location.origin);
+    url.searchParams.set("from_picker", "1");
+    window.location.assign(url.toString());
   };
 
   const handleCountrySelect = (country: any) => {
