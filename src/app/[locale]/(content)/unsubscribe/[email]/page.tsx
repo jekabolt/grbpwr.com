@@ -15,6 +15,7 @@ interface Props {
 export default async function Unsubscribe(props: Props) {
   const params = await props.params;
   const { locale, email } = params;
+
   setRequestLocale(locale);
   const t = await getTranslations("unsubscribe");
 
