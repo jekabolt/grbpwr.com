@@ -58,7 +58,11 @@ export const useMarkdownContent = (
         };
 
         loadContent();
-    }, [JSON.stringify(filePathOrPaths)]);
+    }, [
+        Array.isArray(filePathOrPaths)
+            ? filePathOrPaths.join("\0")
+            : filePathOrPaths,
+    ]);
 
     return { content, loading, error };
 };
