@@ -62,21 +62,13 @@ export default async function middleware(req: NextRequest) {
             return NextResponse.redirect(url, { status: 307 });
         }
 
-        // Block manual URL country/locale changes – only Country Picker or geo banner may change them.
-        // Skip for new users (no cookies) so they can land on the page and see the geo banner.
-        const hadChoice = countryCookie || localeCookie;
-        if (hadChoice) {
-            const allowedCountry = (countryCookie && supportedCountries.includes(countryCookie))
-                ? countryCookie
-                : getNormalizedCountry(detectedCountry);
-            const allowedLocale = (localeCookie && (routing.locales as readonly string[]).includes(localeCookie))
-                ? localeCookie
-                : getLocaleFromCountry(allowedCountry);
-            if (country !== allowedCountry || locale !== allowedLocale) {
-                const url = req.nextUrl.clone();
-                url.pathname = `/${allowedCountry}/${allowedLocale}${rest}`;
-                return NextResponse.redirect(url, { status: 307 });
-            }
+        // Validate that the locale in the URL is actually supported;
+        // fall back to the country's default locale if not.
+        if (!(routing.locales as readonly string[]).includes(locale!)) {
+            const fallbackLocale = getLocaleFromCountry(country!);
+            const url = req.nextUrl.clone();
+            url.pathname = `/${country}/${fallbackLocale}${rest}`;
+            return NextResponse.redirect(url, { status: 307 });
         }
 
         const url = req.nextUrl.clone();

@@ -16,15 +16,16 @@ export interface InitialTranslationState {
 export async function getInitialTranslationState(): Promise<InitialTranslationState> {
     const cookieStore = await cookies();
     const headersList = await headers();
-    let countryCookie = cookieStore.get("NEXT_COUNTRY")?.value?.toLowerCase();
-    let localeCookie = cookieStore.get("NEXT_LOCALE")?.value;
+    // Middleware sets x-nextjs-country/locale from the URL path on every request.
+    // These headers are the source of truth — cookies may be stale when a
+    // from_picker redirect's Set-Cookie hasn't been committed yet (mobile Safari).
+    const headerCountry = headersList.get("x-nextjs-country")?.toLowerCase();
+    const headerLocale = headersList.get("x-nextjs-locale");
 
-    // Fallback: middleware sets x-nextjs-country/locale from URL path when cookies
-    // are empty (e.g. static catalog RSC cache, template remount on navigation)
-    if (!countryCookie || !localeCookie) {
-        countryCookie = countryCookie ?? headersList.get("x-nextjs-country")?.toLowerCase() ?? undefined;
-        localeCookie = localeCookie ?? headersList.get("x-nextjs-locale") ?? undefined;
-    }
+    const countryCookie = headerCountry
+        ?? cookieStore.get("NEXT_COUNTRY")?.value?.toLowerCase();
+    const localeCookie = headerLocale
+        ?? cookieStore.get("NEXT_LOCALE")?.value;
 
     if (!countryCookie || !localeCookie) {
         return {};
