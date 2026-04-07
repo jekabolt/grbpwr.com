@@ -82,7 +82,7 @@ export const handleFromPickerAction = (req: NextRequest): NextResponse | null =>
 
     const url = req.nextUrl.clone();
     url.searchParams.delete("from_picker");
-    const res = NextResponse.redirect(url, { status: 307 });
+    const res = NextResponse.redirect(url, { status: 308 });
     setMainCookies(res, parsedPath.country, parsedPath.locale);
     clearSuggestCookies(res);
     return res;

@@ -161,7 +161,7 @@ export default async function middleware(req: NextRequest) {
         // redirect to country/locale (preserve path when locale-only e.g. /en/products -> /us/en/products)
         const url = req.nextUrl.clone();
         url.pathname = `/${targetCountry}/${targetLocale}${pathRest}`;
-        const res = NextResponse.redirect(url, { status: 307 });
+        const res = NextResponse.redirect(url, { status: 308 });
         setMainCookies(res, targetCountry, targetLocale);
         return res;
     }
