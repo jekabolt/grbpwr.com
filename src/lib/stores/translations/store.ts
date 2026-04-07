@@ -85,8 +85,9 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                     const current = currentState as TranslationsStore;
                     return { ...(persisted || {}), ...current } as TranslationsStore;
                 },
+                // languageId comes from NEXT_LOCALE cookie + URL — do not persist it or
+                // rehydration wins over fresh server init and the country popup shows fr/fr on /fr/en.
                 partialize: (state) => ({
-                    languageId: state.languageId,
                     currentCountry: state.currentCountry,
                     nextCountry: state.nextCountry,
                     rates: state.rates,

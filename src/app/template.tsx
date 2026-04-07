@@ -42,6 +42,7 @@ export default async function Template({
           <CheckoutStoreProvider>
             <LastViewedStoreProvider>
               <TranslationsStoreProvider
+                key={`${initialTranslationState.country?.countryCode?.toLowerCase() ?? ""}:${initialTranslationState.languageId ?? "?"}`}
                 initialCountry={initialTranslationState.country}
                 initialLanguageId={initialTranslationState.languageId}
                 initialRates={((heroData as GetHeroResponse & { rates?: { currencies?: Record<string, CurrencyRate> } }).rates?.currencies) as Record<string, CurrencyRate> | undefined}

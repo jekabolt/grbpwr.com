@@ -11,6 +11,13 @@ import {
   parseLocaleOnlyPath,
 } from "@/lib/middleware-utils";
 
+function readBrowserCookie(name: string): string | undefined {
+  if (typeof document === "undefined") return undefined;
+  const parts = `; ${document.cookie}`.split(`; ${name}=`);
+  if (parts.length !== 2) return undefined;
+  return decodeURIComponent(parts.pop()!.split(";").shift() || "");
+}
+
 /**
  * Syncs translations store with URL /{country}/{locale}: fixes stale country
  * and stale language when only the locale segment changes (e.g. fr/fr → fr/en).
@@ -26,7 +33,15 @@ export function UrlCountrySync() {
     const localeOnly = !parsed?.country ? parseLocaleOnlyPath(path) : null;
 
     const urlCountry = parsed?.country?.toLowerCase();
-    const urlLocale = parsed?.locale ?? localeOnly?.locale;
+    let urlLocale = parsed?.locale ?? localeOnly?.locale;
+
+    if (!urlLocale) {
+      const fromCookie = readBrowserCookie("NEXT_LOCALE");
+      if (fromCookie && LANGUAGE_CODE_TO_ID[fromCookie] !== undefined) {
+        urlLocale = fromCookie;
+      }
+    }
+
     if (!urlLocale) return;
 
     const urlLangId = LANGUAGE_CODE_TO_ID[urlLocale];
