@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
+const HEADER_OFFSET = 50;
+const MOBILE_SCROLL_TOLERANCE = 8;
+
 export function useHeaderVisibility() {
   const [isVisible, setIsVisible] = useState(true);
   const [isAnnounceVisible, setIsAnnounceVisible] = useState(true);
@@ -16,16 +19,22 @@ export function useHeaderVisibility() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const current = window.scrollY;
+      const current = Math.max(window.scrollY, 0);
       const prev = lastScrollY.current;
-      const isDown = current > prev;
-      const atTop = current <= 50;
+      const delta = current - prev;
+      const isDown = delta > 0;
+      const atTop = current <= HEADER_OFFSET;
       setIsAtTop(atTop);
 
       if (isMobile) {
-        if (isDown && current > 50) {
+        if (Math.abs(delta) < MOBILE_SCROLL_TOLERANCE) {
+          lastScrollY.current = current;
+          return;
+        }
+
+        if (isDown && current > HEADER_OFFSET) {
           setIsVisible(false);
-        } else if (!isDown) {
+        } else if (delta < 0 || atTop) {
           setIsVisible(true);
         }
         setIsAnnounceVisible(true);
