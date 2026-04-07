@@ -138,7 +138,9 @@ export function CountriesContent({ className }: { className?: string }) {
                             <Text className="uppercase">{country.name}</Text>
                             <Text>{`[${country.currency}]`}</Text>
                           </div>
-                          <Text className="uppercase">{country.displayLng}</Text>
+                          <Text className="uppercase">
+                            {country.displayLng}
+                          </Text>
                         </div>
                       </Button>
                     ))}

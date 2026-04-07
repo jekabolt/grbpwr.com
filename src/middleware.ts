@@ -75,7 +75,7 @@ export default async function middleware(req: NextRequest) {
             if (country !== allowedCountry || locale !== allowedLocale) {
                 const url = req.nextUrl.clone();
                 url.pathname = `/${allowedCountry}/${allowedLocale}${rest}`;
-                return NextResponse.redirect(url, { status: 308 });
+                return NextResponse.redirect(url, { status: 307 });
             }
         }
 
@@ -161,8 +161,7 @@ export default async function middleware(req: NextRequest) {
         // redirect to country/locale (preserve path when locale-only e.g. /en/products -> /us/en/products)
         const url = req.nextUrl.clone();
         url.pathname = `/${targetCountry}/${targetLocale}${pathRest}`;
-        const res = NextResponse.redirect(url, { status: 308 });
-        // Ensure defaults are persisted for subsequent requests
+        const res = NextResponse.redirect(url, { status: 307 });
         setMainCookies(res, targetCountry, targetLocale);
         return res;
     }

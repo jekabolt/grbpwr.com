@@ -2,11 +2,10 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { parseCountryLocalePath } from "@/lib/middleware-utils";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
 /**
  * Syncs translations store with URL when path has /{country}/{locale} but store
