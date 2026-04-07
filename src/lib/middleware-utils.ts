@@ -94,7 +94,7 @@ export const handleGeoAction = (req: NextRequest): NextResponse | null => {
 
     const url = req.nextUrl.clone();
     url.searchParams.delete("geo");
-    const res = NextResponse.redirect(url, { status: 307 });
+    const res = NextResponse.redirect(url, { status: 308 });
 
     if (action === "dismiss") {
         clearSuggestCookies(res);
@@ -122,7 +122,7 @@ export const handleGeoAction = (req: NextRequest): NextResponse | null => {
             target.pathname = `/${suggestCountry}/${suggestLocale}${rest}`;
         }
 
-        const acceptRes = NextResponse.redirect(target, { status: 307 });
+        const acceptRes = NextResponse.redirect(target, { status: 308 });
         setMainCookies(acceptRes, suggestCountry, suggestLocale);
         clearSuggestCookies(acceptRes);
         return acceptRes;

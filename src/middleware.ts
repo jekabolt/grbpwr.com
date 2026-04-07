@@ -75,7 +75,7 @@ export default async function middleware(req: NextRequest) {
             if (country !== allowedCountry || locale !== allowedLocale) {
                 const url = req.nextUrl.clone();
                 url.pathname = `/${allowedCountry}/${allowedLocale}${rest}`;
-                return NextResponse.redirect(url, { status: 307 });
+                return NextResponse.redirect(url, { status: 308 });
             }
         }
 
@@ -149,7 +149,7 @@ export default async function middleware(req: NextRequest) {
                 if (siteEnabled === false) {
                     const url = req.nextUrl.clone();
                     url.pathname = `/${targetCountry}/${targetLocale}`;
-                    const res = NextResponse.redirect(url, { status: 307 });
+                    const res = NextResponse.redirect(url, { status: 308 });
                     setMainCookies(res, targetCountry, targetLocale);
                     return res;
                 }
