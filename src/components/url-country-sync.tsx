@@ -6,26 +6,64 @@ import { usePathname } from "next/navigation";
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { parseCountryLocalePath } from "@/lib/middleware-utils";
+import {
+  parseCountryLocalePath,
+  parseLocaleOnlyPath,
+} from "@/lib/middleware-utils";
+
+function readBrowserCookie(name: string): string | undefined {
+  if (typeof document === "undefined") return undefined;
+  const parts = `; ${document.cookie}`.split(`; ${name}=`);
+  if (parts.length !== 2) return undefined;
+  return decodeURIComponent(parts.pop()!.split(";").shift() || "");
+}
 
 /**
- * Syncs translations store with URL when path has /{country}/{locale} but store
- * has wrong country (e.g. static RSC cache, edge, template remount).
+ * Syncs translations store with URL /{country}/{locale}: fixes stale country
+ * and stale language when only the locale segment changes (e.g. fr/fr → fr/en).
  */
 export function UrlCountrySync() {
   const pathname = usePathname();
-  const { currentCountry, setCurrentCountry, setLanguageId } =
+  const { currentCountry, languageId, setCurrentCountry, setLanguageId } =
     useTranslationsStore((s) => s);
 
   useEffect(() => {
-    const parsed = parseCountryLocalePath(pathname ?? "");
-    if (!parsed?.country || !parsed.locale) return;
+    const path = pathname ?? "";
+    const parsed = parseCountryLocalePath(path);
+    const localeOnly = !parsed?.country ? parseLocaleOnlyPath(path) : null;
 
-    const urlCountry = parsed.country.toLowerCase();
-    const urlLocale = parsed.locale;
+    const urlCountry = parsed?.country?.toLowerCase();
+    let urlLocale = parsed?.locale ?? localeOnly?.locale;
+
+    if (!urlLocale) {
+      const fromCookie = readBrowserCookie("NEXT_LOCALE");
+      if (fromCookie && LANGUAGE_CODE_TO_ID[fromCookie] !== undefined) {
+        urlLocale = fromCookie;
+      }
+    }
+
+    if (!urlLocale) return;
+
+    const urlLangId = LANGUAGE_CODE_TO_ID[urlLocale];
+    if (urlLangId === undefined) return;
+
+    // e.g. internal `/en/...` after rewrite — at least sync language id
+    if (!urlCountry) {
+      if (languageId !== urlLangId) {
+        setLanguageId(urlLangId);
+      }
+      return;
+    }
+
     const storeCountry = currentCountry.countryCode?.toLowerCase();
 
-    if (storeCountry === urlCountry) return;
+    // Same country: still align language with URL (persist/localStorage can keep old id)
+    if (storeCountry === urlCountry) {
+      if (languageId !== urlLangId) {
+        setLanguageId(urlLangId);
+      }
+      return;
+    }
 
     for (const [, list] of Object.entries(COUNTRIES_BY_REGION)) {
       const c = list.find(
@@ -60,7 +98,13 @@ export function UrlCountrySync() {
         return;
       }
     }
-  }, [pathname, currentCountry.countryCode, setCurrentCountry, setLanguageId]);
+  }, [
+    pathname,
+    currentCountry.countryCode,
+    languageId,
+    setCurrentCountry,
+    setLanguageId,
+  ]);
 
   return null;
 }

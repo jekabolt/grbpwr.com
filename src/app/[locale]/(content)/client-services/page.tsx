@@ -1,15 +1,21 @@
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import FlexibleLayout from "@/components/flexible-layout";
 import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";
 import { Text } from "@/components/ui/text";
 
-export default function ClientServices() {
-  const t = useTranslations("client-services");
-  const tContent = useTranslations("content");
-  
+export default async function ClientServices({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("client-services");
+  const tContent = await getTranslations("content");
+
   return (
     <FlexibleLayout>
       <div className="h-full space-y-12 px-2.5 pt-8 lg:space-y-32 lg:px-28 lg:pt-32">
@@ -30,9 +36,7 @@ export default function ClientServices() {
               >
                 <Link href="/faq">{tContent("frequently asked questions")}</Link>
               </Button>
-              <Text>
-                {t("faq description")}
-              </Text>
+              <Text>{t("faq description")}</Text>
             </div>
             <div className="space-y-8">
               <Button
@@ -42,9 +46,7 @@ export default function ClientServices() {
               >
                 <Link href="/aftersale-services">{t("after sales title")}</Link>
               </Button>
-              <Text>
-                {t("after sales description")}
-              </Text>
+              <Text>{t("after sales description")}</Text>
             </div>
           </div>
           <div className="space-y-8">

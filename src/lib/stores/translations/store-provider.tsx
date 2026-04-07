@@ -28,7 +28,9 @@ export const TranslationsStoreProvider = ({
     const initState = {
       ...defaultInitState,
       ...(initialCountry && { currentCountry: initialCountry }),
-      ...(initialLanguageId && { languageId: initialLanguageId }),
+      ...(initialLanguageId != null
+        ? { languageId: initialLanguageId }
+        : {}),
       ...(initialRates && { rates: initialRates }),
     };
     storeRef.current = createTranslationsStore(initState);

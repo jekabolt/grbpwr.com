@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
@@ -7,14 +7,17 @@ import { UnsubscribeForm } from "./_components/unsubscribe-form";
 
 interface Props {
   params: Promise<{
+    locale: string;
     email: string;
   }>;
 }
 
 export default async function Unsubscribe(props: Props) {
-  const t = await getTranslations("unsubscribe");
   const params = await props.params;
-  const { email } = params;
+  const { locale, email } = params;
+
+  setRequestLocale(locale);
+  const t = await getTranslations("unsubscribe");
 
   return (
     <FlexibleLayout>

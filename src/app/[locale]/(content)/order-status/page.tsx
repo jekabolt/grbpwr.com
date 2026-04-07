@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
@@ -6,8 +6,14 @@ import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components
 
 import OrderStatusForm from "../_components/order-status-form";
 
-export default function OrderStatus() {
-  const t = useTranslations("order-status");
+export default async function OrderStatus({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("order-status");
   return (
     <FlexibleLayout>
       <div className="h-full space-y-12 px-2.5 pt-24 lg:space-y-16 lg:px-28">
