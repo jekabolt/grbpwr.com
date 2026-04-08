@@ -2,9 +2,11 @@ import { common_Category } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import {
+  filterSubCategories,
   getSubCategoriesForTopCategory,
   getSubCategoryName,
   getTopCategoryName,
+  isCategoryDisabled,
 } from "@/lib/categories-map";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
@@ -12,31 +14,6 @@ import { Text } from "@/components/ui/text";
 import { useRouteParams } from "../useRouteParams";
 import { CategoryButton } from "./category-btn";
 import { TopCategories } from "./top-categories";
-
-function filterSubCategories(
-  categories: { name: string; id: number; href: string }[],
-  gender: string,
-) {
-  if (gender === "men") {
-    return categories.filter(
-      (c) =>
-        !["swimwear_w", "bralettes", "heels"].includes(
-          c.name?.toLowerCase() ?? "",
-        ),
-    );
-  }
-  return categories.filter((c) => c.name?.toLowerCase() !== "swimwear_m");
-}
-
-export function isCategoryDisabled(category: common_Category, gender: string) {
-  if (!category) return true;
-
-  if (!gender) {
-    return !category.countMen && !category.countWomen;
-  }
-
-  return gender === "men" ? !category.countMen : !category.countWomen;
-}
 
 export function Categories() {
   const t = useTranslations("categories");

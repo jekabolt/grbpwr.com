@@ -103,6 +103,31 @@ export const processCategories = (
   });
 };
 
+export function filterSubCategories(
+  subs: ProcessedCategory["subCategories"],
+  gender: string,
+) {
+  if (gender === "men") {
+    return subs.filter(
+      (c) =>
+        !["swimwear_w", "bralettes", "heels"].includes(
+          c.name?.toLowerCase() ?? "",
+        ),
+    );
+  }
+  return subs.filter((c) => c.name?.toLowerCase() !== "swimwear_m");
+}
+
+export function isCategoryDisabled(category: common_Category, gender: string) {
+  if (!category) return true;
+
+  if (!gender) {
+    return !category.countMen && !category.countWomen;
+  }
+
+  return gender === "men" ? !category.countMen : !category.countWomen;
+}
+
 export function findCategoryByName(
   categories: common_Category[],
   name: string | undefined,
