@@ -61,7 +61,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     ) || product.product?.prices?.[0];
   const sizePickerProductContext = {
     productId: product.product?.sku || "",
-    productName: name,
+    productName: name || "",
     productCategory: productCategory || "",
     productPrice: parseFloat(productPrice?.price?.value || "0"),
     currency: currencyKey,

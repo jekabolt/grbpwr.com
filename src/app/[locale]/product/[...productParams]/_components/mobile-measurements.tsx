@@ -55,7 +55,7 @@ export function MobileMeasurements({
       });
       sendSizeGuideViewEvent({
         product_id: productId,
-        product_name: name,
+        product_name: name || "",
         product_category: productCategory || "",
         page_location:
           typeof window !== "undefined" ? window.location.href : "",

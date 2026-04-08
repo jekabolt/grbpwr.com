@@ -34,6 +34,7 @@ export function ProductItem({
   const tCatalog = useTranslations("catalog");
   const t = useTranslations("categories");
   const tFit = useTranslations("fit");
+  const tProduct = useTranslations("product");
 
   const { dictionary } = useDataContext();
   const { currentCountry } = useTranslationsStore((s) => s);
@@ -140,7 +141,7 @@ export function ProductItem({
                 {isSaleApplied && <Text>{formattedPriceWithSale}</Text>}
                 {preorder !== EMPTY_PREORDER &&
                   isDateTodayOrFuture(preorder || "") && (
-                    <Text variant="inactive">preorder</Text>
+                    <Text variant="inactive">{tProduct("preorder")}</Text>
                   )}
               </>
             )}

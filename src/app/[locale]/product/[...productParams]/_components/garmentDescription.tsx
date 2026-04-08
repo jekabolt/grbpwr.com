@@ -89,7 +89,9 @@ export function GarmentDescription({
           {modelWear && <Text variant="uppercase">{modelWear}</Text>}
         </div>
         <div>
-          <Text variant="uppercase">collection: {collection}</Text>
+          <Text variant="uppercase">
+            {t("collection line", { name: collection || "" })}
+          </Text>
         </div>
       </AccordionSection>
 

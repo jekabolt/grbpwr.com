@@ -84,7 +84,7 @@ export function MobileProductInfo({
     ) || product.product?.prices?.[0];
   const sizePickerProductContext = {
     productId: product.product?.sku || "",
-    productName: name,
+    productName: name || "",
     productCategory: productCategory || "",
     productPrice: parseFloat(productPrice?.price?.value || "0"),
     currency: currencyKey,
