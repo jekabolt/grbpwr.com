@@ -2,7 +2,7 @@ import createMiddleware from "next-intl/middleware";
 
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
-import { getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
+import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -120,8 +120,26 @@ export default async function middleware(req: NextRequest) {
         if (shouldSuggest) {
             setSuggestedCookies(res, geoCountry, geoLocale, country!);
         } else if (suggestCountryCookie && suggestLocaleCookie && suggestCurrentCookie) {
-            // Refresh suggest cookies so they persist across navigation until user chooses
-            setSuggestedCookies(res, suggestCountryCookie, suggestLocaleCookie, suggestCurrentCookie);
+            const pathCountry = country!;
+            const pathLocale = locale!;
+            const onSuggestedNow =
+                suggestCountryCookie.toLowerCase() === pathCountry.toLowerCase() &&
+                suggestLocaleCookie === pathLocale;
+            const issuedForThisCountry =
+                suggestCurrentCookie.toLowerCase() === pathCountry.toLowerCase();
+
+            if (onSuggestedNow) {
+                clearSuggestCookies(res);
+            } else if (issuedForThisCountry) {
+                setSuggestedCookies(
+                    res,
+                    suggestCountryCookie,
+                    suggestLocaleCookie,
+                    suggestCurrentCookie,
+                );
+            } else {
+                clearSuggestCookies(res);
+            }
         }
         return res;
     }
