@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
@@ -14,7 +15,6 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn, validateEmail } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import InputField from "@/components/ui/form/fields/input-field";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
@@ -30,7 +30,6 @@ export default function NewslatterForm() {
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [pulseEmail, setPulseEmail] = useState(false);
-  const [pulseTerms, setPulseTerms] = useState(false);
   const t = useTranslations("newslatter");
   const tToaster = useTranslations("toaster");
 
@@ -40,38 +39,23 @@ export default function NewslatterForm() {
   });
 
   const emailValue = form.watch("email");
-  const acceptTermsValue = form.watch("acceptTerms");
 
   useEffect(() => {
     if (emailValue) setPulseEmail(false);
   }, [emailValue]);
 
   useEffect(() => {
-    if (acceptTermsValue) setPulseTerms(false);
-  }, [acceptTermsValue]);
-
-  useEffect(() => {
-    if (!pulseEmail && !pulseTerms) return;
-    const id = window.setTimeout(() => {
-      setPulseEmail(false);
-      setPulseTerms(false);
-    }, FIELD_PULSE_MS);
+    if (!pulseEmail) return;
+    const id = window.setTimeout(() => setPulseEmail(false), FIELD_PULSE_MS);
     return () => window.clearTimeout(id);
-  }, [pulseEmail, pulseTerms]);
+  }, [pulseEmail]);
 
   async function onSubmit(data: NewsletterFormValues) {
     const email = (data.email ?? "").trim();
 
     if (!email) {
       setPulseEmail(true);
-      if (!data.acceptTerms) setPulseTerms(true);
       setToastMessage(tToaster("email_required"));
-      setToastOpen(true);
-      return;
-    }
-    if (!data.acceptTerms) {
-      setPulseTerms(true);
-      setToastMessage(tToaster("required_terms"));
       setToastOpen(true);
       return;
     }
@@ -132,14 +116,26 @@ export default function NewslatterForm() {
                 disabled={isLoading}
               />
             </div>
-            <div className="relative">
-              {pulseTerms && <Overlay color="highlight" cover="container" />}
-              <CheckboxField
-                name="acceptTerms"
-                label={t("agree").toUpperCase()}
-                disabled={isLoading}
-              />
-            </div>
+            <Text variant="uppercase" className="leading-none">
+              {t.rich("consent_notice", {
+                privacy: (chunks) => (
+                  <Link
+                    href="/legal-notices?section=privacy"
+                    className="underline hover:no-underline"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+                terms: (chunks) => (
+                  <Link
+                    href="/legal-notices?section=terms"
+                    className="underline hover:no-underline"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
+            </Text>
           </div>
           <Button
             variant="simple"
@@ -148,7 +144,7 @@ export default function NewslatterForm() {
             disabled={isLoading}
             className={cn("uppercase", {
               "border border-textColor !bg-bgColor !text-textColor":
-                !emailValue || !acceptTermsValue,
+                !emailValue,
             })}
           >
             {t("subscribe")}

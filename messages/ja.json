@@ -30,6 +30,7 @@
   "newslatter": {
     "mailing list": "メーリングリスト",
     "agree": "メール受信に同意します。詳細については、プライバシーポリシーをお読みください。",
+    "consent_notice": "このフォームを送信することにより、当社の<privacy>プライバシーポリシー</privacy>および<terms>利用規約</terms>に同意したものとみなされます。",
     "subscribe": "購読する",
     "email": "メール"
   },
