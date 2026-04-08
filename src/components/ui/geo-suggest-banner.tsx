@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 import { useLocale, useTranslations } from "next-intl";
 
+import { parseCountryLocalePath } from "@/lib/middleware-utils";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { getCountryName } from "@/lib/utils";
 
@@ -61,9 +62,13 @@ export function GeoSuggestBanner({
 
   useEffect(() => {
     if (!suggestCountry || !suggestLocale) return;
-    const alreadyOnSuggested = pathname?.startsWith(
-      `/${suggestCountry}/${suggestLocale}`,
-    );
+    const path =
+      typeof window !== "undefined" ? window.location.pathname : pathname ?? "";
+    const parsed = parseCountryLocalePath(path);
+    const alreadyOnSuggested =
+      parsed != null &&
+      parsed.country?.toLowerCase() === suggestCountry.toLowerCase() &&
+      parsed.locale === suggestLocale;
     setVisible(!alreadyOnSuggested);
   }, [pathname, suggestCountry, suggestLocale]);
 

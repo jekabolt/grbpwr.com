@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { GeoSuggestBanner } from "./geo-suggest-banner";
@@ -34,12 +35,13 @@ function parseSuggestCookies(): {
  * (e.g. Vercel edge, static cache). Reads suggest cookies set by middleware.
  */
 export function GeoSuggestClientFallback() {
+  const pathname = usePathname();
   const [data, setData] =
     useState<ReturnType<typeof parseSuggestCookies>>(null);
 
   useEffect(() => {
     setData(parseSuggestCookies());
-  }, []);
+  }, [pathname]);
 
   if (!data) return null;
 
