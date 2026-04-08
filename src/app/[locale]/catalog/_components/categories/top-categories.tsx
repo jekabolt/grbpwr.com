@@ -5,7 +5,7 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 import { useRouteParams } from "../useRouteParams";
-import { isCategoryDisabled } from "./categories";
+import { isCategoryDisabled } from "@/lib/categories-map";
 import { CategoryButton } from "./category-btn";
 
 export function TopCategories() {
