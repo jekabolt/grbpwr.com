@@ -1,5 +1,3 @@
-import type { MetadataRoute } from "next";
-
 import { routing } from "@/i18n/routing";
 import { serviceClient } from "@/lib/api";
 
@@ -8,10 +6,11 @@ import {
   collectCatalogSitemapPaths,
   PAGES_SITEMAP_PATHS,
 } from "./catalog-paths";
+import type { SitemapUrlEntry } from "./serialize-xml";
 
 export const SITEMAP_PUBLIC_BASE_URL = "https://grbpwr.com";
 
-const CANONICAL_COUNTRY_BY_LOCALE = {
+export const CANONICAL_COUNTRY_BY_LOCALE = {
   en: "gb",
   fr: "fr",
   de: "de",
@@ -27,6 +26,7 @@ export const SITEMAP_REVALIDATE_SECONDS = 3600;
 export const SITEMAP_CHILD_DOCUMENT_RELATIVE = {
   pages: "/sitemap_pages.xml",
   catalog: "/sitemap_catalog.xml",
+  products: "/sitemap_products.xml",
 } as const;
 
 function catalogPriority(path: string): number {
@@ -44,8 +44,8 @@ function pagesPriority(path: string): number {
 function expandRelPaths(
   relPaths: readonly string[],
   priorityFor: (path: string) => number,
-): MetadataRoute.Sitemap {
-  const entries: MetadataRoute.Sitemap = [];
+): SitemapUrlEntry[] {
+  const entries: SitemapUrlEntry[] = [];
   const now = new Date();
 
   for (const locale of routing.locales) {
@@ -65,11 +65,11 @@ function expandRelPaths(
   return entries;
 }
 
-export function buildPagesSitemapEntries(): MetadataRoute.Sitemap {
+export function buildPagesSitemapEntries(): SitemapUrlEntry[] {
   return expandRelPaths(PAGES_SITEMAP_PATHS, pagesPriority);
 }
 
-export async function buildCatalogSitemapEntries(): Promise<MetadataRoute.Sitemap> {
+export async function buildCatalogSitemapEntries(): Promise<SitemapUrlEntry[]> {
   let relPaths: string[] = [...CATALOG_SITEMAP_HUB_PATHS];
 
   try {

@@ -12,6 +12,7 @@ export async function GET() {
   const locs = [
     `${SITEMAP_PUBLIC_BASE_URL}${SITEMAP_CHILD_DOCUMENT_RELATIVE.pages}`,
     `${SITEMAP_PUBLIC_BASE_URL}${SITEMAP_CHILD_DOCUMENT_RELATIVE.catalog}`,
+    `${SITEMAP_PUBLIC_BASE_URL}${SITEMAP_CHILD_DOCUMENT_RELATIVE.products}`,
   ];
   const xml = serializeSitemapIndex(locs);
   return new NextResponse(xml, {
