@@ -129,10 +129,8 @@ export default async function middleware(req: NextRequest) {
                 suggestCurrentCookie.toLowerCase() === pathCountry.toLowerCase();
 
             if (onSuggestedNow) {
-                // Already on suggested storefront; drop spent/stale triplet.
                 clearSuggestCookies(res);
             } else if (issuedForThisCountry) {
-                // Still on the country the suggestion was issued for — keep until accept/dismiss.
                 setSuggestedCookies(
                     res,
                     suggestCountryCookie,
@@ -140,7 +138,6 @@ export default async function middleware(req: NextRequest) {
                     suggestCurrentCookie,
                 );
             } else {
-                // Path country changed since the suggestion was created (e.g. banner accept).
                 clearSuggestCookies(res);
             }
         }
