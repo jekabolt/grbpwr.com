@@ -30,6 +30,7 @@
   "newslatter": {
     "mailing list": "liste de diffusion",
     "agree": "j'accepte de recevoir des emails. lisez notre politique de confidentialité pour plus d'informations.",
+    "consent_notice": "En envoyant ce formulaire, vous acceptez les conditions de notre <privacy>politique de confidentialité</privacy> et de nos <terms>conditions générales</terms>.",
     "subscribe": "s'abonner",
     "email": "email"
   },

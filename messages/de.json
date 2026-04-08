@@ -30,6 +30,7 @@
   "newslatter": {
     "mailing list": "mailingliste",
     "agree": "ich stimme zu, e-mails zu erhalten. lesen sie unsere datenschutzrichtlinie für weitere informationen.",
+    "consent_notice": "Mit dem Absenden dieses Formulars erklären Sie sich mit den Bedingungen unserer <privacy>Datenschutzrichtlinie</privacy> und unseren <terms>Allgemeinen Geschäftsbedingungen</terms> einverstanden.",
     "subscribe": "abonnieren",
     "email": "email"
   },

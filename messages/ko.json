@@ -30,6 +30,7 @@
   "newslatter": {
     "mailing list": "메일링 리스트",
     "agree": "이메일 수신에 동의합니다. 자세한 내용은 개인정보처리방침을 참조하세요.",
+    "consent_notice": "이 양식을 제출하면 당사 <privacy>개인정보 처리방침</privacy> 및 <terms>이용약관</terms>에 동의하는 것으로 간주됩니다.",
     "subscribe": "구독하기",
     "email": "이메일"
   },

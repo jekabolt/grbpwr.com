@@ -30,6 +30,7 @@
   "newslatter": {
     "mailing list": "mailing list",
     "agree": "i agree to receive emails. read our privacy policy for more information.",
+    "consent_notice": "By submitting this form, you agree to terms of our <privacy>Privacy Policy</privacy> and <terms>Terms and Conditions</terms>.",
     "subscribe": "subscribe",
     "email": "email"
   },

@@ -30,6 +30,7 @@
   "newslatter": {
     "mailing list": "邮件列表",
     "agree": "我同意接收邮件。请阅读我们的隐私政策了解更多信息。",
+    "consent_notice": "提交此表单即表示您同意我们的<privacy>隐私政策</privacy>和<terms>条款与条件</terms>。",
     "subscribe": "订阅",
     "email": "电子邮件"
   },
