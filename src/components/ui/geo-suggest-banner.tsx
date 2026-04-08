@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -12,6 +12,19 @@ import { getCountryName } from "@/lib/utils";
 import { Banner } from "./banner";
 import { Button } from "./button";
 import { Text } from "./text";
+
+function clearSuggestCookiesOnClient() {
+  if (typeof document === "undefined") return;
+  const secure = window.location.protocol === "https:" ? "; Secure" : "";
+  const names = [
+    "NEXT_SUGGEST_COUNTRY",
+    "NEXT_SUGGEST_LOCALE",
+    "NEXT_SUGGEST_CURRENT_COUNTRY",
+  ];
+  for (const name of names) {
+    document.cookie = `${name}=; path=/; max-age=0; SameSite=Lax${secure}`;
+  }
+}
 
 interface Props {
   suggestCountry?: string;
@@ -35,7 +48,6 @@ export function GeoSuggestBanner({
         )
       : false,
   );
-  const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
   const defaultT = useTranslations("geo-suggest");
@@ -88,10 +100,10 @@ export function GeoSuggestBanner({
 
   const onDismiss = () => {
     setVisible(false);
-
+    clearSuggestCookiesOnClient();
     const url = new URL(window.location.href);
     url.searchParams.set("geo", "dismiss");
-    router.push(url.toString());
+    window.location.assign(url.toString());
   };
 
   const onAccept = () => {
@@ -131,6 +143,7 @@ export function GeoSuggestBanner({
         const url = new URL(window.location.href);
         url.pathname = newPath;
         url.searchParams.set("geo", "accept");
+        // Do not clear suggest cookies here — middleware `geo=accept` reads them from the request.
         window.location.href = url.toString();
       }
     }
