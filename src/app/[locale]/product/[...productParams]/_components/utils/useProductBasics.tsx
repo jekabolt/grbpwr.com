@@ -35,7 +35,7 @@ export function useProductBasics({ product }: { product: common_ProductFull }) {
     productBody?.subCategoryId || 0,
   );
 
-  const name = `${productBody?.collection || ""} ${productBody?.version || ""} ${productBody?.fit || ""} ${productBody?.color || ""} ${currentTranslation?.name || ""}`;
+  const name = currentTranslation?.name;
 
   return {
     isComposition,
