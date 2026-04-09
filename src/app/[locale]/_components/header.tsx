@@ -109,7 +109,15 @@ export function Header({
               )}
             </div>
             {isWebsiteEnabled && (
-              <div className="hidden lg:block">
+              <div className="hidden gap-3 lg:flex">
+                <Button
+                  size="sm"
+                  className="underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
+                  asChild
+                >
+                  <Link href="/account">account</Link>
+                </Button>
+
                 <Button
                   onClick={toggleCart}
                   variant={isOpen ? "underline" : "default"}
