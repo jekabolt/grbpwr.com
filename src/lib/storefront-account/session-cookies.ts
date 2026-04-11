@@ -16,6 +16,17 @@ const baseCookie = {
   path: "/",
 };
 
+function maxAgeSecondsFromAccessExpiry(
+  accessExpiresAt: string | undefined,
+): number | undefined {
+  if (!accessExpiresAt) return undefined;
+  const ms = Date.parse(accessExpiresAt);
+  if (Number.isNaN(ms)) return undefined;
+  return Math.max(0, Math.floor((ms - Date.now()) / 1000));
+}
+
+const FALLBACK_ACCESS_MAX_AGE = 60 * 15;
+
 export function applySessionCookies(
   res: { cookies: { set: (n: string, v: string, o: object) => void } },
   payload: VerifyAccountLoginResponse | RefreshAccountSessionResponse,
@@ -26,9 +37,12 @@ export function applySessionCookies(
 
   if (!access || !refresh) return;
 
+  const accessMaxAge =
+    maxAgeSecondsFromAccessExpiry(exp) ?? FALLBACK_ACCESS_MAX_AGE;
+
   res.cookies.set(ACCESS_COOKIE, access, {
     ...baseCookie,
-    maxAge: 60 * 15,
+    maxAge: accessMaxAge,
   });
   res.cookies.set(REFRESH_COOKIE, refresh, {
     ...baseCookie,
@@ -37,7 +51,7 @@ export function applySessionCookies(
   if (exp) {
     res.cookies.set(ACCESS_EXPIRES_COOKIE, exp, {
       ...baseCookie,
-      maxAge: 60 * 60 * 24 * 30,
+      maxAge: accessMaxAge,
     });
   }
 }

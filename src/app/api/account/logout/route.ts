@@ -1,4 +1,5 @@
-import { revokeAccountSessionResponse } from "@/lib/storefront-account";
+import { revokeAccountSessionResponse } from "@/lib/storefront-account/account-auth";
+
 
 export async function POST() {
   return revokeAccountSessionResponse();

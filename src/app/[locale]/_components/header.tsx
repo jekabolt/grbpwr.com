@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
@@ -26,6 +27,7 @@ export function Header({
   const { dictionary } = useDataContext();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
+  const { isSignedIn } = useAccountOnboardingStore((s) => s);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
   const itemsQuantity = Object.keys(products).length;
@@ -89,7 +91,7 @@ export function Header({
               "w-1/3 text-center transition-colors hover:opacity-70 active:opacity-50 lg:w-auto",
             )}
           >
-            <Link href="/">grbpwr</Link>
+            <Link href="/">{isSignedIn ? "grbpwr +" : "grbpwr"}</Link>
           </Button>
         )}
 

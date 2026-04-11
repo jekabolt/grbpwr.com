@@ -1,6 +1,7 @@
+import { verifyAccountMagicLinkResponse } from "@/lib/storefront-account/account-auth";
 import { NextResponse } from "next/server";
 
-import { verifyAccountMagicLinkResponse } from "@/lib/storefront-account";
+
 
 export async function POST(req: Request) {
   const { token } = (await req.json()) as { token?: string };
