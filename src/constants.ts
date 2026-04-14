@@ -2,6 +2,7 @@ import type {
   common_GenderEnum,
   common_OrderFactor,
   common_SortFactor,
+  ShoppingPreferenceEnum,
 } from "./api/proto-http/frontend";
 
 export const PRODUCTS_CACHE_TAG = "products";
@@ -58,7 +59,6 @@ export const SORT_MAP_URL: Record<string, common_SortFactor> = {
   price: "SORT_FACTOR_PRICE",
 };
 
-/** Proto enum name prefixes → strip for order-review i18n keys. */
 export const REVIEW_ENUM_PREFIX = {
   delivery: "DELIVERY_SPEED_ENUM_",
   packaging: "PACKAGING_CONDITION_ENUM_",
@@ -66,7 +66,12 @@ export const REVIEW_ENUM_PREFIX = {
   fit: "FIT_SCALE_ENUM_",
 } as const;
 
-/** Storefront-visible values only (excludes *_UNKNOWN). */
+export const EMAIL_PREFERENCES: Record<string, ShoppingPreferenceEnum> = {
+  all: "SHOPPING_PREFERENCE_ENUM_ALL",
+  men: "SHOPPING_PREFERENCE_ENUM_MALE",
+  women: "SHOPPING_PREFERENCE_ENUM_FEMALE",
+} as const
+
 export const DELIVERY_SPEED_VALUES = [
   "DELIVERY_SPEED_ENUM_MUCH_FASTER_THAN_EXPECTED",
   "DELIVERY_SPEED_ENUM_FASTER_THAN_EXPECTED",

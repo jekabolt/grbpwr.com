@@ -11,6 +11,9 @@
     "close": "닫기",
     "menu": "메뉴"
   },
+  "account": {
+    "privacy policy": "<privacy>개인정보 처리방침</privacy>과 <membership>멤버십 정책</membership>을 읽었습니다"
+  },
   "footer": {
     "legal notices": "법적 고지",
     "order status": "주문 상태",

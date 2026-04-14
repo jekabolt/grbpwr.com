@@ -11,6 +11,9 @@
     "close": "关闭",
     "menu": "菜单"
   },
+  "account": {
+    "privacy policy": "我已阅读<privacy>隐私政策</privacy>和<membership>会员政策</membership>"
+  },
   "footer": {
     "legal notices": "法律声明",
     "order status": "订单状态",

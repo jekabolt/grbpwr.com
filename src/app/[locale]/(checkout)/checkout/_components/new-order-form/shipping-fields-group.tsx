@@ -12,7 +12,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import InputField from "@/components/ui/form/fields/input-field";
-import { PhoneField } from "@/components/ui/form/fields/phone-field";
+import { FormPhoneField } from "@/components/ui/form/fields/form-phone-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
@@ -161,8 +161,7 @@ export function AddressFields({
   prefix?: string;
   disabled?: boolean;
 }) {
-  const { phoneCodeItems, stateItems, handleCountryChange } =
-    useAddressFields(prefix);
+  const { stateItems, handleCountryChange } = useAddressFields(prefix);
   const { watch } = useFormContext();
   const t = useTranslations("checkout");
 
@@ -246,13 +245,12 @@ export function AddressFields({
         keyboardRestriction={keyboardRestrictions.companyField}
       />
 
-      <PhoneField
+      <FormPhoneField
         loading={loading}
         variant="secondary"
         name={getFieldName(prefix, "phone")}
         label={t("phone number:")}
         disabled={disabled}
-        items={phoneCodeItems}
         selectedCountry={selectedCountry}
       />
       <InputField

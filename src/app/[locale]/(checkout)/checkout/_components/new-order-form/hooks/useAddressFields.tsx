@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useFormContext, useWatch } from "react-hook-form";
 
+import { navigateToCountryWithPicker } from "@/lib/navigation/navigate-to-country-with-picker";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
 import { countryStatesMap } from "../constants";
@@ -23,13 +24,6 @@ export function useAddressFields(prefix?: string) {
   const selectedCountry = useWatch({ name: countryFieldName });
 
   const uniqueCountries = getUniqueCountries();
-  const phoneCodeItems = uniqueCountries
-    .map((country) => ({
-      label: `${country.name} +${country.phoneCode}`,
-      value: `${country.countryCode}-${country.phoneCode}`,
-      phoneCode: country.phoneCode,
-    }))
-    .sort((a, b) => a.label.localeCompare(b.label));
 
   const stateItems =
     countryStatesMap[selectedCountry as keyof typeof countryStatesMap] || [];
@@ -91,36 +85,20 @@ export function useAddressFields(prefix?: string) {
     }
 
     if (!isBillingAddress) {
-      cancelNextCountry();
-      setCurrentCountry({
-        name: country.name,
-        countryCode: country.countryCode,
-        currencyKey: country.currencyKey,
-      });
-
       const email = getValues("email");
       const promoCode = getValues("promoCode");
-      if (email || promoCode) {
-        sessionStorage.setItem(
-          "checkout-country-change-stash",
-          JSON.stringify({ email: email || "", promoCode: promoCode || "" }),
-        );
-      }
-
-      const newLocale = country.lng;
-      const pathWithoutLocaleCountry =
-        pathname.replace(/^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/, "") ||
-        "/";
-      const newPath = `/${newCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
-      const url = new URL(newPath, window.location.origin);
-      url.searchParams.set("from_picker", "1");
-      window.location.href = url.toString();
+      navigateToCountryWithPicker(
+        country,
+        { pathname, cancelNextCountry, setCurrentCountry },
+        email || promoCode
+          ? { email: email || "", promoCode: promoCode || "" }
+          : undefined,
+      );
     }
   };
 
   return {
     countries: uniqueCountries,
-    phoneCodeItems,
     stateItems,
     handleCountryChange,
   };

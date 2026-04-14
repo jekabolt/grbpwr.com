@@ -8,7 +8,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "..";
 import Input from "../../input";
 import Select from "../../select";
 
-type Props = {
+export type PhoneFieldProps = {
   name: string;
   label: string;
   items: {
@@ -17,7 +17,9 @@ type Props = {
     phoneCode?: string;
   }[];
   selectedCountry?: string;
-  [k: string]: any;
+  disabled?: boolean;
+  loading?: boolean;
+  variant?: string;
 };
 
 export function PhoneField({
@@ -26,7 +28,7 @@ export function PhoneField({
   items,
   selectedCountry,
   ...props
-}: Props) {
+}: PhoneFieldProps) {
   const { control, trigger } = useFormContext();
   const t = useTranslations("errors");
   const containerRef = useRef<HTMLDivElement>(null);

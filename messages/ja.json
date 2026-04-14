@@ -11,6 +11,9 @@
     "close": "閉じる",
     "menu": "メニュー"
   },
+  "account": {
+    "privacy policy": "<privacy>プライバシーポリシー</privacy>と<membership>メンバーシップポリシー</membership>を読みました"
+  },
   "footer": {
     "legal notices": "法的通知",
     "order status": "注文状況",

@@ -11,6 +11,9 @@
     "close": "chiudi",
     "menu": "menu"
   },
+  "account": {
+    "privacy policy": "Ho letto l'<privacy>informativa sulla privacy</privacy> e la <membership>politica di membership</membership>"
+  },
   "footer": {
     "legal notices": "note legali",
     "order status": "stato ordine",

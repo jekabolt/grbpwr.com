@@ -91,7 +91,7 @@ export function Header({
               "w-1/3 text-center transition-colors hover:opacity-70 active:opacity-50 lg:w-auto",
             )}
           >
-            <Link href="/">{isSignedIn ? "grbpwr +" : "grbpwr"}</Link>
+            <Link href="/">{isSignedIn ? "grbpwr+" : "grbpwr"}</Link>
           </Button>
         )}
 

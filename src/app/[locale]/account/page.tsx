@@ -9,7 +9,7 @@ export default async function AccountPage() {
 
   return (
     <FlexibleLayout>
-      <div className="h-screen justify-center px-2.5 lg:py-24">
+      <div className="flex h-screen items-center justify-center border border-red-500">
         {account ? (
           <AccountSignedInSection account={account} />
         ) : (
