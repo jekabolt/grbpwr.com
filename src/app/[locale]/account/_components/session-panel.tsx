@@ -10,7 +10,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
-import { ActiveAccountSection } from "@/app/[locale]/account/_components/account-sections";
+import { ActiveAccountSection } from "@/app/[locale]/account/_components/sections";
 import {
   accountSchema,
   AccountSchema,

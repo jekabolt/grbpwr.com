@@ -1,18 +1,16 @@
 "use client";
 
-import { Fragment, useCallback } from "react";
-import { currencySymbols } from "@/constants";
+import { Fragment } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
-import { findCountryByCode } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/utils";
 import type { AccountSchema } from "@/app/[locale]/account/utils/shema";
 import { EMAIL_REFERENCE_STEPS } from "@/app/[locale]/account/utils/utility";
 
-import { useEmailPreferences } from "./use-email-preferences";
+import { useEmailPreferences } from "../utils/use-email-preferences";
+import { UserLocation } from "./user-location";
 
 type EmailBooleanField = Pick<
   AccountSchema,
@@ -77,30 +75,12 @@ export function EmailPreferences() {
     pending,
     preferenceItems,
     shoppingPreference,
-    sortedCountries,
-    uniqueCountries,
     scheduleSave,
     commitShoppingPreference,
     onDefaultCountryChange,
   } = useEmailPreferences();
 
-  const renderDefaultCountryValue = useCallback(
-    (
-      selectedValue: string,
-      selectedItem: { label: string; value: string } | undefined,
-    ) => {
-      if (!selectedItem) return null;
-      const meta = findCountryByCode(uniqueCountries, selectedValue);
-      const currency = meta?.currencyKey ?? "";
-      return (
-        <Text variant="uppercase">
-          {selectedItem.label} /{" "}
-          {currencySymbols[currency as keyof typeof currencySymbols]}
-        </Text>
-      );
-    },
-    [uniqueCountries],
-  );
+  const form = useFormContext<AccountSchema>();
 
   return (
     <div className="flex w-full flex-col gap-8">
@@ -117,9 +97,9 @@ export function EmailPreferences() {
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-3.5">
+        <div className="flex flex-col gap-6">
           <Text variant="uppercase">email preferences</Text>
-          <div className="flex flex-wrap items-center uppercase leading-none">
+          <div className="flex flex-wrap items-center uppercase">
             {preferenceItems.map((i, idx) => {
               const selected = shoppingPreference === i.value;
               return (
@@ -148,17 +128,7 @@ export function EmailPreferences() {
             })}
           </div>
         </div>
-
-        <SelectField
-          name="defaultCountry"
-          label="COUNTRY"
-          items={sortedCountries}
-          variant="secondary"
-          fullWidth
-          disabled={pending}
-          renderValue={renderDefaultCountryValue}
-          onValueChange={onDefaultCountryChange}
-        />
+        <UserLocation pending={pending} />
       </div>
     </div>
   );

@@ -3,35 +3,36 @@
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { currencySymbols } from "@/constants";
 
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/input";
+import { OtpInput } from "@/components/ui/otp-input";
 import { Text } from "@/components/ui/text";
 
-export function AccountLoginForm() {
+export function AccountLoginForm({
+  isCheckout = true,
+}: {
+  isCheckout?: boolean;
+}) {
   const router = useRouter();
+  const { currentCountry } = useTranslationsStore((s) => s);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [step, setStep] = useState<"email" | "code">("email");
-  const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   async function requestLink() {
-    setError(null);
     setPending(true);
     try {
-      const res = await fetch("/api/account/login/request", {
+      await fetch("/api/account/login/request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as {
-          error?: string;
-        } | null;
-        setError(body?.error ?? "Could not send login email");
-        return;
-      }
+
       setStep("code");
     } finally {
       setPending(false);
@@ -39,21 +40,13 @@ export function AccountLoginForm() {
   }
 
   async function verifyCode() {
-    setError(null);
     setPending(true);
     try {
-      const res = await fetch("/api/account/login/verify-code", {
+      await fetch("/api/account/login/verify-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code }),
       });
-      if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as {
-          error?: string;
-        } | null;
-        setError(body?.error ?? "Invalid code");
-        return;
-      }
       router.refresh();
     } finally {
       setPending(false);
@@ -61,13 +54,23 @@ export function AccountLoginForm() {
   }
 
   return (
-    <div className="flex w-full max-w-md flex-col gap-6">
+    <div className="flex w-full max-w-sm flex-col gap-6">
       {step === "email" ? (
-        <>
-          <div>
-            <Text variant="uppercase" className="mb-2 block">
-              email
+        <div className="space-y-10">
+          <div className="flex flex-col items-center gap-6">
+            <Text variant="uppercase">logn or create account</Text>
+            <Text variant="uppercase">
+              your are in country: {currentCountry.name} /{" "}
+              {
+                currencySymbols[
+                  currentCountry.currencyKey as keyof typeof currencySymbols
+                ]
+              }{" "}
+              change location
             </Text>
+          </div>
+          <div>
+            <Text variant="uppercase">email</Text>
             <Input
               name="email"
               type="email"
@@ -79,63 +82,65 @@ export function AccountLoginForm() {
               disabled={pending}
             />
           </div>
-          <Button
-            type="button"
-            variant="main"
-            size="lg"
-            className="w-full"
-            disabled={pending || !email.trim()}
-            onClick={requestLink}
+          <div
+            className={cn("space-y-0", {
+              "space-y-3": isCheckout,
+            })}
           >
-            continue
-          </Button>
-        </>
+            <Button
+              type="button"
+              variant="main"
+              size="lg"
+              className="w-full uppercase"
+              disabled={pending || !email.trim()}
+              onClick={requestLink}
+            >
+              continue
+            </Button>
+            {isCheckout && (
+              <>
+                <Text variant="uppercase" className="text-center">
+                  or
+                </Text>
+                <Button
+                  variant="simpleReverseWithBorder"
+                  className="w-full uppercase"
+                  size="lg"
+                >
+                  checkout as guest
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
       ) : (
-        <>
-          <div>
-            <Text variant="uppercase" className="mb-2 block">
-              code from email
-            </Text>
-            <Input
-              name="code"
-              type="text"
-              autoComplete="one-time-code"
+        <div className="space-y-10">
+          <div className="flex flex-col items-center gap-16">
+            <Text variant="uppercase">enter your verificaiton code</Text>
+            <OtpInput
+              id="login-code"
               value={code}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setCode(e.target.value)
-              }
+              onChange={setCode}
               disabled={pending}
             />
           </div>
-          <Button
-            type="button"
-            variant="main"
-            size="lg"
-            className="w-full"
-            disabled={pending || !code.trim()}
-            onClick={verifyCode}
-          >
-            sign in
-          </Button>
-          <button
-            type="button"
-            className="text-left text-textBaseSize uppercase underline disabled:opacity-50"
-            disabled={pending}
-            onClick={() => {
-              setStep("email");
-              setCode("");
-              setError(null);
-            }}
-          >
-            use a different email
-          </button>
-        </>
+          <div className="space-y-5">
+            <Button
+              type="button"
+              variant="main"
+              size="lg"
+              className="w-full uppercase"
+              disabled={pending || code.length !== 6}
+              onClick={verifyCode}
+            >
+              resend code in
+            </Button>
+            <Text variant="uppercase">
+              or sign in via the link sent to your email
+            </Text>
+          </div>
+        </div>
       )}
-      {error ? (
-        <Text variant="uppercase" className="text-red-600">
-          {error}
-        </Text>
-      ) : null}
     </div>
   );
 }

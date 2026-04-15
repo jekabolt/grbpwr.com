@@ -5,7 +5,7 @@ import { useFormContext } from "react-hook-form";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { AccountPersonalInfoFields } from "@/app/[locale]/account/_components/account-personal-info-fields";
+import { AccountPersonalInfoFields } from "@/app/[locale]/account/_components/personal-info-fields";
 import type { AccountSchema } from "@/app/[locale]/account/utils/shema";
 
 import { buildAccountUpdatePayload } from "../utils/utility";

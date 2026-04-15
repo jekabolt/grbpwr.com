@@ -140,7 +140,7 @@ export const currencySymbols: Record<string, string> = {
   // TRY: "₺", // Turkish Lira
   // UAH: "₴", // Ukrainian Hryvnia
   // HKD: "$", // Hong Kong Dollar
-};
+} as const;
 
 export type OrderFactorOption = {
   factor: common_OrderFactor;

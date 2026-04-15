@@ -48,7 +48,7 @@ export function AccountPersonalInfoFields({
       />
       <FormPhoneField
         name="phone"
-        label={t("phone number:")}
+        label={`${t("phone number:")} (optional)`}
         selectedCountry={selectedCountryCode}
         disabled={disabled}
       />

@@ -54,19 +54,27 @@ export function useEmailPreferences() {
   const uniqueCountries = useMemo(() => getUniqueCountries(), []);
 
   useEffect(() => {
-    if (seededDefaultCountry.current) return;
-    if (form.getValues("defaultCountry")) {
+    // Keep `defaultCountry` aligned with cookie-derived `currentCountry`
+    // unless the user explicitly changed the field.
+    const cc = currentCountry.countryCode?.trim().toUpperCase();
+    if (!cc) return;
+
+    if (!seededDefaultCountry.current) {
+      form.setValue("defaultCountry", cc, {
+        shouldDirty: false,
+        shouldValidate: false,
+      });
       seededDefaultCountry.current = true;
       return;
     }
-    const cc = currentCountry.countryCode?.trim().toLowerCase();
-    if (cc) {
+
+    const dirty = !!form.formState.dirtyFields?.defaultCountry;
+    if (!dirty) {
       form.setValue("defaultCountry", cc, {
         shouldDirty: false,
         shouldValidate: false,
       });
     }
-    seededDefaultCountry.current = true;
   }, [form, currentCountry.countryCode]);
 
   const performEmailSave = useCallback(async (): Promise<boolean> => {

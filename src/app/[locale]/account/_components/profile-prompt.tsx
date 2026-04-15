@@ -10,9 +10,13 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
-import { AccountPersonalInfoFields } from "@/app/[locale]/account/_components/account-personal-info-fields";
-import { AccountRegistrationCheckboxSection } from "@/app/[locale]/account/_components/account-registration-checkbox-section";
-import { accountSchema, AccountSchema } from "@/app/[locale]/account/utils/shema";
+import { AccountPersonalInfoFields } from "@/app/[locale]/account/_components/personal-info-fields";
+import { AccountRegistrationCheckboxSection } from "@/app/[locale]/account/_components/registration-checkbox-section";
+import {
+  accountSchema,
+  AccountSchema,
+} from "@/app/[locale]/account/utils/shema";
+
 import {
   buildAccountUpdatePayload,
   getAccountFormDefaultValues,
@@ -43,10 +47,14 @@ export function AccountProfilePrompt({ account }: Props) {
   async function onSubmit(data: AccountSchema) {
     setPending(true);
     try {
-      const payload = buildAccountUpdatePayload(data, {
-        languageId,
-        currentCountryCode: currentCountry.countryCode,
-      }, "full");
+      const payload = buildAccountUpdatePayload(
+        data,
+        {
+          languageId,
+          currentCountryCode: currentCountry.countryCode,
+        },
+        "full",
+      );
 
       const res = await fetch("/api/account/update", {
         method: "POST",
@@ -78,11 +86,7 @@ export function AccountProfilePrompt({ account }: Props) {
             disabled={pending}
             selectedCountryCode={selectedCountryCode}
           />
-
-          <div className="border-t border-textColor/15 pt-10">
-            <AccountRegistrationCheckboxSection form={form} disabled={pending} />
-          </div>
-
+          <AccountRegistrationCheckboxSection form={form} disabled={pending} />
           <Button
             type="submit"
             variant="main"
