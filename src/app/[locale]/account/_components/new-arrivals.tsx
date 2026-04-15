@@ -1,0 +1,54 @@
+import { Fragment } from "react";
+import { EMAIL_PREFERENCES } from "@/constants";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+
+import type { AccountEmailPreference } from "../utils/shema";
+
+export function NewArrivales({
+  value,
+  onChange,
+  pending,
+  className,
+}: {
+  value: AccountEmailPreference;
+  onChange: (next: AccountEmailPreference) => void;
+  pending?: boolean;
+  className?: string;
+}) {
+  const items = Object.entries(EMAIL_PREFERENCES).map(([label, value]) => ({
+    label,
+    value,
+  }));
+
+  return (
+    <div className={cn("flex flex-wrap items-center uppercase", className)}>
+      {items.map((i, id) => {
+        const selected = value === i.value;
+        return (
+          <Fragment key={i.value}>
+            {id > 0 && (
+              <Text className="mx-2 select-none text-textInactiveColor">/</Text>
+            )}
+            <Button
+              type="button"
+              disabled={pending}
+              variant={selected ? "underline" : "default"}
+              onClick={() => onChange(i.value)}
+              className={cn(
+                "uppercase text-textInactiveColor hover:text-textColor",
+                {
+                  "text-textColor": selected,
+                },
+              )}
+            >
+              {i.label}
+            </Button>
+          </Fragment>
+        );
+      })}
+    </div>
+  );
+}

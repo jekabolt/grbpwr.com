@@ -1,9 +1,8 @@
 "use client";
 
-import { EMAIL_PREFERENCES } from "@/constants";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import {
   findCountryByCode,
@@ -11,8 +10,7 @@ import {
   getUniqueCountries,
 } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/utils";
 import type {
-  AccountEmailPreference,
-  AccountSchema,
+  AccountSchema
 } from "@/app/[locale]/account/utils/shema";
 import {
   buildAccountUpdatePayload,
@@ -35,20 +33,6 @@ export function useEmailPreferences() {
   const [pending, setPending] = useState(false);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const seededDefaultCountry = useRef(false);
-
-  const shoppingPreference = useWatch({
-    control: form.control,
-    name: "shoppingPreference",
-  });
-
-  const preferenceItems = useMemo(
-    () =>
-      Object.entries(EMAIL_PREFERENCES).map(([label, value]) => ({
-        label,
-        value,
-      })),
-    [],
-  );
 
   const sortedCountries = useMemo(() => getSortedCountries(), []);
   const uniqueCountries = useMemo(() => getUniqueCountries(), []);
@@ -157,16 +141,6 @@ export function useEmailPreferences() {
     }, SAVE_DEBOUNCE_MS);
   }, [persist]);
 
-  const commitShoppingPreference = useCallback(
-    (value: AccountEmailPreference) => {
-      form.setValue("shoppingPreference", value, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      scheduleSave();
-    },
-    [form, scheduleSave],
-  );
 
   useEffect(
     () => () => {
@@ -179,12 +153,9 @@ export function useEmailPreferences() {
 
   return {
     pending,
-    preferenceItems,
-    shoppingPreference,
     sortedCountries,
     uniqueCountries,
     scheduleSave,
-    commitShoppingPreference,
     onDefaultCountryChange: handleDefaultCountryPicked,
   };
 }

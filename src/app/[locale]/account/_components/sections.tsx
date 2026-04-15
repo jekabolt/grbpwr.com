@@ -1,9 +1,9 @@
 "use client";
 
-import { EmailPreferences } from "@/app/[locale]/account/_components/email-preferences";
+import { EmailPreferences } from "@/app/[locale]/account/sections/email-preferences";
 
+import { PersonalInfo } from "../sections/personal-info";
 import type { ActivePanel } from "../utils/utility";
-import { PersonalInfo } from "./personal-info";
 
 type Props = {
   activePanel: ActivePanel;

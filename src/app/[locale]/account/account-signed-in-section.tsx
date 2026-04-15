@@ -2,8 +2,8 @@
 
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 
-import { AccountProfilePrompt } from "./_components/profile-prompt";
-import { AccountSessionPanel } from "./_components/session-panel";
+import { AccountProfilePrompt } from "./authorization/profile-form";
+import { AccountSessionPanel } from "./sections/session-panel";
 import { accountNeedsNameCompletion } from "./utils/utility";
 
 export function AccountSignedInSection({

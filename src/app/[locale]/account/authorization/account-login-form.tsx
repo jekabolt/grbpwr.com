@@ -13,7 +13,7 @@ import { OtpInput } from "@/components/ui/otp-input";
 import { Text } from "@/components/ui/text";
 
 export function AccountLoginForm({
-  isCheckout = true,
+  isCheckout = false,
 }: {
   isCheckout?: boolean;
 }) {
