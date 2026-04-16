@@ -24,9 +24,19 @@ import {
 
 type Props = {
   account: StorefrontAccount;
+  onCompleted?: (data: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    country: string;
+  }) => void;
 };
 
-export function AccountProfilePrompt({ account }: Props) {
+export function AccountProfilePrompt({
+  account,
+  onCompleted,
+}: Props) {
   const router = useRouter();
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const [pending, setPending] = useState(false);
@@ -65,6 +75,17 @@ export function AccountProfilePrompt({ account }: Props) {
         await res.json().catch(() => null);
         return;
       }
+
+      onCompleted?.({
+        firstName: data.firstName.trim(),
+        lastName: data.lastName.trim(),
+        phone: data.phone.trim(),
+        email: account.email?.trim() ?? "",
+        country:
+          data.defaultCountry?.trim().toLowerCase() ||
+          selectedCountryCode?.toLowerCase() ||
+          "",
+      });
 
       router.refresh();
     } finally {

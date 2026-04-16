@@ -1,21 +1,28 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
-import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
+import { useEffect, useMemo, useState } from "react";
+import type {
+  StorefrontAccount,
+  ValidateOrderItemsInsertResponse,
+} from "@/api/proto-http/frontend";
 import { currencySymbols, keyboardRestrictions } from "@/constants";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { formatPrice } from "@/lib/currency";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
-import InputField from "@/components/ui/form/fields/input-field";
+import { Button } from "@/components/ui/button";
 import { FormPhoneField } from "@/components/ui/form/fields/form-phone-field";
+import InputField from "@/components/ui/form/fields/input-field";
 import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
+import { CheckoutSavedAddressSelector } from "@/app/[locale]/account/_components/checkout-saved-address-selector";
+import { useAddresses } from "@/app/[locale]/account/utils/useAddresses";
 
 import AddressAutocomplete from "./address-autocomplete";
 import CityAutocomplete from "./city-autocomplete";
@@ -34,6 +41,7 @@ type Props = {
   isOpen: boolean;
   disabled?: boolean;
   order?: ValidateOrderItemsInsertResponse;
+  account?: StorefrontAccount;
   onToggle: () => void;
 };
 
@@ -42,13 +50,23 @@ export default function ShippingFieldsGroup({
   isOpen,
   disabled = false,
   order,
+  account,
   onToggle,
 }: Props) {
   const t = useTranslations("checkout");
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, getValues, trigger } = useFormContext();
   const { dictionary } = useDataContext();
   const { currentCountry } = useTranslationsStore((s) => s);
+  const { isSignedIn } = useAccountOnboardingStore((s) => s);
   const { handleShippingCarrierChange } = useCheckoutAnalytics();
+
+  const [saveAddressLabel, setSaveAddressLabel] = useState("");
+  const [saveAsDefault, setSaveAsDefault] = useState(false);
+  const [isSavingAddress, setIsSavingAddress] = useState(false);
+  const [addressSaveStatus, setAddressSaveStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   const currency =
     currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
@@ -84,6 +102,136 @@ export default function ShippingFieldsGroup({
     setValue,
   ]);
 
+  const [savedAddressesRefreshKey, setSavedAddressesRefreshKey] = useState(0);
+  const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
+
+  const { addresses, defaultAddress, loaded } = useAddresses({
+    enabled: isSignedIn,
+    refreshKey: savedAddressesRefreshKey,
+  });
+
+  const showAddressForm =
+    !isSignedIn || (loaded && !addresses.length) || isAddingNewAddress;
+  const showSavedAddressesSelector =
+    isSignedIn && loaded && addresses.length > 0 && !isAddingNewAddress;
+
+  function resetAddressFields() {
+    const keys: Array<
+      | "state"
+      | "city"
+      | "address"
+      | "additionalAddress"
+      | "company"
+      | "phone"
+      | "postalCode"
+      | "savedAddressId"
+    > = [
+      "state",
+      "city",
+      "address",
+      "additionalAddress",
+      "company",
+      "phone",
+      "postalCode",
+      "savedAddressId",
+    ];
+    keys.forEach((k) =>
+      setValue(k, "", { shouldValidate: false, shouldDirty: false }),
+    );
+    setValue("country", currentCountry.countryCode ?? "", {
+      shouldValidate: false,
+      shouldDirty: false,
+    });
+  }
+
+  function handleAddNewAddress() {
+    setAddressSaveStatus(null);
+    setSaveAddressLabel("");
+    setSaveAsDefault(false);
+    resetAddressFields();
+    setIsAddingNewAddress(true);
+  }
+
+  function handleCancelAddNewAddress() {
+    setAddressSaveStatus(null);
+    setIsAddingNewAddress(false);
+  }
+
+  async function handleSaveAddress() {
+    setAddressSaveStatus(null);
+
+    const requiredShippingFields: Array<
+      "firstName" | "lastName" | "country" | "city" | "address" | "postalCode"
+    > = ["firstName", "lastName", "country", "city", "address", "postalCode"];
+    const valid = await trigger(requiredShippingFields);
+    if (!valid) {
+      setAddressSaveStatus({
+        type: "error",
+        message: "fill required shipping fields before saving address",
+      });
+      return;
+    }
+
+    const values = getValues();
+    const autoLabel =
+      `${values.firstName?.trim() ?? ""} ${values.lastName?.trim() ?? ""}`.trim() ||
+      "My address";
+
+    setIsSavingAddress(true);
+    try {
+      const addRes = await fetch("/api/account/addresses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address: {
+            label: saveAddressLabel.trim() || autoLabel,
+            country: values.country?.trim(),
+            state: values.state?.trim() || "",
+            city: values.city?.trim(),
+            addressLineOne: values.address?.trim(),
+            addressLineTwo: values.additionalAddress?.trim() || "",
+            company: values.company?.trim() || "",
+            postalCode: values.postalCode?.trim(),
+            isDefault: saveAsDefault,
+          },
+        }),
+      });
+
+      const addData = await addRes.json().catch(() => ({}));
+      if (!addRes.ok) {
+        setAddressSaveStatus({
+          type: "error",
+          message:
+            typeof addData?.error === "string"
+              ? addData.error
+              : "failed to save address",
+        });
+        return;
+      }
+
+      if (saveAsDefault && typeof addData?.id === "number") {
+        await fetch(`/api/account/addresses/${addData.id}/default`, {
+          method: "POST",
+        });
+        setValue("savedAddressId", String(addData.id), {
+          shouldValidate: false,
+        });
+      }
+
+      setSavedAddressesRefreshKey((k) => k + 1);
+
+      setAddressSaveStatus({
+        type: "success",
+        message: "address saved",
+      });
+      setIsAddingNewAddress(false);
+      setSaveAddressLabel("");
+      setSaveAsDefault(false);
+    } finally {
+      setIsSavingAddress(false);
+    }
+  }
+
   return (
     <FieldsGroupContainer
       stage="2/3"
@@ -92,7 +240,53 @@ export default function ShippingFieldsGroup({
       isOpen={isOpen}
       onToggle={onToggle}
     >
-      <AddressFields loading={loading} disabled={disabled} />
+      {showAddressForm && (
+        <>
+          <AddressFields loading={loading} disabled={disabled} />
+
+          {isSignedIn && (
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                variant="main"
+                size="lg"
+                className="w-full uppercase"
+                disabled={disabled || loading || isSavingAddress}
+                loading={isSavingAddress}
+                onClick={handleSaveAddress}
+              >
+                save address
+              </Button>
+              {isAddingNewAddress && addresses.length > 0 && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="lg"
+                  className="w-full uppercase"
+                  disabled={disabled || loading || isSavingAddress}
+                  onClick={handleCancelAddNewAddress}
+                >
+                  cancel
+                </Button>
+              )}
+            </div>
+          )}
+        </>
+      )}
+      {showSavedAddressesSelector && (
+        <CheckoutSavedAddressSelector
+          loading={loading}
+          disabled={disabled}
+          defaultOnly={true}
+          isSignedIn={isSignedIn}
+          refreshKey={savedAddressesRefreshKey}
+          account={account as StorefrontAccount}
+          onDefaultChange={() => {
+            setSavedAddressesRefreshKey((k) => k + 1);
+          }}
+          onAddNewAddress={handleAddNewAddress}
+        />
+      )}
       <div>
         <div className="space-y-4">
           <Text

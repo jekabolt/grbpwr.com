@@ -63,6 +63,10 @@ export function AccountSessionPanel({ account }: Props) {
 
   async function logout() {
     await fetch("/api/account/logout", { method: "POST" });
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("checkout-form-storage");
+      sessionStorage.removeItem("checkout-country-change-stash");
+    }
     router.refresh();
   }
 
@@ -71,11 +75,11 @@ export function AccountSessionPanel({ account }: Props) {
   }
 
   return (
-    <div className="w-full lg:relative lg:min-h-screen lg:px-32 lg:py-24">
-      <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-0">
+    <div className="w-screen lg:relative lg:min-h-screen lg:px-32 lg:py-24">
+      <div className="flex w-full flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-0">
         <div className="flex flex-col gap-12">
           <div className="space-y-2">
-            <Text variant="uppercase">
+            <Text>
               {account.firstName} {account.lastName}
             </Text>
             <Text variant="inactive">{account.email}</Text>
@@ -103,11 +107,12 @@ export function AccountSessionPanel({ account }: Props) {
             log out
           </Button>
         </div>
-        <div>
+        <div className="w-full">
           <Form {...form}>
             <ActiveAccountSection
               activePanel={activePanel}
               selectedCountryCode={selectedCountryCode}
+              account={account}
             />
           </Form>
         </div>

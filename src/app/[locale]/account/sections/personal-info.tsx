@@ -48,7 +48,7 @@ export function PersonalInfo({
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col gap-14"
+      className="flex w-full flex-col gap-14"
     >
       <Text variant="uppercase">personal info</Text>
       <AccountPersonalInfoFields

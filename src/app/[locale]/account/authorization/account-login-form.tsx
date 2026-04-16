@@ -14,8 +14,10 @@ import { Text } from "@/components/ui/text";
 
 export function AccountLoginForm({
   isCheckout = false,
+  onCheckoutAsGuest,
 }: {
   isCheckout?: boolean;
+  onCheckoutAsGuest?: () => void;
 }) {
   const router = useRouter();
   const { currentCountry } = useTranslationsStore((s) => s);
@@ -106,6 +108,8 @@ export function AccountLoginForm({
                   variant="simpleReverseWithBorder"
                   className="w-full uppercase"
                   size="lg"
+                  type="button"
+                  onClick={onCheckoutAsGuest}
                 >
                   checkout as guest
                 </Button>
@@ -114,9 +118,11 @@ export function AccountLoginForm({
           </div>
         </div>
       ) : (
-        <div className="space-y-10">
-          <div className="flex flex-col items-center gap-16">
-            <Text variant="uppercase">enter your verificaiton code</Text>
+        <div className="flex flex-col items-center gap-10">
+          <div className="space-y-16">
+            <Text variant="uppercase" className="text-center">
+              enter your verificaiton code
+            </Text>
             <OtpInput
               id="login-code"
               value={code}

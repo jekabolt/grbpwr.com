@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
@@ -23,7 +24,11 @@ interface ExtendedAppearance extends Appearance {
   fonts?: { cssSrc: string }[];
 }
 
-export function CheckoutFormWrapper() {
+export function CheckoutFormWrapper({
+  initialAccount,
+}: {
+  initialAccount: StorefrontAccount | null;
+}) {
   const router = useRouter();
   const products = useCart((s) => s.products);
   const { dictionary } = useDataContext();
@@ -119,7 +124,10 @@ export function CheckoutFormWrapper() {
             "en") as StripeElementLocale,
         }}
       >
-        <NewOrderForm onAmountChange={handleAmountChange} />
+        <NewOrderForm
+          onAmountChange={handleAmountChange}
+          initialAccount={initialAccount}
+        />
       </Elements>
       <SubmissionToaster
         open={toastOpen}
