@@ -45,8 +45,9 @@ export function AddressesSection({
         {visibleAddresses.map((address) => (
           <div
             key={address.id}
-            className={cn("space-y-3 border-b border-textInactiveColor pb-6", {
+            className={cn("space-y-3 border-b border-textInactiveColor", {
               "border-transparent pb-0": defaultOnly,
+              "py-6": address.id && address.id > 0,
             })}
           >
             <div className="leading-none">
