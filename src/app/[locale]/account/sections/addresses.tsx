@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 
 import { cn, getCountryName } from "@/lib/utils";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
 import { Text } from "@/components/ui/text";
 
+import { EditAddressForm } from "../_components/edit-address-form";
 import { useAddresses } from "../utils/useAddresses";
 
 export function AddressesSection({
@@ -27,7 +28,10 @@ export function AddressesSection({
     deletingId,
     handleDefaultAddress,
     handleDeleteAddress,
+    reload,
   } = useAddresses({ refreshKey });
+
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   const visibleAddresses = useMemo(() => {
     if (!defaultOnly) return addresses;
@@ -53,8 +57,19 @@ export function AddressesSection({
                     .join(", ")}
                 </Text>
                 <div className="flex items-center gap-3">
-                  <Button variant="underline" className="uppercase">
-                    edit
+                  <Button
+                    variant="underline"
+                    className="uppercase"
+                    onClick={() =>
+                      setEditingId(
+                        editingId === (address.id as number)
+                          ? null
+                          : (address.id as number),
+                      )
+                    }
+                    disabled={pending}
+                  >
+                    {editingId === (address.id as number) ? "cancel" : "edit"}
                   </Button>
                   {!defaultOnly && (
                     <Button
@@ -102,6 +117,16 @@ export function AddressesSection({
                 </div>
               )}
             </div>
+            {editingId === (address.id as number) && (
+              <EditAddressForm
+                address={address}
+                onCancel={() => setEditingId(null)}
+                onSuccess={() => {
+                  setEditingId(null);
+                  void reload();
+                }}
+              />
+            )}
           </div>
         ))}
       </div>
