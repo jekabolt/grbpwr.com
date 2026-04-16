@@ -19,9 +19,9 @@ function isSavedAddress(value: unknown): value is StorefrontSavedAddress {
 
 export async function PUT(
   req: Request,
-  context: { params: { id: string } },
+  context: { params: Promise<{ id: string }> },
 ) {
-  const { id } = context.params;
+  const { id } = await context.params;
   const parsedId = Number(id);
   if (!Number.isFinite(parsedId) || parsedId <= 0) {
     return NextResponse.json({ error: "invalid id" }, { status: 400 });
@@ -37,9 +37,9 @@ export async function PUT(
 
 export async function DELETE(
   _req: Request,
-  context: { params: { id: string } },
+  context: { params: Promise<{ id: string }> },
 ) {
-  const { id } = context.params;
+  const { id } = await context.params;
   const parsedId = Number(id);
   if (!Number.isFinite(parsedId) || parsedId <= 0) {
     return NextResponse.json({ error: "invalid id" }, { status: 400 });

@@ -4,9 +4,9 @@ import { setDefaultSavedAddressResponse } from "@/lib/storefront-account/account
 
 export async function POST(
   _req: Request,
-  context: { params: { id: string } },
+  context: { params: Promise<{ id: string }> },
 ) {
-  const { id } = context.params;
+  const { id } = await context.params;
   const parsedId = Number(id);
   if (!Number.isFinite(parsedId) || parsedId <= 0) {
     return NextResponse.json({ error: "invalid id" }, { status: 400 });
