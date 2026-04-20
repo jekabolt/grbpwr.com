@@ -277,7 +277,7 @@ export default function NewOrderForm({
                   variant="main"
                   size="lg"
                   className="w-full uppercase"
-                  disabled={loading}
+                  disabled={loading || !form.formState.isValid}
                   loading={loading}
                   loadingType="order-processing"
                   analyticsButtonId="place_order"

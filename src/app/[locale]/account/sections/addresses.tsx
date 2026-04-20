@@ -59,6 +59,7 @@ export function AddressesSection({
                 </Text>
                 <div className="flex items-center gap-3">
                   <Button
+                    type="button"
                     variant="underline"
                     className="uppercase"
                     onClick={() =>
@@ -74,6 +75,7 @@ export function AddressesSection({
                   </Button>
                   {!defaultOnly && (
                     <Button
+                      type="button"
                       variant="underline"
                       className="uppercase"
                       onClick={() => handleDeleteAddress(address.id as number)}

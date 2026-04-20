@@ -7,15 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
-import { countryStatesMap } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/constants";
-import { getSortedCountries } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/utils";
-import AddressAutocomplete from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/address-autocomplete";
-import CityAutocomplete from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/city-autocomplete";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
 import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
+import AddressAutocomplete from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/address-autocomplete";
+import CityAutocomplete from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/city-autocomplete";
+import { countryStatesMap } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/constants";
+import { getSortedCountries } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/utils";
 
 const schema = z.object({
   country: z.string().min(2, "country is required"),
@@ -69,7 +69,6 @@ export function EditAddressForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           address: {
-            label: address.label ?? "",
             country: data.country.trim(),
             state: data.state?.trim() ?? "",
             city: data.city.trim(),
@@ -94,7 +93,7 @@ export function EditAddressForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <AddressAutocomplete
           loading={saving}
           disabled={saving}
@@ -162,12 +161,13 @@ export function EditAddressForm({
 
         <div className="flex gap-3">
           <Button
-            type="submit"
+            type="button"
             variant="main"
             size="lg"
             className="w-full uppercase"
             disabled={saving}
             loading={saving}
+            onClick={form.handleSubmit(onSubmit)}
           >
             save
           </Button>
@@ -182,7 +182,7 @@ export function EditAddressForm({
             cancel
           </Button>
         </div>
-      </form>
+      </div>
     </Form>
   );
 }

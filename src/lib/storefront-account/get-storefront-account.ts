@@ -1,19 +1,12 @@
-import { cookies } from "next/headers";
-
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 
-import { createAccountServiceClient } from "./authed-client";
-import { ACCESS_COOKIE } from "./session-cookies";
+import { executeWithAccountSession } from "./session-executor";
 
 export async function getStorefrontAccount(): Promise<StorefrontAccount | null> {
-  const store = await cookies();
-  const access = store.get(ACCESS_COOKIE)?.value;
-  if (!access) return null;
-
-  const client = createAccountServiceClient(() => access);
   try {
-    const { account } = await client.GetAccount({});
-    return account ?? null;
+    const result = await executeWithAccountSession((client) => client.GetAccount({}));
+    if (!result.ok) return null;
+    return result.data.account ?? null;
   } catch {
     return null;
   }

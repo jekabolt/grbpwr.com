@@ -155,6 +155,46 @@ export default function ShippingFieldsGroup({
   function handleCancelAddNewAddress() {
     setAddressSaveStatus(null);
     setIsAddingNewAddress(false);
+
+    // Restore whichever saved address was active before the user opened the form.
+    const currentSavedId = getValues("savedAddressId");
+    const target = currentSavedId
+      ? addresses.find((a) => String(a.id ?? "") === currentSavedId)
+      : defaultAddress;
+    const addr = target ?? defaultAddress;
+    if (!addr) return;
+
+    setValue("savedAddressId", String(addr.id ?? ""), {
+      shouldValidate: false,
+    });
+    setValue("country", (addr.country ?? "").trim().toLowerCase(), {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("state", (addr.state ?? "").trim(), {
+      shouldValidate: false,
+      shouldDirty: true,
+    });
+    setValue("city", (addr.city ?? "").trim(), {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("address", (addr.addressLineOne ?? "").trim(), {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("additionalAddress", (addr.addressLineTwo ?? "").trim(), {
+      shouldValidate: false,
+      shouldDirty: true,
+    });
+    setValue("company", (addr.company ?? "").trim(), {
+      shouldValidate: false,
+      shouldDirty: true,
+    });
+    setValue("postalCode", (addr.postalCode ?? "").trim(), {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   }
 
   async function handleSaveAddress() {

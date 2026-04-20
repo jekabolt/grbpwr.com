@@ -2,13 +2,14 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { serviceClient } from "@/lib/api";
+import type { RefreshAccountSessionResponse } from "@/api/proto-http/frontend";
 
 
+import { jsonWithSessionCookies } from "./account-response-builders";
 import { createAccountServiceClient } from "./authed-client";
 import {
   ACCESS_COOKIE,
   REFRESH_COOKIE,
-  applySessionCookies,
   clearSessionCookies,
 } from "./session-cookies";
 
@@ -30,16 +31,12 @@ export async function verifyAccountLoginCodeResponse(
     email,
     code: code.trim(),
   });
-  const res = NextResponse.json({ account: session.account });
-  applySessionCookies(res, session);
-  return res;
+  return jsonWithSessionCookies({ account: session.account }, session);
 }
 
 export async function verifyAccountMagicLinkResponse(token: string): Promise<NextResponse> {
   const session = await serviceClient.VerifyAccountMagicLink({ token: token.trim() });
-  const res = NextResponse.json({ account: session.account });
-  applySessionCookies(res, session);
-  return res;
+  return jsonWithSessionCookies({ account: session.account }, session);
 }
 
 export async function refreshAccountSessionResponse(): Promise<NextResponse> {
@@ -51,13 +48,30 @@ export async function refreshAccountSessionResponse(): Promise<NextResponse> {
 
   try {
     const session = await serviceClient.RefreshAccountSession({ refreshToken: refresh });
-    const res = NextResponse.json({});
-    applySessionCookies(res, session);
-    return res;
+    return jsonWithSessionCookies({}, session);
   } catch {
     const res = NextResponse.json({ error: "failed to refresh session" }, { status: 401 });
     clearSessionCookies(res);
     return res;
+  }
+}
+
+type AuthError = Error & { code?: number; status?: number };
+
+export function isUnauthorizedError(error: unknown): boolean {
+  const e = error as AuthError | undefined;
+  return e?.status === 401 || e?.code === 401 || e?.code === 16;
+}
+
+export async function tryRefreshAccountSessionFromCookies(): Promise<RefreshAccountSessionResponse | null> {
+  const store = await cookies();
+  const refresh = store.get(REFRESH_COOKIE)?.value;
+  if (!refresh) return null;
+
+  try {
+    return await serviceClient.RefreshAccountSession({ refreshToken: refresh });
+  } catch {
+    return null;
   }
 }
 

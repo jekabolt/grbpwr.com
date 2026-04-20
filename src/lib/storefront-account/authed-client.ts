@@ -23,8 +23,10 @@ export function createAccountServiceClient(
     if (!response.ok) {
       const err = new Error((data?.message as string) || response.statusText) as Error & {
         code?: number;
+        status?: number;
       };
       err.code = data?.code;
+      err.status = response.status;
       throw err;
     }
 
