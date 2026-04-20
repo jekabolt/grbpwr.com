@@ -3,6 +3,7 @@ import type {
   StorefrontSavedAddress,
 } from "@/api/proto-http/frontend";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
 import { Text } from "@/components/ui/text";
@@ -70,7 +71,9 @@ export function AddressListItem({
         <Text>+{account.phone}</Text>
       </div>
       <div className="flex items-center justify-between">
-        <Text variant="uppercase">{formatAddressDisplayName(address, account)}</Text>
+        <Text variant="uppercase">
+          {formatAddressDisplayName(address, account)}
+        </Text>
         {!defaultOnly && (
           <div className="flex items-center gap-3">
             <Text variant="uppercase">default</Text>

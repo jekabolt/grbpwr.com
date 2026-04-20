@@ -72,14 +72,14 @@ export function CheckoutSavedAddressSelector({
           >
             + add new address
           </Button>
-          <div className="w-64">
+          <div className="w-48">
             <AddressesSelector
               savedAddressId={savedAddressId || ""}
               handleValueChange={handleSavedAddressChange}
               open={open}
               setOpen={setOpen}
               isDisabled={isDisabled}
-              selectedAddress={selectedAddress}
+              // selectedAddress={selectedAddress}
               addresses={addresses}
               account={account}
             />

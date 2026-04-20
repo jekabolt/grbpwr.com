@@ -8,14 +8,14 @@ import { cn } from "@/lib/utils";
 import { Arrow } from "@/components/ui/icons/arrow";
 import { Text } from "@/components/ui/text";
 
-import { buildAddressTextValue, formatAddressStreet } from "../utils/address-format";
+import { buildAddressTextValue } from "../utils/address-format";
 import { AddressFullDetails } from "./addresse-details";
 
 export function AddressesSelector({
   savedAddressId,
   open,
   isDisabled,
-  selectedAddress,
+  // selectedAddress,
   addresses,
   account,
   handleValueChange,
@@ -24,7 +24,7 @@ export function AddressesSelector({
   savedAddressId: string;
   open: boolean;
   isDisabled: boolean;
-  selectedAddress: StorefrontSavedAddress | undefined;
+  // selectedAddress: StorefrontSavedAddress | undefined;
   addresses: StorefrontSavedAddress[];
   account: StorefrontAccount;
   handleValueChange: (value: string) => void;
@@ -52,12 +52,11 @@ export function AddressesSelector({
         >
           <Arrow />
         </RadixSelect.Icon>
-        <Text className="min-w-0 flex-1 truncate">
-          {selectedAddress ? (
-            <AddressSummary address={selectedAddress} />
-          ) : (
-            <RadixSelect.Value placeholder="select saved address" />
-          )}
+        <Text
+          variant="uppercase"
+          className="min-w-0 flex-1 truncate text-center"
+        >
+          use other address
         </Text>
       </RadixSelect.Trigger>
 
@@ -73,7 +72,12 @@ export function AddressesSelector({
                 key={address.id}
                 value={String(address.id ?? "")}
                 textValue={buildAddressTextValue(address)}
-                className="relative flex select-none flex-col gap-2 border-b border-textInactiveColor px-3 py-3 last:border-b-0 data-[disabled]:pointer-events-none data-[highlighted]:bg-[rgba(0,0,0,0.08)] data-[highlighted]:text-textColor data-[disabled]:opacity-30 data-[highlighted]:outline-none"
+                className={cn(
+                  "relative flex select-none flex-col gap-2 border-b border-textInactiveColor px-3 py-3 last:border-b-0 data-[disabled]:pointer-events-none data-[highlighted]:bg-[rgba(0,0,0,0.08)] data-[highlighted]:text-textColor data-[disabled]:opacity-30 data-[highlighted]:outline-none",
+                  {
+                    "bg-textInactiveColor": address.isDefault,
+                  },
+                )}
               >
                 <RadixSelect.ItemText>
                   <Text className="sr-only">
@@ -88,8 +92,4 @@ export function AddressesSelector({
       </RadixSelect.Portal>
     </RadixSelect.Root>
   );
-}
-
-function AddressSummary({ address }: { address: StorefrontSavedAddress }) {
-  return <Text className="truncate">{formatAddressStreet(address)}</Text>;
 }

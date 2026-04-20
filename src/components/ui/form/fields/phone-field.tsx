@@ -18,6 +18,7 @@ export type PhoneFieldProps = {
   }[];
   selectedCountry?: string;
   disabled?: boolean;
+  readOnly?: boolean;
   loading?: boolean;
   variant?: string;
 };
@@ -138,6 +139,7 @@ export function PhoneField({
                     })}
                     customWidth={containerWidth}
                     renderValue={handleSelectChange}
+                    readOnly={props.readOnly}
                   />
                 </div>
                 <Input
@@ -146,6 +148,7 @@ export function PhoneField({
                   value={number}
                   onChange={handleNumberChange}
                   disabled={props.disabled}
+                  readOnly={props.readOnly}
                   variant="secondary"
                   onBlur={onBlur}
                 />

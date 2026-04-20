@@ -19,14 +19,9 @@ export function AddressFullDetails({
   account: StorefrontAccount;
 }) {
   return (
-    <div className="flex w-full flex-col leading-none">
+    <div className="flex flex-col leading-none">
       <div className="flex items-center justify-between gap-3">
         <Text className="truncate">{formatAddressStreet(address)}</Text>
-        {address.isDefault ? (
-          <Text variant="uppercase" className="shrink-0">
-            default
-          </Text>
-        ) : null}
       </div>
       <Text className="truncate">{formatAddressLocation(address)}</Text>
       {account.phone ? <Text>+{account.phone}</Text> : null}

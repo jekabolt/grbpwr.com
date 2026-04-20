@@ -5,20 +5,16 @@ import type {
   StorefrontAccount,
   StorefrontSavedAddress,
 } from "@/api/proto-http/frontend";
-import { keyboardRestrictions } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { FormPhoneField } from "@/components/ui/form/fields/form-phone-field";
 import InputField from "@/components/ui/form/fields/input-field";
-import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
-import AddressAutocomplete from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/address-autocomplete";
-import CityAutocomplete from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/city-autocomplete";
-import { countryStatesMap } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/constants";
-import { getSortedCountries } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/utils";
+import { AddressFields } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/shipping-fields-group";
 import { parseApiError } from "@/app/[locale]/account/utils/api-error";
 
 const schema = z.object({
@@ -30,12 +26,11 @@ const schema = z.object({
   address: z.string().min(3, "address is required"),
   additionalAddress: z.string().optional(),
   company: z.string().optional(),
+  phone: z.string().optional(),
   postalCode: z.string().min(2, "postal code is required"),
 });
 
 type FormData = z.infer<typeof schema>;
-
-const sortedCountries = getSortedCountries();
 
 export function EditAddressForm({
   address,
@@ -62,13 +57,10 @@ export function EditAddressForm({
       address: address.addressLineOne ?? "",
       additionalAddress: address.addressLineTwo ?? "",
       company: address.company ?? "",
+      phone: account.phone ?? "",
       postalCode: address.postalCode ?? "",
     },
   });
-
-  const selectedCountry = useWatch({ control: form.control, name: "country" });
-  const stateItems =
-    countryStatesMap[selectedCountry as keyof typeof countryStatesMap] ?? [];
 
   async function onSubmit(data: FormData) {
     setError(null);
@@ -121,61 +113,19 @@ export function EditAddressForm({
             readOnly
           />
         </div>
-        <AddressAutocomplete
+        <AddressFields
           loading={saving}
           disabled={saving}
-          countryCode={selectedCountry}
+          showNameFields={false}
+          showPhoneField={false}
         />
-        <SelectField
+        <FormPhoneField
           loading={saving}
           variant="secondary"
-          fullWidth
-          name="country"
-          label="country/region:"
-          items={sortedCountries}
+          name="phone"
+          label="phone:"
           disabled={saving}
-          onValueChange={(v: string) => {
-            form.setValue("country", v, { shouldValidate: true });
-            form.setValue("state", "", { shouldValidate: false });
-            form.setValue("city", "", { shouldValidate: false });
-          }}
-        />
-        {stateItems.length > 0 && (
-          <SelectField
-            name="state"
-            label="state:"
-            items={stateItems}
-            disabled={saving}
-          />
-        )}
-        <CityAutocomplete
-          loading={saving}
-          disabled={saving}
-          countryCode={selectedCountry}
-        />
-        <InputField
-          loading={saving}
-          variant="secondary"
-          name="additionalAddress"
-          label="additional address:"
-          disabled={saving}
-          keyboardRestriction={keyboardRestrictions.addressField}
-        />
-        <InputField
-          loading={saving}
-          variant="secondary"
-          name="company"
-          label="company:"
-          disabled={saving}
-          keyboardRestriction={keyboardRestrictions.companyField}
-        />
-        <InputField
-          loading={saving}
-          variant="secondary"
-          name="postalCode"
-          label="postal code:"
-          disabled={saving}
-          keyboardRestriction={keyboardRestrictions.postalCodeField}
+          readOnly
         />
 
         {error && <Text variant="inactive">{error}</Text>}
