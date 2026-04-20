@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { StorefrontSavedAddress } from "@/api/proto-http/frontend";
+import type {
+  StorefrontAccount,
+  StorefrontSavedAddress,
+} from "@/api/proto-http/frontend";
 import { keyboardRestrictions } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
@@ -16,8 +19,11 @@ import AddressAutocomplete from "@/app/[locale]/(checkout)/checkout/_components/
 import CityAutocomplete from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/city-autocomplete";
 import { countryStatesMap } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/constants";
 import { getSortedCountries } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/utils";
+import { parseApiError } from "@/app/[locale]/account/utils/api-error";
 
 const schema = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
   country: z.string().min(2, "country is required"),
   state: z.string().optional(),
   city: z.string().min(1, "city is required"),
@@ -33,10 +39,12 @@ const sortedCountries = getSortedCountries();
 
 export function EditAddressForm({
   address,
+  account,
   onSuccess,
   onCancel,
 }: {
   address: StorefrontSavedAddress;
+  account: StorefrontAccount;
   onSuccess: () => void;
   onCancel: () => void;
 }) {
@@ -46,6 +54,8 @@ export function EditAddressForm({
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
+      firstName: account.firstName ?? "",
+      lastName: account.lastName ?? "",
       country: address.country ?? "",
       state: address.state ?? "",
       city: address.city ?? "",
@@ -80,9 +90,8 @@ export function EditAddressForm({
           },
         }),
       });
-      const json = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
-        setError(json.error ?? "failed to update address");
+        setError(await parseApiError(res, "failed to update address"));
         return;
       }
       onSuccess();
@@ -93,13 +102,30 @@ export function EditAddressForm({
 
   return (
     <Form {...form}>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-8">
+        <div className="grid grid-cols-2 gap-6">
+          <InputField
+            loading={saving}
+            variant="secondary"
+            name="firstName"
+            label="first name:"
+            disabled={saving}
+            readOnly
+          />
+          <InputField
+            loading={saving}
+            variant="secondary"
+            name="lastName"
+            label="last name:"
+            disabled={saving}
+            readOnly
+          />
+        </div>
         <AddressAutocomplete
           loading={saving}
           disabled={saving}
           countryCode={selectedCountry}
         />
-
         <SelectField
           loading={saving}
           variant="secondary"
@@ -114,7 +140,6 @@ export function EditAddressForm({
             form.setValue("city", "", { shouldValidate: false });
           }}
         />
-
         {stateItems.length > 0 && (
           <SelectField
             name="state"
@@ -123,13 +148,11 @@ export function EditAddressForm({
             disabled={saving}
           />
         )}
-
         <CityAutocomplete
           loading={saving}
           disabled={saving}
           countryCode={selectedCountry}
         />
-
         <InputField
           loading={saving}
           variant="secondary"
@@ -138,7 +161,6 @@ export function EditAddressForm({
           disabled={saving}
           keyboardRestriction={keyboardRestrictions.addressField}
         />
-
         <InputField
           loading={saving}
           variant="secondary"
@@ -147,7 +169,6 @@ export function EditAddressForm({
           disabled={saving}
           keyboardRestriction={keyboardRestrictions.companyField}
         />
-
         <InputField
           loading={saving}
           variant="secondary"
@@ -158,7 +179,6 @@ export function EditAddressForm({
         />
 
         {error && <Text variant="inactive">{error}</Text>}
-
         <div className="flex gap-3">
           <Button
             type="button"

@@ -3,6 +3,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { StorefrontSavedAddress } from "@/api/proto-http/frontend";
 
+import { setDefaultAddressRequest } from "./address-actions";
+import { parseApiError } from "./api-error";
+
 type Options = {
   enabled?: boolean;
   refreshKey?: number;
@@ -20,15 +23,14 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
     setPending(true);
     try {
       const res = await fetch("/api/account/addresses", { method: "GET" });
-      const data = (await res.json().catch(() => ({}))) as {
-        addresses?: StorefrontSavedAddress[];
-        error?: string;
-      };
       if (!res.ok) {
-        setToastMessage(data.error || "failed to load addresses");
+        setToastMessage(await parseApiError(res, "failed to load addresses"));
         setAddresses([]);
         return;
       }
+      const data = (await res.json().catch(() => ({}))) as {
+        addresses?: StorefrontSavedAddress[];
+      };
       setToastMessage(null);
       setAddresses(Array.isArray(data.addresses) ? data.addresses : []);
     } finally {
@@ -40,12 +42,9 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
   async function handleDefaultAddress(id: number) {
     setDefaultId(id);
     try {
-      const res = await fetch(`/api/account/addresses/${id}/default`, {
-        method: "POST",
-      });
-      const data = (await res.json().catch(() => ({}))) as { error?: string };
-      if (!res.ok) {
-        setToastMessage(data.error || "failed to set default address");
+      const result = await setDefaultAddressRequest(id);
+      if (!result.ok) {
+        setToastMessage(result.error);
         return;
       }
       setToastMessage(null);
@@ -61,9 +60,8 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
       const res = await fetch(`/api/account/addresses/${id}`, {
         method: "DELETE",
       });
-      const data = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
-        setToastMessage(data.error || "failed to delete address");
+        setToastMessage(await parseApiError(res, "failed to delete address"));
         return;
       }
       setToastMessage(null);

@@ -10,8 +10,10 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 import { AccountPersonalInfoFields } from "@/app/[locale]/account/_components/personal-info-fields";
 import { AccountRegistrationCheckboxSection } from "@/app/[locale]/account/_components/registration-checkbox-section";
+import { parseApiError } from "@/app/[locale]/account/utils/api-error";
 import {
   accountSchema,
   AccountSchema,
@@ -40,6 +42,8 @@ export function AccountProfilePrompt({
   const router = useRouter();
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const [pending, setPending] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const selectedCountryCode =
     account.defaultCountry?.trim() ||
@@ -72,7 +76,8 @@ export function AccountProfilePrompt({
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        await res.json().catch(() => null);
+        setToastMessage(await parseApiError(res, "failed to update account"));
+        setToastOpen(true);
         return;
       }
 
@@ -94,32 +99,39 @@ export function AccountProfilePrompt({
   }
 
   return (
-    <div className="flex w-full max-w-md flex-col gap-14">
-      <Text variant="uppercase" className="text-center">
-        complete your registration
-      </Text>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-10"
-        >
-          <AccountPersonalInfoFields
-            disabled={pending}
-            selectedCountryCode={selectedCountryCode}
-          />
-          <AccountRegistrationCheckboxSection form={form} disabled={pending} />
-          <Button
-            type="submit"
-            variant="main"
-            size="lg"
-            className="w-full uppercase"
-            loading={pending}
-            disabled={pending}
+    <>
+      <div className="flex w-full max-w-md flex-col gap-14">
+        <Text variant="uppercase" className="text-center">
+          complete your registration
+        </Text>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-10"
           >
-            continue
-          </Button>
-        </form>
-      </Form>
-    </div>
+            <AccountPersonalInfoFields
+              disabled={pending}
+              selectedCountryCode={selectedCountryCode}
+            />
+            <AccountRegistrationCheckboxSection form={form} disabled={pending} />
+            <Button
+              type="submit"
+              variant="main"
+              size="lg"
+              className="w-full uppercase"
+              loading={pending}
+              disabled={pending}
+            >
+              continue
+            </Button>
+          </form>
+        </Form>
+      </div>
+      <SubmissionToaster
+        open={toastOpen}
+        message={toastMessage}
+        onOpenChange={setToastOpen}
+      />
+    </>
   );
 }

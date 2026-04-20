@@ -1,13 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 
-import { cn, getCountryName } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import CheckboxGlobal from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
+import { AddressListItem } from "../_components/address-list-item";
 import { EditAddressForm } from "../_components/edit-address-form";
 import { useAddresses } from "../utils/useAddresses";
 
@@ -15,14 +14,17 @@ export function AddressesSection({
   account,
   defaultOnly = false,
   refreshKey,
+  isCheckout,
+  onEditModeChange,
 }: {
   account: StorefrontAccount;
   defaultOnly?: boolean;
   refreshKey?: number;
+  isCheckout?: boolean;
+  onEditModeChange?: (isEditing: boolean) => void;
 }) {
   const {
     addresses,
-    toastMessage,
     pending,
     defaultId,
     deletingId,
@@ -38,91 +40,50 @@ export function AddressesSection({
     return addresses.filter((address) => address.isDefault);
   }, [addresses, defaultOnly]);
 
+  useEffect(() => {
+    onEditModeChange?.(editingId !== null);
+  }, [editingId, onEditModeChange]);
+
   return (
-    <div className="flex w-full flex-col gap-16">
-      <Text variant="uppercase">addresses</Text>
+    <div
+      className={cn("flex w-full flex-col gap-16", {
+        "gap-0": isCheckout,
+      })}
+    >
+      {!isCheckout && (
+        <Text variant="uppercase">
+          {editingId !== null ? "edit shipping address" : "addresses"}
+        </Text>
+      )}
       <div className="flex flex-col gap-3">
         {visibleAddresses.map((address) => (
-          <div
-            key={address.id}
-            className={cn("space-y-3 border-b border-textInactiveColor", {
-              "border-transparent pb-0": defaultOnly,
-              "py-6": address.id && address.id > 0,
-            })}
-          >
-            <div className="leading-none">
-              <div className="flex items-center justify-between">
-                <Text>
-                  {[address.addressLineOne, address.addressLineTwo]
-                    .filter(Boolean)
-                    .join(", ")}
-                </Text>
-                <div className="flex items-center gap-3">
-                  <Button
-                    type="button"
-                    variant="underline"
-                    className="uppercase"
-                    onClick={() =>
-                      setEditingId(
-                        editingId === (address.id as number)
-                          ? null
-                          : (address.id as number),
-                      )
-                    }
-                    disabled={pending}
-                  >
-                    {editingId === (address.id as number) ? "cancel" : "edit"}
-                  </Button>
-                  {!defaultOnly && (
-                    <Button
-                      type="button"
-                      variant="underline"
-                      className="uppercase"
-                      onClick={() => handleDeleteAddress(address.id as number)}
-                      disabled={
-                        pending || deletingId === (address.id as number)
-                      }
-                    >
-                      delete
-                    </Button>
-                  )}
-                </div>
+          <div key={address.id}>
+            {editingId === null && (
+              <div
+                className={cn("space-y-3 border-b border-textInactiveColor", {
+                  "border-transparent pb-0": defaultOnly,
+                  "py-6": (address.id ?? 0) > 0,
+                })}
+              >
+                <AddressListItem
+                  address={address}
+                  account={account}
+                  pending={pending}
+                  deletingId={deletingId}
+                  defaultId={defaultId}
+                  defaultOnly={defaultOnly}
+                  onEdit={(addressId) =>
+                    setEditingId(editingId === addressId ? null : addressId)
+                  }
+                  onDelete={handleDeleteAddress}
+                  onSetDefault={handleDefaultAddress}
+                />
               </div>
-              <Text>
-                {[
-                  getCountryName(address.country) ?? address.country,
-                  address.state,
-                  address.city,
-                  address.postalCode,
-                ]
-                  .filter(Boolean)
-                  .join(", ")}
-              </Text>
-              <Text>+{account.phone}</Text>
-            </div>
-            <div className="flex items-center justify-between">
-              <Text variant="uppercase">
-                {`${account.firstName?.trim() ?? ""} ${account.lastName?.trim() ?? ""}`.trim() ||
-                  address.label ||
-                  "address"}
-              </Text>
-              {!defaultOnly && (
-                <div className="flex items-center gap-3">
-                  <Text variant="uppercase">default</Text>
-                  <CheckboxGlobal
-                    name="default"
-                    checked={address.isDefault}
-                    onCheckedChange={() =>
-                      handleDefaultAddress(address.id as number)
-                    }
-                    disabled={pending || defaultId === (address.id as number)}
-                  />
-                </div>
-              )}
-            </div>
+            )}
             {editingId === (address.id as number) && (
               <EditAddressForm
                 address={address}
+                account={account}
                 onCancel={() => setEditingId(null)}
                 onSuccess={() => {
                   setEditingId(null);

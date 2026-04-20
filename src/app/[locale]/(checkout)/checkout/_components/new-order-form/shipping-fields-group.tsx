@@ -315,6 +315,7 @@ export default function ShippingFieldsGroup({
       )}
       {showSavedAddressesSelector && (
         <CheckoutSavedAddressSelector
+          isCheckout={true}
           loading={loading}
           disabled={disabled}
           defaultOnly={true}

@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Arrow } from "@/components/ui/icons/arrow";
 import { Text } from "@/components/ui/text";
 
+import { buildAddressTextValue, formatAddressStreet } from "../utils/address-format";
 import { AddressFullDetails } from "./addresse-details";
 
 export function AddressesSelector({
@@ -90,24 +91,5 @@ export function AddressesSelector({
 }
 
 function AddressSummary({ address }: { address: StorefrontSavedAddress }) {
-  return (
-    <Text className="truncate">
-      {[address.addressLineOne, address.addressLineTwo]
-        .filter(Boolean)
-        .join(", ")}
-    </Text>
-  );
-}
-
-function buildAddressTextValue(address: StorefrontSavedAddress) {
-  return [
-    address.addressLineOne,
-    address.addressLineTwo,
-    address.city,
-    address.state,
-    address.postalCode,
-    address.country,
-  ]
-    .filter(Boolean)
-    .join(", ");
+  return <Text className="truncate">{formatAddressStreet(address)}</Text>;
 }

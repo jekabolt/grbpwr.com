@@ -3,8 +3,13 @@ import {
   StorefrontSavedAddress,
 } from "@/api/proto-http/frontend";
 
-import { getCountryName } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
+
+import {
+  formatAddressDisplayName,
+  formatAddressLocation,
+  formatAddressStreet,
+} from "../utils/address-format";
 
 export function AddressFullDetails({
   address,
@@ -13,36 +18,20 @@ export function AddressFullDetails({
   address: StorefrontSavedAddress;
   account: StorefrontAccount;
 }) {
-  const fullName =
-    `${account.firstName?.trim() ?? ""} ${account.lastName?.trim() ?? ""}`.trim();
-
   return (
     <div className="flex w-full flex-col leading-none">
       <div className="flex items-center justify-between gap-3">
-        <Text className="truncate">
-          {[address.addressLineOne, address.addressLineTwo]
-            .filter(Boolean)
-            .join(", ")}
-        </Text>
+        <Text className="truncate">{formatAddressStreet(address)}</Text>
         {address.isDefault ? (
           <Text variant="uppercase" className="shrink-0">
             default
           </Text>
         ) : null}
       </div>
-      <Text className="truncate">
-        {[
-          getCountryName(address.country) ?? address.country,
-          address.state,
-          address.city,
-          address.postalCode,
-        ]
-          .filter(Boolean)
-          .join(", ")}
-      </Text>
+      <Text className="truncate">{formatAddressLocation(address)}</Text>
       {account.phone ? <Text>+{account.phone}</Text> : null}
       <Text variant="uppercase" className="truncate">
-        {fullName || address.label || "address"}
+        {formatAddressDisplayName(address, account)}
       </Text>
     </div>
   );
