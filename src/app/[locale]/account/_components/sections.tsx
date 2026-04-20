@@ -5,6 +5,7 @@ import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { AddressesSection } from "@/app/[locale]/account/sections/addresses";
 import { EmailPreferences } from "@/app/[locale]/account/sections/email-preferences";
 
+import { OrderReturns } from "../sections/order-returns";
 import { PersonalInfo } from "../sections/personal-info";
 import type { ActivePanel } from "../utils/utility";
 
@@ -26,6 +27,8 @@ export function ActiveAccountSection({
       return <EmailPreferences />;
     case "addresses":
       return <AddressesSection account={account} />;
+    case "order&returns":
+      return <OrderReturns account={account} />;
     default:
       return null;
   }

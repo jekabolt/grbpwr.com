@@ -40,7 +40,7 @@ export function AccountLoginForm({
 
   return (
     <>
-      <div className="flex w-full max-w-sm flex-col gap-6">
+      <div className="flex w-full flex-col gap-6 px-2.5 lg:max-w-sm lg:px-0">
         {step === "email" ? (
           <EmailStep
             email={email}
@@ -172,7 +172,7 @@ function CodeStep({
   onResend: () => void;
 }) {
   return (
-    <div className="flex flex-col items-center gap-10">
+    <div className="flex w-full flex-col items-center gap-10">
       <div className="space-y-16">
         <Text variant="uppercase" className="text-center">
           enter your verification code
@@ -185,7 +185,7 @@ function CodeStep({
           disabled={pending}
         />
       </div>
-      <div className="space-y-5">
+      <div className="w-full space-y-5 text-center lg:w-auto">
         <Button
           type="button"
           variant="main"

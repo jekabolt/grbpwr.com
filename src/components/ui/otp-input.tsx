@@ -101,7 +101,7 @@ export function OtpInput({
       id={id}
       role="group"
       aria-label="One-time code"
-      className={cn("flex gap-2", className)}
+      className={cn("flex w-full gap-2.5 lg:gap-2", className)}
       onPaste={handlePaste}
     >
       {Array.from({ length: LENGTH }, (_, i) => {
@@ -121,7 +121,7 @@ export function OtpInput({
             value={char}
             maxLength={1}
             className={cn(
-              "box-border size-11 w-11 border border-textColor text-center tabular-nums",
+              "box-border size-[59.5px] w-[59.5px] border border-textColor text-center tabular-nums lg:size-11 lg:w-11",
               "caret-textColor focus:border-textColor",
               "disabled:border-textInactiveColor disabled:text-textInactiveColor",
             )}
