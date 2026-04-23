@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -32,6 +33,7 @@ type Props = {
 };
 
 export function AccountProfilePrompt({ account, onCompleted }: Props) {
+  const t = useTranslations("account");
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const { pending, toastOpen, toastMessage, setToastOpen, updateAccount } =
     useAccountUpdate();
@@ -76,7 +78,7 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
     <>
       <div className="flex w-full max-w-md flex-col gap-14">
         <Text variant="uppercase" className="text-center">
-          complete your registration
+          {t("complete your registration")}
         </Text>
         <Form {...form}>
           <form
@@ -99,7 +101,7 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
               loading={pending}
               disabled={pending}
             >
-              continue
+              {t("continue")}
             </Button>
           </form>
         </Form>

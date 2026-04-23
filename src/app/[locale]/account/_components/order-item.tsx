@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { common_OrderFull, StorefrontAccount } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ export function OrderItem({
   order: common_OrderFull;
   account: StorefrontAccount;
 }) {
+  const t = useTranslations("account");
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const createdAt = formatOrderDate(
     order.order?.placed ??
@@ -41,7 +43,9 @@ export function OrderItem({
             <Text>{order.order?.uuid}</Text>
             <StatusBadge statusId={order.order?.orderStatusId ?? 0} />
             <Button asChild variant="underlineWithColors" className="uppercase">
-              <Link href={order.shipment?.trackingCode ?? ""}>track order</Link>
+              <Link href={order.shipment?.trackingCode ?? ""}>
+                {t("track order")}
+              </Link>
             </Button>
           </div>
         </div>

@@ -6,6 +6,7 @@ import type {
   StorefrontSavedAddress,
 } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -43,6 +44,8 @@ export function EditAddressForm({
   onSuccess: () => void;
   onCancel: () => void;
 }) {
+  const t = useTranslations("checkout");
+  const tAccount = useTranslations("account");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -100,7 +103,7 @@ export function EditAddressForm({
             loading={saving}
             variant="secondary"
             name="firstName"
-            label="first name:"
+            label={`${t("first name")}:`}
             disabled={saving}
             readOnly
           />
@@ -108,7 +111,7 @@ export function EditAddressForm({
             loading={saving}
             variant="secondary"
             name="lastName"
-            label="last name:"
+            label={`${t("last name")}:`}
             disabled={saving}
             readOnly
           />
@@ -123,7 +126,7 @@ export function EditAddressForm({
           loading={saving}
           variant="secondary"
           name="phone"
-          label="phone:"
+          label={`${t("phone")}:`}
           disabled={saving}
           readOnly
         />
@@ -139,7 +142,7 @@ export function EditAddressForm({
             loading={saving}
             onClick={form.handleSubmit(onSubmit)}
           >
-            save
+            {tAccount("save")}
           </Button>
           <Button
             type="button"
@@ -149,7 +152,7 @@ export function EditAddressForm({
             disabled={saving}
             onClick={onCancel}
           >
-            cancel
+            {tAccount("cancel")}
           </Button>
         </div>
       </div>

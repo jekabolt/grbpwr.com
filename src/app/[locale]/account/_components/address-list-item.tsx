@@ -2,8 +2,8 @@ import type {
   StorefrontAccount,
   StorefrontSavedAddress,
 } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
 import { Text } from "@/components/ui/text";
@@ -37,6 +37,7 @@ export function AddressListItem({
   onDelete,
   onSetDefault,
 }: AddressListItemProps) {
+  const t = useTranslations("account");
   const addressId = address.id as number;
 
   return (
@@ -52,7 +53,7 @@ export function AddressListItem({
               onClick={() => onEdit(addressId)}
               disabled={pending}
             >
-              edit
+              {t("edit")}
             </Button>
             {!defaultOnly && (
               <Button
@@ -62,7 +63,7 @@ export function AddressListItem({
                 onClick={() => onDelete(addressId)}
                 disabled={pending || deletingId === addressId}
               >
-                delete
+                {t("delete")}
               </Button>
             )}
           </div>
@@ -76,7 +77,7 @@ export function AddressListItem({
         </Text>
         {!defaultOnly && (
           <div className="flex items-center gap-3">
-            <Text variant="uppercase">default</Text>
+            <Text variant="uppercase">{t("default")}</Text>
             <CheckboxGlobal
               name="default"
               checked={address.isDefault}

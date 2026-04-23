@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { EMAIL_PREFERENCES } from "@/constants";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ export function NewArrivales({
   pending?: boolean;
   className?: string;
 }) {
+  const t = useTranslations("account");
   const items = Object.entries(EMAIL_PREFERENCES).map(([label, value]) => ({
     label,
     value,
@@ -44,7 +46,7 @@ export function NewArrivales({
                 },
               )}
             >
-              {i.label}
+              {t(i.label)}
             </Button>
           </Fragment>
         );

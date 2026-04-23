@@ -28,10 +28,21 @@ export default async function Template({
   const initialTranslationState = await getInitialTranslationState();
   const account = await getStorefrontAccount();
   const sessionSignedIn = account != null;
+  const accountProfile = account
+    ? {
+        firstName: account.firstName?.trim() ?? "",
+        lastName: account.lastName?.trim() ?? "",
+        email: account.email?.trim() ?? "",
+        accountTier: account.accountTier,
+      }
+    : null;
 
   return (
     <QueryWrapper>
-      <AccountOnboardingStoreProvider initialSignedIn={sessionSignedIn}>
+      <AccountOnboardingStoreProvider
+        initialSignedIn={sessionSignedIn}
+        initialAccount={accountProfile}
+      >
         <ServerActionsContextProvider
           // all requests on the client should be made using server actions accessible from the context
           GetArchivesPaged={async (request: GetArchivesPagedRequest) => {

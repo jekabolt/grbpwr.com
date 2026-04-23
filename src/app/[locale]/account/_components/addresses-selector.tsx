@@ -3,6 +3,7 @@ import {
   StorefrontSavedAddress,
 } from "@/api/proto-http/frontend";
 import * as RadixSelect from "@radix-ui/react-select";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import { Arrow } from "@/components/ui/icons/arrow";
@@ -15,7 +16,6 @@ export function AddressesSelector({
   savedAddressId,
   open,
   isDisabled,
-  // selectedAddress,
   addresses,
   account,
   handleValueChange,
@@ -24,12 +24,12 @@ export function AddressesSelector({
   savedAddressId: string;
   open: boolean;
   isDisabled: boolean;
-  // selectedAddress: StorefrontSavedAddress | undefined;
   addresses: StorefrontSavedAddress[];
   account: StorefrontAccount;
   handleValueChange: (value: string) => void;
   setOpen: (open: boolean) => void;
 }) {
+  const t = useTranslations("account");
   return (
     <RadixSelect.Root
       value={savedAddressId ?? ""}
@@ -56,7 +56,7 @@ export function AddressesSelector({
           variant="uppercase"
           className="min-w-0 flex-1 truncate text-center"
         >
-          use other address
+          {t("use other address")}
         </Text>
       </RadixSelect.Trigger>
 

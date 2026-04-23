@@ -21,16 +21,18 @@ export type AccountOnboardingStoreProviderProps = CreateAccountOnboardingStoreOp
 
 export function AccountOnboardingStoreProvider({
   initialSignedIn,
+  initialAccount,
   children,
 }: AccountOnboardingStoreProviderProps) {
   const storeRef = useRef<AccountOnboardingStoreApi | undefined>(undefined);
   if (!storeRef.current) {
-    storeRef.current = createAccountOnboardingStore({ initialSignedIn });
+    storeRef.current = createAccountOnboardingStore({ initialSignedIn, initialAccount });
   }
 
   useEffect(() => {
     storeRef.current?.getState().setSignedIn(initialSignedIn);
-  }, [initialSignedIn]);
+    storeRef.current?.getState().setAccount(initialAccount);
+  }, [initialSignedIn, initialAccount]);
 
   return (
     <AccountOnboardingStoreContext.Provider value={storeRef.current}>

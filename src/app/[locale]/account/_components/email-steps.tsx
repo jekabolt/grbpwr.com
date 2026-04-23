@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
@@ -23,6 +24,7 @@ export function EmailPreferenceStepRow({
   disabled: boolean;
   onCommitted: () => void;
 }) {
+  const t = useTranslations("account");
   const form = useFormContext<AccountSchema>();
   const name = step.name as StepName;
   const value = useWatch({ control: form.control, name });
@@ -30,8 +32,8 @@ export function EmailPreferenceStepRow({
   return (
     <div className="flex flex-col gap-6">
       <div className="space-y-3 leading-none">
-        <Text variant="uppercase">{step.label}</Text>
-        <Text variant="inactive">{step.description}</Text>
+        <Text variant="uppercase">{t(step.label)}</Text>
+        <Text variant="inactive">{t(step.description)}</Text>
       </div>
       <div className="flex flex-wrap items-center gap-3">
         {step.actions.map((action) => {
@@ -56,7 +58,7 @@ export function EmailPreferenceStepRow({
                 onCommitted();
               }}
             >
-              {action.label}
+              {t(action.label)}
             </Button>
           );
         })}

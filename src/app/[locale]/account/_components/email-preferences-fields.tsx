@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { UseFormReturn } from "react-hook-form";
 import { useWatch } from "react-hook-form";
 
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export function AccountEmailPreferencesFields({ form, disabled }: Props) {
+  const t = useTranslations("account");
   const subscribeNewArrivals = useWatch({
     control: form.control,
     name: "subscribeNewArrivals",
@@ -30,8 +32,8 @@ export function AccountEmailPreferencesFields({ form, disabled }: Props) {
         disabled={disabled}
         label={
           subscribeNewArrivals
-            ? "email preferences"
-            : "receive updates on new arrivals and brand news"
+            ? t("email preferences")
+            : t("receive updates on new arrivals and brand news")
         }
       />
       {subscribeNewArrivals ? (

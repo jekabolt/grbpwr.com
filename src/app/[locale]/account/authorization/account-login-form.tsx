@@ -1,9 +1,8 @@
 "use client";
 
 import type { ChangeEvent } from "react";
-import { currencySymbols } from "@/constants";
+import { useTranslations } from "next-intl";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/input";
@@ -11,6 +10,7 @@ import { OtpInput } from "@/components/ui/otp-input";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
+import { UserLocationTrigger } from "../_components/user-location";
 import { useAccountLogin } from "../utils/use-account-login";
 
 export function AccountLoginForm({
@@ -20,7 +20,6 @@ export function AccountLoginForm({
   isCheckout?: boolean;
   onCheckoutAsGuest?: () => void;
 }) {
-  const { currentCountry } = useTranslationsStore((s) => s);
   const {
     email,
     code,
@@ -47,8 +46,6 @@ export function AccountLoginForm({
             pending={pending}
             isValidEmail={isValidEmail}
             isCheckout={isCheckout}
-            currentCountryName={currentCountry.name}
-            currentCurrencyKey={currentCountry.currencyKey}
             onEmailChange={setEmail}
             onContinue={sendInitialCode}
             onCheckoutAsGuest={onCheckoutAsGuest}
@@ -78,8 +75,6 @@ function EmailStep({
   pending,
   isValidEmail,
   isCheckout,
-  currentCountryName,
-  currentCurrencyKey,
   onEmailChange,
   onContinue,
   onCheckoutAsGuest,
@@ -88,27 +83,25 @@ function EmailStep({
   pending: boolean;
   isValidEmail: boolean;
   isCheckout: boolean;
-  currentCountryName: string;
-  currentCurrencyKey?: string;
   onEmailChange: (value: string) => void;
   onContinue: () => void;
   onCheckoutAsGuest?: () => void;
 }) {
-  const currencySymbol = currentCurrencyKey
-    ? currencySymbols[currentCurrencyKey as keyof typeof currencySymbols]
-    : "";
+  const t = useTranslations("account");
 
   return (
     <div className="w-full space-y-10">
       <div className="flex flex-col items-center gap-6">
-        <Text variant="uppercase">log in or create account</Text>
-        <Text variant="uppercase">
-          you are in country: {currentCountryName} / {currencySymbol} change
-          location
-        </Text>
+        <Text variant="uppercase">{t("login")}</Text>
+        <UserLocationTrigger
+          pending={pending}
+          showLabel={false}
+          showCurrentCountryText
+          buttonLabel={t("change location")}
+        />
       </div>
       <div>
-        <Text variant="uppercase">email</Text>
+        <Text variant="uppercase">{t("email")}</Text>
         <Input
           name="email"
           type="email"
@@ -133,7 +126,7 @@ function EmailStep({
           disabled={pending || !isValidEmail}
           onClick={onContinue}
         >
-          continue
+          {t("continue")}
         </Button>
         {isCheckout && (
           <>
@@ -147,7 +140,7 @@ function EmailStep({
               type="button"
               onClick={onCheckoutAsGuest}
             >
-              checkout as guest
+              {t("checkout as guest")}
             </Button>
           </>
         )}
@@ -171,11 +164,12 @@ function CodeStep({
   onCodeComplete: (code: string) => void;
   onResend: () => void;
 }) {
+  const t = useTranslations("account");
   return (
     <div className="flex w-full flex-col items-center gap-10">
       <div className="space-y-16">
         <Text variant="uppercase" className="text-center">
-          enter your verification code
+          {t("enter your verification code")}
         </Text>
         <OtpInput
           id="login-code"
@@ -195,11 +189,11 @@ function CodeStep({
           onClick={onResend}
         >
           {resendSeconds > 0
-            ? `resend code in ${resendSeconds}`
-            : "resend code"}
+            ? `${t("resend code in")} ${resendSeconds}`
+            : `${t("resend code")}`}
         </Button>
         <Text variant="uppercase">
-          or sign in via the link sent to your email
+          {t("or sign in via the link sent to your email")}
         </Text>
       </div>
     </div>

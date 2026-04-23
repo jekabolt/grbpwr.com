@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { USER_TIER } from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
@@ -27,7 +28,7 @@ export function Header({
   const { dictionary } = useDataContext();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
-  const { isSignedIn } = useAccountOnboardingStore((s) => s);
+  const { isSignedIn, account } = useAccountOnboardingStore((s) => s);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
   const itemsQuantity = Object.keys(products).length;
@@ -39,7 +40,9 @@ export function Header({
   );
   const { open, handleClose } = useAnnounce(announceTranslation?.text || "");
   const t = useTranslations("navigation");
+  const tAccount = useTranslations("account");
   const isWebsiteEnabled = dictionary?.siteEnabled;
+  const userTier = account?.accountTier ? USER_TIER[account.accountTier] : "";
 
   return (
     <>
@@ -91,7 +94,7 @@ export function Header({
               "w-1/3 text-center transition-colors hover:opacity-70 active:opacity-50 lg:w-auto",
             )}
           >
-            <Link href="/">{isSignedIn ? "grbpwr+" : "grbpwr"}</Link>
+            <Link href="/">{isSignedIn ? `grbpwr${userTier}` : "grbpwr"}</Link>
           </Button>
         )}
 
@@ -117,7 +120,7 @@ export function Header({
                   className="underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
                   asChild
                 >
-                  <Link href="/account">account</Link>
+                  <Link href="/account">{tAccount("account")}</Link>
                 </Button>
 
                 <Button

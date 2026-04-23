@@ -1,4 +1,5 @@
 import type {
+  AccountTierEnum,
   common_GenderEnum,
   common_OrderFactor,
   common_SortFactor,
@@ -32,6 +33,13 @@ export const MAX_LIMIT = 9999999;
 export const GRBPWR_CART = "grbpwr-cart";
 
 export const ORDER_STATUS_DELIVERED_ID = 5;
+
+
+export const USER_TIER: Partial<Record<AccountTierEnum, string>> = {
+  ACCOUNT_TIER_ENUM_PLUS: "+",
+  ACCOUNT_TIER_ENUM_PLUS_PLUS: "++",
+  ACCOUNT_TIER_ENUM_HACKER: "hacker",
+} as const;
 
 export const GENDER_MAP: Record<string, common_GenderEnum> = {
   men: "GENDER_ENUM_MALE",

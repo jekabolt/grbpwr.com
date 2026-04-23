@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 
@@ -31,6 +32,7 @@ export function CheckoutSavedAddressSelector({
   onDefaultChange?: () => void;
   onAddNewAddress?: () => void;
 }) {
+  const t = useTranslations("account");
   const [open, setOpen] = useState(false);
   const [isAddressEditing, setIsAddressEditing] = useState(false);
 
@@ -47,10 +49,6 @@ export function CheckoutSavedAddressSelector({
   });
 
   const isDisabled = disabled || pending || loading || !addresses.length;
-
-  const selectedAddress = addresses.find(
-    (a) => String(a.id ?? "") === savedAddressId,
-  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -70,7 +68,7 @@ export function CheckoutSavedAddressSelector({
             onClick={onAddNewAddress}
             disabled={disabled || loading}
           >
-            + add new address
+            {`+ ${t("add new address")}`}
           </Button>
           <div className="w-48">
             <AddressesSelector
@@ -79,7 +77,6 @@ export function CheckoutSavedAddressSelector({
               open={open}
               setOpen={setOpen}
               isDisabled={isDisabled}
-              // selectedAddress={selectedAddress}
               addresses={addresses}
               account={account}
             />

@@ -55,14 +55,14 @@ export const EMAIL_REFERENCE_STEPS = [
         label: "new arrivals",
         name: "subscribeNewArrivals",
         description:
-            "first notice of new drops, restocked pieces, and seasonal releases.",
+            "first notice of new drops, restocked pieces, and seasonal releases",
         actions: EMAIL_REFERENCE_ACTIONS,
     },
     {
         label: "events",
         name: "subscribeEvents",
         description:
-            "invitations to launches, private viewings, and selected brand moments.",
+            "invitations to launches, private viewings, and selected brand moments",
         actions: EMAIL_REFERENCE_ACTIONS,
     },
 ] as const;
