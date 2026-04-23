@@ -24,6 +24,7 @@ type Props = {
   order?: ValidateOrderItemsInsertResponse;
   orderCurrency?: string;
   disabled?: boolean;
+  showCheckoutFields?: boolean;
 };
 
 export function MobileOrderSummary({

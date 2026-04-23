@@ -1,71 +1,61 @@
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 import { AccountPersonalInfoFields } from "@/app/[locale]/account/_components/personal-info-fields";
-import type { AccountSchema } from "@/app/[locale]/account/utils/shema";
-
-import { buildAccountUpdatePayload } from "../utils/utility";
+import type { AccountSchema } from "@/app/[locale]/account/utils/schema";
+import { useAccountUpdate } from "@/app/[locale]/account/utils/use-account-update";
 
 export function PersonalInfo({
   selectedCountryCode,
 }: {
   selectedCountryCode: string;
 }) {
-  const router = useRouter();
   const form = useFormContext<AccountSchema>();
-  const [pending, setPending] = useState(false);
+  const { pending, toastOpen, toastMessage, setToastOpen, updateAccount } =
+    useAccountUpdate();
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
 
   async function onSubmit(data: AccountSchema) {
-    setPending(true);
-    try {
-      const payload = buildAccountUpdatePayload(
-        data,
-        {
-          languageId,
-          currentCountryCode: currentCountry.countryCode,
-        },
-        "personal",
-      );
-      const res = await fetch("/api/account/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        await res.json().catch(() => null);
-        return;
-      }
-      router.refresh();
-    } finally {
-      setPending(false);
-    }
+    await updateAccount({
+      data,
+      context: {
+        languageId,
+        currentCountryCode: currentCountry.countryCode,
+      },
+      mode: "personal",
+    });
   }
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="flex w-full flex-col gap-14"
-    >
-      <Text variant="uppercase">personal info</Text>
-      <AccountPersonalInfoFields
-        twoColumn
-        disabled={pending}
-        selectedCountryCode={selectedCountryCode}
-      />
-      <Button
-        type="submit"
-        variant="main"
-        size="lg"
-        className="uppercase"
-        loading={pending}
-        disabled={pending}
+    <>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex w-full flex-col gap-14"
       >
-        save changes
-      </Button>
-    </form>
+        <Text variant="uppercase">personal info</Text>
+        <AccountPersonalInfoFields
+          twoColumn
+          disabled={pending}
+          selectedCountryCode={selectedCountryCode}
+        />
+        <Button
+          type="submit"
+          variant="main"
+          size="lg"
+          className="uppercase"
+          loading={pending}
+          disabled={pending}
+        >
+          save changes
+        </Button>
+      </form>
+      <SubmissionToaster
+        open={toastOpen}
+        message={toastMessage}
+        onOpenChange={setToastOpen}
+      />
+    </>
   );
 }

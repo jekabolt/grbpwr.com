@@ -6,7 +6,7 @@ import {
     defaultData,
     type AccountEmailPreference,
     type AccountSchema,
-} from "./shema";
+} from "./schema";
 
 export type ActivePanel =
     | "personal"

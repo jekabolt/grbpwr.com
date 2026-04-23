@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
-import { AccountSchema } from "../utils/shema";
+import { AccountSchema } from "../utils/schema";
 import { EMAIL_REFERENCE_STEPS } from "../utils/utility";
 
 type EmailBooleanField = Pick<

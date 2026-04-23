@@ -166,10 +166,14 @@ export default function NewOrderForm({
         <form
           ref={formRef}
           onSubmit={form.handleSubmit(handleValidSubmit, handleSubmitInvalid)}
-          className="relative space-y-14 lg:space-y-0"
+          className="relative h-full space-y-14 lg:space-y-0"
         >
           <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
-            <div className="block lg:hidden">
+            <div
+              className={cn("block lg:hidden", {
+                "fixed inset-x-2.5 bottom-6": !showCheckoutFields,
+              })}
+            >
               <MobileOrderSummary
                 form={form}
                 order={order}
@@ -178,23 +182,23 @@ export default function NewOrderForm({
                 disabled={loading}
               />
             </div>
-            <div className="space-y-10 lg:space-y-16">
-              {!showCheckoutFields ? (
-                <div className="lg:pt-16">
-                  <AccountLoginForm
-                    isCheckout
-                    onCheckoutAsGuest={() => setGuestCheckout(true)}
-                  />
-                </div>
-              ) : showProfilePrompt ? (
-                <div className="lg:pt-10">
-                  <AccountSignedInSection
-                    account={initialAccount}
-                    isCheckout
-                    onProfileCompleted={handleProfileCompleted}
-                  />
-                </div>
-              ) : (
+            {!showCheckoutFields ? (
+              <div className="pt-24 lg:pt-10">
+                <AccountLoginForm
+                  isCheckout
+                  onCheckoutAsGuest={() => setGuestCheckout(true)}
+                />
+              </div>
+            ) : showProfilePrompt ? (
+              <div className="lg:pt-10">
+                <AccountSignedInSection
+                  account={initialAccount}
+                  isCheckout
+                  onProfileCompleted={handleProfileCompleted}
+                />
+              </div>
+            ) : (
+              <div className="space-y-10 lg:space-y-16">
                 <>
                   <div ref={contactRef}>
                     <ContactFieldsGroup
@@ -234,8 +238,8 @@ export default function NewOrderForm({
                     />
                   </div>
                 </>
-              )}
-            </div>
+              </div>
+            )}
             <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
               <div className="hidden space-y-8 lg:block">
                 <Text

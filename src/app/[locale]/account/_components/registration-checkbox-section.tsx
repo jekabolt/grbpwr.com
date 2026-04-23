@@ -6,7 +6,7 @@ import type { UseFormReturn } from "react-hook-form";
 
 import CheckboxGlobal from "@/components/ui/checkbox";
 import { AccountEmailPreferencesFields } from "@/app/[locale]/account/_components/email-preferences-fields";
-import type { AccountSchema } from "@/app/[locale]/account/utils/shema";
+import type { AccountSchema } from "@/app/[locale]/account/utils/schema";
 
 type Props = {
   form: UseFormReturn<AccountSchema>;

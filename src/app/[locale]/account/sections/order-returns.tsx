@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 import { OrderItem } from "../_components/order-item";
+import { OrderReturnsSectionFallback } from "../_components/section-fallbacks";
 
 type OrderReturnsView = "orders" | "returns";
 const RETURN_STATUS_IDS = new Set([6, 7, 8, 9]);
@@ -22,20 +23,28 @@ const ORDER_RETURNS_LABELS = [
 
 export function OrderReturns({ account }: { account: StorefrontAccount }) {
   const [orders, setOrders] = useState<common_OrderFull[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [view, setView] = useState<OrderReturnsView>("orders");
 
   const loadOrders = useCallback(async () => {
-    const res = await fetch("/api/account/orders?limit=100&offset=0", {
-      method: "GET",
-    });
-    if (!res.ok) {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/account/orders?limit=100&offset=0", {
+        method: "GET",
+      });
+      if (!res.ok) {
+        setOrders([]);
+        return;
+      }
+      const data = (await res.json().catch(() => ({}))) as {
+        orders?: common_OrderFull[];
+      };
+      setOrders(Array.isArray(data.orders) ? data.orders : []);
+    } catch {
       setOrders([]);
-      return;
+    } finally {
+      setIsLoading(false);
     }
-    const data = (await res.json().catch(() => ({}))) as {
-      orders?: common_OrderFull[];
-    };
-    setOrders(Array.isArray(data.orders) ? data.orders : []);
   }, []);
 
   useEffect(() => {
@@ -43,7 +52,7 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
   }, [loadOrders]);
 
   return (
-    <div className="space-y-16">
+    <div className="w-full space-y-16">
       <div className="flex gap-3">
         {ORDER_RETURNS_LABELS.map((label) => (
           <Button
@@ -58,8 +67,9 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
           </Button>
         ))}
       </div>
-      {view === "orders" && <OrdersList orders={orders} account={account} />}
-      {view === "returns" && <ReturnsList orders={orders} account={account} />}
+      {isLoading ? <OrderReturnsSectionFallback /> : null}
+      {!isLoading && view === "orders" ? <OrdersList orders={orders} account={account} /> : null}
+      {!isLoading && view === "returns" ? <ReturnsList orders={orders} account={account} /> : null}
     </div>
   );
 }

@@ -9,7 +9,7 @@ import { Arrow } from "@/components/ui/icons/arrow";
 import { Text } from "@/components/ui/text";
 
 import { buildAddressTextValue } from "../utils/address-format";
-import { AddressFullDetails } from "./addresse-details";
+import { AddressFullDetails } from "./address-details";
 
 export function AddressesSelector({
   savedAddressId,

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
 import {
@@ -11,10 +11,8 @@ import {
 } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/utils";
 import type {
   AccountSchema
-} from "@/app/[locale]/account/utils/shema";
-import {
-  buildAccountUpdatePayload,
-} from "@/app/[locale]/account/utils/utility";
+} from "@/app/[locale]/account/utils/schema";
+import { useAccountUpdate } from "@/app/[locale]/account/utils/use-account-update";
 import { navigateToCountryWithPicker } from "@/lib/navigation/navigate-to-country-with-picker";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
@@ -30,7 +28,8 @@ export function useEmailPreferences() {
     cancelNextCountry,
     setCurrentCountry,
   } = useTranslationsStore((s) => s);
-  const [pending, setPending] = useState(false);
+  const { pending, toastOpen, toastMessage, setToastOpen, updateAccount } =
+    useAccountUpdate();
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const seededDefaultCountry = useRef(false);
 
@@ -61,37 +60,23 @@ export function useEmailPreferences() {
     }
   }, [form, currentCountry.countryCode]);
 
-  const performEmailSave = useCallback(async (): Promise<boolean> => {
+  const performEmailSave = useCallback(async (refresh = true): Promise<boolean> => {
     const data = form.getValues();
-    setPending(true);
-    try {
-      const payload = buildAccountUpdatePayload(
-        data,
-        {
-          languageId,
-          currentCountryCode: currentCountry.countryCode,
-        },
-        "email",
-      );
-      const res = await fetch("/api/account/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        await res.json().catch(() => null);
-        return false;
-      }
-      return true;
-    } finally {
-      setPending(false);
-    }
-  }, [form, languageId, currentCountry.countryCode]);
+    const result = await updateAccount({
+      data,
+      context: {
+        languageId,
+        currentCountryCode: currentCountry.countryCode,
+      },
+      mode: "email",
+      refresh,
+    });
+    return result.ok;
+  }, [form, languageId, currentCountry.countryCode, updateAccount]);
 
   const persist = useCallback(async () => {
-    const ok = await performEmailSave();
-    if (ok) router.refresh();
-  }, [performEmailSave, router]);
+    await performEmailSave(true);
+  }, [performEmailSave]);
 
   const handleDefaultCountryPicked = useCallback(
     async (countryCode: string) => {
@@ -103,7 +88,7 @@ export function useEmailPreferences() {
       const meta = findCountryByCode(uniqueCountries, countryCode);
       if (!meta) return;
 
-      const ok = await performEmailSave();
+      const ok = await performEmailSave(false);
       if (!ok) return;
 
       if (
@@ -153,6 +138,9 @@ export function useEmailPreferences() {
 
   return {
     pending,
+    toastOpen,
+    toastMessage,
+    setToastOpen,
     sortedCountries,
     uniqueCountries,
     scheduleSave,

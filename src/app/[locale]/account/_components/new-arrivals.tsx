@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
-import type { AccountEmailPreference } from "../utils/shema";
+import type { AccountEmailPreference } from "../utils/schema";
 
 export function NewArrivales({
   value,

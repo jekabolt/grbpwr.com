@@ -119,6 +119,8 @@ export default function ShippingFieldsGroup({
     !isSignedIn || (loaded && !addresses.length) || isAddingNewAddress;
   const showSavedAddressesSelector =
     isSignedIn && loaded && addresses.length > 0 && !isAddingNewAddress;
+  const shouldShowSaveAddressActions =
+    isSignedIn && (isAddingNewAddress || (loaded && addresses.length === 0));
 
   return (
     <FieldsGroupContainer
@@ -131,7 +133,7 @@ export default function ShippingFieldsGroup({
       {showAddressForm && (
         <>
           <AddressFields loading={loading} disabled={disabled} />
-          {isSignedIn && isAddingNewAddress && (
+          {shouldShowSaveAddressActions && (
             <div className="mt-4 flex gap-3">
               <Button
                 type="button"
@@ -144,16 +146,18 @@ export default function ShippingFieldsGroup({
               >
                 save
               </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                size="lg"
-                className="w-full uppercase"
-                disabled={disabled || loading || savingNewAddress}
-                onClick={handleCancelAddNewAddress}
-              >
-                cancel
-              </Button>
+              {isAddingNewAddress ? (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="lg"
+                  className="w-full uppercase"
+                  disabled={disabled || loading || savingNewAddress}
+                  onClick={handleCancelAddNewAddress}
+                >
+                  cancel
+                </Button>
+              ) : null}
             </div>
           )}
         </>

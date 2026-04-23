@@ -8,6 +8,7 @@ import { Text } from "@/components/ui/text";
 
 import { AddressListItem } from "../_components/address-list-item";
 import { EditAddressForm } from "../_components/edit-address-form";
+import { AddressesSectionFallback } from "../_components/section-fallbacks";
 import { useAddresses } from "../utils/useAddresses";
 
 export function AddressesSection({
@@ -26,6 +27,8 @@ export function AddressesSection({
   const {
     addresses,
     pending,
+    loaded,
+    toastMessage,
     defaultId,
     deletingId,
     handleDefaultAddress,
@@ -44,6 +47,8 @@ export function AddressesSection({
     onEditModeChange?.(editingId !== null);
   }, [editingId, onEditModeChange]);
 
+  const isInitialLoading = pending && !loaded;
+
   return (
     <div
       className={cn("flex w-full flex-col gap-16", {
@@ -56,6 +61,12 @@ export function AddressesSection({
         </Text>
       )}
       <div className="flex flex-col gap-3">
+        {isInitialLoading ? (
+          <AddressesSectionFallback
+            defaultOnly={defaultOnly}
+            rows={Math.max(1, addresses.length)}
+          />
+        ) : null}
         {visibleAddresses.map((address) => (
           <div key={address.id}>
             {editingId === null && (

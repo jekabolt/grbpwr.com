@@ -40,7 +40,7 @@ export function AccountLoginForm({
 
   return (
     <>
-      <div className="flex w-full flex-col gap-6 px-2.5 lg:max-w-sm lg:px-0">
+      <div className={cn("flex h-full w-full items-center gap-6 lg:max-w-sm")}>
         {step === "email" ? (
           <EmailStep
             email={email}
@@ -99,7 +99,7 @@ function EmailStep({
     : "";
 
   return (
-    <div className="space-y-10">
+    <div className="w-full space-y-10">
       <div className="flex flex-col items-center gap-6">
         <Text variant="uppercase">log in or create account</Text>
         <Text variant="uppercase">

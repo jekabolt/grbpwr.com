@@ -30,5 +30,9 @@ export function AccountSignedInSection({
     );
   }
 
-  return <div>{!isCheckout && <AccountSessionPanel account={account} />}</div>;
+  return (
+    <div className="h-full w-full px-2.5 pt-24 lg:px-32 lg:py-24">
+      {!isCheckout && <AccountSessionPanel account={account} />}
+    </div>
+  );
 }

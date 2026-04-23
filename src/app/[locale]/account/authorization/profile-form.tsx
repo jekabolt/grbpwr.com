@@ -1,7 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,16 +12,13 @@ import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
 import { AccountPersonalInfoFields } from "@/app/[locale]/account/_components/personal-info-fields";
 import { AccountRegistrationCheckboxSection } from "@/app/[locale]/account/_components/registration-checkbox-section";
-import { parseApiError } from "@/app/[locale]/account/utils/api-error";
 import {
   accountSchema,
   AccountSchema,
-} from "@/app/[locale]/account/utils/shema";
+} from "@/app/[locale]/account/utils/schema";
+import { useAccountUpdate } from "@/app/[locale]/account/utils/use-account-update";
 
-import {
-  buildAccountUpdatePayload,
-  getAccountFormDefaultValues,
-} from "../utils/utility";
+import { getAccountFormDefaultValues } from "../utils/utility";
 
 type Props = {
   account: StorefrontAccount;
@@ -35,15 +31,10 @@ type Props = {
   }) => void;
 };
 
-export function AccountProfilePrompt({
-  account,
-  onCompleted,
-}: Props) {
-  const router = useRouter();
+export function AccountProfilePrompt({ account, onCompleted }: Props) {
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
-  const [pending, setPending] = useState(false);
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const { pending, toastOpen, toastMessage, setToastOpen, updateAccount } =
+    useAccountUpdate();
 
   const selectedCountryCode =
     account.defaultCountry?.trim() ||
@@ -59,43 +50,26 @@ export function AccountProfilePrompt({
   });
 
   async function onSubmit(data: AccountSchema) {
-    setPending(true);
-    try {
-      const payload = buildAccountUpdatePayload(
-        data,
-        {
-          languageId,
-          currentCountryCode: currentCountry.countryCode,
-        },
-        "full",
-      );
+    const result = await updateAccount({
+      data,
+      context: {
+        languageId,
+        currentCountryCode: currentCountry.countryCode,
+      },
+      mode: "full",
+    });
+    if (!result.ok) return;
 
-      const res = await fetch("/api/account/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        setToastMessage(await parseApiError(res, "failed to update account"));
-        setToastOpen(true);
-        return;
-      }
-
-      onCompleted?.({
-        firstName: data.firstName.trim(),
-        lastName: data.lastName.trim(),
-        phone: data.phone.trim(),
-        email: account.email?.trim() ?? "",
-        country:
-          data.defaultCountry?.trim().toLowerCase() ||
-          selectedCountryCode?.toLowerCase() ||
-          "",
-      });
-
-      router.refresh();
-    } finally {
-      setPending(false);
-    }
+    onCompleted?.({
+      firstName: data.firstName.trim(),
+      lastName: data.lastName.trim(),
+      phone: data.phone.trim(),
+      email: account.email?.trim() ?? "",
+      country:
+        data.defaultCountry?.trim().toLowerCase() ||
+        selectedCountryCode?.toLowerCase() ||
+        "",
+    });
   }
 
   return (
@@ -113,7 +87,10 @@ export function AccountProfilePrompt({
               disabled={pending}
               selectedCountryCode={selectedCountryCode}
             />
-            <AccountRegistrationCheckboxSection form={form} disabled={pending} />
+            <AccountRegistrationCheckboxSection
+              form={form}
+              disabled={pending}
+            />
             <Button
               type="submit"
               variant="main"

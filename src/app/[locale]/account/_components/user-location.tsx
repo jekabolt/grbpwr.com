@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
-import type { AccountSchema } from "../utils/shema";
+import type { AccountSchema } from "../utils/schema";
 import { useEmailPreferences } from "../utils/use-email-preferences";
 
 export function UserLocation({ pending }: { pending: boolean }) {

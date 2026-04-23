@@ -4,7 +4,7 @@ import type { UseFormReturn } from "react-hook-form";
 import { useWatch } from "react-hook-form";
 
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
-import { AccountSchema } from "@/app/[locale]/account/utils/shema";
+import { AccountSchema } from "@/app/[locale]/account/utils/schema";
 
 import { NewArrivales } from "./new-arrivals";
 

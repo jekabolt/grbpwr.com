@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +14,7 @@ import { ActiveAccountSection } from "@/app/[locale]/account/_components/section
 import {
   accountSchema,
   AccountSchema,
-} from "@/app/[locale]/account/utils/shema";
+} from "@/app/[locale]/account/utils/schema";
 
 import {
   ACCOUNT_SECTIONS,
@@ -37,7 +37,7 @@ export function AccountSessionPanel({ account }: Props) {
   const { currentCountry } = useTranslationsStore((s) => s);
   const [activePanel, setActivePanel] = useState<ActivePanel>("personal");
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const raw = params.get(ACCOUNT_PANEL_QUERY);
     if (!raw || !ACCOUNT_PANEL_VALUES.has(raw as ActivePanel)) return;
@@ -75,47 +75,43 @@ export function AccountSessionPanel({ account }: Props) {
   }
 
   return (
-    <div className="w-screen lg:relative lg:min-h-screen lg:px-32 lg:py-24">
-      <div className="flex w-full flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-0">
-        <div className="flex flex-col gap-12">
-          <div className="space-y-2">
-            <Text>
-              {account.firstName} {account.lastName}
-            </Text>
-            <Text variant="inactive">{account.email}</Text>
-          </div>
-          <div className="space-y-3">
-            {ACCOUNT_SECTIONS.map((section) => (
-              <Button
-                type="button"
-                key={section.value}
-                variant={
-                  activePanel === section.value ? "underline" : "default"
-                }
-                onClick={() => togglePanel(section.value)}
-                className="uppercase"
-              >
-                {section.label}
-              </Button>
-            ))}
-          </div>
-          <Button
-            type="button"
-            className="self-start uppercase text-textInactiveColor hover:text-textColor"
-            onClick={logout}
-          >
-            log out
-          </Button>
+    <div className="flex w-full flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-0">
+      <div className="flex flex-col gap-12">
+        <div className="space-y-2">
+          <Text>
+            {account.firstName} {account.lastName}
+          </Text>
+          <Text variant="inactive">{account.email}</Text>
         </div>
-        <div className="w-full">
-          <Form {...form}>
-            <ActiveAccountSection
-              activePanel={activePanel}
-              selectedCountryCode={selectedCountryCode}
-              account={account}
-            />
-          </Form>
+        <div className="space-y-3">
+          {ACCOUNT_SECTIONS.map((section) => (
+            <Button
+              type="button"
+              key={section.value}
+              variant={activePanel === section.value ? "underline" : "default"}
+              onClick={() => togglePanel(section.value)}
+              className="uppercase"
+            >
+              {section.label}
+            </Button>
+          ))}
         </div>
+        <Button
+          type="button"
+          className="self-start uppercase text-textInactiveColor hover:text-textColor"
+          onClick={logout}
+        >
+          log out
+        </Button>
+      </div>
+      <div className="w-full">
+        <Form {...form}>
+          <ActiveAccountSection
+            activePanel={activePanel}
+            selectedCountryCode={selectedCountryCode}
+            account={account}
+          />
+        </Form>
       </div>
     </div>
   );
