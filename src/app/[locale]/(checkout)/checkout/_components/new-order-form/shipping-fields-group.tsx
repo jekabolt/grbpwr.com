@@ -22,7 +22,7 @@ import RadioGroupField from "@/components/ui/form/fields/radio-group-field";
 import SelectField from "@/components/ui/form/fields/select-field";
 import { Text } from "@/components/ui/text";
 import { CheckoutSavedAddressSelector } from "@/app/[locale]/account/_components/checkout-saved-address-selector";
-import { useAddresses } from "@/app/[locale]/account/utils/useAddresses";
+import { useAddresses } from "@/app/[locale]/account/utils/use-addresses";
 
 import AddressAutocomplete from "./address-autocomplete";
 import CityAutocomplete from "./city-autocomplete";

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useMemo } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -34,19 +34,15 @@ type Props = {
 
 export function AccountSessionPanel({ account }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { currentCountry } = useTranslationsStore((s) => s);
-  const [activePanel, setActivePanel] = useState<ActivePanel>("personal");
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const raw = params.get(ACCOUNT_PANEL_QUERY);
-    if (!raw || !ACCOUNT_PANEL_VALUES.has(raw as ActivePanel)) return;
-    setActivePanel(raw as ActivePanel);
-    params.delete(ACCOUNT_PANEL_QUERY);
-    const qs = params.toString();
-    const next = `${window.location.pathname}${qs ? `?${qs}` : ""}${window.location.hash}`;
-    window.history.replaceState(null, "", next);
-  }, []);
+  const rawPanel = searchParams.get(ACCOUNT_PANEL_QUERY);
+  const activePanel: ActivePanel =
+    rawPanel && ACCOUNT_PANEL_VALUES.has(rawPanel as ActivePanel)
+      ? (rawPanel as ActivePanel)
+      : "personal";
 
   const selectedCountryCode =
     account.defaultCountry?.trim() ||
@@ -71,7 +67,14 @@ export function AccountSessionPanel({ account }: Props) {
   }
 
   function togglePanel(panel: ActivePanel) {
-    setActivePanel((prev) => (prev === panel ? "personal" : panel));
+    const params = new URLSearchParams(searchParams.toString());
+    if (activePanel === panel) {
+      params.delete(ACCOUNT_PANEL_QUERY);
+    } else {
+      params.set(ACCOUNT_PANEL_QUERY, panel);
+    }
+    const qs = params.toString();
+    router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { scroll: false });
   }
 
   return (

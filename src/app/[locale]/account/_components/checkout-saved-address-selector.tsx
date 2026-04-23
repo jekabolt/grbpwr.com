@@ -6,8 +6,8 @@ import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { Button } from "@/components/ui/button";
 
 import { AddressesSection } from "../sections/addresses";
+import { useAddresses } from "../utils/use-addresses";
 import { useSavedAddressFormSync } from "../utils/use-saved-address-form-sync";
-import { useAddresses } from "../utils/useAddresses";
 import { AddressesSelector } from "./addresses-selector";
 
 export function CheckoutSavedAddressSelector({

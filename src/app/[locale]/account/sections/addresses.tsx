@@ -9,7 +9,7 @@ import { Text } from "@/components/ui/text";
 import { AddressListItem } from "../_components/address-list-item";
 import { EditAddressForm } from "../_components/edit-address-form";
 import { AddressesSectionFallback } from "../_components/section-fallbacks";
-import { useAddresses } from "../utils/useAddresses";
+import { useAddresses } from "../utils/use-addresses";
 
 export function AddressesSection({
   account,
