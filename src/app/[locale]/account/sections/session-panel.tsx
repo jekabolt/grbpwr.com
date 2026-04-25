@@ -63,22 +63,19 @@ export function AccountSessionPanel({ account }: Props) {
       localStorage.removeItem("checkout-form-storage");
       sessionStorage.removeItem("checkout-country-change-stash");
     }
+    router.replace("/");
     router.refresh();
   }
 
   function togglePanel(panel: ActivePanel) {
     const params = new URLSearchParams(searchParams.toString());
-    if (activePanel === panel) {
-      params.delete(ACCOUNT_PANEL_QUERY);
-    } else {
-      params.set(ACCOUNT_PANEL_QUERY, panel);
-    }
+    params.set(ACCOUNT_PANEL_QUERY, panel);
     const qs = params.toString();
     router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { scroll: false });
   }
 
   return (
-    <div className="grid w-full grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-0">
+    <div className="grid h-full w-full grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-0 lg:overflow-y-auto">
       <div className="flex flex-col gap-12">
         <div className="space-y-2">
           <Text>
@@ -107,7 +104,7 @@ export function AccountSessionPanel({ account }: Props) {
           log out
         </Button>
       </div>
-      <div className="h-full w-full">
+      <div className="w-full">
         <Form {...form}>
           <ActiveAccountSection
             activePanel={activePanel}

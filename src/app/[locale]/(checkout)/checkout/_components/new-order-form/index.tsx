@@ -187,6 +187,7 @@ export default function NewOrderForm({
                   validatedProducts={order?.validItems}
                   orderCurrency={orderCurrency}
                   disabled={loading}
+                  overlay={!hideOrderSummary}
                 />
               </div>
             )}

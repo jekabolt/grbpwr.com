@@ -57,7 +57,7 @@ export function Header({
       )}
       <header
         className={cn(
-          "fixed inset-x-2.5 z-30 h-12 py-2 lg:gap-0 lg:px-5 lg:py-3",
+          "fixed inset-x-2.5 z-30 h-12 py-2 selection:bg-inverted selection:text-textColor lg:gap-0 lg:px-5 lg:py-3",
           "flex items-center justify-between gap-1",
           "border border-textInactiveColor bg-bgColor text-textColor lg:border-transparent",
           "transition-[top] duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",

@@ -24,7 +24,7 @@ type Params = {
 };
 
 export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
-  const { setValue, getValues, trigger } = useFormContext();
+  const { setValue, getValues, trigger, resetField } = useFormContext();
   const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
   const [savingNewAddress, setSavingNewAddress] = useState(false);
   const [saveAddressError, setSaveAddressError] = useState<string | null>(null);
@@ -98,20 +98,38 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
     setSaveAddressError(null);
     const previousValues = previousAddressValuesRef.current;
     if (previousValues) {
-      Object.entries(previousValues).forEach(([key, value]) => {
-        setValue(key as keyof typeof previousValues, value, {
-          shouldValidate: false,
-          shouldDirty: false,
-        });
+      resetField("firstName", { defaultValue: previousValues.firstName });
+      resetField("lastName", { defaultValue: previousValues.lastName });
+      resetField("country", { defaultValue: previousValues.country });
+      resetField("state", { defaultValue: previousValues.state });
+      resetField("city", { defaultValue: previousValues.city });
+      resetField("address", { defaultValue: previousValues.address });
+      resetField("additionalAddress", {
+        defaultValue: previousValues.additionalAddress,
       });
+      resetField("company", { defaultValue: previousValues.company });
+      resetField("phone", { defaultValue: previousValues.phone });
+      resetField("postalCode", { defaultValue: previousValues.postalCode });
+      resetField("savedAddressId", { defaultValue: previousValues.savedAddressId });
       previousAddressValuesRef.current = null;
-      void trigger([...FIELDS_TO_VALIDATE, "savedAddressId"]);
     }
     setIsAddingNewAddress(false);
   }
 
+  function touchAddressFields() {
+    const values = getValues();
+    FIELDS_TO_VALIDATE.forEach((field) => {
+      setValue(field, values[field] ?? "", {
+        shouldTouch: true,
+        shouldDirty: false,
+        shouldValidate: false,
+      });
+    });
+  }
+
   async function handleSaveNewAddress() {
     setSaveAddressError(null);
+    touchAddressFields();
     const valid = await trigger([...FIELDS_TO_VALIDATE]);
     if (!valid) return;
 

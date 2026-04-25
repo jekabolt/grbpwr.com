@@ -126,7 +126,7 @@ export function EditAddressForm({
           loading={saving}
           variant="secondary"
           name="phone"
-          label={`${t("phone")}:`}
+          label={`${t("phone number:")}`}
           disabled={saving}
           readOnly
         />
