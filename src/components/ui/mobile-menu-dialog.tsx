@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { getTopCategoryName } from "@/lib/categories-map";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
   calculateAspectRatio,
@@ -14,6 +16,7 @@ import NewslatterForm from "@/app/[locale]/_components/newslatter-form";
 
 import { useDataContext } from "../contexts/DataContext";
 import { AnimatedButton } from "./animated-button";
+import { Button } from "./button";
 import Image from "./image";
 import { Text } from "./text";
 
@@ -34,10 +37,16 @@ export function DefaultMobileMenuDialog({
   isBigMenuEnabled,
   isWebsiteEnabled = true,
 }: DefaultMenuProps) {
+  const { account, isSignedIn } = useAccountOnboardingStore((s) => s);
   const defaultMenuItems = isWebsiteEnabled
     ? createMenuItems(isBigMenuEnabled, setActiveCategory)
     : [{ label: "timeline", showArrow: false, href: "/timeline" }];
   const t = useTranslations("navigation");
+  const tAccount = useTranslations("account");
+
+  const accountText = isSignedIn
+    ? `${tAccount("account")}: ${account?.firstName} ${account?.lastName}`
+    : tAccount("account");
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -68,6 +77,11 @@ export function DefaultMobileMenuDialog({
               )}
             </div>
           ))}
+        </div>
+        <div>
+          <Button asChild className="upeercase">
+            <Link href="/account">{accountText}</Link>
+          </Button>
         </div>
         <div className="self-start">
           <MobileCountriesPopupTrigger />
