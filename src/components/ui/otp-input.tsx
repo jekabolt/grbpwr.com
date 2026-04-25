@@ -121,7 +121,7 @@ export function OtpInput({
             value={char}
             maxLength={1}
             className={cn(
-              "box-border aspect-square min-w-0 flex-1 basis-0 border border-textColor text-center tabular-nums lg:size-11 lg:flex-none lg:basis-auto",
+              "box-border aspect-square min-w-0 flex-1 basis-0 border border-textColor text-center tabular-nums",
               "caret-textColor focus:border-textColor",
               "disabled:border-textInactiveColor disabled:text-textInactiveColor",
             )}

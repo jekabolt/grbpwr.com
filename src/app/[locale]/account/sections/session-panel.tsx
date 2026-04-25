@@ -78,7 +78,7 @@ export function AccountSessionPanel({ account }: Props) {
   }
 
   return (
-    <div className="flex w-full flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-0">
+    <div className="grid w-full grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-0">
       <div className="flex flex-col gap-12">
         <div className="space-y-2">
           <Text>
@@ -107,7 +107,7 @@ export function AccountSessionPanel({ account }: Props) {
           log out
         </Button>
       </div>
-      <div className="w-full">
+      <div className="h-full w-full">
         <Form {...form}>
           <ActiveAccountSection
             activePanel={activePanel}

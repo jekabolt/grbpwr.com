@@ -5,6 +5,12 @@ import { requestAccountLoginCode, verifyAccountLoginCode } from "../authorizatio
 const RESEND_TIMEOUT_SECONDS = 30;
 type LoginStep = "email" | "code";
 
+function isInvalidVerificationCodeError(message: string) {
+    return /(invalid|incorrect|expired).*(code|verification)|\b(code|verification).*(invalid|incorrect|expired)/i.test(
+        message,
+    );
+}
+
 export function useAccountLogin() {
     const router = useRouter();
     const [email, setEmail] = useState("");
@@ -80,7 +86,11 @@ export function useAccountLogin() {
         try {
             const result = await verifyAccountLoginCode(normalizedEmail, candidateCode);
             if (!result.ok) {
-                openErrorToast(result.error ?? "failed to verify code");
+                const errorMessage = result.error ?? "failed to verify code";
+                if (isInvalidVerificationCodeError(errorMessage)) {
+                    setCode("");
+                }
+                openErrorToast(errorMessage);
                 return;
             }
             router.refresh();

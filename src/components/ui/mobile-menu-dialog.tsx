@@ -43,8 +43,8 @@ export function DefaultMobileMenuDialog({
   const tAccount = useTranslations("account");
 
   const accountText = isSignedIn
-    ? `${tAccount("account").toLowerCase()}: ${account?.firstName} ${account?.lastName}`
-    : tAccount("account");
+    ? `${tAccount("account").toUpperCase()}: ${account?.firstName} ${account?.lastName}`
+    : tAccount("account").toUpperCase();
 
   return (
     <div className="flex h-full flex-col justify-between">

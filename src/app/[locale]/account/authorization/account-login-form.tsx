@@ -47,7 +47,7 @@ export function AccountLoginForm({
 
   return (
     <>
-      <div className="flex h-full w-full items-center gap-6 lg:w-[400px]">
+      <div className="flex h-auto w-full items-center gap-6 lg:max-w-[400px]">
         {step === "email" ? (
           <EmailStep
             email={email}
@@ -188,7 +188,7 @@ function CodeStep({
             onComplete={onCodeComplete}
             disabled={pending}
           />
-          <div className="w-full space-y-5 text-center">
+          <div className="space-y-5 text-center">
             <Button
               type="button"
               variant="main"

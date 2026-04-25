@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { common_OrderFull, StorefrontAccount } from "@/api/proto-http/frontend";
+import { useInView } from "react-intersection-observer";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -40,7 +41,7 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
 
       {loading ? <OrderReturnsSectionFallback /> : null}
 
-      {!loading && view === "orders" ? (
+      {!loading && view === "orders" && (
         <OrdersList
           orders={allOrders}
           account={account}
@@ -48,9 +49,9 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
           loadingMore={loadingMore}
           onLoadMore={loadMore}
         />
-      ) : null}
+      )}
 
-      {!loading && view === "returns" ? (
+      {!loading && view === "returns" && (
         <ReturnsList
           orders={allOrders}
           account={account}
@@ -58,7 +59,7 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
           loadingMore={loadingMore}
           onLoadMore={loadMore}
         />
-      ) : null}
+      )}
     </div>
   );
 }
@@ -83,19 +84,15 @@ function OrdersList({
   );
 
   return (
-    <div className="flex flex-col gap-0">
+    <div className="flex h-full flex-col gap-0 lg:max-h-[650px] lg:overflow-y-auto">
       {visible.map((order) => (
         <OrderItem key={order.order?.id} order={order} account={account} />
       ))}
-      {hasMore && (
-        <Button
-          className="mt-6 self-start uppercase"
-          onClick={onLoadMore}
-          disabled={loadingMore}
-        >
-          {loadingMore ? "loading..." : "load more"}
-        </Button>
-      )}
+      <AutoLoadMore
+        hasMore={hasMore}
+        loadingMore={loadingMore}
+        onLoadMore={onLoadMore}
+      />
     </div>
   );
 }
@@ -112,19 +109,33 @@ function ReturnsList({
   );
 
   return (
-    <div className="flex flex-col gap-0">
+    <div className="flex max-h-[650px] flex-col gap-0 overflow-y-auto">
       {visible.map((order) => (
         <OrderItem key={order.order?.id} order={order} account={account} />
       ))}
-      {hasMore && (
-        <Button
-          className="mt-6 self-start uppercase"
-          onClick={onLoadMore}
-          disabled={loadingMore}
-        >
-          {loadingMore ? "loading..." : "load more"}
-        </Button>
-      )}
+      <AutoLoadMore
+        hasMore={hasMore}
+        loadingMore={loadingMore}
+        onLoadMore={onLoadMore}
+      />
     </div>
   );
+}
+
+function AutoLoadMore({
+  hasMore,
+  loadingMore,
+  onLoadMore,
+}: Pick<ListProps, "hasMore" | "loadingMore" | "onLoadMore">) {
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView && hasMore && !loadingMore) {
+      onLoadMore();
+    }
+  }, [inView, hasMore, loadingMore, onLoadMore]);
+
+  if (!hasMore) return null;
+
+  return !loadingMore ? <div ref={ref} /> : null;
 }
