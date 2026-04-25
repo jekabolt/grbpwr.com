@@ -28,13 +28,15 @@ export default function InputField({
   srLabel,
   keyboardRestriction,
   disabled,
+  onBlur,
   ...props
 }: Props) {
   const { control, trigger, setValue } = useFormContext();
   const t = useTranslations("errors");
 
-  function onBlur() {
+  function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
     trigger(name);
+    onBlur?.(e);
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -81,7 +83,7 @@ export default function InputField({
               value={field.value || ""}
               {...props}
               disabled={disabled}
-              onBlur={onBlur}
+              onBlur={handleBlur}
               onKeyDown={handleKeyDown}
               onChange={keyboardRestriction ? handleChange : field.onChange}
             />
