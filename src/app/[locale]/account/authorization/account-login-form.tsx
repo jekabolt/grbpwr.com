@@ -168,11 +168,11 @@ function CodeStep({
 
   return (
     <div className="flex w-full items-center justify-center">
-      <div className="flex flex-col items-center gap-16">
+      <div className="flex w-full flex-col items-center gap-16">
         <Text variant="uppercase" className="text-center">
           {t("enter your verification code")}
         </Text>
-        <div className="space-y-10">
+        <div className="w-full space-y-10">
           <OtpInput
             id="login-code"
             value={code}
