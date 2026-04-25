@@ -166,7 +166,10 @@ export default function NewOrderForm({
         <form
           ref={formRef}
           onSubmit={form.handleSubmit(handleValidSubmit, handleSubmitInvalid)}
-          className="relative h-full space-y-14 lg:space-y-0"
+          className={cn("relative h-full space-y-14 lg:space-y-0", {
+            "h-[calc(100dvh-5rem)] overflow-hidden lg:h-full lg:overflow-visible":
+              !showCheckoutFields,
+          })}
         >
           <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
             <div
