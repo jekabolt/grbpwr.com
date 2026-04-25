@@ -45,7 +45,7 @@ export function DefaultMobileMenuDialog({
   const tAccount = useTranslations("account");
 
   const accountText = isSignedIn
-    ? `${tAccount("account")}: ${account?.firstName} ${account?.lastName}`
+    ? `${tAccount("account").toLowerCase()}: ${account?.firstName} ${account?.lastName}`
     : tAccount("account");
 
   return (
@@ -79,7 +79,7 @@ export function DefaultMobileMenuDialog({
           ))}
         </div>
         <div>
-          <Button asChild className="upeercase">
+          <Button asChild>
             <Link href="/account">{accountText}</Link>
           </Button>
         </div>
