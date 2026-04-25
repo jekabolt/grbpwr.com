@@ -79,6 +79,7 @@ export function AddressesSection({
                 className={cn("space-y-3 border-b border-textInactiveColor", {
                   "border-transparent pb-0": defaultOnly,
                   "py-6": (address.id ?? 0) > 0,
+                  "border-none": visibleAddresses.length === 1,
                 })}
               >
                 <AddressListItem

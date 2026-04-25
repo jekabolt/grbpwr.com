@@ -26,7 +26,7 @@ export function Overlay({
   onClick,
 }: Props) {
   useEffect(() => {
-    if (cover !== "screen") return;
+    if (cover !== "screen" || !active) return;
     overflowLockCount++;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -36,7 +36,7 @@ export function Overlay({
         document.body.style.overflow = prevOverflow;
       }
     };
-  }, [cover]);
+  }, [cover, active]);
 
   return (
     <div

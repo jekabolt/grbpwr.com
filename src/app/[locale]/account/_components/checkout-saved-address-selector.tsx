@@ -68,15 +68,6 @@ export function CheckoutSavedAddressSelector({
       />
       {!isAddressEditing && (
         <div className="flex items-end justify-between">
-          <Button
-            type="button"
-            variant="underline"
-            className="uppercase"
-            onClick={onAddNewAddress}
-            disabled={disabled || loading}
-          >
-            {`+ ${t("add new address")}`}
-          </Button>
           <div className="w-48">
             <AddressesSelector
               savedAddressId={savedAddressId || ""}
@@ -88,6 +79,15 @@ export function CheckoutSavedAddressSelector({
               account={account}
             />
           </div>
+          <Button
+            type="button"
+            variant="underline"
+            className="uppercase"
+            onClick={onAddNewAddress}
+            disabled={disabled || loading}
+          >
+            {`+ ${t("add new address")}`}
+          </Button>
         </div>
       )}
     </div>

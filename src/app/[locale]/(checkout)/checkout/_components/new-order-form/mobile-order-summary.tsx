@@ -57,6 +57,7 @@ export function MobileOrderSummary({
       <Overlay
         cover="screen"
         trigger="active"
+        color="dark"
         active={overlay && !!isOpen}
         onClick={handleToggle}
       />
@@ -65,7 +66,7 @@ export function MobileOrderSummary({
         className={cn(
           "relative z-40 space-y-0 border border-textInactiveColor p-2.5",
           {
-          "text-textInactiveColor": disabled,
+            "text-textInactiveColor": disabled,
           },
         )}
         signPosition="before"
@@ -96,7 +97,11 @@ export function MobileOrderSummary({
           />
         </div>
         <div onClick={() => setIsOpen(false)}>
-          <PriceSummary form={form} order={order} orderCurrency={orderCurrency} />
+          <PriceSummary
+            form={form}
+            order={order}
+            orderCurrency={orderCurrency}
+          />
         </div>
       </FieldsGroupContainer>
     </>

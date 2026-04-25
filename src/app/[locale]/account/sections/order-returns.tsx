@@ -84,7 +84,7 @@ function OrdersList({
   );
 
   return (
-    <div className="flex h-full flex-col gap-0 lg:max-h-[650px] lg:overflow-y-auto">
+    <div className="flex h-full flex-col gap-0 lg:max-h-[550px] lg:overflow-y-auto">
       {visible.map((order) => (
         <OrderItem key={order.order?.id} order={order} account={account} />
       ))}
@@ -109,7 +109,7 @@ function ReturnsList({
   );
 
   return (
-    <div className="flex max-h-[650px] flex-col gap-0 overflow-y-auto">
+    <div className="flex max-h-[550px] flex-col gap-0 overflow-y-auto">
       {visible.map((order) => (
         <OrderItem key={order.order?.id} order={order} account={account} />
       ))}

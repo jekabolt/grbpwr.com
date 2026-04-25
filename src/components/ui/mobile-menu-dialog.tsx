@@ -43,8 +43,8 @@ export function DefaultMobileMenuDialog({
   const tAccount = useTranslations("account");
 
   const accountText = isSignedIn
-    ? `${tAccount("account").toUpperCase()}: ${account?.firstName} ${account?.lastName}`
-    : tAccount("account").toUpperCase();
+    ? `${tAccount("account")}: ${account?.firstName}`
+    : tAccount("account");
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -81,6 +81,7 @@ export function DefaultMobileMenuDialog({
             animationDuration={1000}
             animationArea="text"
             href="/account"
+            className="uppercase"
           >
             {accountText}
           </AnimatedButton>

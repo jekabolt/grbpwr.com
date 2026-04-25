@@ -100,7 +100,14 @@ function EmailStep({
   return (
     <div className="w-full space-y-10">
       <div className="flex flex-col items-center gap-6">
-        <Text variant="uppercase">{t("login")}</Text>
+        <Text
+          variant="uppercase"
+          className={cn("", {
+            "text-textInactiveColor": pending,
+          })}
+        >
+          {t("login")}
+        </Text>
         <UserLocationTrigger
           pending={pending}
           showLabel={false}
@@ -109,7 +116,14 @@ function EmailStep({
         />
       </div>
       <div>
-        <Text variant="uppercase">{t("email")}</Text>
+        <Text
+          variant="uppercase"
+          className={cn("", {
+            "text-textInactiveColor": pending,
+          })}
+        >
+          {t("email")}
+        </Text>
         <Input
           name="email"
           type="email"
@@ -153,6 +167,12 @@ function EmailStep({
           </>
         )}
       </div>
+      <div>
+        <Text variant="inactive" className="text-center uppercase">
+          By becoming a member, you agree to our Privacy Policy and Membership
+          Policy.
+        </Text>
+      </div>
     </div>
   );
 }
@@ -194,6 +214,7 @@ function CodeStep({
               variant="main"
               size="lg"
               className="w-full uppercase"
+              loading={pending}
               disabled={pending || resendSeconds > 0}
               onClick={onResend}
             >
@@ -201,8 +222,8 @@ function CodeStep({
                 ? `${t("resend code in")} ${resendSeconds}`
                 : `${t("resend code")}`}
             </Button>
-            <Text variant="uppercase">
-              {t("or sign in via the link sent to your email")}
+            <Text variant="uppercase" className="text-textInactiveColor">
+              {t("or continue using the link sent to your email")}
             </Text>
           </div>
         </div>

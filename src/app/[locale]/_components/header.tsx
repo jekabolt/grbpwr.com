@@ -13,6 +13,7 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { Announce } from "@/components/ui/announce";
 import { Button } from "@/components/ui/button";
 import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
+import { Text } from "@/components/ui/text";
 
 import { HeaderLeftNav } from "./header-left-nav";
 import { useAnnounce } from "./useAnnounce";
@@ -44,7 +45,7 @@ export function Header({
   const isWebsiteEnabled = dictionary?.siteEnabled;
   const userTier = account?.accountTier ? USER_TIER[account.accountTier] : "";
   const isHacker = account?.accountTier === "ACCOUNT_TIER_ENUM_HACKER";
-  const tierText = isHacker ? "grbpwr hacker" : `grbpwr${userTier}`;
+  const tierText = isHacker ? "hacker" : userTier;
 
   return (
     <>
@@ -96,7 +97,21 @@ export function Header({
               "w-1/3 text-center transition-colors hover:opacity-70 active:opacity-50 lg:w-auto",
             )}
           >
-            <Link href="/">{isSignedIn ? `${tierText}` : "grbpwr"}</Link>
+            <Link
+              href="/"
+              className="inline-flex items-center whitespace-nowrap [font-variant-ligatures:none]"
+            >
+              {isSignedIn ? (
+                <>
+                  <Text>grbpwr</Text>
+                  {tierText ? (
+                    <Text className="ml-[1px]">{tierText}</Text>
+                  ) : null}
+                </>
+              ) : (
+                "grbpwr"
+              )}
+            </Link>
           </Button>
         )}
 
