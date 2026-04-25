@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
@@ -48,7 +48,13 @@ export function CheckoutSavedAddressSelector({
     onDefaultChange,
   });
 
-  const isDisabled = disabled || pending || loading || !addresses.length;
+  const isDisabled = disabled || pending || loading || addresses.length <= 1;
+
+  useEffect(() => {
+    if (isDisabled && open) {
+      setOpen(false);
+    }
+  }, [isDisabled, open]);
 
   return (
     <div className="flex flex-col gap-6">

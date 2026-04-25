@@ -53,20 +53,6 @@
       @apply bg-acidColor text-bgColor;
     }
   }
-
-  .pac-container {
-    border: 1px solid var(--inactive) !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    font-family: inherit !important;
-    z-index: 1000 !important;
-  }
-
-  .pac-container:empty,
-  .pac-container:not(:has(.pac-item)) {
-    display: none !important;
-    border: 0 !important;
-  }
 }
 
 @layer utilities {

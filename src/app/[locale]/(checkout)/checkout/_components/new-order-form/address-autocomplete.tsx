@@ -84,17 +84,6 @@ type Props = {
   countryCode?: string | string[];
 };
 
-function hideGooglePlacesPopover() {
-  const hide = () => {
-    document.querySelectorAll<HTMLElement>(".pac-container").forEach((el) => {
-      el.style.display = "none";
-    });
-  };
-
-  requestAnimationFrame(hide);
-  window.setTimeout(hide, 100);
-}
-
 export default function AddressAutocomplete({
   loading,
   disabled,
@@ -171,7 +160,6 @@ export default function AddressAutocomplete({
           if (!place || !place.address_components) return;
           const components = extractAddressComponents(place.address_components);
           updateAddressFields(components, prefix, setValue);
-          hideGooglePlacesPopover();
         }}
       >
         <InputField
@@ -181,7 +169,6 @@ export default function AddressAutocomplete({
           placeholder=" "
           disabled={disabled}
           keyboardRestriction={keyboardRestrictions.addressField}
-          onBlur={hideGooglePlacesPopover}
         />
       </Autocomplete>
     </div>
