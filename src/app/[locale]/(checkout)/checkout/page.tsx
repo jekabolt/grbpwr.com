@@ -21,7 +21,7 @@ export default async function CheckoutPage() {
         right: t("close"),
       }}
     >
-      <div className="px-2.5 pt-20 lg:relative lg:min-h-screen lg:px-32 lg:py-24">
+      <div className="px-2.5 py-20 lg:relative lg:min-h-screen lg:px-32 lg:py-24">
         <Suspense fallback={<CheckoutFormSkeleton />}>
           <CheckoutFormWrapper initialAccount={account} />
         </Suspense>
