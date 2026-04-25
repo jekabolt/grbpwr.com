@@ -22,13 +22,8 @@ import { useLocation } from "./useLocation";
 import { useSearchCountries } from "./useSearchCountries";
 
 export function MobileCountriesPopup() {
-  const {
-    isOpen,
-    currentCountry,
-    languageId,
-    openCountryPopup,
-    closeCountryPopup,
-  } = useTranslationsStore((state) => state);
+  const { isOpen, currentCountry, languageId, closeCountryPopup } =
+    useTranslationsStore((state) => state);
   const { query, filteredCountries, searchQuery, handleSearch } =
     useSearchCountries();
 
@@ -46,7 +41,6 @@ export function MobileCountriesPopup() {
   });
 
   const t = useTranslations("countries-popup");
-  const f = useTranslations("footer");
 
   function toggleSection(index: number) {
     setOpenSection((prev) => (prev === index ? null : index));
@@ -54,22 +48,12 @@ export function MobileCountriesPopup() {
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCountryPopup}>
-      <Button
-        onClick={openCountryPopup}
-        className="flex w-full items-center justify-between uppercase lg:hidden"
-      >
-        <Text>{f("country")}:</Text>
-        <Text>
-          {currentCountry.name} /{" "}
-          {currencySymbols[currentCountry.currencyKey || "EUR"]}
-        </Text>
-      </Button>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
         <ModalTransition
           isOpen={open}
           contentSlideFrom="top"
-          contentClassName="fixed inset-x-2 bottom-2 top-2 z-50 overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden"
+          contentClassName="fixed inset-x-2 bottom-2 top-2 z-[70] overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden"
           content={
             <DialogPrimitives.Content className="flex h-full flex-col overflow-y-auto">
               <div className="flex items-center justify-between bg-bgColor pb-8">
@@ -177,5 +161,25 @@ export function MobileCountriesPopup() {
         />
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
+  );
+}
+
+export function MobileCountriesPopupTrigger() {
+  const { currentCountry, openCountryPopup } = useTranslationsStore(
+    (state) => state,
+  );
+  const f = useTranslations("footer");
+
+  return (
+    <Button
+      onClick={openCountryPopup}
+      className="flex w-full items-center justify-between uppercase lg:hidden"
+    >
+      <Text>{f("country")}:</Text>
+      <Text>
+        {currentCountry.name} /{" "}
+        {currencySymbols[currentCountry.currencyKey || "EUR"]}
+      </Text>
+    </Button>
   );
 }

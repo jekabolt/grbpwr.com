@@ -8,8 +8,8 @@ export default async function AccountPage() {
   const account = await getStorefrontAccount();
 
   return (
-    <FlexibleLayout displayFooter={!!account}>
-      <div className="flex h-dvh items-center justify-center overflow-hidden lg:h-screen">
+    <FlexibleLayout>
+      <div className="flex h-screen items-center justify-center">
         {account ? (
           <AccountSignedInSection account={account} />
         ) : (

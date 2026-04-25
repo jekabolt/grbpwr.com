@@ -15,9 +15,9 @@ import { WhiteLogo } from "@/components/ui/icons/white-logo";
 import { Logo } from "@/components/ui/logo";
 import { Text } from "@/components/ui/text";
 
-import { CountriesPopup } from "./CountriesPopup";
 import { FooterNavMobile } from "./footer-nav-mobile";
 import HelpPopover from "./help-popover";
+import { MobileCountriesPopupTrigger } from "./mobile-countries-popup";
 import NewslatterForm from "./newslatter-form";
 
 function LiveClock() {
@@ -110,7 +110,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
             {t("country")}: {currentCountry.name} /{" "}
             {currencySymbols[currentCountry.currencyKey || "EUR"]}
           </Button>
-          <CountriesPopup />
+          <MobileCountriesPopupTrigger />
         </div>
       </div>
     </footer>

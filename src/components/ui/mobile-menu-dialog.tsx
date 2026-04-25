@@ -9,7 +9,7 @@ import {
   getCategoryDisplayName,
   getHeroNavLink,
 } from "@/lib/utils";
-import { CountriesPopup } from "@/app/[locale]/_components/CountriesPopup";
+import { MobileCountriesPopupTrigger } from "@/app/[locale]/_components/mobile-countries-popup";
 import NewslatterForm from "@/app/[locale]/_components/newslatter-form";
 
 import { useDataContext } from "../contexts/DataContext";
@@ -70,7 +70,7 @@ export function DefaultMobileMenuDialog({
           ))}
         </div>
         <div className="self-start">
-          <CountriesPopup />
+          <MobileCountriesPopupTrigger />
         </div>
       </div>
       <NewslatterForm />
