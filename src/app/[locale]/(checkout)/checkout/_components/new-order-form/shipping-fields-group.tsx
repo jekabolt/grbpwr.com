@@ -46,6 +46,20 @@ type Props = {
   onToggle: () => void;
 };
 
+const SHIPPING_ADDRESS_REQUIRED_FIELDS = [
+  "firstName",
+  "lastName",
+  "country",
+  "city",
+  "address",
+  "postalCode",
+  "phone",
+];
+
+function hasValue(value: unknown) {
+  return String(value ?? "").trim().length > 0;
+}
+
 export default function ShippingFieldsGroup({
   loading,
   isOpen,
@@ -65,6 +79,8 @@ export default function ShippingFieldsGroup({
     currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
   const selectedCountry = watch("country");
   const selectedShipmentCarrierId = watch("shipmentCarrierId");
+  const shippingAddressValues = watch(SHIPPING_ADDRESS_REQUIRED_FIELDS);
+  const hasFilledAddress = shippingAddressValues.every(hasValue);
   const region = getShippingRegionForCountry(selectedCountry || "");
 
   const eligibleCarriers = useMemo(
@@ -84,11 +100,13 @@ export default function ShippingFieldsGroup({
   useEffect(() => {
     if (
       selectedShipmentCarrierId &&
-      !eligibleCarrierIds.includes(selectedShipmentCarrierId)
+      (!hasFilledAddress ||
+        !eligibleCarrierIds.includes(selectedShipmentCarrierId))
     ) {
       setValue("shipmentCarrierId", "");
     }
   }, [
+    hasFilledAddress,
     selectedCountry,
     selectedShipmentCarrierId,
     eligibleCarrierIds,
@@ -177,59 +195,61 @@ export default function ShippingFieldsGroup({
           onAddNewAddress={handleAddNewAddress}
         />
       )}
-      <div>
-        <div className="space-y-4">
-          <Text
-            variant="uppercase"
-            className={cn("", {
-              "text-textInactiveColor": disabled || loading,
-            })}
-          >
-            {t("shipping method")}
-          </Text>
-
-          {eligibleCarriers.length === 0 ? (
-            <Text variant="inactive">
-              {region
-                ? t("no shipping options for location")
-                : t("select country to see shipping options")}
-            </Text>
-          ) : (
-            <RadioGroupField
-              view="card"
-              loading={loading}
-              name="shipmentCarrierId"
-              onChange={handleShippingCarrierChange}
-              disabled={disabled}
-              // @ts-ignore
-              items={eligibleCarriers.map((c) => {
-                const carrierName = c.shipmentCarrier?.carrier || "";
-                const eta = c.shipmentCarrier?.expectedDeliveryTime;
-                const displayCarrierName =
-                  carrierName === "FREE" ? t("FREE") : carrierName;
-                const price = getCarrierPriceForCurrency(c, currency);
-                const symbol = currencySymbols[currency] || currency;
-                const formattedPrice = price
-                  ? formatPrice(Number(price), currency, symbol)
-                  : "";
-                const label =
-                  eta && eta !== "-"
-                    ? `${displayCarrierName} (${eta} ${t("business days")})`
-                    : displayCarrierName;
-                const promoFreeShipping = !!order?.promo?.freeShipping;
-                const orderFreeShipping = !!order?.freeShipping;
-                const freeShipping = promoFreeShipping || orderFreeShipping;
-                return {
-                  label,
-                  value: c.id + "" || "",
-                  priceLabel: formattedPrice || undefined,
-                  priceLabelStrikethrough: freeShipping && !!formattedPrice,
-                };
+      {hasFilledAddress && (
+        <div>
+          <div className="space-y-4">
+            <Text
+              variant="uppercase"
+              className={cn("", {
+                "text-textInactiveColor": disabled || loading,
               })}
-            />
-          )}
+            >
+              {t("shipping method")}
+            </Text>
+
+            {eligibleCarriers.length === 0 ? (
+              <Text variant="inactive">
+                {region
+                  ? t("no shipping options for location")
+                  : t("select country to see shipping options")}
+              </Text>
+            ) : (
+              <RadioGroupField
+                view="card"
+                loading={loading}
+                name="shipmentCarrierId"
+                onChange={handleShippingCarrierChange}
+                disabled={disabled}
+                // @ts-ignore
+                items={eligibleCarriers.map((c) => {
+                  const carrierName = c.shipmentCarrier?.carrier || "";
+                  const eta = c.shipmentCarrier?.expectedDeliveryTime;
+                  const displayCarrierName =
+                    carrierName === "FREE" ? t("FREE") : carrierName;
+                  const price = getCarrierPriceForCurrency(c, currency);
+                  const symbol = currencySymbols[currency] || currency;
+                  const formattedPrice = price
+                    ? formatPrice(Number(price), currency, symbol)
+                    : "";
+                  const label =
+                    eta && eta !== "-"
+                      ? `${displayCarrierName} (${eta} ${t("business days")})`
+                      : displayCarrierName;
+                  const promoFreeShipping = !!order?.promo?.freeShipping;
+                  const orderFreeShipping = !!order?.freeShipping;
+                  const freeShipping = promoFreeShipping || orderFreeShipping;
+                  return {
+                    label,
+                    value: c.id + "" || "",
+                    priceLabel: formattedPrice || undefined,
+                    priceLabelStrikethrough: freeShipping && !!formattedPrice,
+                  };
+                })}
+              />
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </FieldsGroupContainer>
   );
 }
