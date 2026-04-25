@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { getTopCategoryName } from "@/lib/categories-map";
@@ -16,7 +15,6 @@ import NewslatterForm from "@/app/[locale]/_components/newslatter-form";
 
 import { useDataContext } from "../contexts/DataContext";
 import { AnimatedButton } from "./animated-button";
-import { Button } from "./button";
 import Image from "./image";
 import { Text } from "./text";
 
@@ -79,9 +77,13 @@ export function DefaultMobileMenuDialog({
           ))}
         </div>
         <div>
-          <Button asChild>
-            <Link href="/account">{accountText}</Link>
-          </Button>
+          <AnimatedButton
+            animationDuration={1000}
+            animationArea="text"
+            href="/account"
+          >
+            {accountText}
+          </AnimatedButton>
         </div>
         <div className="self-start">
           <MobileCountriesPopupTrigger />
