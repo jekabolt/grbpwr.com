@@ -1,6 +1,6 @@
 "use client";
 
-import type { ChangeEvent } from "react";
+import { useEffect, type ChangeEvent } from "react";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
@@ -13,12 +13,16 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 import { UserLocationTrigger } from "../_components/user-location";
 import { useAccountLogin } from "../utils/use-account-login";
 
+export type AccountLoginStep = "email" | "code";
+
 export function AccountLoginForm({
   isCheckout = false,
   onCheckoutAsGuest,
+  onStepChange,
 }: {
   isCheckout?: boolean;
   onCheckoutAsGuest?: () => void;
+  onStepChange?: (step: AccountLoginStep) => void;
 }) {
   const {
     email,
@@ -36,6 +40,10 @@ export function AccountLoginForm({
     resendCode,
     verifyCode,
   } = useAccountLogin();
+
+  useEffect(() => {
+    onStepChange?.(step);
+  }, [onStepChange, step]);
 
   return (
     <>

@@ -18,7 +18,10 @@ import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
 import { AccountSignedInSection } from "@/app/[locale]/account/account-signed-in-section";
-import { AccountLoginForm } from "@/app/[locale]/account/authorization/account-login-form";
+import {
+  AccountLoginForm,
+  type AccountLoginStep,
+} from "@/app/[locale]/account/authorization/account-login-form";
 import { accountNeedsNameCompletion } from "@/app/[locale]/account/utils/utility";
 
 import ContactFieldsGroup from "./contact-fields-group";
@@ -50,6 +53,8 @@ export default function NewOrderForm({
   const { products, totalPrice, validatedCurrency } = useCart((s) => s);
   const { isSignedIn } = useAccountOnboardingStore((s) => s);
   const [guestCheckout, setGuestCheckout] = useState(false);
+  const [checkoutLoginStep, setCheckoutLoginStep] =
+    useState<AccountLoginStep>("email");
   const [checkoutProfileCompleted, setCheckoutProfileCompleted] =
     useState(false);
 
@@ -140,6 +145,7 @@ export default function NewOrderForm({
   });
 
   const showCheckoutFields = isSignedIn || guestCheckout;
+  const hideOrderSummary = !showCheckoutFields && checkoutLoginStep === "code";
   const showProfilePrompt =
     isSignedIn &&
     !!initialAccount &&
@@ -169,23 +175,26 @@ export default function NewOrderForm({
           className="relative h-full space-y-14 lg:space-y-0"
         >
           <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
-            <div
-              className={cn("block lg:hidden", {
-                "fixed inset-x-2.5 bottom-6": !showCheckoutFields,
-              })}
-            >
-              <MobileOrderSummary
-                form={form}
-                order={order}
-                validatedProducts={order?.validItems}
-                orderCurrency={orderCurrency}
-                disabled={loading}
-              />
-            </div>
+            {!hideOrderSummary && (
+              <div
+                className={cn("block lg:hidden", {
+                  "fixed inset-x-2.5 bottom-6": !showCheckoutFields,
+                })}
+              >
+                <MobileOrderSummary
+                  form={form}
+                  order={order}
+                  validatedProducts={order?.validItems}
+                  orderCurrency={orderCurrency}
+                  disabled={loading}
+                />
+              </div>
+            )}
             {!showCheckoutFields ? (
               <div className="pt-24 lg:pt-10">
                 <AccountLoginForm
                   isCheckout
+                  onStepChange={setCheckoutLoginStep}
                   onCheckoutAsGuest={() => setGuestCheckout(true)}
                 />
               </div>
