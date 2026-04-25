@@ -24,7 +24,9 @@ export function EmailPreferences() {
   return (
     <>
       <div className="flex w-full flex-col gap-8">
-        <Text variant="uppercase">email preferences</Text>
+        <Text variant="uppercase" className="hidden lg:block">
+          email preferences
+        </Text>
         <div className="flex flex-col gap-10">
           {EMAIL_REFERENCE_STEPS.map((step) => (
             <EmailPreferenceStepRow

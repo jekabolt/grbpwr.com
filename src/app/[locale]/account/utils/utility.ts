@@ -17,12 +17,12 @@ export type ActivePanel =
 
 export const ACCOUNT_SECTIONS = [
     {
-        label: "personal info",
-        value: "personal",
-    },
-    {
         label: "order & returns",
         value: "order&returns",
+    },
+    {
+        label: "personal info",
+        value: "personal",
     },
     {
         label: "addresses",

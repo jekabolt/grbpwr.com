@@ -42,7 +42,7 @@ export function AccountSessionPanel({ account }: Props) {
   const activePanel: ActivePanel =
     rawPanel && ACCOUNT_PANEL_VALUES.has(rawPanel as ActivePanel)
       ? (rawPanel as ActivePanel)
-      : "personal";
+      : "order&returns";
 
   const selectedCountryCode =
     account.defaultCountry?.trim() ||
@@ -77,11 +77,21 @@ export function AccountSessionPanel({ account }: Props) {
   return (
     <div className="grid h-full w-full grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-0 lg:overflow-y-auto">
       <div className="flex flex-col gap-12">
-        <div className="space-y-2">
-          <Text>
-            {account.firstName} {account.lastName}
-          </Text>
-          <Text variant="inactive">{account.email}</Text>
+        <div className="flex items-start justify-between">
+          <div className="space-y-2">
+            <Text variant="uppercase">
+              {account.firstName} {account.lastName}
+            </Text>
+            <Text variant="inactive">{account.email}</Text>
+          </div>
+          <Button
+            type="button"
+            variant="underline"
+            className="block self-start uppercase leading-none hover:text-textColor lg:hidden"
+            onClick={logout}
+          >
+            log out
+          </Button>
         </div>
         <div className="space-y-3">
           {ACCOUNT_SECTIONS.map((section) => (
@@ -98,13 +108,13 @@ export function AccountSessionPanel({ account }: Props) {
         </div>
         <Button
           type="button"
-          className="self-start uppercase text-textInactiveColor hover:text-textColor"
+          className="hidden self-start uppercase text-textInactiveColor hover:text-textColor lg:block"
           onClick={logout}
         >
           log out
         </Button>
       </div>
-      <div className="w-full">
+      <div className="w-full pb-24 lg:pb-0">
         <Form {...form}>
           <ActiveAccountSection
             activePanel={activePanel}

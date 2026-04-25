@@ -32,9 +32,11 @@ export function PersonalInfo({
     <>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-full flex-col gap-14"
+        className="relative flex w-full flex-col gap-14"
       >
-        <Text variant="uppercase">personal info</Text>
+        <Text variant="uppercase" className="hidden lg:block">
+          personal info
+        </Text>
         <AccountPersonalInfoFields
           twoColumn
           disabled={pending}
@@ -44,7 +46,7 @@ export function PersonalInfo({
           type="submit"
           variant="main"
           size="lg"
-          className="uppercase"
+          className="fixed inset-x-2.5 bottom-6 uppercase lg:static"
           loading={pending}
           disabled={pending}
         >

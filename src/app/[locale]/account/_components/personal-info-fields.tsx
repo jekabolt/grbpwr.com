@@ -56,6 +56,7 @@ export function AccountPersonalInfoFields({
         name="birthDate"
         label="date of birth"
         type="date"
+        className="text-left"
         variant="secondary"
         disabled={disabled}
       />

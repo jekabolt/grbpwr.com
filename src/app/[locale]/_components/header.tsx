@@ -94,18 +94,25 @@ export function Header({
             asChild
             size="lg"
             className={cn(
-              "w-1/3 text-center transition-colors hover:opacity-70 active:opacity-50 lg:w-auto",
+              "absolute left-1/2 -translate-x-1/2 text-center transition-colors hover:opacity-70 active:opacity-50",
             )}
           >
             <Link
               href="/"
-              className="inline-flex items-center whitespace-nowrap"
+              className="inline-flex items-center whitespace-nowrap leading-none"
             >
               {isSignedIn ? (
                 <>
-                  <Text>grbpwr</Text>
+                  <Text component="span">grbpwr</Text>
                   {tierText ? (
-                    <Text className="ml-[1px]">{tierText}</Text>
+                    <Text
+                      component="span"
+                      className={cn("inline-block pl-[0.5px]", {
+                        "tracking-[0.02em]": tierText.includes("+"),
+                      })}
+                    >
+                      {tierText}
+                    </Text>
                   ) : null}
                 </>
               ) : (

@@ -60,7 +60,9 @@ export function AddressesSection({
       {!isCheckout && (
         <Text
           variant="uppercase"
-          className={cn({ "text-textInactiveColor": isDisabled })}
+          className={cn("hidden lg:block", {
+            "text-textInactiveColor": isDisabled,
+          })}
         >
           {editingId !== null ? "edit shipping address" : "addresses"}
         </Text>
