@@ -43,6 +43,8 @@ export function Header({
   const tAccount = useTranslations("account");
   const isWebsiteEnabled = dictionary?.siteEnabled;
   const userTier = account?.accountTier ? USER_TIER[account.accountTier] : "";
+  const isHacker = account?.accountTier === "ACCOUNT_TIER_ENUM_HACKER";
+  const tierText = isHacker ? "grbpwr hacker" : `grbpwr${userTier}`;
 
   return (
     <>
@@ -94,7 +96,7 @@ export function Header({
               "w-1/3 text-center transition-colors hover:opacity-70 active:opacity-50 lg:w-auto",
             )}
           >
-            <Link href="/">{isSignedIn ? `grbpwr${userTier}` : "grbpwr"}</Link>
+            <Link href="/">{isSignedIn ? `${tierText}` : "grbpwr"}</Link>
           </Button>
         )}
 

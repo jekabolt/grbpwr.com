@@ -39,7 +39,7 @@ export function AccountLoginForm({
 
   return (
     <>
-      <div className={cn("flex h-full w-full items-center gap-6 lg:max-w-sm")}>
+      <div className="flex h-full w-full items-center gap-6 lg:w-[400px]">
         {step === "email" ? (
           <EmailStep
             email={email}
@@ -165,36 +165,39 @@ function CodeStep({
   onResend: () => void;
 }) {
   const t = useTranslations("account");
+
   return (
-    <div className="flex w-full flex-col items-center gap-10">
-      <div className="space-y-16">
+    <div className="flex w-full items-center justify-center">
+      <div className="flex flex-col items-center gap-16">
         <Text variant="uppercase" className="text-center">
           {t("enter your verification code")}
         </Text>
-        <OtpInput
-          id="login-code"
-          value={code}
-          onChange={onCodeChange}
-          onComplete={onCodeComplete}
-          disabled={pending}
-        />
-      </div>
-      <div className="w-full space-y-5 text-center lg:w-auto">
-        <Button
-          type="button"
-          variant="main"
-          size="lg"
-          className="w-full uppercase"
-          disabled={pending || resendSeconds > 0}
-          onClick={onResend}
-        >
-          {resendSeconds > 0
-            ? `${t("resend code in")} ${resendSeconds}`
-            : `${t("resend code")}`}
-        </Button>
-        <Text variant="uppercase">
-          {t("or sign in via the link sent to your email")}
-        </Text>
+        <div className="space-y-10">
+          <OtpInput
+            id="login-code"
+            value={code}
+            onChange={onCodeChange}
+            onComplete={onCodeComplete}
+            disabled={pending}
+          />
+          <div className="w-full space-y-5 text-center">
+            <Button
+              type="button"
+              variant="main"
+              size="lg"
+              className="w-full uppercase"
+              disabled={pending || resendSeconds > 0}
+              onClick={onResend}
+            >
+              {resendSeconds > 0
+                ? `${t("resend code in")} ${resendSeconds}`
+                : `${t("resend code")}`}
+            </Button>
+            <Text variant="uppercase">
+              {t("or sign in via the link sent to your email")}
+            </Text>
+          </div>
+        </div>
       </div>
     </div>
   );
