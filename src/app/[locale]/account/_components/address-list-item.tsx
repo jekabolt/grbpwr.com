@@ -4,6 +4,7 @@ import type {
 } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
 import { Text } from "@/components/ui/text";
@@ -17,6 +18,7 @@ import {
 type AddressListItemProps = {
   address: StorefrontSavedAddress;
   account: StorefrontAccount;
+  isDisabled: boolean;
   pending: boolean;
   deletingId: number | null;
   defaultId: number | null;
@@ -28,6 +30,7 @@ type AddressListItemProps = {
 
 export function AddressListItem({
   address,
+  isDisabled,
   account,
   pending,
   deletingId,
@@ -44,14 +47,16 @@ export function AddressListItem({
     <div className="space-y-3">
       <div className="leading-none">
         <div className="flex items-center justify-between">
-          <Text>{formatAddressStreet(address)}</Text>
+          <Text className={cn({ "text-textInactiveColor": isDisabled })}>
+            {formatAddressStreet(address)}
+          </Text>
           <div className="flex items-center gap-3">
             <Button
               type="button"
               variant="underline"
               className="uppercase"
               onClick={() => onEdit(addressId)}
-              disabled={pending}
+              disabled={pending || isDisabled}
             >
               {t("edit")}
             </Button>
@@ -61,28 +66,40 @@ export function AddressListItem({
                 variant="underline"
                 className="uppercase"
                 onClick={() => onDelete(addressId)}
-                disabled={pending || deletingId === addressId}
+                disabled={pending || deletingId === addressId || isDisabled}
               >
                 {t("delete")}
               </Button>
             )}
           </div>
         </div>
-        <Text>{formatAddressLocation(address)}</Text>
-        <Text>+{account.phone}</Text>
+        <Text className={cn({ "text-textInactiveColor": isDisabled })}>
+          {formatAddressLocation(address)}
+        </Text>
+        <Text className={cn({ "text-textInactiveColor": isDisabled })}>
+          +{account.phone}
+        </Text>
       </div>
       <div className="flex items-center justify-between">
-        <Text variant="uppercase">
+        <Text
+          variant="uppercase"
+          className={cn({ "text-textInactiveColor": isDisabled })}
+        >
           {formatAddressDisplayName(address, account)}
         </Text>
         {!defaultOnly && (
           <div className="flex items-center gap-3">
-            <Text variant="uppercase">{t("default")}</Text>
+            <Text
+              variant="uppercase"
+              className={cn({ "text-textInactiveColor": isDisabled })}
+            >
+              {t("default")}
+            </Text>
             <CheckboxGlobal
               name="default"
               checked={address.isDefault}
               onCheckedChange={() => onSetDefault(addressId)}
-              disabled={pending || defaultId === addressId}
+              disabled={pending || defaultId === addressId || isDisabled}
             />
           </div>
         )}

@@ -16,12 +16,14 @@ export function AddressesSection({
   defaultOnly = false,
   refreshKey,
   isCheckout,
+  isDisabled,
   onEditModeChange,
 }: {
   account: StorefrontAccount;
   defaultOnly?: boolean;
   refreshKey?: number;
   isCheckout?: boolean;
+  isDisabled?: boolean;
   onEditModeChange?: (isEditing: boolean) => void;
 }) {
   const {
@@ -56,7 +58,10 @@ export function AddressesSection({
       })}
     >
       {!isCheckout && (
-        <Text variant="uppercase">
+        <Text
+          variant="uppercase"
+          className={cn({ "text-textInactiveColor": isDisabled })}
+        >
           {editingId !== null ? "edit shipping address" : "addresses"}
         </Text>
       )}
@@ -79,6 +84,7 @@ export function AddressesSection({
                 <AddressListItem
                   address={address}
                   account={account}
+                  isDisabled={isDisabled ?? false}
                   pending={pending}
                   deletingId={deletingId}
                   defaultId={defaultId}

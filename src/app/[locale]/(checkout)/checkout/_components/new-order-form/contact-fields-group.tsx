@@ -11,6 +11,7 @@ import {
 } from "@/lib/analitycs/form";
 import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import InputField from "@/components/ui/form/fields/input-field";
 import { Text } from "@/components/ui/text";
@@ -67,7 +68,9 @@ export default function ContactFieldsGroup({
       disabled={disabled}
     >
       {isSignedIn ? (
-        <Text>{initialAccountEmail}</Text>
+        <Text className={cn({ "text-textInactiveColor": disabled })}>
+          {initialAccountEmail}
+        </Text>
       ) : (
         <>
           <InputField

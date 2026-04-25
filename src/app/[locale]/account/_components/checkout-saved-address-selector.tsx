@@ -63,6 +63,7 @@ export function CheckoutSavedAddressSelector({
         defaultOnly={defaultOnly}
         refreshKey={refreshKey}
         isCheckout={isCheckout}
+        isDisabled={disabled || loading}
         onEditModeChange={setIsAddressEditing}
       />
       {!isAddressEditing && (
