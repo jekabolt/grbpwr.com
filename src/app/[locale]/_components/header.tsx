@@ -99,7 +99,7 @@ export function Header({
           >
             <Link
               href="/"
-              className="inline-flex items-center whitespace-nowrap [font-variant-ligatures:none]"
+              className="inline-flex items-center whitespace-nowrap"
             >
               {isSignedIn ? (
                 <>

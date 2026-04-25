@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { requestAccountLoginCode, verifyAccountLoginCode } from "../authorization/api";
 
-const RESEND_TIMEOUT_SECONDS = 30;
+const RESEND_TIMEOUT_SECONDS = 60;
 type LoginStep = "email" | "code";
 
 

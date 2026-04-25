@@ -146,6 +146,8 @@ export default function NewOrderForm({
 
   const showCheckoutFields = isSignedIn || guestCheckout;
   const hideOrderSummary = !showCheckoutFields && checkoutLoginStep === "code";
+  const showMobileOrderSummaryOverlay =
+    !showCheckoutFields && checkoutLoginStep === "email";
   const showProfilePrompt =
     isSignedIn &&
     !!initialAccount &&
@@ -187,7 +189,7 @@ export default function NewOrderForm({
                   validatedProducts={order?.validItems}
                   orderCurrency={orderCurrency}
                   disabled={loading}
-                  overlay={!hideOrderSummary}
+                  overlay={showMobileOrderSummaryOverlay}
                 />
               </div>
             )}

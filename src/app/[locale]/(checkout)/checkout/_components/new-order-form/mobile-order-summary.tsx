@@ -58,7 +58,7 @@ export function MobileOrderSummary({
         cover="screen"
         trigger="active"
         color="dark"
-        active={overlay && !!isOpen}
+        active={overlay && isOpen}
         onClick={handleToggle}
       />
       <FieldsGroupContainer
