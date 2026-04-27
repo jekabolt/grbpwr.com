@@ -17,7 +17,7 @@
     "email": "email",
     "continue": "continua",
     "checkout as guest": "checkout come ospite",
-    "enter your verification code": "inserisci il tuo codice di verifica",
+    "enter verification code from your email": "inserisci il codice di verifica ricevuto via email",
     "the code couldn’t be verified": "non è stato possibile verificare il codice",
     "resend code": "invia di nuovo il codice",
     "resend code in": "invia di nuovo il codice tra",

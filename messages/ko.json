@@ -17,7 +17,7 @@
     "email": "이메일",
     "continue": "계속",
     "checkout as guest": "게스트로 결제",
-    "enter your verification code": "인증 코드를 입력하세요",
+    "enter verification code from your email": "이메일로 받은 인증 코드를 입력하세요",
     "the code couldn’t be verified": "코드를 확인할 수 없었습니다",
     "resend code": "코드 다시 보내기",
     "resend code in": "코드 재전송까지",
