@@ -19,7 +19,7 @@ export function useSavedAddressFormSync({
   defaultAddress,
   onDefaultChange,
 }: Params) {
-  const { watch, setValue, getValues } = useFormContext();
+  const { watch, setValue } = useFormContext();
   const savedAddressId = watch("savedAddressId") as string | undefined;
   const appliedSavedAddressRef = useRef(false);
 
@@ -68,39 +68,19 @@ export function useSavedAddressFormSync({
     if (appliedSavedAddressRef.current) return;
     if (!defaultAddress?.id) return;
 
-    const currentAddress = getValues("address")?.trim() ?? "";
-    const currentPostalCode = getValues("postalCode")?.trim() ?? "";
-    const hasShippingAddressValues = !!currentAddress || !!currentPostalCode;
-    const hasSavedAddressSelection = !!savedAddressId?.trim();
+    const selected = savedAddressId?.trim()
+      ? addresses.find((address) => String(address.id ?? "") === savedAddressId)
+      : defaultAddress;
 
-    if (hasShippingAddressValues) {
-      if (!hasSavedAddressSelection) {
-        setValue("savedAddressId", String(defaultAddress.id), {
-          shouldValidate: false,
-        });
-      }
-      appliedSavedAddressRef.current = true;
-      return;
-    }
-
-    if (!hasSavedAddressSelection || savedAddressId === "") {
-      applySavedAddressToForm(defaultAddress);
-    } else {
-      const selected = addresses.find(
-        (address) => String(address.id ?? "") === savedAddressId,
-      );
-      if (selected) applySavedAddressToForm(selected);
-    }
+    applySavedAddressToForm(selected ?? defaultAddress);
 
     appliedSavedAddressRef.current = true;
   }, [
     addresses,
     applySavedAddressToForm,
     defaultAddress,
-    getValues,
     isSignedIn,
     savedAddressId,
-    setValue,
   ]);
 
   const handleSavedAddressChange = useCallback(

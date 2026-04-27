@@ -8,17 +8,29 @@ import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 
+import type { AccountProfile } from "@/lib/stores/account-onboarding/store-types";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
+import { CheckoutFormSkeleton } from "./checkout-skeleton";
 import NewOrderForm from "./new-order-form";
 import { useStripeRedirect } from "./new-order-form/hooks/useStripeRedirect";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
+
+function toAccountProfile(account: StorefrontAccount): AccountProfile {
+  return {
+    firstName: account.firstName?.trim() ?? "",
+    lastName: account.lastName?.trim() ?? "",
+    email: account.email?.trim() ?? "",
+    accountTier: account.accountTier,
+  };
+}
 
 interface ExtendedAppearance extends Appearance {
   fonts?: { cssSrc: string }[];
@@ -31,9 +43,13 @@ export function CheckoutFormWrapper({
 }) {
   const router = useRouter();
   const products = useCart((s) => s.products);
+  const setSignedIn = useAccountOnboardingStore((s) => s.setSignedIn);
+  const setAccount = useAccountOnboardingStore((s) => s.setAccount);
   const { dictionary } = useDataContext();
   const { currentCountry, languageId } = useTranslationsStore((state) => state);
   const tToaster = useTranslations("toaster");
+  const [sessionAccount, setSessionAccount] = useState(initialAccount);
+  const [resolvingSession, setResolvingSession] = useState(!initialAccount);
 
   const { toastOpen, toastMessage, setToastOpen } = useStripeRedirect({
     paymentFailedMessage: tToaster("payment_failed"),
@@ -54,6 +70,63 @@ export function CheckoutFormWrapper({
     return () => clearTimeout(t);
   }, [products.length, languageId, currentCountry.countryCode, router]);
 
+  useEffect(() => {
+    let active = true;
+
+    if (initialAccount) {
+      setSessionAccount(initialAccount);
+      setSignedIn(true);
+      setAccount(toAccountProfile(initialAccount));
+      setResolvingSession(false);
+      return;
+    }
+
+    setResolvingSession(true);
+
+    async function resolveSession() {
+      try {
+        const response = await fetch("/api/account/me", {
+          headers: { Accept: "application/json" },
+        });
+        if (!active) return;
+
+        if (!response.ok) {
+          setSessionAccount(null);
+          setSignedIn(false);
+          setAccount(null);
+          return;
+        }
+
+        const payload = (await response.json()) as {
+          account?: StorefrontAccount | null;
+        };
+        if (!payload.account) {
+          setSessionAccount(null);
+          setSignedIn(false);
+          setAccount(null);
+          return;
+        }
+
+        setSessionAccount(payload.account);
+        setSignedIn(true);
+        setAccount(toAccountProfile(payload.account));
+      } catch {
+        if (!active) return;
+        setSessionAccount(null);
+        setSignedIn(false);
+        setAccount(null);
+      } finally {
+        if (active) setResolvingSession(false);
+      }
+    }
+
+    void resolveSession();
+
+    return () => {
+      active = false;
+    };
+  }, [initialAccount, setAccount, setSignedIn]);
+
   const currency =
     currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
   const [orderAmount, setOrderAmount] = useState<number>(1000);
@@ -61,6 +134,10 @@ export function CheckoutFormWrapper({
   const handleAmountChange = (amount: number) => {
     setOrderAmount(amount);
   };
+
+  if (resolvingSession) {
+    return <CheckoutFormSkeleton />;
+  }
 
   const appearance: ExtendedAppearance = {
     theme: "stripe",
@@ -126,7 +203,7 @@ export function CheckoutFormWrapper({
       >
         <NewOrderForm
           onAmountChange={handleAmountChange}
-          initialAccount={initialAccount}
+          initialAccount={sessionAccount}
         />
       </Elements>
       <SubmissionToaster
