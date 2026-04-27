@@ -25,6 +25,7 @@ export async function requestAccountLoginCode(email: string): Promise<ApiResult>
 export async function verifyAccountLoginCode(
   email: string,
   code: string,
+  fallbackMessage = "the code couldn’t be verified",
 ): Promise<ApiResult> {
   const response = await fetch("/api/account/login/verify-code", {
     method: "POST",
@@ -35,7 +36,7 @@ export async function verifyAccountLoginCode(
   if (!response.ok) {
     return {
       ok: false,
-      error: await parseApiError(response, "failed to verify code"),
+      error: await parseApiError(response, fallbackMessage),
     };
   }
 

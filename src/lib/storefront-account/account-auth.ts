@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 import { serviceClient } from "@/lib/api";
 import type { RefreshAccountSessionResponse } from "@/api/proto-http/frontend";
 
-
 import { jsonWithSessionCookies } from "./account-response-builders";
 import { createAccountServiceClient } from "./authed-client";
 import {
@@ -12,6 +11,68 @@ import {
   REFRESH_COOKIE,
   clearSessionCookies,
 } from "./session-cookies";
+
+type RefreshFlight = {
+  promise: Promise<RefreshAccountSessionResponse>;
+  result: RefreshAccountSessionResponse | null;
+  resultExpiresAt: number;
+};
+
+const REFRESH_RESULT_REUSE_MS = 10_000;
+
+const refreshFlights =
+  ((globalThis as typeof globalThis & {
+    __accountRefreshFlights?: Map<string, RefreshFlight>;
+  }).__accountRefreshFlights ??= new Map<string, RefreshFlight>());
+
+function pruneExpiredRefreshFlights(now: number) {
+  for (const [token, flight] of refreshFlights) {
+    if (flight.result && flight.resultExpiresAt <= now) {
+      refreshFlights.delete(token);
+    }
+  }
+}
+
+/**
+ * Refresh tokens rotate on every successful backend call. Coalesce concurrent
+ * requests with the same old refresh token so only one backend refresh burns it.
+ */
+export async function refreshAccountSession(
+  refreshToken: string,
+): Promise<RefreshAccountSessionResponse> {
+  const now = Date.now();
+  pruneExpiredRefreshFlights(now);
+
+  const existing = refreshFlights.get(refreshToken);
+  if (existing) {
+    if (existing.result && existing.resultExpiresAt > now) {
+      return existing.result;
+    }
+    if (!existing.result) {
+      return existing.promise;
+    }
+    refreshFlights.delete(refreshToken);
+  }
+
+  const flight: RefreshFlight = {
+    result: null,
+    resultExpiresAt: 0,
+    promise: serviceClient
+      .RefreshAccountSession({ refreshToken })
+      .then((session) => {
+        flight.result = session;
+        flight.resultExpiresAt = Date.now() + REFRESH_RESULT_REUSE_MS;
+        return session;
+      })
+      .catch((error) => {
+        refreshFlights.delete(refreshToken);
+        throw error;
+      }),
+  };
+
+  refreshFlights.set(refreshToken, flight);
+  return flight.promise;
+}
 
 export async function requestAccountLoginEmail(email: string): Promise<void> {
   if (!email.trim()) {
@@ -47,7 +108,7 @@ export async function refreshAccountSessionResponse(): Promise<NextResponse> {
   }
 
   try {
-    const session = await serviceClient.RefreshAccountSession({ refreshToken: refresh });
+    const session = await refreshAccountSession(refresh);
     return jsonWithSessionCookies({}, session);
   } catch {
     const res = NextResponse.json({ error: "failed to refresh session" }, { status: 401 });
@@ -69,7 +130,7 @@ export async function tryRefreshAccountSessionFromCookies(): Promise<RefreshAcco
   if (!refresh) return null;
 
   try {
-    return await serviceClient.RefreshAccountSession({ refreshToken: refresh });
+    return await refreshAccountSession(refresh);
   } catch {
     return null;
   }

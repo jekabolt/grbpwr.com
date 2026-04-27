@@ -18,6 +18,7 @@
     "continue": "続行",
     "checkout as guest": "ゲストとして購入",
     "enter your verification code": "認証コードを入力してください",
+    "the code couldn’t be verified": "コードを確認できませんでした",
     "resend code": "コードを再送信",
     "resend code in": "コード再送まで",
     "or sign in via the link sent to your email": "またはメールに送信されたリンクからサインイン",

@@ -18,6 +18,7 @@
     "continue": "continuer",
     "checkout as guest": "payer en tant qu'invité",
     "enter your verification code": "saisissez votre code de vérification",
+    "the code couldn’t be verified": "le code n’a pas pu être vérifié",
     "resend code": "renvoyer le code",
     "resend code in": "renvoyer le code dans",
     "or sign in via the link sent to your email": "ou connectez-vous via le lien envoyé à votre e-mail",

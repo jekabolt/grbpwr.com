@@ -18,6 +18,7 @@
     "continue": "继续",
     "checkout as guest": "以访客身份结账",
     "enter your verification code": "请输入验证码",
+    "the code couldn’t be verified": "无法验证该验证码",
     "resend code": "重新发送验证码",
     "resend code in": "重新发送倒计时",
     "or sign in via the link sent to your email": "或通过发送到您邮箱的链接登录",

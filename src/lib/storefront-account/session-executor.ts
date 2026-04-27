@@ -4,7 +4,7 @@ import type { RefreshAccountSessionResponse } from "@/api/proto-http/frontend";
 
 import { createAccountServiceClient } from "./authed-client";
 import { isUnauthorizedError, tryRefreshAccountSessionFromCookies } from "./account-auth";
-import { ACCESS_COOKIE } from "./session-cookies";
+import { ACCESS_COOKIE, REFRESH_COOKIE } from "./session-cookies";
 
 export type AccountServiceClient = ReturnType<typeof createAccountServiceClient>;
 
@@ -20,7 +20,7 @@ export type AccountSessionOk<T> = {
 
 export type AccountSessionFail = {
   ok: false;
-  /** No access cookie */
+  /** No usable account session cookies */
   reason: "no_access";
 } | {
   ok: false;
@@ -40,27 +40,39 @@ export async function executeWithAccountSession<T>(
 ): Promise<AccountSessionResult<T>> {
   const store = await cookies();
   const access = store.get(ACCESS_COOKIE)?.value;
-  if (!access) {
+  const refresh = store.get(REFRESH_COOKIE)?.value;
+  if (!access && !refresh) {
     return { ok: false, reason: "no_access" };
   }
 
   let currentAccess = access;
+  let refreshed: RefreshAccountSessionResponse | null = null;
+
+  async function refreshSession(): Promise<boolean> {
+    refreshed = await tryRefreshAccountSessionFromCookies();
+    if (!refreshed?.accessToken) return false;
+    currentAccess = refreshed.accessToken;
+    return true;
+  }
+
+  if (!currentAccess && !(await refreshSession())) {
+    return { ok: false, reason: "refresh_failed" };
+  }
+
   let client = createAccountServiceClient(() => currentAccess);
 
   try {
     const data = await call(client);
-    return { ok: true, data, refreshed: null };
+    return { ok: true, data, refreshed };
   } catch (e) {
     if (!isUnauthorizedError(e)) {
       throw e;
     }
 
-    const refreshed = await tryRefreshAccountSessionFromCookies();
-    if (!refreshed?.accessToken) {
+    if (!(await refreshSession())) {
       return { ok: false, reason: "refresh_failed" };
     }
 
-    currentAccess = refreshed.accessToken;
     client = createAccountServiceClient(() => currentAccess);
     const data = await call(client);
     return { ok: true, data, refreshed };
