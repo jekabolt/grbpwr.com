@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, type ChangeEvent } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
@@ -169,8 +170,24 @@ function EmailStep({
       </div>
       <div>
         <Text variant="inactive" className="text-center uppercase">
-          By becoming a member, you agree to our Privacy Policy and Membership
-          Policy.
+          {t.rich("email_consent_notice", {
+            privacy: (chunks) => (
+              <Link
+                href="/legal-notices?section=privacy"
+                className="underline hover:no-underline"
+              >
+                {chunks}
+              </Link>
+            ),
+            membership: (chunks) => (
+              <Link
+                href="/legal-notices?section=membership"
+                className="underline hover:no-underline"
+              >
+                {chunks}
+              </Link>
+            ),
+          })}
         </Text>
       </div>
     </div>

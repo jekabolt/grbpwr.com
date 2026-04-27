@@ -51,7 +51,8 @@
     "delete": "delete",
     "default": "default",
     "you are in country: {country} / {currency}": "you are in country: {country} / {currency}",
-    "change location": "change location"
+    "change location": "change location",
+    "email_consent_notice": "by becoming a member, you agree to our <privacy>privacy policy</privacy> and <membership>membership policy</membership>."
   },
   "footer": {
     "legal notices": "legal notices",
@@ -571,7 +572,8 @@
     "return and exchange policy": "return and exchange policy",
     "cookie settings": "cookie settings",
     "frequently asked questions": "frequently asked questions",
-    "placing an order": "placing an order, order tracking, returns policy, aftersale services and sustainable development."
+    "placing an order": "placing an order, order tracking, returns policy, aftersale services and sustainable development.",
+    "membership policy": "membership policy"
   },
   "colors": {
     "black": "black",
