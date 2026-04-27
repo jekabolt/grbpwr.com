@@ -17,6 +17,7 @@
     "email": "邮箱",
     "continue": "继续",
     "checkout as guest": "以访客身份结账",
+    "or": "或",
     "enter verification code from your email": "请输入邮箱中的验证码",
     "the code couldn’t be verified": "无法验证该验证码",
     "resend code": "重新发送验证码",

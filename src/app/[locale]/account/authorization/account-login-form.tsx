@@ -154,7 +154,7 @@ function EmailStep({
         {isCheckout && (
           <>
             <Text variant="uppercase" className="text-center">
-              or
+              {t("or")}
             </Text>
             <Button
               variant="simpleReverseWithBorder"
@@ -215,7 +215,7 @@ function CodeStep({
     <div className="flex w-full items-center justify-center">
       <div className="flex w-full flex-col items-center gap-16">
         <Text variant="uppercase" className="text-center">
-          {t("enter your verification code")}
+          {t("enter verification code from your email")}
         </Text>
         <div className="w-full space-y-10">
           <OtpInput

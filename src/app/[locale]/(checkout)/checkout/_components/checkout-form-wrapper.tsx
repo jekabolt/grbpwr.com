@@ -8,7 +8,10 @@ import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 
-import type { AccountProfile } from "@/lib/stores/account-onboarding/store-types";
+import {
+  resolveAccountSession,
+  storefrontAccountToProfile,
+} from "@/lib/storefront-account/client-session";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -22,15 +25,6 @@ import { useStripeRedirect } from "./new-order-form/hooks/useStripeRedirect";
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
-
-function toAccountProfile(account: StorefrontAccount): AccountProfile {
-  return {
-    firstName: account.firstName?.trim() ?? "",
-    lastName: account.lastName?.trim() ?? "",
-    email: account.email?.trim() ?? "",
-    accountTier: account.accountTier,
-  };
-}
 
 interface ExtendedAppearance extends Appearance {
   fonts?: { cssSrc: string }[];
@@ -76,7 +70,7 @@ export function CheckoutFormWrapper({
     if (initialAccount) {
       setSessionAccount(initialAccount);
       setSignedIn(true);
-      setAccount(toAccountProfile(initialAccount));
+      setAccount(storefrontAccountToProfile(initialAccount));
       setResolvingSession(false);
       return;
     }
@@ -84,40 +78,20 @@ export function CheckoutFormWrapper({
     setResolvingSession(true);
 
     async function resolveSession() {
-      try {
-        const response = await fetch("/api/account/me", {
-          headers: { Accept: "application/json" },
-        });
-        if (!active) return;
+      const account = await resolveAccountSession();
+      if (!active) return;
 
-        if (!response.ok) {
-          setSessionAccount(null);
-          setSignedIn(false);
-          setAccount(null);
-          return;
-        }
-
-        const payload = (await response.json()) as {
-          account?: StorefrontAccount | null;
-        };
-        if (!payload.account) {
-          setSessionAccount(null);
-          setSignedIn(false);
-          setAccount(null);
-          return;
-        }
-
-        setSessionAccount(payload.account);
+      if (account) {
+        setSessionAccount(account);
         setSignedIn(true);
-        setAccount(toAccountProfile(payload.account));
-      } catch {
-        if (!active) return;
+        setAccount(storefrontAccountToProfile(account));
+      } else {
         setSessionAccount(null);
         setSignedIn(false);
         setAccount(null);
-      } finally {
-        if (active) setResolvingSession(false);
       }
+
+      setResolvingSession(false);
     }
 
     void resolveSession();

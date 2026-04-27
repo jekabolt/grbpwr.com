@@ -17,6 +17,7 @@
     "email": "email",
     "continue": "continuer",
     "checkout as guest": "payer en tant qu'invité",
+    "or": "ou",
     "enter verification code from your email": "saisissez le code de vérification reçu par e-mail",
     "the code couldn’t be verified": "le code n’a pas pu être vérifié",
     "resend code": "renvoyer le code",

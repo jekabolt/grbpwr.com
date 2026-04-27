@@ -1,7 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, useRef, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  type ReactNode,
+} from "react";
 import { useStore } from "zustand";
+
+import {
+  resolveAccountSession,
+  storefrontAccountToProfile,
+} from "@/lib/storefront-account/client-session";
 
 import {
   createAccountOnboardingStore,
@@ -14,6 +25,8 @@ export type AccountOnboardingStoreApi = ReturnType<typeof createAccountOnboardin
 const AccountOnboardingStoreContext = createContext<
   AccountOnboardingStoreApi | undefined
 >(undefined);
+
+const SESSION_RECHECK_INTERVAL_MS = 60_000;
 
 export type AccountOnboardingStoreProviderProps = CreateAccountOnboardingStoreOptions & {
   children: ReactNode;
@@ -33,6 +46,46 @@ export function AccountOnboardingStoreProvider({
     storeRef.current?.getState().setSignedIn(initialSignedIn);
     storeRef.current?.getState().setAccount(initialAccount);
   }, [initialSignedIn, initialAccount]);
+
+  useEffect(() => {
+    let active = true;
+    let lastCheckedAt = 0;
+
+    async function hydrateSession() {
+      lastCheckedAt = Date.now();
+      const account = await resolveAccountSession();
+      if (!active) return;
+
+      const state = storeRef.current?.getState();
+      if (!state) return;
+
+      if (!account) {
+        state.setSignedIn(false);
+        state.setAccount(null);
+        return;
+      }
+
+      state.setSignedIn(true);
+      state.setAccount(storefrontAccountToProfile(account));
+    }
+
+    function hydrateIfStale() {
+      if (document.visibilityState !== "visible") return;
+      if (Date.now() - lastCheckedAt < SESSION_RECHECK_INTERVAL_MS) return;
+      void hydrateSession();
+    }
+
+    void hydrateSession();
+
+    window.addEventListener("focus", hydrateIfStale);
+    document.addEventListener("visibilitychange", hydrateIfStale);
+
+    return () => {
+      active = false;
+      window.removeEventListener("focus", hydrateIfStale);
+      document.removeEventListener("visibilitychange", hydrateIfStale);
+    };
+  }, []);
 
   return (
     <AccountOnboardingStoreContext.Provider value={storeRef.current}>
