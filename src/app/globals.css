@@ -53,6 +53,10 @@
       @apply bg-acidColor text-bgColor;
     }
   }
+
+  input[type="date"]::-webkit-date-and-time-value {
+    text-align: left;
+  }
 }
 
 @layer utilities {
