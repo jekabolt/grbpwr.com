@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -33,6 +34,7 @@ type Props = {
 };
 
 export function AccountSessionPanel({ account }: Props) {
+  const t = useTranslations("account");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -102,7 +104,7 @@ export function AccountSessionPanel({ account }: Props) {
               onClick={() => togglePanel(section.value)}
               className="uppercase"
             >
-              {section.label}
+              {t(section.label)}
             </Button>
           ))}
         </div>
