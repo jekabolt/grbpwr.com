@@ -9,6 +9,7 @@ import {
 } from "@/constants";
 import { useTranslations } from "next-intl";
 
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { WhiteLogo } from "@/components/ui/icons/white-logo";
@@ -46,6 +47,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
   const t = useTranslations("footer");
 
   const { currentCountry, openCountryPopup } = useTranslationsStore((s) => s);
+  const { isSignedIn } = useAccountOnboardingStore((s) => s);
 
   return (
     <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
@@ -68,9 +70,11 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
               <WhiteLogo className="hidden aspect-square h-full w-40 lg:block" />
             )}
           </div>
-          <div className="w-full lg:w-[346px]">
-            <NewslatterForm />
-          </div>
+          {!isSignedIn && (
+            <div className="w-full lg:w-[346px]">
+              <NewslatterForm />
+            </div>
+          )}
         </div>
       </div>
       <div className="flex flex-col justify-between gap-x-24 lg:flex-row lg:items-start lg:px-7">
