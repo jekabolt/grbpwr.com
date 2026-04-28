@@ -61,8 +61,8 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
                   : "https://art.grbpwr.com"
               }
               loading="lazy"
-              className="h-40 w-40 border-0 lg:hidden"
-              title="Art"
+              className="h-56 w-56 border-0 lg:hidden"
+              title="logo"
             />
             {theme === "dark" ? (
               <Logo className="hidden aspect-square h-full w-40 lg:block" />
