@@ -355,7 +355,7 @@ export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
 
 export const keyboardRestrictions = {
   nameFields: /[A-Za-z .'-]/,
-  addressField: /[A-Za-z0-9 .','-]/,
+  addressField: /[A-Za-z0-9 .','/-]/,
   postalCodeField: /[A-Za-z0-9 \-]/,
   companyField: /[A-Za-z0-9 .'-]/,
 };

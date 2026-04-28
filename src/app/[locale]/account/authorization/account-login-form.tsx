@@ -232,7 +232,7 @@ function CodeStep({
               size="lg"
               className="w-full uppercase"
               loading={pending}
-              disabled={pending || resendSeconds > 0}
+              disabled={pending}
               onClick={onResend}
             >
               {resendSeconds > 0

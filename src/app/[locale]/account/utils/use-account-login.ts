@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 import {
   requestAccountLoginCode,
@@ -9,6 +9,8 @@ import {
 
 const RESEND_TIMEOUT_SECONDS = 60;
 const LOGIN_ATTEMPT_STORAGE_KEY = "account-login-attempt";
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 type LoginStep = "email" | "code";
 
 type StoredLoginAttempt = {
@@ -57,7 +59,7 @@ function writeStoredLoginAttempt(email: string): void {
 
   try {
     sessionStorage.setItem(LOGIN_ATTEMPT_STORAGE_KEY, JSON.stringify(attempt));
-  } catch {}
+  } catch { }
 }
 
 function clearStoredLoginAttempt(): void {
@@ -65,7 +67,7 @@ function clearStoredLoginAttempt(): void {
 
   try {
     sessionStorage.removeItem(LOGIN_ATTEMPT_STORAGE_KEY);
-  } catch {}
+  } catch { }
 }
 
 export function useAccountLogin() {
@@ -78,6 +80,8 @@ export function useAccountLogin() {
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [resendSeconds, setResendSeconds] = useState(0);
+  const [storageChecked, setStorageChecked] = useState(false);
+  const [codeVerified, setCodeVerified] = useState(false);
 
   const normalizedEmail = email.trim().toLowerCase();
   const normalizedCode = code.trim();
@@ -89,15 +93,19 @@ export function useAccountLogin() {
     setToastOpen(true);
   };
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const stored = readStoredLoginAttempt();
-    if (!stored) return;
+    if (!stored) {
+      setStorageChecked(true);
+      return;
+    }
 
     setEmail(stored.email);
     setStep(stored.step);
     setResendSeconds(
       Math.max(0, Math.ceil((stored.resendAvailableAt - Date.now()) / 1000)),
     );
+    setStorageChecked(true);
   }, []);
 
   useEffect(() => {
@@ -111,6 +119,7 @@ export function useAccountLogin() {
   function updateEmail(value: string) {
     setEmail(value);
     setCode("");
+    setCodeVerified(false);
     if (step === "code") {
       setStep("email");
       setResendSeconds(0);
@@ -124,6 +133,7 @@ export function useAccountLogin() {
       return false;
     }
 
+    setCodeVerified(false);
     setPending(true);
     try {
       const result = await requestAccountLoginCode(normalizedEmail);
@@ -164,6 +174,7 @@ export function useAccountLogin() {
       return;
     }
 
+    setCodeVerified(false);
     setPending(true);
     try {
       const result = await verifyAccountLoginCode(
@@ -179,6 +190,7 @@ export function useAccountLogin() {
         openErrorToast(errorMessage);
         return;
       }
+      setCodeVerified(true);
       clearStoredLoginAttempt();
       router.refresh();
     } catch (error) {
@@ -198,6 +210,8 @@ export function useAccountLogin() {
     toastOpen,
     toastMessage,
     resendSeconds,
+    storageChecked,
+    codeVerified,
     isValidEmail,
     isValidCode,
     setEmail: updateEmail,
