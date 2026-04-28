@@ -23,11 +23,16 @@ type Params = {
   onSaved: () => void;
 };
 
+type AddNewAddressOptions = {
+  saveOnly?: boolean;
+};
+
 export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
   const { setValue, getValues, trigger, resetField } = useFormContext();
   const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
   const [savingNewAddress, setSavingNewAddress] = useState(false);
   const [saveAddressError, setSaveAddressError] = useState<string | null>(null);
+  const [showSaveOnlyActions, setShowSaveOnlyActions] = useState(false);
   const previousAddressValuesRef = useRef<
     Record<
       | "firstName"
@@ -56,15 +61,15 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
       | "postalCode"
       | "savedAddressId"
     > = [
-      "state",
-      "city",
-      "address",
-      "additionalAddress",
-      "company",
-      "phone",
-      "postalCode",
-      "savedAddressId",
-    ];
+        "state",
+        "city",
+        "address",
+        "additionalAddress",
+        "company",
+        "phone",
+        "postalCode",
+        "savedAddressId",
+      ];
     keys.forEach((k) =>
       setValue(k, "", { shouldValidate: false, shouldDirty: false }),
     );
@@ -74,8 +79,9 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
     });
   }
 
-  function handleAddNewAddress() {
+  function handleAddNewAddress(options?: AddNewAddressOptions) {
     setSaveAddressError(null);
+    setShowSaveOnlyActions(!!options?.saveOnly);
     const currentValues = getValues();
     previousAddressValuesRef.current = {
       firstName: String(currentValues.firstName ?? ""),
@@ -96,6 +102,7 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
 
   function handleCancelAddNewAddress() {
     setSaveAddressError(null);
+    setShowSaveOnlyActions(false);
     const previousValues = previousAddressValuesRef.current;
     if (previousValues) {
       resetField("firstName", { defaultValue: previousValues.firstName });
@@ -160,6 +167,7 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
         });
       }
       previousAddressValuesRef.current = null;
+      setShowSaveOnlyActions(false);
       onSaved();
       setIsAddingNewAddress(false);
     } catch {
@@ -173,6 +181,7 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
     isAddingNewAddress,
     savingNewAddress,
     saveAddressError,
+    showSaveOnlyActions,
     handleAddNewAddress,
     handleCancelAddNewAddress,
     handleSaveNewAddress,

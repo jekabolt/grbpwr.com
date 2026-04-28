@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { LANGUAGE_CODE_TO_ID } from "@/constants";
 import { useFormContext, useWatch } from "react-hook-form";
 
-import { navigateToCountryWithPicker } from "@/lib/navigation/navigate-to-country-with-picker";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
 import { countryStatesMap } from "../constants";
@@ -12,10 +11,8 @@ import { findCountryByCode, getFieldName, getUniqueCountries } from "../utils";
 
 export function useAddressFields(prefix?: string) {
   const { setValue, getValues } = useFormContext();
-  const pathname = usePathname();
-  const { setCurrentCountry, cancelNextCountry } = useTranslationsStore(
-    (s) => s,
-  );
+  const { currentCountry, setLanguageId, setNextCountry, cancelNextCountry } =
+    useTranslationsStore((s) => s);
 
   const countryFieldName = getFieldName(prefix, "country");
   const phoneFieldName = getFieldName(prefix, "phone");
@@ -67,12 +64,6 @@ export function useAddressFields(prefix?: string) {
   }, [selectedCountry, phoneFieldName, uniqueCountries, getValues, setValue]);
 
   const handleCountryChange = (newCountryCode: string) => {
-    const currentFormCountry = getValues(countryFieldName);
-
-    if (currentFormCountry === newCountryCode) {
-      return;
-    }
-
     const country = findCountryByCode(uniqueCountries, newCountryCode);
     if (!country) return;
 
@@ -85,15 +76,25 @@ export function useAddressFields(prefix?: string) {
     }
 
     if (!isBillingAddress) {
-      const email = getValues("email");
-      const promoCode = getValues("promoCode");
-      navigateToCountryWithPicker(
-        country,
-        { pathname, cancelNextCountry, setCurrentCountry },
-        email || promoCode
-          ? { email: email || "", promoCode: promoCode || "" }
-          : undefined,
-      );
+      if (
+        country.countryCode.toLowerCase() ===
+        currentCountry.countryCode?.toLowerCase()
+      ) {
+        cancelNextCountry();
+        return;
+      }
+
+      setNextCountry({
+        name: country.name,
+        countryCode: country.countryCode,
+        currencyKey: country.currencyKey,
+        localeCode: country.lng,
+      });
+
+      const languageId = LANGUAGE_CODE_TO_ID[country.lng];
+      if (languageId !== undefined) {
+        setLanguageId(languageId);
+      }
     }
   };
 

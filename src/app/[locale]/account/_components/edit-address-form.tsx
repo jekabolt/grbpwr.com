@@ -121,6 +121,7 @@ export function EditAddressForm({
           disabled={saving}
           showNameFields={false}
           showPhoneField={false}
+          disableCountryField
         />
         <FormPhoneField
           loading={saving}

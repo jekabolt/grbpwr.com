@@ -1,6 +1,6 @@
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { googletype_Date } from "@/api/proto-http/frontend";
-import { EMAIL_PREFERENCES, LANGUAGE_ID_TO_LOCALE } from "@/constants";
+import { COUNTRIES_BY_REGION, EMAIL_PREFERENCES, LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
 import {
     defaultData,
@@ -183,4 +183,22 @@ export function formatOrderDate(value?: string) {
     const minutes = String(date.getMinutes()).padStart(2, "0");
 
     return `${day}/${month}/${year} / ${hours}:${minutes}`;
+}
+
+export function isSameCountry(addressCountry?: string, currentCountryCode?: string) {
+    if (!currentCountryCode) return true;
+    return (
+        addressCountry?.trim().toLowerCase() ===
+        currentCountryCode.trim().toLowerCase()
+    );
+}
+
+export function getCountryMeta(countryCode?: string) {
+    if (!countryCode) return undefined;
+    return Object.values(COUNTRIES_BY_REGION)
+        .flat()
+        .find(
+            (country) =>
+                country.countryCode.toLowerCase() === countryCode.trim().toLowerCase(),
+        );
 }

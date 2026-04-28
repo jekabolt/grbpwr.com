@@ -118,6 +118,7 @@ export default function ShippingFieldsGroup({
     isAddingNewAddress,
     savingNewAddress,
     saveAddressError,
+    showSaveOnlyActions,
     handleAddNewAddress,
     handleCancelAddNewAddress,
     handleSaveNewAddress,
@@ -164,7 +165,7 @@ export default function ShippingFieldsGroup({
               >
                 save
               </Button>
-              {isAddingNewAddress ? (
+              {isAddingNewAddress && !showSaveOnlyActions ? (
                 <Button
                   type="button"
                   variant="secondary"
@@ -262,12 +263,14 @@ export function AddressFields({
   disabled,
   showNameFields = true,
   showPhoneField = true,
+  disableCountryField = false,
 }: {
   loading: boolean;
   prefix?: string;
   disabled?: boolean;
   showNameFields?: boolean;
   showPhoneField?: boolean;
+  disableCountryField?: boolean;
 }) {
   const { stateItems, handleCountryChange } = useAddressFields(prefix);
   const { watch } = useFormContext();
@@ -317,7 +320,7 @@ export function AddressFields({
         name={getFieldName(prefix, "country")}
         label={t("country/region:")}
         items={sortedCountries}
-        disabled={disabled}
+        disabled={disabled || disableCountryField}
         onValueChange={handleCountryChange}
       />
 

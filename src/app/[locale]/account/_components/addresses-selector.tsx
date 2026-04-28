@@ -40,12 +40,12 @@ export function AddressesSelector({
     >
       <RadixSelect.Trigger
         className={cn(
-          "flex w-full items-center justify-between gap-2 border-b border-textColor bg-bgColor text-left text-textBaseSize focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
+          "flex w-full items-center justify-between gap-2 border-b border-textColor bg-bgColor text-left text-textBaseSize leading-none focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
         )}
         aria-label="select saved address"
       >
         <RadixSelect.Icon
-          className={cn("shrink-0 rotate-180 text-textColor", {
+          className={cn("shrink-0 rotate-180 text-textColor underline", {
             "rotate-0": open,
             "text-textInactiveColor": isDisabled,
           })}

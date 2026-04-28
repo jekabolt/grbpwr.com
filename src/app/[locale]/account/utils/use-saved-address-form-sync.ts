@@ -10,13 +10,23 @@ type Params = {
   isSignedIn: boolean;
   addresses: StorefrontSavedAddress[];
   defaultAddress: StorefrontSavedAddress | undefined;
+  currentCountryCode?: string;
   onDefaultChange?: () => void;
 };
+
+function isSameCountry(addressCountry?: string, currentCountryCode?: string) {
+  if (!currentCountryCode) return true;
+  return (
+    addressCountry?.trim().toLowerCase() ===
+    currentCountryCode.trim().toLowerCase()
+  );
+}
 
 export function useSavedAddressFormSync({
   isSignedIn,
   addresses,
   defaultAddress,
+  currentCountryCode,
   onDefaultChange,
 }: Params) {
   const { watch, setValue } = useFormContext();
@@ -72,12 +82,20 @@ export function useSavedAddressFormSync({
       ? addresses.find((address) => String(address.id ?? "") === savedAddressId)
       : defaultAddress;
 
+    if (
+      selected === defaultAddress &&
+      !isSameCountry(defaultAddress.country, currentCountryCode)
+    ) {
+      return;
+    }
+
     applySavedAddressToForm(selected ?? defaultAddress);
 
     appliedSavedAddressRef.current = true;
   }, [
     addresses,
     applySavedAddressToForm,
+    currentCountryCode,
     defaultAddress,
     isSignedIn,
     savedAddressId,
@@ -94,13 +112,17 @@ export function useSavedAddressFormSync({
       appliedSavedAddressRef.current = true;
       applySavedAddressToForm(selected);
 
+      if (!isSameCountry(selected.country, currentCountryCode)) {
+        return;
+      }
+
       void setDefaultAddressRequest(id)
         .catch(() => {})
         .finally(() => {
           onDefaultChange?.();
         });
     },
-    [addresses, applySavedAddressToForm, onDefaultChange],
+    [addresses, applySavedAddressToForm, currentCountryCode, onDefaultChange],
   );
 
   return {
