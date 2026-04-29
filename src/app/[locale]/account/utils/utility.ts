@@ -105,7 +105,7 @@ export function buildAccountUpdatePayload(
     ctx: AccountUpdateContext,
     mode: "full" | "personal" | "email",
 ): Record<string, unknown> {
-    const phone = data.phone.trim();
+    const phone = data.phone?.trim() ?? "";
     const birth = data.birthDate?.trim() ?? "";
     const countryFromStore = ctx.currentCountryCode?.trim();
     const defaultLanguage = LANGUAGE_ID_TO_LOCALE[ctx.languageId] ?? "en";
