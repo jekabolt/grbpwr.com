@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -35,8 +35,16 @@ type Props = {
 export function AccountProfilePrompt({ account, onCompleted }: Props) {
   const t = useTranslations("account");
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
-  const { pending, toastOpen, toastMessage, setToastOpen, updateAccount } =
+  const {
+    pending,
+    toastOpen,
+    toastMessage,
+    setToastOpen,
+    showToast,
+    updateAccount,
+  } =
     useAccountUpdate();
+  const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
 
   const selectedCountryCode =
     account.defaultCountry?.trim() ||
@@ -52,6 +60,11 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
   });
 
   async function onSubmit(data: AccountSchema) {
+    if (!privacyPolicyChecked) {
+      showToast(t("privacy policy is required"));
+      return;
+    }
+
     const result = await updateAccount({
       data,
       context: {
@@ -92,6 +105,8 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
             <AccountRegistrationCheckboxSection
               form={form}
               disabled={pending}
+              checked={privacyPolicyChecked}
+              onCheckedChange={setPrivacyPolicyChecked}
             />
             <Button
               type="submit"

@@ -49,6 +49,7 @@
     "add new address": "添加新地址",
     "use other address": "使用其他地址",
     "privacy policy": "我已阅读<privacy>隐私政策</privacy>和<membership>会员政策</membership>",
+    "privacy policy is required": "请先同意隐私政策和会员政策",
     "edit": "编辑",
     "delete": "删除",
     "default": "默认",

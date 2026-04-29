@@ -31,6 +31,11 @@ export function useAccountUpdate() {
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
+  const showToast = useCallback((message: string) => {
+    setToastMessage(message);
+    setToastOpen(true);
+  }, []);
+
   const updateAccount = useCallback(
     async ({
       data,
@@ -49,8 +54,7 @@ export function useAccountUpdate() {
 
         if (!res.ok) {
           const error = await parseApiError(res, "failed to update account");
-          setToastMessage(error);
-          setToastOpen(true);
+          showToast(error);
           return { ok: false, error };
         }
 
@@ -61,7 +65,7 @@ export function useAccountUpdate() {
         setPending(false);
       }
     },
-    [router],
+    [router, showToast],
   );
 
   return {
@@ -69,6 +73,7 @@ export function useAccountUpdate() {
     toastOpen,
     toastMessage,
     setToastOpen,
+    showToast,
     updateAccount,
   };
 }

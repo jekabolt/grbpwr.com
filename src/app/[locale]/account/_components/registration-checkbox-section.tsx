@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { CheckedState } from "@radix-ui/react-checkbox";
 import { useTranslations } from "next-intl";
 import type { UseFormReturn } from "react-hook-form";
 
@@ -11,9 +12,16 @@ import type { AccountSchema } from "@/app/[locale]/account/utils/schema";
 type Props = {
   form: UseFormReturn<AccountSchema>;
   disabled?: boolean;
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
 };
 
-export function AccountRegistrationCheckboxSection({ form, disabled }: Props) {
+export function AccountRegistrationCheckboxSection({
+  form,
+  disabled,
+  checked,
+  onCheckedChange,
+}: Props) {
   const tAccount = useTranslations("account");
 
   return (
@@ -21,6 +29,8 @@ export function AccountRegistrationCheckboxSection({ form, disabled }: Props) {
       <AccountEmailPreferencesFields form={form} disabled={disabled} />
       <CheckboxGlobal
         name="privacyPolicy"
+        checked={checked}
+        onCheckedChange={(value: CheckedState) => onCheckedChange(value === true)}
         label={tAccount.rich("privacy policy", {
           privacy: (chunks) => (
             <Link

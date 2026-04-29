@@ -37,19 +37,21 @@ const baseAccountSchema = z.object({
             .max(15, errorMessages.phone.max)
             .trim(),
     ]),
-    birthDate: z.union([
-        z.literal(""),
-        z
-            .string()
-            .regex(/^\d{4}-\d{2}-\d{2}$/, "invalid date")
-            .refine((s) => {
-                const parsed = new Date(`${s}T12:00:00`);
-                if (Number.isNaN(parsed.getTime())) return false;
-                if (parsed > new Date()) return false;
-                if (parsed < new Date("1900-01-01T12:00:00")) return false;
-                return true;
-            }, "enter a valid date of birth"),
-    ]),
+    birthDate: z
+        .union([
+            z.literal(""),
+            z
+                .string()
+                .regex(/^\d{4}-\d{2}-\d{2}$/, "invalid date")
+                .refine((s) => {
+                    const parsed = new Date(`${s}T12:00:00`);
+                    if (Number.isNaN(parsed.getTime())) return false;
+                    if (parsed > new Date()) return false;
+                    if (parsed < new Date("1900-01-01T12:00:00")) return false;
+                    return true;
+                }, "enter a valid date of birth"),
+        ])
+        .optional(),
     subscribeNewsletter: z.boolean(),
     subscribeNewArrivals: z.boolean(),
     subscribeEvents: z.boolean(),

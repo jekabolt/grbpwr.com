@@ -48,6 +48,7 @@
     "add new address": "add new address",
     "use other address": "use other address",
     "privacy policy": "i have read <privacy>privacy policy</privacy> and <membership>membership policy</membership>",
+    "privacy policy is required": "please accept privacy policy and membership policy",
     "edit": "edit",
     "delete": "delete",
     "default": "default",

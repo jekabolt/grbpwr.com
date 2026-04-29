@@ -49,6 +49,7 @@
     "add new address": "ajouter une nouvelle adresse",
     "use other address": "utiliser une autre adresse",
     "privacy policy": "J'ai lu la <privacy>politique de confidentialité</privacy> et la <membership>politique d'adhésion</membership>",
+    "privacy policy is required": "veuillez accepter la politique de confidentialité et la politique d'adhésion",
     "edit": "modifier",
     "delete": "supprimer",
     "default": "par défaut",

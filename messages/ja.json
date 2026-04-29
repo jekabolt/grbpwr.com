@@ -49,6 +49,7 @@
     "add new address": "新しい住所を追加",
     "use other address": "別の住所を使用",
     "privacy policy": "<privacy>プライバシーポリシー</privacy>と<membership>メンバーシップポリシー</membership>を読みました",
+    "privacy policy is required": "プライバシーポリシーとメンバーシップポリシーへの同意が必要です",
     "edit": "編集",
     "delete": "削除",
     "default": "デフォルト",
