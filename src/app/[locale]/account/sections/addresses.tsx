@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
-import { Text } from "@/components/ui/text";
 
 import { AddressListItem } from "../_components/address-list-item";
 import { EditAddressForm } from "../_components/edit-address-form";
@@ -17,6 +16,7 @@ export function AddressesSection({
   refreshKey,
   isCheckout,
   isDisabled,
+  editResetKey,
   onEditModeChange,
 }: {
   account: StorefrontAccount;
@@ -24,6 +24,7 @@ export function AddressesSection({
   refreshKey?: number;
   isCheckout?: boolean;
   isDisabled?: boolean;
+  editResetKey?: number;
   onEditModeChange?: (isEditing: boolean) => void;
 }) {
   const {
@@ -45,9 +46,16 @@ export function AddressesSection({
     return addresses.filter((address) => address.isDefault);
   }, [addresses, defaultOnly]);
 
+  function setAddressEditingId(nextId: number | null) {
+    setEditingId(nextId);
+    onEditModeChange?.(nextId !== null);
+  }
+
   useEffect(() => {
-    onEditModeChange?.(editingId !== null);
-  }, [editingId, onEditModeChange]);
+    if (editResetKey === undefined) return;
+    setEditingId(null);
+    onEditModeChange?.(false);
+  }, [editResetKey, onEditModeChange]);
 
   const isInitialLoading = pending && !loaded;
 
@@ -57,16 +65,6 @@ export function AddressesSection({
         "gap-0": isCheckout,
       })}
     >
-      {!isCheckout && (
-        <Text
-          variant="uppercase"
-          className={cn("hidden lg:block", {
-            "text-textInactiveColor": isDisabled,
-          })}
-        >
-          {editingId !== null ? "edit shipping address" : "addresses"}
-        </Text>
-      )}
       <div className="flex flex-col gap-3">
         {isInitialLoading ? (
           <AddressesSectionFallback
@@ -93,7 +91,9 @@ export function AddressesSection({
                   defaultId={defaultId}
                   defaultOnly={defaultOnly}
                   onEdit={(addressId) =>
-                    setEditingId(editingId === addressId ? null : addressId)
+                    setAddressEditingId(
+                      editingId === addressId ? null : addressId,
+                    )
                   }
                   onDelete={handleDeleteAddress}
                   onSetDefault={handleDefaultAddress}
@@ -104,9 +104,9 @@ export function AddressesSection({
               <EditAddressForm
                 address={address}
                 account={account}
-                onCancel={() => setEditingId(null)}
+                onCancel={() => setAddressEditingId(null)}
                 onSuccess={() => {
-                  setEditingId(null);
+                  setAddressEditingId(null);
                   void reload();
                 }}
               />

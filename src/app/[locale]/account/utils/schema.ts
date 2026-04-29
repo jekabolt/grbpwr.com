@@ -60,13 +60,9 @@ const baseAccountSchema = z.object({
 
 export const accountSchema = baseAccountSchema;
 
-export const defaultData: Omit<
-    z.infer<typeof accountSchema>,
-    "phone" | "birthDate"
-> & {
-    phone: z.infer<typeof accountSchema>["phone"] | undefined;
-    birthDate: z.infer<typeof accountSchema>["birthDate"] | undefined;
-} = {
+export type AccountSchema = z.infer<typeof accountSchema>;
+
+export const defaultData: AccountSchema = {
     firstName: "",
     lastName: "",
     phone: "",
@@ -77,5 +73,3 @@ export const defaultData: Omit<
     shoppingPreference: EMAIL_PREFERENCES.all,
     defaultCountry: "",
 };
-
-export type AccountSchema = z.infer<typeof accountSchema>;

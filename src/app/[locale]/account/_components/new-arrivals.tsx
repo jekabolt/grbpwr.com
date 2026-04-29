@@ -8,7 +8,7 @@ import { Text } from "@/components/ui/text";
 
 import type { AccountEmailPreference } from "../utils/schema";
 
-export function NewArrivales({
+export function NewArrivals({
   value,
   onChange,
   pending,
@@ -32,7 +32,9 @@ export function NewArrivales({
         return (
           <Fragment key={i.value}>
             {id > 0 && (
-              <Text className="mx-2 select-none text-textInactiveColor">/</Text>
+              <Text className="mx-5 select-none text-textInactiveColor lg:mx-2">
+                /
+              </Text>
             )}
             <Button
               type="button"

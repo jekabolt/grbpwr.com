@@ -8,7 +8,7 @@ import type { AccountSchema } from "@/app/[locale]/account/utils/schema";
 import { EMAIL_REFERENCE_STEPS } from "@/app/[locale]/account/utils/utility";
 
 import { EmailPreferenceStepRow } from "../_components/email-steps";
-import { NewArrivales } from "../_components/new-arrivals";
+import { NewArrivals } from "../_components/new-arrivals";
 import { UserLocation } from "../_components/user-location";
 import { useEmailPreferences } from "../utils/use-email-preferences";
 
@@ -38,10 +38,10 @@ export function EmailPreferences() {
           ))}
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-6">
+        <div className="flex w-full items-center justify-between">
+          <div className="flex w-full flex-row justify-between lg:flex-col lg:justify-start lg:gap-6">
             <Text variant="uppercase">email preferences</Text>
-            <NewArrivales
+            <NewArrivals
               pending={pending}
               value={shoppingPreference}
               onChange={(next) => {
@@ -53,7 +53,9 @@ export function EmailPreferences() {
               }}
             />
           </div>
-          <UserLocation pending={pending} />
+          <div className="hidden lg:block">
+            <UserLocation pending={pending} />
+          </div>
         </div>
       </div>
       <SubmissionToaster

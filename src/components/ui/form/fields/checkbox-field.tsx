@@ -26,6 +26,7 @@ export default function CheckboxField({
   label,
   name,
   description,
+  onCheckedChange,
   ...props
 }: Props) {
   const t = useTranslations("errors");
@@ -46,7 +47,10 @@ export default function CheckboxField({
               <Checkbox
                 {...field}
                 checked={field.value}
-                onCheckedChange={field.onChange}
+                onCheckedChange={(checked: boolean | "indeterminate") => {
+                  field.onChange(checked);
+                  onCheckedChange?.(checked);
+                }}
                 disabled={props.disabled || props.loading}
                 onBlur={onBlur}
                 {...props}

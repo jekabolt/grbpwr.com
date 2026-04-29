@@ -11,7 +11,7 @@ import { useAccountUpdate } from "@/app/[locale]/account/utils/use-account-updat
 export function PersonalInfo({
   selectedCountryCode,
 }: {
-  selectedCountryCode: string;
+  selectedCountryCode?: string;
 }) {
   const form = useFormContext<AccountSchema>();
   const { pending, toastOpen, toastMessage, setToastOpen, updateAccount } =
@@ -46,7 +46,7 @@ export function PersonalInfo({
           type="submit"
           variant="main"
           size="lg"
-          className="fixed inset-x-2.5 bottom-6 uppercase lg:static"
+          className="uppercase"
           loading={pending}
           disabled={pending}
         >

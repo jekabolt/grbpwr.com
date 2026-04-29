@@ -13,20 +13,31 @@ type Props = {
   activePanel: ActivePanel;
   selectedCountryCode?: string;
   account: StorefrontAccount;
+  addressOptions?: {
+    editResetKey?: number;
+    onEditModeChange?: (isEditing: boolean) => void;
+  };
 };
 
 export function ActiveAccountSection({
   activePanel,
   selectedCountryCode,
   account,
+  addressOptions,
 }: Props) {
   switch (activePanel) {
     case "personal":
-      return <PersonalInfo selectedCountryCode={selectedCountryCode || ""} />;
+      return <PersonalInfo selectedCountryCode={selectedCountryCode} />;
     case "email":
       return <EmailPreferences />;
     case "addresses":
-      return <AddressesSection account={account} />;
+      return (
+        <AddressesSection
+          account={account}
+          editResetKey={addressOptions?.editResetKey}
+          onEditModeChange={addressOptions?.onEditModeChange}
+        />
+      );
     case "order&returns":
       return <OrderReturns account={account} />;
     default:

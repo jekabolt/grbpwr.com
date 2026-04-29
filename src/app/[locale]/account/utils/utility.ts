@@ -12,31 +12,37 @@ export type ActivePanel =
     | "personal"
     | "email"
     | "order&returns"
-    | "addresses"
-    | "private";
+    | "addresses";
 
 export const ACCOUNT_SECTIONS = [
     {
         label: "order & returns",
         value: "order&returns",
+        path: "order-returns",
     },
     {
         label: "personal info",
         value: "personal",
+        path: "personal-info",
     },
     {
         label: "addresses",
         value: "addresses",
+        path: "addresses",
     },
     {
         label: "email preferences",
         value: "email",
-    },
-    {
-        label: "private community",
-        value: "private",
+        path: "email-preferences",
     },
 ] as const;
+
+export type AccountSection = (typeof ACCOUNT_SECTIONS)[number];
+export type AccountSectionPath = (typeof ACCOUNT_SECTIONS)[number]["path"];
+
+export function getAccountSectionByPath(path: string) {
+    return ACCOUNT_SECTIONS.find((section) => section.path === path);
+}
 
 export const EMAIL_REFERENCE_ACTIONS = [
     { label: "subscribe", value: true },
@@ -201,4 +207,12 @@ export function getCountryMeta(countryCode?: string) {
             (country) =>
                 country.countryCode.toLowerCase() === countryCode.trim().toLowerCase(),
         );
+}
+
+export function encodeEmailBase64(email: string) {
+    if (typeof window !== "undefined") {
+        return window.btoa(email);
+    }
+
+    return Buffer.from(email).toString("base64");
 }

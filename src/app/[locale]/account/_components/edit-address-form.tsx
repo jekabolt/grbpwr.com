@@ -138,7 +138,7 @@ export function EditAddressForm({
             type="button"
             variant="main"
             size="lg"
-            className="w-full uppercase"
+            className="fixed inset-x-2.5 bottom-2.5 mx-auto uppercase lg:static lg:w-full"
             disabled={saving}
             loading={saving}
             onClick={form.handleSubmit(onSubmit)}
@@ -149,7 +149,7 @@ export function EditAddressForm({
             type="button"
             variant="secondary"
             size="lg"
-            className="w-full uppercase"
+            className="hidden w-full uppercase lg:block"
             disabled={saving}
             onClick={onCancel}
           >

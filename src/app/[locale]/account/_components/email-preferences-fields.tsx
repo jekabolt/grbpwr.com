@@ -7,7 +7,7 @@ import { useWatch } from "react-hook-form";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import { AccountSchema } from "@/app/[locale]/account/utils/schema";
 
-import { NewArrivales } from "./new-arrivals";
+import { NewArrivals } from "./new-arrivals";
 
 type Props = {
   form: UseFormReturn<AccountSchema>;
@@ -33,11 +33,11 @@ export function AccountEmailPreferencesFields({ form, disabled }: Props) {
         label={
           subscribeNewArrivals
             ? t("email preferences")
-            : t("receive updates on new arrivals and brand news")
+            : "receive updates on new arrivals and brand news"
         }
       />
       {subscribeNewArrivals ? (
-        <NewArrivales
+        <NewArrivals
           pending={disabled}
           value={shoppingPreference}
           onChange={(next) => {

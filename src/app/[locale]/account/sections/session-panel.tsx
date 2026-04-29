@@ -1,27 +1,15 @@
 "use client";
 
-import { useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { useForm } from "react-hook-form";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
-import { ActiveAccountSection } from "@/app/[locale]/account/_components/sections";
-import {
-  accountSchema,
-  AccountSchema,
-} from "@/app/[locale]/account/utils/schema";
 
-import {
-  ACCOUNT_SECTIONS,
-  ActivePanel,
-  getAccountFormDefaultValues,
-} from "../utils/utility";
+import { AccountSectionContent } from "../_components/account-section-content";
+import { ACCOUNT_SECTIONS, ActivePanel } from "../utils/utility";
 
 const ACCOUNT_PANEL_QUERY = "account_panel";
 
@@ -38,26 +26,12 @@ export function AccountSessionPanel({ account }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { currentCountry } = useTranslationsStore((s) => s);
 
   const rawPanel = searchParams.get(ACCOUNT_PANEL_QUERY);
   const activePanel: ActivePanel =
     rawPanel && ACCOUNT_PANEL_VALUES.has(rawPanel as ActivePanel)
       ? (rawPanel as ActivePanel)
       : "order&returns";
-
-  const selectedCountryCode =
-    account.defaultCountry?.trim() ||
-    currentCountry.countryCode?.trim() ||
-    undefined;
-
-  const form = useForm<AccountSchema>({
-    resolver: zodResolver(accountSchema),
-    defaultValues: useMemo(
-      () => getAccountFormDefaultValues(account),
-      [account],
-    ),
-  });
 
   async function logout() {
     await fetch("/api/account/logout", { method: "POST" });
@@ -86,44 +60,42 @@ export function AccountSessionPanel({ account }: Props) {
             </Text>
             <Text variant="inactive">{account.email}</Text>
           </div>
-          <Button
-            type="button"
-            variant="underline"
-            className="block self-start uppercase leading-none hover:text-textColor lg:hidden"
-            onClick={logout}
-          >
-            log out
-          </Button>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-5 lg:space-y-3">
           {ACCOUNT_SECTIONS.map((section) => (
-            <Button
-              type="button"
-              key={section.value}
-              variant={activePanel === section.value ? "underline" : "default"}
-              onClick={() => togglePanel(section.value)}
-              className="uppercase"
-            >
-              {t(section.label)}
-            </Button>
+            <div key={section.value}>
+              <Button
+                type="button"
+                variant={
+                  activePanel === section.value ? "underline" : "default"
+                }
+                onClick={() => togglePanel(section.value)}
+                className="hidden uppercase lg:block"
+              >
+                {t(section.label)}
+              </Button>
+              <AnimatedButton
+                animationDuration={1000}
+                animationArea="full-underline"
+                className="flex w-full items-center justify-between text-left uppercase lg:hidden"
+                href={`/account/${section.path}`}
+              >
+                <Text>{t(section.label)}</Text>
+                <Text>{">"}</Text>
+              </AnimatedButton>
+            </div>
           ))}
         </div>
         <Button
           type="button"
-          className="hidden self-start uppercase text-textInactiveColor hover:text-textColor lg:block"
+          className="self-start uppercase text-textInactiveColor hover:text-textColor"
           onClick={logout}
         >
           log out
         </Button>
       </div>
-      <div className="w-full pb-24 lg:pb-0">
-        <Form {...form}>
-          <ActiveAccountSection
-            activePanel={activePanel}
-            selectedCountryCode={selectedCountryCode}
-            account={account}
-          />
-        </Form>
+      <div className="hidden w-full pb-24 lg:block lg:pb-0">
+        <AccountSectionContent account={account} activePanel={activePanel} />
       </div>
     </div>
   );
