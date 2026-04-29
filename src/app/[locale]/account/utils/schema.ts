@@ -36,7 +36,8 @@ const baseAccountSchema = z.object({
             .min(5, errorMessages.phone.min)
             .max(15, errorMessages.phone.max)
             .trim(),
-    ]),
+    ])
+        .optional(),
     birthDate: z
         .union([
             z.literal(""),

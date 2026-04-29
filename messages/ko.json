@@ -49,7 +49,7 @@
     "add new address": "새 주소 추가",
     "use other address": "다른 주소 사용",
     "privacy policy": "<privacy>개인정보 처리방침</privacy>과 <membership>멤버십 정책</membership>을 읽었습니다",
-    "privacy policy is required": "개인정보 처리방침과 멤버십 정책 동의가 필요합니다",
+    "privacy_policy_required": "개인정보 처리방침과 멤버십 정책 동의가 필요합니다",
     "edit": "수정",
     "delete": "삭제",
     "default": "기본",

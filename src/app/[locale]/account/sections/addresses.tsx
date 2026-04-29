@@ -65,7 +65,7 @@ export function AddressesSection({
         "gap-0": isCheckout,
       })}
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col">
         {isInitialLoading ? (
           <AddressesSectionFallback
             defaultOnly={defaultOnly}
@@ -76,7 +76,7 @@ export function AddressesSection({
           <div key={address.id}>
             {editingId === null && (
               <div
-                className={cn("space-y-3 border-b border-textInactiveColor", {
+                className={cn("border-b border-textInactiveColor", {
                   "border-transparent pb-0": defaultOnly,
                   "py-6": (address.id ?? 0) > 0,
                   "border-none": visibleAddresses.length === 1,

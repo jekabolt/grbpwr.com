@@ -29,8 +29,11 @@ export function AccountRegistrationCheckboxSection({
       <AccountEmailPreferencesFields form={form} disabled={disabled} />
       <CheckboxGlobal
         name="privacyPolicy"
+        disabled={disabled}
         checked={checked}
-        onCheckedChange={(value: CheckedState) => onCheckedChange(value === true)}
+        onCheckedChange={(value: CheckedState) =>
+          onCheckedChange(value === true)
+        }
         label={tAccount.rich("privacy policy", {
           privacy: (chunks) => (
             <Link

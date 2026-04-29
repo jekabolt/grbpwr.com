@@ -93,7 +93,7 @@ export function DefaultMobileMenuDialog({
           </div>
         </div>
       </div>
-      {!isSignedIn && <NewslatterForm />}
+      {!isSignedIn && <NewslatterForm inactiveBgColor />}
     </div>
   );
 }

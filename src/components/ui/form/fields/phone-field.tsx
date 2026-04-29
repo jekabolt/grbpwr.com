@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
+import { Text } from "@/components/ui/text";
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "..";
 import Input from "../../input";
@@ -21,6 +22,7 @@ export type PhoneFieldProps = {
   readOnly?: boolean;
   loading?: boolean;
   variant?: string;
+  optional?: boolean;
 };
 
 export function PhoneField({
@@ -28,6 +30,7 @@ export function PhoneField({
   label,
   items,
   selectedCountry,
+  optional,
   ...props
 }: PhoneFieldProps) {
   const { control, trigger } = useFormContext();
@@ -120,9 +123,14 @@ export function PhoneField({
         return (
           <FormItem>
             <FormLabel
-              className={cn("", { "text-textInactiveColor": props.disabled })}
+              className={cn("flex", {
+                "text-textInactiveColor": props.disabled,
+              })}
             >
-              {label}
+              <Text>{label}</Text>
+              {optional && (
+                <Text className="text-textInactiveColor"> (optional)</Text>
+              )}
             </FormLabel>
             <FormControl>
               <div className="flex items-end" ref={containerRef}>

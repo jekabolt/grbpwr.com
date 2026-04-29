@@ -88,18 +88,19 @@ export function MobileEmailPreferenceStepRow({
 }) {
   const t = useTranslations("account");
   return (
-    <div className="flex items-center border-b border-textInactiveColor py-6 first:pt-0">
+    <div className="flex items-center border-b border-textInactiveColor py-6">
       <CheckboxField
         name={step.name}
-        label={""}
-        description={""}
+        label={t(step.label)}
+        description={t(step.description)}
         disabled={disabled}
         onCheckedChange={onCommitted}
+        isEmailPreference
       />
-      <div className="space-y-3">
+      {/* <div className="flex flex-col gap-3">
         <Text variant="uppercase">{t(step.label)}</Text>
         <Text>{t(step.description)}</Text>
-      </div>
+      </div> */}
     </div>
   );
 }

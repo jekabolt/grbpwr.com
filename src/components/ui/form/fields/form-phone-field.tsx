@@ -11,8 +11,15 @@ import {
 
 type Props = Omit<PhoneFieldProps, "items"> & {
   items?: PhoneCodeSelectItem[];
+  optional?: boolean;
 };
 
-export function FormPhoneField({ items, ...rest }: Props) {
-  return <PhoneField {...rest} items={items ?? getPhoneCodeSelectItems()} />;
+export function FormPhoneField({ items, optional, ...rest }: Props) {
+  return (
+    <PhoneField
+      {...rest}
+      items={items ?? getPhoneCodeSelectItems()}
+      optional={optional}
+    />
+  );
 }

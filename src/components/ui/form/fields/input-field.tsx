@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import Input, { InputProps } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
 
 import {
   FormControl,
@@ -17,6 +18,7 @@ type Props = InputProps & {
   description?: string;
   loading?: boolean;
   keyboardRestriction?: RegExp;
+  optional?: boolean;
 };
 
 export default function InputField({
@@ -28,13 +30,15 @@ export default function InputField({
   srLabel,
   keyboardRestriction,
   disabled,
+  optional,
   ...props
 }: Props) {
   const { control, trigger, setValue } = useFormContext();
   const t = useTranslations("errors");
 
-  function onBlur() {
+  function handleBlur(event: React.FocusEvent<HTMLInputElement>) {
     trigger(name);
+    props.onBlur?.(event);
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -67,11 +71,15 @@ export default function InputField({
           {label && (
             <FormLabel
               className={cn(
+                "flex",
                 srLabel ? "sr-only" : "",
                 disabled ? "text-textInactiveColor" : "",
               )}
             >
-              {label}
+              <Text>{label}</Text>
+              {optional && (
+                <Text className="text-textInactiveColor"> (optional)</Text>
+              )}
             </FormLabel>
           )}
           <FormControl>
@@ -82,7 +90,7 @@ export default function InputField({
               {...props}
               disabled={disabled}
               className={props.className}
-              onBlur={onBlur}
+              onBlur={handleBlur}
               onKeyDown={handleKeyDown}
               onChange={keyboardRestriction ? handleChange : field.onChange}
             />

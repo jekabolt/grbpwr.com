@@ -48,9 +48,10 @@ export function AccountPersonalInfoFields({
       />
       <FormPhoneField
         name="phone"
-        label={`${t("phone number:")} (optional)`}
+        label={`${t("phone number:")}`}
         selectedCountry={selectedCountryCode}
         disabled={disabled}
+        optional
       />
       <InputField
         name="birthDate"
@@ -58,6 +59,7 @@ export function AccountPersonalInfoFields({
         type="date"
         variant="secondary"
         disabled={disabled}
+        optional
       />
     </div>
   );

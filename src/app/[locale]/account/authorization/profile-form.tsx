@@ -42,8 +42,7 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
     setToastOpen,
     showToast,
     updateAccount,
-  } =
-    useAccountUpdate();
+  } = useAccountUpdate();
   const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
 
   const selectedCountryCode =
@@ -61,7 +60,7 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
 
   async function onSubmit(data: AccountSchema) {
     if (!privacyPolicyChecked) {
-      showToast(t("privacy policy is required"));
+      showToast(t("privacy_policy_required"));
       return;
     }
 
@@ -78,7 +77,7 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
     onCompleted?.({
       firstName: data.firstName.trim(),
       lastName: data.lastName.trim(),
-      phone: data.phone.trim(),
+      phone: data.phone?.trim() ?? "",
       email: account.email?.trim() ?? "",
       country:
         data.defaultCountry?.trim().toLowerCase() ||
