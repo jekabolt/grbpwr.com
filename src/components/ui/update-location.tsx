@@ -1,16 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { parseCountryLocalePath } from "@/lib/middleware-utils";
+import { notifyCheckoutLocationChangeCancelled } from "@/lib/checkout-location-change";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { setDefaultAddressRequest } from "@/app/[locale]/account/utils/address-actions";
 
 import { Banner } from "./banner";
 import { Button } from "./button";
+import { Overlay } from "./overlay";
 import { Text } from "./text";
 
 export function UpdateLocation() {
@@ -23,7 +26,7 @@ export function UpdateLocation() {
   } = useTranslationsStore((state) => state);
   const t = useTranslations("update_location");
   const pathname = usePathname();
-  const initialCountryName = useRef(currentCountry.name);
+  const isCheckoutPage = /\/checkout(?:\/|$)/.test(pathname || "");
   const targetLocale =
     nextCountry.localeCode || LANGUAGE_ID_TO_LOCALE[languageId] || "";
   const parsedPath = parseCountryLocalePath(pathname || "");
@@ -74,39 +77,60 @@ export function UpdateLocation() {
     window.location.href = url.toString();
   };
 
+  const handleCancelCountry = () => {
+    notifyCheckoutLocationChangeCancelled();
+    cancelNextCountry();
+  };
+
+  if (!nextCountry.name || !nextCountry.countryCode || isAlreadyOnTargetPath) {
+    return null;
+  }
+
   return (
     <>
-      {nextCountry.name &&
-        nextCountry.countryCode &&
-        !isAlreadyOnTargetPath && (
-          <Banner>
-            <div className="flex flex-col gap-y-4 p-2.5">
-              <Text className="uppercase">
-                {t("message", { currentCountry: initialCountryName.current })}
-              </Text>
-              <div className="flex items-center justify-between gap-2">
-                <Button
-                  variant="main"
-                  size="lg"
-                  className="w-full uppercase"
-                  onClick={() => {
-                    void handleApplyCountry();
-                  }}
-                >
-                  {t("continue", { country: nextCountry.name })}
-                </Button>
-                <Button
-                  variant="simpleReverse"
-                  size="lg"
-                  className="w-full uppercase"
-                  onClick={cancelNextCountry}
-                >
-                  {t("cancel")}
-                </Button>
-              </div>
-            </div>
-          </Banner>
-        )}
+      {isCheckoutPage && (
+        <Overlay
+          cover="screen"
+          active
+          disablePointerEvents={false}
+          className="z-[70]"
+          onClick={handleCancelCountry}
+        />
+      )}
+      <Banner
+        className={cn("", {
+          "inset-x-2.5 bottom-auto top-1/2 z-[80] -translate-y-1/2 lg:bottom-auto lg:left-1/2 lg:right-auto lg:top-1/2 lg:w-96 lg:-translate-x-1/2":
+            isCheckoutPage,
+        })}
+      >
+        <div className="flex flex-col gap-y-4 p-2.5">
+          <Text className="uppercase">
+            {t("message", { currentCountry: currentCountry.name })}
+          </Text>
+          <div className="flex items-center justify-between gap-2">
+            <Button
+              type="button"
+              variant="main"
+              size="lg"
+              className="w-full uppercase"
+              onClick={() => {
+                void handleApplyCountry();
+              }}
+            >
+              {t("continue", { country: nextCountry.name })}
+            </Button>
+            <Button
+              type="button"
+              variant="simpleReverse"
+              size="lg"
+              className="w-full uppercase"
+              onClick={handleCancelCountry}
+            >
+              {t("cancel")}
+            </Button>
+          </div>
+        </div>
+      </Banner>
     </>
   );
 }

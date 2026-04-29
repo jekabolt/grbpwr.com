@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef } from "react";
 import type { StorefrontSavedAddress } from "@/api/proto-http/frontend";
 import { useFormContext } from "react-hook-form";
 
+import { CHECKOUT_LOCATION_CHANGE_CANCELLED } from "@/lib/checkout-location-change";
+
 import { setDefaultAddressRequest } from "./address-actions";
 
 type Params = {
@@ -13,6 +15,17 @@ type Params = {
   currentCountryCode?: string;
   onDefaultChange?: () => void;
 };
+
+const CHECKOUT_ADDRESS_FIELDS_TO_RESTORE = [
+  "savedAddressId",
+  "country",
+  "state",
+  "city",
+  "address",
+  "additionalAddress",
+  "company",
+  "postalCode",
+] as const;
 
 function isSameCountry(addressCountry?: string, currentCountryCode?: string) {
   if (!currentCountryCode) return true;
@@ -29,9 +42,10 @@ export function useSavedAddressFormSync({
   currentCountryCode,
   onDefaultChange,
 }: Params) {
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, getValues } = useFormContext();
   const savedAddressId = watch("savedAddressId") as string | undefined;
   const appliedSavedAddressRef = useRef(false);
+  const restoreSnapshotRef = useRef<Record<string, string> | null>(null);
 
   const applySavedAddressToForm = useCallback(
     (address: StorefrontSavedAddress) => {
@@ -101,6 +115,32 @@ export function useSavedAddressFormSync({
     savedAddressId,
   ]);
 
+  useEffect(() => {
+    function restorePreviousSavedAddress() {
+      const snapshot = restoreSnapshotRef.current;
+      if (!snapshot) return;
+
+      CHECKOUT_ADDRESS_FIELDS_TO_RESTORE.forEach((field) => {
+        setValue(field, snapshot[field] ?? "", {
+          shouldValidate: false,
+          shouldDirty: true,
+        });
+      });
+      restoreSnapshotRef.current = null;
+    }
+
+    window.addEventListener(
+      CHECKOUT_LOCATION_CHANGE_CANCELLED,
+      restorePreviousSavedAddress,
+    );
+    return () => {
+      window.removeEventListener(
+        CHECKOUT_LOCATION_CHANGE_CANCELLED,
+        restorePreviousSavedAddress,
+      );
+    };
+  }, [setValue]);
+
   const handleSavedAddressChange = useCallback(
     (value: string) => {
       const id = Number(value);
@@ -108,6 +148,19 @@ export function useSavedAddressFormSync({
 
       const selected = addresses.find((address) => address.id === id);
       if (!selected) return;
+
+      if (
+        !isSameCountry(selected.country, currentCountryCode) &&
+        !restoreSnapshotRef.current
+      ) {
+        const values = getValues();
+        restoreSnapshotRef.current = Object.fromEntries(
+          CHECKOUT_ADDRESS_FIELDS_TO_RESTORE.map((field) => [
+            field,
+            String(values[field] ?? ""),
+          ]),
+        );
+      }
 
       appliedSavedAddressRef.current = true;
       applySavedAddressToForm(selected);
@@ -122,7 +175,13 @@ export function useSavedAddressFormSync({
           onDefaultChange?.();
         });
     },
-    [addresses, applySavedAddressToForm, currentCountryCode, onDefaultChange],
+    [
+      addresses,
+      applySavedAddressToForm,
+      currentCountryCode,
+      getValues,
+      onDefaultChange,
+    ],
   );
 
   return {

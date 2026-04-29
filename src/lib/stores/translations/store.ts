@@ -2,6 +2,14 @@ import { createStore } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { TranslationsState, TranslationsStore } from "./store-types";
 
+const emptyNextCountry = {
+    name: "",
+    countryCode: "",
+    currencyKey: undefined,
+    savedAddressId: undefined,
+    localeCode: undefined,
+};
+
 export const defaultInitState: TranslationsState = {
     languageId: 1, // english
     currentCountry: {
@@ -9,11 +17,7 @@ export const defaultInitState: TranslationsState = {
         countryCode: "GB",
         currencyKey: "GBP",
     },
-    nextCountry: {
-        name: "",
-        countryCode: "",
-        currencyKey: undefined,
-    },
+    nextCountry: emptyNextCountry,
     isOpen: false,
 };
 
@@ -33,11 +37,7 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                     if (nextCountry.name && nextCountry.countryCode) {
                         set({
                             currentCountry: nextCountry,
-                            nextCountry: {
-                                name: "",
-                                countryCode: "",
-                                currencyKey: undefined,
-                            },
+                            nextCountry: emptyNextCountry,
                         });
                     }
                 },
@@ -50,11 +50,7 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                     })),
                 cancelNextCountry: () =>
                     set({
-                        nextCountry: {
-                            name: "",
-                            countryCode: "",
-                            currencyKey: undefined,
-                        },
+                        nextCountry: emptyNextCountry,
                     }),
 
                 // Price conversion based on selected currency (moved from currency store, currently disabled)
@@ -89,7 +85,6 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                 // rehydration wins over fresh server init and the country popup shows fr/fr on /fr/en.
                 partialize: (state) => ({
                     currentCountry: state.currentCountry,
-                    nextCountry: state.nextCountry,
                     rates: state.rates,
                 }),
             },

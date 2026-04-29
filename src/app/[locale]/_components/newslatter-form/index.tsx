@@ -101,7 +101,7 @@ export default function NewslatterForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex w-full flex-col items-start gap-6"
+          className="flex w-full flex-col items-start gap-6 bg-textInactiveColorAlpha p-2.5"
         >
           <Text variant="uppercase" className="leading-none">
             {t("mailing list")}
@@ -113,6 +113,7 @@ export default function NewslatterForm() {
                 name="email"
                 type="email"
                 placeholder={t("email")}
+                className="bg-transparent"
                 disabled={isLoading}
               />
             </div>
@@ -143,7 +144,7 @@ export default function NewslatterForm() {
             type="submit"
             disabled={isLoading}
             className={cn("uppercase", {
-              "border border-textColor !bg-bgColor !text-textColor":
+              "border border-textColor !bg-transparent !text-textColor":
                 !emailValue,
             })}
           >

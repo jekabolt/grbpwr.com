@@ -49,6 +49,16 @@ export function DefaultMobileMenuDialog({
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex flex-col gap-10">
+        <div>
+          <AnimatedButton
+            animationDuration={1000}
+            animationArea="text"
+            href="/account"
+            className="uppercase"
+          >
+            {accountText}
+          </AnimatedButton>
+        </div>
         <div className="flex flex-col gap-5">
           {defaultMenuItems.map((item) => (
             <div key={item.label} className="w-full">
@@ -77,17 +87,10 @@ export function DefaultMobileMenuDialog({
           ))}
         </div>
         <div>
-          <AnimatedButton
-            animationDuration={1000}
-            animationArea="text"
-            href="/account"
-            className="uppercase"
-          >
-            {accountText}
-          </AnimatedButton>
-        </div>
-        <div className="self-start">
-          <MobileCountriesPopupTrigger />
+          <div className="w-full border-t border-textColor" />
+          <div className="self-start pt-5">
+            <MobileCountriesPopupTrigger />
+          </div>
         </div>
       </div>
       {!isSignedIn && <NewslatterForm />}

@@ -81,6 +81,7 @@ export default function InputField({
               value={field.value || ""}
               {...props}
               disabled={disabled}
+              className={props.className}
               onBlur={onBlur}
               onKeyDown={handleKeyDown}
               onChange={keyboardRestriction ? handleChange : field.onChange}
