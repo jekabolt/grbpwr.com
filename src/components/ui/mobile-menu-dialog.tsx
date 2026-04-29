@@ -52,11 +52,19 @@ export function DefaultMobileMenuDialog({
         <div>
           <AnimatedButton
             animationDuration={1000}
-            animationArea="text"
             href="/account"
             className="uppercase"
           >
-            {accountText}
+            {isSignedIn ? (
+              <div className="flex gap-2">
+                <Text>{tAccount("account")}:</Text>
+                <Text variant="uppercase" className="underline">
+                  {account?.firstName}
+                </Text>
+              </div>
+            ) : (
+              <Text>{tAccount("account")}</Text>
+            )}
           </AnimatedButton>
         </div>
         <div className="flex flex-col gap-5">
