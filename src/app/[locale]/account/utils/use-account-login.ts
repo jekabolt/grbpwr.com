@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import {
   requestAccountLoginCode,
@@ -17,6 +17,13 @@ type StoredLoginAttempt = {
   email: string;
   step: LoginStep;
   resendAvailableAt: number;
+};
+
+type InitialLoginState = {
+  email: string;
+  step: LoginStep;
+  resendSeconds: number;
+  storageChecked: boolean;
 };
 
 function readStoredLoginAttempt(): StoredLoginAttempt | null {
@@ -70,18 +77,51 @@ function clearStoredLoginAttempt(): void {
   } catch { }
 }
 
+function getInitialLoginState(): InitialLoginState {
+  if (typeof window === "undefined") {
+    return {
+      email: "",
+      step: "email",
+      resendSeconds: 0,
+      storageChecked: false,
+    };
+  }
+
+  const stored = readStoredLoginAttempt();
+  if (!stored) {
+    return {
+      email: "",
+      step: "email",
+      resendSeconds: 0,
+      storageChecked: true,
+    };
+  }
+
+  return {
+    email: stored.email,
+    step: stored.step,
+    resendSeconds: Math.max(
+      0,
+      Math.ceil((stored.resendAvailableAt - Date.now()) / 1000),
+    ),
+    storageChecked: true,
+  };
+}
+
 export function useAccountLogin() {
   const router = useRouter();
   const t = useTranslations("account");
-  const [email, setEmail] = useState("");
+  const [initialState] = useState(getInitialLoginState);
+  const [email, setEmail] = useState(initialState.email);
   const [code, setCode] = useState("");
-  const [step, setStep] = useState<LoginStep>("email");
+  const [step, setStep] = useState<LoginStep>(initialState.step);
   const [pending, setPending] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [resendSeconds, setResendSeconds] = useState(0);
-  const [storageChecked, setStorageChecked] = useState(false);
+  const [resendSeconds, setResendSeconds] = useState(initialState.resendSeconds);
+  const [storageChecked, setStorageChecked] = useState(initialState.storageChecked);
   const [codeVerified, setCodeVerified] = useState(false);
+  const requestInFlightRef = useRef(false);
 
   const normalizedEmail = email.trim().toLowerCase();
   const normalizedCode = code.trim();
@@ -94,6 +134,7 @@ export function useAccountLogin() {
   };
 
   useIsomorphicLayoutEffect(() => {
+    if (storageChecked) return;
     const stored = readStoredLoginAttempt();
     if (!stored) {
       setStorageChecked(true);
@@ -128,12 +169,15 @@ export function useAccountLogin() {
   }
 
   async function sendLoginCode(moveToCodeStep: boolean) {
+    if (pending || requestInFlightRef.current) return false;
+    if (!moveToCodeStep && resendSeconds > 0) return false;
     if (!isValidEmail) {
       openErrorToast("invalid email");
       return false;
     }
 
     setCodeVerified(false);
+    requestInFlightRef.current = true;
     setPending(true);
     try {
       const result = await requestAccountLoginCode(normalizedEmail);
@@ -149,6 +193,7 @@ export function useAccountLogin() {
       setResendSeconds(RESEND_TIMEOUT_SECONDS);
       return true;
     } finally {
+      requestInFlightRef.current = false;
       setPending(false);
     }
   }

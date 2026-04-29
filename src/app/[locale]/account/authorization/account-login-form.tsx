@@ -33,6 +33,7 @@ export function AccountLoginForm({
     toastOpen,
     toastMessage,
     resendSeconds,
+    storageChecked,
     isValidEmail,
     setEmail,
     setCode,
@@ -43,8 +44,13 @@ export function AccountLoginForm({
   } = useAccountLogin();
 
   useEffect(() => {
+    if (!storageChecked) return;
     onStepChange?.(step);
-  }, [onStepChange, step]);
+  }, [onStepChange, step, storageChecked]);
+
+  if (!storageChecked) {
+    return <div className="h-[340px] w-full lg:max-w-[400px]" aria-hidden />;
+  }
 
   return (
     <>
