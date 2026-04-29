@@ -40,22 +40,19 @@ export function AddressesSelector({
     >
       <RadixSelect.Trigger
         className={cn(
-          "flex w-full items-center justify-between gap-2 border-b border-textColor bg-bgColor text-left text-textBaseSize leading-none focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
+          "flex w-full items-center gap-1.5 border-b border-textColor bg-bgColor text-left text-textBaseSize leading-none focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
         )}
         aria-label="select saved address"
       >
         <RadixSelect.Icon
-          className={cn("shrink-0 rotate-180 text-textColor underline", {
+          className={cn("rotate-180 text-textColor underline", {
             "rotate-0": open,
             "text-textInactiveColor": isDisabled,
           })}
         >
           <Arrow />
         </RadixSelect.Icon>
-        <Text
-          variant="uppercase"
-          className="min-w-0 flex-1 truncate text-center"
-        >
+        <Text variant="uppercase" className="min-w-0 truncate text-center">
           {t("use other address")}
         </Text>
       </RadixSelect.Trigger>
@@ -63,8 +60,9 @@ export function AddressesSelector({
       <RadixSelect.Portal>
         <RadixSelect.Content
           position="popper"
-          className="z-[100] overflow-hidden border border-textInactiveColor bg-bgColor"
-          style={{ width: "var(--radix-select-trigger-width)" }}
+          align="start"
+          collisionPadding={10}
+          className="z-[100] w-[calc(100vw-1.25rem)] overflow-hidden border border-textInactiveColor bg-bgColor lg:w-auto"
         >
           <RadixSelect.Viewport className="max-h-[360px] bg-bgColor">
             {addresses.map((address) => (

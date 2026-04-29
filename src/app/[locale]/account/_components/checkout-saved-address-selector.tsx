@@ -135,8 +135,8 @@ export function CheckoutSavedAddressSelector({
         onEditModeChange={setIsAddressEditing}
       />
       {!isAddressEditing && (
-        <div className="flex items-end justify-between">
-          <div className="w-48">
+        <div className="flex w-full items-end justify-between">
+          <div className="w-auto">
             <AddressesSelector
               savedAddressId={savedAddressId || ""}
               handleValueChange={handleSavedAddressChange}
