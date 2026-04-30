@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import { type MouseEvent } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
@@ -87,8 +88,30 @@ export function MobileEmailPreferenceStepRow({
   onCommitted: () => void;
 }) {
   const t = useTranslations("account");
+  const form = useFormContext<AccountSchema>();
+  const name = step.name as StepName;
+  const value = useWatch({ control: form.control, name });
+
+  const onContainerClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (disabled) return;
+    const target = event.target as HTMLElement;
+    if (target.closest("button,label,a,input,textarea,select")) return;
+
+    form.setValue(name, !value, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    onCommitted();
+  };
+
   return (
-    <div className="flex items-center border-b border-textInactiveColor py-6">
+    <div
+      className={cn(
+        "flex items-center border-b border-textInactiveColor py-6",
+        !disabled && "cursor-pointer",
+      )}
+      onClick={onContainerClick}
+    >
       <CheckboxField
         name={step.name}
         label={t(step.label)}
@@ -97,10 +120,6 @@ export function MobileEmailPreferenceStepRow({
         onCheckedChange={onCommitted}
         isEmailPreference
       />
-      {/* <div className="flex flex-col gap-3">
-        <Text variant="uppercase">{t(step.label)}</Text>
-        <Text>{t(step.description)}</Text>
-      </div> */}
     </div>
   );
 }
