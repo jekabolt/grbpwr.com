@@ -66,6 +66,7 @@ export function AccountLoginForm({
       <div
         className={cn("flex w-full items-center", {
           "min-h-[340px] justify-center": !showCartSummary,
+          "pb-28": showCartSummary,
           "lg:grid lg:max-w-[1000px] lg:grid-cols-2 lg:items-center lg:gap-20":
             showCartSummary,
         })}
