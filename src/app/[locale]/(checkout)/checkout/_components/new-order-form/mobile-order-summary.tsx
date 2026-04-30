@@ -59,6 +59,7 @@ export function MobileOrderSummary({
         trigger="active"
         color="dark"
         active={overlay && isOpen}
+        disablePointerEvents={overlay ? false : true}
         onClick={handleToggle}
       />
       <FieldsGroupContainer

@@ -4,6 +4,7 @@ import { useEffect, type ChangeEvent } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
+import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/input";
@@ -13,6 +14,10 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 
 import { UserLocationTrigger } from "../_components/user-location";
 import { useAccountLogin } from "../utils/use-account-login";
+import {
+  AccountCartDesktopOrderSummary,
+  AccountCartMobileOrderSummary,
+} from "./account-cart-mobile-order-summary";
 
 export type AccountLoginStep = "email" | "code";
 
@@ -25,6 +30,9 @@ export function AccountLoginForm({
   onCheckoutAsGuest?: () => void;
   onStepChange?: (step: AccountLoginStep) => void;
 }) {
+  const hasCartSummary = useCart((state) =>
+    state.products.some((product) => Boolean(product.productData)),
+  );
   const {
     email,
     code,
@@ -42,6 +50,7 @@ export function AccountLoginForm({
     resendCode,
     verifyCode,
   } = useAccountLogin();
+  const showCartSummary = hasCartSummary && step === "email";
 
   useEffect(() => {
     if (!storageChecked) return;
@@ -54,28 +63,46 @@ export function AccountLoginForm({
 
   return (
     <>
-      <div className="flex h-auto w-full items-center gap-6 lg:max-w-[400px]">
-        {step === "email" ? (
-          <EmailStep
-            email={email}
-            pending={pending}
-            isValidEmail={isValidEmail}
-            isCheckout={isCheckout}
-            onEmailChange={setEmail}
-            onContinue={sendInitialCode}
-            onCheckoutAsGuest={onCheckoutAsGuest}
-          />
-        ) : (
-          <CodeStep
-            code={code}
-            pending={pending}
-            resendSeconds={resendSeconds}
-            onCodeChange={setCode}
-            onCodeComplete={verifyCode}
-            onResend={resendCode}
-          />
+      <div
+        className={cn("flex w-full items-center", {
+          "min-h-[340px] justify-center": !showCartSummary,
+          "lg:grid lg:max-w-[1000px] lg:grid-cols-2 lg:items-center lg:gap-20":
+            showCartSummary,
+        })}
+      >
+        <div className="mx-auto flex h-auto w-full items-center gap-6 lg:max-w-[400px]">
+          {step === "email" ? (
+            <EmailStep
+              email={email}
+              pending={pending}
+              isValidEmail={isValidEmail}
+              isCheckout={isCheckout}
+              onEmailChange={setEmail}
+              onContinue={sendInitialCode}
+              onCheckoutAsGuest={onCheckoutAsGuest}
+            />
+          ) : (
+            <CodeStep
+              code={code}
+              pending={pending}
+              resendSeconds={resendSeconds}
+              onCodeChange={setCode}
+              onCodeComplete={verifyCode}
+              onResend={resendCode}
+            />
+          )}
+        </div>
+        {showCartSummary && (
+          <div className="hidden lg:block">
+            <AccountCartDesktopOrderSummary />
+          </div>
         )}
       </div>
+      {showCartSummary && (
+        <div className="fixed inset-x-2.5 bottom-6 lg:hidden">
+          <AccountCartMobileOrderSummary />
+        </div>
+      )}
       <SubmissionToaster
         open={toastOpen}
         message={toastMessage}
