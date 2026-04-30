@@ -9,7 +9,7 @@ export default async function AccountPage() {
 
   return (
     <FlexibleLayout displayFooter={false}>
-      <div className="flex min-h-[100svh] items-center justify-center px-2.5 lg:min-h-screen lg:p-0">
+      <div className="flex min-h-[calc(100svh-3.5rem)] items-center justify-center px-2.5 pt-14 lg:min-h-screen lg:p-0">
         {account ? (
           <AccountSignedInSection account={account} />
         ) : (
