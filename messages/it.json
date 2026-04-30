@@ -52,6 +52,7 @@
     "privacy_policy_required": "accetta l'informativa sulla privacy e la politica di membership",
     "edit": "modifica",
     "delete": "elimina",
+    "sure?": "sicuro?",
     "default": "predefinito",
     "you are in country: {country} / {currency}": "ti trovi nel paese: {country} / {currency}",
     "change location": "cambia posizione"

@@ -31,7 +31,6 @@ export function AddressesSection({
     addresses,
     pending,
     loaded,
-    toastMessage,
     defaultId,
     deletingId,
     handleDefaultAddress,

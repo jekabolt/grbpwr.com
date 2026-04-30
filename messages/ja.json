@@ -52,6 +52,7 @@
     "privacy_policy_required": "プライバシーポリシーとメンバーシップポリシーへの同意が必要です",
     "edit": "編集",
     "delete": "削除",
+    "sure?": "よろしいですか？",
     "default": "デフォルト",
     "you are in country: {country} / {currency}": "現在の国: {country} / {currency}",
     "change location": "ロケーションを変更"

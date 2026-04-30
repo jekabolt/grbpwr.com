@@ -52,6 +52,7 @@
     "privacy_policy_required": "请先同意隐私政策和会员政策",
     "edit": "编辑",
     "delete": "删除",
+    "sure?": "确定吗？",
     "default": "默认",
     "you are in country: {country} / {currency}": "您所在国家：{country} / {currency}",
     "change location": "更改位置"

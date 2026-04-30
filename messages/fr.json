@@ -52,6 +52,7 @@
     "privacy_policy_required": "veuillez accepter la politique de confidentialité et la politique d'adhésion",
     "edit": "modifier",
     "delete": "supprimer",
+    "sure?": "tu es sûr?",
     "default": "par défaut",
     "you are in country: {country} / {currency}": "vous êtes dans le pays : {country} / {currency}",
     "change location": "changer de localisation"

@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import type {
   StorefrontAccount,
   StorefrontSavedAddress,
@@ -42,6 +43,33 @@ export function AddressListItem({
 }: AddressListItemProps) {
   const t = useTranslations("account");
   const addressId = address.id as number;
+  const deleteZoneRef = useRef<HTMLDivElement | null>(null);
+
+  const [addressToRemove, setAddressToRemove] = useState<number | null>(null);
+
+  function handleDeleteClick() {
+    if (addressToRemove !== addressId) {
+      setAddressToRemove(addressId);
+      return;
+    }
+
+    onDelete(addressId);
+  }
+
+  useEffect(() => {
+    if (addressToRemove !== addressId) return;
+
+    function handleOutsideClick(event: MouseEvent) {
+      const target = event.target as Node;
+      if (deleteZoneRef.current?.contains(target)) return;
+      setAddressToRemove(null);
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [addressId, addressToRemove]);
 
   return (
     <div className="space-y-3">
@@ -61,15 +89,17 @@ export function AddressListItem({
               {t("edit")}
             </Button>
             {!defaultOnly && (
-              <Button
-                type="button"
-                variant="underline"
-                className="uppercase"
-                onClick={() => onDelete(addressId)}
-                disabled={pending || deletingId === addressId || isDisabled}
-              >
-                {t("delete")}
-              </Button>
+              <div ref={deleteZoneRef}>
+                <Button
+                  type="button"
+                  variant="underline"
+                  className="uppercase"
+                  onClick={handleDeleteClick}
+                  disabled={pending || deletingId === addressId || isDisabled}
+                >
+                  {addressToRemove === addressId ? t("sure?") : t("delete")}
+                </Button>
+              </div>
             )}
           </div>
         </div>

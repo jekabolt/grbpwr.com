@@ -51,6 +51,7 @@
     "privacy_policy_required": "please accept privacy policy and membership policy",
     "edit": "edit",
     "delete": "delete",
+    "sure?": "sure?",
     "default": "default",
     "you are in country: {country} / {currency}": "you are in country: {country} / {currency}",
     "change location": "change location",

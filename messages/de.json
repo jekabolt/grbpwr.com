@@ -52,6 +52,7 @@
     "privacy_policy_required": "bitte akzeptieren sie die datenschutzerklärung und mitgliedschaftsrichtlinie",
     "edit": "bearbeiten",
     "delete": "löschen",
+    "sure?": "sicher?",
     "default": "standard",
     "you are in country: {country} / {currency}": "sie sind im land: {country} / {currency}",
     "change location": "standort ändern"
