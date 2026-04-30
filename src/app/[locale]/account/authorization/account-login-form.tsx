@@ -62,7 +62,7 @@ export function AccountLoginForm({
   }
 
   return (
-    <>
+    <div className="flex h-full w-full items-center justify-center border border-red-500">
       <div
         className={cn("flex w-full items-center", {
           "min-h-[340px] justify-center": !showCartSummary,
@@ -109,7 +109,7 @@ export function AccountLoginForm({
         message={toastMessage}
         onOpenChange={setToastOpen}
       />
-    </>
+    </div>
   );
 }
 
