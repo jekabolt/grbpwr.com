@@ -9,15 +9,16 @@ import {
 } from "@/constants";
 import { useTranslations } from "next-intl";
 
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { WhiteLogo } from "@/components/ui/icons/white-logo";
 import { Logo } from "@/components/ui/logo";
 import { Text } from "@/components/ui/text";
 
-import { CountriesPopup } from "./CountriesPopup";
 import { FooterNavMobile } from "./footer-nav-mobile";
 import HelpPopover from "./help-popover";
+import { MobileCountriesPopupTrigger } from "./mobile-countries-popup";
 import NewslatterForm from "./newslatter-form";
 
 function LiveClock() {
@@ -46,11 +47,12 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
   const t = useTranslations("footer");
 
   const { currentCountry, openCountryPopup } = useTranslationsStore((s) => s);
+  const { isSignedIn } = useAccountOnboardingStore((s) => s);
 
   return (
     <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
       <div className="flex justify-center pt-16 lg:py-52">
-        <div className="flex w-full flex-col gap-y-16 lg:w-auto lg:flex-row lg:gap-x-20">
+        <div className="flex w-full flex-col gap-y-16 lg:w-auto lg:flex-row lg:items-start lg:gap-x-20">
           <div className="flex justify-center lg:justify-end">
             <iframe
               src={
@@ -59,8 +61,8 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
                   : "https://art.grbpwr.com"
               }
               loading="lazy"
-              className="h-40 w-40 border-0 lg:hidden"
-              title="Art"
+              className="h-56 w-56 border-0 lg:hidden"
+              title="logo"
             />
             {theme === "dark" ? (
               <Logo className="hidden aspect-square h-full w-40 lg:block" />
@@ -68,9 +70,11 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
               <WhiteLogo className="hidden aspect-square h-full w-40 lg:block" />
             )}
           </div>
-          <div className="w-full lg:w-[346px]">
-            <NewslatterForm />
-          </div>
+          {!isSignedIn && (
+            <div className="w-full lg:w-[346px]">
+              <NewslatterForm />
+            </div>
+          )}
         </div>
       </div>
       <div className="flex flex-col justify-between gap-x-24 lg:flex-row lg:items-start lg:px-7">
@@ -110,7 +114,7 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
             {t("country")}: {currentCountry.name} /{" "}
             {currencySymbols[currentCountry.currencyKey || "EUR"]}
           </Button>
-          <CountriesPopup />
+          <MobileCountriesPopupTrigger />
         </div>
       </div>
     </footer>

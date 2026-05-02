@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { FormField, FormItem, FormLabel, FormMessage } from "..";
@@ -11,6 +12,11 @@ type Props = {
   className?: string;
   hideFormMessage?: boolean;
   items: { label: string; value: string }[];
+  renderValue?: (
+    selectedValue: string,
+    selectedItem: { label: string; value: string } | undefined,
+  ) => ReactNode;
+  onValueChange?: (value: string) => void;
   [k: string]: any;
 };
 
@@ -22,6 +28,8 @@ export default function SelectField({
   className,
   disabled,
   hideFormMessage,
+  renderValue,
+  onValueChange: onValueChangeSideEffect,
   ...props
 }: Props) {
   const { control, trigger } = useFormContext();
@@ -42,8 +50,12 @@ export default function SelectField({
             </FormLabel>
           )}
           <Select
-            onValueChange={field.onChange}
+            onValueChange={(v: string) => {
+              field.onChange(v);
+              onValueChangeSideEffect?.(v);
+            }}
             items={items}
+            renderValue={renderValue}
             {...field}
             {...props}
             className={className}

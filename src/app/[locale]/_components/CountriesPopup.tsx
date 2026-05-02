@@ -24,7 +24,7 @@ export function CountriesPopup() {
             <ModalTransition
               isOpen={isOpen}
               contentSlideFrom="right"
-              contentClassName="fixed inset-y-2 right-2 z-30 w-[460px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor"
+              contentClassName="fixed inset-y-2 right-2 z-[70] w-[460px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor"
               content={<CountriesContent />}
             />
           </>

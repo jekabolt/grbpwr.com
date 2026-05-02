@@ -26,7 +26,7 @@ export default function FlexibleLayout({
         blackTheme: theme === "dark",
       })}
     >
-      <div className={cn("relative min-h-screen", className)}>
+      <div className={cn("relative min-h-dvh", className)}>
         {mobileHeaderType === "flexible" && (
           <div className="block lg:hidden">
             <MobileProductInfoHeader {...headerProps} />

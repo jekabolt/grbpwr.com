@@ -4,7 +4,8 @@ export type LegalSection =
     | "cookies"
     | "return-exchange"
     | "terms-of-sale"
-    | "legal-notice";
+    | "legal-notice"
+    | "membership";
 
 export const legalSections: Record<LegalSection, { title: string; file?: string }> = {
     privacy: {
@@ -29,6 +30,10 @@ export const legalSections: Record<LegalSection, { title: string; file?: string 
     },
     cookies: {
         title: "cookie settings",
+    },
+    membership: {
+        title: "membership policy",
+        file: "/content/legal/membership.md",
     },
 };
 

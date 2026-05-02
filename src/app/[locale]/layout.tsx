@@ -24,6 +24,8 @@ import "../globals.css";
 
 import { UpdateLocation } from "@/components/ui/update-location";
 
+import { CountriesPopup } from "./_components/CountriesPopup";
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -98,9 +100,10 @@ export default async function RootLayout({ children, params }: Props) {
           <ToastProvider>
             <PageTransition>
               <SiteGuard>
-                <div className="relative min-h-screen">{children}</div>
+                <div className="relative min-h-dvh">{children}</div>
               </SiteGuard>
             </PageTransition>
+            <CountriesPopup />
             <GeoSuggestWrapper />
             <UpdateLocation />
             <AnalyticsInit />

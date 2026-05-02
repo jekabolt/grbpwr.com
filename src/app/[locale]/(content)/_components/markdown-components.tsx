@@ -23,6 +23,10 @@ export const CustomOrderedList = ({ children, ...props }: any) => {
   );
 };
 
+export const CustomListItem = ({ children, ...props }: any) => {
+  return <li {...props}>{children}</li>;
+};
+
 export const createCustomLink = (
   onSectionChange?: (section: string) => void,
 ) => {
@@ -41,7 +45,6 @@ export const createCustomLink = (
     }
     if (href?.startsWith("mailto:")) {
       const email = href.replace("mailto:", "");
-      console.log("email", email);
       return (
         <CopyText
           text={email}
@@ -71,5 +74,6 @@ export const createMarkdownComponents = (
   p: CustomParagraph,
   ul: CustomList,
   ol: CustomOrderedList,
+  li: CustomListItem,
   a: createCustomLink(onSectionChange),
 });

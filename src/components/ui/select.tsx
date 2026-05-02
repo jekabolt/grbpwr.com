@@ -13,6 +13,7 @@ export default function SelectComponent({
   fullWidth,
   renderValue,
   singleLineSelectedValue,
+  readOnly,
   ...props
 }: {
   name: string;
@@ -21,6 +22,7 @@ export default function SelectComponent({
   customWidth?: number;
   fullWidth?: boolean;
   singleLineSelectedValue?: boolean;
+  readOnly?: boolean;
   renderValue?: (
     selectedValue: string,
     selectedItem: { label: string; value: string } | undefined,
@@ -28,9 +30,28 @@ export default function SelectComponent({
   [k: string]: any;
 }) {
   const [open, setOpen] = useState(false);
+  const isReadOnly = Boolean(readOnly);
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (props.disabled || isReadOnly) {
+      setOpen(false);
+      return;
+    }
+    setOpen(nextOpen);
+  };
+
+  const handleValueChange = (value: string) => {
+    if (isReadOnly) return;
+    props.onValueChange?.(value);
+  };
 
   return (
-    <Select.Root {...props} open={open} onOpenChange={setOpen}>
+    <Select.Root
+      {...props}
+      onValueChange={handleValueChange}
+      open={open}
+      onOpenChange={handleOpenChange}
+    >
       <SelectTrigger
         placeholder={props.placeholder}
         className={className}
@@ -38,6 +59,7 @@ export default function SelectComponent({
         value={props.value}
         items={items}
         isOpen={open}
+        readOnly={isReadOnly}
         singleLineSelectedValue={singleLineSelectedValue}
       >
         <Arrow
@@ -84,6 +106,7 @@ export function SelectTrigger({
   value,
   items,
   isOpen,
+  readOnly,
   renderValue,
   singleLineSelectedValue,
 }: {
@@ -93,6 +116,7 @@ export function SelectTrigger({
   value?: string;
   items?: { label: string; value: string }[];
   isOpen?: boolean;
+  readOnly?: boolean;
   singleLineSelectedValue?: boolean;
   renderValue?: (
     selectedValue: string,
@@ -115,6 +139,7 @@ export function SelectTrigger({
         className,
       )}
       aria-label={placeholder}
+      aria-readonly={readOnly || undefined}
     >
       {singleLineSelectedValue ? (
         <span className="min-w-0 flex-1 truncate text-left [&_[data-placeholder]]:truncate">

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
@@ -8,6 +9,7 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { formatPrice } from "@/lib/currency";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
@@ -15,6 +17,12 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
+import { AccountSignedInSection } from "@/app/[locale]/account/account-signed-in-section";
+import {
+  AccountLoginForm,
+  type AccountLoginStep,
+} from "@/app/[locale]/account/authorization/account-login-form";
+import { accountNeedsNameCompletion } from "@/app/[locale]/account/utils/utility";
 
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
@@ -34,11 +42,25 @@ import ShippingFieldsGroup from "./shipping-fields-group";
 
 type NewOrderFormProps = {
   onAmountChange: (amount: number) => void;
+  initialAccount: StorefrontAccount | null;
 };
 
-export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
+export default function NewOrderForm({
+  onAmountChange,
+  initialAccount,
+}: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
   const { products, totalPrice, validatedCurrency } = useCart((s) => s);
+  const { isSignedIn } = useAccountOnboardingStore((s) => s);
+  const [guestCheckout, setGuestCheckout] = useState(false);
+  const [checkoutLoginStep, setCheckoutLoginStep] =
+    useState<AccountLoginStep>("email");
+  const [checkoutProfileCompleted, setCheckoutProfileCompleted] =
+    useState(false);
+
+  useEffect(() => {
+    if (isSignedIn) setGuestCheckout(false);
+  }, [isSignedIn]);
 
   const formRef = useRef<HTMLFormElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
@@ -56,9 +78,13 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
   });
 
   const { order, validateItems, orderCurrency } = useValidatedOrder(form);
-  const { clearFormData } = useOrderPersistence(
+  const { clearFormData, applyCheckoutIdentity } = useOrderPersistence(
     form,
     currentCountry.countryCode,
+    {
+      isSignedIn,
+      initialAccount,
+    },
   );
   const { isGroupOpen, handleGroupToggle, isGroupDisabled, handleFormChange } =
     useAutoGroupOpen(form);
@@ -118,60 +144,123 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
     paymentMethod,
   });
 
+  const showCheckoutFields = isSignedIn || guestCheckout;
+  const hideOrderSummary = !showCheckoutFields && checkoutLoginStep === "code";
+  const showMobileOrderSummaryOverlay =
+    !showCheckoutFields && checkoutLoginStep === "email";
+  const showProfilePrompt =
+    isSignedIn &&
+    !!initialAccount &&
+    accountNeedsNameCompletion(initialAccount) &&
+    !checkoutProfileCompleted;
+
+  const centerAuthOnMobile =
+    !showCheckoutFields || showProfilePrompt;
+
+  const handleProfileCompleted = (data: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    country: string;
+  }) => {
+    setCheckoutProfileCompleted(true);
+    applyCheckoutIdentity(data, {
+      overwriteExisting: true,
+      shouldValidate: true,
+    });
+  };
+
   return (
     <>
       <Form {...form}>
         <form
           ref={formRef}
           onSubmit={form.handleSubmit(handleValidSubmit, handleSubmitInvalid)}
-          className="relative space-y-14 lg:space-y-0"
+          className="relative h-full space-y-14 lg:space-y-0"
         >
-          <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
-            <div className="block lg:hidden">
-              <MobileOrderSummary
-                form={form}
-                order={order}
-                validatedProducts={order?.validItems}
-                orderCurrency={orderCurrency}
-                disabled={loading}
-              />
-            </div>
-            <div className="space-y-10 lg:space-y-16">
-              <div ref={contactRef}>
-                <ContactFieldsGroup
-                  loading={loading}
-                  isOpen={isGroupOpen("contact")}
-                  onToggle={() => handleGroupToggle("contact")}
-                  disabled={isGroupDisabled("contact") || loading}
-                />
-              </div>
-              <div ref={shippingRef}>
-                <ShippingFieldsGroup
-                  loading={loading}
-                  order={order}
-                  isOpen={isGroupOpen("shipping")}
-                  onToggle={() => handleGroupToggle("shipping")}
-                  disabled={isGroupDisabled("shipping") || loading}
-                />
-              </div>
-              <div ref={paymentRef}>
-                <PaymentFieldsGroup
-                  loading={loading}
+          <div
+            className={cn(
+              "flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28",
+              centerAuthOnMobile &&
+                "min-h-[calc(100dvh-7rem)] justify-center lg:min-h-0 lg:justify-start",
+            )}
+          >
+            {!hideOrderSummary && (
+              <div
+                className={cn("block lg:hidden", {
+                  "fixed inset-x-2.5 bottom-6": !showCheckoutFields,
+                })}
+              >
+                <MobileOrderSummary
                   form={form}
-                  validateItems={validateItems}
-                  isOpen={isGroupOpen("payment")}
-                  onToggle={() => handleGroupToggle("payment")}
-                  disabled={isGroupDisabled("payment") || loading}
-                  onPaymentElementChange={setIsPaymentElementComplete}
-                  showPaymentError={
-                    (form.formState.isSubmitted ||
-                      form.formState.submitCount > 0) &&
-                    !isPaymentFieldsValid &&
-                    paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
-                  }
+                  order={order}
+                  validatedProducts={order?.validItems}
+                  orderCurrency={orderCurrency}
+                  disabled={loading}
+                  overlay={showMobileOrderSummaryOverlay}
                 />
               </div>
-            </div>
+            )}
+            {!showCheckoutFields ? (
+              <div className="w-full shrink-0 lg:pt-10">
+                <AccountLoginForm
+                  isCheckout
+                  onStepChange={setCheckoutLoginStep}
+                  onCheckoutAsGuest={() => setGuestCheckout(true)}
+                />
+              </div>
+            ) : showProfilePrompt ? (
+              <div className="w-full shrink-0 lg:pt-10">
+                <AccountSignedInSection
+                  account={initialAccount}
+                  isCheckout
+                  onProfileCompleted={handleProfileCompleted}
+                />
+              </div>
+            ) : (
+              <div className="space-y-10 lg:space-y-16">
+                <>
+                  <div ref={contactRef}>
+                    <ContactFieldsGroup
+                      loading={loading}
+                      isOpen={isGroupOpen("contact")}
+                      isSignedIn={isSignedIn}
+                      initialAccountEmail={initialAccount?.email ?? ""}
+                      onToggle={() => handleGroupToggle("contact")}
+                      disabled={isGroupDisabled("contact") || loading}
+                    />
+                  </div>
+                  <div ref={shippingRef}>
+                    <ShippingFieldsGroup
+                      loading={loading}
+                      order={order}
+                      account={initialAccount as StorefrontAccount}
+                      isOpen={isGroupOpen("shipping")}
+                      onToggle={() => handleGroupToggle("shipping")}
+                      disabled={isGroupDisabled("shipping") || loading}
+                    />
+                  </div>
+                  <div ref={paymentRef}>
+                    <PaymentFieldsGroup
+                      loading={loading}
+                      form={form}
+                      validateItems={validateItems}
+                      isOpen={isGroupOpen("payment")}
+                      onToggle={() => handleGroupToggle("payment")}
+                      disabled={isGroupDisabled("payment") || loading}
+                      onPaymentElementChange={setIsPaymentElementComplete}
+                      showPaymentError={
+                        (form.formState.isSubmitted ||
+                          form.formState.submitCount > 0) &&
+                        !isPaymentFieldsValid &&
+                        paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
+                      }
+                    />
+                  </div>
+                </>
+              </div>
+            )}
             <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
               <div className="hidden space-y-8 lg:block">
                 <Text
@@ -207,18 +296,20 @@ export default function NewOrderForm({ onAmountChange }: NewOrderFormProps) {
                   />
                 </div>
               </div>
-              <Button
-                type="submit"
-                variant="main"
-                size="lg"
-                className="w-full uppercase"
-                disabled={loading}
-                loading={loading}
-                loadingType="order-processing"
-                analyticsButtonId="place_order"
-              >
-                {`${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`}
-              </Button>
+              {showCheckoutFields ? (
+                <Button
+                  type="submit"
+                  variant="main"
+                  size="lg"
+                  className="w-full uppercase"
+                  disabled={loading || !form.formState.isValid}
+                  loading={loading}
+                  loadingType="order-processing"
+                  analyticsButtonId="place_order"
+                >
+                  {`${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`}
+                </Button>
+              ) : null}
             </div>
           </div>
         </form>

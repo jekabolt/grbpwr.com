@@ -34,6 +34,9 @@ const baseCheckoutSchema = z.object({
     message: "you must accept the terms & conditions",
   }),
   ...addressFields,
+  // UI-only: lets signed-in users pick which saved address to use for shipping.
+  // Not sent/used on the backend order payload.
+  savedAddressId: z.string().optional(),
   shipmentCarrierId: z.string().min(1, errorMessages.shipmentCarrierId.min),
   promoCode: z.string().optional(),
 
@@ -116,6 +119,7 @@ export const defaultData: Omit<z.infer<typeof checkoutSchema>, "paymentMethod"> 
   additionalAddress: "",
   company: "",
   postalCode: "",
+  savedAddressId: "",
   shipmentCarrierId: "",
   subscribe: false,
   billingAddressIsSameAsAddress: true,

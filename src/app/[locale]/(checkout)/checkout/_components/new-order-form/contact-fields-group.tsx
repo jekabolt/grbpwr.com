@@ -1,29 +1,35 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { useEffect, useRef } from "react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
-import CheckboxField from "@/components/ui/form/fields/checkbox-field";
-import InputField from "@/components/ui/form/fields/input-field";
 import {
   sendGenerateLeadEvent,
   sendNewsletterSignupEvent,
 } from "@/lib/analitycs/form";
 import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
+import CheckboxField from "@/components/ui/form/fields/checkbox-field";
+import InputField from "@/components/ui/form/fields/input-field";
+import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "./fields-group-container";
 
 export default function ContactFieldsGroup({
   loading,
   isOpen,
+  isSignedIn,
+  initialAccountEmail,
   disabled = false,
   onToggle,
 }: {
   loading: boolean;
   isOpen: boolean;
+  isSignedIn?: boolean;
+  initialAccountEmail?: string;
   disabled?: boolean;
   onToggle: () => void;
 }) {
@@ -61,43 +67,51 @@ export default function ContactFieldsGroup({
       onToggle={onToggle}
       disabled={disabled}
     >
-      <InputField
-        loading={loading}
-        variant="secondary"
-        name="email"
-        label={t("email address:")}
-        type="email"
-        disabled={disabled}
-      />
-      <div className="space-y-4" data-nosnippet>
-        <CheckboxField
-          name="subscribe"
-          label={t("accept")}
-          disabled={disabled}
-        />
-        <CheckboxField
-          name="termsOfService"
-          label={
-            <>
-              *{t("proceed")}{" "}
-              <Link
-                href="/legal-notices?section=terms"
-                className="underline hover:no-underline"
-              >
-                {t("terms and conditions")}
-              </Link>{" "}
-              {t("and").toLocaleUpperCase()}{" "}
-              <Link
-                href="/legal-notices?section=privacy"
-                className="underline hover:no-underline"
-              >
-                {t("privacy information notice")}
-              </Link>
-            </>
-          }
-          disabled={disabled}
-        />
-      </div>
+      {isSignedIn ? (
+        <Text className={cn({ "text-textInactiveColor": disabled })}>
+          {initialAccountEmail}
+        </Text>
+      ) : (
+        <>
+          <InputField
+            loading={loading}
+            variant="secondary"
+            name="email"
+            label={t("email address:")}
+            type="email"
+            disabled={disabled}
+          />
+          <div className="space-y-4" data-nosnippet>
+            <CheckboxField
+              name="subscribe"
+              label={t("accept")}
+              disabled={disabled}
+            />
+            <CheckboxField
+              name="termsOfService"
+              label={
+                <>
+                  *{t("proceed")}{" "}
+                  <Link
+                    href="/legal-notices?section=terms"
+                    className="underline hover:no-underline"
+                  >
+                    {t("terms and conditions")}
+                  </Link>{" "}
+                  {t("and").toLocaleUpperCase()}{" "}
+                  <Link
+                    href="/legal-notices?section=privacy"
+                    className="underline hover:no-underline"
+                  >
+                    {t("privacy information notice")}
+                  </Link>
+                </>
+              }
+              disabled={disabled}
+            />
+          </div>
+        </>
+      )}
     </FieldsGroupContainer>
   );
 }

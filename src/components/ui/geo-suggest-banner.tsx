@@ -31,6 +31,7 @@ interface Props {
   suggestLocale?: string;
   currentCountry?: string;
   messages?: any;
+  forceVisible?: boolean;
 }
 
 export function GeoSuggestBanner({
@@ -38,6 +39,7 @@ export function GeoSuggestBanner({
   suggestLocale,
   currentCountry,
   messages,
+  forceVisible = false,
 }: Props) {
   const [visible, setVisible] = useState(false);
   const [isCookiesAccepted, setIsCookiesAccepted] = useState(() =>
@@ -74,6 +76,10 @@ export function GeoSuggestBanner({
 
   useEffect(() => {
     if (!suggestCountry || !suggestLocale) return;
+    if (forceVisible) {
+      setVisible(true);
+      return;
+    }
     const path =
       typeof window !== "undefined" ? window.location.pathname : pathname ?? "";
     const parsed = parseCountryLocalePath(path);
@@ -82,7 +88,7 @@ export function GeoSuggestBanner({
       parsed.country?.toLowerCase() === suggestCountry.toLowerCase() &&
       parsed.locale === suggestLocale;
     setVisible(!alreadyOnSuggested);
-  }, [pathname, suggestCountry, suggestLocale]);
+  }, [forceVisible, pathname, suggestCountry, suggestLocale]);
 
   useEffect(() => {
     const onConsentAccepted = () => setIsCookiesAccepted(true);
@@ -149,13 +155,15 @@ export function GeoSuggestBanner({
     }
   };
 
-  if (!visible || !isCookiesAccepted) return null;
+  if (!forceVisible && (!visible || !isCookiesAccepted)) return null;
 
   return (
     <Banner>
       <div className="flex flex-col gap-y-4 p-2.5">
         <Text className="uppercase">
-          {t("message", { country: suggestedCountryName || "" })}
+          {t("message", {
+            country: suggestedCountryName || "",
+          })}
         </Text>
         <div className="flex items-center justify-between gap-2">
           <Button

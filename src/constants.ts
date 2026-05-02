@@ -1,7 +1,9 @@
 import type {
+  AccountTierEnum,
   common_GenderEnum,
   common_OrderFactor,
   common_SortFactor,
+  ShoppingPreferenceEnum,
 } from "./api/proto-http/frontend";
 
 export const PRODUCTS_CACHE_TAG = "products";
@@ -32,6 +34,12 @@ export const GRBPWR_CART = "grbpwr-cart";
 
 export const ORDER_STATUS_DELIVERED_ID = 5;
 
+
+export const USER_TIER: Partial<Record<AccountTierEnum, string>> = {
+  ACCOUNT_TIER_ENUM_PLUS: "+",
+  ACCOUNT_TIER_ENUM_PLUS_PLUS: "++",
+  ACCOUNT_TIER_ENUM_HACKER: "hacker",
+} as const;
 export const GENDER_MAP: Record<string, common_GenderEnum> = {
   men: "GENDER_ENUM_MALE",
   women: "GENDER_ENUM_FEMALE",
@@ -58,7 +66,6 @@ export const SORT_MAP_URL: Record<string, common_SortFactor> = {
   price: "SORT_FACTOR_PRICE",
 };
 
-/** Proto enum name prefixes → strip for order-review i18n keys. */
 export const REVIEW_ENUM_PREFIX = {
   delivery: "DELIVERY_SPEED_ENUM_",
   packaging: "PACKAGING_CONDITION_ENUM_",
@@ -66,28 +73,33 @@ export const REVIEW_ENUM_PREFIX = {
   fit: "FIT_SCALE_ENUM_",
 } as const;
 
-/** Storefront-visible values only (excludes *_UNKNOWN). */
+export const EMAIL_PREFERENCES: Record<string, ShoppingPreferenceEnum> = {
+  all: "SHOPPING_PREFERENCE_ENUM_ALL",
+  men: "SHOPPING_PREFERENCE_ENUM_MALE",
+  women: "SHOPPING_PREFERENCE_ENUM_FEMALE",
+} as const
+
 export const DELIVERY_SPEED_VALUES = [
-  "DELIVERY_SPEED_ENUM_MUCH_FASTER_THAN_EXPECTED",
-  "DELIVERY_SPEED_ENUM_FASTER_THAN_EXPECTED",
-  "DELIVERY_SPEED_ENUM_AS_EXPECTED",
-  "DELIVERY_SPEED_ENUM_SLOWER_THAN_EXPECTED",
   "DELIVERY_SPEED_ENUM_MUCH_SLOWER_THAN_EXPECTED",
+  "DELIVERY_SPEED_ENUM_SLOWER_THAN_EXPECTED",
+  "DELIVERY_SPEED_ENUM_AS_EXPECTED",
+  "DELIVERY_SPEED_ENUM_FASTER_THAN_EXPECTED",
+  "DELIVERY_SPEED_ENUM_MUCH_FASTER_THAN_EXPECTED",
 ] as const;
 
 export const PACKAGING_VALUES = [
-  "PACKAGING_CONDITION_ENUM_EXCELLENT",
-  "PACKAGING_CONDITION_ENUM_GOOD",
-  "PACKAGING_CONDITION_ENUM_ACCEPTABLE",
   "PACKAGING_CONDITION_ENUM_DAMAGED",
+  "PACKAGING_CONDITION_ENUM_ACCEPTABLE",
+  "PACKAGING_CONDITION_ENUM_GOOD",
+  "PACKAGING_CONDITION_ENUM_EXCELLENT",
 ] as const;
 
 export const PRODUCT_RATING_VALUES = [
-  "PRODUCT_RATING_ENUM_EXCELLENT",
-  "PRODUCT_RATING_ENUM_VERY_GOOD",
-  "PRODUCT_RATING_ENUM_GOOD",
-  "PRODUCT_RATING_ENUM_FAIR",
   "PRODUCT_RATING_ENUM_POOR",
+  "PRODUCT_RATING_ENUM_FAIR",
+  "PRODUCT_RATING_ENUM_GOOD",
+  "PRODUCT_RATING_ENUM_VERY_GOOD",
+  "PRODUCT_RATING_ENUM_EXCELLENT",
 ] as const;
 
 export const FIT_SCALE_VALUES = [
@@ -135,7 +147,7 @@ export const currencySymbols: Record<string, string> = {
   // TRY: "₺", // Turkish Lira
   // UAH: "₴", // Ukrainian Hryvnia
   // HKD: "$", // Hong Kong Dollar
-};
+} as const;
 
 export type OrderFactorOption = {
   factor: common_OrderFactor;
@@ -343,7 +355,7 @@ export const MEASUREMENT_DESCRIPTIONS: Record<string, string> = {
 
 export const keyboardRestrictions = {
   nameFields: /[A-Za-z .'-]/,
-  addressField: /[A-Za-z0-9 .','-]/,
+  addressField: /[A-Za-z0-9 .','/-]/,
   postalCodeField: /[A-Za-z0-9 \-]/,
   companyField: /[A-Za-z0-9 .'-]/,
 };

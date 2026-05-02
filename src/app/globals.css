@@ -7,6 +7,7 @@
     /* COLORS */
     --text: #000;
     --inactive: #cccccc;
+    --inactive-alpha: rgba(180, 180, 180, 0.2);
     --background: #fff;
     --highlight: #311eee;
     --error: #ff0000;
@@ -52,6 +53,10 @@
     ::selection {
       @apply bg-acidColor text-bgColor;
     }
+  }
+
+  input[type="date"]::-webkit-date-and-time-value {
+    text-align: left;
   }
 }
 

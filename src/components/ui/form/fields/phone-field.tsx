@@ -3,12 +3,13 @@ import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
+import { Text } from "@/components/ui/text";
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "..";
 import Input from "../../input";
 import Select from "../../select";
 
-type Props = {
+export type PhoneFieldProps = {
   name: string;
   label: string;
   items: {
@@ -17,7 +18,11 @@ type Props = {
     phoneCode?: string;
   }[];
   selectedCountry?: string;
-  [k: string]: any;
+  disabled?: boolean;
+  readOnly?: boolean;
+  loading?: boolean;
+  variant?: string;
+  optional?: boolean;
 };
 
 export function PhoneField({
@@ -25,8 +30,9 @@ export function PhoneField({
   label,
   items,
   selectedCountry,
+  optional,
   ...props
-}: Props) {
+}: PhoneFieldProps) {
   const { control, trigger } = useFormContext();
   const t = useTranslations("errors");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -117,9 +123,14 @@ export function PhoneField({
         return (
           <FormItem>
             <FormLabel
-              className={cn("", { "text-textInactiveColor": props.disabled })}
+              className={cn("flex", {
+                "text-textInactiveColor": props.disabled,
+              })}
             >
-              {label}
+              <Text>{label}</Text>
+              {optional && (
+                <Text className="text-textInactiveColor"> (optional)</Text>
+              )}
             </FormLabel>
             <FormControl>
               <div className="flex items-end" ref={containerRef}>
@@ -136,6 +147,7 @@ export function PhoneField({
                     })}
                     customWidth={containerWidth}
                     renderValue={handleSelectChange}
+                    readOnly={props.readOnly}
                   />
                 </div>
                 <Input
@@ -144,6 +156,7 @@ export function PhoneField({
                   value={number}
                   onChange={handleNumberChange}
                   disabled={props.disabled}
+                  readOnly={props.readOnly}
                   variant="secondary"
                   onBlur={onBlur}
                 />

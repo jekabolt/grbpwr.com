@@ -1,0 +1,93 @@
+import {
+  StorefrontAccount,
+  StorefrontSavedAddress,
+} from "@/api/proto-http/frontend";
+import * as RadixSelect from "@radix-ui/react-select";
+import { useTranslations } from "next-intl";
+
+import { cn } from "@/lib/utils";
+import { Arrow } from "@/components/ui/icons/arrow";
+import { Text } from "@/components/ui/text";
+
+import { buildAddressTextValue } from "../utils/address-format";
+import { AddressFullDetails } from "./address-details";
+
+export function AddressesSelector({
+  savedAddressId,
+  open,
+  isDisabled,
+  addresses,
+  account,
+  handleValueChange,
+  setOpen,
+}: {
+  savedAddressId: string;
+  open: boolean;
+  isDisabled: boolean;
+  addresses: StorefrontSavedAddress[];
+  account: StorefrontAccount;
+  handleValueChange: (value: string) => void;
+  setOpen: (open: boolean) => void;
+}) {
+  const t = useTranslations("account");
+  return (
+    <RadixSelect.Root
+      value={savedAddressId ?? ""}
+      onValueChange={handleValueChange}
+      open={open}
+      onOpenChange={setOpen}
+      disabled={isDisabled}
+    >
+      <RadixSelect.Trigger
+        className={cn(
+          "flex w-full items-center gap-1.5 border-b border-textColor bg-bgColor text-left text-textBaseSize leading-none focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
+        )}
+        aria-label="select saved address"
+      >
+        <RadixSelect.Icon
+          className={cn("rotate-180 text-textColor underline", {
+            "rotate-0": open,
+            "text-textInactiveColor": isDisabled,
+          })}
+        >
+          <Arrow />
+        </RadixSelect.Icon>
+        <Text variant="uppercase" className="min-w-0 truncate text-center">
+          {t("use other address")}
+        </Text>
+      </RadixSelect.Trigger>
+
+      <RadixSelect.Portal>
+        <RadixSelect.Content
+          position="popper"
+          align="start"
+          collisionPadding={10}
+          className="z-[100] w-[calc(100vw-1.25rem)] overflow-hidden border border-textInactiveColor bg-bgColor lg:w-auto"
+        >
+          <RadixSelect.Viewport className="max-h-[360px] bg-bgColor">
+            {addresses.map((address) => (
+              <RadixSelect.Item
+                key={address.id}
+                value={String(address.id ?? "")}
+                textValue={buildAddressTextValue(address)}
+                className={cn(
+                  "relative flex select-none flex-col gap-2 border-b border-textInactiveColor px-3 py-3 last:border-b-0 data-[disabled]:pointer-events-none data-[highlighted]:bg-[rgba(0,0,0,0.08)] data-[highlighted]:text-textColor data-[disabled]:opacity-30 data-[highlighted]:outline-none",
+                  {
+                    "bg-textInactiveColor": address.isDefault,
+                  },
+                )}
+              >
+                <RadixSelect.ItemText>
+                  <Text className="sr-only">
+                    {buildAddressTextValue(address)}
+                  </Text>
+                </RadixSelect.ItemText>
+                <AddressFullDetails address={address} account={account} />
+              </RadixSelect.Item>
+            ))}
+          </RadixSelect.Viewport>
+        </RadixSelect.Content>
+      </RadixSelect.Portal>
+    </RadixSelect.Root>
+  );
+}

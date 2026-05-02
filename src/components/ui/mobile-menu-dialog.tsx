@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 
 import { getTopCategoryName } from "@/lib/categories-map";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
   calculateAspectRatio,
@@ -9,7 +10,7 @@ import {
   getCategoryDisplayName,
   getHeroNavLink,
 } from "@/lib/utils";
-import { CountriesPopup } from "@/app/[locale]/_components/CountriesPopup";
+import { MobileCountriesPopupTrigger } from "@/app/[locale]/_components/mobile-countries-popup";
 import NewslatterForm from "@/app/[locale]/_components/newslatter-form";
 
 import { useDataContext } from "../contexts/DataContext";
@@ -34,14 +35,38 @@ export function DefaultMobileMenuDialog({
   isBigMenuEnabled,
   isWebsiteEnabled = true,
 }: DefaultMenuProps) {
+  const { account, isSignedIn } = useAccountOnboardingStore((s) => s);
   const defaultMenuItems = isWebsiteEnabled
     ? createMenuItems(isBigMenuEnabled, setActiveCategory)
     : [{ label: "timeline", showArrow: false, href: "/timeline" }];
   const t = useTranslations("navigation");
+  const tAccount = useTranslations("account");
+
+  const accountText = isSignedIn
+    ? `${tAccount("account")}: ${account?.firstName}`
+    : tAccount("account");
 
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex flex-col gap-10">
+        <div>
+          <AnimatedButton
+            animationDuration={1000}
+            href="/account"
+            className="uppercase"
+          >
+            {isSignedIn ? (
+              <div className="flex gap-2">
+                <Text>{tAccount("account")}:</Text>
+                <Text variant="uppercase" className="underline">
+                  {account?.firstName}
+                </Text>
+              </div>
+            ) : (
+              <Text>{tAccount("account")}</Text>
+            )}
+          </AnimatedButton>
+        </div>
         <div className="flex flex-col gap-5">
           {defaultMenuItems.map((item) => (
             <div key={item.label} className="w-full">
@@ -69,11 +94,14 @@ export function DefaultMobileMenuDialog({
             </div>
           ))}
         </div>
-        <div className="self-start">
-          <CountriesPopup />
+        <div>
+          <div className="w-full border-t border-textColor" />
+          <div className="self-start pt-5">
+            <MobileCountriesPopupTrigger />
+          </div>
         </div>
       </div>
-      <NewslatterForm />
+      {!isSignedIn && <NewslatterForm inactiveBgColor />}
     </div>
   );
 }

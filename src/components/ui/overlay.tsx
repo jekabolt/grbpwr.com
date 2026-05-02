@@ -9,6 +9,7 @@ let overflowLockCount = 0;
 interface Props {
   cover: "screen" | "container";
   color?: "dark" | "light" | "highlight";
+  className?: string;
   disablePointerEvents?: boolean;
   trigger?: "hover" | "held" | "active" | "none";
   active?: boolean;
@@ -19,6 +20,7 @@ interface Props {
 export function Overlay({
   cover,
   color = "dark",
+  className,
   disablePointerEvents = true,
   trigger = "none",
   active = false,
@@ -26,7 +28,7 @@ export function Overlay({
   onClick,
 }: Props) {
   useEffect(() => {
-    if (cover !== "screen") return;
+    if (cover !== "screen" || !active) return;
     overflowLockCount++;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -36,25 +38,29 @@ export function Overlay({
         document.body.style.overflow = prevOverflow;
       }
     };
-  }, [cover]);
+  }, [cover, active]);
 
   return (
     <div
-      className={cn("inset-0 z-30 h-screen", {
-        "pointer-events-none z-10": disablePointerEvents,
-        "bg-overlay": color === "dark",
-        "bg-white/50": color === "light",
-        "bg-highlightColor mix-blend-screen": color === "highlight",
-        "transform-gpu": color === "highlight" && cover === "container",
-        fixed: cover === "screen",
-        "absolute h-full": cover === "container",
-        "transition-opacity duration-[400ms] ease-out": trigger !== "none",
-        "opacity-0 group-hover:opacity-60": trigger === "hover",
-        "opacity-0 group-data-[held=true]:opacity-60": trigger === "held",
-        "opacity-0": trigger === "active" && !active,
-        "opacity-60": trigger === "active" && active,
-        "bg-textInactiveColor": disabled,
-      })}
+      className={cn(
+        "inset-0 z-30 h-screen",
+        {
+          "pointer-events-none z-10": disablePointerEvents,
+          "bg-overlay": color === "dark",
+          "bg-white/50": color === "light",
+          "bg-highlightColor mix-blend-screen": color === "highlight",
+          "transform-gpu": color === "highlight" && cover === "container",
+          fixed: cover === "screen",
+          "absolute h-full": cover === "container",
+          "transition-opacity duration-[400ms] ease-out": trigger !== "none",
+          "opacity-0 group-hover:opacity-60": trigger === "hover",
+          "opacity-0 group-data-[held=true]:opacity-60": trigger === "held",
+          "opacity-0": trigger === "active" && !active,
+          "opacity-60": trigger === "active" && active,
+          "bg-textInactiveColor": disabled,
+        },
+        className,
+      )}
       onClick={onClick}
       aria-hidden="true"
     />

@@ -14,6 +14,8 @@ export interface TranslationsState {
         name: string;
         countryCode: string;
         currencyKey?: string;
+        savedAddressId?: number;
+        localeCode?: string;
     };
     isOpen: boolean;
     rates?: Record<string, CurrencyRate> | undefined;
@@ -28,6 +30,8 @@ export interface TranslationsActions {
         countryCode: string;
         currency?: string;
         currencyKey?: string;
+        savedAddressId?: number;
+        localeCode?: string;
     }) => void;
     applyNextCountry: () => void;
     cancelNextCountry: () => void;
