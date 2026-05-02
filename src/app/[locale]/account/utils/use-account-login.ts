@@ -179,6 +179,15 @@ export function useAccountLogin() {
     setCodeVerified(false);
     requestInFlightRef.current = true;
     setPending(true);
+
+    // Resend: start the cooldown immediately so the button stays locked for the
+    // whole request and after failures (cooldown was previously only set on success,
+    // so pending could clear while resendSeconds was still 0).
+    if (!moveToCodeStep) {
+      writeStoredLoginAttempt(normalizedEmail);
+      setResendSeconds(RESEND_TIMEOUT_SECONDS);
+    }
+
     try {
       const result = await requestAccountLoginCode(normalizedEmail);
       if (!result.ok) {
@@ -188,9 +197,9 @@ export function useAccountLogin() {
 
       if (moveToCodeStep) {
         setStep("code");
+        writeStoredLoginAttempt(normalizedEmail);
+        setResendSeconds(RESEND_TIMEOUT_SECONDS);
       }
-      writeStoredLoginAttempt(normalizedEmail);
-      setResendSeconds(RESEND_TIMEOUT_SECONDS);
       return true;
     } finally {
       requestInFlightRef.current = false;
@@ -221,6 +230,7 @@ export function useAccountLogin() {
 
     setCodeVerified(false);
     setPending(true);
+    let verificationSucceeded = false;
     try {
       const result = await verifyAccountLoginCode(
         normalizedEmail,
@@ -238,12 +248,14 @@ export function useAccountLogin() {
       setCodeVerified(true);
       clearStoredLoginAttempt();
       router.refresh();
+      verificationSucceeded = true;
     } catch (error) {
       openErrorToast(t("the code couldn’t be verified"));
       setCode("");
-      return;
     } finally {
-      setPending(false);
+      if (!verificationSucceeded) {
+        setPending(false);
+      }
     }
   }
 

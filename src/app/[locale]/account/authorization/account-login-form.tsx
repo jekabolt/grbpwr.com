@@ -248,7 +248,12 @@ function CodeStep({
   return (
     <div className="flex w-full items-center justify-center">
       <div className="flex w-full flex-col items-center gap-16">
-        <Text variant="uppercase" className="text-center">
+        <Text
+          variant="uppercase"
+          className={cn("text-center text-textColor", {
+            "text-textInactiveColor": pending,
+          })}
+        >
           {t("enter verification code from your email")}
         </Text>
         <div className="w-full space-y-10">

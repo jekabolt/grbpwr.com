@@ -13,7 +13,8 @@ export type AccountTierEnum =
   | "ACCOUNT_TIER_ENUM_UNKNOWN"
   | "ACCOUNT_TIER_ENUM_PLUS"
   | "ACCOUNT_TIER_ENUM_PLUS_PLUS"
-  | "ACCOUNT_TIER_ENUM_HACKER";
+  | "ACCOUNT_TIER_ENUM_HACKER"
+  | "ACCOUNT_TIER_ENUM_MEMBER";
 export type GetHeroRequest = {
 };
 
