@@ -100,7 +100,7 @@ export default async function RootLayout({ children, params }: Props) {
           <ToastProvider>
             <PageTransition>
               <SiteGuard>
-                <div className="relative min-h-screen">{children}</div>
+                <div className="relative min-h-dvh">{children}</div>
               </SiteGuard>
             </PageTransition>
             <CountriesPopup />
