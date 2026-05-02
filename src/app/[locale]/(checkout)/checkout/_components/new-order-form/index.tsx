@@ -194,7 +194,7 @@ export default function NewOrderForm({
               </div>
             )}
             {!showCheckoutFields ? (
-              <div className="pt-24 lg:pt-10">
+              <div className="lg:pt-10">
                 <AccountLoginForm
                   isCheckout
                   onStepChange={setCheckoutLoginStep}
