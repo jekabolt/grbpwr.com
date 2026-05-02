@@ -154,6 +154,9 @@ export default function NewOrderForm({
     accountNeedsNameCompletion(initialAccount) &&
     !checkoutProfileCompleted;
 
+  const centerAuthOnMobile =
+    !showCheckoutFields || showProfilePrompt;
+
   const handleProfileCompleted = (data: {
     firstName: string;
     lastName: string;
@@ -176,7 +179,13 @@ export default function NewOrderForm({
           onSubmit={form.handleSubmit(handleValidSubmit, handleSubmitInvalid)}
           className="relative h-full space-y-14 lg:space-y-0"
         >
-          <div className="flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28">
+          <div
+            className={cn(
+              "flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28",
+              centerAuthOnMobile &&
+                "min-h-[calc(100dvh-7rem)] justify-center lg:min-h-0 lg:justify-start",
+            )}
+          >
             {!hideOrderSummary && (
               <div
                 className={cn("block lg:hidden", {
@@ -194,7 +203,7 @@ export default function NewOrderForm({
               </div>
             )}
             {!showCheckoutFields ? (
-              <div className="lg:pt-10">
+              <div className="w-full shrink-0 lg:pt-10">
                 <AccountLoginForm
                   isCheckout
                   onStepChange={setCheckoutLoginStep}
@@ -202,7 +211,7 @@ export default function NewOrderForm({
                 />
               </div>
             ) : showProfilePrompt ? (
-              <div className="lg:pt-10">
+              <div className="w-full shrink-0 lg:pt-10">
                 <AccountSignedInSection
                   account={initialAccount}
                   isCheckout
