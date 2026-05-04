@@ -46,6 +46,8 @@ export function Overlay({
         "inset-0 z-30 h-screen",
         {
           "pointer-events-none z-10": disablePointerEvents,
+          "pointer-events-none":
+            !disablePointerEvents && trigger === "active" && !active,
           "bg-overlay": color === "dark",
           "bg-white/50": color === "light",
           "bg-highlightColor mix-blend-screen": color === "highlight",

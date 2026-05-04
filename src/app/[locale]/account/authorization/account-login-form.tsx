@@ -100,7 +100,7 @@ export function AccountLoginForm({
         )}
       </div>
       {showCartSummary && (
-        <div className="fixed inset-x-2.5 bottom-6 lg:hidden">
+        <div className="fixed inset-x-2.5 bottom-6 top-auto lg:hidden">
           <AccountCartMobileOrderSummary />
         </div>
       )}
