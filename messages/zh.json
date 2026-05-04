@@ -76,7 +76,9 @@
     "sure?": "确定吗？",
     "default": "默认",
     "you are in country: {country} / {currency}": "您所在国家：{country} / {currency}",
-    "change location": "更改位置"
+    "change location": "更改位置",
+    "magic_login_success_title": "登录成功",
+    "magic_login_success_subtitle": "欢迎回来。"
   },
   "footer": {
     "legal notices": "法律声明",

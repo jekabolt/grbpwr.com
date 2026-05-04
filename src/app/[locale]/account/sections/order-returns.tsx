@@ -1,10 +1,14 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import Link from "next/link";
 import { common_OrderFull, StorefrontAccount } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 import { useInView } from "react-intersection-observer";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Text as UIText } from "@/components/ui/text";
 
 import { OrderItem } from "../_components/order-item";
 import { OrderReturnsSectionFallback } from "../_components/section-fallbacks";
@@ -14,11 +18,13 @@ type OrderReturnsView = "orders" | "returns";
 
 const RETURN_STATUS_IDS = new Set([6, 7, 8, 9]);
 
-const ORDER_RETURN_TABS: { labelKey: "orders list" | "returns"; value: OrderReturnsView }[] =
-  [
-    { labelKey: "orders list", value: "orders" },
-    { labelKey: "returns", value: "returns" },
-  ];
+const ORDER_RETURN_TABS: {
+  labelKey: "orders list" | "returns";
+  value: OrderReturnsView;
+}[] = [
+  { labelKey: "orders list", value: "orders" },
+  { labelKey: "returns", value: "returns" },
+];
 
 export function OrderReturns({ account }: { account: StorefrontAccount }) {
   const t = useTranslations("account");
@@ -88,14 +94,30 @@ function OrdersList({
 
   return (
     <div className="flex h-full flex-col gap-0 lg:max-h-[550px] lg:overflow-y-auto">
-      {visible.map((order) => (
-        <OrderItem key={order.order?.id} order={order} account={account} />
-      ))}
-      <AutoLoadMore
-        hasMore={hasMore}
-        loadingMore={loadingMore}
-        onLoadMore={onLoadMore}
-      />
+      {visible.length > 0 ? (
+        <>
+          {visible.map((order) => (
+            <OrderItem key={order.order?.id} order={order} account={account} />
+          ))}
+          <AutoLoadMore
+            hasMore={hasMore}
+            loadingMore={loadingMore}
+            onLoadMore={onLoadMore}
+          />
+        </>
+      ) : (
+        <div className="flex flex-col gap-6">
+          <UIText variant="uppercase">no orders yet</UIText>
+          <Button
+            size={"lg"}
+            variant="simpleReverseWithBorder"
+            className="self-start uppercase"
+            asChild
+          >
+            <Link href="/catalog">explore collections</Link>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
@@ -113,14 +135,23 @@ function ReturnsList({
 
   return (
     <div className="flex max-h-[550px] flex-col gap-0 overflow-y-auto">
-      {visible.map((order) => (
-        <OrderItem key={order.order?.id} order={order} account={account} />
-      ))}
-      <AutoLoadMore
-        hasMore={hasMore}
-        loadingMore={loadingMore}
-        onLoadMore={onLoadMore}
-      />
+      {visible.length > 0 ? (
+        <>
+          {visible.map((order) => (
+            <OrderItem key={order.order?.id} order={order} account={account} />
+          ))}
+          <AutoLoadMore
+            hasMore={hasMore}
+            loadingMore={loadingMore}
+            onLoadMore={onLoadMore}
+          />
+        </>
+      ) : (
+        <div className="flex flex-col gap-6">
+          <UIText variant="uppercase">no returns</UIText>
+          <UIText>to start new return, visit our returns</UIText>
+        </div>
+      )}
     </div>
   );
 }

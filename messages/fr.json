@@ -76,7 +76,9 @@
     "sure?": "tu es sûr?",
     "default": "par défaut",
     "you are in country: {country} / {currency}": "vous êtes dans le pays : {country} / {currency}",
-    "change location": "changer de localisation"
+    "change location": "changer de localisation",
+    "magic_login_success_title": "connexion réussie",
+    "magic_login_success_subtitle": "vous êtes connecté. bienvenue."
   },
   "footer": {
     "legal notices": "mentions légales",

@@ -76,7 +76,9 @@
     "sure?": "확실한가요?",
     "default": "기본",
     "you are in country: {country} / {currency}": "현재 국가: {country} / {currency}",
-    "change location": "위치 변경"
+    "change location": "위치 변경",
+    "magic_login_success_title": "로그인되었습니다",
+    "magic_login_success_subtitle": "다시 오신 것을 환영합니다."
   },
   "footer": {
     "legal notices": "법적 고지",

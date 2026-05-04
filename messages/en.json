@@ -76,7 +76,9 @@
     "default": "default",
     "you are in country: {country} / {currency}": "you are in country: {country} / {currency}",
     "change location": "change location",
-    "email_consent_notice": "by becoming a member, you agree to our <privacy>privacy policy</privacy> and <membership>membership policy</membership>."
+    "email_consent_notice": "by becoming a member, you agree to our <privacy>privacy policy</privacy> and <membership>membership policy</membership>.",
+    "magic_login_success_title": "login successful",
+    "magic_login_success_subtitle": "you're in. welcome back."
   },
   "footer": {
     "legal notices": "legal notices",

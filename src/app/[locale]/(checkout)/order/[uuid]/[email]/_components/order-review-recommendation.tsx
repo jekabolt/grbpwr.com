@@ -1,9 +1,9 @@
-import { Checkbox, CheckedState } from "@radix-ui/react-checkbox";
 import { useTranslations } from "next-intl";
 import { Path, useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Checkbox from "@/components/ui/checkbox";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
@@ -44,7 +44,7 @@ export function RecommendCheckboxes({
               <Text className="lg:text-right" variant="uppercase">
                 {t("recommend")}
               </Text>
-              <div className="flex w-full gap-2 md:hidden">
+              <div className="flex w-full gap-2 lg:hidden">
                 <Button
                   type="button"
                   variant={field.value === true ? "main" : "secondary"}
@@ -74,13 +74,13 @@ export function RecommendCheckboxes({
                   {t("no")}
                 </Button>
               </div>
-              <div className="hidden items-center gap-x-2 md:flex">
+              <div className="hidden items-center gap-x-2 lg:flex">
                 <div className="flex items-center gap-1">
                   <FormControl>
                     <Checkbox
                       name={yesId}
                       checked={field.value === true}
-                      onCheckedChange={(c: CheckedState) => {
+                      onCheckedChange={(c: boolean | "indeterminate") => {
                         if (c === true) field.onChange(true);
                         else field.onChange(undefined);
                       }}
@@ -104,7 +104,7 @@ export function RecommendCheckboxes({
                     <Checkbox
                       name={noId}
                       checked={field.value === false}
-                      onCheckedChange={(c: CheckedState) => {
+                      onCheckedChange={(c: boolean | "indeterminate") => {
                         if (c === true) field.onChange(false);
                         else field.onChange(undefined);
                       }}

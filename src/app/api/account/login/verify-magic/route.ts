@@ -1,3 +1,4 @@
+import { routing } from "@/i18n/routing";
 import { verifyAccountMagicLinkResponse } from "@/lib/storefront-account/account-auth";
 import {
   getMagicLinkToken,
@@ -41,6 +42,21 @@ function buildRedirectWithError(origin: string, redirectTo: string, errorCode: s
   return target;
 }
 
+function localeFromRelativePath(path: string): string | undefined {
+  const first = path.replace(/^\//, "").split("/")[0]?.toLowerCase() ?? "";
+  return (routing.locales as readonly string[]).includes(first) ? first : undefined;
+}
+
+function resolveMagicSuccessPath(url: URL, redirectTo: string): string {
+  const raw = url.searchParams.get("locale")?.trim().toLowerCase() ?? "";
+  if ((routing.locales as readonly string[]).includes(raw)) {
+    return `/${raw}/login/magic-success`;
+  }
+  const fromRedirect = localeFromRelativePath(redirectTo);
+  const locale = fromRedirect ?? "en";
+  return `/${locale}/login/magic-success`;
+}
+
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const token = getMagicLinkToken(url.searchParams);
@@ -55,7 +71,8 @@ export async function GET(req: Request) {
 
   try {
     const response = await verifyAccountMagicLinkResponse(token);
-    return NextResponse.redirect(new URL(redirectTo, url.origin), {
+    const successPath = resolveMagicSuccessPath(url, redirectTo);
+    return NextResponse.redirect(new URL(successPath, url.origin), {
       headers: response.headers,
     });
   } catch (error) {

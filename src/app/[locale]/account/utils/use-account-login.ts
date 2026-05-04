@@ -69,7 +69,7 @@ function writeStoredLoginAttempt(email: string): void {
   } catch { }
 }
 
-function clearStoredLoginAttempt(): void {
+export function clearStoredLoginAttempt(): void {
   if (typeof window === "undefined") return;
 
   try {

@@ -32,6 +32,7 @@ export default async function LoginMagicPage({ params, searchParams }: Props) {
   const verifyUrl = new URL("/api/account/login/verify-magic", "http://localhost");
   verifyUrl.searchParams.set("token", token);
   verifyUrl.searchParams.set("redirect_to", redirectTo);
+  verifyUrl.searchParams.set("locale", locale);
 
   redirect(`${verifyUrl.pathname}?${verifyUrl.searchParams.toString()}`);
 }

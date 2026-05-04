@@ -76,7 +76,9 @@
     "sure?": "sicuro?",
     "default": "predefinito",
     "you are in country: {country} / {currency}": "ti trovi nel paese: {country} / {currency}",
-    "change location": "cambia posizione"
+    "change location": "cambia posizione",
+    "magic_login_success_title": "accesso effettuato",
+    "magic_login_success_subtitle": "ci sei. bentornato."
   },
   "footer": {
     "legal notices": "note legali",
