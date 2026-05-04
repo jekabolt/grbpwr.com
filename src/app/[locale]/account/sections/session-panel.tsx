@@ -91,7 +91,7 @@ export function AccountSessionPanel({ account }: Props) {
           className="self-start uppercase text-textInactiveColor hover:text-textColor"
           onClick={logout}
         >
-          log out
+          {t("log out")}
         </Button>
       </div>
       <div className="hidden w-full pb-24 lg:block lg:pb-0">

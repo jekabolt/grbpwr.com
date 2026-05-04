@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -13,6 +14,7 @@ export function PersonalInfo({
 }: {
   selectedCountryCode?: string;
 }) {
+  const t = useTranslations("account");
   const form = useFormContext<AccountSchema>();
   const { pending, toastOpen, toastMessage, setToastOpen, updateAccount } =
     useAccountUpdate();
@@ -35,7 +37,7 @@ export function PersonalInfo({
         className="relative flex w-full flex-col gap-14"
       >
         <Text variant="uppercase" className="hidden lg:block">
-          personal info
+          {t("personal info")}
         </Text>
         <AccountPersonalInfoFields
           twoColumn
@@ -50,7 +52,7 @@ export function PersonalInfo({
           loading={pending}
           disabled={pending}
         >
-          save changes
+          {t("save changes")}
         </Button>
       </form>
       <SubmissionToaster

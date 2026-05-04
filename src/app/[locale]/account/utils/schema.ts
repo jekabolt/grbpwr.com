@@ -10,58 +10,74 @@ const SHOPPING_PREFERENCE_ENUM = [
 
 export type AccountEmailPreference = (typeof SHOPPING_PREFERENCE_ENUM)[number];
 
-const baseAccountSchema = z.object({
-    firstName: z
-        .string()
-        .min(1, errorMessages.firstName.min)
-        .max(40, errorMessages.firstName.max)
-        .regex(
-            errorMessages.firstName.regex.restriction,
-            errorMessages.firstName.regex.message,
-        )
-        .trim(),
-    lastName: z
-        .string()
-        .min(1, errorMessages.lastName.min)
-        .max(40, errorMessages.lastName.max)
-        .regex(
-            errorMessages.lastName.regex.restriction,
-            errorMessages.lastName.regex.message,
-        )
-        .trim(),
-    phone: z.union([
-        z.literal(""),
-        z
+const accountFieldsSchema = ({
+    invalidDate,
+    validBirthDate,
+}: {
+    invalidDate: string;
+    validBirthDate: string;
+}) =>
+    z.object({
+        firstName: z
             .string()
-            .min(5, errorMessages.phone.min)
-            .max(15, errorMessages.phone.max)
+            .min(1, errorMessages.firstName.min)
+            .max(40, errorMessages.firstName.max)
+            .regex(
+                errorMessages.firstName.regex.restriction,
+                errorMessages.firstName.regex.message,
+            )
             .trim(),
-    ])
-        .optional(),
-    birthDate: z
-        .union([
+        lastName: z
+            .string()
+            .min(1, errorMessages.lastName.min)
+            .max(40, errorMessages.lastName.max)
+            .regex(
+                errorMessages.lastName.regex.restriction,
+                errorMessages.lastName.regex.message,
+            )
+            .trim(),
+        phone: z.union([
             z.literal(""),
             z
                 .string()
-                .regex(/^\d{4}-\d{2}-\d{2}$/, "invalid date")
-                .refine((s) => {
-                    const parsed = new Date(`${s}T12:00:00`);
-                    if (Number.isNaN(parsed.getTime())) return false;
-                    if (parsed > new Date()) return false;
-                    if (parsed < new Date("1900-01-01T12:00:00")) return false;
-                    return true;
-                }, "enter a valid date of birth"),
+                .min(5, errorMessages.phone.min)
+                .max(15, errorMessages.phone.max)
+                .trim(),
         ])
-        .optional(),
-    subscribeNewsletter: z.boolean(),
-    subscribeNewArrivals: z.boolean(),
-    subscribeEvents: z.boolean(),
-    shoppingPreference: z.enum(SHOPPING_PREFERENCE_ENUM),
-    defaultCountry: z.string(),
+            .optional(),
+        birthDate: z
+            .union([
+                z.literal(""),
+                z
+                    .string()
+                    .regex(/^\d{4}-\d{2}-\d{2}$/, invalidDate)
+                    .refine((s) => {
+                        const parsed = new Date(`${s}T12:00:00`);
+                        if (Number.isNaN(parsed.getTime())) return false;
+                        if (parsed > new Date()) return false;
+                        if (parsed < new Date("1900-01-01T12:00:00")) return false;
+                        return true;
+                    }, validBirthDate),
+            ])
+            .optional(),
+        subscribeNewsletter: z.boolean(),
+        subscribeNewArrivals: z.boolean(),
+        subscribeEvents: z.boolean(),
+        shoppingPreference: z.enum(SHOPPING_PREFERENCE_ENUM),
+        defaultCountry: z.string(),
+    });
 
+export function createAccountSchema(t: (key: string) => string) {
+    return accountFieldsSchema({
+        invalidDate: t("invalid date"),
+        validBirthDate: t("enter a valid date of birth"),
+    });
+}
+
+export const accountSchema = accountFieldsSchema({
+    invalidDate: "invalid date",
+    validBirthDate: "enter a valid date of birth",
 });
-
-export const accountSchema = baseAccountSchema;
 
 export type AccountSchema = z.infer<typeof accountSchema>;
 

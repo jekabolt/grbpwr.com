@@ -5,21 +5,12 @@ The membership provider is the UK company GRBPWR LTD with registration number 17
 
 ## MEMBERSHIP TIERS AND BENEFITS
 
-There are four membership tiers.
-A “tier” means a membership level within our program. Your tier determines which membership services and advantages may be made available to you.
-grbpwr
-This is the default membership tier assigned upon registration. No membership services or advantages are included.
-grbpwr+
-This tier is available to members who have spent €1,000 or more. Membership services and advantages may include access to a hidden catalog, tier-based drops, free shipping, gifts of a lower value, branded merchandise, invitation to a private Instagram account, and early collection previews and pre-sale access.
-grbpwr++
-This tier is available to members who have spent €3,000 or more. In addition to the services and advantages available under grbpwr+, membership services and advantages may include free returns, special packaging, personalized offers including atelier services, personal appointments, birthday gifts, free global shipping, access to limited-edition collections, made-to-order services, and access to a personal stylist.
-grbpwr hacker
-This is a separate membership branch that may be granted to individuals who support the brand in other ways, or who are selected by us at our discretion. Membership services and advantages may include access to a hidden catalog, invitations to events and networking opportunities, special packaging, branded merchandise, birthday gifts, and the possibility of moving into the main loyalty program based on qualifying purchases.
+A “tier” means a membership status level within our loyalty program, assigned to each member individually as determined by us at our sole discretion. Your tier determines which membership services and advantages may be made available to you.
 
 ## PROCESSING OF PERSONAL DATA
 
 GRBPWR will process your personal data and may share your personal data with GRBPWR’s affiliates and third parties in order to provide you with membership services in accordance with our Privacy Policy, which you can find here.
-The personal data processed for this purpose may include your first name, last name, date of birth.
+The personal data processed for this purpose may include identification and contact details, purchase and transaction data, payment status, marketing preferences and consents, and technical and analytics data, including data collected through cookies, Google Analytics, or similar analytics tools.
 By signing up as a member, you consent to the processing of your personal data in accordance with GRBPWR’s Privacy Policy.
 
 ## TERMINATION OF MEMBERSHIP

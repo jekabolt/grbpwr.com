@@ -5,21 +5,12 @@ Le prestataire d’adhésion est la société britannique GRBPWR LTD, numéro d�
 
 ## NIVEAUX D’ADHÉSION ET AVANTAGES
 
-Il existe quatre niveaux d’adhésion.
-Un « niveau » désigne un palier d’adhésion au sein de notre programme. Votre niveau détermine quels services et avantages d’adhésion peuvent vous être proposés.
-grbpwr
-Il s’agit du niveau d’adhésion par défaut attribué à l’inscription. Aucun service ou avantage d’adhésion n’est inclus.
-grbpwr+
-Ce niveau est accessible aux membres ayant dépensé 1 000 € ou plus. Les services et avantages peuvent inclure l’accès à un catalogue masqué, des ventes liées au niveau, la livraison gratuite, des cadeaux de moindre valeur, des articles de marque, une invitation à un compte Instagram privé, ainsi que des aperçus de collections et l’accès aux préventes.
-grbpwr++
-Ce niveau est accessible aux membres ayant dépensé 3 000 € ou plus. Outre les services et avantages du niveau grbpwr+, les services et avantages peuvent inclure les retours gratuits, un emballage spécial, des offres personnalisées dont des services atelier, des rendez-vous personnalisés, des cadeaux d’anniversaire, la livraison mondiale gratuite, l’accès à des collections en édition limitée, des services sur mesure et l’accès à un styliste personnel.
-grbpwr hacker
-Il s’agit d’une branche d’adhésion distincte pouvant être accordée à des personnes qui soutiennent la marque d’autres façons, ou sélectionnées par nous à notre discrétion. Les services et avantages peuvent inclure l’accès à un catalogue masqué, des invitations à des événements et des opportunités de réseautage, un emballage spécial, des articles de marque, des cadeaux d’anniversaire et la possibilité d’intégrer le programme de fidélité principal sur la base d’achats éligibles.
+Un « niveau » désigne un niveau de statut d’adhésion au sein de notre programme de fidélité, attribué à chaque membre individuellement, tel que déterminé par nous à notre seule discrétion. Votre niveau détermine quels services et avantages d’adhésion peuvent vous être proposés.
 
 ## TRAITEMENT DES DONNÉES À CARACTÈRE PERSONNEL
 
 GRBPWR traitera vos données à caractère personnel et peut les partager avec les sociétés affiliées de GRBPWR et des tiers afin de vous fournir les services d’adhésion conformément à notre politique de confidentialité, disponible ici.
-Les données traitées à cette fin peuvent inclure votre prénom, nom et date de naissance.
+Les données traitées à cette fin peuvent inclure des données d’identification et de contact, des données d’achat et de transaction, le statut de paiement, les préférences et consentements marketing, ainsi que des données techniques et d’analyse, y compris les données collectées par le biais de cookies, Google Analytics ou d’outils d’analyse comparables.
 En devenant membre, vous acceptez le traitement de vos données à caractère personnel conformément à la politique de confidentialité de GRBPWR.
 
 ## RÉSILIATION DE L’ADHÉSION

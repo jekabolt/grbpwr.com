@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { StorefrontSavedAddress } from "@/api/proto-http/frontend";
 
@@ -12,6 +13,7 @@ type Options = {
 };
 
 export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
+  const t = useTranslations("account");
   const [pending, setPending] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [addresses, setAddresses] = useState<StorefrontSavedAddress[]>([]);
@@ -24,7 +26,7 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
     try {
       const res = await fetch("/api/account/addresses", { method: "GET" });
       if (!res.ok) {
-        setToastMessage(await parseApiError(res, "failed to load addresses"));
+        setToastMessage(await parseApiError(res, t("failed to load addresses")));
         setAddresses([]);
         return;
       }
@@ -37,7 +39,7 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
       setPending(false);
       setLoaded(true);
     }
-  }, []);
+  }, [t]);
 
   async function handleDefaultAddress(id: number) {
     setDefaultId(id);
@@ -61,7 +63,7 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
         method: "DELETE",
       });
       if (!res.ok) {
-        setToastMessage(await parseApiError(res, "failed to delete address"));
+        setToastMessage(await parseApiError(res, t("failed to delete address")));
         return;
       }
       setToastMessage(null);

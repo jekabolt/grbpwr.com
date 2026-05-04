@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type {
   StorefrontAccount,
   StorefrontSavedAddress,
@@ -18,20 +18,22 @@ import { Text } from "@/components/ui/text";
 import { AddressFields } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/shipping-fields-group";
 import { parseApiError } from "@/app/[locale]/account/utils/api-error";
 
-const schema = z.object({
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  country: z.string().min(2, "country is required"),
-  state: z.string().optional(),
-  city: z.string().min(1, "city is required"),
-  address: z.string().min(3, "address is required"),
-  additionalAddress: z.string().optional(),
-  company: z.string().optional(),
-  phone: z.string().optional(),
-  postalCode: z.string().min(2, "postal code is required"),
-});
+function createAddressEditSchema(tAccount: (key: string) => string) {
+  return z.object({
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    country: z.string().min(2, tAccount("country is required")),
+    state: z.string().optional(),
+    city: z.string().min(1, tAccount("city is required")),
+    address: z.string().min(3, tAccount("address is required")),
+    additionalAddress: z.string().optional(),
+    company: z.string().optional(),
+    phone: z.string().optional(),
+    postalCode: z.string().min(2, tAccount("postal code is required")),
+  });
+}
 
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<ReturnType<typeof createAddressEditSchema>>;
 
 export function EditAddressForm({
   address,
@@ -48,6 +50,11 @@ export function EditAddressForm({
   const tAccount = useTranslations("account");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  const schema = useMemo(
+    () => createAddressEditSchema(tAccount),
+    [tAccount],
+  );
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -86,7 +93,7 @@ export function EditAddressForm({
         }),
       });
       if (!res.ok) {
-        setError(await parseApiError(res, "failed to update address"));
+        setError(await parseApiError(res, tAccount("failed to update address")));
         return;
       }
       onSuccess();

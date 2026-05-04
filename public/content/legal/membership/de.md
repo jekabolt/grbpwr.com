@@ -5,21 +5,12 @@ Anbieter der Mitgliedschaft ist das britische Unternehmen GRBPWR LTD mit der Reg
 
 ## MITGLIEDSCHAFTSSTUFEN UND VORTEILE
 
-Es gibt vier Mitgliedschaftsstufen.
-Eine « Stufe » bezeichnet eine Mitgliedschaftsebene innerhalb unseres Programms. Ihre Stufe bestimmt, welche Mitgliedschaftsdienstleistungen und Vorteile Ihnen zur Verfügung gestellt werden können.
-grbpwr
-Dies ist die Standardmitgliedschaftsstufe bei der Registrierung. Es sind keine Mitgliedschaftsdienstleistungen oder Vorteile enthalten.
-grbpwr+
-Diese Stufe steht Mitgliedern zur Verfügung, die 1.000 € oder mehr ausgegeben haben. Zu den Dienstleistungen und Vorteilen können der Zugang zu einem verborgenen Katalog, stufenabhängige Drops, kostenloser Versand, Geschenke geringeren Werts, Markenartikel, eine Einladung zu einem privaten Instagram-Konto sowie frühzeitige Kollektionsvorschauen und Vorverkaufszugang gehören.
-grbpwr++
-Diese Stufe steht Mitgliedern zur Verfügung, die 3.000 € oder mehr ausgegeben haben. Zusätzlich zu den Leistungen der Stufe grbpwr+ können Dienstleistungen und Vorteile kostenlose Rücksendungen, Sonderverpackung, personalisierte Angebote einschließlich Atelier-Dienstleistungen, persönliche Termine, Geburtstagsgeschenke, kostenloser weltweiter Versand, Zugang zu limitierten Kollektionen, Made-to-Order-Leistungen und Zugang zu einem persönlichen Stylisten umfassen.
-grbpwr hacker
-Dies ist ein separater Mitgliedschaftszweig, der Personen gewährt werden kann, die die Marke auf andere Weise unterstützen oder von uns nach eigenem Ermessen ausgewählt werden. Zu den Dienstleistungen und Vorteilen können der Zugang zu einem verborgenen Katalog, Einladungen zu Veranstaltungen und Networking-Möglichkeiten, Sonderverpackung, Markenartikel, Geburtstagsgeschenke und die Möglichkeit gehören, bei qualifizierten Käufen in das Haupt-Treueprogramm zu wechseln.
+Eine « Stufe » bezeichnet eine Mitgliedschafts-Statusstufe innerhalb unseres Treueprogramms, die jedem Mitglied individuell nach unserem alleinigen Ermessen zugewiesen wird. Ihre Stufe bestimmt, welche Mitgliedschaftsdienstleistungen und Vorteile Ihnen zur Verfügung gestellt werden können.
 
 ## VERARBEITUNG PERSONENBEZOGENER DATEN
 
 GRBPWR verarbeitet Ihre personenbezogenen Daten und kann diese mit verbundenen Unternehmen von GRBPWR und Dritten teilen, um Ihnen Mitgliedschaftsdienstleistungen gemäß unserer Datenschutzerklärung bereitzustellen, die Sie hier finden.
-Zu den verarbeiteten Daten können Vorname, Nachname und Geburtsdatum gehören.
+Zu den verarbeiteten Daten können Identifikations- und Kontaktdaten, Kauf- und Transaktionsdaten, Zahlungsstatus, Marketingpräferenzen und Einwilligungen sowie technische und Analysedaten gehören, einschließlich durch Cookies, Google Analytics oder vergleichbare Analysetools erhobener Daten.
 Mit Ihrer Anmeldung als Mitglied willigen Sie in die Verarbeitung Ihrer personenbezogenen Daten gemäß der Datenschutzerklärung von GRBPWR ein.
 
 ## BEENDIGUNG DER MITGLIEDSCHAFT

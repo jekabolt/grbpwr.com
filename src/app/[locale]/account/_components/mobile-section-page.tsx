@@ -23,7 +23,7 @@ export function AccountMobileSectionPage({ account, section }: Props) {
   const [addressEditResetKey, setAddressEditResetKey] = useState(0);
   const isAddressEditHeader = activePanel === "addresses" && isEditingAddress;
   const sectionLabel = isAddressEditHeader
-    ? "edit shipping address"
+    ? t("edit shipping address")
     : t(section.label);
 
   function closeAddressEditMode() {

@@ -42,7 +42,7 @@ export function AddressesSelector({
         className={cn(
           "flex w-full items-center gap-1.5 border-b border-textColor bg-bgColor text-left text-textBaseSize leading-none focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
         )}
-        aria-label="select saved address"
+        aria-label={t("select saved address")}
       >
         <RadixSelect.Icon
           className={cn("rotate-180 text-textColor underline", {

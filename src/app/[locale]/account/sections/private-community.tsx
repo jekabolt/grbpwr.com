@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { USER_TIER } from "@/constants";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import ReactMarkdown from "react-markdown";
 
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
@@ -15,6 +15,7 @@ import { tierPrivilegesMarkdownCandidates } from "../utils/tier-privileges-conte
 
 export function PrivateCommunity() {
   const locale = useLocale();
+  const t = useTranslations("account");
   const { account } = useAccountOnboardingStore((s) => s);
 
   const userTier = account?.accountTier ? USER_TIER[account.accountTier] : "";
@@ -38,12 +39,12 @@ export function PrivateCommunity() {
   return (
     <div className="flex flex-col gap-14">
       <Text variant="uppercase" className="hidden lg:block">
-        private community
+        {t("private community")}
       </Text>
       <div>
         <div className="flex items-center justify-between border-b border-textInactiveColor pb-6">
           <Text variant="uppercase" className="w-full">
-            your access
+            {t("your access")}
           </Text>
           <div className="inline-flex items-center whitespace-nowrap leading-none lg:w-full">
             <Text
@@ -68,14 +69,13 @@ export function PrivateCommunity() {
         </div>
         <div className="flex flex-col gap-6 border-b border-textInactiveColor py-6 lg:flex-row lg:gap-0">
           <Text variant="uppercase" className="w-full">
-            priveleges
+            {t("privileges")}
           </Text>
           {mdPaths.length > 0 && !loading && content && (
             <Text
               component="div"
               className={cn(
                 "prose w-full max-w-none lowercase leading-none lg:max-h-[300px] lg:overflow-y-auto",
-                // CustomParagraph uses mb-4/lg:mb-8; tighten gap after title (odd), keep section gap after body (even).
                 "[&>div:nth-child(even)]:!mb-6 [&>div:nth-child(odd)]:!mb-1.5",
                 "[&>div:nth-child(even):last-child]:!mb-0",
               )}

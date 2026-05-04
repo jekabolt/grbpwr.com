@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { Text } from "@/components/ui/text";
@@ -13,6 +14,7 @@ import { UserLocation } from "../_components/user-location";
 import { useEmailPreferences } from "../utils/use-email-preferences";
 
 export function EmailPreferences() {
+  const t = useTranslations("account");
   const { pending, scheduleSave, toastOpen, toastMessage, setToastOpen } =
     useEmailPreferences();
   const form = useFormContext<AccountSchema>();
@@ -25,7 +27,7 @@ export function EmailPreferences() {
     <>
       <div className="flex w-full flex-col gap-8">
         <Text variant="uppercase" className="hidden lg:block">
-          email preferences
+          {t("email preferences")}
         </Text>
         <div className="flex flex-col lg:gap-10">
           {EMAIL_REFERENCE_STEPS.map((step) => (
@@ -40,7 +42,7 @@ export function EmailPreferences() {
 
         <div className="flex w-full items-center justify-between">
           <div className="flex w-full flex-row justify-between lg:flex-col lg:justify-start lg:gap-6">
-            <Text variant="uppercase">email preferences</Text>
+            <Text variant="uppercase">{t("email preferences")}</Text>
             <NewArrivals
               pending={pending}
               value={shoppingPreference}

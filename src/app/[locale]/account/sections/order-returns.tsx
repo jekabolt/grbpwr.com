@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { common_OrderFull, StorefrontAccount } from "@/api/proto-http/frontend";
 import { useInView } from "react-intersection-observer";
 
@@ -13,28 +14,30 @@ type OrderReturnsView = "orders" | "returns";
 
 const RETURN_STATUS_IDS = new Set([6, 7, 8, 9]);
 
-const ORDER_RETURNS_LABELS = [
-  { label: "orders list", value: "orders" },
-  { label: "returns", value: "returns" },
-] as const;
+const ORDER_RETURN_TABS: { labelKey: "orders list" | "returns"; value: OrderReturnsView }[] =
+  [
+    { labelKey: "orders list", value: "orders" },
+    { labelKey: "returns", value: "returns" },
+  ];
 
 export function OrderReturns({ account }: { account: StorefrontAccount }) {
+  const t = useTranslations("account");
   const [view, setView] = useState<OrderReturnsView>("orders");
   const { allOrders, loading, loadingMore, hasMore, loadMore } = useOrders();
 
   return (
     <div className="w-full space-y-16">
       <div className="flex gap-3">
-        {ORDER_RETURNS_LABELS.map((label) => (
+        {ORDER_RETURN_TABS.map((tab) => (
           <Button
-            key={label.value}
-            onClick={() => setView(label.value)}
+            key={tab.value}
+            onClick={() => setView(tab.value)}
             className={cn("uppercase", {
-              "text-textInactiveColor": view !== label.value,
+              "text-textInactiveColor": view !== tab.value,
             })}
-            variant={view === label.value ? "underline" : "default"}
+            variant={view === tab.value ? "underline" : "default"}
           >
-            {label.label}
+            {t(tab.labelKey)}
           </Button>
         ))}
       </div>

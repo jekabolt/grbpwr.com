@@ -14,7 +14,7 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 import { AccountPersonalInfoFields } from "@/app/[locale]/account/_components/personal-info-fields";
 import { AccountRegistrationCheckboxSection } from "@/app/[locale]/account/_components/registration-checkbox-section";
 import {
-  accountSchema,
+  createAccountSchema,
   AccountSchema,
 } from "@/app/[locale]/account/utils/schema";
 import { useAccountUpdate } from "@/app/[locale]/account/utils/use-account-update";
@@ -50,8 +50,10 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
     currentCountry.countryCode?.trim() ||
     undefined;
 
+  const accountFormSchema = useMemo(() => createAccountSchema(t), [t]);
+
   const form = useForm<AccountSchema>({
-    resolver: zodResolver(accountSchema),
+    resolver: zodResolver(accountFormSchema),
     defaultValues: useMemo(
       () => getAccountFormDefaultValues(account),
       [account],

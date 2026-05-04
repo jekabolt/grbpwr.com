@@ -3,12 +3,16 @@
 import { useMemo } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Form } from "@/components/ui/form";
 
-import { accountSchema, type AccountSchema } from "../utils/schema";
+import {
+  createAccountSchema,
+  type AccountSchema,
+} from "../utils/schema";
 import {
   getAccountFormDefaultValues,
   type ActivePanel,
@@ -30,13 +34,15 @@ export function AccountSectionContent({
   addressOptions,
 }: Props) {
   const { currentCountry } = useTranslationsStore((s) => s);
+  const t = useTranslations("account");
+  const accountFormSchema = useMemo(() => createAccountSchema(t), [t]);
   const selectedCountryCode =
     account.defaultCountry?.trim() ||
     currentCountry.countryCode?.trim() ||
     undefined;
 
   const form = useForm<AccountSchema>({
-    resolver: zodResolver(accountSchema),
+    resolver: zodResolver(accountFormSchema),
     defaultValues: useMemo(
       () => getAccountFormDefaultValues(account),
       [account],

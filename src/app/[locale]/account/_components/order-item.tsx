@@ -60,7 +60,7 @@ export function OrderItem({
                 src={i.thumbnail ?? ""}
                 fit="contain"
                 aspectRatio="4/5"
-                alt="product"
+                alt={t("order product thumbnail alt")}
               />
             </div>
           ))}

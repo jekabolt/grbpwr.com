@@ -172,7 +172,7 @@ export function useAccountLogin() {
     if (pending || requestInFlightRef.current) return false;
     if (!moveToCodeStep && resendSeconds > 0) return false;
     if (!isValidEmail) {
-      openErrorToast("invalid email");
+      openErrorToast(t("invalid email"));
       return false;
     }
 
@@ -191,7 +191,7 @@ export function useAccountLogin() {
     try {
       const result = await requestAccountLoginCode(normalizedEmail);
       if (!result.ok) {
-        openErrorToast(result.error ?? "failed to request login code");
+        openErrorToast(result.error ?? t("failed to request login code"));
         return false;
       }
 
@@ -220,11 +220,11 @@ export function useAccountLogin() {
     const candidateCode = (codeOverride ?? code).trim();
     const isCandidateCodeValid = /^\d{6}$/.test(candidateCode);
     if (!isValidEmail) {
-      openErrorToast("invalid email");
+      openErrorToast(t("invalid email"));
       return;
     }
     if (!isCandidateCodeValid) {
-      openErrorToast("invalid verification code");
+      openErrorToast(t("invalid verification code"));
       return;
     }
 
