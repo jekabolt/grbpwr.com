@@ -521,7 +521,7 @@
       "required": "Veuillez choisir l’état de l’emballage."
     },
     "sophisticationRating": {
-      "required": "Veuillez noter le raffinement."
+      "required": "Veuillez noter votre expérience globale."
     },
     "rating": {
       "required": "Veuillez noter cet article."
@@ -795,7 +795,6 @@
     "order section": "Votre commande",
     "delivery speed": "Délai de livraison",
     "packaging": "État de l’emballage",
-    "sophistication": "Finition",
     "overall experience": "Expérience globale",
     "comments": "Commentaire (facultatif)",
     "enter review": "Rédigez votre avis…",

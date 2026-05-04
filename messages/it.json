@@ -521,7 +521,7 @@
       "required": "Seleziona le condizioni dell’imballaggio."
     },
     "sophisticationRating": {
-      "required": "Valuta la sofisticatezza."
+      "required": "Valuta la tua esperienza complessiva."
     },
     "rating": {
       "required": "Valuta questo articolo."
@@ -795,7 +795,6 @@
     "order section": "Il tuo ordine",
     "delivery speed": "Velocità di consegna",
     "packaging": "Stato dell’imballaggio",
-    "sophistication": "Raffinatezza",
     "overall experience": "Esperienza complessiva",
     "comments": "Commento (facoltativo)",
     "enter review": "Scrivi la tua recensione…",

@@ -7,15 +7,11 @@ import {
   PRODUCT_RATING_VALUES,
   REVIEW_ENUM_PREFIX,
 } from "@/constants";
-import type { CheckedState } from "@radix-ui/react-checkbox";
 import { useTranslations } from "next-intl";
-import type { Path } from "react-hook-form";
 import { useFormContext, useFormState } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
-import Checkbox from "@/components/ui/checkbox";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import SelectField from "@/components/ui/form/fields/select-field";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -24,92 +20,7 @@ import CartItemSize from "@/app/[locale]/(checkout)/cart/_components/CartItemSiz
 import AftersaleSelector from "@/app/[locale]/(content)/_components/aftersale-selector";
 
 import { type OrderReviewFormInput } from "../utils/order-review-schema";
-
-function RecommendCheckboxes({
-  name,
-  disabled,
-  className,
-  shouldBlink,
-}: {
-  name: Path<OrderReviewFormInput>;
-  disabled?: boolean;
-  className?: string;
-  formMessageGate?: boolean;
-  shouldBlink?: boolean;
-}) {
-  const t = useTranslations("order-review");
-  const { control, trigger } = useFormContext<OrderReviewFormInput>();
-  const nameStr = String(name);
-  const yesId = `${nameStr}__yes`;
-  const noId = `${nameStr}__no`;
-
-  return (
-    <FormField
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <FormItem className={cn("relative flex flex-col gap-1", className)}>
-          <div className="flex flex-row justify-between gap-2">
-            {shouldBlink && <Overlay color="highlight" cover="container" />}
-            <Text className="text-right" variant="uppercase">
-              {t("recommend")}
-            </Text>
-            <div className="flex items-center gap-x-2">
-              <div className="flex items-center gap-1">
-                <FormControl>
-                  <Checkbox
-                    name={yesId}
-                    checked={field.value === true}
-                    onCheckedChange={(c: CheckedState) => {
-                      if (c === true) field.onChange(true);
-                      else field.onChange(undefined);
-                    }}
-                    disabled={disabled}
-                    onBlur={() => void trigger(name)}
-                  />
-                </FormControl>
-                <Text
-                  component="label"
-                  variant="uppercase"
-                  htmlFor={yesId}
-                  className={cn("cursor-pointer leading-none", {
-                    "text-textInactiveColor": disabled,
-                  })}
-                >
-                  {t("yes")}
-                </Text>
-              </div>
-              <div className="flex items-center gap-1">
-                <FormControl>
-                  <Checkbox
-                    name={noId}
-                    checked={field.value === false}
-                    onCheckedChange={(c: CheckedState) => {
-                      if (c === true) field.onChange(false);
-                      else field.onChange(undefined);
-                    }}
-                    disabled={disabled}
-                    onBlur={() => void trigger(name)}
-                  />
-                </FormControl>
-                <Text
-                  component="label"
-                  variant="uppercase"
-                  htmlFor={noId}
-                  className={cn("cursor-pointer leading-none", {
-                    "text-textInactiveColor": disabled,
-                  })}
-                >
-                  {t("no")}
-                </Text>
-              </div>
-            </div>
-          </div>
-        </FormItem>
-      )}
-    />
-  );
-}
+import { RecommendCheckboxes } from "./order-review-recommendation";
 
 export function OrderReviewProductRow({
   product,
@@ -186,16 +97,17 @@ export function OrderReviewProductRow({
           >
             {productName}
           </Text>
+          <div className="flex shrink-0 items-start gap-2">
+            <Text variant="uppercase">size</Text>
+            <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+            {lineQty > 1 && (
+              <Text variant="uppercase" className="text-textInactiveColor">
+                ×{lineQty}
+              </Text>
+            )}
+          </div>
           <div className="mt-auto flex w-full min-w-0 items-end justify-between gap-3">
             <div className="flex min-w-0 flex-1 items-end justify-between gap-3">
-              <div className="flex shrink-0 items-start gap-2">
-                <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
-                {lineQty > 1 && (
-                  <Text variant="uppercase" className="text-textInactiveColor">
-                    ×{lineQty}
-                  </Text>
-                )}
-              </div>
               <div
                 className={cn(
                   "relative flex items-start gap-3 bg-bgColor",
@@ -210,7 +122,7 @@ export function OrderReviewProductRow({
                   variant="uppercase"
                   className={cn(mobileSummaryFitSelect && "shrink-0")}
                 >
-                  {t("fit")}:
+                  {t("fit")}
                 </Text>
                 <div
                   className={cn(
@@ -251,7 +163,6 @@ export function OrderReviewProductRow({
         className="shrink-0"
         name={`itemReviews.${itemIndex}.recommend`}
         disabled={disabled}
-        // formMessageGate={itemRowDirty}
         shouldBlink={shouldBlinkRecommend}
       />
     </div>

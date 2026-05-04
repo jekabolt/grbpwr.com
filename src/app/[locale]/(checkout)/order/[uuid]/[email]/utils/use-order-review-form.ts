@@ -144,7 +144,7 @@ export function useOrderReviewForm({
       },
       {
         step: step(),
-        title: t("sophistication"),
+        title: t("overall experience"),
         name: "orderReview.sophisticationRating",
         list: [...PRODUCT_RATING_VALUES],
         renderLabel: labelSophistication,

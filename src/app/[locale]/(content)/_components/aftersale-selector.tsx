@@ -19,7 +19,6 @@ export interface AftersaleSelectorProps<T extends FieldValues> {
   renderLabel?: (value: string) => string;
   disabled?: boolean;
   fiveOptionMobileGrid?: boolean;
-  /** When false, hide validation message (e.g. optional row until user edits it). */
   formMessageGate?: boolean;
 }
 
@@ -35,7 +34,9 @@ export default function AftersaleSelector<T extends FieldValues>({
 }: AftersaleSelectorProps<T>) {
   const t = useTranslations("accessibility");
   const te = useTranslations("errors");
-  const useFiveGrid = fiveOptionMobileGrid && list.length === 5;
+  const useOrderReviewGrid =
+    fiveOptionMobileGrid && (list.length === 4 || list.length === 5);
+  const useFiveDesktopLayout = useOrderReviewGrid && list.length === 5;
 
   return (
     <FormField
@@ -47,8 +48,10 @@ export default function AftersaleSelector<T extends FieldValues>({
           <FormControl>
             <div
               className={cn(
-                useFiveGrid
-                  ? "grid w-full grid-cols-6 gap-3"
+                useOrderReviewGrid
+                  ? useFiveDesktopLayout
+                    ? "grid w-full grid-cols-2 gap-3 lg:grid-cols-6"
+                    : "grid w-full grid-cols-2 gap-3 lg:grid-cols-4"
                   : "flex flex-wrap gap-3",
                 className,
               )}
@@ -63,12 +66,9 @@ export default function AftersaleSelector<T extends FieldValues>({
                   className={cn(
                     "border border-textColor uppercase",
                     l === field.value && "bg-textColor text-bgColor",
-                    useFiveGrid &&
-                      i < 3 &&
-                      "col-span-2 w-full min-w-0 lg:w-auto",
-                    useFiveGrid &&
-                      i >= 3 &&
-                      "col-span-3 w-full min-w-0 lg:w-auto",
+                    useOrderReviewGrid && "w-full min-w-0",
+                    useFiveDesktopLayout && i < 3 && "lg:col-span-2",
+                    useFiveDesktopLayout && i >= 3 && "lg:col-span-3",
                   )}
                 >
                   {renderLabel ? renderLabel(l) : l}

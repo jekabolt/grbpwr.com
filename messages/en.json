@@ -414,7 +414,6 @@
     "order section": "Your order",
     "delivery speed": "Delivery speed",
     "packaging": "Packaging condition",
-    "sophistication": "Sophistication",
     "overall experience": "Overall experience",
     "comments": "Comments (optional)",
     "enter review": "enter review",
@@ -578,7 +577,7 @@
       "required": "Please select packaging condition."
     },
     "sophisticationRating": {
-      "required": "Please rate sophistication."
+      "required": "Please rate your overall experience."
     },
     "rating": {
       "required": "Please rate this item."

@@ -521,7 +521,7 @@
       "required": "请选择包装状况。"
     },
     "sophisticationRating": {
-      "required": "请为精致度评分。"
+      "required": "请评价您的整体体验。"
     },
     "rating": {
       "required": "请为该商品评分。"
@@ -795,7 +795,6 @@
     "order section": "您的订单",
     "delivery speed": "配送速度",
     "packaging": "包装状况",
-    "sophistication": "品质与做工印象",
     "overall experience": "整体体验",
     "comments": "留言（选填）",
     "enter review": "请填写评价内容",

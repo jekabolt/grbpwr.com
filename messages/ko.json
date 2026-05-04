@@ -521,7 +521,7 @@
       "required": "포장 상태를 선택해 주세요."
     },
     "sophisticationRating": {
-      "required": "세련됨을 평가해 주세요."
+      "required": "전체 경험을 평가해 주세요."
     },
     "rating": {
       "required": "이 상품을 평가해 주세요."
@@ -795,7 +795,6 @@
     "order section": "주문 정보",
     "delivery speed": "배송 속도",
     "packaging": "포장 상태",
-    "sophistication": "마감·품질 인상",
     "overall experience": "전체 경험",
     "comments": "코멘트(선택)",
     "enter review": "리뷰를 입력하세요",

@@ -522,7 +522,7 @@
       "required": "Bitte Verpackungszustand wählen."
     },
     "sophisticationRating": {
-      "required": "Bitte Raffinesse bewerten."
+      "required": "Bitte bewerten Sie Ihr Gesamterlebnis."
     },
     "rating": {
       "required": "Bitte diesen Artikel bewerten."
@@ -796,7 +796,6 @@
     "order section": "Ihre Bestellung",
     "delivery speed": "Liefergeschwindigkeit",
     "packaging": "Verpackungszustand",
-    "sophistication": "Raffinesse",
     "overall experience": "Gesamterlebnis",
     "comments": "Kommentar (optional)",
     "enter review": "Schreiben Sie hier Ihre Bewertung…",

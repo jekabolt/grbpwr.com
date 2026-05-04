@@ -521,7 +521,7 @@
       "required": "梱包状態を選択してください。"
     },
     "sophisticationRating": {
-      "required": "洗練さを評価してください。"
+      "required": "総合的な体験を評価してください。"
     },
     "rating": {
       "required": "この商品を評価してください。"
@@ -795,7 +795,6 @@
     "order section": "ご注文",
     "delivery speed": "配送の速さ",
     "packaging": "梱包状態",
-    "sophistication": "仕上がり・品格",
     "overall experience": "総合的な体験",
     "comments": "コメント（任意）",
     "enter review": "レビューをご記入ください",

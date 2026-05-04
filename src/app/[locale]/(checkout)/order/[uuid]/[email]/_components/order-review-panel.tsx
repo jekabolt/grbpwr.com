@@ -71,7 +71,10 @@ export function OrderReviewPanel({
   });
 
   const { fitBlinkingIndices, triggerFitBlink } = useFitRatingBlink();
-  const { fitBlinkingIndices: recommendBlinkingIndices, triggerFitBlink: triggerRecommendBlink } = useFitRatingBlink();
+  const {
+    fitBlinkingIndices: recommendBlinkingIndices,
+    triggerFitBlink: triggerRecommendBlink,
+  } = useFitRatingBlink();
   const [mobileItemsSectionOpen, setMobileItemsSectionOpen] = useState(true);
 
   const { mobileRowRefByIndex, desktopRowRefByIndex } =
@@ -98,7 +101,8 @@ export function OrderReviewPanel({
         setMobileItemsSectionOpen(true);
         showToast(t("select fit before submit"));
         if (fitIndices.length > 0) triggerFitBlink(fitIndices);
-        if (recommendIndices.length > 0) triggerRecommendBlink(recommendIndices);
+        if (recommendIndices.length > 0)
+          triggerRecommendBlink(recommendIndices);
       }
     },
     [showToast, t, triggerFitBlink, triggerRecommendBlink],
@@ -137,6 +141,7 @@ export function OrderReviewPanel({
                     className="w-full"
                     renderLabel={config.renderLabel}
                     disabled={submitting || alreadyReviewed}
+                    fiveOptionMobileGrid
                   />
                 </FieldsGroupContainer>
               ))}
@@ -194,8 +199,12 @@ export function OrderReviewPanel({
                         itemIndex={row.lineItemIndex}
                         disabled={submitting || alreadyReviewed}
                         length={orderItemReviewRows.length}
-                        shouldBlinkFit={fitBlinkingIndices.includes(row.lineItemIndex)}
-                        shouldBlinkRecommend={recommendBlinkingIndices.includes(row.lineItemIndex)}
+                        shouldBlinkFit={fitBlinkingIndices.includes(
+                          row.lineItemIndex,
+                        )}
+                        shouldBlinkRecommend={recommendBlinkingIndices.includes(
+                          row.lineItemIndex,
+                        )}
                         rowRef={desktopRowRefByIndex.get(row.lineItemIndex)}
                       />
                     ))}
