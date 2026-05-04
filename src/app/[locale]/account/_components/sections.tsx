@@ -7,6 +7,7 @@ import { EmailPreferences } from "@/app/[locale]/account/sections/email-preferen
 
 import { OrderReturns } from "../sections/order-returns";
 import { PersonalInfo } from "../sections/personal-info";
+import { PrivateCommunity } from "../sections/private-community";
 import type { ActivePanel } from "../utils/utility";
 
 type Props = {
@@ -40,6 +41,8 @@ export function ActiveAccountSection({
       );
     case "order&returns":
       return <OrderReturns account={account} />;
+    case "private community":
+      return <PrivateCommunity />;
     default:
       return null;
   }

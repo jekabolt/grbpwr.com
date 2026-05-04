@@ -40,6 +40,15 @@ export const USER_TIER: Partial<Record<AccountTierEnum, string>> = {
   ACCOUNT_TIER_ENUM_PLUS_PLUS: "++",
   ACCOUNT_TIER_ENUM_HACKER: "hacker",
 } as const;
+
+/** Subfolder under `public/content/tier/` for tier privileges markdown (`{slug}/{locale}.md`). */
+export const USER_TIER_CONTENT_SLUG: Partial<Record<AccountTierEnum, string>> = {
+  ACCOUNT_TIER_ENUM_UNKNOWN: "default",
+  ACCOUNT_TIER_ENUM_PLUS: "plus",
+  ACCOUNT_TIER_ENUM_PLUS_PLUS: "plus-plus",
+  ACCOUNT_TIER_ENUM_HACKER: "hacker",
+  ACCOUNT_TIER_ENUM_MEMBER: "member",
+} as const;
 export const GENDER_MAP: Record<string, common_GenderEnum> = {
   men: "GENDER_ENUM_MALE",
   women: "GENDER_ENUM_FEMALE",

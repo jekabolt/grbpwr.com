@@ -12,7 +12,8 @@ export type ActivePanel =
     | "personal"
     | "email"
     | "order&returns"
-    | "addresses";
+    | "addresses"
+    | "private community";
 
 export const ACCOUNT_SECTIONS = [
     {
@@ -21,9 +22,9 @@ export const ACCOUNT_SECTIONS = [
         path: "order-returns",
     },
     {
-        label: "personal info",
-        value: "personal",
-        path: "personal-info",
+        label: 'private community',
+        value: 'private community',
+        path: 'private-community',
     },
     {
         label: "addresses",
@@ -34,6 +35,11 @@ export const ACCOUNT_SECTIONS = [
         label: "email preferences",
         value: "email",
         path: "email-preferences",
+    },
+    {
+        label: "personal info",
+        value: "personal",
+        path: "personal-info",
     },
 ] as const;
 
