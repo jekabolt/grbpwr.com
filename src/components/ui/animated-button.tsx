@@ -38,6 +38,8 @@ export function AnimatedButton({
   onClick,
   ...props
 }: AnimatedButtonProps) {
+  const shouldAnimatePress = href === undefined || Boolean(href);
+
   const [isPressed, setIsPressed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isHeld, setIsHeld] = useState(false);
@@ -68,7 +70,7 @@ export function AnimatedButton({
   }, []);
 
   const handlePress = () => {
-    if (!enableThresholdAnimation) {
+    if (!enableThresholdAnimation && shouldAnimatePress) {
       setIsPressed(true);
       setTimeout(() => setIsPressed(false), animationDuration);
     }
