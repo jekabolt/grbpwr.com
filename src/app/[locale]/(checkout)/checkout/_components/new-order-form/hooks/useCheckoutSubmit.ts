@@ -40,6 +40,7 @@ interface UseCheckoutSubmitProps {
   clearFormData: () => void;
   setToastMessage: (msg: string) => void;
   setOrderModifiedToastOpen: (open: boolean) => void;
+  onOrderRedirectStart?: () => void;
 }
 
 export function useCheckoutSubmit({
@@ -59,6 +60,7 @@ export function useCheckoutSubmit({
   clearFormData,
   setToastMessage,
   setOrderModifiedToastOpen,
+  onOrderRedirectStart,
   resolveToasterMessage,
 }: UseCheckoutSubmitProps) {
   const [loading, setLoading] = useState(false);
@@ -164,6 +166,7 @@ export function useCheckoutSubmit({
     orderUuid: string,
     options?: { redirectStatus?: "succeeded" },
   ) => {
+    onOrderRedirectStart?.();
     await pushUserIdToDataLayer(data.email);
     clearCart();
     clearFormData();

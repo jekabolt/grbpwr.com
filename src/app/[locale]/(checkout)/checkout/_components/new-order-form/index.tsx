@@ -43,11 +43,13 @@ import ShippingFieldsGroup from "./shipping-fields-group";
 type NewOrderFormProps = {
   onAmountChange: (amount: number) => void;
   initialAccount: StorefrontAccount | null;
+  onOrderRedirectStart?: () => void;
 };
 
 export default function NewOrderForm({
   onAmountChange,
   initialAccount,
+  onOrderRedirectStart,
 }: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
   const { products, totalPrice, validatedCurrency } = useCart((s) => s);
@@ -135,6 +137,7 @@ export default function NewOrderForm({
     clearFormData,
     setToastMessage,
     setOrderModifiedToastOpen,
+    onOrderRedirectStart,
   });
 
   useCheckoutFormAnalytics({

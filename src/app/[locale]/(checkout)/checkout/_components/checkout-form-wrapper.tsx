@@ -44,6 +44,7 @@ export function CheckoutFormWrapper({
   const tToaster = useTranslations("toaster");
   const [sessionAccount, setSessionAccount] = useState(initialAccount);
   const [resolvingSession, setResolvingSession] = useState(!initialAccount);
+  const [isOrderRedirecting, setIsOrderRedirecting] = useState(false);
 
   const { toastOpen, toastMessage, setToastOpen } = useStripeRedirect({
     paymentFailedMessage: tToaster("payment_failed"),
@@ -52,9 +53,11 @@ export function CheckoutFormWrapper({
   const productsRef = useRef(products);
   productsRef.current = products;
   useEffect(() => {
+    if (isOrderRedirecting) return;
     if (products.length > 0) return;
 
     const t = setTimeout(() => {
+      if (isOrderRedirecting) return;
       if (productsRef.current.length === 0) {
         const country = currentCountry.countryCode?.toLowerCase() || "gb";
         const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
@@ -62,7 +65,13 @@ export function CheckoutFormWrapper({
       }
     }, 100);
     return () => clearTimeout(t);
-  }, [products.length, languageId, currentCountry.countryCode, router]);
+  }, [
+    products.length,
+    languageId,
+    currentCountry.countryCode,
+    router,
+    isOrderRedirecting,
+  ]);
 
   useEffect(() => {
     let active = true;
@@ -178,6 +187,7 @@ export function CheckoutFormWrapper({
         <NewOrderForm
           onAmountChange={handleAmountChange}
           initialAccount={sessionAccount}
+          onOrderRedirectStart={() => setIsOrderRedirecting(true)}
         />
       </Elements>
       <SubmissionToaster
