@@ -1,6 +1,9 @@
 import { parseApiError } from "./api-error";
 
-export async function setDefaultAddressRequest(id: number) {
+export async function setDefaultAddressRequest(
+  id: number,
+  fallbackMessage = "",
+) {
   const response = await fetch(`/api/account/addresses/${id}/default`, {
     method: "POST",
   });
@@ -8,7 +11,7 @@ export async function setDefaultAddressRequest(id: number) {
   if (!response.ok) {
     return {
       ok: false as const,
-      error: await parseApiError(response, "failed to set default address"),
+      error: await parseApiError(response, fallbackMessage),
     };
   }
 
@@ -27,7 +30,10 @@ type AddAddressPayload = {
   isDefault?: boolean;
 };
 
-export async function addAddressRequest(address: AddAddressPayload) {
+export async function addAddressRequest(
+  address: AddAddressPayload,
+  fallbackMessage: string,
+) {
   const response = await fetch("/api/account/addresses", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -37,7 +43,7 @@ export async function addAddressRequest(address: AddAddressPayload) {
   if (!response.ok) {
     return {
       ok: false as const,
-      error: await parseApiError(response, "failed to add address"),
+      error: await parseApiError(response, fallbackMessage),
     };
   }
 

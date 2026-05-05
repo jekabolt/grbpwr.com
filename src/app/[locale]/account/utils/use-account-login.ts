@@ -189,7 +189,10 @@ export function useAccountLogin() {
     }
 
     try {
-      const result = await requestAccountLoginCode(normalizedEmail);
+      const result = await requestAccountLoginCode(
+        normalizedEmail,
+        t("failed to request login code"),
+      );
       if (!result.ok) {
         openErrorToast(result.error ?? t("failed to request login code"));
         return false;

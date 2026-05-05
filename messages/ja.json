@@ -77,8 +77,19 @@
     "default": "デフォルト",
     "you are in country: {country} / {currency}": "現在の国: {country} / {currency}",
     "change location": "ロケーションを変更",
+    "email_consent_notice": "メンバーになることで、<privacy>プライバシーポリシー</privacy>および<membership>メンバーシップポリシー</membership>に同意したものとみなされます。",
     "magic_login_success_title": "ログインに成功しました",
-    "magic_login_success_subtitle": "おかえりなさい。"
+    "magic_login_success_subtitle": "おかえりなさい。",
+    "no addresses saved": "保存された住所はありません",
+    "save an address to faster checkout": "住所を保存すると購入手続きがスムーズになります",
+    "no orders yet": "まだ注文はありません",
+    "explore collections": "コレクションを見る",
+    "no returns": "返品はありません",
+    "to start new return, visit our returns": "新しい返品を開始するには、返品ページをご覧ください",
+    "date of birth": "生年月日",
+    "failed to update account": "アカウントを更新できませんでした",
+    "failed to set default address": "デフォルト住所を設定できませんでした",
+    "failed to add address": "住所を追加できませんでした"
   },
   "footer": {
     "legal notices": "法的通知",

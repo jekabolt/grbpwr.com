@@ -77,8 +77,19 @@
     "default": "par défaut",
     "you are in country: {country} / {currency}": "vous êtes dans le pays : {country} / {currency}",
     "change location": "changer de localisation",
+    "email_consent_notice": "en devenant membre, vous acceptez notre <privacy>politique de confidentialité</privacy> et notre <membership>politique d'adhésion</membership>.",
     "magic_login_success_title": "connexion réussie",
-    "magic_login_success_subtitle": "vous êtes connecté. bienvenue."
+    "magic_login_success_subtitle": "vous êtes connecté. bienvenue.",
+    "no addresses saved": "aucune adresse enregistrée",
+    "save an address to faster checkout": "enregistrez une adresse pour un paiement plus rapide",
+    "no orders yet": "aucune commande pour le moment",
+    "explore collections": "explorer les collections",
+    "no returns": "aucun retour",
+    "to start new return, visit our returns": "pour créer un nouveau retour, consultez nos retours",
+    "date of birth": "date de naissance",
+    "failed to update account": "impossible de mettre à jour le compte",
+    "failed to set default address": "impossible de définir l’adresse par défaut",
+    "failed to add address": "impossible d’ajouter l’adresse"
   },
   "footer": {
     "legal notices": "mentions légales",

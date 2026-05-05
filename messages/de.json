@@ -77,8 +77,19 @@
     "default": "standard",
     "you are in country: {country} / {currency}": "sie sind im land: {country} / {currency}",
     "change location": "standort ändern",
+    "email_consent_notice": "wenn sie mitglied werden, stimmen sie unserer <privacy>datenschutzerklärung</privacy> und <membership>mitgliedschaftsrichtlinie</membership> zu.",
     "magic_login_success_title": "anmeldung erfolgreich",
-    "magic_login_success_subtitle": "du bist drin. willkommen zurück."
+    "magic_login_success_subtitle": "du bist drin. willkommen zurück.",
+    "no addresses saved": "keine adressen gespeichert",
+    "save an address to faster checkout": "speichern sie eine adresse für einen schnelleren checkout",
+    "no orders yet": "noch keine bestellungen",
+    "explore collections": "kollektionen entdecken",
+    "no returns": "keine rücksendungen",
+    "to start new return, visit our returns": "um eine neue rücksendung zu starten, besuchen sie unsere rücksendungen",
+    "date of birth": "geburtsdatum",
+    "failed to update account": "konto konnte nicht aktualisiert werden",
+    "failed to set default address": "standardadresse konnte nicht festgelegt werden",
+    "failed to add address": "adresse konnte nicht hinzugefügt werden"
   },
   "footer": {
     "legal notices": "rechtliche hinweise",

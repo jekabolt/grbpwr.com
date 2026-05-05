@@ -22,6 +22,7 @@ export function AccountPersonalInfoFields({
   className,
 }: Props) {
   const t = useTranslations("checkout");
+  const tAccount = useTranslations("account");
 
   return (
     <div
@@ -55,7 +56,7 @@ export function AccountPersonalInfoFields({
       />
       <InputField
         name="birthDate"
-        label="date of birth"
+        label={tAccount("date of birth")}
         type="date"
         variant="secondary"
         disabled={disabled}

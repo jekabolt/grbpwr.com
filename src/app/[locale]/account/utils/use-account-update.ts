@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { parseApiError } from "@/app/[locale]/account/utils/api-error";
 import type { AccountSchema } from "@/app/[locale]/account/utils/schema";
@@ -27,6 +28,7 @@ type UpdateAccountResult = {
 
 export function useAccountUpdate() {
   const router = useRouter();
+  const t = useTranslations("account");
   const [pending, setPending] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -53,7 +55,7 @@ export function useAccountUpdate() {
         });
 
         if (!res.ok) {
-          const error = await parseApiError(res, "failed to update account");
+          const error = await parseApiError(res, t("failed to update account"));
           showToast(error);
           return { ok: false, error };
         }
@@ -65,7 +67,7 @@ export function useAccountUpdate() {
         setPending(false);
       }
     },
-    [router, showToast],
+    [router, showToast, t],
   );
 
   return {

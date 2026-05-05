@@ -92,7 +92,7 @@ export function EditAddressForm({
       >
         {!isCheckout && (
           <div className="flex items-center justify-between">
-            <Text variant="uppercase">edit shipping address</Text>
+            <Text variant="uppercase">{tAccount("edit shipping address")}</Text>
             <Button
               type="button"
               className="hidden lg:block"

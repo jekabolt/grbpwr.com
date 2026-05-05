@@ -77,8 +77,19 @@
     "default": "默认",
     "you are in country: {country} / {currency}": "您所在国家：{country} / {currency}",
     "change location": "更改位置",
+    "email_consent_notice": "成为会员即表示您同意我们的<privacy>隐私政策</privacy>和<membership>会员政策</membership>。",
     "magic_login_success_title": "登录成功",
-    "magic_login_success_subtitle": "欢迎回来。"
+    "magic_login_success_subtitle": "欢迎回来。",
+    "no addresses saved": "暂无已保存地址",
+    "save an address to faster checkout": "保存地址以便更快结账",
+    "no orders yet": "暂无订单",
+    "explore collections": "探索系列",
+    "no returns": "暂无退货",
+    "to start new return, visit our returns": "如需发起新的退货，请访问退货页面",
+    "date of birth": "出生日期",
+    "failed to update account": "无法更新账户",
+    "failed to set default address": "无法设置默认地址",
+    "failed to add address": "无法添加地址"
   },
   "footer": {
     "legal notices": "法律声明",

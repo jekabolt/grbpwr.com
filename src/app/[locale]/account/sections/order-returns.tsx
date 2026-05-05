@@ -88,6 +88,7 @@ function OrdersList({
   loadingMore,
   onLoadMore,
 }: ListProps) {
+  const t = useTranslations("account");
   const visible = orders.filter(
     (o) => !RETURN_STATUS_IDS.has(o.order?.orderStatusId ?? 0),
   );
@@ -107,14 +108,14 @@ function OrdersList({
         </>
       ) : (
         <div className="flex flex-col gap-6">
-          <UIText variant="uppercase">no orders yet</UIText>
+          <UIText variant="uppercase">{t("no orders yet")}</UIText>
           <Button
             size={"lg"}
             variant="simpleReverseWithBorder"
             className="self-start uppercase"
             asChild
           >
-            <Link href="/catalog">explore collections</Link>
+            <Link href="/catalog">{t("explore collections")}</Link>
           </Button>
         </div>
       )}
@@ -129,6 +130,7 @@ function ReturnsList({
   loadingMore,
   onLoadMore,
 }: ListProps) {
+  const t = useTranslations("account");
   const visible = orders.filter((o) =>
     RETURN_STATUS_IDS.has(o.order?.orderStatusId ?? 0),
   );
@@ -148,8 +150,8 @@ function ReturnsList({
         </>
       ) : (
         <div className="flex flex-col gap-6">
-          <UIText variant="uppercase">no returns</UIText>
-          <UIText>to start new return, visit our returns</UIText>
+          <UIText variant="uppercase">{t("no returns")}</UIText>
+          <UIText>{t("to start new return, visit our returns")}</UIText>
         </div>
       )}
     </div>

@@ -77,8 +77,19 @@
     "default": "predefinito",
     "you are in country: {country} / {currency}": "ti trovi nel paese: {country} / {currency}",
     "change location": "cambia posizione",
+    "email_consent_notice": "diventando membro, accetti la nostra <privacy>informativa sulla privacy</privacy> e la <membership>politica di membership</membership>.",
     "magic_login_success_title": "accesso effettuato",
-    "magic_login_success_subtitle": "ci sei. bentornato."
+    "magic_login_success_subtitle": "ci sei. bentornato.",
+    "no addresses saved": "nessun indirizzo salvato",
+    "save an address to faster checkout": "salva un indirizzo per un checkout più veloce",
+    "no orders yet": "nessun ordine ancora",
+    "explore collections": "esplora le collezioni",
+    "no returns": "nessun reso",
+    "to start new return, visit our returns": "per avviare un nuovo reso, visita i nostri resi",
+    "date of birth": "data di nascita",
+    "failed to update account": "impossibile aggiornare l’account",
+    "failed to set default address": "impossibile impostare l’indirizzo predefinito",
+    "failed to add address": "impossibile aggiungere l’indirizzo"
   },
   "footer": {
     "legal notices": "note legali",

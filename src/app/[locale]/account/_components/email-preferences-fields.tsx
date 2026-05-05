@@ -33,7 +33,7 @@ export function AccountEmailPreferencesFields({ form, disabled }: Props) {
         label={
           subscribeNewArrivals
             ? t("email preferences")
-            : "receive updates on new arrivals and brand news"
+            : t("receive updates on new arrivals and brand news")
         }
       />
       {subscribeNewArrivals ? (

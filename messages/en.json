@@ -78,7 +78,17 @@
     "change location": "change location",
     "email_consent_notice": "by becoming a member, you agree to our <privacy>privacy policy</privacy> and <membership>membership policy</membership>.",
     "magic_login_success_title": "login successful",
-    "magic_login_success_subtitle": "you're in. welcome back."
+    "magic_login_success_subtitle": "you're in. welcome back.",
+    "no addresses saved": "no addresses saved",
+    "save an address to faster checkout": "save an address to faster checkout",
+    "no orders yet": "no orders yet",
+    "explore collections": "explore collections",
+    "no returns": "no returns",
+    "to start new return, visit our returns": "to start new return, visit our returns",
+    "date of birth": "date of birth",
+    "failed to update account": "failed to update account",
+    "failed to set default address": "failed to set default address",
+    "failed to add address": "failed to add address"
   },
   "footer": {
     "legal notices": "legal notices",

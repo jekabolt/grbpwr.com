@@ -77,8 +77,19 @@
     "default": "기본",
     "you are in country: {country} / {currency}": "현재 국가: {country} / {currency}",
     "change location": "위치 변경",
+    "email_consent_notice": "회원이 되면 <privacy>개인정보 처리방침</privacy>과 <membership>멤버십 정책</membership>에 동의하게 됩니다.",
     "magic_login_success_title": "로그인되었습니다",
-    "magic_login_success_subtitle": "다시 오신 것을 환영합니다."
+    "magic_login_success_subtitle": "다시 오신 것을 환영합니다.",
+    "no addresses saved": "저장된 주소가 없습니다",
+    "save an address to faster checkout": "더 빠른 결제를 위해 주소를 저장하세요",
+    "no orders yet": "아직 주문이 없습니다",
+    "explore collections": "컬렉션 둘러보기",
+    "no returns": "반품이 없습니다",
+    "to start new return, visit our returns": "새 반품을 시작하려면 반품 페이지를 방문하세요",
+    "date of birth": "생년월일",
+    "failed to update account": "계정을 업데이트하지 못했습니다",
+    "failed to set default address": "기본 주소를 설정하지 못했습니다",
+    "failed to add address": "주소를 추가하지 못했습니다"
   },
   "footer": {
     "legal notices": "법적 고지",

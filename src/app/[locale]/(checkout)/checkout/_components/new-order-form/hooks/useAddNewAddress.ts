@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { CHECKOUT_ERROR_CITY_COUNTRY } from "@/constants";
@@ -31,6 +32,7 @@ type AddNewAddressOptions = {
 };
 
 export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
+  const tAccount = useTranslations("account");
   const { setValue, getValues, trigger, resetField, setError } =
     useFormContext();
   const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
@@ -157,17 +159,20 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
 
     setSavingNewAddress(true);
     try {
-      const result = await addAddressRequest({
-        country: String(values.country ?? "").trim().toLowerCase(),
-        state: String(values.state ?? "").trim(),
-        city: String(values.city ?? "").trim(),
-        addressLineOne: String(values.address ?? "").trim(),
-        addressLineTwo: String(values.additionalAddress ?? "").trim(),
-        company: String(values.company ?? "").trim(),
-        postalCode: String(values.postalCode ?? "").trim(),
-        phone: String(values.phone ?? "").trim(),
-        isDefault: true,
-      });
+      const result = await addAddressRequest(
+        {
+          country: String(values.country ?? "").trim().toLowerCase(),
+          state: String(values.state ?? "").trim(),
+          city: String(values.city ?? "").trim(),
+          addressLineOne: String(values.address ?? "").trim(),
+          addressLineTwo: String(values.additionalAddress ?? "").trim(),
+          company: String(values.company ?? "").trim(),
+          postalCode: String(values.postalCode ?? "").trim(),
+          phone: String(values.phone ?? "").trim(),
+          isDefault: true,
+        },
+        tAccount("failed to add address"),
+      );
 
       if (!result.ok) {
         setSaveAddressError(result.error);
@@ -185,7 +190,7 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
       onSaved();
       setIsAddingNewAddress(false);
     } catch {
-      setSaveAddressError("failed to add address");
+      setSaveAddressError(tAccount("failed to add address"));
     } finally {
       setSavingNewAddress(false);
     }

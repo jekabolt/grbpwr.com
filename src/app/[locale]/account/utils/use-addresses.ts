@@ -44,7 +44,10 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
   async function handleDefaultAddress(id: number) {
     setDefaultId(id);
     try {
-      const result = await setDefaultAddressRequest(id);
+      const result = await setDefaultAddressRequest(
+        id,
+        t("failed to set default address"),
+      );
       if (!result.ok) {
         setToastMessage(result.error);
         return;

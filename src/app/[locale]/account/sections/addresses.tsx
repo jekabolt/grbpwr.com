@@ -125,8 +125,8 @@ export function AddressesSection({
         </div>
       ) : (
         <div className="flex flex-col gap-6">
-          <Text variant="uppercase">no addresses saved</Text>
-          <Text>save an address to faster checkout</Text>
+          <Text variant="uppercase">{t("no addresses saved")}</Text>
+          <Text>{t("save an address to faster checkout")}</Text>
         </div>
       )}
     </div>

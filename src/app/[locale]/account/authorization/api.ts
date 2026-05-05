@@ -5,7 +5,10 @@ type ApiResult = {
   error?: string;
 };
 
-export async function requestAccountLoginCode(email: string): Promise<ApiResult> {
+export async function requestAccountLoginCode(
+  email: string,
+  fallbackMessage: string,
+): Promise<ApiResult> {
   const response = await fetch("/api/account/login/request", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -15,7 +18,7 @@ export async function requestAccountLoginCode(email: string): Promise<ApiResult>
   if (!response.ok) {
     return {
       ok: false,
-      error: await parseApiError(response, "failed to request login code"),
+      error: await parseApiError(response, fallbackMessage),
     };
   }
 
@@ -25,7 +28,7 @@ export async function requestAccountLoginCode(email: string): Promise<ApiResult>
 export async function verifyAccountLoginCode(
   email: string,
   code: string,
-  fallbackMessage = "the code couldn’t be verified",
+  fallbackMessage: string,
 ): Promise<ApiResult> {
   const response = await fetch("/api/account/login/verify-code", {
     method: "POST",
