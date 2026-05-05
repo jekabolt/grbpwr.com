@@ -10,12 +10,14 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { CHECKOUT_ERROR_CITY_COUNTRY } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormPhoneField } from "@/components/ui/form/fields/form-phone-field";
 import InputField from "@/components/ui/form/fields/input-field";
 import { Text } from "@/components/ui/text";
 import { AddressFields } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/shipping-fields-group";
+import { verifyCityInCountry } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/verify-city";
 import { parseApiError } from "@/app/[locale]/account/utils/api-error";
 
 function createAddressEditSchema(tAccount: (key: string) => string) {
@@ -74,6 +76,18 @@ export function EditAddressForm({
 
   async function onSubmit(data: FormData) {
     setError(null);
+    if (
+      !(await verifyCityInCountry(
+        data.city.trim(),
+        data.country.trim(),
+      ))
+    ) {
+      form.setError("city", {
+        type: "manual",
+        message: CHECKOUT_ERROR_CITY_COUNTRY,
+      });
+      return;
+    }
     setSaving(true);
     try {
       const res = await fetch(`/api/account/addresses/${address.id}`, {

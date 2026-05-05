@@ -184,7 +184,7 @@ function FormMessage({
     <p
       ref={ref}
       id={formMessageId}
-      className={cn("text-xs", className, {
+      className={cn("text-xs lowercase", className, {
         "text-errorColor": shouldShowError,
       })}
       {...props}

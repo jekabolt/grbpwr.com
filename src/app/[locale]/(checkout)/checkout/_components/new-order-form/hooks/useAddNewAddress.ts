@@ -3,7 +3,10 @@
 import { useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
+import { CHECKOUT_ERROR_CITY_COUNTRY } from "@/constants";
 import { addAddressRequest } from "@/app/[locale]/account/utils/address-actions";
+
+import { verifyCityInCountry } from "../verify-city";
 
 const FIELDS_TO_VALIDATE = [
   "firstName",
@@ -28,7 +31,8 @@ type AddNewAddressOptions = {
 };
 
 export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
-  const { setValue, getValues, trigger, resetField } = useFormContext();
+  const { setValue, getValues, trigger, resetField, setError } =
+    useFormContext();
   const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
   const [savingNewAddress, setSavingNewAddress] = useState(false);
   const [saveAddressError, setSaveAddressError] = useState<string | null>(null);
@@ -141,6 +145,16 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
     if (!valid) return;
 
     const values = getValues();
+    const city = String(values.city ?? "").trim();
+    const country = String(values.country ?? "").trim();
+    if (!(await verifyCityInCountry(city, country))) {
+      setError("city", {
+        type: "manual",
+        message: CHECKOUT_ERROR_CITY_COUNTRY,
+      });
+      return;
+    }
+
     setSavingNewAddress(true);
     try {
       const result = await addAddressRequest({
