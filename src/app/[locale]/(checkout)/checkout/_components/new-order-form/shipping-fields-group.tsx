@@ -282,7 +282,7 @@ export function AddressFields({
   return (
     <>
       {showNameFields && (
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div className="col-span-1">
             <InputField
               loading={loading}
@@ -334,12 +334,27 @@ export function AddressFields({
         />
       )}
 
-      <CityAutocomplete
-        loading={loading}
-        disabled={disabled}
-        prefix={prefix}
-        countryCode={selectedCountry}
-      />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="col-span-1">
+          <CityAutocomplete
+            loading={loading}
+            disabled={disabled}
+            prefix={prefix}
+            countryCode={selectedCountry}
+          />
+        </div>
+
+        <div className="col-span-1">
+          <InputField
+            loading={loading}
+            variant="secondary"
+            name={getFieldName(prefix, "postalCode")}
+            label={t("postal code:")}
+            disabled={disabled}
+            keyboardRestriction={keyboardRestrictions.postalCodeField}
+          />
+        </div>
+      </div>
 
       <InputField
         loading={loading}
@@ -370,14 +385,6 @@ export function AddressFields({
           selectedCountry={selectedCountry}
         />
       )}
-      <InputField
-        loading={loading}
-        variant="secondary"
-        name={getFieldName(prefix, "postalCode")}
-        label={t("postal code:")}
-        disabled={disabled}
-        keyboardRestriction={keyboardRestrictions.postalCodeField}
-      />
     </>
   );
 }

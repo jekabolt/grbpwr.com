@@ -103,7 +103,7 @@ export function EditAddressForm({
           </div>
         )}
         <div className="flex flex-col gap-8">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <InputField
               {...readOnlyFieldProps}
               name="firstName"
@@ -144,16 +144,18 @@ export function EditAddressForm({
             >
               {tAccount("save")}
             </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              size="lg"
-              className="hidden w-full uppercase lg:block"
-              disabled={isSubmitting}
-              onClick={onCancel}
-            >
-              {tAccount("cancel")}
-            </Button>
+            {isCheckout && (
+              <Button
+                type="button"
+                variant="secondary"
+                size="lg"
+                className="hidden w-full uppercase lg:block"
+                disabled={isSubmitting}
+                onClick={onCancel}
+              >
+                {tAccount("cancel")}
+              </Button>
+            )}
           </div>
         </div>
       </div>

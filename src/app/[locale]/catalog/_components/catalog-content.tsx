@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-
 import { CATALOG_LIMIT } from "@/constants";
 
 import { serviceClient } from "@/lib/api";

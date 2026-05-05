@@ -68,7 +68,12 @@ export function AddressesSection({
       })}
     >
       {editingId === null && (
-        <Text variant="uppercase" className="hidden lg:block">
+        <Text
+          variant="uppercase"
+          className={cn("hidden lg:block", {
+            "text-textInactiveColor": isDisabled,
+          })}
+        >
           {t("addresses")}
         </Text>
       )}
