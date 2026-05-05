@@ -28,7 +28,9 @@ export function PrivateCommunity() {
   );
   const { content, loading } = useMarkdownContent(mdPaths);
 
-  const markdownComponents = createMarkdownComponents();
+  const markdownComponents = createMarkdownComponents(undefined, {
+    paragraphTone: "tier-privileges",
+  });
   const proseStyle = {
     "--tw-prose-bullets": "hsl(var(--textColor))",
     "--tw-prose-counters": "hsl(var(--textColor))",
@@ -75,7 +77,7 @@ export function PrivateCommunity() {
             <Text
               component="div"
               className={cn(
-                "prose w-full max-w-none lowercase leading-none lg:max-h-[300px] lg:overflow-y-auto",
+                "prose w-full max-w-none leading-none lg:max-h-[300px] lg:overflow-y-auto",
                 "[&>div:nth-child(even)]:!mb-6 [&>div:nth-child(odd)]:!mb-1.5",
                 "[&>div:nth-child(even):last-child]:!mb-0",
               )}
