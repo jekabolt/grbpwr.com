@@ -91,7 +91,9 @@ function FormLabel({ className, ref, ...props }: any) {
 
   return (
     <Label ref={ref} className={cn(className)} htmlFor={formItemId} {...props}>
-      <Text size="small">{props.children}</Text>
+      <Text component="span" size="small">
+        {props.children}
+      </Text>
     </Label>
   );
 }

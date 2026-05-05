@@ -67,9 +67,11 @@ export function AddressesSection({
         "gap-0": isCheckout,
       })}
     >
-      <Text variant="uppercase" className="hidden lg:block">
-        {t("addresses")}
-      </Text>
+      {editingId === null && (
+        <Text variant="uppercase" className="hidden lg:block">
+          {t("addresses")}
+        </Text>
+      )}
       {addresses.length > 0 ? (
         <div className="flex flex-col">
           {isInitialLoading ? (
@@ -110,6 +112,7 @@ export function AddressesSection({
                 <EditAddressForm
                   address={address}
                   account={account}
+                  isCheckout={isCheckout}
                   onCancel={() => setAddressEditingId(null)}
                   onSuccess={() => {
                     setAddressEditingId(null);

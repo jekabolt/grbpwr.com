@@ -23,6 +23,7 @@ export type PhoneFieldProps = {
   loading?: boolean;
   variant?: string;
   optional?: boolean;
+  displayTrigger?: boolean;
 };
 
 export function PhoneField({
@@ -31,10 +32,12 @@ export function PhoneField({
   items,
   selectedCountry,
   optional,
+  displayTrigger = true,
   ...props
 }: PhoneFieldProps) {
   const { control, trigger } = useFormContext();
-  const t = useTranslations("errors");
+  const tErrors = useTranslations("errors");
+  const tCheckout = useTranslations("checkout");
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
 
@@ -123,13 +126,18 @@ export function PhoneField({
         return (
           <FormItem>
             <FormLabel
-              className={cn("flex", {
+              className={cn("inline-flex items-center", {
                 "text-textInactiveColor": props.disabled,
               })}
             >
-              <Text>{label}</Text>
+              <Text component="span">{label}</Text>
               {optional && (
-                <Text className="text-textInactiveColor"> (optional)</Text>
+                <Text
+                  component="span"
+                  className="ml-1 whitespace-nowrap text-textInactiveColor"
+                >
+                  ({tCheckout("optional")})
+                </Text>
               )}
             </FormLabel>
             <FormControl>
@@ -141,13 +149,11 @@ export function PhoneField({
                     onValueChange={handleCodeChange}
                     items={items}
                     disabled={props.disabled}
-                    variant="secondary"
-                    className={cn("flex-row-reverse text-textBaseSize", {
-                      // "text-textInactiveColor": props.disabled,
-                    })}
+                    className="flex-row-reverse text-textBaseSize"
                     customWidth={containerWidth}
                     renderValue={handleSelectChange}
                     readOnly={props.readOnly}
+                    displayTrigger={displayTrigger && !props.disabled}
                   />
                 </div>
                 <Input
@@ -162,7 +168,7 @@ export function PhoneField({
                 />
               </div>
             </FormControl>
-            <FormMessage translateError={t} fieldName={name} />
+            <FormMessage translateError={tErrors} fieldName={name} />
           </FormItem>
         );
       }}

@@ -34,7 +34,8 @@ export default function InputField({
   ...props
 }: Props) {
   const { control, trigger, setValue } = useFormContext();
-  const t = useTranslations("errors");
+  const tErrors = useTranslations("errors");
+  const tCheckout = useTranslations("checkout");
 
   function handleBlur(event: React.FocusEvent<HTMLInputElement>) {
     trigger(name);
@@ -71,14 +72,19 @@ export default function InputField({
           {label && (
             <FormLabel
               className={cn(
-                "flex",
+                "inline-flex items-center",
                 srLabel ? "sr-only" : "",
                 disabled ? "text-textInactiveColor" : "",
               )}
             >
-              <Text>{label}</Text>
+              <Text component="span">{label}</Text>
               {optional && (
-                <Text className="text-textInactiveColor"> (optional)</Text>
+                <Text
+                  component="span"
+                  className="ml-1 whitespace-nowrap text-textInactiveColor"
+                >
+                  ({tCheckout("optional")}):
+                </Text>
               )}
             </FormLabel>
           )}
@@ -96,7 +102,7 @@ export default function InputField({
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage translateError={t} fieldName={name} />
+          <FormMessage translateError={tErrors} fieldName={name} />
         </FormItem>
       )}
     />

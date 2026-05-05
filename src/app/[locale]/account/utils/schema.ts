@@ -74,6 +74,25 @@ export function createAccountSchema(t: (key: string) => string) {
     });
 }
 
+export function createAddressEditSchema(t: (key: string) => string) {
+    return z.object({
+        firstName: z.string().optional(),
+        lastName: z.string().optional(),
+        country: z.string().min(2, t("country is required")),
+        state: z.string().optional(),
+        city: z.string().min(1, t("city is required")),
+        address: z.string().min(3, t("address is required")),
+        additionalAddress: z.string().optional(),
+        company: z.string().optional(),
+        phone: z.string().optional(),
+        postalCode: z.string().min(2, t("postal code is required")),
+    });
+}
+
+export type AddressEditFormData = z.infer<
+    ReturnType<typeof createAddressEditSchema>
+>;
+
 export const accountSchema = accountFieldsSchema({
     invalidDate: "invalid date",
     validBirthDate: "enter a valid date of birth",

@@ -11,9 +11,10 @@ export default function SelectComponent({
   className,
   customWidth,
   fullWidth,
-  renderValue,
   singleLineSelectedValue,
   readOnly,
+  displayTrigger = true,
+  renderValue,
   ...props
 }: {
   name: string;
@@ -23,6 +24,7 @@ export default function SelectComponent({
   fullWidth?: boolean;
   singleLineSelectedValue?: boolean;
   readOnly?: boolean;
+  displayTrigger?: boolean;
   renderValue?: (
     selectedValue: string,
     selectedItem: { label: string; value: string } | undefined,
@@ -62,11 +64,13 @@ export default function SelectComponent({
         readOnly={isReadOnly}
         singleLineSelectedValue={singleLineSelectedValue}
       >
-        <Arrow
-          className={cn("text-textColor", {
-            "text-textInactiveColor": props.disabled,
-          })}
-        />
+        {displayTrigger && (
+          <Arrow
+            className={cn("text-textColor", {
+              "text-textInactiveColor": props.disabled,
+            })}
+          />
+        )}
       </SelectTrigger>
       <SelectContent fullWidth={fullWidth} customWidth={customWidth}>
         {items.map((item) => (
@@ -148,14 +152,16 @@ export function SelectTrigger({
       ) : (
         valueNode
       )}
-      <Select.Icon
-        className={cn("rotate-180 text-textColor", {
-          "rotate-0": isOpen,
-          "shrink-0": singleLineSelectedValue,
-        })}
-      >
-        {children}
-      </Select.Icon>
+      {children && (
+        <Select.Icon
+          className={cn("rotate-180 text-textColor", {
+            "rotate-0": isOpen,
+            "shrink-0": singleLineSelectedValue,
+          })}
+        >
+          {children}
+        </Select.Icon>
+      )}
     </Select.Trigger>
   );
 }

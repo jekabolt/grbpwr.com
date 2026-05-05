@@ -1,9 +1,13 @@
-import type { StorefrontAccount } from "@/api/proto-http/frontend";
+import type {
+    StorefrontAccount,
+    StorefrontSavedAddress,
+} from "@/api/proto-http/frontend";
 import { googletype_Date } from "@/api/proto-http/frontend";
 import { COUNTRIES_BY_REGION, EMAIL_PREFERENCES, LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
 import {
     defaultData,
+    type AddressEditFormData,
     type AccountEmailPreference,
     type AccountSchema,
 } from "./schema";
@@ -160,6 +164,40 @@ export function buildAccountUpdatePayload(
         ...(phone.length > 0 ? { phone } : {}),
         ...(birth.length > 0 ? { birthDate: inputValueToBirthDate(birth) } : {}),
         ...(marketingOptIn ? { shoppingPreference: data.shoppingPreference } : {}),
+    };
+}
+
+export function getAddressEditDefaultValues(
+    account: StorefrontAccount,
+    address: StorefrontSavedAddress,
+): AddressEditFormData {
+    return {
+        firstName: account.firstName ?? "",
+        lastName: account.lastName ?? "",
+        country: address.country ?? "",
+        state: address.state ?? "",
+        city: address.city ?? "",
+        address: address.addressLineOne ?? "",
+        additionalAddress: address.addressLineTwo ?? "",
+        company: address.company ?? "",
+        phone: account.phone ?? "",
+        postalCode: address.postalCode ?? "",
+    };
+}
+
+export function buildAddressEditPayload(
+    data: AddressEditFormData,
+    isDefault: boolean | undefined,
+) {
+    return {
+        country: data.country.trim(),
+        state: data.state?.trim() ?? "",
+        city: data.city.trim(),
+        addressLineOne: data.address.trim(),
+        addressLineTwo: data.additionalAddress?.trim() ?? "",
+        company: data.company?.trim() ?? "",
+        postalCode: data.postalCode.trim(),
+        isDefault: isDefault ?? false,
     };
 }
 

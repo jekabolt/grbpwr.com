@@ -306,13 +306,6 @@ export function AddressFields({
         </div>
       )}
 
-      <AddressAutocomplete
-        loading={loading}
-        disabled={disabled}
-        prefix={prefix}
-        countryCode={selectedCountry}
-      />
-
       <SelectField
         loading={loading}
         variant="secondary"
@@ -322,6 +315,13 @@ export function AddressFields({
         items={sortedCountries}
         disabled={disabled || disableCountryField}
         onValueChange={handleCountryChange}
+      />
+
+      <AddressAutocomplete
+        loading={loading}
+        disabled={disabled}
+        prefix={prefix}
+        countryCode={selectedCountry}
       />
 
       {stateItems.length > 0 && (
@@ -345,17 +345,19 @@ export function AddressFields({
         loading={loading}
         variant="secondary"
         name={getFieldName(prefix, "additionalAddress")}
-        label={t("additional address:")}
+        label={t("additional address")}
         disabled={disabled}
         keyboardRestriction={keyboardRestrictions.addressField}
+        optional
       />
       <InputField
         loading={loading}
         variant="secondary"
         name={getFieldName(prefix, "company")}
-        label={t("company:")}
+        label={t("company")}
         disabled={disabled}
         keyboardRestriction={keyboardRestrictions.companyField}
+        optional
       />
 
       {showPhoneField && (
