@@ -50,7 +50,7 @@ export function AccountLoginForm({
     resendCode,
     verifyCode,
   } = useAccountLogin();
-  const showCartSummary = hasCartSummary && step === "email";
+  const showCartSummary = hasCartSummary && !isCheckout && step === "email";
 
   useEffect(() => {
     if (!storageChecked) return;
