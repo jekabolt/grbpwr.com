@@ -14,6 +14,7 @@ import itMessages from "../../messages/it.json";
 import jaMessages from "../../messages/ja.json";
 import koMessages from "../../messages/ko.json";
 import zhMessages from "../../messages/zh.json";
+
 import "./globals.css";
 
 import { resolveLocale } from "@/lib/utils";
@@ -76,10 +77,21 @@ export default function GlobalError({ error, reset }: Props) {
             </Text>
             <Text className="max-w-xs lg:max-w-72">{t.text}</Text>
             <div className="flex gap-3">
-              <Button type="button" variant="main" size="lg" onClick={reset}>
+              <Button
+                type="button"
+                variant="main"
+                size="lg"
+                className="uppercase"
+                onClick={reset}
+              >
                 {t.retry}
               </Button>
-              <Button asChild variant="secondary" size="lg">
+              <Button
+                asChild
+                variant="secondary"
+                size="lg"
+                className="uppercase"
+              >
                 <Link href="/">{t.main}</Link>
               </Button>
             </div>
