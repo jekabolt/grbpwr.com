@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { USER_TIER } from "@/constants";
 import { useTranslations } from "next-intl";
 
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
@@ -11,6 +13,7 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { Announce } from "@/components/ui/announce";
 import { Button } from "@/components/ui/button";
 import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
+import { Text } from "@/components/ui/text";
 
 import { HeaderLeftNav } from "./header-left-nav";
 import { useAnnounce } from "./useAnnounce";
@@ -26,6 +29,7 @@ export function Header({
   const { dictionary } = useDataContext();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
+  const { isSignedIn, account } = useAccountOnboardingStore((s) => s);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isBigMenuEnabled = dictionary?.bigMenu;
   const itemsQuantity = Object.keys(products).length;
@@ -37,7 +41,11 @@ export function Header({
   );
   const { open, handleClose } = useAnnounce(announceTranslation?.text || "");
   const t = useTranslations("navigation");
+  const tAccount = useTranslations("account");
   const isWebsiteEnabled = dictionary?.siteEnabled;
+  const userTier = account?.accountTier ? USER_TIER[account.accountTier] : "";
+  const isHacker = account?.accountTier === "ACCOUNT_TIER_ENUM_HACKER";
+  const tierText = isHacker ? "hacker" : userTier;
 
   return (
     <>
@@ -50,7 +58,7 @@ export function Header({
       )}
       <header
         className={cn(
-          "fixed inset-x-2.5 z-30 h-12 py-2 lg:gap-0 lg:px-5 lg:py-3",
+          "fixed inset-x-2.5 z-30 h-12 py-2 selection:bg-inverted selection:text-textColor lg:gap-0 lg:px-5 lg:py-3",
           "flex items-center justify-between gap-1",
           "border border-textInactiveColor bg-bgColor text-textColor lg:border-transparent",
           "transition-[top] duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
@@ -86,10 +94,31 @@ export function Header({
             asChild
             size="lg"
             className={cn(
-              "w-1/3 text-center transition-colors hover:opacity-70 active:opacity-50 lg:w-auto",
+              "absolute left-1/2 -translate-x-1/2 text-center transition-colors hover:opacity-70 active:opacity-50",
             )}
           >
-            <Link href="/">grbpwr</Link>
+            <Link
+              href="/"
+              className="inline-flex items-center whitespace-nowrap leading-none"
+            >
+              {isSignedIn ? (
+                <>
+                  <Text component="span">grbpwr</Text>
+                  {tierText ? (
+                    <Text
+                      component="span"
+                      className={cn("inline-block pl-[0.5px]", {
+                        "tracking-[0.02em]": tierText.includes("+"),
+                      })}
+                    >
+                      {tierText}
+                    </Text>
+                  ) : null}
+                </>
+              ) : (
+                "grbpwr"
+              )}
+            </Link>
           </Button>
         )}
 
@@ -109,7 +138,15 @@ export function Header({
               )}
             </div>
             {isWebsiteEnabled && (
-              <div className="hidden lg:block">
+              <div className="hidden gap-3 lg:flex">
+                <Button
+                  size="sm"
+                  className="underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
+                  asChild
+                >
+                  <Link href="/account">{tAccount("account")}</Link>
+                </Button>
+
                 <Button
                   onClick={toggleCart}
                   variant={isOpen ? "underline" : "default"}

@@ -11,6 +11,86 @@
     "close": "닫기",
     "menu": "메뉴"
   },
+  "account": {
+    "account": "계정",
+    "login": "로그인 또는 계정 만들기",
+    "email": "이메일",
+    "continue": "계속",
+    "checkout as guest": "게스트로 결제",
+    "or": "또는",
+    "enter verification code from your email": "이메일로 받은 인증 코드를 입력하세요",
+    "the code couldn’t be verified": "코드를 확인할 수 없었습니다",
+    "resend code": "코드 다시 보내기",
+    "resend code in": "코드 재전송까지",
+    "or sign in via the link sent to your email": "또는 이메일로 전송된 링크로 로그인하세요",
+    "or continue using the link sent to your email": "또는 이메일로 전송된 링크로 계속하세요",
+    "complete your registration": "회원가입을 완료하세요",
+    "country": "국가",
+    "track order": "주문 추적",
+    "order & returns": "주문 및 반품",
+    "personal info": "개인 정보",
+    "addresses": "주소",
+    "all": "전체",
+    "men": "남성",
+    "women": "여성",
+    "newsletter": "뉴스레터",
+    "new arrivals": "신상품",
+    "events": "이벤트",
+    "brand updates, considered releases, and occasional private offers": "브랜드 업데이트, 엄선된 출시 소식, 가끔 제공되는 프라이빗 혜택",
+    "first notice of new drops, restocked pieces, and seasonal releases": "신규 드롭, 재입고 상품, 시즌 릴리스 소식을 가장 먼저 받아보세요",
+    "invitations to launches, private viewings, and selected brand moments": "런칭, 프라이빗 뷰잉, 특별 브랜드 이벤트 초대",
+    "subscribe": "구독",
+    "unsubscribe": "구독 취소",
+    "email preferences": "이메일 설정",
+    "private community": "프라이빗 커뮤니티",
+    "your access": "회원 등급",
+    "privileges": "혜택",
+    "save changes": "변경 사항 저장",
+    "log out": "로그아웃",
+    "orders list": "주문",
+    "returns": "반품",
+    "edit shipping address": "배송지 수정",
+    "select saved address": "저장된 주소 선택",
+    "order product thumbnail alt": "제품",
+    "failed to load addresses": "주소를 불러오지 못했습니다",
+    "failed to delete address": "주소를 삭제하지 못했습니다",
+    "failed to update address": "주소를 업데이트하지 못했습니다",
+    "invalid email": "유효하지 않은 이메일입니다",
+    "failed to request login code": "로그인 코드를 요청하지 못했습니다",
+    "invalid verification code": "인증 코드가 유효하지 않습니다",
+    "country is required": "국가/지역을 입력해 주세요",
+    "city is required": "도시를 입력해 주세요",
+    "address is required": "주소를 입력해 주세요",
+    "postal code is required": "우편번호를 입력해 주세요",
+    "invalid date": "유효하지 않은 날짜입니다",
+    "enter a valid date of birth": "유효한 생년월일을 입력해 주세요",
+    "receive updates on new arrivals and brand news": "신상품 및 브랜드 소식 받기",
+    "save": "저장",
+    "cancel": "취소",
+    "add new address": "새 주소 추가",
+    "use other address": "다른 주소 사용",
+    "privacy policy": "<privacy>개인정보 처리방침</privacy>과 <membership>멤버십 정책</membership>을 읽었습니다",
+    "privacy_policy_required": "개인정보 처리방침과 멤버십 정책 동의가 필요합니다",
+    "edit": "수정",
+    "delete": "삭제",
+    "sure?": "확실한가요?",
+    "default": "기본",
+    "you are in country: {country} / {currency}": "현재 국가: {country} / {currency}",
+    "change location": "위치 변경",
+    "email_consent_notice": "회원이 되면 <privacy>개인정보 처리방침</privacy>과 <membership>멤버십 정책</membership>에 동의하게 됩니다.",
+    "magic_login_success_title": "로그인되었습니다",
+    "magic_login_success_subtitle": "다시 오신 것을 환영합니다.",
+    "no addresses saved": "저장된 주소가 없습니다",
+    "save an address to faster checkout": "더 빠른 결제를 위해 주소를 저장하세요",
+    "no orders yet": "아직 주문이 없습니다",
+    "explore collections": "컬렉션 둘러보기",
+    "no returns": "반품이 없습니다",
+    "to start new return, visit our returns": "새 반품을 시작하려면 반품 페이지를 방문하세요",
+    "date of birth": "생년월일",
+    "failed to update account": "계정을 업데이트하지 못했습니다",
+    "failed to set default address": "기본 주소를 설정하지 못했습니다",
+    "failed to add address": "주소를 추가하지 못했습니다"
+  },
   "footer": {
     "legal notices": "법적 고지",
     "order status": "주문 상태",
@@ -95,9 +175,10 @@
     "country/region:": "국가/지역:",
     "state:": "시/도:",
     "city:": "시/군/구:",
-    "additional address:": "상세주소:",
-    "company:": "회사명:",
-    "phone number:": "전화번호:",
+    "additional address": "상세주소",
+    "company": "회사명",
+    "phone number:": "전화번호",
+    "optional": "선택 사항",
     "postal code:": "우편번호:",
     "shipping method": "배송 방법",
     "no shipping options for location": "선택한 지역에 배송 옵션이 없습니다.",
@@ -137,6 +218,12 @@
   "not-found": {
     "title": "페이지를 찾을 수 없습니다",
     "text": "죄송합니다. 찾으시는 페이지가 존재하지 않거나 이동되었습니다. 홈페이지로 돌아가시거나 문제가 지속되면 문의해 주세요",
+    "main": "메인 페이지"
+  },
+  "error": {
+    "title": "문제가 발생했습니다",
+    "text": "일시적인 서버 문제입니다. 다시 시도해 주세요.",
+    "retry": "다시 시도",
     "main": "메인 페이지"
   },
   "cookies": {
@@ -300,7 +387,7 @@
     "RWOL": "재활용 울"
   },
   "meta": {
-    "description": "GRBPWR은 불완전한 언어로 어려운 주제를 논의하고 이 불완전한 언어를 마스터합니다. 최신 레디-투-웨어를 쇼핑하세요.",
+    "description": "GRBPWR은 불완전한 언어로 어려운 주제를 논의하고 이를 마스터합니다. 최신 레디-투-웨어를 쇼핑하세요.",
     "catalog": "카탈로그",
     "catalog description": "전체 GRBPWR 컬렉션을 둘러보세요. 레디-투-웨어, 악세서리, 큐레이션된 피스를 발견하세요.",
     "men description": "남성 레디-투-웨어와 악세서리를 쇼핑하세요. GRBPWR의 테일러드, 아우터, 에센셜.",
@@ -400,7 +487,8 @@
     },
     "phone": {
       "min": "전화번호는 최소 5자리 숫자여야 합니다",
-      "max": "전화번호는 최대 15자리 숫자까지 입력할 수 있습니다"
+      "max": "전화번호는 최대 15자리 숫자까지 입력할 수 있습니다",
+      "countryMismatch": "선택한 국가에 유효한 전화번호를 입력하세요"
     },
     "city": {
       "min": "도시명은 최소 2자 이상이어야 합니다",
@@ -454,7 +542,7 @@
       "required": "포장 상태를 선택해 주세요."
     },
     "sophisticationRating": {
-      "required": "세련됨을 평가해 주세요."
+      "required": "전체 경험을 평가해 주세요."
     },
     "rating": {
       "required": "이 상품을 평가해 주세요."
@@ -472,7 +560,8 @@
     "return and exchange policy": "반품 및 교환 정책",
     "cookie settings": "쿠키 설정",
     "frequently asked questions": "자주 묻는 질문",
-    "placing an order": "주문하기, 주문 추적, 반품 정책, 애프터서비스 및 지속가능한 발전."
+    "placing an order": "주문하기, 주문 추적, 반품 정책, 애프터서비스 및 지속가능한 발전.",
+    "membership policy": "멤버십 정책"
   },
   "colors": {
     "black": "검은색",
@@ -727,7 +816,6 @@
     "order section": "주문 정보",
     "delivery speed": "배송 속도",
     "packaging": "포장 상태",
-    "sophistication": "마감·품질 인상",
     "overall experience": "전체 경험",
     "comments": "코멘트(선택)",
     "enter review": "리뷰를 입력하세요",

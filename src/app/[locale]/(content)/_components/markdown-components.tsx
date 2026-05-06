@@ -1,10 +1,40 @@
+import { isValidElement } from "react";
 import Link from "next/link";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";
 
 export const CustomParagraph = ({ children }: any) => {
   return <div className="mb-4 lg:mb-8">{children}</div>;
+};
+
+function markdownPlainText(node: unknown): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(markdownPlainText).join("");
+  if (isValidElement(node)) {
+    const props = node.props as { children?: unknown };
+    if (props.children != null) return markdownPlainText(props.children);
+  }
+  return "";
+}
+
+export const TierPrivilegeParagraph = ({ children }: any) => {
+  const plain = markdownPlainText(children).trim();
+  const hasLowercaseLetter = /\p{Ll}/u.test(plain);
+  const isDescriptionLine = plain.length === 0 || hasLowercaseLetter;
+
+  return (
+    <div
+      className={cn(
+        "mb-4 lg:mb-8",
+        isDescriptionLine ? "lowercase" : "uppercase",
+      )}
+    >
+      {children}
+    </div>
+  );
 };
 
 export const CustomList = ({ children, ...props }: any) => {
@@ -21,6 +51,10 @@ export const CustomOrderedList = ({ children, ...props }: any) => {
       {children}
     </ol>
   );
+};
+
+export const CustomListItem = ({ children, ...props }: any) => {
+  return <li {...props}>{children}</li>;
 };
 
 export const createCustomLink = (
@@ -41,7 +75,6 @@ export const createCustomLink = (
     }
     if (href?.startsWith("mailto:")) {
       const email = href.replace("mailto:", "");
-      console.log("email", email);
       return (
         <CopyText
           text={email}
@@ -65,11 +98,25 @@ export const createCustomLink = (
   return CustomLink;
 };
 
-export const createMarkdownComponents = (
+export type MarkdownComponentsOptions = {
+  /** Tier privilege MD: alternate ALL-CAPS titles with lowercase descriptive lines without forcing one casing on everything. */
+  paragraphTone?: "default" | "tier-privileges";
+};
+
+export function createMarkdownComponents(
   onSectionChange?: (section: string) => void,
-) => ({
-  p: CustomParagraph,
-  ul: CustomList,
-  ol: CustomOrderedList,
-  a: createCustomLink(onSectionChange),
-});
+  options?: MarkdownComponentsOptions,
+) {
+  const P =
+    options?.paragraphTone === "tier-privileges"
+      ? TierPrivilegeParagraph
+      : CustomParagraph;
+
+  return {
+    p: P,
+    ul: CustomList,
+    ol: CustomOrderedList,
+    li: CustomListItem,
+    a: createCustomLink(onSectionChange),
+  };
+}

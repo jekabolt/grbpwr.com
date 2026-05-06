@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import Input, { InputProps } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
 
 import {
   FormControl,
@@ -17,6 +18,7 @@ type Props = InputProps & {
   description?: string;
   loading?: boolean;
   keyboardRestriction?: RegExp;
+  optional?: boolean;
 };
 
 export default function InputField({
@@ -28,13 +30,16 @@ export default function InputField({
   srLabel,
   keyboardRestriction,
   disabled,
+  optional,
   ...props
 }: Props) {
   const { control, trigger, setValue } = useFormContext();
-  const t = useTranslations("errors");
+  const tErrors = useTranslations("errors");
+  const tCheckout = useTranslations("checkout");
 
-  function onBlur() {
+  function handleBlur(event: React.FocusEvent<HTMLInputElement>) {
     trigger(name);
+    props.onBlur?.(event);
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -67,11 +72,20 @@ export default function InputField({
           {label && (
             <FormLabel
               className={cn(
+                "inline-flex items-center",
                 srLabel ? "sr-only" : "",
                 disabled ? "text-textInactiveColor" : "",
               )}
             >
-              {label}
+              <Text component="span">{label}</Text>
+              {optional && (
+                <Text
+                  component="span"
+                  className="ml-1 whitespace-nowrap text-textInactiveColor"
+                >
+                  ({tCheckout("optional")}):
+                </Text>
+              )}
             </FormLabel>
           )}
           <FormControl>
@@ -81,13 +95,14 @@ export default function InputField({
               value={field.value || ""}
               {...props}
               disabled={disabled}
-              onBlur={onBlur}
+              className={props.className}
+              onBlur={handleBlur}
               onKeyDown={handleKeyDown}
               onChange={keyboardRestriction ? handleChange : field.onChange}
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage translateError={t} fieldName={name} />
+          <FormMessage translateError={tErrors} fieldName={name} />
         </FormItem>
       )}
     />

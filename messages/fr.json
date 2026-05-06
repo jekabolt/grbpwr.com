@@ -11,6 +11,86 @@
     "close": "fermer",
     "menu": "menu"
   },
+  "account": {
+    "account": "compte",
+    "login": "se connecter ou créer un compte",
+    "email": "email",
+    "continue": "continuer",
+    "checkout as guest": "payer en tant qu'invité",
+    "or": "ou",
+    "enter verification code from your email": "saisissez le code de vérification reçu par e-mail",
+    "the code couldn’t be verified": "le code n’a pas pu être vérifié",
+    "resend code": "renvoyer le code",
+    "resend code in": "renvoyer le code dans",
+    "or sign in via the link sent to your email": "ou connectez-vous via le lien envoyé à votre e-mail",
+    "or continue using the link sent to your email": "ou continuez avec le lien envoyé à votre e-mail",
+    "complete your registration": "complétez votre inscription",
+    "country": "pays",
+    "track order": "suivre la commande",
+    "order & returns": "commandes et retours",
+    "personal info": "informations personnelles",
+    "addresses": "adresses",
+    "all": "tous",
+    "men": "hommes",
+    "women": "femmes",
+    "newsletter": "newsletter",
+    "new arrivals": "nouveautés",
+    "events": "événements",
+    "brand updates, considered releases, and occasional private offers": "actualités de la marque, sorties sélectionnées et offres privées occasionnelles",
+    "first notice of new drops, restocked pieces, and seasonal releases": "premières annonces des nouveaux drops, réassorts et sorties saisonnières",
+    "invitations to launches, private viewings, and selected brand moments": "invitations aux lancements, présentations privées et moments sélectionnés de la marque",
+    "subscribe": "s'abonner",
+    "unsubscribe": "se désabonner",
+    "email preferences": "préférences e-mail",
+    "private community": "communauté privée",
+    "your access": "votre accès",
+    "privileges": "avantages",
+    "save changes": "enregistrer les modifications",
+    "log out": "se déconnecter",
+    "orders list": "commandes",
+    "returns": "retours",
+    "edit shipping address": "modifier l’adresse de livraison",
+    "select saved address": "sélectionner une adresse enregistrée",
+    "order product thumbnail alt": "produit",
+    "failed to load addresses": "impossible de charger les adresses",
+    "failed to delete address": "impossible de supprimer l’adresse",
+    "failed to update address": "impossible de mettre à jour l’adresse",
+    "invalid email": "e-mail invalide",
+    "failed to request login code": "échec de l’envoi du code de connexion",
+    "invalid verification code": "code de vérification invalide",
+    "country is required": "pays requis",
+    "city is required": "ville requise",
+    "address is required": "adresse requise",
+    "postal code is required": "code postal requis",
+    "invalid date": "date invalide",
+    "enter a valid date of birth": "saisissez une date de naissance valide",
+    "receive updates on new arrivals and brand news": "recevoir des nouveautés et des infos de la marque",
+    "save": "enregistrer",
+    "cancel": "annuler",
+    "add new address": "ajouter une nouvelle adresse",
+    "use other address": "utiliser une autre adresse",
+    "privacy policy": "J'ai lu la <privacy>politique de confidentialité</privacy> et la <membership>politique d'adhésion</membership>",
+    "privacy_policy_required": "veuillez accepter la politique de confidentialité et la politique d'adhésion",
+    "edit": "modifier",
+    "delete": "supprimer",
+    "sure?": "tu es sûr?",
+    "default": "par défaut",
+    "you are in country: {country} / {currency}": "vous êtes dans le pays : {country} / {currency}",
+    "change location": "changer de localisation",
+    "email_consent_notice": "en devenant membre, vous acceptez notre <privacy>politique de confidentialité</privacy> et notre <membership>politique d'adhésion</membership>.",
+    "magic_login_success_title": "connexion réussie",
+    "magic_login_success_subtitle": "vous êtes connecté. bienvenue.",
+    "no addresses saved": "aucune adresse enregistrée",
+    "save an address to faster checkout": "enregistrez une adresse pour un paiement plus rapide",
+    "no orders yet": "aucune commande pour le moment",
+    "explore collections": "explorer les collections",
+    "no returns": "aucun retour",
+    "to start new return, visit our returns": "pour créer un nouveau retour, consultez nos retours",
+    "date of birth": "date de naissance",
+    "failed to update account": "impossible de mettre à jour le compte",
+    "failed to set default address": "impossible de définir l’adresse par défaut",
+    "failed to add address": "impossible d’ajouter l’adresse"
+  },
   "footer": {
     "legal notices": "mentions légales",
     "order status": "statut de commande",
@@ -95,9 +175,10 @@
     "country/region:": "pays/région:",
     "state:": "état:",
     "city:": "ville:",
-    "additional address:": "adresse complémentaire:",
-    "company:": "entreprise:",
-    "phone number:": "numéro de téléphone:",
+    "additional address": "adresse complémentaire",
+    "company": "entreprise",
+    "phone number:": "numéro de téléphone",
+    "optional": "facultatif",
     "postal code:": "code postal:",
     "shipping method": "méthode d'expédition",
     "no shipping options for location": "Aucune option d'expédition disponible pour votre emplacement.",
@@ -137,6 +218,12 @@
   "not-found": {
     "title": "page non trouvée",
     "text": "désolé, la page que vous cherchez n'existe pas ou a été déplacée. veuillez retourner à la page d'accueil ou contacter nous si le problème persiste",
+    "main": "page d'accueil"
+  },
+  "error": {
+    "title": "une erreur est survenue",
+    "text": "problème temporaire du serveur. veuillez réessayer.",
+    "retry": "réessayer",
     "main": "page d'accueil"
   },
   "cookies": {
@@ -300,7 +387,7 @@
     "RWOL": "Laine recyclée"
   },
   "meta": {
-    "description": "GRBPWR discute de sujets difficiles par un langage imparfait et maîtrise ce langage imparfait. Achetez la dernière collection de prêt-à-porter.",
+    "description": "GRBPWR discute de sujets difficiles par un langage imparfait et le maîtrise. Achetez la dernière collection de prêt-à-porter.",
     "catalog": "catalogue",
     "catalog description": "parcourez la collection complète GRBPWR. découvrez le prêt-à-porter, les accessoires et les pièces sélectionnées.",
     "men description": "shoppez la mode et les accessoires homme. pièces sur mesure, manteaux et essentiels GRBPWR.",
@@ -400,7 +487,8 @@
     },
     "phone": {
       "min": "le téléphone doit contenir au moins 5 chiffres",
-      "max": "le téléphone peut contenir au maximum 15 chiffres"
+      "max": "le téléphone peut contenir au maximum 15 chiffres",
+      "countryMismatch": "saisissez un numéro de téléphone valide pour le pays sélectionné"
     },
     "city": {
       "min": "la ville doit contenir au moins 2 caractères",
@@ -454,7 +542,7 @@
       "required": "Veuillez choisir l’état de l’emballage."
     },
     "sophisticationRating": {
-      "required": "Veuillez noter le raffinement."
+      "required": "Veuillez noter votre expérience globale."
     },
     "rating": {
       "required": "Veuillez noter cet article."
@@ -472,7 +560,8 @@
     "return and exchange policy": "politique de retour et d'échange",
     "cookie settings": "paramètres des cookies",
     "frequently asked questions": "questions fréquemment posées",
-    "placing an order": "passer une commande, suivi de commande, politique de retour, services après-vente et développement durable."
+    "placing an order": "passer une commande, suivi de commande, politique de retour, services après-vente et développement durable.",
+    "membership policy": "politique d'adhésion"
   },
   "colors": {
     "black": "noir",
@@ -727,7 +816,6 @@
     "order section": "Votre commande",
     "delivery speed": "Délai de livraison",
     "packaging": "État de l’emballage",
-    "sophistication": "Finition",
     "overall experience": "Expérience globale",
     "comments": "Commentaire (facultatif)",
     "enter review": "Rédigez votre avis…",

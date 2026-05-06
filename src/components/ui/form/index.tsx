@@ -91,7 +91,9 @@ function FormLabel({ className, ref, ...props }: any) {
 
   return (
     <Label ref={ref} className={cn(className)} htmlFor={formItemId} {...props}>
-      <Text size="small">{props.children}</Text>
+      <Text component="span" size="small">
+        {props.children}
+      </Text>
     </Label>
   );
 }
@@ -184,7 +186,7 @@ function FormMessage({
     <p
       ref={ref}
       id={formMessageId}
-      className={cn("text-xs", className, {
+      className={cn("text-xs lowercase", className, {
         "text-errorColor": shouldShowError,
       })}
       {...props}

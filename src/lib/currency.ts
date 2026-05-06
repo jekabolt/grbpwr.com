@@ -7,6 +7,18 @@ const ZERO_DECIMAL_CURRENCIES = new Set(["JPY", "KRW"]);
 /** Currencies where symbol comes before the amount (e.g. $100). */
 const SYMBOL_BEFORE_CURRENCIES = new Set(["USD"]);
 
+export function toStripeMinorUnitAmount(
+  value: number | string,
+  currencyKey: string,
+): number {
+  const num = typeof value === "string" ? parseFloat(value) : value;
+  if (!Number.isFinite(num) || num <= 0) return 0;
+
+  const key = currencyKey?.toUpperCase() || "EUR";
+  const multiplier = ZERO_DECIMAL_CURRENCIES.has(key) ? 1 : 100;
+  return Math.round(num * multiplier);
+}
+
 /**
  * Formats a numeric amount for display based on currency.
  * Zero-decimal currencies (JPY, KRW) show no trailing .00.

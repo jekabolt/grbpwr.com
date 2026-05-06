@@ -24,12 +24,17 @@ import { newsletterDefaultValues, type NewsletterFormValues } from "./schema";
 
 const FIELD_PULSE_MS = 500;
 
-export default function NewslatterForm() {
+export default function NewslatterForm({
+  inactiveBgColor = false,
+}: {
+  inactiveBgColor?: boolean;
+}) {
   const { currentCountry } = useTranslationsStore((state) => state);
   const [isLoading, setIsLoading] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [pulseEmail, setPulseEmail] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
   const t = useTranslations("newslatter");
   const tToaster = useTranslations("toaster");
 
@@ -101,7 +106,12 @@ export default function NewslatterForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex w-full flex-col items-start gap-6"
+          className={cn(
+            "flex w-full flex-col items-start gap-6 lg:bg-bgColor",
+            {
+              "bg-textInactiveColorAlpha p-2.5": inactiveBgColor,
+            },
+          )}
         >
           <Text variant="uppercase" className="leading-none">
             {t("mailing list")}
@@ -113,10 +123,37 @@ export default function NewslatterForm() {
                 name="email"
                 type="email"
                 placeholder={t("email")}
+                className={cn("", {
+                  "bg-transparent": inactiveBgColor,
+                })}
                 disabled={isLoading}
+                onFocus={() => setIsEmailFocused(true)}
+                onBlur={() => setIsEmailFocused(false)}
               />
             </div>
-            <Text variant="uppercase" className="leading-none">
+            {isEmailFocused && (
+              <Text variant="uppercase" className="leading-none lg:hidden">
+                {t.rich("consent_notice", {
+                  privacy: (chunks) => (
+                    <Link
+                      href="/legal-notices?section=privacy"
+                      className="underline hover:no-underline"
+                    >
+                      {chunks}
+                    </Link>
+                  ),
+                  terms: (chunks) => (
+                    <Link
+                      href="/legal-notices?section=terms"
+                      className="underline hover:no-underline"
+                    >
+                      {chunks}
+                    </Link>
+                  ),
+                })}
+              </Text>
+            )}
+            <Text variant="uppercase" className="hidden leading-none lg:block">
               {t.rich("consent_notice", {
                 privacy: (chunks) => (
                   <Link
@@ -137,13 +174,28 @@ export default function NewslatterForm() {
               })}
             </Text>
           </div>
+          {isEmailFocused && (
+            <Button
+              variant="simple"
+              size="lg"
+              type="submit"
+              disabled={isLoading}
+              className={cn("uppercase lg:hidden", {
+                "border border-textColor !bg-bgColor !text-textColor":
+                  !emailValue,
+                "!bg-transparent": inactiveBgColor,
+              })}
+            >
+              {t("subscribe")}
+            </Button>
+          )}
           <Button
             variant="simple"
             size="lg"
             type="submit"
             disabled={isLoading}
-            className={cn("uppercase", {
-              "border border-textColor !bg-bgColor !text-textColor":
+            className={cn("hidden uppercase lg:inline-flex", {
+              "border border-textColor !bg-transparent !text-textColor lg:!bg-bgColor":
                 !emailValue,
             })}
           >

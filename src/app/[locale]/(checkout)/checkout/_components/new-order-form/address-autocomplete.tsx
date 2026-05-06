@@ -46,15 +46,22 @@ function extractAddressComponents(addressComponents: any[]): AddressComponents {
 function updateAddressFields(
   components: AddressComponents,
   prefix: string | undefined,
+  fallbackAddress: string | undefined,
   setValue: (
     field: string,
     value: string,
     options?: { shouldValidate?: boolean; shouldDirty?: boolean },
   ) => void,
 ) {
-  const address = [components.route, components.streetNumber]
+  const componentAddress = [components.route, components.streetNumber]
     .filter(Boolean)
     .join(" ");
+  const trimmedFallbackAddress = fallbackAddress?.trim() || "";
+  const address =
+    componentAddress &&
+    (components.streetNumber || !/\d/.test(trimmedFallbackAddress))
+      ? componentAddress
+      : trimmedFallbackAddress || componentAddress;
 
   const addressFieldName = prefix ? `${prefix}.address` : "address";
   const postalCodeFieldName = prefix ? `${prefix}.postalCode` : "postalCode";
@@ -77,6 +84,23 @@ function updateAddressFields(
     });
 }
 
+function getStreetLine(value: string | undefined) {
+  return value?.split(",")[0]?.trim() || "";
+}
+
+function getAddressFallback(
+  place: google.maps.places.PlaceResult,
+  currentAddress: string | undefined,
+) {
+  const candidates = [
+    currentAddress?.trim(),
+    getStreetLine(place.name),
+    getStreetLine(place.formatted_address),
+  ].filter(Boolean) as string[];
+
+  return candidates.find((value) => /\d/.test(value)) || candidates[0] || "";
+}
+
 type Props = {
   loading: boolean;
   disabled?: boolean;
@@ -90,7 +114,7 @@ export default function AddressAutocomplete({
   prefix,
   countryCode,
 }: Props) {
-  const { setValue } = useFormContext();
+  const { getValues, setValue } = useFormContext();
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const t = useTranslations("checkout");
   const storeCountryCode = useTranslationsStore(
@@ -146,7 +170,11 @@ export default function AddressAutocomplete({
         }}
         onLoad={(autocomplete) => {
           autocompleteRef.current = autocomplete;
-          autocomplete.setFields(["address_components"]);
+          autocomplete.setFields([
+            "address_components",
+            "formatted_address",
+            "name",
+          ]);
           if (effectiveCountryCode) {
             autocomplete.setComponentRestrictions({
               country: effectiveCountryCode as any,
@@ -157,9 +185,17 @@ export default function AddressAutocomplete({
           const autocomplete = autocompleteRef.current;
           if (!autocomplete) return;
           const place = autocomplete.getPlace();
-          if (!place || !place.address_components) return;
-          const components = extractAddressComponents(place.address_components);
-          updateAddressFields(components, prefix, setValue);
+          if (!place) return;
+          const addressFieldName = prefix ? `${prefix}.address` : "address";
+          const components = extractAddressComponents(
+            place.address_components ?? [],
+          );
+          updateAddressFields(
+            components,
+            prefix,
+            getAddressFallback(place, getValues(addressFieldName)),
+            setValue,
+          );
         }}
       >
         <InputField

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import ReactMarkdown from "react-markdown";
 
 import { cn } from "@/lib/utils";
@@ -34,19 +35,16 @@ export function CollapsibleSections({
   };
 
   const markdownComponents = createMarkdownComponents(onSectionChange);
+  const proseStyle = {
+    "--tw-prose-bullets": "hsl(var(--textColor))",
+    "--tw-prose-counters": "hsl(var(--textColor))",
+    "--tw-prose-headings": "hsl(var(--textColor))",
+    "--tw-prose-body": "hsl(var(--textColor))",
+  } as CSSProperties;
 
   if (showDirectly) {
     return (
-      <Text
-        component="span"
-        className="prose max-w-none"
-        style={{
-          "--tw-prose-bullets": "hsl(var(--textColor))",
-          "--tw-prose-counters": "hsl(var(--textColor))",
-          "--tw-prose-headings": "hsl(var(--textColor))",
-          "--tw-prose-body": "hsl(var(--textColor))",
-        }}
-      >
+      <Text component="div" className="prose max-w-none" style={proseStyle}>
         <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
       </Text>
     );
@@ -82,14 +80,9 @@ export function CollapsibleSections({
                 clickableAreaClassName="w-full h-16"
               >
                 <Text
-                  component="span"
+                  component="div"
                   className="prose max-w-none"
-                  style={{
-                    "--tw-prose-bullets": "hsl(var(--textColor))",
-                    "--tw-prose-counters": "hsl(var(--textColor))",
-                    "--tw-prose-headings": "hsl(var(--textColor))",
-                    "--tw-prose-body": "hsl(var(--textColor))",
-                  }}
+                  style={proseStyle}
                 >
                   <ReactMarkdown components={markdownComponents}>
                     {sectionContent}

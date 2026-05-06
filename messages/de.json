@@ -11,6 +11,86 @@
     "close": "schließen",
     "menu": "menu"
   },
+  "account": {
+    "account": "konto",
+    "login": "einloggen oder konto erstellen",
+    "email": "e-mail",
+    "continue": "weiter",
+    "checkout as guest": "als gast zur kasse",
+    "or": "oder",
+    "enter verification code from your email": "geben sie den bestätigungscode aus ihrer e-mail ein",
+    "the code couldn’t be verified": "der code konnte nicht verifiziert werden",
+    "resend code": "code erneut senden",
+    "resend code in": "code erneut senden in",
+    "or sign in via the link sent to your email": "oder melden sie sich über den link in ihrer e-mail an",
+    "or continue using the link sent to your email": "oder fahren sie mit dem link fort, der an ihre e-mail gesendet wurde",
+    "complete your registration": "vervollständigen sie ihre registrierung",
+    "country": "land",
+    "track order": "bestellung verfolgen",
+    "order & returns": "bestellungen & rückgaben",
+    "personal info": "persönliche daten",
+    "addresses": "adressen",
+    "all": "alle",
+    "men": "herren",
+    "women": "damen",
+    "newsletter": "newsletter",
+    "new arrivals": "neuheiten",
+    "events": "events",
+    "brand updates, considered releases, and occasional private offers": "markenupdates, kuratierte releases und gelegentliche exklusive angebote",
+    "first notice of new drops, restocked pieces, and seasonal releases": "als erstes über neue drops, restocks und saisonale veröffentlichungen informiert werden",
+    "invitations to launches, private viewings, and selected brand moments": "einladungen zu launches, privaten vorstellungen und ausgewählten markenmomenten",
+    "subscribe": "abonnieren",
+    "unsubscribe": "abbestellen",
+    "email preferences": "e-mail-präferenzen",
+    "private community": "private community",
+    "your access": "ihr zugang",
+    "privileges": "vorteile",
+    "save changes": "änderungen speichern",
+    "log out": "abmelden",
+    "orders list": "bestellungen",
+    "returns": "rücksendungen",
+    "edit shipping address": "lieferadresse bearbeiten",
+    "select saved address": "gespeicherte adresse auswählen",
+    "order product thumbnail alt": "produkt",
+    "failed to load addresses": "adressen konnten nicht geladen werden",
+    "failed to delete address": "adresse konnte nicht gelöscht werden",
+    "failed to update address": "adresse konnte nicht aktualisiert werden",
+    "invalid email": "ungültige e-mail",
+    "failed to request login code": "anmeldecode konnte nicht angefordert werden",
+    "invalid verification code": "ungültiger bestätigungscode",
+    "country is required": "land ist erforderlich",
+    "city is required": "stadt ist erforderlich",
+    "address is required": "adresse ist erforderlich",
+    "postal code is required": "postleitzahl ist erforderlich",
+    "invalid date": "ungültiges datum",
+    "enter a valid date of birth": "geben sie ein gültiges geburtsdatum ein",
+    "receive updates on new arrivals and brand news": "updates zu neuheiten und markennews erhalten",
+    "save": "speichern",
+    "cancel": "abbrechen",
+    "add new address": "neue adresse hinzufügen",
+    "use other address": "andere adresse verwenden",
+    "privacy policy": "Ich habe die <privacy>Datenschutzerklärung</privacy> und die <membership>Mitgliedschaftsrichtlinie</membership> gelesen",
+    "privacy_policy_required": "bitte akzeptieren sie die datenschutzerklärung und mitgliedschaftsrichtlinie",
+    "edit": "bearbeiten",
+    "delete": "löschen",
+    "sure?": "sicher?",
+    "default": "standard",
+    "you are in country: {country} / {currency}": "sie sind im land: {country} / {currency}",
+    "change location": "standort ändern",
+    "email_consent_notice": "wenn sie mitglied werden, stimmen sie unserer <privacy>datenschutzerklärung</privacy> und <membership>mitgliedschaftsrichtlinie</membership> zu.",
+    "magic_login_success_title": "anmeldung erfolgreich",
+    "magic_login_success_subtitle": "du bist drin. willkommen zurück.",
+    "no addresses saved": "keine adressen gespeichert",
+    "save an address to faster checkout": "speichern sie eine adresse für einen schnelleren checkout",
+    "no orders yet": "noch keine bestellungen",
+    "explore collections": "kollektionen entdecken",
+    "no returns": "keine rücksendungen",
+    "to start new return, visit our returns": "um eine neue rücksendung zu starten, besuchen sie unsere rücksendungen",
+    "date of birth": "geburtsdatum",
+    "failed to update account": "konto konnte nicht aktualisiert werden",
+    "failed to set default address": "standardadresse konnte nicht festgelegt werden",
+    "failed to add address": "adresse konnte nicht hinzugefügt werden"
+  },
   "footer": {
     "legal notices": "rechtliche hinweise",
     "order status": "bestellstatus",
@@ -95,9 +175,10 @@
     "country/region:": "land/region:",
     "state:": "bundesland:",
     "city:": "stadt:",
-    "additional address:": "zusätzliche adresse:",
-    "company:": "unternehmen:",
-    "phone number:": "telefonnummer:",
+    "additional address": "zusätzliche adresse",
+    "company": "unternehmen",
+    "phone number:": "telefonnummer",
+    "optional": "optional",
     "postal code:": "postleitzahl:",
     "shipping method": "versandmethode",
     "no shipping options for location": "Keine Versandoptionen für Ihren Standort verfügbar.",
@@ -138,6 +219,12 @@
   "not-found": {
     "title": "seite nicht gefunden",
     "text": "entschuldigung, die seite, die sie suchen, existiert nicht oder wurde verschoben. bitte gehen sie zurück zur startseite oder kontaktieren sie uns, wenn das problem weiterhin besteht",
+    "main": "hauptseite"
+  },
+  "error": {
+    "title": "etwas ist schiefgelaufen",
+    "text": "vorübergehendes serverproblem. bitte versuchen sie es erneut.",
+    "retry": "erneut versuchen",
     "main": "hauptseite"
   },
   "cookies": {
@@ -301,7 +388,7 @@
     "RWOL": "Recycelte Wolle"
   },
   "meta": {
-    "description": "GRBPWR diskutiert schwierige Themen durch unvollkommene Sprache und beherrscht diese unvollkommene Sprache. Kaufen Sie die neueste Ready-to-Wear.",
+    "description": "GRBPWR diskutiert schwierige Themen durch unvollkommene Sprache und beherrscht sie. Kaufen Sie die neueste Ready-to-Wear.",
     "catalog": "katalog",
     "catalog description": "durchstöbern Sie die vollständige GRBPWR-Kollektion. entdecken Sie Ready-to-Wear, Accessoires und kuratierte Stücke.",
     "men description": "shoppen Sie Herrenmode und Accessoires. maßgeschneiderte Stücke, Oberbekleidung und Essentials von GRBPWR.",
@@ -401,7 +488,8 @@
     },
     "phone": {
       "min": "telefon muss mindestens 5 zahlen enthalten",
-      "max": "telefon darf höchstens 15 zahlen enthalten"
+      "max": "telefon darf höchstens 15 zahlen enthalten",
+      "countryMismatch": "geben sie eine gültige telefonnummer für das ausgewählte land ein"
     },
     "city": {
       "min": "stadt muss mindestens 2 zeichen enthalten",
@@ -455,7 +543,7 @@
       "required": "Bitte Verpackungszustand wählen."
     },
     "sophisticationRating": {
-      "required": "Bitte Raffinesse bewerten."
+      "required": "Bitte bewerten Sie Ihr Gesamterlebnis."
     },
     "rating": {
       "required": "Bitte diesen Artikel bewerten."
@@ -473,7 +561,8 @@
     "return and exchange policy": "rückgabe- und umtauschrichtlinien",
     "cookie settings": "cookie-einstellungen",
     "frequently asked questions": "häufig gestellte fragen",
-    "placing an order": "bestellung aufgeben, sendungsverfolgung, rückgaberichtlinien, kundendienst und nachhaltige entwicklung."
+    "placing an order": "bestellung aufgeben, sendungsverfolgung, rückgaberichtlinien, kundendienst und nachhaltige entwicklung.",
+    "membership policy": "mitgliedschaftsrichtlinie"
   },
   "colors": {
     "black": "schwarz",
@@ -728,7 +817,6 @@
     "order section": "Ihre Bestellung",
     "delivery speed": "Liefergeschwindigkeit",
     "packaging": "Verpackungszustand",
-    "sophistication": "Raffinesse",
     "overall experience": "Gesamterlebnis",
     "comments": "Kommentar (optional)",
     "enter review": "Schreiben Sie hier Ihre Bewertung…",

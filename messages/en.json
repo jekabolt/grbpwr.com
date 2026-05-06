@@ -11,6 +11,85 @@
     "close": "close",
     "menu": "menu"
   },
+  "account": {
+    "account": "account",
+    "login": "log in or create account",
+    "email": "email",
+    "continue": "continue",
+    "checkout as guest": "checkout as guest",
+    "or": "or",
+    "enter verification code from your email": "enter verification code from your email",
+    "the code couldn’t be verified": "the code couldn’t be verified",
+    "resend code": "resend code",
+    "resend code in": "resend code in",
+    "or continue using the link sent to your email": "or continue using the link sent to your email",
+    "complete your registration": "complete your registration",
+    "country": "country",
+    "track order": "track order",
+    "order & returns": "order & returns",
+    "personal info": "personal info",
+    "addresses": "addresses",
+    "all": "all",
+    "men": "men",
+    "women": "women",
+    "newsletter": "newsletter",
+    "new arrivals": "new arrivals",
+    "events": "events",
+    "brand updates, considered releases, and occasional private offers": "brand updates, considered releases, and occasional private offers",
+    "first notice of new drops, restocked pieces, and seasonal releases": "first notice of new drops, restocked pieces, and seasonal releases",
+    "invitations to launches, private viewings, and selected brand moments": "invitations to launches, private viewings, and selected brand moments",
+    "subscribe": "subscribe",
+    "unsubscribe": "unsubscribe",
+    "email preferences": "email preferences",
+    "private community": "private community",
+    "your access": "your access",
+    "privileges": "privileges",
+    "save changes": "save changes",
+    "log out": "log out",
+    "orders list": "orders list",
+    "returns": "returns",
+    "edit shipping address": "edit shipping address",
+    "select saved address": "select saved address",
+    "order product thumbnail alt": "product",
+    "failed to load addresses": "failed to load addresses",
+    "failed to delete address": "failed to delete address",
+    "failed to update address": "failed to update address",
+    "invalid email": "invalid email",
+    "failed to request login code": "failed to request login code",
+    "invalid verification code": "invalid verification code",
+    "country is required": "country is required",
+    "city is required": "city is required",
+    "address is required": "address is required",
+    "postal code is required": "postal code is required",
+    "invalid date": "invalid date",
+    "enter a valid date of birth": "enter a valid date of birth",
+    "receive updates on new arrivals and brand news": "receive updates on new arrivals and brand news",
+    "save": "save",
+    "cancel": "cancel",
+    "add new address": "add new address",
+    "use other address": "use other address",
+    "privacy policy": "i have read <privacy>privacy policy</privacy> and <membership>membership policy</membership>",
+    "privacy_policy_required": "please accept privacy policy and membership policy",
+    "edit": "edit",
+    "delete": "delete",
+    "sure?": "sure?",
+    "default": "default",
+    "you are in country: {country} / {currency}": "you are in country: {country} / {currency}",
+    "change location": "change location",
+    "email_consent_notice": "by becoming a member, you agree to our <privacy>privacy policy</privacy> and <membership>membership policy</membership>.",
+    "magic_login_success_title": "login successful",
+    "magic_login_success_subtitle": "you're in. welcome back.",
+    "no addresses saved": "no addresses saved",
+    "save an address to faster checkout": "save an address to faster checkout",
+    "no orders yet": "no orders yet",
+    "explore collections": "explore collections",
+    "no returns": "no returns",
+    "to start new return, visit our returns": "to start new return, visit our returns",
+    "date of birth": "date of birth",
+    "failed to update account": "failed to update account",
+    "failed to set default address": "failed to set default address",
+    "failed to add address": "failed to add address"
+  },
   "footer": {
     "legal notices": "legal notices",
     "order status": "order status",
@@ -95,9 +174,10 @@
     "country/region:": "country/region:",
     "state:": "state:",
     "city:": "city:",
-    "additional address:": "additional address:",
-    "company:": "company:",
-    "phone number:": "phone number:",
+    "additional address": "additional address",
+    "company": "company",
+    "phone number:": "phone number",
+    "optional": "optional",
     "postal code:": "postal code:",
     "shipping method": "shipping method",
     "no shipping options for location": "No shipping options available for your selected location.",
@@ -137,6 +217,12 @@
   "not-found": {
     "title": "page not found",
     "text": "sorry, the page you are looking for doesn't exist or has been moved. please go back to the homepage or contact us if the problem persists",
+    "main": "main"
+  },
+  "error": {
+    "title": "something went wrong",
+    "text": "temporary server issue. please try again.",
+    "retry": "try again",
     "main": "main"
   },
   "cookies": {
@@ -300,7 +386,7 @@
     "RWOL": "Recycled Wool"
   },
   "meta": {
-    "description": "GRBPWR discusses difficult topics by imperfect language and master this imperfect language. Shop latest ready-to-wear.",
+    "description": "GRBPWR discusses difficult topics by imperfect language and master it. Shop latest ready-to-wear.",
     "catalog": "catalog",
     "catalog description": "browse the full GRBPWR collection. discover ready-to-wear, accessories, and curated pieces.",
     "men description": "shop men's ready-to-wear and accessories. tailored pieces, outerwear, and essentials from GRBPWR.",
@@ -347,7 +433,6 @@
     "order section": "Your order",
     "delivery speed": "Delivery speed",
     "packaging": "Packaging condition",
-    "sophistication": "Sophistication",
     "overall experience": "Overall experience",
     "comments": "Comments (optional)",
     "enter review": "enter review",
@@ -457,7 +542,8 @@
     },
     "phone": {
       "min": "phone must contain at least 5 numbers",
-      "max": "phone must contain at most 15 numbers"
+      "max": "phone must contain at most 15 numbers",
+      "countryMismatch": "enter a valid phone number for selected country"
     },
     "city": {
       "min": "city must contain at least 2 characters",
@@ -511,7 +597,7 @@
       "required": "Please select packaging condition."
     },
     "sophisticationRating": {
-      "required": "Please rate sophistication."
+      "required": "Please rate your overall experience."
     },
     "rating": {
       "required": "Please rate this item."
@@ -529,7 +615,8 @@
     "return and exchange policy": "return and exchange policy",
     "cookie settings": "cookie settings",
     "frequently asked questions": "frequently asked questions",
-    "placing an order": "placing an order, order tracking, returns policy, aftersale services and sustainable development."
+    "placing an order": "placing an order, order tracking, returns policy, aftersale services and sustainable development.",
+    "membership policy": "membership policy"
   },
   "colors": {
     "black": "black",

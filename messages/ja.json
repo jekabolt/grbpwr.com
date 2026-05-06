@@ -11,6 +11,86 @@
     "close": "閉じる",
     "menu": "メニュー"
   },
+  "account": {
+    "account": "アカウント",
+    "login": "ログインまたはアカウント作成",
+    "email": "メール",
+    "continue": "続行",
+    "checkout as guest": "ゲストとして購入",
+    "or": "または",
+    "enter verification code from your email": "メールに届いた認証コードを入力してください",
+    "the code couldn’t be verified": "コードを確認できませんでした",
+    "resend code": "コードを再送信",
+    "resend code in": "コード再送まで",
+    "or sign in via the link sent to your email": "またはメールに送信されたリンクからサインイン",
+    "or continue using the link sent to your email": "またはメールに送信されたリンクで続行",
+    "complete your registration": "登録を完了してください",
+    "country": "国",
+    "track order": "注文を追跡",
+    "order & returns": "注文と返品",
+    "personal info": "個人情報",
+    "addresses": "住所",
+    "all": "すべて",
+    "men": "メンズ",
+    "women": "レディース",
+    "newsletter": "ニュースレター",
+    "new arrivals": "新着",
+    "events": "イベント",
+    "brand updates, considered releases, and occasional private offers": "ブランドの最新情報、厳選リリース、限定オファーをお届けします",
+    "first notice of new drops, restocked pieces, and seasonal releases": "新しいドロップ、再入荷、季節リリースの最新情報をいち早くお知らせします",
+    "invitations to launches, private viewings, and selected brand moments": "ローンチ、プライベートビューイング、特別なブランドイベントへのご案内",
+    "subscribe": "購読する",
+    "unsubscribe": "配信停止",
+    "email preferences": "メール設定",
+    "private community": "プライベートコミュニティ",
+    "your access": "アクセス区分",
+    "privileges": "特典",
+    "save changes": "変更を保存",
+    "log out": "ログアウト",
+    "orders list": "ご注文一覧",
+    "returns": "返品",
+    "edit shipping address": "配送先住所を編集",
+    "select saved address": "保存済み住所を選択",
+    "order product thumbnail alt": "商品",
+    "failed to load addresses": "住所を読み込めませんでした",
+    "failed to delete address": "住所を削除できませんでした",
+    "failed to update address": "住所を更新できませんでした",
+    "invalid email": "メールアドレスが無効です",
+    "failed to request login code": "ログインコードを送信できませんでした",
+    "invalid verification code": "認証コードが無効です",
+    "country is required": "国を入力してください",
+    "city is required": "市区町村を入力してください",
+    "address is required": "住所を入力してください",
+    "postal code is required": "郵便番号を入力してください",
+    "invalid date": "無効な日付です",
+    "enter a valid date of birth": "有効な生年月日を入力してください",
+    "receive updates on new arrivals and brand news": "新着情報とブランドニュースを受け取る",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "add new address": "新しい住所を追加",
+    "use other address": "別の住所を使用",
+    "privacy policy": "<privacy>プライバシーポリシー</privacy>と<membership>メンバーシップポリシー</membership>を読みました",
+    "privacy_policy_required": "プライバシーポリシーとメンバーシップポリシーへの同意が必要です",
+    "edit": "編集",
+    "delete": "削除",
+    "sure?": "よろしいですか？",
+    "default": "デフォルト",
+    "you are in country: {country} / {currency}": "現在の国: {country} / {currency}",
+    "change location": "ロケーションを変更",
+    "email_consent_notice": "メンバーになることで、<privacy>プライバシーポリシー</privacy>および<membership>メンバーシップポリシー</membership>に同意したものとみなされます。",
+    "magic_login_success_title": "ログインに成功しました",
+    "magic_login_success_subtitle": "おかえりなさい。",
+    "no addresses saved": "保存された住所はありません",
+    "save an address to faster checkout": "住所を保存すると購入手続きがスムーズになります",
+    "no orders yet": "まだ注文はありません",
+    "explore collections": "コレクションを見る",
+    "no returns": "返品はありません",
+    "to start new return, visit our returns": "新しい返品を開始するには、返品ページをご覧ください",
+    "date of birth": "生年月日",
+    "failed to update account": "アカウントを更新できませんでした",
+    "failed to set default address": "デフォルト住所を設定できませんでした",
+    "failed to add address": "住所を追加できませんでした"
+  },
   "footer": {
     "legal notices": "法的通知",
     "order status": "注文状況",
@@ -95,9 +175,10 @@
     "country/region:": "国/地域：",
     "state:": "都道府県：",
     "city:": "市区町村：",
-    "additional address:": "追加住所：",
-    "company:": "会社名：",
-    "phone number:": "電話番号：",
+    "additional address": "追加住所",
+    "company": "会社名",
+    "phone number:": "電話番号",
+    "optional": "任意",
     "postal code:": "郵便番号：",
     "shipping method": "配送方法",
     "no shipping options for location": "選択した地域には配送オプションがありません。",
@@ -137,6 +218,12 @@
   "not-found": {
     "title": "ページが見つかりません",
     "text": "申し訳ございませんが、お探しのページは存在しないか移動されました。ホームページに戻るか、問題が続く場合はお問い合わせください",
+    "main": "メインページ"
+  },
+  "error": {
+    "title": "問題が発生しました",
+    "text": "一時的なサーバーの問題です。もう一度お試しください。",
+    "retry": "再試行",
     "main": "メインページ"
   },
   "cookies": {
@@ -300,7 +387,7 @@
     "RWOL": "リサイクルウール"
   },
   "meta": {
-    "description": "GRBPWRは不完全な言葉で難しいトピックを議論し、この不完全な言葉を習得します。最新のレディ・トゥ・ウェアをご購入ください。",
+    "description": "GRBPWRは不完全な言葉で難しいトピックを議論し、それを習得します。最新のレディ・トゥ・ウェアをご購入ください。",
     "catalog": "カタログ",
     "catalog description": "GRBPWRコレクション全体をご覧ください。レディ・トゥ・ウェア、アクセサリー、厳選アイテムをお探しください。",
     "men description": "メンズレディ・トゥ・ウェアとアクセサリーをお買い求めください。GRBPWRのテーラード、アウター、エッセンシャル。",
@@ -400,7 +487,8 @@
     },
     "phone": {
       "min": "電話番号は最低5桁の数字が必要です",
-      "max": "電話番号は最大15桁まで入力できます"
+      "max": "電話番号は最大15桁まで入力できます",
+      "countryMismatch": "選択した国に有効な電話番号を入力してください"
     },
     "city": {
       "min": "都市名は最低2文字以上必要です",
@@ -454,7 +542,7 @@
       "required": "梱包状態を選択してください。"
     },
     "sophisticationRating": {
-      "required": "洗練さを評価してください。"
+      "required": "総合的な体験を評価してください。"
     },
     "rating": {
       "required": "この商品を評価してください。"
@@ -472,7 +560,8 @@
     "return and exchange policy": "返品・交換ポリシー",
     "cookie settings": "クッキー設定",
     "frequently asked questions": "よくある質問",
-    "placing an order": "注文方法、注文追跡、返品ポリシー、アフターサービス、持続可能な開発について。"
+    "placing an order": "注文方法、注文追跡、返品ポリシー、アフターサービス、持続可能な開発について。",
+    "membership policy": "メンバーシップポリシー"
   },
   "colors": {
     "black": "黒",
@@ -727,7 +816,6 @@
     "order section": "ご注文",
     "delivery speed": "配送の速さ",
     "packaging": "梱包状態",
-    "sophistication": "仕上がり・品格",
     "overall experience": "総合的な体験",
     "comments": "コメント（任意）",
     "enter review": "レビューをご記入ください",

@@ -17,7 +17,7 @@ import type { OpenGroups } from "./constants";
 import { CheckoutData } from "../schema";
 import {
   buildOrderConfirmationUrl,
-  buildStripeCheckoutReturnUrl,
+  isStripeCardPaymentMethod,
   mapFormFieldToOrderDataFormat,
 } from "../utils";
 import { verifyCityInCountry } from "../verify-city";
@@ -40,6 +40,7 @@ interface UseCheckoutSubmitProps {
   clearFormData: () => void;
   setToastMessage: (msg: string) => void;
   setOrderModifiedToastOpen: (open: boolean) => void;
+  onOrderRedirectStart?: () => void;
 }
 
 export function useCheckoutSubmit({
@@ -59,6 +60,7 @@ export function useCheckoutSubmit({
   clearFormData,
   setToastMessage,
   setOrderModifiedToastOpen,
+  onOrderRedirectStart,
   resolveToasterMessage,
 }: UseCheckoutSubmitProps) {
   const [loading, setLoading] = useState(false);
@@ -70,8 +72,7 @@ export function useCheckoutSubmit({
 
   const paymentMethod = form.watch("paymentMethod");
   const isPaymentFieldsValid =
-    paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" ||
-    isPaymentElementComplete;
+    !isStripeCardPaymentMethod(paymentMethod) || isPaymentElementComplete;
 
   const focusGroup = (group: OpenGroups, ref: RefObject<HTMLDivElement | null>) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -164,6 +165,7 @@ export function useCheckoutSubmit({
     orderUuid: string,
     options?: { redirectStatus?: "succeeded" },
   ) => {
+    onOrderRedirectStart?.();
     await pushUserIdToDataLayer(data.email);
     clearCart();
     clearFormData();
@@ -220,21 +222,23 @@ export function useCheckoutSubmit({
         response?.clientSecret || newOrderResponse.order?.payment?.clientSecret;
       const orderUuid = newOrderResponse.order?.orderUuid;
 
-      const isCardTest =
-        paymentType === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" &&
+      const isCardPayment =
+        isStripeCardPaymentMethod(paymentType) &&
         Boolean(clientSecret && orderUuid);
 
-      if (isCardTest && orderUuid && clientSecret) {
+      if (isCardPayment && orderUuid && clientSecret) {
         stripeOrderUuid = orderUuid;
 
         const encodedEmail = window.btoa(data.email);
-        const returnUrl = buildStripeCheckoutReturnUrl({
-          origin: window.location.origin,
-          countryCode: currentCountry.countryCode,
-          languageId,
-          orderUuid,
-          emailBase64: encodedEmail,
-        });
+        const returnUrl = new URL(
+          buildOrderConfirmationUrl({
+            countryCode: currentCountry.countryCode,
+            languageId,
+            orderUuid,
+            emailBase64: encodedEmail,
+          }),
+          window.location.origin,
+        ).toString();
 
         try {
           sessionStorage.setItem(

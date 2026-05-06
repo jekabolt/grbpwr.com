@@ -3,12 +3,13 @@ import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
+import { Text } from "@/components/ui/text";
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "..";
 import Input from "../../input";
 import Select from "../../select";
 
-type Props = {
+export type PhoneFieldProps = {
   name: string;
   label: string;
   items: {
@@ -17,7 +18,12 @@ type Props = {
     phoneCode?: string;
   }[];
   selectedCountry?: string;
-  [k: string]: any;
+  disabled?: boolean;
+  readOnly?: boolean;
+  loading?: boolean;
+  variant?: string;
+  optional?: boolean;
+  displayTrigger?: boolean;
 };
 
 export function PhoneField({
@@ -25,10 +31,13 @@ export function PhoneField({
   label,
   items,
   selectedCountry,
+  optional,
+  displayTrigger = true,
   ...props
-}: Props) {
+}: PhoneFieldProps) {
   const { control, trigger } = useFormContext();
-  const t = useTranslations("errors");
+  const tErrors = useTranslations("errors");
+  const tCheckout = useTranslations("checkout");
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
 
@@ -62,9 +71,9 @@ export function PhoneField({
       return { code: "", number: value };
     }
 
-    const matches = items.filter(
-      (item) => item.phoneCode && value.startsWith(item.phoneCode),
-    );
+    const matches = items
+      .filter((item) => item.phoneCode && value.startsWith(item.phoneCode))
+      .sort((a, b) => (b.phoneCode?.length ?? 0) - (a.phoneCode?.length ?? 0));
 
     if (matches.length > 0) {
       const preferredMatch = selectedCountry
@@ -117,9 +126,19 @@ export function PhoneField({
         return (
           <FormItem>
             <FormLabel
-              className={cn("", { "text-textInactiveColor": props.disabled })}
+              className={cn("inline-flex items-center", {
+                "text-textInactiveColor": props.disabled,
+              })}
             >
-              {label}
+              <Text component="span">{label}</Text>
+              {optional && (
+                <Text
+                  component="span"
+                  className="ml-1 whitespace-nowrap text-textInactiveColor"
+                >
+                  ({tCheckout("optional")})
+                </Text>
+              )}
             </FormLabel>
             <FormControl>
               <div className="flex items-end" ref={containerRef}>
@@ -130,12 +149,11 @@ export function PhoneField({
                     onValueChange={handleCodeChange}
                     items={items}
                     disabled={props.disabled}
-                    variant="secondary"
-                    className={cn("flex-row-reverse text-textBaseSize", {
-                      // "text-textInactiveColor": props.disabled,
-                    })}
+                    className="flex-row-reverse text-textBaseSize"
                     customWidth={containerWidth}
                     renderValue={handleSelectChange}
+                    readOnly={props.readOnly}
+                    displayTrigger={displayTrigger && !props.disabled}
                   />
                 </div>
                 <Input
@@ -144,12 +162,13 @@ export function PhoneField({
                   value={number}
                   onChange={handleNumberChange}
                   disabled={props.disabled}
+                  readOnly={props.readOnly}
                   variant="secondary"
                   onBlur={onBlur}
                 />
               </div>
             </FormControl>
-            <FormMessage translateError={t} fieldName={name} />
+            <FormMessage translateError={tErrors} fieldName={name} />
           </FormItem>
         );
       }}

@@ -24,7 +24,6 @@ export function useLocation({
     setNextCountry,
     setLanguageId,
     closeCountryPopup,
-    // setCurrentCountry,
   } = useTranslationsStore((state) => state);
 
   const languagesForCurrentCountry = (() => {
@@ -64,8 +63,7 @@ export function useLocation({
       "/";
     const rest =
       pathWithoutLocaleCountry === "/" ? "" : pathWithoutLocaleCountry;
-    const search =
-      typeof window !== "undefined" ? window.location.search : "";
+    const search = typeof window !== "undefined" ? window.location.search : "";
     router.push(`/${lng}${rest}${search}`);
   };
 
@@ -74,12 +72,8 @@ export function useLocation({
       name: country.name,
       countryCode: country.countryCode,
       currencyKey: country.currencyKey,
+      localeCode: country.lng,
     });
-
-    const newLanguageId = LANGUAGE_CODE_TO_ID[country.lng];
-    if (newLanguageId !== undefined) {
-      setLanguageId(newLanguageId);
-    }
 
     closeCountryPopup();
   };

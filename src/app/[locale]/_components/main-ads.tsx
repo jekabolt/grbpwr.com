@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { common_HeroMainWithTranslations } from "@/api/proto-http/frontend";
+import { useState } from "react";
 
-import { sendHeroEvent } from "@/lib/analitycs/hero";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, isVideo } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
+import { sendHeroEvent } from "@/lib/analitycs/hero";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { calculateAspectRatio, isVideo } from "@/lib/utils";
 
 export function MainAds({
   main,
@@ -30,7 +30,7 @@ export function MainAds({
   return (
     <AnimatedButton
       href={main.single?.exploreLink || ""}
-      className="relative h-screen w-full"
+      className="relative h-screen w-full overflow-hidden"
       onClick={() => sendHeroEvent({ heroType: "HERO_TYPE_MAIN" })}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

@@ -11,6 +11,86 @@
     "close": "关闭",
     "menu": "菜单"
   },
+  "account": {
+    "account": "账户",
+    "login": "登录或创建账户",
+    "email": "邮箱",
+    "continue": "继续",
+    "checkout as guest": "以访客身份结账",
+    "or": "或",
+    "enter verification code from your email": "请输入邮箱中的验证码",
+    "the code couldn’t be verified": "无法验证该验证码",
+    "resend code": "重新发送验证码",
+    "resend code in": "重新发送倒计时",
+    "or sign in via the link sent to your email": "或通过发送到您邮箱的链接登录",
+    "or continue using the link sent to your email": "或继续使用发送到您邮箱的链接",
+    "complete your registration": "完成您的注册",
+    "country": "国家",
+    "track order": "追踪订单",
+    "order & returns": "订单与退货",
+    "personal info": "个人信息",
+    "addresses": "地址",
+    "all": "全部",
+    "men": "男装",
+    "women": "女装",
+    "newsletter": "新闻通讯",
+    "new arrivals": "新品",
+    "events": "活动",
+    "brand updates, considered releases, and occasional private offers": "品牌更新、精选发布以及不定期专属优惠",
+    "first notice of new drops, restocked pieces, and seasonal releases": "第一时间获取新品发售、补货和季节发布信息",
+    "invitations to launches, private viewings, and selected brand moments": "受邀参加发布会、私享预览和精选品牌活动",
+    "subscribe": "订阅",
+    "unsubscribe": "取消订阅",
+    "email preferences": "邮件偏好",
+    "private community": "私享社区",
+    "your access": "您的会籍",
+    "privileges": "权益",
+    "save changes": "保存更改",
+    "log out": "退出登录",
+    "orders list": "订单",
+    "returns": "退货",
+    "edit shipping address": "编辑收货地址",
+    "select saved address": "选择已保存地址",
+    "order product thumbnail alt": "商品",
+    "failed to load addresses": "无法加载地址",
+    "failed to delete address": "无法删除地址",
+    "failed to update address": "无法更新地址",
+    "invalid email": "邮箱无效",
+    "failed to request login code": "无法请求登录验证码",
+    "invalid verification code": "验证码无效",
+    "country is required": "请填写国家/地区",
+    "city is required": "请填写城市",
+    "address is required": "请填写地址",
+    "postal code is required": "请填写邮政编码",
+    "invalid date": "日期无效",
+    "enter a valid date of birth": "请输入有效的出生日期",
+    "receive updates on new arrivals and brand news": "接收新品和品牌资讯更新",
+    "save": "保存",
+    "cancel": "取消",
+    "add new address": "添加新地址",
+    "use other address": "使用其他地址",
+    "privacy policy": "我已阅读<privacy>隐私政策</privacy>和<membership>会员政策</membership>",
+    "privacy_policy_required": "请先同意隐私政策和会员政策",
+    "edit": "编辑",
+    "delete": "删除",
+    "sure?": "确定吗？",
+    "default": "默认",
+    "you are in country: {country} / {currency}": "您所在国家：{country} / {currency}",
+    "change location": "更改位置",
+    "email_consent_notice": "成为会员即表示您同意我们的<privacy>隐私政策</privacy>和<membership>会员政策</membership>。",
+    "magic_login_success_title": "登录成功",
+    "magic_login_success_subtitle": "欢迎回来。",
+    "no addresses saved": "暂无已保存地址",
+    "save an address to faster checkout": "保存地址以便更快结账",
+    "no orders yet": "暂无订单",
+    "explore collections": "探索系列",
+    "no returns": "暂无退货",
+    "to start new return, visit our returns": "如需发起新的退货，请访问退货页面",
+    "date of birth": "出生日期",
+    "failed to update account": "无法更新账户",
+    "failed to set default address": "无法设置默认地址",
+    "failed to add address": "无法添加地址"
+  },
   "footer": {
     "legal notices": "法律声明",
     "order status": "订单状态",
@@ -95,9 +175,10 @@
     "country/region:": "国家/地区：",
     "state:": "省/州：",
     "city:": "城市：",
-    "additional address:": "详细地址：",
-    "company:": "公司：",
-    "phone number:": "电话号码：",
+    "additional address": "详细地址",
+    "company": "公司",
+    "phone number:": "电话号码",
+    "optional": "可选",
     "postal code:": "邮政编码：",
     "shipping method": "配送方式",
     "no shipping options for location": "您所选地区暂无配送选项。",
@@ -137,6 +218,12 @@
   "not-found": {
     "title": "页面未找到",
     "text": "抱歉，您查找的页面不存在或已被移动。请返回首页，如果问题仍然存在，请联系我们",
+    "main": "主页"
+  },
+  "error": {
+    "title": "出现错误",
+    "text": "服务器暂时出现问题。请重试。",
+    "retry": "重试",
     "main": "主页"
   },
   "cookies": {
@@ -300,7 +387,7 @@
     "RWOL": "再生羊毛"
   },
   "meta": {
-    "description": "GRBPWR通过不完美的语言讨论困难的话题，并掌握这种不完美的语言。购买最新的成衣系列。",
+    "description": "GRBPWR通过不完美的语言讨论困难的话题，并掌握它。购买最新的成衣系列。",
     "catalog": "目录",
     "catalog description": "浏览完整GRBPWR系列。发现成衣、配饰及精选单品。",
     "men description": "选购男士成衣与配饰。GRBPWR定制款、外套及必备单品。",
@@ -400,7 +487,8 @@
     },
     "phone": {
       "min": "电话号码至少需要包含5个数字",
-      "max": "电话号码最多只能包含15个数字"
+      "max": "电话号码最多只能包含15个数字",
+      "countryMismatch": "请输入适用于所选国家的有效电话号码"
     },
     "city": {
       "min": "城市名称至少需要包含2个字符",
@@ -454,7 +542,7 @@
       "required": "请选择包装状况。"
     },
     "sophisticationRating": {
-      "required": "请为精致度评分。"
+      "required": "请评价您的整体体验。"
     },
     "rating": {
       "required": "请为该商品评分。"
@@ -472,7 +560,8 @@
     "return and exchange policy": "退换货政策",
     "cookie settings": "cookie设置",
     "frequently asked questions": "常见问题",
-    "placing an order": "下订单、订单跟踪、退货政策、售后服务和可持续发展。"
+    "placing an order": "下订单、订单跟踪、退货政策、售后服务和可持续发展。",
+    "membership policy": "会员政策"
   },
   "colors": {
     "black": "黑色",
@@ -727,7 +816,6 @@
     "order section": "您的订单",
     "delivery speed": "配送速度",
     "packaging": "包装状况",
-    "sophistication": "品质与做工印象",
     "overall experience": "整体体验",
     "comments": "留言（选填）",
     "enter review": "请填写评价内容",

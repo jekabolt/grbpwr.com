@@ -8,6 +8,13 @@ export type ShoppingPreferenceEnum =
   | "SHOPPING_PREFERENCE_ENUM_MALE"
   | "SHOPPING_PREFERENCE_ENUM_FEMALE"
   | "SHOPPING_PREFERENCE_ENUM_ALL";
+// Account tier / membership level
+export type AccountTierEnum =
+  | "ACCOUNT_TIER_ENUM_UNKNOWN"
+  | "ACCOUNT_TIER_ENUM_PLUS"
+  | "ACCOUNT_TIER_ENUM_PLUS_PLUS"
+  | "ACCOUNT_TIER_ENUM_HACKER"
+  | "ACCOUNT_TIER_ENUM_MEMBER";
 export type GetHeroRequest = {
 };
 
@@ -926,6 +933,14 @@ export type StorefrontAccount = {
   lastName: string | undefined;
   birthDate: googletype_Date | undefined;
   shoppingPreference: ShoppingPreferenceEnum | undefined;
+  phone: string | undefined;
+  subscribeNewsletter: boolean | undefined;
+  subscribeNewArrivals: boolean | undefined;
+  subscribeEvents: boolean | undefined;
+  accountTier: AccountTierEnum | undefined;
+  addresses: StorefrontSavedAddress[] | undefined;
+  defaultCountry: string | undefined;
+  defaultLanguage: string | undefined;
 };
 
 // Represents a whole or partial calendar date, such as a birthday. The time of
@@ -950,6 +965,19 @@ export type googletype_Date = {
   // to specify a year by itself or a year and month where the day isn't
   // significant.
   day: number | undefined;
+};
+
+export type StorefrontSavedAddress = {
+  id: number | undefined;
+  label: string | undefined;
+  country: string | undefined;
+  state: string | undefined;
+  city: string | undefined;
+  addressLineOne: string | undefined;
+  addressLineTwo: string | undefined;
+  company: string | undefined;
+  postalCode: string | undefined;
+  isDefault: boolean | undefined;
 };
 
 export type RefreshAccountSessionRequest = {
@@ -982,23 +1010,16 @@ export type UpdateAccountRequest = {
   lastName?: string;
   birthDate?: googletype_Date;
   shoppingPreference?: ShoppingPreferenceEnum;
+  phone?: string;
+  subscribeNewsletter?: boolean;
+  subscribeNewArrivals?: boolean;
+  subscribeEvents?: boolean;
+  defaultCountry?: string;
+  defaultLanguage?: string;
 };
 
 export type UpdateAccountResponse = {
   account: StorefrontAccount | undefined;
-};
-
-export type StorefrontSavedAddress = {
-  id: number | undefined;
-  label: string | undefined;
-  country: string | undefined;
-  state: string | undefined;
-  city: string | undefined;
-  addressLineOne: string | undefined;
-  addressLineTwo: string | undefined;
-  company: string | undefined;
-  postalCode: string | undefined;
-  isDefault: boolean | undefined;
 };
 
 export type ListSavedAddressesRequest = {

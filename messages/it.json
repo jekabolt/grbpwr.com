@@ -11,6 +11,86 @@
     "close": "chiudi",
     "menu": "menu"
   },
+  "account": {
+    "account": "account",
+    "login": "accedi o crea un account",
+    "email": "email",
+    "continue": "continua",
+    "checkout as guest": "checkout come ospite",
+    "or": "oppure",
+    "enter verification code from your email": "inserisci il codice di verifica ricevuto via email",
+    "the code couldn’t be verified": "non è stato possibile verificare il codice",
+    "resend code": "invia di nuovo il codice",
+    "resend code in": "invia di nuovo il codice tra",
+    "or sign in via the link sent to your email": "oppure accedi tramite il link inviato alla tua email",
+    "or continue using the link sent to your email": "oppure continua con il link inviato alla tua email",
+    "complete your registration": "completa la tua registrazione",
+    "country": "paese",
+    "track order": "traccia ordine",
+    "order & returns": "ordini e resi",
+    "personal info": "informazioni personali",
+    "addresses": "indirizzi",
+    "all": "tutto",
+    "men": "uomo",
+    "women": "donna",
+    "newsletter": "newsletter",
+    "new arrivals": "nuovi arrivi",
+    "events": "eventi",
+    "brand updates, considered releases, and occasional private offers": "aggiornamenti del brand, release selezionate e offerte private occasionali",
+    "first notice of new drops, restocked pieces, and seasonal releases": "avvisi in anteprima su nuovi drop, riassortimenti e uscite stagionali",
+    "invitations to launches, private viewings, and selected brand moments": "inviti a lanci, presentazioni private e momenti selezionati del brand",
+    "subscribe": "iscriviti",
+    "unsubscribe": "annulla iscrizione",
+    "email preferences": "preferenze email",
+    "private community": "community privata",
+    "your access": "il tuo accesso",
+    "privileges": "vantaggi",
+    "save changes": "salva modifiche",
+    "log out": "esci",
+    "orders list": "ordini",
+    "returns": "resi",
+    "edit shipping address": "modifica indirizzo di spedizione",
+    "select saved address": "seleziona indirizzo salvato",
+    "order product thumbnail alt": "prodotto",
+    "failed to load addresses": "impossibile caricare gli indirizzi",
+    "failed to delete address": "impossibile eliminare l’indirizzo",
+    "failed to update address": "impossibile aggiornare l’indirizzo",
+    "invalid email": "e-mail non valida",
+    "failed to request login code": "impossibile richiedere il codice di accesso",
+    "invalid verification code": "codice di verifica non valido",
+    "country is required": "paese obbligatorio",
+    "city is required": "città obbligatoria",
+    "address is required": "indirizzo obbligatorio",
+    "postal code is required": "cap obbligatorio",
+    "invalid date": "data non valida",
+    "enter a valid date of birth": "inserisci una data di nascita valida",
+    "receive updates on new arrivals and brand news": "ricevi aggiornamenti su nuovi arrivi e novità del brand",
+    "save": "salva",
+    "cancel": "annulla",
+    "add new address": "aggiungi nuovo indirizzo",
+    "use other address": "usa un altro indirizzo",
+    "privacy policy": "Ho letto l'<privacy>informativa sulla privacy</privacy> e la <membership>politica di membership</membership>",
+    "privacy_policy_required": "accetta l'informativa sulla privacy e la politica di membership",
+    "edit": "modifica",
+    "delete": "elimina",
+    "sure?": "sicuro?",
+    "default": "predefinito",
+    "you are in country: {country} / {currency}": "ti trovi nel paese: {country} / {currency}",
+    "change location": "cambia posizione",
+    "email_consent_notice": "diventando membro, accetti la nostra <privacy>informativa sulla privacy</privacy> e la <membership>politica di membership</membership>.",
+    "magic_login_success_title": "accesso effettuato",
+    "magic_login_success_subtitle": "ci sei. bentornato.",
+    "no addresses saved": "nessun indirizzo salvato",
+    "save an address to faster checkout": "salva un indirizzo per un checkout più veloce",
+    "no orders yet": "nessun ordine ancora",
+    "explore collections": "esplora le collezioni",
+    "no returns": "nessun reso",
+    "to start new return, visit our returns": "per avviare un nuovo reso, visita i nostri resi",
+    "date of birth": "data di nascita",
+    "failed to update account": "impossibile aggiornare l’account",
+    "failed to set default address": "impossibile impostare l’indirizzo predefinito",
+    "failed to add address": "impossibile aggiungere l’indirizzo"
+  },
   "footer": {
     "legal notices": "note legali",
     "order status": "stato ordine",
@@ -95,9 +175,10 @@
     "country/region:": "paese/regione:",
     "state:": "stato:",
     "city:": "città:",
-    "additional address:": "indirizzo aggiuntivo:",
-    "company:": "azienda:",
-    "phone number:": "numero di telefono:",
+    "additional address": "indirizzo aggiuntivo",
+    "company": "azienda",
+    "phone number:": "numero di telefono",
+    "optional": "facoltativo",
     "postal code:": "codice postale:",
     "shipping method": "metodo di spedizione",
     "no shipping options for location": "Nessuna opzione di spedizione disponibile per la tua posizione.",
@@ -137,6 +218,12 @@
   "not-found": {
     "title": "pagina non trovata",
     "text": "spiacenti, la pagina che stai cercando non esiste o è stata spostata. torna alla homepage o contattaci se il problema persiste",
+    "main": "pagina d'inizio"
+  },
+  "error": {
+    "title": "qualcosa è andato storto",
+    "text": "problema temporaneo del server. riprova.",
+    "retry": "riprova",
     "main": "pagina d'inizio"
   },
   "cookies": {
@@ -300,7 +387,7 @@
     "RWOL": "Lana riciclata"
   },
   "meta": {
-    "description": "GRBPWR discute argomenti difficili con un linguaggio imperfetto e padroneggia questo linguaggio imperfetto. Acquista l'ultima collezione di prêt-à-porter.",
+    "description": "GRBPWR discute argomenti difficili con un linguaggio imperfetto e lo padroneggia. Acquista l'ultima collezione di prêt-à-porter.",
     "catalog": "catalogo",
     "catalog description": "sfoglia la collezione completa GRBPWR. scopri prêt-à-porter, accessori e pezzi curati.",
     "men description": "acquista moda e accessori uomo. capi su misura, outerwear ed essentials GRBPWR.",
@@ -400,7 +487,8 @@
     },
     "phone": {
       "min": "il telefono deve contenere almeno 5 numeri",
-      "max": "il telefono può contenere al massimo 15 numeri"
+      "max": "il telefono può contenere al massimo 15 numeri",
+      "countryMismatch": "inserisci un numero di telefono valido per il paese selezionato"
     },
     "city": {
       "min": "la città deve contenere almeno 2 caratteri",
@@ -454,7 +542,7 @@
       "required": "Seleziona le condizioni dell’imballaggio."
     },
     "sophisticationRating": {
-      "required": "Valuta la sofisticatezza."
+      "required": "Valuta la tua esperienza complessiva."
     },
     "rating": {
       "required": "Valuta questo articolo."
@@ -472,7 +560,8 @@
     "return and exchange policy": "politica di reso e cambio",
     "cookie settings": "impostazioni cookie",
     "frequently asked questions": "domande frequenti",
-    "placing an order": "effettuare un ordine, tracciamento dell'ordine, politica dei resi, servizi post-vendita e sviluppo sostenibile."
+    "placing an order": "effettuare un ordine, tracciamento dell'ordine, politica dei resi, servizi post-vendita e sviluppo sostenibile.",
+    "membership policy": "politica di membership"
   },
   "colors": {
     "black": "nero",
@@ -727,7 +816,6 @@
     "order section": "Il tuo ordine",
     "delivery speed": "Velocità di consegna",
     "packaging": "Stato dell’imballaggio",
-    "sophistication": "Raffinatezza",
     "overall experience": "Esperienza complessiva",
     "comments": "Commento (facoltativo)",
     "enter review": "Scrivi la tua recensione…",

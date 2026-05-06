@@ -1,17 +1,28 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 
+import { clientHasGuestCheckoutIntent } from "@/lib/checkout/guest-checkout-intent";
+import {
+  resolveAccountSession,
+  storefrontAccountToProfile,
+} from "@/lib/storefront-account/client-session";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
+import {
+  CheckoutGuestSkeleton,
+  CheckoutLoginFormSkeleton,
+} from "./checkout-skeleton";
 import NewOrderForm from "./new-order-form";
 import { useStripeRedirect } from "./new-order-form/hooks/useStripeRedirect";
 
@@ -19,16 +30,29 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
 
-interface ExtendedAppearance extends Appearance {
-  fonts?: { cssSrc: string }[];
-}
-
-export function CheckoutFormWrapper() {
+export function CheckoutFormWrapper({
+  initialAccount,
+  persistedGuestCheckout = false,
+}: {
+  initialAccount: StorefrontAccount | null;
+  persistedGuestCheckout?: boolean;
+}) {
   const router = useRouter();
   const products = useCart((s) => s.products);
+  const setSignedIn = useAccountOnboardingStore((s) => s.setSignedIn);
+  const setAccount = useAccountOnboardingStore((s) => s.setAccount);
   const { dictionary } = useDataContext();
   const { currentCountry, languageId } = useTranslationsStore((state) => state);
   const tToaster = useTranslations("toaster");
+  const [sessionAccount, setSessionAccount] = useState(initialAccount);
+  const [resolvingSession, setResolvingSession] = useState(!initialAccount);
+
+  const [guestClientHint, setGuestClientHint] = useState(false);
+  const [isOrderRedirecting, setIsOrderRedirecting] = useState(false);
+
+  useLayoutEffect(() => {
+    setGuestClientHint(clientHasGuestCheckoutIntent());
+  }, []);
 
   const { toastOpen, toastMessage, setToastOpen } = useStripeRedirect({
     paymentFailedMessage: tToaster("payment_failed"),
@@ -37,9 +61,11 @@ export function CheckoutFormWrapper() {
   const productsRef = useRef(products);
   productsRef.current = products;
   useEffect(() => {
+    if (isOrderRedirecting) return;
     if (products.length > 0) return;
 
     const t = setTimeout(() => {
+      if (isOrderRedirecting) return;
       if (productsRef.current.length === 0) {
         const country = currentCountry.countryCode?.toLowerCase() || "gb";
         const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
@@ -47,23 +73,72 @@ export function CheckoutFormWrapper() {
       }
     }, 100);
     return () => clearTimeout(t);
-  }, [products.length, languageId, currentCountry.countryCode, router]);
+  }, [
+    products.length,
+    languageId,
+    currentCountry.countryCode,
+    router,
+    isOrderRedirecting,
+  ]);
+
+  useEffect(() => {
+    let active = true;
+
+    if (initialAccount) {
+      setSessionAccount(initialAccount);
+      setSignedIn(true);
+      setAccount(storefrontAccountToProfile(initialAccount));
+      setResolvingSession(false);
+      return;
+    }
+
+    setResolvingSession(true);
+
+    async function resolveSession() {
+      const account = await resolveAccountSession();
+      if (!active) return;
+
+      if (account) {
+        setSessionAccount(account);
+        setSignedIn(true);
+        setAccount(storefrontAccountToProfile(account));
+      } else {
+        setSessionAccount(null);
+        setSignedIn(false);
+        setAccount(null);
+      }
+
+      setResolvingSession(false);
+    }
+
+    void resolveSession();
+
+    return () => {
+      active = false;
+    };
+  }, [initialAccount, setAccount, setSignedIn]);
 
   const currency =
     currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
   const [orderAmount, setOrderAmount] = useState<number>(1000);
 
   const handleAmountChange = (amount: number) => {
+    if (!Number.isFinite(amount) || amount <= 0) return;
     setOrderAmount(amount);
   };
 
-  const appearance: ExtendedAppearance = {
+  const guestCheckoutIntent = persistedGuestCheckout || guestClientHint;
+
+  if (resolvingSession) {
+    return guestCheckoutIntent ? (
+      <CheckoutGuestSkeleton />
+    ) : (
+      <CheckoutLoginFormSkeleton />
+    );
+  }
+
+  const appearance: Appearance = {
     theme: "stripe",
-    fonts: [
-      {
-        cssSrc: "/fonts/FeatureMono-Regular.ttf",
-      },
-    ],
     labels: "floating",
     variables: {
       colorPrimary: "#000000",
@@ -79,7 +154,6 @@ export function CheckoutFormWrapper() {
       ".Input": {
         border: "1px solid #B4B4B4",
         boxShadow: "none",
-        height: "16px",
         padding: "8px 16px",
       },
       ".Input:focus": {
@@ -94,10 +168,6 @@ export function CheckoutFormWrapper() {
       },
       ".Label--focused": {
         color: "#B4B4B4",
-      },
-      ".Tab": {
-        display: "flex",
-        flexDirection: "row",
       },
       ".TabLabel": {
         textTransform: "lowercase",
@@ -119,7 +189,12 @@ export function CheckoutFormWrapper() {
             "en") as StripeElementLocale,
         }}
       >
-        <NewOrderForm onAmountChange={handleAmountChange} />
+        <NewOrderForm
+          onAmountChange={handleAmountChange}
+          initialAccount={initialAccount ?? sessionAccount}
+          persistedGuestCheckout={guestCheckoutIntent}
+          onOrderRedirectStart={() => setIsOrderRedirecting(true)}
+        />
       </Elements>
       <SubmissionToaster
         open={toastOpen}

@@ -50,7 +50,7 @@ export function MobileNavMenu({
                 {tAccessibility("mobile menu")}
               </DialogPrimitives.Title>
               <div className="flex h-full flex-col">
-                <div className="mb-14">
+                <div className="mb-24">
                   {activeCategory ? (
                     <div className="flex items-center justify-between">
                       <Button onClick={() => setActiveCategory(undefined)}>

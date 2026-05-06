@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import * as Checkbox from "@radix-ui/react-checkbox";
 
 import { cn } from "@/lib/utils";
@@ -9,7 +10,7 @@ export default function CheckboxGlobal({
   ...props
 }: {
   name: string;
-  label?: string;
+  label?: string | ReactNode;
   [k: string]: unknown;
 }) {
   return (

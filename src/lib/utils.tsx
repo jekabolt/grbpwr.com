@@ -10,6 +10,7 @@ import {
   SHOES_SIZE_CONVERSION,
   SortFactorConfig,
 } from "@/constants";
+import { routing } from "@/i18n/routing";
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -267,4 +268,16 @@ export function getVatRateByCountryCode(
 export function formatSizeName(name: string): string {
   const match = name.match(/_(\d+)(?:ta|bo)_[mf]$/);
   return match ? match[1] : name;
+}
+
+/**
+ * Resolve locale from tag
+ * @param tag - The tag to resolve locale from
+ * @returns The resolved locale
+ */
+export function resolveLocale(tag: string | undefined) {
+  if (tag && (routing.locales as readonly string[]).includes(tag)) {
+    return tag;
+  }
+  return routing.defaultLocale;
 }

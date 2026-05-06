@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-import { errorMessages } from "@/constants";
+import { CHECKOUT_ERROR_PHONE_COUNTRY, errorMessages } from "@/constants";
+import { isValidPhoneForCountry } from "@/lib/phone/phone-validation";
 
 const addressFields = {
   firstName: z.string().min(1, errorMessages.firstName.min).max(40, errorMessages.firstName.max).regex(errorMessages.firstName.regex.restriction, errorMessages.firstName.regex.message).trim(),
@@ -34,6 +35,9 @@ const baseCheckoutSchema = z.object({
     message: "you must accept the terms & conditions",
   }),
   ...addressFields,
+  // UI-only: lets signed-in users pick which saved address to use for shipping.
+  // Not sent/used on the backend order payload.
+  savedAddressId: z.string().optional(),
   shipmentCarrierId: z.string().min(1, errorMessages.shipmentCarrierId.min),
   promoCode: z.string().optional(),
 
@@ -66,6 +70,14 @@ const baseCheckoutSchema = z.object({
   ]),
 })
   .superRefine((data, ctx) => {
+    if (!isValidPhoneForCountry(data.phone, data.country)) {
+      ctx.addIssue({
+        path: ["phone"],
+        message: CHECKOUT_ERROR_PHONE_COUNTRY,
+        code: z.ZodIssueCode.custom,
+      });
+    }
+
     if (!data.billingAddressIsSameAsAddress) {
       if (!data.billingAddress) {
         ctx.addIssue({
@@ -96,6 +108,21 @@ const baseCheckoutSchema = z.object({
           });
         }
       }
+
+      if (
+        data.billingAddress.phone &&
+        data.billingAddress.country &&
+        !isValidPhoneForCountry(
+          data.billingAddress.phone,
+          data.billingAddress.country,
+        )
+      ) {
+        ctx.addIssue({
+          path: ["billingAddress", "phone"],
+          message: CHECKOUT_ERROR_PHONE_COUNTRY,
+          code: z.ZodIssueCode.custom,
+        });
+      }
     }
   });
 
@@ -116,6 +143,7 @@ export const defaultData: Omit<z.infer<typeof checkoutSchema>, "paymentMethod"> 
   additionalAddress: "",
   company: "",
   postalCode: "",
+  savedAddressId: "",
   shipmentCarrierId: "",
   subscribe: false,
   billingAddressIsSameAsAddress: true,

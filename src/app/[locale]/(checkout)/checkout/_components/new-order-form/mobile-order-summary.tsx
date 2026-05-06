@@ -12,6 +12,7 @@ import { UseFormReturn } from "react-hook-form";
 import { formatPrice } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "./fields-group-container";
@@ -24,6 +25,8 @@ type Props = {
   order?: ValidateOrderItemsInsertResponse;
   orderCurrency?: string;
   disabled?: boolean;
+  showCheckoutFields?: boolean;
+  overlay?: boolean;
 };
 
 export function MobileOrderSummary({
@@ -32,6 +35,7 @@ export function MobileOrderSummary({
   order,
   orderCurrency,
   disabled = false,
+  overlay = false,
 }: Props) {
   const t = useTranslations("checkout");
 
@@ -49,39 +53,58 @@ export function MobileOrderSummary({
   }
 
   return (
-    <FieldsGroupContainer
-      signType="plus-minus"
-      className={cn("space-y-0 border border-textInactiveColor p-2.5", {
-        "text-textInactiveColor": disabled,
-      })}
-      signPosition="before"
-      title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
-      preview={
-        <Text
-          className={cn({
+    <>
+      <Overlay
+        cover="screen"
+        trigger="active"
+        color="dark"
+        active={overlay && isOpen}
+        disablePointerEvents={overlay ? false : true}
+        onClick={handleToggle}
+      />
+      <FieldsGroupContainer
+        signType="plus-minus"
+        className={cn(
+          "relative z-40 space-y-0 border border-textInactiveColor p-2.5",
+          {
             "text-textInactiveColor": disabled,
-          })}
-        >
-          {formatPrice(
-            order?.totalSale?.value || "0",
-            currency,
-            currencySymbol,
-          )}
-        </Text>
-      }
-      isOpen={isOpen}
-      disabled={disabled}
-      onToggle={handleToggle}
-    >
-      <div className="pt-6">
-        <OrderProducts
-          validatedProducts={validatedProducts}
-          currencyKey={orderCurrency}
-          disabled={disabled}
-          disableProductLinks
-        />
-      </div>
-      <PriceSummary form={form} order={order} orderCurrency={orderCurrency} />
-    </FieldsGroupContainer>
+          },
+        )}
+        signPosition="before"
+        title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
+        preview={
+          <Text
+            className={cn({
+              "text-textInactiveColor": disabled,
+            })}
+          >
+            {formatPrice(
+              order?.totalSale?.value || "0",
+              currency,
+              currencySymbol,
+            )}
+          </Text>
+        }
+        isOpen={isOpen}
+        disabled={disabled}
+        onToggle={handleToggle}
+      >
+        <div className="pt-6">
+          <OrderProducts
+            validatedProducts={validatedProducts}
+            currencyKey={orderCurrency}
+            disabled={disabled}
+            disableProductLinks
+          />
+        </div>
+        <div onClick={() => setIsOpen(false)}>
+          <PriceSummary
+            form={form}
+            order={order}
+            orderCurrency={orderCurrency}
+          />
+        </div>
+      </FieldsGroupContainer>
+    </>
   );
 }
