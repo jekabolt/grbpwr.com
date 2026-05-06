@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +24,7 @@ import {
 } from "@/app/[locale]/account/authorization/account-login-form";
 import { accountNeedsNameCompletion } from "@/app/[locale]/account/utils/utility";
 
-import { CheckoutFormSkeleton } from "../checkout-skeleton";
+import { CheckoutSignedInSkeleton } from "../checkout-skeleton";
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
 import { useCheckoutEffects } from "./hooks/useCheckout";
@@ -40,31 +40,48 @@ import { PriceSummary } from "./price-summary";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
+import {
+  clearGuestCheckoutIntent,
+  persistGuestCheckoutIntent,
+  readGuestCheckoutFromSession,
+} from "@/lib/checkout/guest-checkout-intent";
+
 import { isStripeCardPaymentMethod } from "./utils";
 
 type NewOrderFormProps = {
   onAmountChange: (amount: number) => void;
   initialAccount: StorefrontAccount | null;
+  persistedGuestCheckout?: boolean;
   onOrderRedirectStart?: () => void;
 };
 
 export default function NewOrderForm({
   onAmountChange,
   initialAccount,
+  persistedGuestCheckout = false,
   onOrderRedirectStart,
 }: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
   const { products, totalPrice, validatedCurrency } = useCart((s) => s);
   const { isSignedIn } = useAccountOnboardingStore((s) => s);
-  const [guestCheckout, setGuestCheckout] = useState(false);
+  const [guestCheckout, setGuestCheckout] = useState(persistedGuestCheckout);
   const [checkoutLoginStep, setCheckoutLoginStep] =
     useState<AccountLoginStep>("email");
   const [checkoutLoginVerified, setCheckoutLoginVerified] = useState(false);
   const [checkoutProfileCompleted, setCheckoutProfileCompleted] =
     useState(false);
 
+  useLayoutEffect(() => {
+    if (persistedGuestCheckout || readGuestCheckoutFromSession()) {
+      setGuestCheckout(true);
+    }
+  }, [persistedGuestCheckout]);
+
   useEffect(() => {
-    if (isSignedIn) setGuestCheckout(false);
+    if (isSignedIn) {
+      setGuestCheckout(false);
+      clearGuestCheckoutIntent();
+    }
   }, [isSignedIn]);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -141,7 +158,10 @@ export default function NewOrderForm({
     clearFormData,
     setToastMessage,
     setOrderModifiedToastOpen,
-    onOrderRedirectStart,
+    onOrderRedirectStart: () => {
+      clearGuestCheckoutIntent();
+      onOrderRedirectStart?.();
+    },
   });
 
   useCheckoutFormAnalytics({
@@ -177,8 +197,11 @@ export default function NewOrderForm({
     });
   };
 
-  if (checkoutLoginVerified) {
-    return <CheckoutFormSkeleton />;
+  const awaitingPostLoginHydration =
+    checkoutLoginVerified && !guestCheckout && !isSignedIn && !initialAccount;
+
+  if (awaitingPostLoginHydration) {
+    return <CheckoutSignedInSkeleton />;
   }
 
   return (
@@ -218,7 +241,10 @@ export default function NewOrderForm({
                   isCheckout
                   onStepChange={setCheckoutLoginStep}
                   onVerified={() => setCheckoutLoginVerified(true)}
-                  onCheckoutAsGuest={() => setGuestCheckout(true)}
+                  onCheckoutAsGuest={() => {
+                    persistGuestCheckoutIntent();
+                    setGuestCheckout(true);
+                  }}
                 />
               </div>
             ) : showProfilePrompt ? (
