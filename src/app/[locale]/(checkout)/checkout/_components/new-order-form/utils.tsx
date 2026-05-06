@@ -80,20 +80,6 @@ export function getCheckoutLocalePath(
   };
 }
 
-export function buildStripeCheckoutReturnUrl(params: {
-  origin: string;
-  countryCode: string | undefined;
-  languageId: number;
-  orderUuid: string;
-  emailBase64: string;
-}): string {
-  const { country, locale } = getCheckoutLocalePath(
-    params.countryCode,
-    params.languageId,
-  );
-  return `${params.origin}/${country}/${locale}/checkout?order_uuid=${params.orderUuid}&email=${params.emailBase64}`;
-}
-
 export function buildOrderConfirmationUrl(params: {
   countryCode: string | undefined;
   languageId: number;
@@ -109,6 +95,33 @@ export function buildOrderConfirmationUrl(params: {
     ? `?redirect_status=${params.redirectStatus}`
     : "";
   return `/${country}/${locale}/order/${params.orderUuid}/${params.emailBase64}${suffix}`;
+}
+
+export function isStripeCardPaymentMethod(
+  paymentMethod: unknown,
+): paymentMethod is CheckoutData["paymentMethod"] {
+  return Boolean(normalizeStripeCardPaymentMethod(paymentMethod));
+}
+
+export function normalizeStripeCardPaymentMethod(
+  paymentMethod: unknown,
+): CheckoutData["paymentMethod"] | undefined {
+  if (typeof paymentMethod !== "string") return undefined;
+
+  const normalized = paymentMethod.trim().toLowerCase();
+  if (normalized === "payment_method_name_enum_card" || normalized === "card") {
+    return "PAYMENT_METHOD_NAME_ENUM_CARD";
+  }
+
+  if (
+    normalized === "payment_method_name_enum_card_test" ||
+    normalized === "card (test)" ||
+    normalized === "card test"
+  ) {
+    return "PAYMENT_METHOD_NAME_ENUM_CARD_TEST";
+  }
+
+  return undefined;
 }
 
 export function mapFormFieldToOrderDataFormat(

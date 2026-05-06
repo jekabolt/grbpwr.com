@@ -40,6 +40,7 @@ export function useOrderRedirectAnalytics({
 
       clearCart();
       clearIdempotencyKey();
+      sessionStorage.removeItem("pending_stripe_order");
 
       if (
         !purchaseFiredRef.current &&

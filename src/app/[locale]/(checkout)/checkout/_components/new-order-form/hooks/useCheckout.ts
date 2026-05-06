@@ -1,5 +1,6 @@
 // hooks/useCheckoutEffects.ts
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
+import { toStripeMinorUnitAmount } from "@/lib/currency";
 import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { usePathname, useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ interface UseCheckoutEffectsProps {
     products: any[];
     form: any;
     countryCode: string;
+    orderCurrency?: string;
     onAmountChange: (amount: number) => void;
     handleFormChange: (name?: string) => void;
 }
@@ -19,6 +21,7 @@ export const useCheckoutEffects = ({
     products,
     form,
     countryCode,
+    orderCurrency,
     onAmountChange,
     handleFormChange,
 }: UseCheckoutEffectsProps) => {
@@ -74,9 +77,19 @@ export const useCheckoutEffects = ({
 
     useEffect(() => {
         if (order?.totalSale?.value) {
-            onAmountChange(Math.round(parseFloat(order.totalSale.value)));
+            onAmountChange(
+                toStripeMinorUnitAmount(
+                    order.totalSale.value,
+                    orderCurrency || currentCountry.currencyKey || "EUR",
+                ),
+            );
         }
-    }, [order?.totalSale?.value, onAmountChange]);
+    }, [
+        currentCountry.currencyKey,
+        order?.totalSale?.value,
+        orderCurrency,
+        onAmountChange,
+    ]);
 
     // Initialize country from store only on mount, don't update when store changes
     // This prevents geo-suggest banner from changing the form before user accepts

@@ -13,6 +13,10 @@ import { Text } from "@/components/ui/text";
 import FieldsGroupContainer from "./fields-group-container";
 import PromoCode from "./PromoCode";
 import { AddressFields } from "./shipping-fields-group";
+import {
+  isStripeCardPaymentMethod,
+  normalizeStripeCardPaymentMethod,
+} from "./utils";
 
 type Props = {
   loading: boolean;
@@ -43,7 +47,18 @@ export default function PaymentFieldsGroup({
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
+  const showStripePaymentElement = isStripeCardPaymentMethod(paymentMethod);
   const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    const normalizedPaymentMethod =
+      normalizeStripeCardPaymentMethod(paymentMethod);
+    if (normalizedPaymentMethod && normalizedPaymentMethod !== paymentMethod) {
+      setValue("paymentMethod", normalizedPaymentMethod, {
+        shouldValidate: false,
+      });
+    }
+  }, [paymentMethod, setValue]);
 
   useEffect(() => {
     if (isInitialMount.current) {
@@ -100,7 +115,7 @@ export default function PaymentFieldsGroup({
             disabled || loading ? "pointer-events-none opacity-50" : ""
           }
         >
-          {paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST" && (
+          {showStripePaymentElement && (
             <>
               <PaymentElement
                 onChange={handlePaymentElementChange}

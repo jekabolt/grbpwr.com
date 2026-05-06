@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
-import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
+import {
+  Appearance,
+  loadStripe,
+  StripeElementLocale,
+} from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 
 import {
@@ -25,10 +29,6 @@ import { useStripeRedirect } from "./new-order-form/hooks/useStripeRedirect";
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
-
-interface ExtendedAppearance extends Appearance {
-  fonts?: { cssSrc: string }[];
-}
 
 export function CheckoutFormWrapper({
   initialAccount,
@@ -115,6 +115,7 @@ export function CheckoutFormWrapper({
   const [orderAmount, setOrderAmount] = useState<number>(1000);
 
   const handleAmountChange = (amount: number) => {
+    if (!Number.isFinite(amount) || amount <= 0) return;
     setOrderAmount(amount);
   };
 
@@ -122,13 +123,8 @@ export function CheckoutFormWrapper({
     return <CheckoutLoginSkeleton />;
   }
 
-  const appearance: ExtendedAppearance = {
+  const appearance: Appearance = {
     theme: "stripe",
-    fonts: [
-      {
-        cssSrc: "/fonts/FeatureMono-Regular.ttf",
-      },
-    ],
     labels: "floating",
     variables: {
       colorPrimary: "#000000",
@@ -144,7 +140,6 @@ export function CheckoutFormWrapper({
       ".Input": {
         border: "1px solid #B4B4B4",
         boxShadow: "none",
-        height: "16px",
         padding: "8px 16px",
       },
       ".Input:focus": {
@@ -159,10 +154,6 @@ export function CheckoutFormWrapper({
       },
       ".Label--focused": {
         color: "#B4B4B4",
-      },
-      ".Tab": {
-        display: "flex",
-        flexDirection: "row",
       },
       ".TabLabel": {
         textTransform: "lowercase",

@@ -3,6 +3,7 @@ import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 import { useEffect, useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { CheckoutData, defaultData } from "../schema";
+import { normalizeStripeCardPaymentMethod } from "../utils";
 
 type CheckoutIdentityData = Pick<
     CheckoutData,
@@ -125,6 +126,9 @@ export const useOrderPersistence = (
                 }
             } catch {
             }
+            data.paymentMethod =
+                normalizeStripeCardPaymentMethod(data.paymentMethod) ??
+                defaultData.paymentMethod;
             form.reset(data);
         }, 0);
     }, [currentCountryCode, form, formData, hasPersistedData, rehydrated]);

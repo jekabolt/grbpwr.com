@@ -40,6 +40,7 @@ import { PriceSummary } from "./price-summary";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
+import { isStripeCardPaymentMethod } from "./utils";
 
 type NewOrderFormProps = {
   onAmountChange: (amount: number) => void;
@@ -109,6 +110,7 @@ export default function NewOrderForm({
     products,
     form,
     countryCode: currentCountry.countryCode || "",
+    orderCurrency,
     onAmountChange,
     handleFormChange,
   });
@@ -159,8 +161,7 @@ export default function NewOrderForm({
     accountNeedsNameCompletion(initialAccount) &&
     !checkoutProfileCompleted;
 
-  const centerAuthOnMobile =
-    !showCheckoutFields || showProfilePrompt;
+  const centerAuthOnMobile = !showCheckoutFields || showProfilePrompt;
 
   const handleProfileCompleted = (data: {
     firstName: string;
@@ -264,7 +265,7 @@ export default function NewOrderForm({
                         (form.formState.isSubmitted ||
                           form.formState.submitCount > 0) &&
                         !isPaymentFieldsValid &&
-                        paymentMethod === "PAYMENT_METHOD_NAME_ENUM_CARD_TEST"
+                        isStripeCardPaymentMethod(paymentMethod)
                       }
                     />
                   </div>
@@ -312,7 +313,9 @@ export default function NewOrderForm({
                   variant="main"
                   size="lg"
                   className="w-full uppercase"
-                  disabled={loading || !form.formState.isValid}
+                  disabled={
+                    loading || !form.formState.isValid || !isPaymentFieldsValid
+                  }
                   loading={loading}
                   loadingType="order-processing"
                   analyticsButtonId="place_order"
