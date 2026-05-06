@@ -150,7 +150,8 @@ export function CheckoutSavedAddressSelector({
 
           <Button
             type="button"
-            className="border-b border-textColor uppercase"
+            variant="underline"
+            className="uppercase underline"
             onClick={() => onAddNewAddress?.()}
             disabled={disabled || loading}
           >

@@ -40,7 +40,7 @@ export function AddressesSelector({
     >
       <RadixSelect.Trigger
         className={cn(
-          "flex w-full items-center gap-1.5 border-b border-textColor bg-bgColor text-left text-textBaseSize leading-none focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
+          "flex w-full items-center gap-1.5 bg-bgColor text-left text-textBaseSize leading-none underline focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
         )}
         aria-label={t("select saved address")}
       >
