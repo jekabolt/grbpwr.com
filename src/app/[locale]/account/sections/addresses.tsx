@@ -59,7 +59,7 @@ export function AddressesSection({
     onEditModeChange?.(false);
   }, [editResetKey, onEditModeChange]);
 
-  const isInitialLoading = pending && !loaded;
+  const isInitialLoading = !loaded;
 
   return (
     <div
@@ -77,14 +77,13 @@ export function AddressesSection({
           {t("addresses")}
         </Text>
       )}
-      {addresses.length > 0 ? (
+      {isInitialLoading ? (
+        <AddressesSectionFallback
+          defaultOnly={defaultOnly}
+          rows={addresses.length || (defaultOnly ? 1 : undefined)}
+        />
+      ) : addresses.length > 0 ? (
         <div className="flex flex-col">
-          {isInitialLoading ? (
-            <AddressesSectionFallback
-              defaultOnly={defaultOnly}
-              rows={Math.max(1, addresses.length)}
-            />
-          ) : null}
           {visibleAddresses.map((address) => (
             <div key={address.id}>
               {editingId === null && (
