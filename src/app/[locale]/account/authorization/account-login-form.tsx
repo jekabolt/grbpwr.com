@@ -25,10 +25,12 @@ export function AccountLoginForm({
   isCheckout = false,
   onCheckoutAsGuest,
   onStepChange,
+  onVerified,
 }: {
   isCheckout?: boolean;
   onCheckoutAsGuest?: () => void;
   onStepChange?: (step: AccountLoginStep) => void;
+  onVerified?: () => void;
 }) {
   const hasCartSummary = useCart((state) =>
     state.products.some((product) => Boolean(product.productData)),
@@ -42,6 +44,7 @@ export function AccountLoginForm({
     toastMessage,
     resendSeconds,
     storageChecked,
+    codeVerified,
     isValidEmail,
     setEmail,
     setCode,
@@ -56,6 +59,11 @@ export function AccountLoginForm({
     if (!storageChecked) return;
     onStepChange?.(step);
   }, [onStepChange, step, storageChecked]);
+
+  useEffect(() => {
+    if (!codeVerified) return;
+    onVerified?.();
+  }, [codeVerified, onVerified]);
 
   if (!storageChecked) {
     return <div className="h-[340px] w-full lg:max-w-[400px]" aria-hidden />;

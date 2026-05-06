@@ -24,6 +24,7 @@ import {
 } from "@/app/[locale]/account/authorization/account-login-form";
 import { accountNeedsNameCompletion } from "@/app/[locale]/account/utils/utility";
 
+import { CheckoutFormSkeleton } from "../checkout-skeleton";
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
 import { useCheckoutEffects } from "./hooks/useCheckout";
@@ -57,6 +58,7 @@ export default function NewOrderForm({
   const [guestCheckout, setGuestCheckout] = useState(false);
   const [checkoutLoginStep, setCheckoutLoginStep] =
     useState<AccountLoginStep>("email");
+  const [checkoutLoginVerified, setCheckoutLoginVerified] = useState(false);
   const [checkoutProfileCompleted, setCheckoutProfileCompleted] =
     useState(false);
 
@@ -174,6 +176,10 @@ export default function NewOrderForm({
     });
   };
 
+  if (checkoutLoginVerified) {
+    return <CheckoutFormSkeleton />;
+  }
+
   return (
     <>
       <Form {...form}>
@@ -210,6 +216,7 @@ export default function NewOrderForm({
                 <AccountLoginForm
                   isCheckout
                   onStepChange={setCheckoutLoginStep}
+                  onVerified={() => setCheckoutLoginVerified(true)}
                   onCheckoutAsGuest={() => setGuestCheckout(true)}
                 />
               </div>

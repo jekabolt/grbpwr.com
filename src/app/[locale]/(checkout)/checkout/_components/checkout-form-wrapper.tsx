@@ -18,7 +18,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
-import { CheckoutFormSkeleton } from "./checkout-skeleton";
+import { CheckoutLoginSkeleton } from "./checkout-skeleton";
 import NewOrderForm from "./new-order-form";
 import { useStripeRedirect } from "./new-order-form/hooks/useStripeRedirect";
 
@@ -119,7 +119,7 @@ export function CheckoutFormWrapper({
   };
 
   if (resolvingSession) {
-    return <CheckoutFormSkeleton />;
+    return <CheckoutLoginSkeleton />;
   }
 
   const appearance: ExtendedAppearance = {
