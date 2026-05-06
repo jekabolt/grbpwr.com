@@ -220,6 +220,12 @@
     "text": "抱歉，您查找的页面不存在或已被移动。请返回首页，如果问题仍然存在，请联系我们",
     "main": "主页"
   },
+  "error": {
+    "title": "出现错误",
+    "text": "服务器暂时出现问题。请重试。",
+    "retry": "重试",
+    "main": "主页"
+  },
   "cookies": {
     "cookies title": "我们使用cookie来增强网站的功能。您可以在浏览器设置中禁用cookie。",
     "cookie preferences": "cookie设置",

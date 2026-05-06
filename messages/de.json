@@ -221,6 +221,12 @@
     "text": "entschuldigung, die seite, die sie suchen, existiert nicht oder wurde verschoben. bitte gehen sie zurück zur startseite oder kontaktieren sie uns, wenn das problem weiterhin besteht",
     "main": "hauptseite"
   },
+  "error": {
+    "title": "etwas ist schiefgelaufen",
+    "text": "vorübergehendes serverproblem. bitte versuchen sie es erneut.",
+    "retry": "erneut versuchen",
+    "main": "hauptseite"
+  },
   "cookies": {
     "cookies title": "wir verwenden cookies, um die funktion des websites zu verbessern. sie können cookies in ihren browser-einstellungen deaktivieren.",
     "cookie preferences": "cookie-einstellungen",

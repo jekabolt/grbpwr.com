@@ -1,21 +1,15 @@
-import Link from "next/link";
 import { cookies } from "next/headers";
+import Link from "next/link";
+import { FeatureMono } from "@/fonts";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { NotFoundTracker } from "@/app/[locale]/_components/not-found-tracker";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { FeatureMono } from "@/fonts";
-import { routing } from "@/i18n/routing";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { NotFoundTracker } from "@/app/[locale]/_components/not-found-tracker";
 
 import "./globals.css";
 
-function resolveLocale(tag: string | undefined) {
-  if (tag && (routing.locales as readonly string[]).includes(tag)) {
-    return tag;
-  }
-  return routing.defaultLocale;
-}
+import { resolveLocale } from "@/lib/utils";
 
 export default async function GlobalNotFound() {
   const store = await cookies();
@@ -36,7 +30,7 @@ export default async function GlobalNotFound() {
       </head>
       <body className={FeatureMono.className}>
         <NotFoundTracker />
-        <div className="bg-bgColor relative min-h-dvh">
+        <div className="relative min-h-dvh bg-bgColor">
           <div className="flex h-screen flex-col items-center justify-center gap-6">
             <Text variant="uppercase" component="h1">
               {t("title")}

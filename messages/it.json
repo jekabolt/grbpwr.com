@@ -220,6 +220,12 @@
     "text": "spiacenti, la pagina che stai cercando non esiste o è stata spostata. torna alla homepage o contattaci se il problema persiste",
     "main": "pagina d'inizio"
   },
+  "error": {
+    "title": "qualcosa è andato storto",
+    "text": "problema temporaneo del server. riprova.",
+    "retry": "riprova",
+    "main": "pagina d'inizio"
+  },
   "cookies": {
     "cookies title": "utilizziamo i cookie per migliorare la funzionalità del sito web. puoi disabilitare i cookie nelle tue impostazioni del browser.",
     "cookie preferences": "preferenze dei cookie",

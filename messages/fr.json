@@ -220,6 +220,12 @@
     "text": "désolé, la page que vous cherchez n'existe pas ou a été déplacée. veuillez retourner à la page d'accueil ou contacter nous si le problème persiste",
     "main": "page d'accueil"
   },
+  "error": {
+    "title": "une erreur est survenue",
+    "text": "problème temporaire du serveur. veuillez réessayer.",
+    "retry": "réessayer",
+    "main": "page d'accueil"
+  },
   "cookies": {
     "cookies title": "nous utilisons des cookies pour améliorer la fonctionnalité du site web. vous pouvez désactiver les cookies dans vos paramètres de navigateur.",
     "cookie preferences": "préférences des cookies",

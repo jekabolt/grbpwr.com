@@ -219,6 +219,12 @@
     "text": "sorry, the page you are looking for doesn't exist or has been moved. please go back to the homepage or contact us if the problem persists",
     "main": "main"
   },
+  "error": {
+    "title": "something went wrong",
+    "text": "temporary server issue. please try again.",
+    "retry": "try again",
+    "main": "main"
+  },
   "cookies": {
     "cookies title": "we use cookies to enhance the functionality of the website.you can disable cookies in your browser settings.",
     "cookie preferences": "cookie preferences",
