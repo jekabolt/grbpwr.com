@@ -7,6 +7,7 @@ import { useFormContext } from "react-hook-form";
 import { CHECKOUT_ERROR_CITY_COUNTRY } from "@/constants";
 import { addAddressRequest } from "@/app/[locale]/account/utils/address-actions";
 
+import { findCountryByCode, getUniqueCountries } from "../utils";
 import { verifyCityInCountry } from "../verify-city";
 
 const FIELDS_TO_VALIDATE = [
@@ -57,13 +58,15 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
   >(null);
 
   function resetAddressFields() {
+    const defaultCountry = defaultCountryCode
+      ? findCountryByCode(getUniqueCountries(), defaultCountryCode)
+      : undefined;
     const keys: Array<
       | "state"
       | "city"
       | "address"
       | "additionalAddress"
       | "company"
-      | "phone"
       | "postalCode"
       | "savedAddressId"
     > = [
@@ -72,7 +75,6 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
         "address",
         "additionalAddress",
         "company",
-        "phone",
         "postalCode",
         "savedAddressId",
       ];
@@ -80,6 +82,10 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
       setValue(k, "", { shouldValidate: false, shouldDirty: false }),
     );
     setValue("country", defaultCountryCode ?? "", {
+      shouldValidate: false,
+      shouldDirty: false,
+    });
+    setValue("phone", defaultCountry?.phoneCode ?? "", {
       shouldValidate: false,
       shouldDirty: false,
     });

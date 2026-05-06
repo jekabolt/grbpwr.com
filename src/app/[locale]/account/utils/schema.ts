@@ -1,4 +1,9 @@
-import { EMAIL_PREFERENCES, errorMessages } from "@/constants";
+import {
+    CHECKOUT_ERROR_PHONE_COUNTRY,
+    EMAIL_PREFERENCES,
+    errorMessages,
+} from "@/constants";
+import { isValidPhoneForCountry } from "@/lib/phone/phone-validation";
 import { z } from "zod";
 
 /** Proto `ShoppingPreferenceEnum` strings (matches `EMAIL_PREFERENCES` values). */
@@ -65,6 +70,18 @@ const accountFieldsSchema = ({
         subscribeEvents: z.boolean(),
         shoppingPreference: z.enum(SHOPPING_PREFERENCE_ENUM),
         defaultCountry: z.string(),
+    }).superRefine((data, ctx) => {
+        if (
+            data.phone &&
+            data.defaultCountry &&
+            !isValidPhoneForCountry(data.phone, data.defaultCountry)
+        ) {
+            ctx.addIssue({
+                path: ["phone"],
+                code: z.ZodIssueCode.custom,
+                message: CHECKOUT_ERROR_PHONE_COUNTRY,
+            });
+        }
     });
 
 export function createAccountSchema(t: (key: string) => string) {
@@ -86,6 +103,18 @@ export function createAddressEditSchema(t: (key: string) => string) {
         company: z.string().optional(),
         phone: z.string().optional(),
         postalCode: z.string().min(2, t("postal code is required")),
+    }).superRefine((data, ctx) => {
+        if (
+            data.phone &&
+            data.country &&
+            !isValidPhoneForCountry(data.phone, data.country)
+        ) {
+            ctx.addIssue({
+                path: ["phone"],
+                code: z.ZodIssueCode.custom,
+                message: CHECKOUT_ERROR_PHONE_COUNTRY,
+            });
+        }
     });
 }
 

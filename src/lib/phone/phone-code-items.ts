@@ -1,4 +1,4 @@
-import { getUniqueCountries } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/utils";
+import { getUniquePhoneCountries } from "./phone-country";
 
 export type PhoneCodeSelectItem = {
   label: string;
@@ -10,7 +10,7 @@ let cachedItems: PhoneCodeSelectItem[] | undefined;
 
 export function getPhoneCodeSelectItems(): PhoneCodeSelectItem[] {
   if (cachedItems) return cachedItems;
-  cachedItems = getUniqueCountries()
+  cachedItems = getUniquePhoneCountries()
     .map((country) => ({
       label: `${country.name} +${country.phoneCode}`,
       value: `${country.countryCode}-${country.phoneCode}`,

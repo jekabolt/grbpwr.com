@@ -71,9 +71,9 @@ export function PhoneField({
       return { code: "", number: value };
     }
 
-    const matches = items.filter(
-      (item) => item.phoneCode && value.startsWith(item.phoneCode),
-    );
+    const matches = items
+      .filter((item) => item.phoneCode && value.startsWith(item.phoneCode))
+      .sort((a, b) => (b.phoneCode?.length ?? 0) - (a.phoneCode?.length ?? 0));
 
     if (matches.length > 0) {
       const preferredMatch = selectedCountry

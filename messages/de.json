@@ -482,7 +482,8 @@
     },
     "phone": {
       "min": "telefon muss mindestens 5 zahlen enthalten",
-      "max": "telefon darf höchstens 15 zahlen enthalten"
+      "max": "telefon darf höchstens 15 zahlen enthalten",
+      "countryMismatch": "geben sie eine gültige telefonnummer für das ausgewählte land ein"
     },
     "city": {
       "min": "stadt muss mindestens 2 zeichen enthalten",

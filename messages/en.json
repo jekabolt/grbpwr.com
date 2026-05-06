@@ -536,7 +536,8 @@
     },
     "phone": {
       "min": "phone must contain at least 5 numbers",
-      "max": "phone must contain at most 15 numbers"
+      "max": "phone must contain at most 15 numbers",
+      "countryMismatch": "enter a valid phone number for selected country"
     },
     "city": {
       "min": "city must contain at least 2 characters",

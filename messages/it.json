@@ -481,7 +481,8 @@
     },
     "phone": {
       "min": "il telefono deve contenere almeno 5 numeri",
-      "max": "il telefono può contenere al massimo 15 numeri"
+      "max": "il telefono può contenere al massimo 15 numeri",
+      "countryMismatch": "inserisci un numero di telefono valido per il paese selezionato"
     },
     "city": {
       "min": "la città deve contenere almeno 2 caratteri",
