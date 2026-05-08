@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
+import { resolvePhoneCodeItemForNumber } from "@/lib/phone/phone-validation";
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
@@ -35,11 +36,24 @@ export function PhoneField({
   displayTrigger = true,
   ...props
 }: PhoneFieldProps) {
-  const { control, trigger } = useFormContext();
+  const { control, trigger, setValue, getValues, formState } = useFormContext();
   const tErrors = useTranslations("errors");
   const tCheckout = useTranslations("checkout");
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [showPhoneError, setShowPhoneError] = useState(false);
+  const submitAttempted =
+    formState.isSubmitted || (formState.submitCount ?? 0) > 0;
+
+  const defaultItem = useMemo(() => {
+    if (items.length === 0) return undefined;
+    if (selectedCountry) {
+      const needle = `${selectedCountry.toLowerCase()}-`;
+      const match = items.find((item) => item.value.startsWith(needle));
+      if (match) return match;
+    }
+    return items[0];
+  }, [items, selectedCountry]);
 
   useEffect(() => {
     const updateWidth = () => {
@@ -64,64 +78,83 @@ export function PhoneField({
     };
   }, []);
 
-  function splitValue(value: string) {
-    if (!value) return { code: "", number: "" };
+  const normalize = (raw: string) => {
+    const trimmed = raw.trimStart();
+    const hasPlus = trimmed.startsWith("+");
+    const digits = raw.replace(/\D/g, "");
+    return `${hasPlus ? "+" : ""}${digits}`;
+  };
 
-    if (items.length === 0) {
-      return { code: "", number: value };
-    }
+  const writeValue = (next: string) => {
+    setValue(name, next, {
+      shouldDirty: true,
+      shouldTouch: false,
+      shouldValidate: true,
+    });
+  };
 
-    const matches = items
-      .filter((item) => item.phoneCode && value.startsWith(item.phoneCode))
-      .sort((a, b) => (b.phoneCode?.length ?? 0) - (a.phoneCode?.length ?? 0));
-
-    if (matches.length > 0) {
-      const preferredMatch = selectedCountry
-        ? matches.find((item) =>
-            item.value.startsWith(`${selectedCountry.toLowerCase()}-`),
-          )
-        : undefined;
-      const foundByPhoneCode = preferredMatch ?? matches[0];
-
-      return {
-        code: foundByPhoneCode.value,
-        number: value.slice(foundByPhoneCode.phoneCode!.length),
-      };
-    }
-
-    return { code: "", number: value };
-  }
-
-  function onBlur() {
-    trigger(name);
-  }
+  useEffect(() => {
+    const current = String(getValues(name) ?? "");
+    if (current) return;
+    if (!defaultItem?.phoneCode) return;
+    setValue(name, `+${defaultItem.phoneCode}`, {
+      shouldDirty: false,
+      shouldTouch: false,
+      shouldValidate: false,
+    });
+  }, [defaultItem?.phoneCode, getValues, name, setValue]);
 
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => {
-        const { code, number } = splitValue(field.value || "");
+        const phoneValue = String(field.value ?? "");
+        const normalized = normalize(phoneValue);
+        const prefixItem = resolvePhoneCodeItemForNumber(normalized, items);
+        const activeItem = prefixItem ?? defaultItem;
+        const activeCodeValue = activeItem?.value ?? "";
 
         const handleCodeChange = (newCode: string) => {
           const selectedItem = items.find((item) => item.value === newCode);
-          const phoneCode = selectedItem?.phoneCode || newCode;
-          field.onChange(phoneCode + number);
+          const newPhoneCode = selectedItem?.phoneCode ?? "";
+          if (!newPhoneCode) return;
+
+          const hasPlus = normalized.startsWith("+");
+          const digits = normalized.replace(/\D/g, "");
+          const oldPhoneCode = activeItem?.phoneCode ?? "";
+          const rest =
+            oldPhoneCode && digits.startsWith(oldPhoneCode)
+              ? digits.slice(oldPhoneCode.length)
+              : digits;
+
+          const restWithoutDup = rest.startsWith(newPhoneCode)
+            ? rest.slice(newPhoneCode.length)
+            : rest;
+
+          writeValue(`${hasPlus ? "+" : "+"}${newPhoneCode}${restWithoutDup}`);
         };
 
-        const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          const digitsOnly = e.target.value.replace(/\D/g, "");
-          const selectedItem = items.find((item) => item.value === code);
-          const phoneCode = selectedItem?.phoneCode || code;
-          field.onChange(phoneCode + digitsOnly);
+        const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const next = normalize(e.target.value);
+          const dialCode = activeItem?.phoneCode ?? "";
+
+          if (!dialCode) {
+            writeValue(next);
+            return;
+          }
+
+          const hasPlus = next.startsWith("+");
+          const digits = next.replace(/\D/g, "");
+          const doubled = `${dialCode}${dialCode}`;
+          const collapsedDigits = digits.startsWith(doubled)
+            ? dialCode + digits.slice(doubled.length)
+            : digits;
+
+          writeValue(`${hasPlus ? "+" : ""}${collapsedDigits}`);
         };
 
-        const handleSelectChange = (value: string) => {
-          if (!value) return "";
-          const selectedItem = items.find((item) => item.value === value);
-          const phoneCode = selectedItem?.phoneCode || value;
-          return `+${phoneCode}`;
-        };
+        const renderEmpty = () => "";
 
         return (
           <FormItem>
@@ -145,30 +178,39 @@ export function PhoneField({
                 <div className="flex items-end">
                   <Select
                     name={name + "_code"}
-                    value={code}
+                    value={activeCodeValue}
                     onValueChange={handleCodeChange}
                     items={items}
                     disabled={props.disabled}
                     className="flex-row-reverse text-textBaseSize"
                     customWidth={containerWidth}
-                    renderValue={handleSelectChange}
+                    renderValue={renderEmpty}
                     readOnly={props.readOnly}
                     displayTrigger={displayTrigger && !props.disabled}
                   />
                 </div>
                 <Input
-                  name={name + "_number"}
+                  name={name}
                   type="tel"
-                  value={number}
-                  onChange={handleNumberChange}
+                  value={phoneValue}
+                  onChange={handlePhoneChange}
                   disabled={props.disabled}
                   readOnly={props.readOnly}
                   variant="secondary"
-                  onBlur={onBlur}
+                  onFocus={() => setShowPhoneError(false)}
+                  onBlur={() => {
+                    field.onBlur();
+                    setShowPhoneError(true);
+                    void trigger(name);
+                  }}
                 />
               </div>
             </FormControl>
-            <FormMessage translateError={tErrors} fieldName={name} />
+            <FormMessage
+              translateError={tErrors}
+              fieldName={name}
+              gate={showPhoneError || submitAttempted}
+            />
           </FormItem>
         );
       }}

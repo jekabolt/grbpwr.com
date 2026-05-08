@@ -1,7 +1,10 @@
 import { z } from "zod";
 
 import { CHECKOUT_ERROR_PHONE_COUNTRY, errorMessages } from "@/constants";
-import { isValidPhoneForCountry } from "@/lib/phone/phone-validation";
+import {
+  findIsoCountryFromPhoneNumber,
+  isValidPhoneForCountry,
+} from "@/lib/phone/phone-validation";
 
 const addressFields = {
   firstName: z.string().min(1, errorMessages.firstName.min).max(40, errorMessages.firstName.max).regex(errorMessages.firstName.regex.restriction, errorMessages.firstName.regex.message).trim(),
@@ -70,7 +73,9 @@ const baseCheckoutSchema = z.object({
   ]),
 })
   .superRefine((data, ctx) => {
-    if (!isValidPhoneForCountry(data.phone, data.country)) {
+    const countryForPhone =
+      findIsoCountryFromPhoneNumber(data.phone) ?? data.country;
+    if (!isValidPhoneForCountry(data.phone, countryForPhone)) {
       ctx.addIssue({
         path: ["phone"],
         message: CHECKOUT_ERROR_PHONE_COUNTRY,
@@ -109,12 +114,15 @@ const baseCheckoutSchema = z.object({
         }
       }
 
+      const billingCountryForPhone =
+        findIsoCountryFromPhoneNumber(data.billingAddress.phone) ??
+        data.billingAddress.country;
       if (
         data.billingAddress.phone &&
         data.billingAddress.country &&
         !isValidPhoneForCountry(
           data.billingAddress.phone,
-          data.billingAddress.country,
+          billingCountryForPhone,
         )
       ) {
         ctx.addIssue({
