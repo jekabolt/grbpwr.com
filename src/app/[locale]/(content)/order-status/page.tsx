@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { serviceClient } from "@/lib/api";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
 import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
@@ -12,10 +13,12 @@ export default async function OrderStatus({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const { dictionary } = await serviceClient.GetHero({});
+  const isWebsiteEnabled = dictionary?.siteEnabled;
   setRequestLocale(locale);
   const t = await getTranslations("order-status");
   return (
-    <FlexibleLayout>
+    <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
       <div className="h-full space-y-12 px-2.5 pt-24 lg:space-y-16 lg:px-28">
         <div className="space-y-9">
           <Text variant="uppercase">{t("order status")}</Text>

@@ -94,7 +94,7 @@ function OrdersList({
   );
 
   return (
-    <div className="flex h-full flex-col gap-0 lg:max-h-[550px] lg:overflow-y-auto">
+    <div className="flex h-full flex-col gap-0 bg-bgColor text-textColor lg:max-h-[550px] lg:overflow-y-auto">
       {visible.length > 0 ? (
         <>
           {visible.map((order) => (

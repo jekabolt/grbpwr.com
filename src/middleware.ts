@@ -2,7 +2,7 @@ import createMiddleware from "next-intl/middleware";
 
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
-import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
+import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, isAllowedWhenSiteDisabled, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -39,9 +39,8 @@ export default async function middleware(req: NextRequest) {
     if (parsedPath) {
         const { country, locale, rest } = parsedPath;
 
-        // Redirect to home when site is disabled and user navigates to non-home, non-timeline URL
-        const isTimelinePath = rest === "/timeline" || rest?.startsWith("/timeline/");
-        if (rest?.trim() && !isTimelinePath) {
+        // Redirect to home when site is disabled and URL is not timeline / footer-help allowlist
+        if (rest?.trim() && !isAllowedWhenSiteDisabled(pathname)) {
             try {
                 const siteStatusUrl = new URL("/api/site-status", req.url);
                 const res = await fetch(siteStatusUrl);
@@ -156,10 +155,9 @@ export default async function middleware(req: NextRequest) {
             : localeCookie || getLocaleFromCountry(targetCountry);
         const pathRest = pathname === "/" ? "" : (localeOnly?.rest ?? pathname);
 
-        // Redirect to home when site is disabled (path is not just /, /locale, or timeline)
+        // Redirect to home when site is disabled (path is not home, timeline, or footer/help allowlist)
         const isHomePath = pathname === "/" || /^\/[a-z]{2}\/?$/.test(pathname);
-        const isTimelinePath = /\/timeline(\/|$)/.test(pathname);
-        if (!isHomePath && !isTimelinePath) {
+        if (!isHomePath && !isAllowedWhenSiteDisabled(pathname)) {
             try {
                 const siteStatusUrl = new URL("/api/site-status", req.url);
                 const siteRes = await fetch(siteStatusUrl);

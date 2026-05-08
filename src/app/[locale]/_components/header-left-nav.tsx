@@ -17,8 +17,6 @@ export function HeaderLeftNav({
   isMobile?: boolean;
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
-  const showGrbpwrOnLeft = isWebsiteEnabled === false && isMobile;
-
   return (
     <div className="grow basis-0">
       <div className="hidden lg:block">
@@ -30,13 +28,13 @@ export function HeaderLeftNav({
       </div>
 
       <div className="block lg:hidden">
-        {showGrbpwrOnLeft ? (
+        {!isWebsiteEnabled ? (
           <Button
             asChild
             size="lg"
             className="transition-colors hover:opacity-70 active:opacity-50"
           >
-            <Link href="/">grbpwr</Link>
+            <Link href="/account">account</Link>
           </Button>
         ) : (
           <MobileNavMenu isBigMenuEnabled={isBigMenuEnabled} />

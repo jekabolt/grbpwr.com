@@ -21,6 +21,16 @@ export const FOOTER_LINKS: { text: string; href: string }[] = [
   { text: "tg", href: "https://www.t.me/grbpwr/" },
 ];
 
+/** Internal routes still reachable when the storefront is disabled (footer & help). */
+export const SITE_DISABLED_ALLOWED_REST_PATHS: readonly string[] = [
+  "/account",
+  "/legal-notices",
+  "/order-status",
+  "/aftersale-services",
+  "/return",
+  "/faq",
+];
+
 export const CATALOG_LIMIT = 16;
 
 export const ARCHIVE_LIMIT = 48;
