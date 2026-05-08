@@ -1,10 +1,10 @@
+import { sendOutOfStockClickEvent } from "@/lib/analitycs/product-engagement";
+import { sendSizeSelectedEvent } from "@/lib/analitycs/sizes";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { HoverText } from "@/components/ui/hover-text";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
-import { sendOutOfStockClickEvent } from "@/lib/analitycs/product-engagement";
-import { sendSizeSelectedEvent } from "@/lib/analitycs/sizes";
-import { cn } from "@/lib/utils";
 
 type ProductContext = {
   productId: string;
@@ -93,7 +93,6 @@ export function SizePicker({
           const isOutOfStock = isTrulyOutOfStock || hasNoAvailableQty;
           const isActive = activeSizeId === id;
           const isDisabled = hasNoAvailableQty && !isTrulyOutOfStock;
-          
 
           return (
             <Button
@@ -101,16 +100,8 @@ export function SizePicker({
               disabled={isDisabled}
               variant={isOutOfStock ? "strikeThrough" : "default"}
               className={cn("border-b border-transparent leading-none", {
-                "border-textColor":
-                  isActive &&
-                  !isOutOfStock &&
-                  !isOneSize &&
-                  !skipQtyUnderline,
-                "hover:border-textColor":
-                  !isActive &&
-                  !isOutOfStock &&
-                  !isOneSize &&
-                  !skipQtyUnderline,
+                "border-textColor": isActive && !isOutOfStock,
+                "hover:border-textColor": !isActive && !isOutOfStock,
                 "px-3 py-0.5": view === "line" && !isOneSize,
                 "!text-textColor": isOutOfStock && isActive,
                 "hover:!text-textColor": isOutOfStock && !isActive,
