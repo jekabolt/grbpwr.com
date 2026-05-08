@@ -44,23 +44,24 @@ export function useAddressFields(prefix?: string) {
       if (!country) return;
 
       const currentPhone = getValues(phoneFieldName) || "";
+      const digits = currentPhone.replace(/\D/g, "");
 
       const countriesByPhoneCodeLength = [...uniqueCountries].sort(
         (a, b) => b.phoneCode.length - a.phoneCode.length,
       );
 
-      let numberPart = currentPhone;
+      let nationalDigits = digits;
       for (const c of countriesByPhoneCodeLength) {
-        if (currentPhone.startsWith(c.phoneCode)) {
-          numberPart = currentPhone.slice(c.phoneCode.length);
+        if (digits.startsWith(c.phoneCode)) {
+          nationalDigits = digits.slice(c.phoneCode.length);
           break;
         }
       }
 
       const newPhoneValue =
-        numberPart && numberPart !== currentPhone
-          ? country.phoneCode + numberPart
-          : country.phoneCode;
+        nationalDigits.length > 0
+          ? `+${country.phoneCode}${nationalDigits}`
+          : `+${country.phoneCode}`;
       setValue(phoneFieldName, newPhoneValue);
     },
     [getValues, phoneFieldName, setValue, uniqueCountries],
@@ -73,7 +74,9 @@ export function useAddressFields(prefix?: string) {
     if (!found) return;
 
     const currentPhone = getValues(phoneFieldName) || "";
-    const phoneMatchesCountry = currentPhone.startsWith(found.phoneCode);
+    const digits = currentPhone.replace(/\D/g, "");
+    const phoneMatchesCountry =
+      digits.length > 0 && digits.startsWith(found.phoneCode);
     if (!currentPhone || !phoneMatchesCountry) {
       updatePhoneCode(selectedCountry);
     }

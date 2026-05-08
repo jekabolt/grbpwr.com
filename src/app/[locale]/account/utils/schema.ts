@@ -3,7 +3,10 @@ import {
     EMAIL_PREFERENCES,
     errorMessages,
 } from "@/constants";
-import { isValidPhoneForCountry } from "@/lib/phone/phone-validation";
+import {
+    findIsoCountryFromPhoneNumber,
+    isValidPhoneForCountry,
+} from "@/lib/phone/phone-validation";
 import { z } from "zod";
 
 /** Proto `ShoppingPreferenceEnum` strings (matches `EMAIL_PREFERENCES` values). */
@@ -71,10 +74,13 @@ const accountFieldsSchema = ({
         shoppingPreference: z.enum(SHOPPING_PREFERENCE_ENUM),
         defaultCountry: z.string(),
     }).superRefine((data, ctx) => {
+        const countryForPhone =
+            findIsoCountryFromPhoneNumber(data.phone ?? "") ??
+            data.defaultCountry;
         if (
             data.phone &&
-            data.defaultCountry &&
-            !isValidPhoneForCountry(data.phone, data.defaultCountry)
+            countryForPhone &&
+            !isValidPhoneForCountry(data.phone, countryForPhone)
         ) {
             ctx.addIssue({
                 path: ["phone"],
@@ -104,10 +110,12 @@ export function createAddressEditSchema(t: (key: string) => string) {
         phone: z.string().optional(),
         postalCode: z.string().min(2, t("postal code is required")),
     }).superRefine((data, ctx) => {
+        const countryForPhone =
+            findIsoCountryFromPhoneNumber(data.phone ?? "") ?? data.country;
         if (
             data.phone &&
             data.country &&
-            !isValidPhoneForCountry(data.phone, data.country)
+            !isValidPhoneForCountry(data.phone, countryForPhone)
         ) {
             ctx.addIssue({
                 path: ["phone"],
