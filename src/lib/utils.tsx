@@ -266,8 +266,12 @@ export function getVatRateByCountryCode(
 }
 
 export function formatSizeName(name: string): string {
-  const match = name.match(/_(\d+)(?:ta|bo)_[mf]$/);
-  return match ? match[1] : name;
+  const trimmed = name.trim();
+  if (trimmed.toLowerCase() === "os") {
+    return "one size";
+  }
+  const match = trimmed.match(/_(\d+)(?:ta|bo)_[mf]$/);
+  return match ? match[1] : trimmed;
 }
 
 /**

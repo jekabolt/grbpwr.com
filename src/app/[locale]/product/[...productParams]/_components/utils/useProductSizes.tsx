@@ -39,7 +39,8 @@ export function useProductSizes({ product }: { product: common_ProductFull }) {
     ) || {};
 
   const isOneSize =
-    sizeNames?.length === 1 && sizeNames[0].name.toLowerCase() === "os";
+    sizeNames?.length === 1 &&
+    sizeNames[0].name.toLowerCase() === "one size";
 
   return {
     sizes,
