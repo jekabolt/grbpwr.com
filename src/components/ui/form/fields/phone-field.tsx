@@ -40,6 +40,8 @@ export function PhoneField({
   const tErrors = useTranslations("errors");
   const tCheckout = useTranslations("checkout");
   const containerRef = useRef<HTMLDivElement>(null);
+  /** Only auto-insert default dial code once (empty initial load); do not refill after user clears. */
+  const initialDialSeedDoneRef = useRef(false);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [showPhoneError, setShowPhoneError] = useState(false);
   const submitAttempted =
@@ -94,9 +96,17 @@ export function PhoneField({
   };
 
   useEffect(() => {
+    if (initialDialSeedDoneRef.current) return;
+
     const current = String(getValues(name) ?? "");
-    if (current) return;
+    if (current) {
+      initialDialSeedDoneRef.current = true;
+      return;
+    }
+
     if (!defaultItem?.phoneCode) return;
+
+    initialDialSeedDoneRef.current = true;
     setValue(name, `+${defaultItem.phoneCode}`, {
       shouldDirty: false,
       shouldTouch: false,
@@ -110,6 +120,8 @@ export function PhoneField({
       name={name}
       render={({ field }) => {
         const phoneValue = String(field.value ?? "");
+        const phoneDigits = phoneValue.replace(/\D/g, "");
+        const inputDisplayValue = phoneDigits ? `+${phoneDigits}` : "";
         const normalized = normalize(phoneValue);
         const prefixItem = resolvePhoneCodeItemForNumber(normalized, items);
         const activeItem = prefixItem ?? defaultItem;
@@ -120,7 +132,6 @@ export function PhoneField({
           const newPhoneCode = selectedItem?.phoneCode ?? "";
           if (!newPhoneCode) return;
 
-          const hasPlus = normalized.startsWith("+");
           const digits = normalized.replace(/\D/g, "");
           const oldPhoneCode = activeItem?.phoneCode ?? "";
           const rest =
@@ -132,26 +143,30 @@ export function PhoneField({
             ? rest.slice(newPhoneCode.length)
             : rest;
 
-          writeValue(`${hasPlus ? "+" : "+"}${newPhoneCode}${restWithoutDup}`);
+          writeValue(`+${newPhoneCode}${restWithoutDup}`);
         };
 
         const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const next = normalize(e.target.value);
           const dialCode = activeItem?.phoneCode ?? "";
+          const digits = next.replace(/\D/g, "");
 
           if (!dialCode) {
-            writeValue(next);
+            writeValue(digits ? `+${digits}` : "");
             return;
           }
 
-          const hasPlus = next.startsWith("+");
-          const digits = next.replace(/\D/g, "");
+          if (!digits) {
+            writeValue("");
+            return;
+          }
+
           const doubled = `${dialCode}${dialCode}`;
           const collapsedDigits = digits.startsWith(doubled)
             ? dialCode + digits.slice(doubled.length)
             : digits;
 
-          writeValue(`${hasPlus ? "+" : ""}${collapsedDigits}`);
+          writeValue(`+${collapsedDigits}`);
         };
 
         const renderEmpty = () => "";
@@ -192,7 +207,7 @@ export function PhoneField({
                 <Input
                   name={name}
                   type="tel"
-                  value={phoneValue}
+                  value={inputDisplayValue}
                   onChange={handlePhoneChange}
                   disabled={props.disabled}
                   readOnly={props.readOnly}

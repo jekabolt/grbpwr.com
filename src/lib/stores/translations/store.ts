@@ -11,10 +11,10 @@ const emptyNextCountry = {
 };
 
 export const defaultInitState: TranslationsState = {
-    languageId: 1, // english
+    languageId: 1,
     currentCountry: {
         name: "united kingdom",
-        countryCode: "GB",
+        countryCode: "gb",
         currencyKey: "GBP",
     },
     nextCountry: emptyNextCountry,
@@ -79,7 +79,18 @@ export const createTranslationsStore = (initState: TranslationsState = defaultIn
                 merge: (persistedState, currentState) => {
                     const persisted = persistedState as Partial<TranslationsState> | undefined;
                     const current = currentState as TranslationsStore;
-                    return { ...(persisted || {}), ...current } as TranslationsStore;
+                    const merged = {
+                        ...(persisted || {}),
+                        ...current,
+                    } as TranslationsStore;
+                    if (merged.currentCountry?.countryCode) {
+                        merged.currentCountry = {
+                            ...merged.currentCountry,
+                            countryCode:
+                                merged.currentCountry.countryCode.toLowerCase(),
+                        };
+                    }
+                    return merged;
                 },
                 // languageId comes from NEXT_LOCALE cookie + URL — do not persist it or
                 // rehydration wins over fresh server init and the country popup shows fr/fr on /fr/en.

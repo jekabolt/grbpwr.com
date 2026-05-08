@@ -109,6 +109,13 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
       savedAddressId: String(currentValues.savedAddressId ?? ""),
     };
     resetAddressFields();
+
+    // Clear RHF touched/errors from prior save validation so FormMessage does not show until blur/save again.
+    const metaResetFields = [...FIELDS_TO_VALIDATE, "savedAddressId"] as const;
+    metaResetFields.forEach((field) => {
+      resetField(field, { defaultValue: getValues(field) });
+    });
+
     setIsAddingNewAddress(true);
   }
 
