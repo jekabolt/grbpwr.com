@@ -37,7 +37,7 @@ export function OrderItem({
   const trackingHref = order.shipment?.trackingCode?.trim();
 
   return (
-    <div className="border-b border-textInactiveColor py-6 first:pt-0">
+    <div className="border-b border-textInactiveColor bg-bgColor py-6 text-textColor first:pt-0">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_auto]">
         <div className="min-w-0 space-y-6">
           <Link href={orderHref} className="block space-y-6">

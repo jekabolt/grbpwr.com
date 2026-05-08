@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 
+import { useDataContext } from "@/components/contexts/DataContext";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
 
@@ -11,12 +12,15 @@ import { useMarkdownContent } from "../_components/use-markdown-content";
 export default function FaqPage() {
   const locale = useLocale();
   const t = useTranslations("content");
+  const { dictionary } = useDataContext();
   const { content } = useMarkdownContent([
     `/content/faq/faq.${locale}.md`,
     "/content/faq/faq.md",
   ]);
+
+  const isWebsiteEnabled = dictionary?.siteEnabled;
   return (
-    <FlexibleLayout>
+    <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
       <div className="h-full space-y-12 px-2.5 pt-24 lg:space-y-16 lg:px-28">
         <div className="flex flex-col justify-start gap-y-10 lg:w-1/2 lg:gap-y-20">
           <div className="space-y-8">

@@ -1,8 +1,8 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";

@@ -34,7 +34,9 @@ export default async function ClientServices({
                 className="uppercase"
                 asChild
               >
-                <Link href="/faq">{tContent("frequently asked questions")}</Link>
+                <Link href="/faq">
+                  {tContent("frequently asked questions")}
+                </Link>
               </Button>
               <Text>{t("faq description")}</Text>
             </div>

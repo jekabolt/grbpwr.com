@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { serviceClient } from "@/lib/api";
 import { getStorefrontAccount } from "@/lib/storefront-account/get-storefront-account";
 import FlexibleLayout from "@/components/flexible-layout";
 
@@ -15,6 +16,8 @@ type Props = {
 export default async function AccountSectionPage({ params }: Props) {
   const { section: sectionPath } = await params;
   const section = getAccountSectionByPath(sectionPath);
+  const { dictionary } = await serviceClient.GetHero({});
+  const isWebsiteEnabled = dictionary?.siteEnabled;
 
   if (!section) {
     notFound();
@@ -23,8 +26,11 @@ export default async function AccountSectionPage({ params }: Props) {
   const account = await getStorefrontAccount();
 
   return (
-    <FlexibleLayout displayFooter={false}>
-      <div className="flex min-h-screen items-center justify-center lg:p-0">
+    <FlexibleLayout
+      theme={isWebsiteEnabled ? "light" : "dark"}
+      displayFooter={false}
+    >
+      <div className="flex min-h-screen items-center justify-center bg-bgColor text-textColor lg:p-0">
         {account ? (
           <>
             <AccountMobileSectionPage account={account} section={section} />

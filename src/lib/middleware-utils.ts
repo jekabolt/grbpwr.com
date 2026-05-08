@@ -1,4 +1,4 @@
-import { COUNTRIES_BY_REGION } from "@/constants";
+import { COUNTRIES_BY_REGION, SITE_DISABLED_ALLOWED_REST_PATHS } from "@/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 const createCountryToLocaleMap = () => {
@@ -159,3 +159,27 @@ export const parseLocaleOnlyPath = (
     const [, locale, rest] = match;
     return { locale, rest: rest || "" };
 };
+
+export function isSiteDisabledPublicRest(rest: string): boolean {
+    const pathOnly = rest.split("?")[0] ?? "";
+    return SITE_DISABLED_ALLOWED_REST_PATHS.some(
+        (route) => pathOnly === route || pathOnly.startsWith(`${route}/`),
+    );
+}
+
+/** Path after `/{country}/{locale}` or locale-only prefix; mirrors middleware “rest” semantics. */
+export function getRestPathForSiteDisabledCheck(pathname: string): string {
+    const parsed = parseCountryLocalePath(pathname);
+    if (parsed?.country && parsed.locale) {
+        return parsed.rest ?? "";
+    }
+    if (pathname === "/") return "";
+    const localeOnly = parseLocaleOnlyPath(pathname);
+    return localeOnly?.rest ?? pathname;
+}
+
+/** Home & timeline stay reachable; plus footer/help routes when the shop is off. */
+export function isAllowedWhenSiteDisabled(pathname: string): boolean {
+    if (/\/timeline(\/|$)/.test(pathname)) return true;
+    return isSiteDisabledPublicRest(getRestPathForSiteDisabledCheck(pathname));
+}

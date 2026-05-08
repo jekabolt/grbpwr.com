@@ -89,38 +89,36 @@ export function Header({
           isMobile={isMobile}
         />
 
-        {!(isWebsiteEnabled === false && isMobile) && (
-          <Button
-            asChild
-            size="lg"
-            className={cn(
-              "absolute left-1/2 -translate-x-1/2 text-center transition-colors hover:opacity-70 active:opacity-50",
-            )}
+        <Button
+          asChild
+          size="lg"
+          className={cn(
+            "absolute left-1/2 -translate-x-1/2 text-center transition-colors hover:opacity-70 active:opacity-50",
+          )}
+        >
+          <Link
+            href="/"
+            className="inline-flex items-center whitespace-nowrap leading-none"
           >
-            <Link
-              href="/"
-              className="inline-flex items-center whitespace-nowrap leading-none"
-            >
-              {isSignedIn ? (
-                <>
-                  <Text component="span">grbpwr</Text>
-                  {tierText ? (
-                    <Text
-                      component="span"
-                      className={cn("inline-block pl-[0.5px]", {
-                        "tracking-[0.02em]": tierText.includes("+"),
-                      })}
-                    >
-                      {tierText}
-                    </Text>
-                  ) : null}
-                </>
-              ) : (
-                "grbpwr"
-              )}
-            </Link>
-          </Button>
-        )}
+            {isSignedIn ? (
+              <>
+                <Text component="span">grbpwr</Text>
+                {tierText ? (
+                  <Text
+                    component="span"
+                    className={cn("inline-block pl-[0.5px]", {
+                      "tracking-[0.02em]": tierText.includes("+"),
+                    })}
+                  >
+                    {tierText}
+                  </Text>
+                ) : null}
+              </>
+            ) : (
+              "grbpwr"
+            )}
+          </Link>
+        </Button>
 
         <div className="flex grow basis-0 items-center justify-end">
           <div className="relative w-full lg:w-auto">
@@ -137,16 +135,16 @@ export function Header({
                 </Button>
               )}
             </div>
-            {isWebsiteEnabled && (
-              <div className="hidden gap-3 lg:flex">
-                <Button
-                  size="sm"
-                  className="underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
-                  asChild
-                >
-                  <Link href="/account">{tAccount("account")}</Link>
-                </Button>
+            <div className="hidden gap-3 lg:flex">
+              <Button
+                size="sm"
+                className="underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
+                asChild
+              >
+                <Link href="/account">{tAccount("account")}</Link>
+              </Button>
 
+              {isWebsiteEnabled && (
                 <Button
                   onClick={toggleCart}
                   variant={isOpen ? "underline" : "default"}
@@ -155,8 +153,8 @@ export function Header({
                 >
                   {t("cart")} {itemsQuantity ? itemsQuantity : ""}
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </header>

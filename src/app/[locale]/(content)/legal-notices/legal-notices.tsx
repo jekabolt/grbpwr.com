@@ -51,7 +51,7 @@ export function LegalNotices() {
                 key={key}
                 variant={selectedSection === key ? "underline" : "default"}
                 onClick={() => setSelectedSection(key as LegalSection)}
-                className="uppercase"
+                className="uppercase text-textColor"
               >
                 {t(section.title)}
               </Button>
