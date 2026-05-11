@@ -48,6 +48,9 @@ import {
 
 import { isStripeCardPaymentMethod } from "./utils";
 
+const CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY =
+  "grbpwr.checkout.profileCompletedEmail";
+
 type NewOrderFormProps = {
   onAmountChange: (amount: number) => void;
   initialAccount: StorefrontAccount | null;
@@ -76,6 +79,28 @@ export default function NewOrderForm({
       setGuestCheckout(true);
     }
   }, [persistedGuestCheckout]);
+
+  useLayoutEffect(() => {
+    const email = initialAccount?.email?.trim();
+    if (!email || typeof window === "undefined") return;
+    try {
+      const stored = sessionStorage.getItem(CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY);
+      if (stored === email) setCheckoutProfileCompleted(true);
+    } catch {
+      /* ignore */
+    }
+  }, [initialAccount?.email]);
+
+  useEffect(() => {
+    if (!initialAccount) return;
+    if (!accountNeedsNameCompletion(initialAccount)) {
+      try {
+        sessionStorage.removeItem(CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY);
+      } catch {
+        /* ignore */
+      }
+    }
+  }, [initialAccount]);
 
   useEffect(() => {
     if (isSignedIn) {
@@ -173,13 +198,15 @@ export default function NewOrderForm({
 
   const showCheckoutFields = isSignedIn || guestCheckout;
   const hideOrderSummary = !showCheckoutFields && checkoutLoginStep === "code";
-  const showMobileOrderSummaryOverlay =
-    !showCheckoutFields && checkoutLoginStep === "email";
   const showProfilePrompt =
     isSignedIn &&
     !!initialAccount &&
     accountNeedsNameCompletion(initialAccount) &&
     !checkoutProfileCompleted;
+  const showMobileOrderSummaryOverlay =
+    (!showCheckoutFields && checkoutLoginStep === "email") ||
+    showProfilePrompt;
+  const showCheckoutForm = showCheckoutFields && !showProfilePrompt;
 
   const centerAuthOnMobile = !showCheckoutFields || showProfilePrompt;
 
@@ -195,6 +222,12 @@ export default function NewOrderForm({
       overwriteExisting: true,
       shouldValidate: true,
     });
+    try {
+      const e = data.email?.trim();
+      if (e) sessionStorage.setItem(CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY, e);
+    } catch {
+      /* ignore */
+    }
   };
 
   const awaitingPostLoginHydration =
@@ -207,11 +240,7 @@ export default function NewOrderForm({
   return (
     <>
       <Form {...form}>
-        <form
-          ref={formRef}
-          onSubmit={form.handleSubmit(handleValidSubmit, handleSubmitInvalid)}
-          className="relative h-full space-y-14 lg:space-y-0"
-        >
+        <div className="relative h-full space-y-14 lg:space-y-0">
           <div
             className={cn(
               "flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28",
@@ -222,7 +251,8 @@ export default function NewOrderForm({
             {!hideOrderSummary && (
               <div
                 className={cn("block lg:hidden", {
-                  "fixed inset-x-2.5 bottom-6": !showCheckoutFields,
+                  "fixed inset-x-2.5 bottom-6":
+                    !showCheckoutFields || showProfilePrompt,
                 })}
               >
                 <MobileOrderSummary
@@ -256,49 +286,64 @@ export default function NewOrderForm({
                 />
               </div>
             ) : (
-              <div className="space-y-10 lg:space-y-16">
-                <>
-                  <div ref={contactRef}>
-                    <ContactFieldsGroup
-                      loading={loading}
-                      isOpen={isGroupOpen("contact")}
-                      isSignedIn={isSignedIn}
-                      initialAccountEmail={initialAccount?.email ?? ""}
-                      onToggle={() => handleGroupToggle("contact")}
-                      disabled={isGroupDisabled("contact") || loading}
-                    />
-                  </div>
-                  <div ref={shippingRef}>
-                    <ShippingFieldsGroup
-                      loading={loading}
-                      order={order}
-                      account={initialAccount as StorefrontAccount}
-                      isOpen={isGroupOpen("shipping")}
-                      onToggle={() => handleGroupToggle("shipping")}
-                      disabled={isGroupDisabled("shipping") || loading}
-                    />
-                  </div>
-                  <div ref={paymentRef}>
-                    <PaymentFieldsGroup
-                      loading={loading}
-                      form={form}
-                      validateItems={validateItems}
-                      isOpen={isGroupOpen("payment")}
-                      onToggle={() => handleGroupToggle("payment")}
-                      disabled={isGroupDisabled("payment") || loading}
-                      onPaymentElementChange={setIsPaymentElementComplete}
-                      showPaymentError={
-                        (form.formState.isSubmitted ||
-                          form.formState.submitCount > 0) &&
-                        !isPaymentFieldsValid &&
-                        isStripeCardPaymentMethod(paymentMethod)
-                      }
-                    />
-                  </div>
-                </>
-              </div>
+              <form
+                id="checkout-order-form"
+                ref={formRef}
+                onSubmit={form.handleSubmit(
+                  handleValidSubmit,
+                  handleSubmitInvalid,
+                )}
+                className="contents"
+              >
+                <div className="space-y-10 lg:space-y-16">
+                  <>
+                    <div ref={contactRef}>
+                      <ContactFieldsGroup
+                        loading={loading}
+                        isOpen={isGroupOpen("contact")}
+                        isSignedIn={isSignedIn}
+                        initialAccountEmail={initialAccount?.email ?? ""}
+                        onToggle={() => handleGroupToggle("contact")}
+                        disabled={isGroupDisabled("contact") || loading}
+                      />
+                    </div>
+                    <div ref={shippingRef}>
+                      <ShippingFieldsGroup
+                        loading={loading}
+                        order={order}
+                        account={initialAccount as StorefrontAccount}
+                        isOpen={isGroupOpen("shipping")}
+                        onToggle={() => handleGroupToggle("shipping")}
+                        disabled={isGroupDisabled("shipping") || loading}
+                      />
+                    </div>
+                    <div ref={paymentRef}>
+                      <PaymentFieldsGroup
+                        loading={loading}
+                        form={form}
+                        validateItems={validateItems}
+                        isOpen={isGroupOpen("payment")}
+                        onToggle={() => handleGroupToggle("payment")}
+                        disabled={isGroupDisabled("payment") || loading}
+                        onPaymentElementChange={setIsPaymentElementComplete}
+                        showPaymentError={
+                          (form.formState.isSubmitted ||
+                            form.formState.submitCount > 0) &&
+                          !isPaymentFieldsValid &&
+                          isStripeCardPaymentMethod(paymentMethod)
+                        }
+                      />
+                    </div>
+                  </>
+                </div>
+              </form>
             )}
-            <div className="fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start">
+            <div
+              className={cn(
+                "fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start",
+                !showCheckoutForm && "hidden lg:block",
+              )}
+            >
               <div className="hidden space-y-8 lg:block">
                 <Text
                   variant="uppercase"
@@ -333,8 +378,9 @@ export default function NewOrderForm({
                   />
                 </div>
               </div>
-              {showCheckoutFields ? (
+              {showCheckoutForm ? (
                 <Button
+                  form="checkout-order-form"
                   type="submit"
                   variant="main"
                   size="lg"
@@ -351,7 +397,7 @@ export default function NewOrderForm({
               ) : null}
             </div>
           </div>
-        </form>
+        </div>
       </Form>
       <SubmissionToaster
         open={orderModifiedToastOpen}

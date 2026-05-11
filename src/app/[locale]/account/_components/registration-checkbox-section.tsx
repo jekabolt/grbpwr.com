@@ -22,8 +22,8 @@ export function AccountRegistrationCheckboxSection({
   form,
   disabled,
   checked,
-  onCheckedChange,
   privacyCheckboxShouldBlink = false,
+  onCheckedChange,
 }: Props) {
   const tAccount = useTranslations("account");
 
