@@ -39,6 +39,8 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
     pending,
     toastOpen,
     toastMessage,
+    shouldBlink,
+    triggerBlink,
     setToastOpen,
     showToast,
     updateAccount,
@@ -69,6 +71,7 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
   async function onSubmit(data: AccountSchema) {
     if (!privacyPolicyChecked) {
       showToast(t("privacy_policy_required"));
+      triggerBlink();
       return;
     }
 
@@ -115,6 +118,7 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
               disabled={pending}
               checked={privacyPolicyChecked}
               onCheckedChange={setPrivacyPolicyChecked}
+              privacyCheckboxShouldBlink={shouldBlink}
             />
             <Button
               type="submit"
