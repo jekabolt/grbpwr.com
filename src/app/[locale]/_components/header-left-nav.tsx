@@ -8,13 +8,11 @@ export function HeaderLeftNav({
   showAnnounce,
   isBigMenuEnabled,
   isWebsiteEnabled,
-  isMobile,
   onNavOpenChange,
 }: {
   showAnnounce?: boolean;
   isBigMenuEnabled?: boolean;
   isWebsiteEnabled?: boolean;
-  isMobile?: boolean;
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
   return (

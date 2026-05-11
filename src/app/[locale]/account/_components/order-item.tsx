@@ -38,7 +38,7 @@ export function OrderItem({
 
   return (
     <div className="border-b border-textInactiveColor bg-bgColor py-6 text-textColor first:pt-0">
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_auto]">
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-[minmax(0,1fr)_auto]">
         <div className="min-w-0 space-y-6">
           <Link href={orderHref} className="block space-y-6">
             <Text>{createdAt}</Text>
@@ -53,8 +53,8 @@ export function OrderItem({
             </Button>
           ) : null}
         </div>
-        <Link href={orderHref} className="flex shrink-0 gap-2">
-          {order.orderItems?.slice(0, 3).map((i) => (
+        <Link href={orderHref} className="flex shrink-0 justify-end gap-2">
+          {order.orderItems?.slice(0, 2).map((i) => (
             <div key={i.id} className="w-20">
               <Image
                 src={i.thumbnail ?? ""}

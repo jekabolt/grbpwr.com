@@ -64,7 +64,8 @@ export function MobileNavMenu({
                       </DialogPrimitives.Close>
                     </div>
                   ) : (
-                    <div className="flex items-center justify-end">
+                    <div className="flex items-center justify-between">
+                      <Text variant="uppercase">{t("menu")}</Text>
                       <DialogPrimitives.Close>
                         <Text>[x]</Text>
                       </DialogPrimitives.Close>

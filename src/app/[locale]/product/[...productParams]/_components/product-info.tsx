@@ -101,6 +101,7 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
         <div className="flex flex-col justify-between gap-16">
           <Text variant="uppercase">{name}</Text>
           <GarmentDescription product={product} />
+
           <div className="space-y-5">
             <Modal
               product={product}

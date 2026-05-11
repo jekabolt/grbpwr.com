@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-import { CHECKOUT_ERROR_CITY_COUNTRY } from "@/constants";
 import { addAddressRequest } from "@/app/[locale]/account/utils/address-actions";
+import { CHECKOUT_ERROR_CITY_COUNTRY } from "@/constants";
 
 import { findCountryByCode, getUniqueCountries } from "../utils";
 import { verifyCityInCountry } from "../verify-city";
@@ -109,6 +109,12 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
       savedAddressId: String(currentValues.savedAddressId ?? ""),
     };
     resetAddressFields();
+
+    const metaResetFields = [...FIELDS_TO_VALIDATE, "savedAddressId"] as const;
+    metaResetFields.forEach((field) => {
+      resetField(field, { defaultValue: getValues(field) });
+    });
+
     setIsAddingNewAddress(true);
   }
 

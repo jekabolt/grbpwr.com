@@ -86,7 +86,6 @@ export function Header({
           onNavOpenChange={setIsNavOpen}
           isBigMenuEnabled={isBigMenuEnabled}
           isWebsiteEnabled={isWebsiteEnabled}
-          isMobile={isMobile}
         />
 
         <Button
