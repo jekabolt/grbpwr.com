@@ -63,7 +63,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
                   </div>
                   {!itemsQuantity ? (
                     <div className="flex h-full items-center justify-center">
-                      <Text>{t("empty")}</Text>
+                      <Text variant="uppercase">{t("empty")}</Text>
                     </div>
                   ) : (
                     <>{children}</>
