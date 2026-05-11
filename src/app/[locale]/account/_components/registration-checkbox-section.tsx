@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import type { UseFormReturn } from "react-hook-form";
 
 import CheckboxGlobal from "@/components/ui/checkbox";
+import { Overlay } from "@/components/ui/overlay";
 import { AccountEmailPreferencesFields } from "@/app/[locale]/account/_components/email-preferences-fields";
 import type { AccountSchema } from "@/app/[locale]/account/utils/schema";
 
@@ -13,6 +14,7 @@ type Props = {
   form: UseFormReturn<AccountSchema>;
   disabled?: boolean;
   checked: boolean;
+  privacyCheckboxShouldBlink?: boolean;
   onCheckedChange: (checked: boolean) => void;
 };
 
@@ -20,6 +22,7 @@ export function AccountRegistrationCheckboxSection({
   form,
   disabled,
   checked,
+  privacyCheckboxShouldBlink = false,
   onCheckedChange,
 }: Props) {
   const tAccount = useTranslations("account");
@@ -27,32 +30,37 @@ export function AccountRegistrationCheckboxSection({
   return (
     <div className="flex flex-col gap-6">
       <AccountEmailPreferencesFields form={form} disabled={disabled} />
-      <CheckboxGlobal
-        name="privacyPolicy"
-        disabled={disabled}
-        checked={checked}
-        onCheckedChange={(value: CheckedState) =>
-          onCheckedChange(value === true)
-        }
-        label={tAccount.rich("privacy policy", {
-          privacy: (chunks) => (
-            <Link
-              className="underline hover:no-underline"
-              href="/privacy-policy"
-            >
-              {chunks}
-            </Link>
-          ),
-          membership: (chunks) => (
-            <Link
-              className="underline hover:no-underline"
-              href="/membership-policy"
-            >
-              {chunks}
-            </Link>
-          ),
-        })}
-      />
+      <div className="relative">
+        {privacyCheckboxShouldBlink && (
+          <Overlay color="highlight" cover="container" />
+        )}
+        <CheckboxGlobal
+          name="privacyPolicy"
+          disabled={disabled}
+          checked={checked}
+          onCheckedChange={(value: CheckedState) =>
+            onCheckedChange(value === true)
+          }
+          label={tAccount.rich("privacy policy", {
+            privacy: (chunks) => (
+              <Link
+                className="underline hover:no-underline"
+                href="/privacy-policy"
+              >
+                {chunks}
+              </Link>
+            ),
+            membership: (chunks) => (
+              <Link
+                className="underline hover:no-underline"
+                href="/membership-policy"
+              >
+                {chunks}
+              </Link>
+            ),
+          })}
+        />
+      </div>
     </div>
   );
 }

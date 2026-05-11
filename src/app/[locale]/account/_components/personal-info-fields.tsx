@@ -10,8 +10,8 @@ import InputField from "@/components/ui/form/fields/input-field";
 type Props = {
   disabled?: boolean;
   selectedCountryCode?: string;
-  /** Two-column grid (e.g. account session); registration flow stays a single column. */
   twoColumn?: boolean;
+  hideOptional?: boolean;
   className?: string;
 };
 
@@ -19,6 +19,7 @@ export function AccountPersonalInfoFields({
   disabled,
   selectedCountryCode,
   twoColumn = false,
+  hideOptional = false,
   className,
 }: Props) {
   const t = useTranslations("checkout");
@@ -47,21 +48,25 @@ export function AccountPersonalInfoFields({
         keyboardRestriction={keyboardRestrictions.nameFields}
         disabled={disabled}
       />
-      <FormPhoneField
-        name="phone"
-        label={`${t("phone number:")}`}
-        selectedCountry={selectedCountryCode}
-        disabled={disabled}
-        optional
-      />
-      <InputField
-        name="birthDate"
-        label={tAccount("date of birth")}
-        type="date"
-        variant="secondary"
-        disabled={disabled}
-        optional
-      />
+      {!hideOptional && (
+        <>
+          <FormPhoneField
+            name="phone"
+            label={`${t("phone number:")}`}
+            selectedCountry={selectedCountryCode}
+            disabled={disabled}
+            optional
+          />
+          <InputField
+            name="birthDate"
+            label={tAccount("date of birth")}
+            type="date"
+            variant="secondary"
+            disabled={disabled}
+            optional
+          />
+        </>
+      )}
     </div>
   );
 }

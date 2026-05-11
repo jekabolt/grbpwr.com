@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
 
 import { parseApiError } from "@/app/[locale]/account/utils/api-error";
 import type { AccountSchema } from "@/app/[locale]/account/utils/schema";
@@ -32,6 +32,7 @@ export function useAccountUpdate() {
   const [pending, setPending] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [shouldBlink, setShouldBlink] = useState(false);
 
   const showToast = useCallback((message: string) => {
     setToastMessage(message);
@@ -70,10 +71,20 @@ export function useAccountUpdate() {
     [router, showToast, t],
   );
 
+
+  function triggerBlink() {
+    setShouldBlink(true);
+    setTimeout(() => {
+      setShouldBlink(false);
+    }, 400);
+  }
+
   return {
     pending,
     toastOpen,
     toastMessage,
+    shouldBlink,
+    triggerBlink,
     setToastOpen,
     showToast,
     updateAccount,
