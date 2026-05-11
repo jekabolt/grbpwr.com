@@ -37,8 +37,8 @@ export function AccountSectionContent({
   const t = useTranslations("account");
   const accountFormSchema = useMemo(() => createAccountSchema(t), [t]);
   const selectedCountryCode =
-    account.defaultCountry?.trim() ||
     currentCountry.countryCode?.trim() ||
+    account.defaultCountry?.trim() ||
     undefined;
 
   const form = useForm<AccountSchema>({

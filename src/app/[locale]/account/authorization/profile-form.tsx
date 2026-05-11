@@ -14,8 +14,8 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 import { AccountPersonalInfoFields } from "@/app/[locale]/account/_components/personal-info-fields";
 import { AccountRegistrationCheckboxSection } from "@/app/[locale]/account/_components/registration-checkbox-section";
 import {
-  createAccountSchema,
   AccountSchema,
+  createAccountSchema,
 } from "@/app/[locale]/account/utils/schema";
 import { useAccountUpdate } from "@/app/[locale]/account/utils/use-account-update";
 
@@ -46,18 +46,24 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
   const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
 
   const selectedCountryCode =
-    account.defaultCountry?.trim() ||
     currentCountry.countryCode?.trim() ||
+    account.defaultCountry?.trim() ||
     undefined;
 
   const accountFormSchema = useMemo(() => createAccountSchema(t), [t]);
 
   const form = useForm<AccountSchema>({
     resolver: zodResolver(accountFormSchema),
-    defaultValues: useMemo(
-      () => getAccountFormDefaultValues(account),
-      [account],
-    ),
+    defaultValues: useMemo(() => {
+      const fromAccount = getAccountFormDefaultValues(account);
+      return {
+        ...fromAccount,
+        firstName: "",
+        lastName: "",
+        phone: "",
+        birthDate: "",
+      };
+    }, [account]),
   });
 
   async function onSubmit(data: AccountSchema) {
@@ -102,6 +108,7 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
             <AccountPersonalInfoFields
               disabled={pending}
               selectedCountryCode={selectedCountryCode}
+              hideOptional
             />
             <AccountRegistrationCheckboxSection
               form={form}
