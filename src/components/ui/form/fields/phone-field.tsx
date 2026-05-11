@@ -40,7 +40,6 @@ export function PhoneField({
   const tErrors = useTranslations("errors");
   const tCheckout = useTranslations("checkout");
   const containerRef = useRef<HTMLDivElement>(null);
-  /** Only auto-insert default dial code once (empty initial load); do not refill after user clears. */
   const initialDialSeedDoneRef = useRef(false);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [showPhoneError, setShowPhoneError] = useState(false);
