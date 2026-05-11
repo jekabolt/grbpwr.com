@@ -43,6 +43,10 @@ export function Header({
   const t = useTranslations("navigation");
   const tAccount = useTranslations("account");
   const isWebsiteEnabled = dictionary?.siteEnabled;
+  const showTierInHeader =
+    isSignedIn &&
+    Boolean(account?.firstName?.trim()) &&
+    Boolean(account?.lastName?.trim());
   const userTier = account?.accountTier ? USER_TIER[account.accountTier] : "";
   const isHacker = account?.accountTier === "ACCOUNT_TIER_ENUM_HACKER";
   const tierText = isHacker ? "hacker" : userTier;
@@ -102,7 +106,7 @@ export function Header({
             {isSignedIn ? (
               <>
                 <Text component="span">grbpwr</Text>
-                {tierText ? (
+                {showTierInHeader && tierText ? (
                   <Text
                     component="span"
                     className={cn("inline-block pl-[0.5px]", {

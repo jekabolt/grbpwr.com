@@ -6,6 +6,7 @@ import type {
 import { QueryWrapper } from "@/providers/query-wrapper";
 
 import { serviceClient } from "@/lib/api";
+import { AccountLoginAttemptRouteSync } from "@/app/[locale]/account/_components/account-login-attempt-route-sync";
 import { getStorefrontAccount } from "@/lib/storefront-account/get-storefront-account";
 import { AccountOnboardingStoreProvider } from "@/lib/stores/account-onboarding/store-provider";
 import { CartCurrencySyncWrapper } from "@/lib/stores/cart/cart-currency-sync-wrapper";
@@ -43,6 +44,7 @@ export default async function Template({
         initialSignedIn={sessionSignedIn}
         initialAccount={accountProfile}
       >
+        <AccountLoginAttemptRouteSync />
         <ServerActionsContextProvider
           // all requests on the client should be made using server actions accessible from the context
           GetArchivesPaged={async (request: GetArchivesPagedRequest) => {
