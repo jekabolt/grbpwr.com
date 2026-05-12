@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
 import type { StorefrontSavedAddress } from "@/api/proto-http/frontend";
+import { useCallback, useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { CHECKOUT_LOCATION_CHANGE_CANCELLED } from "@/lib/checkout-location-change";
@@ -170,7 +170,7 @@ export function useSavedAddressFormSync({
       }
 
       void setDefaultAddressRequest(id)
-        .catch(() => {})
+        .catch(() => { })
         .finally(() => {
           onDefaultChange?.();
         });
