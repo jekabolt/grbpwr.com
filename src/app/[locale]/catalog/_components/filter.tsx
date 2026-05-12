@@ -83,7 +83,7 @@ export function Filter({
                 </div>
                 <div className="flex items-center justify-end gap-2 bg-bgColor">
                   <Button
-                    className={cn("hidden w-1/2 uppercase", {
+                    className={cn("w-1/2 uppercase", {
                       block: hasActiveFilters,
                     })}
                     size="lg"
