@@ -18,6 +18,16 @@ function getItemName(item: FilterItem): string {
   return item.name?.toLowerCase() || "";
 }
 
+function itemIsAvailable(factor: FilterItem, gender?: string): boolean {
+  const menCount = factor.countMen || 0;
+  const womenCount = factor.countWomen || 0;
+  return gender === "men"
+    ? menCount > 0
+    : gender === "women"
+      ? womenCount > 0
+      : menCount > 0 || womenCount > 0;
+}
+
 const SIZE_PATTERNS = {
   numeric: /^\d+(\.\d+)?$/,
   bottoms: /_\d+bo_[mf]$/,
@@ -62,10 +72,22 @@ export default function FilterOptionButtons({
     isSizeType(getItemName(f), "tailored"),
   );
 
-  const showNonNumeric = showSeparated ? nonNumericValues.length > 0 : true;
-  const showNumeric = showSeparated ? numericValues.length > 0 : false;
-  const showBottoms = showSeparated ? bottomsValues.length > 0 : false;
-  const showTailored = showSeparated ? tailoredValues.length > 0 : false;
+  const showNonNumeric =
+    showSeparated &&
+    nonNumericValues.length > 0 &&
+    nonNumericValues.some((f) => itemIsAvailable(f, gender));
+  const showNumeric =
+    showSeparated &&
+    numericValues.length > 0 &&
+    numericValues.some((f) => itemIsAvailable(f, gender));
+  const showBottoms =
+    showSeparated &&
+    bottomsValues.length > 0 &&
+    bottomsValues.some((f) => itemIsAvailable(f, gender));
+  const showTailored =
+    showSeparated &&
+    tailoredValues.length > 0 &&
+    tailoredValues.some((f) => itemIsAvailable(f, gender));
 
   const handleClick = async (id: string) => {
     setLoadingId(id);
@@ -78,15 +100,7 @@ export default function FilterOptionButtons({
     const factorId = getItemId(factor);
     const isSelected = selectedValues.includes(factorId);
     const isLoading = loadingId === factorId;
-    const menCount = factor.countMen || 0;
-    const womenCount = factor.countWomen || 0;
-
-    const isAvailable =
-      gender === "men"
-        ? menCount > 0
-        : gender === "women"
-          ? womenCount > 0
-          : menCount > 0 || womenCount > 0;
+    const isAvailable = itemIsAvailable(factor, gender);
 
     const displayName = formatSizeName(getItemName(factor));
 
@@ -111,6 +125,12 @@ export default function FilterOptionButtons({
   };
 
   if (!showSeparated) {
+    if (
+      values.length === 0 ||
+      values.every((f) => !itemIsAvailable(f, gender))
+    ) {
+      return null;
+    }
     return (
       <div className="space-y-6">
         {title && <Text variant="uppercase">{title}</Text>}
@@ -119,6 +139,10 @@ export default function FilterOptionButtons({
         </div>
       </div>
     );
+  }
+
+  if (!showNonNumeric && !showNumeric && !showBottoms && !showTailored) {
+    return null;
   }
 
   const hasMultipleSections =
