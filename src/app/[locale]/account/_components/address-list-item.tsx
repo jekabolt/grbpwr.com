@@ -14,6 +14,7 @@ import {
   formatAddressDisplayName,
   formatAddressLocation,
   formatAddressStreet,
+  formatE164PhoneDisplay,
 } from "../utils/address-format";
 
 type AddressListItemProps = {
@@ -43,6 +44,7 @@ export function AddressListItem({
 }: AddressListItemProps) {
   const t = useTranslations("account");
   const addressId = address.id as number;
+  const phoneDisplay = formatE164PhoneDisplay(account.phone);
   const deleteZoneRef = useRef<HTMLDivElement | null>(null);
 
   const [addressToRemove, setAddressToRemove] = useState<number | null>(null);
@@ -106,9 +108,11 @@ export function AddressListItem({
         <Text className={cn({ "text-textInactiveColor": isDisabled })}>
           {formatAddressLocation(address)}
         </Text>
-        <Text className={cn({ "text-textInactiveColor": isDisabled })}>
-          +{account.phone}
-        </Text>
+        {phoneDisplay ? (
+          <Text className={cn({ "text-textInactiveColor": isDisabled })}>
+            {phoneDisplay}
+          </Text>
+        ) : null}
       </div>
       <div className="flex items-center justify-between">
         <Text

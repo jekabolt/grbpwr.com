@@ -120,7 +120,13 @@ export function PhoneField({
       render={({ field }) => {
         const phoneValue = String(field.value ?? "");
         const phoneDigits = phoneValue.replace(/\D/g, "");
-        const inputDisplayValue = phoneDigits ? `+${phoneDigits}` : "";
+        const trimmedStart = phoneValue.trimStart();
+        const inputDisplayValue =
+          phoneDigits.length > 0
+            ? `+${phoneDigits}`
+            : trimmedStart.startsWith("+")
+              ? "+"
+              : "";
         const normalized = normalize(phoneValue);
         const prefixItem = resolvePhoneCodeItemForNumber(normalized, items);
         const activeItem = prefixItem ?? defaultItem;
@@ -151,12 +157,12 @@ export function PhoneField({
           const digits = next.replace(/\D/g, "");
 
           if (!dialCode) {
-            writeValue(digits ? `+${digits}` : "");
+            writeValue(digits ? `+${digits}` : next === "+" ? "+" : "");
             return;
           }
 
           if (!digits) {
-            writeValue("");
+            writeValue(next === "+" ? "+" : "");
             return;
           }
 

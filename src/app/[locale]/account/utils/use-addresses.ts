@@ -1,8 +1,8 @@
 "use client";
 
+import type { StorefrontSavedAddress } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { StorefrontSavedAddress } from "@/api/proto-http/frontend";
 
 import { setDefaultAddressRequest } from "./address-actions";
 import { parseApiError } from "./api-error";

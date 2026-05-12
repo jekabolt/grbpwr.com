@@ -7,9 +7,9 @@ import { COUNTRIES_BY_REGION, EMAIL_PREFERENCES, LANGUAGE_ID_TO_LOCALE } from "@
 
 import {
     defaultData,
-    type AddressEditFormData,
     type AccountEmailPreference,
     type AccountSchema,
+    type AddressEditFormData,
 } from "./schema";
 
 export type ActivePanel =
