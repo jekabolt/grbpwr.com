@@ -54,32 +54,24 @@ export function getAccountSectionByPath(path: string) {
     return ACCOUNT_SECTIONS.find((section) => section.path === path);
 }
 
-export const EMAIL_REFERENCE_ACTIONS = [
-    { label: "subscribe", value: true },
-    { label: "unsubscribe", value: false },
-] as const;
-
 export const EMAIL_REFERENCE_STEPS = [
     {
         label: "newsletter",
         name: "subscribeNewsletter",
         description:
             "brand updates, considered releases, and occasional private offers",
-        actions: EMAIL_REFERENCE_ACTIONS,
     },
     {
         label: "new arrivals",
         name: "subscribeNewArrivals",
         description:
             "first notice of new drops, restocked pieces, and seasonal releases",
-        actions: EMAIL_REFERENCE_ACTIONS,
     },
     {
         label: "events",
         name: "subscribeEvents",
         description:
             "invitations to launches, private viewings, and selected brand moments",
-        actions: EMAIL_REFERENCE_ACTIONS,
     },
 ] as const;
 
