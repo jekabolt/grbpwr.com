@@ -978,7 +978,6 @@ export type StorefrontSavedAddress = {
   company: string | undefined;
   postalCode: string | undefined;
   isDefault: boolean | undefined;
-  phone: string | undefined;
 };
 
 export type RefreshAccountSessionRequest = {
