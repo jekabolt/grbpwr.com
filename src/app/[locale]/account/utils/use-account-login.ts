@@ -16,7 +16,7 @@ type LoginStep = "email" | "code";
 type StoredLoginAttempt = {
   email: string;
   step: LoginStep;
-  resendAvailableAt: number;
+  resendAvailableAt?: number;
 };
 
 type InitialLoginState = {
@@ -34,16 +34,23 @@ function readStoredLoginAttempt(): StoredLoginAttempt | null {
     if (!raw) return null;
 
     const parsed = JSON.parse(raw) as Partial<StoredLoginAttempt>;
-    if (
-      parsed.step !== "code" ||
-      typeof parsed.email !== "string" ||
-      !parsed.email.trim()
-    ) {
+    const emailRaw =
+      typeof parsed.email === "string" ? parsed.email.trim() : "";
+
+    if (parsed.step === "email") {
+      if (!emailRaw) return null;
+      return {
+        email: emailRaw,
+        step: "email",
+      };
+    }
+
+    if (parsed.step !== "code" || !emailRaw) {
       return null;
     }
 
     return {
-      email: parsed.email.trim().toLowerCase(),
+      email: emailRaw.toLowerCase(),
       step: "code",
       resendAvailableAt:
         typeof parsed.resendAvailableAt === "number"
@@ -97,12 +104,23 @@ function getInitialLoginState(): InitialLoginState {
     };
   }
 
+  if (stored.step === "email") {
+    return {
+      email: stored.email,
+      step: "email",
+      resendSeconds: 0,
+      storageChecked: true,
+    };
+  }
+
   return {
     email: stored.email,
     step: stored.step,
     resendSeconds: Math.max(
       0,
-      Math.ceil((stored.resendAvailableAt - Date.now()) / 1000),
+      Math.ceil(
+        ((stored.resendAvailableAt ?? 0) - Date.now()) / 1000,
+      ),
     ),
     storageChecked: true,
   };
@@ -144,7 +162,14 @@ export function useAccountLogin() {
     setEmail(stored.email);
     setStep(stored.step);
     setResendSeconds(
-      Math.max(0, Math.ceil((stored.resendAvailableAt - Date.now()) / 1000)),
+      stored.step === "code"
+        ? Math.max(
+          0,
+          Math.ceil(
+            ((stored.resendAvailableAt ?? 0) - Date.now()) / 1000,
+          ),
+        )
+        : 0,
     );
     setStorageChecked(true);
   }, []);
@@ -157,6 +182,19 @@ export function useAccountLogin() {
     return () => window.clearTimeout(timeoutId);
   }, [resendSeconds, step]);
 
+  function persistEmailDraft(value: string) {
+    if (typeof window === "undefined") return;
+    const trimmed = value.trim();
+    try {
+      if (!trimmed) {
+        sessionStorage.removeItem(LOGIN_ATTEMPT_STORAGE_KEY);
+        return;
+      }
+      const draft: StoredLoginAttempt = { email: trimmed, step: "email" };
+      sessionStorage.setItem(LOGIN_ATTEMPT_STORAGE_KEY, JSON.stringify(draft));
+    } catch { }
+  }
+
   function updateEmail(value: string) {
     setEmail(value);
     setCode("");
@@ -165,7 +203,7 @@ export function useAccountLogin() {
       setStep("email");
       setResendSeconds(0);
     }
-    clearStoredLoginAttempt();
+    persistEmailDraft(value);
   }
 
   async function sendLoginCode(moveToCodeStep: boolean) {
