@@ -19,6 +19,7 @@ export default function FlexibleLayout({
   className,
   displayFooter = true,
   showAnnounce = false,
+  accountPanel = false,
 }: Props) {
   return (
     <div
@@ -45,7 +46,7 @@ export default function FlexibleLayout({
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
         <div className="w-full">{children}</div>
       </div>
-      {displayFooter && <Footer theme={theme} />}
+      {displayFooter && <Footer theme={theme} accountPanel={accountPanel} />}
       {(headerType === "catalog" || headerType === "main") && (
         <CartPopup>
           <div className="h-full overflow-y-scroll">
@@ -67,6 +68,7 @@ type Props = {
   className?: string;
   displayFooter?: boolean;
   showAnnounce?: boolean;
+  accountPanel?: boolean;
 };
 
 export type HeaderProps = {
@@ -75,7 +77,6 @@ export type HeaderProps = {
   right?: string;
   link?: string;
   hidden?: boolean;
-  onClick?: () => void;
-  /** When "home", left button always goes to localized home (e.g. checkout opened via direct URL). */
   leftNav?: "default" | "home";
+  onClick?: () => void;
 };

@@ -43,7 +43,13 @@ function LiveClock() {
   );
 }
 
-export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
+export function Footer({
+  theme = "light",
+  accountPanel = false,
+}: {
+  theme?: "light" | "dark";
+  accountPanel?: boolean;
+}) {
   const t = useTranslations("footer");
 
   const { currentCountry, openCountryPopup } = useTranslationsStore((s) => s);
@@ -51,32 +57,34 @@ export function Footer({ theme = "light" }: { theme?: "light" | "dark" }) {
 
   return (
     <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
-      <div className="flex justify-center pt-16 lg:py-52">
-        <div className="flex w-full flex-col gap-y-16 lg:w-auto lg:flex-row lg:items-start lg:gap-x-20">
-          <div className="flex justify-center lg:justify-end">
-            <iframe
-              src={
-                theme === "dark"
-                  ? "https://art.grbpwr.com/invert"
-                  : "https://art.grbpwr.com"
-              }
-              loading="lazy"
-              className="h-56 w-56 border-0 lg:hidden"
-              title="logo"
-            />
-            {theme === "dark" ? (
-              <Logo className="hidden aspect-square h-full w-40 lg:block" />
-            ) : (
-              <WhiteLogo className="hidden aspect-square h-full w-40 lg:block" />
+      {!accountPanel && (
+        <div className="flex justify-center pt-16 lg:py-52">
+          <div className="flex w-full flex-col gap-y-16 lg:w-auto lg:flex-row lg:items-start lg:gap-x-20">
+            <div className="flex justify-center lg:justify-end">
+              <iframe
+                src={
+                  theme === "dark"
+                    ? "https://art.grbpwr.com/invert"
+                    : "https://art.grbpwr.com"
+                }
+                loading="lazy"
+                className="h-56 w-56 border-0 lg:hidden"
+                title="logo"
+              />
+              {theme === "dark" ? (
+                <Logo className="hidden aspect-square h-full w-40 lg:block" />
+              ) : (
+                <WhiteLogo className="hidden aspect-square h-full w-40 lg:block" />
+              )}
+            </div>
+            {!isSignedIn && (
+              <div className="w-full lg:w-[346px]">
+                <NewslatterForm />
+              </div>
             )}
           </div>
-          {!isSignedIn && (
-            <div className="w-full lg:w-[346px]">
-              <NewslatterForm />
-            </div>
-          )}
         </div>
-      </div>
+      )}
       <div className="flex flex-col justify-between gap-x-24 lg:flex-row lg:items-start lg:px-7">
         <div className="order-4 flex justify-center gap-2 lg:order-1 lg:justify-start">
           <Text
