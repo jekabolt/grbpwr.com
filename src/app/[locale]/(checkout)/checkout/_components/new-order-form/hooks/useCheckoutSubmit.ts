@@ -17,6 +17,7 @@ import type { OpenGroups } from "./constants";
 import { CheckoutData } from "../schema";
 import {
   buildOrderConfirmationUrl,
+  buildStripeCheckoutReturnUrl,
   isStripeCardPaymentMethod,
   mapFormFieldToOrderDataFormat,
 } from "../utils";
@@ -231,7 +232,7 @@ export function useCheckoutSubmit({
 
         const encodedEmail = window.btoa(data.email);
         const returnUrl = new URL(
-          buildOrderConfirmationUrl({
+          buildStripeCheckoutReturnUrl({
             countryCode: currentCountry.countryCode,
             languageId,
             orderUuid,

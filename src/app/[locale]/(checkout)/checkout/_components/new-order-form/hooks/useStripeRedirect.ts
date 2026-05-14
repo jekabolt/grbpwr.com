@@ -22,12 +22,18 @@ export function useStripeRedirect({ paymentFailedMessage }: UseStripeRedirectPro
 
   useEffect(() => {
     const redirectStatus = searchParams.get("redirect_status");
+    const paymentIntentFromStripe = searchParams.get("payment_intent");
     const orderUuid = searchParams.get("order_uuid");
     const email = searchParams.get("email");
 
     if (!redirectStatus) return;
 
-    if (redirectStatus === "succeeded" && orderUuid && email) {
+    if (
+      redirectStatus === "succeeded" &&
+      orderUuid &&
+      email &&
+      paymentIntentFromStripe
+    ) {
       window.location.href = buildOrderConfirmationUrl({
         countryCode: currentCountry.countryCode,
         languageId,
@@ -38,7 +44,10 @@ export function useStripeRedirect({ paymentFailedMessage }: UseStripeRedirectPro
       return;
     }
 
-    if (redirectStatus === "failed" || redirectStatus === "canceled") {
+    if (
+      (redirectStatus === "failed" || redirectStatus === "canceled") &&
+      paymentIntentFromStripe
+    ) {
       try {
         const raw = sessionStorage.getItem("pending_stripe_order");
         if (raw) {
