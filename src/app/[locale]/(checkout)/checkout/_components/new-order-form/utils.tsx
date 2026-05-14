@@ -97,6 +97,23 @@ export function buildOrderConfirmationUrl(params: {
   return `/${country}/${locale}/order/${params.orderUuid}/${params.emailBase64}${suffix}`;
 }
 
+export function buildStripeCheckoutReturnUrl(params: {
+  countryCode: string | undefined;
+  languageId: number;
+  orderUuid: string;
+  emailBase64: string;
+}): string {
+  const { country, locale } = getCheckoutLocalePath(
+    params.countryCode,
+    params.languageId,
+  );
+  const qp = new URLSearchParams({
+    order_uuid: params.orderUuid,
+    email: params.emailBase64,
+  });
+  return `/${country}/${locale}/checkout?${qp.toString()}`;
+}
+
 export function isStripeCardPaymentMethod(
   paymentMethod: unknown,
 ): paymentMethod is CheckoutData["paymentMethod"] {
