@@ -29,7 +29,7 @@ export function EmailPreferences() {
         <Text variant="uppercase" className="hidden lg:block">
           {t("email preferences")}
         </Text>
-        <div className="flex flex-col lg:gap-10">
+        <div className="flex flex-col">
           {EMAIL_REFERENCE_STEPS.map((step) => (
             <EmailPreferenceStepRow
               key={step.name}
