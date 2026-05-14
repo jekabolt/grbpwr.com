@@ -41,6 +41,8 @@ export function SizePicker({
   handleSizeSelect,
   onOutOfStockHover,
 }: Props) {
+  const isSingleDisplayedSize = (sizeNames?.length ?? 0) === 1;
+
   const handleAnalytics = (
     sizeId: number,
     sizeName: string,
@@ -99,9 +101,12 @@ export function SizePicker({
               type="button"
               disabled={isDisabled}
               variant={isOutOfStock ? "strikeThrough" : "default"}
-              className={cn("border-b border-transparent leading-none", {
-                "border-textColor": isActive && !isOutOfStock,
-                "hover:border-textColor": !isActive && !isOutOfStock,
+              className={cn("leading-none", {
+                "border-b border-transparent": !isSingleDisplayedSize,
+                "border-textColor":
+                  !isSingleDisplayedSize && isActive && !isOutOfStock,
+                "hover:border-textColor":
+                  !isSingleDisplayedSize && !isActive && !isOutOfStock,
                 "px-3 py-0.5": view === "line" && !isOneSize,
                 "!text-textColor": isOutOfStock && isActive,
                 "hover:!text-textColor": isOutOfStock && !isActive,

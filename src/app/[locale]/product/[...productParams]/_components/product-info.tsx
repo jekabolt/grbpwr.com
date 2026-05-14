@@ -119,36 +119,38 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
                 handleSelectSize={handleSelectSize}
               />
             </Modal>
-            <div ref={sizePickerRef}>
-              <SizePicker
-                sizeNames={sizeNames || []}
-                activeSizeId={activeSizeId || 0}
-                outOfStock={outOfStock}
-                sizeQuantity={sizeQuantity}
-                isOneSize={isOneSize}
-                handleSizeSelect={handleSizeSelect}
-                view={isOneSize ? "line" : "grid"}
-                onOutOfStockHover={setHoveredOutOfStockSizeId}
-                shouldBlink={shouldBlinkSizes}
-                productContext={sizePickerProductContext}
-              />
+            <div className="space-y-5">
+              <div ref={sizePickerRef}>
+                <SizePicker
+                  sizeNames={sizeNames || []}
+                  activeSizeId={activeSizeId || 0}
+                  outOfStock={outOfStock}
+                  sizeQuantity={sizeQuantity}
+                  isOneSize={isOneSize}
+                  handleSizeSelect={handleSizeSelect}
+                  view={isOneSize ? "line" : "grid"}
+                  onOutOfStockHover={setHoveredOutOfStockSizeId}
+                  shouldBlink={shouldBlinkSizes}
+                  productContext={sizePickerProductContext}
+                />
+              </div>
             </div>
+            <AddToCartBtn
+              product={product}
+              handlers={{
+                activeSizeId,
+                isLoading,
+                outOfStock,
+                sizePickerRef,
+                isMaxQuantity,
+                hoveredOutOfStockSizeId,
+                shouldBlinkSizes,
+                handleSizeSelect,
+                handleAddToCart,
+                triggerSizeBlink,
+              }}
+            />
           </div>
-          <AddToCartBtn
-            product={product}
-            handlers={{
-              activeSizeId,
-              isLoading,
-              outOfStock,
-              sizePickerRef,
-              isMaxQuantity,
-              hoveredOutOfStockSizeId,
-              shouldBlinkSizes,
-              handleSizeSelect,
-              handleAddToCart,
-              triggerSizeBlink,
-            }}
-          />
         </div>
       </div>
     </div>

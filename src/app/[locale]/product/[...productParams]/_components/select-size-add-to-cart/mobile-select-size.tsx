@@ -47,9 +47,7 @@ export function MobileSelectSize({
   }, [open]);
 
   const handleSizeClick = (sizeId: number) => {
-    const isOutOfStock = outOfStock?.[sizeId];
-
-    if (isOutOfStock) {
+    if (outOfStock?.[sizeId]) {
       onOpenChange(false);
       setTimeout(() => {
         onNotifyMeOpen?.(sizeId);
@@ -85,9 +83,11 @@ export function MobileSelectSize({
 
                   return (
                     <Button
-                      disabled={!!isOutOfStock}
+                      type="button"
                       variant={isOutOfStock ? "strikeThrough" : "default"}
-                      className="uppercase"
+                      className={
+                        isOutOfStock ? "cursor-pointer uppercase" : "uppercase"
+                      }
                       key={id}
                       onClick={() => handleSizeClick(id)}
                     >
