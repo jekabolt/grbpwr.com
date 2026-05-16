@@ -4,11 +4,11 @@ Per effettuare un ordine sul nostro sito web, segui i passaggi riportati di segu
 
 1. Esplora il catalogo
 
-Utilizza la barra di navigazione per selezionare abbigliamento uomo, abbigliamento donna, accessori o oggetti. Applica i filtri o le opzioni di ordinamento per trovare più facilmente ciò che cerchi.
+   Utilizza la barra di navigazione per selezionare abbigliamento uomo, abbigliamento donna, accessori o oggetti. Applica i filtri o le opzioni di ordinamento per trovare più facilmente ciò che cerchi.
 
 2. Visualizza i dettagli del prodotto
 
-Ogni prodotto è accompagnato da descrizioni dettagliate e da una guida alle taglie, oltre che da foto. Leggi attentamente queste informazioni prima di effettuare un ordine. Se hai domande, non esitare a contattarci utilizzando il modulo [Servizi post-vendita](/aftersale-services) e selezionando "Informazioni sul prodotto" come argomento.
+   Ogni prodotto è accompagnato da descrizioni dettagliate e da una guida alle taglie, oltre che da foto. Leggi attentamente queste informazioni prima di effettuare un ordine. Se hai domande, non esitare a contattarci utilizzando il modulo [Servizi post-vendita](/aftersale-services) e selezionando "Informazioni sul prodotto" come argomento.
 
 3. Acquista
 
@@ -28,23 +28,29 @@ Puoi pagare il tuo ordine utilizzando qualsiasi carta di credito, Apple Pay, Pay
 
 Hai 30 minuti di tempo per completare il pagamento. Se il pagamento non viene completato entro questo tempo, il tuo ordine verrà automaticamente annullato.
 
+I nostri prezzi sono visualizzati in USD, EUR, GBP, JPY, CNY o KRW a seconda della tua regione e selezione.
+
 CONSEGNA
 
-Il costo e la velocità di consegna dipendono dalla regione selezionata.
+Il costo e la velocità di consegna dipendono dalla regione selezionata. La spedizione standard gratuita potrebbe essere disponibile per gli ordini superiori a una soglia determinata dalla tua regione; questo verrà visualizzato al checkout.
 
 Una volta spedito l'ordine, riceverai un numero di tracciamento per [monitorarne lo stato](/order-status). Gli ordini vengono spediti entro tre giorni lavorativi dall'invio, a meno che non includano articoli in preordine.
 
-Non si effettuano consegne nei fine settimana e nei giorni festivi.
+Se il tuo ordine contiene un articolo in preordine, spediremo l'intero ordine quando l'articolo in preordine sarà pronto. La data di spedizione per i preordini è indicata nella pagina del prodotto. Non offriamo spedizioni separate.
+
+Non vengono effettuati consegne nei fine settimana e nei giorni festivi.
 
 Riceverai una notifica via e-mail una volta che il tuo ordine sarà stato consegnato.
 
 RESO
 
-Puoi restituire il tuo ordine entro 14 giorni dalla ricezione. Per effettuare un reso, utilizza il modulo di reso allegato al tuo ordine e contattaci utilizzando il [modulo del servizio post-vendita](/aftersale-services).
+Puoi restituire il tuo ordine entro 14 giorni dalla ricezione. Per effettuare un reso, utilizza il modulo di reso allegato al tuo ordine e contattaci utilizzando il [modulo del servizio post-vendita](/aftersale-services). Riceverai un'etichetta di reso prepagato via e-mail. Reimballa accuratamente l'articolo/i nella loro condizione originale, utilizzando l'imballaggio originale ove possibile, applica l'etichetta di reso e organizza il ritiro tramite il corriere.
 
-Gli articoli danneggiati o privi di etichetta non saranno accettati per il reso.
+Gli articoli danneggiati, usati, modificati o privi di etichette e imballaggio originale non saranno accettati per il reso.
 
-Se desideri sostituire un articolo con una taglia diversa, utilizza il nostro [Servizio post-vendita](/aftersale-services).
+Puoi controllare lo stato del tuo rimborso nelle informazioni del tuo ordine sul nostro sito web.
+
+Se desideri sostituire un articolo con una taglia o un colore diverso, utilizza il nostro [Servizio post-vendita](/aftersale-services).
 
 ## TRACCIAMENTO DELL'ORDINE E PREORDINE
 
@@ -72,6 +78,7 @@ L'ordine è stato annullato da te tramite una richiesta di reso o dal mittente n
 
 Rimborsato
 Il tuo reso è stato ricevuto ed elaborato dal nostro magazzino.
+
 Per qualsiasi domanda relativa al tuo ordine, comprese le richieste di annullamento, ti preghiamo di utilizzare i nostri [Servizi post-vendita](/aftersale-services) o di inviare un'e-mail a [support@grbpwr.com](mailto:support@grbpwr.com).
 
 PREORDINE
@@ -135,3 +142,7 @@ Ogni articolo è accompagnato dalle proprie istruzioni per la cura. È possibile
 Teniamo conto dell'impatto sociale e ambientale, non solo del profitto. I nostri processi di produzione sono trasparenti e ci impegniamo a utilizzare materiali che riducano al minimo gli effetti negativi sull'ambiente.
 
 Lavoriamo inoltre esclusivamente con produttori di abbigliamento che possiedono certificazioni di lavoro equo, garantendo condizioni di lavoro sicure e salari equi lungo tutta la nostra catena di fornitura.
+
+## RECLAMI
+
+Se hai un reclamo riguardo ai nostri prodotti o servizi, ti preghiamo di contattarci tramite il [modulo Servizi post-vendita](/aftersale-services) sul nostro sito web o inviando un'e-mail a [support@grbpwr.com](mailto:support@grbpwr.com). Riconosceremo tempestivamente il tuo reclamo e faremo tutto il possibile per risolverlo nel più breve tempo possibile.
