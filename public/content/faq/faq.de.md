@@ -1,24 +1,24 @@
-## BESTELLUNG AUFGEBEN
+## EINE BESTELLung AUFGEBEN
 
-Um eine Bestellung auf unserer Website aufzugeben, befolgen Sie bitte die folgenden Schritte.
+Um eine Bestellung auf unserer Website aufzugeben, folgen Sie bitte den folgenden Schritten.
 
-1. Durchsuchen Sie den Katalog
+1. Katalog durchsuchen
 
-Wählen Sie über die Navigation zwischen Herrenbekleidung, Damenbekleidung, Accessoires oder Objekten. Verwenden Sie Filter oder Sortieroptionen, um leichter zu finden, was Sie suchen.
+   Verwenden Sie die Navigation, um Herrenbekleidung, Damenbekleidung, Accessoires oder Objekte auszuwählen. Wenden Sie Filter oder Sortieroptionen an, um das Gesuchte leichter zu finden.
 
-2. Produktdetails anzeigen
+2. Produktdetails ansehen
 
-Jedes Produkt verfügt neben Fotos auch über detaillierte Beschreibungen und eine Größentabelle. Bitte lesen Sie diese sorgfältig durch, bevor Sie eine Bestellung aufgeben. Wenn Sie Fragen haben, können Sie sich gerne über das [Formular für den Kundendienst](/aftersale-services) an uns wenden und als Betreff „Produktinformationen" auswählen.
+   Jedes Produkt verfügt neben Fotos auch über detaillierte Beschreibungen und eine Größentabelle. Bitte lesen Sie diese sorgfältig durch, bevor Sie eine Bestellung aufgeben. Wenn Sie Fragen haben, können Sie sich gerne über das [Formular für den Kundendienst](/aftersale-services) an uns wenden und als Betreff „Produktinformationen" auswählen.
 
 3. Kauf
 
-- Wählen Sie die gewünschte Größe des Artikels aus und klicken Sie dann auf die Schaltfläche „HINZUFÜGEN" oder „VORBESTELLEN".
+- Wählen Sie die erforderliche Größe des Artikels aus und klicken Sie dann auf die Schaltfläche „HINZUFÜGEN" oder „VORBESTELLEN".
 - Wenn Sie alle gewünschten Artikel ausgewählt haben, klicken Sie auf „Warenkorb", um Ihren Warenkorb zu überprüfen und mit dem Kauf fortzufahren.
 - Klicken Sie im Warenkorb auf die Schaltfläche „ZUR KASSE GEHEN".
 - Geben Sie die erforderlichen Lieferdaten, die Zahlungsmethode und den Promo-Code (falls zutreffend) ein.
 - Überprüfen Sie die eingegebenen Informationen.
 - Klicken Sie auf „BEZAHLEN" und geben Sie die erforderlichen Zahlungsdaten ein.
-- Sobald Ihre Bestellung bestätigt ist, wird eine Quittung mit Ihrer Bestellnummer an die von Ihnen angegebene E-Mail-Adresse gesendet.
+- Sobald Ihre Bestellung erfolgreich über Stripe verarbeitet wurde, wird sie bestätigt und eine Quittung mit Ihrer Bestellnummer wird an die von Ihnen angegebene E-Mail-Adresse gesendet.
 
 Sie können den Status Ihrer Bestellung anhand Ihrer Bestellnummer und Ihrer E-Mail-Adresse [hier](/order-status) verfolgen.
 
@@ -28,23 +28,29 @@ Sie können Ihre Bestellung mit jeder Kreditkarte, Apple Pay, PayPal oder Klarna
 
 Sie haben 30 Minuten Zeit, um Ihre Zahlung abzuschließen. Wenn die Zahlung nicht innerhalb dieser Zeit abgeschlossen wird, wird Ihre Bestellung automatisch storniert.
 
+Unsere Preise werden in USD, EUR, GBP, JPY, CNY oder KRW angezeigt, abhängig von Ihrer Region und Auswahl.
+
 LIEFERUNG
 
-Die Kosten und die Liefergeschwindigkeit hängen von der ausgewählten Region ab.
+Die Kosten und die Liefergeschwindigkeit hängen von der ausgewählten Region ab. Kostenloser Standardversand kann bei Bestellungen über einem von Ihrer Region bestimmten Schwellenwert verfügbar sein; dies wird beim Checkout angezeigt.
 
 Sobald Ihre Bestellung versandt wurde, erhalten Sie eine Sendungsverfolgungsnummer, mit der Sie [den Status Ihrer Bestellung verfolgen können](/order-status). Bestellungen werden innerhalb von drei Werktagen nach Eingang versandt, sofern sie keine Vorbestellungsartikel enthalten.
 
-An Wochenenden und Feiertagen finden keine Lieferungen statt.
+Wenn Ihre Bestellung einen Vorbestellungsartikel enthält, versenden wir die gesamte Bestellung zusammen, sobald die Vorbestellung bereit ist. Das Versanddatum für Vorbestellungen ist auf der Produktseite angegeben. Wir bieten keine Teillieferungen an.
+
+Lieferungen finden nicht an Wochenenden und Feiertagen statt.
 
 Sie erhalten eine E-Mail-Benachrichtigung, sobald Ihre Bestellung zugestellt wurde.
 
 RÜCKSENDUNG
 
-Sie können Ihre Bestellung innerhalb von 14 Tagen nach Erhalt zurücksenden. Um eine Rücksendung vorzunehmen, verwenden Sie bitte das Ihrer Bestellung beiliegende Rücksendeformular und kontaktieren Sie uns über das [Kundendienstformular](/aftersale-services).
+Sie können Ihre Bestellung innerhalb von 14 Tagen nach Erhalt zurücksenden. Um eine Rücksendung vorzunehmen, füllen Sie bitte das Rücksendeformular auf unserer [Kundendienstseite](/aftersale-services) aus. Sie erhalten ein Vorauszahlungs-Rücksendeetikett per E-Mail. Verpacken Sie das/die Artikel sorgfältig in ihrem ursprünglichen Zustand, verwenden Sie wenn möglich die ursprüngliche Verpackung, befestigen Sie das Rücksendeetikett und beauftragen Sie den Kurierdienst mit der Abholung.
 
 Beschädigte Artikel oder Artikel ohne Etikett können nicht zurückgegeben werden.
 
-Wenn Sie einen Artikel gegen eine andere Größe umtauschen möchten, nutzen Sie bitte unseren [Kundendienst](/aftersale-services).
+Sie können den Status Ihrer Rückerstattung in Ihren Bestellinformationen auf unserer Website überprüfen.
+
+Wenn Sie einen Artikel gegen eine andere Größe oder Farbe umtauschen möchten, verwenden Sie bitte unser [Kundendienstformular](/aftersale-services).
 
 ## BESTELLVERFOLGUNG & VORBESTELLUNG
 
@@ -71,18 +77,19 @@ Storniert
 Die Bestellung wurde entweder von Ihnen durch eine Rücksendung oder vom Versender storniert, da der Artikel nicht mehr vorrätig ist. Sie können Ihre Bestellung stornieren, solange sie sich in einem der folgenden Status befindet: Aufgegeben, Zahlung ausstehend oder Bestätigt.
 
 Rückerstattet
-Ihre Rücksendung wurde von unserem Lager erhalten und bearbeitet.
+Ihre Rücksendung wurde von unserem Lager erhalten und bearbeitet. Sie können den Status Ihrer Rückerstattung in Ihren Bestellinformationen überprüfen.
+
 Bei Fragen zu Ihrer Bestellung, einschließlich Stornierungsanfragen, wenden Sie sich bitte an unseren [Kundendienst](/aftersale-services) oder senden Sie eine E-Mail an [support@grbpwr.com](mailto:support@grbpwr.com).
 
 VORBESTELLUNG
 
-Eine Vorbestellung bezieht sich auf einen Artikel, der in Kürze lieferbar sein wird. Wenn Ihre Bestellung einen vorbestellten Artikel enthält, versenden wir die gesamte Bestellung, sobald die Vorbestellung bereit ist. Das Versanddatum für Vorbestellungen ist auf der Produktseite angegeben.
+Eine Vorbestellung bezieht sich auf einen Artikel, der in Kürze lieferbar sein wird. Wenn Ihre Bestellung einen vorbestellten Artikel enthält, versenden wir die gesamte Bestellung, sobald die Vorbestellung bereit ist. Die Zahlung erfolgt beim Checkout. Das Versanddatum für Vorbestellungen ist auf der Produktseite angegeben.
 
 Was soll ich tun, wenn meine Bestellung nicht rechtzeitig geliefert wurde?
 
 - Überprüfen Sie den Status Ihrer Bestellung.
 - Vergewissern Sie sich, dass die Lieferadresse korrekt ist.
-- Wenden Sie sich an den Kurierdienst, wenn Sie Ihre Bestellung nicht rechtzeitig abholen können.
+- Kontaktieren Sie den Kurierdienst, wenn Sie Ihre Bestellung nicht rechtzeitig abholen können.
 - Wenn keine der oben genannten Maßnahmen hilft, kontaktieren Sie uns bitte über das [Formular für den Kundendienst](/aftersale-services).
 
 Was soll ich tun, wenn meine Bestellung beschädigt ist?
@@ -93,11 +100,11 @@ Machen Sie klare Fotos von der Beschädigung und [kontaktieren Sie uns](/aftersa
 
 EIN PRODUKT ZURÜCKSENDEN
 
-Um eine Bestellung zurückzusenden, verwenden Sie bitte das Ihrem Paket beiliegende Rücksendeformular. Wenn Sie das Formular verloren haben, [kontaktieren Sie uns bitte](/aftersale-services).
+Um eine Bestellung zurückzusenden, füllen Sie bitte das Rücksendeformular auf unserer [Kundendienstseite](/aftersale-services) aus. Sie erhalten ein Vorauszahlungs-Rücksendeetikett per E-Mail.
 
-Beschädigte Artikel oder Artikel ohne Etikett können nicht zurückgenommen werden.
+Beschädigte Artikel oder Artikel ohne Etikett können nicht zurückgegeben werden.
 
-Wenn Sie einen Artikel gegen eine andere Größe umtauschen möchten, [setzen Sie sich bitte mit uns in Verbindung](/aftersale-services).
+Wenn Sie einen Artikel gegen eine andere Größe oder Farbe umtauschen möchten, [nehmen Sie bitte Kontakt mit uns auf](/aftersale-services).
 
 RÜCKGABEFRIST
 
@@ -105,15 +112,17 @@ Sie können Ihre Bestellung innerhalb von 14 Tagen nach Erhalt zurücksenden.
 
 RÜCKSENDUNGSKOSTEN
 
-Wir übernehmen die Kosten für die Rücksendung.
+Wir übernehmen die Kosten für die Rücksendung, indem wir ein vorausbezahltes Rücksendeetikett bereitstellen.
 
 UMTAUSCHANFRAGE
 
-Um einen Artikel gegen eine andere Größe umzutauschen, [kontaktieren Sie uns bitte](/aftersale-services).
+Um einen Artikel gegen eine andere Größe oder Farbe umzutauschen, [nehmen Sie bitte Kontakt mit uns auf](/aftersale-services).
 
 RÜCKERSTATTUNG
 
-Wir erstatten Ihnen den Kaufpreis innerhalb von 5–7 Tagen nach Erhalt der Rücksendung. Sobald wir Ihre Rücksendung erhalten und genehmigt haben, erhalten Sie eine Bestätigungs-E-Mail. Auf dieser Seite können Sie den Status Ihrer Rücksendung überprüfen.
+Wir erstatten Ihnen den Kaufpreis innerhalb von 5–7 Tagen nach Erhalt der Rücksendung. Sobald wir Ihre Rücksendung erhalten und genehmigt haben, erhalten Sie eine Bestätigungs-E-Mail. Sie können den Status Ihrer Rücksendung auf dieser Seite überprüfen.
+
+Für Rücksendungen innerhalb der 14-tägigen Stornierungsfrist erstatten wir den günstigsten Standardversandkosten zusätzlich zum Produktpreis. Rückerstattungen werden auf die ursprüngliche Zahlungsmethode und in derselben Währung wie beim Kauf ausgestellt.
 
 Wie schnell die Rückerstattung auf Ihrem Konto erscheint, hängt von Ihrer Bank oder Ihrem Zahlungsanbieter ab.
 
@@ -135,3 +144,7 @@ Jeder Artikel wird mit einer eigenen Pflegeanleitung geliefert. Diese finden Sie
 Wir berücksichtigen nicht nur den Gewinn, sondern auch die sozialen und ökologischen Auswirkungen. Unsere Produktionsprozesse sind transparent, und wir verpflichten uns, Materialien zu verwenden, die die negativen Auswirkungen auf die Umwelt minimieren.
 
 Außerdem arbeiten wir ausschließlich mit Bekleidungsherstellern zusammen, die über Fair-Labour-Zertifizierungen verfügen, um sichere Arbeitsbedingungen und faire Löhne in unserer gesamten Lieferkette zu gewährleisten.
+
+## BESCHWERDEN
+
+Wenn Sie eine Beschwerde über unsere Produkte oder Dienstleistungen haben, kontaktieren Sie uns bitte über das [Kundendienstformular](/aftersale-services) auf unserer Website oder senden Sie eine E-Mail an [support@grbpwr.com](mailto:support@grbpwr.com). Wir werden Ihre Beschwerde umgehend bestätigen und versuchen, sie so schnell wie möglich zu lösen.

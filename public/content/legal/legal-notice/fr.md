@@ -1,5 +1,7 @@
-BIENVENUE SUR WWW.GRBPWR.COM (LE « SITE WEB »)
+BIENVENUE SUR GRBPWR.COM (LE « SITE WEB »)
 
-Ce site web est exploité par GRBPWR Limited, une société constituée en vertu des lois du Royaume-Uni, dont le siège social est situé au 167-169 Great Portland Street, 5th Floor, London, W1W 5PF, et dont le numéro d'enregistrement est 17015705.
+Ce site Web est exploité par GRBPWR Limited, une société constituée en vertu du droit du Royaume‑Uni, dont le siège social est situé au 167‑169 Great Portland Street, 5ᵉ étage, Londres, W1W 5PF, numéro d’entreprise 17015705.
 
-Vous pouvez nous contacter de différentes manières : Par e-mail : [support@grbpwr.com](mailto:support@grbpwr.com) ou via le formulaire de service après-vente disponible sur le site Web.
+Vous pouvez nous contacter de la façon suivante : par e‑mail à [support@grbpwr.com](mailto:support@grbpwr.com) ou via le formulaire **Aftersale Services** disponible sur le site Web.
+
+Si vous avez une réclamation, veuillez utiliser le formulaire **Aftersale Services** sur le site ou nous écrire à support@grbpwr.com.
