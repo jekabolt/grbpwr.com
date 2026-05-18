@@ -203,6 +203,7 @@
     "sales tax": "Umsatzsteuer",
     "gst": "GST",
     "FREE": "KOSTENLOS",
+    "STANDARD": "standard",
     "hide": "ausblenden",
     "show": "anzeigen",
     "incl": "inkl. MwSt.",
