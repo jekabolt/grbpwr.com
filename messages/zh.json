@@ -290,6 +290,7 @@
   },
   "update_location": {
     "message": "您当前在{currentCountry}购物。更改国家/地区时，购物车将被清空。您确定要继续吗？",
+    "messageCheckout": "更改地区将更新货币和价格。您的购物袋将保持不变。",
     "continue": "继续前往: {country}",
     "cancel": "取消"
   },

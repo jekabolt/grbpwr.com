@@ -290,6 +290,7 @@
   },
   "update_location": {
     "message": "Vous êtes actuellement dans {currentCountry}. Lors du changement de pays/région, votre panier sera vidé. Êtes-vous sûr de vouloir continuer?",
+    "messageCheckout": "Changer de région mettra à jour la devise et les prix. Votre panier restera intact.",
     "continue": "Continuer vers: {country}",
     "cancel": "Annuler"
   },

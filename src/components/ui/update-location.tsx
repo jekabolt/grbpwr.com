@@ -105,7 +105,9 @@ export function UpdateLocation() {
       >
         <div className="flex flex-col gap-y-4 p-2.5">
           <Text className="uppercase">
-            {t("message", { currentCountry: currentCountry.name })}
+            {isCheckoutPage
+              ? t("messageCheckout")
+              : t("message", { currentCountry: currentCountry.name })}
           </Text>
           <div className="flex items-center justify-between gap-2">
             <Button
