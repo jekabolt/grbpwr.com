@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
 import { AccountSectionContent } from "../_components/account-section-content";
-import { clearStoredLoginAttempt } from "../utils/use-account-login";
+import { clearAccountLoginPersistence } from "../utils/use-account-login";
 import { ACCOUNT_SECTIONS, ActivePanel } from "../utils/utility";
 
 const ACCOUNT_PANEL_QUERY = "account_panel";
@@ -39,7 +39,7 @@ export function AccountSessionPanel({ account }: Props) {
     if (typeof window !== "undefined") {
       localStorage.removeItem("checkout-form-storage");
       sessionStorage.removeItem("checkout-country-change-stash");
-      clearStoredLoginAttempt();
+      clearAccountLoginPersistence();
     }
     router.replace("/");
     router.refresh();

@@ -11,7 +11,7 @@ import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
 
 import { AccountCartMobileOrderSummary } from "../../account/authorization/account-cart-mobile-order-summary";
-import { clearStoredLoginAttempt } from "../../account/utils/use-account-login";
+import { clearAccountLoginPersistence } from "../../account/utils/use-account-login";
 
 const DISPLAY_MS = 3_000;
 
@@ -52,7 +52,7 @@ export function MagicLoginSuccessClient() {
   }, [currentCountry.countryCode, languageId]);
 
   useEffect(() => {
-    clearStoredLoginAttempt();
+    clearAccountLoginPersistence();
   }, []);
 
   useEffect(() => {
