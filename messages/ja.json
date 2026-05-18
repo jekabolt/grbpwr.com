@@ -158,7 +158,8 @@
     "recently viewed": "最近見た商品",
     "notify me": "通知する",
     "notify-description": "サイズを選択すると、この商品が再入荷したときにメールでお知らせします。",
-    "order limit exceeded": "注文限度を超えました"
+    "order limit exceeded": "注文限度を超えました",
+    "select your size to continue": "続けるにはサイズを選択してください"
   },
   "checkout": {
     "contact": "連絡先",

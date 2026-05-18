@@ -158,7 +158,8 @@
     "recently viewed": "zuletzt angesehen",
     "notify me": "benachrichtige mich",
     "notify-description": "wählen sie ihre größe und wir benachrichtigen sie per e-mail, sobald dieses produkt wieder auf lager ist.",
-    "order limit exceeded": "bestelllimit überschritten"
+    "order limit exceeded": "bestelllimit überschritten",
+    "select your size to continue": "wählen sie ihre größe, um fortzufahren"
   },
   "checkout": {
     "contact": "kontakt",

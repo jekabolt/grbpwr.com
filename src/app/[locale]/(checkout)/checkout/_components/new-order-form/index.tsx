@@ -8,6 +8,11 @@ import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
+import {
+  clearGuestCheckoutIntent,
+  persistGuestCheckoutIntent,
+  readGuestCheckoutFromSession,
+} from "@/lib/checkout/guest-checkout-intent";
 import { formatPrice } from "@/lib/currency";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -40,12 +45,6 @@ import { PriceSummary } from "./price-summary";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
-import {
-  clearGuestCheckoutIntent,
-  persistGuestCheckoutIntent,
-  readGuestCheckoutFromSession,
-} from "@/lib/checkout/guest-checkout-intent";
-
 import { isStripeCardPaymentMethod } from "./utils";
 
 const CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY =
@@ -84,7 +83,9 @@ export default function NewOrderForm({
     const email = initialAccount?.email?.trim();
     if (!email || typeof window === "undefined") return;
     try {
-      const stored = sessionStorage.getItem(CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY);
+      const stored = sessionStorage.getItem(
+        CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY,
+      );
       if (stored === email) setCheckoutProfileCompleted(true);
     } catch {
       /* ignore */
@@ -204,8 +205,7 @@ export default function NewOrderForm({
     accountNeedsNameCompletion(initialAccount) &&
     !checkoutProfileCompleted;
   const showMobileOrderSummaryOverlay =
-    (!showCheckoutFields && checkoutLoginStep === "email") ||
-    showProfilePrompt;
+    (!showCheckoutFields && checkoutLoginStep === "email") || showProfilePrompt;
   const showCheckoutForm = showCheckoutFields && !showProfilePrompt;
 
   const centerAuthOnMobile = !showCheckoutFields || showProfilePrompt;
@@ -250,8 +250,8 @@ export default function NewOrderForm({
           >
             {!hideOrderSummary && (
               <div
-                className={cn("block lg:hidden", {
-                  "fixed inset-x-2.5 bottom-6":
+                className={cn("z-40 block lg:hidden", {
+                  "fixed inset-x-2.5 bottom-6 top-auto":
                     !showCheckoutFields || showProfilePrompt,
                 })}
               >

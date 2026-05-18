@@ -1,11 +1,9 @@
 import {
-    common_OrderItem,
-    common_ProductFull,
+    common_OrderItem
 } from "@/api/proto-http/frontend";
 
 import { getStoredCampaignParams } from "./campaign";
 
-/** Single source of truth — must match gtag `config` / script `id` in layout. */
 export const GA4_MEASUREMENT_ID = "G-YX09JT9HVC";
 
 const GA4_CLIENT_ID_SESSION_KEY = "grbpwr_ga4_client_id";
@@ -115,7 +113,7 @@ export function ensureGtag(): void {
     }
 }
 
-const ANALYTICS_FLUSH_MS = 1500;
+const ANALYTICS_FLUSH_MS = 200;
 
 export function waitForAnalytics(): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ANALYTICS_FLUSH_MS));

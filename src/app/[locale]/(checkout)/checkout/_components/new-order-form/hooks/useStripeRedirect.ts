@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
@@ -20,7 +20,7 @@ export function useStripeRedirect({ paymentFailedMessage }: UseStripeRedirectPro
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const redirectStatus = searchParams.get("redirect_status");
     const paymentIntentFromStripe = searchParams.get("payment_intent");
     const orderUuid = searchParams.get("order_uuid");
@@ -80,6 +80,8 @@ export function useStripeRedirect({ paymentFailedMessage }: UseStripeRedirectPro
 
       return () => window.clearTimeout(timer);
     }
+
+    return undefined;
   }, [
     searchParams,
     pathname,

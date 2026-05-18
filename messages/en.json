@@ -157,7 +157,8 @@
     "recently viewed": "recently viewed",
     "notify me": "notify me",
     "notify-description": "select your size and we will email you when this product is back in stock.",
-    "order limit exceeded": "order limit exceeded"
+    "order limit exceeded": "order limit exceeded",
+    "select your size to continue": "select your size to continue"
   },
   "checkout": {
     "contact": "contact",
