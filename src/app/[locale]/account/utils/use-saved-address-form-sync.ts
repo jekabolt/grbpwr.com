@@ -13,6 +13,7 @@ type Params = {
   addresses: StorefrontSavedAddress[];
   defaultAddress: StorefrontSavedAddress | undefined;
   currentCountryCode?: string;
+  profilePhone?: string;
   onDefaultChange?: () => void;
 };
 
@@ -25,6 +26,7 @@ const CHECKOUT_ADDRESS_FIELDS_TO_RESTORE = [
   "additionalAddress",
   "company",
   "postalCode",
+  "phone",
 ] as const;
 
 function isSameCountry(addressCountry?: string, currentCountryCode?: string) {
@@ -40,6 +42,7 @@ export function useSavedAddressFormSync({
   addresses,
   defaultAddress,
   currentCountryCode,
+  profilePhone,
   onDefaultChange,
 }: Params) {
   const { watch, setValue, getValues } = useFormContext();
@@ -82,8 +85,14 @@ export function useSavedAddressFormSync({
         shouldValidate: true,
         shouldDirty: true,
       });
+      const addressPhone = (address.phone ?? "").trim();
+      const fallbackPhone = (profilePhone ?? "").trim();
+      setValue("phone", addressPhone || fallbackPhone, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     },
-    [setValue],
+    [profilePhone, setValue],
   );
 
   useEffect(() => {
