@@ -290,6 +290,7 @@
   },
   "update_location": {
     "message": "당신은 현재 {currentCountry}에서 쇼핑을 하고 있습니다. 국가/지역을 변경하면 쇼핑카트가 비워집니다. 계속하시겠습니까?",
+    "messageCheckout": "지역을 변경하면 통화와 가격이 업데이트됩니다. 쇼핑백은 그대로 유지됩니다.",
     "continue": "계속하다: {country}",
     "cancel": "취소"
   },

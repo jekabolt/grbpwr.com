@@ -290,6 +290,7 @@
   },
   "update_location": {
     "message": "Sei attualmente in {currentCountry}. Quando cambi paese/regione, il tuo carrello sarà svuotato. Sei sicuro di voler continuare?",
+    "messageCheckout": "Cambiare regione aggiornerà valuta e prezzi. Il tuo carrello resterà intatto.",
     "continue": "Continua a: {country}",
     "cancel": "Annulla"
   },
