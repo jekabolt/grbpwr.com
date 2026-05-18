@@ -58,9 +58,9 @@ type NewOrderFormProps = {
 };
 
 export default function NewOrderForm({
-  onAmountChange,
   initialAccount,
   persistedGuestCheckout = false,
+  onAmountChange,
   onOrderRedirectStart,
 }: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
