@@ -43,6 +43,10 @@ function getRemainingResendSeconds(resendAvailableAt?: number): number {
   );
 }
 
+function isCooldownActive(resendAvailableAt?: number): boolean {
+  return (resendAvailableAt ?? 0) > Date.now();
+}
+
 function readStoredLoginAttempt(): StoredLoginAttempt | null {
   if (typeof window === "undefined") return null;
 
@@ -126,20 +130,61 @@ function clearLoginCodeCooldown(): void {
   } catch { }
 }
 
-function writeStoredLoginAttempt(email: string, resendAvailableAt?: number): void {
+function writeStoredLoginAttempt(
+  email: string,
+  resendAvailableAt?: number,
+  options?: { forceNewCooldown?: boolean },
+): void {
   if (typeof window === "undefined") return;
 
-  const availableAt =
-    resendAvailableAt ?? Date.now() + RESEND_TIMEOUT_SECONDS * 1000;
+  const normalized = normalizeStoredEmail(email);
+  const existingCooldown = readCodeCooldown();
+  const hasActiveExisting =
+    existingCooldown?.email === normalized &&
+    isCooldownActive(existingCooldown.resendAvailableAt);
+
+  let availableAt: number;
+  if (resendAvailableAt !== undefined) {
+    availableAt = resendAvailableAt;
+  } else if (hasActiveExisting && !options?.forceNewCooldown) {
+    availableAt = existingCooldown.resendAvailableAt;
+  } else {
+    availableAt = Date.now() + RESEND_TIMEOUT_SECONDS * 1000;
+  }
+
   const attempt: StoredLoginAttempt = {
-    email: normalizeStoredEmail(email),
+    email: normalized,
     step: "code",
     resendAvailableAt: availableAt,
   };
 
   try {
     sessionStorage.setItem(LOGIN_ATTEMPT_STORAGE_KEY, JSON.stringify(attempt));
-    writeCodeCooldown(email, availableAt);
+    if (options?.forceNewCooldown || !hasActiveExisting) {
+      writeCodeCooldown(email, availableAt);
+    }
+  } catch { }
+}
+
+function writeCodeStepMarker(email: string): void {
+  if (typeof window === "undefined") return;
+
+  const normalized = normalizeStoredEmail(email);
+  const cooldown = readCodeCooldown();
+  const resendAvailableAt =
+    cooldown?.email === normalized && isCooldownActive(cooldown.resendAvailableAt)
+      ? cooldown.resendAvailableAt
+      : Date.now() + RESEND_TIMEOUT_SECONDS * 1000;
+
+  try {
+    sessionStorage.setItem(
+      LOGIN_ATTEMPT_STORAGE_KEY,
+      JSON.stringify({
+        email: normalized,
+        step: "code",
+        resendAvailableAt,
+      } satisfies StoredLoginAttempt),
+    );
   } catch { }
 }
 
@@ -161,25 +206,17 @@ function getActiveCooldownForEmail(
 ): { resendAvailableAt: number; remaining: number } | null {
   const normalized = normalizeStoredEmail(email);
   const cooldown = readCodeCooldown();
-  if (cooldown && cooldown.email === normalized) {
-    const remaining = getRemainingResendSeconds(cooldown.resendAvailableAt);
-    if (remaining > 0) {
-      return { resendAvailableAt: cooldown.resendAvailableAt, remaining };
-    }
+  if (
+    !cooldown ||
+    cooldown.email !== normalized ||
+    !isCooldownActive(cooldown.resendAvailableAt)
+  ) {
     return null;
   }
-
-  const stored = readStoredLoginAttempt();
-  if (!stored || normalizeStoredEmail(stored.email) !== normalized) {
-    return null;
-  }
-
-  const remaining = getRemainingResendSeconds(stored.resendAvailableAt);
-  if (remaining <= 0) return null;
 
   return {
-    resendAvailableAt: stored.resendAvailableAt ?? 0,
-    remaining,
+    resendAvailableAt: cooldown.resendAvailableAt,
+    remaining: getRemainingResendSeconds(cooldown.resendAvailableAt),
   };
 }
 
@@ -301,7 +338,8 @@ export function useAccountLogin() {
 
   async function sendLoginCode(moveToCodeStep: boolean) {
     if (pending || requestInFlightRef.current) return false;
-    if (!moveToCodeStep && resendSeconds > 0) return false;
+    const activeCooldown = getActiveCooldownForEmail(normalizedEmail);
+    if (!moveToCodeStep && activeCooldown) return false;
     if (!isValidEmail) {
       openErrorToast(t("invalid email"));
       return false;
@@ -309,24 +347,20 @@ export function useAccountLogin() {
 
     setCodeVerified(false);
 
-    if (moveToCodeStep) {
-      const activeCooldown = getActiveCooldownForEmail(normalizedEmail);
-      if (activeCooldown) {
-        setStep("code");
-        setResendSeconds(activeCooldown.remaining);
-        writeStoredLoginAttempt(
-          normalizedEmail,
-          activeCooldown.resendAvailableAt,
-        );
-        return true;
-      }
+    if (moveToCodeStep && activeCooldown) {
+      setStep("code");
+      setResendSeconds(activeCooldown.remaining);
+      writeCodeStepMarker(normalizedEmail);
+      return true;
     }
 
     requestInFlightRef.current = true;
     setPending(true);
 
     if (!moveToCodeStep) {
-      writeStoredLoginAttempt(normalizedEmail);
+      writeStoredLoginAttempt(normalizedEmail, undefined, {
+        forceNewCooldown: true,
+      });
       setResendSeconds(RESEND_TIMEOUT_SECONDS);
     }
 
@@ -342,7 +376,9 @@ export function useAccountLogin() {
 
       if (moveToCodeStep) {
         setStep("code");
-        writeStoredLoginAttempt(normalizedEmail);
+        writeStoredLoginAttempt(normalizedEmail, undefined, {
+          forceNewCooldown: true,
+        });
         setResendSeconds(RESEND_TIMEOUT_SECONDS);
       }
       return true;
