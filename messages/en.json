@@ -202,6 +202,7 @@
     "sales tax": "Sales Tax",
     "gst": "GST",
     "FREE": "FREE",
+    "STANDARD": "standard",
     "hide": "hide",
     "show": "show",
     "incl": "incl. vat",

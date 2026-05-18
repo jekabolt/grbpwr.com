@@ -25,7 +25,7 @@ export function OrderSecondaryInfo({
   );
   const rawCarrierName = carrier?.shipmentCarrier?.carrier;
   const shipmentCarrierName =
-    rawCarrierName === "FREE" ? tCheckout("FREE") : rawCarrierName;
+    rawCarrierName === "STANDARD" ? tCheckout("STANDARD") : rawCarrierName;
   return (
     <>
       <div className="hidden lg:block">
