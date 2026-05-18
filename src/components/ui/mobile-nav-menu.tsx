@@ -33,7 +33,7 @@ export function MobileNavMenu({
       <DialogPrimitives.Trigger asChild>
         <Button
           size="lg"
-          className="w-full text-left transition-colors hover:opacity-70 active:opacity-50"
+          className="w-1/2 text-left transition-colors hover:opacity-70 active:opacity-50"
         >
           {t("menu")}
         </Button>
