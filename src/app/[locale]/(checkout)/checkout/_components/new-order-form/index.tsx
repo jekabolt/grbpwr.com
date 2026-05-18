@@ -8,11 +8,6 @@ import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
-import {
-  clearGuestCheckoutIntent,
-  persistGuestCheckoutIntent,
-  readGuestCheckoutFromSession,
-} from "@/lib/checkout/guest-checkout-intent";
 import { formatPrice } from "@/lib/currency";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -53,31 +48,23 @@ const CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY =
 type NewOrderFormProps = {
   onAmountChange: (amount: number) => void;
   initialAccount: StorefrontAccount | null;
-  persistedGuestCheckout?: boolean;
   onOrderRedirectStart?: () => void;
 };
 
 export default function NewOrderForm({
   initialAccount,
-  persistedGuestCheckout = false,
   onAmountChange,
   onOrderRedirectStart,
 }: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
   const { products, totalPrice, validatedCurrency } = useCart((s) => s);
   const { isSignedIn } = useAccountOnboardingStore((s) => s);
-  const [guestCheckout, setGuestCheckout] = useState(persistedGuestCheckout);
+  const [guestCheckout, setGuestCheckout] = useState(false);
   const [checkoutLoginStep, setCheckoutLoginStep] =
     useState<AccountLoginStep>("email");
   const [checkoutLoginVerified, setCheckoutLoginVerified] = useState(false);
   const [checkoutProfileCompleted, setCheckoutProfileCompleted] =
     useState(false);
-
-  useLayoutEffect(() => {
-    if (persistedGuestCheckout || readGuestCheckoutFromSession()) {
-      setGuestCheckout(true);
-    }
-  }, [persistedGuestCheckout]);
 
   useLayoutEffect(() => {
     const email = initialAccount?.email?.trim();
@@ -106,7 +93,6 @@ export default function NewOrderForm({
   useEffect(() => {
     if (isSignedIn) {
       setGuestCheckout(false);
-      clearGuestCheckoutIntent();
     }
   }, [isSignedIn]);
 
@@ -184,10 +170,7 @@ export default function NewOrderForm({
     clearFormData,
     setToastMessage,
     setOrderModifiedToastOpen,
-    onOrderRedirectStart: () => {
-      clearGuestCheckoutIntent();
-      onOrderRedirectStart?.();
-    },
+    onOrderRedirectStart,
   });
 
   useCheckoutFormAnalytics({
@@ -271,10 +254,7 @@ export default function NewOrderForm({
                   isCheckout
                   onStepChange={setCheckoutLoginStep}
                   onVerified={() => setCheckoutLoginVerified(true)}
-                  onCheckoutAsGuest={() => {
-                    persistGuestCheckoutIntent();
-                    setGuestCheckout(true);
-                  }}
+                  onCheckoutAsGuest={() => setGuestCheckout(true)}
                 />
               </div>
             ) : showProfilePrompt ? (
