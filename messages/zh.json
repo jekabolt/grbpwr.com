@@ -158,6 +158,7 @@
     "recently viewed": "最近浏览的商品",
     "notify me": "通知我",
     "notify-description": "选择您的尺码，当此商品重新上架时，我们将通过电子邮件通知您。",
+    "notify-agree": "我同意接收邮件。请阅读我们的<privacy>隐私政策</privacy>了解更多信息。",
     "order limit exceeded": "订单限制已超出",
     "select your size to continue": "请选择尺码以继续"
   },

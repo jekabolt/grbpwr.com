@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
@@ -190,7 +191,16 @@ export function NotifyMe({
                     />
                     <CheckboxGlobal
                       name="newsLetter"
-                      label={t("agree")}
+                      label={tProduct.rich("notify-agree", {
+                        privacy: (chunks) => (
+                          <Link
+                            href="/legal-notices?section=privacy"
+                            className="underline hover:no-underline"
+                          >
+                            {chunks}
+                          </Link>
+                        ),
+                      })}
                       checked={isChecked}
                       onCheckedChange={(checked: boolean) =>
                         setIsChecked(checked)

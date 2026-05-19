@@ -158,6 +158,7 @@
     "recently viewed": "vue récente",
     "notify me": "me notifier",
     "notify-description": "sélectionnez votre taille et nous vous enverrons un e-mail lorsque ce produit sera de nouveau en stock.",
+    "notify-agree": "j'accepte de recevoir des emails. lisez notre <privacy>politique de confidentialité</privacy> pour plus d'informations.",
     "order limit exceeded": "limite de commande dépassée",
     "select your size to continue": "sélectionnez votre taille pour continuer"
   },
