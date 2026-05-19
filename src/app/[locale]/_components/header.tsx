@@ -96,7 +96,7 @@ export function Header({
           asChild
           size="lg"
           className={cn(
-            "absolute left-1/2 -translate-x-1/2 text-center transition-colors hover:opacity-70 active:opacity-50",
+            "absolute left-1/2 z-10 -translate-x-1/2 text-center transition-colors hover:opacity-70 active:opacity-50",
           )}
         >
           <Link
@@ -124,14 +124,14 @@ export function Header({
         </Button>
 
         <div className="flex grow basis-0 items-center justify-end">
-          <div className="relative w-full lg:w-auto">
-            <div className="block w-full lg:hidden">
+          <div className="relative w-1/2 lg:w-auto">
+            <div className="flex justify-end lg:hidden">
               {isWebsiteEnabled ? (
                 <MobileNavCart />
               ) : (
                 <Button
                   size="lg"
-                  className="z-50 w-full bg-transparent text-right transition-colors hover:opacity-70 active:opacity-50"
+                  className="ml-auto w-1/2 bg-transparent text-right transition-colors hover:opacity-70 active:opacity-50"
                   asChild
                 >
                   <Link href="/timeline">{t("timeline")}</Link>

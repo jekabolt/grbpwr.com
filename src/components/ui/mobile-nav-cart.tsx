@@ -46,7 +46,7 @@ export function MobileNavCart({
         <Button
           size={isProductInfo ? "default" : "lg"}
           onClick={openCart}
-          className={cn("w-full bg-transparent text-right", {
+          className={cn("ml-auto bg-transparent text-right", {
             "w-1/3 py-2.5 pr-2.5": isProductInfo,
           })}
         >
