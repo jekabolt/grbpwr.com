@@ -1,12 +1,13 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   CountryOption,
   LANGUAGE_CODE_TO_ID,
   LANGUAGE_ID_TO_LOCALE,
 } from "@/constants";
 
+import { navigateToLocaleWithPicker } from "@/lib/navigation/navigate-with-picker";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +17,6 @@ export function useLocation({
   regionsWithCountries?: [string, CountryOption[]][];
 } = {}) {
   const pathname = usePathname();
-  const router = useRouter();
 
   const {
     languageId,
@@ -30,7 +30,10 @@ export function useLocation({
     const langs: { label: string; value: string; className?: string }[] = [];
     for (const [, countries] of regionsWithCountries || []) {
       for (const c of countries) {
-        if (c.countryCode === currentCountry.countryCode) {
+        if (
+          c.countryCode.toLowerCase() ===
+          currentCountry.countryCode?.toLowerCase()
+        ) {
           const isSelected = LANGUAGE_ID_TO_LOCALE[languageId] === c.lng;
           langs.push({
             label: c.displayLng || c.lng,
@@ -58,13 +61,7 @@ export function useLocation({
     setLanguageId(newLanguageId);
     closeCountryPopup();
 
-    const pathWithoutLocaleCountry =
-      pathname.replace(/^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/, "") ||
-      "/";
-    const rest =
-      pathWithoutLocaleCountry === "/" ? "" : pathWithoutLocaleCountry;
-    const search = typeof window !== "undefined" ? window.location.search : "";
-    router.push(`/${lng}${rest}${search}`);
+    navigateToLocaleWithPicker(lng, pathname, currentCountry.countryCode);
   };
 
   const handleCountrySelect = (country: any) => {

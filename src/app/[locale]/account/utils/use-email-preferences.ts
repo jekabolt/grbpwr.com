@@ -13,7 +13,7 @@ import type {
   AccountSchema
 } from "@/app/[locale]/account/utils/schema";
 import { useAccountUpdate } from "@/app/[locale]/account/utils/use-account-update";
-import { navigateToCountryWithPicker } from "@/lib/navigation/navigate-to-country-with-picker";
+import { navigateToCountryWithPicker } from "@/lib/navigation/navigate-with-picker";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
 const SAVE_DEBOUNCE_MS = 450;

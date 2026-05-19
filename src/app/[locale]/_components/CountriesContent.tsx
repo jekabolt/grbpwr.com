@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { COUNTRIES_BY_REGION, LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import RadioGroup from "@/components/ui/radio-group";
 import { Searchbar } from "@/components/ui/searchbar";
 import { Text } from "@/components/ui/text";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 
 import FieldsGroupContainer from "../(checkout)/checkout/_components/new-order-form/fields-group-container";
 import { useLocation } from "./useLocation";
@@ -138,7 +138,9 @@ export function CountriesContent({ className }: { className?: string }) {
                             <Text className="uppercase">{country.name}</Text>
                             <Text>{`[${country.currency}]`}</Text>
                           </div>
-                          <Text className="uppercase">{country.displayLng}</Text>
+                          <Text className="uppercase">
+                            {country.displayLng}
+                          </Text>
                         </div>
                       </Button>
                     ))}
