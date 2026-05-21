@@ -34,7 +34,7 @@ export function AccountMobileSectionPage({ account, section }: Props) {
   return (
     <div className="min-h-screen w-full px-2.5 pb-24 pt-20 lg:hidden">
       <div className="mb-10">
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center border-b border-textColor pb-3">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center">
           {isAddressEditHeader ? (
             <div />
           ) : (

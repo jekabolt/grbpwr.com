@@ -33,15 +33,16 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
 
   return (
     <div className="w-full space-y-16">
-      <div className="flex gap-3">
+      <div className="flex">
         {ORDER_RETURN_TABS.map((tab) => (
           <Button
             key={tab.value}
             onClick={() => setView(tab.value)}
-            className={cn("uppercase", {
-              "text-textInactiveColor": view !== tab.value,
+            className={cn("w-full uppercase", {
+              "border-b border-textColor": view === tab.value,
+              "border-b border-textInactiveColor text-textInactiveColor":
+                view !== tab.value,
             })}
-            variant={view === tab.value ? "underline" : "default"}
           >
             {t(tab.labelKey)}
           </Button>
