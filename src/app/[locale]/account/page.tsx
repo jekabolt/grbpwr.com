@@ -12,7 +12,7 @@ export default async function AccountPage() {
 
   return (
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"} accountPanel>
-      <div className="flex min-h-dvh w-full items-center justify-center bg-bgColor px-2.5 text-textColor lg:p-0">
+      <div className="flex min-h-dvh w-full items-center justify-center bg-bgColor px-2.5 text-textColor lg:px-32 lg:py-24">
         {account ? (
           <AccountSignedInSection account={account} />
         ) : (

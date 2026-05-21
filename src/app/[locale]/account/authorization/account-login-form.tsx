@@ -21,6 +21,8 @@ import {
 
 export type AccountLoginStep = "email" | "code";
 
+const LOGIN_FORM_WIDTH_CLASS = "w-full max-w-md";
+
 export function AccountLoginForm({
   isCheckout = false,
   onCheckoutAsGuest,
@@ -66,40 +68,49 @@ export function AccountLoginForm({
   }, [codeVerified, onVerified]);
 
   if (!storageChecked) {
-    return <div className="h-[340px] w-full lg:max-w-[400px]" aria-hidden />;
+    return (
+      <div className={cn("h-[340px]", LOGIN_FORM_WIDTH_CLASS)} aria-hidden />
+    );
   }
 
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div
-        className={cn("flex w-full items-center", {
+        className={cn("flex h-full w-full items-center", {
           "min-h-[340px] justify-center": !showCartSummary,
           "pb-28": showCartSummary,
-          "lg:grid lg:max-w-[1000px] lg:grid-cols-2 lg:items-center lg:gap-20":
+          "lg:grid lg:max-w-[1000px] lg:grid-cols-2 lg:items-start lg:gap-20":
             showCartSummary,
         })}
       >
-        <div className="mx-auto flex h-auto w-full items-center gap-6 lg:max-w-[400px]">
-          {step === "email" ? (
-            <EmailStep
-              email={email}
-              pending={pending}
-              isValidEmail={isValidEmail}
-              isCheckout={isCheckout}
-              onEmailChange={setEmail}
-              onContinue={sendInitialCode}
-              onCheckoutAsGuest={onCheckoutAsGuest}
-            />
-          ) : (
-            <CodeStep
-              code={code}
-              pending={pending}
-              resendSeconds={resendSeconds}
-              onCodeChange={setCode}
-              onCodeComplete={verifyCode}
-              onResend={resendCode}
-            />
-          )}
+        <div>
+          <div
+            className={cn(
+              "mx-auto flex h-auto items-center gap-6",
+              LOGIN_FORM_WIDTH_CLASS,
+            )}
+          >
+            {step === "email" ? (
+              <EmailStep
+                email={email}
+                pending={pending}
+                isValidEmail={isValidEmail}
+                isCheckout={isCheckout}
+                onEmailChange={setEmail}
+                onContinue={sendInitialCode}
+                onCheckoutAsGuest={onCheckoutAsGuest}
+              />
+            ) : (
+              <CodeStep
+                code={code}
+                pending={pending}
+                resendSeconds={resendSeconds}
+                onCodeChange={setCode}
+                onCodeComplete={verifyCode}
+                onResend={resendCode}
+              />
+            )}
+          </div>
         </div>
         {showCartSummary && (
           <div className="hidden lg:block">
@@ -141,48 +152,37 @@ function EmailStep({
   const t = useTranslations("account");
 
   return (
-    <div className="w-full space-y-10">
-      <div className="flex w-full flex-col items-center gap-6">
-        <Text
-          variant="uppercase"
-          className={cn("", {
-            "text-textInactiveColor": pending,
-          })}
-        >
-          {t("login")}
-        </Text>
-        <UserLocationTrigger
-          pending={pending}
-          showLabel={false}
-          showCurrentCountryText
-          buttonLabel={t("change location")}
-        />
-      </div>
-      <div>
-        <Text
-          variant="uppercase"
-          className={cn("", {
-            "text-textInactiveColor": pending,
-          })}
-        >
-          {t("email")}
-        </Text>
-        <Input
-          name="email"
-          type="email"
-          autoComplete="email"
-          value={email}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            onEmailChange(e.target.value)
-          }
-          disabled={pending}
-        />
-      </div>
+    <div className={cn("space-y-6", LOGIN_FORM_WIDTH_CLASS)}>
       <div
-        className={cn("space-y-0", {
-          "space-y-3": isCheckout,
-        })}
+        className={cn(
+          "space-y-10 lg:border lg:border-textInactiveColor lg:p-10",
+          {
+            "text-textInactiveColor": pending,
+          },
+        )}
       >
+        <div className="flex w-full flex-col items-center gap-6">
+          <Text variant="uppercase">{t("login")}</Text>
+          <UserLocationTrigger
+            pending={pending}
+            showLabel={false}
+            showCurrentCountryText
+            buttonLabel={t("change location")}
+          />
+        </div>
+        <div>
+          <Text variant="uppercase">{t("email")}</Text>
+          <Input
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              onEmailChange(e.target.value)
+            }
+            disabled={pending}
+          />
+        </div>
         <Button
           type="button"
           variant="main"
@@ -193,23 +193,23 @@ function EmailStep({
         >
           {t("continue")}
         </Button>
-        {isCheckout && (
-          <>
-            <Text variant="uppercase" className="text-center">
-              {t("or")}
-            </Text>
-            <Button
-              variant="simpleReverseWithBorder"
-              className="w-full uppercase"
-              size="lg"
-              type="button"
-              onClick={onCheckoutAsGuest}
-            >
-              {t("checkout as guest")}
-            </Button>
-          </>
-        )}
       </div>
+      {isCheckout && (
+        <div className="space-y-4">
+          <Text variant="uppercase" className="text-center">
+            {t("or")}
+          </Text>
+          <Button
+            variant="simpleReverseWithBorder"
+            className="w-full uppercase"
+            size="lg"
+            type="button"
+            onClick={onCheckoutAsGuest}
+          >
+            {t("checkout as guest")}
+          </Button>
+        </div>
+      )}
       <div>
         <Text variant="inactive" className="text-center uppercase">
           {t.rich("email_consent_notice", {
@@ -254,7 +254,12 @@ function CodeStep({
   const t = useTranslations("account");
 
   return (
-    <div className="flex w-full items-center justify-center">
+    <div
+      className={cn(
+        "flex items-center justify-center lg:border lg:border-textInactiveColor lg:p-10",
+        LOGIN_FORM_WIDTH_CLASS,
+      )}
+    >
       <div className="flex w-full flex-col items-center gap-16">
         <Text
           variant="uppercase"

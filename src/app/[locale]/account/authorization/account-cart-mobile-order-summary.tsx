@@ -22,7 +22,15 @@ function useAccountCartSummaryData() {
 
   const validatedProducts = products
     .map((product) => product.productData)
-    .filter((item): item is NonNullable<typeof item> => Boolean(item));
+    .filter((item): item is NonNullable<typeof item> => Boolean(item))
+    .map((item) =>
+      item.orderItem
+        ? {
+            ...item,
+            orderItem: { ...item.orderItem, quantity: 1 },
+          }
+        : item,
+    );
 
   const currency = validatedCurrency || "EUR";
   const currencySymbol =
@@ -119,11 +127,6 @@ export function AccountCartDesktopOrderSummary() {
   return (
     <div className="space-y-8">
       <Text variant="uppercase">{t("order summary")}</Text>
-      <OrderProducts
-        validatedProducts={validatedProducts}
-        currencyKey={validatedCurrency}
-        disableProductLinks
-      />
       <div className="space-y-3 border-t border-textInactiveColor pt-4">
         <div className="flex justify-between">
           <Text variant="uppercase">{t("subtotal")}:</Text>
@@ -134,6 +137,11 @@ export function AccountCartDesktopOrderSummary() {
           <Text>{formatPrice(totalPrice, currency, currencySymbol)}</Text>
         </div>
       </div>
+      <OrderProducts
+        validatedProducts={validatedProducts}
+        currencyKey={validatedCurrency}
+        disableProductLinks
+      />
     </div>
   );
 }

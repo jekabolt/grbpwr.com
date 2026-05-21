@@ -226,7 +226,7 @@ export default function NewOrderForm({
         <div className="relative h-full space-y-14 lg:space-y-0">
           <div
             className={cn(
-              "flex flex-col gap-14 lg:grid lg:grid-cols-2 lg:gap-28",
+              "flex flex-col items-start gap-14 lg:grid lg:grid-cols-2 lg:gap-28",
               centerAuthOnMobile &&
                 "min-h-[calc(100dvh-7rem)] justify-center lg:min-h-0 lg:justify-start",
             )}
@@ -249,7 +249,7 @@ export default function NewOrderForm({
               </div>
             )}
             {!showCheckoutFields ? (
-              <div className="w-full shrink-0 lg:pt-10">
+              <div>
                 <AccountLoginForm
                   isCheckout
                   onStepChange={setCheckoutLoginStep}
@@ -320,7 +320,7 @@ export default function NewOrderForm({
             )}
             <div
               className={cn(
-                "fixed inset-x-2.5 bottom-3 lg:sticky lg:top-16 lg:space-y-8 lg:self-start",
+                "fixed inset-x-2.5 bottom-3 lg:static lg:top-16 lg:space-y-8 lg:self-start",
                 !showCheckoutForm && "hidden lg:block",
               )}
             >
@@ -331,50 +331,54 @@ export default function NewOrderForm({
                 >
                   {t("order summary")}
                 </Text>
-                <OrderProducts
-                  validatedProducts={order?.validItems}
-                  currencyKey={orderCurrency}
-                  disabled={loading}
-                  disableProductLinks
-                />
                 <div
                   className={cn("space-y-8", {
                     "text-textInactiveColor": loading,
                   })}
                 >
-                  <PromoCode
-                    freeShipmentCarrierId={2}
-                    form={form}
-                    loading={loading}
-                    validateItems={validateItems}
-                    currency={
-                      orderCurrency || currentCountry.currencyKey || "EUR"
-                    }
-                  />
+                  {showCheckoutForm && (
+                    <PromoCode
+                      freeShipmentCarrierId={2}
+                      form={form}
+                      loading={loading}
+                      validateItems={validateItems}
+                      currency={
+                        orderCurrency || currentCountry.currencyKey || "EUR"
+                      }
+                    />
+                  )}
                   <PriceSummary
                     form={form}
                     order={order}
                     orderCurrency={orderCurrency}
                   />
+                  {showCheckoutForm && (
+                    <Button
+                      form="checkout-order-form"
+                      type="submit"
+                      variant="main"
+                      size="lg"
+                      className="w-full uppercase"
+                      disabled={
+                        loading ||
+                        !form.formState.isValid ||
+                        !isPaymentFieldsValid
+                      }
+                      loading={loading}
+                      loadingType="order-processing"
+                      analyticsButtonId="place_order"
+                    >
+                      {`${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`}
+                    </Button>
+                  )}
+                  <OrderProducts
+                    validatedProducts={order?.validItems}
+                    currencyKey={orderCurrency}
+                    disabled={loading}
+                    disableProductLinks
+                  />
                 </div>
               </div>
-              {showCheckoutForm ? (
-                <Button
-                  form="checkout-order-form"
-                  type="submit"
-                  variant="main"
-                  size="lg"
-                  className="w-full uppercase"
-                  disabled={
-                    loading || !form.formState.isValid || !isPaymentFieldsValid
-                  }
-                  loading={loading}
-                  loadingType="order-processing"
-                  analyticsButtonId="place_order"
-                >
-                  {`${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`}
-                </Button>
-              ) : null}
             </div>
           </div>
         </div>

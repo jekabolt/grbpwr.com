@@ -25,7 +25,7 @@ export function OrderProducts({
 
   return (
     <div>
-      <div className="hidden max-h-[50vh] overflow-y-scroll lg:block">
+      <div className="hidden h-full overflow-y-scroll lg:block">
         <CartProductsList
           hideQuantityButtons
           validatedProducts={expandedProducts}
