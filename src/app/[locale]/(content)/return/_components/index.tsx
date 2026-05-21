@@ -1,24 +1,24 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { common_OrderFull } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
+import { sendRefundEvent } from "@/lib/analitycs/checkout";
+import { sendFormEvent } from "@/lib/analitycs/form";
+import { SizeMap } from "@/lib/analitycs/utils";
+import { serviceClient } from "@/lib/api";
+import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
-import { sendRefundEvent } from "@/lib/analitycs/checkout";
-import { sendFormEvent } from "@/lib/analitycs/form";
-import { SizeMap } from "@/lib/analitycs/utils";
-import { serviceClient } from "@/lib/api";
-import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
+import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
 import AftersaleSelector from "../../_components/aftersale-selector";
 import { reasons } from "../../_components/constant";
@@ -88,7 +88,9 @@ export function RefundForm() {
           email: data.email,
           formId: "refund",
         });
-        setToastMessage(t("return_request_success", { orderNumber: data.orderUuid }));
+        setToastMessage(
+          t("return_request_success", { orderNumber: data.orderUuid }),
+        );
         form.reset(defaultData);
         setOpen(true);
         setTimeout(() => {
@@ -98,9 +100,7 @@ export function RefundForm() {
     } catch (e) {
       console.error("Form submission failed:", e);
       const message =
-        e instanceof Error && e.message
-          ? e.message
-          : t("submission_error");
+        e instanceof Error && e.message ? e.message : t("submission_error");
       setToastMessage(message);
       setOpen(true);
     }
@@ -110,7 +110,7 @@ export function RefundForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <div className="w-full space-y-9 lg:w-1/2">
+          <div className="w-full space-y-9">
             <FieldsGroupContainer
               stage="1/1"
               collapsible={false}
@@ -133,7 +133,7 @@ export function RefundForm() {
                   control={form.control}
                   name="reason"
                   list={reasons}
-                  className="w-full lg:w-4/5"
+                  className="w-full"
                   renderLabel={(value) => t(value as any)}
                 />
               </div>

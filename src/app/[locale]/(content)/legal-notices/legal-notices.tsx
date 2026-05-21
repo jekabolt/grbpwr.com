@@ -42,7 +42,7 @@ export function LegalNotices() {
   const { content } = useMarkdownContent(localizedCandidates);
   return (
     <>
-      <div className="flex w-full flex-col lg:w-1/2 lg:pl-8 lg:pt-56">
+      <div className="flex w-full flex-col lg:w-1/2">
         <div className="space-y-10">
           <Text className="uppercase">{t("legal notices")}</Text>
           <div className="space-y-4">
@@ -59,7 +59,7 @@ export function LegalNotices() {
           </div>
         </div>
       </div>
-      <div className="w-full lg:w-1/2 lg:pr-40">
+      <div className="w-full lg:w-1/2">
         {selectedSection === "cookies" ? (
           <CookieContent autoSave={true} />
         ) : (

@@ -83,7 +83,7 @@ export default function AftersaleForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <div className="mb-9 w-full space-y-9 lg:w-1/2">
+          <div className="mb-9 w-full space-y-9">
             {formSteps.map(({ step, title, name, list }) => (
               <FieldsGroupContainer
                 key={name}
@@ -95,7 +95,7 @@ export default function AftersaleForm() {
                   control={form.control}
                   name={name}
                   list={list}
-                  className="w-full lg:w-3/4"
+                  className="w-full"
                   renderLabel={(value) => t(value as any)}
                 />
               </FieldsGroupContainer>
