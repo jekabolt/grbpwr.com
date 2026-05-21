@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 
 import { parseCountryLocalePath } from "@/lib/middleware-utils";
 import { notifyCheckoutLocationChangeCancelled } from "@/lib/checkout-location-change";
+import { navigateWithPicker } from "@/lib/navigation/navigate-with-picker";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { setDefaultAddressRequest } from "@/app/[locale]/account/utils/address-actions";
@@ -67,14 +68,12 @@ export function UpdateLocation() {
 
     applyNextCountry();
 
-    const pathWithoutLocaleCountry =
-      pathname.replace(/^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/, "") ||
-      "/";
-
-    const newPath = `/${targetCountryCode.toLowerCase()}/${newLocale}${pathWithoutLocaleCountry}`;
-    const url = new URL(newPath, window.location.origin);
-    url.searchParams.set("from_picker", "1");
-    window.location.href = url.toString();
+    navigateWithPicker({
+      countryCode: targetCountryCode,
+      locale: newLocale,
+      pathname: pathname || "",
+      fromPicker: true,
+    });
   };
 
   const handleCancelCountry = () => {
