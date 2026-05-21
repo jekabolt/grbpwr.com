@@ -1,13 +1,12 @@
-import { isValidElement } from "react";
+import { isValidElement, type ReactNode } from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";
 
-export const CustomParagraph = ({ children }: any) => {
-  return <div className="mb-4 lg:mb-8">{children}</div>;
-};
+export const CONTENT_PROSE_CLASSNAME =
+  "prose-li:my-0 prose-ol:my-0 prose-ul:my-0 prose-ol:list-decimal prose-ul:list-disc prose-strong:font-normal leading-none";
 
 function markdownPlainText(node: unknown): string {
   if (node == null || typeof node === "boolean") return "";
@@ -20,16 +19,50 @@ function markdownPlainText(node: unknown): string {
   return "";
 }
 
-export const TierPrivilegeParagraph = ({ children }: any) => {
-  const plain = markdownPlainText(children).trim();
-  const hasLowercaseLetter = /\p{Ll}/u.test(plain);
-  const isDescriptionLine = plain.length === 0 || hasLowercaseLetter;
+const SUBSECTION_TITLE_MAX_LENGTH = 50;
+const BLOCK_GAP = "mb-3";
 
+function hasLowercaseLetter(text: string): boolean {
+  return /\p{Ll}/u.test(text);
+}
+
+function isSubsectionTitle(plain: string): boolean {
+  if (plain.length === 0 || plain.length > SUBSECTION_TITLE_MAX_LENGTH) {
+    return false;
+  }
+  return !hasLowercaseLetter(plain);
+}
+
+const MarkdownParagraph = ({
+  children,
+  tierPrivileges = false,
+}: {
+  children?: ReactNode;
+  tierPrivileges?: boolean;
+}) => {
+  const plain = markdownPlainText(children).trim();
+
+  if (tierPrivileges) {
+    const isDescriptionLine = plain.length === 0 || hasLowercaseLetter(plain);
+    return (
+      <div
+        className={cn(
+          "mb-4 lg:mb-8",
+          isDescriptionLine ? "lowercase" : "uppercase",
+        )}
+      >
+        {children}
+      </div>
+    );
+  }
+
+  const isTitle = isSubsectionTitle(plain);
   return (
     <div
       className={cn(
-        "mb-4 lg:mb-8",
-        isDescriptionLine ? "lowercase" : "uppercase",
+        "content-md-block",
+        BLOCK_GAP,
+        isTitle && "mt-8 uppercase lg:mt-12",
       )}
     >
       {children}
@@ -37,24 +70,53 @@ export const TierPrivilegeParagraph = ({ children }: any) => {
   );
 };
 
-export const CustomList = ({ children, ...props }: any) => {
-  return (
-    <ul {...props} className="mb-4 lg:mb-8">
-      {children}
-    </ul>
-  );
-};
+const MarkdownList = ({ children, className, ...props }: any) => (
+  <ul
+    {...props}
+    className={cn(
+      "not-prose list-outside list-disc space-y-0 pl-5 leading-none marker:text-[inherit] [&>li]:my-0 [&_.content-md-block]:mb-0",
+      BLOCK_GAP,
+      className,
+    )}
+  >
+    {children}
+  </ul>
+);
 
-export const CustomOrderedList = ({ children, ...props }: any) => {
-  return (
-    <ol {...props} className="mb-4 lg:mb-8">
-      {children}
-    </ol>
-  );
-};
+const MarkdownOrderedList = ({ children, className, ...props }: any) => (
+  <ol
+    {...props}
+    className={cn(
+      "not-prose list-outside list-decimal space-y-3 pl-5 leading-none marker:text-[inherit]",
+      BLOCK_GAP,
+      className,
+    )}
+  >
+    {children}
+  </ol>
+);
 
-export const CustomListItem = ({ children, ...props }: any) => {
-  return <li {...props}>{children}</li>;
+const MarkdownListItem = ({ children, className, ...props }: any) => (
+  <li
+    {...props}
+    className={cn(
+      "not-prose leading-none [&>ul]:mt-3 [&_.content-md-block:not(:last-child)]:mb-3 [&_.content-md-block]:mb-0",
+      className,
+    )}
+  >
+    {children}
+  </li>
+);
+
+const MarkdownHeading = ({
+  children,
+  level,
+}: {
+  children?: ReactNode;
+  level: 3 | 4;
+}) => {
+  const Tag = `h${level}` as "h3" | "h4";
+  return <Tag className="mb-4 mt-8 uppercase lg:mt-12">{children}</Tag>;
 };
 
 export const createCustomLink = (
@@ -99,24 +161,31 @@ export const createCustomLink = (
 };
 
 export type MarkdownComponentsOptions = {
-  /** Tier privilege MD: alternate ALL-CAPS titles with lowercase descriptive lines without forcing one casing on everything. */
-  paragraphTone?: "default" | "tier-privileges";
+  paragraphTone?: "tier-privileges";
 };
 
 export function createMarkdownComponents(
   onSectionChange?: (section: string) => void,
   options?: MarkdownComponentsOptions,
 ) {
-  const P =
-    options?.paragraphTone === "tier-privileges"
-      ? TierPrivilegeParagraph
-      : CustomParagraph;
+  const tierPrivileges = options?.paragraphTone === "tier-privileges";
 
   return {
-    p: P,
-    ul: CustomList,
-    ol: CustomOrderedList,
-    li: CustomListItem,
+    p: (props: { children?: ReactNode }) => (
+      <MarkdownParagraph {...props} tierPrivileges={tierPrivileges} />
+    ),
+    ul: MarkdownList,
+    ol: MarkdownOrderedList,
+    li: MarkdownListItem,
+    h3: ({ children }: { children?: ReactNode }) => (
+      <MarkdownHeading level={3}>{children}</MarkdownHeading>
+    ),
+    h4: ({ children }: { children?: ReactNode }) => (
+      <MarkdownHeading level={4}>{children}</MarkdownHeading>
+    ),
+    strong: ({ children }: { children?: ReactNode }) => (
+      <span className="font-normal">{children}</span>
+    ),
     a: createCustomLink(onSectionChange),
   };
 }

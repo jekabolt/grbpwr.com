@@ -18,7 +18,7 @@ export default async function Refund({
   const isWebsiteEnabled = dictionary?.siteEnabled;
   return (
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
-      <div className="h-full space-y-12 px-2.5 pb-24 pt-24 lg:space-y-16 lg:px-28">
+      <div className="h-full space-y-12 px-2.5 pb-24 pt-24 lg:space-y-16 lg:px-96">
         <div className="space-y-9">
           <Text variant="uppercase">{t("return order")}</Text>
           <Text>{t("text")}</Text>
@@ -28,3 +28,5 @@ export default async function Refund({
     </FlexibleLayout>
   );
 }
+
+//className="h-full space-y-12 px-2.5 pb-24 pt-24 lg:space-y-16 lg:px-28"

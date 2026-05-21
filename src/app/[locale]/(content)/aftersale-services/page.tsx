@@ -18,7 +18,7 @@ export default async function AftersaleServicesPage({
   const isWebsiteEnabled = dictionary?.siteEnabled;
   return (
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
-      <div className="h-full space-y-12 px-2.5 pt-24 lg:space-y-16 lg:px-28">
+      <div className="flex h-full flex-col space-y-12 px-2.5 pt-24 lg:space-y-16 lg:px-96">
         <Text variant="uppercase">{t("aftersale services")}</Text>
         <AftersaleForm />
       </div>
