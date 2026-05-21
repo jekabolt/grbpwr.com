@@ -31,7 +31,8 @@ export function UserLocationTrigger({
   return (
     <div
       className={cn("space-y-6", {
-        "flex gap-2 space-y-0": showCurrentCountryText,
+        "flex w-full max-w-full flex-wrap items-center justify-center gap-x-2 gap-y-1 space-y-0":
+          showCurrentCountryText,
       })}
     >
       {showLabel ? (
@@ -45,7 +46,10 @@ export function UserLocationTrigger({
       {showCurrentCountryText ? (
         <Text
           variant="uppercase"
-          className={cn({ "text-textInactiveColor": pending })}
+          component="span"
+          className={cn("inline-block max-w-full text-center", {
+            "text-textInactiveColor": pending,
+          })}
         >
           {t("you are in country: {country} / {currency}", {
             country: currentCountry.name,
@@ -57,7 +61,7 @@ export function UserLocationTrigger({
         type="button"
         variant="underline"
         disabled={pending}
-        className="whitespace-nowrap uppercase"
+        className="shrink-0 whitespace-nowrap uppercase"
         onClick={onClick ?? openCountryPopup}
       >
         {buttonLabel ?? `${currentCountry.name} / ${currencySymbol}`}

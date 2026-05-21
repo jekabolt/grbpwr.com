@@ -85,8 +85,8 @@ export function Footer({
           </div>
         </div>
       )}
-      <div className="flex flex-col justify-between gap-x-24 lg:flex-row lg:items-start lg:px-7">
-        <div className="order-4 flex justify-center gap-2 lg:order-1 lg:justify-start">
+      <div className="flex flex-col justify-between lg:flex-row lg:flex-nowrap lg:items-center lg:px-7">
+        <div className="order-4 flex shrink-0 justify-center gap-2 whitespace-nowrap lg:order-1 lg:justify-start">
           <Text
             variant="uppercase"
             className="uppercase transition-colors hover:text-textInactiveColor active:text-highlightColor"
@@ -114,9 +114,9 @@ export function Footer({
         <div className="order-1 block lg:hidden">
           <FooterNavMobile />
         </div>
-        <div className="order-2 flex lg:order-4">
+        <div className="order-2 flex shrink-0 lg:order-4">
           <Button
-            className="hidden uppercase lg:block"
+            className="hidden shrink-0 whitespace-nowrap uppercase lg:block"
             onClick={openCountryPopup}
           >
             {t("country")}: {currentCountry.name} /{" "}
