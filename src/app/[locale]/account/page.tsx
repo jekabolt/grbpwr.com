@@ -11,7 +11,11 @@ export default async function AccountPage() {
   const isWebsiteEnabled = dictionary?.siteEnabled;
 
   return (
-    <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"} accountPanel>
+    <FlexibleLayout
+      theme={isWebsiteEnabled ? "light" : "dark"}
+      accountPanel
+      displayFooter={!!account}
+    >
       <div className="flex min-h-dvh flex-col bg-bgColor px-2.5 lg:h-dvh lg:max-h-dvh lg:min-h-0 lg:overflow-hidden lg:p-0">
         <div className="flex min-h-0 w-full flex-1">
           {account ? (

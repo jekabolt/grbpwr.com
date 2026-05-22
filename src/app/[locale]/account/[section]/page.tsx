@@ -26,7 +26,11 @@ export default async function AccountSectionPage({ params }: Props) {
   const account = await getStorefrontAccount();
 
   return (
-    <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
+    <FlexibleLayout
+      theme={isWebsiteEnabled ? "light" : "dark"}
+      accountPanel
+      displayFooter={!!account}
+    >
       <div className="flex min-h-screen items-center justify-center bg-bgColor text-textColor lg:p-0">
         {account ? (
           <>
