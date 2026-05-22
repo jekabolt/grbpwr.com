@@ -74,52 +74,67 @@ export function AccountLoginForm({
   }
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
+    <>
       <div
-        className={cn("flex h-full w-full items-center", {
-          "min-h-[340px] justify-center": !showCartSummary,
-          "pb-28": showCartSummary,
-          "lg:grid lg:max-w-[1000px] lg:grid-cols-2 lg:items-start lg:gap-20":
-            showCartSummary,
+        className={cn("flex min-h-0 w-full px-2.5 pt-20 lg:px-32 lg:pt-24", {
+          "h-full items-center justify-center": !showCartSummary && !isCheckout,
+          "items-start justify-center": isCheckout,
+          "h-full lg:justify-center": showCartSummary,
         })}
       >
-        <div>
+        <div
+          className={cn("flex min-h-0 w-full", {
+            "h-full min-h-[340px] items-center justify-center":
+              !showCartSummary && !isCheckout,
+            "items-start justify-center": isCheckout,
+            "h-full pb-28 lg:pb-0": showCartSummary,
+            "lg:mx-auto lg:grid lg:h-full lg:max-w-[1000px] lg:grid-cols-2 lg:items-start lg:gap-20":
+              showCartSummary,
+          })}
+        >
           <div
-            className={cn(
-              "mx-auto flex h-auto items-center gap-6",
-              LOGIN_FORM_WIDTH_CLASS,
-            )}
+            className={cn({
+              "flex min-h-0 lg:h-full lg:items-start lg:justify-center":
+                showCartSummary,
+            })}
           >
-            {step === "email" ? (
-              <EmailStep
-                email={email}
-                pending={pending}
-                isValidEmail={isValidEmail}
-                isCheckout={isCheckout}
-                onEmailChange={setEmail}
-                onContinue={sendInitialCode}
-                onCheckoutAsGuest={onCheckoutAsGuest}
-              />
-            ) : (
-              <CodeStep
-                code={code}
-                pending={pending}
-                resendSeconds={resendSeconds}
-                onCodeChange={setCode}
-                onCodeComplete={verifyCode}
-                onResend={resendCode}
-              />
-            )}
+            <div
+              className={cn(
+                "mx-auto flex h-auto items-center gap-6",
+                LOGIN_FORM_WIDTH_CLASS,
+              )}
+            >
+              {step === "email" ? (
+                <EmailStep
+                  email={email}
+                  pending={pending}
+                  isValidEmail={isValidEmail}
+                  isCheckout={isCheckout}
+                  onEmailChange={setEmail}
+                  onContinue={sendInitialCode}
+                  onCheckoutAsGuest={onCheckoutAsGuest}
+                />
+              ) : (
+                <CodeStep
+                  code={code}
+                  pending={pending}
+                  resendSeconds={resendSeconds}
+                  onCodeChange={setCode}
+                  onCodeComplete={verifyCode}
+                  onResend={resendCode}
+                />
+              )}
+            </div>
           </div>
+          {showCartSummary && (
+            <div className="hidden min-h-0 lg:flex lg:h-full lg:flex-col">
+              <AccountCartDesktopOrderSummary />
+            </div>
+          )}
         </div>
-        {showCartSummary && (
-          <div className="hidden lg:block">
-            <AccountCartDesktopOrderSummary />
-          </div>
-        )}
       </div>
       {showCartSummary && (
-        <div className="fixed inset-x-2.5 bottom-6 top-auto lg:hidden">
+        <div className="fixed inset-x-2.5 bottom-6 top-auto z-40 lg:hidden">
           <AccountCartMobileOrderSummary />
         </div>
       )}
@@ -128,7 +143,7 @@ export function AccountLoginForm({
         message={toastMessage}
         onOpenChange={setToastOpen}
       />
-    </div>
+    </>
   );
 }
 

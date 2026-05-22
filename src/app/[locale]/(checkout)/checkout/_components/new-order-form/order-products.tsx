@@ -9,6 +9,7 @@ export function OrderProducts({
   currencyKey,
   disabled = false,
   disableProductLinks = false,
+  className,
 }: Props) {
   const expandedProducts = validatedProducts
     ? validatedProducts.flatMap((item) =>
@@ -25,7 +26,8 @@ export function OrderProducts({
 
   return (
     <div>
-      <div className="hidden h-full overflow-y-scroll lg:block">
+      {/* <div className="hidden max-h-[62.8vh] overflow-y-scroll lg:block"> */}
+      <div className={className}>
         <CartProductsList
           hideQuantityButtons
           validatedProducts={expandedProducts}
@@ -34,6 +36,7 @@ export function OrderProducts({
           disableProductLinks={disableProductLinks}
         />
       </div>
+
       <div className="block lg:hidden">
         <MobileProductsCarousel
           validatedProducts={expandedProducts}
@@ -51,4 +54,5 @@ type Props = {
   currencyKey?: string;
   disabled?: boolean;
   disableProductLinks?: boolean;
+  className?: string;
 };

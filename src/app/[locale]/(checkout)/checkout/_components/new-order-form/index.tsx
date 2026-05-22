@@ -46,20 +46,23 @@ const CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY =
   "grbpwr.checkout.profileCompletedEmail";
 
 type NewOrderFormProps = {
-  onAmountChange: (amount: number) => void;
+  guestCheckout: boolean;
   initialAccount: StorefrontAccount | null;
+  onAmountChange: (amount: number) => void;
   onOrderRedirectStart?: () => void;
+  setGuestCheckout: (value: boolean) => void;
 };
 
 export default function NewOrderForm({
   initialAccount,
+  guestCheckout,
   onAmountChange,
   onOrderRedirectStart,
+  setGuestCheckout,
 }: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
   const { products, totalPrice, validatedCurrency } = useCart((s) => s);
   const { isSignedIn } = useAccountOnboardingStore((s) => s);
-  const [guestCheckout, setGuestCheckout] = useState(false);
   const [checkoutLoginStep, setCheckoutLoginStep] =
     useState<AccountLoginStep>("email");
   const [checkoutLoginVerified, setCheckoutLoginVerified] = useState(false);
@@ -226,7 +229,7 @@ export default function NewOrderForm({
         <div className="relative h-full space-y-14 lg:space-y-0">
           <div
             className={cn(
-              "flex flex-col items-start gap-14 lg:grid lg:grid-cols-2 lg:gap-28",
+              "flex flex-col items-start gap-14 lg:grid lg:h-full lg:min-h-0 lg:grid-cols-2 lg:items-start lg:gap-28",
               centerAuthOnMobile &&
                 "min-h-[calc(100dvh-7rem)] justify-center lg:min-h-0 lg:justify-start",
             )}
@@ -249,7 +252,7 @@ export default function NewOrderForm({
               </div>
             )}
             {!showCheckoutFields ? (
-              <div>
+              <div className="flex min-h-0 w-full lg:items-start lg:justify-center">
                 <AccountLoginForm
                   isCheckout
                   onStepChange={setCheckoutLoginStep}
@@ -258,7 +261,7 @@ export default function NewOrderForm({
                 />
               </div>
             ) : showProfilePrompt ? (
-              <div className="w-full shrink-0 lg:pt-10">
+              <div className="flex min-h-0 w-full shrink-0 lg:items-start lg:justify-center">
                 <AccountSignedInSection
                   account={initialAccount}
                   isCheckout
@@ -320,19 +323,24 @@ export default function NewOrderForm({
             )}
             <div
               className={cn(
-                "fixed inset-x-2.5 bottom-3 lg:static lg:top-16 lg:space-y-8 lg:self-start",
-                !showCheckoutForm && "hidden lg:block",
+                "fixed inset-x-2.5 bottom-3 z-40 lg:sticky lg:top-16 lg:z-auto lg:flex lg:min-h-0 lg:flex-col lg:self-start",
+                showCheckoutForm
+                  ? "lg:h-[calc(100dvh-6rem)] lg:max-h-[calc(100dvh-6rem)]"
+                  : "lg:h-[calc(100dvh-4rem)] lg:max-h-[calc(100dvh-4rem)]",
+                !showCheckoutForm && "hidden lg:flex",
               )}
             >
-              <div className="hidden space-y-8 lg:block">
+              <div className="hidden h-full min-h-0 flex-col gap-8 lg:flex">
                 <Text
                   variant="uppercase"
-                  className={cn("", { "text-textInactiveColor": loading })}
+                  className={cn("shrink-0", {
+                    "text-textInactiveColor": loading,
+                  })}
                 >
                   {t("order summary")}
                 </Text>
                 <div
-                  className={cn("space-y-8", {
+                  className={cn("shrink-0 space-y-8", {
                     "text-textInactiveColor": loading,
                   })}
                 >
@@ -371,11 +379,14 @@ export default function NewOrderForm({
                       {`${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`}
                     </Button>
                   )}
+                </div>
+                <div className="min-h-0 flex-1 overflow-y-auto">
                   <OrderProducts
                     validatedProducts={order?.validItems}
                     currencyKey={orderCurrency}
                     disabled={loading}
                     disableProductLinks
+                    className="min-h-0"
                   />
                 </div>
               </div>

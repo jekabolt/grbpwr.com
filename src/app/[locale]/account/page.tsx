@@ -1,4 +1,3 @@
-import { serviceClient } from "@/lib/api";
 import { getStorefrontAccount } from "@/lib/storefront-account/get-storefront-account";
 import FlexibleLayout from "@/components/flexible-layout";
 
@@ -7,17 +6,17 @@ import { AccountLoginForm } from "./authorization/account-login-form";
 
 export default async function AccountPage() {
   const account = await getStorefrontAccount();
-  const { dictionary } = await serviceClient.GetHero({});
-  const isWebsiteEnabled = dictionary?.siteEnabled;
 
   return (
-    <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"} accountPanel>
-      <div className="flex min-h-dvh w-full items-center justify-center bg-bgColor px-2.5 text-textColor lg:px-32 lg:py-24">
-        {account ? (
-          <AccountSignedInSection account={account} />
-        ) : (
-          <AccountLoginForm />
-        )}
+    <FlexibleLayout displayFooter={false}>
+      <div className="flex h-dvh min-h-0 flex-col px-2.5 lg:p-0">
+        <div className="flex min-h-0 flex-1">
+          {account ? (
+            <AccountSignedInSection account={account} />
+          ) : (
+            <AccountLoginForm />
+          )}
+        </div>
       </div>
     </FlexibleLayout>
   );

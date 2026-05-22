@@ -15,6 +15,7 @@ import {
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
@@ -33,8 +34,10 @@ export function CheckoutFormWrapper({
 }) {
   const router = useRouter();
   const products = useCart((s) => s.products);
+  const isSignedIn = useAccountOnboardingStore((s) => s.isSignedIn);
   const setSignedIn = useAccountOnboardingStore((s) => s.setSignedIn);
   const setAccount = useAccountOnboardingStore((s) => s.setAccount);
+  const [guestCheckout, setGuestCheckout] = useState(false);
   const { dictionary } = useDataContext();
   const { currentCountry, languageId } = useTranslationsStore((state) => state);
   const tToaster = useTranslations("toaster");
@@ -116,8 +119,21 @@ export function CheckoutFormWrapper({
     setOrderAmount(amount);
   };
 
+  const showAuthOnlyPadding = !isSignedIn && !guestCheckout;
+
   if (resolvingSession) {
-    return <CheckoutLoginFormSkeleton />;
+    return (
+      <div
+        className={cn(
+          "px-2.5 pb-8 pt-20 lg:relative lg:min-h-dvh lg:px-32 lg:py-24",
+          {
+            "lg:pb-0 lg:pt-24": showAuthOnlyPadding,
+          },
+        )}
+      >
+        <CheckoutLoginFormSkeleton />
+      </div>
+    );
   }
 
   const appearance: Appearance = {
@@ -160,24 +176,35 @@ export function CheckoutFormWrapper({
 
   return (
     <>
-      <Elements
-        stripe={stripePromise}
-        options={{
-          mode: "payment",
-          amount: orderAmount,
-          currency: currency?.toLowerCase(),
-          appearance,
-          paymentMethodCreation: "manual",
-          locale: (LANGUAGE_ID_TO_LOCALE[languageId] ||
-            "en") as StripeElementLocale,
-        }}
+      <div
+        className={cn(
+          "px-2.5 pb-8 pt-20 lg:relative lg:min-h-dvh lg:px-32 lg:py-24",
+          {
+            "lg:pb-0 lg:pt-24": showAuthOnlyPadding,
+          },
+        )}
       >
-        <NewOrderForm
-          onAmountChange={handleAmountChange}
-          initialAccount={initialAccount ?? sessionAccount}
-          onOrderRedirectStart={() => setIsOrderRedirecting(true)}
-        />
-      </Elements>
+        <Elements
+          stripe={stripePromise}
+          options={{
+            mode: "payment",
+            amount: orderAmount,
+            currency: currency?.toLowerCase(),
+            appearance,
+            paymentMethodCreation: "manual",
+            locale: (LANGUAGE_ID_TO_LOCALE[languageId] ||
+              "en") as StripeElementLocale,
+          }}
+        >
+          <NewOrderForm
+            onAmountChange={handleAmountChange}
+            initialAccount={initialAccount ?? sessionAccount}
+            onOrderRedirectStart={() => setIsOrderRedirecting(true)}
+            guestCheckout={guestCheckout}
+            setGuestCheckout={setGuestCheckout}
+          />
+        </Elements>
+      </div>
       <SubmissionToaster
         open={toastOpen}
         message={toastMessage}
