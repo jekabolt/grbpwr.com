@@ -20,6 +20,7 @@ export default function FlexibleLayout({
   displayFooter = true,
   showAnnounce = false,
   accountPanel = false,
+  fillViewport = false,
 }: Props) {
   return (
     <div
@@ -44,7 +45,11 @@ export default function FlexibleLayout({
           </div>
         )}
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
-        <div className="w-full">{children}</div>
+        <div
+          className={cn("w-full", fillViewport && "h-full min-h-0")}
+        >
+          {children}
+        </div>
       </div>
       {displayFooter && <Footer theme={theme} accountPanel={accountPanel} />}
       {(headerType === "catalog" || headerType === "main") && (
@@ -69,6 +74,8 @@ type Props = {
   displayFooter?: boolean;
   showAnnounce?: boolean;
   accountPanel?: boolean;
+  /** Pass true when page content must fill a fixed viewport height (e.g. account). */
+  fillViewport?: boolean;
 };
 
 export type HeaderProps = {

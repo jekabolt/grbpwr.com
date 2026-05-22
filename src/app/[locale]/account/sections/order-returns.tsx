@@ -14,6 +14,11 @@ import { OrderItem } from "../_components/order-item";
 import { OrderReturnsSectionFallback } from "../_components/section-fallbacks";
 import { useOrders } from "../utils/use-orders";
 
+const SECTION_CLASSNAME =
+  "flex w-full flex-col lg:h-[calc(100dvh-12rem)] lg:max-h-[calc(100dvh-12rem)]";
+const LIST_CLASSNAME =
+  "flex min-h-0 flex-1 flex-col gap-0 overflow-y-auto bg-bgColor pt-16 text-textColor";
+
 type OrderReturnsView = "orders" | "returns";
 
 const RETURN_STATUS_IDS = new Set([6, 7, 8, 9]);
@@ -32,8 +37,8 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
   const { allOrders, loading, loadingMore, hasMore, loadMore } = useOrders();
 
   return (
-    <div className="w-full space-y-16">
-      <div className="flex">
+    <div className={SECTION_CLASSNAME}>
+      <div className="flex shrink-0">
         {ORDER_RETURN_TABS.map((tab) => (
           <Button
             key={tab.value}
@@ -49,7 +54,11 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
         ))}
       </div>
 
-      {loading ? <OrderReturnsSectionFallback /> : null}
+      {loading ? (
+        <div className={LIST_CLASSNAME}>
+          <OrderReturnsSectionFallback />
+        </div>
+      ) : null}
 
       {!loading && view === "orders" && (
         <OrdersList
@@ -95,7 +104,7 @@ function OrdersList({
   );
 
   return (
-    <div className="flex h-full flex-col gap-0 bg-bgColor text-textColor lg:max-h-[550px] lg:overflow-y-auto">
+    <div className={LIST_CLASSNAME}>
       {visible.length > 0 ? (
         <>
           {visible.map((order) => (
@@ -137,7 +146,7 @@ function ReturnsList({
   );
 
   return (
-    <div className="flex max-h-[550px] flex-col gap-0 overflow-y-auto">
+    <div className={LIST_CLASSNAME}>
       {visible.length > 0 ? (
         <>
           {visible.map((order) => (

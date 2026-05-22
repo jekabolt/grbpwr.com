@@ -40,7 +40,11 @@ export function ActiveAccountSection({
         />
       );
     case "order&returns":
-      return <OrderReturns account={account} />;
+      return (
+        <div className="flex h-full min-h-0 flex-col">
+          <OrderReturns account={account} />
+        </div>
+      );
     case "private community":
       return <PrivateCommunity />;
     default:

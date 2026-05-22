@@ -96,7 +96,7 @@ export function AccountSessionPanel({ account }: Props) {
           {t("log out")}
         </Button>
       </div>
-      <div className="hidden w-full pb-24 lg:block lg:pb-0">
+      <div className="hidden max-h-dvh w-full pb-24 lg:block lg:pb-0">
         <AccountSectionContent account={account} activePanel={activePanel} />
       </div>
     </div>

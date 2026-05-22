@@ -74,20 +74,20 @@ export function AccountLoginForm({
   }
 
   return (
-    <>
+    <div className="flex h-full min-h-0 w-full flex-1 flex-col">
       <div
-        className={cn("flex min-h-0 w-full px-2.5 pt-20 lg:px-32 lg:pt-24", {
-          "h-full items-center justify-center": !showCartSummary && !isCheckout,
+        className={cn("flex min-h-0 w-full flex-1", {
+          "items-center justify-center": !showCartSummary && !isCheckout,
           "items-start justify-center": isCheckout,
-          "h-full lg:justify-center": showCartSummary,
+          "px-2.5 pt-20 lg:justify-center lg:px-32 lg:pt-24": showCartSummary,
         })}
       >
         <div
-          className={cn("flex min-h-0 w-full", {
-            "h-full min-h-[340px] items-center justify-center":
+          className={cn("flex min-h-0 w-full flex-1", {
+            "min-h-[340px] items-center justify-center":
               !showCartSummary && !isCheckout,
             "items-start justify-center": isCheckout,
-            "h-full pb-28 lg:pb-0": showCartSummary,
+            "pb-28 lg:pb-0": showCartSummary,
             "lg:mx-auto lg:grid lg:h-full lg:max-w-[1000px] lg:grid-cols-2 lg:items-start lg:gap-20":
               showCartSummary,
           })}
@@ -143,7 +143,7 @@ export function AccountLoginForm({
         message={toastMessage}
         onOpenChange={setToastOpen}
       />
-    </>
+    </div>
   );
 }
 
