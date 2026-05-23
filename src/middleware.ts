@@ -61,21 +61,15 @@ export default async function middleware(req: NextRequest) {
             return NextResponse.redirect(url, { status: 308 });
         }
 
-        // Block manual URL country/locale changes – only Country Picker or geo banner may change them.
-        // Skip for new users (no cookies) so they can land on the page and see the geo banner.
-        const hadChoice = countryCookie || localeCookie;
-        if (hadChoice) {
-            const allowedCountry = (countryCookie && supportedCountries.includes(countryCookie))
-                ? countryCookie
-                : getNormalizedCountry(detectedCountry);
-            const allowedLocale = (localeCookie && (routing.locales as readonly string[]).includes(localeCookie))
-                ? localeCookie
-                : getLocaleFromCountry(allowedCountry);
-            if (country !== allowedCountry || locale !== allowedLocale) {
-                const url = req.nextUrl.clone();
-                url.pathname = `/${allowedCountry}/${allowedLocale}${rest}`;
-                return NextResponse.redirect(url, { status: 308 });
-            }
+        // URL is the source of truth: when /{country}/{locale} is a valid combo,
+        // trust it and let setMainCookies (below) sync cookies to match. The previous
+        // "block manual URL changes" guard caused legitimate refreshes of /fr/en to
+        // revert to /fr/{cookieLocale} when the cookie hadn't caught up yet.
+        if (!(routing.locales as readonly string[]).includes(locale!)) {
+            const fallbackLocale = getLocaleFromCountry(country!);
+            const url = req.nextUrl.clone();
+            url.pathname = `/${country}/${fallbackLocale}${rest}`;
+            return NextResponse.redirect(url, { status: 308 });
         }
 
         const url = req.nextUrl.clone();

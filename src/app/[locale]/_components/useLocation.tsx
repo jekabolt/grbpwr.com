@@ -60,14 +60,14 @@ export function useLocation({
     const country = currentCountry.countryCode?.toLowerCase();
     if (!country) return;
 
-    const pathWithoutLocaleCountry =
+    const stripped =
       pathname.replace(/^\/(?:[A-Za-z]{2}\/[a-z]{2}|[a-z]{2})(?=\/|$)/, "") ||
-      "/";
+      "";
+    const rest = stripped === "/" ? "" : stripped;
     const url = new URL(
-      `/${country}/${lng}${pathWithoutLocaleCountry}`,
+      `/${country}/${lng}${rest}`,
       window.location.origin,
     );
-    url.searchParams.set("from_picker", "1");
     const existing =
       typeof window !== "undefined" ? window.location.search : "";
     if (existing) {
@@ -76,6 +76,15 @@ export function useLocation({
         if (key !== "from_picker") url.searchParams.set(key, value);
       });
     }
+    url.searchParams.set("from_picker", "1");
+
+    if (typeof document !== "undefined") {
+      const secure = window.location.protocol === "https:" ? "; Secure" : "";
+      const oneYear = 60 * 60 * 24 * 365;
+      document.cookie = `NEXT_COUNTRY=${country}; Path=/; Max-Age=${oneYear}; SameSite=Lax${secure}`;
+      document.cookie = `NEXT_LOCALE=${lng}; Path=/; Max-Age=${oneYear}; SameSite=Lax${secure}`;
+    }
+
     window.location.href = url.toString();
   };
 
