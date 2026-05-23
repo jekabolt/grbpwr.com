@@ -39,9 +39,10 @@ export function EmailToaster({
         {children}
       </Button>
       <Toast.Root
-        className="flex h-12 items-center justify-center bg-highlightColor lg:h-8"
+        className="flex h-12 cursor-pointer items-center justify-center bg-highlightColor lg:h-8"
         open={open}
         onOpenChange={setOpen}
+        onClick={() => setOpen(false)}
       >
         <Toast.Title>
           <Text className="lowercase text-bgColor">
@@ -68,13 +69,14 @@ export function SubmissionToaster({
   return (
     <Toast.Root
       className={cn(
-        "flex h-12 items-center justify-center bg-highlightColor lg:h-8",
+        "flex h-12 cursor-pointer items-center justify-center bg-highlightColor lg:h-8",
         persistUntilClosed &&
           "justify-between px-2.5 lg:relative lg:justify-center",
       )}
       open={open}
       onOpenChange={onOpenChange}
       duration={duration}
+      onClick={() => onOpenChange(false)}
     >
       <Toast.Title>
         <Text className="text-center lowercase text-bgColor">{message}</Text>
