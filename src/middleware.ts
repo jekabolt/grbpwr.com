@@ -65,11 +65,12 @@ export default async function middleware(req: NextRequest) {
         // trust it and let setMainCookies (below) sync cookies to match. The previous
         // "block manual URL changes" guard caused legitimate refreshes of /fr/en to
         // revert to /fr/{cookieLocale} when the cookie hadn't caught up yet.
+        // 307 (not 308) because the resolved locale can change with cookies.
         if (!(routing.locales as readonly string[]).includes(locale!)) {
             const fallbackLocale = getLocaleFromCountry(country!);
             const url = req.nextUrl.clone();
             url.pathname = `/${country}/${fallbackLocale}${rest}`;
-            return NextResponse.redirect(url, { status: 308 });
+            return NextResponse.redirect(url, { status: 307 });
         }
 
         const url = req.nextUrl.clone();
@@ -169,9 +170,10 @@ export default async function middleware(req: NextRequest) {
         }
 
         // redirect to country/locale (preserve path when locale-only e.g. /en/products -> /us/en/products)
+        // 307 (not 308) so browsers don't cache /account -> /fr/fr/account when cookies later flip to en.
         const url = req.nextUrl.clone();
         url.pathname = `/${targetCountry}/${targetLocale}${pathRest}`;
-        const res = NextResponse.redirect(url, { status: 308 });
+        const res = NextResponse.redirect(url, { status: 307 });
         // Ensure defaults are persisted for subsequent requests
         setMainCookies(res, targetCountry, targetLocale);
         return res;
