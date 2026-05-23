@@ -76,7 +76,7 @@ export default function OrderStatusForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-          <div className="w-full space-y-10 lg:w-1/2">
+          <div className="w-full space-y-10">
             <div className="space-y-6">
               <InputField
                 name="email"

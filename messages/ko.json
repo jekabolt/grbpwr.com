@@ -158,7 +158,9 @@
     "recently viewed": "최근 본 상품",
     "notify me": "알림 받기",
     "notify-description": "사이즈를 선택하시면 이 제품이 다시 입고될 때 이메일로 알려드립니다.",
-    "order limit exceeded": "주문 한도 초과"
+    "notify-agree": "이메일 수신에 동의합니다. 자세한 내용은 <privacy>개인정보처리방침</privacy>을 참조하세요.",
+    "order limit exceeded": "주문 한도 초과",
+    "select your size to continue": "계속하려면 사이즈를 선택하세요"
   },
   "checkout": {
     "contact": "연락처",
@@ -202,6 +204,7 @@
     "sales tax": "판매세",
     "gst": "GST",
     "FREE": "무료",
+    "STANDARD": "스탠다드",
     "hide": "숨기기",
     "show": "표시",
     "incl": "부가세 포함",
@@ -289,6 +292,7 @@
   },
   "update_location": {
     "message": "당신은 현재 {currentCountry}에서 쇼핑을 하고 있습니다. 국가/지역을 변경하면 쇼핑카트가 비워집니다. 계속하시겠습니까?",
+    "messageCheckout": "지역을 변경하면 통화와 가격이 업데이트됩니다. 쇼핑백은 그대로 유지됩니다.",
     "continue": "계속하다: {country}",
     "cancel": "취소"
   },

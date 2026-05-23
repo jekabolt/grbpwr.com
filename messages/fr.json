@@ -158,7 +158,9 @@
     "recently viewed": "vue récente",
     "notify me": "me notifier",
     "notify-description": "sélectionnez votre taille et nous vous enverrons un e-mail lorsque ce produit sera de nouveau en stock.",
-    "order limit exceeded": "limite de commande dépassée"
+    "notify-agree": "j'accepte de recevoir des emails. lisez notre <privacy>politique de confidentialité</privacy> pour plus d'informations.",
+    "order limit exceeded": "limite de commande dépassée",
+    "select your size to continue": "sélectionnez votre taille pour continuer"
   },
   "checkout": {
     "contact": "contact",
@@ -202,6 +204,7 @@
     "sales tax": "Taxe de vente",
     "gst": "TPS",
     "FREE": "GRATUIT",
+    "STANDARD": "standard",
     "hide": "masquer",
     "show": "afficher",
     "incl": "TVA incl.",
@@ -289,6 +292,7 @@
   },
   "update_location": {
     "message": "Vous êtes actuellement dans {currentCountry}. Lors du changement de pays/région, votre panier sera vidé. Êtes-vous sûr de vouloir continuer?",
+    "messageCheckout": "Changer de région mettra à jour la devise et les prix. Votre panier restera intact.",
     "continue": "Continuer vers: {country}",
     "cancel": "Annuler"
   },

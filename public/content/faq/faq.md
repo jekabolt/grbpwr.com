@@ -3,11 +3,9 @@
 To place an order on our website, please follow the steps below.
 
 1. Explore the catalog
-
    Use the navigation to select men's clothing, women's clothing, accessories, or objects. Apply filters or sorting options to help you find what you're looking for more easily.
 
 2. View product details
-
    Each product has detailed descriptions and a size guide, in addition to photos. Please read these carefully before placing an order. If you have any questions, feel free to contact us using the [Aftersale Services form](/aftersale-services) and select "Product Information" as the topic.
 
 3. Purchase

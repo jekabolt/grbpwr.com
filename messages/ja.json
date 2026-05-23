@@ -158,7 +158,9 @@
     "recently viewed": "最近見た商品",
     "notify me": "通知する",
     "notify-description": "サイズを選択すると、この商品が再入荷したときにメールでお知らせします。",
-    "order limit exceeded": "注文限度を超えました"
+    "notify-agree": "メール受信に同意します。詳細については、<privacy>プライバシーポリシー</privacy>をお読みください。",
+    "order limit exceeded": "注文限度を超えました",
+    "select your size to continue": "続けるにはサイズを選択してください"
   },
   "checkout": {
     "contact": "連絡先",
@@ -202,6 +204,7 @@
     "sales tax": "売上税",
     "gst": "GST",
     "FREE": "無料",
+    "STANDARD": "スタンダード",
     "hide": "非表示",
     "show": "表示",
     "incl": "税込",
@@ -289,6 +292,7 @@
   },
   "update_location": {
     "message": "あなたは現在{currentCountry}でショッピングしています。国/地域を変更すると、ショッピングカートが空になります。続行してもよろしいですか？",
+    "messageCheckout": "地域を変更すると通貨と価格が更新されます。ショッピングバッグの内容はそのまま残ります。",
     "continue": "次へ進む: {country}",
     "cancel": "キャンセル"
   },

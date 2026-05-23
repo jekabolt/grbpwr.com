@@ -1,27 +1,30 @@
 "use client";
 
-import { useState } from "react";
 import type { CSSProperties } from "react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
-import { cn } from "@/lib/utils";
-import { Text } from "@/components/ui/text";
 import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
+import { Text } from "@/components/ui/text";
+import { cn } from "@/lib/utils";
 
-import { createMarkdownComponents } from "./markdown-components";
+import {
+  CONTENT_PROSE_CLASSNAME,
+  createMarkdownComponents,
+} from "./markdown-components";
 
 export function CollapsibleSections({
   content,
   skipFirstSectionNumber = false,
   showDirectly = false,
-  onSectionChange,
   autoOpenFirst = false,
+  onSectionChange,
 }: {
   content: string;
   skipFirstSectionNumber?: boolean;
   showDirectly?: boolean;
-  onSectionChange?: (section: string) => void;
   autoOpenFirst?: boolean;
+  onSectionChange?: (section: string) => void;
 }) {
   const [openSection, setOpenSection] = useState<number | null>(
     autoOpenFirst ? 0 : null,
@@ -42,9 +45,14 @@ export function CollapsibleSections({
     "--tw-prose-body": "hsl(var(--textColor))",
   } as CSSProperties;
 
+  const proseClassName = cn(
+    "prose max-w-none pb-4 lg:pb-8",
+    CONTENT_PROSE_CLASSNAME,
+  );
+
   if (showDirectly) {
     return (
-      <Text component="div" className="prose max-w-none" style={proseStyle}>
+      <Text component="div" className={proseClassName} style={proseStyle}>
         <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
       </Text>
     );
@@ -81,7 +89,7 @@ export function CollapsibleSections({
               >
                 <Text
                   component="div"
-                  className="prose max-w-none"
+                  className={proseClassName}
                   style={proseStyle}
                 >
                   <ReactMarkdown components={markdownComponents}>

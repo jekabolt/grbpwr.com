@@ -142,7 +142,7 @@ function EmailStep({
 
   return (
     <div className="w-full space-y-10">
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex w-full flex-col items-center gap-6">
         <Text
           variant="uppercase"
           className={cn("", {

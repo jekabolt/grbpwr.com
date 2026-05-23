@@ -22,7 +22,7 @@ export default function HelpPopover({ theme }: { theme: "light" | "dark" }) {
         "blackTheme bg-bgColor text-textColor": theme === "dark",
       })}
       openElement={(isOpen) => (
-        <div className="flex items-center gap-x-2">
+        <div className="flex shrink-0 items-center gap-x-2 whitespace-nowrap">
           <Text variant="uppercase">{t("help")}</Text>
           <Text>{isOpen ? <MinusIcon /> : <PlusIcon />}</Text>
         </div>

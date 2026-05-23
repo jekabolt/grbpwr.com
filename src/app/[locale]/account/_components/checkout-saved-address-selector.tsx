@@ -51,6 +51,7 @@ export function CheckoutSavedAddressSelector({
     addresses,
     defaultAddress,
     currentCountryCode: currentCountry.countryCode,
+    profilePhone: account.phone?.trim(),
     onDefaultChange,
   });
 

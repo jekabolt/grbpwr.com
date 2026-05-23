@@ -40,12 +40,6 @@ import { PriceSummary } from "./price-summary";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
-import {
-  clearGuestCheckoutIntent,
-  persistGuestCheckoutIntent,
-  readGuestCheckoutFromSession,
-} from "@/lib/checkout/guest-checkout-intent";
-
 import { isStripeCardPaymentMethod } from "./utils";
 
 const CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY =
@@ -54,20 +48,18 @@ const CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY =
 type NewOrderFormProps = {
   onAmountChange: (amount: number) => void;
   initialAccount: StorefrontAccount | null;
-  persistedGuestCheckout?: boolean;
   onOrderRedirectStart?: () => void;
 };
 
 export default function NewOrderForm({
-  onAmountChange,
   initialAccount,
-  persistedGuestCheckout = false,
+  onAmountChange,
   onOrderRedirectStart,
 }: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
   const { products, totalPrice, validatedCurrency } = useCart((s) => s);
   const { isSignedIn } = useAccountOnboardingStore((s) => s);
-  const [guestCheckout, setGuestCheckout] = useState(persistedGuestCheckout);
+  const [guestCheckout, setGuestCheckout] = useState(false);
   const [checkoutLoginStep, setCheckoutLoginStep] =
     useState<AccountLoginStep>("email");
   const [checkoutLoginVerified, setCheckoutLoginVerified] = useState(false);
@@ -75,16 +67,12 @@ export default function NewOrderForm({
     useState(false);
 
   useLayoutEffect(() => {
-    if (persistedGuestCheckout || readGuestCheckoutFromSession()) {
-      setGuestCheckout(true);
-    }
-  }, [persistedGuestCheckout]);
-
-  useLayoutEffect(() => {
     const email = initialAccount?.email?.trim();
     if (!email || typeof window === "undefined") return;
     try {
-      const stored = sessionStorage.getItem(CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY);
+      const stored = sessionStorage.getItem(
+        CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY,
+      );
       if (stored === email) setCheckoutProfileCompleted(true);
     } catch {
       /* ignore */
@@ -105,7 +93,6 @@ export default function NewOrderForm({
   useEffect(() => {
     if (isSignedIn) {
       setGuestCheckout(false);
-      clearGuestCheckoutIntent();
     }
   }, [isSignedIn]);
 
@@ -183,10 +170,7 @@ export default function NewOrderForm({
     clearFormData,
     setToastMessage,
     setOrderModifiedToastOpen,
-    onOrderRedirectStart: () => {
-      clearGuestCheckoutIntent();
-      onOrderRedirectStart?.();
-    },
+    onOrderRedirectStart,
   });
 
   useCheckoutFormAnalytics({
@@ -204,8 +188,7 @@ export default function NewOrderForm({
     accountNeedsNameCompletion(initialAccount) &&
     !checkoutProfileCompleted;
   const showMobileOrderSummaryOverlay =
-    (!showCheckoutFields && checkoutLoginStep === "email") ||
-    showProfilePrompt;
+    (!showCheckoutFields && checkoutLoginStep === "email") || showProfilePrompt;
   const showCheckoutForm = showCheckoutFields && !showProfilePrompt;
 
   const centerAuthOnMobile = !showCheckoutFields || showProfilePrompt;
@@ -250,8 +233,8 @@ export default function NewOrderForm({
           >
             {!hideOrderSummary && (
               <div
-                className={cn("block lg:hidden", {
-                  "fixed inset-x-2.5 bottom-6":
+                className={cn("z-40 block lg:hidden", {
+                  "fixed inset-x-2.5 bottom-6 top-auto":
                     !showCheckoutFields || showProfilePrompt,
                 })}
               >
@@ -271,10 +254,7 @@ export default function NewOrderForm({
                   isCheckout
                   onStepChange={setCheckoutLoginStep}
                   onVerified={() => setCheckoutLoginVerified(true)}
-                  onCheckoutAsGuest={() => {
-                    persistGuestCheckoutIntent();
-                    setGuestCheckout(true);
-                  }}
+                  onCheckoutAsGuest={() => setGuestCheckout(true)}
                 />
               </div>
             ) : showProfilePrompt ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
@@ -8,7 +8,6 @@ import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 
-import { clientHasGuestCheckoutIntent } from "@/lib/checkout/guest-checkout-intent";
 import {
   resolveAccountSession,
   storefrontAccountToProfile,
@@ -19,10 +18,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
-import {
-  CheckoutGuestSkeleton,
-  CheckoutLoginFormSkeleton,
-} from "./checkout-skeleton";
+import { CheckoutLoginFormSkeleton } from "./checkout-skeleton";
 import NewOrderForm from "./new-order-form";
 import { useStripeRedirect } from "./new-order-form/hooks/useStripeRedirect";
 
@@ -32,10 +28,8 @@ const stripePromise = loadStripe(
 
 export function CheckoutFormWrapper({
   initialAccount,
-  persistedGuestCheckout = false,
 }: {
   initialAccount: StorefrontAccount | null;
-  persistedGuestCheckout?: boolean;
 }) {
   const router = useRouter();
   const products = useCart((s) => s.products);
@@ -47,12 +41,7 @@ export function CheckoutFormWrapper({
   const [sessionAccount, setSessionAccount] = useState(initialAccount);
   const [resolvingSession, setResolvingSession] = useState(!initialAccount);
 
-  const [guestClientHint, setGuestClientHint] = useState(false);
   const [isOrderRedirecting, setIsOrderRedirecting] = useState(false);
-
-  useLayoutEffect(() => {
-    setGuestClientHint(clientHasGuestCheckoutIntent());
-  }, []);
 
   const { toastOpen, toastMessage, setToastOpen } = useStripeRedirect({
     paymentFailedMessage: tToaster("payment_failed"),
@@ -127,14 +116,8 @@ export function CheckoutFormWrapper({
     setOrderAmount(amount);
   };
 
-  const guestCheckoutIntent = persistedGuestCheckout || guestClientHint;
-
   if (resolvingSession) {
-    return guestCheckoutIntent ? (
-      <CheckoutGuestSkeleton />
-    ) : (
-      <CheckoutLoginFormSkeleton />
-    );
+    return <CheckoutLoginFormSkeleton />;
   }
 
   const appearance: Appearance = {
@@ -192,7 +175,6 @@ export function CheckoutFormWrapper({
         <NewOrderForm
           onAmountChange={handleAmountChange}
           initialAccount={initialAccount ?? sessionAccount}
-          persistedGuestCheckout={guestCheckoutIntent}
           onOrderRedirectStart={() => setIsOrderRedirecting(true)}
         />
       </Elements>

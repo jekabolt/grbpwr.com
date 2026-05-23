@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
-import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
+import { cn, isDateTodayOrFuture } from "@/lib/utils";
 
 import { LoadingButton } from "../loading-button";
 import { NotifyMe } from "../notify-me";
@@ -117,6 +117,8 @@ export function AddToCartBtn({
     if (!activeSizeId) {
       onCollapseSheet?.();
       triggerSizeBlink?.();
+      setToastMessage(t("select your size to continue"));
+      setMaxOrderLimitExceededToastOpen(true);
 
       if (sizePickerRef?.current) {
         const scrollableContainer = sizePickerRef.current.closest(

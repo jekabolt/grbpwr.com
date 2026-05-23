@@ -157,7 +157,9 @@
     "recently viewed": "recently viewed",
     "notify me": "notify me",
     "notify-description": "select your size and we will email you when this product is back in stock.",
-    "order limit exceeded": "order limit exceeded"
+    "notify-agree": "i agree to receive emails. read our <privacy>privacy policy</privacy> for more information.",
+    "order limit exceeded": "order limit exceeded",
+    "select your size to continue": "select your size to continue"
   },
   "checkout": {
     "contact": "contact",
@@ -201,6 +203,7 @@
     "sales tax": "Sales Tax",
     "gst": "GST",
     "FREE": "FREE",
+    "STANDARD": "standard",
     "hide": "hide",
     "show": "show",
     "incl": "incl. vat",
@@ -288,6 +291,7 @@
   },
   "update_location": {
     "message": "You are currently shopping on the {currentCountry}. When changing countries/regions your shopping bag will be emptied. Are you sure you want to proceed?",
+    "messageCheckout": "Changing your region will update the currency and pricing. Your shopping bag will remain intact.",
     "continue": "Continue to: {country}",
     "cancel": "Cancel"
   },

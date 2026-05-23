@@ -143,13 +143,14 @@ export const useOrderPersistence = (
         const persistedEmail = form.getValues("email")?.trim().toLowerCase();
         const signedInEmail = accountEmail.toLowerCase();
         const switchedAccount = !!persistedEmail && persistedEmail !== signedInEmail;
+        const profilePhone = account.phone?.trim() ?? "";
 
         applyCheckoutIdentity(
             {
                 email: accountEmail,
                 firstName: account.firstName?.trim() ?? "",
                 lastName: account.lastName?.trim() ?? "",
-                phone: account.phone?.trim() ?? "",
+                ...(switchedAccount ? { phone: profilePhone } : {}),
                 country: account.defaultCountry?.trim() ?? currentCountryCode ?? "",
             },
             {
@@ -158,7 +159,18 @@ export const useOrderPersistence = (
                 shouldValidate: false,
             },
         );
-    }, [currentCountryCode, form, opts?.initialAccount, opts?.isSignedIn]);
+
+        if (!switchedAccount && profilePhone) {
+            const currentPhone = form.getValues("phone")?.trim();
+            if (!currentPhone) {
+                form.setValue("phone", profilePhone, {
+                    shouldDirty: false,
+                    shouldValidate: false,
+                });
+                updateFormData({ phone: profilePhone });
+            }
+        }
+    }, [currentCountryCode, form, opts?.initialAccount, opts?.isSignedIn, updateFormData]);
 
     return {
         clearFormData,

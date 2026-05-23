@@ -158,7 +158,9 @@
     "recently viewed": "recentemente visualizzato",
     "notify me": "avvisami",
     "notify-description": "seleziona la tua taglia e ti invieremo un'email quando questo prodotto sarà di nuovo disponibile.",
-    "order limit exceeded": "limite ordine superato"
+    "notify-agree": "accetto di ricevere email. leggi la nostra <privacy>informativa sulla privacy</privacy> per maggiori informazioni.",
+    "order limit exceeded": "limite ordine superato",
+    "select your size to continue": "seleziona la tua taglia per continuare"
   },
   "checkout": {
     "contact": "contatto",
@@ -202,6 +204,7 @@
     "sales tax": "Imposta sulle vendite",
     "gst": "GST",
     "FREE": "GRATUITO",
+    "STANDARD": "standard",
     "hide": "nascondi",
     "show": "mostra",
     "incl": "IVA incl.",
@@ -289,6 +292,7 @@
   },
   "update_location": {
     "message": "Sei attualmente in {currentCountry}. Quando cambi paese/regione, il tuo carrello sarà svuotato. Sei sicuro di voler continuare?",
+    "messageCheckout": "Cambiare regione aggiornerà valuta e prezzi. Il tuo carrello resterà intatto.",
     "continue": "Continua a: {country}",
     "cancel": "Annulla"
   },

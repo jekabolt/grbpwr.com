@@ -226,7 +226,9 @@ export default function ShippingFieldsGroup({
                   const carrierName = c.shipmentCarrier?.carrier || "";
                   const eta = c.shipmentCarrier?.expectedDeliveryTime;
                   const displayCarrierName =
-                    carrierName === "FREE" ? t("FREE") : carrierName;
+                    carrierName === "FREE"
+                      ? t("STANDARD").toUpperCase()
+                      : carrierName;
                   const price = getCarrierPriceForCurrency(c, currency);
                   const symbol = currencySymbols[currency] || currency;
                   const formattedPrice = price

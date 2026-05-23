@@ -44,7 +44,7 @@ export function AddressListItem({
 }: AddressListItemProps) {
   const t = useTranslations("account");
   const addressId = address.id as number;
-  const phoneDisplay = formatE164PhoneDisplay(account.phone);
+  const phoneDisplay = formatE164PhoneDisplay(address.phone);
   const deleteZoneRef = useRef<HTMLDivElement | null>(null);
 
   const [addressToRemove, setAddressToRemove] = useState<number | null>(null);
