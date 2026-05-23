@@ -90,11 +90,28 @@ export default async function middleware(req: NextRequest) {
         }
 
         const newReq = new NextRequest(url, { headers: req.headers });
-        const intlRes = intlMiddleware(newReq);
+        // Still run intlMiddleware so next-intl picks up the rewritten URL for
+        // translations, but discard its response — we manage cookies ourselves.
+        intlMiddleware(newReq);
 
         const reqHeaders = new Headers(req.headers);
         reqHeaders.set("x-nextjs-country", country!);
         reqHeaders.set("x-nextjs-locale", locale!);
+        // Override the request's Cookie header so RSC/server components see the
+        // URL-derived values immediately, even if the browser still holds a stale
+        // NEXT_LOCALE from before. Without this, getInitialTranslationState reads
+        // the old cookie and initializes the store with the wrong language.
+        const existingCookies = req.headers.get("cookie") ?? "";
+        const cookiesWithoutLocale = existingCookies
+            .split(/;\s*/)
+            .filter((c) => c && !/^NEXT_(LOCALE|COUNTRY)=/.test(c))
+            .join("; ");
+        reqHeaders.set(
+            "cookie",
+            [cookiesWithoutLocale, `NEXT_COUNTRY=${country}`, `NEXT_LOCALE=${locale}`]
+                .filter(Boolean)
+                .join("; "),
+        );
         if (shouldSuggest) {
             reqHeaders.set("x-geo-suggest-country", geoCountry);
             reqHeaders.set("x-geo-suggest-locale", geoLocale);
@@ -105,7 +122,9 @@ export default async function middleware(req: NextRequest) {
         const res = NextResponse.rewrite(rewriteUrl, {
             request: { headers: reqHeaders },
         });
-        intlRes.cookies.getAll().forEach((c) => res.cookies.set(c.name, c.value));
+        // Prevent any edge/CDN caching of this rewrite — we depend on the
+        // Set-Cookie below being applied on every request.
+        res.headers.set("Cache-Control", "no-store");
         setMainCookies(res, country!, locale!);
         const suggestCountryCookie = req.cookies.get("NEXT_SUGGEST_COUNTRY")?.value;
         const suggestLocaleCookie = req.cookies.get("NEXT_SUGGEST_LOCALE")?.value;
