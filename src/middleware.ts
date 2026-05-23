@@ -170,10 +170,11 @@ export default async function middleware(req: NextRequest) {
         }
 
         // redirect to country/locale (preserve path when locale-only e.g. /en/products -> /us/en/products)
-        // 307 (not 308) so browsers don't cache /account -> /fr/fr/account when cookies later flip to en.
+        // 307 + no-store so browsers/CDNs never cache /account -> /fr/fr/account when cookies later flip to en.
         const url = req.nextUrl.clone();
         url.pathname = `/${targetCountry}/${targetLocale}${pathRest}`;
         const res = NextResponse.redirect(url, { status: 307 });
+        res.headers.set("Cache-Control", "no-store");
         // Ensure defaults are persisted for subsequent requests
         setMainCookies(res, targetCountry, targetLocale);
         return res;

@@ -85,6 +85,7 @@ export const handleFromPickerAction = (req: NextRequest): NextResponse | null =>
     // 307 (not 308): the redirect's cookie writes must be re-issued by middleware on each
     // subsequent request; caching the redirect would skip middleware and lose the cookies.
     const res = NextResponse.redirect(url, { status: 307 });
+    res.headers.set("Cache-Control", "no-store");
     setMainCookies(res, parsedPath.country, parsedPath.locale);
     clearSuggestCookies(res);
     return res;

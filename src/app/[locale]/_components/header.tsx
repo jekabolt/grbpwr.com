@@ -5,6 +5,7 @@ import Link from "next/link";
 import { USER_TIER } from "@/constants";
 import { useTranslations } from "next-intl";
 
+import { useLocalizedHref } from "@/lib/navigation/use-localized-href";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -36,6 +37,7 @@ export function Header({
   const { isVisible, isAnnounceVisible, isAtTop, isMobile } =
     useHeaderVisibility();
   const { languageId } = useTranslationsStore((state) => state);
+  const localized = useLocalizedHref();
   const announceTranslation = dictionary?.announce?.translations?.find(
     (t) => t.languageId === languageId,
   );
@@ -134,7 +136,7 @@ export function Header({
                   className="ml-auto w-1/2 bg-transparent text-right transition-colors hover:opacity-70 active:opacity-50"
                   asChild
                 >
-                  <Link href="/timeline">{t("timeline")}</Link>
+                  <Link href={localized("/timeline")}>{t("timeline")}</Link>
                 </Button>
               )}
             </div>
@@ -144,7 +146,7 @@ export function Header({
                 className="underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
                 asChild
               >
-                <Link href="/account">{tAccount("account")}</Link>
+                <Link href={localized("/account")}>{tAccount("account")}</Link>
               </Button>
 
               {isWebsiteEnabled && (
