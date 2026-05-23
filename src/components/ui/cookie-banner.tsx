@@ -34,22 +34,34 @@ function updateConsentMode(prefs: typeof defaultCookiePreferences) {
   });
 }
 
-export function CookieBanner({ defaultVisible = false }: CookieBannerProps) {
-  const [isVisible, setIsVisible] = useState(defaultVisible);
+const hasConsentCookie = () =>
+  typeof document !== "undefined" &&
+  document.cookie
+    .split("; ")
+    .some((c) => c.startsWith("cookieConsent="));
+
+const setConsentCookie = () => {
+  const secure =
+    typeof window !== "undefined" && window.location.protocol === "https:"
+      ? ";Secure"
+      : "";
+  document.cookie = `cookieConsent=1;path=/;max-age=31536000;SameSite=Lax${secure}`;
+};
+
+export function CookieBanner(_props: CookieBannerProps = {}) {
+  // Server-render hidden; client decides after reading cookie + localStorage.
+  // This avoids a flash when the cookie was cleared but localStorage still has consent.
+  const [isVisible, setIsVisible] = useState(false);
   const [open, setOpenStatus] = useState(false);
   const [preferences, setPreferences] = useState(defaultCookiePreferences);
   const t = useTranslations("cookies");
 
   useEffect(() => {
     const savedConsent = localStorage.getItem("cookieConsent");
-    if (savedConsent) {
-      setIsVisible(false);
-    }
+    const cookiePresent = hasConsentCookie();
+    if (savedConsent && !cookiePresent) setConsentCookie();
+    if (!savedConsent && !cookiePresent) setIsVisible(true);
   }, []);
-
-  const setConsentCookie = () => {
-    document.cookie = "cookieConsent=1;path=/;max-age=31536000;SameSite=Lax";
-  };
 
   const handleSaveCookies = () => {
     localStorage.setItem("cookieConsent", JSON.stringify(preferences));
