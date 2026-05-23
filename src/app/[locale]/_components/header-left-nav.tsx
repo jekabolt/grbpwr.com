@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 
+import { useLocalizedHref } from "@/lib/navigation/use-localized-href";
 import { Button } from "@/components/ui/button";
 import { MobileNavMenu } from "@/components/ui/mobile-nav-menu";
 import { DesktopNavigationMenu } from "@/app/[locale]/_components/desktop-nav-menu";
@@ -15,6 +18,7 @@ export function HeaderLeftNav({
   isWebsiteEnabled?: boolean;
   onNavOpenChange: (isOpen: boolean) => void;
 }) {
+  const localized = useLocalizedHref();
   return (
     <div className="grow basis-0">
       <div className="hidden lg:block">
@@ -32,7 +36,7 @@ export function HeaderLeftNav({
             size="lg"
             className="transition-colors hover:opacity-70 active:opacity-50"
           >
-            <Link href="/account">account</Link>
+            <Link href={localized("/account")}>account</Link>
           </Button>
         ) : (
           <MobileNavMenu isBigMenuEnabled={isBigMenuEnabled} />

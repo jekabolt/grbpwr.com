@@ -1,6 +1,9 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 
 import { getTopCategoryName } from "@/lib/categories-map";
+import { useLocalizedHref } from "@/lib/navigation/use-localized-href";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
@@ -36,6 +39,7 @@ export function DefaultMobileMenuDialog({
   isWebsiteEnabled = true,
 }: DefaultMenuProps) {
   const { account, isSignedIn } = useAccountOnboardingStore((s) => s);
+  const localized = useLocalizedHref();
   const defaultMenuItems = isWebsiteEnabled
     ? createMenuItems(isBigMenuEnabled, setActiveCategory)
     : [{ label: "timeline", showArrow: false, href: "/timeline" }];
@@ -52,7 +56,7 @@ export function DefaultMobileMenuDialog({
         <div>
           <AnimatedButton
             animationDuration={1000}
-            href="/account"
+            href={localized("/account")}
             className="uppercase"
           >
             {isSignedIn ? (

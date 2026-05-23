@@ -65,11 +65,12 @@ export default async function middleware(req: NextRequest) {
         // trust it and let setMainCookies (below) sync cookies to match. The previous
         // "block manual URL changes" guard caused legitimate refreshes of /fr/en to
         // revert to /fr/{cookieLocale} when the cookie hadn't caught up yet.
+        // 307 (not 308) because the resolved locale can change with cookies.
         if (!(routing.locales as readonly string[]).includes(locale!)) {
             const fallbackLocale = getLocaleFromCountry(country!);
             const url = req.nextUrl.clone();
             url.pathname = `/${country}/${fallbackLocale}${rest}`;
-            return NextResponse.redirect(url, { status: 308 });
+            return NextResponse.redirect(url, { status: 307 });
         }
 
         const url = req.nextUrl.clone();
@@ -89,11 +90,28 @@ export default async function middleware(req: NextRequest) {
         }
 
         const newReq = new NextRequest(url, { headers: req.headers });
-        const intlRes = intlMiddleware(newReq);
+        // Still run intlMiddleware so next-intl picks up the rewritten URL for
+        // translations, but discard its response — we manage cookies ourselves.
+        intlMiddleware(newReq);
 
         const reqHeaders = new Headers(req.headers);
         reqHeaders.set("x-nextjs-country", country!);
         reqHeaders.set("x-nextjs-locale", locale!);
+        // Override the request's Cookie header so RSC/server components see the
+        // URL-derived values immediately, even if the browser still holds a stale
+        // NEXT_LOCALE from before. Without this, getInitialTranslationState reads
+        // the old cookie and initializes the store with the wrong language.
+        const existingCookies = req.headers.get("cookie") ?? "";
+        const cookiesWithoutLocale = existingCookies
+            .split(/;\s*/)
+            .filter((c) => c && !/^NEXT_(LOCALE|COUNTRY)=/.test(c))
+            .join("; ");
+        reqHeaders.set(
+            "cookie",
+            [cookiesWithoutLocale, `NEXT_COUNTRY=${country}`, `NEXT_LOCALE=${locale}`]
+                .filter(Boolean)
+                .join("; "),
+        );
         if (shouldSuggest) {
             reqHeaders.set("x-geo-suggest-country", geoCountry);
             reqHeaders.set("x-geo-suggest-locale", geoLocale);
@@ -104,7 +122,9 @@ export default async function middleware(req: NextRequest) {
         const res = NextResponse.rewrite(rewriteUrl, {
             request: { headers: reqHeaders },
         });
-        intlRes.cookies.getAll().forEach((c) => res.cookies.set(c.name, c.value));
+        // Prevent any edge/CDN caching of this rewrite — we depend on the
+        // Set-Cookie below being applied on every request.
+        res.headers.set("Cache-Control", "no-store");
         setMainCookies(res, country!, locale!);
         const suggestCountryCookie = req.cookies.get("NEXT_SUGGEST_COUNTRY")?.value;
         const suggestLocaleCookie = req.cookies.get("NEXT_SUGGEST_LOCALE")?.value;
@@ -169,9 +189,11 @@ export default async function middleware(req: NextRequest) {
         }
 
         // redirect to country/locale (preserve path when locale-only e.g. /en/products -> /us/en/products)
+        // 307 + no-store so browsers/CDNs never cache /account -> /fr/fr/account when cookies later flip to en.
         const url = req.nextUrl.clone();
         url.pathname = `/${targetCountry}/${targetLocale}${pathRest}`;
-        const res = NextResponse.redirect(url, { status: 308 });
+        const res = NextResponse.redirect(url, { status: 307 });
+        res.headers.set("Cache-Control", "no-store");
         // Ensure defaults are persisted for subsequent requests
         setMainCookies(res, targetCountry, targetLocale);
         return res;
