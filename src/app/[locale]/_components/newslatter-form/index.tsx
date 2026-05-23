@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
@@ -35,6 +35,7 @@ export default function NewslatterForm({
   const [toastMessage, setToastMessage] = useState("");
   const [pulseEmail, setPulseEmail] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const blurTimeoutRef = useRef<number | null>(null);
   const t = useTranslations("newslatter");
   const tToaster = useTranslations("toaster");
 
@@ -54,6 +55,34 @@ export default function NewslatterForm({
     const id = window.setTimeout(() => setPulseEmail(false), FIELD_PULSE_MS);
     return () => window.clearTimeout(id);
   }, [pulseEmail]);
+
+  useEffect(
+    () => () => {
+      if (blurTimeoutRef.current !== null) {
+        window.clearTimeout(blurTimeoutRef.current);
+      }
+    },
+    [],
+  );
+
+  const handleEmailFocus = () => {
+    if (blurTimeoutRef.current !== null) {
+      window.clearTimeout(blurTimeoutRef.current);
+      blurTimeoutRef.current = null;
+    }
+    setIsEmailFocused(true);
+  };
+
+  // Delay blur so a mobile tap on Subscribe lands before the button unmounts.
+  const handleEmailBlur = () => {
+    if (blurTimeoutRef.current !== null) {
+      window.clearTimeout(blurTimeoutRef.current);
+    }
+    blurTimeoutRef.current = window.setTimeout(() => {
+      setIsEmailFocused(false);
+      blurTimeoutRef.current = null;
+    }, 200);
+  };
 
   async function onSubmit(data: NewsletterFormValues) {
     const email = (data.email ?? "").trim();
@@ -127,8 +156,8 @@ export default function NewslatterForm({
                   "bg-transparent": inactiveBgColor,
                 })}
                 disabled={isLoading}
-                onFocus={() => setIsEmailFocused(true)}
-                onBlur={() => setIsEmailFocused(false)}
+                onFocus={handleEmailFocus}
+                onBlur={handleEmailBlur}
               />
             </div>
             {isEmailFocused && (
