@@ -87,6 +87,6 @@ Si vous avez une réclamation concernant votre commande ou nos services, veuille
 
 **Divisibilité.** Si une disposition des présentes Conditions est déclarée invalide ou inapplicable par un tribunal compétent, cette disposition sera limitée ou éliminée dans la mesure minimale nécessaire, et les autres dispositions resteront pleinement en vigueur.
 **Intégralité de l'accord.** Les présentes Conditions, ainsi que la Politique de confidentialité et les Conditions d'utilisation, constituent l'intégralité de l'accord entre vous et GRBPWR concernant votre achat et remplacent tous les accords antérieurs ou simultanés.
-**Renonciation.** Le fait que nous n'appliquions pas un droit ou une disposition des présentes Conditions ne constitue pas une renonciation à ce droit ou à cette disposition.
-**Cession.** Vous ne pouvez pas céder ou transférer les présentes Conditions, ou les droits ou obligations en découlant, sans notre consentement écrit préalable.
+**Aucune renonciation.** Le fait que nous n'appliquions pas un droit ou une disposition des présentes Conditions ne constitue pas une renonciation à ce droit ou à cette disposition.
+**Aucune cession.** Vous ne pouvez pas céder ou transférer les présentes Conditions, ou les droits ou obligations en découlant, sans notre consentement écrit préalable.
 **Langue.** Les présentes Conditions sont rédigées en anglais. En cas de conflit entre une version traduite et la version anglaise, la version anglaise prévaudra.

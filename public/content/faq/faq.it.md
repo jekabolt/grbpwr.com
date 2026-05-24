@@ -44,13 +44,13 @@ Riceverai una notifica via e-mail una volta che il tuo ordine sarà stato conseg
 
 RESO
 
-Puoi restituire il tuo ordine entro 14 giorni dalla ricezione. Per effettuare un reso, utilizza il modulo di reso allegato al tuo ordine e contattaci utilizzando il [modulo del servizio post-vendita](/aftersale-services). Riceverai un'etichetta di reso prepagato via e-mail. Reimballa accuratamente l'articolo/i nella loro condizione originale, utilizzando l'imballaggio originale ove possibile, applica l'etichetta di reso e organizza il ritiro tramite il corriere.
+Puoi restituire il tuo ordine entro 14 giorni dalla ricezione. Per effettuare un reso, compila il modulo di reso sulla nostra pagina [Servizi post-vendita](/aftersale-services). Riceverai un'etichetta di reso prepagato via e-mail. Reimballa accuratamente l'articolo/i nella loro condizione originale, utilizzando l'imballaggio originale ove possibile, applica l'etichetta di reso e organizza il ritiro tramite il corriere.
 
 Gli articoli danneggiati, usati, modificati o privi di etichette e imballaggio originale non saranno accettati per il reso.
 
 Puoi controllare lo stato del tuo rimborso nelle informazioni del tuo ordine sul nostro sito web.
 
-Se desideri sostituire un articolo con una taglia o un colore diverso, utilizza il nostro [Servizio post-vendita](/aftersale-services).
+Se desideri sostituire un articolo con una taglia o un colore diverso, utilizza il nostro modulo [Servizi post-vendita](/aftersale-services).
 
 ## TRACCIAMENTO DELL'ORDINE E PREORDINE
 
@@ -100,11 +100,11 @@ Scatta delle foto chiare del danno e [contattaci](/aftersale-services).
 
 RESO DI UN PRODOTTO
 
-Per restituire un ordine, utilizza il modulo di reso incluso nel pacco. Se hai smarrito il modulo, [contattaci](/aftersale-services).
+Per restituire un ordine, compila il modulo di reso sulla nostra pagina [Servizi post-vendita](/aftersale-services). Riceverai un'etichetta di reso prepagato via e-mail.
 
-Gli articoli danneggiati o privi di etichetta non saranno accettati per il reso.
+Gli articoli danneggiati, usati, modificati o privi di etichette e imballaggio originale non saranno accettati per il reso.
 
-Se desideri cambiare un articolo con una taglia diversa, [ti preghiamo di contattarci](/aftersale-services).
+Se desideri cambiare un articolo con una taglia o un colore diverso, [ti preghiamo di contattarci](/aftersale-services).
 
 PERIODO DI RESO
 
@@ -116,11 +116,13 @@ Le spese di restituzione sono a nostro carico.
 
 RICHIESTA DI CAMBIO
 
-Per cambiare un articolo con una taglia diversa, [contattaci](/aftersale-services).
+Per cambiare un articolo con una taglia o un colore diverso, [contattaci](/aftersale-services).
 
 RIMBORSO
 
-Emetteremo un rimborso entro 5-7 giorni dal ricevimento dell'ordine restituito. Una volta ricevuto e approvato il tuo reso, riceverai un'e-mail di conferma. Puoi controllare lo stato del tuo reso su questa pagina.
+Emetteremo un rimborso entro 5-7 giorni dal ricevimento e dall'approvazione dell'ordine restituito. Una volta ricevuto e approvato il tuo reso, riceverai un'e-mail di conferma. Puoi controllare lo stato del tuo rimborso nelle informazioni del tuo ordine.
+
+Per i resi effettuati entro il periodo di recesso di 14 giorni, rimborseremo il costo di spedizione standard più economico oltre al prezzo del prodotto. I rimborsi vengono emessi con lo stesso metodo di pagamento utilizzato per l'acquisto e nella stessa valuta.
 
 La rapidità con cui il rimborso apparirà sul tuo conto dipende dalla tua banca o dal tuo fornitore di servizi di pagamento.
 

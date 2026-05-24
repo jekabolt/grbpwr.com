@@ -1,6 +1,6 @@
 ZUGANG ZUM VERBORGENEN KATALOG
 
-zugang zu ausgewählten produkten, limitierten releases und exklusiven drops für mitglieder.
+zugang zu ausgewählten produkten, limitierten releases und privaten drops für mitglieder.
 
 EVENTS UND NETWORKING-MÖGLICHKEITEN
 

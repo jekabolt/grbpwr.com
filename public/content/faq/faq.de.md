@@ -120,9 +120,9 @@ Um einen Artikel gegen eine andere Größe oder Farbe umzutauschen, [nehmen Sie 
 
 RÜCKERSTATTUNG
 
-Wir erstatten Ihnen den Kaufpreis innerhalb von 5–7 Tagen nach Erhalt der Rücksendung. Sobald wir Ihre Rücksendung erhalten und genehmigt haben, erhalten Sie eine Bestätigungs-E-Mail. Sie können den Status Ihrer Rücksendung auf dieser Seite überprüfen.
+Wir erstatten Ihnen den Kaufpreis innerhalb von 5–7 Tagen nach Erhalt und Genehmigung der Rücksendung. Sobald wir Ihre Rücksendung erhalten und genehmigt haben, erhalten Sie eine Bestätigungs-E-Mail. Sie können den Status Ihrer Rückerstattung in Ihren Bestellinformationen überprüfen.
 
-Für Rücksendungen innerhalb der 14-tägigen Stornierungsfrist erstatten wir den günstigsten Standardversandkosten zusätzlich zum Produktpreis. Rückerstattungen werden auf die ursprüngliche Zahlungsmethode und in derselben Währung wie beim Kauf ausgestellt.
+Für Rücksendungen innerhalb der 14-tägigen Stornierungsfrist erstatten wir die günstigsten Standardversandkosten zusätzlich zum Produktpreis. Rückerstattungen werden auf die ursprüngliche Zahlungsmethode und in derselben Währung wie beim Kauf ausgestellt.
 
 Wie schnell die Rückerstattung auf Ihrem Konto erscheint, hängt von Ihrer Bank oder Ihrem Zahlungsanbieter ab.
 

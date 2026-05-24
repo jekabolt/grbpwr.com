@@ -33,4 +33,4 @@ Se hai un reclamo riguardante la nostra procedura di reso, contattaci utilizzand
 
 ## LEGGE APPLICABILE
 
-La presente politica di reso e cambio è regolata e interpretata in conformità con le leghi dell'Inghilterra e del Galles.
+La presente politica di reso e cambio è regolata e interpretata in conformità con le leggi dell'Inghilterra e del Galles.
