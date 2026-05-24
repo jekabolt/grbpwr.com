@@ -44,6 +44,7 @@ Il rischio passa a te al momento della consegna o del ritiro. I prodotti rimango
 È possibile restituire gli articoli entro 14 giorni dalla ricezione, compilando il modulo di reso sulla nostra pagina [Reso](/return). Gli articoli devono essere inutilizzati, nelle loro condizioni e confezioni originali, con tutte le etichette e gli accessori inclusi. I prodotti danneggiati, usurati, alterati o privi di etichette non saranno accettati.
 I resi sono gratuiti se si utilizza la nostra etichetta di reso prepagata. I rimborsi vengono elaborati entro 5-7 giorni dal ricevimento e dall'approvazione del reso.
 Per i resi effettuati entro il periodo di recesso legale di 14 giorni, rimborseremo il costo di spedizione standard più economico oltre al prezzo del prodotto. Per i resi parziali, il costo di spedizione potrà essere adeguato proporzionalmente. I rimborsi vengono emessi con lo stesso metodo di pagamento utilizzato per l'acquisto e nella stessa valuta.
+I prodotti su misura o personalizzati non possono essere restituiti in conformità con la normativa applicabile in materia di tutela dei consumatori, in quanto sono realizzati secondo le tue specifiche individuali. Ciò non pregiudica i tuoi diritti legali in relazione ad articoli difettosi o descritti in modo errato.
 
 ## ARTICOLI SU MISURA
 
@@ -87,5 +88,5 @@ Se hai un reclamo riguardante il tuo ordine o i nostri servizi, contattaci utili
 **Separabilità.** Se una disposizione dei presenti Termini è ritenuta invalida o inapplicabile da un tribunale competente, tale disposizione sarà limitata o eliminata nella misura minima necessaria e le restanti disposizioni rimarranno pienamente in vigore.
 **Intero accordo.** I presenti Termini, insieme all'Informativa sulla privacy e ai Termini di utilizzo, costituiscono l'intero accordo tra te e GRBPWR riguardante il tuo acquisto e sostituiscono tutti gli accordi precedenti o contemporanei.
 **Nessuna rinuncia.** La nostra mancata applicazione di un diritto o di una disposizione dei presenti Termini non costituirà una rinuncia a tale diritto o disposizione.
-**Nessun cessione.** Non puoi cedere o trasferire i presenti Termini, o qualsiasi diritto o obbligo derivante da essi, senza il nostro previo consenso scritto.
+**Nessuna cessione.** Non puoi cedere o trasferire i presenti Termini, o qualsiasi diritto o obbligo derivante da essi, senza il nostro previo consenso scritto.
 **Lingua.** I presenti Termini sono redatti in lingua inglese. In caso di conflitto tra una versione tradotta e la versione inglese, prevarrà la versione inglese.

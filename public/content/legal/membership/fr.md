@@ -31,7 +31,7 @@ En vous inscrivant en tant que membre, vous consentez au traitement de vos donn�
 
 Si vous ne souhaitez plus être membre, vous pouvez résilier votre adhésion à tout moment en envoyant un avis écrit à client@grbpwr.com.
 Vous pouvez également demander la suppression complète de vos données personnelles (y compris l'historique des commandes, les mesures et les scans 3D) en envoyant un e-mail à client@grbpwr.com. Nous traiterons votre demande conformément aux lois applicables sur la protection des données. Veuillez noter que certaines informations peuvent devoir être conservées pour des raisons juridiques ou comptables.
-GRBPWR se réserve le droit de résilier votre adhésion à tout moment si nous suspectons un abus du programme de fidélité.
+GRBPWR se réserve le droit de résilier votre adhésion à tout moment si nous suspectons un abus du programme d'adhésion.
 
 ## MODIFICATIONS DES CONDITIONS GÉNÉRALES
 
@@ -48,4 +48,4 @@ Cette politique d'adhésion est régie et interprétée conformément aux lois d
 - London, Greater London, United Kingdom, W1W 5PF
 - client@grbpwr.com
 
-Si vous avez une réclamation concernant le programme de fidélité, veuillez nous contacter en utilisant le formulaire [Services après-vente](/aftersale-services) sur le site Web ou nous envoyer un e-mail à support@grbpwr.com.
+Si vous avez une réclamation concernant le programme d'adhésion, veuillez nous contacter en utilisant le formulaire [Services après-vente](/aftersale-services) sur le site Web ou nous envoyer un e-mail à support@grbpwr.com.

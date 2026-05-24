@@ -1,6 +1,6 @@
 VERBORGENER KATALOG UND TIER-BASIERTE DROPS
 
-zugang zu ausgewählten produkten, limitierten releases und exklusiven drops für berechtigte mitglieder.
+zugang zu ausgewählten produkten, limitierten releases und privaten drops für berechtigte mitglieder.
 
 KOSTENLOSER STANDARDVERSAND
 

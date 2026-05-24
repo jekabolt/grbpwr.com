@@ -44,13 +44,13 @@ Vous recevrez une notification par e-mail une fois votre commande livrée.
 
 RETOUR
 
-Vous pouvez retourner votre commande dans les 14 jours suivant sa réception. Pour effectuer un retour, veuillez utiliser le formulaire de retour inclus dans votre commande et nous contacter via le [formulaire du service après-vente](/aftersale-services). Vous recevrez une étiquette de retour prépayée par e-mail. Reconditionnez soigneusement l'article(s) dans son état d'origine, en utilisant l'emballage d'origine dans la mesure du possible, fixez l'étiquette de retour et organisez la collecte par le transporteur.
+Vous pouvez retourner votre commande dans les 14 jours suivant sa réception. Pour effectuer un retour, veuillez remplir le formulaire de retour sur notre page [Service après-vente](/aftersale-services). Vous recevrez une étiquette de retour prépayée par e-mail. Reconditionnez soigneusement l'article(s) dans son état d'origine, en utilisant l'emballage d'origine dans la mesure du possible, fixez l'étiquette de retour et organisez la collecte par le transporteur.
 
 Les articles endommagés, usés, modifiés ou dépourvus d'étiquettes et d'emballage d'origine ne seront pas acceptés pour un retour.
 
 Vous pouvez vérifier le statut de votre remboursement dans vos informations de commande sur notre site web.
 
-Si vous souhaitez échanger un article contre une autre taille ou couleur, veuillez utiliser notre [Service après-vente](/aftersale-services).
+Si vous souhaitez échanger un article contre une autre taille ou couleur, veuillez utiliser notre formulaire [Service après-vente](/aftersale-services).
 
 ## SUIVI DE COMMANDE ET PRÉCOMMANDE
 
@@ -100,11 +100,11 @@ Prenez des photos claires des dégâts et [contactez-nous](/aftersale-services).
 
 RETOUR D'UN PRODUIT
 
-Pour retourner une commande, veuillez utiliser le formulaire de retour inclus dans votre colis. Si vous avez perdu le formulaire, [contactez-nous](/aftersale-services).
+Pour retourner une commande, veuillez remplir le formulaire de retour sur notre page [Service après-vente](/aftersale-services). Vous recevrez une étiquette de retour prépayée par e-mail.
 
-Les articles endommagés ou dont l'étiquette est manquante ne seront pas acceptés pour un retour.
+Les articles endommagés, usés, modifiés ou dépourvus d'étiquettes et d'emballage d'origine ne seront pas acceptés pour un retour.
 
-Si vous souhaitez échanger un article contre une autre taille, [veuillez nous contacter](/aftersale-services).
+Si vous souhaitez échanger un article contre une autre taille ou couleur, [veuillez nous contacter](/aftersale-services).
 
 DÉLAI DE RETOUR
 
@@ -116,13 +116,13 @@ Nous prenons en charge les frais de retour.
 
 DEMANDE D'ÉCHANGE
 
-Pour échanger un article contre une autre taille, [veuillez nous contacter](/aftersale-services).
+Pour échanger un article contre une autre taille ou couleur, [veuillez nous contacter](/aftersale-services).
 
 REMBOURSEMENT
 
-Nous effectuons le remboursement dans les 5 à 7 jours suivant la réception de la commande retournée. Une fois que nous avons reçu votre retour et qu'il a été approuvé, vous recevrez un e-mail de confirmation.
+Nous effectuons le remboursement dans les 5 à 7 jours suivant la réception et l'approbation de la commande retournée. Une fois que nous avons reçu votre retour et qu'il a été approuvé, vous recevrez un e-mail de confirmation. Vous pouvez vérifier le statut de votre remboursement dans les informations de votre commande.
 
-Vous pouvez vérifier le statut de votre retour sur cette page.
+Pour les retours effectués dans le délai de rétractation de 14 jours, nous rembourserons le coût de livraison standard le moins cher en plus du prix du produit. Les remboursements sont effectués selon le mode de paiement initial et dans la même devise que celle utilisée pour l'achat.
 
 Le délai d'apparition du remboursement sur votre compte dépend de votre banque ou de votre prestataire de paiement.
 
@@ -130,6 +130,8 @@ Puis-je recevoir un remboursement sur une carte différente de celle utilisée p
 Non, les remboursements ne peuvent être effectués que sur le mode de paiement d'origine.
 
 ## SERVICES APRÈS-VENTE
+
+SERVICE DE RÉPARATION
 
 Si votre article est endommagé, veuillez remplir le formulaire de [service après-vente](/aftersale-services) et sélectionner "RÉPARATION". Joignez des photos claires et une description détaillée des dommages dans le formulaire. Nous vous répondrons dans les trois jours pour vous expliquer les étapes suivantes.
 

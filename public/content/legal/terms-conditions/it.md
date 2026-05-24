@@ -46,7 +46,7 @@ Ci riserviamo il diritto di aggiornare le presenti Condizioni d'uso in qualsiasi
 
 ## PROCEDURA DI RIMOZIONE DEI CONTENUTI UTENTE
 
-8.1. Se ritenete che qualsiasi contenuto pubblicato sul nostro sito web violi i vostri diritti di proprietà intellettuale o sia altrimente illecito, contattateci all'indirizzo support@grbpwr.com con i dettagli del contenuto e della vostra richiesta. Esamineremo il reclamo e rimuoveremo il contenuto ove appropriato, in conformità con la legge applicabile.
+8.1. Se ritenete che qualsiasi contenuto pubblicato sul nostro sito web violi i vostri diritti di proprietà intellettuale o sia altrimenti illecito, contattateci all'indirizzo support@grbpwr.com con i dettagli del contenuto e della vostra richiesta. Esamineremo il reclamo e rimuoveremo il contenuto ove appropriato, in conformità con la legge applicabile.
 
 ## RECLAMI
 
