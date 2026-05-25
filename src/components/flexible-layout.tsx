@@ -80,7 +80,6 @@ type Props = {
   displayFooter?: boolean;
   showAnnounce?: boolean;
   accountPanel?: boolean;
-  /** Pass true when page content must fill a fixed viewport height (e.g. account). */
   fillViewport?: boolean;
 };
 
