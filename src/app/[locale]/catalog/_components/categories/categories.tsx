@@ -1,32 +1,30 @@
-import { common_Category } from "@/api/proto-http/frontend";
+// import { common_Category } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import {
-  filterSubCategories,
-  getSubCategoriesForTopCategory,
-  getSubCategoryName,
+  // filterSubCategories,
+  // getSubCategoriesForTopCategory,
+  // getSubCategoryName,
   getTopCategoryName,
-  isCategoryDisabled,
 } from "@/lib/categories-map";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 import { useRouteParams } from "../useRouteParams";
-import { CategoryButton } from "./category-btn";
+import { CategoryButton, CategoryUndoButton } from "./category-btn";
 import { TopCategories } from "./top-categories";
 
 export function Categories() {
   const t = useTranslations("categories");
   const { dictionary } = useDataContext();
-  const { gender, categoryName, subCategoryName, topCategory } =
-    useRouteParams();
+  const { gender, categoryName, topCategory } = useRouteParams();
 
   const categories = dictionary?.categories || [];
-  const subCategories = getSubCategoriesForTopCategory(
-    categories,
-    topCategory?.id || 0,
-  );
-  const filteredSubCategories = filterSubCategories(subCategories, gender);
+  // const subCategories = getSubCategoriesForTopCategory(
+  //   categories,
+  //   topCategory?.id || 0,
+  // );
+  // const filteredSubCategories = filterSubCategories(subCategories, gender);
 
   if (!categoryName) {
     return <TopCategories />;
@@ -39,12 +37,14 @@ export function Categories() {
   const baseHref = gender ? `/catalog/${gender}` : "/catalog";
 
   return (
-    <div className="flex items-center gap-2">
-      <CategoryButton href={baseHref}>
+    <div className="inline-flex items-center selection:bg-inverted selection:text-textColor">
+      <CategoryButton href={baseHref} variant="underline">
         {t((topCategoryName || categoryName || "").toLowerCase())}
       </CategoryButton>
+      <Text component="span">{"\u00A0/\u00A0"}</Text>
+      <CategoryUndoButton href={baseHref} />
 
-      {!!filteredSubCategories.length && <Text>/</Text>}
+      {/* {!!filteredSubCategories.length && <Text>/</Text>}
 
       {filteredSubCategories.map((subCategory, index) => {
         const findSubCategory = categories.find(
@@ -74,7 +74,7 @@ export function Categories() {
             {index < filteredSubCategories.length - 1 && <Text>/</Text>}
           </div>
         );
-      })}
+      })} */}
     </div>
   );
 }

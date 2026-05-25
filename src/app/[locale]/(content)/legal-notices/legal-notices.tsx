@@ -41,7 +41,7 @@ export function LegalNotices() {
 
   const { content } = useMarkdownContent(localizedCandidates);
   return (
-    <div className="space-y-10 lg:space-y-0">
+    <div className="flex w-full flex-col space-y-10 lg:flex-row lg:space-y-0">
       <div className="flex w-full flex-col lg:w-1/2 lg:gap-y-0">
         <div className="space-y-10">
           <Text className="uppercase">{t("legal notices")}</Text>

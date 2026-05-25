@@ -1,11 +1,10 @@
 import { useTranslations } from "next-intl";
 
-import { getTopCategoryName } from "@/lib/categories-map";
+import { getTopCategoryName, isCategoryDisabled } from "@/lib/categories-map";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 import { useRouteParams } from "../useRouteParams";
-import { isCategoryDisabled } from "@/lib/categories-map";
 import { CategoryButton } from "./category-btn";
 
 export function TopCategories() {
@@ -28,27 +27,28 @@ export function TopCategories() {
     .sort((a, b) => (a.id || 0) - (b.id || 0));
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center selection:bg-inverted selection:text-textColor">
       {topCategories?.map((category, index) => {
         const categoryName = getTopCategoryName(categories, category.id || 0);
         const originalCategoryName = category.name?.toLowerCase() || "";
 
         if (!categoryName) return null;
 
-        // Build href: if no gender, skip it; otherwise include it
         const href = gender
           ? `/catalog/${gender}/${categoryName.toLowerCase()}`
           : `/catalog/${categoryName.toLowerCase()}`;
 
         return (
-          <div className="flex items-center gap-2" key={category.id}>
+          <div className="flex items-center" key={category.id}>
             <CategoryButton
               href={href}
               disabled={isCategoryDisabled(category, gender)}
             >
               {originalCategoryName ? t(originalCategoryName) : ""}
             </CategoryButton>
-            {index < topCategories.length - 1 && <Text>/</Text>}
+            {index < topCategories.length - 1 && (
+              <Text component="span">{"\u00A0/\u00A0"}</Text>
+            )}
           </div>
         );
       })}
