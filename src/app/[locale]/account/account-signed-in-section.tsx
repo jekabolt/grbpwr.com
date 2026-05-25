@@ -31,8 +31,12 @@ export function AccountSignedInSection({
   }
 
   return (
-    <div className="min-h-dvh w-full pt-24 lg:px-32 lg:py-24">
-      {!isCheckout && <AccountSessionPanel account={account} />}
+    <div className="flex min-h-0 w-full flex-1 flex-col pt-24 lg:px-48 lg:pb-0 lg:pt-24">
+      {!isCheckout && (
+        <div className="flex min-h-0 flex-1 flex-col">
+          <AccountSessionPanel account={account} />
+        </div>
+      )}
     </div>
   );
 }

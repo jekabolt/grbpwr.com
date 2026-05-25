@@ -158,6 +158,7 @@ export default function PaymentFieldsGroup({
         >
           {t("billing text")}
         </Text>
+
         <CheckboxField
           name="billingAddressIsSameAsAddress"
           label={t("same as shipping address")}

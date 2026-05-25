@@ -22,7 +22,15 @@ function useAccountCartSummaryData() {
 
   const validatedProducts = products
     .map((product) => product.productData)
-    .filter((item): item is NonNullable<typeof item> => Boolean(item));
+    .filter((item): item is NonNullable<typeof item> => Boolean(item))
+    .map((item) =>
+      item.orderItem
+        ? {
+            ...item,
+            orderItem: { ...item.orderItem, quantity: 1 },
+          }
+        : item,
+    );
 
   const currency = validatedCurrency || "EUR";
   const currencySymbol =
@@ -117,14 +125,44 @@ export function AccountCartDesktopOrderSummary() {
   if (!validatedProducts.length) return null;
 
   return (
-    <div className="space-y-8">
-      <Text variant="uppercase">{t("order summary")}</Text>
+    <AccountSummaryWrapper
+      t={t}
+      subTotalPrice={subTotalPrice}
+      totalPrice={totalPrice}
+      currency={currency}
+      currencySymbol={currencySymbol}
+    >
       <OrderProducts
         validatedProducts={validatedProducts}
         currencyKey={validatedCurrency}
         disableProductLinks
+        className="min-h-0"
       />
-      <div className="space-y-3 border-t border-textInactiveColor pt-4">
+    </AccountSummaryWrapper>
+  );
+}
+
+function AccountSummaryWrapper({
+  t,
+  subTotalPrice,
+  totalPrice,
+  currency,
+  currencySymbol,
+  children,
+}: {
+  t: ReturnType<typeof useTranslations>;
+  subTotalPrice: number;
+  totalPrice: number;
+  currency: string;
+  currencySymbol: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex h-full min-h-0 flex-col gap-y-8">
+      <Text variant="uppercase" className="shrink-0">
+        {t("order summary")}
+      </Text>
+      <div className="shrink-0 space-y-3 border-t border-textInactiveColor pt-4">
         <div className="flex justify-between">
           <Text variant="uppercase">{t("subtotal")}:</Text>
           <Text>{formatPrice(subTotalPrice, currency, currencySymbol)}</Text>
@@ -134,6 +172,7 @@ export function AccountCartDesktopOrderSummary() {
           <Text>{formatPrice(totalPrice, currency, currencySymbol)}</Text>
         </div>
       </div>
+      <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
     </div>
   );
 }

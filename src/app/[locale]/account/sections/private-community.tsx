@@ -69,8 +69,8 @@ export function PrivateCommunity() {
             )}
           </div>
         </div>
-        <div className="flex flex-col gap-6 border-b border-textInactiveColor py-6 lg:flex-row lg:gap-0">
-          <Text variant="uppercase" className="w-full">
+        <div className="flex flex-col gap-6 border-b border-textInactiveColor py-6 leading-none lg:flex-row lg:items-start lg:gap-24">
+          <Text variant="uppercase" className="leading-none">
             {t("privileges")}
           </Text>
           {mdPaths.length > 0 && !loading && content && (

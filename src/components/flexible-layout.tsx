@@ -20,6 +20,7 @@ export default function FlexibleLayout({
   displayFooter = true,
   showAnnounce = false,
   accountPanel = false,
+  fillViewport = false,
 }: Props) {
   return (
     <div
@@ -27,7 +28,15 @@ export default function FlexibleLayout({
         blackTheme: theme === "dark",
       })}
     >
-      <div className={cn("relative min-h-dvh", className)}>
+      <div
+        className={cn(
+          "relative min-h-dvh",
+          {
+            "flex h-dvh min-h-0 flex-col": fillViewport,
+          },
+          className,
+        )}
+      >
         {mobileHeaderType === "flexible" && (
           <div className="block lg:hidden">
             <MobileProductInfoHeader {...headerProps} />
@@ -44,7 +53,9 @@ export default function FlexibleLayout({
           </div>
         )}
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
-        <div className="w-full">{children}</div>
+        <div className={cn("w-full", { "min-h-0 flex-1": fillViewport })}>
+          {children}
+        </div>
       </div>
       {displayFooter && <Footer theme={theme} accountPanel={accountPanel} />}
       {(headerType === "catalog" || headerType === "main") && (
@@ -69,6 +80,7 @@ type Props = {
   displayFooter?: boolean;
   showAnnounce?: boolean;
   accountPanel?: boolean;
+  fillViewport?: boolean;
 };
 
 export type HeaderProps = {

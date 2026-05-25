@@ -26,17 +26,24 @@ export default async function AccountSectionPage({ params }: Props) {
   const account = await getStorefrontAccount();
 
   return (
-    <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
-      <div className="flex min-h-screen items-center justify-center bg-bgColor text-textColor lg:p-0">
+    <FlexibleLayout
+      theme={isWebsiteEnabled ? "light" : "dark"}
+      accountPanel
+      fillViewport
+      displayFooter={!account}
+    >
+      <div className="flex h-dvh min-h-0 flex-col bg-bgColor px-2.5 text-textColor lg:max-h-dvh lg:overflow-hidden lg:p-0">
         {account ? (
           <>
             <AccountMobileSectionPage account={account} section={section} />
-            <div className="hidden w-full lg:block">
+            <div className="hidden min-h-0 w-full flex-1 lg:flex">
               <AccountSignedInSection account={account} />
             </div>
           </>
         ) : (
-          <AccountLoginForm />
+          <div className="flex min-h-0 w-full flex-1">
+            <AccountLoginForm />
+          </div>
         )}
       </div>
     </FlexibleLayout>

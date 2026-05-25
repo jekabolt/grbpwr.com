@@ -51,12 +51,14 @@ export function AccountSectionContent({
 
   return (
     <Form {...form}>
-      <ActiveAccountSection
-        activePanel={activePanel}
-        selectedCountryCode={selectedCountryCode}
-        account={account}
-        addressOptions={addressOptions}
-      />
+      <div className="flex h-full min-h-0 flex-col">
+        <ActiveAccountSection
+          activePanel={activePanel}
+          selectedCountryCode={selectedCountryCode}
+          account={account}
+          addressOptions={addressOptions}
+        />
+      </div>
     </Form>
   );
 }

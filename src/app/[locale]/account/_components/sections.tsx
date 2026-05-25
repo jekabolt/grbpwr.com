@@ -33,14 +33,20 @@ export function ActiveAccountSection({
       return <EmailPreferences />;
     case "addresses":
       return (
-        <AddressesSection
-          account={account}
-          editResetKey={addressOptions?.editResetKey}
-          onEditModeChange={addressOptions?.onEditModeChange}
-        />
+        <div className="flex h-full min-h-0 flex-col">
+          <AddressesSection
+            account={account}
+            editResetKey={addressOptions?.editResetKey}
+            onEditModeChange={addressOptions?.onEditModeChange}
+          />
+        </div>
       );
     case "order&returns":
-      return <OrderReturns account={account} />;
+      return (
+        <div className="flex h-full min-h-0 flex-col">
+          <OrderReturns account={account} />
+        </div>
+      );
     case "private community":
       return <PrivateCommunity />;
     default:

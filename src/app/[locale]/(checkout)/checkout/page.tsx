@@ -71,11 +71,9 @@ export default async function CheckoutPage({
         right: t("close"),
       }}
     >
-      <div className="px-2.5 pb-8 pt-20 lg:relative lg:min-h-dvh lg:px-32 lg:py-24">
-        <Suspense fallback={<CheckoutLoginFormSkeleton />}>
-          <CheckoutFormWrapper initialAccount={account} />
-        </Suspense>
-      </div>
+      <Suspense fallback={<CheckoutLoginFormSkeleton />}>
+        <CheckoutFormWrapper initialAccount={account} />
+      </Suspense>
     </FlexibleLayout>
   );
 }

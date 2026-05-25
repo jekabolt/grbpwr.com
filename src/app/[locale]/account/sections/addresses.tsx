@@ -12,6 +12,10 @@ import { EditAddressForm } from "../_components/edit-address-form";
 import { AddressesSectionFallback } from "../_components/section-fallbacks";
 import { useAddresses } from "../utils/use-addresses";
 
+const SECTION_CLASSNAME = "flex h-full min-h-0 w-full flex-col";
+const LIST_CLASSNAME =
+  "flex min-h-0 flex-1 flex-col overflow-y-auto bg-bgColor lg:pt-16 text-textColor lg:mb-10";
+
 export function AddressesSection({
   account,
   defaultOnly = false,
@@ -61,16 +65,19 @@ export function AddressesSection({
 
   const isInitialLoading = !loaded;
 
+  const rootClassName = cn(
+    "flex w-full flex-col",
+    isCheckout ? "gap-16" : SECTION_CLASSNAME,
+    { "gap-0": isCheckout },
+  );
+  const listClassName = isCheckout ? "flex flex-col" : LIST_CLASSNAME;
+
   return (
-    <div
-      className={cn("flex w-full flex-col gap-16", {
-        "gap-0": isCheckout,
-      })}
-    >
+    <div className={rootClassName}>
       {editingId === null && (
         <Text
           variant="uppercase"
-          className={cn("hidden lg:block", {
+          className={cn("hidden shrink-0 lg:block", {
             "text-textInactiveColor": isDisabled,
           })}
         >
@@ -78,12 +85,14 @@ export function AddressesSection({
         </Text>
       )}
       {isInitialLoading ? (
-        <AddressesSectionFallback
-          defaultOnly={defaultOnly}
-          rows={addresses.length || (defaultOnly ? 1 : undefined)}
-        />
+        <div className={listClassName}>
+          <AddressesSectionFallback
+            defaultOnly={defaultOnly}
+            rows={addresses.length || (defaultOnly ? 1 : undefined)}
+          />
+        </div>
       ) : addresses.length > 0 ? (
-        <div className="flex flex-col">
+        <div className={listClassName}>
           {visibleAddresses.map((address) => (
             <div key={address.id}>
               {editingId === null && (
@@ -128,9 +137,11 @@ export function AddressesSection({
           ))}
         </div>
       ) : (
-        <div className="flex flex-col gap-6">
-          <Text variant="uppercase">{t("no addresses saved")}</Text>
-          <Text>{t("save an address to faster checkout")}</Text>
+        <div className={listClassName}>
+          <div className="flex flex-col gap-6">
+            <Text variant="uppercase">{t("no addresses saved")}</Text>
+            <Text>{t("save an address to faster checkout")}</Text>
+          </div>
         </div>
       )}
     </div>
