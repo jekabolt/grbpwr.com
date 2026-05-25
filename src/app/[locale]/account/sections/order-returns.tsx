@@ -14,10 +14,9 @@ import { OrderItem } from "../_components/order-item";
 import { OrderReturnsSectionFallback } from "../_components/section-fallbacks";
 import { useOrders } from "../utils/use-orders";
 
-const SECTION_CLASSNAME =
-  "flex w-full flex-col lg:h-[calc(100dvh-12rem)] lg:max-h-[calc(100dvh-12rem)]";
+const SECTION_CLASSNAME = "flex h-full min-h-0 w-full flex-col";
 const LIST_CLASSNAME =
-  "flex min-h-0 flex-1 flex-col gap-0 overflow-y-auto bg-bgColor pt-16 text-textColor";
+  "flex min-h-0 flex-1 flex-col gap-0 overflow-y-auto  bg-bgColor pt-16 mb-10 text-textColor";
 
 type OrderReturnsView = "orders" | "returns";
 

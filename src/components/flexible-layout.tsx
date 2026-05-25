@@ -28,7 +28,15 @@ export default function FlexibleLayout({
         blackTheme: theme === "dark",
       })}
     >
-      <div className={cn("relative min-h-dvh", className)}>
+      <div
+        className={cn(
+          "relative min-h-dvh",
+          {
+            "flex h-dvh min-h-0 flex-col": fillViewport,
+          },
+          className,
+        )}
+      >
         {mobileHeaderType === "flexible" && (
           <div className="block lg:hidden">
             <MobileProductInfoHeader {...headerProps} />
@@ -45,9 +53,7 @@ export default function FlexibleLayout({
           </div>
         )}
         {headerType === "archive" && <HeaderArchive {...headerProps} />}
-        <div
-          className={cn("w-full", fillViewport && "h-full min-h-0")}
-        >
+        <div className={cn("w-full", { "min-h-0 flex-1": fillViewport })}>
           {children}
         </div>
       </div>

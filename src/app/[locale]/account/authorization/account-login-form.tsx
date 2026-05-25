@@ -77,15 +77,14 @@ export function AccountLoginForm({
     <div className="flex h-full min-h-0 w-full flex-1 flex-col">
       <div
         className={cn("flex min-h-0 w-full flex-1", {
-          "items-center justify-center": !showCartSummary && !isCheckout,
+          "items-center justify-center": !isCheckout,
           "items-start justify-center": isCheckout,
-          "px-2.5 pt-20 lg:justify-center lg:px-32 lg:pt-24": showCartSummary,
+          "lg:justify-center lg:px-32 lg:pt-24": showCartSummary,
         })}
       >
         <div
           className={cn("flex min-h-0 w-full flex-1", {
-            "min-h-[340px] items-center justify-center":
-              !showCartSummary && !isCheckout,
+            "items-center justify-center": !isCheckout,
             "items-start justify-center": isCheckout,
             "pb-28 lg:pb-0": showCartSummary,
             "lg:mx-auto lg:grid lg:h-full lg:max-w-[1000px] lg:grid-cols-2 lg:items-start lg:gap-20":

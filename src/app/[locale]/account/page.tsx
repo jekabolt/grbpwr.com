@@ -14,16 +14,19 @@ export default async function AccountPage() {
     <FlexibleLayout
       theme={isWebsiteEnabled ? "light" : "dark"}
       accountPanel
+      fillViewport
       displayFooter={!!account}
     >
-      <div className="flex min-h-dvh flex-col bg-bgColor px-2.5 lg:h-dvh lg:max-h-dvh lg:min-h-0 lg:overflow-hidden lg:p-0">
-        <div className="flex min-h-0 w-full flex-1">
-          {account ? (
+      <div className="flex h-dvh min-h-0 flex-col bg-bgColor px-2.5 lg:max-h-dvh lg:overflow-hidden lg:p-0">
+        {account ? (
+          <div className="flex min-h-0 w-full flex-1">
             <AccountSignedInSection account={account} />
-          ) : (
+          </div>
+        ) : (
+          <div className="flex min-h-0 w-full flex-1">
             <AccountLoginForm />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </FlexibleLayout>
   );

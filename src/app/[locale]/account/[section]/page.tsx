@@ -29,18 +29,21 @@ export default async function AccountSectionPage({ params }: Props) {
     <FlexibleLayout
       theme={isWebsiteEnabled ? "light" : "dark"}
       accountPanel
-      displayFooter={!!account}
+      fillViewport
+      displayFooter={!account}
     >
-      <div className="flex min-h-screen items-center justify-center bg-bgColor text-textColor lg:p-0">
+      <div className="flex h-dvh min-h-0 flex-col bg-bgColor px-2.5 text-textColor lg:max-h-dvh lg:overflow-hidden lg:p-0">
         {account ? (
           <>
             <AccountMobileSectionPage account={account} section={section} />
-            <div className="hidden w-full lg:block">
+            <div className="hidden min-h-0 w-full flex-1 lg:flex">
               <AccountSignedInSection account={account} />
             </div>
           </>
         ) : (
-          <AccountLoginForm />
+          <div className="flex min-h-0 w-full flex-1">
+            <AccountLoginForm />
+          </div>
         )}
       </div>
     </FlexibleLayout>

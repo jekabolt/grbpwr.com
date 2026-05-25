@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import Checkbox from "@/components/ui/checkbox";
+import { Text } from "@/components/ui/text";
 
 import {
   FormControl,
@@ -46,18 +47,15 @@ export default function CheckboxField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          {/*
-            Make the full row tappable for email preferences while avoiding
-            double-toggle when clicking native interactive elements.
-          */}
           <div
-            className={cn("flex items-start gap-x-4", {
+            className={cn("flex items-start gap-x-4 leading-none", {
               "cursor-pointer items-center": isEmailPreference,
             })}
             onClick={(event) => {
               if (!isEmailPreference || props.disabled || props.loading) return;
               const target = event.target as HTMLElement;
-              if (target.closest("button,label,a,input,textarea,select")) return;
+              if (target.closest("button,label,a,input,textarea,select"))
+                return;
               field.onChange(!field.value);
               onCheckedChange?.(!field.value);
             }}
@@ -76,7 +74,7 @@ export default function CheckboxField({
               />
             </FormControl>
             <div
-              className={cn("leading-none", props.className, {
+              className={cn("", props.className, {
                 "text-textInactiveColor": props.disabled || props.loading,
                 "space-y-1": description,
                 "space-y-3": isEmailPreference,
@@ -87,10 +85,10 @@ export default function CheckboxField({
                   uppercase: isEmailPreference,
                 })}
               >
-                {label}
+                <Text className="leading-none">{label}</Text>
               </FormLabel>
               <FormDescription
-                className={cn("", {
+                className={cn("leading-none", {
                   lowercase: isEmailPreference,
                 })}
               >
