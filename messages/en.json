@@ -133,6 +133,7 @@
     "next": "next",
     "empty": "nothing",
     "clear all": "clear all",
+    "undo": "undo",
     "show": "show",
     "sort": {
       "latest arrivals": "latest arrivals",
