@@ -661,7 +661,6 @@ export const FIT_OPTIONS = [
 ] as const;
 
 
-/** Proto `ShoppingPreferenceEnum` strings (matches `EMAIL_PREFERENCES` values). */
 export const SHOPPING_PREFERENCE_ENUM = [
   EMAIL_PREFERENCES.all,
   EMAIL_PREFERENCES.men,
