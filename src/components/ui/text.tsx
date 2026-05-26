@@ -11,6 +11,7 @@ const textVariants = cva("", {
       strileTroughInactive: ["line-through", "text-textInactiveColor"],
       inactive: ["text-textInactiveColor"],
       undrleineWithColors: ["underline", "text-highlightColor"],
+      productLink: ["underline", "text-highlightColor", "visited-link"],
       uppercaseWithColors: ["uppercase", "text-highlightColor"],
       color: ["text-highlightColor"],
       error: ["text-errorColor"],

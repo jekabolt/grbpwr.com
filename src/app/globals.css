@@ -61,6 +61,11 @@
 }
 
 @layer utilities {
+  .visited-link.is-visited,
+  .visited-link[data-visited="true"] {
+    color: #501089 !important;
+  }
+
   .no-scroll-bar {
     scrollbar-width: none;
 

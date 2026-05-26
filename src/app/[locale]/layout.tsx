@@ -13,6 +13,7 @@ import {
 import { GA4_MEASUREMENT_ID } from "@/lib/analitycs/utils";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { AnalyticsInit } from "@/components/analytics-init";
+import { VisitedLinksSync } from "@/components/visited-links-sync";
 import { PageTransition } from "@/components/page-transition";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
@@ -102,6 +103,7 @@ export default async function RootLayout({ children, params }: Props) {
             <GeoSuggestWrapper />
             <UpdateLocation />
             <AnalyticsInit />
+            <VisitedLinksSync />
           </ToastProvider>
         </NextIntlClientProvider>
       </body>
