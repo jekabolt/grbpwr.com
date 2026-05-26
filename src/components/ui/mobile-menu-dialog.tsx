@@ -14,7 +14,7 @@ import {
   getHeroNavLink,
 } from "@/lib/utils";
 import { MobileCountriesPopupTrigger } from "@/app/[locale]/_components/mobile-countries-popup";
-import NewslatterForm from "@/app/[locale]/_components/newslatter-form";
+import NewslatterForm from "@/app/[locale]/_components/newsletter-form";
 
 import { useDataContext } from "../contexts/DataContext";
 import { AnimatedButton } from "./animated-button";

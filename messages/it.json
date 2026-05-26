@@ -112,7 +112,14 @@
     "agree": "accetto di ricevere email. leggi la nostra informativa sulla privacy per maggiori informazioni.",
     "consent_notice": "Inviando questo modulo, accetti le condizioni della nostra <privacy>informativa sulla privacy</privacy> e dei <terms>termini e condizioni</terms>.",
     "subscribe": "iscriviti",
-    "email": "email"
+    "email": "email",
+    "newsletter": "newsletter",
+    "close": "[x]",
+    "sign_up_description": "iscriviti per contenuti esclusivi e offerte speciali",
+    "first name": "nome",
+    "new arrivals": "nuovi arrivi",
+    "events": "eventi",
+    "email preferences": "preferenze email"
   },
   "cart": {
     "empty": "niente",

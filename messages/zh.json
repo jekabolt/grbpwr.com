@@ -112,7 +112,14 @@
     "agree": "我同意接收邮件。请阅读我们的隐私政策了解更多信息。",
     "consent_notice": "提交此表单即表示您同意我们的<privacy>隐私政策</privacy>和<terms>条款与条件</terms>。",
     "subscribe": "订阅",
-    "email": "电子邮件"
+    "email": "电子邮件",
+    "newsletter": "新闻通讯",
+    "close": "[x]",
+    "sign_up_description": "注册获取独家内容与特别优惠",
+    "first name": "名",
+    "new arrivals": "新品",
+    "events": "活动",
+    "email preferences": "邮件偏好"
   },
   "cart": {
     "empty": "空",

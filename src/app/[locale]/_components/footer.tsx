@@ -19,7 +19,7 @@ import { Text } from "@/components/ui/text";
 import { FooterNavMobile } from "./footer-nav-mobile";
 import HelpPopover from "./help-popover";
 import { MobileCountriesPopupTrigger } from "./mobile-countries-popup";
-import NewslatterForm from "./newslatter-form";
+import NewslatterForm from "./newsletter-form";
 
 function LiveClock() {
   const [timestamp, setTimestamp] = useState<number>(FOOTER_YEAR);

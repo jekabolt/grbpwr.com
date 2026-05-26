@@ -112,7 +112,14 @@
     "agree": "メール受信に同意します。詳細については、プライバシーポリシーをお読みください。",
     "consent_notice": "このフォームを送信することにより、当社の<privacy>プライバシーポリシー</privacy>および<terms>利用規約</terms>に同意したものとみなされます。",
     "subscribe": "購読する",
-    "email": "メール"
+    "email": "メール",
+    "newsletter": "ニュースレター",
+    "close": "[x]",
+    "sign_up_description": "限定コンテンツと特別オファーにご登録ください",
+    "first name": "名",
+    "new arrivals": "新着",
+    "events": "イベント",
+    "email preferences": "メール設定"
   },
   "cart": {
     "empty": "何もありません",
