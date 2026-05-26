@@ -9,13 +9,9 @@ import { Text } from "@/components/ui/text";
 export function ArchiveGrid({
   items,
   languageId,
-  onHover,
-  onLeave,
 }: {
   items: common_ArchiveList[];
   languageId: number;
-  onHover: (item: common_ArchiveList, rect: DOMRect) => void;
-  onLeave: () => void;
 }) {
   return (
     <div className="h-full px-2.5 pb-2.5 pt-20 lg:px-7 lg:pt-24">
@@ -28,12 +24,7 @@ export function ArchiveGrid({
             <Link
               key={item.id}
               href={item.slug || ""}
-              onMouseEnter={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                onHover(item, rect);
-              }}
-              onMouseLeave={onLeave}
-              className="space-y-2"
+              className="group space-y-2"
             >
               <div className="relative aspect-square">
                 <ImageComponent
@@ -43,7 +34,7 @@ export function ArchiveGrid({
                   fit="cover"
                 />
               </div>
-              <Text className="text-highlightColor">
+              <Text className="text-textColor group-hover:text-highlightColor">
                 {currentTranslation?.heading}
               </Text>
             </Link>
