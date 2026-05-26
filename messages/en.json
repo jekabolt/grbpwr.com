@@ -111,7 +111,14 @@
     "agree": "i agree to receive emails. read our privacy policy for more information.",
     "consent_notice": "By submitting this form, you agree to terms of our <privacy>Privacy Policy</privacy> and <terms>Terms and Conditions</terms>.",
     "subscribe": "subscribe",
-    "email": "email"
+    "email": "email",
+    "newsletter": "newsletter",
+    "close": "[x]",
+    "sign_up_description": "sign up for exclusive content and special offers",
+    "first name": "first name",
+    "new arrivals": "new arrivals",
+    "events": "events",
+    "email preferences": "email preferences"
   },
   "cart": {
     "empty": "nothing",

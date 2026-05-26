@@ -5,11 +5,36 @@ import { currencySymbols } from "@/constants";
 
 import { formatPrice } from "@/lib/currency";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, calculatePriceWithSale } from "@/lib/utils";
+import { calculateAspectRatio, calculatePriceWithSale, cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
+
+import { useVisitedLink } from "../catalog/_components/use-visited-link";
+
+function FeaturedProductLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  const visited = useVisitedLink(href);
+
+  return (
+    <Button
+      variant="underlineWithColors"
+      className={cn(
+        "w-full overflow-hidden pb-5 leading-none",
+        visited ? "text-visitedLinkColor" : "text-inverted",
+      )}
+      asChild
+    >
+      <Link href={href}>{children}</Link>
+    </Button>
+  );
+}
 
 export function SingleFeaturedItem({
   products,
@@ -53,13 +78,9 @@ export function SingleFeaturedItem({
                   <Text variant="uppercase">{headline}</Text>
                 </div>
 
-                <Button
-                  variant="underlineWithColors"
-                  className="w-full overflow-hidden pb-5 leading-none text-inverted group-[:visited]:text-visitedLinkColor"
-                  asChild
-                >
-                  <Link href={p.slug || ""}>{currentTranslation?.name}</Link>
-                </Button>
+                <FeaturedProductLink href={p.slug || ""}>
+                  {currentTranslation?.name}
+                </FeaturedProductLink>
               </div>
 
               <div className="flex w-1/2 pl-24">

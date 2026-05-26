@@ -16,6 +16,7 @@ import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
+import { useVisitedLink } from "../catalog/_components/use-visited-link";
 import { useAnalytics } from "../catalog/_components/useAnalytics";
 
 export function ProductItem({
@@ -39,6 +40,7 @@ export function ProductItem({
   const { dictionary } = useDataContext();
   const { currentCountry } = useTranslationsStore((s) => s);
   const { handleSelectItemEvent } = useAnalytics();
+  const visited = useVisitedLink(product?.slug);
 
   const currencyKey = currentCountry.currencyKey || "EUR";
   const productBody = product.productDisplay?.productBody?.productBodyInsert;
@@ -123,8 +125,13 @@ export function ProductItem({
           })}
         >
           <Text
-            variant="undrleineWithColors"
-            className="overflow-hidden text-ellipsis leading-none group-[:visited]:text-visitedLinkColor"
+            variant="productLink"
+            component="span"
+            data-visited={visited ? "true" : undefined}
+            className={cn(
+              "overflow-hidden text-ellipsis leading-none",
+              visited && "is-visited",
+            )}
           >
             {name}
           </Text>

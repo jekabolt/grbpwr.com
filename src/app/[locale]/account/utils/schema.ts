@@ -2,19 +2,13 @@ import {
     CHECKOUT_ERROR_PHONE_COUNTRY,
     EMAIL_PREFERENCES,
     errorMessages,
+    SHOPPING_PREFERENCE_ENUM,
 } from "@/constants";
 import {
     findIsoCountryFromPhoneNumber,
     isValidPhoneForCountry,
 } from "@/lib/phone/phone-validation";
 import { z } from "zod";
-
-/** Proto `ShoppingPreferenceEnum` strings (matches `EMAIL_PREFERENCES` values). */
-const SHOPPING_PREFERENCE_ENUM = [
-    EMAIL_PREFERENCES.all,
-    EMAIL_PREFERENCES.men,
-    EMAIL_PREFERENCES.women,
-] as const;
 
 export type AccountEmailPreference = (typeof SHOPPING_PREFERENCE_ENUM)[number];
 

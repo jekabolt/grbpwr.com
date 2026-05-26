@@ -112,7 +112,14 @@
     "agree": "이메일 수신에 동의합니다. 자세한 내용은 개인정보처리방침을 참조하세요.",
     "consent_notice": "이 양식을 제출하면 당사 <privacy>개인정보 처리방침</privacy> 및 <terms>이용약관</terms>에 동의하는 것으로 간주됩니다.",
     "subscribe": "구독하기",
-    "email": "이메일"
+    "email": "이메일",
+    "newsletter": "뉴스레터",
+    "close": "[x]",
+    "sign_up_description": "독점 콘텐츠와 특별 혜택을 받으려면 가입하세요",
+    "first name": "이름",
+    "new arrivals": "신상품",
+    "events": "이벤트",
+    "email preferences": "이메일 설정"
   },
   "cart": {
     "empty": "없음",

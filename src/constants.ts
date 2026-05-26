@@ -659,3 +659,10 @@ export const FIT_OPTIONS = [
   "cropped",
   "tailored",
 ] as const;
+
+
+export const SHOPPING_PREFERENCE_ENUM = [
+  EMAIL_PREFERENCES.all,
+  EMAIL_PREFERENCES.men,
+  EMAIL_PREFERENCES.women,
+] as const;
