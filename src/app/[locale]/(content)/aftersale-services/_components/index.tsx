@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 
 import { sendFormEvent } from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
+import { useFixedWithinContainer } from "@/lib/hooks/useFixedWithinContainer";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -22,6 +24,10 @@ import { aftersaleForm, AftersaleSchema, defaultValues } from "./schema";
 
 export default function AftersaleForm() {
   const t = useTranslations("aftersale-services");
+  const mobileButtonPosition = useFixedWithinContainer({
+    containerId: "aftersale-services-page",
+    bottomOffset: 24,
+  });
   const form = useForm<AftersaleSchema>({
     resolver: zodResolver(aftersaleForm),
     defaultValues,
@@ -112,7 +118,12 @@ export default function AftersaleForm() {
               variant="main"
               size="lg"
               disabled={!form.formState.isValid}
-              className="uppercase lg:ml-14"
+              className={cn(
+                "absolute inset-x-2.5 bottom-6 z-50 uppercase lg:static lg:ml-14",
+                {
+                  fixed: mobileButtonPosition === "fixed",
+                },
+              )}
             >
               {t("send")}
             </Button>

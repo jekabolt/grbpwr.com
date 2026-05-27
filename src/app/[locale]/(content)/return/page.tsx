@@ -18,10 +18,15 @@ export default async function Refund({
   const isWebsiteEnabled = dictionary?.siteEnabled;
   return (
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
-      <div className="min-dvh px-2.5items-center flex h-screen w-full flex-col justify-center gap-12 py-24 lg:gap-16 lg:px-96">
+      <div
+        id="refund-page"
+        className="min-dvh flex h-screen w-full flex-col items-center justify-center gap-12 px-2.5 lg:gap-16 lg:px-96"
+      >
         <div className="space-y-9">
-          <Text variant="uppercase">{t("return order")}</Text>
-          <Text>{t("text")}</Text>
+          <Text variant="uppercase" className="text-center lg:text-left">
+            {t("return order")}
+          </Text>
+          <Text className="text-justify lg:text-left">{t("text")}</Text>
         </div>
         <RefundForm />
       </div>
