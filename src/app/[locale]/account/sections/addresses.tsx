@@ -14,7 +14,7 @@ import { useAddresses } from "../utils/use-addresses";
 
 const SECTION_CLASSNAME = "flex h-full min-h-0 w-full flex-col";
 const LIST_CLASSNAME =
-  "flex min-h-0 flex-1 flex-col overflow-y-auto bg-bgColor lg:pt-16 text-textColor lg:mb-10";
+  "flex min-h-0 flex-1 flex-col overflow-y-auto bg-bgColor lg:pt-16 text-textColor";
 
 export function AddressesSection({
   account,

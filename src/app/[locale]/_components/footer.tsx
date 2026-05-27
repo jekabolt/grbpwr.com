@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { WhiteLogo } from "@/components/ui/icons/white-logo";
 import { Logo } from "@/components/ui/logo";
@@ -85,7 +86,14 @@ export function Footer({
           </div>
         </div>
       )}
-      <div className="flex flex-col justify-between lg:flex-row lg:flex-nowrap lg:items-center lg:px-7">
+      <div
+        className={cn(
+          "flex flex-col justify-between lg:flex-row lg:flex-nowrap lg:items-center lg:px-7",
+          {
+            "pt-32": !!accountPanel,
+          },
+        )}
+      >
         <div className="order-4 flex shrink-0 justify-center gap-2 whitespace-nowrap lg:order-1 lg:justify-start">
           <Text
             variant="uppercase"
