@@ -21,7 +21,7 @@ export default function FaqPage() {
   const isWebsiteEnabled = dictionary?.siteEnabled;
   return (
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
-      <div className="flex h-full justify-center space-y-12 px-2.5 pt-24 lg:space-y-16 lg:px-28">
+      <div className="flex h-full justify-center space-y-12 px-2.5 pt-24 text-textColor lg:space-y-16 lg:px-28">
         <div className="flex flex-col justify-start gap-y-10 lg:w-1/2 lg:gap-y-6">
           <div className="space-y-8">
             <Text variant="uppercase">{t("frequently asked questions")}</Text>

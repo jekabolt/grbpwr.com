@@ -20,7 +20,7 @@ export default async function Refund({
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
       <div
         id="refund-page"
-        className="min-dvh flex h-screen w-full flex-col items-center justify-center gap-12 px-2.5 lg:gap-16 lg:px-96"
+        className="min-dvh flex h-screen w-full flex-col items-center justify-center gap-12 px-2.5 text-textColor lg:gap-16 lg:px-96"
       >
         <div className="space-y-9">
           <Text variant="uppercase" className="text-center lg:text-left">

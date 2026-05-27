@@ -20,10 +20,14 @@ export default async function AftersaleServicesPage({
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
       <div
         id="aftersale-services-page"
-        className="min-dvh flex h-full w-full flex-col items-center justify-center gap-12 px-2.5 py-24 lg:gap-16 lg:px-96"
+        className="min-dvh flex h-full w-full flex-col items-center justify-center gap-12 px-2.5 py-24 text-textColor lg:gap-16 lg:px-96"
       >
-        <Text variant="uppercase">{t("aftersale services")}</Text>
-        <AftersaleForm />
+        <Text variant="uppercase" className="w-full text-center lg:text-left">
+          {t("aftersale services")}
+        </Text>
+        <div className="w-full">
+          <AftersaleForm />
+        </div>
       </div>
     </FlexibleLayout>
   );

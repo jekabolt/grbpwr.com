@@ -27,6 +27,7 @@ export const SITE_DISABLED_ALLOWED_REST_PATHS: readonly string[] = [
   "/legal-notices",
   "/order-status",
   "/aftersale-services",
+  "/order",
   "/return",
   "/faq",
 ];

@@ -21,7 +21,7 @@ export default async function OrderStatus({
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
       <div
         id="order-status-page"
-        className="relative min-dvh flex h-screen w-full flex-col items-center justify-center space-y-12 px-2.5 lg:space-y-16 lg:px-96"
+        className="min-dvh relative flex h-screen w-full flex-col items-center justify-center space-y-12 px-2.5 text-textColor lg:space-y-16 lg:px-96"
       >
         <div className="space-y-9">
           <Text variant="uppercase" className="text-center lg:text-left">
