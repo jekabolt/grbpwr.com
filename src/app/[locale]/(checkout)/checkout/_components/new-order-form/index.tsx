@@ -195,6 +195,9 @@ export default function NewOrderForm({
   const showCheckoutForm = showCheckoutFields && !showProfilePrompt;
 
   const centerAuthOnMobile = !showCheckoutFields || showProfilePrompt;
+  const placeOrderDisabled =
+    loading || !form.formState.isValid || !isPaymentFieldsValid;
+  const placeOrderLabel = `${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`;
 
   const handleProfileCompleted = (data: {
     firstName: string;
@@ -226,17 +229,17 @@ export default function NewOrderForm({
   return (
     <>
       <Form {...form}>
-        <div className="relative h-full space-y-14 lg:space-y-0">
+        <div className="relative h-full w-full space-y-14 lg:space-y-0">
           <div
             className={cn(
-              "flex flex-col items-start gap-14 lg:grid lg:h-full lg:min-h-0 lg:grid-cols-2 lg:items-start lg:gap-28",
+              "flex flex-col items-start gap-14 pb-12 lg:grid lg:h-full lg:min-h-0 lg:grid-cols-2 lg:items-start lg:gap-28 lg:p-0",
               centerAuthOnMobile &&
                 "min-h-[calc(100dvh-7rem)] justify-center lg:min-h-0 lg:justify-start",
             )}
           >
             {!hideOrderSummary && (
               <div
-                className={cn("z-40 block lg:hidden", {
+                className={cn("z-40 block w-full lg:hidden", {
                   "fixed inset-x-2.5 bottom-6 top-auto":
                     !showCheckoutFields || showProfilePrompt,
                 })}
@@ -278,7 +281,7 @@ export default function NewOrderForm({
                 )}
                 className="contents"
               >
-                <div className="space-y-10 lg:space-y-16">
+                <div className="w-full space-y-10 lg:space-y-16">
                   <>
                     <div ref={contactRef}>
                       <ContactFieldsGroup
@@ -330,6 +333,21 @@ export default function NewOrderForm({
                 !showCheckoutForm && "hidden lg:flex",
               )}
             >
+              {showCheckoutForm && (
+                <Button
+                  form="checkout-order-form"
+                  type="submit"
+                  variant="main"
+                  size="lg"
+                  className="w-full uppercase lg:hidden"
+                  disabled={placeOrderDisabled}
+                  loading={loading}
+                  loadingType="order-processing"
+                  analyticsButtonId="place_order"
+                >
+                  {placeOrderLabel}
+                </Button>
+              )}
               <div className="hidden h-full min-h-0 flex-col gap-8 lg:flex">
                 <Text
                   variant="uppercase"
@@ -367,16 +385,12 @@ export default function NewOrderForm({
                       variant="main"
                       size="lg"
                       className="w-full uppercase"
-                      disabled={
-                        loading ||
-                        !form.formState.isValid ||
-                        !isPaymentFieldsValid
-                      }
+                      disabled={placeOrderDisabled}
                       loading={loading}
                       loadingType="order-processing"
                       analyticsButtonId="place_order"
                     >
-                      {`${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`}
+                      {placeOrderLabel}
                     </Button>
                   )}
                 </div>
