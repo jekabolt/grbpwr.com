@@ -92,9 +92,9 @@ export default async function Page({ params }: ArchivePageParams) {
           center: t("timeline"),
         }}
         theme="dark"
-        className="pt-5 lg:pt-20"
+        // className="pt-5 lg:pt-20"
       >
-        <div className="space-y-20 px-2.5 pt-20 lg:space-y-10 lg:px-7 lg:pt-24">
+        <div className="space-y-20 px-2.5 pt-20 lg:space-y-10 lg:px-7">
           <PageComponent archive={archive} />
           {/* <div className="h-full lg:h-screen">
           <FullSizeItem archive={nextArchive} className="w-60 lg:w-[34rem]" />

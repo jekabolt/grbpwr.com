@@ -31,23 +31,21 @@ export default function PageComponent({
   };
 
   return (
-    <div className="space-y-2 text-textColor lg:min-h-screen lg:space-y-10">
-      <div className="flex flex-col gap-x-4 lg:flex-row lg:items-start lg:justify-between">
-        <Text
-          className="order-1 mb-2.5 text-textInactiveColor lg:mb-0 lg:w-80 lg:text-textColor"
-          variant="uppercase"
-        >
-          {currentTranslation?.heading || ""}
-        </Text>
-        {currentTranslation?.description && (
-          <Text className="order-3 mb-12 mt-7 break-words lg:order-2 lg:m-0 lg:w-fit lg:max-w-[calc(100%-theme(spacing.80)*2)] lg:flex-none">
-            {currentTranslation?.description}
-          </Text>
-        )}
-        <Text
-          className="order-2 text-textInactiveColor lg:order-3 lg:w-80 lg:text-right lg:text-textColor"
-          variant="uppercase"
-        >{`${archive?.archiveList?.tag || ""} / ${currentYear}`}</Text>
+    <div className="w-full space-y-10 text-textColor lg:min-h-screen lg:space-y-14">
+      <div className="flex w-full items-center justify-center">
+        <div className="flex w-fit max-w-[640px] flex-col items-start justify-center gap-10">
+          <div className="space-y-4">
+            <Text className="text-textInactiveColor" variant="uppercase">
+              {currentTranslation?.heading || ""}
+            </Text>
+            <Text variant="uppercase">{`${archive?.archiveList?.tag || ""} / ${currentYear}`}</Text>
+          </div>
+          {currentTranslation?.description && (
+            <Text className="break-words text-left">
+              {currentTranslation?.description}
+            </Text>
+          )}
+        </div>
       </div>
 
       {archive?.mainMedia?.map((item) => {
