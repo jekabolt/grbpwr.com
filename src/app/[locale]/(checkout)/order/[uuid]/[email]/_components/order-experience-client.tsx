@@ -25,7 +25,7 @@ export function OrderExperienceClient({
   );
 
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col gap-10">
+    <div className="flex h-full min-h-0 flex-1 flex-col gap-10 text-textColor">
       <div className="shrink-0 space-y-2">
         <OrderSectionNav
           isDelivered={isDelivered}

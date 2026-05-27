@@ -12,6 +12,8 @@ import { sendFormEvent } from "@/lib/analitycs/form";
 import { SizeMap } from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
+import { useFixedWithinContainer } from "@/lib/hooks/useFixedWithinContainer";
+import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -35,6 +37,11 @@ export function RefundForm() {
   const form = useForm<RefundSchema>({
     resolver: zodResolver(refundForm),
     defaultValues: defaultData,
+  });
+
+  const mobileButtonPosition = useFixedWithinContainer({
+    containerId: "refund-page",
+    bottomOffset: 24,
   });
 
   function handleRefundEvent(order: common_OrderFull, reason: string) {
@@ -143,7 +150,12 @@ export function RefundForm() {
               variant="main"
               size="lg"
               disabled={form.formState.isSubmitting}
-              className="uppercase lg:ml-14"
+              className={cn(
+                "absolute inset-x-2.5 bottom-6 z-50 uppercase lg:static lg:ml-14",
+                {
+                  fixed: mobileButtonPosition === "fixed",
+                },
+              )}
             >
               {t("submit")}
             </Button>

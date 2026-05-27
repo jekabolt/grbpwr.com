@@ -41,7 +41,7 @@ export default function PageComponent({
             <Text variant="uppercase">{`${archive?.archiveList?.tag || ""} / ${currentYear}`}</Text>
           </div>
           {currentTranslation?.description && (
-            <Text className="break-words text-left">
+            <Text className="break-words text-justify lg:text-left">
               {currentTranslation?.description}
             </Text>
           )}

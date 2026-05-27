@@ -4,9 +4,9 @@ import type { CSSProperties } from "react";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
-import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
-import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
+import { Text } from "@/components/ui/text";
+import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 
 import {
   CONTENT_PROSE_CLASSNAME,

@@ -10,7 +10,7 @@ export default function LegalNoticesPage() {
   const isWebsiteEnabled = dictionary?.siteEnabled;
   return (
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
-      <div className="flex flex-col px-2.5 pb-20 pt-24 lg:flex-row lg:px-48 lg:py-24">
+      <div className="flex flex-col px-2.5 pb-20 pt-24 text-textColor lg:flex-row lg:px-48 lg:py-24">
         <LegalNotices />
       </div>
     </FlexibleLayout>

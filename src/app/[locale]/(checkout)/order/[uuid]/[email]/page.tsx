@@ -16,6 +16,8 @@ interface PageProps {
 export default async function OrderPage(props: PageProps) {
   const params = await props.params;
   const { uuid, email } = params;
+  const { dictionary } = await serviceClient.GetHero({});
+  const isWebsiteEnabled = dictionary?.siteEnabled;
 
   const orderResponse = await serviceClient
     .GetOrderByUUIDAndEmail({
@@ -35,8 +37,8 @@ export default async function OrderPage(props: PageProps) {
     orderResponse.order?.order?.orderStatusId === ORDER_STATUS_DELIVERED_ID;
 
   return (
-    <FlexibleLayout>
-      <div className="flex min-h-[calc(100dvh-10rem)] flex-col gap-10 px-2.5 pb-20 pt-24 lg:min-h-[calc(100dvh-12rem)] lg:px-32 lg:py-24">
+    <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
+      <div className="flex min-h-[calc(100dvh-10rem)] flex-col gap-10 px-2.5 pb-20 pt-24 text-textColor lg:min-h-[calc(100dvh-12rem)] lg:px-32 lg:py-24">
         <OrderExperienceClient
           isDelivered={isDelivered}
           orderPromise={orderPromise}

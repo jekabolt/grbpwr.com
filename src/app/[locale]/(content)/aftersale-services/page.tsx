@@ -18,9 +18,16 @@ export default async function AftersaleServicesPage({
   const isWebsiteEnabled = dictionary?.siteEnabled;
   return (
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
-      <div className="flex h-full flex-col space-y-12 px-2.5 pt-24 lg:space-y-16 lg:px-96">
-        <Text variant="uppercase">{t("aftersale services")}</Text>
-        <AftersaleForm />
+      <div
+        id="aftersale-services-page"
+        className="min-dvh flex h-full w-full flex-col items-center justify-center gap-12 px-2.5 py-24 text-textColor lg:gap-16 lg:px-96"
+      >
+        <Text variant="uppercase" className="w-full text-center lg:text-left">
+          {t("aftersale services")}
+        </Text>
+        <div className="w-full">
+          <AftersaleForm />
+        </div>
       </div>
     </FlexibleLayout>
   );

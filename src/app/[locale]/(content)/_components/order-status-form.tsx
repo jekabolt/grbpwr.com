@@ -10,6 +10,8 @@ import { z } from "zod";
 
 import { sendFormEvent } from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
+import { useFixedWithinContainer } from "@/lib/hooks/useFixedWithinContainer";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -32,6 +34,10 @@ export default function OrderStatusForm() {
   const [open, setOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
+  const mobileButtonPosition = useFixedWithinContainer({
+    containerId: "order-status-page",
+    bottomOffset: 24,
+  });
 
   const form = useForm<OrderStatusData>({
     resolver: zodResolver(orderStatusSchema),
@@ -97,7 +103,12 @@ export default function OrderStatusForm() {
               variant="main"
               size="lg"
               disabled={!form.formState.isValid || isLoading}
-              className="uppercase"
+              className={cn(
+                "absolute inset-x-2.5 bottom-6 z-50 uppercase lg:static",
+                {
+                  fixed: mobileButtonPosition === "fixed",
+                },
+              )}
             >
               {t("submit")}
             </Button>
