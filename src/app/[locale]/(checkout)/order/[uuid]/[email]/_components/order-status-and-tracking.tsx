@@ -39,7 +39,9 @@ export function OrderStatusAndTracking({
             </Link>
           </Button>
         ) : (
-          <Text className="text-textInactiveColor">—</Text>
+          <Text className="text-textInactiveColor" variant="uppercase">
+            {t("no tracking number")}
+          </Text>
         )}
       </div>
     ) : null;
@@ -62,9 +64,7 @@ export function OrderStatusAndTracking({
     <div className="flex items-center justify-between border-b border-textInactiveColor py-6">
       <div className="flex w-full flex-col items-baseline justify-between gap-4">
         <Text variant="uppercase">{t("status")}</Text>
-        {order?.orderStatusId && (
-          <StatusBadge statusId={order.orderStatusId} />
-        )}
+        {order?.orderStatusId && <StatusBadge statusId={order.orderStatusId} />}
       </div>
       {trackingSection}
     </div>

@@ -427,6 +427,7 @@
     "order date": "Bestelldatum",
     "status": "Status",
     "tracking number": "Sendungsnummer",
+    "no tracking number": "keine Sendungsnummer",
     "delivery/payment info": "Liefer-/Zahlungsinformationen",
     "shipping address": "Lieferadresse",
     "discount code": "Rabattcode",
@@ -845,6 +846,9 @@
     "no": "nein",
     "placeholder select": "Auswählen",
     "select fit before submit": "Bitte wählen Sie vor dem Absenden für jeden Artikel eine Passform.",
+    "select recommend before submit": "Bitte geben Sie vor dem Absenden an, ob Sie jeden Artikel empfehlen.",
+    "select fit and recommend before submit": "Bitte wählen Sie vor dem Absenden Passform und Empfehlung für jeden Artikel.",
+    "select product quality before submit": "Bitte bewerten Sie vor dem Absenden die Produktqualität für jeden Artikel.",
     "dSpeed": {
       "MUCH_FASTER_THAN_EXPECTED": "Früh angekommen",
       "FASTER_THAN_EXPECTED": "Vor dem geplanten Zeitpunkt",

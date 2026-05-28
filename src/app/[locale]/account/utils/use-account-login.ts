@@ -25,13 +25,6 @@ type StoredCodeCooldown = {
   resendAvailableAt: number;
 };
 
-type InitialLoginState = {
-  email: string;
-  step: LoginStep;
-  resendSeconds: number;
-  storageChecked: boolean;
-};
-
 function normalizeStoredEmail(email: string): string {
   return email.trim().toLowerCase();
 }
@@ -220,55 +213,17 @@ function getActiveCooldownForEmail(
   };
 }
 
-function getInitialLoginState(): InitialLoginState {
-  if (typeof window === "undefined") {
-    return {
-      email: "",
-      step: "email",
-      resendSeconds: 0,
-      storageChecked: false,
-    };
-  }
-
-  const stored = readStoredLoginAttempt();
-  if (!stored) {
-    return {
-      email: "",
-      step: "email",
-      resendSeconds: 0,
-      storageChecked: true,
-    };
-  }
-
-  if (stored.step === "email") {
-    return {
-      email: "",
-      step: "email",
-      resendSeconds: 0,
-      storageChecked: true,
-    };
-  }
-
-  return {
-    email: stored.email,
-    step: "code",
-    resendSeconds: getRemainingResendSeconds(stored.resendAvailableAt),
-    storageChecked: true,
-  };
-}
-
 export function useAccountLogin() {
   const router = useRouter();
   const t = useTranslations("account");
-  const [initialState] = useState(getInitialLoginState);
-  const [email, setEmail] = useState(initialState.email);
+  const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
-  const [step, setStep] = useState<LoginStep>(initialState.step);
+  const [step, setStep] = useState<LoginStep>("email");
   const [pending, setPending] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [resendSeconds, setResendSeconds] = useState(initialState.resendSeconds);
-  const [storageChecked, setStorageChecked] = useState(initialState.storageChecked);
+  const [resendSeconds, setResendSeconds] = useState(0);
+  const [storageChecked, setStorageChecked] = useState(false);
   const [codeVerified, setCodeVerified] = useState(false);
   const requestInFlightRef = useRef(false);
 
@@ -283,20 +238,14 @@ export function useAccountLogin() {
   };
 
   useIsomorphicLayoutEffect(() => {
-    if (storageChecked) return;
     const stored = readStoredLoginAttempt();
-    if (!stored) {
-      setStorageChecked(true);
-      return;
-    }
-
-    if (stored.step === "code") {
+    if (stored?.step === "code") {
       setEmail(stored.email);
       setStep("code");
       const cooldownRemaining = getActiveCooldownForEmail(stored.email);
       setResendSeconds(
         cooldownRemaining?.remaining ??
-        getRemainingResendSeconds(stored.resendAvailableAt),
+          getRemainingResendSeconds(stored.resendAvailableAt),
       );
     }
     setStorageChecked(true);

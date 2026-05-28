@@ -425,6 +425,7 @@
     "order date": "order date",
     "status": "status",
     "tracking number": "tracking number",
+    "no tracking number": "no tracking number",
     "delivery/payment info": "delivery/payment info",
     "shipping address": "shipping address",
     "discount code": "discount code",
@@ -461,6 +462,9 @@
     "no": "no",
     "placeholder select": "Select",
     "select fit before submit": "Please select a fit rating for each item before submitting.",
+    "select recommend before submit": "Please choose whether you recommend each item before submitting.",
+    "select fit and recommend before submit": "Please select fit and recommendation for each item before submitting.",
+    "select product quality before submit": "Please rate product quality for each item before submitting.",
     "dSpeed": {
       "MUCH_FASTER_THAN_EXPECTED": "Arrived early",
       "FASTER_THAN_EXPECTED": "Ahead of schedule",

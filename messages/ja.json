@@ -426,6 +426,7 @@
     "order date": "注文日",
     "status": "ステータス",
     "tracking number": "追跡番号",
+    "no tracking number": "追跡番号なし",
     "delivery/payment info": "配送/支払い情報",
     "shipping address": "配送先住所",
     "discount code": "割引コード",
@@ -844,6 +845,9 @@
     "no": "いいえ",
     "placeholder select": "選択",
     "select fit before submit": "送信する前に、各商品のフィット感を選択してください。",
+    "select recommend before submit": "送信する前に、各商品をおすすめするかどうかを選択してください。",
+    "select fit and recommend before submit": "送信する前に、各商品のフィット感とおすすめを選択してください。",
+    "select product quality before submit": "送信する前に、各商品の品質を評価してください。",
     "dSpeed": {
       "MUCH_FASTER_THAN_EXPECTED": "かなり早く到着",
       "FASTER_THAN_EXPECTED": "予定より早く到着",

@@ -45,12 +45,14 @@ export function MobileOrderSummary({ orderData }: Props) {
       isOpen={isOpen}
       onToggle={() => setIsOpen((prev) => !prev)}
     >
-      <div className="mt-4 space-y-3">
-        <OrderSummaryPromoRows promoCode={orderData.promoCode} />
+      <div className="pt-6">
         <OrderSummaryProducts
           order={orderData.order}
           orderItems={orderData.orderItems}
         />
+      </div>
+      <div className="space-y-3">
+        <OrderSummaryPromoRows promoCode={orderData.promoCode} />
         <OrderSummaryShippingAndTotal
           order={orderData.order}
           shipment={orderData.shipment}

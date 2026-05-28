@@ -74,7 +74,7 @@ export function MobileOrderSummary({
         title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
         preview={
           <Text
-            className={cn({
+            className={cn("shrink-0 whitespace-nowrap", {
               "text-textInactiveColor": disabled,
             })}
           >

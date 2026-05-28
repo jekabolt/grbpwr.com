@@ -227,3 +227,13 @@ export function getSortedCountries(): { label: string; value: string }[] {
     )
     .map((c) => ({ label: c.name, value: c.countryCode }));
 }
+
+export function pickSearchParam(
+  qs: Record<string, string | string[] | undefined>,
+  key: string,
+): string | undefined {
+  const v = qs[key];
+  if (typeof v === "string" && v.length > 0) return v;
+  if (Array.isArray(v) && typeof v[0] === "string") return v[0];
+  return undefined;
+}
