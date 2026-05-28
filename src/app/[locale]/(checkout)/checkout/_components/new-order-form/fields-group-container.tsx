@@ -67,14 +67,14 @@ export default function FieldsGroupContainer({
     >
       <div
         className={cn(
-          "flex items-center justify-between",
+          "flex min-w-0 items-center justify-between",
           { "h-auto cursor-pointer lg:h-20": disabled },
           { "cursor-pointer": collapsible && !disabled },
           clickableAreaClassName,
         )}
         onClick={collapsible ? handleToggle : undefined}
       >
-        <div className="flex flex-1 items-center gap-x-6">
+        <div className="flex min-w-0 flex-1 items-center gap-x-6">
           {stage && (
             <Text
               variant="uppercase"
@@ -104,14 +104,14 @@ export default function FieldsGroupContainer({
               )}
               <Text
                 variant="uppercase"
-                className={cn("text-textColor", {
+                className={cn("truncate text-textColor", {
                   "text-textInactiveColor": disabled,
                 })}
               >
                 {title}
               </Text>
             </div>
-            {preview && <div>{preview}</div>}
+            {preview && <div className="shrink-0">{preview}</div>}
           </div>
         </div>
 

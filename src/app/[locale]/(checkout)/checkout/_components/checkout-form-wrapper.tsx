@@ -19,8 +19,9 @@ import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
-import { CheckoutLoginFormSkeleton } from "./checkout-skeleton";
+import { CheckoutLoadingShell } from "./checkout-skeleton";
 import NewOrderForm from "./new-order-form";
+import { useCheckoutGuestPersistence } from "./checkout-guest-persistence";
 import { useStripeRedirect } from "./new-order-form/hooks/useStripeRedirect";
 
 const stripePromise = loadStripe(
@@ -29,15 +30,18 @@ const stripePromise = loadStripe(
 
 export function CheckoutFormWrapper({
   initialAccount,
+  initialGuestCheckout = false,
 }: {
   initialAccount: StorefrontAccount | null;
+  initialGuestCheckout?: boolean;
 }) {
   const router = useRouter();
   const products = useCart((s) => s.products);
   const isSignedIn = useAccountOnboardingStore((s) => s.isSignedIn);
   const setSignedIn = useAccountOnboardingStore((s) => s.setSignedIn);
   const setAccount = useAccountOnboardingStore((s) => s.setAccount);
-  const [guestCheckout, setGuestCheckout] = useState(false);
+  const { guestCheckout, setGuestCheckout } =
+    useCheckoutGuestPersistence(initialGuestCheckout);
   const { dictionary } = useDataContext();
   const { currentCountry, languageId } = useTranslationsStore((state) => state);
   const tToaster = useTranslations("toaster");
@@ -123,16 +127,10 @@ export function CheckoutFormWrapper({
 
   if (resolvingSession) {
     return (
-      <div
-        className={cn(
-          "px-2.5 pb-8 pt-20 lg:relative lg:min-h-dvh lg:px-32 lg:py-24",
-          {
-            "lg:pb-0 lg:pt-24": showAuthOnlyPadding,
-          },
-        )}
-      >
-        <CheckoutLoginFormSkeleton />
-      </div>
+      <CheckoutLoadingShell
+        initialAccount={initialAccount}
+        guestCheckout={guestCheckout || initialGuestCheckout}
+      />
     );
   }
 

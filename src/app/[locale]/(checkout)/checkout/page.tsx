@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { LANGUAGE_CODE_TO_ID } from "@/constants";
 import { getTranslations } from "next-intl/server";
@@ -8,18 +8,15 @@ import { getStorefrontAccount } from "@/lib/storefront-account/get-storefront-ac
 import FlexibleLayout from "@/components/flexible-layout";
 
 import { CheckoutFormWrapper } from "./_components/checkout-form-wrapper";
-import { CheckoutLoginFormSkeleton } from "./_components/checkout-skeleton";
-import { buildOrderConfirmationUrl } from "./_components/new-order-form/utils";
-
-function pickSearchParam(
-  qs: Record<string, string | string[] | undefined>,
-  key: string,
-): string | undefined {
-  const v = qs[key];
-  if (typeof v === "string" && v.length > 0) return v;
-  if (Array.isArray(v) && typeof v[0] === "string") return v[0];
-  return undefined;
-}
+import {
+  CHECKOUT_GUEST_COOKIE,
+  isGuestCheckoutCookie,
+} from "./_components/checkout-guest-persistence";
+import { CheckoutLoadingShell } from "./_components/checkout-skeleton";
+import {
+  buildOrderConfirmationUrl,
+  pickSearchParam,
+} from "./_components/new-order-form/utils";
 
 type CheckoutPageProps = {
   params: Promise<{ locale: string }>;
@@ -60,6 +57,10 @@ export default async function CheckoutPage({
 
   const t = await getTranslations("navigation");
   const account = await getStorefrontAccount();
+  const cookieStore = await cookies();
+  const initialGuestCheckout = isGuestCheckoutCookie(
+    cookieStore.get(CHECKOUT_GUEST_COOKIE)?.value,
+  );
 
   return (
     <FlexibleLayout
@@ -71,8 +72,18 @@ export default async function CheckoutPage({
         right: t("close"),
       }}
     >
-      <Suspense fallback={<CheckoutLoginFormSkeleton />}>
-        <CheckoutFormWrapper initialAccount={account} />
+      <Suspense
+        fallback={
+          <CheckoutLoadingShell
+            initialAccount={account}
+            guestCheckout={initialGuestCheckout}
+          />
+        }
+      >
+        <CheckoutFormWrapper
+          initialAccount={account}
+          initialGuestCheckout={initialGuestCheckout}
+        />
       </Suspense>
     </FlexibleLayout>
   );

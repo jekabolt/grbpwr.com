@@ -239,9 +239,10 @@ export default function NewOrderForm({
           >
             {!hideOrderSummary && (
               <div
-                className={cn("z-40 block w-full lg:hidden", {
-                  "fixed inset-x-2.5 bottom-6 top-auto":
+                className={cn("z-40 block lg:hidden", {
+                  "fixed inset-x-2.5 bottom-6":
                     !showCheckoutFields || showProfilePrompt,
+                  "w-full": showCheckoutFields && !showProfilePrompt,
                 })}
               >
                 <MobileOrderSummary

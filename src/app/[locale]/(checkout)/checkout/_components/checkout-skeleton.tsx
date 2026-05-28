@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { StorefrontAccount } from "@/api/proto-http/frontend";
 
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -214,6 +215,24 @@ function GuestCheckoutStepsSkeleton() {
   );
 }
 
+const DESKTOP_ORDER_SUMMARY_PRODUCT_COUNT = 4;
+
+function DesktopOrderSummaryProductRowSkeleton() {
+  return (
+    <div className="flex gap-4">
+      <Skeleton className="h-[120px] w-[72px] shrink-0" />
+      <div className="flex min-w-0 flex-1 items-start justify-between gap-3">
+        <div className="min-w-0 space-y-2">
+          <Skeleton className="h-4 w-full max-w-[200px]" />
+          <Skeleton className="h-3.5 w-16" />
+          <Skeleton className="h-3.5 w-12" />
+        </div>
+        <Skeleton className="h-4 w-16 shrink-0" />
+      </div>
+    </div>
+  );
+}
+
 export function DesktopOrderSummarySkeleton() {
   return (
     <div className="hidden h-full min-h-0 flex-col gap-8 lg:flex">
@@ -245,18 +264,13 @@ export function DesktopOrderSummarySkeleton() {
         </div>
         <Skeleton className="h-12 w-full" />
       </div>
-      <div className="flex min-h-0 flex-1 flex-col justify-end">
-        <div className="flex gap-4">
-          <Skeleton className="h-[120px] w-[72px] shrink-0" />
-          <div className="flex min-w-0 flex-1 items-start justify-between gap-3">
-            <div className="min-w-0 space-y-2">
-              <Skeleton className="h-4 w-full max-w-[200px]" />
-              <Skeleton className="h-3.5 w-16" />
-              <Skeleton className="h-3.5 w-12" />
-            </div>
-            <Skeleton className="h-4 w-16 shrink-0" />
-          </div>
-        </div>
+      <div className="flex max-h-[50vh] min-h-0 flex-1 flex-col justify-end gap-4 overflow-y-auto">
+        {Array.from(
+          { length: DESKTOP_ORDER_SUMMARY_PRODUCT_COUNT },
+          (_, id) => (
+            <DesktopOrderSummaryProductRowSkeleton key={id} />
+          ),
+        )}
       </div>
     </div>
   );
@@ -291,11 +305,11 @@ function CheckoutTwoColumnShell({
 export function CheckoutLoginFormSkeleton() {
   return (
     <div className="relative h-full space-y-14 lg:space-y-0">
-      <div className="flex min-h-[calc(100dvh-7rem)] flex-col justify-center gap-14 lg:grid lg:min-h-0 lg:grid-cols-2 lg:justify-start lg:gap-28">
+      <div className="flex min-h-[calc(100dvh-7rem)] flex-col justify-center gap-14 lg:grid lg:min-h-0 lg:grid-cols-2 lg:items-start lg:gap-28">
         <div className="fixed inset-x-2.5 bottom-6 block lg:hidden">
           <MobileCollapsedOrderSummarySkeleton />
         </div>
-        <div className="w-full shrink-0 lg:pt-10">
+        <div className="w-full shrink-0">
           <div className="flex h-full w-full items-center justify-center">
             <div className="mx-auto w-full space-y-10 lg:max-w-[400px]">
               <div className="flex flex-col items-center gap-6">
@@ -343,5 +357,41 @@ export function CheckoutGuestSkeleton() {
       leftColumn={<GuestCheckoutStepsSkeleton />}
       showPlaceOrderPlaceholder
     />
+  );
+}
+
+export function resolveCheckoutSkeleton(
+  initialAccount: StorefrontAccount | null,
+  guestCheckout: boolean,
+) {
+  if (initialAccount) return CheckoutSignedInSkeleton;
+  if (guestCheckout) return CheckoutGuestSkeleton;
+  return CheckoutLoginFormSkeleton;
+}
+
+export function CheckoutLoadingShell({
+  initialAccount,
+  guestCheckout,
+}: {
+  initialAccount: StorefrontAccount | null;
+  guestCheckout: boolean;
+}) {
+  const SkeletonComponent = resolveCheckoutSkeleton(
+    initialAccount,
+    guestCheckout,
+  );
+  const showAuthOnlyPadding = !initialAccount && !guestCheckout;
+
+  return (
+    <div
+      className={cn(
+        "px-2.5 pb-8 pt-20 lg:relative lg:min-h-dvh lg:px-32 lg:py-24",
+        {
+          "lg:pb-0 lg:pt-24": showAuthOnlyPadding,
+        },
+      )}
+    >
+      <SkeletonComponent />
+    </div>
   );
 }

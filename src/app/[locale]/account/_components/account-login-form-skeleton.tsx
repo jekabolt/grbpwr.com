@@ -41,17 +41,19 @@ export function AccountDesktopOrderSummarySkeleton() {
         </div>
       </div>
       <div className="flex max-h-[50vh] flex-col gap-4">
-        <div className="flex gap-4">
-          <Skeleton className="h-[120px] w-[72px] shrink-0" />
-          <div className="flex min-w-0 flex-1 items-start justify-between gap-3">
-            <div className="min-w-0 space-y-2">
-              <Skeleton className="h-4 w-full max-w-[200px]" />
-              <Skeleton className="h-3.5 w-16" />
-              <Skeleton className="h-3.5 w-12" />
+        {Array.from({ length: 4 }).map((_, id) => (
+          <div key={id} className="flex gap-4">
+            <Skeleton className="h-[160px] w-[72px] shrink-0" />
+            <div className="flex min-w-0 flex-1 items-start justify-between gap-3">
+              <div className="min-w-0 space-y-2">
+                <Skeleton className="h-4 w-full max-w-[200px]" />
+                <Skeleton className="h-3.5 w-16" />
+                <Skeleton className="h-3.5 w-12" />
+              </div>
+              <Skeleton className="h-4 w-16 shrink-0" />
             </div>
-            <Skeleton className="h-4 w-16 shrink-0" />
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
