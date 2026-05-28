@@ -15,30 +15,24 @@ import { clearAccountLoginPersistence } from "../../account/utils/use-account-lo
 
 const DISPLAY_MS = 3_000;
 
-function useCartPersistHydrated(): boolean {
-  const store = useContext(CartStoreContext);
-  const [hydrated, setHydrated] = useState(() =>
-    store ? store.persist.hasHydrated() : false,
-  );
-
-  useEffect(() => {
-    if (!store) return;
-    if (store.persist.hasHydrated()) {
-      setHydrated(true);
-      return;
-    }
-    return store.persist.onFinishHydration(() => setHydrated(true));
-  }, [store]);
-
-  return hydrated;
-}
-
 export function MagicLoginSuccessClient() {
   const router = useRouter();
   const tAccount = useTranslations("account");
   const tNav = useTranslations("navigation");
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
-  const cartHydrated = useCartPersistHydrated();
+  const cartStore = useContext(CartStoreContext);
+  const [cartHydrated, setCartHydrated] = useState(() =>
+    cartStore ? cartStore.persist.hasHydrated() : false,
+  );
+
+  useEffect(() => {
+    if (!cartStore) return;
+    if (cartStore.persist.hasHydrated()) {
+      setCartHydrated(true);
+      return;
+    }
+    return cartStore.persist.onFinishHydration(() => setCartHydrated(true));
+  }, [cartStore]);
   const products = useCart((s) => s.products);
   const hasCartItems = useMemo(() => products.length > 0, [products]);
 

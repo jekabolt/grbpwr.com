@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 
-function MobileCollapsedOrderSummarySkeleton() {
+export function MobileCollapsedOrderSummarySkeleton() {
   return (
-    <div className="space-y-0 border border-textInactiveColor p-2.5">
+    <div className="w-full space-y-0 border border-textInactiveColor p-2.5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-4">
           <Skeleton className="h-4 w-4 shrink-0" />
@@ -19,18 +19,18 @@ function MobileCollapsedOrderSummarySkeleton() {
 
 function MobileExpandedOrderSummarySkeleton() {
   return (
-    <div className="space-y-0 border border-textInactiveColor p-2.5">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col border border-textInactiveColor p-2.5">
+      <div className="flex shrink-0 items-center justify-between">
         <div className="flex items-center gap-x-4">
           <Skeleton className="h-4 w-4 shrink-0" />
           <Skeleton className="h-4 w-32" />
         </div>
         <Skeleton className="h-4 w-16 shrink-0" />
       </div>
-      <div className="space-y-4 pt-6">
+      <div className="flex min-h-0 flex-1 flex-col justify-end pt-6">
         <div className="flex gap-3">
           <Skeleton className="h-[90px] min-w-[72px] shrink-0" />
-          <div className="flex flex-1 flex-col justify-between gap-2">
+          <div className="flex min-w-0 flex-1 flex-col justify-between gap-2">
             <div className="space-y-2">
               <Skeleton className="h-3.5 w-[85%] max-w-[200px]" />
               <Skeleton className="h-3 w-14" />
@@ -39,25 +39,24 @@ function MobileExpandedOrderSummarySkeleton() {
             <Skeleton className="ml-auto h-3.5 w-14 shrink-0" />
           </div>
         </div>
-        <Skeleton className="h-10 w-full" />
-        <div className="space-y-3 pt-1">
+      </div>
+      <div className="mt-4 shrink-0 space-y-3 border-t border-textInactiveColor pt-4">
+        <div className="flex justify-between">
+          <Skeleton className="h-3 w-16" />
+          <Skeleton className="h-3 w-12" />
+        </div>
+        <div className="flex justify-between">
+          <Skeleton className="h-3 w-28" />
+          <Skeleton className="h-3 w-12" />
+        </div>
+        <div className="flex justify-between">
+          <Skeleton className="h-3 w-10" />
+          <Skeleton className="h-3 w-12" />
+        </div>
+        <div className="border-t border-textInactiveColor pt-3">
           <div className="flex justify-between">
-            <Skeleton className="h-3 w-16" />
-            <Skeleton className="h-3 w-12" />
-          </div>
-          <div className="flex justify-between">
-            <Skeleton className="h-3 w-28" />
-            <Skeleton className="h-3 w-12" />
-          </div>
-          <div className="flex justify-between">
-            <Skeleton className="h-3 w-10" />
-            <Skeleton className="h-3 w-12" />
-          </div>
-          <div className="border-t border-textInactiveColor pt-3">
-            <div className="flex justify-between">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-4 w-20" />
-            </div>
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-20" />
           </div>
         </div>
       </div>
@@ -215,26 +214,13 @@ function GuestCheckoutStepsSkeleton() {
   );
 }
 
-function DesktopOrderSummarySkeleton() {
+export function DesktopOrderSummarySkeleton() {
   return (
-    <div className="hidden space-y-8 lg:block">
-      <Skeleton className="h-4 w-36" />
-      <div className="flex max-h-[50vh] flex-col gap-4">
-        <div className="flex gap-4">
-          <Skeleton className="h-[120px] w-[72px] shrink-0" />
-          <div className="flex min-w-0 flex-1 items-start justify-between gap-3">
-            <div className="min-w-0 space-y-2">
-              <Skeleton className="h-4 w-full max-w-[200px]" />
-              <Skeleton className="h-3.5 w-16" />
-              <Skeleton className="h-3.5 w-12" />
-            </div>
-            <Skeleton className="h-4 w-16 shrink-0" />
-          </div>
-        </div>
-      </div>
-      <div className="space-y-8">
+    <div className="hidden h-full min-h-0 flex-col gap-8 lg:flex">
+      <Skeleton className="h-4 w-36 shrink-0" />
+      <div className="shrink-0 space-y-8">
         <Skeleton className="h-10 w-full" />
-        <div className="mt-4 space-y-3">
+        <div className="space-y-3">
           <div className="flex justify-between">
             <Skeleton className="h-4 w-20" />
             <Skeleton className="h-4 w-16" />
@@ -247,14 +233,28 @@ function DesktopOrderSummarySkeleton() {
             <Skeleton className="h-4 w-12" />
             <Skeleton className="h-4 w-14" />
           </div>
-          <div className="pt-5">
-            <div className="flex items-center justify-between border-t border-textInactiveColor pt-3">
+          <div className="border-t border-textInactiveColor pt-3">
+            <div className="flex items-center justify-between">
               <Skeleton className="h-4 w-28" />
               <div className="flex items-center gap-2">
                 <Skeleton className="h-3 w-14" />
                 <Skeleton className="h-4 w-20" />
               </div>
             </div>
+          </div>
+        </div>
+        <Skeleton className="h-12 w-full" />
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col justify-end">
+        <div className="flex gap-4">
+          <Skeleton className="h-[120px] w-[72px] shrink-0" />
+          <div className="flex min-w-0 flex-1 items-start justify-between gap-3">
+            <div className="min-w-0 space-y-2">
+              <Skeleton className="h-4 w-full max-w-[200px]" />
+              <Skeleton className="h-3.5 w-16" />
+              <Skeleton className="h-3.5 w-12" />
+            </div>
+            <Skeleton className="h-4 w-16 shrink-0" />
           </div>
         </div>
       </div>

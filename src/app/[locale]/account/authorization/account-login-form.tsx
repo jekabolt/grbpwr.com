@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/input";
@@ -12,6 +13,11 @@ import { OtpInput } from "@/components/ui/otp-input";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
+import {
+  AccountDesktopOrderSummarySkeleton,
+  AccountMobileOrderSummarySkeleton,
+  LoginEmailStepSkeleton,
+} from "../_components/account-login-form-skeleton";
 import { UserLocationTrigger } from "../_components/user-location";
 import { useAccountLogin } from "../utils/use-account-login";
 import {
@@ -34,9 +40,10 @@ export function AccountLoginForm({
   onStepChange?: (step: AccountLoginStep) => void;
   onVerified?: () => void;
 }) {
-  const hasCartSummary = useCart((state) =>
-    state.products.some((product) => Boolean(product.productData)),
-  );
+  const products = useCart((state) => state.products);
+  const revalidateCart = useCart((state) => state.revalidateCart);
+  const currency =
+    useTranslationsStore((state) => state.currentCountry.currencyKey) || "EUR";
   const {
     email,
     code,
@@ -55,7 +62,8 @@ export function AccountLoginForm({
     resendCode,
     verifyCode,
   } = useAccountLogin();
-  const showCartSummary = hasCartSummary && !isCheckout && step === "email";
+  const showOrderSummary = !isCheckout && step === "email";
+  const isRestoringSession = !storageChecked;
 
   useEffect(() => {
     if (!storageChecked) return;
@@ -67,11 +75,11 @@ export function AccountLoginForm({
     onVerified?.();
   }, [codeVerified, onVerified]);
 
-  if (!storageChecked) {
-    return (
-      <div className={cn("h-[340px]", LOGIN_FORM_WIDTH_CLASS)} aria-hidden />
-    );
-  }
+  useEffect(() => {
+    if (isCheckout || products.length === 0) return;
+    if (products.every((product) => Boolean(product.productData))) return;
+    void revalidateCart(currency);
+  }, [currency, isCheckout, products, revalidateCart]);
 
   return (
     <div className="flex h-full min-h-0 w-full flex-1 flex-col">
@@ -79,31 +87,33 @@ export function AccountLoginForm({
         className={cn("flex min-h-0 w-full flex-1", {
           "items-center justify-center": !isCheckout,
           "items-start justify-center": isCheckout,
-          "lg:justify-center lg:px-32 lg:pt-24": showCartSummary,
+          "lg:justify-center lg:px-32 lg:pt-24": showOrderSummary,
         })}
       >
         <div
           className={cn("flex min-h-0 w-full flex-1", {
             "items-center justify-center": !isCheckout,
             "items-start justify-center": isCheckout,
-            "pb-28 lg:pb-0": showCartSummary,
-            "lg:mx-auto lg:grid lg:h-full lg:max-w-[1000px] lg:grid-cols-2 lg:items-start lg:gap-20":
-              showCartSummary,
+            "lg:grid lg:h-full lg:grid-cols-2 lg:items-start lg:gap-28":
+              showOrderSummary,
+            "pb-28 lg:pb-0": showOrderSummary,
           })}
         >
           <div
-            className={cn({
+            className={cn("w-full min-w-0", {
               "flex min-h-0 lg:h-full lg:items-start lg:justify-center":
-                showCartSummary,
+                showOrderSummary,
             })}
           >
             <div
               className={cn(
-                "mx-auto flex h-auto items-center gap-6",
+                "mx-auto flex h-auto w-full items-center gap-6",
                 LOGIN_FORM_WIDTH_CLASS,
               )}
             >
-              {step === "email" ? (
+              {isRestoringSession ? (
+                <LoginEmailStepSkeleton />
+              ) : step === "email" ? (
                 <EmailStep
                   email={email}
                   pending={pending}
@@ -125,16 +135,24 @@ export function AccountLoginForm({
               )}
             </div>
           </div>
-          {showCartSummary && (
+          {showOrderSummary && (
             <div className="hidden min-h-0 lg:flex lg:h-full lg:flex-col">
-              <AccountCartDesktopOrderSummary />
+              {isRestoringSession ? (
+                <AccountDesktopOrderSummarySkeleton />
+              ) : (
+                <AccountCartDesktopOrderSummary />
+              )}
             </div>
           )}
         </div>
       </div>
-      {showCartSummary && (
+      {showOrderSummary && (
         <div className="fixed inset-x-2.5 bottom-6 top-auto z-40 lg:hidden">
-          <AccountCartMobileOrderSummary />
+          {isRestoringSession ? (
+            <AccountMobileOrderSummarySkeleton />
+          ) : (
+            <AccountCartMobileOrderSummary />
+          )}
         </div>
       )}
       <SubmissionToaster
