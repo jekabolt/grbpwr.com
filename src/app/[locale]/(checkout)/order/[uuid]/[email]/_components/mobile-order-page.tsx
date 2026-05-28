@@ -20,16 +20,6 @@ export function MobileOrderPage({
   return (
     <div className="flex flex-col gap-6">
       <div className="space-y-10">
-        <div className="space-y-4">
-          <MobileOrderSummary orderData={orderData} />
-          <OrderSecondaryInfo
-            shipping={shipping}
-            billing={billing}
-            shipment={shipment}
-            buyer={buyer}
-            payment={payment}
-          />
-        </div>
         <div className="flex flex-col gap-4">
           <OrderIdDateRow
             variant="mobile"
@@ -41,6 +31,16 @@ export function MobileOrderPage({
             order={order}
             shipment={shipment}
             trackingUrl={trackingUrl || undefined}
+          />
+        </div>
+        <div className="space-y-4">
+          <MobileOrderSummary orderData={orderData} />
+          <OrderSecondaryInfo
+            shipping={shipping}
+            billing={billing}
+            shipment={shipment}
+            buyer={buyer}
+            payment={payment}
           />
         </div>
       </div>

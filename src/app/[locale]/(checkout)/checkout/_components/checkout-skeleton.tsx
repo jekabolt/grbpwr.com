@@ -233,12 +233,25 @@ function DesktopOrderSummaryProductRowSkeleton() {
   );
 }
 
-export function DesktopOrderSummarySkeleton() {
+export function DesktopOrderSummarySkeleton({
+  showPromoInput = true,
+  showPlaceOrderButton = true,
+  className,
+}: {
+  showPromoInput?: boolean;
+  showPlaceOrderButton?: boolean;
+  className?: string;
+} = {}) {
   return (
-    <div className="hidden h-full min-h-0 flex-col gap-8 lg:flex">
+    <div
+      className={cn(
+        "hidden h-full min-h-0 flex-col gap-8 lg:flex",
+        className,
+      )}
+    >
       <Skeleton className="h-4 w-36 shrink-0" />
       <div className="shrink-0 space-y-8">
-        <Skeleton className="h-10 w-full" />
+        {showPromoInput ? <Skeleton className="h-10 w-full" /> : null}
         <div className="space-y-3">
           <div className="flex justify-between">
             <Skeleton className="h-4 w-20" />
@@ -262,7 +275,7 @@ export function DesktopOrderSummarySkeleton() {
             </div>
           </div>
         </div>
-        <Skeleton className="h-12 w-full" />
+        {showPlaceOrderButton ? <Skeleton className="h-12 w-full" /> : null}
       </div>
       <div className="flex max-h-[50vh] min-h-0 flex-1 flex-col justify-end gap-4 overflow-y-auto">
         {Array.from(

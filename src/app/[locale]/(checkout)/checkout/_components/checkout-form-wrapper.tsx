@@ -21,7 +21,7 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 
 import { CheckoutLoadingShell } from "./checkout-skeleton";
 import NewOrderForm from "./new-order-form";
-import { useCheckoutGuestPersistence } from "./checkout-guest-persistence";
+import { useCheckoutGuestPersistence } from "./use-checkout-guest-persistence";
 import { useStripeRedirect } from "./new-order-form/hooks/useStripeRedirect";
 
 const stripePromise = loadStripe(

@@ -40,11 +40,16 @@ export function OrderSummaryPromoRows({
 export function OrderSummaryProducts({
   order,
   orderItems,
-}: Pick<OrderSummaryPick, "order" | "orderItems">) {
+  hideMobileCarousel = false,
+}: Pick<OrderSummaryPick, "order" | "orderItems"> & {
+  hideMobileCarousel?: boolean;
+}) {
   return (
     <OrderProducts
       validatedProducts={orderItems || []}
       currencyKey={order?.currency?.toUpperCase()}
+      hideMobileCarousel={hideMobileCarousel}
+      className="min-h-0"
     />
   );
 }
@@ -59,7 +64,7 @@ export function OrderSummaryShippingAndTotal({
   const orderCurrency = currencySymbols[orderCurrencyKey];
 
   return (
-    <div className="space-y-3 pt-3">
+    <div className="space-y-3">
       <div className="flex justify-between">
         <Text variant="uppercase">{t("shipping")}:</Text>
         <Text>
@@ -81,6 +86,36 @@ export function OrderSummaryShippingAndTotal({
             orderCurrency,
           )}
         </Text>
+      </div>
+    </div>
+  );
+}
+
+export function OrderDesktopSummary({
+  order,
+  orderItems,
+  promoCode,
+  shipment,
+}: OrderSummaryPick) {
+  const tCheckout = useTranslations("checkout");
+
+  return (
+    <div className="hidden h-full min-h-0 w-full md:flex lg:sticky lg:top-16 lg:h-[calc(100dvh-6rem)] lg:max-h-[calc(100dvh-6rem)]">
+      <div className="flex h-full min-h-0 w-full flex-col gap-8">
+        <Text variant="uppercase" className="shrink-0">
+          {tCheckout("order summary")}
+        </Text>
+        <div className="shrink-0 space-y-8">
+          <OrderSummaryPromoRows promoCode={promoCode} />
+          <OrderSummaryShippingAndTotal order={order} shipment={shipment} />
+        </div>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <OrderSummaryProducts
+            order={order}
+            orderItems={orderItems}
+            hideMobileCarousel
+          />
+        </div>
       </div>
     </div>
   );

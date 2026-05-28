@@ -95,3 +95,54 @@ export function buildOrderReviewDefaultValues(
 export type OrderReviewFormInput = z.input<ReturnType<typeof buildOrderReviewFormSchema>>;
 export type OrderReviewFormValues = z.infer<ReturnType<typeof buildOrderReviewFormSchema>>;
 
+export type OrderReviewItemSubmitToastKey =
+  | "select fit before submit"
+  | "select recommend before submit"
+  | "select fit and recommend before submit"
+  | "select product quality before submit";
+
+export function collectOrderReviewItemSubmitErrors(itemReviewsErrors: unknown): {
+  ratingIndices: number[];
+  fitIndices: number[];
+  recommendIndices: number[];
+} {
+  const ratingIndices: number[] = [];
+  const fitIndices: number[] = [];
+  const recommendIndices: number[] = [];
+
+  if (!Array.isArray(itemReviewsErrors)) {
+    return { ratingIndices, fitIndices, recommendIndices };
+  }
+
+  itemReviewsErrors.forEach((row, i) => {
+    if (row && typeof row === "object") {
+      const r = row as Record<string, unknown>;
+      if (r.rating) ratingIndices.push(i);
+      if (r.fitRating) fitIndices.push(i);
+      if (r.recommend) recommendIndices.push(i);
+    }
+  });
+
+  return { ratingIndices, fitIndices, recommendIndices };
+}
+
+export function orderReviewItemSubmitToastKey({
+  ratingIndices,
+  fitIndices,
+  recommendIndices,
+}: {
+  ratingIndices: readonly number[];
+  fitIndices: readonly number[];
+  recommendIndices: readonly number[];
+}): OrderReviewItemSubmitToastKey {
+  const hasFit = fitIndices.length > 0;
+  const hasRecommend = recommendIndices.length > 0;
+  const hasRating = ratingIndices.length > 0;
+
+  if (hasFit && hasRecommend) return "select fit and recommend before submit";
+  if (hasFit) return "select fit before submit";
+  if (hasRecommend) return "select recommend before submit";
+  if (hasRating) return "select product quality before submit";
+  return "select fit before submit";
+}
+

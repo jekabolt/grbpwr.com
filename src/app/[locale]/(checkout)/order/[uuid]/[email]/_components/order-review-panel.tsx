@@ -13,7 +13,11 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 import FieldsGroupContainer from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
 import AftersaleSelector from "@/app/[locale]/(content)/_components/aftersale-selector";
 
-import type { OrderReviewFormInput } from "../utils/order-review-schema";
+import {
+  collectOrderReviewItemSubmitErrors,
+  orderReviewItemSubmitToastKey,
+  type OrderReviewFormInput,
+} from "../utils/order-review-schema";
 import { useFitRatingBlink } from "../utils/use-fit-rating-blink";
 import { useOrderReviewForm } from "../utils/use-order-review-form";
 import { useOrderReviewItemRowScroll } from "../utils/use-order-review-item-row-scroll";
@@ -77,8 +81,13 @@ export function OrderReviewPanel({
   } = useFitRatingBlink();
   const [mobileItemsSectionOpen, setMobileItemsSectionOpen] = useState(true);
 
+  const itemReviewScrollIndices = useMemo(
+    () => [...new Set([...fitBlinkingIndices, ...recommendBlinkingIndices])],
+    [fitBlinkingIndices, recommendBlinkingIndices],
+  );
+
   const { mobileRowRefByIndex, desktopRowRefByIndex } =
-    useOrderReviewItemRowScroll(orderItemReviewRows, fitBlinkingIndices);
+    useOrderReviewItemRowScroll(orderItemReviewRows, itemReviewScrollIndices);
 
   const [leftColEl, setLeftColEl] = useState<HTMLDivElement | null>(null);
   const setLeftColRef = useCallback<RefCallback<HTMLDivElement>>((node) => {
@@ -88,22 +97,29 @@ export function OrderReviewPanel({
 
   const onSubmitInvalid: SubmitErrorHandler<OrderReviewFormInput> = useCallback(
     (errors) => {
-      const fitIndices: number[] = [];
-      const recommendIndices: number[] = [];
-      const rows = errors.itemReviews;
-      if (Array.isArray(rows)) {
-        rows.forEach((row, i) => {
-          if (row?.fitRating) fitIndices.push(i);
-          if (row?.recommend) recommendIndices.push(i);
-        });
+      const { ratingIndices, fitIndices, recommendIndices } =
+        collectOrderReviewItemSubmitErrors(errors.itemReviews);
+
+      if (
+        ratingIndices.length === 0 &&
+        fitIndices.length === 0 &&
+        recommendIndices.length === 0
+      ) {
+        return;
       }
-      if (fitIndices.length > 0 || recommendIndices.length > 0) {
-        setMobileItemsSectionOpen(true);
-        showToast(t("select fit before submit"));
-        if (fitIndices.length > 0) triggerFitBlink(fitIndices);
-        if (recommendIndices.length > 0)
-          triggerRecommendBlink(recommendIndices);
-      }
+
+      setMobileItemsSectionOpen(true);
+      showToast(
+        t(
+          orderReviewItemSubmitToastKey({
+            ratingIndices,
+            fitIndices,
+            recommendIndices,
+          }),
+        ),
+      );
+      if (fitIndices.length > 0) triggerFitBlink(fitIndices);
+      if (recommendIndices.length > 0) triggerRecommendBlink(recommendIndices);
     },
     [showToast, t, triggerFitBlink, triggerRecommendBlink],
   );

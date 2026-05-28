@@ -9,6 +9,7 @@ export function OrderProducts({
   currencyKey,
   disabled = false,
   disableProductLinks = false,
+  hideMobileCarousel = false,
   className,
 }: Props) {
   const expandedProducts = validatedProducts
@@ -26,7 +27,6 @@ export function OrderProducts({
 
   return (
     <div>
-      {/* <div className="hidden max-h-[62.8vh] overflow-y-scroll lg:block"> */}
       <div className={className}>
         <CartProductsList
           hideQuantityButtons
@@ -37,14 +37,16 @@ export function OrderProducts({
         />
       </div>
 
-      <div className="block lg:hidden">
-        <MobileProductsCarousel
-          validatedProducts={expandedProducts}
-          currencyKey={currencyKey}
-          disabled={disabled}
-          disableProductLinks={disableProductLinks}
-        />
-      </div>
+      {!hideMobileCarousel ? (
+        <div className="block lg:hidden">
+          <MobileProductsCarousel
+            validatedProducts={expandedProducts}
+            currencyKey={currencyKey}
+            disabled={disabled}
+            disableProductLinks={disableProductLinks}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -54,5 +56,6 @@ type Props = {
   currencyKey?: string;
   disabled?: boolean;
   disableProductLinks?: boolean;
+  hideMobileCarousel?: boolean;
   className?: string;
 };

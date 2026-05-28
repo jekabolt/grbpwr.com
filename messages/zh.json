@@ -426,6 +426,7 @@
     "order date": "订单日期",
     "status": "状态",
     "tracking number": "追踪号码",
+    "no tracking number": "无追踪号码",
     "delivery/payment info": "配送/支付信息",
     "shipping address": "配送地址",
     "discount code": "折扣码",
@@ -844,6 +845,9 @@
     "no": "否",
     "placeholder select": "请选择",
     "select fit before submit": "提交前请为每件商品选择合身度。",
+    "select recommend before submit": "提交前请选择是否推荐每件商品。",
+    "select fit and recommend before submit": "提交前请为每件商品选择合身度并填写是否推荐。",
+    "select product quality before submit": "提交前请为每件商品评价产品质量。",
     "dSpeed": {
       "MUCH_FASTER_THAN_EXPECTED": "提早很多送达",
       "FASTER_THAN_EXPECTED": "比预定早",
