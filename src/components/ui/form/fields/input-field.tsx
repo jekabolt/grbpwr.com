@@ -1,3 +1,5 @@
+import { INVALID_CHARACTER_ERROR } from "@/constants";
+import { useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
@@ -21,6 +23,10 @@ type Props = InputProps & {
   optional?: boolean;
 };
 
+function stripDisallowedChars(value: string, allowed: RegExp) {
+  return [...value].filter((char) => allowed.test(char)).join("");
+}
+
 export default function InputField({
   loading,
   name,
@@ -33,78 +39,116 @@ export default function InputField({
   optional,
   ...props
 }: Props) {
-  const { control, trigger, setValue } = useFormContext();
+  const { control, trigger, setError, clearErrors, setValue, getValues } =
+    useFormContext();
   const tErrors = useTranslations("errors");
   const tCheckout = useTranslations("checkout");
+  const hasInvalidCharacterError = useRef(false);
 
-  function handleBlur(event: React.FocusEvent<HTMLInputElement>) {
-    trigger(name);
-    props.onBlur?.(event);
+  function showInvalidCharacterError() {
+    hasInvalidCharacterError.current = true;
+    setError(name, {
+      type: "invalidCharacter",
+      message: INVALID_CHARACTER_ERROR,
+    });
+    setValue(name, getValues(name), { shouldTouch: true });
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!keyboardRestriction || e.ctrlKey || e.metaKey) return;
-
-    const allowedKeys = ["Backspace", "Delete", "Tab", "Escape", "Enter"];
-    if (allowedKeys.includes(e.key) || e.key.startsWith("Arrow")) return;
-
-    if (!keyboardRestriction.test(e.key)) e.preventDefault();
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
-    if (keyboardRestriction) {
-      value = value.replace(
-        new RegExp(`[^${keyboardRestriction.source}]`, "g"),
-        "",
-      );
-      value = value.replace(/[ .'-]{2,}/g, (match) => match[0]);
-    }
-    setValue(name, value);
-  };
+  function clearInvalidCharacterError() {
+    if (!hasInvalidCharacterError.current) return;
+    hasInvalidCharacterError.current = false;
+    clearErrors(name);
+    void trigger(name);
+  }
 
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
-        <FormItem>
-          {label && (
-            <FormLabel
-              className={cn(
-                "inline-flex items-center",
-                srLabel ? "sr-only" : "",
-                disabled ? "text-textInactiveColor" : "",
-              )}
-            >
-              <Text component="span">{label}</Text>
-              {optional && (
-                <Text
-                  component="span"
-                  className="ml-1 whitespace-nowrap text-textInactiveColor"
-                >
-                  ({tCheckout("optional")}):
-                </Text>
-              )}
-            </FormLabel>
-          )}
-          <FormControl>
-            <Input
-              type={type}
-              {...field}
-              value={field.value || ""}
-              {...props}
-              disabled={disabled}
-              className={props.className}
-              onBlur={handleBlur}
-              onKeyDown={handleKeyDown}
-              onChange={keyboardRestriction ? handleChange : field.onChange}
-            />
-          </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage translateError={tErrors} fieldName={name} />
-        </FormItem>
-      )}
+      render={({ field }) => {
+        function handleBlur(event: React.FocusEvent<HTMLInputElement>) {
+          field.onBlur();
+          void trigger(name);
+          props.onBlur?.(event);
+        }
+
+        const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+          if (!keyboardRestriction || e.ctrlKey || e.metaKey) return;
+
+          const allowedKeys = [
+            "Backspace",
+            "Delete",
+            "Tab",
+            "Escape",
+            "Enter",
+          ];
+          if (allowedKeys.includes(e.key) || e.key.startsWith("Arrow")) return;
+
+          if (!keyboardRestriction.test(e.key)) {
+            e.preventDefault();
+            showInvalidCharacterError();
+            return;
+          }
+
+          clearInvalidCharacterError();
+        };
+
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          let value = e.target.value;
+          if (keyboardRestriction) {
+            const stripped = stripDisallowedChars(value, keyboardRestriction);
+            if (stripped !== value) {
+              showInvalidCharacterError();
+              value = stripped;
+            } else {
+              clearInvalidCharacterError();
+            }
+            value = value.replace(/[ .'-]{2,}/g, (match) => match[0]);
+          }
+          field.onChange(value);
+        };
+
+        return (
+          <FormItem>
+            {label && (
+              <FormLabel
+                className={cn(
+                  "inline-flex items-center",
+                  srLabel ? "sr-only" : "",
+                  disabled ? "text-textInactiveColor" : "",
+                )}
+              >
+                <Text component="span">{label}</Text>
+                {optional && (
+                  <Text
+                    component="span"
+                    className="ml-1 whitespace-nowrap text-textInactiveColor"
+                  >
+                    ({tCheckout("optional")}):
+                  </Text>
+                )}
+              </FormLabel>
+            )}
+            <FormControl>
+              <Input
+                type={type}
+                {...field}
+                value={field.value || ""}
+                {...props}
+                disabled={disabled}
+                className={props.className}
+                onBlur={handleBlur}
+                onKeyDown={handleKeyDown}
+                onChange={
+                  keyboardRestriction ? handleChange : field.onChange
+                }
+              />
+            </FormControl>
+            {description && <FormDescription>{description}</FormDescription>}
+            <FormMessage translateError={tErrors} fieldName={name} />
+          </FormItem>
+        );
+      }}
     />
   );
 }

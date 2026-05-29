@@ -603,8 +603,11 @@ export const LANGUAGE_ID_TO_LOCALE: Record<number, string> = {
 export const CHECKOUT_ERROR_CITY_COUNTRY = "__checkout_city_country__";
 export const CHECKOUT_ERROR_PHONE_COUNTRY = "__checkout_phone_country__";
 
+export const INVALID_CHARACTER_ERROR = "invalid character";
+
 // Map validation messages to translation keys
 export const errorMap: Record<string, string> = {
+  [INVALID_CHARACTER_ERROR]: "invalidCharacter",
   "invalid email": "invalid",
   "must contain at least": "min",
   "must contain at most": "max",
@@ -618,6 +621,17 @@ export const errorMap: Record<string, string> = {
   [CHECKOUT_ERROR_CITY_COUNTRY]: "countryMismatch",
   [CHECKOUT_ERROR_PHONE_COUNTRY]: "countryMismatch",
 };
+
+for (const fieldConfig of Object.values(errorMessages)) {
+  if (
+    fieldConfig &&
+    typeof fieldConfig === "object" &&
+    "regex" in fieldConfig &&
+    fieldConfig.regex?.message
+  ) {
+    errorMap[fieldConfig.regex.message] = "regex";
+  }
+}
 
 export const PLURIAL_SINGLE_CATEGORY_MAP: Record<string, string> = {
   dresses: "dress",
