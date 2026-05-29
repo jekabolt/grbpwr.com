@@ -9,10 +9,10 @@ import { useForm } from "react-hook-form";
 
 import { sendRefundEvent } from "@/lib/analitycs/checkout";
 import { sendFormEvent } from "@/lib/analitycs/form";
-import { getErrorMessage } from "@/lib/error-message";
 import { SizeMap } from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
+import { getErrorMessage } from "@/lib/error-message";
 import { useFixedWithinContainer } from "@/lib/hooks/useFixedWithinContainer";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -117,7 +117,7 @@ export function RefundForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <div className="w-full space-y-9">
+          <div className="mb-9 w-full space-y-9 lg:mb-0">
             <FieldsGroupContainer
               stage="1/1"
               collapsible={false}
