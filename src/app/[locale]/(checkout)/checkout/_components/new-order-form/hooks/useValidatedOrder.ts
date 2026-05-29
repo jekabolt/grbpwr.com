@@ -1,21 +1,33 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { validateCartItems } from "@/lib/cart/validate-cart-items";
+import { getErrorMessage } from "@/lib/error-message";
 import { useCart } from "@/lib/stores/cart/store-provider";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { CheckoutData } from "../schema";
 
-export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
+type UseValidatedOrderOptions = {
+  validationErrorFallback?: string;
+};
+
+export function useValidatedOrder(
+  form: UseFormReturn<CheckoutData>,
+  options: UseValidatedOrderOptions = {},
+) {
+  const { validationErrorFallback = "Something went wrong. Please try again." } =
+    options;
   const [validatedOrder, setValidatedOrder] = useState<
     ValidateOrderItemsInsertResponse | undefined
   >(undefined);
   const [orderCurrency, setOrderCurrency] = useState<string>("EUR");
+  const [validationToastOpen, setValidationToastOpen] = useState(false);
+  const [validationToastMessage, setValidationToastMessage] = useState("");
   const products = useCart((cart) => cart.products);
   const syncWithValidatedItems = useCart((cart) => cart.syncWithValidatedItems);
   const { dictionary } = useDataContext();
@@ -23,6 +35,16 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
   const currency = currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
   const prevCurrencyRef = useRef(currency);
   const initialValidationStartedRef = useRef(false);
+
+  const reportValidationError = useCallback(
+    (error: unknown) => {
+      setValidationToastMessage(
+        getErrorMessage(error, validationErrorFallback),
+      );
+      setValidationToastOpen(true);
+    },
+    [validationErrorFallback],
+  );
 
   const validateItems = async (shipmentCarrierId?: string) => {
     const promoCode: string = form.getValues("promoCode") || "";
@@ -64,14 +86,14 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
       return;
     }
     initialValidationStartedRef.current = true;
-    validateItems();
+    void validateItems().catch(reportValidationError);
     // validatedOrder intentionally omitted: only products should re-trigger this gate
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 
   useEffect(() => {
     if (prevCurrencyRef.current !== currency && validatedOrder && products.length > 0) {
-      validateItems();
+      void validateItems().catch(reportValidationError);
     }
     prevCurrencyRef.current = currency;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,9 +112,16 @@ export function useValidatedOrder(form: UseFormReturn<CheckoutData>) {
       lastValidatedParamsRef.current !== paramsKey
     ) {
       lastValidatedParamsRef.current = paramsKey;
-      validateItems(shipmentCarrierId);
+      void validateItems(shipmentCarrierId).catch(reportValidationError);
     }
   }, [shipmentCarrierId, country, validatedOrder]);
 
-  return { order: validatedOrder, validateItems, orderCurrency };
+  return {
+    order: validatedOrder,
+    validateItems,
+    orderCurrency,
+    validationToastOpen,
+    validationToastMessage,
+    setValidationToastOpen,
+  };
 }

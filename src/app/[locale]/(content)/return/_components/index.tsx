@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 
 import { sendRefundEvent } from "@/lib/analitycs/checkout";
 import { sendFormEvent } from "@/lib/analitycs/form";
+import { getErrorMessage } from "@/lib/error-message";
 import { SizeMap } from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
@@ -82,9 +83,9 @@ export function RefundForm() {
         reason: data.reason,
       });
 
-      const errorResponse = response as any;
+      const errorResponse = response as { error?: string };
       if (errorResponse.error) {
-        setToastMessage(t("order already in refund progress"));
+        setToastMessage(errorResponse.error);
         setOpen(true);
         return;
       }
@@ -106,8 +107,7 @@ export function RefundForm() {
       }
     } catch (e) {
       console.error("Form submission failed:", e);
-      const message =
-        e instanceof Error && e.message ? e.message : t("submission_error");
+      const message = getErrorMessage(e, t("submission_error"));
       setToastMessage(message);
       setOpen(true);
     }

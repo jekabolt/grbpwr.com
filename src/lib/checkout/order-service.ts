@@ -1,5 +1,6 @@
 import type { common_OrderNew } from "@/api/proto-http/frontend";
 import { serviceClient } from "@/lib/api";
+import { getErrorMessage } from "@/lib/error-message";
 import {
     GA4_MEASUREMENT_ID,
     ensureGtag,
@@ -11,7 +12,7 @@ import {
 
 export type SubmitOrderResult =
     | { ok: true; order: Awaited<ReturnType<typeof serviceClient.SubmitOrder>> }
-    | { ok: false };
+    | { ok: false; error?: string };
 
 const GA4_CLIENT_ID_GET_MS = 4000;
 
@@ -68,6 +69,7 @@ export async function submitNewOrder(
 
             return {
                 ok: false,
+                error: "Failed to create order",
             };
         }
 
@@ -84,6 +86,7 @@ export async function submitNewOrder(
         console.error("Error submitting new order:", error);
         return {
             ok: false,
+            error: getErrorMessage(error, "Failed to submit order"),
         };
     }
 }

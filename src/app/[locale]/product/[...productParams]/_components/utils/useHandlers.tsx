@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { sendAddToCartEvent } from "@/lib/analitycs/cart";
+import { getErrorMessage } from "@/lib/error-message";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -22,10 +24,13 @@ export function useHandlers({
   const { increaseQuantity, openCart } = useCart((state) => state);
   const { currentCountry } = useTranslationsStore((s) => s);
   const { dictionary } = useDataContext();
+  const tToaster = useTranslations("toaster");
   const [activeSizeId, setActiveSizeId] = useState<number | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const [isMobileSizeDialogOpen, setIsMobileSizeDialogOpen] = useState(false);
   const [shouldBlinkSizes, setShouldBlinkSizes] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const maxOrderItems = dictionary?.maxOrderItems || 3;
 
@@ -38,6 +43,11 @@ export function useHandlers({
       setActiveSizeId(sizeNames[0].id);
     }
   }, [isOneSize, sizeNames, activeSizeId]);
+
+  const showErrorToast = (error: unknown) => {
+    setToastMessage(getErrorMessage(error, tToaster("validation_error")));
+    setToastOpen(true);
+  };
 
   const handleAddToCart = async () => {
     if (
@@ -55,13 +65,17 @@ export function useHandlers({
 
     try {
       const currency = currentCountry.currencyKey || "EUR";
-      await increaseQuantity(
+      const success = await increaseQuantity(
         id,
         activeSizeId?.toString() || "",
         1,
         currency,
         maxOrderItems,
       );
+
+      if (!success) {
+        return false;
+      }
 
       if (product && currency) {
         sendAddToCartEvent(
@@ -76,6 +90,7 @@ export function useHandlers({
       return true;
     } catch (error) {
       console.error("Failed to add item to cart:", error);
+      showErrorToast(error);
       return false;
     }
   };
@@ -88,13 +103,17 @@ export function useHandlers({
     if (isMobileSizeDialogOpen) {
       try {
         const currency = currentCountry.currencyKey || "EUR";
-        await increaseQuantity(
+        const success = await increaseQuantity(
           id,
           sizeId.toString(),
           1,
           currency,
           maxOrderItems,
         );
+
+        if (!success) {
+          return false;
+        }
 
         if (product && currency) {
           sendAddToCartEvent(
@@ -109,6 +128,7 @@ export function useHandlers({
         return true;
       } catch (error) {
         console.error("Failed to add item to cart:", error);
+        showErrorToast(error);
         return false;
       } finally {
         setIsLoading(false);
@@ -135,6 +155,9 @@ export function useHandlers({
     isLoading,
     isMobileSizeDialogOpen,
     shouldBlinkSizes,
+    toastOpen,
+    toastMessage,
+    setToastOpen,
     setActiveSizeId,
     handleAddToCart,
     handleSizeSelect,

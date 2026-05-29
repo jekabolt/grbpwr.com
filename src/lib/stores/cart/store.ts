@@ -158,7 +158,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             return true;
           } catch (error) {
             console.error("increaseQuantity failed 💩:", error);
-            return false;
+            throw error;
           }
         },
 

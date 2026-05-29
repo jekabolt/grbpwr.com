@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 
 import { AddressListItem } from "../_components/address-list-item";
 import { EditAddressForm } from "../_components/edit-address-form";
@@ -43,6 +44,9 @@ export function AddressesSection({
     handleDefaultAddress,
     handleDeleteAddress,
     reload,
+    toastMessage,
+    toastOpen,
+    setToastOpen,
   } = useAddresses({ refreshKey });
 
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -73,7 +77,8 @@ export function AddressesSection({
   const listClassName = isCheckout ? "flex flex-col" : LIST_CLASSNAME;
 
   return (
-    <div className={rootClassName}>
+    <>
+      <div className={rootClassName}>
       {editingId === null && (
         <Text
           variant="uppercase"
@@ -144,6 +149,14 @@ export function AddressesSection({
           </div>
         </div>
       )}
-    </div>
+      </div>
+      {toastMessage && (
+        <SubmissionToaster
+          open={toastOpen}
+          message={toastMessage}
+          onOpenChange={setToastOpen}
+        />
+      )}
+    </>
   );
 }

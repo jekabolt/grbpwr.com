@@ -25,7 +25,7 @@ export function UnsubscribeForm({ email }: Props) {
     setIsLoading(true);
     const result = await unsubscribeAction(email);
     setIsLoading(false);
-    setToastMessage(result.success ? t("success") : t("error"));
+    setToastMessage(result.success ? t("success") : (result.error ?? t("error")));
     setToastOpen(true);
 
     if (result.success) {

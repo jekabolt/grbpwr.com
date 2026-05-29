@@ -4,6 +4,7 @@ import type {
   common_ProductRatingEnum,
 } from "@/api/proto-http/frontend";
 import { serviceClient } from "@/lib/api";
+import { getErrorMessage } from "@/lib/error-message";
 import { useCallback, useMemo, useState } from "react";
 
 import {
@@ -72,7 +73,7 @@ export function useOrderReviewSubmit({
         showToast(t("success"));
       } catch (e) {
         console.error(e);
-        showToast(t("error"));
+        showToast(getErrorMessage(e, t("error")));
       } finally {
         setSubmitting(false);
       }

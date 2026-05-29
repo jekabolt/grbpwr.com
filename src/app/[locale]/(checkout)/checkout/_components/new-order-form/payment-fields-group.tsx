@@ -26,6 +26,7 @@ type Props = {
   form: UseFormReturn<any>;
   showPaymentError?: boolean;
   validateItems: () => Promise<ValidateOrderItemsInsertResponse | null>;
+  onPromoError?: (message: string) => void;
   onToggle: () => void;
   onPaymentElementChange?: (isComplete: boolean) => void;
 };
@@ -37,6 +38,7 @@ export default function PaymentFieldsGroup({
   form,
   showPaymentError = false,
   validateItems,
+  onPromoError,
   onToggle,
   onPaymentElementChange,
 }: Props) {
@@ -108,6 +110,7 @@ export default function PaymentFieldsGroup({
               form={form}
               loading={loading}
               validateItems={validateItems}
+              onError={onPromoError}
             />
           </FieldsGroupContainer>
         </div>

@@ -2,8 +2,10 @@
 
 import { common_ProductFull } from "@/api/proto-http/frontend";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { useDataContext } from "@/components/contexts/DataContext";
+import { getErrorMessage } from "@/lib/error-message";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
@@ -20,8 +22,8 @@ export function useMeasurementSizes({
   const { increaseQuantity, openCart } = useCart((state) => state);
   const { currentCountry } = useTranslationsStore((s) => s);
   const { dictionary } = useDataContext();
+  const tToaster = useTranslations("toaster");
 
-  // Calculate out of stock sizes
   const outOfStock =
     product?.sizes?.reduce(
       (acc, size) => {
@@ -31,17 +33,19 @@ export function useMeasurementSizes({
       {} as Record<number, boolean>,
     ) || {};
 
-  // Select first in-stock size, or first size if all are out of stock
   const getInitialSize = () => {
     if (!sizes || sizes.length === 0) return undefined;
-    const firstInStockSize = sizes.find(size => !outOfStock[size.sizeId || 0]);
+    const firstInStockSize = sizes.find((size) => !outOfStock[size.sizeId || 0]);
     return firstInStockSize ? firstInStockSize.sizeId : sizes[0].sizeId;
   };
 
-  const [selectedSize, setSelectedSize] = useState<number | undefined>(getInitialSize());
+  const [selectedSize, setSelectedSize] = useState<number | undefined>(
+    getInitialSize(),
+  );
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const maxOrderItems = dictionary?.maxOrderItems || 3;
 
-  // Auto-select size for one-size products
   useEffect(() => {
     if (isOneSize && sizeNames && sizeNames.length === 1 && !selectedSize) {
       setSelectedSize(sizeNames[0].id);
@@ -52,7 +56,6 @@ export function useMeasurementSizes({
     setSelectedSize(sizeId);
   };
 
-  // Convert sizeId to productSizeId for measurements
   const getProductSizeId = (sizeId: number): number | undefined => {
     return sizes?.find((s) => s.sizeId === sizeId)?.id;
   };
@@ -75,9 +78,12 @@ export function useMeasurementSizes({
       return success;
     } catch (error) {
       console.error(error);
+      setToastMessage(getErrorMessage(error, tToaster("validation_error")));
+      setToastOpen(true);
       return false;
     }
   }
+
   return {
     selectedSize,
     selectedProductSizeId: selectedSize
@@ -85,5 +91,8 @@ export function useMeasurementSizes({
       : undefined,
     handleSelectSize,
     handleMeasurementSizes,
+    toastOpen,
+    toastMessage,
+    setToastOpen,
   };
 }

@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
 import { sendCouponAppliedEvent } from "@/lib/analitycs/promo";
+import { getErrorMessage } from "@/lib/error-message";
 import { Button } from "@/components/ui/button";
 import InputField from "@/components/ui/form/fields/input-field";
 
@@ -15,6 +16,7 @@ type Props = {
   freeShipmentCarrierId?: number;
   validateItems: () => Promise<ValidateOrderItemsInsertResponse | null>;
   currency?: string;
+  onError?: (message: string) => void;
 };
 
 export default function PromoCode({
@@ -23,6 +25,7 @@ export default function PromoCode({
   validateItems,
   freeShipmentCarrierId,
   currency = "EUR",
+  onError,
 }: Props) {
   const [isApplied, setIsApplied] = useState(false);
   const [promoLoading, setPromoLoading] = useState(false);
@@ -30,6 +33,7 @@ export default function PromoCode({
   const { setValue } = useFormContext();
   const promoCode = form.watch("promoCode");
   const t = useTranslations("checkout");
+  const tToaster = useTranslations("toaster");
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -63,6 +67,7 @@ export default function PromoCode({
       setIsApplied(true);
     } catch (error) {
       console.error(error);
+      onError?.(getErrorMessage(error, tToaster("validation_error")));
     } finally {
       setPromoLoading(false);
     }
