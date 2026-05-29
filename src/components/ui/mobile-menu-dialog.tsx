@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import { getTopCategoryName } from "@/lib/categories-map";
@@ -23,32 +24,58 @@ import { Text } from "./text";
 
 type Gender = "men" | "women" | undefined;
 
+const LOCALIZED_PATH_PREFIX = /^(\/[A-Za-z]{2}\/[a-z]{2})/;
+
+function resolveHref(href: string, localized: (href: string) => string): string {
+  return LOCALIZED_PATH_PREFIX.test(href) ? href : localized(href);
+}
+
+function isSamePathPage(
+  pathname: string,
+  href: string,
+  localized: (href: string) => string,
+): boolean {
+  const resolved = resolveHref(href, localized);
+  return !resolved.includes("?") && pathname === resolved;
+}
+
+function useSamePageClose(closeMenu: () => void) {
+  const pathname = usePathname();
+  const localized = useLocalizedHref();
+
+  return (href: string) => {
+    if (isSamePathPage(pathname || "", href, localized)) {
+      closeMenu();
+    }
+  };
+}
+
 interface DefaultMenuProps {
   isBigMenuEnabled: boolean | undefined;
   isWebsiteEnabled?: boolean;
   setActiveCategory: (category: Gender) => void;
+  closeMenu: () => void;
 }
 
 interface ActiveCategoryMenuProps {
   activeCategory: Gender;
+  closeMenu: () => void;
 }
 
 export function DefaultMobileMenuDialog({
   setActiveCategory,
   isBigMenuEnabled,
   isWebsiteEnabled = true,
+  closeMenu,
 }: DefaultMenuProps) {
   const { account, isSignedIn } = useAccountOnboardingStore((s) => s);
   const localized = useLocalizedHref();
+  const closeIfSamePage = useSamePageClose(closeMenu);
   const defaultMenuItems = isWebsiteEnabled
     ? createMenuItems(isBigMenuEnabled, setActiveCategory)
     : [{ label: "timeline", showArrow: false, href: "/timeline" }];
   const t = useTranslations("navigation");
   const tAccount = useTranslations("account");
-
-  const accountText = isSignedIn
-    ? `${tAccount("account")}: ${account?.firstName}`
-    : tAccount("account");
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -57,6 +84,7 @@ export function DefaultMobileMenuDialog({
           <AnimatedButton
             animationDuration={1000}
             href={localized("/account")}
+            onClick={() => closeIfSamePage("/account")}
             className="uppercase"
           >
             {isSignedIn ? (
@@ -89,6 +117,7 @@ export function DefaultMobileMenuDialog({
                   animationDuration={1000}
                   animationArea="full-underline"
                   href={item.href}
+                  onClick={() => closeIfSamePage(item.href)}
                   className="flex w-full items-center justify-between uppercase"
                 >
                   <Text>{t(item.label)}</Text>
@@ -112,10 +141,12 @@ export function DefaultMobileMenuDialog({
 
 export function ActiveCategoryMenuDialog({
   activeCategory,
+  closeMenu,
 }: ActiveCategoryMenuProps) {
   const { dictionary, hero } = useDataContext();
   const { languageId } = useTranslationsStore((state) => state);
   const t = useTranslations("navigation");
+  const closeIfSamePage = useSamePageClose(closeMenu);
 
   const heroNav = activeCategory
     ? hero?.navFeatured?.[activeCategory]
@@ -139,6 +170,7 @@ export function ActiveCategoryMenuDialog({
         <AnimatedButton
           animationArea="text"
           href={`/catalog/${activeCategory}`}
+          onClick={() => closeIfSamePage(`/catalog/${activeCategory}`)}
           className="uppercase"
         >
           {t("all")}
@@ -148,6 +180,7 @@ export function ActiveCategoryMenuDialog({
             key={link.id}
             link={link}
             activeCategory={activeCategory}
+            closeMenu={closeMenu}
           />
         ))}
       </div>
@@ -157,12 +190,17 @@ export function ActiveCategoryMenuDialog({
             key={link.id}
             link={link}
             activeCategory={activeCategory}
+            closeMenu={closeMenu}
           />
         ))}
       </div>
       {heroNav?.media?.media?.thumbnail?.mediaUrl && (
         <div className="w-full">
-          <AnimatedButton href={heroLink} className="space-y-2">
+          <AnimatedButton
+            href={heroLink}
+            onClick={() => closeIfSamePage(heroLink)}
+            className="space-y-2"
+          >
             <div className="w-full">
               <Image
                 src={heroNav.media.media.thumbnail.mediaUrl}
@@ -187,12 +225,16 @@ export function ActiveCategoryMenuDialog({
 function CategoryButton({
   link,
   activeCategory,
+  closeMenu,
 }: {
   activeCategory: Gender;
   link: { title: string; id: string };
+  closeMenu: () => void;
 }) {
   const { dictionary } = useDataContext();
   const tCategories = useTranslations("categories");
+  const closeIfSamePage = useSamePageClose(closeMenu);
+  const href = `/catalog/${activeCategory}/${link.title.toLowerCase()}`;
 
   const categoryName = getTopCategoryName(
     dictionary?.categories || [],
@@ -210,7 +252,8 @@ function CategoryButton({
     <AnimatedButton
       key={link.id}
       animationArea="text"
-      href={`/catalog/${activeCategory}/${link.title.toLowerCase()}`}
+      href={href}
+      onClick={() => closeIfSamePage(href)}
       className="uppercase"
     >
       {translatedName || getCategoryDisplayName(link.title)}

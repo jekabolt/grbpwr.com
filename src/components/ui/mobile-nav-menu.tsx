@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
@@ -27,6 +28,15 @@ export function MobileNavMenu({
   const t = useTranslations("navigation");
   const tAccessibility = useTranslations("accessibility");
   const isWebsiteEnabled = dictionary?.siteEnabled;
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const searchParamsKey = searchParams.toString();
+  const closeMenu = () => setOpen(false);
+
+  useEffect(() => {
+    setOpen(false);
+    setActiveCategory(undefined);
+  }, [pathname, searchParamsKey]);
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
@@ -79,9 +89,13 @@ export function MobileNavMenu({
                     setActiveCategory={setActiveCategory}
                     isBigMenuEnabled={isBigMenuEnabled}
                     isWebsiteEnabled={isWebsiteEnabled}
+                    closeMenu={closeMenu}
                   />
                 ) : (
-                  <ActiveCategoryMenuDialog activeCategory={activeCategory} />
+                  <ActiveCategoryMenuDialog
+                    activeCategory={activeCategory}
+                    closeMenu={closeMenu}
+                  />
                 )}
               </div>
             </DialogPrimitives.Content>
