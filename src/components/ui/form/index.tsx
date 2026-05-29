@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, useId } from "react";
-import { errorMap } from "@/constants";
 import { Label } from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import {
@@ -14,6 +13,7 @@ import {
 } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
+import { resolveErrorTranslationKey } from "@/components/ui/form/utils/resolve-error-translation-key";
 
 import { Text } from "../text";
 
@@ -141,7 +141,6 @@ function FormMessage({
   ref,
   translateError,
   fieldName,
-  /** When false, never show validation output (e.g. optional groups until dirty). */
   gate,
   ...props
 }: any) {
@@ -150,8 +149,7 @@ function FormMessage({
   if (gate === false) {
     return null;
   }
-  // Only show errors for touched fields or after form submit attempt - avoids showing
-  // errors on untouched fields when trigger() validates the whole form (e.g. zodResolver)
+
   const submitAttempted =
     formState.isSubmitted || (formState.submitCount ?? 0) > 0;
   const shouldShowError = !!error && (!!isTouched || submitAttempted);
@@ -161,19 +159,22 @@ function FormMessage({
 
   if (shouldShowError && translateError && fieldName) {
     const errorMessage = String(error.message || "");
-    const errorType =
-      Object.entries(errorMap).find(([key]) =>
-        errorMessage.toLowerCase().includes(key.toLowerCase()),
-      )?.[1] || errorMessage.replace(/\s+/g, "").toLowerCase();
-
-    // Extract the field name from nested paths (e.g., "billingAddress.firstName" -> "firstName")
     const baseFieldName = fieldName.includes(".")
       ? fieldName.split(".").pop() || fieldName
       : fieldName;
+    const errorType = resolveErrorTranslationKey(error);
 
-    const errorKey = `${baseFieldName}.${errorType}`;
-    const translated = translateError(errorKey);
-    body = translated === errorKey ? errorMessage : translated;
+    if (errorType) {
+      const errorKey = `${baseFieldName}.${errorType}`;
+      const translated = translateError(errorKey);
+      const translationMissing =
+        translated === errorKey ||
+        translated === `errors.${errorKey}` ||
+        translated.startsWith(`errors.${errorKey}.`);
+      body = translationMissing ? errorMessage : translated;
+    } else {
+      body = errorMessage;
+    }
   } else {
     body = shouldShowError ? String(error?.message) : children;
   }

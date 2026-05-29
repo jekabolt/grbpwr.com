@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { PaymentElement } from "@stripe/react-stripe-js";
+import type { PaymentWalletsOption } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
@@ -121,6 +122,9 @@ export default function PaymentFieldsGroup({
                 onChange={handlePaymentElementChange}
                 options={{
                   layout: "tabs",
+                  wallets: {
+                    link: "never",
+                  } as PaymentWalletsOption,
                   fields: {
                     billingDetails: {
                       address: {

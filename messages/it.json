@@ -491,12 +491,14 @@
     "firstName": {
       "min": "il nome deve contenere almeno 1 carattere",
       "max": "il nome può contenere al massimo 40 caratteri",
-      "regex": "deve contenere almeno una lettera e sono consentiti solo lettere, spazi, trattini, apostrofi e punti"
+      "regex": "deve contenere almeno una lettera e sono consentiti solo lettere, spazi, trattini, apostrofi e punti",
+      "invalidCharacter": "questo carattere non è consentito"
     },
     "lastName": {
       "min": "il cognome deve contenere almeno 1 carattere",
       "max": "il cognome può contenere al massimo 40 caratteri",
-      "regex": "deve contenere almeno una lettera e sono consentiti solo lettere, spazi, trattini, apostrofi e punti"
+      "regex": "deve contenere almeno una lettera e sono consentiti solo lettere, spazi, trattini, apostrofi e punti",
+      "invalidCharacter": "questo carattere non è consentito"
     },
     "phone": {
       "min": "il telefono deve contenere almeno 5 numeri",
@@ -506,17 +508,20 @@
     "city": {
       "min": "la città deve contenere almeno 2 caratteri",
       "regex": "deve contenere almeno una lettera e sono consentiti solo lettere, spazi, trattini, apostrofi e punti",
-      "countryMismatch": "Scegli una città tra i suggerimenti per il paese selezionato."
+      "countryMismatch": "Scegli una città tra i suggerimenti per il paese selezionato.",
+      "invalidCharacter": "questo carattere non è consentito"
     },
     "address": {
       "min": "l'indirizzo deve contenere almeno 3 caratteri",
       "max": "l'indirizzo può contenere al massimo 40 caratteri",
-      "regex": "sono consentiti solo lettere, numeri, spazi, trattini, apostrofi e punti"
+      "regex": "sono consentiti solo lettere, numeri, spazi, trattini, apostrofi e punti",
+      "invalidCharacter": "questo carattere non è consentito"
     },
     "postalCode": {
       "min": "il codice postale deve contenere almeno 2 caratteri",
       "max": "il codice postale può contenere al massimo 12 caratteri",
-      "regex": "il codice postale può contenere solo lettere, numeri, spazi o trattini"
+      "regex": "il codice postale può contenere solo lettere, numeri, spazi o trattini",
+      "invalidCharacter": "questo carattere non è consentito"
     },
     "country": {
       "min": "il paese deve contenere almeno 2 caratteri"
@@ -527,7 +532,8 @@
     "company": {
       "min": "l'azienda deve contenere almeno 1 carattere",
       "max": "l'azienda può contenere al massimo 40 caratteri",
-      "regex": "sono consentiti solo lettere, numeri, spazi, trattini, apostrofi e punti"
+      "regex": "sono consentiti solo lettere, numeri, spazi, trattini, apostrofi e punti",
+      "invalidCharacter": "questo carattere non è consentito"
     },
     "email": {
       "invalid": "email non valida",
@@ -537,7 +543,8 @@
     "additionalAddress": {
       "min": "l'indirizzo aggiuntivo deve contenere almeno 3 caratteri",
       "max": "l'indirizzo aggiuntivo può contenere al massimo 40 caratteri",
-      "regex": "sono consentiti solo lettere, numeri, spazi, trattini, apostrofi e punti"
+      "regex": "sono consentiti solo lettere, numeri, spazi, trattini, apostrofi e punti",
+      "invalidCharacter": "questo carattere non è consentito"
     },
     "termsOfService": {
       "required": "devi accettare i termini e le condizioni per procedere"
