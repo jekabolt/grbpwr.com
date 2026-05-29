@@ -1,3 +1,6 @@
+"use client";
+
+import { useMemo } from "react";
 import Link from "next/link";
 import type {
   common_OrderFull,
@@ -5,7 +8,9 @@ import type {
 } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
+import { buildTrackingUrl } from "@/lib/shipment/tracking-url";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
@@ -22,6 +27,7 @@ export function OrderItem({
   account: StorefrontAccount;
 }) {
   const t = useTranslations("account");
+  const { dictionary } = useDataContext();
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const createdAt = formatOrderDate(
     order.order?.placed ??
@@ -34,7 +40,16 @@ export function OrderItem({
     orderUuid: order.order?.uuid ?? "",
     emailBase64: encodeEmailBase64(account.email ?? ""),
   });
-  const trackingHref = order.shipment?.trackingCode?.trim();
+  const trackingUrl = useMemo(() => {
+    if (!order.shipment || !dictionary?.shipmentCarriers) return undefined;
+    const carrier = dictionary.shipmentCarriers.find(
+      (c) => String(c.id) === String(order.shipment?.carrierId),
+    );
+    return buildTrackingUrl(
+      carrier?.shipmentCarrier?.trackingUrl,
+      order.shipment.trackingCode,
+    );
+  }, [dictionary?.shipmentCarriers, order.shipment]);
 
   return (
     <div className="border-b border-textInactiveColor bg-bgColor py-6 text-textColor first:pt-0">
@@ -47,9 +62,15 @@ export function OrderItem({
               <StatusBadge statusId={order.order?.orderStatusId ?? 0} />
             </div>
           </Link>
-          {trackingHref ? (
+          {trackingUrl ? (
             <Button asChild variant="underlineWithColors" className="uppercase">
-              <Link href={trackingHref}>{t("track order")}</Link>
+              <Link
+                href={trackingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("track order")}
+              </Link>
             </Button>
           ) : null}
         </div>
