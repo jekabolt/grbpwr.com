@@ -6,6 +6,7 @@ import {
   requestAccountLoginCode,
   verifyAccountLoginCode,
 } from "../authorization/api";
+import { getErrorMessage } from "@/lib/error-message";
 
 const RESEND_TIMEOUT_SECONDS = 60;
 const LOGIN_ATTEMPT_STORAGE_KEY = "account-login-attempt";
@@ -380,7 +381,9 @@ export function useAccountLogin() {
       router.refresh();
       verificationSucceeded = true;
     } catch (error) {
-      openErrorToast(t("the code couldn’t be verified"));
+      openErrorToast(
+        getErrorMessage(error, t("the code couldn’t be verified")),
+      );
       setCode("");
     } finally {
       if (!verificationSucceeded) {

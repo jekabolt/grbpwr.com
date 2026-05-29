@@ -66,6 +66,12 @@ export function AddToCartBtn({
     product,
   });
   const {
+    toastOpen: cartErrorToastOpen,
+    toastMessage: cartErrorToastMessage,
+    setToastOpen: setCartErrorToastOpen,
+    ...internalHandlersRest
+  } = internalHandlers;
+  const {
     outOfStock: internalOutOfStock,
     isMaxQuantity: internalIsMaxQuantity,
   } = useDisabled({
@@ -86,7 +92,7 @@ export function AddToCartBtn({
     handleDialogClose,
     triggerSizeBlink,
     onCollapseSheet,
-  } = { ...internalHandlers, ...handlers };
+  } = { ...internalHandlersRest, ...handlers };
 
   const outOfStock = handlers?.outOfStock ?? internalOutOfStock;
   const isMaxQuantityFinal = handlers?.isMaxQuantity ?? internalIsMaxQuantity;
@@ -221,9 +227,14 @@ export function AddToCartBtn({
         </div>
       </div>
       <SubmissionToaster
-        open={maxOrderLimitExceededToastOpen}
-        message={toastMessage}
-        onOpenChange={setMaxOrderLimitExceededToastOpen}
+        open={maxOrderLimitExceededToastOpen || cartErrorToastOpen}
+        message={toastMessage || cartErrorToastMessage}
+        onOpenChange={(open) => {
+          if (!open) {
+            setMaxOrderLimitExceededToastOpen(false);
+            setCartErrorToastOpen(false);
+          }
+        }}
       />
     </>
   );

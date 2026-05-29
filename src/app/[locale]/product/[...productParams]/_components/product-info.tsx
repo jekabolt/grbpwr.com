@@ -6,6 +6,7 @@ import { common_ProductFull } from "@/api/proto-http/frontend";
 import { sendViewItemEvent } from "@/lib/analitycs/product";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 import Modal from "@/app/[locale]/product/[...productParams]/_components/MeasurementPopup";
 
 import { GarmentDescription } from "./garmentDescription";
@@ -40,6 +41,9 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     handleAddToCart,
     setActiveSizeId,
     triggerSizeBlink,
+    toastOpen: cartToastOpen,
+    toastMessage: cartToastMessage,
+    setToastOpen: setCartToastOpen,
   } = useHandlers({
     id: productId,
     sizeNames,
@@ -51,8 +55,14 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
     activeSizeId,
     product,
   });
-  const { selectedSize, handleSelectSize, handleMeasurementSizes } =
-    useMeasurementSizes({ product });
+  const {
+    selectedSize,
+    handleSelectSize,
+    handleMeasurementSizes,
+    toastOpen: measurementToastOpen,
+    toastMessage: measurementToastMessage,
+    setToastOpen: setMeasurementToastOpen,
+  } = useMeasurementSizes({ product });
 
   const currencyKey = currentCountry.currencyKey || "EUR";
   const productPrice =
@@ -152,6 +162,16 @@ export function ProductInfo({ product }: { product: common_ProductFull }) {
           </div>
         </div>
       </div>
+      <SubmissionToaster
+        open={cartToastOpen}
+        message={cartToastMessage}
+        onOpenChange={setCartToastOpen}
+      />
+      <SubmissionToaster
+        open={measurementToastOpen}
+        message={measurementToastMessage}
+        onOpenChange={setMeasurementToastOpen}
+      />
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import { common_OrderFull } from "@/api/proto-http/frontend";
 import { useCallback, useEffect, useState } from "react";
 
+import { parseApiError } from "./api-error";
+
 const PAGE_SIZE = 10;
 
 export function useOrders() {
@@ -8,6 +10,8 @@ export function useOrders() {
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
+    const [toastOpen, setToastOpen] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
 
     const fetchPage = useCallback(async (offset: number) => {
         if (offset === 0) setLoading(true);
@@ -16,7 +20,13 @@ export function useOrders() {
             const res = await fetch(
                 `/api/account/orders?limit=${PAGE_SIZE}&offset=${offset}`,
             );
-            if (!res.ok) return;
+            if (!res.ok) {
+                setToastMessage(
+                    await parseApiError(res, "failed to load orders"),
+                );
+                setToastOpen(true);
+                return;
+            }
             const data = (await res.json().catch(() => ({}))) as {
                 orders?: common_OrderFull[];
                 total?: number;
@@ -25,7 +35,8 @@ export function useOrders() {
             setAllOrders((prev) => (offset === 0 ? page : [...prev, ...page]));
             if (data.total !== undefined) setTotal(data.total);
         } catch {
-            // leave state as-is on network error
+            setToastMessage("failed to load orders");
+            setToastOpen(true);
         } finally {
             if (offset === 0) setLoading(false);
             else setLoadingMore(false);
@@ -46,5 +57,8 @@ export function useOrders() {
         loadingMore,
         hasMore: allOrders.length < total,
         loadMore,
+        toastOpen,
+        toastMessage,
+        setToastOpen,
     };
 }

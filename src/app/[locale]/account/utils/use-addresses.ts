@@ -18,6 +18,7 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
   const [loaded, setLoaded] = useState(false);
   const [addresses, setAddresses] = useState<StorefrontSavedAddress[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastOpen, setToastOpen] = useState(false);
   const [defaultId, setDefaultId] = useState<number | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
@@ -27,6 +28,7 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
       const res = await fetch("/api/account/addresses", { method: "GET" });
       if (!res.ok) {
         setToastMessage(await parseApiError(res, t("failed to load addresses")));
+        setToastOpen(true);
         setAddresses([]);
         return;
       }
@@ -34,6 +36,7 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
         addresses?: StorefrontSavedAddress[];
       };
       setToastMessage(null);
+      setToastOpen(false);
       setAddresses(Array.isArray(data.addresses) ? data.addresses : []);
     } finally {
       setPending(false);
@@ -50,9 +53,11 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
       );
       if (!result.ok) {
         setToastMessage(result.error);
+        setToastOpen(true);
         return;
       }
       setToastMessage(null);
+      setToastOpen(false);
       await loadAddresses();
     } finally {
       setDefaultId(null);
@@ -67,9 +72,11 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
       });
       if (!res.ok) {
         setToastMessage(await parseApiError(res, t("failed to delete address")));
+        setToastOpen(true);
         return;
       }
       setToastMessage(null);
+      setToastOpen(false);
       setAddresses((prev) => prev.filter((address) => address.id !== id));
     } finally {
       setDeletingId(null);
@@ -98,6 +105,8 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
     defaultId,
     deletingId,
     toastMessage,
+    toastOpen,
+    setToastOpen,
     reload: loadAddresses,
     handleDefaultAddress,
     handleDeleteAddress,

@@ -9,6 +9,7 @@ import { useInView } from "react-intersection-observer";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Text as UIText } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 
 import { OrderItem } from "../_components/order-item";
 import { OrderReturnsSectionFallback } from "../_components/section-fallbacks";
@@ -33,10 +34,11 @@ const ORDER_RETURN_TABS: {
 export function OrderReturns({ account }: { account: StorefrontAccount }) {
   const t = useTranslations("account");
   const [view, setView] = useState<OrderReturnsView>("orders");
-  const { allOrders, loading, loadingMore, hasMore, loadMore } = useOrders();
+  const { allOrders, loading, loadingMore, hasMore, loadMore, toastOpen, toastMessage, setToastOpen } = useOrders();
 
   return (
-    <div className={SECTION_CLASSNAME}>
+    <>
+      <div className={SECTION_CLASSNAME}>
       <div className="flex shrink-0">
         {ORDER_RETURN_TABS.map((tab) => (
           <Button
@@ -78,7 +80,15 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
           onLoadMore={loadMore}
         />
       )}
-    </div>
+      </div>
+      {toastMessage && (
+        <SubmissionToaster
+          open={toastOpen}
+          message={toastMessage}
+          onOpenChange={setToastOpen}
+        />
+      )}
+    </>
   );
 }
 

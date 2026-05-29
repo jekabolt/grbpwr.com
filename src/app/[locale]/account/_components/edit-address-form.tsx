@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type {
   StorefrontAccount,
   StorefrontSavedAddress,
@@ -10,14 +10,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
+import { getErrorMessage } from "@/lib/error-message";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormPhoneField } from "@/components/ui/form/fields/form-phone-field";
 import InputField from "@/components/ui/form/fields/input-field";
 import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 import { AddressFields } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/shipping-fields-group";
 import { verifyCityInCountry } from "@/app/[locale]/(checkout)/checkout/_components/new-order-form/verify-city";
+import { parseApiError } from "@/app/[locale]/account/utils/api-error";
 import {
   createAddressEditSchema,
   type AddressEditFormData,
@@ -42,6 +45,8 @@ export function EditAddressForm({
 }) {
   const t = useTranslations("checkout");
   const tAccount = useTranslations("account");
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const schema = useMemo(() => createAddressEditSchema(tAccount), [tAccount]);
 
@@ -75,90 +80,105 @@ export function EditAddressForm({
           address: buildAddressEditPayload(data, address.isDefault),
         }),
       });
-      if (!res.ok) return;
+      if (!res.ok) {
+        const message = await parseApiError(res, tAccount("failed to update address"));
+        setToastMessage(message);
+        setToastOpen(true);
+        return;
+      }
+      onSuccess();
     } catch (error) {
       console.error(error);
+      setToastMessage(
+        getErrorMessage(error, tAccount("failed to update address")),
+      );
+      setToastOpen(true);
     }
-
-    onSuccess();
   }
 
   return (
-    <Form {...form}>
-      <div
-        className={cn("flex flex-col gap-12", {
-          "gap-0": isCheckout,
-        })}
-      >
-        {!isCheckout && (
-          <div className="flex items-center justify-between">
-            <Text variant="uppercase">{tAccount("edit shipping address")}</Text>
-            <Button
-              type="button"
-              className="hidden lg:block"
-              onClick={onCancel}
-            >
-              [x]
-            </Button>
-          </div>
-        )}
-        <div className="flex flex-col gap-8">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <InputField
-              {...readOnlyFieldProps}
-              name="firstName"
-              label={`${t("first name")}:`}
-            />
-            <InputField
-              {...readOnlyFieldProps}
-              name="lastName"
-              label={`${t("last name")}:`}
-            />
-          </div>
-          <AddressFields
-            loading={isSubmitting}
-            disabled={isSubmitting}
-            showNameFields={false}
-            showPhoneField={false}
-            disableCountryField
-          />
-          <FormPhoneField
-            loading={isSubmitting}
-            variant="secondary"
-            name="phone"
-            label={t("phone number:")}
-            disabled
-            readOnly
-            displayTrigger={false}
-          />
-
-          <div className="flex gap-3">
-            <Button
-              type="button"
-              variant="main"
-              size="lg"
-              className="fixed inset-x-2.5 bottom-2.5 mx-auto uppercase lg:static lg:w-full"
-              disabled={isSubmitting}
-              loading={isSubmitting}
-              onClick={form.handleSubmit(onSubmit)}
-            >
-              {tAccount("save")}
-            </Button>
-            {isCheckout && (
+    <>
+      <Form {...form}>
+        <div
+          className={cn("flex flex-col gap-12", {
+            "gap-0": isCheckout,
+          })}
+        >
+          {!isCheckout && (
+            <div className="flex items-center justify-between">
+              <Text variant="uppercase">{tAccount("edit shipping address")}</Text>
               <Button
                 type="button"
-                variant="secondary"
-                size="lg"
-                className="hidden w-full uppercase lg:block"
-                disabled={isSubmitting}
+                className="hidden lg:block"
                 onClick={onCancel}
               >
-                {tAccount("cancel")}
+                [x]
               </Button>
-            )}
+            </div>
+          )}
+          <div className="flex flex-col gap-8">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <InputField
+                {...readOnlyFieldProps}
+                name="firstName"
+                label={`${t("first name")}:`}
+              />
+              <InputField
+                {...readOnlyFieldProps}
+                name="lastName"
+                label={`${t("last name")}:`}
+              />
+            </div>
+            <AddressFields
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              showNameFields={false}
+              showPhoneField={false}
+              disableCountryField
+            />
+            <FormPhoneField
+              loading={isSubmitting}
+              variant="secondary"
+              name="phone"
+              label={t("phone number:")}
+              disabled
+              readOnly
+              displayTrigger={false}
+            />
+
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="main"
+                size="lg"
+                className="fixed inset-x-2.5 bottom-2.5 mx-auto uppercase lg:static lg:w-full"
+                disabled={isSubmitting}
+                loading={isSubmitting}
+                onClick={form.handleSubmit(onSubmit)}
+              >
+                {tAccount("save")}
+              </Button>
+              {isCheckout && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="lg"
+                  className="hidden w-full uppercase lg:block"
+                  disabled={isSubmitting}
+                  onClick={onCancel}
+                >
+                  {tAccount("cancel")}
+                </Button>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </Form>
+      </Form>
+      <SubmissionToaster
+        open={toastOpen}
+        message={toastMessage}
+        onOpenChange={setToastOpen}
+      />
+    </>
   );
 }

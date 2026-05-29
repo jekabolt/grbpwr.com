@@ -10,6 +10,7 @@ import { getValidationErrorToastKey } from "@/lib/cart/validate-cart-items";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
+import { getErrorMessage } from "@/lib/error-message";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import type { OpenGroups } from "./constants";
@@ -216,7 +217,14 @@ export function useCheckoutSubmit({
         response?.paymentIntentId || "",
       );
 
-      if (!newOrderResponse.ok) return;
+      if (!newOrderResponse.ok) {
+        setToastMessage(
+          newOrderResponse.error ||
+            resolveToasterMessage(getValidationErrorToastKey(null)),
+        );
+        setOrderModifiedToastOpen(true);
+        return;
+      }
 
       const paymentType = newOrderResponse.order?.payment?.paymentMethod;
       const clientSecret =
@@ -281,7 +289,9 @@ export function useCheckoutSubmit({
           transaction_id: orderUuid,
         });
 
-        setToastMessage(paymentFailedMessage);
+        setToastMessage(
+          paymentResult.error || paymentFailedMessage,
+        );
         setOrderModifiedToastOpen(true);
         console.error("Payment confirmation failed:", paymentResult.error);
         return;
@@ -305,10 +315,10 @@ export function useCheckoutSubmit({
         sessionStorage.removeItem("pending_stripe_order");
       }
 
-      const message =
-        error instanceof Error && error.message
-          ? error.message
-          : resolveToasterMessage(getValidationErrorToastKey(error));
+      const message = getErrorMessage(
+        error,
+        resolveToasterMessage(getValidationErrorToastKey(error)),
+      );
       setToastMessage(message);
       setOrderModifiedToastOpen(true);
     } finally {

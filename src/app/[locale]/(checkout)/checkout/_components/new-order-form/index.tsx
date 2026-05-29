@@ -114,7 +114,9 @@ export default function NewOrderForm({
     defaultValues: { ...defaultData, country: currentCountry.countryCode },
   });
 
-  const { order, validateItems, orderCurrency } = useValidatedOrder(form);
+  const { order, validateItems, orderCurrency, validationToastOpen, validationToastMessage, setValidationToastOpen } = useValidatedOrder(form, {
+    validationErrorFallback: tToaster("validation_error"),
+  });
   const { clearFormData, applyCheckoutIdentity } = useOrderPersistence(
     form,
     currentCountry.countryCode,
@@ -146,6 +148,11 @@ export default function NewOrderForm({
     onAmountChange,
     handleFormChange,
   });
+
+  const handlePromoError = (message: string) => {
+    setToastMessage(message);
+    setOrderModifiedToastOpen(true);
+  };
 
   const {
     loading,
@@ -309,6 +316,7 @@ export default function NewOrderForm({
                         loading={loading}
                         form={form}
                         validateItems={validateItems}
+                        onPromoError={handlePromoError}
                         isOpen={isGroupOpen("payment")}
                         onToggle={() => handleGroupToggle("payment")}
                         disabled={isGroupDisabled("payment") || loading}
@@ -369,6 +377,7 @@ export default function NewOrderForm({
                       form={form}
                       loading={loading}
                       validateItems={validateItems}
+                      onError={handlePromoError}
                       currency={
                         orderCurrency || currentCountry.currencyKey || "EUR"
                       }
@@ -413,6 +422,11 @@ export default function NewOrderForm({
         open={orderModifiedToastOpen}
         message={toastMessage}
         onOpenChange={setOrderModifiedToastOpen}
+      />
+      <SubmissionToaster
+        open={validationToastOpen}
+        message={validationToastMessage}
+        onOpenChange={setValidationToastOpen}
       />
       {showComplimentaryToast && complimentaryToastMessage && (
         <SubmissionToaster

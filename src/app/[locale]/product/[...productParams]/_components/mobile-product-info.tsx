@@ -7,6 +7,7 @@ import { useElementHeight } from "@/lib/hooks/useBottomSheet";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Text } from "@/components/ui/text";
+import { SubmissionToaster } from "@/components/ui/toaster";
 
 import { GarmentDescription } from "./garmentDescription";
 import { LastViewedProducts } from "./last-viewed-products";
@@ -44,6 +45,9 @@ export function MobileProductInfo({
     handleAddToCart,
     setActiveSizeId,
     triggerSizeBlink,
+    toastOpen: cartToastOpen,
+    toastMessage: cartToastMessage,
+    setToastOpen: setCartToastOpen,
   } = useHandlers({
     id: productId,
     sizeNames,
@@ -56,8 +60,14 @@ export function MobileProductInfo({
     activeSizeId,
     product,
   });
-  const { selectedSize, handleSelectSize, handleMeasurementSizes } =
-    useMeasurementSizes({ product });
+  const {
+    selectedSize,
+    handleSelectSize,
+    handleMeasurementSizes,
+    toastOpen: measurementToastOpen,
+    toastMessage: measurementToastMessage,
+    setToastOpen: setMeasurementToastOpen,
+  } = useMeasurementSizes({ product });
   const containerRef = useRef<HTMLDivElement>(null!);
   const mainAreaRef = useRef<HTMLDivElement>(null!);
   const collapseSheetRef = useRef<(() => void) | null>(null);
@@ -193,6 +203,16 @@ export function MobileProductInfo({
           triggerSizeBlink,
           onCollapseSheet: () => collapseSheetRef.current?.(),
         }}
+      />
+      <SubmissionToaster
+        open={cartToastOpen}
+        message={cartToastMessage}
+        onOpenChange={setCartToastOpen}
+      />
+      <SubmissionToaster
+        open={measurementToastOpen}
+        message={measurementToastMessage}
+        onOpenChange={setMeasurementToastOpen}
       />
     </div>
   );
