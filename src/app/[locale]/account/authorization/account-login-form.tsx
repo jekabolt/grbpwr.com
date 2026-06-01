@@ -62,7 +62,8 @@ export function AccountLoginForm({
     resendCode,
     verifyCode,
   } = useAccountLogin();
-  const showOrderSummary = !isCheckout && step === "email";
+  const showOrderSummary =
+    !isCheckout && step === "email" && products.length > 0;
   const isRestoringSession = !storageChecked;
 
   useEffect(() => {
