@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
@@ -10,6 +10,8 @@ import {
 } from "@/lib/analitycs/form";
 import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
+import { syncSignedInEmailToForm } from "@/lib/stores/account-onboarding/selectors";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Form } from "@/components/ui/form";
 import { SubmissionToaster } from "@/components/ui/toaster";
@@ -30,10 +32,15 @@ export default function NewslatterForm({
   const [toastMessage, setToastMessage] = useState("");
   const tToaster = useTranslations("toaster");
 
+  const signedInEmail = useAccountOnboardingStore((s) =>
+    s.isSignedIn ? s.account?.email?.trim() || undefined : undefined,
+  );
   const form = useForm<NewsletterFormValues>({
-    defaultValues: newsletterDefaultValues,
+    defaultValues: { ...newsletterDefaultValues, email: signedInEmail ?? "" },
     mode: "onSubmit",
   });
+
+  useEffect(() => syncSignedInEmailToForm(form, signedInEmail), [form, signedInEmail]);
 
   const emailValue = form.watch("email");
 

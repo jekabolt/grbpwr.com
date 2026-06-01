@@ -7,8 +7,9 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
-import { serviceClient } from "@/lib/api";
 import { sendNotifyMeIntentEvent } from "@/lib/analitycs/product-engagement";
+import { serviceClient } from "@/lib/api";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
@@ -50,6 +51,9 @@ export function NotifyMe({
   const tProduct = useTranslations("product");
   const tToaster = useTranslations("toaster");
   const tAccessibility = useTranslations("accessibility");
+  const signedInEmail = useAccountOnboardingStore((s) =>
+    s.isSignedIn ? s.account?.email?.trim() || undefined : undefined,
+  );
 
   const outOfStockSizes =
     sizeNames?.filter((size) => outOfStock?.[size.id]) || [];
@@ -69,7 +73,7 @@ export function NotifyMe({
   useEffect(() => {
     if (open && activeSizeId) {
       form.reset({
-        email: "",
+        email: signedInEmail ?? "",
         sizeId: activeSizeId,
         productId: id,
       });
@@ -85,7 +89,16 @@ export function NotifyMe({
         action: "opened",
       });
     }
-  }, [open, activeSizeId, id, sizeNames, productName, productCategory, form]);
+  }, [
+    open,
+    activeSizeId,
+    id,
+    sizeNames,
+    productName,
+    productCategory,
+    form,
+    signedInEmail,
+  ]);
 
   const handleSizeSelect = (sizeId: number) => {
     form.setValue("sizeId", sizeId);
