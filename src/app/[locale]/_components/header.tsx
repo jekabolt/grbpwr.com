@@ -126,14 +126,19 @@ export function Header({
         </Button>
 
         <div className="flex grow basis-0 items-center justify-end">
-          <div className="relative w-1/2 lg:w-auto">
+          <div
+            className={cn("relative lg:w-auto", {
+              "w-1/2": isWebsiteEnabled,
+              "w-auto": !isWebsiteEnabled,
+            })}
+          >
             <div className="flex justify-end lg:hidden">
               {isWebsiteEnabled ? (
                 <MobileNavCart />
               ) : (
                 <Button
                   size="lg"
-                  className="ml-auto w-1/2 bg-transparent text-right transition-colors hover:opacity-70 active:opacity-50"
+                  className="ml-auto shrink-0 whitespace-nowrap bg-transparent text-right transition-colors hover:opacity-70 active:opacity-50"
                   asChild
                 >
                   <Link href={localized("/timeline")}>{t("timeline")}</Link>

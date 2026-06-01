@@ -83,7 +83,7 @@ export function AccountLoginForm({
   }, [currency, isCheckout, products, revalidateCart]);
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-1 flex-col">
+    <div className="flex h-full min-h-0 w-full flex-1 flex-col text-textColor">
       <div
         className={cn("flex min-h-0 w-full flex-1", {
           "items-center justify-center": !isCheckout,
