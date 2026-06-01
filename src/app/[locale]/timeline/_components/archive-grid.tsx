@@ -34,7 +34,7 @@ export function ArchiveGrid({
                   fit="cover"
                 />
               </div>
-              <Text className="text-textColor group-hover:text-highlightColor">
+              <Text className="uppercase text-textColor group-hover:text-highlightColor">
                 {currentTranslation?.heading}
               </Text>
             </Link>
