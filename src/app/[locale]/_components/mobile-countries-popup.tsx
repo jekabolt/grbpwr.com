@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import RadioGroup from "@/components/ui/radio-group";
@@ -26,6 +27,8 @@ export function MobileCountriesPopup() {
     useTranslationsStore((state) => state);
   const { query, filteredCountries, searchQuery, handleSearch } =
     useSearchCountries();
+  const { dictionary } = useDataContext();
+  const isWebsiteEnabled = dictionary?.siteEnabled;
 
   const [openSection, setOpenSection] = useState<number | null>(null);
   const regionsWithCountries = Object.entries(COUNTRIES_BY_REGION);
@@ -53,7 +56,12 @@ export function MobileCountriesPopup() {
         <ModalTransition
           isOpen={open}
           contentSlideFrom="top"
-          contentClassName="fixed inset-x-2 bottom-2 top-2 z-[70] overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden"
+          contentClassName={cn(
+            "fixed inset-x-2 bottom-2 top-2 z-[70] overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden",
+            {
+              blackTheme: !isWebsiteEnabled,
+            },
+          )}
           content={
             <DialogPrimitives.Content className="flex h-full flex-col overflow-y-auto">
               <div className="flex items-center justify-between bg-bgColor pb-8">
