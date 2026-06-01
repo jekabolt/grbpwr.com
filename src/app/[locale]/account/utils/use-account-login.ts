@@ -7,6 +7,11 @@ import {
   verifyAccountLoginCode,
 } from "../authorization/api";
 import { getErrorMessage } from "@/lib/error-message";
+import {
+  invalidateAccountSessionCache,
+  storefrontAccountToProfile,
+} from "@/lib/storefront-account/client-session";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 
 const RESEND_TIMEOUT_SECONDS = 60;
 const LOGIN_ATTEMPT_STORAGE_KEY = "account-login-attempt";
@@ -217,6 +222,8 @@ function getActiveCooldownForEmail(
 export function useAccountLogin() {
   const router = useRouter();
   const t = useTranslations("account");
+  const setSignedIn = useAccountOnboardingStore((s) => s.setSignedIn);
+  const setAccount = useAccountOnboardingStore((s) => s.setAccount);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [step, setStep] = useState<LoginStep>("email");
@@ -375,6 +382,11 @@ export function useAccountLogin() {
         }
         openErrorToast(errorMessage);
         return;
+      }
+      if (result.account) {
+        invalidateAccountSessionCache();
+        setSignedIn(true);
+        setAccount(storefrontAccountToProfile(result.account));
       }
       setCodeVerified(true);
       clearAccountLoginPersistence();

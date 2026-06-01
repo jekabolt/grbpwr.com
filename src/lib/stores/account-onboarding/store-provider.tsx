@@ -43,18 +43,32 @@ export function AccountOnboardingStoreProvider({
   }
 
   useEffect(() => {
-    storeRef.current?.getState().setSignedIn(initialSignedIn);
-    storeRef.current?.getState().setAccount(initialAccount);
+    const state = storeRef.current?.getState();
+    if (!state) return;
+
+    if (initialSignedIn) {
+      state.setSignedIn(true);
+      if (initialAccount) {
+        state.setAccount(initialAccount);
+      }
+      return;
+    }
+
+    if (!state.isSignedIn) {
+      state.setAccount(initialAccount);
+    }
   }, [initialSignedIn, initialAccount]);
 
   useEffect(() => {
     let active = true;
     let lastCheckedAt = 0;
+    let hydrateGeneration = 0;
 
     async function hydrateSession() {
+      const generation = ++hydrateGeneration;
       lastCheckedAt = Date.now();
       const account = await resolveAccountSession();
-      if (!active) return;
+      if (!active || generation !== hydrateGeneration) return;
 
       const state = storeRef.current?.getState();
       if (!state) return;

@@ -190,7 +190,8 @@ export default function NewOrderForm({
     paymentMethod,
   });
 
-  const showCheckoutFields = isSignedIn || guestCheckout;
+  const showCheckoutFields =
+    isSignedIn || guestCheckout || Boolean(initialAccount);
   const hideOrderSummary = !showCheckoutFields && checkoutLoginStep === "code";
   const showProfilePrompt =
     isSignedIn &&

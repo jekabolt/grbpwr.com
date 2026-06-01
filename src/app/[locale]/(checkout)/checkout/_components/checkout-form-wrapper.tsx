@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
@@ -77,22 +77,29 @@ export function CheckoutFormWrapper({
     isOrderRedirecting,
   ]);
 
+  useLayoutEffect(() => {
+    if (!initialAccount) return;
+
+    setSessionAccount(initialAccount);
+    setSignedIn(true);
+    setAccount(storefrontAccountToProfile(initialAccount));
+    setResolvingSession(false);
+  }, [initialAccount, setAccount, setSignedIn]);
+
   useEffect(() => {
     let active = true;
+    let resolveGeneration = 0;
 
     if (initialAccount) {
-      setSessionAccount(initialAccount);
-      setSignedIn(true);
-      setAccount(storefrontAccountToProfile(initialAccount));
-      setResolvingSession(false);
       return;
     }
 
     setResolvingSession(true);
 
     async function resolveSession() {
+      const generation = ++resolveGeneration;
       const account = await resolveAccountSession();
-      if (!active) return;
+      if (!active || generation !== resolveGeneration) return;
 
       if (account) {
         setSessionAccount(account);
