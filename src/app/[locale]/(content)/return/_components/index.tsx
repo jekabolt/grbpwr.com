@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { common_OrderFull } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +14,8 @@ import { serviceClient } from "@/lib/api";
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { getErrorMessage } from "@/lib/error-message";
 import { useFixedWithinContainer } from "@/lib/hooks/useFixedWithinContainer";
+import { syncSignedInEmailToForm } from "@/lib/stores/account-onboarding/selectors";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
@@ -35,10 +37,15 @@ export function RefundForm() {
   const [open, setOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
+  const signedInEmail = useAccountOnboardingStore((s) =>
+    s.isSignedIn ? s.account?.email?.trim() || undefined : undefined,
+  );
   const form = useForm<RefundSchema>({
     resolver: zodResolver(refundForm),
-    defaultValues: defaultData,
+    defaultValues: { ...defaultData, email: signedInEmail ?? "" },
   });
+
+  useEffect(() => syncSignedInEmailToForm(form, signedInEmail), [form, signedInEmail]);
 
   const mobileButtonPosition = useFixedWithinContainer({
     containerId: "refund-page",

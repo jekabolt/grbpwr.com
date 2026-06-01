@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { errorMessages } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,8 @@ import { z } from "zod";
 import { sendFormEvent } from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
 import { useFixedWithinContainer } from "@/lib/hooks/useFixedWithinContainer";
+import { syncSignedInEmailToForm } from "@/lib/stores/account-onboarding/selectors";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -39,13 +41,19 @@ export default function OrderStatusForm() {
     bottomOffset: 24,
   });
 
+  const signedInEmail = useAccountOnboardingStore((s) =>
+    s.isSignedIn ? s.account?.email?.trim() || undefined : undefined,
+  );
   const form = useForm<OrderStatusData>({
     resolver: zodResolver(orderStatusSchema),
     defaultValues: {
-      email: "",
+      email: signedInEmail ?? "",
       orderUuid: "",
     },
   });
+
+  useEffect(() => syncSignedInEmailToForm(form, signedInEmail), [form, signedInEmail]);
+
   async function onSubmit(data: OrderStatusData) {
     setIsLoading(true);
     try {
