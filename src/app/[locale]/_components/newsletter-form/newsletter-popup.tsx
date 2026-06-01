@@ -3,6 +3,8 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 import { useFormContext, useWatch } from "react-hook-form";
 
+import { cn } from "@/lib/utils";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
@@ -24,6 +26,8 @@ export function NewsletterPopup({
   onSubscribe: () => void;
 }) {
   const t = useTranslations("newslatter");
+  const { dictionary } = useDataContext();
+  const isWebsiteEnabled = dictionary?.siteEnabled;
   const form = useFormContext<NewsletterFormValues>();
   const shoppingPreference = useWatch({
     control: form.control,
@@ -36,7 +40,12 @@ export function NewsletterPopup({
         <ModalTransition
           isOpen={open}
           contentSlideFrom="none"
-          contentClassName="fixed inset-x-2.5 top-1/2 z-50 flex h-auto w-auto -translate-y-1/2 flex-col border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:inset-x-auto lg:left-1/2 lg:w-80 lg:-translate-x-1/2"
+          contentClassName={cn(
+            "fixed inset-x-2.5 top-1/2 z-50 flex h-auto w-auto -translate-y-1/2 flex-col border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:inset-x-auto lg:left-1/2 lg:w-80 lg:-translate-x-1/2",
+            {
+              blackTheme: !isWebsiteEnabled,
+            },
+          )}
           content={
             <DialogPrimitives.Content className="flex h-auto flex-col">
               <DialogPrimitives.Title className="sr-only">
