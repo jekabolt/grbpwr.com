@@ -5,6 +5,12 @@ import { useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
 
+import {
+  invalidateAccountSessionCache,
+  resolveAccountSession,
+  storefrontAccountToProfile,
+} from "@/lib/storefront-account/client-session";
+import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { CartStoreContext, useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import FlexibleLayout from "@/components/flexible-layout";
@@ -19,6 +25,8 @@ export function MagicLoginSuccessClient() {
   const router = useRouter();
   const tAccount = useTranslations("account");
   const tNav = useTranslations("navigation");
+  const setSignedIn = useAccountOnboardingStore((s) => s.setSignedIn);
+  const setAccount = useAccountOnboardingStore((s) => s.setAccount);
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const cartStore = useContext(CartStoreContext);
   const [cartHydrated, setCartHydrated] = useState(() =>
@@ -47,7 +55,14 @@ export function MagicLoginSuccessClient() {
 
   useEffect(() => {
     clearAccountLoginPersistence();
-  }, []);
+    invalidateAccountSessionCache();
+    void resolveAccountSession().then((account) => {
+      if (!account) return;
+      setSignedIn(true);
+      setAccount(storefrontAccountToProfile(account));
+    });
+    router.refresh();
+  }, [router, setAccount, setSignedIn]);
 
   useEffect(() => {
     if (!cartHydrated) return;

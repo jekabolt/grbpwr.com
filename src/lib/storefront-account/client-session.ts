@@ -3,6 +3,10 @@ import type { AccountProfile } from "@/lib/stores/account-onboarding/store-types
 
 let accountSessionPromise: Promise<StorefrontAccount | null> | null = null;
 
+export function invalidateAccountSessionCache(): void {
+  accountSessionPromise = null;
+}
+
 export function storefrontAccountToProfile(
   account: StorefrontAccount,
 ): AccountProfile {

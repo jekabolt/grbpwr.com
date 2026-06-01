@@ -1,8 +1,11 @@
+import type { StorefrontAccount } from "@/api/proto-http/frontend";
+
 import { parseApiError } from "@/app/[locale]/account/utils/api-error";
 
 type ApiResult = {
   ok: boolean;
   error?: string;
+  account?: StorefrontAccount | null;
 };
 
 export async function requestAccountLoginCode(
@@ -43,5 +46,9 @@ export async function verifyAccountLoginCode(
     };
   }
 
-  return { ok: true };
+  const payload = (await response.json()) as {
+    account?: StorefrontAccount | null;
+  };
+
+  return { ok: true, account: payload.account ?? null };
 }
