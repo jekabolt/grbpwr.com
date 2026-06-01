@@ -1,6 +1,7 @@
 import { common_OrderItem } from "@/api/proto-http/frontend";
 
 import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartProductsList";
+import { cn } from "@/lib/utils";
 
 import { MobileProductsCarousel } from "./mobile-products-carousel";
 
@@ -27,7 +28,11 @@ export function OrderProducts({
 
   return (
     <div>
-      <div className={className}>
+      <div
+        className={cn(className, {
+          "hidden lg:block": !hideMobileCarousel,
+        })}
+      >
         <CartProductsList
           hideQuantityButtons
           validatedProducts={expandedProducts}
