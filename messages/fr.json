@@ -654,7 +654,7 @@
     "other": "autre",
     "order already in refund progress": "commande déjà en cours de remboursement",
     "refund request submitted successfully": "demande de remboursement soumise avec succès",
-    "return_request_success": "Votre demande de retour pour la commande #{orderNumber} a été soumise avec succès. Vous recevrez un e-mail de confirmation avec les prochaines étapes sous peu.",
+    "return_request_success": "demande de retour pour la commande {orderNumber} soumise",
     "submission_error": "Une erreur s'est produite. Veuillez réessayer.",
     "reason": "raison"
   },

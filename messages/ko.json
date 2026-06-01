@@ -654,7 +654,7 @@
     "other": "기타",
     "order already in refund progress": "주문이 이미 환불 진행 중임",
     "refund request submitted successfully": "환불 요청이 성공적으로 제출되었습니다",
-    "return_request_success": "주문 #{orderNumber}에 대한 반품 요청이 성공적으로 제출되었습니다. 곧 확인 이메일과 다음 단계를 받으실 수 있습니다.",
+    "return_request_success": "주문 {orderNumber} 반품 요청이 제출되었습니다",
     "submission_error": "문제가 발생했습니다. 다시 시도해 주세요.",
     "reason": "사유"
   },

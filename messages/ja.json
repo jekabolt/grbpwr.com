@@ -654,7 +654,7 @@
     "other": "その他",
     "order already in refund progress": "注文はすでに返金処理中です",
     "refund request submitted successfully": "返金リクエストが正常に送信されました",
-    "return_request_success": "注文 #{orderNumber} の返品リクエストが正常に送信されました。まもなく確認メールと次のステップをお送りします。",
+    "return_request_success": "注文 {orderNumber} の返品リクエストを送信しました",
     "submission_error": "問題が発生しました。もう一度お試しください。",
     "reason": "理由"
   },

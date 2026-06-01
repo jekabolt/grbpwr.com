@@ -655,7 +655,7 @@
     "other": "anderes",
     "order already in refund progress": "bestellung bereits in erstattungsbearbeitung",
     "refund request submitted successfully": "rückerstattungsanfrage erfolgreich eingereicht",
-    "return_request_success": "Sie haben Ihre Rückgabebitte für Bestellung #{orderNumber} erfolgreich eingereicht. Sie erhalten in Kürze eine Bestätigungs-E-Mail mit den nächsten Schritten.",
+    "return_request_success": "rückgabeanfrage für bestellung {orderNumber} eingereicht",
     "submission_error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
     "reason": "grund"
   },

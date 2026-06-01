@@ -45,7 +45,10 @@ export function RefundForm() {
     defaultValues: { ...defaultData, email: signedInEmail ?? "" },
   });
 
-  useEffect(() => syncSignedInEmailToForm(form, signedInEmail), [form, signedInEmail]);
+  useEffect(
+    () => syncSignedInEmailToForm(form, signedInEmail),
+    [form, signedInEmail],
+  );
 
   const mobileButtonPosition = useFixedWithinContainer({
     containerId: "refund-page",

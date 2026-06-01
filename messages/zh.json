@@ -654,7 +654,7 @@
     "other": "其他",
     "order already in refund progress": "订单已在退款处理中",
     "refund request submitted successfully": "退款请求提交成功",
-    "return_request_success": "您已成功提交订单 #{orderNumber} 的退货申请。您将很快收到确认邮件及后续步骤说明。",
+    "return_request_success": "订单 {orderNumber} 的退货申请已提交",
     "submission_error": "出了点问题，请重试。",
     "reason": "原因"
   },

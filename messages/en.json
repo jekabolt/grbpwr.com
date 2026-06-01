@@ -712,7 +712,7 @@
     "other": "other",
     "order already in refund progress": "order already in refund progress",
     "refund request submitted successfully": "refund request submitted successfully",
-    "return_request_success": "You've successfully submitted your return request for Order #{orderNumber}. You'll receive a confirmation email with next steps shortly.",
+    "return_request_success": "return request for order {orderNumber} submitted",
     "submission_error": "Something went wrong. Please try again.",
     "reason": "reason"
   },

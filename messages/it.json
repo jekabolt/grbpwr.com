@@ -654,7 +654,7 @@
     "other": "altro",
     "order already in refund progress": "ordine già in corso di rimborso",
     "refund request submitted successfully": "richiesta di rimborso inviata con successo",
-    "return_request_success": "Hai inviato con successo la richiesta di reso per l'ordine #{orderNumber}. Riceverai a breve un'email di conferma con i prossimi passaggi.",
+    "return_request_success": "richiesta di reso per l'ordine {orderNumber} inviata",
     "submission_error": "Qualcosa è andato storto. Riprova.",
     "reason": "motivo"
   },
