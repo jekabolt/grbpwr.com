@@ -98,7 +98,9 @@ export function AddToCartBtn({
   const isMaxQuantityFinal = handlers?.isMaxQuantity ?? internalIsMaxQuantity;
   const sizeQuantity = handlers?.sizeQuantity ?? internalSizeQuantity;
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
-  const isNoSizeSelected = !activeSizeId && isHovered;
+  const isMobile =
+    typeof window !== "undefined" && window.innerWidth < 1024;
+  const isNoSizeSelected = !activeSizeId && isHovered && !isMobile;
   const isSelectedSizeOutOfStock = activeSizeId && outOfStock?.[activeSizeId];
   const isHoveringOutOfStock = hoveredOutOfStockSizeId !== null;
   const isSoldOut = product.product?.soldOut === true;
@@ -120,7 +122,7 @@ export function AddToCartBtn({
       return Promise.resolve(false);
     }
 
-    if (!activeSizeId) {
+    if (!activeSizeId && !isMobile) {
       onCollapseSheet?.();
       triggerSizeBlink?.();
       setToastMessage(t("select your size to continue"));

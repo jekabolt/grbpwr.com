@@ -1,3 +1,5 @@
+"use client";
+
 import { sendOutOfStockClickEvent } from "@/lib/analitycs/product-engagement";
 import { sendSizeSelectedEvent } from "@/lib/analitycs/sizes";
 import { cn } from "@/lib/utils";
@@ -5,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { HoverText } from "@/components/ui/hover-text";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
+import { useTranslations } from "next-intl";
 
 type ProductContext = {
   productId: string;
@@ -41,6 +44,7 @@ export function SizePicker({
   handleSizeSelect,
   onOutOfStockHover,
 }: Props) {
+  const t = useTranslations("product");
   const isSingleDisplayedSize = (sizeNames?.length ?? 0) === 1;
 
   const handleAnalytics = (
@@ -95,6 +99,11 @@ export function SizePicker({
           const isOutOfStock = isTrulyOutOfStock || hasNoAvailableQty;
           const isActive = activeSizeId === id;
           const isDisabled = hasNoAvailableQty && !isTrulyOutOfStock;
+          const displayName =
+            isOneSize || name.toLowerCase() === "one size"
+              ? t("one size")
+              : name;
+          const quantity = sizeQuantity?.[id] ?? 0;
 
           return (
             <Button
@@ -119,14 +128,14 @@ export function SizePicker({
               onMouseEnter={() => isOutOfStock && onOutOfStockHover?.(id)}
               onMouseLeave={() => isOutOfStock && onOutOfStockHover?.(null)}
             >
-              {sizeQuantity?.[id] && sizeQuantity?.[id] > 0 ? (
+              {quantity > 0 ? (
                 <HoverText
-                  defaultText={name}
-                  hoveredText={`${sizeQuantity?.[id]} left`}
-                  hoverTextCondition={sizeQuantity?.[id] > 5}
+                  defaultText={displayName}
+                  hoveredText={t("quantity left", { count: quantity })}
+                  hoverTextCondition={quantity > 5}
                 />
               ) : (
-                <Text variant="uppercase">{name}</Text>
+                <Text variant="uppercase">{displayName}</Text>
               )}
             </Button>
           );

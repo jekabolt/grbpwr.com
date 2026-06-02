@@ -168,7 +168,9 @@
     "notify-description": "选择您的尺码，当此商品重新上架时，我们将通过电子邮件通知您。",
     "notify-agree": "我同意接收邮件。请阅读我们的<privacy>隐私政策</privacy>了解更多信息。",
     "order limit exceeded": "订单限制已超出",
-    "select your size to continue": "请选择尺码以继续"
+    "select your size to continue": "请选择尺码以继续",
+    "one size": "均码",
+    "quantity left": "剩余{count}件"
   },
   "checkout": {
     "contact": "联系人",
@@ -625,6 +627,7 @@
   "toaster": {
     "successfully_subscribed": "成功订阅新闻通讯！",
     "failed_to_subscribe": "订阅失败，请重试。",
+    "notify_me_success": "该商品补货后我们会通知您。",
     "invalid_email": "请输入有效的邮箱地址",
     "email_copied": "邮箱已复制",
     "cart_outdated": "您的购物车已过期",
