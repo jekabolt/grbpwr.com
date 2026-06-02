@@ -13,6 +13,7 @@ import {
 import { GA4_MEASUREMENT_ID } from "@/lib/analitycs/utils";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { AnalyticsInit } from "@/components/analytics-init";
+import { ConsoleArtInit } from "@/components/ui/art/console-art-init";
 import { VisitedLinksSync } from "@/components/visited-links-sync";
 import { PageTransition } from "@/components/page-transition";
 import { CookieBanner } from "@/components/ui/cookie-banner";
@@ -104,6 +105,7 @@ export default async function RootLayout({ children, params }: Props) {
             <UpdateLocation />
             <AnalyticsInit />
             <VisitedLinksSync />
+            <ConsoleArtInit />
           </ToastProvider>
         </NextIntlClientProvider>
       </body>
