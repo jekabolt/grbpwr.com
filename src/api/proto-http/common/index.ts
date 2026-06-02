@@ -258,6 +258,8 @@ export type ProductBodyInsert = {
   version: string | undefined;
   collection: string | undefined;
   fit: string | undefined;
+  // min_tier is the minimum loyalty tier code required to buy (0/1/2/99).
+  minTier: number | undefined;
 };
 
 // A representation of a decimal value, such as 2.5. Clients may convert values

@@ -23,11 +23,15 @@ export function EmailHandler({
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [pulseEmail, setPulseEmail] = useState(false);
-  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [mobileEmailExpanded, setMobileEmailExpanded] = useState(false);
   const blurTimeoutRef = useRef<number | null>(null);
 
   const t = useTranslations("newslatter");
   const tToaster = useTranslations("toaster");
+
+  useEffect(() => {
+    if (emailValue.trim()) setMobileEmailExpanded(true);
+  }, [emailValue]);
 
   useEffect(() => {
     if (emailValue) setPulseEmail(false);
@@ -53,15 +57,18 @@ export function EmailHandler({
       window.clearTimeout(blurTimeoutRef.current);
       blurTimeoutRef.current = null;
     }
-    setIsEmailFocused(true);
+    setMobileEmailExpanded(true);
   };
 
-  const handleEmailBlur = () => {
+  const handleEmailBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     if (blurTimeoutRef.current !== null) {
       window.clearTimeout(blurTimeoutRef.current);
     }
     blurTimeoutRef.current = window.setTimeout(() => {
-      setIsEmailFocused(false);
+      const hasValue = Boolean(
+        event.target.value.trim() || emailValue.trim(),
+      );
+      if (!hasValue) setMobileEmailExpanded(false);
       blurTimeoutRef.current = null;
     }, 200);
   };
@@ -106,7 +113,7 @@ export function EmailHandler({
             onBlur={handleEmailBlur}
           />
         </div>
-        {isEmailFocused && (
+        {mobileEmailExpanded && (
           <Text variant="uppercase" className="leading-none lg:hidden">
             {t.rich("consent_notice", {
               privacy: (chunks) => (
@@ -149,7 +156,7 @@ export function EmailHandler({
           })}
         </Text>
       </div>
-      {isEmailFocused && (
+      {mobileEmailExpanded && (
         <Button
           variant="simple"
           size="lg"

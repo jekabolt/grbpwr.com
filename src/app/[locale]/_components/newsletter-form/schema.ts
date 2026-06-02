@@ -1,21 +1,32 @@
+import type { SubscribeNewsletterRequest } from "@/api/proto-http/frontend";
 import { EMAIL_PREFERENCES, SHOPPING_PREFERENCE_ENUM } from "@/constants";
 import { z } from "zod";
 
-export const newsletterFormSchema = z.object({
+const newsletterFormFields = z.object({
   email: z.string().optional(),
-  firstName: z.string(),
+  name: z.string(),
   shoppingPreference: z.enum(SHOPPING_PREFERENCE_ENUM),
+  subscribeNewsletter: z.boolean(),
   subscribeNewArrivals: z.boolean(),
   subscribeEvents: z.boolean(),
 });
 
-export const newsletterDefaultValues: NewsletterFormValues = {
+export const newsletterFormSchema = newsletterFormFields.transform(
+  ({ email, name, ...rest }): SubscribeNewsletterRequest => ({
+    ...rest,
+    email: email?.trim() || undefined,
+    name: name.trim() || undefined,
+  }),
+);
+
+export const newsletterDefaultValues: NewsletterFormInput = {
   email: "",
-  firstName: "",
+  name: "",
   shoppingPreference: EMAIL_PREFERENCES.all,
+  subscribeNewsletter: true,
   subscribeNewArrivals: false,
   subscribeEvents: false,
-
 };
 
-export type NewsletterFormValues = z.infer<typeof newsletterFormSchema>;
+export type NewsletterFormInput = z.input<typeof newsletterFormSchema>;
+export type NewsletterFormValues = z.output<typeof newsletterFormSchema>;

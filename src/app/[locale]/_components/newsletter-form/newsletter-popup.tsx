@@ -12,7 +12,7 @@ import InputField from "@/components/ui/form/fields/input-field";
 import { Text } from "@/components/ui/text";
 
 import { NewArrivals } from "../../account/_components/new-arrivals";
-import { NewsletterFormValues } from "./schema";
+import { NewsletterFormInput } from "./schema";
 
 export function NewsletterPopup({
   open,
@@ -28,7 +28,7 @@ export function NewsletterPopup({
   const t = useTranslations("newslatter");
   const { dictionary } = useDataContext();
   const isWebsiteEnabled = dictionary?.siteEnabled;
-  const form = useFormContext<NewsletterFormValues>();
+  const form = useFormContext<NewsletterFormInput>();
   const shoppingPreference = useWatch({
     control: form.control,
     name: "shoppingPreference",
@@ -62,7 +62,7 @@ export function NewsletterPopup({
                   <div className="space-y-10">
                     <Text>{t("sign_up_description")}</Text>
                     <InputField
-                      name="firstName"
+                      name="name"
                       label=""
                       placeholder={t("first name")}
                       variant="secondary"
@@ -78,13 +78,11 @@ export function NewsletterPopup({
                       name="subscribeNewArrivals"
                       label={t("new arrivals").toUpperCase()}
                       disabled={isLoading}
-                      onCheckedChange={onSubscribe}
                     />
                     <CheckboxField
                       name="subscribeEvents"
                       label={t("events").toUpperCase()}
                       disabled={isLoading}
-                      onCheckedChange={onSubscribe}
                     />
                   </div>
                   <div className="flex w-full flex-row justify-between lg:flex-col lg:justify-start lg:gap-3">

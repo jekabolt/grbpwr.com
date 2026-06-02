@@ -160,6 +160,8 @@ export type common_ProductBodyInsert = {
   version: string | undefined;
   collection: string | undefined;
   fit: string | undefined;
+  // min_tier is the minimum loyalty tier code required to buy (0/1/2/99).
+  minTier: number | undefined;
 };
 
 // A representation of a decimal value, such as 2.5. Clients may convert values
@@ -812,6 +814,14 @@ export type CancelOrderByUserResponse = {
 
 export type SubscribeNewsletterRequest = {
   email: string | undefined;
+  // name is stored as the storefront account first name.
+  name: string | undefined;
+  // shopping_preference (all/men/women) is the same field used for storefront accounts.
+  shoppingPreference: ShoppingPreferenceEnum | undefined;
+  // per-topic opt-ins, same as the storefront account email preferences.
+  subscribeNewsletter: boolean | undefined;
+  subscribeNewArrivals: boolean | undefined;
+  subscribeEvents: boolean | undefined;
 };
 
 export type SubscribeNewsletterResponse = {
