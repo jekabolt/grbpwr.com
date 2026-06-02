@@ -1,37 +1,45 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import FlexibleLayout from "@/components/flexible-layout";
-
-function getCatalogGender(gender: string | undefined): string | undefined {
-  if (!gender) return undefined;
-  const normalizedGender = gender.toLowerCase();
-  if (normalizedGender === "male") return "men";
-  if (normalizedGender === "female") return "women";
-  if (normalizedGender === "men" || normalizedGender === "women") {
-    return normalizedGender;
-  }
-  return undefined;
-}
 
 export function ProductPageLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const params = useParams();
-  const productParams = params.productParams as string[] | undefined;
-  const genderFromUrl = productParams?.[0];
+  const { currentCountry, languageId } = useTranslationsStore((s) => s);
 
-  const catalogGender = getCatalogGender(genderFromUrl);
+  const country = currentCountry.countryCode?.toLowerCase() || "gb";
+  const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
+  const homePath = `/${country}/${locale}`;
 
   const handleBack = () => {
-    if (typeof window !== "undefined" && window.history.length > 1) {
-      router.back();
-    } else {
-      const catalogPath = catalogGender
-        ? `/catalog/${catalogGender}`
-        : `/catalog`;
-      router.push(catalogPath);
+    if (typeof window === "undefined") {
+      router.push(homePath);
+      return;
     }
+
+    const historyIdx = window.history.state?.idx;
+    if (typeof historyIdx === "number" && historyIdx > 0) {
+      router.back();
+      return;
+    }
+
+    try {
+      const ref = document.referrer;
+      if (ref) {
+        const refUrl = new URL(ref);
+        if (refUrl.origin === window.location.origin) {
+          router.push(`${refUrl.pathname}${refUrl.search}${refUrl.hash}`);
+          return;
+        }
+      }
+    } catch {
+      /* invalid referrer */
+    }
+
+    router.push(homePath);
   };
 
   return (
