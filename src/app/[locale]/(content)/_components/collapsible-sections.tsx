@@ -85,7 +85,9 @@ export function CollapsibleSections({
                 title={heading}
                 isOpen={openSection === index}
                 onToggle={() => toggleSection(index)}
-                clickableAreaClassName="w-full h-16"
+                clickableAreaClassName="w-full min-h-16 h-auto gap-x-4 py-4 max-lg:items-start lg:h-16 lg:items-center lg:py-0"
+                titleClassName="max-lg:whitespace-normal max-lg:break-words lg:truncate"
+                titleWrapperClassName="min-w-0 max-lg:pr-2"
               >
                 <Text
                   component="div"
