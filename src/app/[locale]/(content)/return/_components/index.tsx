@@ -161,7 +161,7 @@ export function RefundForm() {
               size="lg"
               disabled={form.formState.isSubmitting}
               className={cn(
-                "absolute inset-x-2.5 bottom-6 z-50 uppercase lg:static lg:ml-14",
+                "absolute inset-x-2.5 bottom-6 z-30 uppercase lg:static lg:ml-14",
                 {
                   fixed: mobileButtonPosition === "fixed",
                 },
