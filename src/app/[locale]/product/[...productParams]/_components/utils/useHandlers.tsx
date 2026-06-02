@@ -39,15 +39,7 @@ export function useHandlers({
   });
 
   useEffect(() => {
-    const isMobile =
-      typeof window !== "undefined" && window.innerWidth < 1024;
-    if (
-      isOneSize &&
-      sizeNames &&
-      sizeNames.length === 1 &&
-      !activeSizeId &&
-      !isMobile
-    ) {
+    if (isOneSize && sizeNames?.length === 1 && !activeSizeId) {
       setActiveSizeId(sizeNames[0].id);
     }
   }, [isOneSize, sizeNames, activeSizeId]);
@@ -58,7 +50,14 @@ export function useHandlers({
   };
 
   const handleAddToCart = async () => {
-    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+    const isMobile =
+      typeof window !== "undefined" && window.innerWidth < 1024;
+
+    if (isMobile) {
+      if (isOneSize && sizeNames?.length === 1) {
+        return handleSizeSelect(sizeNames[0].id, { addToCart: true });
+      }
+
       setActiveSizeId(undefined);
       setIsMobileSizeDialogOpen(true);
       return false;
@@ -100,14 +99,15 @@ export function useHandlers({
     }
   };
 
-  const handleSizeSelect = async (sizeId: number) => {
+  const handleSizeSelect = async (
+    sizeId: number,
+    options?: { addToCart?: boolean },
+  ) => {
     const fromMobileDialog = isMobileSizeDialogOpen;
+    const isMobile =
+      typeof window !== "undefined" && window.innerWidth < 1024;
 
-    if (
-      !fromMobileDialog &&
-      typeof window !== "undefined" &&
-      window.innerWidth < 1024
-    ) {
+    if (!fromMobileDialog && isMobile && !options?.addToCart) {
       return true;
     }
 
@@ -115,7 +115,7 @@ export function useHandlers({
     setActiveSizeId(sizeId);
     setIsMobileSizeDialogOpen(false);
 
-    if (fromMobileDialog) {
+    if (fromMobileDialog || options?.addToCart) {
       try {
         const currency = currentCountry.currencyKey || "EUR";
         const success = await increaseQuantity(
