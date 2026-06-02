@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
+import { getPreviousPath } from "@/lib/navigation/internal-navigation";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import FlexibleLayout from "@/components/flexible-layout";
 
@@ -20,23 +21,12 @@ export function ProductPageLayout({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const historyIdx = window.history.state?.idx;
-    if (typeof historyIdx === "number" && historyIdx > 0) {
-      router.back();
-      return;
-    }
+    const prevPath = getPreviousPath();
+    const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
 
-    try {
-      const ref = document.referrer;
-      if (ref) {
-        const refUrl = new URL(ref);
-        if (refUrl.origin === window.location.origin) {
-          router.push(`${refUrl.pathname}${refUrl.search}${refUrl.hash}`);
-          return;
-        }
-      }
-    } catch {
-      /* invalid referrer */
+    if (prevPath && prevPath !== currentPath) {
+      router.push(prevPath);
+      return;
     }
 
     router.push(homePath);
