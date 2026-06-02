@@ -23,6 +23,7 @@ interface FieldsGroupContainerProps {
   childrenSpacingClass?: string;
   headerContentGapClass?: string;
   titleWrapperClassName?: string;
+  titleClassName?: string;
   onToggle?: () => void;
   childrenOffset?: "title" | "stage";
 }
@@ -42,6 +43,7 @@ export default function FieldsGroupContainer({
   childrenSpacingClass = "space-y-8",
   headerContentGapClass = "space-y-4 lg:space-y-8",
   titleWrapperClassName,
+  titleClassName,
   onToggle,
   childrenOffset = "title",
 }: FieldsGroupContainerProps) {
@@ -93,20 +95,25 @@ export default function FieldsGroupContainer({
               titleWrapperClassName,
             )}
           >
-            <div className="flex items-center">
+            <div className="flex min-w-0 items-center">
               {collapsible && signPosition === "before" && (
                 <CollapsibleSign
                   sign={signType}
                   isOpen={localIsOpen}
                   position={signPosition}
                   disabled={disabled}
+                  className="shrink-0"
                 />
               )}
               <Text
                 variant="uppercase"
-                className={cn("truncate text-textColor", {
-                  "text-textInactiveColor": disabled,
-                })}
+                className={cn(
+                  "min-w-0 text-textColor",
+                  titleClassName ?? "truncate",
+                  {
+                    "text-textInactiveColor": disabled,
+                  },
+                )}
               >
                 {title}
               </Text>
@@ -121,6 +128,7 @@ export default function FieldsGroupContainer({
             isOpen={localIsOpen}
             position={signPosition}
             disabled={disabled}
+            className="shrink-0"
           />
         )}
       </div>
@@ -142,11 +150,13 @@ function CollapsibleSign({
   isOpen,
   position,
   disabled,
+  className,
 }: {
   sign: "arrow" | "plus-minus";
   isOpen: boolean;
   position: "before" | "after";
   disabled?: boolean;
+  className?: string;
 }) {
   const signContent =
     sign === "arrow" ? (
@@ -174,10 +184,14 @@ function CollapsibleSign({
 
   return (
     <div
-      className={cn("text-textColor", {
-        "mr-6": position === "before" && sign === "arrow",
-        "mr-4": position === "before" && sign === "plus-minus",
-      })}
+      className={cn(
+        "text-textColor",
+        {
+          "mr-6": position === "before" && sign === "arrow",
+          "mr-4": position === "before" && sign === "plus-minus",
+        },
+        className,
+      )}
     >
       {signContent}
     </div>
