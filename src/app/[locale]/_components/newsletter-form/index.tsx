@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormReturn } from "react-hook-form";
 
 import {
   sendGenerateLeadEvent,
@@ -18,7 +19,12 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 
 import { EmailHandler } from "./email-handler";
 import { NewsletterPopup } from "./newsletter-popup";
-import { newsletterDefaultValues, type NewsletterFormValues } from "./schema";
+import {
+  newsletterDefaultValues,
+  newsletterFormSchema,
+  type NewsletterFormInput,
+  type NewsletterFormValues,
+} from "./schema";
 
 export default function NewslatterForm({
   inactiveBgColor = false,
@@ -35,12 +41,20 @@ export default function NewslatterForm({
   const signedInEmail = useAccountOnboardingStore((s) =>
     s.isSignedIn ? s.account?.email?.trim() || undefined : undefined,
   );
-  const form = useForm<NewsletterFormValues>({
+  const form = useForm<NewsletterFormInput, unknown, NewsletterFormValues>({
+    resolver: zodResolver(newsletterFormSchema),
     defaultValues: { ...newsletterDefaultValues, email: signedInEmail ?? "" },
     mode: "onSubmit",
   });
 
-  useEffect(() => syncSignedInEmailToForm(form, signedInEmail), [form, signedInEmail]);
+  useEffect(
+    () =>
+      syncSignedInEmailToForm(
+        form as unknown as UseFormReturn<NewsletterFormInput>,
+        signedInEmail,
+      ),
+    [form, signedInEmail],
+  );
 
   const emailValue = form.watch("email");
 
@@ -50,11 +64,10 @@ export default function NewslatterForm({
   };
 
   async function onSubmit(data: NewsletterFormValues) {
-    const email = (data.email ?? "").trim();
     setIsLoading(true);
     try {
-      await serviceClient.SubscribeNewsletter({ email });
-      await pushUserIdToDataLayer(email);
+      await serviceClient.SubscribeNewsletter(data);
+      await pushUserIdToDataLayer(data.email ?? "");
       sendGenerateLeadEvent({
         currency: currentCountry.currencyKey || "EUR",
         value: 0,
