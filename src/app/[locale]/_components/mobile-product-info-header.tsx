@@ -12,6 +12,7 @@ export function MobileProductInfoHeader({ left, link, onClick }: HeaderProps) {
           onClick={onClick}
           className="w-1/3 py-2.5 pl-2.5 text-left"
           animationArea="text"
+          animationDuration={300}
         >
           {left}
         </AnimatedButton>
@@ -20,6 +21,7 @@ export function MobileProductInfoHeader({ left, link, onClick }: HeaderProps) {
           href={link || "/catalog"}
           className="w-1/3 py-2.5 pl-2.5 text-left"
           animationArea="text"
+          animationDuration={300}
         >
           {left}
         </AnimatedButton>

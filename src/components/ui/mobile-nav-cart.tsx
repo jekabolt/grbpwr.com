@@ -46,11 +46,14 @@ export function MobileNavCart({
         <Button
           size={isProductInfo ? "default" : "lg"}
           onClick={openCart}
-          className={cn("ml-auto bg-transparent text-right", {
-            "w-1/3 py-2.5 pr-2.5": isProductInfo,
-          })}
+          className={cn(
+            "ml-auto shrink-0 whitespace-nowrap bg-transparent text-right",
+            {
+              "w-1/3 py-2.5 pr-2.5": isProductInfo,
+            },
+          )}
         >
-          {t("cart")} {itemsQuantity ? itemsQuantity : ""}
+          {`${t("cart")}${itemsQuantity ? `\u00a0${itemsQuantity}` : ""}`}
         </Button>
         <DialogPrimitives.Portal>
           <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />

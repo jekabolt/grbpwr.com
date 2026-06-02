@@ -159,9 +159,9 @@ export function Header({
                   onClick={toggleCart}
                   variant={isOpen ? "underline" : "default"}
                   size="sm"
-                  className="underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
+                  className="shrink-0 whitespace-nowrap underline-offset-2 transition-colors hover:underline hover:opacity-70 active:opacity-50"
                 >
-                  {t("cart")} {itemsQuantity ? itemsQuantity : ""}
+                  {`${t("cart")}${itemsQuantity ? `\u00a0${itemsQuantity}` : ""}`}
                 </Button>
               )}
             </div>

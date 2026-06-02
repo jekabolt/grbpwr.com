@@ -140,6 +140,8 @@ export function NotifyMe({
       
       onOpenChange(false);
       form.reset();
+      setToastMessage(tToaster("notify_me_success"));
+      setToastOpen(true);
     } catch (e) {
       console.error("Form submission failed:", e);
       const message =

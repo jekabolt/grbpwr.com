@@ -2,7 +2,7 @@ import Link from "next/link";
 import { common_ArchiveList } from "@/api/proto-http/frontend";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio } from "@/lib/utils";
+import { calculateAspectRatio, isVideo } from "@/lib/utils";
 import ImageComponent from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
@@ -17,6 +17,9 @@ export function FullSizeItem({ className, archive, highlightedItem }: Props) {
   const currentTranslation =
     archive?.translations?.find((t) => t.languageId === languageId) ||
     archive?.translations?.[0];
+  const thumbnailUrl = archive?.thumbnail?.media?.fullSize?.mediaUrl || "";
+  const isVideoItem = isVideo(thumbnailUrl);
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-between gap-y-9 bg-bgColor text-textColor lg:flex-row lg:gap-4">
       <Text className="w-60 text-center lg:text-left">
@@ -25,12 +28,14 @@ export function FullSizeItem({ className, archive, highlightedItem }: Props) {
       <div className={className}>
         <Link href={archive?.slug || ""}>
           <ImageComponent
-            src={archive?.thumbnail?.media?.fullSize?.mediaUrl || ""}
+            src={thumbnailUrl}
             alt={currentTranslation?.heading || ""}
             aspectRatio={calculateAspectRatio(
               archive?.thumbnail?.media?.fullSize?.width,
               archive?.thumbnail?.media?.fullSize?.height,
             )}
+            type={isVideoItem ? "video" : "image"}
+            playOnHover={isVideoItem && !!highlightedItem}
           />
         </Link>
       </div>

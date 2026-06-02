@@ -168,7 +168,9 @@
     "notify-description": "seleziona la tua taglia e ti invieremo un'email quando questo prodotto sarà di nuovo disponibile.",
     "notify-agree": "accetto di ricevere email. leggi la nostra <privacy>informativa sulla privacy</privacy> per maggiori informazioni.",
     "order limit exceeded": "limite ordine superato",
-    "select your size to continue": "seleziona la tua taglia per continuare"
+    "select your size to continue": "seleziona la tua taglia per continuare",
+    "one size": "taglia unica",
+    "quantity left": "{count} rimasti"
   },
   "checkout": {
     "contact": "contatto",
@@ -625,6 +627,7 @@
   "toaster": {
     "successfully_subscribed": "iscrizione alla newsletter avvenuta con successo!",
     "failed_to_subscribe": "iscrizione fallita. riprova.",
+    "notify_me_success": "ti avviseremo quando questo articolo sarà di nuovo disponibile.",
     "invalid_email": "inserisci un indirizzo email valido",
     "email_copied": "email copiata",
     "cart_outdated": "il tuo carrello è obsoleto",

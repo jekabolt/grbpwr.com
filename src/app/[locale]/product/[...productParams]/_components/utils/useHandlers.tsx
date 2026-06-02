@@ -39,7 +39,15 @@ export function useHandlers({
   });
 
   useEffect(() => {
-    if (isOneSize && sizeNames && sizeNames.length === 1 && !activeSizeId) {
+    const isMobile =
+      typeof window !== "undefined" && window.innerWidth < 1024;
+    if (
+      isOneSize &&
+      sizeNames &&
+      sizeNames.length === 1 &&
+      !activeSizeId &&
+      !isMobile
+    ) {
       setActiveSizeId(sizeNames[0].id);
     }
   }, [isOneSize, sizeNames, activeSizeId]);
@@ -50,11 +58,8 @@ export function useHandlers({
   };
 
   const handleAddToCart = async () => {
-    if (
-      typeof window !== "undefined" &&
-      window.innerWidth < 1024 &&
-      !activeSizeId
-    ) {
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setActiveSizeId(undefined);
       setIsMobileSizeDialogOpen(true);
       return false;
     }
@@ -96,11 +101,21 @@ export function useHandlers({
   };
 
   const handleSizeSelect = async (sizeId: number) => {
+    const fromMobileDialog = isMobileSizeDialogOpen;
+
+    if (
+      !fromMobileDialog &&
+      typeof window !== "undefined" &&
+      window.innerWidth < 1024
+    ) {
+      return true;
+    }
+
     setIsLoading(true);
     setActiveSizeId(sizeId);
     setIsMobileSizeDialogOpen(false);
 
-    if (isMobileSizeDialogOpen) {
+    if (fromMobileDialog) {
       try {
         const currency = currentCountry.currencyKey || "EUR";
         const success = await increaseQuantity(
@@ -125,6 +140,7 @@ export function useHandlers({
         }
 
         openCart();
+        setActiveSizeId(undefined);
         return true;
       } catch (error) {
         console.error("Failed to add item to cart:", error);

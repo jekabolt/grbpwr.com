@@ -168,7 +168,9 @@
     "notify-description": "サイズを選択すると、この商品が再入荷したときにメールでお知らせします。",
     "notify-agree": "メール受信に同意します。詳細については、<privacy>プライバシーポリシー</privacy>をお読みください。",
     "order limit exceeded": "注文限度を超えました",
-    "select your size to continue": "続けるにはサイズを選択してください"
+    "select your size to continue": "続けるにはサイズを選択してください",
+    "one size": "ワンサイズ",
+    "quantity left": "残り{count}"
   },
   "checkout": {
     "contact": "連絡先",
@@ -625,6 +627,7 @@
   "toaster": {
     "successfully_subscribed": "ニュースレターの購読が完了しました！",
     "failed_to_subscribe": "購読に失敗しました。もう一度お試しください。",
+    "notify_me_success": "この商品が再入荷したらお知らせします。",
     "invalid_email": "有効なメールアドレスを入力してください",
     "email_copied": "メールアドレスがコピーされました",
     "cart_outdated": "カートが古くなっています",
