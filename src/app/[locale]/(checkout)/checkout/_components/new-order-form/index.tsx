@@ -114,7 +114,14 @@ export default function NewOrderForm({
     defaultValues: { ...defaultData, country: currentCountry.countryCode },
   });
 
-  const { order, validateItems, orderCurrency, validationToastOpen, validationToastMessage, setValidationToastOpen } = useValidatedOrder(form, {
+  const {
+    order,
+    validateItems,
+    orderCurrency,
+    validationToastOpen,
+    validationToastMessage,
+    setValidationToastOpen,
+  } = useValidatedOrder(form, {
     validationErrorFallback: tToaster("validation_error"),
   });
   const { clearFormData, applyCheckoutIdentity } = useOrderPersistence(
