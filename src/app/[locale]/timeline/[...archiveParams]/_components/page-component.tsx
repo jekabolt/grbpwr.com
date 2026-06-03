@@ -4,10 +4,12 @@ import { useRef, useState } from "react";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, isVideo } from "@/lib/utils";
+import { calculateAspectRatio, isVideo, resolveArchiveMedia } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
+
+import { ArchiveMediaThumbnail } from "../../_components/archive-media-thumbnail";
 
 export default function PageComponent({
   archive,
@@ -97,17 +99,23 @@ export default function PageComponent({
       })}
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:gap-4">
         {archive?.media?.map((item, id) => {
-          // Prioritize first 4 images in grid (above fold on desktop)
+          const media = resolveArchiveMedia(item.media);
+          const aspectRatio = calculateAspectRatio(
+            item.media?.fullSize?.width ?? item.media?.thumbnail?.width,
+            item.media?.fullSize?.height ?? item.media?.thumbnail?.height,
+          );
           const isPriority = id < 4;
           return (
-            <div key={id}>
-              <ImageComponent
-                src={item.media?.fullSize?.mediaUrl || ""}
+            <div
+              key={item.id ?? id}
+              className="relative w-full overflow-hidden"
+              style={{ aspectRatio }}
+            >
+              <ArchiveMediaThumbnail
+                media={media}
                 alt={`${currentTranslation?.heading || ""} image ${id + 1}`}
-                aspectRatio={calculateAspectRatio(
-                  item.media?.fullSize?.width,
-                  item.media?.fullSize?.height,
-                )}
+                aspectRatio={aspectRatio}
+                blurhash={item.media?.blurhash}
                 priority={isPriority}
                 loading={isPriority ? "eager" : "lazy"}
               />
