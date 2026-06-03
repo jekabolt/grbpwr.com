@@ -14,11 +14,11 @@ import { GA4_MEASUREMENT_ID } from "@/lib/analitycs/utils";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { AnalyticsInit } from "@/components/analytics-init";
 import { PageTransition } from "@/components/page-transition";
+import { ConsoleArtInit } from "@/components/ui/art/console-art-init";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
 import { SiteGuard } from "@/components/ui/site-guard";
 import { ToastProvider } from "@/components/ui/toaster";
-import { InternalNavigationTracker } from "@/components/internal-navigation-tracker";
 import { VisitedLinksSync } from "@/components/visited-links-sync";
 
 import "../globals.css";
@@ -106,6 +106,7 @@ export default async function RootLayout({ children, params }: Props) {
             <AnalyticsInit />
             <InternalNavigationTracker />
             <VisitedLinksSync />
+            <ConsoleArtInit />
           </ToastProvider>
         </NextIntlClientProvider>
       </body>
