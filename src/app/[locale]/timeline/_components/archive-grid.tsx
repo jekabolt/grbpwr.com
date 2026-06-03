@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { common_ArchiveList } from "@/api/proto-http/frontend";
 
@@ -15,25 +16,37 @@ function ArchiveGridItem({
   item: common_ArchiveList;
   languageId: number;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const currentTranslation = item.translations?.find(
     (t) => t.languageId === languageId,
   );
   const media = resolveArchiveMedia(item.thumbnail?.media);
+  const isVideoItem = media.type === "video";
 
   return (
-    <Link href={item.slug || ""} className="group flex min-w-0 flex-col gap-2">
+    <Link
+      href={item.slug || ""}
+      className="group flex min-w-0 flex-col gap-2"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="relative aspect-[3/4] w-full overflow-hidden">
         <ArchiveMediaThumbnail
           media={media}
           alt={currentTranslation?.heading || item.tag || ""}
           aspectRatio="3/4"
           blurhash={item.thumbnail?.media?.blurhash}
+          playOnHover={!isMobile && isVideoItem && isHovered}
+          autoPlay={isMobile && isVideoItem}
           fit="fill"
         />
       </div>
-      <Text className="w-full min-w-0 break-words uppercase text-textColor group-hover:text-highlightColor">
-        {currentTranslation?.heading}
-      </Text>
+      <div className="min-w-0 max-w-full overflow-hidden">
+        <Text className="line-clamp-2 break-all uppercase text-textColor group-hover:text-highlightColor">
+          {currentTranslation?.heading}
+        </Text>
+      </div>
     </Link>
   );
 }

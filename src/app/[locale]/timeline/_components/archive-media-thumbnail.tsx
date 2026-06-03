@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import ImageComponent from "@/components/ui/image";
 import { resolveArchiveMedia } from "@/lib/utils";
 
@@ -11,6 +12,8 @@ type ArchiveMediaThumbnailProps = {
   fit?: "cover" | "contain" | "fill" | "scale-down";
   priority?: boolean;
   loading?: "lazy" | "eager";
+  playOnHover?: boolean;
+  autoPlay?: boolean;
 };
 
 export function ArchiveMediaThumbnail({
@@ -21,7 +24,17 @@ export function ArchiveMediaThumbnail({
   fit = "cover",
   priority,
   loading,
+  playOnHover = false,
+  autoPlay = false,
 }: ArchiveMediaThumbnailProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (media.type !== "video" || !videoRef.current) return;
+    if (autoPlay) return;
+    if (playOnHover) videoRef.current.play();
+    else videoRef.current.pause();
+  }, [media.type, playOnHover, autoPlay]);
   if (!media.src) {
     return null;
   }
@@ -29,10 +42,11 @@ export function ArchiveMediaThumbnail({
   if (media.type === "video") {
     return (
       <video
+        ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover"
         src={media.src}
         poster={media.poster}
-        autoPlay
+        autoPlay={autoPlay}
         muted
         loop
         playsInline
