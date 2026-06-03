@@ -4,10 +4,51 @@ import { useRef, useState } from "react";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, isVideo } from "@/lib/utils";
+import {
+  calculateAspectRatio,
+  isVideo,
+  resolveArchiveMedia,
+} from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
+
+import { ArchiveMediaThumbnail } from "../../_components/archive-media-thumbnail";
+
+function ArchiveMediaGridItem({
+  item,
+  id,
+  heading,
+}: {
+  item: NonNullable<common_ArchiveFull["media"]>[number];
+  id: number;
+  heading: string;
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const media = resolveArchiveMedia(item.media);
+  const isPriority = id < 4;
+  const isVideoItem = media.type === "video";
+
+  return (
+    <div
+      className="relative aspect-[3/4] w-full overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <ArchiveMediaThumbnail
+        media={media}
+        alt={`${heading} image ${id + 1}`}
+        aspectRatio="3/4"
+        blurhash={item.media?.blurhash}
+        priority={isPriority}
+        loading={isPriority ? "eager" : "lazy"}
+        playOnHover={!isMobile && isVideoItem && isHovered}
+        autoPlay={isMobile && isVideoItem}
+      />
+    </div>
+  );
+}
 
 export default function PageComponent({
   archive,
@@ -96,24 +137,14 @@ export default function PageComponent({
         );
       })}
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:gap-4">
-        {archive?.media?.map((item, id) => {
-          // Prioritize first 4 images in grid (above fold on desktop)
-          const isPriority = id < 4;
-          return (
-            <div key={id}>
-              <ImageComponent
-                src={item.media?.fullSize?.mediaUrl || ""}
-                alt={`${currentTranslation?.heading || ""} image ${id + 1}`}
-                aspectRatio={calculateAspectRatio(
-                  item.media?.fullSize?.width,
-                  item.media?.fullSize?.height,
-                )}
-                priority={isPriority}
-                loading={isPriority ? "eager" : "lazy"}
-              />
-            </div>
-          );
-        })}
+        {archive?.media?.map((item, id) => (
+          <ArchiveMediaGridItem
+            key={item.id ?? id}
+            item={item}
+            id={id}
+            heading={currentTranslation?.heading || ""}
+          />
+        ))}
       </div>
     </div>
   );
