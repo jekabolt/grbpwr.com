@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 
 import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
-import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
@@ -76,27 +75,27 @@ export function AccountCartMobileOrderSummary() {
         disablePointerEvents={false}
         onClick={handleToggle}
       />
-      <FieldsGroupContainer
-        signType="plus-minus"
-        className="relative z-40 space-y-0 border border-textInactiveColor p-2.5"
-        signPosition="before"
-        title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
-        isOpen={isOpen}
-        onToggle={handleToggle}
-      >
-        <div className="pt-6">
-          <OrderProducts
-            validatedProducts={validatedProducts}
-            currencyKey={validatedCurrency}
-            disableProductLinks
-          />
-        </div>
-        <div
-          className={cn(
-            "mt-4 space-y-3 border-t border-textInactiveColor pt-4",
-          )}
-          onClick={() => setIsOpen(false)}
+      <div className="pointer-events-auto flex max-h-full min-h-0 w-full flex-col justify-end overflow-hidden">
+        <FieldsGroupContainer
+          signType="plus-minus"
+          className="relative z-40 flex max-h-full min-h-0 flex-col overflow-hidden space-y-0 border border-textInactiveColor p-2.5"
+          childrenSpacingClass="flex min-h-0 flex-1 flex-col overflow-hidden space-y-0"
+          signPosition="before"
+          title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
+          isOpen={isOpen}
+          onToggle={handleToggle}
         >
+          <div className="min-h-0 flex-1 overflow-y-auto pt-6">
+            <OrderProducts
+              validatedProducts={validatedProducts}
+              currencyKey={validatedCurrency}
+              disableProductLinks
+            />
+          </div>
+          <div
+            className="mt-4 shrink-0 space-y-3 border-t border-textInactiveColor pt-4"
+            onClick={() => setIsOpen(false)}
+          >
           <div className="flex justify-between">
             <Text variant="uppercase">{t("subtotal")}:</Text>
             <Text>{formatPrice(subTotalPrice, currency, currencySymbol)}</Text>
@@ -105,8 +104,9 @@ export function AccountCartMobileOrderSummary() {
             <Text variant="uppercase">{t("grand total")}:</Text>
             <Text>{formatPrice(totalPrice, currency, currencySymbol)}</Text>
           </div>
-        </div>
-      </FieldsGroupContainer>
+          </div>
+        </FieldsGroupContainer>
+      </div>
     </>
   );
 }

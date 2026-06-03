@@ -104,6 +104,7 @@ export default async function RootLayout({ children, params }: Props) {
             <GeoSuggestWrapper />
             <UpdateLocation />
             <AnalyticsInit />
+            <InternalNavigationTracker />
             <VisitedLinksSync />
             <ConsoleArtInit />
           </ToastProvider>

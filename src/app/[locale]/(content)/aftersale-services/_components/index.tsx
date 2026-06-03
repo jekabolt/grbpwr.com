@@ -38,7 +38,10 @@ export default function AftersaleForm() {
     defaultValues: { ...defaultValues, email: signedInEmail ?? "" },
   });
 
-  useEffect(() => syncSignedInEmailToForm(form, signedInEmail), [form, signedInEmail]);
+  useEffect(
+    () => syncSignedInEmailToForm(form, signedInEmail),
+    [form, signedInEmail],
+  );
 
   const [open, setOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -126,7 +129,7 @@ export default function AftersaleForm() {
               size="lg"
               disabled={!form.formState.isValid}
               className={cn(
-                "absolute inset-x-2.5 bottom-6 z-50 uppercase lg:static lg:ml-14",
+                "absolute inset-x-2.5 bottom-6 z-30 uppercase lg:static lg:ml-14",
                 {
                   fixed: mobileButtonPosition === "fixed",
                 },

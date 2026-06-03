@@ -182,26 +182,58 @@ export function getCategoryDisplayName(title: string) {
   return CATEGORY_TITLE_MAP[title] || title;
 }
 
+const VIDEO_EXTENSIONS = new Set([
+  "mp4",
+  "mov",
+  "avi",
+  "mkv",
+  "webm",
+  "flv",
+  "wmv",
+  "mpeg",
+  "mpg",
+  "m4v",
+  "3gp",
+  "ogv",
+]);
+
 export function isVideo(mediaUrl: string | undefined): boolean {
   if (!mediaUrl) return false;
 
-  const extension = mediaUrl.split(".").pop()?.toLowerCase();
-  const videoExtensions = new Set([
-    "mp4",
-    "mov",
-    "avi",
-    "mkv",
-    "webm",
-    "flv",
-    "wmv",
-    "mpeg",
-    "mpg",
-    "m4v",
-    "3gp",
-    "ogv",
-  ]);
+  const path = mediaUrl.split(/[?#]/)[0];
+  const extension = path.split(".").pop()?.toLowerCase();
 
-  return extension ? videoExtensions.has(extension) : false;
+  return extension ? VIDEO_EXTENSIONS.has(extension) : false;
+}
+
+type ArchiveMediaSource = {
+  fullSize?: { mediaUrl?: string };
+  thumbnail?: { mediaUrl?: string };
+  compressed?: { mediaUrl?: string };
+};
+
+export function resolveArchiveMedia(media: ArchiveMediaSource | undefined): {
+  type: "image" | "video";
+  src: string;
+  poster?: string;
+} {
+  const fullSize = media?.fullSize?.mediaUrl;
+  const thumbnail = media?.thumbnail?.mediaUrl;
+  const compressed = media?.compressed?.mediaUrl;
+
+  const hasVideo =
+    isVideo(fullSize) || isVideo(thumbnail) || isVideo(compressed);
+
+  if (hasVideo) {
+    const src = fullSize || thumbnail || compressed || "";
+    const poster = [thumbnail, compressed, fullSize].find(
+      (url) => url && url !== src && !isVideo(url),
+    );
+    return { type: "video", src, poster };
+  }
+
+  const src = fullSize || thumbnail || compressed || "";
+  return { type: "image", src };
 }
 
 export function getCountryName(countryCode?: string, preferredLng?: string) {

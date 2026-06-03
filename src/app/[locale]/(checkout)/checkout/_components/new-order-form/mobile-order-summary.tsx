@@ -62,49 +62,52 @@ export function MobileOrderSummary({
         disablePointerEvents={overlay ? false : true}
         onClick={handleToggle}
       />
-      <FieldsGroupContainer
-        signType="plus-minus"
-        className={cn(
-          "relative z-40 space-y-0 border border-textInactiveColor p-2.5",
-          {
-            "text-textInactiveColor": disabled,
-          },
-        )}
-        signPosition="before"
-        title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
-        preview={
-          <Text
-            className={cn("shrink-0 whitespace-nowrap", {
+      <div className="pointer-events-auto flex max-h-full min-h-0 w-full flex-col justify-end overflow-hidden">
+        <FieldsGroupContainer
+          signType="plus-minus"
+          className={cn(
+            "relative z-40 flex max-h-full min-h-0 flex-col overflow-hidden space-y-0 border border-textInactiveColor p-2.5",
+            {
               "text-textInactiveColor": disabled,
-            })}
-          >
-            {formatPrice(
-              order?.totalSale?.value || "0",
-              currency,
-              currencySymbol,
-            )}
-          </Text>
-        }
-        isOpen={isOpen}
-        disabled={disabled}
-        onToggle={handleToggle}
-      >
-        <div className="pt-6">
-          <OrderProducts
-            validatedProducts={validatedProducts}
-            currencyKey={orderCurrency}
-            disabled={disabled}
-            disableProductLinks
-          />
-        </div>
-        <div onClick={() => setIsOpen(false)}>
-          <PriceSummary
-            form={form}
-            order={order}
-            orderCurrency={orderCurrency}
-          />
-        </div>
-      </FieldsGroupContainer>
+            },
+          )}
+          childrenSpacingClass="flex min-h-0 flex-1 flex-col overflow-hidden space-y-0"
+          signPosition="before"
+          title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
+          preview={
+            <Text
+              className={cn("shrink-0 whitespace-nowrap", {
+                "text-textInactiveColor": disabled,
+              })}
+            >
+              {formatPrice(
+                order?.totalSale?.value || "0",
+                currency,
+                currencySymbol,
+              )}
+            </Text>
+          }
+          isOpen={isOpen}
+          disabled={disabled}
+          onToggle={handleToggle}
+        >
+          <div className="min-h-0 flex-1 overflow-y-auto pt-6">
+            <OrderProducts
+              validatedProducts={validatedProducts}
+              currencyKey={orderCurrency}
+              disabled={disabled}
+              disableProductLinks
+            />
+          </div>
+          <div className="shrink-0" onClick={() => setIsOpen(false)}>
+            <PriceSummary
+              form={form}
+              order={order}
+              orderCurrency={orderCurrency}
+            />
+          </div>
+        </FieldsGroupContainer>
+      </div>
     </>
   );
 }

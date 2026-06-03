@@ -52,7 +52,10 @@ export default function OrderStatusForm() {
     },
   });
 
-  useEffect(() => syncSignedInEmailToForm(form, signedInEmail), [form, signedInEmail]);
+  useEffect(
+    () => syncSignedInEmailToForm(form, signedInEmail),
+    [form, signedInEmail],
+  );
 
   async function onSubmit(data: OrderStatusData) {
     setIsLoading(true);
@@ -112,7 +115,7 @@ export default function OrderStatusForm() {
               size="lg"
               disabled={!form.formState.isValid || isLoading}
               className={cn(
-                "absolute inset-x-2.5 bottom-6 z-50 uppercase lg:static",
+                "absolute inset-x-2.5 bottom-6 z-30 uppercase lg:static",
                 {
                   fixed: mobileButtonPosition === "fixed",
                 },

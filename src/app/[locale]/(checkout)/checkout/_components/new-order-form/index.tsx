@@ -114,7 +114,14 @@ export default function NewOrderForm({
     defaultValues: { ...defaultData, country: currentCountry.countryCode },
   });
 
-  const { order, validateItems, orderCurrency, validationToastOpen, validationToastMessage, setValidationToastOpen } = useValidatedOrder(form, {
+  const {
+    order,
+    validateItems,
+    orderCurrency,
+    validationToastOpen,
+    validationToastMessage,
+    setValidationToastOpen,
+  } = useValidatedOrder(form, {
     validationErrorFallback: tToaster("validation_error"),
   });
   const { clearFormData, applyCheckoutIdentity } = useOrderPersistence(
@@ -247,8 +254,8 @@ export default function NewOrderForm({
           >
             {!hideOrderSummary && (
               <div
-                className={cn("z-40 block lg:hidden", {
-                  "fixed inset-x-2.5 bottom-6":
+                className={cn("z-40 lg:hidden", {
+                  "pointer-events-none fixed inset-x-2.5 bottom-6 top-2.5 flex flex-col justify-end":
                     !showCheckoutFields || showProfilePrompt,
                   "w-full": showCheckoutFields && !showProfilePrompt,
                 })}
