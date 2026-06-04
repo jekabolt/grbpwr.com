@@ -19,6 +19,7 @@ import type { CurrencyRate } from "@/lib/stores/translations/store-types";
 import { DataContextProvider } from "@/components/contexts/DataContext";
 import { ServerActionsContextProvider } from "@/components/contexts/ServerActionsContext";
 import { UrlCountrySync } from "@/components/url-country-sync";
+import { WebMCPTools } from "@/components/webmcp-tools";
 
 export default async function Template({
   children,
@@ -76,6 +77,7 @@ export default async function Template({
                   <UrlCountrySync />
                   <CartCurrencySyncWrapper>
                     <DataContextProvider {...heroData}>
+                      <WebMCPTools />
                       {children}
                     </DataContextProvider>
                   </CartCurrencySyncWrapper>
