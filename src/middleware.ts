@@ -2,6 +2,7 @@ import createMiddleware from "next-intl/middleware";
 
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
+import { homepageMarkdown } from "./lib/agent-markdown";
 import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, isAllowedWhenSiteDisabled, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
 
 const intlMiddleware = createMiddleware(routing);
@@ -15,6 +16,25 @@ export default async function middleware(req: NextRequest) {
         const url = req.nextUrl.clone();
         url.host = host.replace(/^www\./, "");
         return NextResponse.redirect(url, { status: 308 });
+    }
+
+    // Markdown for Agents: when an agent explicitly asks for text/markdown,
+    // serve a markdown overview of the homepage instead of the HTML app shell.
+    // Browsers send `text/html`, so normal traffic is unaffected. Limited to the
+    // homepage ("/" or "/{country}/{locale}") — other paths fall through to HTML.
+    const isHomePathForMarkdown =
+        pathname === "/" || /^\/[A-Za-z]{2}\/[a-z]{2}\/?$/.test(pathname);
+    if (
+        isHomePathForMarkdown &&
+        (req.headers.get("accept") || "").includes("text/markdown")
+    ) {
+        return new NextResponse(homepageMarkdown(), {
+            headers: {
+                "Content-Type": "text/markdown; charset=utf-8",
+                Vary: "Accept",
+                "Cache-Control": "public, max-age=3600",
+            },
+        });
     }
 
     // get existing cookies
