@@ -7,6 +7,12 @@ import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handle
 
 const intlMiddleware = createMiddleware(routing);
 
+// Agent-discovery Link header (RFC 8288) for the homepage: advertise the
+// markdown alternate (see Markdown-for-Agents above) and the sitemap. Only
+// resources that exist and are locale-agnostic are listed.
+const HOMEPAGE_LINK_HEADER =
+    '</>; rel="alternate"; type="text/markdown", </sitemap.xml>; rel="sitemap"';
+
 export default async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
@@ -145,6 +151,11 @@ export default async function middleware(req: NextRequest) {
         // Prevent any edge/CDN caching of this rewrite — we depend on the
         // Set-Cookie below being applied on every request.
         res.headers.set("Cache-Control", "no-store");
+        // Homepage only: point agents at the markdown alternate and sitemap.
+        if (!rest?.trim()) {
+            res.headers.append("Link", HOMEPAGE_LINK_HEADER);
+            res.headers.set("Vary", "Accept");
+        }
         setMainCookies(res, country!, locale!);
         const suggestCountryCookie = req.cookies.get("NEXT_SUGGEST_COUNTRY")?.value;
         const suggestLocaleCookie = req.cookies.get("NEXT_SUGGEST_LOCALE")?.value;
