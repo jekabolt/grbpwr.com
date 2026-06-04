@@ -13,6 +13,7 @@ import {
 import { GA4_MEASUREMENT_ID } from "@/lib/analitycs/utils";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { AnalyticsInit } from "@/components/analytics-init";
+import { InternalNavigationTracker } from "@/components/internal-navigation-tracker";
 import { PageTransition } from "@/components/page-transition";
 import { ConsoleArtInit } from "@/components/ui/art/console-art-init";
 import { CookieBanner } from "@/components/ui/cookie-banner";
