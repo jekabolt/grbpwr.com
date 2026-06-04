@@ -7,11 +7,11 @@ import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handle
 
 const intlMiddleware = createMiddleware(routing);
 
-// Agent-discovery Link header (RFC 8288) for the homepage: advertise the
-// markdown alternate (see Markdown-for-Agents above) and the sitemap. Only
-// resources that exist and are locale-agnostic are listed.
+// Agent-discovery Link header (RFC 8288) for the homepage: advertise the API
+// catalog (RFC 9727), the markdown alternate (see Markdown-for-Agents above) and
+// the sitemap. Only resources that exist and are locale-agnostic are listed.
 const HOMEPAGE_LINK_HEADER =
-    '</>; rel="alternate"; type="text/markdown", </sitemap.xml>; rel="sitemap"';
+    '</.well-known/api-catalog>; rel="api-catalog", </>; rel="alternate"; type="text/markdown", </sitemap.xml>; rel="sitemap"';
 
 export default async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
