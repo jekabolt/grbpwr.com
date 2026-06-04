@@ -5,7 +5,7 @@ import type {
 } from "@/api/proto-http/frontend";
 import { QueryWrapper } from "@/providers/query-wrapper";
 
-import { serviceClient } from "@/lib/api";
+import { getHero, serviceClient } from "@/lib/api";
 import { AccountLoginAttemptRouteSync } from "@/app/[locale]/account/_components/account-login-attempt-route-sync";
 import { getStorefrontAccount } from "@/lib/storefront-account/get-storefront-account";
 import { AccountOnboardingStoreProvider } from "@/lib/stores/account-onboarding/store-provider";
@@ -25,7 +25,7 @@ export default async function Template({
 }: {
   children: React.ReactNode;
 }) {
-  const heroData = await serviceClient.GetHero({});
+  const heroData = await getHero();
   const initialTranslationState = await getInitialTranslationState();
   const account = await getStorefrontAccount();
   const sessionSignedIn = account != null;
