@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 import { createFrontendServiceClient } from "@/api/proto-http/frontend";
 import { ARCHIVES_CACHE_TAG, HERO_CACHE_TAG, PRODUCTS_CACHE_TAG } from "@/constants";
 
@@ -75,3 +77,8 @@ const requestHandler = async (
 };
 
 export const serviceClient = createFrontendServiceClient(requestHandler);
+
+// GetHero is requested by both app/template.tsx and app/[locale]/page.tsx on the
+// same request. It's a POST, so Next's fetch dedup doesn't cover it — wrap it in
+// React cache() to collapse the two server round-trips into one per request.
+export const getHero = cache(() => serviceClient.GetHero({}));

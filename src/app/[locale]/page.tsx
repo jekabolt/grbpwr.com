@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import { serviceClient } from "@/lib/api";
+import { getHero } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Disabled } from "@/components/ui/disabled";
@@ -32,7 +32,7 @@ export async function generateMetadata({
 }
 
 export default async function Page() {
-  const { hero, dictionary } = await serviceClient.GetHero({});
+  const { hero, dictionary } = await getHero();
   const isHero = hero?.entities?.length;
   const isWebsiteEnabled = dictionary?.siteEnabled;
 
