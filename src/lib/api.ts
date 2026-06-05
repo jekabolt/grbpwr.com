@@ -92,6 +92,7 @@ const EMPTY_FILTERS = {
   color: undefined,
   topCategoryIds: undefined,
   subCategoryIds: undefined,
+  excludeTopCategoryIds: undefined,
   typeIds: undefined,
   sizesIds: undefined,
   preorder: undefined,
