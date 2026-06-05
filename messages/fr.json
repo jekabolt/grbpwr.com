@@ -9,11 +9,15 @@
     "new in": "nouveau dans",
     "checkout": "page de règlement",
     "close": "fermer",
-    "menu": "menu"
+    "menu": "menu",
+    "aftersale services": "services après-vente",
+    "faqs": "faqs",
+    "returns": "retours"
   },
   "account": {
     "account": "compte",
     "login": "se connecter ou créer un compte",
+    "log in": "se connecter",
     "email": "email",
     "continue": "continuer",
     "checkout as guest": "payer en tant qu'invité",

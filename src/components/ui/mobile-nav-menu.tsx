@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
@@ -9,10 +8,7 @@ import { ModalTransition } from "@/components/modal-transition";
 
 import { useDataContext } from "../contexts/DataContext";
 import { Button } from "./button";
-import {
-  ActiveCategoryMenuDialog,
-  DefaultMobileMenuDialog,
-} from "./mobile-menu-dialog";
+import { DefaultMobileMenuDialog } from "./mobile-menu-dialog";
 import { Text } from "./text";
 
 export function MobileNavMenu({
@@ -28,15 +24,8 @@ export function MobileNavMenu({
   const t = useTranslations("navigation");
   const tAccessibility = useTranslations("accessibility");
   const isWebsiteEnabled = dictionary?.siteEnabled;
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const searchParamsKey = searchParams.toString();
-  const closeMenu = () => setOpen(false);
 
-  useEffect(() => {
-    setOpen(false);
-    setActiveCategory(undefined);
-  }, [pathname, searchParamsKey]);
+  const closeMenu = () => setOpen(false);
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={setOpen}>
@@ -82,21 +71,12 @@ export function MobileNavMenu({
                     </div>
                   )}
                 </div>
-                {activeCategory === undefined ||
-                !isBigMenuEnabled ||
-                !isWebsiteEnabled ? (
+                <div className="flex min-h-0 flex-1 flex-col">
                   <DefaultMobileMenuDialog
-                    setActiveCategory={setActiveCategory}
-                    isBigMenuEnabled={isBigMenuEnabled}
                     isWebsiteEnabled={isWebsiteEnabled}
                     closeMenu={closeMenu}
                   />
-                ) : (
-                  <ActiveCategoryMenuDialog
-                    activeCategory={activeCategory}
-                    closeMenu={closeMenu}
-                  />
-                )}
+                </div>
               </div>
             </DialogPrimitives.Content>
           }

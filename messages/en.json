@@ -9,11 +9,15 @@
     "new in": "new in",
     "checkout": "checkout",
     "close": "close",
-    "menu": "menu"
+    "menu": "menu",
+    "aftersale services": "aftersale services",
+    "faqs": "faqs",
+    "returns": "returns"
   },
   "account": {
     "account": "account",
     "login": "log in or create account",
+    "log in": "log in",
     "email": "email",
     "continue": "continue",
     "checkout as guest": "checkout as guest",

@@ -3,30 +3,28 @@
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-import { getTopCategoryName } from "@/lib/categories-map";
 import { useLocalizedHref } from "@/lib/navigation/use-localized-href";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { AccountProfile } from "@/lib/stores/account-onboarding/store-types";
 import {
-  calculateAspectRatio,
-  createActiveCategoryMenuItems,
+  createContentPagesLinks,
   createMenuItems,
-  getCategoryDisplayName,
-  getHeroNavLink,
+  MenuItem,
 } from "@/lib/utils";
 import { MobileCountriesPopupTrigger } from "@/app/[locale]/_components/mobile-countries-popup";
 import NewslatterForm from "@/app/[locale]/_components/newsletter-form";
 
-import { useDataContext } from "../contexts/DataContext";
 import { AnimatedButton } from "./animated-button";
-import Image from "./image";
 import { Text } from "./text";
 
 type Gender = "men" | "women" | undefined;
 
 const LOCALIZED_PATH_PREFIX = /^(\/[A-Za-z]{2}\/[a-z]{2})/;
 
-function resolveHref(href: string, localized: (href: string) => string): string {
+function resolveHref(
+  href: string,
+  localized: (href: string) => string,
+): string {
   return LOCALIZED_PATH_PREFIX.test(href) ? href : localized(href);
 }
 
@@ -51,212 +49,142 @@ function useSamePageClose(closeMenu: () => void) {
 }
 
 interface DefaultMenuProps {
-  isBigMenuEnabled: boolean | undefined;
   isWebsiteEnabled?: boolean;
-  setActiveCategory: (category: Gender) => void;
-  closeMenu: () => void;
-}
-
-interface ActiveCategoryMenuProps {
-  activeCategory: Gender;
   closeMenu: () => void;
 }
 
 export function DefaultMobileMenuDialog({
-  setActiveCategory,
-  isBigMenuEnabled,
   isWebsiteEnabled = true,
   closeMenu,
 }: DefaultMenuProps) {
   const { account, isSignedIn } = useAccountOnboardingStore((s) => s);
-  const localized = useLocalizedHref();
-  const closeIfSamePage = useSamePageClose(closeMenu);
   const defaultMenuItems = isWebsiteEnabled
-    ? createMenuItems(isBigMenuEnabled, setActiveCategory)
+    ? createMenuItems()
     : [{ label: "timeline", showArrow: false, href: "/timeline" }];
-  const t = useTranslations("navigation");
-  const tAccount = useTranslations("account");
+  const contentPagesLinks = createContentPagesLinks();
 
   return (
     <div className="flex h-full flex-col justify-between">
-      <div className="flex flex-col gap-10">
-        <div>
-          <AnimatedButton
-            animationDuration={1000}
-            href={localized("/account")}
-            onClick={() => closeIfSamePage("/account")}
-            className="uppercase"
-          >
-            {isSignedIn ? (
-              <div className="flex gap-2">
-                <Text>{tAccount("account")}:</Text>
-                <Text variant="uppercase" className="underline">
-                  {account?.firstName}
-                </Text>
-              </div>
-            ) : (
-              <Text>{tAccount("account")}</Text>
-            )}
-          </AnimatedButton>
+      <div className="flex min-h-0 flex-1 flex-col gap-10">
+        <div className="min-h-0 flex-[0.4]">
+          <MobileMenuBtns items={defaultMenuItems} closeMenu={closeMenu} />
         </div>
-        <div className="flex flex-col gap-5">
-          {defaultMenuItems.map((item) => (
-            <div key={item.label} className="w-full">
-              {isBigMenuEnabled && item.action ? (
-                <AnimatedButton
-                  animationDuration={1000}
-                  animationArea="full-underline"
-                  className="flex w-full items-center justify-between uppercase"
-                  onClick={item.action}
-                >
-                  <Text>{t(item.label)}</Text>
-                  {item.showArrow && <Text>{">"}</Text>}
-                </AnimatedButton>
-              ) : (
-                <AnimatedButton
-                  animationDuration={1000}
-                  animationArea="full-underline"
-                  href={item.href}
-                  onClick={() => closeIfSamePage(item.href)}
-                  className="flex w-full items-center justify-between uppercase"
-                >
-                  <Text>{t(item.label)}</Text>
-                  {item.showArrow && <Text>{">"}</Text>}
-                </AnimatedButton>
-              )}
-            </div>
-          ))}
-        </div>
-        <div>
-          <div className="w-full border-t border-textColor" />
-          <div className="self-start pt-5">
-            <MobileCountriesPopupTrigger />
-          </div>
+        <div className="flex min-h-0 flex-1 flex-col border-t border-textColor pt-12">
+          {isSignedIn ? (
+            <SignedInContent
+              closeMenu={closeMenu}
+              account={account}
+              contentPagesLinks={contentPagesLinks}
+            />
+          ) : (
+            <NotSignedInContent
+              closeMenu={closeMenu}
+              contentPagesLinks={contentPagesLinks}
+            />
+          )}
         </div>
       </div>
-      {!isSignedIn && <NewslatterForm inactiveBgColor />}
     </div>
   );
 }
 
-export function ActiveCategoryMenuDialog({
-  activeCategory,
+function SignedInContent({
   closeMenu,
-}: ActiveCategoryMenuProps) {
-  const { dictionary, hero } = useDataContext();
-  const { languageId } = useTranslationsStore((state) => state);
-  const t = useTranslations("navigation");
-  const closeIfSamePage = useSamePageClose(closeMenu);
-
-  const heroNav = activeCategory
-    ? hero?.navFeatured?.[activeCategory]
-    : undefined;
-  const heroLink = getHeroNavLink(heroNav);
-  const { leftCategories, rightCategories } = createActiveCategoryMenuItems(
-    activeCategory,
-    dictionary,
-  );
-
-  return (
-    <div className="flex h-full flex-col gap-10 overflow-y-auto">
-      <AnimatedButton
-        animationArea="text"
-        href="/catalog?order=ORDER_FACTOR_DESC&sort=SORT_FACTOR_CREATED_AT"
-        className="uppercase"
-      >
-        {t("new in")}
-      </AnimatedButton>
-      <div className="flex flex-col gap-5">
-        <AnimatedButton
-          animationArea="text"
-          href={`/catalog/${activeCategory}`}
-          onClick={() => closeIfSamePage(`/catalog/${activeCategory}`)}
-          className="uppercase"
-        >
-          {t("all")}
-        </AnimatedButton>
-        {leftCategories.map((link) => (
-          <CategoryButton
-            key={link.id}
-            link={link}
-            activeCategory={activeCategory}
-            closeMenu={closeMenu}
-          />
-        ))}
-      </div>
-      <div className="flex flex-col gap-5">
-        {rightCategories.map((link) => (
-          <CategoryButton
-            key={link.id}
-            link={link}
-            activeCategory={activeCategory}
-            closeMenu={closeMenu}
-          />
-        ))}
-      </div>
-      {heroNav?.media?.media?.thumbnail?.mediaUrl && (
-        <div className="w-full">
-          <AnimatedButton
-            href={heroLink}
-            onClick={() => closeIfSamePage(heroLink)}
-            className="space-y-2"
-          >
-            <div className="w-full">
-              <Image
-                src={heroNav.media.media.thumbnail.mediaUrl}
-                alt="mobile hero nav"
-                aspectRatio={calculateAspectRatio(
-                  heroNav.media.media.thumbnail.width,
-                  heroNav.media.media.thumbnail.height,
-                )}
-              />
-            </div>
-            <Text>
-              {heroNav.translations?.find((t) => t.languageId === languageId)
-                ?.exploreText || heroNav.translations?.[0]?.exploreText}
-            </Text>
-          </AnimatedButton>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function CategoryButton({
-  link,
-  activeCategory,
-  closeMenu,
+  account,
+  contentPagesLinks,
 }: {
-  activeCategory: Gender;
-  link: { title: string; id: string };
   closeMenu: () => void;
+  account: AccountProfile | null;
+  contentPagesLinks: MenuItem[];
 }) {
-  const { dictionary } = useDataContext();
-  const tCategories = useTranslations("categories");
-  const closeIfSamePage = useSamePageClose(closeMenu);
-  const href = `/catalog/${activeCategory}/${link.title.toLowerCase()}`;
-
-  const categoryName = getTopCategoryName(
-    dictionary?.categories || [],
-    parseInt(link.id),
+  return (
+    <div className="flex h-full min-h-0 flex-col justify-between gap-5">
+      <div className="flex flex-col gap-5">
+        <AccountMenuButton closeMenu={closeMenu} account={account} />
+        <MobileMenuBtns items={contentPagesLinks} closeMenu={closeMenu} />
+      </div>
+      <MobileCountriesPopupTrigger />
+    </div>
   );
-  const categoryKey =
-    categoryName === "loungewear_sleepwear"
-      ? "loungewear_sleepwear"
-      : categoryName?.toLowerCase() || link.title.toLowerCase();
-  const translatedName = categoryKey
-    ? tCategories(categoryKey)
-    : getCategoryDisplayName(link.title);
+}
+
+function NotSignedInContent({
+  closeMenu,
+  contentPagesLinks,
+}: {
+  closeMenu: () => void;
+  contentPagesLinks: MenuItem[];
+}) {
+  return (
+    <div className="flex h-full min-h-0 flex-col justify-between gap-5">
+      <div className="flex flex-col gap-5">
+        <MobileCountriesPopupTrigger />
+        <AccountMenuButton closeMenu={closeMenu} account={null} />
+        <MobileMenuBtns items={contentPagesLinks} closeMenu={closeMenu} />
+      </div>
+      <NewslatterForm inactiveBgColor />
+    </div>
+  );
+}
+
+function AccountMenuButton({
+  closeMenu,
+  account,
+}: {
+  closeMenu: () => void;
+  account: AccountProfile | null;
+}) {
+  const localized = useLocalizedHref();
+  const closeIfSamePage = useSamePageClose(closeMenu);
+  const tAccount = useTranslations("account");
 
   return (
     <AnimatedButton
-      key={link.id}
-      animationArea="text"
-      href={href}
-      onClick={() => closeIfSamePage(href)}
-      className="uppercase"
+      animationDuration={1000}
+      href={localized("/account")}
+      onClick={() => closeIfSamePage("/account")}
+      className={account ? undefined : "uppercase"}
     >
-      {translatedName || getCategoryDisplayName(link.title)}
+      {account ? (
+        <div className="flex justify-between">
+          <Text variant="uppercase">{tAccount("account")}:</Text>
+          <Text variant="uppercase" className="underline">
+            {account.firstName}
+          </Text>
+        </div>
+      ) : (
+        <Text>{tAccount("log in")}</Text>
+      )}
     </AnimatedButton>
+  );
+}
+
+function MobileMenuBtns({
+  items,
+  closeMenu,
+}: {
+  items: MenuItem[];
+  closeMenu: () => void;
+}) {
+  const closeIfSamePage = useSamePageClose(closeMenu);
+  const t = useTranslations("navigation");
+
+  return (
+    <div className="flex flex-col gap-5">
+      {items.map((i) => (
+        <div key={i.label} className="w-full">
+          <AnimatedButton
+            animationDuration={1000}
+            animationArea="full-underline"
+            href={i.href}
+            onClick={() => closeIfSamePage(i.href)}
+            className="flex w-full items-center justify-between uppercase"
+          >
+            <Text>{t(i.label)}</Text>
+            {i.showArrow && <Text>{">"}</Text>}
+          </AnimatedButton>
+        </div>
+      ))}
+    </div>
   );
 }

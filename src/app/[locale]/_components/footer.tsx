@@ -57,7 +57,7 @@ export function Footer({
   const { isSignedIn } = useAccountOnboardingStore((s) => s);
 
   return (
-    <footer className="flex w-full flex-col space-y-16 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
+    <footer className="flex w-full flex-col space-y-20 bg-bgColor px-2.5 pb-16 text-textColor lg:space-y-0 lg:px-0 lg:pb-10">
       {!accountPanel && (
         <div className="flex justify-center pt-16 lg:py-52">
           <div className="flex w-full flex-col gap-y-16 lg:w-auto lg:flex-row lg:items-start lg:gap-x-20">
