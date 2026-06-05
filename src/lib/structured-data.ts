@@ -120,6 +120,36 @@ export function productJsonLd(
     brand: { "@type": "Brand", name: "GRBPWR" },
     ...(color ? { color } : {}),
     ...(url ? { url } : {}),
+    ...(p.createdAt ? { datePublished: p.createdAt } : {}),
+    ...(p.updatedAt ? { dateModified: p.updatedAt } : {}),
     ...(offers.length ? { offers } : {}),
+  };
+}
+
+// Organization + WebSite JSON-LD for the homepage. Gives the homepage a content
+// freshness signal (dateModified, derived from the freshest product) and feeds
+// Google's brand knowledge panel / sitelinks search box.
+export function siteJsonLd(dateModified?: string): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE}/#organization`,
+        name: "GRBPWR",
+        url: SITE,
+        logo: `${SITE}/app-logo.webp`,
+        sameAs: ["https://www.instagram.com/grb.pwr/"],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE}/#website`,
+        url: SITE,
+        name: "GRBPWR",
+        publisher: { "@id": `${SITE}/#organization` },
+        inLanguage: "en",
+        ...(dateModified ? { dateModified } : {}),
+      },
+    ],
   };
 }

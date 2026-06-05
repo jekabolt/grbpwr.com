@@ -1,5 +1,9 @@
 import { routing } from "@/i18n/routing";
-import { serviceClient } from "@/lib/api";
+import {
+  getLatestArchiveDate,
+  getLatestProductDate,
+  serviceClient,
+} from "@/lib/api";
 
 import {
   CATALOG_SITEMAP_HUB_PATHS,
@@ -70,16 +74,18 @@ export function hreflangAlternates(
 function expandRelPaths(
   relPaths: readonly string[],
   priorityFor: (path: string) => number,
+  // Real content date per path (not build time) — omitted when unavailable.
+  lastModifiedFor?: (path: string) => string | undefined,
 ): SitemapUrlEntry[] {
   const entries: SitemapUrlEntry[] = [];
 
   for (const path of relPaths) {
     const alternates = hreflangAlternates(path);
+    const lastModified = lastModifiedFor?.(path);
     for (const locale of routing.locales) {
-      // lastModified is intentionally omitted: these are stable hubs, and a
-      // build-time value would reset every deploy and erode lastmod trust.
       entries.push({
         url: localizedSitemapUrl(locale, path),
+        ...(lastModified ? { lastModified } : {}),
         changeFrequency: "daily",
         priority: priorityFor(path),
         alternates,
@@ -90,20 +96,31 @@ function expandRelPaths(
   return entries;
 }
 
-export function buildPagesSitemapEntries(): SitemapUrlEntry[] {
-  return expandRelPaths(PAGES_SITEMAP_PATHS, pagesPriority);
+export async function buildPagesSitemapEntries(): Promise<SitemapUrlEntry[]> {
+  // Freshness from real content: homepage tracks the newest product, timeline the
+  // newest archive.
+  const [productDate, archiveDate] = await Promise.all([
+    getLatestProductDate(),
+    getLatestArchiveDate(),
+  ]);
+  return expandRelPaths(PAGES_SITEMAP_PATHS, pagesPriority, (path) =>
+    path === "/timeline" ? archiveDate : productDate,
+  );
 }
 
 export async function buildCatalogSitemapEntries(): Promise<SitemapUrlEntry[]> {
   let relPaths: string[] = [...CATALOG_SITEMAP_HUB_PATHS];
 
-  try {
-    const { dictionary } = await serviceClient.GetHero({});
-    const categories = dictionary?.categories;
-    if (categories?.length) relPaths = collectCatalogSitemapPaths(categories);
-  } catch {
-    // Catalog hubs only if hero/dictionary fails.
-  }
+  const [{ categories } = { categories: undefined }, productDate] =
+    await Promise.all([
+      serviceClient
+        .GetHero({})
+        .then((r) => ({ categories: r.dictionary?.categories }))
+        .catch(() => ({ categories: undefined })),
+      getLatestProductDate(),
+    ]);
 
-  return expandRelPaths(relPaths, catalogPriority);
+  if (categories?.length) relPaths = collectCatalogSitemapPaths(categories);
+
+  return expandRelPaths(relPaths, catalogPriority, () => productDate);
 }
