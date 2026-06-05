@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { common_Product } from "@/api/proto-http/frontend";
 import {
   currencySymbols,
@@ -41,6 +42,11 @@ export function ProductItem({
   const { currentCountry } = useTranslationsStore((s) => s);
   const { handleSelectItemEvent } = useAnalytics();
   const visited = useVisitedLink(product?.slug);
+
+  // Mobile only: touching a catalog card shows the blue highlight overlay over
+  // the image (like the zoom pulse on the product detail page).
+  const [pressed, setPressed] = useState(false);
+  const onPressEnd = () => setPressed(false);
 
   const currencyKey = currentCountry.currencyKey || "EUR";
   const productBody = product.productDisplay?.productBody?.productBodyInsert;
@@ -95,6 +101,13 @@ export function ProductItem({
         className={cn("group flex h-full w-full flex-col", className)}
       >
         <div
+          onPointerDown={(e) => {
+            if (!disableAnimations && e.pointerType === "touch")
+              setPressed(true);
+          }}
+          // Keep the highlight on after release (tap navigates → this card
+          // unmounts, clearing it). Only a scroll/drag (pointercancel) clears it.
+          onPointerCancel={onPressEnd}
           className={cn("relative", {
             "group-data-[held=true]:animate-threshold-highlight":
               !disableAnimations,
@@ -116,7 +129,13 @@ export function ProductItem({
             loading={imagePriority ? "eager" : "lazy"}
           />
           {!disableAnimations && (
-            <Overlay cover="container" color="highlight" trigger="held" />
+            <Overlay
+              cover="container"
+              color="highlight"
+              trigger="active"
+              active={pressed}
+              className="lg:hidden"
+            />
           )}
         </div>
         <div
