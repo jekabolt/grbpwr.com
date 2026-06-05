@@ -58,9 +58,11 @@ export function EmailHandler({
       blurTimeoutRef.current = null;
     }
     setMobileEmailExpanded(true);
-    requestAnimationFrame(() => {
-      event.target.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    });
+    if (!inactiveBgColor) {
+      requestAnimationFrame(() => {
+        event.target.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      });
+    }
   };
 
   const handleEmailBlur = (event: React.FocusEvent<HTMLInputElement>) => {

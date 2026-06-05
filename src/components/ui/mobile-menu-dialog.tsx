@@ -65,11 +65,14 @@ export function DefaultMobileMenuDialog({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col justify-between">
-      <div className="flex min-h-0 flex-1 flex-col gap-10 overflow-hidden">
-        <div className="min-h-0 flex-[0.4] pb-10">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+        <div className="flex shrink-0 flex-[0.4] flex-col">
           <MobileMenuBtns items={defaultMenuItems} closeMenu={closeMenu} />
         </div>
-        <div className="no-scroll-bar min-h-0 flex-1 overflow-y-auto overscroll-y-contain border-t border-textColor pt-12">
+        <div className="shrink-0 py-12">
+          <div className="border-t border-textColor" />
+        </div>
+        <div className="no-scroll-bar min-h-0 flex-1 overflow-y-auto overscroll-y-contain bg-bgColor">
           {isSignedIn ? (
             <SignedInContent
               closeMenu={closeMenu}
@@ -85,11 +88,13 @@ export function DefaultMobileMenuDialog({
         </div>
       </div>
       {isSignedIn ? (
-        <div className="shrink-0">
+        <div className="relative z-10 shrink-0 bg-bgColor">
           <MobileCountriesPopupTrigger />
         </div>
       ) : (
-        <NewslatterForm inactiveBgColor />
+        <div className="relative z-10 shrink-0 bg-bgColor">
+          <NewslatterForm inactiveBgColor />
+        </div>
       )}
     </div>
   );
