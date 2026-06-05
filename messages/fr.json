@@ -170,7 +170,8 @@
     "order limit exceeded": "limite de commande dépassée",
     "select your size to continue": "sélectionnez votre taille pour continuer",
     "one size": "taille unique",
-    "quantity left": "{count} restants"
+    "quantity left": "{count} restants",
+    "recommended": "recommended"
   },
   "checkout": {
     "contact": "contact",

@@ -10,7 +10,6 @@ import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
 import { GarmentDescription } from "./garmentDescription";
-import { LastViewedProducts } from "./last-viewed-products";
 import type { CarouselNavApi } from "./mobile-image-carousel";
 import { MobileImageCarousel } from "./mobile-image-carousel";
 import { MobileMeasurements } from "./mobile-measurements";
@@ -178,9 +177,6 @@ export function MobileProductInfo({
                     productContext={sizePickerProductContext}
                   />
                 </div>
-                {product.product && (
-                  <LastViewedProducts product={product.product} />
-                )}
               </div>
             </BottomSheet>
           )}
