@@ -19,6 +19,7 @@ import { Text } from "@/components/ui/text";
 
 import { FooterNavMobile } from "./footer-nav-mobile";
 import HelpPopover from "./help-popover";
+import { LazyArtIframe } from "./lazy-art-iframe";
 import { MobileCountriesPopupTrigger } from "./mobile-countries-popup";
 import NewslatterForm from "./newsletter-form";
 
@@ -62,16 +63,7 @@ export function Footer({
         <div className="flex justify-center pt-16 lg:py-52">
           <div className="flex w-full flex-col gap-y-16 lg:w-auto lg:flex-row lg:items-start lg:gap-x-20">
             <div className="flex justify-center lg:justify-end">
-              <iframe
-                src={
-                  theme === "dark"
-                    ? "https://art.grbpwr.com/invert"
-                    : "https://art.grbpwr.com"
-                }
-                loading="lazy"
-                className="h-56 w-56 border-0 lg:hidden"
-                title="logo"
-              />
+              <LazyArtIframe theme={theme} />
               {theme === "dark" ? (
                 <Logo className="hidden aspect-square h-full w-40 lg:block" />
               ) : (

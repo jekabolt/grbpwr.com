@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
@@ -15,7 +16,13 @@ import {
 import { calculateAspectRatio } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
-import { ImageZoom } from "@/components/ui/image-zoom";
+
+// react-zoom-pan-pinch is only needed inside the fullscreen zoom dialog, so load
+// it on demand instead of in the initial product-page bundle.
+const ImageZoom = dynamic(
+  () => import("@/components/ui/image-zoom").then((m) => m.ImageZoom),
+  { ssr: false },
+);
 
 const EMBLA_OPTIONS = {
   loop: true,
