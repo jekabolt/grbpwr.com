@@ -133,12 +133,21 @@ export function getProductsPagedQueryParams(
   const validatedTag =
     tag && tag.length > 0 && tag.length <= MAX_TAG_LENGTH ? tag : undefined;
 
+  // Hide the "objects" top category from gendered (men/women) catalog views —
+  // objects have their own /catalog/objects bucket (gender is undefined there).
+  const objectsCategoryId = dictionary?.categories?.find(
+    (c) => c.level === "top_category" && c.name?.toLowerCase() === "objects",
+  )?.id;
+  const excludeTopCategoryIds =
+    primaryGender && objectsCategoryId != null ? [objectsCategoryId] : undefined;
+
   return {
     sortFactors: sortFactor ? [sortFactor] : undefined,
     orderFactor: orderFactor,
     filterConditions: {
       topCategoryIds: validatedTopCategoryIds,
       subCategoryIds: validatedSubCategoryIds,
+      excludeTopCategoryIds,
       typeIds: undefined,
       sizesIds: sizeIds && sizeIds.length > 0 ? sizeIds : undefined,
       from: undefined,
