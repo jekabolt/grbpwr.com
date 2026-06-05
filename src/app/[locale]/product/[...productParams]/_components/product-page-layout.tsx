@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
-import { canGoBackInApp } from "@/lib/navigation/internal-navigation";
+import { getPreviousPath } from "@/lib/navigation/internal-navigation";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import FlexibleLayout from "@/components/flexible-layout";
 
@@ -25,15 +25,12 @@ export function ProductPageLayout({
   const fallbackPath = gender ? `${homePath}/catalog/${gender}` : homePath;
 
   const handleBack = () => {
-    // Real history pop when we got here in-app — avoids the push(prev) ping-pong
-    // that caused cyclic "back" loops (product↔checkout, product↔recently-viewed).
-    if (typeof window !== "undefined" && canGoBackInApp()) {
-      router.back();
-      return;
-    }
-    // Direct entry / no in-app history: go to the item's gender catalog so the
-    // user is never stranded on the product detail page.
-    router.push(fallbackPath);
+    // Push the specific previous in-app path so the route View Transition plays
+    // (router.back()/popstate doesn't animate). The nav stack makes this safe
+    // from the old ping-pong: at the origin getPreviousPath() is null, so we go
+    // to the item's gender catalog instead of looping — and the user is never
+    // stranded on the product detail page.
+    router.push(getPreviousPath() ?? fallbackPath);
   };
 
   return (

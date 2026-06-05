@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
-import { canGoBackInApp } from "@/lib/navigation/internal-navigation";
+import { getPreviousPath } from "@/lib/navigation/internal-navigation";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
@@ -31,8 +31,9 @@ export function AdditionalHeader({
       return;
     }
 
-    if (canGoBackInApp()) {
-      router.back();
+    const prev = getPreviousPath();
+    if (prev) {
+      router.push(prev);
       return;
     }
     try {
