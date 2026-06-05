@@ -4,6 +4,7 @@ import { LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { productJsonLd } from "@/lib/structured-data";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileProductInfo } from "./_components/mobile-product-info";
@@ -13,6 +14,7 @@ import { ProductPageLayout } from "./_components/product-page-layout";
 
 interface ProductPageProps {
   params: Promise<{
+    locale: string;
     productParams: string[];
   }>;
 }
@@ -59,7 +61,7 @@ export async function generateMetadata({
 export const dynamic = "force-static";
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { productParams } = await params;
+  const { productParams, locale } = await params;
 
   if (productParams.length !== 4) {
     return notFound();
@@ -79,9 +81,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const productMedia = [...(product?.media || [])];
+  const jsonLd = productJsonLd(product, locale);
 
   return (
     <ProductPageLayout>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
       <div className="block lg:hidden">
         {product && <MobileProductInfo product={product} />}
       </div>
