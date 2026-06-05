@@ -21,7 +21,8 @@ type Props = {
 
 export function MobileOrderSummary({ orderData }: Props) {
   const t = useTranslations("checkout");
-  const [isOpen, setIsOpen] = useState(false);
+  // Order summary is expanded by default on the order view page.
+  const [isOpen, setIsOpen] = useState(true);
 
   const { order } = orderData;
   const orderCurrencyKey = order?.currency?.toUpperCase() || "EUR";
