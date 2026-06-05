@@ -1,25 +1,27 @@
 "use client";
 
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import { common_Product } from "@/api/proto-http/frontend";
-import { useTranslations } from "next-intl";
+import { useInView } from "react-intersection-observer";
 
 import { useLastViewed } from "@/lib/stores/last-viewed/store-provider.";
-import { cn } from "@/lib/utils";
-import { Overlay } from "@/components/ui/overlay";
-import { Text } from "@/components/ui/text";
-import { ProductItem } from "@/app/[locale]/_components/product-item";
+
+// The "recently viewed" grid sits below the fold, so load it (and the ProductItem
+// cards it renders) only when scrolled near. The view-tracking side effect stays
+// in this always-mounted wrapper so it still records the current product on
+// navigation away, regardless of whether the user scrolled to the section.
+const LastViewedList = dynamic(
+  () => import("./last-viewed-list").then((m) => m.LastViewedList),
+  { ssr: false },
+);
 
 interface LastViewedProductsProps {
   product: common_Product;
 }
 
 export function LastViewedProducts({ product }: LastViewedProductsProps) {
-  const { products, addProduct } = useLastViewed((state) => state);
-  const t = useTranslations("product");
-  const filteredProducts = products
-    .filter((viewedProduct) => viewedProduct.id !== product.id)
-    .slice(0, 4);
+  const addProduct = useLastViewed((state) => state.addProduct);
 
   useEffect(() => {
     return () => {
@@ -29,43 +31,14 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
     };
   }, [product, addProduct]);
 
-  if (filteredProducts.length === 0) {
-    return null;
-  }
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    rootMargin: "400px 0px",
+  });
 
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center gap-y-16 pb-14 lg:pb-16 lg:pt-16",
-      )}
-    >
-      <Text className="w-full text-left lg:text-center" variant="uppercase">
-        {t("recently viewed")}
-      </Text>
-
-      <div className="flex justify-center gap-2 lg:gap-7">
-        {filteredProducts.map((product, index) => (
-          <div
-            key={product.id}
-            className={cn("group relative w-40 lg:w-52", {
-              "hidden lg:block": index >= 2,
-            })}
-            data-bottom-sheet-ignore-drag="true"
-          >
-            <div className="relative">
-              <ProductItem
-                className="w-full"
-                product={product}
-                isInfoVisible={false}
-                disableAnimations={true}
-              />
-              <div className="hidden lg:block">
-                <Overlay cover="container" color="highlight" trigger="hover" />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div ref={ref}>
+      {inView && <LastViewedList currentProductId={product.id} />}
     </div>
   );
 }
