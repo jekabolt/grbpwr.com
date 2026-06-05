@@ -72,7 +72,11 @@ export function ProductItem({
   const translatedCategory = singularCategory
     ? t(singularCategory.toLowerCase())
     : "";
-  const name = fit ? `${fit} ${translatedCategory}` : translatedCategory;
+  // Objects use their category/sub-category name as-is (no "fit" prefix that
+  // garments get).
+  const isObjects = topCategory?.toLowerCase() === "objects";
+  const name =
+    fit && !isObjects ? `${fit} ${translatedCategory}` : translatedCategory;
 
   const productPrice =
     product.prices?.find(
