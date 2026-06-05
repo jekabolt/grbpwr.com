@@ -23,6 +23,10 @@ export function ProductImagesCarousel({
   productName,
 }: Props) {
   const oneMedia = productMedia.length === 1;
+  // The carousel initially shows the slides at/after startIndex (not index 0,
+  // which is off-screen). Priority must follow what's actually visible so the
+  // LCP image isn't lazy-loaded.
+  const startIndex = oneMedia ? 0 : 2;
   const prevIndexRef = useRef<number>(-1);
 
   const mediaForCarousel =
@@ -69,13 +73,13 @@ export function ProductImagesCarousel({
       <Carousel
         loop={productMedia.length > 1}
         align={oneMedia ? "start" : "end"}
-        startIndex={oneMedia ? 0 : 2}
+        startIndex={startIndex}
         className="flex h-screen w-full pt-14"
         scrollOnClick={true}
         setSelectedIndex={handleSelectedIndex}
       >
         {mediaForCarousel.map((m, index) => {
-          const isPriority = index < 2;
+          const isPriority = index >= startIndex && index < startIndex + 2;
           return (
             <div
               key={`${m.id}-${index}`}
