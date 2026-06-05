@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import type {
   common_OrderFull,
@@ -13,6 +13,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
+import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 import { buildOrderConfirmationUrl } from "../../(checkout)/checkout/_components/new-order-form/utils";
@@ -51,6 +52,10 @@ export function OrderItem({
     );
   }, [dictionary?.shipmentCarriers, order.shipment]);
 
+  // Mobile only: touching the order thumbnails shows the blue highlight, which
+  // stays on until the tap navigates away (this row unmounts). Scroll clears it.
+  const [pressed, setPressed] = useState(false);
+
   return (
     <div className="border-b border-textInactiveColor bg-bgColor py-6 text-textColor first:pt-0">
       <div className="grid grid-cols-2 gap-6 lg:grid-cols-[minmax(0,1fr)_auto]">
@@ -74,14 +79,28 @@ export function OrderItem({
             </Button>
           ) : null}
         </div>
-        <Link href={orderHref} className="flex shrink-0 justify-end gap-2">
+        <Link
+          href={orderHref}
+          className="flex shrink-0 justify-end gap-2"
+          onPointerDown={(e) => {
+            if (e.pointerType === "touch") setPressed(true);
+          }}
+          onPointerCancel={() => setPressed(false)}
+        >
           {order.orderItems?.slice(0, 2).map((i) => (
-            <div key={i.id} className="w-20">
+            <div key={i.id} className="relative w-20">
               <Image
                 src={i.thumbnail ?? ""}
                 fit="contain"
                 aspectRatio="4/5"
                 alt={t("order product thumbnail alt")}
+              />
+              <Overlay
+                cover="container"
+                color="highlight"
+                trigger="active"
+                active={pressed}
+                className="lg:hidden"
               />
             </div>
           ))}
