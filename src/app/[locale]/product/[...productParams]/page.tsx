@@ -51,6 +51,8 @@ export async function generateMetadata({
   return generateCommonMetadata({
     title: title?.toUpperCase(),
     description: `${description}'\n'${color}`,
+    locale,
+    path: `/product/${gender}/${brand}/${name}/${id}`,
     ogParams: {
       imageUrl: productImageUrl,
       imageAlt: `${title || "Product"} - ${color || ""}`.trim(),

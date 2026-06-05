@@ -65,6 +65,10 @@ export async function generateMetadata({
   return generateCommonMetadata({
     title: title.toUpperCase(),
     description: t(descriptionKey),
+    locale,
+    path: routeParams?.length
+      ? `/catalog/${routeParams.join("/")}`
+      : "/catalog",
   });
 }
 
