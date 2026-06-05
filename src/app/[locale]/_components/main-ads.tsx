@@ -81,7 +81,9 @@ export function MainAds({
       <div className="absolute inset-x-0 top-32 z-20 flex h-screen items-center lg:top-20">
         <div className="flex w-full flex-col items-start gap-6 p-2 text-bgColor md:flex-row md:justify-between">
           <Text variant="uppercase">{currentTranslation?.tag}</Text>
-          <Text variant="uppercase">{currentTranslation?.headline}</Text>
+          <Text variant="uppercase" component="h1">
+            {currentTranslation?.headline}
+          </Text>
           <Text variant="uppercase" className="md:w-1/3">
             {currentTranslation?.description}
           </Text>

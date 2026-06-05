@@ -83,6 +83,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const productMedia = [...(product?.media || [])];
   const jsonLd = productJsonLd(product, locale);
 
+  // Single descriptive H1 (the product name) rendered once at page level — both
+  // the desktop and mobile info blocks are in the DOM (CSS-toggled), so putting
+  // the H1 here avoids duplicate H1s. Visually hidden since the name already
+  // shows in the info block.
+  const localeId = LANGUAGE_CODE_TO_ID[locale];
+  const productName =
+    product?.product?.productDisplay?.productBody?.translations?.find(
+      (t) => t.languageId === localeId,
+    )?.name ||
+    product?.product?.sku ||
+    "";
+
   return (
     <ProductPageLayout>
       {jsonLd && (
@@ -91,6 +103,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       )}
+      {productName && <h1 className="sr-only">{productName}</h1>}
       <div className="block lg:hidden">
         {product && <MobileProductInfo product={product} />}
       </div>

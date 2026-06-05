@@ -31,7 +31,11 @@ export function LastViewedList({
     <div
       className={cn("flex flex-col items-center gap-y-16 pb-14 lg:pb-16 lg:pt-16")}
     >
-      <Text className="w-full text-left lg:text-center" variant="uppercase">
+      <Text
+        component="h2"
+        className="w-full text-left lg:text-center"
+        variant="uppercase"
+      >
         {t("recently viewed")}
       </Text>
 
