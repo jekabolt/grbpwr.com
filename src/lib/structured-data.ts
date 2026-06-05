@@ -1,5 +1,5 @@
 import type { common_ProductFull } from "@/api/proto-http/frontend";
-import { LANGUAGE_CODE_TO_ID } from "@/constants";
+import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 
 // schema.org Product/Offer JSON-LD for product pages. Gives search engines (and
 // AI agents) machine-readable price/availability/brand — the "commerce signal"
@@ -16,6 +16,47 @@ const COUNTRY_BY_LOCALE: Record<string, string> = {
   ja: "jp",
   zh: "cn",
   ko: "kr",
+};
+
+// Uppercase ISO codes of every country the storefront ships to (deduped).
+const SHIPPING_COUNTRIES = Array.from(
+  new Set(
+    Object.values(COUNTRIES_BY_REGION)
+      .flat()
+      .map((c) => c.countryCode.toUpperCase()),
+  ),
+);
+
+// Return policy mirrors /legal/return-exchange: 14 calendar days, free returns
+// via a prepaid label (ReturnByMail). Kept in sync with that page.
+const RETURN_POLICY = {
+  "@type": "MerchantReturnPolicy",
+  applicableCountry: SHIPPING_COUNTRIES,
+  returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+  merchantReturnDays: 14,
+  returnMethod: "https://schema.org/ReturnByMail",
+  returnFees: "https://schema.org/FreeReturn",
+};
+
+// Shipping: real destinations + delivery window (5–7 business days, per
+// /legal/terms-of-sale). shippingRate is intentionally omitted — the rate is
+// region-dependent and shown at checkout, so any fixed value would be inaccurate
+// (authoritative rates belong in Google Merchant Center).
+const SHIPPING_DETAILS = {
+  "@type": "OfferShippingDetails",
+  shippingDestination: {
+    "@type": "DefinedRegion",
+    addressCountry: SHIPPING_COUNTRIES,
+  },
+  deliveryTime: {
+    "@type": "ShippingDeliveryTime",
+    transitTime: {
+      "@type": "QuantitativeValue",
+      minValue: 5,
+      maxValue: 7,
+      unitCode: "DAY",
+    },
+  },
 };
 
 export function productJsonLd(
@@ -62,6 +103,8 @@ export function productJsonLd(
       price: pr.price!.value,
       availability,
       ...(url ? { url } : {}),
+      hasMerchantReturnPolicy: RETURN_POLICY,
+      shippingDetails: SHIPPING_DETAILS,
     }));
 
   const description = (t?.description || "").trim();
