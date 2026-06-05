@@ -4,8 +4,8 @@ import React, { type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export const modalTransition = {
-  duration: 0.15,
-  ease: [0.4, 0, 0.2, 1] as const,
+  duration: 0.3,
+  ease: [0.22, 1, 0.36, 1] as const,
 };
 
 export type SlideFrom = "left" | "right" | "top" | "bottom" | "none";
