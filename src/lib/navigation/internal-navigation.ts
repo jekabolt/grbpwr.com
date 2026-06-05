@@ -1,65 +1,67 @@
-const PREV_PATH_KEY = "grbpwr_prev_path";
-const LAST_PATH_KEY = "grbpwr_last_path";
+// Tracks in-app navigation as an explicit stack in sessionStorage so we can tell
+// how deep we are within the app (and what the previous in-app page is) without
+// the prev/last ping-pong the old implementation suffered from. Forward vs back
+// is inferred by comparing the new path with the previous stack entry.
 
-function read(key: string): string | null {
+const STACK_KEY = "grbpwr_nav_stack";
+
+function getStack(): string[] {
   try {
-    return sessionStorage.getItem(key);
+    const raw = sessionStorage.getItem(STACK_KEY);
+    return raw ? (JSON.parse(raw) as string[]) : [];
   } catch {
-    return null;
+    return [];
   }
 }
 
-function write(key: string, value: string): void {
+function setStack(stack: string[]): void {
   try {
-    sessionStorage.setItem(key, value);
-  } catch {
-    /* sessionStorage unavailable */
-  }
-}
-
-function remove(key: string): void {
-  try {
-    sessionStorage.removeItem(key);
+    sessionStorage.setItem(STACK_KEY, JSON.stringify(stack));
   } catch {
     /* sessionStorage unavailable */
   }
 }
 
-export function getPreviousPath(): string | null {
-  return read(PREV_PATH_KEY);
-}
-
+/** Called once when the app first mounts in a tab/session. */
 export function syncNavigationOnEntry(currentPath: string): void {
-  write(LAST_PATH_KEY, currentPath);
-
-  try {
-    const navEntry = performance.getEntriesByType("navigation")[0] as
-      | PerformanceNavigationTiming
-      | undefined;
-
-    if (navEntry?.type !== "navigate") {
-      return;
-    }
-
-    const ref = document.referrer;
-    if (ref && new URL(ref).origin === window.location.origin) {
-      const refPath = `${new URL(ref).pathname}${new URL(ref).search}${new URL(ref).hash}`;
-      write(PREV_PATH_KEY, refPath);
-      return;
-    }
-
-    remove(PREV_PATH_KEY);
-  } catch {
-    remove(PREV_PATH_KEY);
+  const stack = getStack();
+  if (stack.length === 0) {
+    setStack([currentPath]);
+    return;
+  }
+  // Reload of an existing session: keep the stack; only adjust if the top no
+  // longer matches the current path.
+  if (stack[stack.length - 1] !== currentPath) {
+    trackNavigationChange(currentPath);
   }
 }
 
+/** Called on every in-app navigation; maintains the forward/back nav stack. */
 export function trackNavigationChange(currentPath: string): void {
-  const lastPath = read(LAST_PATH_KEY);
-
-  if (lastPath && lastPath !== currentPath) {
-    write(PREV_PATH_KEY, lastPath);
+  const stack = getStack();
+  if (stack.length === 0) {
+    setStack([currentPath]);
+    return;
   }
+  const top = stack[stack.length - 1];
+  if (top === currentPath) return;
 
-  write(LAST_PATH_KEY, currentPath);
+  const prev = stack[stack.length - 2];
+  if (prev === currentPath) {
+    stack.pop(); // back navigation
+  } else {
+    stack.push(currentPath); // forward navigation
+  }
+  setStack(stack);
+}
+
+/** True when there's an in-app page to return to (safe to call router.back()). */
+export function canGoBackInApp(): boolean {
+  return getStack().length > 1;
+}
+
+/** The in-app page we'd return to, or null if we're at the session entry. */
+export function getPreviousPath(): string | null {
+  const stack = getStack();
+  return stack.length > 1 ? stack[stack.length - 2] : null;
 }

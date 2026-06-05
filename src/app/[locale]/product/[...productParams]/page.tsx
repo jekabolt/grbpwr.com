@@ -98,7 +98,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     "";
 
   return (
-    <ProductPageLayout>
+    <ProductPageLayout gender={gender}>
       {jsonLd && (
         <script
           type="application/ld+json"

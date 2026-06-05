@@ -3,33 +3,37 @@
 import { useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
-import { getPreviousPath } from "@/lib/navigation/internal-navigation";
+import { canGoBackInApp } from "@/lib/navigation/internal-navigation";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import FlexibleLayout from "@/components/flexible-layout";
 
-export function ProductPageLayout({ children }: { children: React.ReactNode }) {
+export function ProductPageLayout({
+  children,
+  gender,
+}: {
+  children: React.ReactNode;
+  // Catalog gender of the item (from the URL) — fallback back-target when there
+  // is no in-app history (e.g. arriving via a direct link).
+  gender?: string;
+}) {
   const router = useRouter();
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
 
   const country = currentCountry.countryCode?.toLowerCase() || "gb";
   const locale = LANGUAGE_ID_TO_LOCALE[languageId] || "en";
   const homePath = `/${country}/${locale}`;
+  const fallbackPath = gender ? `${homePath}/catalog/${gender}` : homePath;
 
   const handleBack = () => {
-    if (typeof window === "undefined") {
-      router.push(homePath);
+    // Real history pop when we got here in-app — avoids the push(prev) ping-pong
+    // that caused cyclic "back" loops (product↔checkout, product↔recently-viewed).
+    if (typeof window !== "undefined" && canGoBackInApp()) {
+      router.back();
       return;
     }
-
-    const prevPath = getPreviousPath();
-    const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-
-    if (prevPath && prevPath !== currentPath) {
-      router.push(prevPath);
-      return;
-    }
-
-    router.push(homePath);
+    // Direct entry / no in-app history: go to the item's gender catalog so the
+    // user is never stranded on the product detail page.
+    router.push(fallbackPath);
   };
 
   return (
