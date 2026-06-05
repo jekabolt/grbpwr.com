@@ -41,6 +41,8 @@ export async function generateMetadata({
     title:
       currentTranslation?.heading?.toUpperCase() || "heading".toUpperCase(),
     description: currentTranslation?.description || "description",
+    locale,
+    path: `/timeline/${archiveParams.join("/")}`,
     ogParams: {
       imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
       imageAlt: currentTranslation?.heading || "",

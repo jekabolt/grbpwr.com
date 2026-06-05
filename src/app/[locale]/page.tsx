@@ -23,6 +23,8 @@ export async function generateMetadata({
 
   return generateCommonMetadata({
     description,
+    locale,
+    path: "",
     ogParams: {
       imageUrl: "/app-logo.webp",
       imageWidth: 512,
