@@ -58,16 +58,11 @@ const config = {
           "0%, 100%": { opacity: "0" },
           "50%": { opacity: "0.6" },
         },
-        "page-fade-in": {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
       },
       animation: {
         threshold: "threshold 0.4s ease-out forwards",
         "threshold-highlight": "threshold-with-highlight 0.4s ease-out forwards",
         "highlight-flash": "highlight-flash 0.6s ease-out forwards",
-        "page-fade-in": "page-fade-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both",
       },
     },
   },
