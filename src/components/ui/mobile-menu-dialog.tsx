@@ -64,12 +64,12 @@ export function DefaultMobileMenuDialog({
   const contentPagesLinks = createContentPagesLinks();
 
   return (
-    <div className="flex h-full flex-col justify-between">
-      <div className="flex min-h-0 flex-1 flex-col gap-10">
-        <div className="min-h-0 flex-[0.4]">
+    <div className="flex min-h-0 flex-1 flex-col justify-between">
+      <div className="flex min-h-0 flex-1 flex-col gap-10 overflow-hidden">
+        <div className="min-h-0 flex-[0.4] pb-10">
           <MobileMenuBtns items={defaultMenuItems} closeMenu={closeMenu} />
         </div>
-        <div className="flex min-h-0 flex-1 flex-col border-t border-textColor pt-12">
+        <div className="no-scroll-bar min-h-0 flex-1 overflow-y-auto overscroll-y-contain border-t border-textColor pt-12">
           {isSignedIn ? (
             <SignedInContent
               closeMenu={closeMenu}
@@ -84,6 +84,13 @@ export function DefaultMobileMenuDialog({
           )}
         </div>
       </div>
+      {isSignedIn ? (
+        <div className="shrink-0">
+          <MobileCountriesPopupTrigger />
+        </div>
+      ) : (
+        <NewslatterForm inactiveBgColor />
+      )}
     </div>
   );
 }
@@ -98,12 +105,9 @@ function SignedInContent({
   contentPagesLinks: MenuItem[];
 }) {
   return (
-    <div className="flex h-full min-h-0 flex-col justify-between gap-5">
-      <div className="flex flex-col gap-5">
-        <AccountMenuButton closeMenu={closeMenu} account={account} />
-        <MobileMenuBtns items={contentPagesLinks} closeMenu={closeMenu} />
-      </div>
-      <MobileCountriesPopupTrigger />
+    <div className="flex flex-col gap-5">
+      <AccountMenuButton closeMenu={closeMenu} account={account} />
+      <MobileMenuBtns items={contentPagesLinks} closeMenu={closeMenu} />
     </div>
   );
 }
@@ -116,13 +120,10 @@ function NotSignedInContent({
   contentPagesLinks: MenuItem[];
 }) {
   return (
-    <div className="flex h-full min-h-0 flex-col justify-between gap-5">
-      <div className="flex flex-col gap-5">
-        <MobileCountriesPopupTrigger />
-        <AccountMenuButton closeMenu={closeMenu} account={null} />
-        <MobileMenuBtns items={contentPagesLinks} closeMenu={closeMenu} />
-      </div>
-      <NewslatterForm inactiveBgColor />
+    <div className="flex flex-col gap-5">
+      <MobileCountriesPopupTrigger />
+      <AccountMenuButton closeMenu={closeMenu} account={null} />
+      <MobileMenuBtns items={contentPagesLinks} closeMenu={closeMenu} />
     </div>
   );
 }

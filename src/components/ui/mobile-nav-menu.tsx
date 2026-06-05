@@ -4,6 +4,7 @@ import { useState } from "react";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
+import { useVisualViewportHeight } from "@/lib/hooks/useVisualViewportHeight";
 import { ModalTransition } from "@/components/modal-transition";
 
 import { useDataContext } from "../contexts/DataContext";
@@ -26,6 +27,7 @@ export function MobileNavMenu({
   const isWebsiteEnabled = dictionary?.siteEnabled;
 
   const closeMenu = () => setOpen(false);
+  const menuHeight = useVisualViewportHeight(open, 16);
 
   return (
     <DialogPrimitives.Root open={open} onOpenChange={setOpen}>

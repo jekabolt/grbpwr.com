@@ -115,9 +115,11 @@ export function Footer({
           <Button className="uppercase" asChild>
             <Link href="/legal-notices">{t("legal notices")}</Link>
           </Button>
-          <Button className="uppercase" asChild>
-            <Link href="/order-status">{t("order status")}</Link>
-          </Button>
+          {!isSignedIn && (
+            <Button className="uppercase" asChild>
+              <Link href="/order-status">{t("order status")}</Link>
+            </Button>
+          )}
         </div>
         <div className="order-1 block lg:hidden">
           <FooterNavMobile />

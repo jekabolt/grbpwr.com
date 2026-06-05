@@ -52,12 +52,15 @@ export function EmailHandler({
     [],
   );
 
-  const handleEmailFocus = () => {
+  const handleEmailFocus = (event: React.FocusEvent<HTMLInputElement>) => {
     if (blurTimeoutRef.current !== null) {
       window.clearTimeout(blurTimeoutRef.current);
       blurTimeoutRef.current = null;
     }
     setMobileEmailExpanded(true);
+    requestAnimationFrame(() => {
+      event.target.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    });
   };
 
   const handleEmailBlur = (event: React.FocusEvent<HTMLInputElement>) => {
