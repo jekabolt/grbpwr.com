@@ -105,8 +105,8 @@ export function ProductItem({
             if (!disableAnimations && e.pointerType === "touch")
               setPressed(true);
           }}
-          onPointerUp={onPressEnd}
-          onPointerLeave={onPressEnd}
+          // Keep the highlight on after release (tap navigates → this card
+          // unmounts, clearing it). Only a scroll/drag (pointercancel) clears it.
           onPointerCancel={onPressEnd}
           className={cn("relative", {
             "group-data-[held=true]:animate-threshold-highlight":
