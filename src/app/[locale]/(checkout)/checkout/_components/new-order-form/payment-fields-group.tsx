@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { PaymentElement } from "@stripe/react-stripe-js";
-import type { PaymentWalletsOption } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
@@ -125,9 +124,15 @@ export default function PaymentFieldsGroup({
                 onChange={handlePaymentElementChange}
                 options={{
                   layout: "tabs",
+                  // Explicitly opt the wallets in. A previous config passed an
+                  // invalid `{ link: "never" }` here (cast to silence the type
+                  // error) — `link` is not a member of PaymentWalletsOption, so
+                  // the malformed object disabled the Apple Pay / Google Pay
+                  // button. Only applePay/googlePay are valid keys.
                   wallets: {
-                    link: "never",
-                  } as PaymentWalletsOption,
+                    applePay: "auto",
+                    googlePay: "auto",
+                  },
                   fields: {
                     billingDetails: {
                       address: {
