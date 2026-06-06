@@ -313,24 +313,30 @@ export function applySavedAddressToCheckoutForm(
 export function resolveCheckoutAddressSelection(
     addresses: StorefrontSavedAddress[],
     savedAddressId: string | undefined,
-    resolvedCheckoutAddress: StorefrontSavedAddress | undefined,
+    _resolvedCheckoutAddress: StorefrontSavedAddress | undefined,
     countryAddress: StorefrontSavedAddress | undefined,
     currentCountryCode?: string,
 ): StorefrontSavedAddress | undefined {
-    if (!resolvedCheckoutAddress?.id) return undefined;
-
     const persisted = savedAddressId?.trim()
         ? addresses.find((a) => String(a.id ?? "") === savedAddressId.trim())
         : undefined;
 
     if (
-        persisted &&
-        (!countryAddress || isSameCountry(persisted.country, currentCountryCode))
+        persisted?.id &&
+        isSameCountry(persisted.country, currentCountryCode)
     ) {
         return persisted;
     }
 
-    return resolvedCheckoutAddress;
+    if (countryAddress?.id) {
+        return countryAddress;
+    }
+
+    if (persisted?.id) {
+        return persisted;
+    }
+
+    return undefined;
 }
 
 export function checkoutAddressSelectionKey(

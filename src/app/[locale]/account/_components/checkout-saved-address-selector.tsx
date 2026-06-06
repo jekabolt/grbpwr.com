@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
+import { CHECKOUT_LOCATION_CHANGE_CANCELLED } from "@/lib/checkout-location-change";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 
@@ -44,6 +45,7 @@ export function CheckoutSavedAddressSelector({
     useTranslationsStore((s) => s);
   const [open, setOpen] = useState(false);
   const [isAddressEditing, setIsAddressEditing] = useState(false);
+  const dismissedLocaleSwitchForAddressRef = useRef<number | null>(null);
 
   const internalAddressesState = useAddresses({
     enabled: isSignedIn && !addressesStateFromParent,
@@ -85,7 +87,28 @@ export function CheckoutSavedAddressSelector({
   }, [isDisabled, open]);
 
   useEffect(() => {
+    function onLocaleSwitchDismissed() {
+      const selectedAddressId = Number(selectedAddress?.id);
+      if (Number.isFinite(selectedAddressId)) {
+        dismissedLocaleSwitchForAddressRef.current = selectedAddressId;
+      }
+    }
+
+    window.addEventListener(
+      CHECKOUT_LOCATION_CHANGE_CANCELLED,
+      onLocaleSwitchDismissed,
+    );
+    return () => {
+      window.removeEventListener(
+        CHECKOUT_LOCATION_CHANGE_CANCELLED,
+        onLocaleSwitchDismissed,
+      );
+    };
+  }, [selectedAddress?.id]);
+
+  useEffect(() => {
     if (!selectedAddress?.id) {
+      dismissedLocaleSwitchForAddressRef.current = null;
       if (nextCountry.savedAddressId != null) {
         cancelNextCountry();
       }
@@ -96,9 +119,14 @@ export function CheckoutSavedAddressSelector({
     if (!Number.isFinite(selectedAddressId)) return;
 
     if (!shouldSuggestLocaleSwitch) {
+      dismissedLocaleSwitchForAddressRef.current = null;
       if (nextCountry.savedAddressId === selectedAddressId) {
         cancelNextCountry();
       }
+      return;
+    }
+
+    if (dismissedLocaleSwitchForAddressRef.current === selectedAddressId) {
       return;
     }
 

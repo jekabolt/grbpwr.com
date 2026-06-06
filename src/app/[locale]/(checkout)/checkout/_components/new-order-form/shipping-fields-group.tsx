@@ -136,14 +136,23 @@ export default function ShippingFieldsGroup({
     refreshKey: savedAddressesRefreshKey,
     countryCode: currentCountry.countryCode,
   });
-  const { addresses, loaded } = addressesState;
+  const { addresses, loaded, countryAddress } = addressesState;
 
+  const hasAddressForCountry = !!countryAddress;
   const showAddressForm =
-    !isSignedIn || (loaded && !addresses.length) || isAddingNewAddress;
+    !isSignedIn ||
+    isAddingNewAddress ||
+    (loaded && (!addresses.length || !hasAddressForCountry));
   const showSavedAddressesSelector =
-    isSignedIn && loaded && addresses.length > 0 && !isAddingNewAddress;
+    isSignedIn &&
+    loaded &&
+    addresses.length > 0 &&
+    !isAddingNewAddress &&
+    hasAddressForCountry;
   const shouldShowSaveAddressActions =
-    isSignedIn && (isAddingNewAddress || (loaded && addresses.length === 0));
+    isSignedIn &&
+    (isAddingNewAddress ||
+      (loaded && (!addresses.length || !hasAddressForCountry)));
 
   return (
     <FieldsGroupContainer
