@@ -116,8 +116,19 @@ export default function ShippingFieldsGroup({
   ]);
 
   const [savedAddressesRefreshKey, setSavedAddressesRefreshKey] = useState(0);
+
+  const addressesState = useAddresses({
+    enabled: isSignedIn,
+    refreshKey: savedAddressesRefreshKey,
+    countryCode: currentCountry.countryCode,
+  });
+  const { addresses, loaded, countryAddress } = addressesState;
+
+  const hasAddressForCountry = !!countryAddress;
+
   const {
     isAddingNewAddress,
+    isAutoNewAddressForm,
     savingNewAddress,
     saveAddressError,
     showSaveOnlyActions,
@@ -129,16 +140,14 @@ export default function ShippingFieldsGroup({
     onSaved: () => {
       setSavedAddressesRefreshKey((k) => k + 1);
     },
+    autoSeed: {
+      isSignedIn,
+      addressesLoaded: loaded,
+      hasAddressForCountry,
+      firstName: account?.firstName,
+      lastName: account?.lastName,
+    },
   });
-
-  const addressesState = useAddresses({
-    enabled: isSignedIn,
-    refreshKey: savedAddressesRefreshKey,
-    countryCode: currentCountry.countryCode,
-  });
-  const { addresses, loaded, countryAddress } = addressesState;
-
-  const hasAddressForCountry = !!countryAddress;
   const showAddressForm =
     !isSignedIn ||
     isAddingNewAddress ||
@@ -164,7 +173,11 @@ export default function ShippingFieldsGroup({
     >
       {showAddressForm && (
         <>
-          <AddressFields loading={loading} disabled={disabled} />
+          <AddressFields
+            loading={loading}
+            disabled={disabled}
+            disableCountryField={isAutoNewAddressForm}
+          />
           {shouldShowSaveAddressActions && (
             <div className="mt-4 flex gap-3">
               <Button

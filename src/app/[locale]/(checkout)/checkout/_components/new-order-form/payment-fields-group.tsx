@@ -103,6 +103,7 @@ export default function PaymentFieldsGroup({
             signPosition="before"
             title={t("redeem promo code")}
             isOpen={open}
+            disabled={disabled || loading}
             onToggle={handleToggle}
           >
             <PromoCode
