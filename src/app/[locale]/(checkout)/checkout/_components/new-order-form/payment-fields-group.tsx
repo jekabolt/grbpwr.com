@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { PaymentElement } from "@stripe/react-stripe-js";
+import type { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
@@ -124,14 +125,16 @@ export default function PaymentFieldsGroup({
                 onChange={handlePaymentElementChange}
                 options={{
                   layout: "tabs",
-                  // Explicitly opt the wallets in. A previous config passed an
-                  // invalid `{ link: "never" }` here (cast to silence the type
-                  // error) — `link` is not a member of PaymentWalletsOption, so
-                  // the malformed object disabled the Apple Pay / Google Pay
-                  // button. Only applePay/googlePay are valid keys.
+                  // Show Apple Pay / Google Pay, hide Stripe Link (we don't want
+                  // its inline email/save form). `link` is honored by stripe.js
+                  // at runtime but was dropped from PaymentWalletsOption in the
+                  // installed types, so the wallets object is widened locally.
                   wallets: {
                     applePay: "auto",
                     googlePay: "auto",
+                    link: "never",
+                  } as StripePaymentElementOptions["wallets"] & {
+                    link: "never";
                   },
                   fields: {
                     billingDetails: {
