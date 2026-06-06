@@ -24,6 +24,7 @@ export function CheckoutSavedAddressSelector({
   addressesState: addressesStateFromParent,
   onDefaultChange,
   onAddNewAddress,
+  onEditModeChange,
 }: {
   loading: boolean;
   disabled?: boolean;
@@ -34,6 +35,7 @@ export function CheckoutSavedAddressSelector({
   isCheckout?: boolean;
   onDefaultChange?: () => void;
   onAddNewAddress?: (options?: { saveOnly?: boolean }) => void;
+  onEditModeChange?: (isEditing: boolean) => void;
   /** When provided, reuses a parent fetch instead of calling useAddresses again. */
   addressesState?: UseAddressesResult;
 }) {
@@ -127,7 +129,10 @@ export function CheckoutSavedAddressSelector({
         refreshKey={refreshKey}
         isCheckout={isCheckout}
         isDisabled={disabled || loading}
-        onEditModeChange={setIsAddressEditing}
+        onEditModeChange={(isEditing) => {
+          setIsAddressEditing(isEditing);
+          onEditModeChange?.(isEditing);
+        }}
       />
       {!isAddressEditing && (
         <div className="flex w-full items-end justify-between">

@@ -44,6 +44,7 @@ type Props = {
   order?: ValidateOrderItemsInsertResponse;
   account?: StorefrontAccount;
   onToggle: () => void;
+  onAddressEditModeChange?: (isEditing: boolean) => void;
 };
 
 const SHIPPING_ADDRESS_REQUIRED_FIELDS = [
@@ -67,6 +68,7 @@ export default function ShippingFieldsGroup({
   order,
   account,
   onToggle,
+  onAddressEditModeChange,
 }: Props) {
   const t = useTranslations("checkout");
   const { watch, setValue } = useFormContext();
@@ -197,6 +199,7 @@ export default function ShippingFieldsGroup({
             setSavedAddressesRefreshKey((k) => k + 1);
           }}
           onAddNewAddress={handleAddNewAddress}
+          onEditModeChange={onAddressEditModeChange}
         />
       )}
       {hasFilledAddress && (

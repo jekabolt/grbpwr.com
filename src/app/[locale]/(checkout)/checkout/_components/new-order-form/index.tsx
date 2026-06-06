@@ -70,6 +70,7 @@ export default function NewOrderForm({
   const [checkoutLoginVerified, setCheckoutLoginVerified] = useState(false);
   const [checkoutProfileCompleted, setCheckoutProfileCompleted] =
     useState(false);
+  const [isEditingSavedAddress, setIsEditingSavedAddress] = useState(false);
 
   useLayoutEffect(() => {
     const email = initialAccount?.email?.trim();
@@ -320,6 +321,7 @@ export default function NewOrderForm({
                         isOpen={isGroupOpen("shipping")}
                         onToggle={() => handleGroupToggle("shipping")}
                         disabled={isGroupDisabled("shipping") || loading}
+                        onAddressEditModeChange={setIsEditingSavedAddress}
                       />
                     </div>
                     <div ref={paymentRef}>
@@ -353,7 +355,7 @@ export default function NewOrderForm({
                 !showCheckoutForm && "hidden lg:flex",
               )}
             >
-              {showCheckoutForm && (
+              {showCheckoutForm && !isEditingSavedAddress && (
                 <Button
                   form="checkout-order-form"
                   type="submit"
