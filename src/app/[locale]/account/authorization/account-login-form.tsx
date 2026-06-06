@@ -334,7 +334,7 @@ function CodeStep({
             <Button
               type="button"
               variant="underline"
-              className="uppercase"
+              className="mx-auto w-fit text-center uppercase"
               disabled={pending}
               onClick={onChangeEmail}
             >
