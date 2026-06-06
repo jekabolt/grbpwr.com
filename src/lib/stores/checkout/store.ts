@@ -7,6 +7,7 @@ export const defaultInitState: CheckoutState = {
     formData: {},
     hasPersistedData: false,
     rehydrated: false,
+    isSubmitting: false,
 };
 
 export const createCheckoutStore = (initState: CheckoutState = defaultInitState) => {
@@ -32,6 +33,10 @@ export const createCheckoutStore = (initState: CheckoutState = defaultInitState)
 
                 resetStore: () => {
                     set(defaultInitState);
+                },
+
+                setIsSubmitting: (value) => {
+                    set({ isSubmitting: value });
                 },
             }),
             {

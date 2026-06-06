@@ -5,10 +5,12 @@ import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
 import { getPreviousPath } from "@/lib/navigation/internal-navigation";
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { HeaderProps } from "@/components/flexible-layout";
 import { AnimatedButton } from "@/components/ui/animated-button";
+import { Text } from "@/components/ui/text";
 
 export function AdditionalHeader({
   left,
@@ -18,6 +20,7 @@ export function AdditionalHeader({
 }: HeaderProps) {
   const router = useRouter();
   const { openCart, closeCart } = useCart((s) => s);
+  const isSubmitting = useCheckoutStore((s) => s.isSubmitting);
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
 
   const country = currentCountry.countryCode?.toLowerCase() || "gb";
@@ -25,6 +28,7 @@ export function AdditionalHeader({
   const homePath = `/${country}/${locale}`;
 
   const handleLeftClick = () => {
+    if (isSubmitting) return;
     closeCart();
     if (typeof window === "undefined") {
       router.push(homePath);
@@ -52,6 +56,7 @@ export function AdditionalHeader({
   };
 
   const handleRightClick = () => {
+    if (isSubmitting) return;
     openCart();
     router.push(homePath);
   };
@@ -62,6 +67,8 @@ export function AdditionalHeader({
         "fixed inset-x-2.5 top-2.5 z-30 h-12 py-2 lg:top-2 lg:gap-0 lg:px-5 lg:py-3",
         "flex items-center justify-between gap-1",
         "blackTheme bg-transparent text-textColor mix-blend-exclusion",
+        isSubmitting &&
+          "pointer-events-none text-textInactiveColor mix-blend-normal",
       )}
     >
       <AnimatedButton
@@ -71,7 +78,15 @@ export function AdditionalHeader({
       >
         {left}
       </AnimatedButton>
-      <div className="flex-none text-center text-textBaseSize">{center}</div>
+
+      <Text
+        className={cn("text-baseSize flex-none text-center text-textColor", {
+          "text-textInactiveColor": isSubmitting,
+        })}
+      >
+        {center}
+      </Text>
+
       <AnimatedButton
         onClick={handleRightClick}
         animationArea="text"
