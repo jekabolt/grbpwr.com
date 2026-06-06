@@ -54,11 +54,11 @@ export function MobileCookieModal({
           </Button>
         </div>
         <DialogPrimitives.Portal>
-          <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
+          <DialogPrimitives.Overlay className="fixed inset-0 z-50 h-screen bg-overlay" />
           <ModalTransition
             isOpen={open}
             contentSlideFrom="bottom"
-            contentClassName="fixed inset-x-2 bottom-2 top-2 z-30 flex flex-col gap-4 border border-textInactiveColor bg-bgColor py-4 text-textColor"
+            contentClassName="fixed inset-x-2 bottom-2 top-2 z-[60] flex flex-col gap-4 border border-textInactiveColor bg-bgColor py-4 text-textColor"
             content={
               <DialogPrimitives.Content className="flex h-full flex-col gap-4">
                 <DialogPrimitives.Title className="sr-only">
