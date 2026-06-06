@@ -349,6 +349,18 @@ export function useAccountLogin() {
     await sendLoginCode(true);
   }
 
+  // Go back to the email step from the code step so the user can enter a
+  // different email. The per-email cooldown is intentionally left intact: if
+  // they re-enter the same address, sendLoginCode reuses the existing timer
+  // instead of sending another email.
+  function goToEmailStep() {
+    if (pending) return;
+    setCode("");
+    setCodeVerified(false);
+    setStep("email");
+    clearStoredLoginAttempt();
+  }
+
   async function resendCode() {
     await sendLoginCode(false);
   }
@@ -422,5 +434,6 @@ export function useAccountLogin() {
     sendInitialCode,
     resendCode,
     verifyCode,
+    goToEmailStep,
   };
 }
