@@ -12,7 +12,6 @@ import { useTranslations } from "next-intl";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import RadioGroup from "@/components/ui/radio-group";
 import { Searchbar } from "@/components/ui/searchbar";
@@ -52,18 +51,16 @@ export function MobileCountriesPopup() {
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCountryPopup}>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
-        <ModalTransition
-          isOpen={open}
-          contentSlideFrom="top"
-          contentClassName={cn(
-            "fixed inset-x-2 bottom-2 top-2 z-[70] overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden",
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay data-[state=open]:animate-overlay-in data-[state=closed]:animate-overlay-out" />
+        <DialogPrimitives.Content
+          onOpenAutoFocus={(e) => e.preventDefault()}
+          className={cn(
+            "fixed inset-x-2 bottom-2 top-2 z-[70] flex flex-col overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden data-[state=open]:animate-panel-in data-[state=closed]:animate-panel-out",
             {
               blackTheme: !isWebsiteEnabled,
             },
           )}
-          content={
-            <DialogPrimitives.Content className="flex h-full flex-col overflow-y-auto">
+        >
               <div className="flex items-center justify-between bg-bgColor pb-8">
                 <Text variant="uppercase">{t("change country")}</Text>
                 <DialogPrimitives.Close asChild>
@@ -164,9 +161,7 @@ export function MobileCountriesPopup() {
                   ))
                 )}
               </div>
-            </DialogPrimitives.Content>
-          }
-        />
+        </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
   );

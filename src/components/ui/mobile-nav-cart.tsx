@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
@@ -31,6 +31,13 @@ export function MobileNavCart({
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const open = isMobile && isOpen;
+  const pathname = usePathname();
+
+  // Never let the cart modal persist across a navigation (avoids it reappearing
+  // when going back from checkout to the product page).
+  useEffect(() => {
+    closeCart();
+  }, [pathname, closeCart]);
 
   useEffect(() => {
     if (open && products.length > 0) {
