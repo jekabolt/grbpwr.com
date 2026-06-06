@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { createPortal } from "react-dom";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
+import { createPortal } from "react-dom";
 
 import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -68,18 +68,14 @@ export function AccountCartMobileOrderSummary() {
 
   return (
     <>
-      {isOpen &&
-        createPortal(
-          <Overlay
-            cover="screen"
-            color="dark"
-            active
-            disablePointerEvents={false}
-            className="pointer-events-auto z-[35] opacity-60 lg:hidden"
-            onClick={() => setIsOpen(false)}
-          />,
-          document.body,
-        )}
+      <Overlay
+        cover="screen"
+        trigger="active"
+        color="dark"
+        active={isOpen}
+        disablePointerEvents={false}
+        onClick={handleToggle}
+      />
       <div className="pointer-events-auto flex max-h-full min-h-0 w-full flex-col justify-end overflow-hidden">
         <FieldsGroupContainer
           signType="plus-minus"

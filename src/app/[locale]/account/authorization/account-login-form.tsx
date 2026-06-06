@@ -153,7 +153,7 @@ export function AccountLoginForm({
         </div>
       </div>
       {showOrderSummary && (
-        <div className="pointer-events-none fixed inset-x-2.5 bottom-6 top-2.5 z-40 flex flex-col justify-end lg:hidden">
+        <div className="fixed inset-x-2.5 bottom-6 top-2.5 z-40 flex flex-col justify-end lg:hidden">
           {isRestoringSession ? (
             <AccountMobileOrderSummarySkeleton />
           ) : (
