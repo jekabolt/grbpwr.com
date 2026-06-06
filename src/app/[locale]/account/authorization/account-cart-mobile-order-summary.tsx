@@ -69,17 +69,13 @@ export function AccountCartMobileOrderSummary() {
     <>
       <Overlay
         cover="screen"
-        trigger="active"
-        color="dark"
-        active={isOpen}
+        onClick={handleToggle}
         disablePointerEvents={false}
-        className="pointer-events-auto"
-        onClick={() => setIsOpen(false)}
       />
       <div className="pointer-events-auto flex max-h-full min-h-0 w-full flex-col justify-end overflow-hidden">
         <FieldsGroupContainer
           signType="plus-minus"
-          className="relative z-40 flex max-h-full min-h-0 flex-col overflow-hidden space-y-0 border border-textInactiveColor p-2.5"
+          className="relative z-40 flex max-h-full min-h-0 flex-col space-y-0 overflow-hidden border border-textInactiveColor p-2.5"
           childrenSpacingClass="flex min-h-0 flex-1 flex-col overflow-hidden space-y-0"
           signPosition="before"
           title={`${isOpen ? t("hide") : t("show")} ${t("order summary")}`}
@@ -97,14 +93,16 @@ export function AccountCartMobileOrderSummary() {
             className="mt-4 shrink-0 space-y-3 border-t border-textInactiveColor pt-4"
             onClick={() => setIsOpen(false)}
           >
-          <div className="flex justify-between">
-            <Text variant="uppercase">{t("subtotal")}:</Text>
-            <Text>{formatPrice(subTotalPrice, currency, currencySymbol)}</Text>
-          </div>
-          <div className="flex justify-between">
-            <Text variant="uppercase">{t("grand total")}:</Text>
-            <Text>{formatPrice(totalPrice, currency, currencySymbol)}</Text>
-          </div>
+            <div className="flex justify-between">
+              <Text variant="uppercase">{t("subtotal")}:</Text>
+              <Text>
+                {formatPrice(subTotalPrice, currency, currencySymbol)}
+              </Text>
+            </div>
+            <div className="flex justify-between">
+              <Text variant="uppercase">{t("grand total")}:</Text>
+              <Text>{formatPrice(totalPrice, currency, currencySymbol)}</Text>
+            </div>
           </div>
         </FieldsGroupContainer>
       </div>

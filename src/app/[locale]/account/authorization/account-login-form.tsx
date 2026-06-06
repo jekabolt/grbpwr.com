@@ -1,8 +1,8 @@
 "use client";
 
-import type { StorefrontAccount } from "@/api/proto-http/frontend";
-import { useEffect, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import Link from "next/link";
+import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
