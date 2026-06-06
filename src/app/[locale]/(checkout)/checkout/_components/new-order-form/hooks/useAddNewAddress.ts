@@ -280,7 +280,6 @@ export function useAddNewAddress({
 
   return {
     isAddingNewAddress,
-    isAutoNewAddressForm,
     savingNewAddress,
     saveAddressError,
     showSaveOnlyActions,

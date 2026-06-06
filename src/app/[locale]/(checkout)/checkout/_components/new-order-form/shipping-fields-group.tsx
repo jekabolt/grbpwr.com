@@ -128,7 +128,6 @@ export default function ShippingFieldsGroup({
 
   const {
     isAddingNewAddress,
-    isAutoNewAddressForm,
     savingNewAddress,
     saveAddressError,
     showSaveOnlyActions,
@@ -173,11 +172,7 @@ export default function ShippingFieldsGroup({
     >
       {showAddressForm && (
         <>
-          <AddressFields
-            loading={loading}
-            disabled={disabled}
-            disableCountryField={isAutoNewAddressForm}
-          />
+          <AddressFields loading={loading} disabled={disabled} />
           {shouldShowSaveAddressActions && (
             <div className="mt-4 flex gap-3">
               <Button
