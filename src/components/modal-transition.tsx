@@ -1,6 +1,6 @@
 "use client";
 
-import React, { type ReactNode } from "react";
+import React, { type CSSProperties, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export const modalTransition = {
@@ -34,6 +34,7 @@ interface ModalTransitionProps {
   content?: ReactNode;
   contentSlideFrom?: SlideFrom;
   contentClassName?: string;
+  contentStyle?: CSSProperties;
 }
 
 export function ModalTransition({
@@ -41,6 +42,7 @@ export function ModalTransition({
   content,
   contentSlideFrom = "right",
   contentClassName,
+  contentStyle,
 }: ModalTransitionProps) {
   const animation = getSlideAnimation(contentSlideFrom);
   return (
@@ -54,6 +56,7 @@ export function ModalTransition({
             exit: animation.exit,
             transition: modalTransition,
             className: contentClassName,
+            style: contentStyle,
           } as React.ComponentProps<typeof motion.div>)}
         >
           {content}

@@ -9,11 +9,15 @@
     "new in": "neu",
     "checkout": "kasse",
     "close": "schließen",
-    "menu": "menu"
+    "menu": "menu",
+    "aftersale services": "kundenservice",
+    "faqs": "häufig gestellte fragen",
+    "returns": "rückgaben"
   },
   "account": {
     "account": "konto",
     "login": "einloggen oder konto erstellen",
+    "log in": "einloggen",
     "email": "e-mail",
     "continue": "weiter",
     "checkout as guest": "als gast zur kasse",

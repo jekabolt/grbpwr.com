@@ -14,11 +14,7 @@ import { routing } from "@/i18n/routing";
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import {
-  CATEGORY_TITLE_MAP,
-  filterNavigationLinks,
-  processCategories,
-} from "./categories-map";
+import { CATEGORY_TITLE_MAP } from "./categories-map";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -115,14 +111,16 @@ export function isDateTodayOrFuture(date: string): boolean {
   return inputDate >= today;
 }
 
-export function createMenuItems(
-  isBigMenuEnabled: boolean | undefined,
-  setActiveCategory: (category: "men" | "women" | undefined) => void,
-): { label: string; showArrow: boolean; href: string; action?: () => void }[] {
+export type MenuItem = {
+  label: string;
+  showArrow: boolean;
+  href: string;
+};
+
+export function createMenuItems(): MenuItem[] {
   return [
     ...(["men", "women"] as const).map((gender) => ({
       label: gender,
-      action: isBigMenuEnabled ? () => setActiveCategory(gender) : undefined,
       showArrow: true,
       href: `/catalog/${gender}`,
     })),
@@ -139,34 +137,46 @@ export function createMenuItems(
   ];
 }
 
-export function createActiveCategoryMenuItems(
-  activeCategory: "men" | "women" | undefined,
-  dictionary?: { categories?: any[] },
-) {
-  if (!activeCategory) return { leftCategories: [], rightCategories: [] };
-
-  const categories = processCategories(dictionary?.categories || []);
-  const categoryLinks = categories.map((category: any) => ({
-    title: category.name,
-    href: category.href,
-    id: category.id.toString(),
-  }));
-
-  const { leftSideCategoryLinks, rightSideCategoryLinks } =
-    filterNavigationLinks(categoryLinks);
-
-  const filteredLeftCategories =
-    activeCategory === "men"
-      ? leftSideCategoryLinks.filter(
-          (c: any) => c.title.toLowerCase() !== "dresses",
-        )
-      : leftSideCategoryLinks;
-
-  return {
-    leftCategories: filteredLeftCategories,
-    rightCategories: rightSideCategoryLinks,
-  };
+export function createContentPagesLinks(): MenuItem[] {
+  return [
+    {
+      label: "aftersale services",
+      showArrow: false,
+      href: "/aftersale-services",
+    },
+    { label: "returns", showArrow: false, href: "/return" },
+    { label: "faqs", showArrow: false, href: "/faq" },
+  ];
 }
+
+// export function createActiveCategoryMenuItems(
+//   activeCategory: "men" | "women" | undefined,
+//   dictionary?: { categories?: any[] },
+// ) {
+//   if (!activeCategory) return { leftCategories: [], rightCategories: [] };
+
+//   const categories = processCategories(dictionary?.categories || []);
+//   const categoryLinks = categories.map((category: any) => ({
+//     title: category.name,
+//     href: category.href,
+//     id: category.id.toString(),
+//   }));
+
+//   const { leftSideCategoryLinks, rightSideCategoryLinks } =
+//     filterNavigationLinks(categoryLinks);
+
+//   const filteredLeftCategories =
+//     activeCategory === "men"
+//       ? leftSideCategoryLinks.filter(
+//           (c: any) => c.title.toLowerCase() !== "dresses",
+//         )
+//       : leftSideCategoryLinks;
+
+//   return {
+//     leftCategories: filteredLeftCategories,
+//     rightCategories: rightSideCategoryLinks,
+//   };
+// }
 
 export function getHeroNavLink(heroNav?: {
   featuredTag?: string;

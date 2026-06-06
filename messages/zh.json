@@ -9,11 +9,15 @@
     "new in": "新品",
     "checkout": "结算",
     "close": "关闭",
-    "menu": "菜单"
+    "menu": "菜单",
+    "aftersale services": "售后服务",
+    "faqs": "常见问题",
+    "returns": "退货"
   },
   "account": {
     "account": "账户",
     "login": "登录或创建账户",
+    "log in": "登录",
     "email": "邮箱",
     "continue": "继续",
     "checkout as guest": "以访客身份结账",

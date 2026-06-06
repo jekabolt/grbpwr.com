@@ -9,11 +9,15 @@
     "new in": "新着",
     "checkout": "チェックアウト",
     "close": "閉じる",
-    "menu": "メニュー"
+    "menu": "メニュー",
+    "aftersale services": "アフターサービス",
+    "faqs": "よくある質問",
+    "returns": "返品"
   },
   "account": {
     "account": "アカウント",
     "login": "ログインまたはアカウント作成",
+    "log in": "ログイン",
     "email": "メール",
     "continue": "続行",
     "checkout as guest": "ゲストとして購入",

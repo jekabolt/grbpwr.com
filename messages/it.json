@@ -9,11 +9,15 @@
     "new in": "novità",
     "checkout": "pagamento",
     "close": "chiudi",
-    "menu": "menu"
+    "menu": "menu",
+    "aftersale services": "servizi post vendita",
+    "faqs": "domande frequenti",
+    "returns": "resi"
   },
   "account": {
     "account": "account",
     "login": "accedi o crea un account",
+    "log in": "accedi",
     "email": "email",
     "continue": "continua",
     "checkout as guest": "checkout come ospite",

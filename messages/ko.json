@@ -9,11 +9,15 @@
     "new in": "신상품",
     "checkout": "결제",
     "close": "닫기",
-    "menu": "메뉴"
+    "menu": "메뉴",
+    "aftersale services": "애프터서비스",
+    "faqs": "자주묻는질문",
+    "returns": "반품"
   },
   "account": {
     "account": "계정",
     "login": "로그인 또는 계정 만들기",
+    "log in": "로그인",
     "email": "이메일",
     "continue": "계속",
     "checkout as guest": "게스트로 결제",
