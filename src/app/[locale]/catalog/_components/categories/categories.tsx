@@ -36,13 +36,21 @@ export function Categories() {
 
   const baseHref = gender ? `/catalog/${gender}` : "/catalog";
 
+  // Objects is a standalone top-level catalog (no gender), so there is nothing
+  // to "undo" back to - hide the undo button inside /catalog/objects.
+  const isObjects = categoryName === "objects";
+
   return (
     <div className="inline-flex items-center selection:bg-inverted selection:text-textColor">
       <CategoryButton href={baseHref} variant="underline">
         {t((topCategoryName || categoryName || "").toLowerCase())}
       </CategoryButton>
-      <Text component="span">{"\u00A0/\u00A0"}</Text>
-      <CategoryUndoButton href={baseHref} />
+      {!isObjects && (
+        <>
+          <Text component="span">{"\u00A0/\u00A0"}</Text>
+          <CategoryUndoButton href={baseHref} />
+        </>
+      )}
 
       {/* {!!filteredSubCategories.length && <Text>/</Text>}
 
