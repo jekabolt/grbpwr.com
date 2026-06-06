@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { PaymentElement } from "@stripe/react-stripe-js";
-import type { PaymentWalletsOption } from "@stripe/stripe-js";
+import type { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
@@ -125,9 +125,17 @@ export default function PaymentFieldsGroup({
                 onChange={handlePaymentElementChange}
                 options={{
                   layout: "tabs",
+                  // Show Apple Pay / Google Pay, hide Stripe Link (we don't want
+                  // its inline email/save form). `link` is honored by stripe.js
+                  // at runtime but was dropped from PaymentWalletsOption in the
+                  // installed types, so the wallets object is widened locally.
                   wallets: {
+                    applePay: "auto",
+                    googlePay: "auto",
                     link: "never",
-                  } as PaymentWalletsOption,
+                  } as StripePaymentElementOptions["wallets"] & {
+                    link: "never";
+                  },
                   fields: {
                     billingDetails: {
                       address: {
