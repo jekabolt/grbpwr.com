@@ -7,7 +7,9 @@ const nextConfig: NextConfig = {
   experimental: {
     reactCompiler: {
       compilationMode: 'annotation'
-    }
+    },
+    // Native View Transitions API for smooth cross-fades between routes.
+    viewTransition: true,
   },
   images: {
     remotePatterns: [

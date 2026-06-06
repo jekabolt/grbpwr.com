@@ -28,6 +28,7 @@
     "resend code in": "코드 재전송까지",
     "or sign in via the link sent to your email": "또는 이메일로 전송된 링크로 로그인하세요",
     "or continue using the link sent to your email": "또는 이메일로 전송된 링크로 계속하세요",
+    "use a different email": "다른 이메일 사용",
     "complete your registration": "회원가입을 완료하세요",
     "country": "국가",
     "track order": "주문 추적",
@@ -145,7 +146,7 @@
     "next": "다음",
     "empty": "없음",
     "clear all": "모두 지우기",
-    "undo": "undo",
+    "undo": "되돌리기",
     "show": "보기",
     "sort": {
       "latest arrivals": "신상품",

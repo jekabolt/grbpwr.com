@@ -103,6 +103,7 @@ export function Ads({
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center">
                     <Text
                       variant="uppercase"
+                      component="h2"
                       className={cn("w-full text-center", {
                         "group-hover:underline":
                           !currentTranslation?.exploreText &&

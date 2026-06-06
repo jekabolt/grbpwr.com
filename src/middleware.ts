@@ -2,9 +2,16 @@ import createMiddleware from "next-intl/middleware";
 
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
+import { homepageMarkdown } from "./lib/agent-markdown";
 import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, isAllowedWhenSiteDisabled, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
 
 const intlMiddleware = createMiddleware(routing);
+
+// Agent-discovery Link header (RFC 8288) for the homepage: advertise the API
+// catalog (RFC 9727), the markdown alternate (see Markdown-for-Agents above) and
+// the sitemap. Only resources that exist and are locale-agnostic are listed.
+const HOMEPAGE_LINK_HEADER =
+    '</.well-known/api-catalog>; rel="api-catalog", </>; rel="alternate"; type="text/markdown", </sitemap.xml>; rel="sitemap"';
 
 export default async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
@@ -15,6 +22,25 @@ export default async function middleware(req: NextRequest) {
         const url = req.nextUrl.clone();
         url.host = host.replace(/^www\./, "");
         return NextResponse.redirect(url, { status: 308 });
+    }
+
+    // Markdown for Agents: when an agent explicitly asks for text/markdown,
+    // serve a markdown overview of the homepage instead of the HTML app shell.
+    // Browsers send `text/html`, so normal traffic is unaffected. Limited to the
+    // homepage ("/" or "/{country}/{locale}") — other paths fall through to HTML.
+    const isHomePathForMarkdown =
+        pathname === "/" || /^\/[A-Za-z]{2}\/[a-z]{2}\/?$/.test(pathname);
+    if (
+        isHomePathForMarkdown &&
+        (req.headers.get("accept") || "").includes("text/markdown")
+    ) {
+        return new NextResponse(homepageMarkdown(), {
+            headers: {
+                "Content-Type": "text/markdown; charset=utf-8",
+                Vary: "Accept",
+                "Cache-Control": "public, max-age=3600",
+            },
+        });
     }
 
     // get existing cookies
@@ -125,6 +151,11 @@ export default async function middleware(req: NextRequest) {
         // Prevent any edge/CDN caching of this rewrite — we depend on the
         // Set-Cookie below being applied on every request.
         res.headers.set("Cache-Control", "no-store");
+        // Homepage only: point agents at the markdown alternate and sitemap.
+        if (!rest?.trim()) {
+            res.headers.append("Link", HOMEPAGE_LINK_HEADER);
+            res.headers.set("Vary", "Accept");
+        }
         setMainCookies(res, country!, locale!);
         const suggestCountryCookie = req.cookies.get("NEXT_SUGGEST_COUNTRY")?.value;
         const suggestLocaleCookie = req.cookies.get("NEXT_SUGGEST_LOCALE")?.value;

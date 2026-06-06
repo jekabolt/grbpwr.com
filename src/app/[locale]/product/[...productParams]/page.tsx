@@ -4,6 +4,7 @@ import { LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { productJsonLd } from "@/lib/structured-data";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileProductInfo } from "./_components/mobile-product-info";
@@ -13,6 +14,7 @@ import { ProductPageLayout } from "./_components/product-page-layout";
 
 interface ProductPageProps {
   params: Promise<{
+    locale: string;
     productParams: string[];
   }>;
 }
@@ -49,6 +51,8 @@ export async function generateMetadata({
   return generateCommonMetadata({
     title: title?.toUpperCase(),
     description: `${description}'\n'${color}`,
+    locale,
+    path: `/product/${gender}/${brand}/${name}/${id}`,
     ogParams: {
       imageUrl: productImageUrl,
       imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
@@ -59,7 +63,7 @@ export async function generateMetadata({
 export const dynamic = "force-static";
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { productParams } = await params;
+  const { productParams, locale } = await params;
 
   if (productParams.length !== 4) {
     return notFound();
@@ -79,9 +83,29 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const productMedia = [...(product?.media || [])];
+  const jsonLd = productJsonLd(product, locale);
+
+  // Single descriptive H1 (the product name) rendered once at page level — both
+  // the desktop and mobile info blocks are in the DOM (CSS-toggled), so putting
+  // the H1 here avoids duplicate H1s. Visually hidden since the name already
+  // shows in the info block.
+  const localeId = LANGUAGE_CODE_TO_ID[locale];
+  const productName =
+    product?.product?.productDisplay?.productBody?.translations?.find(
+      (t) => t.languageId === localeId,
+    )?.name ||
+    product?.product?.sku ||
+    "";
 
   return (
-    <ProductPageLayout>
+    <ProductPageLayout gender={gender}>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
+      {productName && <h1 className="sr-only">{productName}</h1>}
       <div className="block lg:hidden">
         {product && <MobileProductInfo product={product} />}
       </div>

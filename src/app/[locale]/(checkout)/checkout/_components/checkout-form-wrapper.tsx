@@ -24,10 +24,6 @@ import NewOrderForm from "./new-order-form";
 import { useCheckoutGuestPersistence } from "./use-checkout-guest-persistence";
 import { useStripeRedirect } from "./new-order-form/hooks/useStripeRedirect";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-);
-
 export function CheckoutFormWrapper({
   initialAccount,
   initialGuestCheckout = false,
@@ -36,6 +32,11 @@ export function CheckoutFormWrapper({
   initialGuestCheckout?: boolean;
 }) {
   const router = useRouter();
+  // Lazy-init so the Stripe SDK only kicks off on mount of the checkout form,
+  // not at module evaluation time.
+  const [stripePromise] = useState(() =>
+    loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!),
+  );
   const products = useCart((s) => s.products);
   const isSignedIn = useAccountOnboardingStore((s) => s.isSignedIn);
   const setSignedIn = useAccountOnboardingStore((s) => s.setSignedIn);

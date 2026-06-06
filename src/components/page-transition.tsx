@@ -1,24 +1,25 @@
 "use client";
 
-import { ReactNode, useLayoutEffect } from "react";
+import * as React from "react";
+import { ComponentType, ReactNode, useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
 
 interface PageTransitionProps {
   children: ReactNode;
 }
 
-const pageTransition = {
-  duration: 0.28,
-  ease: [0.22, 1, 0.36, 1] as const,
-};
+// React's experimental ViewTransition is present at runtime but not yet in the
+// installed @types/react — access it through a cast.
+const ViewTransition = (
+  React as unknown as {
+    unstable_ViewTransition: ComponentType<{ children?: ReactNode }>;
+  }
+).unstable_ViewTransition;
 
-const variants = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-};
-
+// Wraps route content in ViewTransition so the browser cross-fades the old and
+// new page (View Transitions API) instead of the old key-remount fade, which
+// flashed/jumped. Browsers without support fall back to instant navigation.
+// Cross-fade timing is tuned in globals.css.
 export function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
 
@@ -26,19 +27,5 @@ export function PageTransition({ children }: PageTransitionProps) {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={pathname}
-        className="min-h-0 w-full"
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        variants={variants}
-        transition={pageTransition}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
-  );
+  return <ViewTransition>{children}</ViewTransition>;
 }

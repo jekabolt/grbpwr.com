@@ -8,13 +8,15 @@ function escapeXml(text: string): string {
     .replace(/"/g, "&quot;");
 }
 
-/** One `<url>` row; optional `<image:image>` (Google image extension). */
+/** One `<url>` row; optional `<image:image>` (Google image extension)
+ * and `<xhtml:link>` hreflang alternates (Google international extension). */
 export type SitemapUrlEntry = {
   url: string;
   lastModified?: string | Date;
   changeFrequency?: NonNullable<MetadataRoute.Sitemap[number]>["changeFrequency"];
   priority?: number;
   images?: { loc: string; title?: string; caption?: string }[];
+  alternates?: { hreflang: string; href: string }[];
 };
 
 /** Root `<sitemapindex>` pointing at child sitemaps. */
@@ -36,14 +38,19 @@ export function serializeSitemapIndex(childLocs: string[]): string {
 
 export function serializeUrlset(entries: SitemapUrlEntry[]): string {
   const hasImages = entries.some((e) => e.images && e.images.length > 0);
+  const hasAlternates = entries.some(
+    (e) => e.alternates && e.alternates.length > 0,
+  );
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  const ns = ['xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'];
   if (hasImages) {
-    xml +=
-      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n';
-  } else {
-    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+    ns.push('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"');
   }
+  if (hasAlternates) {
+    ns.push('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
+  }
+  xml += `<urlset ${ns.join(" ")}>\n`;
 
   for (const item of entries) {
     xml += "<url>\n";
@@ -57,6 +64,11 @@ export function serializeUrlset(entries: SitemapUrlEntry[]): string {
     }
     if (typeof item.priority === "number") {
       xml += `<priority>${item.priority}</priority>\n`;
+    }
+    if (item.alternates?.length) {
+      for (const alt of item.alternates) {
+        xml += `<xhtml:link rel="alternate" hreflang="${escapeXml(alt.hreflang)}" href="${escapeXml(alt.href)}"/>\n`;
+      }
     }
     if (item.images?.length) {
       for (const img of item.images) {

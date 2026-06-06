@@ -3,7 +3,7 @@ import { LANGUAGE_CODE_TO_ID } from "@/constants";
 import { routing } from "@/i18n/routing";
 import { serviceClient } from "@/lib/api";
 
-import { CANONICAL_COUNTRY_BY_LOCALE, SITEMAP_PUBLIC_BASE_URL } from "./build-entries";
+import { hreflangAlternates, localizedSitemapUrl } from "./build-entries";
 import type { SitemapUrlEntry } from "./serialize-xml";
 
 const SITEMAP_PRODUCT_PAGE_SIZE = 200;
@@ -17,6 +17,7 @@ const productListFilters: common_FilterConditions = {
   color: undefined,
   topCategoryIds: undefined,
   subCategoryIds: undefined,
+  excludeTopCategoryIds: undefined,
   typeIds: undefined,
   sizesIds: undefined,
   preorder: undefined,
@@ -74,10 +75,9 @@ export async function buildProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
 
       const imageLoc = primaryImageLoc(p);
       const lastMod = p.updatedAt ? new Date(p.updatedAt) : new Date();
+      const alternates = hreflangAlternates(productPath);
 
       for (const locale of routing.locales) {
-        const country = CANONICAL_COUNTRY_BY_LOCALE[locale];
-        const urlPath = `/${country}/${locale}${productPath}`;
         const name = productNameForLocale(p, locale);
         const sku = (p.sku || "").trim();
         const title = sku && name ? `${sku} | ${name}` : name || sku || "product";
@@ -88,11 +88,12 @@ export async function buildProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
             : undefined;
 
         entries.push({
-          url: `${SITEMAP_PUBLIC_BASE_URL}${urlPath}`,
+          url: localizedSitemapUrl(locale, productPath),
           lastModified: lastMod,
           changeFrequency: "daily",
           priority: 0.65,
           images,
+          alternates,
         });
       }
     }

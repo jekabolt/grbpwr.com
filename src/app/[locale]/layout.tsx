@@ -1,8 +1,6 @@
 import { Metadata } from "next";
-import Script from "next/script";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
-import { GoogleTagManager } from "@next/third-parties/google";
 import { NextIntlClientProvider } from "next-intl";
 import {
   getMessages,
@@ -10,15 +8,16 @@ import {
   setRequestLocale,
 } from "next-intl/server";
 
-import { GA4_MEASUREMENT_ID } from "@/lib/analitycs/utils";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { AnalyticsInit } from "@/components/analytics-init";
+import { DeferredAnalytics } from "@/components/deferred-analytics";
+import { InternalNavigationTracker } from "@/components/internal-navigation-tracker";
 import { PageTransition } from "@/components/page-transition";
+import { ConsoleArtInit } from "@/components/ui/art/console-art-init";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
 import { SiteGuard } from "@/components/ui/site-guard";
 import { ToastProvider } from "@/components/ui/toaster";
-import { InternalNavigationTracker } from "@/components/internal-navigation-tracker";
 import { VisitedLinksSync } from "@/components/visited-links-sync";
 
 import "../globals.css";
@@ -78,20 +77,19 @@ export default async function RootLayout({ children, params }: Props) {
             __html: `(function(){var p=window.location.pathname;if(/\\/timeline(\\/|$)/.test(p))document.documentElement.classList.add("blackTheme");})();`,
           }}
         />
-        <link rel="preconnect" href="https://files.grbpwr.com" />
-        <link rel="dns-prefetch" href="https://files.grbpwr.com" />
-        <link rel="preconnect" href="https://backend.grbpwr.com" />
-        <link rel="dns-prefetch" href="https://backend.grbpwr.com" />
-      </head>
-      <GoogleTagManager gtmId="GTM-WFC98J99" />
-      <body className={FeatureMono.className}>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
+        {/* files.grbpwr.com serves the LCP hero media — keep this preconnect.
+            backend.grbpwr.com is only called server-side, so a browser preconnect
+            is wasted; dropped along with the redundant dns-prefetch hints. */}
+        <link
+          rel="preconnect"
+          href="https://files.grbpwr.com"
+          crossOrigin="anonymous"
         />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA4_MEASUREMENT_ID}',{send_page_view:false});`}
-        </Script>
+      </head>
+      <body className={FeatureMono.className}>
+        {/* GTM + GA4 load on first interaction (or an idle fallback) to keep
+            third-party JS off the main thread during the initial load. */}
+        <DeferredAnalytics />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <CookieBanner />
           <ToastProvider>
@@ -106,6 +104,7 @@ export default async function RootLayout({ children, params }: Props) {
             <AnalyticsInit />
             <InternalNavigationTracker />
             <VisitedLinksSync />
+            <ConsoleArtInit />
           </ToastProvider>
         </NextIntlClientProvider>
       </body>

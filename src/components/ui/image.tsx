@@ -85,7 +85,9 @@ export default function ImageComponent({
           ref={videoRef}
           src={src}
           className="h-full w-full object-cover"
-          poster={src}
+          // Use the blurhash as the poster so a frame paints instantly; the
+          // video URL itself is not a valid poster image and left it blank.
+          poster={blurhash ? blurhashToBase64(blurhash) : undefined}
           autoPlay={autoPlay}
           muted={muted}
           loop={loop}

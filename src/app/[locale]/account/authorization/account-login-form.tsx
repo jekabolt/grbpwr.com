@@ -61,6 +61,7 @@ export function AccountLoginForm({
     sendInitialCode,
     resendCode,
     verifyCode,
+    goToEmailStep,
   } = useAccountLogin();
   const showOrderSummary =
     !isCheckout && step === "email" && products.length > 0;
@@ -132,6 +133,7 @@ export function AccountLoginForm({
                   onCodeChange={setCode}
                   onCodeComplete={verifyCode}
                   onResend={resendCode}
+                  onChangeEmail={goToEmailStep}
                 />
               )}
             </div>
@@ -276,6 +278,7 @@ function CodeStep({
   onCodeChange,
   onCodeComplete,
   onResend,
+  onChangeEmail,
 }: {
   code: string;
   pending: boolean;
@@ -283,6 +286,7 @@ function CodeStep({
   onCodeChange: (value: string) => void;
   onCodeComplete: (code: string) => void;
   onResend: () => void;
+  onChangeEmail: () => void;
 }) {
   const t = useTranslations("account");
 
@@ -327,6 +331,15 @@ function CodeStep({
             <Text variant="uppercase" className="text-textInactiveColor">
               {t("or continue using the link sent to your email")}
             </Text>
+            <Button
+              type="button"
+              variant="underline"
+              className="mx-auto w-fit text-center uppercase"
+              disabled={pending}
+              onClick={onChangeEmail}
+            >
+              {t("use a different email")}
+            </Button>
           </div>
         </div>
       </div>

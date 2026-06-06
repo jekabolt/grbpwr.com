@@ -27,6 +27,10 @@ export function MainAds({
     (t) => t.languageId === languageId,
   );
 
+  // Mobile hero uses the portrait media (falls back to landscape if missing).
+  const mobileMedia =
+    main.single?.mediaPortrait?.media || main.single?.mediaLandscape?.media;
+
   return (
     <AnimatedButton
       href={main.single?.exploreLink || ""}
@@ -57,16 +61,12 @@ export function MainAds({
       </div>
       <div className="block h-full lg:hidden">
         <Image
-          src={main.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""}
-          blurhash={main.single?.mediaLandscape?.media?.blurhash}
-          type={
-            isVideo(main.single?.mediaLandscape?.media?.fullSize?.mediaUrl)
-              ? "video"
-              : "image"
-          }
+          src={mobileMedia?.fullSize?.mediaUrl || ""}
+          blurhash={mobileMedia?.blurhash}
+          type={isVideo(mobileMedia?.fullSize?.mediaUrl) ? "video" : "image"}
           aspectRatio={calculateAspectRatio(
-            main.single?.mediaLandscape?.media?.fullSize?.width,
-            main.single?.mediaLandscape?.media?.fullSize?.height,
+            mobileMedia?.fullSize?.width,
+            mobileMedia?.fullSize?.height,
           )}
           alt="main hero image"
           fit="cover"
@@ -81,7 +81,9 @@ export function MainAds({
       <div className="absolute inset-x-0 top-32 z-20 flex h-screen items-center lg:top-20">
         <div className="flex w-full flex-col items-start gap-6 p-2 text-bgColor md:flex-row md:justify-between">
           <Text variant="uppercase">{currentTranslation?.tag}</Text>
-          <Text variant="uppercase">{currentTranslation?.headline}</Text>
+          <Text variant="uppercase" component="h1">
+            {currentTranslation?.headline}
+          </Text>
           <Text variant="uppercase" className="md:w-1/3">
             {currentTranslation?.description}
           </Text>

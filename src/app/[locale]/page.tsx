@@ -1,8 +1,9 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import { serviceClient } from "@/lib/api";
+import { getHero, getLatestProductDate } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { siteJsonLd } from "@/lib/structured-data";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Disabled } from "@/components/ui/disabled";
 import { EmptyHero } from "@/components/ui/empty-hero";
@@ -22,6 +23,8 @@ export async function generateMetadata({
 
   return generateCommonMetadata({
     description,
+    locale,
+    path: "",
     ogParams: {
       imageUrl: "/app-logo.webp",
       imageWidth: 512,
@@ -32,7 +35,11 @@ export async function generateMetadata({
 }
 
 export default async function Page() {
-  const { hero, dictionary } = await serviceClient.GetHero({});
+  // Fetch in parallel so the freshness query doesn't add latency to the homepage.
+  const [{ hero, dictionary }, latestProductDate] = await Promise.all([
+    getHero(),
+    getLatestProductDate(),
+  ]);
   const isHero = hero?.entities?.length;
   const isWebsiteEnabled = dictionary?.siteEnabled;
 
@@ -48,8 +55,14 @@ export default async function Page() {
     return <EmptyHero />;
   }
 
+  const jsonLd = siteJsonLd(latestProductDate);
+
   return (
     <FlexibleLayout showAnnounce={true}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* <PageBackground imageUrl={heroImageUrl} /> */}
       <MainAds main={hero?.entities?.[0]?.main} />
       <Ads entities={hero?.entities || []} />

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { common_Product } from "@/api/proto-http/frontend";
 import {
   currencySymbols,
@@ -42,6 +43,11 @@ export function ProductItem({
   const { handleSelectItemEvent } = useAnalytics();
   const visited = useVisitedLink(product?.slug);
 
+  // Mobile only: touching a catalog card shows the blue highlight overlay over
+  // the image (like the zoom pulse on the product detail page).
+  const [pressed, setPressed] = useState(false);
+  const onPressEnd = () => setPressed(false);
+
   const currencyKey = currentCountry.currencyKey || "EUR";
   const productBody = product.productDisplay?.productBody?.productBodyInsert;
   const salePercentage = productBody?.salePercentage?.value || "0";
@@ -66,7 +72,11 @@ export function ProductItem({
   const translatedCategory = singularCategory
     ? t(singularCategory.toLowerCase())
     : "";
-  const name = fit ? `${fit} ${translatedCategory}` : translatedCategory;
+  // Objects use their category/sub-category name as-is (no "fit" prefix that
+  // garments get).
+  const isObjects = topCategory?.toLowerCase() === "objects";
+  const name =
+    fit && !isObjects ? `${fit} ${translatedCategory}` : translatedCategory;
 
   const productPrice =
     product.prices?.find(
@@ -95,6 +105,13 @@ export function ProductItem({
         className={cn("group flex h-full w-full flex-col", className)}
       >
         <div
+          onPointerDown={(e) => {
+            if (!disableAnimations && e.pointerType === "touch")
+              setPressed(true);
+          }}
+          // Keep the highlight on after release (tap navigates → this card
+          // unmounts, clearing it). Only a scroll/drag (pointercancel) clears it.
+          onPointerCancel={onPressEnd}
           className={cn("relative", {
             "group-data-[held=true]:animate-threshold-highlight":
               !disableAnimations,
@@ -116,7 +133,13 @@ export function ProductItem({
             loading={imagePriority ? "eager" : "lazy"}
           />
           {!disableAnimations && (
-            <Overlay cover="container" color="highlight" trigger="held" />
+            <Overlay
+              cover="container"
+              color="highlight"
+              trigger="active"
+              active={pressed}
+              className="lg:hidden"
+            />
           )}
         </div>
         <div

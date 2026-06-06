@@ -40,13 +40,11 @@ export function MobileNavMenu({
         </Button>
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-screen bg-overlay" />
-        <ModalTransition
-          isOpen={open}
-          contentSlideFrom="top"
-          contentClassName="fixed inset-x-2 bottom-2 top-2 z-40 border border-textInactiveColor bg-bgColor p-2.5"
-          content={
-            <DialogPrimitives.Content className="flex h-full flex-col">
+        <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-screen bg-overlay data-[state=open]:animate-overlay-in data-[state=closed]:animate-overlay-out" />
+        <DialogPrimitives.Content
+          onOpenAutoFocus={(e) => e.preventDefault()}
+          className="fixed inset-x-2 bottom-2 top-2 z-40 flex flex-col border border-textInactiveColor bg-bgColor p-2.5 data-[state=open]:animate-panel-in data-[state=closed]:animate-panel-out"
+        >
               <DialogPrimitives.Title className="sr-only">
                 {tAccessibility("mobile menu")}
               </DialogPrimitives.Title>
@@ -80,9 +78,7 @@ export function MobileNavMenu({
                   />
                 </div>
               </div>
-            </DialogPrimitives.Content>
-          }
-        />
+        </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
   );

@@ -28,6 +28,7 @@
     "resend code in": "コード再送まで",
     "or sign in via the link sent to your email": "またはメールに送信されたリンクからサインイン",
     "or continue using the link sent to your email": "またはメールに送信されたリンクで続行",
+    "use a different email": "別のメールアドレスを使用",
     "complete your registration": "登録を完了してください",
     "country": "国",
     "track order": "注文を追跡",
@@ -145,7 +146,7 @@
     "next": "次へ",
     "empty": "空",
     "clear all": "すべてクリア",
-    "undo": "undo",
+    "undo": "元に戻す",
     "show": "表示",
     "sort": {
       "latest arrivals": "新着アイテム",

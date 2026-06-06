@@ -17,6 +17,8 @@ export async function generateMetadata({
   return generateCommonMetadata({
     title: t("timeline"),
     description: t("timeline description"),
+    locale,
+    path: "/timeline",
   });
 }
 
