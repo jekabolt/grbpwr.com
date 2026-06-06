@@ -69,6 +69,11 @@ export function AccountLoginForm({
   const showOrderSummary =
     !isCheckout && step === "email" && products.length > 0;
   const isRestoringSession = !storageChecked;
+  const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
+
+  useEffect(() => {
+    if (!showOrderSummary) setMobileSummaryOpen(false);
+  }, [showOrderSummary]);
 
   useEffect(() => {
     if (!storageChecked) return;
@@ -153,11 +158,16 @@ export function AccountLoginForm({
         </div>
       </div>
       {showOrderSummary && (
-        <div className="fixed inset-x-2.5 bottom-6 top-2.5 z-40 flex flex-col justify-end lg:hidden">
+        <div
+          className={cn(
+            "fixed inset-x-2.5 bottom-6 top-2.5 z-40 flex flex-col justify-end lg:hidden",
+            !mobileSummaryOpen && "pointer-events-none",
+          )}
+        >
           {isRestoringSession ? (
             <AccountMobileOrderSummarySkeleton />
           ) : (
-            <AccountCartMobileOrderSummary />
+            <AccountCartMobileOrderSummary onOpenChange={setMobileSummaryOpen} />
           )}
         </div>
       )}

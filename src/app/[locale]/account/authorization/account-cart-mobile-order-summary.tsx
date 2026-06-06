@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
-import { createPortal } from "react-dom";
 
 import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -48,7 +47,11 @@ function useAccountCartSummaryData() {
   };
 }
 
-export function AccountCartMobileOrderSummary() {
+export function AccountCartMobileOrderSummary({
+  onOpenChange,
+}: {
+  onOpenChange?: (open: boolean) => void;
+} = {}) {
   const {
     t,
     validatedProducts,
@@ -59,6 +62,10 @@ export function AccountCartMobileOrderSummary() {
     currencySymbol,
   } = useAccountCartSummaryData();
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    onOpenChange?.(isOpen);
+  }, [isOpen, onOpenChange]);
 
   if (!validatedProducts.length) return null;
 
@@ -74,7 +81,7 @@ export function AccountCartMobileOrderSummary() {
         color="dark"
         active={isOpen}
         disablePointerEvents={false}
-        onClick={handleToggle}
+        onClick={() => setIsOpen(false)}
       />
       <div className="pointer-events-auto flex max-h-full min-h-0 w-full flex-col justify-end overflow-hidden">
         <FieldsGroupContainer

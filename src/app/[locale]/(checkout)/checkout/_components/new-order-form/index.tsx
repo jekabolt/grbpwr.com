@@ -210,7 +210,12 @@ export default function NewOrderForm({
     !checkoutProfileCompleted;
   const showMobileOrderSummaryOverlay =
     (!showCheckoutFields && checkoutLoginStep === "email") || showProfilePrompt;
+  const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
   const showCheckoutForm = showCheckoutFields && !showProfilePrompt;
+
+  useEffect(() => {
+    if (hideOrderSummary || showCheckoutFields) setMobileSummaryOpen(false);
+  }, [hideOrderSummary, showCheckoutFields]);
 
   const centerAuthOnMobile = !showCheckoutFields || showProfilePrompt;
   const placeOrderDisabled =
@@ -258,8 +263,11 @@ export default function NewOrderForm({
             {!hideOrderSummary && (
               <div
                 className={cn("z-20 lg:hidden", {
-                  "pointer-events-none fixed inset-x-2.5 bottom-6 top-2.5 flex flex-col justify-end":
+                  "fixed inset-x-2.5 bottom-6 top-2.5 flex flex-col justify-end":
                     !showCheckoutFields || showProfilePrompt,
+                  "pointer-events-none":
+                    (!showCheckoutFields || showProfilePrompt) &&
+                    !mobileSummaryOpen,
                   "w-full": showCheckoutFields && !showProfilePrompt,
                 })}
               >
@@ -270,6 +278,7 @@ export default function NewOrderForm({
                   orderCurrency={orderCurrency}
                   disabled={loading}
                   overlay={showMobileOrderSummaryOverlay}
+                  onOpenChange={setMobileSummaryOpen}
                 />
               </div>
             )}

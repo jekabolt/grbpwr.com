@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useState } from "react";
 import {
   common_OrderItem,
   ValidateOrderItemsInsertResponse,
@@ -28,6 +27,7 @@ type Props = {
   disabled?: boolean;
   showCheckoutFields?: boolean;
   overlay?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 export function MobileOrderSummary({
@@ -37,12 +37,17 @@ export function MobileOrderSummary({
   orderCurrency,
   disabled = false,
   overlay = false,
+  onOpenChange,
 }: Props) {
   const t = useTranslations("checkout");
 
   const { dictionary } = useDataContext();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    onOpenChange?.(isOpen);
+  }, [isOpen, onOpenChange]);
 
   const currency = orderCurrency || "EUR";
   const currencySymbol =
@@ -55,19 +60,16 @@ export function MobileOrderSummary({
 
   return (
     <>
-      {overlay &&
-        isOpen &&
-        createPortal(
-          <Overlay
-            cover="screen"
-            color="dark"
-            active
-            disablePointerEvents={false}
-            className="pointer-events-auto z-[35] opacity-60 lg:hidden"
-            onClick={() => setIsOpen(false)}
-          />,
-          document.body,
-        )}
+      {overlay && (
+        <Overlay
+          cover="screen"
+          trigger="active"
+          color="dark"
+          active={isOpen}
+          disablePointerEvents={false}
+          onClick={() => setIsOpen(false)}
+        />
+      )}
       <div className="pointer-events-auto flex max-h-full min-h-0 w-full flex-col justify-end overflow-hidden">
         <FieldsGroupContainer
           signType="plus-minus"
