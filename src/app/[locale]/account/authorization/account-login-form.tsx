@@ -1,5 +1,6 @@
 "use client";
 
+import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useEffect, type ChangeEvent } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -34,11 +35,13 @@ export function AccountLoginForm({
   onCheckoutAsGuest,
   onStepChange,
   onVerified,
+  onLoginSuccess,
 }: {
   isCheckout?: boolean;
   onCheckoutAsGuest?: () => void;
   onStepChange?: (step: AccountLoginStep) => void;
   onVerified?: () => void;
+  onLoginSuccess?: (account: StorefrontAccount) => void;
 }) {
   const products = useCart((state) => state.products);
   const revalidateCart = useCart((state) => state.revalidateCart);
@@ -62,7 +65,7 @@ export function AccountLoginForm({
     resendCode,
     verifyCode,
     goToEmailStep,
-  } = useAccountLogin();
+  } = useAccountLogin({ isCheckout, onLoginSuccess });
   const showOrderSummary =
     !isCheckout && step === "email" && products.length > 0;
   const isRestoringSession = !storageChecked;

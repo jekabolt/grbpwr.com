@@ -91,7 +91,7 @@ export function CheckoutFormWrapper({
     let active = true;
     let resolveGeneration = 0;
 
-    if (initialAccount) {
+    if (initialAccount || sessionAccount) {
       return;
     }
 
@@ -120,7 +120,14 @@ export function CheckoutFormWrapper({
     return () => {
       active = false;
     };
-  }, [initialAccount, setAccount, setSignedIn]);
+  }, [initialAccount, sessionAccount, setAccount, setSignedIn]);
+
+  const handleCheckoutLoginSuccess = (account: StorefrontAccount) => {
+    setSessionAccount(account);
+    setSignedIn(true);
+    setAccount(storefrontAccountToProfile(account));
+    setResolvingSession(false);
+  };
 
   const currency =
     currentCountry.currencyKey || dictionary?.baseCurrency || "EUR";
@@ -205,6 +212,7 @@ export function CheckoutFormWrapper({
           <NewOrderForm
             onAmountChange={handleAmountChange}
             initialAccount={initialAccount ?? sessionAccount}
+            onLoginSuccess={handleCheckoutLoginSuccess}
             onOrderRedirectStart={() => setIsOrderRedirecting(true)}
             guestCheckout={guestCheckout}
             setGuestCheckout={setGuestCheckout}

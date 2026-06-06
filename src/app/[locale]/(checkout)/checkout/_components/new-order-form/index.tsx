@@ -49,6 +49,7 @@ type NewOrderFormProps = {
   guestCheckout: boolean;
   initialAccount: StorefrontAccount | null;
   onAmountChange: (amount: number) => void;
+  onLoginSuccess?: (account: StorefrontAccount) => void;
   onOrderRedirectStart?: () => void;
   setGuestCheckout: (value: boolean) => void;
 };
@@ -57,6 +58,7 @@ export default function NewOrderForm({
   initialAccount,
   guestCheckout,
   onAmountChange,
+  onLoginSuccess,
   onOrderRedirectStart,
   setGuestCheckout,
 }: NewOrderFormProps) {
@@ -277,6 +279,7 @@ export default function NewOrderForm({
                   onStepChange={setCheckoutLoginStep}
                   onVerified={() => setCheckoutLoginVerified(true)}
                   onCheckoutAsGuest={() => setGuestCheckout(true)}
+                  onLoginSuccess={onLoginSuccess}
                 />
               </div>
             ) : showProfilePrompt ? (

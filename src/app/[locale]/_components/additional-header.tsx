@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 
 import { getPreviousPath } from "@/lib/navigation/internal-navigation";
@@ -19,6 +19,7 @@ export function AdditionalHeader({
   hidden = false,
 }: HeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { openCart, closeCart } = useCart((s) => s);
   const isSubmitting = useCheckoutStore((s) => s.isSubmitting);
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
@@ -36,7 +37,8 @@ export function AdditionalHeader({
     }
 
     const prev = getPreviousPath();
-    if (prev) {
+    const onCheckout = pathname?.includes("/checkout");
+    if (prev && (!onCheckout || !prev.includes("/checkout"))) {
       router.push(prev);
       return;
     }

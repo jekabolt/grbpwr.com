@@ -183,7 +183,7 @@ export default function ShippingFieldsGroup({
           )}
         </>
       )}
-      {showSavedAddressesSelector && (
+      {showSavedAddressesSelector && account && (
         <CheckoutSavedAddressSelector
           isCheckout={true}
           loading={loading}
@@ -191,7 +191,7 @@ export default function ShippingFieldsGroup({
           defaultOnly={true}
           isSignedIn={isSignedIn}
           refreshKey={savedAddressesRefreshKey}
-          account={account as StorefrontAccount}
+          account={account}
           addressesState={addressesState}
           onDefaultChange={() => {
             setSavedAddressesRefreshKey((k) => k + 1);
