@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import {
   common_OrderItem,
   ValidateOrderItemsInsertResponse,
@@ -54,14 +55,19 @@ export function MobileOrderSummary({
 
   return (
     <>
-      <Overlay
-        cover="screen"
-        trigger="active"
-        color="dark"
-        active={overlay && isOpen}
-        disablePointerEvents={overlay ? false : true}
-        onClick={handleToggle}
-      />
+      {overlay &&
+        isOpen &&
+        createPortal(
+          <Overlay
+            cover="screen"
+            color="dark"
+            active
+            disablePointerEvents={false}
+            className="pointer-events-auto z-[35] opacity-60 lg:hidden"
+            onClick={() => setIsOpen(false)}
+          />,
+          document.body,
+        )}
       <div className="pointer-events-auto flex max-h-full min-h-0 w-full flex-col justify-end overflow-hidden">
         <FieldsGroupContainer
           signType="plus-minus"
