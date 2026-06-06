@@ -58,7 +58,10 @@ export function useHandlers({
         return handleSizeSelect(sizeNames[0].id, { addToCart: true });
       }
 
-      setActiveSizeId(undefined);
+      if (activeSizeId) {
+        return handleSizeSelect(activeSizeId, { addToCart: true });
+      }
+
       setIsMobileSizeDialogOpen(true);
       return false;
     }
@@ -108,6 +111,7 @@ export function useHandlers({
       typeof window !== "undefined" && window.innerWidth < 1024;
 
     if (!fromMobileDialog && isMobile && !options?.addToCart) {
+      setActiveSizeId(sizeId);
       return true;
     }
 
