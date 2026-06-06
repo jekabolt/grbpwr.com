@@ -74,9 +74,12 @@ export default function PageComponent({
   return (
     <div className="w-full space-y-10 text-textColor lg:min-h-screen lg:space-y-14">
       <div className="flex w-full items-center justify-center">
-        <div className="flex w-fit max-w-[640px] flex-col items-start justify-center gap-10">
-          <div className="space-y-4">
-            <Text className="text-textInactiveColor" variant="uppercase">
+        <div className="flex w-full max-w-[640px] flex-col items-start justify-center gap-10">
+          <div className="w-full space-y-4">
+            <Text
+              className="w-full break-words text-textInactiveColor"
+              variant="uppercase"
+            >
               {currentTranslation?.heading || ""}
             </Text>
             <Text variant="uppercase">{`${archive?.archiveList?.tag || ""} / ${currentYear}`}</Text>
