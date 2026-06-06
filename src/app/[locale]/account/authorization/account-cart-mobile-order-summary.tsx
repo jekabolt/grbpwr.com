@@ -70,7 +70,7 @@ export function AccountCartMobileOrderSummary() {
       <Overlay
         cover="screen"
         onClick={handleToggle}
-        disablePointerEvents={false}
+        disablePointerEvents={true}
       />
       <div className="pointer-events-auto flex max-h-full min-h-0 w-full flex-col justify-end overflow-hidden">
         <FieldsGroupContainer
