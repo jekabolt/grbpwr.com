@@ -6,13 +6,19 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { setDefaultAddressRequest } from "./address-actions";
 import { parseApiError } from "./api-error";
+import { findAddressForCountry, pickAddressForCountry } from "./utility";
 
 type Options = {
   enabled?: boolean;
   refreshKey?: number;
+  countryCode?: string;
 };
 
-export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
+export function useAddresses({
+  enabled = true,
+  refreshKey,
+  countryCode,
+}: Options = {}) {
   const t = useTranslations("account");
   const [pending, setPending] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -97,11 +103,32 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
     [addresses],
   );
 
+  const countryAddress = useMemo(
+    () => findAddressForCountry(addresses, countryCode),
+    [addresses, countryCode],
+  );
+
+  const checkoutAddress = useMemo(
+    () => (countryCode?.trim() ? countryAddress : undefined),
+    [countryAddress, countryCode],
+  );
+
+  const resolvedCheckoutAddress = useMemo(
+    () =>
+      countryCode?.trim()
+        ? pickAddressForCountry(addresses, countryCode)
+        : undefined,
+    [addresses, countryCode],
+  );
+
   return {
     pending,
     loaded,
     addresses,
     defaultAddress,
+    countryAddress,
+    checkoutAddress,
+    resolvedCheckoutAddress,
     defaultId,
     deletingId,
     toastMessage,
@@ -112,3 +139,5 @@ export function useAddresses({ enabled = true, refreshKey }: Options = {}) {
     handleDeleteAddress,
   };
 }
+
+export type UseAddressesResult = ReturnType<typeof useAddresses>;

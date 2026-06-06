@@ -235,6 +235,135 @@ export function isSameCountry(addressCountry?: string, currentCountryCode?: stri
     );
 }
 
+export function findAddressForCountry(
+    addresses: StorefrontSavedAddress[],
+    countryCode?: string,
+): StorefrontSavedAddress | undefined {
+    if (!countryCode?.trim()) return undefined;
+    return addresses.find((a) => isSameCountry(a.country, countryCode));
+}
+
+export function pickAddressForCountry(
+    addresses: StorefrontSavedAddress[],
+    countryCode?: string,
+): StorefrontSavedAddress | undefined {
+    const forCountry = findAddressForCountry(addresses, countryCode);
+    if (forCountry) return forCountry;
+    return addresses.find((a) => a.isDefault) ?? addresses[0];
+}
+
+export const CHECKOUT_SAVED_ADDRESS_FIELDS = [
+    "savedAddressId",
+    "country",
+    "state",
+    "city",
+    "address",
+    "additionalAddress",
+    "company",
+    "postalCode",
+    "phone",
+] as const;
+
+type CheckoutFormSetValue = (
+    name: (typeof CHECKOUT_SAVED_ADDRESS_FIELDS)[number],
+    value: string,
+    options?: { shouldValidate?: boolean; shouldDirty?: boolean },
+) => void;
+
+export function applySavedAddressToCheckoutForm(
+    setValue: CheckoutFormSetValue,
+    address: StorefrontSavedAddress,
+    profilePhone?: string,
+) {
+    setValue("savedAddressId", address.id != null ? String(address.id) : "", {
+        shouldValidate: false,
+    });
+    setValue("country", (address.country ?? "").trim().toLowerCase(), {
+        shouldValidate: true,
+        shouldDirty: true,
+    });
+    setValue("state", (address.state ?? "").trim(), {
+        shouldValidate: false,
+        shouldDirty: true,
+    });
+    setValue("city", (address.city ?? "").trim(), {
+        shouldValidate: true,
+        shouldDirty: true,
+    });
+    setValue("address", (address.addressLineOne ?? "").trim(), {
+        shouldValidate: true,
+        shouldDirty: true,
+    });
+    setValue("additionalAddress", (address.addressLineTwo ?? "").trim(), {
+        shouldValidate: false,
+        shouldDirty: true,
+    });
+    setValue("company", (address.company ?? "").trim(), {
+        shouldValidate: false,
+        shouldDirty: true,
+    });
+    setValue("postalCode", (address.postalCode ?? "").trim(), {
+        shouldValidate: true,
+        shouldDirty: true,
+    });
+    const phone = (address.phone ?? "").trim() || (profilePhone ?? "").trim();
+    setValue("phone", phone, { shouldValidate: true, shouldDirty: true });
+}
+
+export function resolveCheckoutAddressSelection(
+    addresses: StorefrontSavedAddress[],
+    savedAddressId: string | undefined,
+    resolvedCheckoutAddress: StorefrontSavedAddress | undefined,
+    countryAddress: StorefrontSavedAddress | undefined,
+    currentCountryCode?: string,
+): StorefrontSavedAddress | undefined {
+    if (!resolvedCheckoutAddress?.id) return undefined;
+
+    const persisted = savedAddressId?.trim()
+        ? addresses.find((a) => String(a.id ?? "") === savedAddressId.trim())
+        : undefined;
+
+    if (
+        persisted &&
+        (!countryAddress || isSameCountry(persisted.country, currentCountryCode))
+    ) {
+        return persisted;
+    }
+
+    return resolvedCheckoutAddress;
+}
+
+export function checkoutAddressSelectionKey(
+    address: StorefrontSavedAddress,
+    currentCountryCode?: string,
+): string {
+    return isSameCountry(address.country, currentCountryCode)
+        ? `${currentCountryCode ?? ""}:${address.id}`
+        : `fallback:${address.id}`;
+}
+
+export function checkoutFormMatchesAddress(
+    savedAddressId: string | undefined,
+    formCountry: string | undefined,
+    address: StorefrontSavedAddress,
+): boolean {
+    return (
+        String(savedAddressId ?? "") === String(address.id) &&
+        isSameCountry(formCountry, address.country)
+    );
+}
+
+export function snapshotCheckoutAddressFields(
+    values: Record<string, unknown>,
+): Record<string, string> {
+    return Object.fromEntries(
+        CHECKOUT_SAVED_ADDRESS_FIELDS.map((field) => [
+            field,
+            String(values[field] ?? ""),
+        ]),
+    );
+}
+
 export function getCountryMeta(countryCode?: string) {
     if (!countryCode) return undefined;
     return Object.values(COUNTRIES_BY_REGION)

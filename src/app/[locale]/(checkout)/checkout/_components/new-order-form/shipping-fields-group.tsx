@@ -129,10 +129,12 @@ export default function ShippingFieldsGroup({
     },
   });
 
-  const { addresses, loaded } = useAddresses({
+  const addressesState = useAddresses({
     enabled: isSignedIn,
     refreshKey: savedAddressesRefreshKey,
+    countryCode: currentCountry.countryCode,
   });
+  const { addresses, loaded } = addressesState;
 
   const showAddressForm =
     !isSignedIn || (loaded && !addresses.length) || isAddingNewAddress;
@@ -190,6 +192,7 @@ export default function ShippingFieldsGroup({
           isSignedIn={isSignedIn}
           refreshKey={savedAddressesRefreshKey}
           account={account as StorefrontAccount}
+          addressesState={addressesState}
           onDefaultChange={() => {
             setSavedAddressesRefreshKey((k) => k + 1);
           }}

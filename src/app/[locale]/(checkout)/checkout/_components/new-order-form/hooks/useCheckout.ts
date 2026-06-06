@@ -97,6 +97,12 @@ export const useCheckoutEffects = ({
     const skipCountryWatchRef = useRef(false);
     useEffect(() => {
         if (!countryInitializedRef.current && countryCode) {
+            const savedAddressId = String(form.getValues("savedAddressId") ?? "").trim();
+            if (savedAddressId) {
+                countryInitializedRef.current = true;
+                return;
+            }
+
             const currentFormCountry = form.getValues("country");
             // Update country if form doesn't have one, or if it differs from store (e.g., after geo-suggest accept)
             // This ensures the form country matches the store after page reload
@@ -114,6 +120,9 @@ export const useCheckoutEffects = ({
     // Use shouldValidate: false to avoid showing errors on untouched fields on rehydration
     useEffect(() => {
         if (rehydrated && countryCode) {
+            const savedAddressId = String(form.getValues("savedAddressId") ?? "").trim();
+            if (savedAddressId) return;
+
             const formCountry = form.getValues("country");
             if (formCountry !== countryCode) {
                 skipCountryWatchRef.current = true;

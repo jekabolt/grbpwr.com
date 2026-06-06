@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
@@ -8,7 +8,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 
 import { AddressesSection } from "../sections/addresses";
-import { useAddresses } from "../utils/use-addresses";
+import { useAddresses, type UseAddressesResult } from "../utils/use-addresses";
 import { useSavedAddressFormSync } from "../utils/use-saved-address-form-sync";
 import { getCountryMeta, isSameCountry } from "../utils/utility";
 import { AddressesSelector } from "./addresses-selector";
@@ -21,6 +21,7 @@ export function CheckoutSavedAddressSelector({
   account,
   defaultOnly,
   isCheckout,
+  addressesState: addressesStateFromParent,
   onDefaultChange,
   onAddNewAddress,
 }: {
@@ -33,23 +34,30 @@ export function CheckoutSavedAddressSelector({
   isCheckout?: boolean;
   onDefaultChange?: () => void;
   onAddNewAddress?: (options?: { saveOnly?: boolean }) => void;
+  /** When provided, reuses a parent fetch instead of calling useAddresses again. */
+  addressesState?: UseAddressesResult;
 }) {
   const t = useTranslations("account");
   const { currentCountry, setNextCountry, cancelNextCountry, nextCountry } =
     useTranslationsStore((s) => s);
   const [open, setOpen] = useState(false);
   const [isAddressEditing, setIsAddressEditing] = useState(false);
-  const hasTriggeredNewAddressPickerRef = useRef(false);
 
-  const { pending, addresses, defaultAddress } = useAddresses({
-    enabled: isSignedIn,
+  const internalAddressesState = useAddresses({
+    enabled: isSignedIn && !addressesStateFromParent,
     refreshKey,
+    countryCode: currentCountry.countryCode,
   });
+  const addressesState = addressesStateFromParent ?? internalAddressesState;
+
+  const { pending, addresses, resolvedCheckoutAddress, countryAddress } =
+    addressesState;
 
   const { savedAddressId, handleSavedAddressChange } = useSavedAddressFormSync({
     isSignedIn,
     addresses,
-    defaultAddress,
+    resolvedCheckoutAddress,
+    countryAddress,
     currentCountryCode: currentCountry.countryCode,
     profilePhone: account.phone?.trim(),
     onDefaultChange,
@@ -64,9 +72,6 @@ export function CheckoutSavedAddressSelector({
     [addresses, savedAddressId],
   );
 
-  const shouldOpenNewAddressPicker =
-    !!defaultAddress &&
-    !isSameCountry(defaultAddress.country, currentCountry.countryCode);
   const shouldSuggestLocaleSwitch =
     !!selectedAddress &&
     !isSameCountry(selectedAddress.country, currentCountry.countryCode);
@@ -76,18 +81,6 @@ export function CheckoutSavedAddressSelector({
       setOpen(false);
     }
   }, [isDisabled, open]);
-
-  useEffect(() => {
-    if (!onAddNewAddress) return;
-    if (!shouldOpenNewAddressPicker) {
-      hasTriggeredNewAddressPickerRef.current = false;
-      return;
-    }
-    if (hasTriggeredNewAddressPickerRef.current) return;
-
-    hasTriggeredNewAddressPickerRef.current = true;
-    onAddNewAddress({ saveOnly: true });
-  }, [onAddNewAddress, shouldOpenNewAddressPicker]);
 
   useEffect(() => {
     if (!selectedAddress?.id) {
@@ -130,6 +123,7 @@ export function CheckoutSavedAddressSelector({
       <AddressesSection
         account={account}
         defaultOnly={defaultOnly}
+        shared={addressesState}
         refreshKey={refreshKey}
         isCheckout={isCheckout}
         isDisabled={disabled || loading}

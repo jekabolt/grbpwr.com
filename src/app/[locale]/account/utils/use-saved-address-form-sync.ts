@@ -5,123 +5,103 @@ import { useCallback, useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { CHECKOUT_LOCATION_CHANGE_CANCELLED } from "@/lib/checkout-location-change";
+import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 
-import { setDefaultAddressRequest } from "./address-actions";
+import { promoteDefaultAddressForCountry } from "./address-actions";
+import {
+  applySavedAddressToCheckoutForm,
+  CHECKOUT_SAVED_ADDRESS_FIELDS,
+  checkoutAddressSelectionKey,
+  checkoutFormMatchesAddress,
+  isSameCountry,
+  resolveCheckoutAddressSelection,
+  snapshotCheckoutAddressFields,
+} from "./utility";
 
 type Params = {
   isSignedIn: boolean;
   addresses: StorefrontSavedAddress[];
-  defaultAddress: StorefrontSavedAddress | undefined;
+  resolvedCheckoutAddress?: StorefrontSavedAddress;
+  countryAddress?: StorefrontSavedAddress;
   currentCountryCode?: string;
   profilePhone?: string;
   onDefaultChange?: () => void;
 };
 
-const CHECKOUT_ADDRESS_FIELDS_TO_RESTORE = [
-  "savedAddressId",
-  "country",
-  "state",
-  "city",
-  "address",
-  "additionalAddress",
-  "company",
-  "postalCode",
-  "phone",
-] as const;
-
-function isSameCountry(addressCountry?: string, currentCountryCode?: string) {
-  if (!currentCountryCode) return true;
-  return (
-    addressCountry?.trim().toLowerCase() ===
-    currentCountryCode.trim().toLowerCase()
-  );
-}
-
 export function useSavedAddressFormSync({
   isSignedIn,
   addresses,
-  defaultAddress,
+  resolvedCheckoutAddress,
+  countryAddress,
   currentCountryCode,
   profilePhone,
   onDefaultChange,
 }: Params) {
   const { watch, setValue, getValues } = useFormContext();
+  const rehydrated = useCheckoutStore((state) => state.rehydrated);
   const savedAddressId = watch("savedAddressId") as string | undefined;
-  const appliedSavedAddressRef = useRef(false);
+  const formCountry = watch("country") as string | undefined;
+  const appliedKeyRef = useRef<string | null>(null);
+  const lastCountryRef = useRef(currentCountryCode);
   const restoreSnapshotRef = useRef<Record<string, string> | null>(null);
 
-  const applySavedAddressToForm = useCallback(
+  const applyAddress = useCallback(
     (address: StorefrontSavedAddress) => {
-      if (!address) return;
-
-      const idStr = address.id != null ? String(address.id) : "";
-      setValue("savedAddressId", idStr, { shouldValidate: false });
-
-      setValue("country", (address.country ?? "").trim().toLowerCase(), {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      setValue("state", (address.state ?? "").trim(), {
-        shouldValidate: false,
-        shouldDirty: true,
-      });
-      setValue("city", (address.city ?? "").trim(), {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      setValue("address", (address.addressLineOne ?? "").trim(), {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      setValue("additionalAddress", (address.addressLineTwo ?? "").trim(), {
-        shouldValidate: false,
-        shouldDirty: true,
-      });
-      setValue("company", (address.company ?? "").trim(), {
-        shouldValidate: false,
-        shouldDirty: true,
-      });
-      setValue("postalCode", (address.postalCode ?? "").trim(), {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      const addressPhone = (address.phone ?? "").trim();
-      const fallbackPhone = (profilePhone ?? "").trim();
-      setValue("phone", addressPhone || fallbackPhone, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
+      applySavedAddressToCheckoutForm(setValue, address, profilePhone);
     },
     [profilePhone, setValue],
   );
 
+  const selectAddress = useCallback(
+    (address: StorefrontSavedAddress) => {
+      const key = checkoutAddressSelectionKey(address, currentCountryCode);
+      appliedKeyRef.current = key;
+      applyAddress(address);
+      promoteDefaultAddressForCountry(
+        address,
+        currentCountryCode,
+        onDefaultChange,
+      );
+    },
+    [applyAddress, currentCountryCode, onDefaultChange],
+  );
+
   useEffect(() => {
-    if (!isSignedIn) return;
-    if (!addresses.length) return;
-    if (appliedSavedAddressRef.current) return;
-    if (!defaultAddress?.id) return;
+    if (!isSignedIn || !rehydrated || !addresses.length) return;
 
-    const selected = savedAddressId?.trim()
-      ? addresses.find((address) => String(address.id ?? "") === savedAddressId)
-      : defaultAddress;
+    if (lastCountryRef.current !== currentCountryCode) {
+      appliedKeyRef.current = null;
+      lastCountryRef.current = currentCountryCode;
+    }
 
+    const selected = resolveCheckoutAddressSelection(
+      addresses,
+      savedAddressId,
+      resolvedCheckoutAddress,
+      countryAddress,
+      currentCountryCode,
+    );
+    if (!selected?.id) return;
+
+    const key = checkoutAddressSelectionKey(selected, currentCountryCode);
     if (
-      selected === defaultAddress &&
-      !isSameCountry(defaultAddress.country, currentCountryCode)
+      appliedKeyRef.current === key &&
+      checkoutFormMatchesAddress(savedAddressId, formCountry, selected)
     ) {
       return;
     }
 
-    applySavedAddressToForm(selected ?? defaultAddress);
-
-    appliedSavedAddressRef.current = true;
+    selectAddress(selected);
   }, [
     addresses,
-    applySavedAddressToForm,
+    countryAddress,
     currentCountryCode,
-    defaultAddress,
+    formCountry,
     isSignedIn,
+    rehydrated,
+    resolvedCheckoutAddress,
     savedAddressId,
+    selectAddress,
   ]);
 
   useEffect(() => {
@@ -129,7 +109,7 @@ export function useSavedAddressFormSync({
       const snapshot = restoreSnapshotRef.current;
       if (!snapshot) return;
 
-      CHECKOUT_ADDRESS_FIELDS_TO_RESTORE.forEach((field) => {
+      CHECKOUT_SAVED_ADDRESS_FIELDS.forEach((field) => {
         setValue(field, snapshot[field] ?? "", {
           shouldValidate: false,
           shouldDirty: true,
@@ -162,39 +142,13 @@ export function useSavedAddressFormSync({
         !isSameCountry(selected.country, currentCountryCode) &&
         !restoreSnapshotRef.current
       ) {
-        const values = getValues();
-        restoreSnapshotRef.current = Object.fromEntries(
-          CHECKOUT_ADDRESS_FIELDS_TO_RESTORE.map((field) => [
-            field,
-            String(values[field] ?? ""),
-          ]),
-        );
+        restoreSnapshotRef.current = snapshotCheckoutAddressFields(getValues());
       }
 
-      appliedSavedAddressRef.current = true;
-      applySavedAddressToForm(selected);
-
-      if (!isSameCountry(selected.country, currentCountryCode)) {
-        return;
-      }
-
-      void setDefaultAddressRequest(id)
-        .catch(() => { })
-        .finally(() => {
-          onDefaultChange?.();
-        });
+      selectAddress(selected);
     },
-    [
-      addresses,
-      applySavedAddressToForm,
-      currentCountryCode,
-      getValues,
-      onDefaultChange,
-    ],
+    [addresses, currentCountryCode, getValues, selectAddress],
   );
 
-  return {
-    savedAddressId,
-    handleSavedAddressChange,
-  };
+  return { savedAddressId, handleSavedAddressChange };
 }

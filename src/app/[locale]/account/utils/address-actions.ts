@@ -1,4 +1,7 @@
+import type { StorefrontSavedAddress } from "@/api/proto-http/frontend";
+
 import { parseApiError } from "./api-error";
+import { isSameCountry } from "./utility";
 
 export async function setDefaultAddressRequest(
   id: number,
@@ -16,6 +19,26 @@ export async function setDefaultAddressRequest(
   }
 
   return { ok: true as const };
+}
+
+export function promoteDefaultAddressForCountry(
+  address: StorefrontSavedAddress,
+  browsingCountryCode?: string,
+  onDone?: () => void,
+) {
+  if (
+    address.isDefault ||
+    !isSameCountry(address.country, browsingCountryCode)
+  ) {
+    return;
+  }
+
+  const id = Number(address.id);
+  if (!Number.isFinite(id)) return;
+
+  void setDefaultAddressRequest(id)
+    .catch(() => { })
+    .finally(() => onDone?.());
 }
 
 type AddAddressPayload = {
