@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form";
 import { sendNotifyMeIntentEvent } from "@/lib/analitycs/product-engagement";
 import { serviceClient } from "@/lib/api";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
-import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
 import { Form } from "@/components/ui/form";
@@ -78,6 +77,7 @@ export function NotifyMe({
         productId: id,
       });
       setHasInteracted(false);
+      setIsChecked(false);
 
       const sizeName = sizeNames?.find((s) => s.id === activeSizeId)?.name;
       sendNotifyMeIntentEvent({
@@ -121,6 +121,13 @@ export function NotifyMe({
   };
 
   async function handleSubmit(data: NotifySchema) {
+    if (isLoading) return; // guard against rapid double-submits
+    if (!isChecked) {
+      // No consent → don't subscribe, tell the user why.
+      setToastMessage(tToaster("required_terms"));
+      setToastOpen(true);
+      return;
+    }
     setIsLoading(true);
     try {
       await serviceClient.NotifyMe({
@@ -159,13 +166,8 @@ export function NotifyMe({
   return (
     <DialogPrimitives.Root open={open} onOpenChange={handleOpenChange}>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
-        <ModalTransition
-          isOpen={open}
-          contentSlideFrom="none"
-          contentClassName="fixed inset-x-2.5 top-1/2 z-50 flex h-auto w-auto -translate-y-1/2 flex-col border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:inset-x-auto lg:left-1/2 lg:w-80 lg:-translate-x-1/2"
-          content={
-            <DialogPrimitives.Content className="flex h-auto flex-col">
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay data-[state=open]:animate-modal-fade-in data-[state=closed]:animate-modal-fade-out" />
+        <DialogPrimitives.Content className="fixed inset-x-2.5 top-1/2 z-50 flex h-auto w-auto -translate-y-1/2 flex-col border border-textInactiveColor bg-bgColor p-2.5 text-textColor data-[state=open]:animate-modal-fade-in data-[state=closed]:animate-modal-fade-out lg:inset-x-auto lg:left-1/2 lg:w-80 lg:-translate-x-1/2">
               <DialogPrimitives.Title className="sr-only">
                 {tAccessibility("notify me dialog")}
               </DialogPrimitives.Title>
@@ -232,7 +234,7 @@ export function NotifyMe({
                     variant="main"
                     type="submit"
                     size="lg"
-                    className="w-full uppercase"
+                    className="w-full uppercase transition-opacity active:opacity-70"
                     disabled={form.formState.isSubmitting || isLoading}
                     loading={isLoading}
                   >
@@ -240,9 +242,7 @@ export function NotifyMe({
                   </Button>
                 </form>
               </Form>
-            </DialogPrimitives.Content>
-          }
-        />
+        </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
       <SubmissionToaster
         open={toastOpen}
