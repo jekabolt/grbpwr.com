@@ -73,7 +73,8 @@ export function AccountCartMobileOrderSummary() {
         color="dark"
         active={isOpen}
         disablePointerEvents={false}
-        onClick={handleToggle}
+        className="pointer-events-auto"
+        onClick={() => setIsOpen(false)}
       />
       <div className="pointer-events-auto flex max-h-full min-h-0 w-full flex-col justify-end overflow-hidden">
         <FieldsGroupContainer
