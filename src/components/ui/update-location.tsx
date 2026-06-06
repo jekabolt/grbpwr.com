@@ -6,7 +6,10 @@ import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { parseCountryLocalePath } from "@/lib/middleware-utils";
-import { notifyCheckoutLocationChangeCancelled } from "@/lib/checkout-location-change";
+import {
+  markCheckoutLocaleSwitchAccepted,
+  notifyCheckoutLocationChangeCancelled,
+} from "@/lib/checkout-location-change";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { setDefaultAddressRequest } from "@/app/[locale]/account/utils/address-actions";
@@ -59,6 +62,16 @@ export function UpdateLocation() {
       nextCountry.localeCode || LANGUAGE_ID_TO_LOCALE[languageId];
 
     if (!targetCountryCode || !newLocale) return;
+
+    if (targetCountryCode) {
+      const selectedSavedAddressId = Number(nextCountry.savedAddressId);
+      markCheckoutLocaleSwitchAccepted(
+        Number.isFinite(selectedSavedAddressId) && selectedSavedAddressId > 0
+          ? selectedSavedAddressId
+          : 0,
+        targetCountryCode,
+      );
+    }
 
     const selectedSavedAddressId = Number(nextCountry.savedAddressId);
     if (Number.isFinite(selectedSavedAddressId) && selectedSavedAddressId > 0) {

@@ -4,7 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
-import { CHECKOUT_LOCATION_CHANGE_CANCELLED } from "@/lib/checkout-location-change";
+import {
+  CHECKOUT_LOCATION_CHANGE_CANCELLED,
+  clearCheckoutLocaleSwitchAccepted,
+  isCheckoutLocaleSwitchAcceptedForAddress,
+} from "@/lib/checkout-location-change";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 
@@ -120,13 +124,20 @@ export function CheckoutSavedAddressSelector({
 
     if (!shouldSuggestLocaleSwitch) {
       dismissedLocaleSwitchForAddressRef.current = null;
+      clearCheckoutLocaleSwitchAccepted();
       if (nextCountry.savedAddressId === selectedAddressId) {
         cancelNextCountry();
       }
       return;
     }
 
-    if (dismissedLocaleSwitchForAddressRef.current === selectedAddressId) {
+    if (
+      dismissedLocaleSwitchForAddressRef.current === selectedAddressId ||
+      isCheckoutLocaleSwitchAcceptedForAddress(
+        selectedAddressId,
+        selectedAddress.country,
+      )
+    ) {
       return;
     }
 
