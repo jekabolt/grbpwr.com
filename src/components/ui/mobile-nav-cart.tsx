@@ -49,7 +49,7 @@ export function MobileNavCart({
           className={cn(
             "ml-auto shrink-0 whitespace-nowrap bg-transparent text-right",
             {
-              "w-1/3 py-2.5 pr-2.5": isProductInfo,
+              "w-1/3 py-2.5 pr-4": isProductInfo,
             },
           )}
         >
