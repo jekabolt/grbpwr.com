@@ -117,6 +117,7 @@ export function generateCommonMetadata({
   title = "grbpwr.com",
   description = "GRBPWR discusses difficult topics by imperfect language and master it. Shop latest ready-to-wear.",
   ogParams = {},
+  twitterCard = "summary_large_image",
   locale,
   path,
 }: {
@@ -124,6 +125,9 @@ export function generateCommonMetadata({
   templateTitle?: string;
   description?: string;
   ogParams?: GenerateOgParams;
+  // Twitter/X card type. "summary" = small square thumbnail, "summary_large_image"
+  // = large preview. Pass "summary" where a small preview is wanted (e.g. product).
+  twitterCard?: "summary" | "summary_large_image";
   // Pass locale + locale-relative path (e.g. "" or "/product/...") to emit a
   // canonical <link> and hreflang alternates. Omit on layout-level metadata so
   // leaf pages own them.
@@ -173,7 +177,7 @@ export function generateCommonMetadata({
         : {}),
     },
     twitter: {
-      card: "summary_large_image",
+      card: twitterCard,
       title,
       description: description,
       images: [ogParams.imageUrl || logo.src],
