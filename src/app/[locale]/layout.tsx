@@ -1,7 +1,8 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
-import { NextIntlClientProvider } from "next-intl";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
 import {
   getMessages,
   getTranslations,
@@ -36,6 +37,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  // Unknown single-segment paths (e.g. /llms.txt, /anything.ext that bypasses
+  // middleware) match this [locale] route — reject them with a real 404 instead
+  // of rendering the homepage with a bogus locale (soft-404).
+  if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "meta" });
 
@@ -61,6 +66,7 @@ interface Props {
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
 
+  if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const messages = await getMessages();
 
