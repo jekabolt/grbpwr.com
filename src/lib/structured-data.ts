@@ -18,6 +18,46 @@ const COUNTRY_BY_LOCALE: Record<string, string> = {
   ko: "kr",
 };
 
+// Display currency per locale — mirrors the canonical country (COUNTRY_BY_LOCALE)
+// and the currency the storefront actually shows. Country variants (e.g. /us/en)
+// canonicalise to the locale's canonical country, so a locale-only mapping stays
+// consistent with <link rel="canonical">.
+const CURRENCY_BY_LOCALE: Record<string, string> = {
+  en: "GBP",
+  fr: "EUR",
+  de: "EUR",
+  it: "EUR",
+  ja: "JPY",
+  zh: "CNY",
+  ko: "KRW",
+};
+
+/** Canonical display currency code for a locale. */
+export function currencyForLocale(locale: string): string {
+  return CURRENCY_BY_LOCALE[locale] ?? "GBP";
+}
+
+/**
+ * The single offer (currency + price value) to advertise for a locale.
+ * Products carry one base price value; the storefront reuses that value and only
+ * swaps the currency per country, so we surface that value under the locale's
+ * currency — preferring an exact currency match if the backend ever supplies one.
+ * Returns null when the product has no usable price.
+ */
+export function productOfferForLocale(
+  productFull: common_ProductFull | undefined,
+  locale: string,
+): { currency: string; price: string } | null {
+  const prices = productFull?.product?.prices ?? [];
+  const currency = currencyForLocale(locale);
+  const match =
+    prices.find(
+      (pr) => pr?.currency?.toUpperCase() === currency && pr.price?.value,
+    ) ?? prices.find((pr) => pr?.price?.value);
+  const price = match?.price?.value;
+  return price ? { currency, price } : null;
+}
+
 // Uppercase ISO codes of every country the storefront ships to (deduped).
 const SHIPPING_COUNTRIES = Array.from(
   new Set(
@@ -95,17 +135,20 @@ export function productJsonLd(
     ? "https://schema.org/OutOfStock"
     : "https://schema.org/InStock";
 
-  const offers = (p.prices ?? [])
-    .filter((pr) => pr?.price?.value && pr.currency)
-    .map((pr) => ({
-      "@type": "Offer",
-      priceCurrency: pr.currency,
-      price: pr.price!.value,
-      availability,
-      ...(url ? { url } : {}),
-      hasMerchantReturnPolicy: RETURN_POLICY,
-      shippingDetails: SHIPPING_DETAILS,
-    }));
+  const offer = productOfferForLocale(productFull, locale);
+  const offers = offer
+    ? [
+        {
+          "@type": "Offer",
+          priceCurrency: offer.currency,
+          price: offer.price,
+          availability,
+          ...(url ? { url } : {}),
+          hasMerchantReturnPolicy: RETURN_POLICY,
+          shippingDetails: SHIPPING_DETAILS,
+        },
+      ]
+    : [];
 
   const description = (t?.description || "").trim();
   const color = p.productDisplay?.productBody?.productBodyInsert?.color?.trim();

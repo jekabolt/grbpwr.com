@@ -4,7 +4,7 @@ import { LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import { productJsonLd } from "@/lib/structured-data";
+import { productJsonLd, productOfferForLocale } from "@/lib/structured-data";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileProductInfo } from "./_components/mobile-product-info";
@@ -47,13 +47,18 @@ export async function generateMetadata({
 
   const color = productBody?.productBodyInsert?.color;
   const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
+  const offer = productOfferForLocale(product, locale);
 
   return generateCommonMetadata({
     title: title?.toUpperCase(),
     description: `${description}'\n'${color}`,
     locale,
     path: `/product/${gender}/${brand}/${name}/${id}`,
+    ...(offer
+      ? { productPrice: { amount: offer.price, currency: offer.currency } }
+      : {}),
     ogParams: {
+      type: "product",
       imageUrl: productImageUrl,
       imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
     },

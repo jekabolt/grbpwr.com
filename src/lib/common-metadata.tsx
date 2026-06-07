@@ -17,6 +17,18 @@ const CANONICAL_COUNTRY_BY_LOCALE: Record<string, string> = {
   ko: "kr",
 };
 
+// hreflang value (language-region) per locale, pointing at the canonical country
+// version above. Mirrors CANONICAL_COUNTRY_BY_LOCALE.
+const HREFLANG_BY_LOCALE: Record<string, string> = {
+  en: "en-GB",
+  fr: "fr-FR",
+  de: "de-DE",
+  it: "it-IT",
+  ja: "ja-JP",
+  zh: "zh-CN",
+  ko: "ko-KR",
+};
+
 /** Absolute canonical URL for a page, given its locale and locale-relative path. */
 export function canonicalUrl(
   locale?: string,
@@ -28,33 +40,59 @@ export function canonicalUrl(
   return `${SITE_URL}/${country}/${locale}${path}`;
 }
 
+/**
+ * hreflang alternates for a locale-relative path. Every supported locale points
+ * at its canonical country version (so non-canonical country variants don't
+ * compete), plus an x-default fallback on /gb/en — consistent with canonicalUrl.
+ */
+function languageAlternates(path = ""): Record<string, string> {
+  const languages: Record<string, string> = {};
+  for (const [locale, country] of Object.entries(CANONICAL_COUNTRY_BY_LOCALE)) {
+    const hreflang = HREFLANG_BY_LOCALE[locale];
+    if (hreflang) {
+      languages[hreflang] = `${SITE_URL}/${country}/${locale}${path}`;
+    }
+  }
+  languages["x-default"] = `${SITE_URL}/gb/en${path}`;
+  return languages;
+}
+
 type GenerateOgParams = {
   title?: string;
   description?: string;
   imageUrl?: string;
+  // Omit width/height when the real image dimensions are unknown (e.g. a product
+  // photo) rather than asserting a wrong fixed size — scrapers infer from the
+  // image. Only pass them when they're actually correct (e.g. the square logo).
   imageWidth?: number;
   imageHeight?: number;
   imageAlt?: string;
+  // "product" pages emit og:type=product (+ product:price:*) via `other` since
+  // Next's typed openGraph union has no "product" variant.
+  type?: "website" | "product";
 };
 
 export function generateOpenGraph({
   title = "grbpwr.com",
   description = "GRBPWR discusses difficult topics by imperfect language and master it. Shop latest ready-to-wear.",
   imageUrl = logo.src,
-  imageWidth = 512,
-  imageHeight = 512,
+  imageWidth,
+  imageHeight,
   imageAlt = "GRBPWR",
+  type = "website",
 }: GenerateOgParams = {}): Metadata["openGraph"] {
   return {
     title,
     description,
-    type: "website",
+    // og:type=product is set via `other` (see generateCommonMetadata) to avoid a
+    // duplicate tag; only emit the typed "website" here.
+    ...(type === "website" ? { type } : {}),
     siteName: "grbpwr.com",
     images: [
       {
         url: imageUrl,
-        width: imageWidth,
-        height: imageHeight,
+        ...(imageWidth ? { width: imageWidth } : {}),
+        ...(imageHeight ? { height: imageHeight } : {}),
         alt: imageAlt,
       },
     ],
@@ -65,6 +103,7 @@ export function generateCommonMetadata({
   title = "grbpwr.com",
   description = "GRBPWR discusses difficult topics by imperfect language and master it. Shop latest ready-to-wear.",
   ogParams = {},
+  productPrice,
   locale,
   path,
 }: {
@@ -72,12 +111,24 @@ export function generateCommonMetadata({
   templateTitle?: string;
   description?: string;
   ogParams?: GenerateOgParams;
+  // Pass for product pages to emit og:type=product + product:price:* tags.
+  productPrice?: { amount: string; currency: string };
   // Pass locale + locale-relative path (e.g. "" or "/product/...") to emit a
-  // canonical <link>. Omit on layout-level metadata so leaf pages own it.
+  // canonical <link> and hreflang alternates. Omit on layout-level metadata so
+  // leaf pages own them.
   locale?: string;
   path?: string;
 } = {}): Metadata {
   const canonical = canonicalUrl(locale, path);
+  const languages = locale ? languageAlternates(path) : undefined;
+
+  const isProduct = ogParams.type === "product";
+  const other: Record<string, string> = {};
+  if (isProduct) other["og:type"] = "product";
+  if (productPrice) {
+    other["product:price:amount"] = productPrice.amount;
+    other["product:price:currency"] = productPrice.currency;
+  }
 
   return {
     title: {
@@ -85,7 +136,14 @@ export function generateCommonMetadata({
       template: "%s - grbpwr.com",
     },
     description,
-    ...(canonical ? { alternates: { canonical } } : {}),
+    ...(canonical || languages
+      ? {
+          alternates: {
+            ...(canonical ? { canonical } : {}),
+            ...(languages ? { languages } : {}),
+          },
+        }
+      : {}),
     manifest: "/manifest.json",
     appleWebApp: {
       capable: true,
@@ -98,10 +156,11 @@ export function generateCommonMetadata({
       ...ogParams,
     }),
     twitter: {
-      card: "player",
+      card: "summary_large_image",
       title,
       description: description,
       images: [ogParams.imageUrl || logo.src],
     },
+    ...(Object.keys(other).length ? { other } : {}),
   };
 }
