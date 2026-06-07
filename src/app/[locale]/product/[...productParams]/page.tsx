@@ -46,7 +46,7 @@ export async function generateMetadata({
   )?.description;
 
   const color = productBody?.productBodyInsert?.color;
-  const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
+  const productImage = productMedia[0]?.media?.compressed;
 
   // type:"product" suppresses the default og:type=website; og:type=product and
   // product:price:* are rendered as <meta property> JSX in the component below,
@@ -58,7 +58,10 @@ export async function generateMetadata({
     path: `/product/${gender}/${brand}/${name}/${id}`,
     ogParams: {
       type: "product",
-      imageUrl: productImageUrl,
+      imageUrl: productImage?.mediaUrl,
+      // Real dimensions so social cards crop accurately (omitted if unknown).
+      imageWidth: productImage?.width || undefined,
+      imageHeight: productImage?.height || undefined,
       imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
     },
   });
