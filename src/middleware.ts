@@ -99,6 +99,25 @@ export default async function middleware(req: NextRequest) {
             return NextResponse.redirect(url, { status: 307 });
         }
 
+        // Language preference wins over the URL locale: a visitor who picked a
+        // language (NEXT_LOCALE) keeps it even when opening a /{country}/{otherLocale}
+        // URL — e.g. /de/de after choosing English redirects to /de/en. Deliberate
+        // switches go through from_picker (handled above), which sets the cookie
+        // first, so they don't bounce. New visitors / crawlers (no cookie) get the
+        // URL as-is and the cookie is synced below.
+        if (
+            localeCookie &&
+            localeCookie !== locale &&
+            (routing.locales as readonly string[]).includes(localeCookie)
+        ) {
+            const url = req.nextUrl.clone();
+            url.pathname = `/${country}/${localeCookie}${rest}`;
+            const res = NextResponse.redirect(url, { status: 307 });
+            res.headers.set("Cache-Control", "no-store");
+            setMainCookies(res, country!, localeCookie);
+            return res;
+        }
+
         const url = req.nextUrl.clone();
         url.pathname = `/${locale}${rest}` || "/";
 
