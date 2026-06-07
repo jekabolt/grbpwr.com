@@ -33,7 +33,23 @@ const nextConfig: NextConfig = {
   },
   pageExtensions: ["mdx", "ts", "tsx"],
   async headers() {
+    // Baseline security headers (no CSP — added separately once Stripe/Maps/
+    // analytics origins are enumerated). Applied to every response.
+    const securityHeaders = [
+      { key: 'X-Content-Type-Options', value: 'nosniff' },
+      { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+      { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+      // Lock down powerful features the storefront doesn't use. Unlisted
+      // features (e.g. payment for Stripe) keep their default allowlist.
+      { key: 'Permissions-Policy', value: 'camera=(), microphone=(), browsing-topics=()' },
+      // HSTS incl. subdomains (files/art.grbpwr.com are HTTPS); no `preload`.
+      { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains' },
+    ];
     const headers: { source: string; headers: { key: string; value: string }[] }[] = [
+      {
+        source: '/:path*',
+        headers: securityHeaders,
+      },
       {
         source: '/:all*(svg|jpg|jpeg|png|webp|avif|gif|ico)',
         headers: [
