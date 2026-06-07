@@ -67,8 +67,10 @@ type GenerateOgParams = {
   imageWidth?: number;
   imageHeight?: number;
   imageAlt?: string;
-  // "product" pages emit og:type=product (+ product:price:*) via `other` since
-  // Next's typed openGraph union has no "product" variant.
+  // "product" suppresses the default og:type=website here: Next's metadata API
+  // can't emit og:type=product (it throws on types outside its fixed union), so
+  // product pages render og:type=product + product:price:* as <meta property>
+  // JSX themselves. Setting this avoids a duplicate/conflicting og:type tag.
   type?: "website" | "product";
 };
 
@@ -84,8 +86,9 @@ export function generateOpenGraph({
   return {
     title,
     description,
-    // og:type=product is set via `other` (see generateCommonMetadata) to avoid a
-    // duplicate tag; only emit the typed "website" here.
+    // Only emit the typed "website" og:type here. Product pages pass
+    // type:"product" to suppress it and render og:type=product themselves (see
+    // the `type` note above).
     ...(type === "website" ? { type } : {}),
     siteName: "grbpwr.com",
     images: [
@@ -103,7 +106,6 @@ export function generateCommonMetadata({
   title = "grbpwr.com",
   description = "GRBPWR discusses difficult topics by imperfect language and master it. Shop latest ready-to-wear.",
   ogParams = {},
-  productPrice,
   locale,
   path,
 }: {
@@ -111,8 +113,6 @@ export function generateCommonMetadata({
   templateTitle?: string;
   description?: string;
   ogParams?: GenerateOgParams;
-  // Pass for product pages to emit og:type=product + product:price:* tags.
-  productPrice?: { amount: string; currency: string };
   // Pass locale + locale-relative path (e.g. "" or "/product/...") to emit a
   // canonical <link> and hreflang alternates. Omit on layout-level metadata so
   // leaf pages own them.
@@ -121,14 +121,6 @@ export function generateCommonMetadata({
 } = {}): Metadata {
   const canonical = canonicalUrl(locale, path);
   const languages = locale ? languageAlternates(path) : undefined;
-
-  const isProduct = ogParams.type === "product";
-  const other: Record<string, string> = {};
-  if (isProduct) other["og:type"] = "product";
-  if (productPrice) {
-    other["product:price:amount"] = productPrice.amount;
-    other["product:price:currency"] = productPrice.currency;
-  }
 
   return {
     title: {
@@ -161,6 +153,5 @@ export function generateCommonMetadata({
       description: description,
       images: [ogParams.imageUrl || logo.src],
     },
-    ...(Object.keys(other).length ? { other } : {}),
   };
 }
