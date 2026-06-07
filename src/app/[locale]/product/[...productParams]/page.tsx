@@ -47,16 +47,15 @@ export async function generateMetadata({
 
   const color = productBody?.productBodyInsert?.color;
   const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
-  const offer = productOfferForLocale(product, locale);
 
+  // type:"product" suppresses the default og:type=website; og:type=product and
+  // product:price:* are rendered as <meta property> JSX in the component below,
+  // since Next's metadata API can't emit og:type=product.
   return generateCommonMetadata({
     title: title?.toUpperCase(),
     description: `${description}'\n'${color}`,
     locale,
     path: `/product/${gender}/${brand}/${name}/${id}`,
-    ...(offer
-      ? { productPrice: { amount: offer.price, currency: offer.currency } }
-      : {}),
     ogParams: {
       type: "product",
       imageUrl: productImageUrl,
@@ -89,6 +88,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const productMedia = [...(product?.media || [])];
   const jsonLd = productJsonLd(product, locale);
+  // Open Graph product tags. Rendered here (not via the metadata API, which
+  // throws on og:type values outside its fixed union) as <meta property> JSX —
+  // React hoists them into <head>.
+  const offer = productOfferForLocale(product, locale);
 
   // Single descriptive H1 (the product name) rendered once at page level — both
   // the desktop and mobile info blocks are in the DOM (CSS-toggled), so putting
@@ -109,6 +112,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+      )}
+      <meta property="og:type" content="product" />
+      {offer && (
+        <>
+          <meta property="product:price:amount" content={offer.price} />
+          <meta property="product:price:currency" content={offer.currency} />
+        </>
       )}
       {productName && <h1 className="sr-only">{productName}</h1>}
       <div className="block lg:hidden">
