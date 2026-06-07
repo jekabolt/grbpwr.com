@@ -21,6 +21,7 @@ export default async function GlobalNotFound() {
   return (
     <html lang={locale}>
       <head>
+        <title>{`404 — ${t("title")} · grbpwr.com`}</title>
         <style
           dangerouslySetInnerHTML={{
             __html:

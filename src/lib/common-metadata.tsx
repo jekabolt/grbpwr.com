@@ -29,6 +29,17 @@ const HREFLANG_BY_LOCALE: Record<string, string> = {
   ko: "ko-KR",
 };
 
+// Open Graph locale (language_TERRITORY) per locale. Mirrors HREFLANG_BY_LOCALE.
+const OG_LOCALE_BY_LOCALE: Record<string, string> = {
+  en: "en_GB",
+  fr: "fr_FR",
+  de: "de_DE",
+  it: "it_IT",
+  ja: "ja_JP",
+  zh: "zh_CN",
+  ko: "ko_KR",
+};
+
 /** Absolute canonical URL for a page, given its locale and locale-relative path. */
 export function canonicalUrl(
   locale?: string,
@@ -122,6 +133,12 @@ export function generateCommonMetadata({
   const canonical = canonicalUrl(locale, path);
   const languages = locale ? languageAlternates(path) : undefined;
 
+  // og:locale / og:locale:alternate (only when the page's locale is known).
+  const ogLocale = locale ? OG_LOCALE_BY_LOCALE[locale] : undefined;
+  const ogAlternateLocales = ogLocale
+    ? Object.values(OG_LOCALE_BY_LOCALE).filter((l) => l !== ogLocale)
+    : undefined;
+
   const isProduct = ogParams.type === "product";
   const other: Record<string, string> = {};
   if (isProduct) other["og:type"] = "product";
@@ -150,11 +167,19 @@ export function generateCommonMetadata({
       statusBarStyle: "default",
       title: "GRBPWR",
     },
-    openGraph: generateOpenGraph({
-      title,
-      description: description,
-      ...ogParams,
-    }),
+    icons: {
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    },
+    openGraph: {
+      ...generateOpenGraph({
+        title,
+        description: description,
+        ...ogParams,
+      }),
+      ...(ogLocale
+        ? { locale: ogLocale, alternateLocale: ogAlternateLocales }
+        : {}),
+    },
     twitter: {
       card: "summary_large_image",
       title,
