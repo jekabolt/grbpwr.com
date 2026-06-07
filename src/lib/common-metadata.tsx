@@ -139,14 +139,6 @@ export function generateCommonMetadata({
     ? Object.values(OG_LOCALE_BY_LOCALE).filter((l) => l !== ogLocale)
     : undefined;
 
-  const isProduct = ogParams.type === "product";
-  const other: Record<string, string> = {};
-  if (isProduct) other["og:type"] = "product";
-  if (productPrice) {
-    other["product:price:amount"] = productPrice.amount;
-    other["product:price:currency"] = productPrice.currency;
-  }
-
   return {
     title: {
       default: title,
