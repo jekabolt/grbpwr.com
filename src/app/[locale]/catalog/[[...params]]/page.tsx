@@ -3,9 +3,26 @@ import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { catalogJsonLd } from "@/lib/structured-data";
 
 import { CatalogContent } from "../_components/catalog-content";
 import { CatalogSkeleton } from "../_components/catalog-skeleton";
+
+/** Shared resolution of the listing's display title + description key. */
+function resolveCatalogCopy(firstParam?: string) {
+  const p = firstParam?.toLowerCase();
+  const title =
+    p === "men" ? "men" : p === "women" ? "women" : p === "objects" ? "objects" : "catalog";
+  const descriptionKey =
+    p === "men"
+      ? "men description"
+      : p === "women"
+        ? "women description"
+        : p === "objects"
+          ? "objects description"
+          : "catalog description";
+  return { title, descriptionKey };
+}
 
 interface CatalogPageProps {
   params: Promise<{
@@ -43,27 +60,11 @@ export async function generateMetadata({
   const { locale, params: routeParams } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
 
-  const firstParam = routeParams?.[0]?.toLowerCase();
-  const descriptionKey =
-    firstParam === "men"
-      ? "men description"
-      : firstParam === "women"
-        ? "women description"
-        : firstParam === "objects"
-          ? "objects description"
-          : "catalog description";
-
-  const title =
-    firstParam === "men"
-      ? "men"
-      : firstParam === "women"
-        ? "women"
-        : firstParam === "objects"
-          ? "objects"
-          : t("catalog");
+  const { title, descriptionKey } = resolveCatalogCopy(routeParams?.[0]);
+  const displayTitle = title === "catalog" ? t("catalog") : title;
 
   return generateCommonMetadata({
-    title: title.toUpperCase(),
+    title: displayTitle.toUpperCase(),
     description: t(descriptionKey),
     locale,
     path: routeParams?.length
@@ -72,10 +73,28 @@ export async function generateMetadata({
   });
 }
 
-export default function CatalogPage(props: CatalogPageProps) {
+export default async function CatalogPage(props: CatalogPageProps) {
+  const { locale, params: routeParams } = await props.params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  const { title, descriptionKey } = resolveCatalogCopy(routeParams?.[0]);
+  const displayTitle = title === "catalog" ? t("catalog") : title;
+
+  const jsonLd = catalogJsonLd({
+    locale,
+    routeParams,
+    name: displayTitle.toUpperCase(),
+    description: t(descriptionKey),
+  });
+
   return (
-    <Suspense fallback={<CatalogSkeleton />}>
-      <CatalogContent {...props} />
-    </Suspense>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Suspense fallback={<CatalogSkeleton />}>
+        <CatalogContent {...props} />
+      </Suspense>
+    </>
   );
 }

@@ -153,8 +153,7 @@ export function productJsonLd(
   const description = (t?.description || "").trim();
   const color = p.productDisplay?.productBody?.productBodyInsert?.color?.trim();
 
-  return {
-    "@context": "https://schema.org",
+  const productNode = {
     "@type": "Product",
     name,
     ...(description ? { description } : {}),
@@ -166,6 +165,72 @@ export function productJsonLd(
     ...(p.createdAt ? { datePublished: p.createdAt } : {}),
     ...(p.updatedAt ? { dateModified: p.updatedAt } : {}),
     ...(offers.length ? { offers } : {}),
+  };
+
+  // Breadcrumb: GRBPWR > Catalog > {product}. Helps Google render a breadcrumb
+  // trail in product snippets instead of the bare URL.
+  const homeUrl = `${SITE}/${country}/${locale}`;
+  const breadcrumbNode = {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "GRBPWR", item: homeUrl },
+      { "@type": "ListItem", position: 2, name: "Catalog", item: `${homeUrl}/catalog` },
+      { "@type": "ListItem", position: 3, name, ...(url ? { item: url } : {}) },
+    ],
+  };
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [productNode, breadcrumbNode],
+  };
+}
+
+// CollectionPage + BreadcrumbList for catalog listings (/catalog and category
+// listings). ItemList is intentionally omitted — the catalog loads products
+// client-side (infinite scroll), so there's no server-rendered product list to
+// enumerate; adding it would require a dedicated server fetch.
+export function catalogJsonLd({
+  locale,
+  routeParams,
+  name,
+  description,
+}: {
+  locale: string;
+  routeParams?: string[];
+  name: string;
+  description?: string;
+}): Record<string, unknown> {
+  const country = COUNTRY_BY_LOCALE[locale] ?? "gb";
+  const homeUrl = `${SITE}/${country}/${locale}`;
+  const catalogUrl = `${homeUrl}/catalog`;
+  const url = routeParams?.length
+    ? `${catalogUrl}/${routeParams.join("/")}`
+    : catalogUrl;
+  const category = routeParams?.[0];
+
+  const itemListElement = [
+    { "@type": "ListItem", position: 1, name: "GRBPWR", item: homeUrl },
+    { "@type": "ListItem", position: 2, name: "Catalog", item: catalogUrl },
+    ...(category
+      ? [{ "@type": "ListItem", position: 3, name: category, item: url }]
+      : []),
+  ];
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name,
+        url,
+        ...(description ? { description } : {}),
+        isPartOf: { "@type": "WebSite", "@id": `${SITE}/#website` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement,
+      },
+    ],
   };
 }
 
