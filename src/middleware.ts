@@ -155,6 +155,14 @@ export default async function middleware(req: NextRequest) {
         if (!rest?.trim()) {
             res.headers.append("Link", HOMEPAGE_LINK_HEADER);
             res.headers.set("Vary", "Accept");
+            // The homepage is prerendered (force-static) and personalised only via
+            // the cookies set below (read client-side), so `private` is the honest
+            // signal vs `no-store`: the browser may reuse it (revalidating first),
+            // shared caches/proxies must not. It still isn't CDN-cached — the
+            // Set-Cookie precludes that — but the header no longer misrepresents a
+            // prerendered page as non-storable, which was confusing diagnostics and
+            // third-party caches/proxies.
+            res.headers.set("Cache-Control", "private, no-cache, must-revalidate");
         }
         setMainCookies(res, country!, locale!);
         const suggestCountryCookie = req.cookies.get("NEXT_SUGGEST_COUNTRY")?.value;
