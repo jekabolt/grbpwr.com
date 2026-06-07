@@ -196,6 +196,22 @@ export default async function middleware(req: NextRequest) {
         return res;
     }
 
+    // A bare /{country} (e.g. /gb, /us) must resolve to that country, not be
+    // mistaken for a locale by the locale-only handling below (which treats any
+    // two letters as a language). Redirect to the country's default language so
+    // /gb -> /gb/en instead of /{geoCountry}/{geoLocale}.
+    const bareCountry = pathname.match(/^\/([A-Za-z]{2})\/?$/);
+    if (bareCountry && supportedCountries.includes(bareCountry[1].toLowerCase())) {
+        const country = bareCountry[1].toLowerCase();
+        const locale = getLocaleFromCountry(country);
+        const url = req.nextUrl.clone();
+        url.pathname = `/${country}/${locale}`;
+        const res = NextResponse.redirect(url, { status: 307 });
+        res.headers.set("Cache-Control", "no-store");
+        setMainCookies(res, country, locale);
+        return res;
+    }
+
     //handle paths without country/locale (e.g. /, /en, /en/products)
     if (!/^\/[A-Za-z]{2}\/[a-z]{2}(?=\/|$)/.test(pathname)) {
         const targetCountry = (countryCookie && supportedCountries.includes(countryCookie))
