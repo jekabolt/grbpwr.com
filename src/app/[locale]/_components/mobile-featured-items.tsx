@@ -1,6 +1,6 @@
 import { common_Product } from "@/api/proto-http/frontend";
 
-import { cn } from "@/lib/utils";
+import { cn, internalHref } from "@/lib/utils";
 import { Carousel } from "@/components/ui/carousel";
 
 import { HeaderSection } from "./featured-items";
@@ -47,7 +47,7 @@ export function MobileFeaturedItems({
       <div className="px-2.5">
         <HeaderSection
           headline={headline}
-          href={isMultipleItems ? exploreLink || "" : itemSlug}
+          href={internalHref(isMultipleItems ? exploreLink || "" : itemSlug)}
           linkText={isMultipleItems ? exploreText || "" : "buy now"}
           onHeroClick={onHeroClick}
         />

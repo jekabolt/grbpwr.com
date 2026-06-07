@@ -327,3 +327,22 @@ export function resolveLocale(tag: string | undefined) {
   }
   return routing.defaultLocale;
 }
+
+/**
+ * Make an internal nav target root-absolute. Backend-supplied links (hero/ad
+ * `exploreLink`, tags) may be relative (e.g. "catalog"); from /de/en the browser
+ * resolves "catalog" to /de/catalog, dropping the locale and landing on
+ * /de/de/catalog. Forcing a leading slash makes it /catalog -> /de/en/catalog.
+ * External URLs (http:, mailto:, etc.) and anchors are left untouched.
+ */
+export function internalHref(href?: string | null): string {
+  if (!href) return "";
+  if (
+    href.startsWith("/") ||
+    href.startsWith("#") ||
+    /^[a-z][a-z0-9+.-]*:/i.test(href)
+  ) {
+    return href;
+  }
+  return `/${href}`;
+}
