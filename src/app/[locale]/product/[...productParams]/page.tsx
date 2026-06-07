@@ -46,7 +46,11 @@ export async function generateMetadata({
   )?.description;
 
   const color = productBody?.productBodyInsert?.color;
-  const productImage = productMedia[0]?.media?.compressed;
+  // Use the product's thumbnail (compressed) as the link-preview image, falling
+  // back to the first gallery media if no thumbnail is set.
+  const productImage =
+    product?.product?.productDisplay?.thumbnail?.media?.compressed ??
+    productMedia[0]?.media?.compressed;
 
   // type:"product" suppresses the default og:type=website; og:type=product and
   // product:price:* are rendered as <meta property> JSX in the component below,
@@ -56,6 +60,8 @@ export async function generateMetadata({
     description: `${description}'\n'${color}`,
     locale,
     path: `/product/${gender}/${brand}/${name}/${id}`,
+    // Small preview for product links (square thumbnail), not a large card.
+    twitterCard: "summary",
     ogParams: {
       type: "product",
       imageUrl: productImage?.mediaUrl,
