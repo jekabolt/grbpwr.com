@@ -5,7 +5,7 @@ import type { common_HeroEntityWithTranslations } from "@/api/proto-http/fronten
 
 import { sendHeroEvent } from "@/lib/analitycs/hero";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, cn, isVideo } from "@/lib/utils";
+import { calculateAspectRatio, cn, internalHref, isVideo } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -41,7 +41,7 @@ export function Ads({
             return (
               <div className="relative h-screen w-full" key={i}>
                 <AnimatedButton
-                  href={e.single?.exploreLink || ""}
+                  href={internalHref(e.single?.exploreLink)}
                   className="group relative h-full w-full text-bgColor"
                   onClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_SINGLE" })
@@ -139,7 +139,7 @@ export function Ads({
                 className="relative flex h-full w-full flex-col lg:flex-row"
               >
                 <AnimatedButton
-                  href={e.double?.left?.exploreLink || ""}
+                  href={internalHref(e.double?.left?.exploreLink)}
                   className="group relative h-full w-full text-bgColor"
                   onClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_DOUBLE_LEFT" })
@@ -179,7 +179,7 @@ export function Ads({
                   </div>
                 </AnimatedButton>
                 <AnimatedButton
-                  href={e.double?.right?.exploreLink || ""}
+                  href={internalHref(e.double?.right?.exploreLink)}
                   className="group relative h-full w-full"
                   onClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_DOUBLE_RIGHT" })

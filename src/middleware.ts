@@ -203,7 +203,14 @@ export default async function middleware(req: NextRequest) {
     const bareCountry = pathname.match(/^\/([A-Za-z]{2})\/?$/);
     if (bareCountry && supportedCountries.includes(bareCountry[1].toLowerCase())) {
         const country = bareCountry[1].toLowerCase();
-        const locale = getLocaleFromCountry(country);
+        // Keep the visitor's chosen language if they have one; only fall back to
+        // the country's default for fresh visitors. Otherwise /de clobbered a
+        // user's NEXT_LOCALE=en and forced /de/de (and the de cookie cascaded to
+        // catalog/product links).
+        const locale =
+            localeCookie && (routing.locales as readonly string[]).includes(localeCookie)
+                ? localeCookie
+                : getLocaleFromCountry(country);
         const url = req.nextUrl.clone();
         url.pathname = `/${country}/${locale}`;
         const res = NextResponse.redirect(url, { status: 307 });

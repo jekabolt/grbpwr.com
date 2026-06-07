@@ -9,7 +9,7 @@ import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 import { sendHeroEvent } from "@/lib/analitycs/hero";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, isVideo } from "@/lib/utils";
+import { calculateAspectRatio, internalHref, isVideo } from "@/lib/utils";
 
 export function MainAds({
   main,
@@ -33,7 +33,7 @@ export function MainAds({
 
   return (
     <AnimatedButton
-      href={main.single?.exploreLink || ""}
+      href={internalHref(main.single?.exploreLink)}
       className="relative h-screen w-full overflow-hidden"
       onClick={() => sendHeroEvent({ heroType: "HERO_TYPE_MAIN" })}
       onMouseEnter={() => setIsHovered(true)}
