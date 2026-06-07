@@ -4,7 +4,6 @@ import { getTranslations } from "next-intl/server";
 import { getHero, getLatestProductDate } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { siteJsonLd } from "@/lib/structured-data";
-import { isVideo } from "@/lib/utils";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Disabled } from "@/components/ui/disabled";
 import { EmptyHero } from "@/components/ui/empty-hero";
@@ -22,33 +21,19 @@ export async function generateMetadata({
 
   const description = t("description");
 
-  // Prefer the hero's landscape image as the social preview — a real preview
-  // beats the square logo. getHero() is React-cached, so this is deduped with
-  // the page render below (no extra request). Fall back to the logo for video
-  // heroes or when no hero is set.
-  const { hero } = await getHero();
-  const heroMedia = hero?.entities?.[0]?.main?.single?.mediaLandscape?.media;
-  const heroUrl = heroMedia?.fullSize?.mediaUrl;
-  const useHero = Boolean(heroUrl) && !isVideo(heroUrl);
-
+  // Social preview is the brand logo (app-logo.webp), not the hero image — keep
+  // link previews consistent regardless of the current hero.
   return generateCommonMetadata({
     title: "GRBPWR — Ready-to-wear & Archive",
     description,
     locale,
     path: "",
-    ogParams: useHero
-      ? {
-          imageUrl: heroUrl,
-          imageWidth: heroMedia?.fullSize?.width || undefined,
-          imageHeight: heroMedia?.fullSize?.height || undefined,
-          imageAlt: "GRBPWR",
-        }
-      : {
-          imageUrl: "/app-logo.webp",
-          imageWidth: 512,
-          imageHeight: 512,
-          imageAlt: "GRBPWR",
-        },
+    ogParams: {
+      imageUrl: "/app-logo.webp",
+      imageWidth: 512,
+      imageHeight: 512,
+      imageAlt: "GRBPWR",
+    },
   });
 }
 
