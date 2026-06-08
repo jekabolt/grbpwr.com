@@ -1,11 +1,11 @@
-import { common_ProductFull } from "@/api/proto-http/frontend";
-import { useMediaQuery } from "@uidotdev/usehooks";
-import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { common_ProductFull } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
-import { cn, isDateTodayOrFuture } from "@/lib/utils";
 
 import { LoadingButton } from "../loading-button";
 import { NotifyMe } from "../notify-me";

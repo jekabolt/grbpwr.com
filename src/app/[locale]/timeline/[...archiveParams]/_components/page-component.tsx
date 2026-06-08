@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useMediaQuery } from "@uidotdev/usehooks";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
   calculateAspectRatio,

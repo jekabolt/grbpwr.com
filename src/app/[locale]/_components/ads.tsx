@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useMediaQuery } from "@uidotdev/usehooks";
 import type { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
 import { sendHeroEvent } from "@/lib/analitycs/hero";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, internalHref, isVideo } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";

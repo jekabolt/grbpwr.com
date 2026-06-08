@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useMediaQuery } from "@uidotdev/usehooks";
 import { common_ArchiveList } from "@/api/proto-http/frontend";
 
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { resolveArchiveMedia } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 

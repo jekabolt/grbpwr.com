@@ -6,10 +6,10 @@ import {
   currencySymbols,
   LANGUAGE_ID_TO_LOCALE,
 } from "@/constants";
-import { useMediaQuery } from "@uidotdev/usehooks";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
@@ -52,116 +52,112 @@ export function MobileCountriesPopup() {
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCountryPopup}>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay data-[state=open]:animate-overlay-in data-[state=closed]:animate-overlay-out" />
+        <DialogPrimitives.Overlay className="data-[state=open]:animate-overlay-in data-[state=closed]:animate-overlay-out fixed inset-0 z-20 h-screen bg-overlay" />
         <DialogPrimitives.Content
           onOpenAutoFocus={(e) => e.preventDefault()}
           className={cn(
-            "fixed inset-x-2 bottom-2 top-2 z-[70] flex flex-col overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden data-[state=open]:animate-panel-in data-[state=closed]:animate-panel-out",
+            "data-[state=open]:animate-panel-in data-[state=closed]:animate-panel-out fixed inset-x-2 bottom-2 top-2 z-[70] flex flex-col overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden",
             {
               blackTheme: !isWebsiteEnabled,
             },
           )}
         >
-              <div className="flex items-center justify-between bg-bgColor pb-8">
-                <Text variant="uppercase">{t("change country")}</Text>
-                <DialogPrimitives.Close asChild>
-                  <Button>[x]</Button>
-                </DialogPrimitives.Close>
-              </div>
+          <div className="flex items-center justify-between bg-bgColor pb-8">
+            <Text variant="uppercase">{t("change country")}</Text>
+            <DialogPrimitives.Close asChild>
+              <Button>[x]</Button>
+            </DialogPrimitives.Close>
+          </div>
 
-              <div className="space-y-8">
-                <Text className="uppercase">
-                  {t("text", {
-                    currentCountry: currentCountry.name,
-                    currency: currentCountry.currencyKey || "EUR",
-                  })}
-                </Text>
-                <div className="mb-4 space-y-2.5">
-                  <Text className="uppercase">{t("language")}</Text>
-                  {languagesForCurrentCountry &&
-                    languagesForCurrentCountry.length > 1 && (
-                      <RadioGroup
-                        items={languagesForCurrentCountry}
-                        name="language-selector"
-                        value={LANGUAGE_ID_TO_LOCALE[languageId]}
-                        onValueChange={(val: string) =>
-                          handleChangeLocaleOnly(val)
-                        }
-                        className="flex flex-col gap-2 uppercase"
-                      />
-                    )}
-                </div>
-                <Searchbar
-                  name="search"
-                  value={query}
-                  noFound={filteredCountries.length === 0}
-                  handleSearch={handleSearch}
-                  placeholder={t("search location")}
-                />
-              </div>
-
-              <div className="space-y-4 text-textColor">
-                {searchQuery ? (
-                  <div className="flex flex-col gap-2">
-                    {filteredCountries.map((country) => (
-                      <Button
-                        key={`${country.countryCode}-${country.name}-${country.lng}`}
-                        className="flex w-full items-center justify-between px-3"
-                        onClick={() => handleCountrySelect(country)}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Text className="uppercase">{country.name}</Text>
-                          <Text>{`[${country.currency}]`}</Text>
-                        </div>
-                        <Text className="uppercase">{country.displayLng}</Text>
-                      </Button>
-                    ))}
-                  </div>
-                ) : (
-                  regionsWithCountries.map(([region, countries], index) => (
-                    <div
-                      key={region}
-                      className={cn(
-                        "border-b border-textInactiveColorAlpha hover:border-textColor",
-                        {
-                          "border-transparent hover:border-transparent":
-                            index === regionsWithCountries.length - 1,
-                        },
-                      )}
-                    >
-                      <FieldsGroupContainer
-                        key={region}
-                        signType="plus-minus"
-                        clickableAreaClassName="h-9 items-start"
-                        childrenSpacingClass="pb-4"
-                        title={region}
-                        isOpen={openSection === index}
-                        onToggle={() => toggleSection(index)}
-                      >
-                        <div className="flex flex-col gap-2">
-                          {countries.map((country) => (
-                            <Button
-                              key={`${region}-${country.name}-${country.lng}`}
-                              className="flex w-full items-center justify-between px-3"
-                              onClick={() => handleCountrySelect(country)}
-                            >
-                              <div className="flex items-center gap-2">
-                                <Text className="uppercase">
-                                  {country.name}
-                                </Text>
-                                <Text>{`[${country.currency}]`}</Text>
-                              </div>
-                              <Text className="uppercase">
-                                {country.displayLng}
-                              </Text>
-                            </Button>
-                          ))}
-                        </div>
-                      </FieldsGroupContainer>
-                    </div>
-                  ))
+          <div className="space-y-8">
+            <Text className="uppercase">
+              {t("text", {
+                currentCountry: currentCountry.name,
+                currency: currentCountry.currencyKey || "EUR",
+              })}
+            </Text>
+            <div className="mb-4 space-y-2.5">
+              <Text className="uppercase">{t("language")}</Text>
+              {languagesForCurrentCountry &&
+                languagesForCurrentCountry.length > 1 && (
+                  <RadioGroup
+                    items={languagesForCurrentCountry}
+                    name="language-selector"
+                    value={LANGUAGE_ID_TO_LOCALE[languageId]}
+                    onValueChange={(val: string) => handleChangeLocaleOnly(val)}
+                    className="flex flex-col gap-2 uppercase"
+                  />
                 )}
+            </div>
+            <Searchbar
+              name="search"
+              value={query}
+              noFound={filteredCountries.length === 0}
+              handleSearch={handleSearch}
+              placeholder={t("search location")}
+            />
+          </div>
+
+          <div className="space-y-4 text-textColor">
+            {searchQuery ? (
+              <div className="flex flex-col gap-2">
+                {filteredCountries.map((country) => (
+                  <Button
+                    key={`${country.countryCode}-${country.name}-${country.lng}`}
+                    className="flex w-full items-center justify-between px-3"
+                    onClick={() => handleCountrySelect(country)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Text className="uppercase">{country.name}</Text>
+                      <Text>{`[${country.currency}]`}</Text>
+                    </div>
+                    <Text className="uppercase">{country.displayLng}</Text>
+                  </Button>
+                ))}
               </div>
+            ) : (
+              regionsWithCountries.map(([region, countries], index) => (
+                <div
+                  key={region}
+                  className={cn(
+                    "border-b border-textInactiveColorAlpha hover:border-textColor",
+                    {
+                      "border-transparent hover:border-transparent":
+                        index === regionsWithCountries.length - 1,
+                    },
+                  )}
+                >
+                  <FieldsGroupContainer
+                    key={region}
+                    signType="plus-minus"
+                    clickableAreaClassName="h-9 items-start"
+                    childrenSpacingClass="pb-4"
+                    title={region}
+                    isOpen={openSection === index}
+                    onToggle={() => toggleSection(index)}
+                  >
+                    <div className="flex flex-col gap-2">
+                      {countries.map((country) => (
+                        <Button
+                          key={`${region}-${country.name}-${country.lng}`}
+                          className="flex w-full items-center justify-between px-3"
+                          onClick={() => handleCountrySelect(country)}
+                        >
+                          <div className="flex items-center gap-2">
+                            <Text className="uppercase">{country.name}</Text>
+                            <Text>{`[${country.currency}]`}</Text>
+                          </div>
+                          <Text className="uppercase">
+                            {country.displayLng}
+                          </Text>
+                        </Button>
+                      ))}
+                    </div>
+                  </FieldsGroupContainer>
+                </div>
+              ))
+            )}
+          </div>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
     </DialogPrimitives.Root>
