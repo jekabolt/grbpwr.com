@@ -47,6 +47,7 @@ export function NotifyMe({
   const [toastMessage, setToastMessage] = useState("");
   const [hasInteracted, setHasInteracted] = useState(false);
   const t = useTranslations("newslatter");
+  const tNav = useTranslations("navigation");
   const tProduct = useTranslations("product");
   const tToaster = useTranslations("toaster");
   const tAccessibility = useTranslations("accessibility");
@@ -179,7 +180,7 @@ export function NotifyMe({
                   <div className="flex items-center justify-between">
                     <Text variant="uppercase">{tProduct("notify me")}</Text>
                     <DialogPrimitives.Close asChild>
-                      <Button>[x]</Button>
+                      <Button aria-label={tNav("close")}>[x]</Button>
                     </DialogPrimitives.Close>
                   </div>
                   <div className="flex h-full flex-col justify-center space-y-10">

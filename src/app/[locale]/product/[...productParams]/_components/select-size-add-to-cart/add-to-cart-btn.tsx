@@ -1,4 +1,5 @@
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import { useMediaQuery } from "@uidotdev/usehooks";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -98,8 +99,7 @@ export function AddToCartBtn({
   const isMaxQuantityFinal = handlers?.isMaxQuantity ?? internalIsMaxQuantity;
   const sizeQuantity = handlers?.sizeQuantity ?? internalSizeQuantity;
   const isValidPreorder = preorder && isDateTodayOrFuture(preorderRaw || "");
-  const isMobile =
-    typeof window !== "undefined" && window.innerWidth < 1024;
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   const isNoSizeSelected = !activeSizeId && isHovered && !isMobile;
   const isSelectedSizeOutOfStock = activeSizeId && outOfStock?.[activeSizeId];
   const isHoveringOutOfStock = hoveredOutOfStockSizeId !== null;
@@ -180,7 +180,7 @@ export function AddToCartBtn({
       >
         <div>
           {preorder && isDateTodayOrFuture(preorderRaw || "") && (
-            <Text className="bg-[#F0F0F0] p-1.5 text-center uppercase leading-none text-textColor">
+            <Text className="bg-textInactiveColorAlpha p-1.5 text-center uppercase leading-none text-textColor">
               {preorder}
             </Text>
           )}
@@ -218,7 +218,9 @@ export function AddToCartBtn({
                 {isSaleApplied ? (
                   <Text variant="inactive">
                     {priceMinusSale}
-                    <Text component="span">{priceWithSale}</Text>
+                    <Text component="span" className="text-textColor">
+                      {priceWithSale}
+                    </Text>
                   </Text>
                 ) : (
                   <Text variant="inherit">{price}</Text>

@@ -52,7 +52,11 @@ export function MainAds({
             main.single?.mediaLandscape?.media?.fullSize?.width,
             main.single?.mediaLandscape?.media?.fullSize?.height,
           )}
-          alt="main hero image"
+          alt={
+            currentTranslation?.headline ||
+            currentTranslation?.tag ||
+            "GRBPWR"
+          }
           fit="cover"
           priority={true}
           loading="eager"
@@ -68,7 +72,11 @@ export function MainAds({
             mobileMedia?.fullSize?.width,
             mobileMedia?.fullSize?.height,
           )}
-          alt="main hero image"
+          alt={
+            currentTranslation?.headline ||
+            currentTranslation?.tag ||
+            "GRBPWR"
+          }
           fit="cover"
           priority={true}
           loading="eager"

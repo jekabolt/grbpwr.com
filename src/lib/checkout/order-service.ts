@@ -51,10 +51,6 @@ export async function submitNewOrder(
     newOrderData: common_OrderNew,
     paymentIntentId: string,
 ): Promise<SubmitOrderResult> {
-    console.log("order data: ", {
-        order: newOrderData,
-    });
-
     try {
         const gaClientId = await getGA4ClientId();
 
@@ -65,18 +61,11 @@ export async function submitNewOrder(
         });
 
         if (!submitOrderResponse?.orderUuid) {
-            console.log("no data to create order invoice");
-
             return {
                 ok: false,
                 error: "Failed to create order",
             };
         }
-
-        console.log({
-            ok: true,
-            order: submitOrderResponse,
-        });
 
         return {
             ok: true,

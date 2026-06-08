@@ -60,7 +60,7 @@ function MobileOrderItemRow({
       <div className="relative min-w-[90px]">
         <Image
           src={product.thumbnail || ""}
-          alt="product"
+          alt={productName || "product"}
           fit="contain"
           aspectRatio="3/4"
         />

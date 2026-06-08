@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useMediaQuery } from "@uidotdev/usehooks";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -25,7 +26,7 @@ function ArchiveMediaGridItem({
   heading: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   const media = resolveArchiveMedia(item.media);
   const isPriority = id < 4;
   const isVideoItem = media.type === "video";

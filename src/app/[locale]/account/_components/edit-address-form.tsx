@@ -45,6 +45,7 @@ export function EditAddressForm({
 }) {
   const t = useTranslations("checkout");
   const tAccount = useTranslations("account");
+  const tNav = useTranslations("navigation");
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
@@ -109,6 +110,7 @@ export function EditAddressForm({
               <Text variant="uppercase">{tAccount("edit shipping address")}</Text>
               <Button
                 type="button"
+                aria-label={tNav("close")}
                 className="hidden lg:block"
                 onClick={onCancel}
               >

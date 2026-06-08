@@ -53,7 +53,6 @@ export function useValidatedOrder(
     const paymentMethod =
       form.getValues("paymentMethod") || "PAYMENT_METHOD_NAME_ENUM_CARD_TEST";
 
-    console.log("validating products ⌛️");
     const result = await validateCartItems({
       products,
       currency,
@@ -62,7 +61,6 @@ export function useValidatedOrder(
       country,
       paymentMethod,
     });
-    console.log("finished validating products 🎉");
 
     if (!result) return null;
 

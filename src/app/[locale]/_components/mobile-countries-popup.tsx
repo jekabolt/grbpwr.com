@@ -6,6 +6,7 @@ import {
   currencySymbols,
   LANGUAGE_ID_TO_LOCALE,
 } from "@/constants";
+import { useMediaQuery } from "@uidotdev/usehooks";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
@@ -31,7 +32,7 @@ export function MobileCountriesPopup() {
 
   const [openSection, setOpenSection] = useState<number | null>(null);
   const regionsWithCountries = Object.entries(COUNTRIES_BY_REGION);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   const open = isMobile && isOpen;
 
   const {

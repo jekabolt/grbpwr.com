@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { common_Collection, common_Size } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
@@ -51,7 +50,6 @@ export default function FilterOptionButtons({
   handleFilterChange: (id: string) => void;
 }) {
   const t = useTranslations("catalog");
-  const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const isSizeType = (name: string, type: keyof typeof SIZE_PATTERNS) =>
     SIZE_PATTERNS[type].test(name);
@@ -89,17 +87,13 @@ export default function FilterOptionButtons({
     tailoredValues.length > 0 &&
     tailoredValues.some((f) => itemIsAvailable(f, gender));
 
-  const handleClick = async (id: string) => {
-    setLoadingId(id);
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  const handleClick = (id: string) => {
     handleFilterChange(id);
-    setLoadingId(null);
   };
 
   const renderButton = (factor: FilterItem) => {
     const factorId = getItemId(factor);
     const isSelected = selectedValues.includes(factorId);
-    const isLoading = loadingId === factorId;
     const isAvailable = itemIsAvailable(factor, gender);
 
     const displayName = formatSizeName(getItemName(factor));
@@ -107,10 +101,7 @@ export default function FilterOptionButtons({
     return (
       <Button
         onClick={() => handleClick(factorId)}
-        loading={isLoading}
-        loadingReverse={isSelected}
-        loadingType="overlay"
-        disabled={isLoading || !isAvailable}
+        disabled={!isAvailable}
         className={cn(
           "block border border-transparent uppercase md:hover:border-textColor",
           {

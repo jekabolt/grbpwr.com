@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useMediaQuery } from "@uidotdev/usehooks";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
@@ -29,7 +30,7 @@ export function MobileNavCart({
   const tCart = useTranslations("cart");
   const tAccessibility = useTranslations("accessibility");
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   const open = isMobile && isOpen;
   const pathname = usePathname();
 
