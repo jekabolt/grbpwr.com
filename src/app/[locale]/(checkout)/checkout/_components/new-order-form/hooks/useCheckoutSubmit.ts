@@ -290,7 +290,6 @@ export function useCheckoutSubmit({
         });
 
         if (paymentResult.success) {
-          console.log(data)
           sessionStorage.removeItem("pending_stripe_order");
           redirecting = true;
           await finalizeOrderAndRedirect(data, paymentResult.orderUuid, {

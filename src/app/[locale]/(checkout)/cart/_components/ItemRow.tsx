@@ -51,6 +51,52 @@ export default function ItemRow({
     (t) => t.languageId === languageId,
   )?.name;
 
+  // Shared between the linked and non-linked variants below so the markup lives
+  // in one place (the only difference is the wrapper element: Link vs div).
+  const media = (
+    <>
+      <Image
+        src={product.thumbnail || ""}
+        alt={productName || "product"}
+        fit="contain"
+        aspectRatio="4/5"
+      />
+      <div className="absolute inset-0 hidden lg:block">
+        <Overlay
+          cover="container"
+          color="highlight"
+          trigger={disabled ? "none" : "hover"}
+          disabled={disabled}
+        />
+      </div>
+    </>
+  );
+
+  const info = (
+    <>
+      <div className="space-y-3">
+        <Text
+          className="line-clamp-1 overflow-hidden text-ellipsis"
+          variant="uppercase"
+        >
+          {productName}
+        </Text>
+        <div>
+          <Text variant="uppercase">{tColors(product.color || "")}</Text>
+          <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+        </div>
+      </div>
+      {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
+        <Text
+          variant="uppercase"
+          className="whitespace-nowrap text-textInactiveColor"
+        >
+          {preorderDate}
+        </Text>
+      )}
+    </>
+  );
+
   return (
     <div
       className={cn(
@@ -61,94 +107,26 @@ export default function ItemRow({
       )}
     >
       {disableProductLinks ? (
-        <div className="relative h-full min-w-[90px] shrink-0">
-          <Image
-            src={product.thumbnail || ""}
-            alt="product"
-            fit="contain"
-            aspectRatio="4/5"
-          />
-          <div className="absolute inset-0 hidden lg:block">
-            <Overlay
-              cover="container"
-              color="highlight"
-              trigger={disabled ? "none" : "hover"}
-              disabled={disabled}
-            />
-          </div>
-        </div>
+        <div className="relative h-full min-w-[90px] shrink-0">{media}</div>
       ) : (
         <Link
           href={product.slug || ""}
           className="relative h-full min-w-[90px] shrink-0"
           onClick={closeCart}
         >
-          <Image
-            src={product.thumbnail || ""}
-            alt="product"
-            fit="contain"
-            aspectRatio="4/5"
-          />
-          <div className="absolute inset-0 hidden lg:block">
-            <Overlay
-              cover="container"
-              color="highlight"
-              trigger={disabled ? "none" : "hover"}
-              disabled={disabled}
-            />
-          </div>
+          {media}
         </Link>
       )}
       <div className="relative z-10 flex w-full items-stretch justify-between">
         {disableProductLinks ? (
-          <div className="flex w-full flex-col justify-between">
-            <div className="space-y-3">
-              <Text
-                className="line-clamp-1 overflow-hidden text-ellipsis"
-                variant="uppercase"
-              >
-                {productName}
-              </Text>
-              <div>
-                <Text variant="uppercase">{tColors(product.color || "")}</Text>
-                <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
-              </div>
-            </div>
-            {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
-              <Text
-                variant="uppercase"
-                className="whitespace-nowrap text-textInactiveColor"
-              >
-                {preorderDate}
-              </Text>
-            )}
-          </div>
+          <div className="flex w-full flex-col justify-between">{info}</div>
         ) : (
           <Link
             href={product.slug || ""}
             className="flex w-full flex-col justify-between"
             onClick={closeCart}
           >
-            <div className="space-y-3">
-              <Text
-                className="line-clamp-1 overflow-hidden text-ellipsis"
-                variant="uppercase"
-              >
-                {productName}
-              </Text>
-              <div>
-                <Text variant="uppercase">{tColors(product.color || "")}</Text>
-                <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
-              </div>
-            </div>
-            {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
-              <Text
-                variant="uppercase"
-                className="whitespace-nowrap text-textInactiveColor"
-              >
-                {preorderDate}
-              </Text>
-            )}
+            {info}
           </Link>
         )}
         <div

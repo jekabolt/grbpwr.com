@@ -16,7 +16,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         id={name}
         ref={ref}
         className={cn(
-          "mb-5 min-h-56 w-full resize-none appearance-none rounded-none bg-bgColor px-4 pt-2.5 text-textBaseSize focus:outline-none",
+          "mb-5 min-h-56 w-full resize-none appearance-none rounded-none bg-bgColor px-4 pt-2.5 text-textBaseSize",
           {
             "border-textInactiveColor": variant === "secondary",
           },

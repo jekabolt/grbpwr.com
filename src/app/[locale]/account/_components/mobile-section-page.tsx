@@ -18,6 +18,7 @@ type Props = {
 
 export function AccountMobileSectionPage({ account, section }: Props) {
   const t = useTranslations("account");
+  const tNav = useTranslations("navigation");
   const activePanel = section.value as ActivePanel;
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [addressEditResetKey, setAddressEditResetKey] = useState(0);
@@ -51,6 +52,7 @@ export function AccountMobileSectionPage({ account, section }: Props) {
           {isAddressEditHeader ? (
             <Button
               type="button"
+              aria-label={tNav("close")}
               className="justify-self-end leading-none"
               onClick={closeAddressEditMode}
             >

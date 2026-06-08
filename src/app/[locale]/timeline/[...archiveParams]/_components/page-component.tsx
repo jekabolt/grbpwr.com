@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
   calculateAspectRatio,
@@ -25,7 +26,7 @@ function ArchiveMediaGridItem({
   heading: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   const media = resolveArchiveMedia(item.media);
   const isPriority = id < 4;
   const isVideoItem = media.type === "video";

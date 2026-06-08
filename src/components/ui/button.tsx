@@ -9,13 +9,6 @@ export const buttonVariants = cva(
   [
     "block",
     "disabled:cursor-not-allowed",
-    "outline-none",
-    "focus:outline-none",
-    "focus-visible:outline-none",
-    "active:outline-none",
-    "ring-0",
-    "focus:ring-0",
-    "focus-visible:ring-0",
     "[-webkit-tap-highlight-color:transparent]",
   ],
   {

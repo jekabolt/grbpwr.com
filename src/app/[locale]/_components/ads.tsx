@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
 import { sendHeroEvent } from "@/lib/analitycs/hero";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, internalHref, isVideo } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -20,7 +21,9 @@ export function Ads({
   entities: common_HeroEntityWithTranslations[];
 }) {
   const { languageId } = useTranslationsStore((state) => state);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  // SSR-safe, reactive to resize (was computed once at render from window.innerWidth,
+  // which risked a hydration mismatch and never updated on viewport change).
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   const [hoveredSingleIndex, setHoveredSingleIndex] = useState<number | null>(
     null,
   );
@@ -56,7 +59,7 @@ export function Ads({
                         ""
                       }
                       blurhash={e.single?.mediaLandscape?.media?.blurhash}
-                      alt="ad hero image"
+                      alt={currentTranslation?.headline || "GRBPWR feature"}
                       aspectRatio={calculateAspectRatio(
                         e.single?.mediaLandscape?.media?.thumbnail?.width,
                         e.single?.mediaLandscape?.media?.thumbnail?.height,
@@ -81,7 +84,7 @@ export function Ads({
                         e.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""
                       }
                       blurhash={e.single?.mediaPortrait?.media?.blurhash}
-                      alt="ad hero image"
+                      alt={currentTranslation?.headline || "GRBPWR feature"}
                       aspectRatio={calculateAspectRatio(
                         e.single?.mediaPortrait?.media?.fullSize?.width,
                         e.single?.mediaPortrait?.media?.fullSize?.height,
@@ -150,7 +153,7 @@ export function Ads({
                   <Image
                     src={leftUrl}
                     blurhash={e.double?.left?.mediaLandscape?.media?.blurhash}
-                    alt="ad hero image"
+                    alt={leftTranslation?.headline || "GRBPWR feature"}
                     aspectRatio={calculateAspectRatio(
                       e.double?.left?.mediaLandscape?.media?.thumbnail?.width,
                       e.double?.left?.mediaLandscape?.media?.thumbnail?.height,
@@ -190,10 +193,10 @@ export function Ads({
                   <Image
                     src={rightUrl}
                     blurhash={e.double?.right?.mediaLandscape?.media?.blurhash}
-                    alt="ad hero image"
+                    alt={rightTranslation?.headline || "GRBPWR feature"}
                     aspectRatio={calculateAspectRatio(
-                      e.double?.right?.mediaLandscape?.media?.fullSize?.width,
-                      e.double?.right?.mediaLandscape?.media?.fullSize?.height,
+                      e.double?.right?.mediaLandscape?.media?.thumbnail?.width,
+                      e.double?.right?.mediaLandscape?.media?.thumbnail?.height,
                     )}
                     fit="contain"
                     priority={isPriorityAd}
