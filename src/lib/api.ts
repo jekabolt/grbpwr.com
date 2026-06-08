@@ -60,8 +60,6 @@ const requestHandler = async (
     },
   );
 
-  console.log("[BE] response: ", response.status, response.statusText);
-
   const data = await response.json();
 
   if (!response.ok) {

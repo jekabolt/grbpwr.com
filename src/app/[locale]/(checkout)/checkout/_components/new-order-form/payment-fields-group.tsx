@@ -50,6 +50,7 @@ export default function PaymentFieldsGroup({
 
   const billingAddressIsSameAsAddress = watch("billingAddressIsSameAsAddress");
   const paymentMethod = watch("paymentMethod");
+  const shippingCountry = watch("country");
   const showStripePaymentElement = isStripeCardPaymentMethod(paymentMethod);
   const isInitialMount = useRef(true);
 
@@ -141,6 +142,13 @@ export default function PaymentFieldsGroup({
                     billingDetails: {
                       address: {
                         country: "never",
+                      },
+                    },
+                  },
+                  defaultValues: {
+                    billingDetails: {
+                      address: {
+                        country: shippingCountry || undefined,
                       },
                     },
                   },

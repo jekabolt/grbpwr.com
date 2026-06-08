@@ -99,6 +99,25 @@ export default async function middleware(req: NextRequest) {
             return NextResponse.redirect(url, { status: 307 });
         }
 
+        // Language preference wins over the URL locale: a visitor who picked a
+        // language (NEXT_LOCALE) keeps it even when opening a /{country}/{otherLocale}
+        // URL — e.g. /de/de after choosing English redirects to /de/en. Deliberate
+        // switches go through from_picker (handled above), which sets the cookie
+        // first, so they don't bounce. New visitors / crawlers (no cookie) get the
+        // URL as-is and the cookie is synced below.
+        if (
+            localeCookie &&
+            localeCookie !== locale &&
+            (routing.locales as readonly string[]).includes(localeCookie)
+        ) {
+            const url = req.nextUrl.clone();
+            url.pathname = `/${country}/${localeCookie}${rest}`;
+            const res = NextResponse.redirect(url, { status: 307 });
+            res.headers.set("Cache-Control", "no-store");
+            setMainCookies(res, country!, localeCookie);
+            return res;
+        }
+
         const url = req.nextUrl.clone();
         url.pathname = `/${locale}${rest}` || "/";
 
@@ -155,6 +174,14 @@ export default async function middleware(req: NextRequest) {
         if (!rest?.trim()) {
             res.headers.append("Link", HOMEPAGE_LINK_HEADER);
             res.headers.set("Vary", "Accept");
+            // The homepage is prerendered (force-static) and personalised only via
+            // the cookies set below (read client-side), so `private` is the honest
+            // signal vs `no-store`: the browser may reuse it (revalidating first),
+            // shared caches/proxies must not. It still isn't CDN-cached — the
+            // Set-Cookie precludes that — but the header no longer misrepresents a
+            // prerendered page as non-storable, which was confusing diagnostics and
+            // third-party caches/proxies.
+            res.headers.set("Cache-Control", "private, no-cache, must-revalidate");
         }
         setMainCookies(res, country!, locale!);
         const suggestCountryCookie = req.cookies.get("NEXT_SUGGEST_COUNTRY")?.value;
@@ -185,6 +212,29 @@ export default async function middleware(req: NextRequest) {
                 clearSuggestCookies(res);
             }
         }
+        return res;
+    }
+
+    // A bare /{country} (e.g. /gb, /us) must resolve to that country, not be
+    // mistaken for a locale by the locale-only handling below (which treats any
+    // two letters as a language). Redirect to the country's default language so
+    // /gb -> /gb/en instead of /{geoCountry}/{geoLocale}.
+    const bareCountry = pathname.match(/^\/([A-Za-z]{2})\/?$/);
+    if (bareCountry && supportedCountries.includes(bareCountry[1].toLowerCase())) {
+        const country = bareCountry[1].toLowerCase();
+        // Keep the visitor's chosen language if they have one; only fall back to
+        // the country's default for fresh visitors. Otherwise /de clobbered a
+        // user's NEXT_LOCALE=en and forced /de/de (and the de cookie cascaded to
+        // catalog/product links).
+        const locale =
+            localeCookie && (routing.locales as readonly string[]).includes(localeCookie)
+                ? localeCookie
+                : getLocaleFromCountry(country);
+        const url = req.nextUrl.clone();
+        url.pathname = `/${country}/${locale}`;
+        const res = NextResponse.redirect(url, { status: 307 });
+        res.headers.set("Cache-Control", "no-store");
+        setMainCookies(res, country, locale);
         return res;
     }
 

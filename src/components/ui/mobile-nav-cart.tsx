@@ -7,6 +7,7 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import { ModalTransition } from "@/components/modal-transition";
@@ -29,7 +30,7 @@ export function MobileNavCart({
   const tCart = useTranslations("cart");
   const tAccessibility = useTranslations("accessibility");
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   const open = isMobile && isOpen;
   const pathname = usePathname();
 

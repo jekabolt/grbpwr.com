@@ -4,8 +4,9 @@ import { useState } from "react";
 import type { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
 import { sendHeroEvent } from "@/lib/analitycs/hero";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, cn, isVideo } from "@/lib/utils";
+import { calculateAspectRatio, cn, internalHref, isVideo } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -20,7 +21,9 @@ export function Ads({
   entities: common_HeroEntityWithTranslations[];
 }) {
   const { languageId } = useTranslationsStore((state) => state);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  // SSR-safe, reactive to resize (was computed once at render from window.innerWidth,
+  // which risked a hydration mismatch and never updated on viewport change).
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   const [hoveredSingleIndex, setHoveredSingleIndex] = useState<number | null>(
     null,
   );
@@ -41,7 +44,7 @@ export function Ads({
             return (
               <div className="relative h-screen w-full" key={i}>
                 <AnimatedButton
-                  href={e.single?.exploreLink || ""}
+                  href={internalHref(e.single?.exploreLink)}
                   className="group relative h-full w-full text-bgColor"
                   onClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_SINGLE" })
@@ -56,7 +59,7 @@ export function Ads({
                         ""
                       }
                       blurhash={e.single?.mediaLandscape?.media?.blurhash}
-                      alt="ad hero image"
+                      alt={currentTranslation?.headline || "GRBPWR feature"}
                       aspectRatio={calculateAspectRatio(
                         e.single?.mediaLandscape?.media?.thumbnail?.width,
                         e.single?.mediaLandscape?.media?.thumbnail?.height,
@@ -81,7 +84,7 @@ export function Ads({
                         e.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""
                       }
                       blurhash={e.single?.mediaPortrait?.media?.blurhash}
-                      alt="ad hero image"
+                      alt={currentTranslation?.headline || "GRBPWR feature"}
                       aspectRatio={calculateAspectRatio(
                         e.single?.mediaPortrait?.media?.fullSize?.width,
                         e.single?.mediaPortrait?.media?.fullSize?.height,
@@ -139,7 +142,7 @@ export function Ads({
                 className="relative flex h-full w-full flex-col lg:flex-row"
               >
                 <AnimatedButton
-                  href={e.double?.left?.exploreLink || ""}
+                  href={internalHref(e.double?.left?.exploreLink)}
                   className="group relative h-full w-full text-bgColor"
                   onClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_DOUBLE_LEFT" })
@@ -150,7 +153,7 @@ export function Ads({
                   <Image
                     src={leftUrl}
                     blurhash={e.double?.left?.mediaLandscape?.media?.blurhash}
-                    alt="ad hero image"
+                    alt={leftTranslation?.headline || "GRBPWR feature"}
                     aspectRatio={calculateAspectRatio(
                       e.double?.left?.mediaLandscape?.media?.thumbnail?.width,
                       e.double?.left?.mediaLandscape?.media?.thumbnail?.height,
@@ -179,7 +182,7 @@ export function Ads({
                   </div>
                 </AnimatedButton>
                 <AnimatedButton
-                  href={e.double?.right?.exploreLink || ""}
+                  href={internalHref(e.double?.right?.exploreLink)}
                   className="group relative h-full w-full"
                   onClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_DOUBLE_RIGHT" })
@@ -190,10 +193,10 @@ export function Ads({
                   <Image
                     src={rightUrl}
                     blurhash={e.double?.right?.mediaLandscape?.media?.blurhash}
-                    alt="ad hero image"
+                    alt={rightTranslation?.headline || "GRBPWR feature"}
                     aspectRatio={calculateAspectRatio(
-                      e.double?.right?.mediaLandscape?.media?.fullSize?.width,
-                      e.double?.right?.mediaLandscape?.media?.fullSize?.height,
+                      e.double?.right?.mediaLandscape?.media?.thumbnail?.width,
+                      e.double?.right?.mediaLandscape?.media?.thumbnail?.height,
                     )}
                     fit="contain"
                     priority={isPriorityAd}

@@ -79,7 +79,7 @@ function PopoverContent({
           <Popover.Close
             className={cn(
               "fixed left-2 right-2 top-2.5 bg-bgColor",
-              "appearance-none border-0 outline-none focus:outline-none",
+              "appearance-none border-0",
             )}
           >
             <div className="flex items-center justify-between">

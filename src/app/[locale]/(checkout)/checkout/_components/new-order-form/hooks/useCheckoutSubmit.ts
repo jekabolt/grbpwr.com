@@ -201,15 +201,35 @@ export function useCheckoutSubmit({
 
     setLoadingState(true);
 
+    if (!stripe || !elements) {
+      setLoadingState(false);
+      return;
+    }
+
+    let elementsSubmitted = false;
+    if (isStripeCardPaymentMethod(paymentMethod)) {
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        setToastMessage(submitError.message || paymentFailedMessage);
+        setOrderModifiedToastOpen(true);
+        setLoadingState(false);
+        return;
+      }
+      elementsSubmitted = true;
+    }
+
     if (!(await assertShippingCities(data))) {
       setLoadingState(false);
       return;
     }
 
-    await onSubmit(data);
+    await onSubmit(data, { elementsSubmitted });
   };
 
-  const onSubmit = async (data: CheckoutData) => {
+  const onSubmit = async (
+    data: CheckoutData,
+    options: { elementsSubmitted?: boolean } = {},
+  ) => {
     if (!stripe || !elements) {
       setLoadingState(false);
       return;
@@ -220,6 +240,7 @@ export function useCheckoutSubmit({
     let stripeOrderUuid: string | undefined;
     const orderCurrencyResolved = orderCurrency || currentCountry.currencyKey || "EUR";
     let redirecting = false;
+    const { elementsSubmitted = false } = options;
 
     try {
       const response = await validateItems();
@@ -284,13 +305,12 @@ export function useCheckoutSubmit({
           elements,
           clientSecret,
           orderUuid,
-          email: data.email,
-          country: data.country,
           returnUrl,
+          billingCountry: data.country,
+          elementsSubmitted,
         });
 
         if (paymentResult.success) {
-          console.log(data)
           sessionStorage.removeItem("pending_stripe_order");
           redirecting = true;
           await finalizeOrderAndRedirect(data, paymentResult.orderUuid, {

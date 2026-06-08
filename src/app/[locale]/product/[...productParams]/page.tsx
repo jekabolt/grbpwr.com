@@ -4,7 +4,7 @@ import { LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import { productJsonLd } from "@/lib/structured-data";
+import { productJsonLd, productOfferForLocale } from "@/lib/structured-data";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileProductInfo } from "./_components/mobile-product-info";
@@ -46,15 +46,28 @@ export async function generateMetadata({
   )?.description;
 
   const color = productBody?.productBodyInsert?.color;
-  const productImageUrl = productMedia[0]?.media?.compressed?.mediaUrl;
+  // Use the product's thumbnail (compressed) as the link-preview image, falling
+  // back to the first gallery media if no thumbnail is set.
+  const productImage =
+    product?.product?.productDisplay?.thumbnail?.media?.compressed ??
+    productMedia[0]?.media?.compressed;
 
+  // type:"product" suppresses the default og:type=website; og:type=product and
+  // product:price:* are rendered as <meta property> JSX in the component below,
+  // since Next's metadata API can't emit og:type=product.
   return generateCommonMetadata({
     title: title?.toUpperCase(),
     description: `${description}'\n'${color}`,
     locale,
     path: `/product/${gender}/${brand}/${name}/${id}`,
+    // Small preview for product links (square thumbnail), not a large card.
+    twitterCard: "summary",
     ogParams: {
-      imageUrl: productImageUrl,
+      type: "product",
+      imageUrl: productImage?.mediaUrl,
+      // Real dimensions so social cards crop accurately (omitted if unknown).
+      imageWidth: productImage?.width || undefined,
+      imageHeight: productImage?.height || undefined,
       imageAlt: `${title || "Product"} - ${color || ""}`.trim(),
     },
   });
@@ -84,6 +97,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const productMedia = [...(product?.media || [])];
   const jsonLd = productJsonLd(product, locale);
+  // Open Graph product tags. Rendered here (not via the metadata API, which
+  // throws on og:type values outside its fixed union) as <meta property> JSX —
+  // React hoists them into <head>.
+  const offer = productOfferForLocale(product, locale);
 
   // Single descriptive H1 (the product name) rendered once at page level — both
   // the desktop and mobile info blocks are in the DOM (CSS-toggled), so putting
@@ -104,6 +121,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+      )}
+      <meta property="og:type" content="product" />
+      {offer && (
+        <>
+          <meta property="product:price:amount" content={offer.price} />
+          <meta property="product:price:currency" content={offer.currency} />
+        </>
       )}
       {productName && <h1 className="sr-only">{productName}</h1>}
       <div className="block lg:hidden">

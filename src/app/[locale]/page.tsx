@@ -21,7 +21,10 @@ export async function generateMetadata({
 
   const description = t("description");
 
+  // Social preview is the brand logo (app-logo.webp), not the hero image — keep
+  // link previews consistent regardless of the current hero.
   return generateCommonMetadata({
+    title: "GRBPWR — Ready-to-wear & Archive",
     description,
     locale,
     path: "",
@@ -33,6 +36,12 @@ export async function generateMetadata({
     },
   });
 }
+
+// Mirror catalog/product: serve a statically generated (ISR) homepage so it is
+// CDN-cacheable instead of a full SSR + cache MISS on every request. Revalidated
+// on demand via /api/revalidate like the rest of the catalog.
+export const dynamic = "force-static";
+export const dynamicParams = true;
 
 export default async function Page() {
   // Fetch in parallel so the freshness query doesn't add latency to the homepage.

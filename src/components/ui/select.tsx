@@ -138,7 +138,7 @@ export function SelectTrigger({
   return (
     <Select.Trigger
       className={cn(
-        "flex w-full items-center justify-between gap-2 border-b border-textColor bg-bgColor text-textBaseSize focus:outline-none focus:ring-0 disabled:border-textInactiveColor disabled:text-textInactiveColor",
+        "flex w-full items-center justify-between gap-2 border-b border-textColor bg-bgColor text-textBaseSize disabled:border-textInactiveColor disabled:text-textInactiveColor",
         singleLineSelectedValue && "min-w-0",
         className,
       )}

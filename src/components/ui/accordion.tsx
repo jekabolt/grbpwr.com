@@ -68,7 +68,7 @@ export const AccordionTrigger = forwardRef<any, any>(
     <AccordionPrimitives.Header className="w-full">
       <AccordionPrimitives.Trigger
         className={cn(
-          "group flex w-full cursor-pointer items-center justify-between gap-2.5 outline-none",
+          "group flex w-full cursor-pointer items-center justify-between gap-2.5",
           {
             "items-end": !title,
           },

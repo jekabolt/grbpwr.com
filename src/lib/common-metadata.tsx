@@ -17,6 +17,29 @@ const CANONICAL_COUNTRY_BY_LOCALE: Record<string, string> = {
   ko: "kr",
 };
 
+// hreflang value (language-region) per locale, pointing at the canonical country
+// version above. Mirrors CANONICAL_COUNTRY_BY_LOCALE.
+const HREFLANG_BY_LOCALE: Record<string, string> = {
+  en: "en-GB",
+  fr: "fr-FR",
+  de: "de-DE",
+  it: "it-IT",
+  ja: "ja-JP",
+  zh: "zh-CN",
+  ko: "ko-KR",
+};
+
+// Open Graph locale (language_TERRITORY) per locale. Mirrors HREFLANG_BY_LOCALE.
+const OG_LOCALE_BY_LOCALE: Record<string, string> = {
+  en: "en_GB",
+  fr: "fr_FR",
+  de: "de_DE",
+  it: "it_IT",
+  ja: "ja_JP",
+  zh: "zh_CN",
+  ko: "ko_KR",
+};
+
 /** Absolute canonical URL for a page, given its locale and locale-relative path. */
 export function canonicalUrl(
   locale?: string,
@@ -28,33 +51,62 @@ export function canonicalUrl(
   return `${SITE_URL}/${country}/${locale}${path}`;
 }
 
+/**
+ * hreflang alternates for a locale-relative path. Every supported locale points
+ * at its canonical country version (so non-canonical country variants don't
+ * compete), plus an x-default fallback on /gb/en — consistent with canonicalUrl.
+ */
+function languageAlternates(path = ""): Record<string, string> {
+  const languages: Record<string, string> = {};
+  for (const [locale, country] of Object.entries(CANONICAL_COUNTRY_BY_LOCALE)) {
+    const hreflang = HREFLANG_BY_LOCALE[locale];
+    if (hreflang) {
+      languages[hreflang] = `${SITE_URL}/${country}/${locale}${path}`;
+    }
+  }
+  languages["x-default"] = `${SITE_URL}/gb/en${path}`;
+  return languages;
+}
+
 type GenerateOgParams = {
   title?: string;
   description?: string;
   imageUrl?: string;
+  // Omit width/height when the real image dimensions are unknown (e.g. a product
+  // photo) rather than asserting a wrong fixed size — scrapers infer from the
+  // image. Only pass them when they're actually correct (e.g. the square logo).
   imageWidth?: number;
   imageHeight?: number;
   imageAlt?: string;
+  // "product" suppresses the default og:type=website here: Next's metadata API
+  // can't emit og:type=product (it throws on types outside its fixed union), so
+  // product pages render og:type=product + product:price:* as <meta property>
+  // JSX themselves. Setting this avoids a duplicate/conflicting og:type tag.
+  type?: "website" | "product";
 };
 
 export function generateOpenGraph({
   title = "grbpwr.com",
   description = "GRBPWR discusses difficult topics by imperfect language and master it. Shop latest ready-to-wear.",
   imageUrl = logo.src,
-  imageWidth = 512,
-  imageHeight = 512,
+  imageWidth,
+  imageHeight,
   imageAlt = "GRBPWR",
+  type = "website",
 }: GenerateOgParams = {}): Metadata["openGraph"] {
   return {
     title,
     description,
-    type: "website",
+    // Only emit the typed "website" og:type here. Product pages pass
+    // type:"product" to suppress it and render og:type=product themselves (see
+    // the `type` note above).
+    ...(type === "website" ? { type } : {}),
     siteName: "grbpwr.com",
     images: [
       {
         url: imageUrl,
-        width: imageWidth,
-        height: imageHeight,
+        ...(imageWidth ? { width: imageWidth } : {}),
+        ...(imageHeight ? { height: imageHeight } : {}),
         alt: imageAlt,
       },
     ],
@@ -65,6 +117,7 @@ export function generateCommonMetadata({
   title = "grbpwr.com",
   description = "GRBPWR discusses difficult topics by imperfect language and master it. Shop latest ready-to-wear.",
   ogParams = {},
+  twitterCard = "summary_large_image",
   locale,
   path,
 }: {
@@ -72,12 +125,23 @@ export function generateCommonMetadata({
   templateTitle?: string;
   description?: string;
   ogParams?: GenerateOgParams;
+  // Twitter/X card type. "summary" = small square thumbnail, "summary_large_image"
+  // = large preview. Pass "summary" where a small preview is wanted (e.g. product).
+  twitterCard?: "summary" | "summary_large_image";
   // Pass locale + locale-relative path (e.g. "" or "/product/...") to emit a
-  // canonical <link>. Omit on layout-level metadata so leaf pages own it.
+  // canonical <link> and hreflang alternates. Omit on layout-level metadata so
+  // leaf pages own them.
   locale?: string;
   path?: string;
 } = {}): Metadata {
   const canonical = canonicalUrl(locale, path);
+  const languages = locale ? languageAlternates(path) : undefined;
+
+  // og:locale / og:locale:alternate (only when the page's locale is known).
+  const ogLocale = locale ? OG_LOCALE_BY_LOCALE[locale] : undefined;
+  const ogAlternateLocales = ogLocale
+    ? Object.values(OG_LOCALE_BY_LOCALE).filter((l) => l !== ogLocale)
+    : undefined;
 
   return {
     title: {
@@ -85,20 +149,35 @@ export function generateCommonMetadata({
       template: "%s - grbpwr.com",
     },
     description,
-    ...(canonical ? { alternates: { canonical } } : {}),
+    ...(canonical || languages
+      ? {
+          alternates: {
+            ...(canonical ? { canonical } : {}),
+            ...(languages ? { languages } : {}),
+          },
+        }
+      : {}),
     manifest: "/manifest.json",
     appleWebApp: {
       capable: true,
       statusBarStyle: "default",
       title: "GRBPWR",
     },
-    openGraph: generateOpenGraph({
-      title,
-      description: description,
-      ...ogParams,
-    }),
+    icons: {
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    },
+    openGraph: {
+      ...generateOpenGraph({
+        title,
+        description: description,
+        ...ogParams,
+      }),
+      ...(ogLocale
+        ? { locale: ogLocale, alternateLocale: ogAlternateLocales }
+        : {}),
+    },
     twitter: {
-      card: "player",
+      card: twitterCard,
       title,
       description: description,
       images: [ogParams.imageUrl || logo.src],

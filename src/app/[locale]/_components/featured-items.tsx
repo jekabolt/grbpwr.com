@@ -1,6 +1,6 @@
 import { common_Product } from "@/api/proto-http/frontend";
 
-import { cn } from "@/lib/utils";
+import { cn, internalHref } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Carousel } from "@/components/ui/carousel";
 import { Text } from "@/components/ui/text";
@@ -31,7 +31,7 @@ export function FeaturedItems({
       <div className="block lg:hidden">
         <MobileFeaturedItems
           headline={headline}
-          exploreLink={exploreLink ? exploreLink : tag || ""}
+          exploreLink={internalHref(exploreLink ? exploreLink : tag || "")}
           exploreText={exploreText || ""}
           products={products || []}
           itemsQuantity={itemsQuantity}
@@ -51,7 +51,7 @@ export function FeaturedItems({
           <FourFeaturedItems
             products={products}
             headline={headline}
-            href={exploreLink ? exploreLink : tag || ""}
+            href={internalHref(exploreLink ? exploreLink : tag || "")}
             linkText={exploreText || ""}
             onHeroClick={onHeroClick}
           />
@@ -60,7 +60,7 @@ export function FeaturedItems({
           <div className="flex h-full items-center justify-between pl-2.5">
             <HeaderSection
               headline={headline}
-              href={exploreLink ? exploreLink : tag || ""}
+              href={internalHref(exploreLink ? exploreLink : tag || "")}
               linkText={exploreText || ""}
               onHeroClick={onHeroClick}
             />

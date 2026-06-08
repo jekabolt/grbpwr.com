@@ -5,9 +5,9 @@ export type ConfirmPaymentParams = {
     elements: StripeElements;
     clientSecret: string;
     orderUuid: string;
-    email: string;
-    country: string;
     returnUrl: string;
+    billingCountry?: string;
+    elementsSubmitted?: boolean;
 };
 
 export type ConfirmPaymentResult =
@@ -19,9 +19,9 @@ export async function confirmStripePayment({
     elements,
     clientSecret,
     orderUuid,
-    email,
-    country,
     returnUrl,
+    billingCountry,
+    elementsSubmitted = false,
 }: ConfirmPaymentParams): Promise<ConfirmPaymentResult> {
     if (
         !clientSecret ||
@@ -37,11 +37,16 @@ export async function confirmStripePayment({
         return { success: false, error: errorMessage };
     }
 
-    const { error: submitError } = await elements.submit();
+    if (!elementsSubmitted) {
+        const { error: submitError } = await elements.submit();
 
-    if (submitError) {
-        console.error("Error submitting payment elements:", submitError);
-        return { success: false, error: submitError.message || "Failed to submit payment elements" };
+        if (submitError) {
+            console.error("Error submitting payment elements:", submitError);
+            return {
+                success: false,
+                error: submitError.message || "Failed to submit payment elements",
+            };
+        }
     }
 
     const { error } = await stripe.confirmPayment({
@@ -49,15 +54,19 @@ export async function confirmStripePayment({
         elements,
         confirmParams: {
             return_url: returnUrl,
-            payment_method_data: {
-                billing_details: {
-                    address: {
-                        country,
+            // Country is hidden in the Payment Element (we collect it in shipping).
+            // Pass only country here — full billing_details overrides Apple Pay wallet data.
+            ...(billingCountry
+                ? {
+                    payment_method_data: {
+                        billing_details: {
+                            address: { country: billingCountry },
+                        },
                     },
-                },
-            },
+                }
+                : {}),
         },
-        redirect: 'if_required',
+        redirect: "if_required",
     });
 
     if (error) {

@@ -88,7 +88,7 @@ export default function PromoCode({
         />
       </div>
       <Button
-        type="input"
+        type="button"
         className="flex-none uppercase"
         onClick={handleApplyPromoClick}
         disabled={promoLoading || loading || !promoCode}

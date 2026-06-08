@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { common_ArchiveList } from "@/api/proto-http/frontend";
 
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { resolveArchiveMedia } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
@@ -17,7 +18,7 @@ function ArchiveGridItem({
   languageId: number;
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   const currentTranslation = item.translations?.find(
     (t) => t.languageId === languageId,
   );
