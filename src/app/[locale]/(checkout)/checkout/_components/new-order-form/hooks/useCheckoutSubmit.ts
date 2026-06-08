@@ -9,7 +9,7 @@ import { pushUserIdToDataLayer, waitForAnalytics } from "@/lib/analitycs/utils";
 import { getValidationErrorToastKey } from "@/lib/cart/validate-cart-items";
 import { clearIdempotencyKey } from "@/lib/checkout/idempotency-key";
 import { submitNewOrder } from "@/lib/checkout/order-service";
-import { confirmStripePayment, type StripeBillingDetails } from "@/lib/checkout/stripe-service";
+import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { getErrorMessage } from "@/lib/error-message";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -23,27 +23,6 @@ import {
   mapFormFieldToOrderDataFormat,
 } from "../utils";
 import { verifyCityInCountry } from "../verify-city";
-
-function buildStripeBillingDetails(data: CheckoutData): StripeBillingDetails {
-  const source =
-    !data.billingAddressIsSameAsAddress && data.billingAddress
-      ? data.billingAddress
-      : data;
-
-  return {
-    name: `${source.firstName} ${source.lastName}`.trim(),
-    email: data.email,
-    phone: source.phone,
-    address: {
-      line1: source.address,
-      line2: source.additionalAddress || undefined,
-      city: source.city,
-      state: source.state || undefined,
-      postal_code: source.postalCode,
-      country: source.country || data.country,
-    },
-  };
-}
 
 interface UseCheckoutSubmitProps {
   form: UseFormReturn<CheckoutData>;
@@ -211,11 +190,27 @@ export function useCheckoutSubmit({
       return;
     }
 
+    if (!stripe || !elements) return;
+
+    let elementsSubmitted = false;
+    if (isStripeCardPaymentMethod(paymentMethod)) {
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        setToastMessage(submitError.message || paymentFailedMessage);
+        setOrderModifiedToastOpen(true);
+        return;
+      }
+      elementsSubmitted = true;
+    }
+
     if (!(await assertShippingCities(data))) return;
-    await onSubmit(data);
+    await onSubmit(data, { elementsSubmitted });
   };
 
-  const onSubmit = async (data: CheckoutData) => {
+  const onSubmit = async (
+    data: CheckoutData,
+    options: { elementsSubmitted?: boolean } = {},
+  ) => {
     if (!stripe || !elements) return;
 
     handleFormSubmit();
@@ -224,21 +219,9 @@ export function useCheckoutSubmit({
     let stripeOrderUuid: string | undefined;
     const orderCurrencyResolved = orderCurrency || currentCountry.currencyKey || "EUR";
     let redirecting = false;
-    let elementsSubmitted = false;
+    const { elementsSubmitted = false } = options;
 
     try {
-      // Apple Pay / Google Pay require elements.submit() during the user gesture,
-      // before any async backend calls (validateItems, submitNewOrder, etc.).
-      if (isStripeCardPaymentMethod(paymentMethod)) {
-        const { error: submitError } = await elements.submit();
-        if (submitError) {
-          setToastMessage(submitError.message || paymentFailedMessage);
-          setOrderModifiedToastOpen(true);
-          return;
-        }
-        elementsSubmitted = true;
-      }
-
       const response = await validateItems();
       const newOrderData = mapFormFieldToOrderDataFormat(
         data,
@@ -302,7 +285,7 @@ export function useCheckoutSubmit({
           clientSecret,
           orderUuid,
           returnUrl,
-          billingDetails: buildStripeBillingDetails(data),
+          billingCountry: data.country,
           elementsSubmitted,
         });
 
