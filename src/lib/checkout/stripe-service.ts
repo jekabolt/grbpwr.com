@@ -1,13 +1,28 @@
 import type { Stripe, StripeElements } from "@stripe/stripe-js";
 
+export type StripeBillingDetails = {
+    name?: string;
+    email?: string;
+    phone?: string;
+    address?: {
+        line1?: string;
+        line2?: string;
+        city?: string;
+        state?: string;
+        postal_code?: string;
+        country?: string;
+    };
+};
+
 export type ConfirmPaymentParams = {
     stripe: Stripe;
     elements: StripeElements;
     clientSecret: string;
     orderUuid: string;
-    email: string;
-    country: string;
     returnUrl: string;
+    billingDetails?: StripeBillingDetails;
+    /** Set when elements.submit() was already called during the user gesture. */
+    elementsSubmitted?: boolean;
 };
 
 export type ConfirmPaymentResult =
@@ -19,9 +34,9 @@ export async function confirmStripePayment({
     elements,
     clientSecret,
     orderUuid,
-    email,
-    country,
     returnUrl,
+    billingDetails,
+    elementsSubmitted = false,
 }: ConfirmPaymentParams): Promise<ConfirmPaymentResult> {
     if (
         !clientSecret ||
@@ -37,11 +52,16 @@ export async function confirmStripePayment({
         return { success: false, error: errorMessage };
     }
 
-    const { error: submitError } = await elements.submit();
+    if (!elementsSubmitted) {
+        const { error: submitError } = await elements.submit();
 
-    if (submitError) {
-        console.error("Error submitting payment elements:", submitError);
-        return { success: false, error: submitError.message || "Failed to submit payment elements" };
+        if (submitError) {
+            console.error("Error submitting payment elements:", submitError);
+            return {
+                success: false,
+                error: submitError.message || "Failed to submit payment elements",
+            };
+        }
     }
 
     const { error } = await stripe.confirmPayment({
@@ -49,15 +69,11 @@ export async function confirmStripePayment({
         elements,
         confirmParams: {
             return_url: returnUrl,
-            payment_method_data: {
-                billing_details: {
-                    address: {
-                        country,
-                    },
-                },
-            },
+            ...(billingDetails
+                ? { payment_method_data: { billing_details: billingDetails } }
+                : {}),
         },
-        redirect: 'if_required',
+        redirect: "if_required",
     });
 
     if (error) {
