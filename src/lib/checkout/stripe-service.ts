@@ -1,27 +1,12 @@
 import type { Stripe, StripeElements } from "@stripe/stripe-js";
 
-export type StripeBillingDetails = {
-    name?: string;
-    email?: string;
-    phone?: string;
-    address?: {
-        line1?: string;
-        line2?: string;
-        city?: string;
-        state?: string;
-        postal_code?: string;
-        country?: string;
-    };
-};
-
 export type ConfirmPaymentParams = {
     stripe: Stripe;
     elements: StripeElements;
     clientSecret: string;
     orderUuid: string;
     returnUrl: string;
-    billingDetails?: StripeBillingDetails;
-    /** Set when elements.submit() was already called during the user gesture. */
+    billingCountry?: string;
     elementsSubmitted?: boolean;
 };
 
@@ -35,7 +20,7 @@ export async function confirmStripePayment({
     clientSecret,
     orderUuid,
     returnUrl,
-    billingDetails,
+    billingCountry,
     elementsSubmitted = false,
 }: ConfirmPaymentParams): Promise<ConfirmPaymentResult> {
     if (
@@ -69,8 +54,16 @@ export async function confirmStripePayment({
         elements,
         confirmParams: {
             return_url: returnUrl,
-            ...(billingDetails
-                ? { payment_method_data: { billing_details: billingDetails } }
+            // Country is hidden in the Payment Element (we collect it in shipping).
+            // Pass only country here — full billing_details overrides Apple Pay wallet data.
+            ...(billingCountry
+                ? {
+                    payment_method_data: {
+                        billing_details: {
+                            address: { country: billingCountry },
+                        },
+                    },
+                }
                 : {}),
         },
         redirect: "if_required",

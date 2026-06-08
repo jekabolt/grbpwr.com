@@ -197,7 +197,6 @@ export function CheckoutFormWrapper({
             amount: orderAmount,
             currency: currency?.toLowerCase(),
             appearance,
-            paymentMethodCreation: "manual",
             locale: (LANGUAGE_ID_TO_LOCALE[languageId] ||
               "en") as StripeElementLocale,
           }}
