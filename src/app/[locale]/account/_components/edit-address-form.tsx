@@ -148,12 +148,20 @@ export function EditAddressForm({
               displayTrigger={false}
             />
 
-            <div className="flex gap-3">
+            <div
+              className={cn("flex gap-3", {
+                "pb-4 lg:pb-0": isCheckout,
+              })}
+            >
               <Button
                 type="button"
                 variant="main"
                 size="lg"
-                className="fixed inset-x-2.5 bottom-2.5 mx-auto uppercase lg:static lg:w-full"
+                className={cn("uppercase", {
+                  "w-full": isCheckout,
+                  "fixed inset-x-2.5 bottom-2.5 z-50 mx-auto lg:static lg:z-auto lg:w-full":
+                    !isCheckout,
+                })}
                 disabled={isSubmitting}
                 loading={isSubmitting}
                 onClick={form.handleSubmit(onSubmit)}
@@ -165,7 +173,7 @@ export function EditAddressForm({
                   type="button"
                   variant="secondary"
                   size="lg"
-                  className="hidden w-full uppercase lg:block"
+                  className="w-full uppercase"
                   disabled={isSubmitting}
                   onClick={onCancel}
                 >

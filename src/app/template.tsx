@@ -6,7 +6,6 @@ import type {
 import { QueryWrapper } from "@/providers/query-wrapper";
 
 import { getHero, serviceClient } from "@/lib/api";
-import { AccountLoginAttemptRouteSync } from "@/app/[locale]/account/_components/account-login-attempt-route-sync";
 import { getStorefrontAccount } from "@/lib/storefront-account/get-storefront-account";
 import { AccountOnboardingStoreProvider } from "@/lib/stores/account-onboarding/store-provider";
 import { CartCurrencySyncWrapper } from "@/lib/stores/cart/cart-currency-sync-wrapper";
@@ -20,6 +19,7 @@ import { DataContextProvider } from "@/components/contexts/DataContext";
 import { ServerActionsContextProvider } from "@/components/contexts/ServerActionsContext";
 import { UrlCountrySync } from "@/components/url-country-sync";
 import { WebMCPTools } from "@/components/webmcp-tools";
+import { AccountLoginAttemptRouteSync } from "@/app/[locale]/account/_components/account-login-attempt-route-sync";
 
 export default async function Template({
   children,

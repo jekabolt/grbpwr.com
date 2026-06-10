@@ -1,3 +1,4 @@
+import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -219,7 +220,14 @@ function getActiveCooldownForEmail(
   };
 }
 
-export function useAccountLogin() {
+type UseAccountLoginOptions = {
+  /** Checkout already has the account client-side; skip RSC refresh. */
+  isCheckout?: boolean;
+  onLoginSuccess?: (account: StorefrontAccount) => void;
+};
+
+export function useAccountLogin(options: UseAccountLoginOptions = {}) {
+  const { isCheckout = false, onLoginSuccess } = options;
   const router = useRouter();
   const t = useTranslations("account");
   const setSignedIn = useAccountOnboardingStore((s) => s.setSignedIn);
@@ -399,10 +407,13 @@ export function useAccountLogin() {
         invalidateAccountSessionCache();
         setSignedIn(true);
         setAccount(storefrontAccountToProfile(result.account));
+        onLoginSuccess?.(result.account);
       }
       setCodeVerified(true);
       clearAccountLoginPersistence();
-      router.refresh();
+      if (!isCheckout) {
+        router.refresh();
+      }
       verificationSucceeded = true;
     } catch (error) {
       openErrorToast(
@@ -410,9 +421,7 @@ export function useAccountLogin() {
       );
       setCode("");
     } finally {
-      if (!verificationSucceeded) {
-        setPending(false);
-      }
+      setPending(false);
     }
   }
 

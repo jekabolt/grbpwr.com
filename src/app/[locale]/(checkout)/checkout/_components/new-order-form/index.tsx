@@ -49,6 +49,7 @@ type NewOrderFormProps = {
   guestCheckout: boolean;
   initialAccount: StorefrontAccount | null;
   onAmountChange: (amount: number) => void;
+  onLoginSuccess?: (account: StorefrontAccount) => void;
   onOrderRedirectStart?: () => void;
   setGuestCheckout: (value: boolean) => void;
 };
@@ -57,6 +58,7 @@ export default function NewOrderForm({
   initialAccount,
   guestCheckout,
   onAmountChange,
+  onLoginSuccess,
   onOrderRedirectStart,
   setGuestCheckout,
 }: NewOrderFormProps) {
@@ -68,6 +70,7 @@ export default function NewOrderForm({
   const [checkoutLoginVerified, setCheckoutLoginVerified] = useState(false);
   const [checkoutProfileCompleted, setCheckoutProfileCompleted] =
     useState(false);
+  const [isEditingSavedAddress, setIsEditingSavedAddress] = useState(false);
 
   useLayoutEffect(() => {
     const email = initialAccount?.email?.trim();
@@ -207,7 +210,12 @@ export default function NewOrderForm({
     !checkoutProfileCompleted;
   const showMobileOrderSummaryOverlay =
     (!showCheckoutFields && checkoutLoginStep === "email") || showProfilePrompt;
+  const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
   const showCheckoutForm = showCheckoutFields && !showProfilePrompt;
+
+  useEffect(() => {
+    if (hideOrderSummary || showCheckoutFields) setMobileSummaryOpen(false);
+  }, [hideOrderSummary, showCheckoutFields]);
 
   const centerAuthOnMobile = !showCheckoutFields || showProfilePrompt;
   const placeOrderDisabled =
@@ -255,8 +263,11 @@ export default function NewOrderForm({
             {!hideOrderSummary && (
               <div
                 className={cn("z-20 lg:hidden", {
-                  "pointer-events-none fixed inset-x-2.5 bottom-6 top-2.5 flex flex-col justify-end":
+                  "fixed inset-x-2.5 bottom-6 top-2.5 flex flex-col justify-end":
                     !showCheckoutFields || showProfilePrompt,
+                  "pointer-events-none":
+                    (!showCheckoutFields || showProfilePrompt) &&
+                    !mobileSummaryOpen,
                   "w-full": showCheckoutFields && !showProfilePrompt,
                 })}
               >
@@ -267,6 +278,7 @@ export default function NewOrderForm({
                   orderCurrency={orderCurrency}
                   disabled={loading}
                   overlay={showMobileOrderSummaryOverlay}
+                  onOpenChange={setMobileSummaryOpen}
                 />
               </div>
             )}
@@ -277,6 +289,7 @@ export default function NewOrderForm({
                   onStepChange={setCheckoutLoginStep}
                   onVerified={() => setCheckoutLoginVerified(true)}
                   onCheckoutAsGuest={() => setGuestCheckout(true)}
+                  onLoginSuccess={onLoginSuccess}
                 />
               </div>
             ) : showProfilePrompt ? (
@@ -317,6 +330,7 @@ export default function NewOrderForm({
                         isOpen={isGroupOpen("shipping")}
                         onToggle={() => handleGroupToggle("shipping")}
                         disabled={isGroupDisabled("shipping") || loading}
+                        onAddressEditModeChange={setIsEditingSavedAddress}
                       />
                     </div>
                     <div ref={paymentRef}>
@@ -350,7 +364,7 @@ export default function NewOrderForm({
                 !showCheckoutForm && "hidden lg:flex",
               )}
             >
-              {showCheckoutForm && (
+              {showCheckoutForm && !isEditingSavedAddress && (
                 <Button
                   form="checkout-order-form"
                   type="submit"

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import Link from "next/link";
+import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
@@ -34,11 +35,13 @@ export function AccountLoginForm({
   onCheckoutAsGuest,
   onStepChange,
   onVerified,
+  onLoginSuccess,
 }: {
   isCheckout?: boolean;
   onCheckoutAsGuest?: () => void;
   onStepChange?: (step: AccountLoginStep) => void;
   onVerified?: () => void;
+  onLoginSuccess?: (account: StorefrontAccount) => void;
 }) {
   const products = useCart((state) => state.products);
   const revalidateCart = useCart((state) => state.revalidateCart);
@@ -62,10 +65,15 @@ export function AccountLoginForm({
     resendCode,
     verifyCode,
     goToEmailStep,
-  } = useAccountLogin();
+  } = useAccountLogin({ isCheckout, onLoginSuccess });
   const showOrderSummary =
     !isCheckout && step === "email" && products.length > 0;
   const isRestoringSession = !storageChecked;
+  const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
+
+  useEffect(() => {
+    if (!showOrderSummary) setMobileSummaryOpen(false);
+  }, [showOrderSummary]);
 
   useEffect(() => {
     if (!storageChecked) return;
@@ -150,11 +158,16 @@ export function AccountLoginForm({
         </div>
       </div>
       {showOrderSummary && (
-        <div className="pointer-events-none fixed inset-x-2.5 bottom-6 top-2.5 z-40 flex flex-col justify-end lg:hidden">
+        <div
+          className={cn(
+            "fixed inset-x-2.5 bottom-6 top-2.5 z-40 flex flex-col justify-end lg:hidden",
+            !mobileSummaryOpen && "pointer-events-none",
+          )}
+        >
           {isRestoringSession ? (
             <AccountMobileOrderSummarySkeleton />
           ) : (
-            <AccountCartMobileOrderSummary />
+            <AccountCartMobileOrderSummary onOpenChange={setMobileSummaryOpen} />
           )}
         </div>
       )}

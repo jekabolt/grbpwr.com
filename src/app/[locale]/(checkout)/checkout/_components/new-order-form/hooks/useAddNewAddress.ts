@@ -1,11 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { addAddressRequest } from "@/app/[locale]/account/utils/address-actions";
 import { CHECKOUT_ERROR_CITY_COUNTRY } from "@/constants";
+import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 
 import { findCountryByCode, getUniqueCountries } from "../utils";
 import { verifyCityInCountry } from "../verify-city";
@@ -23,17 +24,31 @@ const FIELDS_TO_VALIDATE = [
   "postalCode",
 ] as const;
 
+type AutoSeedOptions = {
+  isSignedIn: boolean;
+  addressesLoaded: boolean;
+  hasAddressForCountry: boolean;
+  firstName?: string;
+  lastName?: string;
+};
+
 type Params = {
   defaultCountryCode?: string;
   onSaved: () => void;
+  autoSeed?: AutoSeedOptions;
 };
 
 type AddNewAddressOptions = {
   saveOnly?: boolean;
 };
 
-export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
+export function useAddNewAddress({
+  defaultCountryCode,
+  onSaved,
+  autoSeed,
+}: Params) {
   const tAccount = useTranslations("account");
+  const rehydrated = useCheckoutStore((state) => state.rehydrated);
   const { setValue, getValues, trigger, resetField, setError } =
     useFormContext();
   const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
@@ -57,19 +72,16 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
     > | null
   >(null);
 
-  function resetAddressFields() {
-    const defaultCountry = defaultCountryCode
-      ? findCountryByCode(getUniqueCountries(), defaultCountryCode)
+  const getPhoneCodeForCountry = useCallback((countryCode?: string) => {
+    const country = countryCode
+      ? findCountryByCode(getUniqueCountries(), countryCode)
       : undefined;
-    const keys: Array<
-      | "state"
-      | "city"
-      | "address"
-      | "additionalAddress"
-      | "company"
-      | "postalCode"
-      | "savedAddressId"
-    > = [
+    return country?.phoneCode ? `+${country.phoneCode}` : "";
+  }, []);
+
+  const seedEmptyAddressForm = useCallback(
+    (options?: { firstName?: string; lastName?: string }) => {
+      const fieldsToClear = [
         "state",
         "city",
         "address",
@@ -77,19 +89,77 @@ export function useAddNewAddress({ defaultCountryCode, onSaved }: Params) {
         "company",
         "postalCode",
         "savedAddressId",
-      ];
-    keys.forEach((k) =>
-      setValue(k, "", { shouldValidate: false, shouldDirty: false }),
-    );
-    setValue("country", defaultCountryCode ?? "", {
-      shouldValidate: false,
-      shouldDirty: false,
-    });
-    setValue("phone", defaultCountry?.phoneCode ?? "", {
-      shouldValidate: false,
-      shouldDirty: false,
-    });
+      ] as const;
+
+      fieldsToClear.forEach((field) =>
+        setValue(field, "", { shouldValidate: false, shouldDirty: false }),
+      );
+
+      setValue("country", defaultCountryCode ?? "", {
+        shouldValidate: false,
+        shouldDirty: false,
+      });
+      setValue("phone", getPhoneCodeForCountry(defaultCountryCode), {
+        shouldValidate: false,
+        shouldDirty: false,
+      });
+
+      if (options?.firstName !== undefined) {
+        setValue("firstName", options.firstName, {
+          shouldValidate: false,
+          shouldDirty: false,
+        });
+      }
+      if (options?.lastName !== undefined) {
+        setValue("lastName", options.lastName, {
+          shouldValidate: false,
+          shouldDirty: false,
+        });
+      }
+    },
+    [defaultCountryCode, getPhoneCodeForCountry, setValue],
+  );
+
+  function resetAddressFields() {
+    seedEmptyAddressForm();
   }
+
+  const isAutoNewAddressForm =
+    !!autoSeed?.isSignedIn &&
+    !!autoSeed?.addressesLoaded &&
+    rehydrated &&
+    !autoSeed.hasAddressForCountry &&
+    !isAddingNewAddress;
+  const seededForCountryRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!isAutoNewAddressForm) {
+      if (autoSeed?.hasAddressForCountry) {
+        seededForCountryRef.current = null;
+      }
+      return;
+    }
+
+    const countryKey = defaultCountryCode?.trim().toLowerCase() ?? "";
+    if (!countryKey || seededForCountryRef.current === countryKey) return;
+
+    const timeoutId = setTimeout(() => {
+      seedEmptyAddressForm({
+        firstName: autoSeed.firstName?.trim() ?? "",
+        lastName: autoSeed.lastName?.trim() ?? "",
+      });
+      seededForCountryRef.current = countryKey;
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
+  }, [
+    autoSeed?.firstName,
+    autoSeed?.hasAddressForCountry,
+    autoSeed?.lastName,
+    defaultCountryCode,
+    isAutoNewAddressForm,
+    seedEmptyAddressForm,
+  ]);
 
   function handleAddNewAddress(options?: AddNewAddressOptions) {
     setSaveAddressError(null);

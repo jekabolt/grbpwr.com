@@ -5,6 +5,10 @@ import { usePathname } from "next/navigation";
 
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 
+import {
+  clearCheckoutLocaleSwitchAccepted,
+  isCheckoutLocaleSwitchPendingNavigation,
+} from "@/lib/checkout-location-change";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
   parseCountryLocalePath,
@@ -56,6 +60,14 @@ export function UrlCountrySync() {
     }
 
     const storeCountry = currentCountry.countryCode?.toLowerCase();
+
+    if (isCheckoutLocaleSwitchPendingNavigation(storeCountry, urlCountry)) {
+      return;
+    }
+
+    if (storeCountry === urlCountry) {
+      clearCheckoutLocaleSwitchAccepted();
+    }
 
     // Same country: still align language with URL (persist/localStorage can keep old id)
     if (storeCountry === urlCountry) {

@@ -44,6 +44,7 @@ type Props = {
   order?: ValidateOrderItemsInsertResponse;
   account?: StorefrontAccount;
   onToggle: () => void;
+  onAddressEditModeChange?: (isEditing: boolean) => void;
 };
 
 const SHIPPING_ADDRESS_REQUIRED_FIELDS = [
@@ -67,6 +68,7 @@ export default function ShippingFieldsGroup({
   order,
   account,
   onToggle,
+  onAddressEditModeChange,
 }: Props) {
   const t = useTranslations("checkout");
   const { watch, setValue } = useFormContext();
@@ -114,6 +116,16 @@ export default function ShippingFieldsGroup({
   ]);
 
   const [savedAddressesRefreshKey, setSavedAddressesRefreshKey] = useState(0);
+
+  const addressesState = useAddresses({
+    enabled: isSignedIn,
+    refreshKey: savedAddressesRefreshKey,
+    countryCode: currentCountry.countryCode,
+  });
+  const { addresses, loaded, countryAddress } = addressesState;
+
+  const hasAddressForCountry = !!countryAddress;
+
   const {
     isAddingNewAddress,
     savingNewAddress,
@@ -127,19 +139,28 @@ export default function ShippingFieldsGroup({
     onSaved: () => {
       setSavedAddressesRefreshKey((k) => k + 1);
     },
+    autoSeed: {
+      isSignedIn,
+      addressesLoaded: loaded,
+      hasAddressForCountry,
+      firstName: account?.firstName,
+      lastName: account?.lastName,
+    },
   });
-
-  const { addresses, loaded } = useAddresses({
-    enabled: isSignedIn,
-    refreshKey: savedAddressesRefreshKey,
-  });
-
   const showAddressForm =
-    !isSignedIn || (loaded && !addresses.length) || isAddingNewAddress;
+    !isSignedIn ||
+    isAddingNewAddress ||
+    (loaded && (!addresses.length || !hasAddressForCountry));
   const showSavedAddressesSelector =
-    isSignedIn && loaded && addresses.length > 0 && !isAddingNewAddress;
+    isSignedIn &&
+    loaded &&
+    addresses.length > 0 &&
+    !isAddingNewAddress &&
+    hasAddressForCountry;
   const shouldShowSaveAddressActions =
-    isSignedIn && (isAddingNewAddress || (loaded && addresses.length === 0));
+    isSignedIn &&
+    (isAddingNewAddress ||
+      (loaded && (!addresses.length || !hasAddressForCountry)));
 
   return (
     <FieldsGroupContainer
@@ -181,7 +202,7 @@ export default function ShippingFieldsGroup({
           )}
         </>
       )}
-      {showSavedAddressesSelector && (
+      {showSavedAddressesSelector && account && (
         <CheckoutSavedAddressSelector
           isCheckout={true}
           loading={loading}
@@ -189,11 +210,13 @@ export default function ShippingFieldsGroup({
           defaultOnly={true}
           isSignedIn={isSignedIn}
           refreshKey={savedAddressesRefreshKey}
-          account={account as StorefrontAccount}
+          account={account}
+          addressesState={addressesState}
           onDefaultChange={() => {
             setSavedAddressesRefreshKey((k) => k + 1);
           }}
           onAddNewAddress={handleAddNewAddress}
+          onEditModeChange={onAddressEditModeChange}
         />
       )}
       {hasFilledAddress && (

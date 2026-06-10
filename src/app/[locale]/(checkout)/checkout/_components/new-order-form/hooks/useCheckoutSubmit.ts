@@ -1,5 +1,5 @@
 import type { Stripe, StripeElements } from "@stripe/stripe-js";
-import { RefObject, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import type { ValidateOrderItemsInsertResponse, common_OrderItem } from "@/api/proto-http/frontend";
@@ -12,6 +12,7 @@ import { submitNewOrder } from "@/lib/checkout/order-service";
 import { confirmStripePayment } from "@/lib/checkout/stripe-service";
 import { getErrorMessage } from "@/lib/error-message";
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import type { OpenGroups } from "./constants";
 
@@ -67,7 +68,15 @@ export function useCheckoutSubmit({
 }: UseCheckoutSubmitProps) {
   const [loading, setLoading] = useState(false);
   const [isPaymentElementComplete, setIsPaymentElementComplete] = useState(false);
+  const setIsSubmitting = useCheckoutStore((state) => state.setIsSubmitting);
   const { currentCountry, languageId } = useTranslationsStore((state) => state);
+
+  const setLoadingState = (value: boolean) => {
+    setLoading(value);
+    setIsSubmitting(value);
+  };
+
+  useEffect(() => () => setIsSubmitting(false), [setIsSubmitting]);
   const { clearCart } = useCart((s) => s);
   const { handleFormSubmit, handleFormError, handlePaymentFailed } =
     useCheckoutAnalytics();
@@ -190,7 +199,12 @@ export function useCheckoutSubmit({
       return;
     }
 
-    if (!stripe || !elements) return;
+    setLoadingState(true);
+
+    if (!stripe || !elements) {
+      setLoadingState(false);
+      return;
+    }
 
     let elementsSubmitted = false;
     if (isStripeCardPaymentMethod(paymentMethod)) {
@@ -198,12 +212,17 @@ export function useCheckoutSubmit({
       if (submitError) {
         setToastMessage(submitError.message || paymentFailedMessage);
         setOrderModifiedToastOpen(true);
+        setLoadingState(false);
         return;
       }
       elementsSubmitted = true;
     }
 
-    if (!(await assertShippingCities(data))) return;
+    if (!(await assertShippingCities(data))) {
+      setLoadingState(false);
+      return;
+    }
+
     await onSubmit(data, { elementsSubmitted });
   };
 
@@ -211,10 +230,12 @@ export function useCheckoutSubmit({
     data: CheckoutData,
     options: { elementsSubmitted?: boolean } = {},
   ) => {
-    if (!stripe || !elements) return;
+    if (!stripe || !elements) {
+      setLoadingState(false);
+      return;
+    }
 
     handleFormSubmit();
-    setLoading(true);
 
     let stripeOrderUuid: string | undefined;
     const orderCurrencyResolved = orderCurrency || currentCountry.currencyKey || "EUR";
@@ -237,7 +258,7 @@ export function useCheckoutSubmit({
       if (!newOrderResponse.ok) {
         setToastMessage(
           newOrderResponse.error ||
-            resolveToasterMessage(getValidationErrorToastKey(null)),
+          resolveToasterMessage(getValidationErrorToastKey(null)),
         );
         setOrderModifiedToastOpen(true);
         return;
@@ -338,7 +359,7 @@ export function useCheckoutSubmit({
       setToastMessage(message);
       setOrderModifiedToastOpen(true);
     } finally {
-      if (!redirecting) setLoading(false);
+      if (!redirecting) setLoadingState(false);
     }
   };
 
