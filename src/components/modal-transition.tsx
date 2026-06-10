@@ -8,6 +8,12 @@ export const modalTransition = {
   ease: [0.22, 1, 0.36, 1] as const,
 };
 
+// Exits run faster than entrances (~75%) so dismissing feels responsive.
+const modalExitTransition = {
+  duration: 0.22,
+  ease: [0.22, 1, 0.36, 1] as const,
+};
+
 export type SlideFrom = "left" | "right" | "top" | "bottom" | "none";
 
 const slide = (axis: "x" | "y", from: number) => ({
@@ -53,7 +59,7 @@ export function ModalTransition({
           {...({
             initial: animation.initial,
             animate: animation.animate,
-            exit: animation.exit,
+            exit: { ...animation.exit, transition: modalExitTransition },
             transition: modalTransition,
             className: contentClassName,
             style: contentStyle,

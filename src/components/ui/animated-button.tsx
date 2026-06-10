@@ -32,7 +32,7 @@ export function AnimatedButton({
   children,
   className,
   animationArea = "container",
-  animationDuration = 5000,
+  animationDuration = 300,
   enableThresholdAnimation = false,
   href,
   onClick,
@@ -115,7 +115,7 @@ export function AnimatedButton({
   };
 
   const buttonClasses = cn(
-    "select-none transition-all duration-300 ease-in-out [-webkit-tap-highlight-color:transparent]",
+    "select-none transition-[opacity,background-color,border-color] duration-300 ease-in-out [-webkit-tap-highlight-color:transparent]",
     {
       "bg-bgColor opacity-50": isPressed && animationArea === "container",
       underline: isPressed && animationArea === "text",
@@ -143,7 +143,7 @@ export function AnimatedButton({
           {children}
           {isHeld && (
             <span
-              className="duration-400 pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-60 mix-blend-screen transition-opacity ease-out"
+              className="duration-[400ms] pointer-events-none absolute inset-0 z-10 bg-highlightColor opacity-60 mix-blend-screen transition-opacity ease-out"
               aria-hidden="true"
             />
           )}

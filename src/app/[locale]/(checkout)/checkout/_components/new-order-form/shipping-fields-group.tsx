@@ -71,6 +71,7 @@ export default function ShippingFieldsGroup({
   onAddressEditModeChange,
 }: Props) {
   const t = useTranslations("checkout");
+  const tAccount = useTranslations("account");
   const { watch, setValue } = useFormContext();
   const { dictionary } = useDataContext();
   const { currentCountry } = useTranslationsStore((s) => s);
@@ -167,6 +168,7 @@ export default function ShippingFieldsGroup({
       stage="2/3"
       title={t("shipping")}
       disabled={disabled}
+      disabledHint={disabled && !loading ? t("locked_complete_contact") : undefined}
       isOpen={isOpen}
       onToggle={onToggle}
     >
@@ -184,7 +186,7 @@ export default function ShippingFieldsGroup({
                 loading={savingNewAddress}
                 onClick={handleSaveNewAddress}
               >
-                save
+                {tAccount("save")}
               </Button>
               {isAddingNewAddress && !showSaveOnlyActions ? (
                 <Button
@@ -195,7 +197,7 @@ export default function ShippingFieldsGroup({
                   disabled={disabled || loading || savingNewAddress}
                   onClick={handleCancelAddNewAddress}
                 >
-                  cancel
+                  {tAccount("cancel")}
                 </Button>
               ) : null}
             </div>

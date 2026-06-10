@@ -10,7 +10,7 @@ export function Skeleton({
   return (
     <div
       className={cn(
-        "animate-[pulse_2s_cubic-bezier(0,0,0.2,1)_infinite] opacity-5",
+        "animate-[pulse_2s_cubic-bezier(0,0,0.2,1)_infinite]",
         {
           "bg-highlightColor": variant === "highlight",
           "bg-textInactiveColor": variant === "default",

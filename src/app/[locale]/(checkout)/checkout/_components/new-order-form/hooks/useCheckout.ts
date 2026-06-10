@@ -12,6 +12,7 @@ interface UseCheckoutEffectsProps {
     form: any;
     countryCode: string;
     orderCurrency?: string;
+    cartModifiedMessage: string;
     onAmountChange: (amount: number) => void;
     handleFormChange: (name?: string) => void;
 }
@@ -22,6 +23,7 @@ export const useCheckoutEffects = ({
     form,
     countryCode,
     orderCurrency,
+    cartModifiedMessage,
     onAmountChange,
     handleFormChange,
 }: UseCheckoutEffectsProps) => {
@@ -68,12 +70,12 @@ export const useCheckoutEffects = ({
             lastValidatedCountRef.current !== null &&
             currentCount !== lastValidatedCountRef.current
         ) {
-            setToastMessage("your order has been modified");
+            setToastMessage(cartModifiedMessage);
             setOrderModifiedToastOpen(true);
         }
 
         lastValidatedCountRef.current = currentCount;
-    }, [order?.validItems, products.length, router]);
+    }, [order?.validItems, products.length, router, cartModifiedMessage]);
 
     useEffect(() => {
         if (order?.totalSale?.value) {

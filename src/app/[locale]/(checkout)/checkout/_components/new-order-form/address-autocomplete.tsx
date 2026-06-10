@@ -152,7 +152,7 @@ export default function AddressAutocomplete({
           loading={true}
           name={prefix ? `${prefix}.address` : "address"}
           label={t("street and house number:")}
-          placeholder="sjyrniesu 10"
+          placeholder=" "
           disabled={true}
         />
       </div>

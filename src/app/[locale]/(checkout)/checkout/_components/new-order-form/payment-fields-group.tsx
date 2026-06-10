@@ -95,6 +95,7 @@ export default function PaymentFieldsGroup({
       title={t("payment method")}
       isOpen={isOpen}
       disabled={disabled}
+      disabledHint={disabled && !loading ? t("locked_complete_shipping") : undefined}
       onToggle={onToggle}
     >
       <div className="space-y-6 lg:space-y-0">
@@ -159,6 +160,12 @@ export default function PaymentFieldsGroup({
                   {t("card_details_required")}
                 </Text>
               )}
+              <Text
+                variant="uppercase"
+                className="mt-3 text-xs text-textInactiveColor"
+              >
+                {t("payment_secured")}
+              </Text>
             </>
           )}
         </div>

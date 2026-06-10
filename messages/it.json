@@ -94,7 +94,8 @@
     "date of birth": "data di nascita",
     "failed to update account": "impossibile aggiornare l’account",
     "failed to set default address": "impossibile impostare l’indirizzo predefinito",
-    "failed to add address": "impossibile aggiungere l’indirizzo"
+    "failed to add address": "impossibile aggiungere l’indirizzo",
+    "start a return": "avvia un reso"
   },
   "footer": {
     "legal notices": "note legali",
@@ -155,7 +156,8 @@
       "high to low": "dall'alto al basso",
       "sale": "saldi"
     },
-    "sold out": "esaurito"
+    "sold out": "esaurito",
+    "no matches": "nessun risultato"
   },
   "product": {
     "model is": "modello è",
@@ -194,7 +196,7 @@
     "city:": "città:",
     "additional address": "indirizzo aggiuntivo",
     "company": "azienda",
-    "phone number:": "numero di telefono",
+    "phone number:": "numero di telefono:",
     "optional": "facoltativo",
     "postal code:": "codice postale:",
     "shipping method": "metodo di spedizione",
@@ -202,6 +204,9 @@
     "select country to see shipping options": "Seleziona il tuo paese per vedere le opzioni di spedizione disponibili.",
     "shipping summary": "spedizione",
     "payment method": "metodo di pagamento",
+    "payment_secured": "protetto da stripe",
+    "locked_complete_contact": "completa il contatto per continuare",
+    "locked_complete_shipping": "completa la spedizione per continuare",
     "billing address": "indirizzo di fatturazione",
     "billing text": "seleziona l'indirizzo che corrisponde alla tua carta o metodo di pagamento",
     "same as shipping address": "stesso dell'indirizzo di spedizione",
@@ -636,12 +641,13 @@
     "invalid_email": "inserisci un indirizzo email valido",
     "email_copied": "email copiata",
     "cart_outdated": "il tuo carrello è obsoleto",
-    "cart_modified": "il tuo carrello è stato modificato",
+    "cart_modified": "alcuni articoli sono cambiati — il tuo carrello è stato aggiornato",
+    "cart_unavailable": "gli articoli nel tuo carrello non sono più disponibili",
     "payment_already_completed": "pagamento già completato per questa sessione. svuota il carrello e inizia un nuovo ordine.",
     "payment_unavailable": "il pagamento non è temporaneamente disponibile. riprova più tardi.",
     "payment_failed": "non siamo riusciti a completare il pagamento. riprova.",
     "validation_error": "qualcosa è andato storto. riprova.",
-    "fill_required_fields": "compila tutti i campi obbligatori",
+    "fill_required_fields": "alcuni campi obbligatori mancano",
     "email_required": "l'email è obbligatoria",
     "required_terms": "consenso richiesto per l'iscrizione"
   },

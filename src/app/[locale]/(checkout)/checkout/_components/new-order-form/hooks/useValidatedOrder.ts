@@ -11,6 +11,7 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { CheckoutData } from "../schema";
+import { resolveCardPaymentMethod } from "../utils";
 
 type UseValidatedOrderOptions = {
   validationErrorFallback?: string;
@@ -51,7 +52,8 @@ export function useValidatedOrder(
     const carrierId = shipmentCarrierId || form.getValues("shipmentCarrierId") || "";
     const country = form.getValues("country") || currentCountry.countryCode || undefined;
     const paymentMethod =
-      form.getValues("paymentMethod") || "PAYMENT_METHOD_NAME_ENUM_CARD_TEST";
+      form.getValues("paymentMethod") ||
+      resolveCardPaymentMethod(dictionary?.isProd);
 
     const result = await validateCartItems({
       products,

@@ -94,7 +94,8 @@
     "date of birth": "date de naissance",
     "failed to update account": "impossible de mettre à jour le compte",
     "failed to set default address": "impossible de définir l’adresse par défaut",
-    "failed to add address": "impossible d’ajouter l’adresse"
+    "failed to add address": "impossible d’ajouter l’adresse",
+    "start a return": "créer un retour"
   },
   "footer": {
     "legal notices": "mentions légales",
@@ -155,7 +156,8 @@
       "high to low": "décroissant",
       "sale": "soldes"
     },
-    "sold out": "rupture de stock"
+    "sold out": "rupture de stock",
+    "no matches": "aucun résultat"
   },
   "product": {
     "model is": "modèle est",
@@ -194,7 +196,7 @@
     "city:": "ville:",
     "additional address": "adresse complémentaire",
     "company": "entreprise",
-    "phone number:": "numéro de téléphone",
+    "phone number:": "numéro de téléphone:",
     "optional": "facultatif",
     "postal code:": "code postal:",
     "shipping method": "méthode d'expédition",
@@ -202,6 +204,9 @@
     "select country to see shipping options": "Sélectionnez votre pays pour voir les options d'expédition disponibles.",
     "shipping summary": "méthode d'expédition",
     "payment method": "méthode de paiement",
+    "payment_secured": "sécurisé par stripe",
+    "locked_complete_contact": "complétez le contact pour continuer",
+    "locked_complete_shipping": "complétez la livraison pour continuer",
     "billing address": "adresse de facturation",
     "billing text": "sélectionnez l'adresse qui correspond à votre carte ou à votre méthode de paiement",
     "same as shipping address": "même adresse que l'adresse de livraison",
@@ -636,12 +641,13 @@
     "invalid_email": "veuillez saisir une adresse email valide",
     "email_copied": "email copié",
     "cart_outdated": "votre panier est obsolète",
-    "cart_modified": "votre panier a été modifié",
+    "cart_modified": "certains articles ont changé — votre panier a été mis à jour",
+    "cart_unavailable": "les articles de votre panier ne sont plus disponibles",
     "payment_already_completed": "le paiement de cette session est déjà terminé. veuillez vider votre panier et créer une nouvelle commande.",
     "payment_unavailable": "le paiement est temporairement indisponible. veuillez réessayer plus tard.",
     "payment_failed": "nous n'avons pas pu finaliser votre paiement. veuillez réessayer.",
     "validation_error": "une erreur s'est produite. veuillez réessayer.",
-    "fill_required_fields": "veuillez remplir tous les champs obligatoires",
+    "fill_required_fields": "certains champs obligatoires sont manquants",
     "email_required": "l'e-mail est obligatoire",
     "required_terms": "consentement requis pour s'abonner"
   },

@@ -94,7 +94,8 @@
     "date of birth": "出生日期",
     "failed to update account": "无法更新账户",
     "failed to set default address": "无法设置默认地址",
-    "failed to add address": "无法添加地址"
+    "failed to add address": "无法添加地址",
+    "start a return": "发起退货"
   },
   "footer": {
     "legal notices": "法律声明",
@@ -155,7 +156,8 @@
       "high to low": "从高到低",
       "sale": "促销"
     },
-    "sold out": "售罄"
+    "sold out": "售罄",
+    "no matches": "无匹配结果"
   },
   "product": {
     "model is": "模特是",
@@ -194,7 +196,7 @@
     "city:": "城市：",
     "additional address": "详细地址",
     "company": "公司",
-    "phone number:": "电话号码",
+    "phone number:": "电话号码：",
     "optional": "可选",
     "postal code:": "邮政编码：",
     "shipping method": "配送方式",
@@ -202,6 +204,9 @@
     "select country to see shipping options": "请选择您的国家/地区以查看可用的配送选项。",
     "shipping summary": "配送",
     "payment method": "支付方式",
+    "payment_secured": "由 stripe 安全保护",
+    "locked_complete_contact": "请填写联系人以继续",
+    "locked_complete_shipping": "请填写配送信息以继续",
     "billing address": "账单地址",
     "billing text": "请选择与您的卡或支付方式匹配的地址",
     "same as shipping address": "与收货地址相同",
@@ -636,12 +641,13 @@
     "invalid_email": "请输入有效的邮箱地址",
     "email_copied": "邮箱已复制",
     "cart_outdated": "您的购物车已过期",
-    "cart_modified": "您的购物车已被修改",
+    "cart_modified": "部分商品已变更 — 您的购物车已更新",
+    "cart_unavailable": "您购物车中的商品已不再可用",
     "payment_already_completed": "此会话的支付已完成。请清空购物车并开始新订单。",
     "payment_unavailable": "支付暂时不可用。请稍后再试。",
     "payment_failed": "我们无法完成您的付款。请重试。",
     "validation_error": "出了点问题。请重试。",
-    "fill_required_fields": "请填写所有必填项",
+    "fill_required_fields": "部分必填字段尚未填写",
     "email_required": "邮箱为必填项",
     "required_terms": "订阅需要同意"
   },

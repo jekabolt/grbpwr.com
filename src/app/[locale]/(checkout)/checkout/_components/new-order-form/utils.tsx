@@ -141,6 +141,21 @@ export function normalizeStripeCardPaymentMethod(
   return undefined;
 }
 
+/**
+ * Single source of truth for which Stripe card enum the order is tagged with.
+ * The live/test split is an environment concern, not user input: drive it from
+ * the dictionary's `isProd` flag so real shoppers route through the live method.
+ * Degrades to the TEST enum when `isProd` is unknown so a misconfigured dictionary
+ * never silently charges real cards.
+ */
+export function resolveCardPaymentMethod(
+  isProd: boolean | undefined,
+): CheckoutData["paymentMethod"] {
+  return isProd
+    ? "PAYMENT_METHOD_NAME_ENUM_CARD"
+    : "PAYMENT_METHOD_NAME_ENUM_CARD_TEST";
+}
+
 export function mapFormFieldToOrderDataFormat(
   data: CheckoutData,
   orderItems: common_OrderItemInsert[],

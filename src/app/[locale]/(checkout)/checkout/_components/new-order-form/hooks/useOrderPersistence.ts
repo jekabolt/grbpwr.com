@@ -1,9 +1,10 @@
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { useCheckoutStore } from "@/lib/stores/checkout/store-provider";
 import { useEffect, useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { CheckoutData, defaultData } from "../schema";
-import { normalizeStripeCardPaymentMethod } from "../utils";
+import { resolveCardPaymentMethod } from "../utils";
 
 type CheckoutIdentityData = Pick<
     CheckoutData,
@@ -31,6 +32,7 @@ export const useOrderPersistence = (
         updateFormData,
         clearFormData,
     } = useCheckoutStore((state) => state);
+    const { dictionary } = useDataContext();
     const didHydrateFormRef = useRef(false);
 
     useEffect(() => {
@@ -126,12 +128,20 @@ export const useOrderPersistence = (
                 }
             } catch {
             }
-            data.paymentMethod =
-                normalizeStripeCardPaymentMethod(data.paymentMethod) ??
-                defaultData.paymentMethod;
+            // Live/test routing is an environment concern, never a persisted
+            // value: re-resolve from the dictionary so a stale TEST enum saved
+            // from a prior session can't follow a real shopper into production.
+            data.paymentMethod = resolveCardPaymentMethod(dictionary?.isProd);
             form.reset(data);
         }, 0);
-    }, [currentCountryCode, form, formData, hasPersistedData, rehydrated]);
+    }, [
+        currentCountryCode,
+        form,
+        formData,
+        hasPersistedData,
+        rehydrated,
+        dictionary?.isProd,
+    ]);
 
     useEffect(() => {
         if (!opts?.isSignedIn || !opts.initialAccount) return;

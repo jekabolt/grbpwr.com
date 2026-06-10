@@ -94,7 +94,8 @@
     "date of birth": "생년월일",
     "failed to update account": "계정을 업데이트하지 못했습니다",
     "failed to set default address": "기본 주소를 설정하지 못했습니다",
-    "failed to add address": "주소를 추가하지 못했습니다"
+    "failed to add address": "주소를 추가하지 못했습니다",
+    "start a return": "반품 시작"
   },
   "footer": {
     "legal notices": "법적 고지",
@@ -155,7 +156,8 @@
       "high to low": "높은 순",
       "sale": "세일"
     },
-    "sold out": "품절"
+    "sold out": "품절",
+    "no matches": "일치하는 항목 없음"
   },
   "product": {
     "model is": "모델은",
@@ -194,7 +196,7 @@
     "city:": "시/군/구:",
     "additional address": "상세주소",
     "company": "회사명",
-    "phone number:": "전화번호",
+    "phone number:": "전화번호:",
     "optional": "선택 사항",
     "postal code:": "우편번호:",
     "shipping method": "배송 방법",
@@ -202,6 +204,9 @@
     "select country to see shipping options": "국가를 선택하여 사용 가능한 배송 옵션을 확인하세요.",
     "shipping summary": "배송",
     "payment method": "결제 수단",
+    "payment_secured": "stripe로 안전하게 결제",
+    "locked_complete_contact": "계속하려면 연락처를 입력하세요",
+    "locked_complete_shipping": "계속하려면 배송 정보를 입력하세요",
     "billing address": "청구지 주소",
     "billing text": "카드 또는 결제 수단과 일치하는 주소를 선택하세요",
     "same as shipping address": "배송지와 동일",
@@ -636,12 +641,13 @@
     "invalid_email": "유효한 이메일 주소를 입력해주세요",
     "email_copied": "이메일 복사됨",
     "cart_outdated": "장바구니가 오래되었습니다",
-    "cart_modified": "장바구니가 수정되었습니다",
+    "cart_modified": "일부 상품이 변경되어 장바구니가 업데이트되었습니다",
+    "cart_unavailable": "장바구니에 담긴 상품은 더 이상 구매할 수 없습니다",
     "payment_already_completed": "이 세션의 결제가 이미 완료되었습니다. 장바구니를 비우고 새 주문을 시작해 주세요.",
     "payment_unavailable": "결제가 일시적으로 사용할 수 없습니다. 나중에 다시 시도해 주세요.",
     "payment_failed": "결제를 완료할 수 없습니다. 다시 시도해 주세요.",
     "validation_error": "문제가 발생했습니다. 다시 시도해 주세요.",
-    "fill_required_fields": "필수 항목을 모두 입력해 주세요",
+    "fill_required_fields": "필수 항목이 입력되지 않았습니다",
     "email_required": "이메일은 필수입니다",
     "required_terms": "구독하려면 동의가 필요합니다"
   },

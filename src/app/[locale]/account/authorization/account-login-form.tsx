@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useState, type ChangeEvent } from "react";
+import {
+  useEffect,
+  useState,
+  type ChangeEvent,
+  type KeyboardEvent,
+} from "react";
 import Link from "next/link";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
@@ -167,7 +172,9 @@ export function AccountLoginForm({
           {isRestoringSession ? (
             <AccountMobileOrderSummarySkeleton />
           ) : (
-            <AccountCartMobileOrderSummary onOpenChange={setMobileSummaryOpen} />
+            <AccountCartMobileOrderSummary
+              onOpenChange={setMobileSummaryOpen}
+            />
           )}
         </div>
       )}
@@ -224,10 +231,17 @@ function EmailStep({
             name="email"
             type="email"
             autoComplete="email"
+            enterKeyHint="go"
             value={email}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               onEmailChange(e.target.value)
             }
+            onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+              if (e.key === "Enter" && !pending && isValidEmail) {
+                e.preventDefault();
+                onContinue();
+              }
+            }}
             disabled={pending}
           />
         </div>

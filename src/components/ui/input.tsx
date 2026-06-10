@@ -14,7 +14,7 @@ function Input({ type = "text", className, name, ref, ...props }: InputProps) {
       type={type}
       ref={ref}
       className={cn(
-        "w-full appearance-none rounded-none border-b border-textColor bg-bgColor text-textBaseSize disabled:border-textInactiveColor disabled:text-textInactiveColor",
+        "w-full appearance-none rounded-none border-b border-textColor bg-bgColor text-textBaseSize aria-[invalid=true]:border-b-errorColor disabled:border-textInactiveColor disabled:text-textInactiveColor",
         className,
       )}
       {...props}

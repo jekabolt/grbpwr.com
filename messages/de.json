@@ -94,7 +94,8 @@
     "date of birth": "geburtsdatum",
     "failed to update account": "konto konnte nicht aktualisiert werden",
     "failed to set default address": "standardadresse konnte nicht festgelegt werden",
-    "failed to add address": "adresse konnte nicht hinzugefügt werden"
+    "failed to add address": "adresse konnte nicht hinzugefügt werden",
+    "start a return": "rücksendung starten"
   },
   "footer": {
     "legal notices": "rechtliche hinweise",
@@ -155,7 +156,8 @@
       "high to low": "hoch zu niedrig",
       "sale": "sale"
     },
-    "sold out": "ausverkauft"
+    "sold out": "ausverkauft",
+    "no matches": "keine treffer"
   },
   "product": {
     "model is": "modell ist",
@@ -194,7 +196,7 @@
     "city:": "stadt:",
     "additional address": "zusätzliche adresse",
     "company": "unternehmen",
-    "phone number:": "telefonnummer",
+    "phone number:": "telefonnummer:",
     "optional": "optional",
     "postal code:": "postleitzahl:",
     "shipping method": "versandmethode",
@@ -202,6 +204,9 @@
     "select country to see shipping options": "Wählen Sie Ihr Land, um verfügbare Versandoptionen zu sehen.",
     "shipping summary": "versand",
     "payment method": "zahlungsmethode",
+    "payment_secured": "gesichert durch stripe",
+    "locked_complete_contact": "kontakt vervollständigen, um fortzufahren",
+    "locked_complete_shipping": "versand vervollständigen, um fortzufahren",
     "billing address": "rechnungsadresse",
     "billing text": "wählen sie die adresse, die ihrer karte oder zahlungsmethode entspricht",
     "same as shipping address": "gleich wie versandadresse",
@@ -637,12 +642,13 @@
     "invalid_email": "bitte geben sie eine gültige e-mail-adresse ein",
     "email_copied": "e-mail kopiert",
     "cart_outdated": "ihr warenkorb ist veraltet",
-    "cart_modified": "ihr warenkorb wurde geändert",
+    "cart_modified": "einige artikel haben sich geändert — ihr warenkorb wurde aktualisiert",
+    "cart_unavailable": "die artikel in ihrem warenkorb sind nicht mehr verfügbar",
     "payment_already_completed": "zahlung für diese sitzung bereits abgeschlossen. bitte leeren sie ihren warenkorb und starten sie eine neue bestellung.",
     "payment_unavailable": "zahlung vorübergehend nicht verfügbar. bitte versuchen sie es später erneut.",
     "payment_failed": "wir konnten ihre zahlung nicht abschließen. bitte versuchen sie es erneut.",
     "validation_error": "etwas ist schiefgelaufen. bitte versuchen sie es erneut.",
-    "fill_required_fields": "bitte füllen sie alle erforderlichen felder aus",
+    "fill_required_fields": "einige pflichtfelder fehlen",
     "email_required": "e-mail ist erforderlich",
     "required_terms": "zustimmung zum abonnieren erforderlich"
   },

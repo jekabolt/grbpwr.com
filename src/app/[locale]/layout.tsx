@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { MotionConfig } from "framer-motion";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
@@ -99,18 +100,23 @@ export default async function RootLayout({ children, params }: Props) {
         <NextIntlClientProvider locale={locale} messages={messages}>
           <CookieBanner />
           <ToastProvider>
-            <PageTransition>
-              <SiteGuard>
-                <div className="relative min-h-dvh">{children}</div>
-              </SiteGuard>
-            </PageTransition>
-            <CountriesPopup />
-            <GeoSuggestWrapper />
-            <UpdateLocation />
-            <AnalyticsInit />
-            <InternalNavigationTracker />
-            <VisitedLinksSync />
-            <ConsoleArtInit />
+            {/* reducedMotion="user" makes every framer-motion animation
+                (modal slides, bottom-sheet spring) honor the OS setting; CSS
+                animations are covered by the reduced-motion block in globals.css. */}
+            <MotionConfig reducedMotion="user">
+              <PageTransition>
+                <SiteGuard>
+                  <div className="relative min-h-dvh">{children}</div>
+                </SiteGuard>
+              </PageTransition>
+              <CountriesPopup />
+              <GeoSuggestWrapper />
+              <UpdateLocation />
+              <AnalyticsInit />
+              <InternalNavigationTracker />
+              <VisitedLinksSync />
+              <ConsoleArtInit />
+            </MotionConfig>
           </ToastProvider>
         </NextIntlClientProvider>
       </body>

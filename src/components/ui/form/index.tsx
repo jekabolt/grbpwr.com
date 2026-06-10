@@ -101,8 +101,16 @@ function FormLabel({ className, ref, ...props }: any) {
 FormLabel.displayName = "FormLabel";
 
 function FormControl(props: any) {
-  const { error, formItemId, formDescriptionId, formMessageId } =
+  const { error, isTouched, formItemId, formDescriptionId, formMessageId } =
     useFormField();
+  const { formState } = useFormContext();
+
+  // Mirror FormMessage's gating so the error border and the error caption
+  // appear together — only after the field is touched or a submit was
+  // attempted, never on a pristine required field at first render.
+  const submitAttempted =
+    formState.isSubmitted || (formState.submitCount ?? 0) > 0;
+  const showError = !!error && (!!isTouched || submitAttempted);
 
   return (
     <Slot
@@ -112,7 +120,7 @@ function FormControl(props: any) {
           ? `${formDescriptionId}`
           : `${formDescriptionId} ${formMessageId}`
       }
-      aria-invalid={!!error}
+      aria-invalid={showError}
       {...props}
     />
   );

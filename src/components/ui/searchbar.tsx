@@ -31,7 +31,7 @@ export function Searchbar({ value, noFound, handleSearch, ...props }: Props) {
           />
         </div>
         <Button
-          className={`transform transition-all duration-200 ease-out ${
+          className={`transform transition-[transform,opacity] duration-200 ease-out ${
             value
               ? "scale-100 opacity-100"
               : "pointer-events-none scale-95 opacity-0"
@@ -44,7 +44,7 @@ export function Searchbar({ value, noFound, handleSearch, ...props }: Props) {
 
       <Text
         className={cn(
-          "transform border border-textInactiveColor px-4 py-1 opacity-0 transition-all duration-200 ease-in-out",
+          "border border-textInactiveColor px-4 py-1 opacity-0 transition-opacity duration-200 ease-in-out",
           {
             "opacity-100": value && noFound,
           },

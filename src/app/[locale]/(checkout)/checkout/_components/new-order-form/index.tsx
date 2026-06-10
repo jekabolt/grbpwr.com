@@ -14,6 +14,7 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useDataContext } from "@/components/contexts/DataContext";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
@@ -27,6 +28,7 @@ import { accountNeedsNameCompletion } from "@/app/[locale]/account/utils/utility
 import { CheckoutSignedInSkeleton } from "../checkout-skeleton";
 import ContactFieldsGroup from "./contact-fields-group";
 import { useAutoGroupOpen } from "./hooks/useAutoGroupOpen";
+import { useCartOutdatedRedirect } from "./hooks/useCartOutdatedRedirect";
 import { useCheckoutEffects } from "./hooks/useCheckout";
 import { useCheckoutFormAnalytics } from "./hooks/useCheckoutFormAnalytics";
 import { useCheckoutSubmit } from "./hooks/useCheckoutSubmit";
@@ -40,7 +42,7 @@ import { PriceSummary } from "./price-summary";
 import PromoCode from "./PromoCode";
 import { CheckoutData, checkoutSchema, defaultData } from "./schema";
 import ShippingFieldsGroup from "./shipping-fields-group";
-import { isStripeCardPaymentMethod } from "./utils";
+import { isStripeCardPaymentMethod, resolveCardPaymentMethod } from "./utils";
 
 const CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY =
   "grbpwr.checkout.profileCompletedEmail";
@@ -63,6 +65,7 @@ export default function NewOrderForm({
   setGuestCheckout,
 }: NewOrderFormProps) {
   const { currentCountry } = useTranslationsStore((state) => state);
+  const { dictionary } = useDataContext();
   const { products, totalPrice, validatedCurrency } = useCart((s) => s);
   const { isSignedIn } = useAccountOnboardingStore((s) => s);
   const [checkoutLoginStep, setCheckoutLoginStep] =
@@ -114,7 +117,11 @@ export default function NewOrderForm({
 
   const form = useForm<CheckoutData>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: { ...defaultData, country: currentCountry.countryCode },
+    defaultValues: {
+      ...defaultData,
+      country: currentCountry.countryCode,
+      paymentMethod: resolveCardPaymentMethod(dictionary?.isProd),
+    },
   });
 
   const {
@@ -155,8 +162,23 @@ export default function NewOrderForm({
     form,
     countryCode: currentCountry.countryCode || "",
     orderCurrency,
+    cartModifiedMessage: tToaster("cart_modified"),
     onAmountChange,
     handleFormChange,
+  });
+
+  // When validation returns zero valid items the cart can no longer be
+  // fulfilled: close every other toast, show a single notice, and send the
+  // user back to the catalog.
+  useCartOutdatedRedirect({
+    order,
+    message: tToaster("cart_unavailable"),
+    onOutdated: (message) => {
+      setValidationToastOpen(false);
+      dismissComplimentaryToast();
+      setToastMessage(message);
+      setOrderModifiedToastOpen(true);
+    },
   });
 
   const handlePromoError = (message: string) => {

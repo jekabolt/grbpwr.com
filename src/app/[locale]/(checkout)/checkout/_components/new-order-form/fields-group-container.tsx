@@ -12,6 +12,9 @@ interface FieldsGroupContainerProps {
   stage?: string;
   title: string;
   preview?: React.ReactNode;
+  /** Reason shown in the header when the group is gated (disabled), e.g.
+   * "complete contact to continue". Only rendered while `disabled` is true. */
+  disabledHint?: React.ReactNode;
   children: React.ReactNode;
   isOpen?: boolean;
   disabled?: boolean;
@@ -32,6 +35,7 @@ export default function FieldsGroupContainer({
   stage,
   title,
   preview,
+  disabledHint,
   children,
   isOpen = false,
   disabled = false,
@@ -118,7 +122,17 @@ export default function FieldsGroupContainer({
                 {title}
               </Text>
             </div>
-            {preview && <div className="shrink-0">{preview}</div>}
+            {disabled && disabledHint ? (
+              <Text
+                variant="uppercase"
+                component="span"
+                className="ml-4 shrink-0 text-xs text-textInactiveColor"
+              >
+                {disabledHint}
+              </Text>
+            ) : (
+              preview && <div className="shrink-0">{preview}</div>
+            )}
           </div>
         </div>
 

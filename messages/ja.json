@@ -94,7 +94,8 @@
     "date of birth": "生年月日",
     "failed to update account": "アカウントを更新できませんでした",
     "failed to set default address": "デフォルト住所を設定できませんでした",
-    "failed to add address": "住所を追加できませんでした"
+    "failed to add address": "住所を追加できませんでした",
+    "start a return": "返品を開始"
   },
   "footer": {
     "legal notices": "法的通知",
@@ -155,7 +156,8 @@
       "high to low": "高い順",
       "sale": "セール"
     },
-    "sold out": "売り切れ"
+    "sold out": "売り切れ",
+    "no matches": "該当なし"
   },
   "product": {
     "model is": "モデルは",
@@ -194,7 +196,7 @@
     "city:": "市区町村：",
     "additional address": "追加住所",
     "company": "会社名",
-    "phone number:": "電話番号",
+    "phone number:": "電話番号：",
     "optional": "任意",
     "postal code:": "郵便番号：",
     "shipping method": "配送方法",
@@ -202,6 +204,9 @@
     "select country to see shipping options": "国を選択して配送オプションを表示してください。",
     "shipping summary": "配送",
     "payment method": "支払い方法",
+    "payment_secured": "stripeによる安全な決済",
+    "locked_complete_contact": "続行するには連絡先を入力してください",
+    "locked_complete_shipping": "続行するには配送先を入力してください",
     "billing address": "請求先住所",
     "billing text": "カードまたは支払い方法と一致する住所を選択してください",
     "same as shipping address": "配送先住所と同じ",
@@ -636,12 +641,13 @@
     "invalid_email": "有効なメールアドレスを入力してください",
     "email_copied": "メールアドレスがコピーされました",
     "cart_outdated": "カートが古くなっています",
-    "cart_modified": "カートが変更されました",
+    "cart_modified": "一部の商品が変更されました — カートを更新しました",
+    "cart_unavailable": "カート内の商品は現在ご利用いただけません",
     "payment_already_completed": "このセッションの支払いは既に完了しています。カートを空にして新しい注文を開始してください。",
     "payment_unavailable": "支払いは一時的に利用できません。後でもう一度お試しください。",
     "payment_failed": "お支払いを完了できませんでした。もう一度お試しください。",
     "validation_error": "問題が発生しました。もう一度お試しください。",
-    "fill_required_fields": "必須項目をすべて入力してください",
+    "fill_required_fields": "必須項目が未入力です",
     "email_required": "メールアドレスは必須です",
     "required_terms": "登録するには同意が必要です"
   },

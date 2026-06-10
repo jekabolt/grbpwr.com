@@ -117,7 +117,7 @@ export default function PageComponent({
               </video>
               <Button
                 onClick={toggleSound}
-                className="absolute bottom-2.5 right-2.5 uppercase text-white mix-blend-difference transition-all"
+                className="absolute bottom-2.5 right-2.5 uppercase text-white mix-blend-difference"
                 aria-label={isMuted ? "unmute" : "mute"}
               >
                 {isMuted ? "sound on" : "sound off"}

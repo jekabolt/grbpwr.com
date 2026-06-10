@@ -1,0 +1,5 @@
+- [Pricing: single base currency](pricing-single-base-currency.md) — products have one price value; storefront only swaps the currency symbol per country, so derive currency from locale not from the price record.
+- [Impeccable polish follow-ups](impeccable-polish-followups.md) — deferred items from the polish pass (PII console.logs, 500ms filter delay, sale-price contrast, ItemRow DRY, [x] aria-labels).
+- [Checkout payment method = isProd](checkout-payment-method-isprod.md) — live vs test Stripe card enum is driven by dictionary.isProd via resolveCardPaymentMethod(), never hardcoded or persisted.
+- [No /cart route](no-cart-route.md) — cart is a drawer/popup (CartPopup), not a page; the old /cart route was deleted, don't re-add a page.tsx there.
+- [Copy options before implementing](copy-options-before-implementing.md) — for user-facing copy, present a few wording options and let the user pick before coding; wire via toaster i18n keys across all 7 locales.

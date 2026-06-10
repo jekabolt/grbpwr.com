@@ -80,3 +80,6 @@ jsconfig.json
 # System Files
 .DS_Store
 Thumbs.db
+
+# impeccable /verify browser profiles (local only)
+.verify-*/

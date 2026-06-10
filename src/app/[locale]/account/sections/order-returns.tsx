@@ -34,52 +34,61 @@ const ORDER_RETURN_TABS: {
 export function OrderReturns({ account }: { account: StorefrontAccount }) {
   const t = useTranslations("account");
   const [view, setView] = useState<OrderReturnsView>("orders");
-  const { allOrders, loading, loadingMore, hasMore, loadMore, toastOpen, toastMessage, setToastOpen } = useOrders();
+  const {
+    allOrders,
+    loading,
+    loadingMore,
+    hasMore,
+    loadMore,
+    toastOpen,
+    toastMessage,
+    setToastOpen,
+  } = useOrders();
 
   return (
     <>
       <div className={SECTION_CLASSNAME}>
-      <div className="flex shrink-0">
-        {ORDER_RETURN_TABS.map((tab) => (
-          <Button
-            key={tab.value}
-            onClick={() => setView(tab.value)}
-            className={cn("w-full uppercase", {
-              "border-b border-textColor": view === tab.value,
-              "border-b border-textInactiveColor text-textInactiveColor":
-                view !== tab.value,
-            })}
-          >
-            {t(tab.labelKey)}
-          </Button>
-        ))}
-      </div>
-
-      {loading ? (
-        <div className={LIST_CLASSNAME}>
-          <OrderReturnsSectionFallback />
+        <div className="flex shrink-0">
+          {ORDER_RETURN_TABS.map((tab) => (
+            <Button
+              key={tab.value}
+              onClick={() => setView(tab.value)}
+              className={cn("w-full uppercase", {
+                "border-b border-textColor": view === tab.value,
+                "border-b border-textInactiveColor text-textInactiveColor":
+                  view !== tab.value,
+              })}
+            >
+              {t(tab.labelKey)}
+            </Button>
+          ))}
         </div>
-      ) : null}
 
-      {!loading && view === "orders" && (
-        <OrdersList
-          orders={allOrders}
-          account={account}
-          hasMore={hasMore}
-          loadingMore={loadingMore}
-          onLoadMore={loadMore}
-        />
-      )}
+        {loading ? (
+          <div className={LIST_CLASSNAME}>
+            <OrderReturnsSectionFallback />
+          </div>
+        ) : null}
 
-      {!loading && view === "returns" && (
-        <ReturnsList
-          orders={allOrders}
-          account={account}
-          hasMore={hasMore}
-          loadingMore={loadingMore}
-          onLoadMore={loadMore}
-        />
-      )}
+        {!loading && view === "orders" && (
+          <OrdersList
+            orders={allOrders}
+            account={account}
+            hasMore={hasMore}
+            loadingMore={loadingMore}
+            onLoadMore={loadMore}
+          />
+        )}
+
+        {!loading && view === "returns" && (
+          <ReturnsList
+            orders={allOrders}
+            account={account}
+            hasMore={hasMore}
+            loadingMore={loadingMore}
+            onLoadMore={loadMore}
+          />
+        )}
       </div>
       {toastMessage && (
         <SubmissionToaster
@@ -170,7 +179,14 @@ function ReturnsList({
       ) : (
         <div className="flex flex-col gap-6">
           <UIText variant="uppercase">{t("no returns")}</UIText>
-          <UIText>{t("to start new return, visit our returns")}</UIText>
+          <Button
+            size={"lg"}
+            variant="simpleReverseWithBorder"
+            className="self-start uppercase"
+            asChild
+          >
+            <Link href="/return">{t("start a return")}</Link>
+          </Button>
         </div>
       )}
     </div>

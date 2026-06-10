@@ -93,7 +93,8 @@
     "date of birth": "date of birth",
     "failed to update account": "failed to update account",
     "failed to set default address": "failed to set default address",
-    "failed to add address": "failed to add address"
+    "failed to add address": "failed to add address",
+    "start a return": "start a return"
   },
   "footer": {
     "legal notices": "legal notices",
@@ -154,7 +155,8 @@
       "high to low": "high to low",
       "sale": "sale"
     },
-    "sold out": "sold out"
+    "sold out": "sold out",
+    "no matches": "no matches"
   },
   "product": {
     "model is": "model is",
@@ -193,7 +195,7 @@
     "city:": "city:",
     "additional address": "additional address",
     "company": "company",
-    "phone number:": "phone number",
+    "phone number:": "phone number:",
     "optional": "optional",
     "postal code:": "postal code:",
     "shipping method": "shipping method",
@@ -201,6 +203,9 @@
     "select country to see shipping options": "Select your country to see available shipping options.",
     "shipping summary": "shipping",
     "payment method": "payment method",
+    "payment_secured": "secured by stripe",
+    "locked_complete_contact": "complete contact to continue",
+    "locked_complete_shipping": "complete shipping to continue",
     "billing address": "billing address",
     "billing text": "select the address that matches your card or payment method",
     "same as shipping address": "same as shipping address",
@@ -694,12 +699,13 @@
     "invalid_email": "please enter a valid email address",
     "email_copied": "e-mail copied",
     "cart_outdated": "your cart is outdated",
-    "cart_modified": "your cart has been modified",
+    "cart_modified": "some items changed — your cart has been updated",
+    "cart_unavailable": "items in your cart are no longer available",
     "payment_already_completed": "payment already completed for this session. please clear your checkout and start a new order.",
     "payment_unavailable": "payment is temporarily unavailable. please try again later.",
     "payment_failed": "we couldn't complete your payment. please try again.",
     "validation_error": "something went wrong. please try again.",
-    "fill_required_fields": "please fill in all required fields",
+    "fill_required_fields": "some required fields are missing",
     "email_required": "email is required",
     "required_terms": "consent required to subscribe"
   },

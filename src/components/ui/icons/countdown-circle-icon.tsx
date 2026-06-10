@@ -27,7 +27,7 @@ export function CountdownCircleIcon({
         strokeDashoffset={strokeDashoffset}
         fill="none"
         strokeLinecap="round"
-        className="transition-all duration-1000 ease-linear"
+        className="transition-[stroke-dashoffset] duration-1000 ease-linear"
       />
     </svg>
   );

@@ -9,7 +9,6 @@ Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 Disallow: /admin/
-Disallow: /*/cart
 Disallow: /*/checkout
 Disallow: /*/account
 Disallow: /*/login

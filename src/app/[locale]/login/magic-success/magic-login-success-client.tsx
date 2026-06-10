@@ -1,6 +1,7 @@
 "use client";
 
 import { useContext, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
@@ -14,6 +15,7 @@ import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store
 import { CartStoreContext, useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import FlexibleLayout from "@/components/flexible-layout";
+import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
 import { AccountCartMobileOrderSummary } from "../../account/authorization/account-cart-mobile-order-summary";
@@ -64,19 +66,19 @@ export function MagicLoginSuccessClient() {
     router.refresh();
   }, [router, setAccount, setSignedIn]);
 
+  const destination = hasCartItems
+    ? localizedPaths.checkout
+    : localizedPaths.account;
+
   useEffect(() => {
     if (!cartHydrated) return;
-
-    const destination = hasCartItems
-      ? localizedPaths.checkout
-      : localizedPaths.account;
 
     const id = window.setTimeout(() => {
       router.replace(destination);
     }, DISPLAY_MS);
 
     return () => window.clearTimeout(id);
-  }, [cartHydrated, hasCartItems, localizedPaths, router]);
+  }, [cartHydrated, destination, router]);
 
   const useCheckoutHeader = cartHydrated && hasCartItems;
 
@@ -96,6 +98,11 @@ export function MagicLoginSuccessClient() {
             {tAccount("magic_login_success_title")}
           </Text>
           <Text>{tAccount("magic_login_success_subtitle")}</Text>
+          <Button asChild variant="underline" className="mt-4 uppercase">
+            <Link href={destination} replace>
+              {tAccount("continue")}
+            </Link>
+          </Button>
         </div>
       </div>
 
