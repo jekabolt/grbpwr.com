@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { MotionConfig } from "framer-motion";
 import { FeatureMono } from "@/fonts";
 import { routing } from "@/i18n/routing";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
@@ -14,6 +13,7 @@ import { generateCommonMetadata } from "@/lib/common-metadata";
 import { AnalyticsInit } from "@/components/analytics-init";
 import { DeferredAnalytics } from "@/components/deferred-analytics";
 import { InternalNavigationTracker } from "@/components/internal-navigation-tracker";
+import { MotionConfigProvider } from "@/components/motion-config-provider";
 import { PageTransition } from "@/components/page-transition";
 import { ConsoleArtInit } from "@/components/ui/art/console-art-init";
 import { CookieBanner } from "@/components/ui/cookie-banner";
@@ -100,10 +100,7 @@ export default async function RootLayout({ children, params }: Props) {
         <NextIntlClientProvider locale={locale} messages={messages}>
           <CookieBanner />
           <ToastProvider>
-            {/* reducedMotion="user" makes every framer-motion animation
-                (modal slides, bottom-sheet spring) honor the OS setting; CSS
-                animations are covered by the reduced-motion block in globals.css. */}
-            <MotionConfig reducedMotion="user">
+            <MotionConfigProvider>
               <PageTransition>
                 <SiteGuard>
                   <div className="relative min-h-dvh">{children}</div>
@@ -116,7 +113,7 @@ export default async function RootLayout({ children, params }: Props) {
               <InternalNavigationTracker />
               <VisitedLinksSync />
               <ConsoleArtInit />
-            </MotionConfig>
+            </MotionConfigProvider>
           </ToastProvider>
         </NextIntlClientProvider>
       </body>
