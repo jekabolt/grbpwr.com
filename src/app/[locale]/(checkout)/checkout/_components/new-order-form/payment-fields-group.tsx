@@ -9,6 +9,7 @@ import { useFormContext, UseFormReturn } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
+import { LockIcon } from "@/components/ui/icons/lock";
 import { Text } from "@/components/ui/text";
 
 import FieldsGroupContainer from "./fields-group-container";
@@ -160,12 +161,12 @@ export default function PaymentFieldsGroup({
                   {t("card_details_required")}
                 </Text>
               )}
-              <Text
-                variant="uppercase"
-                className="mt-3 text-xs text-textInactiveColor"
-              >
-                {t("payment_secured")}
-              </Text>
+              <div className="mt-3 flex items-center gap-x-1.5 text-textInactiveColor">
+                <LockIcon className="h-3 w-3 shrink-0" aria-hidden="true" />
+                <Text variant="uppercase" component="span" className="text-xs">
+                  {t("payment_secured")}
+                </Text>
+              </div>
             </>
           )}
         </div>
