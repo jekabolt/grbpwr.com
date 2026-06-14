@@ -17,6 +17,7 @@ import { PageTransition } from "@/components/page-transition";
 import { ConsoleArtInit } from "@/components/ui/art/console-art-init";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
+import { LanguageSuggestBanner } from "@/components/ui/language-suggest-banner";
 import { SiteGuard } from "@/components/ui/site-guard";
 import { ToastProvider } from "@/components/ui/toaster";
 import { VisitedLinksSync } from "@/components/visited-links-sync";
@@ -106,6 +107,7 @@ export default async function RootLayout({ children, params }: Props) {
             </PageTransition>
             <CountriesPopup />
             <GeoSuggestWrapper />
+            <LanguageSuggestBanner />
             <UpdateLocation />
             <AnalyticsInit />
             <InternalNavigationTracker />
