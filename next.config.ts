@@ -69,13 +69,17 @@ const nextConfig: NextConfig = {
         "https://*.analytics.google.com",
         "https://www.googletagmanager.com",
         "https://api.stripe.com",
+        // Stripe.js fraud signals (m.stripe.network) + metrics (r.stripe.com) —
+        // documented Stripe origins, reliably hit by Payment Element / 3DS.
+        "https://m.stripe.network",
+        "https://r.stripe.com",
         "https://maps.googleapis.com",
         // Dev only: Turbopack HMR websocket + localhost backend.
         ...(isDev ? ["ws://localhost:*", "http://localhost:*"] : []),
       ]
         .filter(Boolean)
         .join(" "),
-      `frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://art.grbpwr.com`,
+      `frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://art.grbpwr.com`,
       `worker-src 'self' blob:`,
       `object-src 'none'`,
       `base-uri 'self'`,
