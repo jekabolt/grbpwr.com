@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Arrow } from "@/components/ui/icons/arrow";
+import { LockIcon } from "@/components/ui/icons/lock";
 import { MinusIcon } from "@/components/ui/icons/minus";
 import { PlusIcon } from "@/components/ui/icons/plus";
 import { Text } from "@/components/ui/text";
@@ -63,6 +64,8 @@ export default function FieldsGroupContainer({
     onToggle?.();
   };
 
+  const gated = disabled && Boolean(disabledHint);
+
   return (
     <div
       className={cn(
@@ -94,7 +97,10 @@ export default function FieldsGroupContainer({
 
           <div
             className={cn(
-              "flex flex-1 items-center justify-between",
+              "flex min-w-0 flex-1",
+              gated
+                ? "flex-col items-start gap-y-1 lg:flex-row lg:items-center lg:justify-between"
+                : "items-center justify-between",
               { "text-textInactiveColor": disabled },
               titleWrapperClassName,
             )}
@@ -122,14 +128,17 @@ export default function FieldsGroupContainer({
                 {title}
               </Text>
             </div>
-            {disabled && disabledHint ? (
-              <Text
-                variant="uppercase"
-                component="span"
-                className="ml-4 shrink-0 text-xs text-textInactiveColor"
-              >
-                {disabledHint}
-              </Text>
+            {gated ? (
+              <span className="flex shrink-0 items-center gap-x-1.5 text-textColor lg:ml-4">
+                <LockIcon className="h-3 w-3 shrink-0" aria-hidden="true" />
+                <Text
+                  variant="uppercase"
+                  component="span"
+                  className="text-xs leading-none"
+                >
+                  {disabledHint}
+                </Text>
+              </span>
             ) : (
               preview && <div className="shrink-0">{preview}</div>
             )}
