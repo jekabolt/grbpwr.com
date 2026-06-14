@@ -7,11 +7,12 @@ export const ACCESS_COOKIE = "grbpwr_access";
 export const REFRESH_COOKIE = "grbpwr_refresh";
 const ACCESS_EXPIRES_COOKIE = "grbpwr_access_exp";
 
-const isProd = process.env.NODE_ENV === "production";
-
 const baseCookie = {
   httpOnly: true,
-  secure: isProd,
+  // Always Secure: session/refresh tokens must never travel over plain HTTP
+  // (e.g. a preview/staging deploy on a real domain). Browsers still send
+  // Secure cookies over http://localhost, so local dev is unaffected.
+  secure: true,
   sameSite: "lax" as const,
   path: "/",
 };

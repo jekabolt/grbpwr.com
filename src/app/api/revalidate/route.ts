@@ -1,49 +1,48 @@
-import { ARCHIVES_CACHE_TAG, HERO_CACHE_TAG, PRODUCTS_CACHE_TAG } from "@/constants";
 import { revalidatePath, revalidateTag } from "next/cache";
+import {
+  ARCHIVES_CACHE_TAG,
+  HERO_CACHE_TAG,
+  PRODUCTS_CACHE_TAG,
+} from "@/constants";
 
 export async function POST(request: Request) {
-    const { searchParams } = new URL(request.url);
-    const secret = searchParams.get("secret");
-    const data = await request.json();
+  const { searchParams } = new URL(request.url);
+  const secret = searchParams.get("secret");
+  const data = await request.json();
 
-    if (!data || !secret) {
-        return Response.json(
-            { error: "No body or secret provided" },
-            { status: 400 },
-        );
+  if (!data || !secret) {
+    return Response.json(
+      { error: "No body or secret provided" },
+      { status: 400 },
+    );
+  }
+
+  if (secret !== process.env.WEBHOOK_REVALIDATE_SECRET) {
+    return Response.json({ error: "Invalid secret" }, { status: 401 });
+  }
+
+  if (Array.isArray(data.products) && data.products.length > 0) {
+    revalidateTag(PRODUCTS_CACHE_TAG);
+    // Revalidate individual product pages
+    for (const id of data.products) {
+      revalidatePath(`/product/${id}`);
     }
+    // Revalidate all catalog pages (dynamic routes)
+    revalidatePath("/catalog", "layout");
+  }
 
-    if (secret !== process.env.WEBHOOK_REVALIDATE_SECRET) {
-        return Response.json(
-            { error: "Invalid secret" },
-            { status: 401 },
-        );
-    }
+  if (data.hero === true) {
+    revalidateTag(HERO_CACHE_TAG);
+    revalidatePath("/");
+  }
 
-    console.log("Revalidation request:", JSON.stringify(data));
+  if (typeof data.archive === "number") {
+    revalidateTag(ARCHIVES_CACHE_TAG);
+    revalidatePath(`/timeline/${data.archive}`);
+  }
 
-    if (Array.isArray(data.products) && data.products.length > 0) {
-        revalidateTag(PRODUCTS_CACHE_TAG);
-        // Revalidate individual product pages
-        for (const id of data.products) {
-            revalidatePath(`/product/${id}`);
-        }
-        // Revalidate all catalog pages (dynamic routes)
-        revalidatePath("/catalog", "layout");
-    }
-
-    if (data.hero === true) {
-        revalidateTag(HERO_CACHE_TAG);
-        revalidatePath("/");
-    }
-
-    if (typeof data.archive === "number") {
-        revalidateTag(ARCHIVES_CACHE_TAG);
-        revalidatePath(`/timeline/${data.archive}`);
-    }
-
-    return Response.json({
-        revalidated: true,
-        now: Date.now()
-    });
+  return Response.json({
+    revalidated: true,
+    now: Date.now(),
+  });
 }

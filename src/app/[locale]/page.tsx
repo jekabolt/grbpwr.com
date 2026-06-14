@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { getHero, getLatestProductDate } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import { siteJsonLd } from "@/lib/structured-data";
+import { jsonLdHtml, siteJsonLd } from "@/lib/structured-data";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Disabled } from "@/components/ui/disabled";
 import { EmptyHero } from "@/components/ui/empty-hero";
@@ -70,7 +70,7 @@ export default async function Page() {
     <FlexibleLayout showAnnounce={true}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }}
       />
       {/* <PageBackground imageUrl={heroImageUrl} /> */}
       <MainAds main={hero?.entities?.[0]?.main} />

@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import { catalogJsonLd } from "@/lib/structured-data";
+import { catalogJsonLd, jsonLdHtml } from "@/lib/structured-data";
 
 import { CatalogContent } from "../_components/catalog-content";
 import { CatalogSkeleton } from "../_components/catalog-skeleton";
@@ -12,7 +12,13 @@ import { CatalogSkeleton } from "../_components/catalog-skeleton";
 function resolveCatalogCopy(firstParam?: string) {
   const p = firstParam?.toLowerCase();
   const title =
-    p === "men" ? "men" : p === "women" ? "women" : p === "objects" ? "objects" : "catalog";
+    p === "men"
+      ? "men"
+      : p === "women"
+        ? "women"
+        : p === "objects"
+          ? "objects"
+          : "catalog";
   const descriptionKey =
     p === "men"
       ? "men description"
@@ -90,7 +96,7 @@ export default async function CatalogPage(props: CatalogPageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }}
       />
       <Suspense fallback={<CatalogSkeleton />}>
         <CatalogContent {...props} />

@@ -1,3 +1,13 @@
+/** Only http(s) URLs may be rendered into an anchor href. */
+function isSafeHttpUrl(value: string): boolean {
+  try {
+    const { protocol } = new URL(value);
+    return protocol === "http:" || protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Builds tracking URL from carrier's trackingUrl template and tracking code.
  * Supports placeholders: {tracking_code}, {tracking_number} (case insensitive), %s (printf-style).
@@ -23,14 +33,19 @@ export function buildTrackingUrl(
       .replace(/\{tracking_number\}/gi, code)
       .replace(/%s/g, encodeURIComponent(code));
 
-    if (withPlaceholder !== template) {
-      return withPlaceholder;
-    }
+    const candidate =
+      withPlaceholder !== template
+        ? withPlaceholder
+        : // No placeholder: append tracking code (base URL typically ends with = or ?)
+          `${template}${template.endsWith("=") || template.endsWith("?") ? "" : "/"}${encodeURIComponent(code)}`;
 
-    // No placeholder: append tracking code (base URL typically ends with = or ?)
-    return `${template}${template.endsWith("=") || template.endsWith("?") ? "" : "/"}${encodeURIComponent(code)}`;
+    // Carrier templates are admin/backend config — never trust them to be safe.
+    // A `javascript:`/`data:` template must not reach an href; fall back instead.
+    if (isSafeHttpUrl(candidate)) {
+      return candidate;
+    }
   }
 
-  // Fallback: universal tracking service when carrier has no trackingUrl configured
+  // Fallback: universal tracking service when carrier has no (usable) trackingUrl
   return `https://parcelsapp.com/en/tracking/${encodeURIComponent(code)}`;
 }
