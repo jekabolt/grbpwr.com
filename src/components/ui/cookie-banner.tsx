@@ -96,6 +96,7 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
           isVisible={isVisible}
           preferences={preferences}
           handleSaveCookies={handleSaveCookies}
+          handleSavePreferences={handleSavePreferences}
           handlePreferenceChange={handlePreferenceChange}
         />
       </div>

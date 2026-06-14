@@ -6,7 +6,6 @@ import { usePathname, useRouter } from "next/navigation";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
-import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
@@ -24,7 +23,6 @@ export function MobileNavCart({
 }) {
   const router = useRouter();
   const { products, isOpen, openCart, closeCart } = useCart((state) => state);
-  const { handleBeginCheckoutEvent } = useCheckoutAnalytics();
 
   const t = useTranslations("navigation");
   const tCart = useTranslations("cart");
@@ -104,10 +102,7 @@ export function MobileNavCart({
                         <Link
                           href="/checkout"
                           prefetch
-                          onClick={() => {
-                            handleBeginCheckoutEvent();
-                            closeCart();
-                          }}
+                          onClick={() => closeCart()}
                         >
                           {tCart("proceed to checkout")}
                         </Link>

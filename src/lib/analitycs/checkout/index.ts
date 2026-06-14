@@ -29,7 +29,10 @@ export function mapItemsToAnalyticsItems(
     item_variant: sizeName,
     discount: (originalPrice * salePercentage) / 100,
     price: originalPrice,
-    quantity: quantity || 1,
+    // Prefer the line item's real quantity so the item-level totals reconcile
+    // with the event `value` (which already multiplies by quantity). The passed
+    // `quantity` stays as a fallback for callers without an order-item context.
+    quantity: item.orderItem?.quantity || quantity || 1,
   };
 }
 
