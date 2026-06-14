@@ -177,7 +177,8 @@
     "order limit exceeded": "bestelllimit überschritten",
     "select your size to continue": "wählen sie ihre größe, um fortzufahren",
     "one size": "one size",
-    "quantity left": "{count} übrig"
+    "quantity left": "{count} übrig",
+    "recommended": "recommended"
   },
   "checkout": {
     "contact": "kontakt",

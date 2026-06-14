@@ -1,16 +1,20 @@
 import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
+import {
+  common_FilterConditions,
+  common_Product,
+} from "@/api/proto-http/frontend";
 import { LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
 import { productJsonLd, productOfferForLocale } from "@/lib/structured-data";
 
-import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileProductInfo } from "./_components/mobile-product-info";
 import { ProductImagesCarousel } from "./_components/product-images-carousel";
 import { ProductInfo } from "./_components/product-info";
 import { ProductPageLayout } from "./_components/product-page-layout";
+import { SuggestList } from "./_components/suggest-list";
 
 interface ProductPageProps {
   params: Promise<{
@@ -114,6 +118,62 @@ export default async function ProductPage({ params }: ProductPageProps) {
     product?.product?.sku ||
     "";
 
+  // "You may also like": same sub-category, then top-category, then any recent
+  // products — the catalog is small, so cascade the fallback so the section is
+  // never empty. Derived from the existing products API; no backend changes.
+  const insert = product.product?.productDisplay?.productBody?.productBodyInsert;
+  const currentId = product.product?.id;
+  // Empty arrays (not undefined) for the category filters — that's how the
+  // working catalog query represents "no filter".
+  const baseFilters: common_FilterConditions = {
+    from: undefined,
+    to: undefined,
+    currency: "EUR",
+    onSale: undefined,
+    gender: undefined,
+    color: undefined,
+    topCategoryIds: [],
+    subCategoryIds: [],
+    typeIds: undefined,
+    sizesIds: undefined,
+    preorder: undefined,
+    byTag: undefined,
+    collections: undefined,
+    seasons: undefined,
+  };
+
+  const fetchRelated = async (
+    overrides: Partial<common_FilterConditions>,
+  ): Promise<common_Product[]> => {
+    const { products } = await serviceClient.GetProductsPaged({
+      limit: 6,
+      offset: 0,
+      sortFactors: ["SORT_FACTOR_CREATED_AT"],
+      orderFactor: "ORDER_FACTOR_DESC",
+      filterConditions: { ...baseFilters, ...overrides },
+    });
+    return (products ?? []).filter((p) => p.id !== currentId).slice(0, 4);
+  };
+
+  let relatedProducts: common_Product[] = [];
+  try {
+    if (insert?.subCategoryId) {
+      relatedProducts = await fetchRelated({
+        subCategoryIds: [insert.subCategoryId],
+      });
+    }
+    if (relatedProducts.length === 0 && insert?.topCategoryId) {
+      relatedProducts = await fetchRelated({
+        topCategoryIds: [insert.topCategoryId],
+      });
+    }
+    if (relatedProducts.length === 0) {
+      relatedProducts = await fetchRelated({});
+    }
+  } catch {
+    // Best-effort; skip the section on failure.
+  }
+
   return (
     <ProductPageLayout gender={gender}>
       {jsonLd && (
@@ -143,8 +203,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           }
         />
         {product && <ProductInfo product={product} />}
-        {product?.product && <LastViewedProducts product={product.product} />}
       </div>
+      <SuggestList products={relatedProducts} locale={locale} />
     </ProductPageLayout>
   );
 }

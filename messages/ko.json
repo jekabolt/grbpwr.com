@@ -177,7 +177,8 @@
     "order limit exceeded": "주문 한도 초과",
     "select your size to continue": "계속하려면 사이즈를 선택하세요",
     "one size": "원 사이즈",
-    "quantity left": "{count}개 남음"
+    "quantity left": "{count}개 남음",
+    "recommended": "recommended"
   },
   "checkout": {
     "contact": "연락처",

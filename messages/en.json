@@ -176,7 +176,8 @@
     "order limit exceeded": "order limit exceeded",
     "select your size to continue": "select your size to continue",
     "one size": "one size",
-    "quantity left": "{count} left"
+    "quantity left": "{count} left",
+    "recommended": "recommended"
   },
   "checkout": {
     "contact": "contact",

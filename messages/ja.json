@@ -177,7 +177,8 @@
     "order limit exceeded": "注文限度を超えました",
     "select your size to continue": "続けるにはサイズを選択してください",
     "one size": "ワンサイズ",
-    "quantity left": "残り{count}"
+    "quantity left": "残り{count}",
+    "recommended": "recommended"
   },
   "checkout": {
     "contact": "連絡先",

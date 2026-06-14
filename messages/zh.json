@@ -177,7 +177,8 @@
     "order limit exceeded": "订单限制已超出",
     "select your size to continue": "请选择尺码以继续",
     "one size": "均码",
-    "quantity left": "剩余{count}件"
+    "quantity left": "剩余{count}件",
+    "recommended": "recommended"
   },
   "checkout": {
     "contact": "联系人",
