@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Arrow } from "@/components/ui/icons/arrow";
-import { LockIcon } from "@/components/ui/icons/lock";
 import { MinusIcon } from "@/components/ui/icons/minus";
 import { PlusIcon } from "@/components/ui/icons/plus";
 import { Text } from "@/components/ui/text";
@@ -129,16 +128,13 @@ export default function FieldsGroupContainer({
               </Text>
             </div>
             {gated ? (
-              <span className="flex shrink-0 items-center gap-x-1.5 text-textColor lg:ml-4">
-                <LockIcon className="h-3 w-3 shrink-0" aria-hidden="true" />
-                <Text
-                  variant="uppercase"
-                  component="span"
-                  className="text-xs leading-none"
-                >
-                  {disabledHint}
-                </Text>
-              </span>
+              <Text
+                variant="uppercase"
+                component="span"
+                className="shrink-0 text-xs text-textInactiveColor lg:ml-4"
+              >
+                {disabledHint}
+              </Text>
             ) : (
               preview && <div className="shrink-0">{preview}</div>
             )}
