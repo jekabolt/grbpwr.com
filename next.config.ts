@@ -44,10 +44,10 @@ const nextConfig: NextConfig = {
       backendOrigin = "";
     }
 
-    // Content-Security-Policy — shipped as **Report-Only** first: it enforces
-    // nothing but reports violations (to /api/csp-report and the console), so we
-    // can confirm every third-party origin (Stripe, Google Maps, GTM/GA) is
-    // covered before flipping the header name to `Content-Security-Policy`.
+    // Content-Security-Policy — ENFORCED. Rolled out Report-Only first to
+    // confirm every third-party origin (Stripe, Google Maps, GTM/GA) was
+    // covered with no violations; now switched to the enforcing header.
+    // Violations are still reported to /api/csp-report.
     //
     // 'unsafe-inline' is intentionally kept for now: GTM/GA inject inline
     // scripts and there's an inline theme bootstrap in layout.tsx; a per-request
@@ -104,9 +104,9 @@ const nextConfig: NextConfig = {
         key: "Strict-Transport-Security",
         value: "max-age=63072000; includeSubDomains",
       },
-      // Reporting target for the Report-Only CSP above (modern Reporting API).
+      // Reporting target for the CSP above (modern Reporting API).
       { key: "Reporting-Endpoints", value: 'csp-endpoint="/api/csp-report"' },
-      { key: "Content-Security-Policy-Report-Only", value: csp },
+      { key: "Content-Security-Policy", value: csp },
     ];
     const headers: {
       source: string;
