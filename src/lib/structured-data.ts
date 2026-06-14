@@ -37,6 +37,19 @@ export function currencyForLocale(locale: string): string {
   return CURRENCY_BY_LOCALE[locale] ?? "GBP";
 }
 
+// Serialize a JSON-LD object for inline `<script>` embedding. JSON.stringify
+// does NOT escape `<`, `>`, `&`, so a backend- or URL-supplied value containing
+// `</script>` (e.g. a product name or a /catalog/<segment> path param) would
+// break out of the script element and execute — XSS. Escaping the HTML-
+// significant characters neutralizes that (`<` alone is sufficient to prevent
+// the `</script>` breakout; `>` and `&` are escaped for good measure).
+export function jsonLdHtml(data: Record<string, unknown>): string {
+  return JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
+}
+
 /**
  * The single offer (currency + price value) to advertise for a locale.
  * Products carry one base price value; the storefront reuses that value and only
@@ -174,7 +187,12 @@ export function productJsonLd(
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "GRBPWR", item: homeUrl },
-      { "@type": "ListItem", position: 2, name: "Catalog", item: `${homeUrl}/catalog` },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Catalog",
+        item: `${homeUrl}/catalog`,
+      },
       { "@type": "ListItem", position: 3, name, ...(url ? { item: url } : {}) },
     ],
   };

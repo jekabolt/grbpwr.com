@@ -4,7 +4,11 @@ import { LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
-import { productJsonLd, productOfferForLocale } from "@/lib/structured-data";
+import {
+  jsonLdHtml,
+  productJsonLd,
+  productOfferForLocale,
+} from "@/lib/structured-data";
 
 import { LastViewedProducts } from "./_components/last-viewed-products";
 import { MobileProductInfo } from "./_components/mobile-product-info";
@@ -119,7 +123,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {jsonLd && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }}
         />
       )}
       <meta property="og:type" content="product" />

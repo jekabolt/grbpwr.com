@@ -9,6 +9,8 @@ import { useFormContext } from "react-hook-form";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import InputField from "@/components/ui/form/fields/input-field";
 
+import { MapsAutocompleteBoundary } from "./maps-autocomplete-boundary";
+
 type AddressComponents = {
   streetNumber: string;
   route: string;
@@ -139,18 +141,35 @@ export default function AddressAutocomplete({
     }
   }, [effectiveCountryCode]);
 
-  const { isLoaded } = useLoadScript({
+  const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
     libraries: ["places"],
     language: "en",
   });
 
-  if (!isLoaded) {
+  const addressFieldName = prefix ? `${prefix}.address` : "address";
+
+  // Plain input used as the fallback whenever Maps is unavailable (blocked,
+  // offline, bad/referrer-restricted key) or its Autocomplete throws — the
+  // customer types the address manually and checkout still works.
+  const plainField = (
+    <InputField
+      loading={loading}
+      name={addressFieldName}
+      label={t("street and house number:")}
+      placeholder=" "
+      disabled={disabled}
+      keyboardRestriction={keyboardRestrictions.addressField}
+    />
+  );
+
+  // Script still loading (and not errored): disabled skeleton input.
+  if (!isLoaded && !loadError) {
     return (
       <div className="relative">
         <InputField
           loading={true}
-          name={prefix ? `${prefix}.address` : "address"}
+          name={addressFieldName}
           label={t("street and house number:")}
           placeholder=" "
           disabled={true}
@@ -159,54 +178,53 @@ export default function AddressAutocomplete({
     );
   }
 
+  // Script failed to load outright: skip Autocomplete, allow manual entry.
+  if (loadError) {
+    return <div className="relative">{plainField}</div>;
+  }
+
   return (
     <div className="relative">
-      <Autocomplete
-        options={{
-          componentRestrictions: effectiveCountryCode
-            ? { country: effectiveCountryCode as any }
-            : undefined,
-          types: ["address"],
-        }}
-        onLoad={(autocomplete) => {
-          autocompleteRef.current = autocomplete;
-          autocomplete.setFields([
-            "address_components",
-            "formatted_address",
-            "name",
-          ]);
-          if (effectiveCountryCode) {
-            autocomplete.setComponentRestrictions({
-              country: effectiveCountryCode as any,
-            });
-          }
-        }}
-        onPlaceChanged={() => {
-          const autocomplete = autocompleteRef.current;
-          if (!autocomplete) return;
-          const place = autocomplete.getPlace();
-          if (!place) return;
-          const addressFieldName = prefix ? `${prefix}.address` : "address";
-          const components = extractAddressComponents(
-            place.address_components ?? [],
-          );
-          updateAddressFields(
-            components,
-            prefix,
-            getAddressFallback(place, getValues(addressFieldName)),
-            setValue,
-          );
-        }}
-      >
-        <InputField
-          loading={loading}
-          name={prefix ? `${prefix}.address` : "address"}
-          label={t("street and house number:")}
-          placeholder=" "
-          disabled={disabled}
-          keyboardRestriction={keyboardRestrictions.addressField}
-        />
-      </Autocomplete>
+      <MapsAutocompleteBoundary fallback={plainField}>
+        <Autocomplete
+          options={{
+            componentRestrictions: effectiveCountryCode
+              ? { country: effectiveCountryCode as any }
+              : undefined,
+            types: ["address"],
+          }}
+          onLoad={(autocomplete) => {
+            autocompleteRef.current = autocomplete;
+            autocomplete.setFields([
+              "address_components",
+              "formatted_address",
+              "name",
+            ]);
+            if (effectiveCountryCode) {
+              autocomplete.setComponentRestrictions({
+                country: effectiveCountryCode as any,
+              });
+            }
+          }}
+          onPlaceChanged={() => {
+            const autocomplete = autocompleteRef.current;
+            if (!autocomplete) return;
+            const place = autocomplete.getPlace();
+            if (!place) return;
+            const components = extractAddressComponents(
+              place.address_components ?? [],
+            );
+            updateAddressFields(
+              components,
+              prefix,
+              getAddressFallback(place, getValues(addressFieldName)),
+              setValue,
+            );
+          }}
+        >
+          {plainField}
+        </Autocomplete>
+      </MapsAutocompleteBoundary>
     </div>
   );
 }

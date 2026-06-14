@@ -8,6 +8,7 @@ import { useFormContext } from "react-hook-form";
 
 import InputField from "@/components/ui/form/fields/input-field";
 
+import { MapsAutocompleteBoundary } from "./maps-autocomplete-boundary";
 import { getFieldName } from "./utils";
 
 type Props = {
@@ -37,13 +38,27 @@ export default function CityAutocomplete({
     }
   }, [cc]);
 
-  const { isLoaded } = useLoadScript({
+  const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
     libraries: ["places"],
     language: "en",
   });
 
-  if (!isLoaded) {
+  // Plain input used as the fallback whenever Maps is unavailable (blocked,
+  // offline, bad/referrer-restricted key) or its Autocomplete throws.
+  const plainField = (
+    <InputField
+      loading={loading}
+      variant="secondary"
+      name={cityFieldName}
+      label={t("city:")}
+      placeholder=""
+      disabled={disabled}
+      keyboardRestriction={keyboardRestrictions.nameFields}
+    />
+  );
+
+  if (!isLoaded && !loadError) {
     return (
       <InputField
         loading={true}
@@ -69,43 +84,42 @@ export default function CityAutocomplete({
     );
   }
 
+  // Maps failed to load: manual entry.
+  if (loadError) {
+    return plainField;
+  }
+
   return (
-    <Autocomplete
-      key={cc}
-      options={{
-        types: ["(cities)"],
-        componentRestrictions: { country: cc as any },
-      }}
-      onLoad={(ac) => {
-        autocompleteRef.current = ac;
-        ac.setFields(["address_components", "name", "formatted_address"]);
-        ac.setComponentRestrictions({ country: cc as any });
-        queueMicrotask(() => {
-          const el = document.getElementById(cityFieldName);
-          if (el instanceof HTMLInputElement) el.placeholder = "";
-        });
-      }}
-      onPlaceChanged={() => {
-        const ac = autocompleteRef.current;
-        if (!ac) return;
-        const place = ac.getPlace();
-        const name = place?.name?.trim();
-        if (!name) return;
-        setValue(cityFieldName, name, {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
-      }}
-    >
-      <InputField
-        loading={loading}
-        variant="secondary"
-        name={cityFieldName}
-        label={t("city:")}
-        placeholder=""
-        disabled={disabled}
-        keyboardRestriction={keyboardRestrictions.nameFields}
-      />
-    </Autocomplete>
+    <MapsAutocompleteBoundary fallback={plainField}>
+      <Autocomplete
+        key={cc}
+        options={{
+          types: ["(cities)"],
+          componentRestrictions: { country: cc as any },
+        }}
+        onLoad={(ac) => {
+          autocompleteRef.current = ac;
+          ac.setFields(["address_components", "name", "formatted_address"]);
+          ac.setComponentRestrictions({ country: cc as any });
+          queueMicrotask(() => {
+            const el = document.getElementById(cityFieldName);
+            if (el instanceof HTMLInputElement) el.placeholder = "";
+          });
+        }}
+        onPlaceChanged={() => {
+          const ac = autocompleteRef.current;
+          if (!ac) return;
+          const place = ac.getPlace();
+          const name = place?.name?.trim();
+          if (!name) return;
+          setValue(cityFieldName, name, {
+            shouldValidate: true,
+            shouldDirty: true,
+          });
+        }}
+      >
+        {plainField}
+      </Autocomplete>
+    </MapsAutocompleteBoundary>
   );
 }
