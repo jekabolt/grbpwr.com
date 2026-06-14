@@ -83,3 +83,9 @@ Thumbs.db
 
 # impeccable /verify browser profiles (local only)
 .verify-*/
+
+# impeccable design tooling & local artifacts (not committed)
+/.agents/
+/.impeccable/
+/memory/
+/skills-lock.json
