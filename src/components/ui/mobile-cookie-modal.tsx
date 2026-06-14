@@ -17,6 +17,7 @@ interface Props {
     experience: boolean;
   };
   handleSaveCookies: () => void;
+  handleSavePreferences: () => void;
   handlePreferenceChange: (key: string, value: boolean) => void;
 }
 
@@ -24,6 +25,7 @@ export function MobileCookieModal({
   isVisible,
   preferences,
   handleSaveCookies,
+  handleSavePreferences,
   handlePreferenceChange,
 }: Props) {
   const t = useTranslations("cookies");
@@ -92,7 +94,7 @@ export function MobileCookieModal({
                   <DialogPrimitives.Close asChild>
                     <Button
                       variant="simpleReverse"
-                      onClick={handleSaveCookies}
+                      onClick={handleSavePreferences}
                       size="lg"
                       className="w-full uppercase"
                     >

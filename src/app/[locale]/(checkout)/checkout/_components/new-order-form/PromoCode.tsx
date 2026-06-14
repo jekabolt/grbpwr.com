@@ -5,7 +5,10 @@ import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend
 import { useTranslations } from "next-intl";
 import { useFormContext, UseFormReturn } from "react-hook-form";
 
-import { sendCouponAppliedEvent } from "@/lib/analitycs/promo";
+import {
+  sendCouponAppliedEvent,
+  sendCouponRemovedEvent,
+} from "@/lib/analitycs/promo";
 import { getErrorMessage } from "@/lib/error-message";
 import { Button } from "@/components/ui/button";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -46,6 +49,7 @@ export default function PromoCode({
     setPromoLoading(true);
 
     if (isApplied) {
+      sendCouponRemovedEvent(promoCode, currency);
       setIsApplied(false);
       setValue("promoCode", "");
       setPromoLoading(false);

@@ -2,6 +2,8 @@ import { RefObject, useEffect, useRef } from "react";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 
+import { isStripeCardPaymentMethod } from "../utils";
+
 interface UseCheckoutFormAnalyticsProps {
   formRef: RefObject<HTMLFormElement | null>;
   products: unknown[];
@@ -39,6 +41,10 @@ export function useCheckoutFormAnalytics({
     }
   }, [products, handleBeginCheckoutEvent]);
 
+  // add_payment_info must fire exactly once, when payment info is genuinely
+  // provided. For card (the pre-filled default method), the real signal is the
+  // Stripe element reporting `complete` — not the method being pre-selected on
+  // mount, which would fire prematurely and double-count alongside this event.
   useEffect(() => {
     if (isPaymentElementComplete && !paymentInfoSentRef.current) {
       paymentInfoSentRef.current = true;
@@ -46,8 +52,16 @@ export function useCheckoutFormAnalytics({
     }
   }, [isPaymentElementComplete, handlePaymentElementComplete]);
 
+  // Non-card methods fire on selection; card variants are handled by the
+  // element-complete effect above. The shared `paymentInfoSentRef` guarantees a
+  // single add_payment_info regardless of which path wins.
   useEffect(() => {
-    if (paymentMethod && paymentMethod !== "PAYMENT_METHOD_NAME_ENUM_CARD_TEST") {
+    if (
+      paymentMethod &&
+      !isStripeCardPaymentMethod(paymentMethod) &&
+      !paymentInfoSentRef.current
+    ) {
+      paymentInfoSentRef.current = true;
       handlePaymentMethodChange(paymentMethod);
     }
   }, [paymentMethod, handlePaymentMethodChange]);

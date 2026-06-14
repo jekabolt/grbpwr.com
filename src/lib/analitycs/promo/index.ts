@@ -11,3 +11,13 @@ export const sendCouponAppliedEvent = (
     currency: currency.toUpperCase(),
   });
 };
+
+export const sendCouponRemovedEvent = (
+  couponCode: string,
+  currency: string = "EUR"
+): void => {
+  pushCustomEvent("coupon_removed", {
+    coupon_code: couponCode,
+    currency: currency.toUpperCase(),
+  });
+};

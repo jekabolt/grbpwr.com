@@ -12,16 +12,8 @@ export const SHIPPING_GROUP_FIELDS = [
   "address",
   "postalCode",
   "shipmentCarrierId",
-  "phone"
+  "phone",
 ];
-
-// 4th
-export const PAYMENT_GROUP_FIELDS = [
-  "paymentMethod",
-  "billingAddressIsSameAsAddress",
-  "billingAddress",
-];
-
 
 export type OpenGroups = "contact" | "shipping" | "payment";
 

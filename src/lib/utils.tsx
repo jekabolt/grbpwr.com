@@ -3,7 +3,6 @@ import type {
   common_Size,
 } from "@/api/proto-http/frontend";
 import {
-  COMPOSITION_MAP,
   COUNTRIES_BY_REGION,
   OrderFactorOption,
   RING_SIZE_CONVERSION,
@@ -13,8 +12,6 @@ import {
 import { routing } from "@/i18n/routing";
 import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-
-import { CATEGORY_TITLE_MAP } from "./categories-map";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -40,24 +37,6 @@ export const getButtonText = (
   const salePrefix = saleFactor ? `${t("sort.sale")}: ` : "";
   return `${saleFactor ? salePrefix : label}${t(orderFactor.name)}`;
 };
-
-export function getFullComposition(composition: string | undefined): string[] {
-  if (!composition) return [];
-
-  const compositionObj = composition.split(",").reduce(
-    (obj, item) => {
-      const [key, value] = item.trim().split(":");
-      obj[key] = value;
-      return obj;
-    },
-    {} as Record<string, string>,
-  );
-
-  return Object.entries(compositionObj).map(([key, value]) => {
-    const materialName = COMPOSITION_MAP[key] || key;
-    return `${materialName}: ${value}%`;
-  });
-}
 
 export function calculatePriceWithSale(
   price: string | undefined,
@@ -177,20 +156,6 @@ export function createContentPagesLinks(): MenuItem[] {
 //     rightCategories: rightSideCategoryLinks,
 //   };
 // }
-
-export function getHeroNavLink(heroNav?: {
-  featuredTag?: string;
-  featuredArchiveId?: string;
-}) {
-  if (!heroNav) return "";
-  return heroNav.featuredTag
-    ? `/catalog?tag=${heroNav.featuredTag}`
-    : `/timeline?id=${heroNav.featuredArchiveId}`;
-}
-
-export function getCategoryDisplayName(title: string) {
-  return CATEGORY_TITLE_MAP[title] || title;
-}
 
 const VIDEO_EXTENSIONS = new Set([
   "mp4",

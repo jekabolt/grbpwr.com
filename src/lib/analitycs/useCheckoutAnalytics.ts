@@ -8,11 +8,9 @@ import { getSubCategoryName, getTopCategoryName } from "../categories-map";
 import { useCart, CartStoreContext } from "../stores/cart/store-provider";
 import { useTranslationsStore } from "../stores/translations/store-provider";
 import {
-    PurchaseOptions,
     sendAddPaymentInfoEvent,
     sendAddShippingInfoEvent,
     sendBeginCheckoutEvent,
-    sendPurchaseEvent,
 } from "./checkout";
 import {
     sendFormErrorEvent,
@@ -141,19 +139,6 @@ export function useCheckoutAnalytics() {
         );
     }
 
-    function handlePurchaseEvent(uuid: string, options?: PurchaseOptions) {
-        const freshItems = getItems();
-        sendPurchaseEvent(
-            freshItems as common_OrderItem[],
-            uuid,
-            topCategoryName || "",
-            subCategoryName || "",
-            currency,
-            sizeMap,
-            options,
-        );
-    }
-
     const pagePath = () =>
         typeof window !== "undefined" ? window.location.pathname : "";
 
@@ -203,7 +188,6 @@ export function useCheckoutAnalytics() {
         handleShippingCarrierChange,
         handlePaymentMethodChange,
         handlePaymentElementComplete,
-        handlePurchaseEvent,
         handleFormStart,
         handleFormSubmit,
         handleFormError,

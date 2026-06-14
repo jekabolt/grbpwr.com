@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
@@ -15,8 +14,6 @@ import { Text } from "@/components/ui/text";
 export default function CartPopup({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { products, isOpen, closeCart } = useCart((state) => state);
-
-  const { handleBeginCheckoutEvent } = useCheckoutAnalytics();
 
   const t = useTranslations("cart");
 
@@ -75,11 +72,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
                       size="lg"
                       className="block w-full uppercase"
                     >
-                      <Link
-                        href="/checkout"
-                        prefetch
-                        onClick={() => handleBeginCheckoutEvent()}
-                      >
+                      <Link href="/checkout" prefetch>
                         {t("proceed to checkout")}
                       </Link>
                     </Button>

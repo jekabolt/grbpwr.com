@@ -45,10 +45,6 @@ export function persistGuestCheckout(value: boolean): void {
   writeGuestCheckoutCookie(value);
 }
 
-export function clearGuestCheckoutPersistence(): void {
-  persistGuestCheckout(false);
-}
-
 export function resolveGuestCheckoutState(
   initialGuestCheckout: boolean,
 ): boolean {
