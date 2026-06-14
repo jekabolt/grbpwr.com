@@ -36,15 +36,7 @@ export const CATALOG_LIMIT = 16;
 
 export const ARCHIVE_LIMIT = 48;
 
-export const CURRENCY_MAP = {
-  eth: "eth",
-};
-export const MAX_LIMIT = 9999999;
-
-export const GRBPWR_CART = "grbpwr-cart";
-
 export const ORDER_STATUS_DELIVERED_ID = 5;
-
 
 export const USER_TIER: Partial<Record<AccountTierEnum, string>> = {
   ACCOUNT_TIER_ENUM_PLUS: "+",
@@ -53,13 +45,14 @@ export const USER_TIER: Partial<Record<AccountTierEnum, string>> = {
 } as const;
 
 /** Subfolder under `public/content/tier/` for tier privileges markdown (`{slug}/{locale}.md`). */
-export const USER_TIER_CONTENT_SLUG: Partial<Record<AccountTierEnum, string>> = {
-  ACCOUNT_TIER_ENUM_UNKNOWN: "default",
-  ACCOUNT_TIER_ENUM_MEMBER: "default",
-  ACCOUNT_TIER_ENUM_PLUS: "plus",
-  ACCOUNT_TIER_ENUM_PLUS_PLUS: "plus-plus",
-  ACCOUNT_TIER_ENUM_HACKER: "hacker",
-} as const;
+export const USER_TIER_CONTENT_SLUG: Partial<Record<AccountTierEnum, string>> =
+  {
+    ACCOUNT_TIER_ENUM_UNKNOWN: "default",
+    ACCOUNT_TIER_ENUM_MEMBER: "default",
+    ACCOUNT_TIER_ENUM_PLUS: "plus",
+    ACCOUNT_TIER_ENUM_PLUS_PLUS: "plus-plus",
+    ACCOUNT_TIER_ENUM_HACKER: "hacker",
+  } as const;
 export const GENDER_MAP: Record<string, common_GenderEnum> = {
   men: "GENDER_ENUM_MALE",
   women: "GENDER_ENUM_FEMALE",
@@ -97,7 +90,7 @@ export const EMAIL_PREFERENCES: Record<string, ShoppingPreferenceEnum> = {
   all: "SHOPPING_PREFERENCE_ENUM_ALL",
   men: "SHOPPING_PREFERENCE_ENUM_MALE",
   women: "SHOPPING_PREFERENCE_ENUM_FEMALE",
-} as const
+} as const;
 
 export const DELIVERY_SPEED_VALUES = [
   "DELIVERY_SPEED_ENUM_MUCH_SLOWER_THAN_EXPECTED",
@@ -539,9 +532,17 @@ export const COUNTRIES_BY_REGION = {
     country("faroe islands", "fo", "298", { vatRate: 0 }),
     country("finland", "fi", "358", { vatRate: 24 }),
     country("france", "fr", "33", { vatRate: 20 }),
-    country("france", "fr", "33", { lng: "fr", displayLng: "français", vatRate: 20 }),
+    country("france", "fr", "33", {
+      lng: "fr",
+      displayLng: "français",
+      vatRate: 20,
+    }),
     country("germany", "de", "49", { vatRate: 19 }),
-    country("deutschland", "de", "49", { lng: "de", displayLng: "deutsch", vatRate: 19 }),
+    country("deutschland", "de", "49", {
+      lng: "de",
+      displayLng: "deutsch",
+      vatRate: 19,
+    }),
     country("gibraltar", "gi", "350", { vatRate: 0 }),
     country("greece", "gr", "30", { vatRate: 24 }),
     country("greenland", "gl", "299", { vatRate: 0 }),
@@ -549,7 +550,11 @@ export const COUNTRIES_BY_REGION = {
     country("hungary", "hu", "36", { vatRate: 27 }),
     country("iceland", "is", "354", { vatRate: 24 }),
     country("italy", "it", "39", { vatRate: 22 }),
-    country("italy", "it", "39", { lng: "it", displayLng: "italiano", vatRate: 22 }),
+    country("italy", "it", "39", {
+      lng: "it",
+      displayLng: "italiano",
+      vatRate: 22,
+    }),
     country("jersey", "je", "44", { vatRate: 0 }),
     country("latvia", "lv", "371", { vatRate: 21 }),
     country("liechtenstein", "li", "423", { vatRate: 7.7 }),
@@ -568,7 +573,11 @@ export const COUNTRIES_BY_REGION = {
     country("sweeden", "se", "46", { vatRate: 25 }),
     country("switzerland", "ch", "41", { vatRate: 7.7 }),
     country("turkey", "tr", "90", { vatRate: 20 }),
-    country("united kingdom", "gb", "44", { currency: "£", currencyKey: "GBP", vatRate: 20 }),
+    country("united kingdom", "gb", "44", {
+      currency: "£",
+      currencyKey: "GBP",
+      vatRate: 20,
+    }),
   ],
   "MIDDLE EAST": [
     country("bahrain", "bh", "973"),
@@ -653,7 +662,6 @@ export const PLURIAL_SINGLE_CATEGORY_MAP: Record<string, string> = {
   backpacks: "backpack",
 };
 
-
 export const TOP_CATEGORIES = [
   { key: "outerwear", label: "outerwear" },
   { key: "tops", label: "tops" },
@@ -674,7 +682,6 @@ export const FIT_OPTIONS = [
   "cropped",
   "tailored",
 ] as const;
-
 
 export const SHOPPING_PREFERENCE_ENUM = [
   EMAIL_PREFERENCES.all,

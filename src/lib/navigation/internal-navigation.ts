@@ -56,10 +56,6 @@ export function trackNavigationChange(currentPath: string): void {
 }
 
 /** True when there's an in-app page to return to (safe to call router.back()). */
-export function canGoBackInApp(): boolean {
-  return getStack().length > 1;
-}
-
 /** The in-app page we'd return to, or null if we're at the session entry. */
 export function getPreviousPath(): string | null {
   const stack = getStack();
