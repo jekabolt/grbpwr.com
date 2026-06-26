@@ -177,7 +177,10 @@
     "order limit exceeded": "limite ordine superato",
     "select your size to continue": "seleziona la tua taglia per continuare",
     "one size": "taglia unica",
-    "quantity left": "{count} rimasti"
+    "quantity left": "{count} rimasti",
+    "image alt": "{name} — immagine {index} di {total}",
+    "image alt unnamed": "immagine {index} di {total}",
+    "out of stock": "esaurito"
   },
   "checkout": {
     "contact": "contatto",
@@ -840,7 +843,11 @@
   "accessibility": {
     "mobile menu": "menu mobile grbpwr",
     "notify me dialog": "dialogo avvisami grbpwr",
-    "reason label": "motivo"
+    "reason label": "motivo",
+    "product image viewer": "visualizzatore immagine prodotto",
+    "size selector": "selettore taglia",
+    "previous image": "immagine precedente",
+    "next image": "immagine successiva"
   },
   "empty-hero": {
     "shop now": "Acquista ora"
