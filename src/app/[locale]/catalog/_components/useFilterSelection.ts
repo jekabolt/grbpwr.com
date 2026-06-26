@@ -27,19 +27,23 @@ export function useFilterSelection({
             .filter(Boolean);
     };
 
-    const initItems = findInitialItems();
-    const initValues = filterKey === "size"
-        ? initItems.map((item: any) => item?.id?.toString())
-        : initItems.map((item: any) => item?.name);
+    const computeSelectedValues = () => {
+        const initItems = findInitialItems();
+        return filterKey === "size"
+            ? initItems.map((item: any) => item?.id?.toString())
+            : initItems.map((item: any) => item?.name);
+    };
 
-    const [selectedValues, setSelectedValues] = useState<string[]>(initValues);
+    const [selectedValues, setSelectedValues] = useState<string[]>(computeSelectedValues);
 
-    // Sync with URL changes
+    // Re-sync with the URL on every param change (back/forward, cleared filters),
+    // and once the dictionary resolves on a cold deep-link load. Keyed on
+    // `items.length` (a stable primitive) to avoid a re-render loop from `items`'
+    // changing array reference.
     useEffect(() => {
-        if (!defaultValue) {
-            setSelectedValues([]);
-        }
-    }, [defaultValue]);
+        setSelectedValues(computeSelectedValues());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [defaultValue, items.length]);
 
     const handleToggle = async (value: string) => {
         let newSelected: string[];
