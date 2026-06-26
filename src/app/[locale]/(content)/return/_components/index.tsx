@@ -36,6 +36,7 @@ export function RefundForm() {
 
   const [open, setOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [pending, setPending] = useState(false);
 
   const signedInEmail = useAccountOnboardingStore((s) =>
     s.isSignedIn ? s.account?.email?.trim() || undefined : undefined,
@@ -86,6 +87,7 @@ export function RefundForm() {
   }
 
   async function handleSubmit(data: RefundSchema) {
+    setPending(true);
     try {
       const response = await serviceClient.CancelOrderByUser({
         orderUuid: data.orderUuid,
@@ -97,6 +99,7 @@ export function RefundForm() {
       if (errorResponse.error) {
         setToastMessage(errorResponse.error);
         setOpen(true);
+        setPending(false);
         return;
       }
 
@@ -111,15 +114,23 @@ export function RefundForm() {
         );
         form.reset(defaultData);
         setOpen(true);
+        // Keep `pending` true so the CTA stays busy until the redirect fires.
         setTimeout(() => {
           router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
         }, 2500);
+      } else {
+        // Unexpected response with neither `.error` nor `.order`: surface
+        // feedback instead of silently stranding the form, and re-enable retry.
+        setToastMessage(t("submission_error"));
+        setOpen(true);
+        setPending(false);
       }
     } catch (e) {
       console.error("Form submission failed:", e);
       const message = getErrorMessage(e, t("submission_error"));
       setToastMessage(message);
       setOpen(true);
+      setPending(false);
     }
   }
 
@@ -159,7 +170,8 @@ export function RefundForm() {
               type="submit"
               variant="main"
               size="lg"
-              disabled={form.formState.isSubmitting}
+              loading={pending || form.formState.isSubmitting}
+              disabled={pending || form.formState.isSubmitting}
               className={cn(
                 "absolute inset-x-2.5 bottom-6 z-30 flex min-h-[44px] items-center justify-center uppercase lg:static lg:ml-14",
                 {
