@@ -309,7 +309,9 @@
     "VGW": "非常温和的水洗"
   },
   "geo-suggest": {
-    "message": "我们认为您在{country}。更新您的位置？"
+    "message": "我们认为您在{country}。更新您的位置？",
+    "accept": "切换到{country}",
+    "dismiss": "留在{country}"
   },
   "update_location": {
     "message": "您当前在{currentCountry}购物。更改国家/地区时，购物车将被清空。您确定要继续吗？",
