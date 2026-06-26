@@ -82,8 +82,8 @@ export function MainAds({
       </div>
       <div className="block h-full lg:hidden">{children}</div>
       <Overlay cover="container" />
-      <div className="absolute inset-x-0 top-32 z-20 flex h-screen items-center lg:top-20">
-        <div className="flex w-full flex-col items-start gap-6 p-2 text-bgColor md:flex-row md:justify-between">
+      <div className="absolute inset-0 z-20 flex items-center">
+        <div className="flex w-full flex-col items-start gap-6 p-2 pt-12 text-bgColor md:flex-row md:justify-between lg:pt-16">
           <Text variant="uppercase">{currentTranslation?.tag}</Text>
           <Text variant="uppercase" component="h1">
             {currentTranslation?.headline}
