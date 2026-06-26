@@ -62,7 +62,10 @@ export function Galery({
   return (
     <div className="w-full">
       {viewMode === "horizontal" ? (
-        <HorizontalGrid archives={items} />
+        <HorizontalGrid
+          archives={items}
+          isFetchingNextPage={isFetchingNextPage}
+        />
       ) : (
         <VerticalCarousel archives={items} />
       )}

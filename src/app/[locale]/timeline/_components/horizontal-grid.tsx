@@ -13,8 +13,10 @@ export interface HoverState {
 
 export function HorizontalGrid({
   archives,
+  isFetchingNextPage,
 }: {
   archives: common_ArchiveList[];
+  isFetchingNextPage?: boolean;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
 
@@ -22,7 +24,11 @@ export function HorizontalGrid({
 
   return (
     <div className="blackTheme bg-bgColor text-textColor">
-      <ArchiveGrid items={archives} languageId={languageId} />
+      <ArchiveGrid
+        items={archives}
+        languageId={languageId}
+        isFetchingNextPage={isFetchingNextPage}
+      />
     </div>
   );
 }
