@@ -55,6 +55,7 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
   const [open, setOpenStatus] = useState(false);
   const [preferences, setPreferences] = useState(defaultCookiePreferences);
   const t = useTranslations("cookies");
+  const tAccessibility = useTranslations("accessibility");
 
   useEffect(() => {
     const savedConsent = localStorage.getItem("cookieConsent");
@@ -142,7 +143,12 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
               <div className="flex h-full flex-col gap-y-6">
                 <div className="flex items-center justify-between">
                   <Text variant="uppercase">{t("cookie preferences")}</Text>
-                  <Button onClick={() => setOpenStatus(false)}>[x]</Button>
+                  <Button
+                    aria-label={tAccessibility("close")}
+                    onClick={() => setOpenStatus(false)}
+                  >
+                    [x]
+                  </Button>
                 </div>
                 <div className="h-full overflow-y-scroll border-b">
                   <CookieContent

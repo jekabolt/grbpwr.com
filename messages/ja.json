@@ -838,6 +838,8 @@
     "email": "メール"
   },
   "accessibility": {
+    "close": "閉じる",
+    "cookie preferences": "grbpwrクッキーの設定",
     "mobile menu": "grbpwrモバイルメニュー",
     "notify me dialog": "grbpwr通知ダイアログ",
     "reason label": "理由"

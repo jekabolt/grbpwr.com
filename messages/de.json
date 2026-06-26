@@ -839,6 +839,8 @@
     "email": "e-mail"
   },
   "accessibility": {
+    "close": "schließen",
+    "cookie preferences": "grbpwr cookie-einstellungen",
     "mobile menu": "grbpwr mobiles menü",
     "notify me dialog": "grbpwr benachrichtige mich",
     "reason label": "grund"

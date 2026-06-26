@@ -838,6 +838,8 @@
     "email": "e-mail"
   },
   "accessibility": {
+    "close": "fermer",
+    "cookie preferences": "préférences des cookies grbpwr",
     "mobile menu": "menu mobile grbpwr",
     "notify me dialog": "dialogue me notifier grbpwr",
     "reason label": "raison"

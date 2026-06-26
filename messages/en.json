@@ -896,6 +896,8 @@
     "email": "email"
   },
   "accessibility": {
+    "close": "close",
+    "cookie preferences": "grbpwr cookie preferences",
     "mobile menu": "grbpwr mobile menu",
     "notify me dialog": "grbpwr notify me",
     "reason label": "reason"

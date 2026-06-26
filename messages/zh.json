@@ -838,6 +838,8 @@
     "email": "电子邮件"
   },
   "accessibility": {
+    "close": "关闭",
+    "cookie preferences": "grbpwr cookie设置",
     "mobile menu": "grbpwr移动菜单",
     "notify me dialog": "grbpwr通知对话框",
     "reason label": "原因"
