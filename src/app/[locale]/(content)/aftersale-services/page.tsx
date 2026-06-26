@@ -20,9 +20,13 @@ export default async function AftersaleServicesPage({
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
       <div
         id="aftersale-services-page"
-        className="min-dvh flex h-full w-full flex-col items-center justify-center gap-12 px-2.5 py-24 text-textColor lg:gap-16 lg:px-96"
+        className="flex h-full w-full flex-col items-center justify-center gap-12 px-2.5 py-24 text-textColor lg:gap-16 lg:px-96"
       >
-        <Text variant="uppercase" className="w-full text-center lg:text-left">
+        <Text
+          component="h1"
+          variant="uppercase"
+          className="w-full text-center lg:text-left"
+        >
           {t("aftersale services")}
         </Text>
         <div className="w-full">

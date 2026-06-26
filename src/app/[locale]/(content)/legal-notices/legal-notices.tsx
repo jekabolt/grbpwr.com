@@ -44,7 +44,9 @@ export function LegalNotices() {
     <div className="flex w-full flex-col space-y-10 lg:flex-row lg:space-y-0">
       <div className="flex w-full flex-col lg:w-1/2 lg:gap-y-0">
         <div className="space-y-10">
-          <Text className="uppercase">{t("legal notices")}</Text>
+          <Text component="h1" className="uppercase">
+            {t("legal notices")}
+          </Text>
           <div className="space-y-4">
             {Object.entries(legalSections).map(([key, section]) => (
               <Button
