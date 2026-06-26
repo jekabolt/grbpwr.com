@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
@@ -25,6 +26,7 @@ function ArchiveMediaGridItem({
   id: number;
   heading: string;
 }) {
+  const t = useTranslations("archive");
   const [isHovered, setIsHovered] = useState(false);
   const isMobile = useMediaQuery("(max-width: 1023px)");
   const media = resolveArchiveMedia(item.media);
@@ -39,7 +41,7 @@ function ArchiveMediaGridItem({
     >
       <ArchiveMediaThumbnail
         media={media}
-        alt={`${heading} image ${id + 1}`}
+        alt={t("imageAlt", { heading, index: id + 1 })}
         aspectRatio="3/4"
         blurhash={item.media?.blurhash}
         priority={isPriority}
@@ -56,6 +58,7 @@ export default function PageComponent({
 }: {
   archive?: common_ArchiveFull;
 }) {
+  const t = useTranslations("archive");
   const { languageId } = useTranslationsStore((state) => state);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -130,7 +133,7 @@ export default function PageComponent({
           <div key={item.id} className="relative h-full w-full lg:h-[80vh]">
             <ImageComponent
               src={item.media?.thumbnail?.mediaUrl || ""}
-              alt={currentTranslation?.heading || "Featured archive image"}
+              alt={currentTranslation?.heading || t("featuredImageAlt")}
               aspectRatio={calculateAspectRatio(
                 item.media?.thumbnail?.width,
                 item.media?.thumbnail?.height,

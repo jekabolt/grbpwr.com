@@ -904,5 +904,18 @@
       "SLIGHTLY_LARGE": "Etwas groß",
       "RUNS_LARGE": "Fällt groß aus"
     }
+  },
+  "archive": {
+    "imageAlt": "{heading} Bild {index}",
+    "featuredImageAlt": "Hervorgehobenes Archivbild",
+    "empty": "Noch keine Archive",
+    "videoLabel": "{heading}",
+    "videoUnsupported": "Ihr Browser unterstützt das Video-Tag nicht.",
+    "soundOn": "ton an",
+    "soundOff": "ton aus",
+    "muteAria": "stummschalten",
+    "unmuteAria": "stummschaltung aufheben",
+    "play": "abspielen",
+    "pause": "pause"
   }
 }
