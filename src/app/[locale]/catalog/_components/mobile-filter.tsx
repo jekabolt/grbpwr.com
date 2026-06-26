@@ -16,7 +16,7 @@ import { useTotalProducts } from "./useTotalProducts";
 export function MobileFilter() {
   const [open, setOpen] = useState(false);
   const t = useTranslations("catalog");
-  const tAccessibility = useTranslations("accessibility");
+  const tNav = useTranslations("navigation");
 
   const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
   const { defaultValue: sortValue } = useFilterQueryParams("sort");
@@ -68,15 +68,15 @@ export function MobileFilter() {
           content={
             <DialogPrimitives.Content className="flex h-full flex-col">
               <DialogPrimitives.Title className="sr-only">
-                {tAccessibility("mobile menu")}
+                {t("filter")}
               </DialogPrimitives.Title>
               <div className="flex h-full flex-col justify-between">
-                <DialogPrimitives.Close asChild>
-                  <div className="flex items-center justify-between">
-                    <Text variant="uppercase">{t("filter")}</Text>
-                    <Button>[x]</Button>
-                  </div>
-                </DialogPrimitives.Close>
+                <div className="flex items-center justify-between">
+                  <Text variant="uppercase">{t("filter")}</Text>
+                  <DialogPrimitives.Close asChild>
+                    <Button aria-label={tNav("close")}>[x]</Button>
+                  </DialogPrimitives.Close>
+                </div>
                 <div className="h-full space-y-10 overflow-y-scroll pt-10">
                   <div className="space-y-6">
                     <Text variant="uppercase">{t("sort by")}</Text>
