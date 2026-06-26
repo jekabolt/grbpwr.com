@@ -420,7 +420,8 @@
     "objects description": "GRBPWR 오브젝트와 악세서리를 탐색하세요. 가방, 소가죽 제품, 라이프스타일 피스.",
     "timeline": "타임라인",
     "timeline description": "아카이브와 업데이트 발견",
-    "main hero image": "메인 히어로 이미지"
+    "main hero image": "메인 히어로 이미지",
+    "archive image": "아카이브 이미지"
   },
   "order-status": {
     "order status": "주문 상태",

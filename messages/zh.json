@@ -420,7 +420,8 @@
     "objects description": "探索GRBPWR物件与配饰。包袋、皮具及生活方式单品。",
     "timeline": "时间轴",
     "timeline description": "发现档案和更新",
-    "main hero image": "主英雄图片"
+    "main hero image": "主英雄图片",
+    "archive image": "存档图片"
   },
   "order-status": {
     "order status": "订单状态",

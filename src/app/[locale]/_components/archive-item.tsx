@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { common_ArchiveFull } from "@/api/proto-http/frontend";
 
 import { calculateAspectRatio, cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ export function ArchiveItem({
   archive: common_ArchiveFull | undefined;
   className: string;
 }) {
+  const t = useTranslations("meta");
   return (
     <div className="relative">
       <Button asChild>
@@ -24,7 +26,7 @@ export function ArchiveItem({
             <div key={m.id} className={cn("group relative", className)}>
               <Image
                 src={m.media?.fullSize?.mediaUrl || ""}
-                alt="archive item"
+                alt={t("archive image")}
                 aspectRatio={calculateAspectRatio(
                   m.media?.fullSize?.width,
                   m.media?.fullSize?.height,

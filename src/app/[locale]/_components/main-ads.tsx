@@ -53,9 +53,7 @@ export function MainAds({
             main.single?.mediaLandscape?.media?.fullSize?.height,
           )}
           alt={
-            currentTranslation?.headline ||
-            currentTranslation?.tag ||
-            "GRBPWR"
+            currentTranslation?.headline || currentTranslation?.tag || ""
           }
           fit="cover"
           priority={true}
@@ -73,9 +71,7 @@ export function MainAds({
             mobileMedia?.fullSize?.height,
           )}
           alt={
-            currentTranslation?.headline ||
-            currentTranslation?.tag ||
-            "GRBPWR"
+            currentTranslation?.headline || currentTranslation?.tag || ""
           }
           fit="cover"
           priority={true}

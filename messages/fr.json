@@ -420,7 +420,8 @@
     "objects description": "explorez les objets et accessoires GRBPWR. sacs, maroquinerie et pièces lifestyle.",
     "timeline": "chronologie",
     "timeline description": "découvrir l'archive et les mises à jour",
-    "main hero image": "image héroïque principale"
+    "main hero image": "image héroïque principale",
+    "archive image": "image d'archive"
   },
   "order-status": {
     "order status": "statut de commande",
