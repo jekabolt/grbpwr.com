@@ -171,7 +171,7 @@ export function ProductItem({
                 {isSaleApplied && <Text>{formattedPriceWithSale}</Text>}
                 {preorder !== EMPTY_PREORDER &&
                   isDateTodayOrFuture(preorder || "") && (
-                    <Text variant="inactive">{tProduct("preorder")}</Text>
+                    <Text variant="uppercase">{tProduct("preorder")}</Text>
                   )}
               </>
             )}
