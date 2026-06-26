@@ -676,7 +676,8 @@
     "title": "annullamento dell'iscrizione alla lista \"grbpwr\". cliccando su annulla iscrizione, non riceverai più email di marketing.",
     "unsubscribe": "annulla iscrizione",
     "success": "sei stato disiscritto dalla newsletter.",
-    "error": "si è verificato un errore. per favore riprova."
+    "error": "si è verificato un errore. per favore riprova.",
+    "explore": "esplora le collezioni"
   },
   "categories": {
     "outerwear": "capispalla",

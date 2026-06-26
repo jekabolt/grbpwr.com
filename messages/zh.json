@@ -676,7 +676,8 @@
     "title": "取消订阅列表\"grbpwr\"。点击取消订阅后，您将不再接收营销电子邮件。",
     "unsubscribe": "取消订阅",
     "success": "您已取消订阅新闻通讯。",
-    "error": "发生错误。请再试一次。"
+    "error": "发生错误。请再试一次。",
+    "explore": "探索系列"
   },
   "categories": {
     "outerwear": "外套",
