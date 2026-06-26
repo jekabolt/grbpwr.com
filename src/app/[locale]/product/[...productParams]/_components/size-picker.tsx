@@ -117,10 +117,6 @@ export function SizePicker({
                 "hover:border-textColor":
                   !isSingleDisplayedSize && !isActive && !isOutOfStock,
                 "px-3 py-0.5": view === "line" && !isOneSize,
-                "!text-textColor":
-                  isOutOfStock && isActive && !isSingleDisplayedSize,
-                "hover:!text-textColor":
-                  isOutOfStock && !isActive && !isSingleDisplayedSize,
               })}
               key={id}
               onClick={() => handleSizeSelect(id)}
