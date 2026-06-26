@@ -21,13 +21,13 @@ export default async function OrderStatus({
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
       <div
         id="order-status-page"
-        className="min-dvh relative flex h-screen w-full flex-col items-center justify-center space-y-12 px-2.5 text-textColor lg:space-y-16 lg:px-96"
+        className="min-h-dvh relative flex h-screen w-full flex-col items-center justify-center space-y-12 px-2.5 text-textColor lg:space-y-16 lg:px-96"
       >
         <div className="space-y-9">
           <Text variant="uppercase" className="text-center lg:text-left">
             {t("order status")}
           </Text>
-          <Text className="text-justify lg:text-left">{t("text")}</Text>
+          <Text className="text-left">{t("text")}</Text>
         </div>
         <div className="w-full self-start">
           <FieldsGroupContainer
