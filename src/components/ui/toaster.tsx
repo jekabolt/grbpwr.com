@@ -66,6 +66,7 @@ export function SubmissionToaster({
   onOpenChange: (open: boolean) => void;
 }) {
   const persistUntilClosed = duration === Infinity;
+  const tToaster = useTranslations("toaster");
   return (
     <Toast.Root
       className={cn(
@@ -85,7 +86,7 @@ export function SubmissionToaster({
         <Toast.Close asChild>
           <Button
             className="text-bgColor lg:absolute lg:right-2 lg:top-1/2 lg:shrink-0 lg:-translate-y-1/2"
-            aria-label="Close"
+            aria-label={tToaster("close")}
           >
             [x]
           </Button>

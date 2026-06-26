@@ -15,6 +15,17 @@
     "returns": "rückgaben"
   },
   "account": {
+    "login_error": {
+      "expired": "dieser link ist abgelaufen — fordere einen neuen an, um dich anzumelden",
+      "used": "dieser link wurde bereits verwendet — fordere einen neuen an, um dich anzumelden",
+      "invalid": "dieser link ist ungültig — fordere einen neuen an, um dich anzumelden",
+      "unauthorized": "die anmeldung mit diesem link war nicht möglich — fordere einen neuen an",
+      "rate_limited": "zu viele versuche — warte einen moment und fordere dann einen neuen link an",
+      "backend_unavailable": "die anmeldung ist vorübergehend nicht verfügbar — bitte versuche es in kürze erneut",
+      "missing_token": "dieser link ist unvollständig — fordere einen neuen an, um dich anzumelden",
+      "bad_request": "dieser link konnte nicht verarbeitet werden — fordere einen neuen an, um dich anzumelden",
+      "invalid_or_expired_link": "dieser link ist ungültig oder abgelaufen — fordere einen neuen an, um dich anzumelden"
+    },
     "account": "konto",
     "login": "einloggen oder konto erstellen",
     "log in": "einloggen",
@@ -636,6 +647,7 @@
     "hot pink": "knallrosa"
   },
   "toaster": {
+    "close": "schließen",
     "successfully_subscribed": "erfolgreich für newsletter angemeldet!",
     "failed_to_subscribe": "anmeldung fehlgeschlagen. bitte versuchen sie es erneut.",
     "notify_me_success": "wir benachrichtigen sie, wenn dieser artikel wieder verfügbar ist.",

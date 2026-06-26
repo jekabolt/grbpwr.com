@@ -15,6 +15,17 @@
     "returns": "resi"
   },
   "account": {
+    "login_error": {
+      "expired": "questo link è scaduto — richiedine uno nuovo per accedere",
+      "used": "questo link è già stato usato — richiedine uno nuovo per accedere",
+      "invalid": "questo link non è valido — richiedine uno nuovo per accedere",
+      "unauthorized": "non è stato possibile accederti con questo link — richiedine uno nuovo",
+      "rate_limited": "troppi tentativi — attendi un momento, poi richiedi un nuovo link",
+      "backend_unavailable": "l'accesso è temporaneamente non disponibile — riprova tra poco",
+      "missing_token": "questo link è incompleto — richiedine uno nuovo per accedere",
+      "bad_request": "non è stato possibile elaborare questo link — richiedine uno nuovo per accedere",
+      "invalid_or_expired_link": "questo link non è valido o è scaduto — richiedine uno nuovo per accedere"
+    },
     "account": "account",
     "login": "accedi o crea un account",
     "log in": "accedi",
@@ -635,6 +646,7 @@
     "hot pink": "rosa acceso"
   },
   "toaster": {
+    "close": "chiudi",
     "successfully_subscribed": "iscrizione alla newsletter avvenuta con successo!",
     "failed_to_subscribe": "iscrizione fallita. riprova.",
     "notify_me_success": "ti avviseremo quando questo articolo sarà di nuovo disponibile.",

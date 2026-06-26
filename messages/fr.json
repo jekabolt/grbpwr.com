@@ -15,6 +15,17 @@
     "returns": "retours"
   },
   "account": {
+    "login_error": {
+      "expired": "ce lien a expiré — demandez-en un nouveau pour vous connecter",
+      "used": "ce lien a déjà été utilisé — demandez-en un nouveau pour vous connecter",
+      "invalid": "ce lien n'est pas valide — demandez-en un nouveau pour vous connecter",
+      "unauthorized": "impossible de vous connecter avec ce lien — demandez-en un nouveau",
+      "rate_limited": "trop de tentatives — patientez un instant, puis demandez un nouveau lien",
+      "backend_unavailable": "la connexion est temporairement indisponible — veuillez réessayer sous peu",
+      "missing_token": "ce lien est incomplet — demandez-en un nouveau pour vous connecter",
+      "bad_request": "impossible de traiter ce lien — demandez-en un nouveau pour vous connecter",
+      "invalid_or_expired_link": "ce lien est invalide ou a expiré — demandez-en un nouveau pour vous connecter"
+    },
     "account": "compte",
     "login": "se connecter ou créer un compte",
     "log in": "se connecter",
@@ -635,6 +646,7 @@
     "hot pink": "rose vif"
   },
   "toaster": {
+    "close": "fermer",
     "successfully_subscribed": "abonnement à la newsletter réussi !",
     "failed_to_subscribe": "échec de l'abonnement. veuillez réessayer.",
     "notify_me_success": "nous vous préviendrons lorsque cet article sera de nouveau en stock.",

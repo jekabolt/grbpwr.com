@@ -238,6 +238,9 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
   const [pending, setPending] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastDuration, setToastDuration] = useState<number | undefined>(
+    undefined,
+  );
   const [resendSeconds, setResendSeconds] = useState(0);
   const [storageChecked, setStorageChecked] = useState(false);
   const [codeVerified, setCodeVerified] = useState(false);
@@ -248,9 +251,17 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail);
   const isValidCode = /^\d{6}$/.test(normalizedCode);
 
-  const openErrorToast = (message: string) => {
+  const openErrorToast = (message: string, duration?: number) => {
+    setToastDuration(duration);
     setToastMessage(message);
     setToastOpen(true);
+  };
+
+  // Persistent error surface for the magic-link `login_error` taxonomy: stays
+  // until the user dismisses it (`duration={Infinity}`), unlike the ephemeral
+  // validation toasts above.
+  const showError = (message: string) => {
+    openErrorToast(message, Infinity);
   };
 
   useIsomorphicLayoutEffect(() => {
@@ -432,6 +443,7 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
     pending,
     toastOpen,
     toastMessage,
+    toastDuration,
     resendSeconds,
     storageChecked,
     codeVerified,
@@ -440,6 +452,7 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
     setEmail: updateEmail,
     setCode,
     setToastOpen,
+    showError,
     sendInitialCode,
     resendCode,
     verifyCode,

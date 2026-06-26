@@ -7,6 +7,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
@@ -35,6 +36,21 @@ export type AccountLoginStep = "email" | "code";
 
 const LOGIN_FORM_WIDTH_CLASS = "w-full max-w-md";
 
+// The magic-link route handlers redirect back with `?login_error=<code>` for
+// this taxonomy. next-intl's `t()` does NOT silently fall back, so an unknown
+// (or crafted) value must be coerced to a known key before lookup.
+const KNOWN_LOGIN_ERROR_CODES = new Set([
+  "expired",
+  "used",
+  "invalid",
+  "unauthorized",
+  "rate_limited",
+  "backend_unavailable",
+  "missing_token",
+  "bad_request",
+  "invalid_or_expired_link",
+]);
+
 export function AccountLoginForm({
   isCheckout = false,
   onCheckoutAsGuest,
@@ -52,6 +68,10 @@ export function AccountLoginForm({
   const revalidateCart = useCart((state) => state.revalidateCart);
   const currency =
     useTranslationsStore((state) => state.currentCountry.currencyKey) || "EUR";
+  const t = useTranslations("account");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const {
     email,
     code,
@@ -59,6 +79,7 @@ export function AccountLoginForm({
     pending,
     toastOpen,
     toastMessage,
+    toastDuration,
     resendSeconds,
     storageChecked,
     codeVerified,
@@ -66,6 +87,7 @@ export function AccountLoginForm({
     setEmail,
     setCode,
     setToastOpen,
+    showError,
     sendInitialCode,
     resendCode,
     verifyCode,
@@ -79,6 +101,25 @@ export function AccountLoginForm({
   useEffect(() => {
     if (!showOrderSummary) setMobileSummaryOpen(false);
   }, [showOrderSummary]);
+
+  // Surface the magic-link `login_error` taxonomy the route handlers redirect
+  // with, then strip the param so it cannot re-fire on refresh. Persistent toast
+  // (duration=Infinity) so a cold-landed expired-link error does not vanish.
+  useEffect(() => {
+    const loginError = searchParams.get("login_error");
+    if (!loginError) return;
+    const errorCode = KNOWN_LOGIN_ERROR_CODES.has(loginError)
+      ? loginError
+      : "invalid_or_expired_link";
+    showError(t(`login_error.${errorCode}`));
+    const params = new URLSearchParams(searchParams);
+    params.delete("login_error");
+    const remainingQs = params.toString();
+    router.replace(pathname + (remainingQs ? `?${remainingQs}` : ""), {
+      scroll: false,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!storageChecked) return;
@@ -181,6 +222,7 @@ export function AccountLoginForm({
       <SubmissionToaster
         open={toastOpen}
         message={toastMessage}
+        duration={toastDuration}
         onOpenChange={setToastOpen}
       />
     </div>
