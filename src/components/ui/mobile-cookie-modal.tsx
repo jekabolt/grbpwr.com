@@ -52,7 +52,7 @@ export function MobileCookieModal({
             size="lg"
             className="uppercase"
           >
-            {t("accept")}
+            {t("accept all cookies")}
           </Button>
         </div>
         <DialogPrimitives.Portal>

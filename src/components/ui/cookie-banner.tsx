@@ -64,9 +64,14 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
   }, []);
 
   const handleSaveCookies = () => {
-    localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    // "accept all" must grant every category, regardless of current toggles.
+    setPreferences(defaultCookiePreferences);
+    localStorage.setItem(
+      "cookieConsent",
+      JSON.stringify(defaultCookiePreferences),
+    );
     setConsentCookie();
-    updateConsentMode(preferences);
+    updateConsentMode(defaultCookiePreferences);
     window.dispatchEvent(new Event("cookie-consent-accepted"));
     setIsVisible(false);
   };
@@ -119,7 +124,7 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
           className="uppercase"
           onClick={handleSaveCookies}
         >
-          {t("accept")}
+          {t("accept all cookies")}
         </Button>
       </div>
       {open && (
