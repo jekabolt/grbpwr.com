@@ -34,6 +34,8 @@
     "checkout as guest": "ゲストとして購入",
     "or": "または",
     "enter verification code from your email": "メールに届いた認証コードを入力してください",
+    "otp_digit_label": "{length} 桁中 {index} 桁目",
+    "otp_error": "そのコードは使用できませんでした — 入力し直すか、新しいコードをリクエストしてください",
     "the code couldn’t be verified": "コードを確認できませんでした",
     "resend code": "コードを再送信",
     "resend code in": "コード再送まで",

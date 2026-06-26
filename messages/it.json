@@ -34,6 +34,8 @@
     "checkout as guest": "checkout come ospite",
     "or": "oppure",
     "enter verification code from your email": "inserisci il codice di verifica ricevuto via email",
+    "otp_digit_label": "cifra {index} di {length}",
+    "otp_error": "questo codice non ha funzionato — reinseriscilo o richiedine uno nuovo",
     "the code couldn’t be verified": "non è stato possibile verificare il codice",
     "resend code": "invia di nuovo il codice",
     "resend code in": "invia di nuovo il codice tra",

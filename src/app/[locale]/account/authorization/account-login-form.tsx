@@ -83,6 +83,8 @@ export function AccountLoginForm({
     resendSeconds,
     storageChecked,
     codeVerified,
+    codeInvalid,
+    verifyErrorNonce,
     isValidEmail,
     setEmail,
     setCode,
@@ -184,6 +186,8 @@ export function AccountLoginForm({
                   code={code}
                   pending={pending}
                   resendSeconds={resendSeconds}
+                  codeInvalid={codeInvalid}
+                  verifyErrorNonce={verifyErrorNonce}
                   onCodeChange={setCode}
                   onCodeComplete={verifyCode}
                   onResend={resendCode}
@@ -344,6 +348,8 @@ function CodeStep({
   code,
   pending,
   resendSeconds,
+  codeInvalid,
+  verifyErrorNonce,
   onCodeChange,
   onCodeComplete,
   onResend,
@@ -352,6 +358,8 @@ function CodeStep({
   code: string;
   pending: boolean;
   resendSeconds: number;
+  codeInvalid: boolean;
+  verifyErrorNonce: number;
   onCodeChange: (value: string) => void;
   onCodeComplete: (code: string) => void;
   onResend: () => void;
@@ -368,6 +376,8 @@ function CodeStep({
     >
       <div className="flex w-full flex-col items-center gap-16">
         <Text
+          component="h1"
+          id="login-code-label"
           variant="uppercase"
           className={cn("text-center text-textColor", {
             "text-textInactiveColor": pending,
@@ -376,13 +386,32 @@ function CodeStep({
           {t("enter verification code from your email")}
         </Text>
         <div className="w-full space-y-10">
-          <OtpInput
-            id="login-code"
-            value={code}
-            onChange={onCodeChange}
-            onComplete={onCodeComplete}
-            disabled={pending}
-          />
+          <div className="space-y-2.5">
+            <OtpInput
+              id="login-code"
+              value={code}
+              onChange={onCodeChange}
+              onComplete={onCodeComplete}
+              disabled={pending}
+              autoFocus
+              invalid={codeInvalid}
+              errorNonce={verifyErrorNonce}
+              labelledById="login-code-label"
+              describedById={codeInvalid ? "login-code-error" : undefined}
+              getDigitLabel={(index) =>
+                t("otp_digit_label", { index: index + 1, length: 6 })
+              }
+            />
+            {codeInvalid && (
+              <Text
+                id="login-code-error"
+                variant="error"
+                className="lowercase"
+              >
+                {t("otp_error")}
+              </Text>
+            )}
+          </div>
           <div className="space-y-5 text-center">
             <Button
               type="button"

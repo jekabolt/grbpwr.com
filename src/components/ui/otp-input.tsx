@@ -2,6 +2,7 @@
 
 import {
   useCallback,
+  useEffect,
   useRef,
   type ChangeEvent,
   type ClipboardEvent,
@@ -21,6 +22,18 @@ export type OtpInputProps = {
   id?: string;
   className?: string;
   onComplete?: (code: string) => void;
+  /** Focus box 0 once on mount (e.g. when advancing to the code step). */
+  autoFocus?: boolean;
+  /** Bumping this nonce refocuses box 0 (used to refocus after a failed verify). */
+  errorNonce?: number;
+  /** Paints the error border and sets aria-invalid on the group and every box. */
+  invalid?: boolean;
+  /** Names the group via aria-labelledby (preferred over a hardcoded aria-label). */
+  labelledById?: string;
+  /** Ties an inline error to the group via aria-describedby. */
+  describedById?: string;
+  /** Localized per-digit label; falls back to the English default. */
+  getDigitLabel?: (index: number) => string;
 };
 
 function sanitizeDigits(raw: string) {
@@ -34,8 +47,31 @@ export function OtpInput({
   className,
   onChange,
   onComplete,
+  autoFocus,
+  errorNonce,
+  invalid,
+  labelledById,
+  describedById,
+  getDigitLabel,
 }: OtpInputProps) {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
+  // Seed with the initial nonce so the mount run does not double-trigger
+  // against autoFocus; only a later change refocuses box 0.
+  const lastErrorNonceRef = useRef(errorNonce);
+
+  useEffect(() => {
+    if (autoFocus) {
+      inputsRef.current[0]?.focus();
+    }
+    // Focus once on mount only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (errorNonce === lastErrorNonceRef.current) return;
+    lastErrorNonceRef.current = errorNonce;
+    inputsRef.current[0]?.focus();
+  }, [errorNonce]);
 
   const commit = useCallback(
     (next: string) => {
@@ -97,10 +133,14 @@ export function OtpInput({
   };
 
   return (
+    // aria-invalid is a global ARIA state; the lint rule predates its global status.
+    // eslint-disable-next-line jsx-a11y/role-supports-aria-props
     <div
       id={id}
       role="group"
-      aria-label="One-time code"
+      aria-labelledby={labelledById}
+      aria-describedby={describedById}
+      aria-invalid={invalid || undefined}
       className={cn("flex w-full min-w-0 gap-2.5 lg:gap-2", className)}
       onPaste={handlePaste}
     >
@@ -116,13 +156,17 @@ export function OtpInput({
             inputMode="numeric"
             autoComplete={i === 0 ? "one-time-code" : "off"}
             name={`otp-${i}`}
-            aria-label={`Digit ${i + 1} of ${LENGTH}`}
+            aria-label={
+              getDigitLabel ? getDigitLabel(i) : `Digit ${i + 1} of ${LENGTH}`
+            }
+            aria-invalid={invalid || undefined}
             disabled={disabled}
             value={char}
             maxLength={1}
             className={cn(
               "box-border aspect-square min-w-0 flex-1 basis-0 border border-textColor text-center tabular-nums",
               "caret-textColor focus:border-textColor",
+              invalid && "border-errorColor focus:border-errorColor",
               "disabled:border-textInactiveColor disabled:text-textInactiveColor",
             )}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
