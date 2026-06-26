@@ -21,6 +21,8 @@ type CarouselProps = {
   dragFree?: boolean;
   skipSnaps?: boolean;
   scrollOnClick?: boolean;
+  prevLabel?: string;
+  nextLabel?: string;
   setSelectedIndex?: (index: number) => void;
 };
 
@@ -37,6 +39,8 @@ export function Carousel({
   dragFree = true,
   skipSnaps = true,
   scrollOnClick = false,
+  prevLabel,
+  nextLabel,
   setSelectedIndex,
 }: CarouselProps) {
   const childrenCount = Children.count(children);
@@ -128,14 +132,23 @@ export function Carousel({
     >
       <div className={className}>{children}</div>
       {scrollOnClick && (
-        <div className="absolute inset-0 flex h-full text-bgColor mix-blend-exclusion">
-          <div
+        <div className="absolute inset-0 flex h-full">
+          <button
+            type="button"
             onClick={scrollPrev}
+            aria-label={prevLabel}
             className="flex h-full flex-1 items-center justify-start"
           >
-            <Text className="pl-8 leading-none">{"<"}</Text>
-          </div>
-          <div onClick={scrollNext} className="h-full flex-1" />
+            <Text className="pl-8 leading-none text-bgColor mix-blend-exclusion">
+              {"<"}
+            </Text>
+          </button>
+          <button
+            type="button"
+            onClick={scrollNext}
+            aria-label={nextLabel}
+            className="h-full flex-1"
+          />
         </div>
       )}
     </div>
