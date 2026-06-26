@@ -698,6 +698,7 @@
     "notify_me_success": "you'll be notified when this item is back in stock.",
     "invalid_email": "please enter a valid email address",
     "email_copied": "e-mail copied",
+    "copy_email": "copy email",
     "cart_outdated": "your cart is outdated",
     "cart_modified": "some items changed — your cart has been updated",
     "cart_unavailable": "items in your cart are no longer available",

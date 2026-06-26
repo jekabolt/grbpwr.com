@@ -53,7 +53,8 @@ export function LegalNotices() {
                 key={key}
                 variant={selectedSection === key ? "underline" : "default"}
                 onClick={() => setSelectedSection(key as LegalSection)}
-                className="uppercase text-textColor"
+                aria-current={selectedSection === key ? "page" : undefined}
+                className="flex min-h-11 items-center uppercase text-textColor hover:underline"
               >
                 {t(section.title)}
               </Button>

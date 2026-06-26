@@ -62,6 +62,7 @@ export default function AftersaleSelector<T extends FieldValues>({
                   type="button"
                   size="lg"
                   disabled={disabled}
+                  aria-pressed={l === field.value}
                   onClick={() => field.onChange(l)}
                   className={cn(
                     "border border-textColor uppercase",

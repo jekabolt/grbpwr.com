@@ -640,6 +640,7 @@
     "notify_me_success": "ti avviseremo quando questo articolo sarà di nuovo disponibile.",
     "invalid_email": "inserisci un indirizzo email valido",
     "email_copied": "email copiata",
+    "copy_email": "copia email",
     "cart_outdated": "il tuo carrello è obsoleto",
     "cart_modified": "alcuni articoli sono cambiati — il tuo carrello è stato aggiornato",
     "cart_unavailable": "gli articoli nel tuo carrello non sono più disponibili",

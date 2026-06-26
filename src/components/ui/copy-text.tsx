@@ -55,7 +55,7 @@ export default function CopyText({
     <Text
       size="small"
       variant={variant}
-      onClick={handleCopy}
+      onClick={mode === "toaster" ? undefined : handleCopy}
       className={cn("text cursor-pointer", {
         "text-visitedLinkColor": mode === "toaster" && isCopied,
       })}
@@ -67,7 +67,9 @@ export default function CopyText({
   return (
     <div className={cn("flex h-4 items-center gap-1", className)}>
       {mode === "toaster" ? (
-        <EmailToaster title="email">{textElement}</EmailToaster>
+        <EmailToaster title="email" email={text} onCopy={handleCopy}>
+          {textElement}
+        </EmailToaster>
       ) : (
         <>
           {textElement}

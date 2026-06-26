@@ -640,6 +640,7 @@
     "notify_me_success": "この商品が再入荷したらお知らせします。",
     "invalid_email": "有効なメールアドレスを入力してください",
     "email_copied": "メールアドレスがコピーされました",
+    "copy_email": "メールアドレスをコピー",
     "cart_outdated": "カートが古くなっています",
     "cart_modified": "一部の商品が変更されました — カートを更新しました",
     "cart_unavailable": "カート内の商品は現在ご利用いただけません",

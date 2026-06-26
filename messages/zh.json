@@ -640,6 +640,7 @@
     "notify_me_success": "该商品补货后我们会通知您。",
     "invalid_email": "请输入有效的邮箱地址",
     "email_copied": "邮箱已复制",
+    "copy_email": "复制邮箱",
     "cart_outdated": "您的购物车已过期",
     "cart_modified": "部分商品已变更 — 您的购物车已更新",
     "cart_unavailable": "您购物车中的商品已不再可用",
