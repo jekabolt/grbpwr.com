@@ -14,6 +14,12 @@
   ::view-transition-new(root) {
     animation: none;
   }
+
+  .animate-threshold,
+  .animate-threshold-highlight,
+  .animate-highlight-flash {
+    animation: none !important;
+  }
 }
 
 @layer base {

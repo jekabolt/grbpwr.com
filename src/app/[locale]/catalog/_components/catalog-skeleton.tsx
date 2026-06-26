@@ -31,19 +31,13 @@ export function CatalogSkeleton() {
       <div className="hidden flex-col gap-6 px-7 pt-24 lg:flex">
         <div className="sticky top-20 z-10 flex items-start justify-between text-bgColor mix-blend-exclusion">
           <div className="flex items-center gap-2">
-            {TOP_CATEGORIES.map(({ key, label }, index) => {
-              const translated = t(key);
-              const display =
-                key === "loungewear_sleepwear" ? label : translated;
-
-              return (
-                <CategorySkeletonItem
-                  key={key}
-                  display={display}
-                  isLast={index === TOP_CATEGORIES.length - 1}
-                />
-              );
-            })}
+            {TOP_CATEGORIES.map(({ key }, index) => (
+              <CategorySkeletonItem
+                key={key}
+                display={t(key)}
+                isLast={index === TOP_CATEGORIES.length - 1}
+              />
+            ))}
           </div>
           <FilterSkeletonLabel />
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { FIT_OPTIONS, TOP_CATEGORIES, currencySymbols } from "@/constants";
+import { useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 
@@ -24,19 +25,25 @@ function createRandomCurrencyPhrase() {
 function useScrambleAnimation(target: string, shouldRepeat = false) {
     const [display, setDisplay] = useState(target);
     const [cycle, setCycle] = useState(0);
+    const shouldReduceMotion = useReducedMotion();
 
     useEffect(() => {
-        if (!shouldRepeat || !target) return;
+        if (shouldReduceMotion || !shouldRepeat || !target) return;
 
         const id = setInterval(() => {
             setCycle((c) => c + 1);
         }, WORD_CHANGE_INTERVAL_MS);
 
         return () => clearInterval(id);
-    }, [shouldRepeat, target]);
+    }, [shouldReduceMotion, shouldRepeat, target]);
 
     useEffect(() => {
         if (!target) return;
+
+        if (shouldReduceMotion) {
+            setDisplay(target);
+            return;
+        }
 
         let step = 0;
         const intervalId = setInterval(() => {
@@ -62,7 +69,7 @@ function useScrambleAnimation(target: string, shouldRepeat = false) {
         }, SCRAMBLE_INTERVAL_MS);
 
         return () => clearInterval(intervalId);
-    }, [target, cycle]);
+    }, [target, cycle, shouldReduceMotion]);
 
     return display;
 }
@@ -70,16 +77,19 @@ function useScrambleAnimation(target: string, shouldRepeat = false) {
 // Generic hook for auto-updating text
 function useAutoScrambleText(generatePhrase: () => string) {
     const [target, setTarget] = useState("");
+    const shouldReduceMotion = useReducedMotion();
 
     useEffect(() => {
         setTarget(generatePhrase());
+
+        if (shouldReduceMotion) return;
 
         const intervalId = setInterval(() => {
             setTarget(generatePhrase());
         }, WORD_CHANGE_INTERVAL_MS);
 
         return () => clearInterval(intervalId);
-    }, [generatePhrase]);
+    }, [generatePhrase, shouldReduceMotion]);
 
     return useScrambleAnimation(target);
 }
@@ -93,10 +103,7 @@ export function useScrambleText() {
         const fit = getRandomItem(FIT_OPTIONS);
         const category = getRandomItem(TOP_CATEGORIES);
         const translatedFit = tFit(fit);
-        const translatedCategory =
-            category.key === "loungewear_sleepwear"
-                ? category.label
-                : t(category.key);
+        const translatedCategory = t(category.key);
         return `${translatedFit} ${translatedCategory}`;
     }, [t, tFit]);
 
