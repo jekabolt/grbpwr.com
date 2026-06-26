@@ -164,14 +164,14 @@ export function ProductItem({
             ) : (
               <>
                 <Text
-                  variant={isSaleApplied ? "strileTroughInactive" : "default"}
+                  variant={isSaleApplied ? "strikethrough" : "default"}
                 >
                   {formattedPrice}
                 </Text>
                 {isSaleApplied && <Text>{formattedPriceWithSale}</Text>}
                 {preorder !== EMPTY_PREORDER &&
                   isDateTodayOrFuture(preorder || "") && (
-                    <Text variant="inactive">{tProduct("preorder")}</Text>
+                    <Text>{tProduct("preorder")}</Text>
                   )}
               </>
             )}
