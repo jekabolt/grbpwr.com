@@ -87,10 +87,7 @@ export default function ItemRow({
         </div>
       </div>
       {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
-        <Text
-          variant="uppercase"
-          className="whitespace-nowrap text-textInactiveColor"
-        >
+        <Text variant="uppercase" className="whitespace-nowrap">
           {preorderDate}
         </Text>
       )}
@@ -148,7 +145,7 @@ export default function ItemRow({
           <div className="flex items-center justify-end whitespace-nowrap text-right">
             {isSaleApplied ? (
               <div className="flex items-center gap-x-2">
-                <Text variant="strileTroughInactive">{priceWithoutSale}</Text>
+                <Text variant="strikethrough">{priceWithoutSale}</Text>
                 <Text>{priceWithSale}</Text>
               </div>
             ) : (
