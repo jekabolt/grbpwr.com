@@ -5,7 +5,6 @@ import type { common_ArchiveFull } from "@/api/proto-http/frontend";
 import { calculateAspectRatio, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
-import { Text } from "@/components/ui/text";
 
 export function ArchiveItem({
   archive,
@@ -22,7 +21,7 @@ export function ArchiveItem({
           className={cn("flex h-full w-full")}
           href={archive?.archiveList?.slug || ""}
         >
-          {archive?.media?.map((m, id) => (
+          {archive?.media?.map((m) => (
             <div key={m.id} className={cn("group relative", className)}>
               <Image
                 src={m.media?.fullSize?.mediaUrl || ""}
@@ -33,9 +32,6 @@ export function ArchiveItem({
                 )}
                 fit="contain"
               />
-              <Text className="absolute right-4 top-1/2 block -translate-y-1/2 md:hidden md:group-hover:block">
-                {id}
-              </Text>
             </div>
           ))}
         </Link>
