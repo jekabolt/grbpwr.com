@@ -64,7 +64,7 @@ const MarkdownParagraph = ({
   return (
     <div
       className={cn(
-        "content-md-block",
+        "content-md-block leading-normal",
         BLOCK_GAP,
         isTitle && "mt-8 uppercase lg:mt-12",
       )}
@@ -78,7 +78,7 @@ const MarkdownList = ({ children, className, ...props }: any) => (
   <ul
     {...props}
     className={cn(
-      "not-prose list-outside list-disc space-y-0 pl-5 leading-none marker:text-[inherit] [&>li]:my-0 [&_.content-md-block]:mb-0",
+      "not-prose list-outside list-disc space-y-0 pl-5 leading-none marker:text-[inherit] [&>li]:my-0 [&_.content-md-block]:mb-0 [&_.content-md-block]:leading-none",
       BLOCK_GAP,
       className,
     )}
@@ -91,7 +91,7 @@ const MarkdownOrderedList = ({ children, className, ...props }: any) => (
   <ol
     {...props}
     className={cn(
-      "not-prose list-outside list-decimal space-y-3 pl-5 leading-none marker:text-[inherit]",
+      "not-prose list-outside list-decimal space-y-3 pl-5 leading-none marker:text-[inherit] [&_.content-md-block]:leading-none",
       BLOCK_GAP,
       className,
     )}
@@ -104,7 +104,7 @@ const MarkdownListItem = ({ children, className, ...props }: any) => (
   <li
     {...props}
     className={cn(
-      "not-prose leading-none [&>ul]:mt-3 [&_.content-md-block:not(:last-child)]:mb-3 [&_.content-md-block]:mb-0",
+      "not-prose leading-none [&>ul]:mt-3 [&_.content-md-block:not(:last-child)]:mb-3 [&_.content-md-block]:mb-0 [&_.content-md-block]:leading-none",
       className,
     )}
   >
