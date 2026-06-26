@@ -94,7 +94,7 @@ export function buildOrderConfirmationUrl(params: {
   const suffix = params.redirectStatus
     ? `?redirect_status=${params.redirectStatus}`
     : "";
-  return `/${country}/${locale}/order/${params.orderUuid}/${params.emailBase64}${suffix}`;
+  return `/${country}/${locale}/order/${params.orderUuid}/${encodeURIComponent(params.emailBase64)}${suffix}`;
 }
 
 export function buildStripeCheckoutReturnUrl(params: {

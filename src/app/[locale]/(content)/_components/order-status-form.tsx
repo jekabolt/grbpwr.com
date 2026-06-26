@@ -71,7 +71,9 @@ export default function OrderStatusForm() {
       });
 
       if (response.order) {
-        router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
+        router.push(
+          `/order/${data.orderUuid}/${encodeURIComponent(window.btoa(data.email))}`,
+        );
       } else {
         setToastMessage(t("order not found"));
         setOpen(true);
