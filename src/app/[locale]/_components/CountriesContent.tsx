@@ -58,7 +58,7 @@ export function CountriesContent({ className }: { className?: string }) {
           <Text className="uppercase">
             {t("text", {
               currentCountry: currentCountry.name,
-              currency: currentCountry.currencyKey || "",
+              currency: currentCountry.currencyKey || "EUR",
             })}
           </Text>
           {languagesForCurrentCountry &&
@@ -109,7 +109,7 @@ export function CountriesContent({ className }: { className?: string }) {
                 >
                   <div className="flex items-center gap-3">
                     <Text className="uppercase">{country.name}</Text>
-                    <Text>{`[${country.currency}]`}</Text>
+                    <Text>{`[${country.currencyKey}]`}</Text>
                   </div>
                   <Text className="uppercase">{country.displayLng}</Text>
                 </Button>
@@ -147,7 +147,7 @@ export function CountriesContent({ className }: { className?: string }) {
                         <div className="flex min-w-0 flex-1 items-center justify-between border-b border-transparent group-hover:border-textColor">
                           <div className="flex items-center gap-2">
                             <Text className="uppercase">{country.name}</Text>
-                            <Text>{`[${country.currency}]`}</Text>
+                            <Text>{`[${country.currencyKey}]`}</Text>
                           </div>
                           <Text className="uppercase">{country.displayLng}</Text>
                         </div>

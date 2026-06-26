@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  COUNTRIES_BY_REGION,
-  currencySymbols,
-  LANGUAGE_ID_TO_LOCALE,
-} from "@/constants";
+import { COUNTRIES_BY_REGION, LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
@@ -118,7 +114,7 @@ export function MobileCountriesPopup() {
                   >
                     <div className="flex items-center gap-2">
                       <Text className="uppercase">{country.name}</Text>
-                      <Text>{`[${country.currency}]`}</Text>
+                      <Text>{`[${country.currencyKey}]`}</Text>
                     </div>
                     <Text className="uppercase">{country.displayLng}</Text>
                   </Button>
@@ -154,7 +150,7 @@ export function MobileCountriesPopup() {
                         >
                           <div className="flex items-center gap-2">
                             <Text className="uppercase">{country.name}</Text>
-                            <Text>{`[${country.currency}]`}</Text>
+                            <Text>{`[${country.currencyKey}]`}</Text>
                           </div>
                           <Text className="uppercase">
                             {country.displayLng}
@@ -186,8 +182,7 @@ export function MobileCountriesPopupTrigger() {
     >
       <Text>{f("country")}:</Text>
       <Text>
-        {currentCountry.name} /{" "}
-        {currencySymbols[currentCountry.currencyKey || "EUR"]}
+        {currentCountry.name} / {currentCountry.currencyKey || "EUR"}
       </Text>
     </Button>
   );
