@@ -40,11 +40,11 @@ function ArchiveGridItem({
           blurhash={item.thumbnail?.media?.blurhash}
           playOnHover={!isMobile && isVideoItem && isHovered}
           autoPlay={isMobile && isVideoItem}
-          fit="fill"
+          fit="cover"
         />
       </div>
       <div className="min-w-0 max-w-full overflow-hidden">
-        <Text className="line-clamp-2 break-all uppercase text-textColor group-hover:text-highlightColor">
+        <Text className="line-clamp-2 break-words uppercase text-textColor group-hover:underline">
           {currentTranslation?.heading}
         </Text>
       </div>
