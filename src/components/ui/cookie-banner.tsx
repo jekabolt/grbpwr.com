@@ -96,7 +96,7 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
   if (!isVisible) return null;
 
   return (
-    <Banner>
+    <Banner role="region" ariaLabel={tAccessibility("cookie preferences")}>
       <div className="block lg:hidden">
         <MobileCookieModal
           isVisible={isVisible}
