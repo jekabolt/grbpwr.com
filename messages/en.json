@@ -607,7 +607,7 @@
     },
     "email": {
       "invalid": "invalid email",
-      "max": "email must contain at most 40 characters",
+      "max": "email is too long",
       "required": "email is required"
     },
     "additionalAddress": {

@@ -549,7 +549,7 @@
     },
     "email": {
       "invalid": "无效的邮箱",
-      "max": "邮箱最多只能包含40个字符",
+      "max": "邮箱过长",
       "required": "邮箱为必填项"
     },
     "additionalAddress": {

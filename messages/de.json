@@ -550,7 +550,7 @@
     },
     "email": {
       "invalid": "ungültige email",
-      "max": "email darf höchstens 40 zeichen enthalten",
+      "max": "die email ist zu lang",
       "required": "e-mail ist erforderlich"
     },
     "additionalAddress": {
