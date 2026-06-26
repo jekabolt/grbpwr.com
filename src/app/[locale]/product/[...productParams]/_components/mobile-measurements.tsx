@@ -37,7 +37,7 @@ export function MobileMeasurements({
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
   const t = useTranslations("product");
-  const tAccessibility = useTranslations("accessibility");
+  const tNav = useTranslations("navigation");
 
   const isSelectedSizeOutOfStock =
     selectedSize !== undefined &&
@@ -100,13 +100,18 @@ export function MobileMeasurements({
           content={
             <DialogPrimitives.Content className="flex h-full flex-col gap-4">
               <DialogPrimitives.Title className="sr-only">
-                {tAccessibility("mobile menu")}
+                {t("size guide")}
               </DialogPrimitives.Title>
 
               <div className="relative flex shrink-0 items-center justify-between">
                 <Text variant="uppercase">{t("size guide")}</Text>
                 <DialogPrimitives.Close asChild>
-                  <Button>[x]</Button>
+                  <Button
+                    aria-label={tNav("close")}
+                    className="inline-flex min-h-11 min-w-11 items-center justify-center"
+                  >
+                    [x]
+                  </Button>
                 </DialogPrimitives.Close>
               </div>
               <div className="min-h-0 grow overflow-y-auto">
