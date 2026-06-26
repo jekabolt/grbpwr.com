@@ -102,8 +102,9 @@ export default function FilterOptionButtons({
       <Button
         onClick={() => handleClick(factorId)}
         disabled={!isAvailable}
+        aria-pressed={isSelected}
         className={cn(
-          "block border border-transparent uppercase md:hover:border-textColor",
+          "flex min-h-11 items-center border border-transparent uppercase md:hover:border-textColor",
           {
             "border-textColor": isSelected,
           },
