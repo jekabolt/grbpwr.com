@@ -109,7 +109,7 @@ export default function InputField({
         };
 
         return (
-          <FormItem>
+          <FormItem className={srLabel ? "space-y-0" : undefined}>
             {label && (
               <FormLabel
                 className={cn(

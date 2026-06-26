@@ -83,6 +83,8 @@ export default function PromoCode({
         <InputField
           control={form.control}
           loading={loading}
+          label={t("enter promo code")}
+          srLabel
           placeholder={t("enter promo code")}
           name="promoCode"
           readOnly={!isFocused || isApplied}
@@ -94,6 +96,7 @@ export default function PromoCode({
       <Button
         type="button"
         className="flex-none uppercase"
+        loading={promoLoading}
         onClick={handleApplyPromoClick}
         disabled={promoLoading || loading || !promoCode}
       >
