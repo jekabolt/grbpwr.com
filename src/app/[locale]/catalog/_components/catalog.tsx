@@ -46,7 +46,10 @@ export default function Catalog({
   }
 
   return (
-    <>
+    <main>
+      <Text component="h1" className="sr-only">
+        {activeTopCategory || t("title")}
+      </Text>
       <div className="block lg:hidden">
         <MobileCatalog
           firstPageItems={firstPageItems || []}
@@ -75,6 +78,6 @@ export default function Catalog({
           </div>
         )}
       </div>
-    </>
+    </main>
   );
 }
