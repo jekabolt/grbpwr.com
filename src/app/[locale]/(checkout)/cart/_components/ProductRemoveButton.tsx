@@ -54,7 +54,7 @@ export default function ProductRemoveButton({
     };
   }, [isRemoveConfirmed, setProductToRemove]);
 
-  const handleRemove = (event: React.PointerEvent) => {
+  const handleRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -71,9 +71,10 @@ export default function ProductRemoveButton({
     <div ref={wrapperRef} className="flex justify-end">
       <Button
         type="button"
-        onPointerDown={handleRemove}
+        onClick={handleRemove}
+        aria-live="polite"
         variant="underline"
-        className="min-h-0 min-w-[4.5rem] touch-manipulation self-start p-0 text-right uppercase"
+        className="min-h-11 min-w-[4.5rem] touch-manipulation self-start p-0 text-right uppercase"
       >
         {isRemoveConfirmed ? t("sure?") : t("remove")}
       </Button>
