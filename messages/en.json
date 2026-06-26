@@ -725,7 +725,7 @@
     "ordered by mistake": "ordered by mistake",
     "other": "other",
     "order already in refund progress": "order already in refund progress",
-    "refund request submitted successfully": "refund request submitted successfully",
+    "order not found": "order not found",
     "return_request_success": "return request for order {orderNumber} submitted",
     "submission_error": "Something went wrong. Please try again.",
     "reason": "reason"

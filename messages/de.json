@@ -668,7 +668,7 @@
     "ordered by mistake": "versehentlich bestellt",
     "other": "anderes",
     "order already in refund progress": "bestellung bereits in erstattungsbearbeitung",
-    "refund request submitted successfully": "rückerstattungsanfrage erfolgreich eingereicht",
+    "order not found": "Bestellung nicht gefunden",
     "return_request_success": "rückgabeanfrage für bestellung {orderNumber} eingereicht",
     "submission_error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
     "reason": "grund"
