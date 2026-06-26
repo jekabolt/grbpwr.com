@@ -64,7 +64,7 @@ export default function AftersaleSelector<T extends FieldValues>({
                   disabled={disabled}
                   onClick={() => field.onChange(l)}
                   className={cn(
-                    "border border-textColor uppercase",
+                    "flex min-h-[44px] items-center justify-center border border-textColor uppercase",
                     l === field.value && "bg-textColor text-bgColor",
                     useOrderReviewGrid && "w-full min-w-0",
                     useFiveDesktopLayout && i < 3 && "lg:col-span-2",
