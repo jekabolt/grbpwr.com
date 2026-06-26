@@ -78,15 +78,16 @@ export default function PageComponent({
         <div className="flex w-full max-w-[640px] flex-col items-start justify-center gap-10">
           <div className="w-full space-y-4">
             <Text
-              className="w-full break-words text-textInactiveColor"
+              className="w-full break-words"
               variant="uppercase"
+              component="h1"
             >
               {currentTranslation?.heading || ""}
             </Text>
             <Text variant="uppercase">{`${archive?.archiveList?.tag || ""} / ${currentYear}`}</Text>
           </div>
           {currentTranslation?.description && (
-            <Text className="break-words text-justify lg:text-left">
+            <Text className="break-words text-left">
               {currentTranslation?.description}
             </Text>
           )}
