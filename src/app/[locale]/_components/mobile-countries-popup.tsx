@@ -44,6 +44,7 @@ export function MobileCountriesPopup() {
   });
 
   const t = useTranslations("countries-popup");
+  const tNav = useTranslations("navigation");
 
   function toggleSection(index: number) {
     setOpenSection((prev) => (prev === index ? null : index));
@@ -54,7 +55,7 @@ export function MobileCountriesPopup() {
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="data-[state=open]:animate-overlay-in data-[state=closed]:animate-overlay-out fixed inset-0 z-20 h-screen bg-overlay" />
         <DialogPrimitives.Content
-          onOpenAutoFocus={(e) => e.preventDefault()}
+          aria-describedby={undefined}
           className={cn(
             "data-[state=open]:animate-panel-in data-[state=closed]:animate-panel-out fixed inset-x-2 bottom-2 top-2 z-[70] flex flex-col overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden",
             {
@@ -63,9 +64,16 @@ export function MobileCountriesPopup() {
           )}
         >
           <div className="flex items-center justify-between bg-bgColor pb-8">
-            <Text variant="uppercase">{t("change country")}</Text>
+            <DialogPrimitives.Title asChild>
+              <Text variant="uppercase">{t("change country")}</Text>
+            </DialogPrimitives.Title>
             <DialogPrimitives.Close asChild>
-              <Button>[x]</Button>
+              <Button
+                aria-label={tNav("close")}
+                className="flex min-h-11 min-w-11 items-center justify-center"
+              >
+                [x]
+              </Button>
             </DialogPrimitives.Close>
           </div>
 
@@ -76,19 +84,20 @@ export function MobileCountriesPopup() {
                 currency: currentCountry.currencyKey || "EUR",
               })}
             </Text>
-            <div className="mb-4 space-y-2.5">
-              <Text className="uppercase">{t("language")}</Text>
-              {languagesForCurrentCountry &&
-                languagesForCurrentCountry.length > 1 && (
+            {languagesForCurrentCountry &&
+              languagesForCurrentCountry.length > 1 && (
+                <div className="mb-4 space-y-2.5">
+                  <Text className="uppercase">{t("language")}</Text>
                   <RadioGroup
+                    aria-label={t("language")}
                     items={languagesForCurrentCountry}
                     name="language-selector"
                     value={LANGUAGE_ID_TO_LOCALE[languageId]}
                     onValueChange={(val: string) => handleChangeLocaleOnly(val)}
                     className="flex flex-col gap-2 uppercase"
                   />
-                )}
-            </div>
+                </div>
+              )}
             <Searchbar
               name="search"
               value={query}

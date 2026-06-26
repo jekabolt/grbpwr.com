@@ -66,6 +66,7 @@ export function CountriesContent({ className }: { className?: string }) {
               <div className="mb-4 space-y-2.5">
                 <Text className="uppercase">{t("language")}</Text>
                 <RadioGroup
+                  aria-label={t("language")}
                   items={languagesForCurrentCountry.map((item, index) => {
                     const isSelected =
                       item.value === LANGUAGE_ID_TO_LOCALE[languageId];
