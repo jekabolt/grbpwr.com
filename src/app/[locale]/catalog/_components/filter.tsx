@@ -1,9 +1,8 @@
+import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
-import { cn } from "@/lib/utils";
 import { ModalTransition } from "@/components/modal-transition";
 import { Button } from "@/components/ui/button";
-import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
 import { Collection } from "./collection";
@@ -21,6 +20,7 @@ export function Filter({
   toggleModal: () => void;
 }) {
   const t = useTranslations("catalog");
+  const tNav = useTranslations("navigation");
 
   const { defaultValue, handleFilterChange } = useFilterQueryParams("size");
   const { defaultValue: sortValue } = useFilterQueryParams("sort");
@@ -56,22 +56,28 @@ export function Filter({
 
   return (
     <div className="z-50 w-full">
-      {isModalOpen && (
-        <div className="hidden lg:block">
-          <Overlay
-            cover="screen"
-            onClick={toggleModal}
-            disablePointerEvents={false}
-          />
+      <DialogPrimitives.Root
+        open={isModalOpen}
+        onOpenChange={(o) => {
+          if (!o) toggleModal();
+        }}
+      >
+        <DialogPrimitives.Portal>
+          <DialogPrimitives.Overlay className="fixed inset-0 z-20 hidden bg-overlay lg:block" />
           <ModalTransition
             isOpen={isModalOpen}
             contentSlideFrom="right"
-            contentClassName="fixed inset-y-2 right-2 z-30 w-[445px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor"
+            contentClassName="fixed inset-y-2 right-2 z-30 hidden w-[445px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:block"
             content={
-              <div className="flex h-full flex-col">
+              <DialogPrimitives.Content className="flex h-full flex-col">
+                <DialogPrimitives.Title className="sr-only">
+                  {t("filter")}
+                </DialogPrimitives.Title>
                 <div className="flex items-center justify-between">
                   <Text variant="uppercase">{t("filter")}</Text>
-                  <Button onClick={toggleModal}>[x]</Button>
+                  <DialogPrimitives.Close asChild>
+                    <Button aria-label={tNav("close")}>[x]</Button>
+                  </DialogPrimitives.Close>
                 </div>
                 <div className="h-full space-y-10 overflow-y-scroll pt-6">
                   <div className="space-y-6">
@@ -83,12 +89,11 @@ export function Filter({
                 </div>
                 <div className="flex items-center justify-end gap-2 bg-bgColor">
                   <Button
-                    className={cn("w-1/2 uppercase", {
-                      block: hasActiveFilters,
-                    })}
+                    className="w-1/2 uppercase"
                     size="lg"
                     variant="simpleReverseWithBorder"
                     onClick={handleClearAll}
+                    disabled={!hasActiveFilters}
                   >
                     {t("clear all")}
                   </Button>
@@ -101,11 +106,11 @@ export function Filter({
                     {t("show")} {total > 0 ? `[${total}]` : ""}
                   </Button>
                 </div>
-              </div>
+              </DialogPrimitives.Content>
             }
           />
-        </div>
-      )}
+        </DialogPrimitives.Portal>
+      </DialogPrimitives.Root>
     </div>
   );
 }
