@@ -5,7 +5,12 @@ import { useRouter } from "next/navigation";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { Elements } from "@stripe/react-stripe-js";
-import { Appearance, loadStripe, StripeElementLocale } from "@stripe/stripe-js";
+import {
+  Appearance,
+  CustomFontSource,
+  loadStripe,
+  StripeElementLocale,
+} from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 
 import {
@@ -187,6 +192,21 @@ export function CheckoutFormWrapper({
     },
   };
 
+  // appearance.fontFamily requests FeatureMono, but the page's next/font/local
+  // file lives behind a hashed _next/static URL unreachable from the Stripe
+  // iframe. Ship a stable same-origin copy (public/fonts) and hand Stripe an
+  // absolute URL — required by Stripe and only available on the client.
+  const stripeFonts: CustomFontSource[] =
+    typeof window !== "undefined"
+      ? [
+          {
+            family: "FeatureMono",
+            src: `url(${window.location.origin}/fonts/FeatureMono-Regular.ttf)`,
+            weight: "400",
+          },
+        ]
+      : [];
+
   return (
     <>
       <div
@@ -204,6 +224,7 @@ export function CheckoutFormWrapper({
             amount: orderAmount,
             currency: currency?.toLowerCase(),
             appearance,
+            fonts: stripeFonts,
             locale: (LANGUAGE_ID_TO_LOCALE[languageId] ||
               "en") as StripeElementLocale,
           }}
