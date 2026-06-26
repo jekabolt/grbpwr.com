@@ -161,7 +161,7 @@ export default function PaymentFieldsGroup({
                   {t("card_details_required")}
                 </Text>
               )}
-              <div className="mt-3 flex items-center gap-x-1.5 text-textInactiveColor">
+              <div className="mt-3 flex items-center gap-x-1.5">
                 <LockIcon className="h-3 w-3 shrink-0" aria-hidden="true" />
                 <Text variant="uppercase" component="span" className="text-xs">
                   {t("payment_secured")}

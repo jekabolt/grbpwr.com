@@ -122,7 +122,7 @@ export default function InputField({
                 {optional && (
                   <Text
                     component="span"
-                    className="ml-1 whitespace-nowrap text-textInactiveColor"
+                    className="ml-1 whitespace-nowrap"
                   >
                     ({tCheckout("optional")}):
                   </Text>
