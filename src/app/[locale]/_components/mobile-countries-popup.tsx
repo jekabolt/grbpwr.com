@@ -49,11 +49,11 @@ export function MobileCountriesPopup() {
   return (
     <DialogPrimitives.Root open={open} onOpenChange={closeCountryPopup}>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="data-[state=open]:animate-overlay-in data-[state=closed]:animate-overlay-out fixed inset-0 z-20 h-screen bg-overlay" />
+        <DialogPrimitives.Overlay className="data-[state=open]:animate-modal-fade-in data-[state=closed]:animate-modal-fade-out fixed inset-0 z-20 h-screen bg-overlay" />
         <DialogPrimitives.Content
           aria-describedby={undefined}
           className={cn(
-            "data-[state=open]:animate-panel-in data-[state=closed]:animate-panel-out fixed inset-x-2 bottom-2 top-2 z-[70] flex flex-col overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden",
+            "data-[state=open]:animate-modal-fade-in data-[state=closed]:animate-modal-fade-out fixed inset-x-2 bottom-2 top-2 z-[70] flex flex-col overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor lg:hidden",
             {
               blackTheme: !isWebsiteEnabled,
             },
