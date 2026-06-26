@@ -59,17 +59,23 @@ export function SubmissionToaster({
   message,
   duration,
   onOpenChange,
+  intent = "success",
 }: {
   open: boolean;
   message?: string;
   duration?: number;
   onOpenChange: (open: boolean) => void;
+  intent?: "success" | "error";
 }) {
   const persistUntilClosed = duration === Infinity;
+  const isError = intent === "error";
   return (
     <Toast.Root
       className={cn(
-        "flex h-12 cursor-pointer items-center justify-center bg-highlightColor lg:h-8",
+        "flex h-12 cursor-pointer items-center justify-center lg:h-8",
+        // Errors paint the reserved Error token (red fill, ink text); the default
+        // success intent keeps the highlight accent. Ink on #ff0000 ≈ 5.25:1 (AA).
+        isError ? "bg-errorColor" : "bg-highlightColor",
         persistUntilClosed &&
           "justify-between px-2.5 lg:relative lg:justify-center",
       )}
@@ -79,7 +85,14 @@ export function SubmissionToaster({
       onClick={() => onOpenChange(false)}
     >
       <Toast.Title>
-        <Text className="text-center lowercase text-bgColor">{message}</Text>
+        <Text
+          className={cn(
+            "text-center lowercase",
+            isError ? "text-textColor" : "text-bgColor",
+          )}
+        >
+          {message}
+        </Text>
       </Toast.Title>
       {persistUntilClosed && (
         <Toast.Close asChild>

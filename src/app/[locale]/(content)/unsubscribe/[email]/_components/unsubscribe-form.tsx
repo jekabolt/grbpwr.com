@@ -95,6 +95,7 @@ export function UnsubscribeForm({ email }: Props) {
         open={toastOpen}
         message={t("error")}
         onOpenChange={setToastOpen}
+        intent="error"
       />
     </>
   );
