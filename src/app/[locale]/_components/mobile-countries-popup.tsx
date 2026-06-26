@@ -104,7 +104,7 @@ export function MobileCountriesPopup() {
                 {filteredCountries.map((country) => (
                   <Button
                     key={`${country.countryCode}-${country.name}-${country.lng}`}
-                    className="flex w-full items-center justify-between px-3"
+                    className="flex min-h-11 w-full items-center justify-between px-3"
                     onClick={() => handleCountrySelect(country)}
                   >
                     <div className="flex items-center gap-2">
@@ -130,7 +130,7 @@ export function MobileCountriesPopup() {
                   <FieldsGroupContainer
                     key={region}
                     signType="plus-minus"
-                    clickableAreaClassName="h-9 items-start"
+                    clickableAreaClassName="min-h-11 items-start"
                     childrenSpacingClass="pb-4"
                     title={region}
                     isOpen={openSection === index}
@@ -140,7 +140,7 @@ export function MobileCountriesPopup() {
                       {countries.map((country) => (
                         <Button
                           key={`${region}-${country.name}-${country.lng}`}
-                          className="flex w-full items-center justify-between px-3"
+                          className="flex min-h-11 w-full items-center justify-between px-3"
                           onClick={() => handleCountrySelect(country)}
                         >
                           <div className="flex items-center gap-2">

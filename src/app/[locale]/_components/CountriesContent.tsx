@@ -103,7 +103,7 @@ export function CountriesContent({ className }: { className?: string }) {
               {filteredCountries.map((country) => (
                 <Button
                   key={`${country.countryCode}-${country.name}-${country.lng}`}
-                  className="flex w-full items-center justify-between px-4"
+                  className="flex min-h-11 w-full items-center justify-between px-4"
                   onClick={() => handleCountrySelect(country)}
                 >
                   <div className="flex items-center gap-3">
@@ -129,7 +129,7 @@ export function CountriesContent({ className }: { className?: string }) {
                 <FieldsGroupContainer
                   key={region}
                   signType="plus-minus"
-                  clickableAreaClassName="h-9 items-start"
+                  clickableAreaClassName="min-h-11 items-start"
                   childrenSpacingClass="pb-4"
                   headerContentGapClass="space-y-2 lg:space-y-1"
                   title={region}
@@ -140,7 +140,7 @@ export function CountriesContent({ className }: { className?: string }) {
                     {countries.map((country) => (
                       <Button
                         key={`${region}-${country.name}-${country.lng}`}
-                        className="group flex w-full items-center justify-between px-4"
+                        className="group flex min-h-11 w-full items-center justify-between px-4"
                         onClick={() => handleCountrySelect(country)}
                       >
                         <div className="flex min-w-0 flex-1 items-center justify-between border-b border-transparent group-hover:border-textColor">
