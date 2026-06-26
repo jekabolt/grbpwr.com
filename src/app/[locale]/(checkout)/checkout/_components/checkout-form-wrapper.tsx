@@ -156,7 +156,7 @@ export function CheckoutFormWrapper({
       colorPrimary: "#000000",
       colorBackground: "#ffffff",
       colorText: "#000000",
-      colorDanger: "#df1b41",
+      colorDanger: "#ff0000",
       fontFamily: "'FeatureMono', monospace",
       focusBoxShadow: "none",
       borderRadius: "0px",
@@ -164,7 +164,7 @@ export function CheckoutFormWrapper({
     },
     rules: {
       ".Input": {
-        border: "1px solid #B4B4B4",
+        border: "1px solid #000000",
         boxShadow: "none",
         padding: "8px 16px",
       },
@@ -173,13 +173,13 @@ export function CheckoutFormWrapper({
         outline: "none",
       },
       ".Input::placeholder": {
-        color: "#B4B4B4",
+        color: "#767676",
       },
       ".Label": {
         textTransform: "uppercase",
       },
       ".Label--focused": {
-        color: "#B4B4B4",
+        color: "#000000",
       },
       ".TabLabel": {
         textTransform: "lowercase",
