@@ -109,6 +109,7 @@
     "change country": "change country",
     "text": "You are currently shipping to {currentCountry} and your order will be billed in {currency}.",
     "search location": "search location",
+    "clear search": "clear search",
     "language": "language",
     "not-found": "sorry, we couldn't find results for your search."
   },
