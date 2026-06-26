@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { COUNTRIES_BY_REGION, LANGUAGE_ID_TO_LOCALE } from "@/constants";
+import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -19,11 +20,11 @@ export function CountriesContent({ className }: { className?: string }) {
   const [openSection, setOpenSection] = useState<number | null>(null);
   const regionsWithCountries = Object.entries(COUNTRIES_BY_REGION);
   const t = useTranslations("countries-popup");
+  const tNav = useTranslations("navigation");
 
   const { filteredCountries, query, searchQuery, handleSearch } =
     useSearchCountries();
-  const { currentCountry, languageId, closeCountryPopup } =
-    useTranslationsStore((s) => s);
+  const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const {
     languagesForCurrentCountry,
     handleChangeLocaleOnly,
@@ -40,8 +41,17 @@ export function CountriesContent({ className }: { className?: string }) {
     <div className={cn("flex h-full flex-col justify-between", className)}>
       <div className="space-y-10 overflow-y-auto">
         <div className="sticky top-0 flex items-center justify-between bg-bgColor">
-          <Text variant="uppercase">{t("change country")}</Text>
-          <Button onClick={closeCountryPopup}>[x]</Button>
+          <DialogPrimitives.Title asChild>
+            <Text variant="uppercase">{t("change country")}</Text>
+          </DialogPrimitives.Title>
+          <DialogPrimitives.Close asChild>
+            <Button
+              aria-label={tNav("close")}
+              className="flex min-h-11 min-w-11 items-center justify-center"
+            >
+              [x]
+            </Button>
+          </DialogPrimitives.Close>
         </div>
 
         <div className="space-y-8">
