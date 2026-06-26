@@ -26,11 +26,15 @@ function hasLowercaseLetter(text: string): boolean {
   return /\p{Ll}/u.test(text);
 }
 
+function hasUppercaseLetter(text: string): boolean {
+  return /\p{Lu}/u.test(text);
+}
+
 function isSubsectionTitle(plain: string): boolean {
   if (plain.length === 0 || plain.length > SUBSECTION_TITLE_MAX_LENGTH) {
     return false;
   }
-  return !hasLowercaseLetter(plain);
+  return hasUppercaseLetter(plain) && !hasLowercaseLetter(plain);
 }
 
 const MarkdownParagraph = ({
