@@ -55,8 +55,7 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
               onClick={() => setView(tab.value)}
               className={cn("w-full uppercase", {
                 "border-b border-textColor": view === tab.value,
-                "border-b border-textInactiveColor text-textInactiveColor":
-                  view !== tab.value,
+                "border-b border-textInactiveColor": view !== tab.value,
               })}
             >
               {t(tab.labelKey)}

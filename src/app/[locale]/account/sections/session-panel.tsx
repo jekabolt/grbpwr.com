@@ -60,7 +60,7 @@ export function AccountSessionPanel({ account }: Props) {
             <Text variant="uppercase">
               {account.firstName} {account.lastName}
             </Text>
-            <Text variant="inactive">{account.email}</Text>
+            <Text>{account.email}</Text>
           </div>
         </div>
         <div className="space-y-5 lg:space-y-3">
@@ -90,7 +90,7 @@ export function AccountSessionPanel({ account }: Props) {
         </div>
         <Button
           type="button"
-          className="self-start uppercase text-textInactiveColor hover:text-textColor"
+          className="self-start uppercase"
           onClick={logout}
         >
           {t("log out")}

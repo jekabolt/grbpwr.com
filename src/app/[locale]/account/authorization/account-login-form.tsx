@@ -273,7 +273,7 @@ function EmailStep({
         </div>
       )}
       <div>
-        <Text variant="inactive" className="text-center uppercase">
+        <Text className="text-center uppercase">
           {t.rich("email_consent_notice", {
             privacy: (chunks) => (
               <Link
@@ -355,7 +355,7 @@ function CodeStep({
                 ? `${t("resend code in")} ${resendSeconds}`
                 : `${t("resend code")}`}
             </Button>
-            <Text variant="uppercase" className="text-textInactiveColor">
+            <Text variant="uppercase">
               {t("or continue using the link sent to your email")}
             </Text>
             <Button
