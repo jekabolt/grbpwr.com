@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from "react";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
+import { blurhashToBase64 } from "blurhash-base64";
+import { useTranslations } from "next-intl";
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -53,20 +54,28 @@ function ArchiveMediaGridItem({
   );
 }
 
-export default function PageComponent({
-  archive,
+function MainMediaVideo({
+  item,
+  heading,
 }: {
-  archive?: common_ArchiveFull;
+  item: NonNullable<common_ArchiveFull["mainMedia"]>[number];
+  heading: string;
 }) {
   const t = useTranslations("archive");
-  const { languageId } = useTranslationsStore((state) => state);
-  const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const currentYear = new Date().getFullYear();
-  const currentTranslation =
-    archive?.archiveList?.translations?.find(
-      (t) => t.languageId === languageId,
-    ) || archive?.archiveList?.translations?.[0];
+  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const reduce = useMediaQuery("(prefers-reduced-motion: reduce)");
+
+  // The force-static HTML ships `autoPlay` present, so pause via the ref on
+  // mount when reduce-motion is on — flipping the prop alone won't stop an
+  // already-playing video pre-reconcile.
+  useEffect(() => {
+    if (reduce && videoRef.current) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [reduce]);
 
   const toggleSound = () => {
     if (videoRef.current) {
@@ -74,6 +83,75 @@ export default function PageComponent({
       setIsMuted(!isMuted);
     }
   };
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play();
+      setIsPlaying(true);
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const controlClassName =
+    "block min-h-11 min-w-11 px-2.5 text-center leading-[44px] uppercase text-white mix-blend-difference";
+
+  return (
+    <div className="relative aspect-video h-full w-full overflow-hidden lg:h-[80vh]">
+      <video
+        ref={videoRef}
+        src={item.media?.thumbnail?.mediaUrl || ""}
+        className="h-full w-full object-cover"
+        poster={
+          item.media?.blurhash
+            ? blurhashToBase64(item.media.blurhash)
+            : undefined
+        }
+        aria-label={t("videoLabel", { heading })}
+        autoPlay={!reduce}
+        playsInline
+        controls={false}
+        muted
+        loop
+        preload="metadata"
+      >
+        {t("videoUnsupported")}
+      </video>
+      <div className="absolute bottom-2.5 right-2.5 flex gap-2">
+        <Button
+          onClick={togglePlay}
+          className={controlClassName}
+          aria-label={isPlaying ? t("pause") : t("play")}
+        >
+          {isPlaying ? t("pause") : t("play")}
+        </Button>
+        <Button
+          onClick={toggleSound}
+          className={controlClassName}
+          aria-label={isMuted ? t("unmuteAria") : t("muteAria")}
+        >
+          {isMuted ? t("soundOn") : t("soundOff")}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default function PageComponent({
+  archive,
+}: {
+  archive?: common_ArchiveFull;
+}) {
+  const t = useTranslations("archive");
+  const { languageId } = useTranslationsStore((state) => state);
+  const currentYear = new Date().getFullYear();
+  const currentTranslation =
+    archive?.archiveList?.translations?.find(
+      (t) => t.languageId === languageId,
+    ) || archive?.archiveList?.translations?.[0];
 
   return (
     <div className="w-full space-y-10 text-textColor lg:min-h-screen lg:space-y-14">
@@ -101,32 +179,11 @@ export default function PageComponent({
         const isVideoItem = isVideo(item.media?.thumbnail?.mediaUrl);
         if (isVideoItem) {
           return (
-            <div
+            <MainMediaVideo
               key={item.id}
-              className="relative aspect-video h-full w-full overflow-hidden lg:h-[80vh]"
-            >
-              <video
-                src={item.media?.thumbnail?.mediaUrl || ""}
-                className="h-full w-full object-cover"
-                poster={item.media?.thumbnail?.mediaUrl}
-                autoPlay
-                playsInline
-                controls={false}
-                muted
-                loop
-                preload="metadata"
-                ref={videoRef}
-              >
-                Your browser does not support the video tag.
-              </video>
-              <Button
-                onClick={toggleSound}
-                className="absolute bottom-2.5 right-2.5 uppercase text-white mix-blend-difference"
-                aria-label={isMuted ? "unmute" : "mute"}
-              >
-                {isMuted ? "sound on" : "sound off"}
-              </Button>
-            </div>
+              item={item}
+              heading={currentTranslation?.heading || ""}
+            />
           );
         }
         return (
