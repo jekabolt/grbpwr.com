@@ -61,7 +61,7 @@ export function UserLocationTrigger({
         type="button"
         variant="underline"
         disabled={pending}
-        className="shrink-0 whitespace-nowrap uppercase"
+        className="inline-flex min-h-[44px] shrink-0 items-center whitespace-nowrap uppercase"
         onClick={onClick ?? openCountryPopup}
       >
         {buttonLabel ?? `${currentCountry.name} / ${currencySymbol}`}

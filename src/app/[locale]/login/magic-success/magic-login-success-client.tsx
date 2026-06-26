@@ -98,7 +98,11 @@ export function MagicLoginSuccessClient() {
             {tAccount("magic_login_success_title")}
           </Text>
           <Text>{tAccount("magic_login_success_subtitle")}</Text>
-          <Button asChild variant="underline" className="mt-4 uppercase">
+          <Button
+            asChild
+            variant="underline"
+            className="mt-4 inline-flex min-h-[44px] items-center uppercase"
+          >
             <Link href={destination} replace>
               {tAccount("continue")}
             </Link>

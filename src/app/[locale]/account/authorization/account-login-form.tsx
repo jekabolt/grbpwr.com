@@ -299,7 +299,7 @@ function EmailStep({
           type="button"
           variant="main"
           size="lg"
-          className="w-full uppercase"
+          className="flex min-h-[44px] w-full items-center justify-center uppercase"
           loading={pending}
           disabled={pending || !isValidEmail}
           onClick={onContinue}
@@ -314,7 +314,7 @@ function EmailStep({
           </Text>
           <Button
             variant="simpleReverseWithBorder"
-            className="w-full uppercase"
+            className="flex min-h-[44px] w-full items-center justify-center uppercase"
             size="lg"
             type="button"
             onClick={onCheckoutAsGuest}
@@ -422,7 +422,7 @@ function CodeStep({
               type="button"
               variant="main"
               size="lg"
-              className="w-full uppercase"
+              className="flex min-h-[44px] w-full items-center justify-center uppercase"
               loading={pending}
               disabled={pending || resendSeconds > 0}
               onClick={onResend}
@@ -437,7 +437,7 @@ function CodeStep({
             <Button
               type="button"
               variant="underline"
-              className="mx-auto w-fit text-center uppercase"
+              className="inline-flex min-h-[44px] w-fit items-center text-center uppercase"
               disabled={pending}
               onClick={onChangeEmail}
             >
