@@ -549,7 +549,7 @@
     },
     "email": {
       "invalid": "email non valida",
-      "max": "l'email può contenere al massimo 40 caratteri",
+      "max": "l'email può contenere al massimo 254 caratteri",
       "required": "l'email è obbligatoria"
     },
     "additionalAddress": {

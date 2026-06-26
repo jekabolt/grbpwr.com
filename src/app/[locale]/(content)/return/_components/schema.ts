@@ -4,7 +4,7 @@ import { z } from "zod";
 export const refundForm = z.object({
     email: z
         .string()
-        .max(40, errorMessages.email.max)
+        .max(254, errorMessages.email.max)
         .email(errorMessages.email.invalid)
         .trim(),
     orderUuid: z.string().trim().min(1, "required"),

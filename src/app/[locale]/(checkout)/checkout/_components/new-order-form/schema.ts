@@ -32,7 +32,7 @@ const addressFields = {
 };
 
 const baseCheckoutSchema = z.object({
-  email: z.string().max(40, errorMessages.email.max).email(errorMessages.email.invalid).trim(),
+  email: z.string().max(254, errorMessages.email.max).email(errorMessages.email.invalid).trim(),
   subscribe: z.boolean().optional(),
   termsOfService: z.boolean().refine(Boolean, {
     message: "you must accept the terms & conditions",

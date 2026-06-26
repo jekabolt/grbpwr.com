@@ -439,7 +439,7 @@ export const errorMessages = {
   },
   email: {
     invalid: "invalid email",
-    max: "email must contain at most 40 characters",
+    max: "email must contain at most 254 characters",
   },
 };
 
