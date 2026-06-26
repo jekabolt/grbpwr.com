@@ -60,7 +60,7 @@ export default function FlexibleLayout({
       {displayFooter && <Footer theme={theme} accountPanel={accountPanel} />}
       {(headerType === "catalog" || headerType === "main") && (
         <CartPopup>
-          <div className="h-full overflow-y-scroll">
+          <div className="min-h-0 flex-1 overflow-y-auto">
             <CartProductsList />
           </div>
           <CartTotalPrice />
