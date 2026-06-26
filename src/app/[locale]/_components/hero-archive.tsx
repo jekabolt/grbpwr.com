@@ -37,7 +37,10 @@ export function HeroArchive({
       ) {
         container.scrollTo({
           left: 250,
-          behavior: "smooth",
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches
+            ? "auto"
+            : "smooth",
         });
         hasScrolledRef.current = true;
       }
