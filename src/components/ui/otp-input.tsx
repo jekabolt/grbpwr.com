@@ -8,6 +8,7 @@ import {
   type FocusEvent,
   type KeyboardEvent,
 } from "react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import Input from "@/components/ui/input";
@@ -35,6 +36,7 @@ export function OtpInput({
   onChange,
   onComplete,
 }: OtpInputProps) {
+  const t = useTranslations("accessibility");
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   const commit = useCallback(
@@ -100,7 +102,7 @@ export function OtpInput({
     <div
       id={id}
       role="group"
-      aria-label="One-time code"
+      aria-label={t("one-time code")}
       className={cn("flex w-full min-w-0 gap-2.5 lg:gap-2", className)}
       onPaste={handlePaste}
     >
@@ -116,7 +118,7 @@ export function OtpInput({
             inputMode="numeric"
             autoComplete={i === 0 ? "one-time-code" : "off"}
             name={`otp-${i}`}
-            aria-label={`Digit ${i + 1} of ${LENGTH}`}
+            aria-label={t("code digit", { index: i + 1, length: LENGTH })}
             disabled={disabled}
             value={char}
             maxLength={1}

@@ -58,6 +58,7 @@
     "select saved address": "select saved address",
     "order product thumbnail alt": "product",
     "failed to load addresses": "failed to load addresses",
+    "failed to load orders": "failed to load orders",
     "failed to delete address": "failed to delete address",
     "failed to update address": "failed to update address",
     "invalid email": "invalid email",
@@ -899,7 +900,9 @@
   "accessibility": {
     "mobile menu": "grbpwr mobile menu",
     "notify me dialog": "grbpwr notify me",
-    "reason label": "reason"
+    "reason label": "reason",
+    "one-time code": "one-time code",
+    "code digit": "digit {index} of {length}"
   },
   "empty-hero": {
     "shop now": "shop now"

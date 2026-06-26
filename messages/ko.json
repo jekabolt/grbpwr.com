@@ -59,6 +59,7 @@
     "select saved address": "저장된 주소 선택",
     "order product thumbnail alt": "제품",
     "failed to load addresses": "주소를 불러오지 못했습니다",
+    "failed to load orders": "주문을 불러오지 못했습니다",
     "failed to delete address": "주소를 삭제하지 못했습니다",
     "failed to update address": "주소를 업데이트하지 못했습니다",
     "invalid email": "유효하지 않은 이메일입니다",
@@ -841,7 +842,9 @@
   "accessibility": {
     "mobile menu": "grbpwr 모바일 메뉴",
     "notify me dialog": "grbpwr 알림 대화상자",
-    "reason label": "이유"
+    "reason label": "이유",
+    "one-time code": "일회용 코드",
+    "code digit": "{length}자리 중 {index}번째"
   },
   "empty-hero": {
     "shop now": "지금 쇼핑하기"

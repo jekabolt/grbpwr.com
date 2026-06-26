@@ -59,6 +59,7 @@
     "select saved address": "gespeicherte adresse auswählen",
     "order product thumbnail alt": "produkt",
     "failed to load addresses": "adressen konnten nicht geladen werden",
+    "failed to load orders": "bestellungen konnten nicht geladen werden",
     "failed to delete address": "adresse konnte nicht gelöscht werden",
     "failed to update address": "adresse konnte nicht aktualisiert werden",
     "invalid email": "ungültige e-mail",
@@ -842,7 +843,9 @@
   "accessibility": {
     "mobile menu": "grbpwr mobiles menü",
     "notify me dialog": "grbpwr benachrichtige mich",
-    "reason label": "grund"
+    "reason label": "grund",
+    "one-time code": "einmalcode",
+    "code digit": "ziffer {index} von {length}"
   },
   "empty-hero": {
     "shop now": "Jetzt einkaufen"
