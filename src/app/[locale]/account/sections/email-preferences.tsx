@@ -42,7 +42,7 @@ export function EmailPreferences() {
 
         <div className="flex w-full items-center justify-between">
           <div className="flex w-full flex-row justify-between lg:flex-col lg:justify-start lg:gap-6">
-            <Text variant="uppercase">{t("email preferences")}</Text>
+            <Text variant="uppercase">{t("shopping preference")}</Text>
             <NewArrivals
               pending={pending}
               value={shoppingPreference}
