@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { sendOutOfStockClickEvent } from "@/lib/analitycs/product-engagement";
 import { sendSizeSelectedEvent } from "@/lib/analitycs/sizes";
 import { cn } from "@/lib/utils";
@@ -7,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { HoverText } from "@/components/ui/hover-text";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
-import { useTranslations } from "next-intl";
 
 type ProductContext = {
   productId: string;
@@ -85,7 +86,7 @@ export function SizePicker({
       <div
         className={cn(
           {
-            "grid grid-cols-4 gap-x-3 gap-y-7": view === "grid",
+            "grid grid-cols-4 gap-x-3 gap-y-4": view === "grid",
             "flex w-full flex-row flex-wrap items-center justify-center gap-5":
               view === "line",
             "flex items-center justify-start": isOneSize,
@@ -110,14 +111,17 @@ export function SizePicker({
               type="button"
               disabled={isDisabled}
               variant={isOutOfStock ? "strikeThrough" : "default"}
-              className={cn("leading-none", {
-                "border-b border-transparent": !isSingleDisplayedSize,
-                "border-textColor":
-                  !isSingleDisplayedSize && isActive && !isOutOfStock,
-                "hover:border-textColor":
-                  !isSingleDisplayedSize && !isActive && !isOutOfStock,
-                "px-3 py-0.5": view === "line" && !isOneSize,
-              })}
+              className={cn(
+                "inline-flex min-h-11 min-w-11 items-center justify-center leading-none",
+                {
+                  "border-b border-transparent": !isSingleDisplayedSize,
+                  "border-textColor":
+                    !isSingleDisplayedSize && isActive && !isOutOfStock,
+                  "hover:border-textColor":
+                    !isSingleDisplayedSize && !isActive && !isOutOfStock,
+                  "px-3 py-0.5": view === "line" && !isOneSize,
+                },
+              )}
               key={id}
               onClick={() => handleSizeSelect(id)}
               onPointerDown={() => handleAnalytics(id, name, isOutOfStock)}

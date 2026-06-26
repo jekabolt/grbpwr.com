@@ -78,13 +78,13 @@ export function MobileSelectSize({
                   <Button
                     type="button"
                     aria-label={tNav("close")}
-                    className="min-h-11 min-w-11 inline-flex items-center justify-center"
+                    className="inline-flex min-h-11 min-w-11 items-center justify-center"
                   >
                     <Text variant="uppercase">[x]</Text>
                   </Button>
                 </DialogPrimitives.Close>
               </div>
-              <div className="grid grid-cols-4 gap-x-2 gap-y-7">
+              <div className="grid grid-cols-4 gap-x-2 gap-y-4">
                 {sizeNames?.map(({ name, id }) => {
                   const isOutOfStock =
                     outOfStock?.[id] || sizeQuantity?.[id] === 0;
@@ -94,7 +94,9 @@ export function MobileSelectSize({
                       type="button"
                       variant={isOutOfStock ? "strikeThrough" : "default"}
                       className={
-                        isOutOfStock ? "cursor-pointer uppercase" : "uppercase"
+                        isOutOfStock
+                          ? "inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center uppercase"
+                          : "inline-flex min-h-11 min-w-11 items-center justify-center uppercase"
                       }
                       key={id}
                       onClick={() => handleSizeClick(id)}
