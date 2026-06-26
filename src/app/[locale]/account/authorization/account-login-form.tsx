@@ -263,7 +263,9 @@ function EmailStep({
         )}
       >
         <div className="flex w-full flex-col items-center gap-6">
-          <Text variant="uppercase">{t("login")}</Text>
+          <Text variant="uppercase" component="h1">
+            {t("login")}
+          </Text>
           <UserLocationTrigger
             pending={pending}
             showLabel={false}
@@ -272,7 +274,9 @@ function EmailStep({
           />
         </div>
         <div>
-          <Text variant="uppercase">{t("email")}</Text>
+          <Text variant="uppercase" component="label" htmlFor="email">
+            {t("email")}
+          </Text>
           <Input
             name="email"
             type="email"
@@ -296,6 +300,7 @@ function EmailStep({
           variant="main"
           size="lg"
           className="w-full uppercase"
+          loading={pending}
           disabled={pending || !isValidEmail}
           onClick={onContinue}
         >
