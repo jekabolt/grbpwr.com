@@ -167,7 +167,7 @@ export function Ads({
                     }
                     autoPlay={isMobile && isLeftVideo}
                   />
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 mix-blend-exclusion">
                     <Text
                       variant="uppercase"
                       className={cn({
@@ -207,7 +207,7 @@ export function Ads({
                     }
                     autoPlay={isMobile && isRightVideo}
                   />
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor mix-blend-exclusion">
                     <Text
                       variant="uppercase"
                       className={cn({
