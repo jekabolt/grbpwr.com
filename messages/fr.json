@@ -910,5 +910,18 @@
       "SLIGHTLY_LARGE": "Légèrement grand",
       "RUNS_LARGE": "Taille grand"
     }
+  },
+  "archive": {
+    "imageAlt": "{heading} image {index}",
+    "featuredImageAlt": "Image d'archive en vedette",
+    "empty": "Aucune archive pour le moment",
+    "videoLabel": "{heading}",
+    "videoUnsupported": "Votre navigateur ne prend pas en charge la balise vidéo.",
+    "soundOn": "son activé",
+    "soundOff": "son désactivé",
+    "muteAria": "couper le son",
+    "unmuteAria": "activer le son",
+    "play": "lecture",
+    "pause": "pause"
   }
 }

@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { common_ArchiveList } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { resolveArchiveMedia } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Text } from "@/components/ui/text";
 
 import { ArchiveMediaThumbnail } from "./archive-media-thumbnail";
@@ -40,11 +42,11 @@ function ArchiveGridItem({
           blurhash={item.thumbnail?.media?.blurhash}
           playOnHover={!isMobile && isVideoItem && isHovered}
           autoPlay={isMobile && isVideoItem}
-          fit="fill"
+          fit="cover"
         />
       </div>
       <div className="min-w-0 max-w-full overflow-hidden">
-        <Text className="line-clamp-2 break-all uppercase text-textColor group-hover:text-highlightColor">
+        <Text className="line-clamp-2 break-words uppercase text-textColor group-hover:underline">
           {currentTranslation?.heading}
         </Text>
       </div>
@@ -55,17 +57,35 @@ function ArchiveGridItem({
 export function ArchiveGrid({
   items,
   languageId,
+  isFetchingNextPage,
 }: {
   items: common_ArchiveList[];
   languageId: number;
+  isFetchingNextPage?: boolean;
 }) {
+  const t = useTranslations("archive");
+
   return (
     <div className="h-full px-2.5 pb-2.5 pt-20 lg:px-7 lg:pt-24">
-      <div className="grid min-w-0 grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-10">
-        {items.map((item) => (
-          <ArchiveGridItem key={item.id} item={item} languageId={languageId} />
-        ))}
-      </div>
+      {items.length === 0 ? (
+        <div className="flex h-full items-center justify-center">
+          <Text variant="uppercase">{t("empty")}</Text>
+        </div>
+      ) : (
+        <div className="grid min-w-0 grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-10">
+          {items.map((item) => (
+            <ArchiveGridItem
+              key={item.id}
+              item={item}
+              languageId={languageId}
+            />
+          ))}
+          {isFetchingNextPage &&
+            Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={`skeleton-${i}`} className="aspect-[3/4] w-full" />
+            ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -910,5 +910,18 @@
       "SLIGHTLY_LARGE": "やや大きめ",
       "RUNS_LARGE": "大きめ"
     }
+  },
+  "archive": {
+    "imageAlt": "{heading} 画像 {index}",
+    "featuredImageAlt": "注目のアーカイブ画像",
+    "empty": "アーカイブはまだありません",
+    "videoLabel": "{heading}",
+    "videoUnsupported": "お使いのブラウザは動画タグに対応していません。",
+    "soundOn": "サウンドオン",
+    "soundOff": "サウンドオフ",
+    "muteAria": "ミュート",
+    "unmuteAria": "ミュート解除",
+    "play": "再生",
+    "pause": "一時停止"
   }
 }

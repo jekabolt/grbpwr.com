@@ -910,5 +910,18 @@
       "SLIGHTLY_LARGE": "약간 큼",
       "RUNS_LARGE": "크게 맞음"
     }
+  },
+  "archive": {
+    "imageAlt": "{heading} 이미지 {index}",
+    "featuredImageAlt": "추천 아카이브 이미지",
+    "empty": "아직 아카이브가 없습니다",
+    "videoLabel": "{heading}",
+    "videoUnsupported": "브라우저가 비디오 태그를 지원하지 않습니다.",
+    "soundOn": "소리 켜기",
+    "soundOff": "소리 끄기",
+    "muteAria": "음소거",
+    "unmuteAria": "음소거 해제",
+    "play": "재생",
+    "pause": "일시정지"
   }
 }

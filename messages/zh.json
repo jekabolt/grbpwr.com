@@ -910,5 +910,18 @@
       "SLIGHTLY_LARGE": "略偏大",
       "RUNS_LARGE": "偏大"
     }
+  },
+  "archive": {
+    "imageAlt": "{heading} 图片 {index}",
+    "featuredImageAlt": "精选档案图片",
+    "empty": "暂无档案",
+    "videoLabel": "{heading}",
+    "videoUnsupported": "您的浏览器不支持视频标签。",
+    "soundOn": "开启声音",
+    "soundOff": "关闭声音",
+    "muteAria": "静音",
+    "unmuteAria": "取消静音",
+    "play": "播放",
+    "pause": "暂停"
   }
 }

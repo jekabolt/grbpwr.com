@@ -909,5 +909,18 @@
   },
   "empty-hero": {
     "shop now": "shop now"
+  },
+  "archive": {
+    "imageAlt": "{heading} image {index}",
+    "featuredImageAlt": "Featured archive image",
+    "empty": "No archives yet",
+    "videoLabel": "{heading}",
+    "videoUnsupported": "Your browser does not support the video tag.",
+    "soundOn": "sound on",
+    "soundOff": "sound off",
+    "muteAria": "mute",
+    "unmuteAria": "unmute",
+    "play": "play",
+    "pause": "pause"
   }
 }

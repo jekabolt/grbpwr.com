@@ -11,18 +11,14 @@ import { useInView } from "react-intersection-observer";
 
 import { useServerActionsContext } from "@/components/contexts/ServerActionsContext";
 
-import { ViewMode } from "./archive-layout";
 import { HorizontalGrid } from "./horizontal-grid";
-import { VerticalCarousel } from "./vertical-carousel";
 
 export function Galery({
   archives,
   total,
-  viewMode,
 }: {
   archives: common_ArchiveList[];
   total: number;
-  viewMode: ViewMode;
 }) {
   const { GetArchivesPaged } = useServerActionsContext();
   const { ref, inView } = useInView();
@@ -61,11 +57,10 @@ export function Galery({
 
   return (
     <div className="w-full">
-      {viewMode === "horizontal" ? (
-        <HorizontalGrid archives={items} />
-      ) : (
-        <VerticalCarousel archives={items} />
-      )}
+      <HorizontalGrid
+        archives={items}
+        isFetchingNextPage={isFetchingNextPage}
+      />
       {hasNextPage && !isFetchingNextPage && <div ref={ref} />}
     </div>
   );

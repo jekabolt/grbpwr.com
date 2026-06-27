@@ -910,5 +910,18 @@
       "SLIGHTLY_LARGE": "Leggermente largo",
       "RUNS_LARGE": "Veste largo"
     }
+  },
+  "archive": {
+    "imageAlt": "{heading} immagine {index}",
+    "featuredImageAlt": "Immagine d'archivio in evidenza",
+    "empty": "Nessun archivio ancora",
+    "videoLabel": "{heading}",
+    "videoUnsupported": "Il tuo browser non supporta il tag video.",
+    "soundOn": "audio attivo",
+    "soundOff": "audio disattivato",
+    "muteAria": "disattiva audio",
+    "unmuteAria": "attiva audio",
+    "play": "riproduci",
+    "pause": "pausa"
   }
 }

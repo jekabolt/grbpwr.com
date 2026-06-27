@@ -25,26 +25,33 @@ export async function generateMetadata({
   const { archiveParams, locale } = await params;
   const localeId = LANGUAGE_CODE_TO_ID[locale];
   const [heading, tag, id] = archiveParams;
+  const path = `/timeline/${archiveParams.join("/")}`;
+
+  const archiveId = Number.parseInt(id, 10);
+  if (Number.isNaN(archiveId)) {
+    return generateCommonMetadata({ locale, path });
+  }
 
   const archiveResponse = await serviceClient.GetArchive({
     heading,
     tag,
-    id: parseInt(id),
+    id: archiveId,
   });
 
   const archive = archiveResponse.archive as common_ArchiveFull;
   const currentTranslation =
-    archive.archiveList?.translations?.find((t) => t.languageId === localeId) ||
-    archive.archiveList?.translations?.[0];
+    archive?.archiveList?.translations?.find(
+      (t) => t.languageId === localeId,
+    ) || archive?.archiveList?.translations?.[0];
 
   return generateCommonMetadata({
     title:
       currentTranslation?.heading?.toUpperCase() || "heading".toUpperCase(),
     description: currentTranslation?.description || "description",
     locale,
-    path: `/timeline/${archiveParams.join("/")}`,
+    path,
     ogParams: {
-      imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
+      imageUrl: archive?.media?.[0]?.media?.thumbnail?.mediaUrl || undefined,
       imageAlt: currentTranslation?.heading || "",
     },
   });
@@ -56,33 +63,22 @@ export default async function Page({ params }: ArchivePageParams) {
   const { archiveParams } = await params;
   const t = await getTranslations("navigation");
 
-  // let nextArchive: common_ArchiveList | undefined;
-
   if (archiveParams.length !== 3) {
     notFound();
   }
 
   const [heading, tag, id] = archiveParams;
+  const archiveId = Number.parseInt(id, 10);
+
+  if (Number.isNaN(archiveId)) {
+    notFound();
+  }
+
   const { archive } = await serviceClient.GetArchive({
     heading,
     tag,
-    id: parseInt(id),
+    id: archiveId,
   });
-
-  // if (archive?.archiveList?.nextSlug) {
-  //   const parts = archive.archiveList?.nextSlug.split("/");
-  //   const nextParams = parts.slice(2);
-
-  //   const [nextHeading, nextTag, nextId] = nextParams;
-
-  //   const { archive: nextArchivee } = await serviceClient.GetArchive({
-  //     heading: nextHeading,
-  //     tag: nextTag,
-  //     id: parseInt(nextId),
-  //   });
-
-  //   nextArchive = nextArchivee?.archiveList;
-  // }
 
   return (
     <>
@@ -98,9 +94,6 @@ export default async function Page({ params }: ArchivePageParams) {
       >
         <div className="space-y-20 px-2.5 pt-20 lg:space-y-10 lg:px-7">
           <PageComponent archive={archive} />
-          {/* <div className="h-full lg:h-screen">
-          <FullSizeItem archive={nextArchive} className="w-60 lg:w-[34rem]" />
-        </div> */}
         </div>
       </FlexibleLayout>
     </>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { blurhashToBase64 } from "blurhash-base64";
 import ImageComponent from "@/components/ui/image";
 import { resolveArchiveMedia } from "@/lib/utils";
 
@@ -45,12 +46,12 @@ export function ArchiveMediaThumbnail({
         ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover"
         src={media.src}
-        poster={media.poster}
+        poster={media.poster ?? (blurhash ? blurhashToBase64(blurhash) : undefined)}
         autoPlay={autoPlay}
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         aria-label={alt}
       />
     );
