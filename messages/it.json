@@ -478,7 +478,7 @@
     "sizing": "taglie",
     "characteristics": "caratteristiche",
     "care": "cura",
-    "gender": "sig.na, sig.ra, ms",
+    "ms": "sig.na, sig.ra, ms",
     "mx": "mx",
     "mr": "sig.",
     "i'd rather not say": "preferisco non dirlo",
@@ -595,7 +595,8 @@
     "cookie settings": "impostazioni cookie",
     "frequently asked questions": "domande frequenti",
     "placing an order": "effettuare un ordine, tracciamento dell'ordine, politica dei resi, servizi post-vendita e sviluppo sostenibile.",
-    "membership policy": "politica di membership"
+    "membership policy": "politica di membership",
+    "content_load_error": "impossibile caricare il contenuto"
   },
   "colors": {
     "black": "nero",
@@ -642,6 +643,7 @@
     "notify_me_success": "ti avviseremo quando questo articolo sarà di nuovo disponibile.",
     "invalid_email": "inserisci un indirizzo email valido",
     "email_copied": "email copiata",
+    "copy_email": "copia email",
     "cart_outdated": "il tuo carrello è obsoleto",
     "cart_modified": "alcuni articoli sono cambiati — il tuo carrello è stato aggiornato",
     "cart_unavailable": "gli articoli nel tuo carrello non sono più disponibili",

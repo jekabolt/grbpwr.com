@@ -71,7 +71,7 @@ export const options = {
 }
 
 export const civility = [
-    "gender",
+    "ms",
     "mx",
     "mr",
     "i'd rather not say",

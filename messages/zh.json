@@ -478,7 +478,7 @@
     "sizing": "尺码",
     "characteristics": "特性",
     "care": "保养",
-    "gender": "小姐, 女士, Ms",
+    "ms": "小姐, 女士, Ms",
     "mx": "Mx",
     "mr": "先生",
     "i'd rather not say": "不愿透露",
@@ -595,7 +595,8 @@
     "cookie settings": "cookie设置",
     "frequently asked questions": "常见问题",
     "placing an order": "下订单、订单跟踪、退货政策、售后服务和可持续发展。",
-    "membership policy": "会员政策"
+    "membership policy": "会员政策",
+    "content_load_error": "无法加载内容"
   },
   "colors": {
     "black": "黑色",
@@ -642,6 +643,7 @@
     "notify_me_success": "该商品补货后我们会通知您。",
     "invalid_email": "请输入有效的邮箱地址",
     "email_copied": "邮箱已复制",
+    "copy_email": "复制邮箱",
     "cart_outdated": "您的购物车已过期",
     "cart_modified": "部分商品已变更 — 您的购物车已更新",
     "cart_unavailable": "您购物车中的商品已不再可用",

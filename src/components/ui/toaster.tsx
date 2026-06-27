@@ -22,10 +22,14 @@ export function EmailToaster({
   children,
   className,
   title,
+  email,
+  onCopy,
 }: {
   children: React.ReactNode;
   className?: string;
   title: "email";
+  email: string;
+  onCopy?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const isEmail = title === "email";
@@ -33,8 +37,12 @@ export function EmailToaster({
   return (
     <>
       <Button
-        className={cn("outline-none", className)}
-        onClick={() => setOpen(true)}
+        className={className}
+        aria-label={`${tToaster("copy_email")} ${email}`}
+        onClick={() => {
+          onCopy?.();
+          setOpen(true);
+        }}
       >
         {children}
       </Button>

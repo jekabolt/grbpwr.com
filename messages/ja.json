@@ -478,7 +478,7 @@
     "sizing": "サイズ",
     "characteristics": "特徴",
     "care": "お手入れ",
-    "gender": "さん, 様, Ms",
+    "ms": "さん, 様, Ms",
     "mx": "Mx",
     "mr": "様",
     "i'd rather not say": "回答しない",
@@ -595,7 +595,8 @@
     "cookie settings": "クッキー設定",
     "frequently asked questions": "よくある質問",
     "placing an order": "注文方法、注文追跡、返品ポリシー、アフターサービス、持続可能な開発について。",
-    "membership policy": "メンバーシップポリシー"
+    "membership policy": "メンバーシップポリシー",
+    "content_load_error": "コンテンツを読み込めませんでした"
   },
   "colors": {
     "black": "黒",
@@ -642,6 +643,7 @@
     "notify_me_success": "この商品が再入荷したらお知らせします。",
     "invalid_email": "有効なメールアドレスを入力してください",
     "email_copied": "メールアドレスがコピーされました",
+    "copy_email": "メールアドレスをコピー",
     "cart_outdated": "カートが古くなっています",
     "cart_modified": "一部の商品が変更されました — カートを更新しました",
     "cart_unavailable": "カート内の商品は現在ご利用いただけません",

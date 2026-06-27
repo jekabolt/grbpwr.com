@@ -20,11 +20,13 @@ export default async function ClientServices({
     <FlexibleLayout>
       <div className="h-full space-y-12 px-2.5 pt-8 lg:space-y-32 lg:px-28 lg:pt-32">
         <div className="space-y-8">
-          <Text variant="uppercase">{t("title")}</Text>
-          <Text>
-            {t("welcome")}
-            <br /> {t("description")}
+          <Text component="h1" variant="uppercase">
+            {t("title")}
           </Text>
+          <div className="space-y-3 lg:max-w-2xl">
+            <Text>{t("welcome")}</Text>
+            <Text>{t("description")}</Text>
+          </div>
         </div>
         <div className="space-y-20">
           <div className="flex flex-col justify-between gap-y-12 lg:flex-row">
