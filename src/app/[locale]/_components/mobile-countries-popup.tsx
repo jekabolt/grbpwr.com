@@ -103,7 +103,7 @@ export function MobileCountriesPopup() {
             />
           </div>
 
-          <div className="space-y-4 text-textColor">
+          <div className="mt-8 space-y-4 text-textColor">
             {searchQuery ? (
               <div className="flex flex-col gap-2">
                 {filteredCountries.map((country) => (
