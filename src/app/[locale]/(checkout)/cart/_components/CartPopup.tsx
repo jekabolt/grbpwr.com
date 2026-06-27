@@ -54,12 +54,7 @@ export default function CartPopup({ children }: { children: React.ReactNode }) {
               <div className="flex items-center justify-between">
                 <Text variant="uppercase">{`${t("shopping cart")} ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
                 <DialogPrimitives.Close asChild>
-                  <Button
-                    aria-label={tAccessibility("close cart")}
-                    className="flex min-h-11 min-w-11 items-center justify-center"
-                  >
-                    [x]
-                  </Button>
+                  <Button aria-label={tAccessibility("close cart")}>[x]</Button>
                 </DialogPrimitives.Close>
               </div>
               {!itemsQuantity ? (
