@@ -57,7 +57,8 @@ export default function Sort() {
                   );
                 }
               }}
-              className={cn("block", {
+              aria-pressed={isSelected}
+              className={cn("flex min-h-11 items-center", {
                 underline: isSelected,
               })}
             >
