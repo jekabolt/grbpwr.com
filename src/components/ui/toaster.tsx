@@ -22,10 +22,14 @@ export function EmailToaster({
   children,
   className,
   title,
+  email,
+  onCopy,
 }: {
   children: React.ReactNode;
   className?: string;
   title: "email";
+  email: string;
+  onCopy?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const isEmail = title === "email";
@@ -33,8 +37,12 @@ export function EmailToaster({
   return (
     <>
       <Button
-        className={cn("outline-none", className)}
-        onClick={() => setOpen(true)}
+        className={className}
+        aria-label={`${tToaster("copy_email")} ${email}`}
+        onClick={() => {
+          onCopy?.();
+          setOpen(true);
+        }}
       >
         {children}
       </Button>
@@ -59,17 +67,24 @@ export function SubmissionToaster({
   message,
   duration,
   onOpenChange,
+  intent = "success",
 }: {
   open: boolean;
   message?: string;
   duration?: number;
   onOpenChange: (open: boolean) => void;
+  intent?: "success" | "error";
 }) {
   const persistUntilClosed = duration === Infinity;
+  const tNav = useTranslations("navigation");
+  const isError = intent === "error";
   return (
     <Toast.Root
       className={cn(
-        "flex h-12 cursor-pointer items-center justify-center bg-highlightColor lg:h-8",
+        "flex h-12 cursor-pointer items-center justify-center lg:h-8",
+        // Errors paint the reserved Error token (red fill, ink text); the default
+        // success intent keeps the highlight accent. Ink on #ff0000 ≈ 5.25:1 (AA).
+        isError ? "bg-errorColor" : "bg-highlightColor",
         persistUntilClosed &&
           "justify-between px-2.5 lg:relative lg:justify-center",
       )}
@@ -79,13 +94,20 @@ export function SubmissionToaster({
       onClick={() => onOpenChange(false)}
     >
       <Toast.Title>
-        <Text className="text-center lowercase text-bgColor">{message}</Text>
+        <Text
+          className={cn(
+            "text-center lowercase",
+            isError ? "text-textColor" : "text-bgColor",
+          )}
+        >
+          {message}
+        </Text>
       </Toast.Title>
       {persistUntilClosed && (
         <Toast.Close asChild>
           <Button
             className="text-bgColor lg:absolute lg:right-2 lg:top-1/2 lg:shrink-0 lg:-translate-y-1/2"
-            aria-label="Close"
+            aria-label={tNav("close")}
           >
             [x]
           </Button>

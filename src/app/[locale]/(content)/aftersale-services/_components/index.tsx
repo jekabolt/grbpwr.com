@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { keyboardRestrictions } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -51,6 +51,18 @@ export default function AftersaleForm() {
   const subjectList = selectedTopic
     ? options[selectedTopic as keyof typeof options]
     : [];
+
+  // Clear the subject whenever the topic changes so a stale subject from the
+  // previous topic cannot satisfy min(1) and submit a contradictory pair.
+  // Skip the initial mount to preserve the preset defaultValues.
+  const isInitialTopicMount = useRef(true);
+  useEffect(() => {
+    if (isInitialTopicMount.current) {
+      isInitialTopicMount.current = false;
+      return;
+    }
+    form.resetField("subject");
+  }, [form, selectedTopic]);
 
   const formSteps = [
     {
@@ -188,7 +200,7 @@ function PersonalInfoForm() {
         placeholder={t("enter notes")}
         showCharCount
         maxLength={1500}
-        className="placeholder:uppercase placeholder:text-textInactiveColor"
+        className="placeholder:uppercase placeholder:text-textColor"
       />
     </div>
   );

@@ -41,7 +41,7 @@ export function AccountMobileSectionPage({ account, section }: Props) {
           ) : (
             <Button
               asChild
-              className="justify-self-start px-1 py-2 leading-none"
+              className="justify-self-start -ml-2.5 inline-flex min-h-11 min-w-11 items-center justify-center"
             >
               <Link href="/account">{"<"}</Link>
             </Button>
@@ -53,7 +53,7 @@ export function AccountMobileSectionPage({ account, section }: Props) {
             <Button
               type="button"
               aria-label={tNav("close")}
-              className="justify-self-end leading-none"
+              className="justify-self-end -mr-2.5 inline-flex min-h-11 min-w-11 items-center justify-center"
               onClick={closeAddressEditMode}
             >
               [x]

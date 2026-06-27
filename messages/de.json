@@ -47,6 +47,7 @@
     "subscribe": "abonnieren",
     "unsubscribe": "abbestellen",
     "email preferences": "e-mail-präferenzen",
+    "shopping preference": "einkaufspräferenz",
     "private community": "private community",
     "your access": "ihr zugang",
     "privileges": "vorteile",
@@ -58,6 +59,7 @@
     "select saved address": "gespeicherte adresse auswählen",
     "order product thumbnail alt": "produkt",
     "failed to load addresses": "adressen konnten nicht geladen werden",
+    "failed to load orders": "bestellungen konnten nicht geladen werden",
     "failed to delete address": "adresse konnte nicht gelöscht werden",
     "failed to update address": "adresse konnte nicht aktualisiert werden",
     "invalid email": "ungültige e-mail",
@@ -477,7 +479,7 @@
     "sizing": "Größe",
     "characteristics": "Eigenschaften",
     "care": "Pflege",
-    "gender": "Frl., Fr., Ms",
+    "ms": "Frl., Fr., Ms",
     "mx": "Mx",
     "mr": "Hr.",
     "i'd rather not say": "möchte ich nicht angeben",
@@ -594,7 +596,8 @@
     "cookie settings": "cookie-einstellungen",
     "frequently asked questions": "häufig gestellte fragen",
     "placing an order": "bestellung aufgeben, sendungsverfolgung, rückgaberichtlinien, kundendienst und nachhaltige entwicklung.",
-    "membership policy": "mitgliedschaftsrichtlinie"
+    "membership policy": "mitgliedschaftsrichtlinie",
+    "content_load_error": "inhalt konnte nicht geladen werden"
   },
   "colors": {
     "black": "schwarz",
@@ -641,6 +644,7 @@
     "notify_me_success": "wir benachrichtigen sie, wenn dieser artikel wieder verfügbar ist.",
     "invalid_email": "bitte geben sie eine gültige e-mail-adresse ein",
     "email_copied": "e-mail kopiert",
+    "copy_email": "e-mail kopieren",
     "cart_outdated": "ihr warenkorb ist veraltet",
     "cart_modified": "einige artikel haben sich geändert — ihr warenkorb wurde aktualisiert",
     "cart_unavailable": "die artikel in ihrem warenkorb sind nicht mehr verfügbar",
@@ -677,7 +681,8 @@
     "title": "abmeldung von der liste \"grbpwr\". durch klicken auf abmelden erhalten sie keine marketing-e-mails mehr.",
     "unsubscribe": "abmelden",
     "success": "sie wurden vom newsletter abgemeldet.",
-    "error": "ein fehler ist aufgetreten. bitte versuchen sie es erneut."
+    "error": "ein fehler ist aufgetreten. bitte versuchen sie es erneut.",
+    "explore": "kollektionen entdecken"
   },
   "categories": {
     "outerwear": "oberbekleidung",
@@ -841,7 +846,9 @@
   "accessibility": {
     "mobile menu": "grbpwr mobiles menü",
     "notify me dialog": "grbpwr benachrichtige mich",
-    "reason label": "grund"
+    "reason label": "grund",
+    "one-time code": "einmalcode",
+    "code digit": "ziffer {index} von {length}"
   },
   "empty-hero": {
     "shop now": "Jetzt einkaufen"

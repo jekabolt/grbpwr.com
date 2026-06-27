@@ -20,10 +20,14 @@ export default async function Refund({
     <FlexibleLayout theme={isWebsiteEnabled ? "light" : "dark"}>
       <div
         id="refund-page"
-        className="min-h-dvh flex h-full w-full flex-col items-center justify-center gap-12 px-2.5 py-24 text-textColor lg:gap-16 lg:px-96"
+        className="flex h-full w-full flex-col items-center justify-center gap-12 px-2.5 py-24 text-textColor lg:gap-16 lg:px-96"
       >
         <div className="space-y-9">
-          <Text variant="uppercase" className="text-center lg:text-left">
+          <Text
+            component="h1"
+            variant="uppercase"
+            className="text-center lg:text-left"
+          >
             {t("return order")}
           </Text>
           <Text className="text-left">{t("text")}</Text>

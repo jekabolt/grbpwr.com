@@ -41,12 +41,9 @@ export function NewArrivals({
               disabled={pending}
               variant={selected ? "underline" : "default"}
               onClick={() => onChange(i.value)}
-              className={cn(
-                "uppercase text-textInactiveColor hover:text-textColor",
-                {
-                  "text-textColor": selected,
-                },
-              )}
+              className={cn("uppercase", {
+                "text-textColor": selected,
+              })}
             >
               {t(i.label)}
             </Button>
