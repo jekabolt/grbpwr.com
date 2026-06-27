@@ -63,8 +63,6 @@ export default async function Page({ params }: ArchivePageParams) {
   const { archiveParams } = await params;
   const t = await getTranslations("navigation");
 
-  // let nextArchive: common_ArchiveList | undefined;
-
   if (archiveParams.length !== 3) {
     notFound();
   }
@@ -82,21 +80,6 @@ export default async function Page({ params }: ArchivePageParams) {
     id: archiveId,
   });
 
-  // if (archive?.archiveList?.nextSlug) {
-  //   const parts = archive.archiveList?.nextSlug.split("/");
-  //   const nextParams = parts.slice(2);
-
-  //   const [nextHeading, nextTag, nextId] = nextParams;
-
-  //   const { archive: nextArchivee } = await serviceClient.GetArchive({
-  //     heading: nextHeading,
-  //     tag: nextTag,
-  //     id: parseInt(nextId),
-  //   });
-
-  //   nextArchive = nextArchivee?.archiveList;
-  // }
-
   return (
     <>
       <PageBackground backgroundColor="#000000" splitBackground={false} />
@@ -111,9 +94,6 @@ export default async function Page({ params }: ArchivePageParams) {
       >
         <div className="space-y-20 px-2.5 pt-20 lg:space-y-10 lg:px-7">
           <PageComponent archive={archive} />
-          {/* <div className="h-full lg:h-screen">
-          <FullSizeItem archive={nextArchive} className="w-60 lg:w-[34rem]" />
-        </div> */}
         </div>
       </FlexibleLayout>
     </>
