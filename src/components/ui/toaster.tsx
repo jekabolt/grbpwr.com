@@ -68,6 +68,7 @@ export function SubmissionToaster({
   intent?: "success" | "error";
 }) {
   const persistUntilClosed = duration === Infinity;
+  const tNav = useTranslations("navigation");
   const isError = intent === "error";
   return (
     <Toast.Root
@@ -98,7 +99,7 @@ export function SubmissionToaster({
         <Toast.Close asChild>
           <Button
             className="text-bgColor lg:absolute lg:right-2 lg:top-1/2 lg:shrink-0 lg:-translate-y-1/2"
-            aria-label="Close"
+            aria-label={tNav("close")}
           >
             [x]
           </Button>

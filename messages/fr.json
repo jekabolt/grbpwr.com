@@ -47,6 +47,7 @@
     "subscribe": "s'abonner",
     "unsubscribe": "se désabonner",
     "email preferences": "préférences e-mail",
+    "shopping preference": "préférence d'achat",
     "private community": "communauté privée",
     "your access": "votre accès",
     "privileges": "avantages",
@@ -58,6 +59,7 @@
     "select saved address": "sélectionner une adresse enregistrée",
     "order product thumbnail alt": "produit",
     "failed to load addresses": "impossible de charger les adresses",
+    "failed to load orders": "impossible de charger les commandes",
     "failed to delete address": "impossible de supprimer l’adresse",
     "failed to update address": "impossible de mettre à jour l’adresse",
     "invalid email": "e-mail invalide",
@@ -841,7 +843,9 @@
   "accessibility": {
     "mobile menu": "menu mobile grbpwr",
     "notify me dialog": "dialogue me notifier grbpwr",
-    "reason label": "raison"
+    "reason label": "raison",
+    "one-time code": "code à usage unique",
+    "code digit": "chiffre {index} sur {length}"
   },
   "empty-hero": {
     "shop now": "Acheter maintenant"

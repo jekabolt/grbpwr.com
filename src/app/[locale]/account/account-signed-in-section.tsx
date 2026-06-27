@@ -22,11 +22,15 @@ export function AccountSignedInSection({
   }) => void;
 }) {
   if (accountNeedsNameCompletion(account)) {
-    return (
-      <AccountProfilePrompt
-        account={account}
-        onCompleted={onProfileCompleted}
-      />
+    const prompt = (
+      <AccountProfilePrompt account={account} onCompleted={onProfileCompleted} />
+    );
+    return isCheckout ? (
+      prompt
+    ) : (
+      <div className="flex min-h-0 w-full flex-1 items-center justify-center">
+        {prompt}
+      </div>
     );
   }
 

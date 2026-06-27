@@ -47,6 +47,7 @@
     "subscribe": "订阅",
     "unsubscribe": "取消订阅",
     "email preferences": "邮件偏好",
+    "shopping preference": "购物偏好",
     "private community": "私享社区",
     "your access": "您的会籍",
     "privileges": "权益",
@@ -58,6 +59,7 @@
     "select saved address": "选择已保存地址",
     "order product thumbnail alt": "商品",
     "failed to load addresses": "无法加载地址",
+    "failed to load orders": "无法加载订单",
     "failed to delete address": "无法删除地址",
     "failed to update address": "无法更新地址",
     "invalid email": "邮箱无效",
@@ -841,7 +843,9 @@
   "accessibility": {
     "mobile menu": "grbpwr移动菜单",
     "notify me dialog": "grbpwr通知对话框",
-    "reason label": "原因"
+    "reason label": "原因",
+    "one-time code": "一次性验证码",
+    "code digit": "第 {index} 位，共 {length} 位"
   },
   "empty-hero": {
     "shop now": "立即购买"

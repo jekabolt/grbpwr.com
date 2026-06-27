@@ -46,6 +46,7 @@
     "subscribe": "subscribe",
     "unsubscribe": "unsubscribe",
     "email preferences": "email preferences",
+    "shopping preference": "shopping preference",
     "private community": "private community",
     "your access": "your access",
     "privileges": "privileges",
@@ -57,6 +58,7 @@
     "select saved address": "select saved address",
     "order product thumbnail alt": "product",
     "failed to load addresses": "failed to load addresses",
+    "failed to load orders": "failed to load orders",
     "failed to delete address": "failed to delete address",
     "failed to update address": "failed to update address",
     "invalid email": "invalid email",
@@ -85,7 +87,7 @@
     "magic_login_success_title": "login successful",
     "magic_login_success_subtitle": "you're in. welcome back.",
     "no addresses saved": "no addresses saved",
-    "save an address to faster checkout": "save an address to faster checkout",
+    "save an address to faster checkout": "save an address for faster checkout",
     "no orders yet": "no orders yet",
     "explore collections": "explore collections",
     "no returns": "no returns",
@@ -899,7 +901,9 @@
   "accessibility": {
     "mobile menu": "grbpwr mobile menu",
     "notify me dialog": "grbpwr notify me",
-    "reason label": "reason"
+    "reason label": "reason",
+    "one-time code": "one-time code",
+    "code digit": "digit {index} of {length}"
   },
   "empty-hero": {
     "shop now": "shop now"

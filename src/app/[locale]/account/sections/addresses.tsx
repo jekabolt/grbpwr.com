@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
@@ -163,6 +165,14 @@ export function AddressesSection({
             <div className="flex flex-col gap-6">
               <Text variant="uppercase">{t("no addresses saved")}</Text>
               <Text>{t("save an address to faster checkout")}</Text>
+              <Button
+                size={"lg"}
+                variant="simpleReverseWithBorder"
+                className="self-start uppercase"
+                asChild
+              >
+                <Link href="/catalog">{t("explore collections")}</Link>
+              </Button>
             </div>
           </div>
         )}
