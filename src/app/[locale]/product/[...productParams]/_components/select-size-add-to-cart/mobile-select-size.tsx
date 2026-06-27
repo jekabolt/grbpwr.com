@@ -92,6 +92,11 @@ export function MobileSelectSize({
                   return (
                     <Button
                       type="button"
+                      aria-label={
+                        isOutOfStock
+                          ? `${name} — ${t("out of stock")}`
+                          : undefined
+                      }
                       variant={isOutOfStock ? "strikeThrough" : "default"}
                       className={
                         isOutOfStock

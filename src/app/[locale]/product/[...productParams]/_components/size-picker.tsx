@@ -110,6 +110,12 @@ export function SizePicker({
             <Button
               type="button"
               disabled={isDisabled}
+              aria-pressed={isActive}
+              aria-label={
+                isOutOfStock
+                  ? `${displayName} — ${t("out of stock")}`
+                  : undefined
+              }
               variant={isOutOfStock ? "strikeThrough" : "default"}
               className={cn(
                 "inline-flex min-h-11 min-w-11 items-center justify-center leading-none",
