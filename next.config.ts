@@ -125,6 +125,20 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // FeatureMono is fetched cross-origin from inside the js.stripe.com iframe
+      // (PaymentElement custom font). public/ assets ship without CORS headers,
+      // so without ACAO the browser blocks the fetch and Stripe silently falls
+      // back to system monospace.
+      {
+        source: "/fonts/:path*",
+        headers: [
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
     if (process.env.NODE_ENV === "production") {
       headers.push({

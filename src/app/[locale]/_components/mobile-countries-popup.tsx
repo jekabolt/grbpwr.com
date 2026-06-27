@@ -83,6 +83,7 @@ export function MobileCountriesPopup() {
                   <RadioGroup
                     items={languagesForCurrentCountry}
                     name="language-selector"
+                    aria-label={t("language")}
                     value={LANGUAGE_ID_TO_LOCALE[languageId]}
                     onValueChange={(val: string) => handleChangeLocaleOnly(val)}
                     className="flex flex-col gap-2 uppercase"

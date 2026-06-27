@@ -36,7 +36,6 @@ export default function RadioGroupComponent({
     <RadioGroup.Root
       name={name}
       className="relative w-full overflow-x-hidden"
-      aria-label="shipping method"
       {...props}
     >
       <div

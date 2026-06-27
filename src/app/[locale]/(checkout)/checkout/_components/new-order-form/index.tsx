@@ -240,8 +240,6 @@ export default function NewOrderForm({
   }, [hideOrderSummary, showCheckoutFields]);
 
   const centerAuthOnMobile = !showCheckoutFields || showProfilePrompt;
-  const placeOrderDisabled =
-    loading || !form.formState.isValid || !isPaymentFieldsValid;
   const placeOrderLabel = `${t("place order")} ${formatPrice(order?.totalSale?.value ?? totalPrice ?? 0, orderCurrency || validatedCurrency || "EUR", currencySymbols[orderCurrency || validatedCurrency || "EUR"])}`;
 
   const handleProfileCompleted = (data: {
@@ -393,7 +391,7 @@ export default function NewOrderForm({
                   variant="main"
                   size="lg"
                   className="w-full uppercase lg:hidden"
-                  disabled={placeOrderDisabled}
+                  disabled={loading}
                   loading={loading}
                   loadingType="order-processing"
                   analyticsButtonId="place_order"
@@ -439,7 +437,7 @@ export default function NewOrderForm({
                       variant="main"
                       size="lg"
                       className="w-full uppercase"
-                      disabled={placeOrderDisabled}
+                      disabled={loading}
                       loading={loading}
                       loadingType="order-processing"
                       analyticsButtonId="place_order"

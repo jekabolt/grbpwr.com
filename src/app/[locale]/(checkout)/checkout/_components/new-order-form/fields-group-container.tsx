@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Arrow } from "@/components/ui/icons/arrow";
@@ -52,6 +52,7 @@ export default function FieldsGroupContainer({
   childrenOffset = "title",
 }: FieldsGroupContainerProps) {
   const [localIsOpen, setLocalIsOpen] = useState(isOpen);
+  const contentId = useId();
 
   useEffect(() => {
     setLocalIsOpen(isOpen);
@@ -61,6 +62,13 @@ export default function FieldsGroupContainer({
     if (disabled || !collapsible) return;
     setLocalIsOpen((v) => !v);
     onToggle?.();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      if (e.key === " ") e.preventDefault();
+      handleToggle();
+    }
   };
 
   const gated = disabled && Boolean(disabledHint);
@@ -81,6 +89,16 @@ export default function FieldsGroupContainer({
           clickableAreaClassName,
         )}
         onClick={collapsible ? handleToggle : undefined}
+        {...(collapsible
+          ? {
+              role: "button",
+              tabIndex: disabled ? -1 : 0,
+              "aria-expanded": localIsOpen,
+              "aria-disabled": disabled || undefined,
+              "aria-controls": contentId,
+              onKeyDown: handleKeyDown,
+            }
+          : {})}
       >
         <div className="flex min-w-0 flex-1 items-center gap-x-6">
           {stage && (
@@ -112,6 +130,7 @@ export default function FieldsGroupContainer({
                   position={signPosition}
                   disabled={disabled}
                   className="shrink-0"
+                  aria-hidden
                 />
               )}
               <Text
@@ -148,11 +167,13 @@ export default function FieldsGroupContainer({
             position={signPosition}
             disabled={disabled}
             className="shrink-0"
+            aria-hidden
           />
         )}
       </div>
 
       <div
+        id={contentId}
         className={cn(childrenSpacingClass, {
           hidden: collapsible && !localIsOpen,
           "lg:ml-14": !collapsible && !!stage && childrenOffset !== "stage",
@@ -170,12 +191,14 @@ function CollapsibleSign({
   position,
   disabled,
   className,
+  "aria-hidden": ariaHidden,
 }: {
   sign: "arrow" | "plus-minus";
   isOpen: boolean;
   position: "before" | "after";
   disabled?: boolean;
   className?: string;
+  "aria-hidden"?: boolean;
 }) {
   const signContent =
     sign === "arrow" ? (
@@ -203,6 +226,7 @@ function CollapsibleSign({
 
   return (
     <div
+      aria-hidden={ariaHidden}
       className={cn(
         "text-textColor",
         {

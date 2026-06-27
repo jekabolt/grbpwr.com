@@ -234,7 +234,7 @@ export default function ShippingFieldsGroup({
             </Text>
 
             {eligibleCarriers.length === 0 ? (
-              <Text variant="inactive">
+              <Text variant="uppercase">
                 {region
                   ? t("no shipping options for location")
                   : t("select country to see shipping options")}
@@ -244,6 +244,7 @@ export default function ShippingFieldsGroup({
                 view="card"
                 loading={loading}
                 name="shipmentCarrierId"
+                aria-label={t("shipping method")}
                 onChange={handleShippingCarrierChange}
                 disabled={disabled}
                 // @ts-ignore

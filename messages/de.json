@@ -641,6 +641,7 @@
     "notify_me_success": "wir benachrichtigen sie, wenn dieser artikel wieder verfügbar ist.",
     "invalid_email": "bitte geben sie eine gültige e-mail-adresse ein",
     "email_copied": "e-mail kopiert",
+    "close": "schließen",
     "cart_outdated": "ihr warenkorb ist veraltet",
     "cart_modified": "einige artikel haben sich geändert — ihr warenkorb wurde aktualisiert",
     "cart_unavailable": "die artikel in ihrem warenkorb sind nicht mehr verfügbar",
