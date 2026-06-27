@@ -7,13 +7,14 @@ import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
 
 import { CollapsibleSections } from "../_components/collapsible-sections";
+import { MarkdownContentState } from "../_components/markdown-content-state";
 import { useMarkdownContent } from "../_components/use-markdown-content";
 
 export default function FaqPage() {
   const locale = useLocale();
   const t = useTranslations("content");
   const { dictionary } = useDataContext();
-  const { content } = useMarkdownContent([
+  const { content, loading, error, retry } = useMarkdownContent([
     `/content/faq/faq.${locale}.md`,
     "/content/faq/faq.md",
   ]);
@@ -29,7 +30,9 @@ export default function FaqPage() {
             </Text>
             <Text>{t("placing an order")}</Text>
           </div>
-          <CollapsibleSections content={content} />
+          <MarkdownContentState loading={loading} error={error} onRetry={retry}>
+            <CollapsibleSections content={content} />
+          </MarkdownContentState>
         </div>
       </div>
     </FlexibleLayout>

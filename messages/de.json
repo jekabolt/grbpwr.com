@@ -594,7 +594,8 @@
     "cookie settings": "cookie-einstellungen",
     "frequently asked questions": "häufig gestellte fragen",
     "placing an order": "bestellung aufgeben, sendungsverfolgung, rückgaberichtlinien, kundendienst und nachhaltige entwicklung.",
-    "membership policy": "mitgliedschaftsrichtlinie"
+    "membership policy": "mitgliedschaftsrichtlinie",
+    "content_load_error": "inhalt konnte nicht geladen werden"
   },
   "colors": {
     "black": "schwarz",

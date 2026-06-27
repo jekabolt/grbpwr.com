@@ -593,7 +593,8 @@
     "cookie settings": "paramètres des cookies",
     "frequently asked questions": "questions fréquemment posées",
     "placing an order": "passer une commande, suivi de commande, politique de retour, services après-vente et développement durable.",
-    "membership policy": "politique d'adhésion"
+    "membership policy": "politique d'adhésion",
+    "content_load_error": "impossible de charger le contenu"
   },
   "colors": {
     "black": "noir",

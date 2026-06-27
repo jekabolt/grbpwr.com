@@ -593,7 +593,8 @@
     "cookie settings": "cookie设置",
     "frequently asked questions": "常见问题",
     "placing an order": "下订单、订单跟踪、退货政策、售后服务和可持续发展。",
-    "membership policy": "会员政策"
+    "membership policy": "会员政策",
+    "content_load_error": "无法加载内容"
   },
   "colors": {
     "black": "黑色",

@@ -593,7 +593,8 @@
     "cookie settings": "쿠키 설정",
     "frequently asked questions": "자주 묻는 질문",
     "placing an order": "주문하기, 주문 추적, 반품 정책, 애프터서비스 및 지속가능한 발전.",
-    "membership policy": "멤버십 정책"
+    "membership policy": "멤버십 정책",
+    "content_load_error": "콘텐츠를 불러올 수 없습니다"
   },
   "colors": {
     "black": "검은색",

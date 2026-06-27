@@ -651,7 +651,8 @@
     "cookie settings": "cookie settings",
     "frequently asked questions": "frequently asked questions",
     "placing an order": "placing an order, order tracking, returns policy, aftersale services and sustainable development.",
-    "membership policy": "membership policy"
+    "membership policy": "membership policy",
+    "content_load_error": "couldn't load content"
   },
   "colors": {
     "black": "black",
