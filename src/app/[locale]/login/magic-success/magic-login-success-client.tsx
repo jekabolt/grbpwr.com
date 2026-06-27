@@ -71,14 +71,12 @@ export function MagicLoginSuccessClient() {
     : localizedPaths.account;
 
   useEffect(() => {
-    if (!cartHydrated) return;
-
     const id = window.setTimeout(() => {
       router.replace(destination);
     }, DISPLAY_MS);
 
     return () => window.clearTimeout(id);
-  }, [cartHydrated, destination, router]);
+  }, [destination, router]);
 
   const useCheckoutHeader = cartHydrated && hasCartItems;
 
@@ -93,8 +91,12 @@ export function MagicLoginSuccessClient() {
       }}
     >
       <div className="flex min-h-dvh flex-col">
-        <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
-          <Text variant="uppercase">
+        <div
+          role="status"
+          aria-live="polite"
+          className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center"
+        >
+          <Text variant="uppercase" component="h1">
             {tAccount("magic_login_success_title")}
           </Text>
           <Text>{tAccount("magic_login_success_subtitle")}</Text>
