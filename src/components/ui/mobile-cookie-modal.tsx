@@ -17,6 +17,7 @@ interface Props {
     experience: boolean;
   };
   handleSaveCookies: () => void;
+  handleRejectCookies: () => void;
   handleSavePreferences: () => void;
   handlePreferenceChange: (key: string, value: boolean) => void;
 }
@@ -25,6 +26,7 @@ export function MobileCookieModal({
   isVisible,
   preferences,
   handleSaveCookies,
+  handleRejectCookies,
   handleSavePreferences,
   handlePreferenceChange,
 }: Props) {
@@ -46,14 +48,24 @@ export function MobileCookieModal({
               </Button>
             </DialogPrimitives.Trigger>
           </span>
-          <Button
-            variant="secondary"
-            onClick={handleSaveCookies}
-            size="lg"
-            className="uppercase"
-          >
-            {t("accept all cookies")}
-          </Button>
+          <div className="flex w-full flex-col gap-2">
+            <Button
+              variant="secondary"
+              onClick={handleSaveCookies}
+              size="lg"
+              className="w-full uppercase"
+            >
+              {t("accept all cookies")}
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={handleRejectCookies}
+              size="lg"
+              className="w-full uppercase"
+            >
+              {t("reject all cookies")}
+            </Button>
+          </div>
         </div>
         <DialogPrimitives.Portal>
           <DialogPrimitives.Overlay className="fixed inset-0 z-50 h-screen bg-overlay" />
@@ -89,6 +101,16 @@ export function MobileCookieModal({
                       className="w-full uppercase"
                     >
                       {t("accept all cookies")}
+                    </Button>
+                  </DialogPrimitives.Close>
+                  <DialogPrimitives.Close asChild>
+                    <Button
+                      variant="main"
+                      onClick={handleRejectCookies}
+                      size="lg"
+                      className="w-full uppercase"
+                    >
+                      {t("reject all cookies")}
                     </Button>
                   </DialogPrimitives.Close>
                   <DialogPrimitives.Close asChild>

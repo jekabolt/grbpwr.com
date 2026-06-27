@@ -77,6 +77,25 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
     setIsVisible(false);
   };
 
+  const handleRejectCookies = () => {
+    // "reject all": deny every optional category; functional stays on.
+    const rejected = {
+      functional: true,
+      statistical: false,
+      advertising_social_media: false,
+      experience: false,
+    };
+    setPreferences(rejected);
+    localStorage.setItem("cookieConsent", JSON.stringify(rejected));
+    setConsentCookie();
+    updateConsentMode(rejected);
+    // Generic "decision made" signal, kept for parity with accept.
+    // It must NOT grant consent — analytics/ads are denied above.
+    window.dispatchEvent(new Event("cookie-consent-accepted"));
+    setIsVisible(false);
+    setOpenStatus(false);
+  };
+
   const handlePreferenceChange = (key: string, value: boolean) => {
     setPreferences((prev) => ({
       ...prev,
@@ -102,6 +121,7 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
           isVisible={isVisible}
           preferences={preferences}
           handleSaveCookies={handleSaveCookies}
+          handleRejectCookies={handleRejectCookies}
           handleSavePreferences={handleSavePreferences}
           handlePreferenceChange={handlePreferenceChange}
         />
@@ -119,14 +139,24 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
             {t("cookie preferences")}
           </Button>
         </span>
-        <Button
-          variant="secondary"
-          size="lg"
-          className="uppercase"
-          onClick={handleSaveCookies}
-        >
-          {t("accept all cookies")}
-        </Button>
+        <div className="flex flex-col gap-2">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-full uppercase"
+            onClick={handleSaveCookies}
+          >
+            {t("accept all cookies")}
+          </Button>
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-full uppercase"
+            onClick={handleRejectCookies}
+          >
+            {t("reject all cookies")}
+          </Button>
+        </div>
       </div>
       {open && (
         <div className="hidden lg:block">
@@ -156,20 +186,28 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
                     onPreferenceChange={handlePreferenceChange}
                   />
                 </div>
-                <div className="flex gap-x-6">
+                <div className="flex flex-col gap-2">
                   <Button
                     variant="main"
                     onClick={handleSaveCookies}
                     size="lg"
-                    className="w-1/2 uppercase"
+                    className="w-full uppercase"
                   >
                     {t("accept all cookies")}
+                  </Button>
+                  <Button
+                    variant="main"
+                    onClick={handleRejectCookies}
+                    size="lg"
+                    className="w-full uppercase"
+                  >
+                    {t("reject all cookies")}
                   </Button>
                   <Button
                     variant="simpleReverse"
                     onClick={handleSavePreferences}
                     size="lg"
-                    className="uppercase"
+                    className="w-full uppercase"
                   >
                     {t("save preferences")}
                   </Button>
