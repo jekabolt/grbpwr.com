@@ -73,6 +73,7 @@ export function CountriesContent({ className }: { className?: string }) {
                     };
                   })}
                   name="language-selector"
+                  aria-label={t("language")}
                   value={LANGUAGE_ID_TO_LOCALE[languageId]}
                   onValueChange={(val: string) => handleChangeLocaleOnly(val)}
                   className="gap-2 uppercase lg:grid lg:grid-cols-1"

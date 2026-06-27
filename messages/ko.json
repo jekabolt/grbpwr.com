@@ -640,6 +640,7 @@
     "notify_me_success": "이 상품이 재입고되면 알려드리겠습니다.",
     "invalid_email": "유효한 이메일 주소를 입력해주세요",
     "email_copied": "이메일 복사됨",
+    "close": "닫기",
     "cart_outdated": "장바구니가 오래되었습니다",
     "cart_modified": "일부 상품이 변경되어 장바구니가 업데이트되었습니다",
     "cart_unavailable": "장바구니에 담긴 상품은 더 이상 구매할 수 없습니다",

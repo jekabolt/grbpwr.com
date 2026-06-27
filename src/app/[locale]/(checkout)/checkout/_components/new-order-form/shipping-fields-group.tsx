@@ -244,6 +244,7 @@ export default function ShippingFieldsGroup({
                 view="card"
                 loading={loading}
                 name="shipmentCarrierId"
+                aria-label={t("shipping method")}
                 onChange={handleShippingCarrierChange}
                 disabled={disabled}
                 // @ts-ignore
