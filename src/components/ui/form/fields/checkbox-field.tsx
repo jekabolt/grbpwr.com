@@ -50,6 +50,7 @@ export default function CheckboxField({
           <div
             className={cn("flex items-start gap-x-4 leading-none", {
               "cursor-pointer items-center": isEmailPreference,
+              "items-center": !description && !isEmailPreference,
             })}
             onClick={(event) => {
               if (!isEmailPreference || props.disabled || props.loading) return;
@@ -83,6 +84,7 @@ export default function CheckboxField({
               <FormLabel
                 className={cn("", {
                   uppercase: isEmailPreference,
+                  "flex min-h-11 items-center": !description && !isEmailPreference,
                 })}
               >
                 <Text className="leading-none">{label}</Text>
