@@ -112,7 +112,9 @@ export function RefundForm() {
         form.reset(defaultData);
         setOpen(true);
         setTimeout(() => {
-          router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
+          router.push(
+            `/order/${data.orderUuid}/${encodeURIComponent(window.btoa(data.email))}`,
+          );
         }, 2500);
       }
     } catch (e) {

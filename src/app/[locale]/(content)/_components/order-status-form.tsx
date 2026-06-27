@@ -22,7 +22,7 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 const orderStatusSchema = z.object({
   email: z
     .string()
-    .max(40, errorMessages.email.max)
+    .max(254, errorMessages.email.max)
     .email(errorMessages.email.invalid)
     .trim(),
   orderUuid: z.string().min(1, "order reference is required").trim(),
@@ -71,7 +71,9 @@ export default function OrderStatusForm() {
       });
 
       if (response.order) {
-        router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
+        router.push(
+          `/order/${data.orderUuid}/${encodeURIComponent(window.btoa(data.email))}`,
+        );
       } else {
         setToastMessage(t("order not found"));
         setOpen(true);
