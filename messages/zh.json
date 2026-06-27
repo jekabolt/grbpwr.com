@@ -177,7 +177,10 @@
     "order limit exceeded": "订单限制已超出",
     "select your size to continue": "请选择尺码以继续",
     "one size": "均码",
-    "quantity left": "剩余{count}件"
+    "quantity left": "剩余{count}件",
+    "image alt": "{name} — 图片 {index}／{total}",
+    "image alt unnamed": "图片 {index}／{total}",
+    "out of stock": "缺货"
   },
   "checkout": {
     "contact": "联系人",
@@ -840,7 +843,11 @@
   "accessibility": {
     "mobile menu": "grbpwr移动菜单",
     "notify me dialog": "grbpwr通知对话框",
-    "reason label": "原因"
+    "reason label": "原因",
+    "product image viewer": "产品图片查看器",
+    "size selector": "尺码选择器",
+    "previous image": "上一张图片",
+    "next image": "下一张图片"
   },
   "empty-hero": {
     "shop now": "立即购买"

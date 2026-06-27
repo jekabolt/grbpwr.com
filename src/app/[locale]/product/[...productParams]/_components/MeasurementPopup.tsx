@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { common_ProductFull } from "@/api/proto-http/frontend";
+import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import {
@@ -14,7 +15,6 @@ import { useProductBasics } from "@/app/[locale]/product/[...productParams]/_com
 import { useProductPricing } from "@/app/[locale]/product/[...productParams]/_components/utils/useProductPricing";
 
 import { Button } from "../../../../../components/ui/button";
-import { Overlay } from "../../../../../components/ui/overlay";
 import { Text } from "../../../../../components/ui/text";
 import { SubmissionToaster } from "../../../../../components/ui/toaster";
 
@@ -41,6 +41,7 @@ export default function MeasurementPopup({
   const { isSaleApplied, price, priceMinusSale, priceWithSale } =
     useProductPricing({ product });
   const t = useTranslations("product");
+  const tNav = useTranslations("navigation");
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | undefined>(
@@ -53,23 +54,8 @@ export default function MeasurementPopup({
     selectedSize !== null &&
     outOfStock?.[selectedSize];
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setModalOpen(false);
-      }
-    };
-
-    if (isModalOpen) {
-      window.addEventListener("keydown", handleKeyDown);
-    }
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isModalOpen]);
-
-  const toggleModal = () => {
-    if (!isModalOpen) {
+  const handleOpenChange = (isOpen: boolean) => {
+    if (isOpen) {
       const productId = product.product?.sku || "";
       const pageLocation =
         typeof window !== "undefined" ? window.location.pathname : "";
@@ -85,7 +71,7 @@ export default function MeasurementPopup({
           typeof window !== "undefined" ? window.location.href : "",
       });
     }
-    setModalOpen(!isModalOpen);
+    setModalOpen(isOpen);
   };
 
   async function handleAddToCartComplete() {
@@ -109,27 +95,33 @@ export default function MeasurementPopup({
   }
 
   return (
-    <div>
-      {isModalOpen && (
-        <Overlay
-          cover="screen"
-          disablePointerEvents={false}
-          onClick={toggleModal}
-        />
-      )}
-      <Button variant="underline" className="uppercase" onClick={toggleModal}>
-        {t("size guide")}
-      </Button>
-      {isModalOpen && (
+    <DialogPrimitives.Root open={isModalOpen} onOpenChange={handleOpenChange}>
+      <DialogPrimitives.Trigger asChild>
+        <Button variant="underline" className="uppercase">
+          {t("size guide")}
+        </Button>
+      </DialogPrimitives.Trigger>
+      <DialogPrimitives.Portal>
+        <DialogPrimitives.Overlay className="fixed inset-0 z-10 h-screen bg-overlay" />
         <ModalTransition
           isOpen={isModalOpen}
           contentSlideFrom="right"
           contentClassName="fixed inset-y-2 right-2 z-50 w-[600px] border border-textInactiveColor bg-bgColor p-2.5"
           content={
-            <div className="flex h-full flex-col gap-y-2">
+            <DialogPrimitives.Content className="flex h-full flex-col gap-y-2">
+              <DialogPrimitives.Title className="sr-only">
+                {t("size guide")}
+              </DialogPrimitives.Title>
               <div className="flex items-center justify-between">
                 <Text variant="uppercase">{t("size guide")}</Text>
-                <Button onClick={toggleModal}>[x]</Button>
+                <DialogPrimitives.Close asChild>
+                  <Button
+                    aria-label={tNav("close")}
+                    className="inline-flex min-h-11 min-w-11 items-center justify-center"
+                  >
+                    [x]
+                  </Button>
+                </DialogPrimitives.Close>
               </div>
               <div className="h-full overflow-y-scroll">{children}</div>
               <LoadingButton
@@ -163,15 +155,15 @@ export default function MeasurementPopup({
                     <Text variant="inherit">{price}</Text>
                   ))}
               </LoadingButton>
-            </div>
+            </DialogPrimitives.Content>
           }
         />
-      )}
+      </DialogPrimitives.Portal>
       <SubmissionToaster
         open={maxOrderLimitExceededToastOpen}
         message={toastMessage}
         onOpenChange={setMaxOrderLimitExceededToastOpen}
       />
-    </div>
+    </DialogPrimitives.Root>
   );
 }

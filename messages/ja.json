@@ -177,7 +177,10 @@
     "order limit exceeded": "注文限度を超えました",
     "select your size to continue": "続けるにはサイズを選択してください",
     "one size": "ワンサイズ",
-    "quantity left": "残り{count}"
+    "quantity left": "残り{count}",
+    "image alt": "{name} — 画像 {index}／{total}",
+    "image alt unnamed": "画像 {index}／{total}",
+    "out of stock": "在庫切れ"
   },
   "checkout": {
     "contact": "連絡先",
@@ -840,7 +843,11 @@
   "accessibility": {
     "mobile menu": "grbpwrモバイルメニュー",
     "notify me dialog": "grbpwr通知ダイアログ",
-    "reason label": "理由"
+    "reason label": "理由",
+    "product image viewer": "商品画像ビューア",
+    "size selector": "サイズセレクター",
+    "previous image": "前の画像",
+    "next image": "次の画像"
   },
   "empty-hero": {
     "shop now": "今すぐ買う"

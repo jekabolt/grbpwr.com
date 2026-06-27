@@ -177,7 +177,10 @@
     "order limit exceeded": "주문 한도 초과",
     "select your size to continue": "계속하려면 사이즈를 선택하세요",
     "one size": "원 사이즈",
-    "quantity left": "{count}개 남음"
+    "quantity left": "{count}개 남음",
+    "image alt": "{name} — 이미지 {index} / {total}",
+    "image alt unnamed": "이미지 {index} / {total}",
+    "out of stock": "품절"
   },
   "checkout": {
     "contact": "연락처",
@@ -840,7 +843,11 @@
   "accessibility": {
     "mobile menu": "grbpwr 모바일 메뉴",
     "notify me dialog": "grbpwr 알림 대화상자",
-    "reason label": "이유"
+    "reason label": "이유",
+    "product image viewer": "제품 이미지 뷰어",
+    "size selector": "사이즈 선택기",
+    "previous image": "이전 이미지",
+    "next image": "다음 이미지"
   },
   "empty-hero": {
     "shop now": "지금 쇼핑하기"

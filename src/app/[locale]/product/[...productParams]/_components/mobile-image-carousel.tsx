@@ -58,9 +58,16 @@ export function MobileImageCarousel({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const tAccessibility = useTranslations("accessibility");
+  const tImg = useTranslations("product");
+  const tNav = useTranslations("navigation");
   const [emblaRef, emblaApi] = useEmblaCarousel(EMBLA_OPTIONS, [
     WheelGesturesPlugin(),
   ]);
+
+  const imageAlt = (n: number, total: number) =>
+    productName
+      ? tImg("image alt", { name: productName, index: n, total })
+      : tImg("image alt unnamed", { index: n, total });
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -167,7 +174,7 @@ export function MobileImageCarousel({
                 >
                   <ImageComponent
                     src={compressed?.mediaUrl!}
-                    alt="Product image"
+                    alt={imageAlt(index + 1, media.length)}
                     aspectRatio="4/5"
                     fit="contain"
                     priority={isPriority}
@@ -182,16 +189,17 @@ export function MobileImageCarousel({
       </DialogPrimitives.Trigger>
       <DialogPrimitives.Portal>
         <DialogPrimitives.Overlay className="fixed inset-0 z-50 bg-overlay" />
-        <DialogPrimitives.Content
-          className="fixed inset-0 z-[100] flex flex-col bg-bgColor"
-          onOpenAutoFocus={(e) => e.preventDefault()}
-        >
+        <DialogPrimitives.Content className="fixed inset-0 z-[100] flex flex-col bg-bgColor">
           <DialogPrimitives.Title className="sr-only">
-            {tAccessibility("mobile menu")}
+            {tAccessibility("product image viewer")}
           </DialogPrimitives.Title>
 
           <DialogPrimitives.Close asChild>
-            <Button className="fixed right-4 top-4 z-50" type="button">
+            <Button
+              className="fixed right-4 top-4 z-50 inline-flex min-h-11 min-w-11 items-center justify-center"
+              type="button"
+              aria-label={tNav("close")}
+            >
               [x]
             </Button>
           </DialogPrimitives.Close>
@@ -208,7 +216,7 @@ export function MobileImageCarousel({
             >
               <ImageComponent
                 src={currentMedia.mediaUrl || ""}
-                alt={currentMedia.mediaUrl || "Product thumbnail"}
+                alt={imageAlt(selectedIndex + 1, media.length)}
                 aspectRatio={calculateAspectRatio(
                   currentMedia.width,
                   currentMedia.height,

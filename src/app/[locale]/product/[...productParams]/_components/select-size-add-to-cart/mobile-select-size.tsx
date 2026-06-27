@@ -35,6 +35,8 @@ export function MobileSelectSize({
     activeSizeId,
   });
   const tAccessibility = useTranslations("accessibility");
+  const t = useTranslations("product");
+  const tNav = useTranslations("navigation");
 
   useEffect(() => {
     if (open) {
@@ -68,15 +70,21 @@ export function MobileSelectSize({
           content={
             <DialogPrimitives.Content className="flex h-full flex-col gap-10">
               <DialogPrimitives.Title className="sr-only">
-                {tAccessibility("mobile menu")}
+                {tAccessibility("size selector")}
               </DialogPrimitives.Title>
-              <DialogPrimitives.Close asChild>
-                <div className="flex items-center justify-between">
-                  <Text variant="uppercase">select size</Text>
-                  <Text variant="uppercase">[x]</Text>
-                </div>
-              </DialogPrimitives.Close>
-              <div className="grid grid-cols-4 gap-x-2 gap-y-7">
+              <div className="flex items-center justify-between">
+                <Text variant="uppercase">{t("select size")}</Text>
+                <DialogPrimitives.Close asChild>
+                  <Button
+                    type="button"
+                    aria-label={tNav("close")}
+                    className="inline-flex min-h-11 min-w-11 items-center justify-center"
+                  >
+                    <Text variant="uppercase">[x]</Text>
+                  </Button>
+                </DialogPrimitives.Close>
+              </div>
+              <div className="grid grid-cols-4 gap-x-2 gap-y-4">
                 {sizeNames?.map(({ name, id }) => {
                   const isOutOfStock =
                     outOfStock?.[id] || sizeQuantity?.[id] === 0;
@@ -84,9 +92,16 @@ export function MobileSelectSize({
                   return (
                     <Button
                       type="button"
+                      aria-label={
+                        isOutOfStock
+                          ? `${name} — ${t("out of stock")}`
+                          : undefined
+                      }
                       variant={isOutOfStock ? "strikeThrough" : "default"}
                       className={
-                        isOutOfStock ? "cursor-pointer uppercase" : "uppercase"
+                        isOutOfStock
+                          ? "inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center uppercase"
+                          : "inline-flex min-h-11 min-w-11 items-center justify-center uppercase"
                       }
                       key={id}
                       onClick={() => handleSizeClick(id)}

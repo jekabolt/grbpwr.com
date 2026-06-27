@@ -72,7 +72,8 @@ export const buttonVariants = cva(
       strikeThrough: [
         "relative",
         "text-textBaseSize",
-        "text-textInactiveColor",
+        "text-textColor",
+        "disabled:text-textInactiveColor",
         "before:absolute",
         "before:top-1/2",
         "before:left-0",

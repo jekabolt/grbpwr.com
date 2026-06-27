@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 
 import {
@@ -22,6 +23,8 @@ export function ProductImagesCarousel({
   productId,
   productName,
 }: Props) {
+  const tA = useTranslations("accessibility");
+  const tImg = useTranslations("product");
   const oneMedia = productMedia.length === 1;
   // The carousel initially shows the slides at/after startIndex (not index 0,
   // which is off-screen). Priority must follow what's actually visible so the
@@ -76,6 +79,8 @@ export function ProductImagesCarousel({
         startIndex={startIndex}
         className="flex h-screen w-full pt-14"
         scrollOnClick={true}
+        prevLabel={tA("previous image")}
+        nextLabel={tA("next image")}
         setSelectedIndex={handleSelectedIndex}
       >
         {mediaForCarousel.map((m, index) => {
@@ -87,7 +92,18 @@ export function ProductImagesCarousel({
             >
               <ImageComponent
                 src={m?.media?.compressed?.mediaUrl!}
-                alt="Product image"
+                alt={
+                  productName
+                    ? tImg("image alt", {
+                        name: productName,
+                        index: (index % productMedia.length) + 1,
+                        total: productMedia.length,
+                      })
+                    : tImg("image alt unnamed", {
+                        index: (index % productMedia.length) + 1,
+                        total: productMedia.length,
+                      })
+                }
                 aspectRatio="4/5"
                 fit="contain"
                 priority={isPriority}
