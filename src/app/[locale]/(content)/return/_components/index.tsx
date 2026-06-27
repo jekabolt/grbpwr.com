@@ -12,7 +12,6 @@ import { sendFormEvent } from "@/lib/analitycs/form";
 import { SizeMap } from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
-import { getErrorMessage } from "@/lib/error-message";
 import { useFixedWithinContainer } from "@/lib/hooks/useFixedWithinContainer";
 import { syncSignedInEmailToForm } from "@/lib/stores/account-onboarding/selectors";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
@@ -36,6 +35,7 @@ export function RefundForm() {
 
   const [open, setOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [pending, setPending] = useState(false);
 
   const signedInEmail = useAccountOnboardingStore((s) =>
     s.isSignedIn ? s.account?.email?.trim() || undefined : undefined,
@@ -85,7 +85,21 @@ export function RefundForm() {
     );
   }
 
+  // Map raw backend error strings onto localized, on-brand toast copy so no raw
+  // English/technical string ever reaches the user. Unknown errors degrade to the
+  // generic `submission_error`.
+  function localizeRefundError(raw?: string) {
+    if (raw && /already.*refund|refund.*progress/i.test(raw)) {
+      return t("order already in refund progress");
+    }
+    if (raw && /not found|no .*order|does not match|mismatch/i.test(raw)) {
+      return t("order not found");
+    }
+    return t("submission_error");
+  }
+
   async function handleSubmit(data: RefundSchema) {
+    setPending(true);
     try {
       const response = await serviceClient.CancelOrderByUser({
         orderUuid: data.orderUuid,
@@ -95,8 +109,9 @@ export function RefundForm() {
 
       const errorResponse = response as { error?: string };
       if (errorResponse.error) {
-        setToastMessage(errorResponse.error);
+        setToastMessage(localizeRefundError(errorResponse.error));
         setOpen(true);
+        setPending(false);
         return;
       }
 
@@ -111,15 +126,24 @@ export function RefundForm() {
         );
         form.reset(defaultData);
         setOpen(true);
+        // Keep `pending` true so the CTA stays busy until the redirect fires.
         setTimeout(() => {
           router.push(`/order/${data.orderUuid}/${window.btoa(data.email)}`);
         }, 2500);
+      } else {
+        // Unexpected response with neither `.error` nor `.order`: surface
+        // feedback instead of silently stranding the form, and re-enable retry.
+        setToastMessage(localizeRefundError());
+        setOpen(true);
+        setPending(false);
       }
     } catch (e) {
       console.error("Form submission failed:", e);
-      const message = getErrorMessage(e, t("submission_error"));
-      setToastMessage(message);
+      setToastMessage(
+        localizeRefundError(e instanceof Error ? e.message : undefined),
+      );
       setOpen(true);
+      setPending(false);
     }
   }
 
@@ -159,9 +183,10 @@ export function RefundForm() {
               type="submit"
               variant="main"
               size="lg"
-              disabled={form.formState.isSubmitting}
+              loading={pending || form.formState.isSubmitting}
+              disabled={pending || form.formState.isSubmitting}
               className={cn(
-                "absolute inset-x-2.5 bottom-6 z-30 uppercase lg:static lg:ml-14",
+                "absolute inset-x-2.5 bottom-6 z-30 flex min-h-[44px] items-center justify-center uppercase lg:static lg:ml-14",
                 {
                   fixed: mobileButtonPosition === "fixed",
                 },

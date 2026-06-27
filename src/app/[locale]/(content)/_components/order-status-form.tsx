@@ -22,7 +22,7 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 const orderStatusSchema = z.object({
   email: z
     .string()
-    .max(40, errorMessages.email.max)
+    .max(254, errorMessages.email.max)
     .email(errorMessages.email.invalid)
     .trim(),
   orderUuid: z.string().min(1, "order reference is required").trim(),

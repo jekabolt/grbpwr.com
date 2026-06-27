@@ -3,7 +3,7 @@ import { z } from "zod";
 
 
 export const notifySchema = z.object({
-    email: z.string().max(40, errorMessages.email.max).email(errorMessages.email.invalid).trim(),
+    email: z.string().max(254, errorMessages.email.max).email(errorMessages.email.invalid).trim(),
     productId: z.number(),
     sizeId: z.number().min(1, "please select a size"),
 })

@@ -31,7 +31,7 @@ export default async function OrderStatus({
           >
             {t("order status")}
           </Text>
-          <Text className="text-justify lg:text-left">{t("text")}</Text>
+          <Text className="text-left">{t("text")}</Text>
         </div>
         <div className="w-full self-start">
           <FieldsGroupContainer

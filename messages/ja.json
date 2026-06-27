@@ -551,7 +551,7 @@
     },
     "email": {
       "invalid": "無効なメールアドレス",
-      "max": "メールアドレスは最大40文字まで入力できます",
+      "max": "メールアドレスが長すぎます",
       "required": "メールアドレスは必須です"
     },
     "additionalAddress": {
@@ -671,7 +671,7 @@
     "ordered by mistake": "誤って注文した",
     "other": "その他",
     "order already in refund progress": "注文はすでに返金処理中です",
-    "refund request submitted successfully": "返金リクエストが正常に送信されました",
+    "order not found": "注文が見つかりません",
     "return_request_success": "注文 {orderNumber} の返品リクエストを送信しました",
     "submission_error": "問題が発生しました。もう一度お試しください。",
     "reason": "理由"

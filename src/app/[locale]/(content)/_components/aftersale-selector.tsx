@@ -7,7 +7,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 
@@ -44,9 +43,10 @@ export default function AftersaleSelector<T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="sr-only">{t("reason label")}:</FormLabel>
           <FormControl>
             <div
+              role="group"
+              aria-label={t("reason label")}
               className={cn(
                 useOrderReviewGrid
                   ? useFiveDesktopLayout
@@ -65,7 +65,7 @@ export default function AftersaleSelector<T extends FieldValues>({
                   aria-pressed={l === field.value}
                   onClick={() => field.onChange(l)}
                   className={cn(
-                    "border border-textColor uppercase",
+                    "flex min-h-[44px] items-center justify-center border border-textColor uppercase",
                     l === field.value && "bg-textColor text-bgColor",
                     useOrderReviewGrid && "w-full min-w-0",
                     useFiveDesktopLayout && i < 3 && "lg:col-span-2",

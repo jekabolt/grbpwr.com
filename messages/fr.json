@@ -551,7 +551,7 @@
     },
     "email": {
       "invalid": "email invalide",
-      "max": "l'email peut contenir au maximum 40 caractères",
+      "max": "l'email est trop long",
       "required": "l'e-mail est obligatoire"
     },
     "additionalAddress": {
@@ -671,7 +671,7 @@
     "ordered by mistake": "commandé par erreur",
     "other": "autre",
     "order already in refund progress": "commande déjà en cours de remboursement",
-    "refund request submitted successfully": "demande de remboursement soumise avec succès",
+    "order not found": "commande introuvable",
     "return_request_success": "demande de retour pour la commande {orderNumber} soumise",
     "submission_error": "Une erreur s'est produite. Veuillez réessayer.",
     "reason": "raison"

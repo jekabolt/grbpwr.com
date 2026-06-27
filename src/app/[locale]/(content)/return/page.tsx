@@ -30,7 +30,7 @@ export default async function Refund({
           >
             {t("return order")}
           </Text>
-          <Text className="text-justify lg:text-left">{t("text")}</Text>
+          <Text className="text-left">{t("text")}</Text>
         </div>
         <RefundForm />
       </div>
