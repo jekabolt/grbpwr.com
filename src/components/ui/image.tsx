@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { blurhashToBase64 } from "blurhash-base64";
 
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+
 function ImageContainer({
   aspectRatio,
   children,
@@ -56,12 +58,13 @@ export default function ImageComponent({
   ...props
 }: ImageProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const reduce = useMediaQuery("(prefers-reduced-motion: reduce)");
 
   useEffect(() => {
     if (type !== "video" || !videoRef.current) return;
-    if (playOnHover) videoRef.current.play();
+    if (playOnHover && !reduce) videoRef.current.play();
     else videoRef.current.pause();
-  }, [type, playOnHover]);
+  }, [type, playOnHover, reduce]);
 
   return (
     <ImageContainer aspectRatio={fit !== "cover" ? aspectRatio : undefined}>
@@ -88,7 +91,7 @@ export default function ImageComponent({
           // Use the blurhash as the poster so a frame paints instantly; the
           // video URL itself is not a valid poster image and left it blank.
           poster={blurhash ? blurhashToBase64(blurhash) : undefined}
-          autoPlay={autoPlay}
+          autoPlay={reduce ? false : autoPlay}
           muted={muted}
           loop={loop}
           controls={controls}

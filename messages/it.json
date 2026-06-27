@@ -137,6 +137,7 @@
   },
   "catalog": {
     "title": "catalogo",
+    "buy now": "acquista",
     "sort by": "ordina per",
     "size": "taglia",
     "shoe size": "taglia scarpa",
@@ -419,7 +420,8 @@
     "objects description": "esplora oggetti e accessori GRBPWR. borse, piccola pelletteria e pezzi lifestyle.",
     "timeline": "cronologia",
     "timeline description": "scopri l'archivio e le aggiornamenti",
-    "main hero image": "immagine hero principale"
+    "main hero image": "immagine hero principale",
+    "archive image": "immagine d'archivio"
   },
   "order-status": {
     "order status": "stato dell'ordine",

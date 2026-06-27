@@ -1,5 +1,5 @@
-import { useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { common_Product } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
@@ -45,7 +45,7 @@ export function SingleFeaturedItem({
 }) {
   const { languageId } = useTranslationsStore((state) => state);
   const { currentCountry } = useTranslationsStore((state) => state);
-  const [isHovered, setIsHovered] = useState(false);
+  const tCatalog = useTranslations("catalog");
 
   const currencyKey = currentCountry.currencyKey || "EUR";
 
@@ -104,20 +104,19 @@ export function SingleFeaturedItem({
                     </Text>
                   )}
                 </div>
-                <Text
-                  variant={isHovered ? "underlined" : "default"}
-                  className="whitespace-nowrap uppercase"
+                <Button
+                  variant="default"
+                  asChild
+                  className="whitespace-nowrap uppercase hover:underline focus-visible:underline"
                 >
-                  buy now
-                </Text>
+                  <Link href={p.slug || ""}>{tCatalog("buy now")}</Link>
+                </Button>
               </div>
             </div>
             <AnimatedButton
               href={p.slug || ""}
               animationArea="container"
               className="h-full w-1/2"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
             >
               <Image
                 src={

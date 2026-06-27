@@ -59,7 +59,7 @@ export function Ads({
                         ""
                       }
                       blurhash={e.single?.mediaLandscape?.media?.blurhash}
-                      alt={currentTranslation?.headline || "GRBPWR feature"}
+                      alt={currentTranslation?.headline || ""}
                       aspectRatio={calculateAspectRatio(
                         e.single?.mediaLandscape?.media?.thumbnail?.width,
                         e.single?.mediaLandscape?.media?.thumbnail?.height,
@@ -84,7 +84,7 @@ export function Ads({
                         e.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""
                       }
                       blurhash={e.single?.mediaPortrait?.media?.blurhash}
-                      alt={currentTranslation?.headline || "GRBPWR feature"}
+                      alt={currentTranslation?.headline || ""}
                       aspectRatio={calculateAspectRatio(
                         e.single?.mediaPortrait?.media?.fullSize?.width,
                         e.single?.mediaPortrait?.media?.fullSize?.height,
@@ -153,7 +153,7 @@ export function Ads({
                   <Image
                     src={leftUrl}
                     blurhash={e.double?.left?.mediaLandscape?.media?.blurhash}
-                    alt={leftTranslation?.headline || "GRBPWR feature"}
+                    alt={leftTranslation?.headline || ""}
                     aspectRatio={calculateAspectRatio(
                       e.double?.left?.mediaLandscape?.media?.thumbnail?.width,
                       e.double?.left?.mediaLandscape?.media?.thumbnail?.height,
@@ -167,7 +167,7 @@ export function Ads({
                     }
                     autoPlay={isMobile && isLeftVideo}
                   />
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 mix-blend-exclusion">
                     <Text
                       variant="uppercase"
                       className={cn({
@@ -193,7 +193,7 @@ export function Ads({
                   <Image
                     src={rightUrl}
                     blurhash={e.double?.right?.mediaLandscape?.media?.blurhash}
-                    alt={rightTranslation?.headline || "GRBPWR feature"}
+                    alt={rightTranslation?.headline || ""}
                     aspectRatio={calculateAspectRatio(
                       e.double?.right?.mediaLandscape?.media?.thumbnail?.width,
                       e.double?.right?.mediaLandscape?.media?.thumbnail?.height,
@@ -207,7 +207,7 @@ export function Ads({
                     }
                     autoPlay={isMobile && isRightVideo}
                   />
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor mix-blend-exclusion">
                     <Text
                       variant="uppercase"
                       className={cn({

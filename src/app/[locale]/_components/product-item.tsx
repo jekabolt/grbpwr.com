@@ -113,7 +113,7 @@ export function ProductItem({
           // unmounts, clearing it). Only a scroll/drag (pointercancel) clears it.
           onPointerCancel={onPressEnd}
           className={cn("relative", {
-            "group-data-[held=true]:animate-threshold-highlight":
+            "motion-safe:group-data-[held=true]:animate-threshold-highlight":
               !disableAnimations,
           })}
         >
@@ -171,7 +171,7 @@ export function ProductItem({
                 {isSaleApplied && <Text>{formattedPriceWithSale}</Text>}
                 {preorder !== EMPTY_PREORDER &&
                   isDateTodayOrFuture(preorder || "") && (
-                    <Text variant="inactive">{tProduct("preorder")}</Text>
+                    <Text variant="uppercase">{tProduct("preorder")}</Text>
                   )}
               </>
             )}

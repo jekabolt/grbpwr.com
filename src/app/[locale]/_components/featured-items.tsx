@@ -132,7 +132,7 @@ export function HeaderSection({
         <AnimatedButton
           href={href}
           animationArea="text"
-          className="flex flex-wrap items-center gap-2 uppercase lg:flex-nowrap lg:pl-2.5"
+          className="flex min-h-11 flex-wrap items-center gap-2 uppercase lg:min-h-0 lg:flex-nowrap lg:pl-2.5"
           onClick={onHeroClick}
         >
           <Text className="text-wrap">{headline}</Text>

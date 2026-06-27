@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { common_Product } from "@/api/proto-http/frontend";
 
 import { cn, internalHref } from "@/lib/utils";
@@ -21,6 +22,7 @@ export function MobileFeaturedItems({
   itemsQuantity: number;
   onHeroClick?: () => void;
 }) {
+  const tCatalog = useTranslations("catalog");
   const isMultipleItems = itemsQuantity > 1;
   const itemSlug = products?.[0]?.slug || "";
   const needsCarousel = itemsQuantity === 3 || itemsQuantity > 4;
@@ -48,7 +50,7 @@ export function MobileFeaturedItems({
         <HeaderSection
           headline={headline}
           href={internalHref(isMultipleItems ? exploreLink || "" : itemSlug)}
-          linkText={isMultipleItems ? exploreText || "" : "buy now"}
+          linkText={isMultipleItems ? exploreText || "" : tCatalog("buy now")}
           onHeroClick={onHeroClick}
         />
       </div>

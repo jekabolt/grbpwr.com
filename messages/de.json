@@ -137,6 +137,7 @@
   },
   "catalog": {
     "title": "katalog",
+    "buy now": "jetzt kaufen",
     "sort by": "sortieren nach",
     "size": "größe",
     "shoe size": "schuhgröße",
@@ -420,7 +421,8 @@
     "objects description": "entdecken Sie GRBPWR Objekte und Accessoires. Taschen, Lederwaren und Lifestyle-Artikel.",
     "timeline": "zeitleiste",
     "timeline description": "archiv und updates entdecken",
-    "main hero image": "hauptheldenbild"
+    "main hero image": "hauptheldenbild",
+    "archive image": "archivbild"
   },
   "order-status": {
     "order status": "Bestellstatus",

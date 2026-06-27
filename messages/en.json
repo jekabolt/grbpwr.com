@@ -136,6 +136,7 @@
   },
   "catalog": {
     "title": "catalog",
+    "buy now": "buy now",
     "sort by": "sort by",
     "size": "size",
     "shoe size": "shoe size",
@@ -418,7 +419,8 @@
     "objects description": "explore GRBPWR objects and accessories. bags, small leather goods, and lifestyle pieces.",
     "timeline": "timeline",
     "timeline description": "discover archive and updates",
-    "main hero image": "main hero image"
+    "main hero image": "main hero image",
+    "archive image": "archive image"
   },
   "order-status": {
     "order status": "order status",
