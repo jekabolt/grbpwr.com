@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { common_ArchiveFull } from "@/api/proto-http/frontend";
 import { blurhashToBase64 } from "blurhash-base64";
 import { useTranslations } from "next-intl";
@@ -65,17 +65,6 @@ function MainMediaVideo({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
-  const reduce = useMediaQuery("(prefers-reduced-motion: reduce)");
-
-  // The force-static HTML ships `autoPlay` present, so pause via the ref on
-  // mount when reduce-motion is on — flipping the prop alone won't stop an
-  // already-playing video pre-reconcile.
-  useEffect(() => {
-    if (reduce && videoRef.current) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  }, [reduce]);
 
   const toggleSound = () => {
     if (videoRef.current) {
@@ -111,7 +100,7 @@ function MainMediaVideo({
             : undefined
         }
         aria-label={t("videoLabel", { heading })}
-        autoPlay={!reduce}
+        autoPlay
         playsInline
         controls={false}
         muted
