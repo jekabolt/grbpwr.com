@@ -238,9 +238,14 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
   const [pending, setPending] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastDuration, setToastDuration] = useState<number | undefined>(
+    undefined,
+  );
   const [resendSeconds, setResendSeconds] = useState(0);
   const [storageChecked, setStorageChecked] = useState(false);
   const [codeVerified, setCodeVerified] = useState(false);
+  const [codeInvalid, setCodeInvalid] = useState(false);
+  const [verifyErrorNonce, setVerifyErrorNonce] = useState(0);
   const requestInFlightRef = useRef(false);
 
   const normalizedEmail = email.trim().toLowerCase();
@@ -248,9 +253,17 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail);
   const isValidCode = /^\d{6}$/.test(normalizedCode);
 
-  const openErrorToast = (message: string) => {
+  const openErrorToast = (message: string, duration?: number) => {
+    setToastDuration(duration);
     setToastMessage(message);
     setToastOpen(true);
+  };
+
+  // Persistent error surface for the magic-link `login_error` taxonomy: stays
+  // until the user dismisses it (`duration={Infinity}`), unlike the ephemeral
+  // validation toasts above.
+  const showError = (message: string) => {
+    openErrorToast(message, Infinity);
   };
 
   useIsomorphicLayoutEffect(() => {
@@ -275,11 +288,19 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
     return () => window.clearTimeout(timeoutId);
   }, [resendSeconds, step]);
 
+  // Wrapped setter handed to the code step: typing dismisses the invalid state
+  // so the red borders and inline error clear as the user re-enters the code.
+  function changeCode(value: string) {
+    setCode(value);
+    if (codeInvalid) setCodeInvalid(false);
+  }
+
   function updateEmail(value: string) {
     const previousEmail = normalizedEmail;
     setEmail(value);
     setCode("");
     setCodeVerified(false);
+    setCodeInvalid(false);
     const nextNormalized = value.trim().toLowerCase();
     const emailChanged = nextNormalized !== previousEmail;
     if (step === "code") {
@@ -365,6 +386,7 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
     if (pending) return;
     setCode("");
     setCodeVerified(false);
+    setCodeInvalid(false);
     setStep("email");
     clearStoredLoginAttempt();
   }
@@ -397,9 +419,11 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
       );
       if (!result.ok) {
         const errorMessage = result.error ?? t("the code couldn’t be verified");
-        if (errorMessage) {
-          setCode("");
-        }
+        // Raw setter so the clear does not reset codeInvalid; keep the red
+        // borders and refocus box 0 while surfacing the inline error.
+        setCode("");
+        setCodeInvalid(true);
+        setVerifyErrorNonce((n) => n + 1);
         openErrorToast(errorMessage);
         return;
       }
@@ -420,6 +444,8 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
         getErrorMessage(error, t("the code couldn’t be verified")),
       );
       setCode("");
+      setCodeInvalid(true);
+      setVerifyErrorNonce((n) => n + 1);
     } finally {
       setPending(false);
     }
@@ -432,14 +458,18 @@ export function useAccountLogin(options: UseAccountLoginOptions = {}) {
     pending,
     toastOpen,
     toastMessage,
+    toastDuration,
     resendSeconds,
     storageChecked,
     codeVerified,
+    codeInvalid,
+    verifyErrorNonce,
     isValidEmail,
     isValidCode,
     setEmail: updateEmail,
-    setCode,
+    setCode: changeCode,
     setToastOpen,
+    showError,
     sendInitialCode,
     resendCode,
     verifyCode,

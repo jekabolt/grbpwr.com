@@ -15,6 +15,17 @@
     "returns": "returns"
   },
   "account": {
+    "login_error": {
+      "expired": "this link has expired — request a new one to sign in",
+      "used": "this link was already used — request a new one to sign in",
+      "invalid": "this link isn't valid — request a new one to sign in",
+      "unauthorized": "we couldn't sign you in with this link — request a new one",
+      "rate_limited": "too many attempts — wait a moment, then request a new link",
+      "backend_unavailable": "sign-in is temporarily unavailable — please try again shortly",
+      "missing_token": "this link is incomplete — request a new one to sign in",
+      "bad_request": "we couldn't process this link — request a new one to sign in",
+      "invalid_or_expired_link": "this link is invalid or has expired — request a new one to sign in"
+    },
     "account": "account",
     "login": "log in or create account",
     "log in": "log in",
@@ -23,6 +34,8 @@
     "checkout as guest": "checkout as guest",
     "or": "or",
     "enter verification code from your email": "enter verification code from your email",
+    "otp_digit_label": "digit {index} of {length}",
+    "otp_error": "that code didn't work — re-enter it or request a new one",
     "the code couldn’t be verified": "the code couldn’t be verified",
     "resend code": "resend code",
     "resend code in": "resend code in",
@@ -693,6 +706,7 @@
     "hot pink": "hot pink"
   },
   "toaster": {
+    "close": "close",
     "successfully_subscribed": "successfully subscribed to newsletter!",
     "failed_to_subscribe": "failed to subscribe. please try again.",
     "notify_me_success": "you'll be notified when this item is back in stock.",

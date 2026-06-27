@@ -7,6 +7,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
@@ -35,6 +36,21 @@ export type AccountLoginStep = "email" | "code";
 
 const LOGIN_FORM_WIDTH_CLASS = "w-full max-w-md";
 
+// The magic-link route handlers redirect back with `?login_error=<code>` for
+// this taxonomy. next-intl's `t()` does NOT silently fall back, so an unknown
+// (or crafted) value must be coerced to a known key before lookup.
+const KNOWN_LOGIN_ERROR_CODES = new Set([
+  "expired",
+  "used",
+  "invalid",
+  "unauthorized",
+  "rate_limited",
+  "backend_unavailable",
+  "missing_token",
+  "bad_request",
+  "invalid_or_expired_link",
+]);
+
 export function AccountLoginForm({
   isCheckout = false,
   onCheckoutAsGuest,
@@ -52,6 +68,10 @@ export function AccountLoginForm({
   const revalidateCart = useCart((state) => state.revalidateCart);
   const currency =
     useTranslationsStore((state) => state.currentCountry.currencyKey) || "EUR";
+  const t = useTranslations("account");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const {
     email,
     code,
@@ -59,13 +79,17 @@ export function AccountLoginForm({
     pending,
     toastOpen,
     toastMessage,
+    toastDuration,
     resendSeconds,
     storageChecked,
     codeVerified,
+    codeInvalid,
+    verifyErrorNonce,
     isValidEmail,
     setEmail,
     setCode,
     setToastOpen,
+    showError,
     sendInitialCode,
     resendCode,
     verifyCode,
@@ -79,6 +103,25 @@ export function AccountLoginForm({
   useEffect(() => {
     if (!showOrderSummary) setMobileSummaryOpen(false);
   }, [showOrderSummary]);
+
+  // Surface the magic-link `login_error` taxonomy the route handlers redirect
+  // with, then strip the param so it cannot re-fire on refresh. Persistent toast
+  // (duration=Infinity) so a cold-landed expired-link error does not vanish.
+  useEffect(() => {
+    const loginError = searchParams.get("login_error");
+    if (!loginError) return;
+    const errorCode = KNOWN_LOGIN_ERROR_CODES.has(loginError)
+      ? loginError
+      : "invalid_or_expired_link";
+    showError(t(`login_error.${errorCode}`));
+    const params = new URLSearchParams(searchParams);
+    params.delete("login_error");
+    const remainingQs = params.toString();
+    router.replace(pathname + (remainingQs ? `?${remainingQs}` : ""), {
+      scroll: false,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!storageChecked) return;
@@ -143,6 +186,8 @@ export function AccountLoginForm({
                   code={code}
                   pending={pending}
                   resendSeconds={resendSeconds}
+                  codeInvalid={codeInvalid}
+                  verifyErrorNonce={verifyErrorNonce}
                   onCodeChange={setCode}
                   onCodeComplete={verifyCode}
                   onResend={resendCode}
@@ -181,6 +226,7 @@ export function AccountLoginForm({
       <SubmissionToaster
         open={toastOpen}
         message={toastMessage}
+        duration={toastDuration}
         onOpenChange={setToastOpen}
       />
     </div>
@@ -217,7 +263,9 @@ function EmailStep({
         )}
       >
         <div className="flex w-full flex-col items-center gap-6">
-          <Text variant="uppercase">{t("login")}</Text>
+          <Text variant="uppercase" component="h1">
+            {t("login")}
+          </Text>
           <UserLocationTrigger
             pending={pending}
             showLabel={false}
@@ -226,7 +274,9 @@ function EmailStep({
           />
         </div>
         <div>
-          <Text variant="uppercase">{t("email")}</Text>
+          <Text variant="uppercase" component="label" htmlFor="email">
+            {t("email")}
+          </Text>
           <Input
             name="email"
             type="email"
@@ -249,7 +299,8 @@ function EmailStep({
           type="button"
           variant="main"
           size="lg"
-          className="w-full uppercase"
+          className="flex min-h-[44px] w-full items-center justify-center uppercase"
+          loading={pending}
           disabled={pending || !isValidEmail}
           onClick={onContinue}
         >
@@ -263,7 +314,7 @@ function EmailStep({
           </Text>
           <Button
             variant="simpleReverseWithBorder"
-            className="w-full uppercase"
+            className="flex min-h-[44px] w-full items-center justify-center uppercase"
             size="lg"
             type="button"
             onClick={onCheckoutAsGuest}
@@ -273,7 +324,7 @@ function EmailStep({
         </div>
       )}
       <div>
-        <Text variant="inactive" className="text-center uppercase">
+        <Text className="text-center uppercase">
           {t.rich("email_consent_notice", {
             privacy: (chunks) => (
               <Link
@@ -302,6 +353,8 @@ function CodeStep({
   code,
   pending,
   resendSeconds,
+  codeInvalid,
+  verifyErrorNonce,
   onCodeChange,
   onCodeComplete,
   onResend,
@@ -310,6 +363,8 @@ function CodeStep({
   code: string;
   pending: boolean;
   resendSeconds: number;
+  codeInvalid: boolean;
+  verifyErrorNonce: number;
   onCodeChange: (value: string) => void;
   onCodeComplete: (code: string) => void;
   onResend: () => void;
@@ -326,6 +381,8 @@ function CodeStep({
     >
       <div className="flex w-full flex-col items-center gap-16">
         <Text
+          component="h1"
+          id="login-code-label"
           variant="uppercase"
           className={cn("text-center text-textColor", {
             "text-textInactiveColor": pending,
@@ -334,19 +391,38 @@ function CodeStep({
           {t("enter verification code from your email")}
         </Text>
         <div className="w-full space-y-10">
-          <OtpInput
-            id="login-code"
-            value={code}
-            onChange={onCodeChange}
-            onComplete={onCodeComplete}
-            disabled={pending}
-          />
+          <div className="space-y-2.5">
+            <OtpInput
+              id="login-code"
+              value={code}
+              onChange={onCodeChange}
+              onComplete={onCodeComplete}
+              disabled={pending}
+              autoFocus
+              invalid={codeInvalid}
+              errorNonce={verifyErrorNonce}
+              labelledById="login-code-label"
+              describedById={codeInvalid ? "login-code-error" : undefined}
+              getDigitLabel={(index) =>
+                t("otp_digit_label", { index: index + 1, length: 6 })
+              }
+            />
+            {codeInvalid && (
+              <Text
+                id="login-code-error"
+                variant="error"
+                className="lowercase"
+              >
+                {t("otp_error")}
+              </Text>
+            )}
+          </div>
           <div className="space-y-5 text-center">
             <Button
               type="button"
               variant="main"
               size="lg"
-              className="w-full uppercase"
+              className="flex min-h-[44px] w-full items-center justify-center uppercase"
               loading={pending}
               disabled={pending || resendSeconds > 0}
               onClick={onResend}
@@ -355,13 +431,13 @@ function CodeStep({
                 ? `${t("resend code in")} ${resendSeconds}`
                 : `${t("resend code")}`}
             </Button>
-            <Text variant="uppercase" className="text-textInactiveColor">
+            <Text variant="uppercase">
               {t("or continue using the link sent to your email")}
             </Text>
             <Button
               type="button"
               variant="underline"
-              className="mx-auto w-fit text-center uppercase"
+              className="inline-flex min-h-[44px] w-fit items-center text-center uppercase"
               disabled={pending}
               onClick={onChangeEmail}
             >

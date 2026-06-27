@@ -15,6 +15,17 @@
     "returns": "退货"
   },
   "account": {
+    "login_error": {
+      "expired": "此链接已过期 — 请重新获取以登录",
+      "used": "此链接已被使用 — 请重新获取以登录",
+      "invalid": "此链接无效 — 请重新获取以登录",
+      "unauthorized": "无法使用此链接登录 — 请重新获取一个",
+      "rate_limited": "尝试次数过多 — 请稍候片刻，然后重新获取链接",
+      "backend_unavailable": "登录暂时不可用 — 请稍后再试",
+      "missing_token": "此链接不完整 — 请重新获取以登录",
+      "bad_request": "无法处理此链接 — 请重新获取以登录",
+      "invalid_or_expired_link": "此链接无效或已过期 — 请重新获取以登录"
+    },
     "account": "账户",
     "login": "登录或创建账户",
     "log in": "登录",
@@ -23,6 +34,8 @@
     "checkout as guest": "以访客身份结账",
     "or": "或",
     "enter verification code from your email": "请输入邮箱中的验证码",
+    "otp_digit_label": "第 {index} 位，共 {length} 位",
+    "otp_error": "该验证码无效 — 请重新输入或重新获取",
     "the code couldn’t be verified": "无法验证该验证码",
     "resend code": "重新发送验证码",
     "resend code in": "重新发送倒计时",
@@ -635,6 +648,7 @@
     "hot pink": "亮粉色"
   },
   "toaster": {
+    "close": "关闭",
     "successfully_subscribed": "成功订阅新闻通讯！",
     "failed_to_subscribe": "订阅失败，请重试。",
     "notify_me_success": "该商品补货后我们会通知您。",
