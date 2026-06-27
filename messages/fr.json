@@ -678,7 +678,8 @@
     "title": "désinscription de la liste \"grbpwr\". en cliquant sur se désabonner, vous ne recevrez plus d'e-mails marketing.",
     "unsubscribe": "se désabonner",
     "success": "vous avez été désabonné de la newsletter.",
-    "error": "une erreur s'est produite. veuillez réessayer."
+    "error": "une erreur s'est produite. veuillez réessayer.",
+    "explore": "explorer les collections"
   },
   "categories": {
     "outerwear": "vestes_et_manteaux",

@@ -736,7 +736,8 @@
     "title": "unsubscribing from list \"grbpwr\". by clicking unsubscribe, you will no longer receive marketing emails.",
     "unsubscribe": "unsubscribe",
     "success": "you have been unsubscribed from the newsletter.",
-    "error": "an error occurred. please try again."
+    "error": "an error occurred. please try again.",
+    "explore": "explore collections"
   },
   "categories": {
     "outerwear": "outerwear",

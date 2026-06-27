@@ -679,7 +679,8 @@
     "title": "abmeldung von der liste \"grbpwr\". durch klicken auf abmelden erhalten sie keine marketing-e-mails mehr.",
     "unsubscribe": "abmelden",
     "success": "sie wurden vom newsletter abgemeldet.",
-    "error": "ein fehler ist aufgetreten. bitte versuchen sie es erneut."
+    "error": "ein fehler ist aufgetreten. bitte versuchen sie es erneut.",
+    "explore": "kollektionen entdecken"
   },
   "categories": {
     "outerwear": "oberbekleidung",

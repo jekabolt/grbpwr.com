@@ -51,7 +51,7 @@ export function Loader({
       <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
         <div
           className={cn(
-            "absolute left-0 top-0 h-full w-full bg-textColor",
+            "absolute left-0 top-0 h-full w-full bg-textColor motion-reduce:animate-none",
             reverse
               ? "animate-[loading-reverse_1s_ease-out_forwards]"
               : "animate-[loading_1s_ease-out_forwards]",
@@ -69,7 +69,7 @@ export function Loader({
       <div className="relative h-[0.5px] w-full overflow-hidden bg-gray-200/20 lg:w-[175px]">
         <div
           className={cn(
-            "absolute left-0 top-0 h-full w-full animate-[loading_1s_ease-out_forwards]",
+            "absolute left-0 top-0 h-full w-full animate-[loading_1s_ease-out_forwards] motion-reduce:animate-none",
             reverse ? "bg-bgColor" : "bg-textColor",
           )}
         />
