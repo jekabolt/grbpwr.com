@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Arrow } from "@/components/ui/icons/arrow";
@@ -29,6 +29,7 @@ interface FieldsGroupContainerProps {
   titleClassName?: string;
   onToggle?: () => void;
   childrenOffset?: "title" | "stage";
+  headingComponent?: "h2" | "h3" | "h4";
 }
 
 export default function FieldsGroupContainer({
@@ -50,8 +51,10 @@ export default function FieldsGroupContainer({
   titleClassName,
   onToggle,
   childrenOffset = "title",
+  headingComponent: HeadingComponent,
 }: FieldsGroupContainerProps) {
   const [localIsOpen, setLocalIsOpen] = useState(isOpen);
+  const bodyId = useId();
 
   useEffect(() => {
     setLocalIsOpen(isOpen);
@@ -63,7 +66,106 @@ export default function FieldsGroupContainer({
     onToggle?.();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (disabled || !collapsible) return;
+    if (e.key === "Enter" || e.key === " ") {
+      if (e.key === " ") e.preventDefault();
+      handleToggle();
+    }
+  };
+
   const gated = disabled && Boolean(disabledHint);
+
+  const headerRow = (
+    <div
+      className={cn(
+        "flex min-w-0 items-center justify-between",
+        { "h-auto cursor-pointer lg:h-20": disabled },
+        { "cursor-pointer": collapsible && !disabled },
+        clickableAreaClassName,
+      )}
+      onClick={collapsible ? handleToggle : undefined}
+      {...(collapsible
+        ? {
+            role: "button" as const,
+            tabIndex: disabled ? -1 : 0,
+            "aria-expanded": localIsOpen,
+            "aria-controls": bodyId,
+            "aria-disabled": disabled || undefined,
+            onKeyDown: handleKeyDown,
+          }
+        : {})}
+    >
+      <div className="flex min-w-0 flex-1 items-center gap-x-6">
+        {stage && (
+          <Text
+            variant="uppercase"
+            className={cn("w-8 text-textColor", {
+              "text-textInactiveColor": disabled,
+            })}
+          >
+            {stage}
+          </Text>
+        )}
+
+        <div
+          className={cn(
+            "flex min-w-0 flex-1",
+            gated
+              ? "flex-col items-start gap-y-1 lg:flex-row lg:items-center lg:justify-between"
+              : "items-center justify-between",
+            { "text-textInactiveColor": disabled },
+            titleWrapperClassName,
+          )}
+        >
+          <div className="flex min-w-0 items-center">
+            {collapsible && signPosition === "before" && (
+              <CollapsibleSign
+                sign={signType}
+                isOpen={localIsOpen}
+                position={signPosition}
+                disabled={disabled}
+                className="shrink-0"
+              />
+            )}
+            <Text
+              variant="uppercase"
+              className={cn(
+                "min-w-0 text-textColor",
+                titleClassName ?? "truncate",
+                {
+                  "text-textInactiveColor": disabled,
+                },
+              )}
+            >
+              {title}
+            </Text>
+          </div>
+          {gated ? (
+            <Text
+              variant="uppercase"
+              component="span"
+              className="shrink-0 text-xs text-textInactiveColor lg:ml-4"
+            >
+              {disabledHint}
+            </Text>
+          ) : (
+            preview && <div className="shrink-0">{preview}</div>
+          )}
+        </div>
+      </div>
+
+      {collapsible && signPosition === "after" && (
+        <CollapsibleSign
+          sign={signType}
+          isOpen={localIsOpen}
+          position={signPosition}
+          disabled={disabled}
+          className="shrink-0"
+        />
+      )}
+    </div>
+  );
 
   return (
     <div
@@ -73,86 +175,14 @@ export default function FieldsGroupContainer({
         className,
       )}
     >
-      <div
-        className={cn(
-          "flex min-w-0 items-center justify-between",
-          { "h-auto cursor-pointer lg:h-20": disabled },
-          { "cursor-pointer": collapsible && !disabled },
-          clickableAreaClassName,
-        )}
-        onClick={collapsible ? handleToggle : undefined}
-      >
-        <div className="flex min-w-0 flex-1 items-center gap-x-6">
-          {stage && (
-            <Text
-              variant="uppercase"
-              className={cn("w-8 text-textColor", {
-                "text-textInactiveColor": disabled,
-              })}
-            >
-              {stage}
-            </Text>
-          )}
-
-          <div
-            className={cn(
-              "flex min-w-0 flex-1",
-              gated
-                ? "flex-col items-start gap-y-1 lg:flex-row lg:items-center lg:justify-between"
-                : "items-center justify-between",
-              { "text-textInactiveColor": disabled },
-              titleWrapperClassName,
-            )}
-          >
-            <div className="flex min-w-0 items-center">
-              {collapsible && signPosition === "before" && (
-                <CollapsibleSign
-                  sign={signType}
-                  isOpen={localIsOpen}
-                  position={signPosition}
-                  disabled={disabled}
-                  className="shrink-0"
-                />
-              )}
-              <Text
-                variant="uppercase"
-                className={cn(
-                  "min-w-0 text-textColor",
-                  titleClassName ?? "truncate",
-                  {
-                    "text-textInactiveColor": disabled,
-                  },
-                )}
-              >
-                {title}
-              </Text>
-            </div>
-            {gated ? (
-              <Text
-                variant="uppercase"
-                component="span"
-                className="shrink-0 text-xs text-textInactiveColor lg:ml-4"
-              >
-                {disabledHint}
-              </Text>
-            ) : (
-              preview && <div className="shrink-0">{preview}</div>
-            )}
-          </div>
-        </div>
-
-        {collapsible && signPosition === "after" && (
-          <CollapsibleSign
-            sign={signType}
-            isOpen={localIsOpen}
-            position={signPosition}
-            disabled={disabled}
-            className="shrink-0"
-          />
-        )}
-      </div>
+      {HeadingComponent ? (
+        <HeadingComponent className="contents">{headerRow}</HeadingComponent>
+      ) : (
+        headerRow
+      )}
 
       <div
+        id={bodyId}
         className={cn(childrenSpacingClass, {
           hidden: collapsible && !localIsOpen,
           "lg:ml-14": !collapsible && !!stage && childrenOffset !== "stage",

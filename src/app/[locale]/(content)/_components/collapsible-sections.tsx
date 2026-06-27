@@ -83,6 +83,7 @@ export function CollapsibleSections({
                       ).padStart(2, "0")
                 }
                 title={heading}
+                headingComponent="h2"
                 isOpen={openSection === index}
                 onToggle={() => toggleSection(index)}
                 clickableAreaClassName="w-full min-h-16 h-auto gap-x-4 py-4 max-lg:items-start lg:h-16 lg:items-center lg:py-0"
