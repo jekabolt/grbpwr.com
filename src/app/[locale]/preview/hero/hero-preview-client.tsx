@@ -97,7 +97,7 @@ export function HeroPreviewClient({
       {/* display:contents = layout-neutral; the capture handler intercepts block
           clicks before their Link navigates. */}
       <div style={{ display: "contents" }} onClickCapture={onBlockClickCapture}>
-        <HeroView hero={hero} />
+        <HeroView hero={hero} preview />
       </div>
     </HeroPreviewBoundary>
   );

@@ -12,14 +12,22 @@ import { MainAds } from "./main-ads";
 // the homepage ignores it, but the /preview/hero iframe reads it on click to tell
 // the editor which block was tapped. index 0 is the main block (`Ads` renders it
 // as null via its default case, so there's no duplicate marker for it).
-export function HeroView({ hero }: { hero?: common_HeroFullWithTranslations }) {
+export function HeroView({
+  hero,
+  preview = false,
+}: {
+  hero?: common_HeroFullWithTranslations;
+  // In the /preview editor, skip the audience-targeting gate so every block is
+  // visible and selectable regardless of the viewer.
+  preview?: boolean;
+}) {
   return (
     <>
       {/* display:contents wrapper = layout-neutral click target for the main block */}
       <div style={{ display: "contents" }} data-hero-block-index={0}>
         <MainAds main={hero?.entities?.[0]?.main} />
       </div>
-      <Ads entities={hero?.entities || []} />
+      <Ads entities={hero?.entities || []} preview={preview} />
     </>
   );
 }
