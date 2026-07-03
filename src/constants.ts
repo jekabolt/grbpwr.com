@@ -30,6 +30,10 @@ export const SITE_DISABLED_ALLOWED_REST_PATHS: readonly string[] = [
   "/order",
   "/return",
   "/faq",
+  // Hero editor preview iframe: must stay reachable while the shop is toggled
+  // off (that's exactly when an editor is staging a new hero). Keeps both the
+  // middleware redirect and SiteGuard from bouncing /preview/* to home.
+  "/preview",
 ];
 
 export const CATALOG_LIMIT = 16;
