@@ -1,20 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import type { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
 import { sendHeroEvent } from "@/lib/analitycs/hero";
-import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, cn, internalHref, isVideo } from "@/lib/utils";
-import { AnimatedButton } from "@/components/ui/animated-button";
-import Image from "@/components/ui/image";
-import { Overlay } from "@/components/ui/overlay";
-import { Text } from "@/components/ui/text";
 
 import { FeaturedItems } from "./featured-items";
 import { HeroArchive } from "./hero-archive";
 import { HeroMarquee } from "./hero-marquee";
+import { HeroSingle } from "./hero-single";
 import { HeroStatement } from "./hero-statement";
 import { HeroVideo } from "./hero-video";
 
@@ -24,16 +18,6 @@ export function Ads({
   entities: common_HeroEntityWithTranslations[];
 }) {
   const { languageId } = useTranslationsStore((state) => state);
-  // SSR-safe, reactive to resize (was computed once at render from window.innerWidth,
-  // which risked a hydration mismatch and never updated on viewport change).
-  const isMobile = useMediaQuery("(max-width: 1023px)");
-  const [hoveredSingleIndex, setHoveredSingleIndex] = useState<number | null>(
-    null,
-  );
-  const [hoveredDouble, setHoveredDouble] = useState<{
-    i: number;
-    side: "left" | "right";
-  } | null>(null);
   return (
     <div>
       {entities?.map((e, i) => {
@@ -41,214 +25,48 @@ export function Ads({
         const isPriorityAd = i === 0;
         switch (e.type) {
           case "HERO_TYPE_SINGLE":
-            const currentTranslation = e.single?.translations?.find(
-              (t) => t.languageId === languageId,
-            );
             return (
-              <div
-                className="relative h-screen w-full"
-                key={i}
-                data-hero-block-index={i}
-              >
-                <AnimatedButton
-                  href={internalHref(e.single?.exploreLink)}
-                  className="group relative h-full w-full text-bgColor"
-                  onClick={() =>
+              <div key={i} data-hero-block-index={i}>
+                <HeroSingle
+                  single={e.single}
+                  priority={isPriorityAd}
+                  onHeroClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_SINGLE" })
                   }
-                  onMouseEnter={() => setHoveredSingleIndex(i)}
-                  onMouseLeave={() => setHoveredSingleIndex(null)}
-                >
-                  <div className="hidden h-full lg:block">
-                    <Image
-                      src={
-                        e.single?.media?.landscape?.media?.thumbnail
-                          ?.mediaUrl || ""
-                      }
-                      blurhash={e.single?.media?.landscape?.media?.blurhash}
-                      alt={currentTranslation?.headline || "GRBPWR feature"}
-                      aspectRatio={calculateAspectRatio(
-                        e.single?.media?.landscape?.media?.thumbnail?.width,
-                        e.single?.media?.landscape?.media?.thumbnail?.height,
-                      )}
-                      fit="cover"
-                      priority={isPriorityAd}
-                      loading={isPriorityAd ? "eager" : "lazy"}
-                      type={
-                        isVideo(
-                          e.single?.media?.landscape?.media?.thumbnail
-                            ?.mediaUrl,
-                        )
-                          ? "video"
-                          : "image"
-                      }
-                      playOnHover={hoveredSingleIndex === i}
-                      preload={isPriorityAd ? "auto" : "metadata"}
-                    />
-                  </div>
-                  <div className="block h-full lg:hidden">
-                    <Image
-                      src={
-                        e.single?.media?.portrait?.media?.fullSize?.mediaUrl ||
-                        ""
-                      }
-                      blurhash={e.single?.media?.portrait?.media?.blurhash}
-                      alt={currentTranslation?.headline || "GRBPWR feature"}
-                      aspectRatio={calculateAspectRatio(
-                        e.single?.media?.portrait?.media?.fullSize?.width,
-                        e.single?.media?.portrait?.media?.fullSize?.height,
-                      )}
-                      type={
-                        isVideo(
-                          e.single?.media?.portrait?.media?.fullSize?.mediaUrl,
-                        )
-                          ? "video"
-                          : "image"
-                      }
-                      fit="cover"
-                      priority={isPriorityAd}
-                      loading={isPriorityAd ? "eager" : "lazy"}
-                      preload={isPriorityAd ? "auto" : "metadata"}
-                      autoPlay={true}
-                    />
-                  </div>
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center">
-                    <Text
-                      variant="uppercase"
-                      component="h2"
-                      className={cn("w-full text-center", {
-                        "group-hover:underline":
-                          !currentTranslation?.exploreText &&
-                          e.single?.exploreLink,
-                      })}
-                    >
-                      {currentTranslation?.headline}
-                    </Text>
-                    <Text variant="uppercase" className="group-hover:underline">
-                      {currentTranslation?.exploreText}
-                    </Text>
-                  </div>
-                </AnimatedButton>
-                {!e.single?.media?.disableOverlay && (
-                  <Overlay cover="container" disablePointerEvents />
-                )}
+                />
               </div>
             );
-          case "HERO_TYPE_DOUBLE": {
-            const leftUrl =
-              e.double?.left?.media?.landscape?.media?.thumbnail?.mediaUrl ||
-              "";
-            const rightUrl =
-              e.double?.right?.media?.landscape?.media?.thumbnail?.mediaUrl ||
-              "";
-            const leftTranslation = e.double?.left?.translations?.find(
-              (t) => t.languageId === languageId,
-            );
-            const rightTranslation = e.double?.right?.translations?.find(
-              (t) => t.languageId === languageId,
-            );
-            const isLeftVideo = isVideo(leftUrl);
-            const isRightVideo = isVideo(rightUrl);
+          case "HERO_TYPE_DOUBLE":
             return (
               <div
                 key={i}
                 data-hero-block-index={i}
                 className="relative flex h-full w-full flex-col lg:flex-row"
               >
-                <AnimatedButton
-                  href={internalHref(e.double?.left?.exploreLink)}
-                  className="group relative h-full w-full text-bgColor"
-                  onClick={() =>
+                <HeroSingle
+                  single={e.double?.left}
+                  priority={isPriorityAd}
+                  fit="contain"
+                  responsive={false}
+                  className="relative h-full w-full"
+                  copyClassName="gap-6"
+                  onHeroClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_DOUBLE_LEFT" })
                   }
-                  onMouseEnter={() => setHoveredDouble({ i, side: "left" })}
-                  onMouseLeave={() => setHoveredDouble(null)}
-                >
-                  <Image
-                    src={leftUrl}
-                    blurhash={e.double?.left?.media?.landscape?.media?.blurhash}
-                    alt={leftTranslation?.headline || "GRBPWR feature"}
-                    aspectRatio={calculateAspectRatio(
-                      e.double?.left?.media?.landscape?.media?.thumbnail?.width,
-                      e.double?.left?.media?.landscape?.media?.thumbnail
-                        ?.height,
-                    )}
-                    fit="contain"
-                    priority={isPriorityAd}
-                    loading={isPriorityAd ? "eager" : "lazy"}
-                    type={isLeftVideo ? "video" : "image"}
-                    playOnHover={
-                      hoveredDouble?.i === i && hoveredDouble?.side === "left"
-                    }
-                    autoPlay={isMobile && isLeftVideo}
-                  />
-                  {!e.double?.left?.media?.disableOverlay && (
-                    <Overlay cover="container" disablePointerEvents />
-                  )}
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
-                    <Text
-                      variant="uppercase"
-                      className={cn({
-                        "group-hover:underline": !leftTranslation?.exploreText,
-                      })}
-                    >
-                      {leftTranslation?.headline}
-                    </Text>
-                    <Text className="uppercase group-hover:underline">
-                      {leftTranslation?.exploreText}
-                    </Text>
-                  </div>
-                </AnimatedButton>
-                <AnimatedButton
-                  href={internalHref(e.double?.right?.exploreLink)}
-                  className="group relative h-full w-full"
-                  onClick={() =>
+                />
+                <HeroSingle
+                  single={e.double?.right}
+                  priority={isPriorityAd}
+                  fit="contain"
+                  responsive={false}
+                  className="relative h-full w-full"
+                  copyClassName="gap-6"
+                  onHeroClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_DOUBLE_RIGHT" })
                   }
-                  onMouseEnter={() => setHoveredDouble({ i, side: "right" })}
-                  onMouseLeave={() => setHoveredDouble(null)}
-                >
-                  <Image
-                    src={rightUrl}
-                    blurhash={
-                      e.double?.right?.media?.landscape?.media?.blurhash
-                    }
-                    alt={rightTranslation?.headline || "GRBPWR feature"}
-                    aspectRatio={calculateAspectRatio(
-                      e.double?.right?.media?.landscape?.media?.thumbnail
-                        ?.width,
-                      e.double?.right?.media?.landscape?.media?.thumbnail
-                        ?.height,
-                    )}
-                    fit="contain"
-                    priority={isPriorityAd}
-                    loading={isPriorityAd ? "eager" : "lazy"}
-                    type={isRightVideo ? "video" : "image"}
-                    playOnHover={
-                      hoveredDouble?.i === i && hoveredDouble?.side === "right"
-                    }
-                    autoPlay={isMobile && isRightVideo}
-                  />
-                  {!e.double?.right?.media?.disableOverlay && (
-                    <Overlay cover="container" disablePointerEvents />
-                  )}
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
-                    <Text
-                      variant="uppercase"
-                      className={cn({
-                        "group-hover:underline": !rightTranslation?.exploreText,
-                      })}
-                    >
-                      {rightTranslation?.headline}
-                    </Text>
-                    <Text className="uppercase group-hover:underline">
-                      {rightTranslation?.exploreText}
-                    </Text>
-                  </div>
-                </AnimatedButton>
+                />
               </div>
             );
-          }
           case "HERO_TYPE_FEATURED_PRODUCTS":
             const itemsQuantity = e.featuredProducts?.products?.length || 0;
             const productsTranslation = e.featuredProducts?.translations?.find(
