@@ -910,5 +910,11 @@
       "SLIGHTLY_LARGE": "Leggermente largo",
       "RUNS_LARGE": "Veste largo"
     }
+  },
+  "countdown": {
+    "days": "giorni",
+    "hours": "ore",
+    "minutes": "minuti",
+    "seconds": "secondi"
   }
 }

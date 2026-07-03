@@ -910,5 +910,11 @@
       "SLIGHTLY_LARGE": "略偏大",
       "RUNS_LARGE": "偏大"
     }
+  },
+  "countdown": {
+    "days": "天",
+    "hours": "小时",
+    "minutes": "分",
+    "seconds": "秒"
   }
 }

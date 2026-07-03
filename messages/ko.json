@@ -910,5 +910,11 @@
       "SLIGHTLY_LARGE": "약간 큼",
       "RUNS_LARGE": "크게 맞음"
     }
+  },
+  "countdown": {
+    "days": "일",
+    "hours": "시간",
+    "minutes": "분",
+    "seconds": "초"
   }
 }

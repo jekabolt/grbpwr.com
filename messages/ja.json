@@ -910,5 +910,11 @@
       "SLIGHTLY_LARGE": "やや大きめ",
       "RUNS_LARGE": "大きめ"
     }
+  },
+  "countdown": {
+    "days": "日",
+    "hours": "時間",
+    "minutes": "分",
+    "seconds": "秒"
   }
 }

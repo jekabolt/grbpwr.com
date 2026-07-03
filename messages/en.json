@@ -909,5 +909,11 @@
   },
   "empty-hero": {
     "shop now": "shop now"
+  },
+  "countdown": {
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes",
+    "seconds": "seconds"
   }
 }
