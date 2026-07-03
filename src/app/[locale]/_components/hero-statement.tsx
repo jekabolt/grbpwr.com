@@ -10,10 +10,10 @@ import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
-// STATEMENT hero: manifesto typography (giant headline + optional subhead/body)
-// optionally over a subtle background image/video. Copy flips to light on media,
-// dark on a plain background. The scrim honours the media's disableOverlay; an
-// optional exploreLink wraps the whole block.
+// STATEMENT hero: centred statement copy (headline + optional subhead/body) at
+// the normal text size, optionally over a subtle background image/video. Copy
+// flips to light on media, dark on a plain background. The scrim honours the
+// media's disableOverlay; an optional exploreLink wraps the whole block.
 export function HeroStatement({
   statement,
   priority = false,
@@ -65,11 +65,7 @@ export function HeroStatement({
         )}
       >
         {t?.headline && (
-          <Text
-            component="h2"
-            variant="uppercase"
-            className="text-textGiantSmallSize leading-tight lg:text-textGiantSize"
-          >
+          <Text component="h2" variant="uppercase">
             {t.headline}
           </Text>
         )}
