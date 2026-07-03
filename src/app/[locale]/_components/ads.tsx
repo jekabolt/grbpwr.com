@@ -13,6 +13,7 @@ import { HeroLookbook } from "./hero-lookbook";
 import { HeroMarquee } from "./hero-marquee";
 import { HeroMosaic } from "./hero-mosaic";
 import { HeroNewsletter } from "./hero-newsletter";
+import { HeroProductSpotlight } from "./hero-product-spotlight";
 import { HeroSingle } from "./hero-single";
 import { HeroSlideshow } from "./hero-slideshow";
 import { HeroSplit } from "./hero-split";
@@ -287,6 +288,18 @@ export function Ads({
                 <HeroNewsletter
                   newsletter={e.newsletter}
                   priority={isPriorityAd}
+                />
+              </div>
+            );
+          case "HERO_TYPE_PRODUCT_SPOTLIGHT":
+            return (
+              <div key={i} data-hero-block-index={i}>
+                <HeroProductSpotlight
+                  spotlight={e.productSpotlight}
+                  priority={isPriorityAd}
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_PRODUCT_SPOTLIGHT" })
+                  }
                 />
               </div>
             );
