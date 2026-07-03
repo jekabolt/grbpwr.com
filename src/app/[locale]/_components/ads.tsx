@@ -12,6 +12,7 @@ import { HeroMarquee } from "./hero-marquee";
 import { HeroMosaic } from "./hero-mosaic";
 import { HeroSingle } from "./hero-single";
 import { HeroSlideshow } from "./hero-slideshow";
+import { HeroSplit } from "./hero-split";
 import { HeroStatement } from "./hero-statement";
 import { HeroVideo } from "./hero-video";
 
@@ -201,6 +202,18 @@ export function Ads({
                   priority={isPriorityAd}
                   onHeroClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_VIDEO" })
+                  }
+                />
+              </div>
+            );
+          case "HERO_TYPE_SPLIT":
+            return (
+              <div key={i} data-hero-block-index={i}>
+                <HeroSplit
+                  split={e.split}
+                  priority={isPriorityAd}
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_SPLIT" })
                   }
                 />
               </div>
