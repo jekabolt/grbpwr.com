@@ -5,16 +5,20 @@ import type { common_HeroMarqueeWithTranslations } from "@/api/proto-http/fronte
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { internalHref } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { Marquee } from "@/components/ui/marquee";
 import { Text } from "@/components/ui/text";
+import { Typewriter } from "@/components/ui/typewriter";
 
-// How many times the headline repeats inside one marquee copy — enough to fill a
-// wide viewport for typical announcement phrases so the loop reads as continuous.
-const REPEAT = 6;
+// Hold the finished line for `speed` seconds (the editor-specified freeze time)
+// before it erases; clamped so it never sticks too briefly or too long.
+const DEFAULT_HOLD_S = 3;
+const MIN_HOLD_S = 1;
+const MAX_HOLD_S = 10;
 
-// MARQUEE hero: a thin, full-width scrolling announcement bar (sale, delivery, drop
-// live). Copy is the current language's `headline`; an optional `link` makes the
-// whole bar clickable. Translations-only, no media — matches the brutalist bar.
+// MARQUEE hero: a thin, full-width announcement bar (sale, delivery, drop live)
+// rendered as a typewriter — the line types itself out with a human, uneven
+// cadence, holds while a black block caret blinks, erases, pauses and loops. Copy
+// is the current language's `headline`; an optional `link` makes the bar
+// clickable.
 export function HeroMarquee({
   marquee,
   onHeroClick,
@@ -30,15 +34,17 @@ export function HeroMarquee({
   const text = translation?.headline;
   if (!marquee || !text) return null;
 
-  const items = Array.from({ length: REPEAT }, (_, idx) => (
-    <Text key={idx} variant="uppercase" className="whitespace-nowrap px-6">
-      {text}
-    </Text>
-  ));
+  const holdMs =
+    Math.min(
+      Math.max(marquee.speed || DEFAULT_HOLD_S, MIN_HOLD_S),
+      MAX_HOLD_S,
+    ) * 1000;
 
   const bar = (
-    <div className="w-full border-y border-textColor bg-bgColor py-2">
-      <Marquee speed={marquee.speed}>{items}</Marquee>
+    <div className="w-full overflow-hidden border-y border-textColor bg-bgColor px-6 py-2">
+      <Text variant="uppercase" component="span">
+        <Typewriter text={text} holdMs={holdMs} />
+      </Text>
     </div>
   );
 
