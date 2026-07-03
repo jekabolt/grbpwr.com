@@ -12,6 +12,7 @@ import { HeroEmbed } from "./hero-embed";
 import { HeroLookbook } from "./hero-lookbook";
 import { HeroMarquee } from "./hero-marquee";
 import { HeroMosaic } from "./hero-mosaic";
+import { HeroNewsletter } from "./hero-newsletter";
 import { HeroSingle } from "./hero-single";
 import { HeroSlideshow } from "./hero-slideshow";
 import { HeroSplit } from "./hero-split";
@@ -277,6 +278,15 @@ export function Ads({
                   onHeroClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_STATEMENT" })
                   }
+                />
+              </div>
+            );
+          case "HERO_TYPE_NEWSLETTER":
+            return (
+              <div key={i} data-hero-block-index={i}>
+                <HeroNewsletter
+                  newsletter={e.newsletter}
+                  priority={isPriorityAd}
                 />
               </div>
             );
