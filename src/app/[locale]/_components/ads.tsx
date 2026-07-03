@@ -9,6 +9,7 @@ import { FeaturedItems } from "./featured-items";
 import { HeroArchive } from "./hero-archive";
 import { HeroMarquee } from "./hero-marquee";
 import { HeroSingle } from "./hero-single";
+import { HeroSlideshow } from "./hero-slideshow";
 import { HeroStatement } from "./hero-statement";
 import { HeroVideo } from "./hero-video";
 
@@ -152,6 +153,18 @@ export function Ads({
                   priority={isPriorityAd}
                   onHeroClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_VIDEO" })
+                  }
+                />
+              </div>
+            );
+          case "HERO_TYPE_SLIDESHOW":
+            return (
+              <div key={i} data-hero-block-index={i}>
+                <HeroSlideshow
+                  slideshow={e.slideshow}
+                  priority={isPriorityAd}
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_SLIDESHOW" })
                   }
                 />
               </div>
