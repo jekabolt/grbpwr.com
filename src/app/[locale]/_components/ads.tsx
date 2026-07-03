@@ -136,6 +136,29 @@ export function Ads({
                 />
               </div>
             );
+          case "HERO_TYPE_NEW_ARRIVALS":
+            const newArrivalsCount = e.newArrivals?.products?.length || 0;
+            const newArrivalsTranslation = e.newArrivals?.translations?.find(
+              (t) => t.languageId === languageId,
+            );
+            return (
+              <div
+                key={i}
+                style={{ display: "contents" }}
+                data-hero-block-index={i}
+              >
+                <FeaturedItems
+                  products={e.newArrivals?.products}
+                  headline={newArrivalsTranslation?.headline}
+                  exploreText={newArrivalsTranslation?.exploreText}
+                  exploreLink={e.newArrivals?.exploreLink}
+                  itemsQuantity={newArrivalsCount}
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_NEW_ARRIVALS" })
+                  }
+                />
+              </div>
+            );
           case "HERO_TYPE_MARQUEE":
             return (
               <div key={i} data-hero-block-index={i}>
