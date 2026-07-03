@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+} from "react";
 import type { common_HeroFullWithTranslations } from "@/api/proto-http/frontend";
 
 import { Text } from "@/components/ui/text";
@@ -52,6 +57,24 @@ export function HeroPreviewClient({
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
+  // Clicking a block should highlight it in the editor, not follow its explore
+  // link. Running in the capture phase (before the block's own Link/onClick) and
+  // calling preventDefault + stopPropagation suppresses both navigation and the
+  // hero analytics event; the parent gets the block's `data-hero-block-index`.
+  function onBlockClickCapture(e: ReactMouseEvent) {
+    const el = (e.target as HTMLElement | null)?.closest?.(
+      "[data-hero-block-index]",
+    );
+    if (!el) return;
+    const index = Number(el.getAttribute("data-hero-block-index"));
+    if (!Number.isFinite(index)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    for (const origin of ADMIN_ORIGINS) {
+      window.parent?.postMessage({ type: "hero-block-click", index }, origin);
+    }
+  }
+
   if (!hero) {
     return (
       <div className="flex min-h-dvh items-center justify-center bg-bgColor p-6">
@@ -71,7 +94,11 @@ export function HeroPreviewClient({
         </div>
       }
     >
-      <HeroView hero={hero} />
+      {/* display:contents = layout-neutral; the capture handler intercepts block
+          clicks before their Link navigates. */}
+      <div style={{ display: "contents" }} onClickCapture={onBlockClickCapture}>
+        <HeroView hero={hero} />
+      </div>
     </HeroPreviewBoundary>
   );
 }
