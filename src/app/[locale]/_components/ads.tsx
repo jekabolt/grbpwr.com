@@ -7,6 +7,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
 import { FeaturedItems } from "./featured-items";
 import { HeroArchive } from "./hero-archive";
+import { HeroLookbook } from "./hero-lookbook";
 import { HeroMarquee } from "./hero-marquee";
 import { HeroMosaic } from "./hero-mosaic";
 import { HeroSingle } from "./hero-single";
@@ -190,6 +191,18 @@ export function Ads({
                   priority={isPriorityAd}
                   onHeroClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_STATEMENT" })
+                  }
+                />
+              </div>
+            );
+          case "HERO_TYPE_LOOKBOOK":
+            return (
+              <div key={i} data-hero-block-index={i}>
+                <HeroLookbook
+                  lookbook={e.lookbook}
+                  priority={isPriorityAd}
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_LOOKBOOK" })
                   }
                 />
               </div>
