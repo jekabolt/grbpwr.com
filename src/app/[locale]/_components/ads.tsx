@@ -42,7 +42,11 @@ export function Ads({
               (t) => t.languageId === languageId,
             );
             return (
-              <div className="relative h-screen w-full" key={i}>
+              <div
+                className="relative h-screen w-full"
+                key={i}
+                data-hero-block-index={i}
+              >
                 <AnimatedButton
                   href={internalHref(e.single?.exploreLink)}
                   className="group relative h-full w-full text-bgColor"
@@ -139,6 +143,7 @@ export function Ads({
             return (
               <div
                 key={i}
+                data-hero-block-index={i}
                 className="relative flex h-full w-full flex-col lg:flex-row"
               >
                 <AnimatedButton
@@ -231,17 +236,22 @@ export function Ads({
               (t) => t.languageId === languageId,
             );
             return (
-              <FeaturedItems
+              <div
                 key={i}
-                products={e.featuredProducts?.products}
-                headline={productsTranslation?.headline}
-                exploreText={productsTranslation?.exploreText}
-                exploreLink={e.featuredProducts?.exploreLink}
-                itemsQuantity={itemsQuantity}
-                onHeroClick={() =>
-                  sendHeroEvent({ heroType: "HERO_TYPE_FEATURED_PRODUCTS" })
-                }
-              />
+                style={{ display: "contents" }}
+                data-hero-block-index={i}
+              >
+                <FeaturedItems
+                  products={e.featuredProducts?.products}
+                  headline={productsTranslation?.headline}
+                  exploreText={productsTranslation?.exploreText}
+                  exploreLink={e.featuredProducts?.exploreLink}
+                  itemsQuantity={itemsQuantity}
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_FEATURED_PRODUCTS" })
+                  }
+                />
+              </div>
             );
           case "HERO_TYPE_FEATURED_PRODUCTS_TAG":
             const productsTagCount =
@@ -251,28 +261,40 @@ export function Ads({
                 (t) => t.languageId === languageId,
               );
             return (
-              <FeaturedItems
+              <div
                 key={i}
-                products={e.featuredProductsTag?.products?.products}
-                headline={productsTagTranslation?.headline}
-                exploreText={productsTagTranslation?.exploreText}
-                exploreLink={e.featuredProductsTag?.products?.exploreLink}
-                itemsQuantity={productsTagCount}
-                onHeroClick={() =>
-                  sendHeroEvent({ heroType: "HERO_TYPE_FEATURED_PRODUCTS_TAG" })
-                }
-              />
+                style={{ display: "contents" }}
+                data-hero-block-index={i}
+              >
+                <FeaturedItems
+                  products={e.featuredProductsTag?.products?.products}
+                  headline={productsTagTranslation?.headline}
+                  exploreText={productsTagTranslation?.exploreText}
+                  exploreLink={e.featuredProductsTag?.products?.exploreLink}
+                  itemsQuantity={productsTagCount}
+                  onHeroClick={() =>
+                    sendHeroEvent({
+                      heroType: "HERO_TYPE_FEATURED_PRODUCTS_TAG",
+                    })
+                  }
+                />
+              </div>
             );
           case "HERO_TYPE_FEATURED_ARCHIVE":
             return (
-              <HeroArchive
-                entity={e}
+              <div
                 key={i}
-                className="space-y-12 pt-16 lg:py-32"
-                onHeroClick={() =>
-                  sendHeroEvent({ heroType: "HERO_TYPE_FEATURED_ARCHIVE" })
-                }
-              />
+                style={{ display: "contents" }}
+                data-hero-block-index={i}
+              >
+                <HeroArchive
+                  entity={e}
+                  className="space-y-12 pt-16 lg:py-32"
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_FEATURED_ARCHIVE" })
+                  }
+                />
+              </div>
             );
           default:
             return null;
