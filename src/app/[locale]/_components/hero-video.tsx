@@ -9,10 +9,12 @@ import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
 
-// VIDEO hero: full-screen muted-autoplay-loop clip with a poster frame and an
-// optional CTA. Reuses the shared <Image type="video"> renderer; autoplay is
-// gated on prefers-reduced-motion (falls back to the static poster). The scrim +
-// copy only render when there is copy, so a pure-video block stays clean.
+// VIDEO hero: full-screen muted-autoplay-loop clip with an optional CTA. Reuses
+// the shared <Image type="video"> renderer. Autoplay + muted are forced on (muted
+// is required for browsers to allow autoplay, and this is a core brand hero), and
+// it does not pause under prefers-reduced-motion. A poster layer sits behind the
+// video so the block is never blank while it loads or if the clip is missing. The
+// scrim + copy only render when there is copy, so a pure-video block stays clean.
 export function HeroVideo({
   video,
   priority = false,
@@ -43,33 +45,50 @@ export function HeroVideo({
   const headline = translation?.headline;
   const ctaText = translation?.ctaText;
   const hasCopy = Boolean(headline || ctaText);
-  // Autoplay unconditionally (muted loop) — this is a core brand hero. Default to
-  // on unless the editor explicitly disabled it; it does not pause under
-  // prefers-reduced-motion (see the marquee note).
-  const shouldAutoplay = video.autoplay ?? true;
 
   const content = (
     <>
-      <div className="h-full w-full">
-        <Image
-          src={videoUrl}
-          type="video"
-          alt={headline || "GRBPWR"}
-          blurhash={media?.blurhash}
-          aspectRatio={calculateAspectRatio(
-            media?.fullSize?.width,
-            media?.fullSize?.height,
-          )}
-          fit="cover"
-          priority={priority}
-          loading={priority ? "eager" : "lazy"}
-          preload={priority ? "auto" : "metadata"}
-          autoPlay={shouldAutoplay}
-          muted={video.muted ?? true}
-          loop={video.loop ?? true}
-          {...(posterUrl ? { poster: posterUrl } : {})}
-        />
-      </div>
+      {/* Poster/first-frame layer behind — the block is never blank while the
+          video loads, and if the clip URL is missing the poster still shows. */}
+      {posterUrl && (
+        <div className="absolute inset-0">
+          <Image
+            src={posterUrl}
+            type="image"
+            alt={headline || "GRBPWR"}
+            blurhash={media?.blurhash}
+            aspectRatio={calculateAspectRatio(
+              video.posterMedia?.media?.fullSize?.width,
+              video.posterMedia?.media?.fullSize?.height,
+            )}
+            fit="cover"
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
+          />
+        </div>
+      )}
+      {videoUrl && (
+        <div className="absolute inset-0">
+          <Image
+            src={videoUrl}
+            type="video"
+            alt={headline || "GRBPWR"}
+            blurhash={media?.blurhash}
+            aspectRatio={calculateAspectRatio(
+              media?.fullSize?.width,
+              media?.fullSize?.height,
+            )}
+            fit="cover"
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
+            preload={priority ? "auto" : "metadata"}
+            autoPlay
+            muted
+            loop={video.loop ?? true}
+            {...(posterUrl ? { poster: posterUrl } : {})}
+          />
+        </div>
+      )}
       {hasCopy && <Overlay cover="container" disablePointerEvents />}
       {hasCopy && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 text-center text-bgColor">

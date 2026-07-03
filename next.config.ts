@@ -65,6 +65,9 @@ const nextConfig: NextConfig = {
         `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://www.google-analytics.com https://js.stripe.com https://maps.googleapis.com`,
         `style-src 'self' 'unsafe-inline'`,
         `img-src 'self' data: blob: https://files.grbpwr.com https://art.grbpwr.com https://cdn.builder.io https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://maps.googleapis.com https://maps.gstatic.com https://*.googleusercontent.com https://*.stripe.com`,
+        // <video>/<audio> load via media-src (not img-src); without this they fall
+        // back to default-src 'self' and CDN clips (hero VIDEO/SINGLE) are blocked.
+        `media-src 'self' data: blob: https://files.grbpwr.com`,
         `font-src 'self' data:`,
         [
           `connect-src 'self'`,
