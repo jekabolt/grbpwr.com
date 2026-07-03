@@ -60,13 +60,8 @@ const config = {
         },
         "modal-fade-in": { from: { opacity: "0" }, to: { opacity: "1" } },
         "modal-fade-out": { from: { opacity: "1" }, to: { opacity: "0" } },
-        "caret-blink": {
-          "0%, 50%": { opacity: "1" },
-          "50.01%, 100%": { opacity: "0" },
-        },
       },
       animation: {
-        "caret-blink": "caret-blink 1s step-end infinite",
         threshold: "threshold 0.4s ease-out forwards",
         "threshold-highlight":
           "threshold-with-highlight 0.4s ease-out forwards",

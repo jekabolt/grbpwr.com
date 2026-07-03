@@ -42,8 +42,8 @@ export function HeroMarquee({
 
   const bar = (
     <div className="w-full overflow-hidden border-y border-textColor bg-bgColor px-6 py-2">
-      <Text variant="uppercase" component="span">
-        <Typewriter text={text} holdMs={holdMs} />
+      <Text variant="uppercase" component="div">
+        <Typewriter text={text} prefix="> " holdMs={holdMs} />
       </Text>
     </div>
   );

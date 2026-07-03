@@ -16,6 +16,17 @@
   }
 }
 
+/* Terminal-style typewriter caret: a hard on/off blink (no fade). Runs
+   unconditionally — it is a core brand element of the marquee. */
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.caret-blink {
+  animation: caret-blink 1s step-end infinite;
+}
+
 @layer base {
   :root {
     /* COLORS */
