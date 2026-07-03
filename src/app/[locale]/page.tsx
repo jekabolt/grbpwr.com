@@ -8,8 +8,7 @@ import FlexibleLayout from "@/components/flexible-layout";
 import { Disabled } from "@/components/ui/disabled";
 import { EmptyHero } from "@/components/ui/empty-hero";
 
-import { Ads } from "./_components/ads";
-import { MainAds } from "./_components/main-ads";
+import { HeroView } from "./_components/hero-view";
 
 export async function generateMetadata({
   params,
@@ -73,8 +72,7 @@ export default async function Page() {
         dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }}
       />
       {/* <PageBackground imageUrl={heroImageUrl} /> */}
-      <MainAds main={hero?.entities?.[0]?.main} />
-      <Ads entities={hero?.entities || []} />
+      <HeroView hero={hero} />
     </FlexibleLayout>
   );
 }
