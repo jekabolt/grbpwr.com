@@ -14,6 +14,7 @@ import { Text } from "@/components/ui/text";
 
 import { FeaturedItems } from "./featured-items";
 import { HeroArchive } from "./hero-archive";
+import { HeroMarquee } from "./hero-marquee";
 
 export function Ads({
   entities,
@@ -308,6 +309,17 @@ export function Ads({
                   className="space-y-12 pt-16 lg:py-32"
                   onHeroClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_FEATURED_ARCHIVE" })
+                  }
+                />
+              </div>
+            );
+          case "HERO_TYPE_MARQUEE":
+            return (
+              <div key={i} data-hero-block-index={i}>
+                <HeroMarquee
+                  marquee={e.marquee}
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_MARQUEE" })
                   }
                 />
               </div>

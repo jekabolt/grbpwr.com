@@ -60,10 +60,16 @@ const config = {
         },
         "modal-fade-in": { from: { opacity: "0" }, to: { opacity: "1" } },
         "modal-fade-out": { from: { opacity: "1" }, to: { opacity: "0" } },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
       },
       animation: {
+        marquee: "marquee 20s linear infinite",
         threshold: "threshold 0.4s ease-out forwards",
-        "threshold-highlight": "threshold-with-highlight 0.4s ease-out forwards",
+        "threshold-highlight":
+          "threshold-with-highlight 0.4s ease-out forwards",
         "highlight-flash": "highlight-flash 0.6s ease-out forwards",
         "modal-fade-in": "modal-fade-in 0.2s ease-out both",
         "modal-fade-out": "modal-fade-out 0.15s ease-in both",
