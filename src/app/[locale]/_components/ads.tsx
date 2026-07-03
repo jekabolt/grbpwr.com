@@ -15,6 +15,7 @@ import { Text } from "@/components/ui/text";
 import { FeaturedItems } from "./featured-items";
 import { HeroArchive } from "./hero-archive";
 import { HeroMarquee } from "./hero-marquee";
+import { HeroVideo } from "./hero-video";
 
 export function Ads({
   entities,
@@ -320,6 +321,18 @@ export function Ads({
                   marquee={e.marquee}
                   onHeroClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_MARQUEE" })
+                  }
+                />
+              </div>
+            );
+          case "HERO_TYPE_VIDEO":
+            return (
+              <div key={i} data-hero-block-index={i}>
+                <HeroVideo
+                  video={e.video}
+                  priority={isPriorityAd}
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_VIDEO" })
                   }
                 />
               </div>
