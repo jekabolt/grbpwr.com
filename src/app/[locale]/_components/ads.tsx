@@ -8,6 +8,7 @@ import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { FeaturedItems } from "./featured-items";
 import { HeroArchive } from "./hero-archive";
 import { HeroMarquee } from "./hero-marquee";
+import { HeroMosaic } from "./hero-mosaic";
 import { HeroSingle } from "./hero-single";
 import { HeroSlideshow } from "./hero-slideshow";
 import { HeroStatement } from "./hero-statement";
@@ -153,6 +154,18 @@ export function Ads({
                   priority={isPriorityAd}
                   onHeroClick={() =>
                     sendHeroEvent({ heroType: "HERO_TYPE_VIDEO" })
+                  }
+                />
+              </div>
+            );
+          case "HERO_TYPE_MOSAIC":
+            return (
+              <div key={i} data-hero-block-index={i}>
+                <HeroMosaic
+                  mosaic={e.mosaic}
+                  priority={isPriorityAd}
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_MOSAIC" })
                   }
                 />
               </div>
