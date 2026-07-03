@@ -2,7 +2,6 @@
 
 import type { common_HeroVideoWithTranslations } from "@/api/proto-http/frontend";
 
-import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, internalHref } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -24,7 +23,6 @@ export function HeroVideo({
   onHeroClick?: () => void;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
-  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
   if (!video) return null;
 
@@ -32,17 +30,29 @@ export function HeroVideo({
     (t) => t.languageId === languageId,
   );
   const media = video.media?.media;
-  const posterUrl = video.posterMedia?.media?.fullSize?.mediaUrl;
+  // The playable URL can live in any size slot depending on the transcode; fall
+  // back across them so a video that only populated one slot still renders.
+  const videoUrl =
+    media?.fullSize?.mediaUrl ||
+    media?.compressed?.mediaUrl ||
+    media?.thumbnail?.mediaUrl ||
+    "";
+  const posterUrl =
+    video.posterMedia?.media?.fullSize?.mediaUrl ||
+    video.posterMedia?.media?.thumbnail?.mediaUrl;
   const headline = translation?.headline;
   const ctaText = translation?.ctaText;
   const hasCopy = Boolean(headline || ctaText);
-  const shouldAutoplay = Boolean(video.autoplay) && !reducedMotion;
+  // Autoplay unconditionally (muted loop) — this is a core brand hero. Default to
+  // on unless the editor explicitly disabled it; it does not pause under
+  // prefers-reduced-motion (see the marquee note).
+  const shouldAutoplay = video.autoplay ?? true;
 
   const content = (
     <>
       <div className="h-full w-full">
         <Image
-          src={media?.fullSize?.mediaUrl || ""}
+          src={videoUrl}
           type="video"
           alt={headline || "GRBPWR"}
           blurhash={media?.blurhash}
