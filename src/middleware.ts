@@ -65,6 +65,13 @@ export default async function middleware(req: NextRequest) {
     if (parsedPath) {
         const { country, locale, rest } = parsedPath;
 
+        // The hero editor drives /preview/* inside an admin iframe and controls
+        // the language purely via the URL locale. Exempt it from the NEXT_LOCALE
+        // cookie override below (and from mutating the visitor's storefront
+        // cookies) so the URL locale — the only signal the editor sends — wins.
+        const isPreview =
+            rest === "/preview" || (rest?.startsWith("/preview/") ?? false);
+
         // Redirect to home when site is disabled and URL is not timeline / footer-help allowlist
         if (rest?.trim() && !isAllowedWhenSiteDisabled(pathname)) {
             try {
@@ -106,6 +113,7 @@ export default async function middleware(req: NextRequest) {
         // first, so they don't bounce. New visitors / crawlers (no cookie) get the
         // URL as-is and the cookie is synced below.
         if (
+            !isPreview &&
             localeCookie &&
             localeCookie !== locale &&
             (routing.locales as readonly string[]).includes(localeCookie)
@@ -183,6 +191,11 @@ export default async function middleware(req: NextRequest) {
             // third-party caches/proxies.
             res.headers.set("Cache-Control", "private, no-cache, must-revalidate");
         }
+        // Editor preview iframe: the URL locale is authoritative and we must not
+        // mutate the visitor's storefront NEXT_LOCALE/COUNTRY cookies. The rewrite
+        // already carries x-nextjs-locale + a URL-derived Cookie header for the RSC
+        // read, so the preview renders in the URL's language without persisting it.
+        if (isPreview) return res;
         setMainCookies(res, country!, locale!);
         const suggestCountryCookie = req.cookies.get("NEXT_SUGGEST_COUNTRY")?.value;
         const suggestLocaleCookie = req.cookies.get("NEXT_SUGGEST_LOCALE")?.value;
