@@ -1,15 +1,15 @@
 "use client";
 
-import { common_HeroMainWithTranslations } from "@/api/proto-http/frontend";
 import { useState } from "react";
+import { common_HeroMainWithTranslations } from "@/api/proto-http/frontend";
 
+import { sendHeroEvent } from "@/lib/analitycs/hero";
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { calculateAspectRatio, internalHref, isVideo } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 import { Text } from "@/components/ui/text";
-import { sendHeroEvent } from "@/lib/analitycs/hero";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, internalHref, isVideo } from "@/lib/utils";
 
 export function MainAds({
   main,
@@ -29,11 +29,11 @@ export function MainAds({
 
   // Mobile hero uses the portrait media (falls back to landscape if missing).
   const mobileMedia =
-    main.single?.mediaPortrait?.media || main.single?.mediaLandscape?.media;
+    main.media?.portrait?.media || main.media?.landscape?.media;
 
   return (
     <AnimatedButton
-      href={internalHref(main.single?.exploreLink)}
+      href={internalHref(main.exploreLink)}
       className="relative h-screen w-full overflow-hidden"
       onClick={() => sendHeroEvent({ heroType: "HERO_TYPE_MAIN" })}
       onMouseEnter={() => setIsHovered(true)}
@@ -41,21 +41,19 @@ export function MainAds({
     >
       <div className="hidden h-full lg:block">
         <Image
-          src={main.single?.mediaLandscape?.media?.fullSize?.mediaUrl || ""}
-          blurhash={main.single?.mediaLandscape?.media?.blurhash}
+          src={main.media?.landscape?.media?.fullSize?.mediaUrl || ""}
+          blurhash={main.media?.landscape?.media?.blurhash}
           type={
-            isVideo(main.single?.mediaLandscape?.media?.fullSize?.mediaUrl)
+            isVideo(main.media?.landscape?.media?.fullSize?.mediaUrl)
               ? "video"
               : "image"
           }
           aspectRatio={calculateAspectRatio(
-            main.single?.mediaLandscape?.media?.fullSize?.width,
-            main.single?.mediaLandscape?.media?.fullSize?.height,
+            main.media?.landscape?.media?.fullSize?.width,
+            main.media?.landscape?.media?.fullSize?.height,
           )}
           alt={
-            currentTranslation?.headline ||
-            currentTranslation?.tag ||
-            "GRBPWR"
+            currentTranslation?.headline || currentTranslation?.tag || "GRBPWR"
           }
           fit="cover"
           priority={true}
@@ -73,9 +71,7 @@ export function MainAds({
             mobileMedia?.fullSize?.height,
           )}
           alt={
-            currentTranslation?.headline ||
-            currentTranslation?.tag ||
-            "GRBPWR"
+            currentTranslation?.headline || currentTranslation?.tag || "GRBPWR"
           }
           fit="cover"
           priority={true}
@@ -85,7 +81,7 @@ export function MainAds({
         />
       </div>
       <div className="block h-full lg:hidden">{children}</div>
-      <Overlay cover="container" />
+      {!main.media?.disableOverlay && <Overlay cover="container" />}
       <div className="absolute inset-x-0 top-32 z-20 flex h-screen items-center lg:top-20">
         <div className="flex w-full flex-col items-start gap-6 p-2 text-bgColor md:flex-row md:justify-between">
           <Text variant="uppercase">{currentTranslation?.tag}</Text>
@@ -93,7 +89,7 @@ export function MainAds({
             {currentTranslation?.headline}
           </Text>
           <Text variant="uppercase" className="md:w-1/3">
-            {currentTranslation?.description}
+            {currentTranslation?.body}
           </Text>
           <Text variant="underlined" className="uppercase">
             {currentTranslation?.exploreText}

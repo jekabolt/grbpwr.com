@@ -22,7 +22,6 @@ export type GetHeroResponse = {
   dictionary: common_Dictionary | undefined;
 };
 
-// Extended hero structures with translations
 export type common_HeroFullWithTranslations = {
   entities: common_HeroEntityWithTranslations[] | undefined;
   navFeatured: common_NavFeaturedWithTranslations | undefined;
@@ -36,6 +35,22 @@ export type common_HeroEntityWithTranslations = {
   featuredProducts: common_HeroFeaturedProductsWithTranslations | undefined;
   featuredProductsTag: common_HeroFeaturedProductsTagWithTranslations | undefined;
   featuredArchive: common_HeroFeaturedArchiveWithTranslations | undefined;
+  embed: common_HeroEmbedWithTranslations | undefined;
+  drop: common_HeroDropWithTranslations | undefined;
+  lastChance: common_HeroLastChanceWithTranslations | undefined;
+  marquee: common_HeroMarqueeWithTranslations | undefined;
+  newArrivals: common_HeroNewArrivalsWithTranslations | undefined;
+  slideshow: common_HeroSlideshowWithTranslations | undefined;
+  mosaic: common_HeroMosaicWithTranslations | undefined;
+  split: common_HeroSplitWithTranslations | undefined;
+  video: common_HeroVideoWithTranslations | undefined;
+  productSpotlight: common_HeroProductSpotlightWithTranslations | undefined;
+  newsletter: common_HeroNewsletterWithTranslations | undefined;
+  statement: common_HeroStatementWithTranslations | undefined;
+  lookbook: common_HeroLookbookWithTranslations | undefined;
+  // modifiers
+  audience: common_HeroAudience | undefined;
+  minTierId: number | undefined;
 };
 
 export type common_HeroType =
@@ -45,12 +60,31 @@ export type common_HeroType =
   | "HERO_TYPE_MAIN"
   | "HERO_TYPE_FEATURED_PRODUCTS"
   | "HERO_TYPE_FEATURED_PRODUCTS_TAG"
-  | "HERO_TYPE_FEATURED_ARCHIVE";
+  | "HERO_TYPE_FEATURED_ARCHIVE"
+  | "HERO_TYPE_EMBED"
+  | "HERO_TYPE_DROP"
+  | "HERO_TYPE_LAST_CHANCE"
+  | "HERO_TYPE_MARQUEE"
+  | "HERO_TYPE_NEW_ARRIVALS"
+  | "HERO_TYPE_SLIDESHOW"
+  | "HERO_TYPE_MOSAIC"
+  | "HERO_TYPE_SPLIT"
+  | "HERO_TYPE_VIDEO"
+  | "HERO_TYPE_PRODUCT_SPOTLIGHT"
+  | "HERO_TYPE_NEWSLETTER"
+  | "HERO_TYPE_STATEMENT"
+  | "HERO_TYPE_LOOKBOOK";
 export type common_HeroSingleWithTranslations = {
-  mediaPortrait: common_MediaFull | undefined;
-  mediaLandscape: common_MediaFull | undefined;
+  media: common_HeroMediaFull | undefined;
   exploreLink: string | undefined;
-  translations: common_HeroSingleInsertTranslation[] | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
+};
+
+// HeroMediaFull is the resolved form of HeroMedia (read side).
+export type common_HeroMediaFull = {
+  portrait: common_MediaFull | undefined;
+  landscape: common_MediaFull | undefined;
+  disableOverlay: boolean | undefined;
 };
 
 export type common_MediaFull = {
@@ -87,10 +121,26 @@ export type common_MediaInfo = {
   height: number | undefined;
 };
 
-export type common_HeroSingleInsertTranslation = {
+// HeroCopyTranslation is the single, shared translation for every hero block.
+// Each block type uses only the subset of fields it needs:
+// single/double        -> headline, explore_text
+// main                 -> tag, body, headline, explore_text
+// featured_products    -> headline, explore_text
+// featured_products_tag-> headline, explore_text
+// featured_archive     -> headline, explore_text
+// (further fields — subhead, cta_text, caption, placeholder, success_text —
+// are reserved for the block types added on top of this foundation.)
+export type common_HeroCopyTranslation = {
   languageId: number | undefined;
+  tag: string | undefined;
   headline: string | undefined;
+  subhead: string | undefined;
+  body: string | undefined;
+  ctaText: string | undefined;
   exploreText: string | undefined;
+  caption: string | undefined;
+  placeholder: string | undefined;
+  successText: string | undefined;
 };
 
 export type common_HeroDoubleWithTranslations = {
@@ -99,22 +149,15 @@ export type common_HeroDoubleWithTranslations = {
 };
 
 export type common_HeroMainWithTranslations = {
-  single: common_HeroSingleWithTranslations | undefined;
-  translations: common_HeroMainInsertTranslation[] | undefined;
-};
-
-export type common_HeroMainInsertTranslation = {
-  languageId: number | undefined;
-  tag: string | undefined;
-  description: string | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
+  media: common_HeroMediaFull | undefined;
+  exploreLink: string | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
 };
 
 export type common_HeroFeaturedProductsWithTranslations = {
   products: common_Product[] | undefined;
   exploreLink: string | undefined;
-  translations: common_HeroFeaturedProductsInsertTranslation[] | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
 };
 
 export type common_Product = {
@@ -239,30 +282,16 @@ export type common_ProductPrice = {
   price: googletype_Decimal | undefined;
 };
 
-export type common_HeroFeaturedProductsInsertTranslation = {
-  languageId: number | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
-};
-
 export type common_HeroFeaturedProductsTagWithTranslations = {
   tag: string | undefined;
   products: common_HeroFeaturedProductsWithTranslations | undefined;
-  translations: common_HeroFeaturedProductsTagInsertTranslation[] | undefined;
-};
-
-export type common_HeroFeaturedProductsTagInsertTranslation = {
-  languageId: number | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
 };
 
 export type common_HeroFeaturedArchiveWithTranslations = {
   archive: common_ArchiveFull | undefined;
   tag: string | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
-  translations: common_HeroFeaturedArchiveInsertTranslation[] | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
 };
 
 export type common_ArchiveFull = {
@@ -286,12 +315,98 @@ export type common_ArchiveInsertTranslation = {
   description: string | undefined;
 };
 
-export type common_HeroFeaturedArchiveInsertTranslation = {
-  languageId: number | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
+export type common_HeroEmbedWithTranslations = {
+  embedUrl: string | undefined;
+  fallback: common_HeroMediaFull | undefined;
+  ctaLink: string | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
 };
 
+export type common_HeroDropWithTranslations = {
+  media: common_HeroMediaFull | undefined;
+  releaseAt: wellKnownTimestamp | undefined;
+  exploreLink: string | undefined;
+  tag: string | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
+};
+
+export type common_HeroLastChanceWithTranslations = {
+  products: common_Product[] | undefined;
+  exploreLink: string | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
+};
+
+export type common_HeroMarqueeWithTranslations = {
+  link: string | undefined;
+  speed: number | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
+};
+
+export type common_HeroNewArrivalsWithTranslations = {
+  products: common_Product[] | undefined;
+  exploreLink: string | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
+};
+
+export type common_HeroSlideshowWithTranslations = {
+  slides: common_HeroSingleWithTranslations[] | undefined;
+  intervalMs: number | undefined;
+};
+
+export type common_HeroMosaicWithTranslations = {
+  tiles: common_HeroSingleWithTranslations[] | undefined;
+  columns: number | undefined;
+};
+
+export type common_HeroSplitWithTranslations = {
+  media: common_HeroSingleWithTranslations | undefined;
+  products: common_Product[] | undefined;
+  mediaLeft: boolean | undefined;
+};
+
+export type common_HeroVideoWithTranslations = {
+  media: common_MediaFull | undefined;
+  posterMedia: common_MediaFull | undefined;
+  autoplay: boolean | undefined;
+  loop: boolean | undefined;
+  muted: boolean | undefined;
+  ctaLink: string | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
+};
+
+export type common_HeroProductSpotlightWithTranslations = {
+  product: common_Product | undefined;
+  media: common_HeroMediaFull | undefined;
+  exploreLink: string | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
+};
+
+export type common_HeroNewsletterWithTranslations = {
+  media: common_HeroMediaFull | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
+};
+
+export type common_HeroStatementWithTranslations = {
+  media: common_HeroMediaFull | undefined;
+  exploreLink: string | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
+};
+
+export type common_HeroLookbookWithTranslations = {
+  frames: common_HeroSingleWithTranslations[] | undefined;
+  exploreLink: string | undefined;
+  translations: common_HeroCopyTranslation[] | undefined;
+};
+
+// HeroAudience is the TARGETING modifier: who a block is shown to. Enforcement
+// requires the frontend GetHero to know the viewer (auth → tier); until then it
+// is carried through and may be applied client-side.
+export type common_HeroAudience =
+  | "HERO_AUDIENCE_UNKNOWN"
+  | "HERO_AUDIENCE_ALL"
+  | "HERO_AUDIENCE_GUESTS"
+  | "HERO_AUDIENCE_MEMBERS"
+  | "HERO_AUDIENCE_TIER";
 export type common_NavFeaturedWithTranslations = {
   men: common_NavFeaturedEntityWithTranslations | undefined;
   women: common_NavFeaturedEntityWithTranslations | undefined;

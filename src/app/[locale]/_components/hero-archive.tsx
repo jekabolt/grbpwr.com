@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { common_HeroEntityWithTranslations } from "@/api/proto-http/frontend";
 
+import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
@@ -18,6 +19,7 @@ export function HeroArchive({
   className?: string;
   onHeroClick?: () => void;
 }) {
+  const { languageId } = useTranslationsStore((state) => state);
   const archiveRef = useRef<HTMLDivElement>(null);
   const hasScrolledRef = useRef(false);
   const userScrolledRef = useRef(false);
@@ -58,13 +60,16 @@ export function HeroArchive({
   }, []);
 
   const archive = entity.featuredArchive;
+  const translation = archive?.translations?.find(
+    (t) => t.languageId === languageId,
+  );
   return (
     <div className={className}>
       <div className="flex flex-col gap-3 px-2 lg:flex-row">
-        <Text variant="uppercase">{archive?.headline}</Text>
+        <Text variant="uppercase">{translation?.headline}</Text>
         <Button variant="underline" className="uppercase" asChild>
           <Link href={`/timeline/${archive?.tag}`} onClick={onHeroClick}>
-            {archive?.exploreText}
+            {translation?.exploreText}
           </Link>
         </Button>
       </div>

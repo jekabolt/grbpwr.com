@@ -21,36 +21,26 @@ export type ArchiveInsertTranslation = {
   description: string | undefined;
 };
 
-export type HeroSingleInsertTranslation = {
-  languageId: number | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
-};
-
-export type HeroMainInsertTranslation = {
+// HeroCopyTranslation is the single, shared translation for every hero block.
+// Each block type uses only the subset of fields it needs:
+// single/double        -> headline, explore_text
+// main                 -> tag, body, headline, explore_text
+// featured_products    -> headline, explore_text
+// featured_products_tag-> headline, explore_text
+// featured_archive     -> headline, explore_text
+// (further fields — subhead, cta_text, caption, placeholder, success_text —
+// are reserved for the block types added on top of this foundation.)
+export type HeroCopyTranslation = {
   languageId: number | undefined;
   tag: string | undefined;
-  description: string | undefined;
   headline: string | undefined;
+  subhead: string | undefined;
+  body: string | undefined;
+  ctaText: string | undefined;
   exploreText: string | undefined;
-};
-
-export type HeroFeaturedProductsInsertTranslation = {
-  languageId: number | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
-};
-
-export type HeroFeaturedProductsTagInsertTranslation = {
-  languageId: number | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
-};
-
-export type HeroFeaturedArchiveInsertTranslation = {
-  languageId: number | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
+  caption: string | undefined;
+  placeholder: string | undefined;
+  successText: string | undefined;
 };
 
 export type NavFeaturedEntityInsertTranslation = {
@@ -759,6 +749,65 @@ export type SortFactors = {
   name: string | undefined;
 };
 
+// FittingStatus is the lifecycle state of a fitting session.
+export type FittingStatus =
+  | "FITTING_STATUS_UNKNOWN"
+  | "FITTING_STATUS_PLANNED"
+  | "FITTING_STATUS_DONE"
+  | "FITTING_STATUS_CANCELLED";
+// FittingVerdict is the outcome of a fitting session.
+export type FittingVerdict =
+  | "FITTING_VERDICT_UNKNOWN"
+  | "FITTING_VERDICT_PENDING"
+  | "FITTING_VERDICT_APPROVED"
+  | "FITTING_VERDICT_NEEDS_REWORK"
+  | "FITTING_VERDICT_REJECTED";
+// FittingSizeInsert is one size tried in a fitting, with an optional per-size note.
+export type FittingSizeInsert = {
+  sizeId: number | undefined;
+  fitNote: string | undefined;
+};
+
+// FittingInsert is the writable payload for a fitting session. A fitting anchors
+// to a tech card (the style) and/or a specific product (the colour/SKU sample);
+// at least one of tech_card_id / product_id must be set.
+export type FittingInsert = {
+  productId: number | undefined;
+  modelId: number | undefined;
+  fittingDate: wellKnownTimestamp | undefined;
+  comment: string | undefined;
+  status: FittingStatus | undefined;
+  verdict: FittingVerdict | undefined;
+  recordedBy: string | undefined;
+  sizes: FittingSizeInsert[] | undefined;
+  mediaIds: number[] | undefined;
+  techCardId: number | undefined;
+  // PDF выкройки measured in this fitting. The tech card holds the FINAL pattern per
+  // size; a fitting captures the ITERATION that was actually tried on (so you know which
+  // pattern you measured). A fitting may carry several (it can span sizes). Each PDF is
+  // uploaded via Admin.UploadPattern; the url is stored as a snapshot (immune to later
+  // tech-card edits).
+  patterns: FittingPattern[] | undefined;
+};
+
+// FittingPattern is one PDF выкройка iteration tried in a fitting (snapshot of the
+// uploaded file, not a live reference to a tech-card pattern).
+export type FittingPattern = {
+  sizeId: number | undefined;
+  url: string | undefined;
+  filename: string | undefined;
+  sizeBytes: number | undefined;
+};
+
+// Fitting is a stored try-on session with resolved media for display.
+export type Fitting = {
+  id: number | undefined;
+  fitting: FittingInsert | undefined;
+  media: MediaFull[] | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
+};
+
 export type HeroType =
   | "HERO_TYPE_UNKNOWN"
   | "HERO_TYPE_SINGLE"
@@ -766,8 +815,44 @@ export type HeroType =
   | "HERO_TYPE_MAIN"
   | "HERO_TYPE_FEATURED_PRODUCTS"
   | "HERO_TYPE_FEATURED_PRODUCTS_TAG"
-  | "HERO_TYPE_FEATURED_ARCHIVE";
-// Extended hero structures with translations
+  | "HERO_TYPE_FEATURED_ARCHIVE"
+  | "HERO_TYPE_EMBED"
+  | "HERO_TYPE_DROP"
+  | "HERO_TYPE_LAST_CHANCE"
+  | "HERO_TYPE_MARQUEE"
+  | "HERO_TYPE_NEW_ARRIVALS"
+  | "HERO_TYPE_SLIDESHOW"
+  | "HERO_TYPE_MOSAIC"
+  | "HERO_TYPE_SPLIT"
+  | "HERO_TYPE_VIDEO"
+  | "HERO_TYPE_PRODUCT_SPOTLIGHT"
+  | "HERO_TYPE_NEWSLETTER"
+  | "HERO_TYPE_STATEMENT"
+  | "HERO_TYPE_LOOKBOOK";
+// HeroAudience is the TARGETING modifier: who a block is shown to. Enforcement
+// requires the frontend GetHero to know the viewer (auth → tier); until then it
+// is carried through and may be applied client-side.
+export type HeroAudience =
+  | "HERO_AUDIENCE_UNKNOWN"
+  | "HERO_AUDIENCE_ALL"
+  | "HERO_AUDIENCE_GUESTS"
+  | "HERO_AUDIENCE_MEMBERS"
+  | "HERO_AUDIENCE_TIER";
+// HeroMedia is a portrait/landscape media pair addressed by id (write side).
+// disable_overlay lives here so the scrim can be toggled per media slot.
+export type HeroMedia = {
+  portraitId: number | undefined;
+  landscapeId: number | undefined;
+  disableOverlay: boolean | undefined;
+};
+
+// HeroMediaFull is the resolved form of HeroMedia (read side).
+export type HeroMediaFull = {
+  portrait: MediaFull | undefined;
+  landscape: MediaFull | undefined;
+  disableOverlay: boolean | undefined;
+};
+
 export type HeroFullWithTranslations = {
   entities: HeroEntityWithTranslations[] | undefined;
   navFeatured: NavFeaturedWithTranslations | undefined;
@@ -781,13 +866,28 @@ export type HeroEntityWithTranslations = {
   featuredProducts: HeroFeaturedProductsWithTranslations | undefined;
   featuredProductsTag: HeroFeaturedProductsTagWithTranslations | undefined;
   featuredArchive: HeroFeaturedArchiveWithTranslations | undefined;
+  embed: HeroEmbedWithTranslations | undefined;
+  drop: HeroDropWithTranslations | undefined;
+  lastChance: HeroLastChanceWithTranslations | undefined;
+  marquee: HeroMarqueeWithTranslations | undefined;
+  newArrivals: HeroNewArrivalsWithTranslations | undefined;
+  slideshow: HeroSlideshowWithTranslations | undefined;
+  mosaic: HeroMosaicWithTranslations | undefined;
+  split: HeroSplitWithTranslations | undefined;
+  video: HeroVideoWithTranslations | undefined;
+  productSpotlight: HeroProductSpotlightWithTranslations | undefined;
+  newsletter: HeroNewsletterWithTranslations | undefined;
+  statement: HeroStatementWithTranslations | undefined;
+  lookbook: HeroLookbookWithTranslations | undefined;
+  // modifiers
+  audience: HeroAudience | undefined;
+  minTierId: number | undefined;
 };
 
 export type HeroSingleWithTranslations = {
-  mediaPortrait: MediaFull | undefined;
-  mediaLandscape: MediaFull | undefined;
+  media: HeroMediaFull | undefined;
   exploreLink: string | undefined;
-  translations: HeroSingleInsertTranslation[] | undefined;
+  translations: HeroCopyTranslation[] | undefined;
 };
 
 export type HeroDoubleWithTranslations = {
@@ -796,28 +896,110 @@ export type HeroDoubleWithTranslations = {
 };
 
 export type HeroMainWithTranslations = {
-  single: HeroSingleWithTranslations | undefined;
-  translations: HeroMainInsertTranslation[] | undefined;
+  media: HeroMediaFull | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
 };
 
 export type HeroFeaturedProductsWithTranslations = {
   products: Product[] | undefined;
   exploreLink: string | undefined;
-  translations: HeroFeaturedProductsInsertTranslation[] | undefined;
+  translations: HeroCopyTranslation[] | undefined;
 };
 
 export type HeroFeaturedProductsTagWithTranslations = {
   tag: string | undefined;
   products: HeroFeaturedProductsWithTranslations | undefined;
-  translations: HeroFeaturedProductsTagInsertTranslation[] | undefined;
+  translations: HeroCopyTranslation[] | undefined;
 };
 
 export type HeroFeaturedArchiveWithTranslations = {
   archive: ArchiveFull | undefined;
   tag: string | undefined;
-  headline: string | undefined;
-  exploreText: string | undefined;
-  translations: HeroFeaturedArchiveInsertTranslation[] | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroEmbedWithTranslations = {
+  embedUrl: string | undefined;
+  fallback: HeroMediaFull | undefined;
+  ctaLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroDropWithTranslations = {
+  media: HeroMediaFull | undefined;
+  releaseAt: wellKnownTimestamp | undefined;
+  exploreLink: string | undefined;
+  tag: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroLastChanceWithTranslations = {
+  products: Product[] | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroMarqueeWithTranslations = {
+  link: string | undefined;
+  speed: number | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroNewArrivalsWithTranslations = {
+  products: Product[] | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroSlideshowWithTranslations = {
+  slides: HeroSingleWithTranslations[] | undefined;
+  intervalMs: number | undefined;
+};
+
+export type HeroMosaicWithTranslations = {
+  tiles: HeroSingleWithTranslations[] | undefined;
+  columns: number | undefined;
+};
+
+export type HeroSplitWithTranslations = {
+  media: HeroSingleWithTranslations | undefined;
+  products: Product[] | undefined;
+  mediaLeft: boolean | undefined;
+};
+
+export type HeroVideoWithTranslations = {
+  media: MediaFull | undefined;
+  posterMedia: MediaFull | undefined;
+  autoplay: boolean | undefined;
+  loop: boolean | undefined;
+  muted: boolean | undefined;
+  ctaLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroProductSpotlightWithTranslations = {
+  product: Product | undefined;
+  media: HeroMediaFull | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroNewsletterWithTranslations = {
+  media: HeroMediaFull | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroStatementWithTranslations = {
+  media: HeroMediaFull | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroLookbookWithTranslations = {
+  frames: HeroSingleWithTranslations[] | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
 };
 
 export type NavFeaturedWithTranslations = {
@@ -857,13 +1039,28 @@ export type HeroEntityInsert = {
   featuredProducts: HeroFeaturedProductsInsert | undefined;
   featuredProductsTag: HeroFeaturedProductsTagInsert | undefined;
   featuredArchive: HeroFeaturedArchiveInsert | undefined;
+  embed: HeroEmbedInsert | undefined;
+  drop: HeroDropInsert | undefined;
+  lastChance: HeroLastChanceInsert | undefined;
+  marquee: HeroMarqueeInsert | undefined;
+  newArrivals: HeroNewArrivalsInsert | undefined;
+  slideshow: HeroSlideshowInsert | undefined;
+  mosaic: HeroMosaicInsert | undefined;
+  split: HeroSplitInsert | undefined;
+  video: HeroVideoInsert | undefined;
+  productSpotlight: HeroProductSpotlightInsert | undefined;
+  newsletter: HeroNewsletterInsert | undefined;
+  statement: HeroStatementInsert | undefined;
+  lookbook: HeroLookbookInsert | undefined;
+  // modifiers
+  audience: HeroAudience | undefined;
+  minTierId: number | undefined;
 };
 
 export type HeroSingleInsert = {
-  mediaPortraitId: number | undefined;
-  mediaLandscapeId: number | undefined;
+  media: HeroMedia | undefined;
   exploreLink: string | undefined;
-  translations: HeroSingleInsertTranslation[] | undefined;
+  translations: HeroCopyTranslation[] | undefined;
 };
 
 export type HeroDoubleInsert = {
@@ -872,27 +1069,167 @@ export type HeroDoubleInsert = {
 };
 
 export type HeroMainInsert = {
-  mediaPortraitId: number | undefined;
-  mediaLandscapeId: number | undefined;
+  media: HeroMedia | undefined;
   exploreLink: string | undefined;
-  translations: HeroMainInsertTranslation[] | undefined;
+  translations: HeroCopyTranslation[] | undefined;
 };
 
 export type HeroFeaturedProductsInsert = {
   productIds: number[] | undefined;
   exploreLink: string | undefined;
-  translations: HeroFeaturedProductsInsertTranslation[] | undefined;
+  translations: HeroCopyTranslation[] | undefined;
 };
 
 export type HeroFeaturedProductsTagInsert = {
   tag: string | undefined;
-  translations: HeroFeaturedProductsTagInsertTranslation[] | undefined;
+  translations: HeroCopyTranslation[] | undefined;
 };
 
 export type HeroFeaturedArchiveInsert = {
   archiveId: number | undefined;
   tag: string | undefined;
-  translations: HeroFeaturedArchiveInsertTranslation[] | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroEmbedInsert = {
+  embedUrl: string | undefined;
+  fallback: HeroMedia | undefined;
+  ctaLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroDropInsert = {
+  media: HeroMedia | undefined;
+  releaseAt: wellKnownTimestamp | undefined;
+  exploreLink: string | undefined;
+  tag: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroLastChanceInsert = {
+  stockThreshold: number | undefined;
+  limit: number | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroMarqueeInsert = {
+  link: string | undefined;
+  speed: number | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroNewArrivalsInsert = {
+  limit: number | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroSlideshowInsert = {
+  slides: HeroSingleInsert[] | undefined;
+  intervalMs: number | undefined;
+};
+
+export type HeroMosaicInsert = {
+  tiles: HeroSingleInsert[] | undefined;
+  columns: number | undefined;
+};
+
+export type HeroSplitInsert = {
+  media: HeroSingleInsert | undefined;
+  productIds: number[] | undefined;
+  mediaLeft: boolean | undefined;
+};
+
+export type HeroVideoInsert = {
+  mediaId: number | undefined;
+  posterMediaId: number | undefined;
+  autoplay: boolean | undefined;
+  loop: boolean | undefined;
+  muted: boolean | undefined;
+  ctaLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroProductSpotlightInsert = {
+  productId: number | undefined;
+  media: HeroMedia | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroNewsletterInsert = {
+  media: HeroMedia | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroStatementInsert = {
+  media: HeroMedia | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+export type HeroLookbookInsert = {
+  frames: HeroSingleInsert[] | undefined;
+  exploreLink: string | undefined;
+  translations: HeroCopyTranslation[] | undefined;
+};
+
+// BodyMeasurementName enumerates the body-measurement types captured for a fit
+// model. It is intentionally separate from the garment MeasurementName dictionary.
+export type BodyMeasurementName =
+  | "BODY_MEASUREMENT_NAME_UNKNOWN"
+  // Torso
+  | "BODY_MEASUREMENT_NAME_CHEST"
+  | "BODY_MEASUREMENT_NAME_UNDER_BUST"
+  | "BODY_MEASUREMENT_NAME_WAIST"
+  | "BODY_MEASUREMENT_NAME_HIGH_HIP"
+  | "BODY_MEASUREMENT_NAME_HIP"
+  | "BODY_MEASUREMENT_NAME_NECK_BASE"
+  // Arms
+  | "BODY_MEASUREMENT_NAME_ACROSS_SHOULDER"
+  | "BODY_MEASUREMENT_NAME_SLEEVE_LENGTH"
+  | "BODY_MEASUREMENT_NAME_BICEP"
+  | "BODY_MEASUREMENT_NAME_WRIST"
+  // Legs
+  | "BODY_MEASUREMENT_NAME_INSEAM"
+  | "BODY_MEASUREMENT_NAME_THIGH"
+  | "BODY_MEASUREMENT_NAME_KNEE"
+  | "BODY_MEASUREMENT_NAME_CALF"
+  | "BODY_MEASUREMENT_NAME_ANKLE"
+  // Vertical / lengths
+  | "BODY_MEASUREMENT_NAME_HEIGHT"
+  | "BODY_MEASUREMENT_NAME_HPS_TO_WAIST_FRONT"
+  | "BODY_MEASUREMENT_NAME_CB_NECK_TO_WAIST"
+  // Widths (front / back)
+  | "BODY_MEASUREMENT_NAME_ACROSS_FRONT"
+  | "BODY_MEASUREMENT_NAME_ACROSS_BACK";
+// ModelMeasurement is a single body measurement value, in millimetres.
+export type ModelMeasurement = {
+  name: BodyMeasurementName | undefined;
+  valueMm: number | undefined;
+};
+
+// ModelInsert is the writable payload for a fit-model profile. Measurements are
+// sparse: include only the ones that are filled in.
+export type ModelInsert = {
+  name: string | undefined;
+  comment: string | undefined;
+  gender: GenderEnum | undefined;
+  measurements: ModelMeasurement[] | undefined;
+  thumbnailId: number | undefined;
+  mediaIds: number[] | undefined;
+  defaultSizeIds: number[] | undefined;
+};
+
+// Model is a stored fit-model profile.
+export type Model = {
+  id: number | undefined;
+  model: ModelInsert | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
+  thumbnail: MediaFull | undefined;
+  media: MediaFull[] | undefined;
 };
 
 // Subscriber represents the subscriber table
@@ -940,6 +1277,476 @@ export type SupportTicket = {
   category: string | undefined;
   priority: SupportTicketPriority | undefined;
   internalNotes: string | undefined;
+};
+
+// TechCardStage is the development stage of a tech pack: prototype, fit sample,
+// salesman sample, pre-production, production.
+export type TechCardStage =
+  | "TECH_CARD_STAGE_UNKNOWN"
+  | "TECH_CARD_STAGE_PROTO"
+  | "TECH_CARD_STAGE_FIT"
+  | "TECH_CARD_STAGE_SMS"
+  | "TECH_CARD_STAGE_PP"
+  | "TECH_CARD_STAGE_PROD";
+// TechCardApprovalState is the gating release state of a tech card, orthogonal to
+// TechCardStage (which tracks development progress). A factory must only receive a
+// card in the RELEASED state.
+export type TechCardApprovalState =
+  | "TECH_CARD_APPROVAL_STATE_UNKNOWN"
+  | "TECH_CARD_APPROVAL_STATE_DRAFT"
+  | "TECH_CARD_APPROVAL_STATE_IN_REVIEW"
+  | "TECH_CARD_APPROVAL_STATE_APPROVED"
+  | "TECH_CARD_APPROVAL_STATE_RELEASED"
+  | "TECH_CARD_APPROVAL_STATE_OBSOLETE";
+// TechCardMeasurementUnit is the unit for the card's geometry (callout dimensions).
+// Metric only — the brand works in cm and mm, never inches.
+export type TechCardMeasurementUnit =
+  | "TECH_CARD_MEASUREMENT_UNIT_UNKNOWN"
+  | "TECH_CARD_MEASUREMENT_UNIT_CM"
+  | "TECH_CARD_MEASUREMENT_UNIT_MM";
+// TechCardMediaKind classifies a tech-card sketch image.
+export type TechCardMediaKind =
+  | "TECH_CARD_MEDIA_KIND_UNKNOWN"
+  | "TECH_CARD_MEDIA_KIND_FRONT"
+  | "TECH_CARD_MEDIA_KIND_BACK"
+  | "TECH_CARD_MEDIA_KIND_DETAIL"
+  | "TECH_CARD_MEDIA_KIND_LINING"
+  | "TECH_CARD_MEDIA_KIND_PREVIEW"
+  | "TECH_CARD_MEDIA_KIND_MOODBOARD"
+  | "TECH_CARD_MEDIA_KIND_REFERENCE"
+  | "TECH_CARD_MEDIA_KIND_SWATCH";
+// TechCardBomSection groups a BOM line by material family (Sheet «Спецификация»).
+export type TechCardBomSection =
+  | "TECH_CARD_BOM_SECTION_UNKNOWN"
+  | "TECH_CARD_BOM_SECTION_FABRIC"
+  | "TECH_CARD_BOM_SECTION_LINING"
+  | "TECH_CARD_BOM_SECTION_INTERLINING"
+  | "TECH_CARD_BOM_SECTION_INSULATION"
+  | "TECH_CARD_BOM_SECTION_HARDWARE"
+  | "TECH_CARD_BOM_SECTION_THREAD"
+  | "TECH_CARD_BOM_SECTION_LABEL"
+  | "TECH_CARD_BOM_SECTION_PACKAGING"
+  | "TECH_CARD_BOM_SECTION_TRIM"
+  | "TECH_CARD_BOM_SECTION_DECORATION"
+  | "TECH_CARD_BOM_SECTION_OTHER";
+// TechCardLabDipStatus is the lab-dip approval lifecycle of a colourway.
+export type TechCardLabDipStatus =
+  | "TECH_CARD_LAB_DIP_STATUS_UNKNOWN"
+  | "TECH_CARD_LAB_DIP_STATUS_PENDING"
+  | "TECH_CARD_LAB_DIP_STATUS_SUBMITTED"
+  | "TECH_CARD_LAB_DIP_STATUS_APPROVED"
+  | "TECH_CARD_LAB_DIP_STATUS_REJECTED";
+// TechCardFabricDirection is the cutting layout a fabric requires.
+export type TechCardFabricDirection =
+  | "TECH_CARD_FABRIC_DIRECTION_UNKNOWN"
+  | "TECH_CARD_FABRIC_DIRECTION_ANY"
+  | "TECH_CARD_FABRIC_DIRECTION_ONE_WAY"
+  | "TECH_CARD_FABRIC_DIRECTION_TWO_WAY";
+// TechCardLabelType classifies a label / tag (Sheet «Этикетки и упаковка»).
+export type TechCardLabelType =
+  | "TECH_CARD_LABEL_TYPE_UNKNOWN"
+  | "TECH_CARD_LABEL_TYPE_MAIN"
+  | "TECH_CARD_LABEL_TYPE_SIZE"
+  | "TECH_CARD_LABEL_TYPE_CARE"
+  | "TECH_CARD_LABEL_TYPE_ORIGIN"
+  | "TECH_CARD_LABEL_TYPE_FLAG"
+  | "TECH_CARD_LABEL_TYPE_HANGTAG"
+  | "TECH_CARD_LABEL_TYPE_BARCODE"
+  | "TECH_CARD_LABEL_TYPE_SPECIAL";
+// TechCardOperationType classifies an operation by its machine / stitch class
+// (replaces the coarse seaming/overlock/decorative split with the real sewing
+// taxonomy the factory works in).
+export type TechCardOperationType =
+  | "TECH_CARD_OPERATION_TYPE_UNKNOWN"
+  | "TECH_CARD_OPERATION_TYPE_LOCKSTITCH"
+  | "TECH_CARD_OPERATION_TYPE_DOUBLE_NEEDLE"
+  | "TECH_CARD_OPERATION_TYPE_OVERLOCK"
+  | "TECH_CARD_OPERATION_TYPE_COVERSTITCH"
+  | "TECH_CARD_OPERATION_TYPE_CHAINSTITCH"
+  | "TECH_CARD_OPERATION_TYPE_BLINDHEM"
+  | "TECH_CARD_OPERATION_TYPE_BARTACK"
+  | "TECH_CARD_OPERATION_TYPE_BUTTONHOLE"
+  | "TECH_CARD_OPERATION_TYPE_BUTTON_ATTACH"
+  | "TECH_CARD_OPERATION_TYPE_FUSING"
+  | "TECH_CARD_OPERATION_TYPE_HANDWORK"
+  | "TECH_CARD_OPERATION_TYPE_OTHER";
+// TechCardConstructionZone groups an operation for display only. Construction stays
+// a single ordered list; the zone is just a visual band (outer shell, lining, …).
+export type TechCardConstructionZone =
+  | "TECH_CARD_CONSTRUCTION_ZONE_UNKNOWN"
+  | "TECH_CARD_CONSTRUCTION_ZONE_OUTER"
+  | "TECH_CARD_CONSTRUCTION_ZONE_LINING"
+  | "TECH_CARD_CONSTRUCTION_ZONE_INTERLINING"
+  | "TECH_CARD_CONSTRUCTION_ZONE_OTHER";
+// TechCardIssueSeverity ranks a flagged construction issue.
+export type TechCardIssueSeverity =
+  | "TECH_CARD_ISSUE_SEVERITY_UNKNOWN"
+  | "TECH_CARD_ISSUE_SEVERITY_LOW"
+  | "TECH_CARD_ISSUE_SEVERITY_MEDIUM"
+  | "TECH_CARD_ISSUE_SEVERITY_HIGH";
+// TechCardIssueStatus is the resolution state of a flagged issue.
+export type TechCardIssueStatus =
+  | "TECH_CARD_ISSUE_STATUS_UNKNOWN"
+  | "TECH_CARD_ISSUE_STATUS_OPEN"
+  | "TECH_CARD_ISSUE_STATUS_RESOLVED"
+  | "TECH_CARD_ISSUE_STATUS_WONTFIX";
+// TechCardInsert is the writable payload for a tech card. Nested lists are full
+// replacements on update (like ProductNew).
+// TechCardSignoffSection is the sheet a sign-off covers.
+export type TechCardSignoffSection =
+  | "TECH_CARD_SIGNOFF_SECTION_UNKNOWN"
+  | "TECH_CARD_SIGNOFF_SECTION_DESIGN"
+  | "TECH_CARD_SIGNOFF_SECTION_CONSTRUCTION"
+  | "TECH_CARD_SIGNOFF_SECTION_MATERIALS"
+  | "TECH_CARD_SIGNOFF_SECTION_COLOUR"
+  | "TECH_CARD_SIGNOFF_SECTION_LABELS"
+  | "TECH_CARD_SIGNOFF_SECTION_PACKAGING"
+  | "TECH_CARD_SIGNOFF_SECTION_COSTING";
+// TechCardSignoffState is the sign-off decision for a section.
+export type TechCardSignoffState =
+  | "TECH_CARD_SIGNOFF_STATE_UNKNOWN"
+  | "TECH_CARD_SIGNOFF_STATE_PENDING"
+  | "TECH_CARD_SIGNOFF_STATE_APPROVED"
+  | "TECH_CARD_SIGNOFF_STATE_REJECTED";
+// TechCardMediaItem is a writable sketch-media reference (id + kind).
+export type TechCardMediaItem = {
+  mediaId: number | undefined;
+  kind: TechCardMediaKind | undefined;
+  caption: string | undefined;
+};
+
+// TechCardMediaFull is a resolved sketch-media reference for display.
+export type TechCardMediaFull = {
+  media: MediaFull | undefined;
+  kind: TechCardMediaKind | undefined;
+};
+
+// TechCardCallout is a numbered detail note pointing at the technical sketch.
+export type TechCardCallout = {
+  number: number | undefined;
+  part: string | undefined;
+  description: string | undefined;
+  dimensions: string | undefined;
+  mediaId: number | undefined;
+  posX: googletype_Decimal | undefined;
+  posY: googletype_Decimal | undefined;
+};
+
+// TechCardRevision is one entry in the spec-document changelog (what changed in
+// which section, by whom). This is NOT fit history — fitting verdicts and
+// measurements live in the separate fitting feature.
+export type TechCardRevision = {
+  version: string | undefined;
+  revisionDate: wellKnownTimestamp | undefined;
+  author: string | undefined;
+  section: string | undefined;
+  changeNote: string | undefined;
+};
+
+// TechCardColorway is a development colourway (Sheet «Колористика» columns). It is
+// distinct from tech_card_product (published catalog SKUs); product_id optionally
+// links the published SKU that realises this colourway.
+export type TechCardColorway = {
+  code: string | undefined;
+  name: string | undefined;
+  labDipStatus: TechCardLabDipStatus | undefined;
+  productId: number | undefined;
+  comment: string | undefined;
+  pantone: string | undefined;
+  pantoneSystem: string | undefined;
+  hex: string | undefined;
+  swatchMediaId: number | undefined;
+  labDipRound: number | undefined;
+  labDipSubmittedAt: wellKnownTimestamp | undefined;
+  labDipDecidedAt: wellKnownTimestamp | undefined;
+  labDipDecidedBy: string | undefined;
+  labDipRejectReason: string | undefined;
+  // the colour's material recipe: which catalog article (bom_item_index) goes on which
+  // garment part, in what colour, at what consumption. Per-colourway divergence lives here.
+  usages: TechCardColorwayUsage[] | undefined;
+};
+
+// TechCardColorwayUsage is one material use inside a colourway: which catalog article
+// (bom_item_index) goes on which garment part (placement), the colour it takes HERE, and
+// how much is consumed (per-garment and/or per-size). The BOM is a pure article catalog;
+// per-colourway divergence lives here.
+export type TechCardColorwayUsage = {
+  // explicit presence: index 0 is a real BOM line, distinct from "unset"
+  // (mirrors TechCardOperation.bom_item_index).
+  bomItemIndex?: number;
+  placement: string | undefined;
+  // matched (trim+lower) against TechCardOperation.placement
+  color: string | undefined;
+  // independent of TechCardColorway.pantone (the swatch colour)
+  pantone: string | undefined;
+  consumption: googletype_Decimal | undefined;
+  quantity: googletype_Decimal | undefined;
+  sizeConsumptions: TechCardBomSizeConsumption[] | undefined;
+  lineTotal: googletype_Decimal | undefined;
+  sizeRunTotal: googletype_Decimal | undefined;
+};
+
+// TechCardBomSizeConsumption is the per-size consumption (норма расхода) of one BOM
+// material — different sizes consume different amounts of fabric.
+export type TechCardBomSizeConsumption = {
+  sizeId: number | undefined;
+  consumption: googletype_Decimal | undefined;
+};
+
+// TechCardDetail is one aspect of the construction description (Sheet «Титул», lower block)
+// with optional reference images. key is freeform (silhouette/collar/fastening/pockets/
+// sleeve_cuff/topstitching/extra_details … or a custom aspect).
+export type TechCardDetail = {
+  key: string | undefined;
+  text: string | undefined;
+  mediaIds: number[] | undefined;
+};
+
+// TechCardBomItem is one bill-of-materials line — a catalog article (Sheet «Спецификация»).
+// The per-colourway colour, placement and consumption live on TechCardColorwayUsage; the
+// BOM line is now a pure material-article catalog entry.
+export type TechCardBomItem = {
+  section: TechCardBomSection | undefined;
+  name: string | undefined;
+  supplier: string | undefined;
+  supplierRef: string | undefined;
+  color: string | undefined;
+  composition: string | undefined;
+  spec: string | undefined;
+  unit: string | undefined;
+  unitPrice: googletype_Decimal | undefined;
+  currency: string | undefined;
+  comment: string | undefined;
+  // fabric data for the cutter / marker (Phase 3.5c)
+  fabricWidth: googletype_Decimal | undefined;
+  fabricWeightGsm: googletype_Decimal | undefined;
+  fabricDirection: TechCardFabricDirection | undefined;
+  wastagePercent: googletype_Decimal | undefined;
+};
+
+// TechCardSizeQuantity is the production order quantity for a size (size run).
+export type TechCardSizeQuantity = {
+  sizeId: number | undefined;
+  orderQty: number | undefined;
+};
+
+// TechCardSizePattern is a downloadable PDF выкройка (cut pattern) for one size of a
+// tech card — the FINAL pattern for that size. A size can carry many patterns (pieces
+// split across sheets). The PDF is uploaded via Admin.UploadPattern, which returns the
+// url stored here; the binary lives in object storage, not the media library.
+export type TechCardSizePattern = {
+  sizeId: number | undefined;
+  url: string | undefined;
+  filename: string | undefined;
+  sizeBytes: number | undefined;
+};
+
+// TechCardConstruction holds general workmanship parameters (Sheet «Обработка»).
+export type TechCardConstruction = {
+  mainStitchType: string | undefined;
+  stitchDensity: string | undefined;
+  overlockThreads: string | undefined;
+  seamAllowances: string | undefined;
+  hemFinish: string | undefined;
+  pressing: string | undefined;
+  machineClass: string | undefined;
+  notes: string | undefined;
+};
+
+// TechCardOperation is one per-node sewing operation (Sheet «Обработка»).
+export type TechCardOperation = {
+  node: string | undefined;
+  description: string | undefined;
+  seamType: string | undefined;
+  stitchesPerCm: googletype_Decimal | undefined;
+  topstitchWidth: string | undefined;
+  thread: string | undefined;
+  note: string | undefined;
+  operationNumber: number | undefined;
+  machine: string | undefined;
+  seamAllowance: string | undefined;
+  needle: string | undefined;
+  timeNorm: googletype_Decimal | undefined;
+  attachment: string | undefined;
+  operationType: TechCardOperationType | undefined;
+  // 0-based index into TechCardInsert.bom_items of the material this operation
+  // applies (thread / binding (бейка) / interlining / zipper) when it is NOT resolved
+  // through a part. Uses proto3 explicit presence so index 0 (the first BOM line) is
+  // distinguishable from "no material": unset = no reference. When set, it wins; the
+  // colour resolves via the selected colourway's usage with the same bom_item_index.
+  bomItemIndex?: number;
+  calloutNumber: number | undefined;
+  zone: TechCardConstructionZone | undefined;
+  placement: string | undefined;
+};
+
+// TechCardIssue is a maker-flagged problem ("this seam is impossible") against an
+// operation or callout (Sheet «Обработка» / «Тех. эскиз»).
+export type TechCardIssue = {
+  operationNumber: number | undefined;
+  calloutNumber: number | undefined;
+  raisedBy: string | undefined;
+  severity: TechCardIssueSeverity | undefined;
+  status: TechCardIssueStatus | undefined;
+  description: string | undefined;
+  resolutionNote: string | undefined;
+};
+
+// TechCardLabel is one label / tag spec (Sheet «Этикетки и упаковка»).
+export type TechCardLabel = {
+  labelType: TechCardLabelType | undefined;
+  content: string | undefined;
+  placement: string | undefined;
+  attachment: string | undefined;
+  size: string | undefined;
+  note: string | undefined;
+};
+
+// TechCardPackaging holds the packaging spec (Sheet «Этикетки и упаковка»).
+export type TechCardPackaging = {
+  foldingMethod: string | undefined;
+  polybag: string | undefined;
+  bagSticker: string | undefined;
+  inserts: string | undefined;
+  unitsPerBox: number | undefined;
+  boxMarking: string | undefined;
+  boxDimensions: string | undefined;
+  weightNet: googletype_Decimal | undefined;
+  weightGross: googletype_Decimal | undefined;
+  notes: string | undefined;
+};
+
+// TechCardCostLine is one currency bucket of the materials rollup.
+export type TechCardCostLine = {
+  currency: string | undefined;
+  amount: googletype_Decimal | undefined;
+};
+
+// TechCardColorwayCost is the computed material cost of ONE colourway (Sheet «Калькуляция»).
+// OUTPUT-ONLY (ignored on write). Per-currency buckets; no FX conversion.
+export type TechCardColorwayCost = {
+  colorwayIndex: number | undefined;
+  materialsTotal: TechCardCostLine[] | undefined;
+  materialsCost: googletype_Decimal | undefined;
+  sizeRunTotal: googletype_Decimal | undefined;
+  hasUnconvertedCurrencies: boolean | undefined;
+};
+
+// TechCardCosting holds the manually-entered cost articles (Sheet «Калькуляция»).
+// The materials rollup and total are COMPUTED on read from the BOM; they are
+// output-only (ignored on write) and never converted across currencies.
+export type TechCardCosting = {
+  cmtCost: googletype_Decimal | undefined;
+  hardwareCost: googletype_Decimal | undefined;
+  packagingCost: googletype_Decimal | undefined;
+  logisticsCost: googletype_Decimal | undefined;
+  overheadCost: googletype_Decimal | undefined;
+  defectPercent: googletype_Decimal | undefined;
+  // Pricing is single (brand policy): markup_multiplier, wholesale_price, retail_price
+  // and currency are the SAME across colourways. Per-SKU pricing, if ever needed, lives
+  // on the published product, not here.
+  markupMultiplier: googletype_Decimal | undefined;
+  wholesalePrice: googletype_Decimal | undefined;
+  retailPrice: googletype_Decimal | undefined;
+  currency: string | undefined;
+  notes: string | undefined;
+  // OUTPUT-ONLY computed rollup (ignored on write; no currency conversion). The root
+  // rollup is the PRIMARY colourway (colorways index 0); per-colourway figures are in
+  // colorway_costs. A usage with per-size consumption contributes its whole-run
+  // size_run_total (order-scale); a usage without contributes its per-garment line_total.
+  materialsTotal: TechCardCostLine[] | undefined;
+  materialsCost: googletype_Decimal | undefined;
+  totalCost: googletype_Decimal | undefined;
+  hasUnconvertedCurrencies: boolean | undefined;
+  totalSam: googletype_Decimal | undefined;
+  colorwayCosts: TechCardColorwayCost[] | undefined;
+};
+
+// TechCardSignoff records one responsible role's sign-off of a sheet, so the
+// header approval_state isn't the only gate (Sheet «Титул» coordination).
+export type TechCardSignoff = {
+  section: TechCardSignoffSection | undefined;
+  state: TechCardSignoffState | undefined;
+  signedBy: string | undefined;
+  signedAt: wellKnownTimestamp | undefined;
+  note: string | undefined;
+};
+
+export type TechCardInsert = {
+  // identification (Sheet «Титул»)
+  styleNumber: string | undefined;
+  name: string | undefined;
+  brand: string | undefined;
+  season: string | undefined;
+  collection: string | undefined;
+  categoryId: number | undefined;
+  targetGender: GenderEnum | undefined;
+  stage: TechCardStage | undefined;
+  status: string | undefined;
+  approvalState: TechCardApprovalState | undefined;
+  approvedBy: string | undefined;
+  releasedAt: wellKnownTimestamp | undefined;
+  measurementUnit: TechCardMeasurementUnit | undefined;
+  version: string | undefined;
+  revisionDate: wellKnownTimestamp | undefined;
+  baseModelId: number | undefined;
+  baseSampleSizeId: number | undefined;
+  designer: string | undefined;
+  constructor: string | undefined;
+  technologist: string | undefined;
+  // construction description (lower block of Sheet «Титул») now lives in details[]; the
+  // header targets / currency were removed (pricing is on costing, single brand policy).
+  notes: string | undefined;
+  // children (full-replace on update)
+  sizeIds: number[] | undefined;
+  productIds: number[] | undefined;
+  media: TechCardMediaItem[] | undefined;
+  callouts: TechCardCallout[] | undefined;
+  revisions: TechCardRevision[] | undefined;
+  // materials (Phase 2): bill of materials (article catalog) and colourways (recipes).
+  bomItems: TechCardBomItem[] | undefined;
+  colorways: TechCardColorway[] | undefined;
+  // production (Phase 3): construction, operations, labels, packaging, costing.
+  construction: TechCardConstruction | undefined;
+  operations: TechCardOperation[] | undefined;
+  labels: TechCardLabel[] | undefined;
+  packaging: TechCardPackaging | undefined;
+  costing: TechCardCosting | undefined;
+  // hardening (Phase 3.5a)
+  approvedAt: wellKnownTimestamp | undefined;
+  concept: string | undefined;
+  issues: TechCardIssue[] | undefined;
+  sizeQuantities: TechCardSizeQuantity[] | undefined;
+  signoffs: TechCardSignoff[] | undefined;
+  patterns: TechCardSizePattern[] | undefined;
+  // construction-description aspects with reference images (replaces the flat strings).
+  details: TechCardDetail[] | undefined;
+};
+
+// TechCard is a stored tech card with resolved sketch media.
+export type TechCard = {
+  id: number | undefined;
+  techCard: TechCardInsert | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
+  resolvedMedia: TechCardMediaFull[] | undefined;
+  lockVersion: number | undefined;
+};
+
+// TechCardListItem is a lightweight tech-card header for list views.
+export type TechCardListItem = {
+  id: number | undefined;
+  styleNumber: string | undefined;
+  name: string | undefined;
+  brand: string | undefined;
+  stage: TechCardStage | undefined;
+  status: string | undefined;
+  targetGender: GenderEnum | undefined;
+  season: string | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
+  approvalState: TechCardApprovalState | undefined;
+  lockVersion: number | undefined;
 };
 
 

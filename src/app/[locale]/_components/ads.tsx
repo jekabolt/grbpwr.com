@@ -59,21 +59,22 @@ export function Ads({
                   <div className="hidden h-full lg:block">
                     <Image
                       src={
-                        e.single?.mediaLandscape?.media?.thumbnail?.mediaUrl ||
-                        ""
+                        e.single?.media?.landscape?.media?.thumbnail
+                          ?.mediaUrl || ""
                       }
-                      blurhash={e.single?.mediaLandscape?.media?.blurhash}
+                      blurhash={e.single?.media?.landscape?.media?.blurhash}
                       alt={currentTranslation?.headline || "GRBPWR feature"}
                       aspectRatio={calculateAspectRatio(
-                        e.single?.mediaLandscape?.media?.thumbnail?.width,
-                        e.single?.mediaLandscape?.media?.thumbnail?.height,
+                        e.single?.media?.landscape?.media?.thumbnail?.width,
+                        e.single?.media?.landscape?.media?.thumbnail?.height,
                       )}
                       fit="cover"
                       priority={isPriorityAd}
                       loading={isPriorityAd ? "eager" : "lazy"}
                       type={
                         isVideo(
-                          e.single?.mediaLandscape?.media?.thumbnail?.mediaUrl,
+                          e.single?.media?.landscape?.media?.thumbnail
+                            ?.mediaUrl,
                         )
                           ? "video"
                           : "image"
@@ -85,17 +86,18 @@ export function Ads({
                   <div className="block h-full lg:hidden">
                     <Image
                       src={
-                        e.single?.mediaPortrait?.media?.fullSize?.mediaUrl || ""
+                        e.single?.media?.portrait?.media?.fullSize?.mediaUrl ||
+                        ""
                       }
-                      blurhash={e.single?.mediaPortrait?.media?.blurhash}
+                      blurhash={e.single?.media?.portrait?.media?.blurhash}
                       alt={currentTranslation?.headline || "GRBPWR feature"}
                       aspectRatio={calculateAspectRatio(
-                        e.single?.mediaPortrait?.media?.fullSize?.width,
-                        e.single?.mediaPortrait?.media?.fullSize?.height,
+                        e.single?.media?.portrait?.media?.fullSize?.width,
+                        e.single?.media?.portrait?.media?.fullSize?.height,
                       )}
                       type={
                         isVideo(
-                          e.single?.mediaPortrait?.media?.fullSize?.mediaUrl,
+                          e.single?.media?.portrait?.media?.fullSize?.mediaUrl,
                         )
                           ? "video"
                           : "image"
@@ -124,14 +126,18 @@ export function Ads({
                     </Text>
                   </div>
                 </AnimatedButton>
-                <Overlay cover="container" disablePointerEvents />
+                {!e.single?.media?.disableOverlay && (
+                  <Overlay cover="container" disablePointerEvents />
+                )}
               </div>
             );
           case "HERO_TYPE_DOUBLE": {
             const leftUrl =
-              e.double?.left?.mediaLandscape?.media?.thumbnail?.mediaUrl || "";
+              e.double?.left?.media?.landscape?.media?.thumbnail?.mediaUrl ||
+              "";
             const rightUrl =
-              e.double?.right?.mediaLandscape?.media?.thumbnail?.mediaUrl || "";
+              e.double?.right?.media?.landscape?.media?.thumbnail?.mediaUrl ||
+              "";
             const leftTranslation = e.double?.left?.translations?.find(
               (t) => t.languageId === languageId,
             );
@@ -157,11 +163,12 @@ export function Ads({
                 >
                   <Image
                     src={leftUrl}
-                    blurhash={e.double?.left?.mediaLandscape?.media?.blurhash}
+                    blurhash={e.double?.left?.media?.landscape?.media?.blurhash}
                     alt={leftTranslation?.headline || "GRBPWR feature"}
                     aspectRatio={calculateAspectRatio(
-                      e.double?.left?.mediaLandscape?.media?.thumbnail?.width,
-                      e.double?.left?.mediaLandscape?.media?.thumbnail?.height,
+                      e.double?.left?.media?.landscape?.media?.thumbnail?.width,
+                      e.double?.left?.media?.landscape?.media?.thumbnail
+                        ?.height,
                     )}
                     fit="contain"
                     priority={isPriorityAd}
@@ -172,6 +179,9 @@ export function Ads({
                     }
                     autoPlay={isMobile && isLeftVideo}
                   />
+                  {!e.double?.left?.media?.disableOverlay && (
+                    <Overlay cover="container" disablePointerEvents />
+                  )}
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6">
                     <Text
                       variant="uppercase"
@@ -197,11 +207,15 @@ export function Ads({
                 >
                   <Image
                     src={rightUrl}
-                    blurhash={e.double?.right?.mediaLandscape?.media?.blurhash}
+                    blurhash={
+                      e.double?.right?.media?.landscape?.media?.blurhash
+                    }
                     alt={rightTranslation?.headline || "GRBPWR feature"}
                     aspectRatio={calculateAspectRatio(
-                      e.double?.right?.mediaLandscape?.media?.thumbnail?.width,
-                      e.double?.right?.mediaLandscape?.media?.thumbnail?.height,
+                      e.double?.right?.media?.landscape?.media?.thumbnail
+                        ?.width,
+                      e.double?.right?.media?.landscape?.media?.thumbnail
+                        ?.height,
                     )}
                     fit="contain"
                     priority={isPriorityAd}
@@ -212,6 +226,9 @@ export function Ads({
                     }
                     autoPlay={isMobile && isRightVideo}
                   />
+                  {!e.double?.right?.media?.disableOverlay && (
+                    <Overlay cover="container" disablePointerEvents />
+                  )}
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center space-y-6 text-bgColor">
                     <Text
                       variant="uppercase"
@@ -226,7 +243,6 @@ export function Ads({
                     </Text>
                   </div>
                 </AnimatedButton>
-                <Overlay cover="container" disablePointerEvents />
               </div>
             );
           }
