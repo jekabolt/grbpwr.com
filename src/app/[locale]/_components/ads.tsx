@@ -159,6 +159,29 @@ export function Ads({
                 />
               </div>
             );
+          case "HERO_TYPE_LAST_CHANCE":
+            const lastChanceCount = e.lastChance?.products?.length || 0;
+            const lastChanceTranslation = e.lastChance?.translations?.find(
+              (t) => t.languageId === languageId,
+            );
+            return (
+              <div
+                key={i}
+                style={{ display: "contents" }}
+                data-hero-block-index={i}
+              >
+                <FeaturedItems
+                  products={e.lastChance?.products}
+                  headline={lastChanceTranslation?.headline}
+                  exploreText={lastChanceTranslation?.exploreText}
+                  exploreLink={e.lastChance?.exploreLink}
+                  itemsQuantity={lastChanceCount}
+                  onHeroClick={() =>
+                    sendHeroEvent({ heroType: "HERO_TYPE_LAST_CHANCE" })
+                  }
+                />
+              </div>
+            );
           case "HERO_TYPE_MARQUEE":
             return (
               <div key={i} data-hero-block-index={i}>
