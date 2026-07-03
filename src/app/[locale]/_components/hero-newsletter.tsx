@@ -33,24 +33,17 @@ export function HeroNewsletter({
     <section className="relative flex min-h-screen w-full items-center justify-center">
       {hasMedia && <HeroMedia media={newsletter.media} priority={priority} />}
       <div className="relative z-20 flex w-full max-w-xl flex-col items-center gap-8 p-6">
-        {(t?.headline || t?.subhead) && (
-          <div
+        {t?.headline && (
+          <Text
+            component="h2"
+            variant="uppercase"
             className={cn(
-              "flex flex-col items-center gap-4 text-center",
+              "text-center",
               hasMedia ? "text-bgColor" : "text-textColor",
             )}
           >
-            {t?.headline && (
-              <Text
-                component="h2"
-                variant="uppercase"
-                className="text-textGiantSmallSize leading-tight lg:text-textGiantSize"
-              >
-                {t.headline}
-              </Text>
-            )}
-            {t?.subhead && <Text variant="uppercase">{t.subhead}</Text>}
-          </div>
+            {t.headline}
+          </Text>
         )}
         <div className="w-full border border-textColor bg-bgColor p-6 text-textColor">
           <NewslatterForm />

@@ -21,6 +21,7 @@ export default function FlexibleLayout({
   showAnnounce = false,
   accountPanel = false,
   fillViewport = false,
+  hideFooterNewsletter = false,
 }: Props) {
   return (
     <div
@@ -57,7 +58,13 @@ export default function FlexibleLayout({
           {children}
         </div>
       </div>
-      {displayFooter && <Footer theme={theme} accountPanel={accountPanel} />}
+      {displayFooter && (
+        <Footer
+          theme={theme}
+          accountPanel={accountPanel}
+          hideNewsletter={hideFooterNewsletter}
+        />
+      )}
       {(headerType === "catalog" || headerType === "main") && (
         <CartPopup>
           <div className="h-full overflow-y-scroll">
@@ -81,6 +88,7 @@ type Props = {
   showAnnounce?: boolean;
   accountPanel?: boolean;
   fillViewport?: boolean;
+  hideFooterNewsletter?: boolean;
 };
 
 export type HeaderProps = {
