@@ -24,7 +24,9 @@ export function HeroNewsletter({
   const { languageId } = useTranslationsStore((state) => state);
   if (!newsletter) return null;
 
-  const t = newsletter.translations?.find((x) => x.languageId === languageId);
+  const t =
+    newsletter.translations?.find((x) => x.languageId === languageId) ||
+    newsletter.translations?.[0];
   const hasMedia = Boolean(
     newsletter.media?.landscape?.media || newsletter.media?.portrait?.media,
   );
@@ -33,19 +35,22 @@ export function HeroNewsletter({
     <section className="relative flex min-h-screen w-full items-center justify-center">
       {hasMedia && <HeroMedia media={newsletter.media} priority={priority} />}
       <div className="relative z-20 flex w-full max-w-xl flex-col items-center gap-8 p-6">
-        {t?.headline && (
-          <Text
-            component="h2"
-            variant="uppercase"
+        {(t?.headline || t?.body) && (
+          <div
             className={cn(
-              "text-center",
+              "flex flex-col items-center gap-2 text-center",
               hasMedia ? "text-bgColor" : "text-textColor",
             )}
           >
-            {t.headline}
-          </Text>
+            {t?.headline && (
+              <Text component="h2" variant="uppercase">
+                {t.headline}
+              </Text>
+            )}
+            {t?.body && <Text>{t.body}</Text>}
+          </div>
         )}
-        <div className="w-full border border-textColor bg-bgColor p-6 text-textColor">
+        <div className="w-full border border-textInactiveColor bg-bgColor p-6 text-textColor">
           <NewslatterForm />
         </div>
       </div>
