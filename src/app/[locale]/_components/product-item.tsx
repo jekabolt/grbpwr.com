@@ -27,6 +27,7 @@ export function ProductItem({
   disableAnimations = false,
   imagePriority = false,
   infoClassName,
+  imageFit = "contain",
 }: {
   product: common_Product;
   className: string;
@@ -37,6 +38,10 @@ export function ProductItem({
   // of flow (e.g. hero SPLIT centres just the image by making the info absolute
   // on desktop). Off by default, so the catalog cards are unaffected.
   infoClassName?: string;
+  // How the thumbnail sits in its fixed 3/4 box. "contain" (default) letterboxes
+  // it so the whole garment shows — the catalog look. "cover" crops it to fill
+  // the box edge-to-edge, so a row of cards is pixel-identical (the archive).
+  imageFit?: "contain" | "cover";
 }) {
   const tCatalog = useTranslations("catalog");
   const t = useTranslations("categories");
@@ -117,10 +122,17 @@ export function ProductItem({
           // Keep the highlight on after release (tap navigates → this card
           // unmounts, clearing it). Only a scroll/drag (pointercancel) clears it.
           onPointerCancel={onPressEnd}
-          className={cn("relative", {
-            "group-data-[held=true]:animate-threshold-highlight":
-              !disableAnimations,
-          })}
+          className={cn(
+            "relative",
+            // "cover" callers crop-fill the box, so pin the box here (a definite
+            // 3/4 aspect) and clip the overflow — `fit="cover"` drops the box off
+            // the shared <ImageComponent>, which would otherwise collapse.
+            imageFit === "cover" && "aspect-[3/4] overflow-hidden",
+            {
+              "group-data-[held=true]:animate-threshold-highlight":
+                !disableAnimations,
+            },
+          )}
         >
           <Image
             src={
@@ -131,11 +143,11 @@ export function ProductItem({
             // Fixed 3/4 box (matches the catalog skeleton) so every card is the
             // same height wherever cards sit side by side — grid, carousel or the
             // SPLIT hero, on desktop and mobile. Tall enough that portrait product
-            // shots fill it without side letterboxing; `contain` still keeps the
-            // whole garment visible (no cropping).
+            // shots fill it without side letterboxing. Default `contain` keeps the
+            // whole garment visible; `cover` crops it to fill the box exactly.
             aspectRatio="3/4"
             blurhash={product.productDisplay?.thumbnail?.media?.blurhash}
-            fit="contain"
+            fit={imageFit}
             priority={imagePriority}
             loading={imagePriority ? "eager" : "lazy"}
           />

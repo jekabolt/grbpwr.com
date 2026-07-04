@@ -18,13 +18,13 @@ export type ProductInsertTranslation = {
 export type ArchiveInsertTranslation = {
   languageId: number | undefined;
   heading: string | undefined;
-  description: string | undefined;
 };
 
 // ArchiveItemTranslation is the per-block translation for a timeline body item.
 // Each block type uses only the subset it needs:
-// text                         -> text
-// media/embed/product/products -> caption
+// text                                          -> text
+// media_with_caption/embed/product/products_*   -> caption
+// (main_media and media_line carry no copy.)
 export type ArchiveItemTranslation = {
   languageId: number | undefined;
   caption: string | undefined;
@@ -51,6 +51,14 @@ export type HeroCopyTranslation = {
   caption: string | undefined;
   placeholder: string | undefined;
   successText: string | undefined;
+};
+
+// HeroNewsletterTranslation is the newsletter block copy — headline + body only
+// (the email placeholder, button text and success message are handled client-side).
+export type HeroNewsletterTranslation = {
+  languageId: number | undefined;
+  headline: string | undefined;
+  body: string | undefined;
 };
 
 export type NavFeaturedEntityInsertTranslation = {
@@ -376,14 +384,27 @@ export type StockChange = {
 
 // ArchiveItemType discriminates a timeline body block. The archive body is an
 // ordered, heterogeneous list of these blocks (Insert-form storage, like hero).
+// Blocks may repeat and appear in any order; only the archive thumbnail, title
+// (heading translation) and tag are mandatory — every timeline block is optional.
 export type ArchiveItemType =
   | "ARCHIVE_ITEM_TYPE_UNKNOWN"
-  | "ARCHIVE_ITEM_TYPE_MEDIA"
+  | "ARCHIVE_ITEM_TYPE_MAIN_MEDIA"
+  | "ARCHIVE_ITEM_TYPE_MEDIA_LINE"
   | "ARCHIVE_ITEM_TYPE_TEXT"
   | "ARCHIVE_ITEM_TYPE_EMBED"
+  | "ARCHIVE_ITEM_TYPE_MEDIA_WITH_CAPTION"
   | "ARCHIVE_ITEM_TYPE_PRODUCT"
   | "ARCHIVE_ITEM_TYPE_PRODUCTS_TAG"
   | "ARCHIVE_ITEM_TYPE_PRODUCTS_MANUAL";
+// ArchiveMediaAspectRatio is the presentation aspect ratio for the media blocks.
+// MAIN_MEDIA uses 16X9 / 2X1 / 1X1 (or UNKNOWN — e.g. a video that carries its
+// own dimensions); MEDIA_LINE and MEDIA_WITH_CAPTION use 3X4 / 1X1.
+export type ArchiveMediaAspectRatio =
+  | "ARCHIVE_MEDIA_ASPECT_RATIO_UNKNOWN"
+  | "ARCHIVE_MEDIA_ASPECT_RATIO_16X9"
+  | "ARCHIVE_MEDIA_ASPECT_RATIO_2X1"
+  | "ARCHIVE_MEDIA_ASPECT_RATIO_1X1"
+  | "ARCHIVE_MEDIA_ASPECT_RATIO_3X4";
 export type ArchiveList = {
   id: number | undefined;
   translations: ArchiveInsertTranslation[] | undefined;
@@ -393,39 +414,134 @@ export type ArchiveList = {
   thumbnail: MediaFull | undefined;
 };
 
-// ArchiveItemInsert is a single timeline body block (write side). Only the
-// fields relevant to `type` are used.
-export type ArchiveItemInsert = {
-  type: ArchiveItemType | undefined;
-  mediaId: number | undefined;
-  embedUrl: string | undefined;
-  productId: number | undefined;
-  tag: string | undefined;
-  limit: number | undefined;
-  productIds: number[] | undefined;
+// MAIN_MEDIA: a single hero-scale media (image or video). aspect_ratio applies
+// to images (16X9 / 2X1 / 1X1) and is UNKNOWN for video.
+export type ArchiveMainMediaFull = {
+  media: MediaFull | undefined;
+  aspectRatio: ArchiveMediaAspectRatio | undefined;
+};
+
+// MEDIA_LINE: a row of 1..4 media sharing one aspect ratio (3X4 or 1X1).
+export type ArchiveMediaLineFull = {
+  media: MediaFull[] | undefined;
+  aspectRatio: ArchiveMediaAspectRatio | undefined;
+};
+
+// TEXT: a translatable text block (copy lives in translations.text).
+export type ArchiveTextFull = {
   translations: ArchiveItemTranslation[] | undefined;
 };
 
-// ArchiveItemFull is the resolved timeline body block (read side).
-export type ArchiveItemFull = {
-  type: ArchiveItemType | undefined;
-  media: MediaFull | undefined;
+// EMBED: an iframe. Optional caption in translations.caption.
+export type ArchiveEmbedFull = {
   embedUrl: string | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+// MEDIA_WITH_CAPTION: one media with a translatable caption and an outbound link.
+export type ArchiveMediaWithCaptionFull = {
+  media: MediaFull | undefined;
+  link: string | undefined;
+  aspectRatio: ArchiveMediaAspectRatio | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+// PRODUCT: a single product. Optional caption in translations.caption.
+export type ArchiveProductFull = {
   product: Product | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+// PRODUCTS_TAG: products resolved by tag. Optional caption in translations.caption.
+export type ArchiveProductsTagFull = {
   tag: string | undefined;
   products: Product[] | undefined;
   translations: ArchiveItemTranslation[] | undefined;
 };
 
+// PRODUCTS_MANUAL: hand-picked, ordered products. Optional caption.
+export type ArchiveProductsManualFull = {
+  products: Product[] | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+// ArchiveItemFull is a single resolved timeline body block (read side). Exactly
+// one payload field is populated, selected by `type`.
+export type ArchiveItemFull = {
+  type: ArchiveItemType | undefined;
+  mainMedia: ArchiveMainMediaFull | undefined;
+  mediaLine: ArchiveMediaLineFull | undefined;
+  text: ArchiveTextFull | undefined;
+  embed: ArchiveEmbedFull | undefined;
+  mediaWithCaption: ArchiveMediaWithCaptionFull | undefined;
+  product: ArchiveProductFull | undefined;
+  productsTag: ArchiveProductsTagFull | undefined;
+  productsManual: ArchiveProductsManualFull | undefined;
+};
+
+export type ArchiveMainMediaInsert = {
+  mediaId: number | undefined;
+  aspectRatio: ArchiveMediaAspectRatio | undefined;
+};
+
+export type ArchiveMediaLineInsert = {
+  mediaIds: number[] | undefined;
+  aspectRatio: ArchiveMediaAspectRatio | undefined;
+};
+
+export type ArchiveTextInsert = {
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+export type ArchiveEmbedInsert = {
+  embedUrl: string | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+export type ArchiveMediaWithCaptionInsert = {
+  mediaId: number | undefined;
+  link: string | undefined;
+  aspectRatio: ArchiveMediaAspectRatio | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+export type ArchiveProductInsert = {
+  productId: number | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+export type ArchiveProductsTagInsert = {
+  tag: string | undefined;
+  limit: number | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+export type ArchiveProductsManualInsert = {
+  productIds: number[] | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+// ArchiveItemInsert is a single timeline body block (write side). Exactly one
+// payload field is set, selected by `type`.
+export type ArchiveItemInsert = {
+  type: ArchiveItemType | undefined;
+  mainMedia: ArchiveMainMediaInsert | undefined;
+  mediaLine: ArchiveMediaLineInsert | undefined;
+  text: ArchiveTextInsert | undefined;
+  embed: ArchiveEmbedInsert | undefined;
+  mediaWithCaption: ArchiveMediaWithCaptionInsert | undefined;
+  product: ArchiveProductInsert | undefined;
+  productsTag: ArchiveProductsTagInsert | undefined;
+  productsManual: ArchiveProductsManualInsert | undefined;
+};
+
 export type ArchiveFull = {
   archiveList: ArchiveList | undefined;
-  mainMedia: MediaFull[] | undefined;
   items: ArchiveItemFull[] | undefined;
 };
 
 export type ArchiveInsert = {
   tag: string | undefined;
-  mainMediaIds: number[] | undefined;
   thumbnailId: number | undefined;
   translations: ArchiveInsertTranslation[] | undefined;
   items: ArchiveItemInsert[] | undefined;
@@ -1038,7 +1154,7 @@ export type HeroProductSpotlightWithTranslations = {
 
 export type HeroNewsletterWithTranslations = {
   media: HeroMediaFull | undefined;
-  translations: HeroCopyTranslation[] | undefined;
+  translations: HeroNewsletterTranslation[] | undefined;
 };
 
 export type HeroStatementWithTranslations = {
@@ -1211,7 +1327,7 @@ export type HeroProductSpotlightInsert = {
 
 export type HeroNewsletterInsert = {
   media: HeroMedia | undefined;
-  translations: HeroCopyTranslation[] | undefined;
+  translations: HeroNewsletterTranslation[] | undefined;
 };
 
 export type HeroStatementInsert = {

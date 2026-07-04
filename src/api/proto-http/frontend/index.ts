@@ -298,7 +298,6 @@ export type common_HeroFeaturedArchiveWithTranslations = {
 
 export type common_ArchiveFull = {
   archiveList: common_ArchiveList | undefined;
-  mainMedia: common_MediaFull[] | undefined;
   items: common_ArchiveItemFull[] | undefined;
 };
 
@@ -314,38 +313,105 @@ export type common_ArchiveList = {
 export type common_ArchiveInsertTranslation = {
   languageId: number | undefined;
   heading: string | undefined;
-  description: string | undefined;
 };
 
-// ArchiveItemFull is the resolved timeline body block (read side).
+// ArchiveItemFull is a single resolved timeline body block (read side). Exactly
+// one payload field is populated, selected by `type`.
 export type common_ArchiveItemFull = {
   type: common_ArchiveItemType | undefined;
+  mainMedia: common_ArchiveMainMediaFull | undefined;
+  mediaLine: common_ArchiveMediaLineFull | undefined;
+  text: common_ArchiveTextFull | undefined;
+  embed: common_ArchiveEmbedFull | undefined;
+  mediaWithCaption: common_ArchiveMediaWithCaptionFull | undefined;
+  product: common_ArchiveProductFull | undefined;
+  productsTag: common_ArchiveProductsTagFull | undefined;
+  productsManual: common_ArchiveProductsManualFull | undefined;
+};
+
+// ArchiveItemType discriminates a timeline body block. The archive body is an
+// ordered, heterogeneous list of these blocks (Insert-form storage, like hero).
+// Blocks may repeat and appear in any order; only the archive thumbnail, title
+// (heading translation) and tag are mandatory — every timeline block is optional.
+export type common_ArchiveItemType =
+  | "ARCHIVE_ITEM_TYPE_UNKNOWN"
+  | "ARCHIVE_ITEM_TYPE_MAIN_MEDIA"
+  | "ARCHIVE_ITEM_TYPE_MEDIA_LINE"
+  | "ARCHIVE_ITEM_TYPE_TEXT"
+  | "ARCHIVE_ITEM_TYPE_EMBED"
+  | "ARCHIVE_ITEM_TYPE_MEDIA_WITH_CAPTION"
+  | "ARCHIVE_ITEM_TYPE_PRODUCT"
+  | "ARCHIVE_ITEM_TYPE_PRODUCTS_TAG"
+  | "ARCHIVE_ITEM_TYPE_PRODUCTS_MANUAL";
+// MAIN_MEDIA: a single hero-scale media (image or video). aspect_ratio applies
+// to images (16X9 / 2X1 / 1X1) and is UNKNOWN for video.
+export type common_ArchiveMainMediaFull = {
   media: common_MediaFull | undefined;
+  aspectRatio: common_ArchiveMediaAspectRatio | undefined;
+};
+
+// ArchiveMediaAspectRatio is the presentation aspect ratio for the media blocks.
+// MAIN_MEDIA uses 16X9 / 2X1 / 1X1 (or UNKNOWN — e.g. a video that carries its
+// own dimensions); MEDIA_LINE and MEDIA_WITH_CAPTION use 3X4 / 1X1.
+export type common_ArchiveMediaAspectRatio =
+  | "ARCHIVE_MEDIA_ASPECT_RATIO_UNKNOWN"
+  | "ARCHIVE_MEDIA_ASPECT_RATIO_16X9"
+  | "ARCHIVE_MEDIA_ASPECT_RATIO_2X1"
+  | "ARCHIVE_MEDIA_ASPECT_RATIO_1X1"
+  | "ARCHIVE_MEDIA_ASPECT_RATIO_3X4";
+// MEDIA_LINE: a row of 1..4 media sharing one aspect ratio (3X4 or 1X1).
+export type common_ArchiveMediaLineFull = {
+  media: common_MediaFull[] | undefined;
+  aspectRatio: common_ArchiveMediaAspectRatio | undefined;
+};
+
+// TEXT: a translatable text block (copy lives in translations.text).
+export type common_ArchiveTextFull = {
+  translations: common_ArchiveItemTranslation[] | undefined;
+};
+
+// ArchiveItemTranslation is the per-block translation for a timeline body item.
+// Each block type uses only the subset it needs:
+// text                                          -> text
+// media_with_caption/embed/product/products_*   -> caption
+// (main_media and media_line carry no copy.)
+export type common_ArchiveItemTranslation = {
+  languageId: number | undefined;
+  caption: string | undefined;
+  text: string | undefined;
+};
+
+// EMBED: an iframe. Optional caption in translations.caption.
+export type common_ArchiveEmbedFull = {
   embedUrl: string | undefined;
+  translations: common_ArchiveItemTranslation[] | undefined;
+};
+
+// MEDIA_WITH_CAPTION: one media with a translatable caption and an outbound link.
+export type common_ArchiveMediaWithCaptionFull = {
+  media: common_MediaFull | undefined;
+  link: string | undefined;
+  aspectRatio: common_ArchiveMediaAspectRatio | undefined;
+  translations: common_ArchiveItemTranslation[] | undefined;
+};
+
+// PRODUCT: a single product. Optional caption in translations.caption.
+export type common_ArchiveProductFull = {
   product: common_Product | undefined;
+  translations: common_ArchiveItemTranslation[] | undefined;
+};
+
+// PRODUCTS_TAG: products resolved by tag. Optional caption in translations.caption.
+export type common_ArchiveProductsTagFull = {
   tag: string | undefined;
   products: common_Product[] | undefined;
   translations: common_ArchiveItemTranslation[] | undefined;
 };
 
-// ArchiveItemType discriminates a timeline body block. The archive body is an
-// ordered, heterogeneous list of these blocks (Insert-form storage, like hero).
-export type common_ArchiveItemType =
-  | "ARCHIVE_ITEM_TYPE_UNKNOWN"
-  | "ARCHIVE_ITEM_TYPE_MEDIA"
-  | "ARCHIVE_ITEM_TYPE_TEXT"
-  | "ARCHIVE_ITEM_TYPE_EMBED"
-  | "ARCHIVE_ITEM_TYPE_PRODUCT"
-  | "ARCHIVE_ITEM_TYPE_PRODUCTS_TAG"
-  | "ARCHIVE_ITEM_TYPE_PRODUCTS_MANUAL";
-// ArchiveItemTranslation is the per-block translation for a timeline body item.
-// Each block type uses only the subset it needs:
-// text                         -> text
-// media/embed/product/products -> caption
-export type common_ArchiveItemTranslation = {
-  languageId: number | undefined;
-  caption: string | undefined;
-  text: string | undefined;
+// PRODUCTS_MANUAL: hand-picked, ordered products. Optional caption.
+export type common_ArchiveProductsManualFull = {
+  products: common_Product[] | undefined;
+  translations: common_ArchiveItemTranslation[] | undefined;
 };
 
 export type common_HeroEmbedWithTranslations = {
@@ -416,7 +482,15 @@ export type common_HeroProductSpotlightWithTranslations = {
 
 export type common_HeroNewsletterWithTranslations = {
   media: common_HeroMediaFull | undefined;
-  translations: common_HeroCopyTranslation[] | undefined;
+  translations: common_HeroNewsletterTranslation[] | undefined;
+};
+
+// HeroNewsletterTranslation is the newsletter block copy — headline + body only
+// (the email placeholder, button text and success message are handled client-side).
+export type common_HeroNewsletterTranslation = {
+  languageId: number | undefined;
+  headline: string | undefined;
+  body: string | undefined;
 };
 
 export type common_HeroStatementWithTranslations = {

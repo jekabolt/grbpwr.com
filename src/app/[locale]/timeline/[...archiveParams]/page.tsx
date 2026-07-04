@@ -38,18 +38,38 @@ export async function generateMetadata({
       (t) => t.languageId === localeId,
     ) || archive?.archiveList?.translations?.[0];
 
+  // Description now lives in the first TEXT block (the archive translation no
+  // longer carries one); fall back to the heading.
+  const firstText = archive?.items?.find(
+    (i) => i.type === "ARCHIVE_ITEM_TYPE_TEXT",
+  )?.text?.translations;
+  const description =
+    (firstText?.find((t) => t.languageId === localeId) || firstText?.[0])
+      ?.text ||
+    currentTranslation?.heading ||
+    "grbpwr archive";
+
+  // OG image: the archive thumbnail, else the first media-carrying block.
+  const firstBlockMedia = archive?.items?.reduce<string | undefined>(
+    (found, i) =>
+      found ||
+      i.mainMedia?.media?.media?.thumbnail?.mediaUrl ||
+      i.mediaLine?.media?.find((m) => m.media?.thumbnail?.mediaUrl)?.media
+        ?.thumbnail?.mediaUrl ||
+      i.mediaWithCaption?.media?.media?.thumbnail?.mediaUrl,
+    undefined,
+  );
+
   return generateCommonMetadata({
     title:
       currentTranslation?.heading?.toUpperCase() || "heading".toUpperCase(),
-    description: currentTranslation?.description || "description",
+    description,
     locale,
     path: `/timeline/${archiveParams.join("/")}`,
     ogParams: {
       imageUrl:
         archive?.archiveList?.thumbnail?.media?.thumbnail?.mediaUrl ||
-        archive?.items?.find((i) => i.media)?.media?.media?.thumbnail
-          ?.mediaUrl ||
-        archive?.mainMedia?.[0]?.media?.thumbnail?.mediaUrl ||
+        firstBlockMedia ||
         "",
       imageAlt: currentTranslation?.heading || "",
     },
