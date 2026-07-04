@@ -17,14 +17,21 @@ export function HeroMedia({
   media,
   priority = false,
   className = "absolute inset-0",
+  preferPortrait = false,
 }: {
   media?: common_HeroMediaFull;
   priority?: boolean;
   className?: string;
+  // Use the portrait (tall) slot on desktop too — for a tall desktop pane (e.g.
+  // PRODUCT_SPOTLIGHT's half-screen column) where a wide landscape image would
+  // crop hard. Mobile always prefers portrait.
+  preferPortrait?: boolean;
 }) {
   const landscape = media?.landscape?.media;
   const portrait = media?.portrait?.media;
-  const desktop = landscape || portrait;
+  const desktop = preferPortrait
+    ? portrait || landscape
+    : landscape || portrait;
   const mobile = portrait || landscape;
   const desktopUrl = desktop?.fullSize?.mediaUrl || "";
   const mobileUrl = mobile?.fullSize?.mediaUrl || "";

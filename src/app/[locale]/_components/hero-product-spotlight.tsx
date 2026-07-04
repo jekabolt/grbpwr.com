@@ -62,7 +62,7 @@ export function HeroProductSpotlight({
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="relative h-[70vh] w-full lg:h-screen lg:w-1/2">
-        <HeroMedia media={spotlight.media} priority={priority} />
+        <HeroMedia media={spotlight.media} priority={priority} preferPortrait />
       </div>
       <div className="flex w-full flex-col items-center justify-center gap-6 p-6 text-center lg:h-screen lg:w-1/2">
         {t?.headline && (
