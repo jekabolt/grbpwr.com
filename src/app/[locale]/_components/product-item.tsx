@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { formatPrice } from "@/lib/currency";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, cn, isDateTodayOrFuture } from "@/lib/utils";
+import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
@@ -26,12 +26,17 @@ export function ProductItem({
   isInfoVisible = true,
   disableAnimations = false,
   imagePriority = false,
+  infoClassName,
 }: {
   product: common_Product;
   className: string;
   isInfoVisible?: boolean;
   disableAnimations?: boolean;
   imagePriority?: boolean;
+  // Extra classes for the name/price block. Lets a caller pull the caption out
+  // of flow (e.g. hero SPLIT centres just the image by making the info absolute
+  // on desktop). Off by default, so the catalog cards are unaffected.
+  infoClassName?: string;
 }) {
   const tCatalog = useTranslations("catalog");
   const t = useTranslations("categories");
@@ -123,10 +128,12 @@ export function ProductItem({
               ""
             }
             alt={name}
-            aspectRatio={calculateAspectRatio(
-              product.productDisplay?.thumbnail?.media?.thumbnail?.width,
-              product.productDisplay?.thumbnail?.media?.thumbnail?.height,
-            )}
+            // Fixed 3/4 box (matches the catalog skeleton) so every card is the
+            // same height wherever cards sit side by side — grid, carousel or the
+            // SPLIT hero, on desktop and mobile. Tall enough that portrait product
+            // shots fill it without side letterboxing; `contain` still keeps the
+            // whole garment visible (no cropping).
+            aspectRatio="3/4"
             blurhash={product.productDisplay?.thumbnail?.media?.blurhash}
             fit="contain"
             priority={imagePriority}
@@ -143,9 +150,11 @@ export function ProductItem({
           )}
         </div>
         <div
-          className={cn("flex w-full flex-col gap-2 pt-2", {
-            hidden: !isInfoVisible,
-          })}
+          className={cn(
+            "flex w-full flex-col gap-2 pt-2",
+            { hidden: !isInfoVisible },
+            infoClassName,
+          )}
         >
           <Text
             variant="productLink"
