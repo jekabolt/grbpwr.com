@@ -4,15 +4,15 @@ import type { common_HeroMediaFull } from "@/api/proto-http/frontend";
 
 import { calculateAspectRatio, cn, isVideo } from "@/lib/utils";
 import Image from "@/components/ui/image";
-import { Overlay } from "@/components/ui/overlay";
 
 // Full-bleed background for a HeroMediaFull: portrait on mobile / landscape on
-// desktop (each falling back to the other slot). Three per-media modifiers:
-// `disableOverlay` (the scrim), `disableTint` (a dark mask over the image — on
-// unless disabled) and `stroke` (our grey hairline border around the media).
-// Video backgrounds autoplay muted (as a core brand hero, it does not pause under
-// prefers-reduced-motion). Shared by the media-backed heroes (DROP, NEWSLETTER,
-// EMBED fallback, PRODUCT_SPOTLIGHT). Renders nothing without a usable media URL.
+// desktop (each falling back to the other slot). A dark mask (our --overlay
+// tint) sits over the image and is removed by EITHER `disableTint` or
+// `disableOverlay`, so the block can show as plain, undarkened media; `stroke`
+// draws our grey hairline border around the media box. Video backgrounds autoplay
+// muted (as a core brand hero, it does not pause under prefers-reduced-motion).
+// Shared by the media-backed heroes (DROP, NEWSLETTER, EMBED fallback,
+// PRODUCT_SPOTLIGHT). Renders nothing without a usable media URL.
 export function HeroMedia({
   media,
   priority = false,
@@ -69,10 +69,10 @@ export function HeroMedia({
           autoPlay={isVideo(mobileUrl)}
         />
       </div>
-      {!media?.disableOverlay && (
-        <Overlay cover="container" disablePointerEvents />
-      )}
-      {!media?.disableTint && (
+      {/* Single dark mask over the media. EITHER modifier — disableTint or
+          disableOverlay — removes it, so the block renders as plain, undarkened
+          media. */}
+      {!media?.disableTint && !media?.disableOverlay && (
         <div
           className="pointer-events-none absolute inset-0 bg-overlay"
           aria-hidden="true"
