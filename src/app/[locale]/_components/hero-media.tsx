@@ -2,17 +2,16 @@
 
 import type { common_HeroMediaFull } from "@/api/proto-http/frontend";
 
-import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { calculateAspectRatio, isVideo } from "@/lib/utils";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 
 // Full-bleed background for a HeroMediaFull: portrait on mobile / landscape on
 // desktop (each falling back to the other slot), with the dark scrim honouring
-// the per-media `disableOverlay` modifier. Video backgrounds autoplay muted
-// unless the viewer prefers reduced motion. Shared by the media-backed heroes
-// (DROP, NEWSLETTER, EMBED fallback, PRODUCT_SPOTLIGHT). Renders nothing without
-// a usable media URL.
+// the per-media `disableOverlay` modifier. Video backgrounds autoplay muted (as a
+// core brand hero, it does not pause under prefers-reduced-motion). Shared by the
+// media-backed heroes (DROP, NEWSLETTER, EMBED fallback, PRODUCT_SPOTLIGHT).
+// Renders nothing without a usable media URL.
 export function HeroMedia({
   media,
   priority = false,
@@ -22,8 +21,6 @@ export function HeroMedia({
   priority?: boolean;
   className?: string;
 }) {
-  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
-
   const landscape = media?.landscape?.media;
   const portrait = media?.portrait?.media;
   const desktop = landscape || portrait;
@@ -47,7 +44,7 @@ export function HeroMedia({
           priority={priority}
           loading={priority ? "eager" : "lazy"}
           type={isVideo(desktopUrl) ? "video" : "image"}
-          autoPlay={isVideo(desktopUrl) && !reducedMotion}
+          autoPlay={isVideo(desktopUrl)}
         />
       </div>
       <div className="block h-full w-full lg:hidden">
@@ -63,7 +60,7 @@ export function HeroMedia({
           priority={priority}
           loading={priority ? "eager" : "lazy"}
           type={isVideo(mobileUrl) ? "video" : "image"}
-          autoPlay={isVideo(mobileUrl) && !reducedMotion}
+          autoPlay={isVideo(mobileUrl)}
         />
       </div>
       {!media?.disableOverlay && (

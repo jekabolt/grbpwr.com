@@ -5,17 +5,19 @@ import { useTranslations } from "next-intl";
 
 import { useCountdown } from "@/lib/hooks/useCountdown";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { internalHref } from "@/lib/utils";
+import { cn, internalHref } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Text } from "@/components/ui/text";
 
 import { HeroMedia } from "./hero-media";
 
-// DROP hero: a full-screen media background with a live countdown to `releaseAt`.
-// Before release it shows the tag, headline and the ticking DD/HH/MM/SS units;
-// once the target passes it swaps to the explore CTA and the whole block becomes
-// a link. The countdown hydrates on the client — units render as "00"
-// placeholders during SSR / first paint to avoid a hydration mismatch.
+// DROP hero: a live countdown to `releaseAt` over an optional media background.
+// Before release it shows the tag, headline and the ticking DD/HH/MM/SS units in
+// hairline boxes; once the target passes it swaps to the explore CTA and the whole
+// block becomes a link. Copy + box borders use currentColor and flip light over
+// media / dark on a plain background, so the block is legible either way. The
+// countdown hydrates on the client — units render as "00" during SSR to avoid a
+// hydration mismatch.
 export function HeroDrop({
   drop,
   priority = false,
@@ -33,6 +35,9 @@ export function HeroDrop({
 
   const t = drop.translations?.find((x) => x.languageId === languageId);
   const released = countdown?.isComplete ?? false;
+  const hasMedia = Boolean(
+    drop.media?.landscape?.media || drop.media?.portrait?.media,
+  );
 
   const units = [
     { key: "days", value: countdown?.days, label: tUnits("days") },
@@ -42,43 +47,41 @@ export function HeroDrop({
   ];
 
   const content = (
-    <div className="relative z-20 flex flex-col items-center gap-8 p-6 text-center text-bgColor">
+    <div
+      className={cn(
+        "relative z-20 flex flex-col items-center gap-6 p-6 text-center",
+        hasMedia ? "text-bgColor" : "text-textColor",
+      )}
+    >
       {drop.tag && <Text variant="uppercase">{drop.tag}</Text>}
       {t?.headline && (
-        <Text
-          component="h2"
-          variant="uppercase"
-          className="text-textGiantSmallSize leading-tight lg:text-textGiantSize"
-        >
+        <Text component="h2" variant="uppercase">
           {t.headline}
         </Text>
       )}
       {t?.subhead && <Text variant="uppercase">{t.subhead}</Text>}
 
-      {released ? (
-        t?.exploreText && (
-          <Text variant="uppercase" className="underline">
-            {t.exploreText}
-          </Text>
-        )
-      ) : (
-        <div className="flex items-start gap-4 lg:gap-8">
+      {!released && (
+        <div className="flex gap-8 tabular-nums lg:gap-12">
           {units.map((u) => (
             <div key={u.key} className="flex flex-col items-center gap-1">
-              <Text
-                variant="uppercase"
-                className="text-4xl tabular-nums leading-none lg:text-6xl"
-              >
+              <Text variant="uppercase">
                 {u.value === undefined
                   ? "00"
                   : String(u.value).padStart(2, "0")}
               </Text>
-              <Text variant="uppercase" className="text-textBaseSize">
+              <Text variant="uppercase" className="opacity-60">
                 {u.label}
               </Text>
             </div>
           ))}
         </div>
+      )}
+
+      {t?.exploreText && (
+        <Text variant="uppercase" className="group-hover:underline">
+          {`[ ${t.exploreText} ]`}
+        </Text>
       )}
     </div>
   );
@@ -86,11 +89,11 @@ export function HeroDrop({
   const className =
     "relative flex min-h-screen w-full items-center justify-center";
 
-  if (released && drop.exploreLink) {
+  if (drop.exploreLink) {
     return (
       <AnimatedButton
         href={internalHref(drop.exploreLink)}
-        className={className}
+        className={cn("group", className)}
         onClick={onHeroClick}
       >
         <HeroMedia media={drop.media} priority={priority} />
