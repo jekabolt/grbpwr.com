@@ -87,9 +87,13 @@ export function HeroPreviewClient({
         </div>
       }
     >
-      {/* display:contents = layout-neutral; the capture handler intercepts block
-          clicks before their Link navigates. */}
-      <div style={{ display: "contents" }} onClickCapture={onBlockClickCapture}>
+      {/* Opaque bgColor backdrop, matching the homepage's FlexibleLayout wrapper.
+          Hero copy that auto-inverts via `mix-blend-exclusion` (SINGLE/DOUBLE/DROP
+          on a plain background) needs something opaque to blend against — in the
+          bare iframe there is no page background, so without this those text boxes
+          render with wrong contrast. The capture handler intercepts block clicks
+          before their Link navigates. */}
+      <div className="bg-bgColor" onClickCapture={onBlockClickCapture}>
         <HeroView hero={hero} preview />
       </div>
     </PreviewBoundary>
