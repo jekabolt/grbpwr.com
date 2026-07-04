@@ -48,9 +48,13 @@ function LiveClock() {
 export function Footer({
   theme = "light",
   accountPanel = false,
+  hideNewsletter = false,
 }: {
   theme?: "light" | "dark";
   accountPanel?: boolean;
+  // Hidden when the page already has a NEWSLETTER hero block, to avoid a
+  // duplicate signup form.
+  hideNewsletter?: boolean;
 }) {
   const t = useTranslations("footer");
 
@@ -70,7 +74,7 @@ export function Footer({
                 <WhiteLogo className="hidden aspect-square h-full w-40 lg:block" />
               )}
             </div>
-            {!isSignedIn && (
+            {!isSignedIn && !hideNewsletter && (
               <div className="w-full lg:w-[346px]">
                 <NewslatterForm />
               </div>

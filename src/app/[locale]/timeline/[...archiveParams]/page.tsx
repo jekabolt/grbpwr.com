@@ -32,10 +32,11 @@ export async function generateMetadata({
     id: parseInt(id),
   });
 
-  const archive = archiveResponse.archive as common_ArchiveFull;
+  const archive = archiveResponse.archive as common_ArchiveFull | undefined;
   const currentTranslation =
-    archive.archiveList?.translations?.find((t) => t.languageId === localeId) ||
-    archive.archiveList?.translations?.[0];
+    archive?.archiveList?.translations?.find(
+      (t) => t.languageId === localeId,
+    ) || archive?.archiveList?.translations?.[0];
 
   return generateCommonMetadata({
     title:
@@ -44,7 +45,12 @@ export async function generateMetadata({
     locale,
     path: `/timeline/${archiveParams.join("/")}`,
     ogParams: {
-      imageUrl: archive.media?.[0].media?.thumbnail?.mediaUrl || "",
+      imageUrl:
+        archive?.archiveList?.thumbnail?.media?.thumbnail?.mediaUrl ||
+        archive?.items?.find((i) => i.media)?.media?.media?.thumbnail
+          ?.mediaUrl ||
+        archive?.mainMedia?.[0]?.media?.thumbnail?.mediaUrl ||
+        "",
       imageAlt: currentTranslation?.heading || "",
     },
   });

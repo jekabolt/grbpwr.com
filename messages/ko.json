@@ -47,6 +47,7 @@
     "subscribe": "구독",
     "unsubscribe": "구독 취소",
     "email preferences": "이메일 설정",
+    "shopping preference": "쇼핑 선호",
     "private community": "프라이빗 커뮤니티",
     "your access": "회원 등급",
     "privileges": "혜택",
@@ -58,6 +59,7 @@
     "select saved address": "저장된 주소 선택",
     "order product thumbnail alt": "제품",
     "failed to load addresses": "주소를 불러오지 못했습니다",
+    "failed to load orders": "주문을 불러오지 못했습니다",
     "failed to delete address": "주소를 삭제하지 못했습니다",
     "failed to update address": "주소를 업데이트하지 못했습니다",
     "invalid email": "유효하지 않은 이메일입니다",
@@ -476,7 +478,7 @@
     "sizing": "사이즈",
     "characteristics": "특징",
     "care": "관리",
-    "gender": "님, 씨, Ms",
+    "ms": "님, 씨, Ms",
     "mx": "Mx",
     "mr": "님",
     "i'd rather not say": "답변하지 않음",
@@ -593,7 +595,8 @@
     "cookie settings": "쿠키 설정",
     "frequently asked questions": "자주 묻는 질문",
     "placing an order": "주문하기, 주문 추적, 반품 정책, 애프터서비스 및 지속가능한 발전.",
-    "membership policy": "멤버십 정책"
+    "membership policy": "멤버십 정책",
+    "content_load_error": "콘텐츠를 불러올 수 없습니다"
   },
   "colors": {
     "black": "검은색",
@@ -640,6 +643,7 @@
     "notify_me_success": "이 상품이 재입고되면 알려드리겠습니다.",
     "invalid_email": "유효한 이메일 주소를 입력해주세요",
     "email_copied": "이메일 복사됨",
+    "copy_email": "이메일 복사",
     "cart_outdated": "장바구니가 오래되었습니다",
     "cart_modified": "일부 상품이 변경되어 장바구니가 업데이트되었습니다",
     "cart_unavailable": "장바구니에 담긴 상품은 더 이상 구매할 수 없습니다",
@@ -676,7 +680,8 @@
     "title": "목록 \"grbpwr\"에서 구독이 취소됩니다. 구독 취소를 클릭하면 마케팅 이메일을 더 이상 받지 않습니다.",
     "unsubscribe": "구독 취소",
     "success": "뉴스레터 구독이 취소되었습니다.",
-    "error": "오류가 발생했습니다. 다시 시도해주세요."
+    "error": "오류가 발생했습니다. 다시 시도해주세요.",
+    "explore": "컬렉션 둘러보기"
   },
   "categories": {
     "outerwear": "아우터",
@@ -840,7 +845,9 @@
   "accessibility": {
     "mobile menu": "grbpwr 모바일 메뉴",
     "notify me dialog": "grbpwr 알림 대화상자",
-    "reason label": "이유"
+    "reason label": "이유",
+    "one-time code": "일회용 코드",
+    "code digit": "{length}자리 중 {index}번째"
   },
   "empty-hero": {
     "shop now": "지금 쇼핑하기"
@@ -903,5 +910,11 @@
       "SLIGHTLY_LARGE": "약간 큼",
       "RUNS_LARGE": "크게 맞음"
     }
+  },
+  "countdown": {
+    "days": "일",
+    "hours": "시간",
+    "minutes": "분",
+    "seconds": "초"
   }
 }

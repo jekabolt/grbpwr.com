@@ -1,4 +1,5 @@
 import { common_OrderFull } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 
 import { parseApiError } from "./api-error";
@@ -6,6 +7,7 @@ import { parseApiError } from "./api-error";
 const PAGE_SIZE = 10;
 
 export function useOrders() {
+    const t = useTranslations("account");
     const [allOrders, setAllOrders] = useState<common_OrderFull[]>([]);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -22,7 +24,7 @@ export function useOrders() {
             );
             if (!res.ok) {
                 setToastMessage(
-                    await parseApiError(res, "failed to load orders"),
+                    await parseApiError(res, t("failed to load orders")),
                 );
                 setToastOpen(true);
                 return;
@@ -35,13 +37,13 @@ export function useOrders() {
             setAllOrders((prev) => (offset === 0 ? page : [...prev, ...page]));
             if (data.total !== undefined) setTotal(data.total);
         } catch {
-            setToastMessage("failed to load orders");
+            setToastMessage(t("failed to load orders"));
             setToastOpen(true);
         } finally {
             if (offset === 0) setLoading(false);
             else setLoadingMore(false);
         }
-    }, []);
+    }, [t]);
 
     useEffect(() => {
         void fetchPage(0);

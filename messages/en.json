@@ -46,6 +46,7 @@
     "subscribe": "subscribe",
     "unsubscribe": "unsubscribe",
     "email preferences": "email preferences",
+    "shopping preference": "shopping preference",
     "private community": "private community",
     "your access": "your access",
     "privileges": "privileges",
@@ -57,6 +58,7 @@
     "select saved address": "select saved address",
     "order product thumbnail alt": "product",
     "failed to load addresses": "failed to load addresses",
+    "failed to load orders": "failed to load orders",
     "failed to delete address": "failed to delete address",
     "failed to update address": "failed to update address",
     "invalid email": "invalid email",
@@ -85,7 +87,7 @@
     "magic_login_success_title": "login successful",
     "magic_login_success_subtitle": "you're in. welcome back.",
     "no addresses saved": "no addresses saved",
-    "save an address to faster checkout": "save an address to faster checkout",
+    "save an address to faster checkout": "save an address for faster checkout",
     "no orders yet": "no orders yet",
     "explore collections": "explore collections",
     "no returns": "no returns",
@@ -534,7 +536,7 @@
     "sizing": "sizing",
     "characteristics": "characteristics",
     "care": "care",
-    "gender": "miss, mrs, ms",
+    "ms": "miss, mrs, ms",
     "mx": "mx",
     "mr": "mr",
     "i'd rather not say": "i'd rather not say",
@@ -651,7 +653,8 @@
     "cookie settings": "cookie settings",
     "frequently asked questions": "frequently asked questions",
     "placing an order": "placing an order, order tracking, returns policy, aftersale services and sustainable development.",
-    "membership policy": "membership policy"
+    "membership policy": "membership policy",
+    "content_load_error": "couldn't load content"
   },
   "colors": {
     "black": "black",
@@ -698,6 +701,7 @@
     "notify_me_success": "you'll be notified when this item is back in stock.",
     "invalid_email": "please enter a valid email address",
     "email_copied": "e-mail copied",
+    "copy_email": "copy email",
     "cart_outdated": "your cart is outdated",
     "cart_modified": "some items changed — your cart has been updated",
     "cart_unavailable": "items in your cart are no longer available",
@@ -734,7 +738,8 @@
     "title": "unsubscribing from list \"grbpwr\". by clicking unsubscribe, you will no longer receive marketing emails.",
     "unsubscribe": "unsubscribe",
     "success": "you have been unsubscribed from the newsletter.",
-    "error": "an error occurred. please try again."
+    "error": "an error occurred. please try again.",
+    "explore": "explore collections"
   },
   "categories": {
     "outerwear": "outerwear",
@@ -898,9 +903,17 @@
   "accessibility": {
     "mobile menu": "grbpwr mobile menu",
     "notify me dialog": "grbpwr notify me",
-    "reason label": "reason"
+    "reason label": "reason",
+    "one-time code": "one-time code",
+    "code digit": "digit {index} of {length}"
   },
   "empty-hero": {
     "shop now": "shop now"
+  },
+  "countdown": {
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes",
+    "seconds": "seconds"
   }
 }

@@ -55,8 +55,7 @@ export function OrderReturns({ account }: { account: StorefrontAccount }) {
               onClick={() => setView(tab.value)}
               className={cn("w-full uppercase", {
                 "border-b border-textColor": view === tab.value,
-                "border-b border-textInactiveColor text-textInactiveColor":
-                  view !== tab.value,
+                "border-b border-textInactiveColor": view !== tab.value,
               })}
             >
               {t(tab.labelKey)}
@@ -120,21 +119,15 @@ function OrdersList({
   const visible = orders.filter(
     (o) => !RETURN_STATUS_IDS.has(o.order?.orderStatusId ?? 0),
   );
+  const showEmpty = visible.length === 0 && !hasMore;
 
   return (
     <div className={LIST_CLASSNAME}>
-      {visible.length > 0 ? (
-        <>
-          {visible.map((order) => (
-            <OrderItem key={order.order?.id} order={order} account={account} />
-          ))}
-          <AutoLoadMore
-            hasMore={hasMore}
-            loadingMore={loadingMore}
-            onLoadMore={onLoadMore}
-          />
-        </>
-      ) : (
+      {visible.map((order) => (
+        <OrderItem key={order.order?.id} order={order} account={account} />
+      ))}
+      {visible.length === 0 && hasMore ? <OrderReturnsSectionFallback /> : null}
+      {showEmpty ? (
         <div className="flex flex-col gap-6">
           <UIText variant="uppercase">{t("no orders yet")}</UIText>
           <Button
@@ -146,7 +139,12 @@ function OrdersList({
             <Link href="/catalog">{t("explore collections")}</Link>
           </Button>
         </div>
-      )}
+      ) : null}
+      <AutoLoadMore
+        hasMore={hasMore}
+        loadingMore={loadingMore}
+        onLoadMore={onLoadMore}
+      />
     </div>
   );
 }
@@ -162,21 +160,15 @@ function ReturnsList({
   const visible = orders.filter((o) =>
     RETURN_STATUS_IDS.has(o.order?.orderStatusId ?? 0),
   );
+  const showEmpty = visible.length === 0 && !hasMore;
 
   return (
     <div className={LIST_CLASSNAME}>
-      {visible.length > 0 ? (
-        <>
-          {visible.map((order) => (
-            <OrderItem key={order.order?.id} order={order} account={account} />
-          ))}
-          <AutoLoadMore
-            hasMore={hasMore}
-            loadingMore={loadingMore}
-            onLoadMore={onLoadMore}
-          />
-        </>
-      ) : (
+      {visible.map((order) => (
+        <OrderItem key={order.order?.id} order={order} account={account} />
+      ))}
+      {visible.length === 0 && hasMore ? <OrderReturnsSectionFallback /> : null}
+      {showEmpty ? (
         <div className="flex flex-col gap-6">
           <UIText variant="uppercase">{t("no returns")}</UIText>
           <Button
@@ -188,7 +180,12 @@ function ReturnsList({
             <Link href="/return">{t("start a return")}</Link>
           </Button>
         </div>
-      )}
+      ) : null}
+      <AutoLoadMore
+        hasMore={hasMore}
+        loadingMore={loadingMore}
+        onLoadMore={onLoadMore}
+      />
     </div>
   );
 }

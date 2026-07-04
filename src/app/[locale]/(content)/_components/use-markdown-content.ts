@@ -5,6 +5,7 @@ export interface MarkdownContentHook {
     content: string;
     loading: boolean;
     error: string | null;
+    retry: () => void;
 }
 
 /**
@@ -17,6 +18,7 @@ export const useMarkdownContent = (
     const [content, setContent] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [reloadKey, setReloadKey] = useState<number>(0);
 
     useEffect(() => {
         const loadContent = async () => {
@@ -53,7 +55,7 @@ export const useMarkdownContent = (
             }
 
             setError(lastError || "Unable to load content from provided paths");
-            setContent("Error loading content. Please try again later.");
+            setContent("");
             setLoading(false);
         };
 
@@ -62,7 +64,13 @@ export const useMarkdownContent = (
         Array.isArray(filePathOrPaths)
             ? filePathOrPaths.join("\0")
             : filePathOrPaths,
+        reloadKey,
     ]);
 
-    return { content, loading, error };
+    return {
+        content,
+        loading,
+        error,
+        retry: () => setReloadKey((k) => k + 1),
+    };
 };

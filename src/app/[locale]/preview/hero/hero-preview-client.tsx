@@ -11,15 +11,8 @@ import type { common_HeroFullWithTranslations } from "@/api/proto-http/frontend"
 import { Text } from "@/components/ui/text";
 import { HeroView } from "@/app/[locale]/_components/hero-view";
 
-import { HeroPreviewBoundary } from "./hero-preview-boundary";
-
-// Origins allowed to embed this iframe and push hero drafts into it. Keep in
-// sync with the `frame-ancestors` allowlist for /preview/* in next.config.ts.
-const ADMIN_ORIGINS = [
-  "https://admin.grbpwr.com",
-  "https://admin.beta.grbpwr.com",
-  "http://localhost:4040",
-];
+import { ADMIN_ORIGINS } from "../_components/admin-origins";
+import { PreviewBoundary } from "../_components/preview-boundary";
 
 type HeroDraftMessage = {
   type: "hero-draft";
@@ -84,7 +77,7 @@ export function HeroPreviewClient({
   }
 
   return (
-    <HeroPreviewBoundary
+    <PreviewBoundary
       resetKey={hero}
       fallback={
         <div className="flex min-h-dvh items-center justify-center bg-bgColor p-6">
@@ -94,11 +87,15 @@ export function HeroPreviewClient({
         </div>
       }
     >
-      {/* display:contents = layout-neutral; the capture handler intercepts block
-          clicks before their Link navigates. */}
-      <div style={{ display: "contents" }} onClickCapture={onBlockClickCapture}>
-        <HeroView hero={hero} />
+      {/* Opaque bgColor backdrop, matching the homepage's FlexibleLayout wrapper.
+          Hero copy that auto-inverts via `mix-blend-exclusion` (SINGLE/DOUBLE/DROP
+          on a plain background) needs something opaque to blend against — in the
+          bare iframe there is no page background, so without this those text boxes
+          render with wrong contrast. The capture handler intercepts block clicks
+          before their Link navigates. */}
+      <div className="bg-bgColor" onClickCapture={onBlockClickCapture}>
+        <HeroView hero={hero} preview />
       </div>
-    </HeroPreviewBoundary>
+    </PreviewBoundary>
   );
 }

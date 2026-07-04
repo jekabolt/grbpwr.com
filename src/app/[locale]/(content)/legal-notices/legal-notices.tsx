@@ -8,6 +8,7 @@ import { Text } from "@/components/ui/text";
 import { CollapsibleSections } from "../_components/collapsible-sections";
 import { LegalSection, legalSections } from "../_components/constant";
 import { CookieContent } from "../_components/cookie-content";
+import { MarkdownContentState } from "../_components/markdown-content-state";
 import { useMarkdownContent } from "../_components/use-markdown-content";
 
 export function LegalNotices() {
@@ -39,19 +40,23 @@ export function LegalNotices() {
       ]
     : "";
 
-  const { content } = useMarkdownContent(localizedCandidates);
+  const { content, loading, error, retry } =
+    useMarkdownContent(localizedCandidates);
   return (
     <div className="flex w-full flex-col space-y-10 lg:flex-row lg:space-y-0">
       <div className="flex w-full flex-col lg:w-1/2 lg:gap-y-0">
         <div className="space-y-10">
-          <Text className="uppercase">{t("legal notices")}</Text>
+          <Text component="h1" className="uppercase">
+            {t("legal notices")}
+          </Text>
           <div className="space-y-4">
             {Object.entries(legalSections).map(([key, section]) => (
               <Button
                 key={key}
                 variant={selectedSection === key ? "underline" : "default"}
                 onClick={() => setSelectedSection(key as LegalSection)}
-                className="uppercase text-textColor"
+                aria-current={selectedSection === key ? "page" : undefined}
+                className="flex min-h-11 items-center uppercase text-textColor hover:underline"
               >
                 {t(section.title)}
               </Button>
@@ -63,18 +68,21 @@ export function LegalNotices() {
         {selectedSection === "cookies" ? (
           <CookieContent autoSave={true} />
         ) : (
-          <CollapsibleSections
-            key={selectedSection}
-            content={content}
-            skipFirstSectionNumber={
-              selectedSection === "terms" || selectedSection === "terms-of-sale"
-            }
-            showDirectly={selectedSection === "legal-notice"}
-            autoOpenFirst={autoOpenFirst}
-            onSectionChange={(section) =>
-              setSelectedSection(section as LegalSection)
-            }
-          />
+          <MarkdownContentState loading={loading} error={error} onRetry={retry}>
+            <CollapsibleSections
+              key={selectedSection}
+              content={content}
+              skipFirstSectionNumber={
+                selectedSection === "terms" ||
+                selectedSection === "terms-of-sale"
+              }
+              showDirectly={selectedSection === "legal-notice"}
+              autoOpenFirst={autoOpenFirst}
+              onSectionChange={(section) =>
+                setSelectedSection(section as LegalSection)
+              }
+            />
+          </MarkdownContentState>
         )}
       </div>
     </div>

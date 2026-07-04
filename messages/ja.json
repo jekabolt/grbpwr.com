@@ -47,6 +47,7 @@
     "subscribe": "購読する",
     "unsubscribe": "配信停止",
     "email preferences": "メール設定",
+    "shopping preference": "ショッピング設定",
     "private community": "プライベートコミュニティ",
     "your access": "アクセス区分",
     "privileges": "特典",
@@ -58,6 +59,7 @@
     "select saved address": "保存済み住所を選択",
     "order product thumbnail alt": "商品",
     "failed to load addresses": "住所を読み込めませんでした",
+    "failed to load orders": "注文を読み込めませんでした",
     "failed to delete address": "住所を削除できませんでした",
     "failed to update address": "住所を更新できませんでした",
     "invalid email": "メールアドレスが無効です",
@@ -476,7 +478,7 @@
     "sizing": "サイズ",
     "characteristics": "特徴",
     "care": "お手入れ",
-    "gender": "さん, 様, Ms",
+    "ms": "さん, 様, Ms",
     "mx": "Mx",
     "mr": "様",
     "i'd rather not say": "回答しない",
@@ -593,7 +595,8 @@
     "cookie settings": "クッキー設定",
     "frequently asked questions": "よくある質問",
     "placing an order": "注文方法、注文追跡、返品ポリシー、アフターサービス、持続可能な開発について。",
-    "membership policy": "メンバーシップポリシー"
+    "membership policy": "メンバーシップポリシー",
+    "content_load_error": "コンテンツを読み込めませんでした"
   },
   "colors": {
     "black": "黒",
@@ -640,6 +643,7 @@
     "notify_me_success": "この商品が再入荷したらお知らせします。",
     "invalid_email": "有効なメールアドレスを入力してください",
     "email_copied": "メールアドレスがコピーされました",
+    "copy_email": "メールアドレスをコピー",
     "cart_outdated": "カートが古くなっています",
     "cart_modified": "一部の商品が変更されました — カートを更新しました",
     "cart_unavailable": "カート内の商品は現在ご利用いただけません",
@@ -676,7 +680,8 @@
     "title": "リスト「grbpwr」からの配信を停止します。購読解除をクリックすると、今後マーケティングメールは受信されません。",
     "unsubscribe": "購読解除",
     "success": "ニュースレターの配信を停止しました。",
-    "error": "エラーが発生しました。もう一度お試しください。"
+    "error": "エラーが発生しました。もう一度お試しください。",
+    "explore": "コレクションを見る"
   },
   "categories": {
     "outerwear": "アウターウェア",
@@ -840,7 +845,9 @@
   "accessibility": {
     "mobile menu": "grbpwrモバイルメニュー",
     "notify me dialog": "grbpwr通知ダイアログ",
-    "reason label": "理由"
+    "reason label": "理由",
+    "one-time code": "ワンタイムコード",
+    "code digit": "{length}桁中{index}桁目"
   },
   "empty-hero": {
     "shop now": "今すぐ買う"
@@ -903,5 +910,11 @@
       "SLIGHTLY_LARGE": "やや大きめ",
       "RUNS_LARGE": "大きめ"
     }
+  },
+  "countdown": {
+    "days": "日",
+    "hours": "時間",
+    "minutes": "分",
+    "seconds": "秒"
   }
 }

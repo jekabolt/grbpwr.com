@@ -65,8 +65,17 @@ export default async function Page() {
 
   const jsonLd = siteJsonLd(latestProductDate);
 
+  // A NEWSLETTER hero block already captures email on the page, so suppress the
+  // duplicate footer newsletter when one is present.
+  const hasNewsletterHero = hero?.entities?.some(
+    (e) => e.type === "HERO_TYPE_NEWSLETTER",
+  );
+
   return (
-    <FlexibleLayout showAnnounce={true}>
+    <FlexibleLayout
+      showAnnounce={true}
+      hideFooterNewsletter={hasNewsletterHero}
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }}

@@ -47,6 +47,7 @@
     "subscribe": "iscriviti",
     "unsubscribe": "annulla iscrizione",
     "email preferences": "preferenze email",
+    "shopping preference": "preferenza di acquisto",
     "private community": "community privata",
     "your access": "il tuo accesso",
     "privileges": "vantaggi",
@@ -58,6 +59,7 @@
     "select saved address": "seleziona indirizzo salvato",
     "order product thumbnail alt": "prodotto",
     "failed to load addresses": "impossibile caricare gli indirizzi",
+    "failed to load orders": "impossibile caricare gli ordini",
     "failed to delete address": "impossibile eliminare l’indirizzo",
     "failed to update address": "impossibile aggiornare l’indirizzo",
     "invalid email": "e-mail non valida",
@@ -476,7 +478,7 @@
     "sizing": "taglie",
     "characteristics": "caratteristiche",
     "care": "cura",
-    "gender": "sig.na, sig.ra, ms",
+    "ms": "sig.na, sig.ra, ms",
     "mx": "mx",
     "mr": "sig.",
     "i'd rather not say": "preferisco non dirlo",
@@ -593,7 +595,8 @@
     "cookie settings": "impostazioni cookie",
     "frequently asked questions": "domande frequenti",
     "placing an order": "effettuare un ordine, tracciamento dell'ordine, politica dei resi, servizi post-vendita e sviluppo sostenibile.",
-    "membership policy": "politica di membership"
+    "membership policy": "politica di membership",
+    "content_load_error": "impossibile caricare il contenuto"
   },
   "colors": {
     "black": "nero",
@@ -640,6 +643,7 @@
     "notify_me_success": "ti avviseremo quando questo articolo sarà di nuovo disponibile.",
     "invalid_email": "inserisci un indirizzo email valido",
     "email_copied": "email copiata",
+    "copy_email": "copia email",
     "cart_outdated": "il tuo carrello è obsoleto",
     "cart_modified": "alcuni articoli sono cambiati — il tuo carrello è stato aggiornato",
     "cart_unavailable": "gli articoli nel tuo carrello non sono più disponibili",
@@ -676,7 +680,8 @@
     "title": "annullamento dell'iscrizione alla lista \"grbpwr\". cliccando su annulla iscrizione, non riceverai più email di marketing.",
     "unsubscribe": "annulla iscrizione",
     "success": "sei stato disiscritto dalla newsletter.",
-    "error": "si è verificato un errore. per favore riprova."
+    "error": "si è verificato un errore. per favore riprova.",
+    "explore": "esplora le collezioni"
   },
   "categories": {
     "outerwear": "capispalla",
@@ -840,7 +845,9 @@
   "accessibility": {
     "mobile menu": "menu mobile grbpwr",
     "notify me dialog": "dialogo avvisami grbpwr",
-    "reason label": "motivo"
+    "reason label": "motivo",
+    "one-time code": "codice monouso",
+    "code digit": "cifra {index} di {length}"
   },
   "empty-hero": {
     "shop now": "Acquista ora"
@@ -903,5 +910,11 @@
       "SLIGHTLY_LARGE": "Leggermente largo",
       "RUNS_LARGE": "Veste largo"
     }
+  },
+  "countdown": {
+    "days": "giorni",
+    "hours": "ore",
+    "minutes": "minuti",
+    "seconds": "secondi"
   }
 }

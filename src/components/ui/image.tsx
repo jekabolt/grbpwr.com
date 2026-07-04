@@ -58,10 +58,13 @@ export default function ImageComponent({
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (type !== "video" || !videoRef.current) return;
-    if (playOnHover) videoRef.current.play();
-    else videoRef.current.pause();
-  }, [type, playOnHover]);
+    const v = videoRef.current;
+    if (type !== "video" || !v) return;
+    // Autoplay clips keep playing; hover clips play only while hovered. Without
+    // the autoPlay guard this effect paused every autoplaying video on mount.
+    if (playOnHover || autoPlay) v.play().catch(() => {});
+    else v.pause();
+  }, [type, playOnHover, autoPlay]);
 
   return (
     <ImageContainer aspectRatio={fit !== "cover" ? aspectRatio : undefined}>

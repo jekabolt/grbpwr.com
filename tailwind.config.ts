@@ -63,7 +63,8 @@ const config = {
       },
       animation: {
         threshold: "threshold 0.4s ease-out forwards",
-        "threshold-highlight": "threshold-with-highlight 0.4s ease-out forwards",
+        "threshold-highlight":
+          "threshold-with-highlight 0.4s ease-out forwards",
         "highlight-flash": "highlight-flash 0.6s ease-out forwards",
         "modal-fade-in": "modal-fade-in 0.2s ease-out both",
         "modal-fade-out": "modal-fade-out 0.15s ease-in both",

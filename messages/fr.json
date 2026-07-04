@@ -47,6 +47,7 @@
     "subscribe": "s'abonner",
     "unsubscribe": "se désabonner",
     "email preferences": "préférences e-mail",
+    "shopping preference": "préférence d'achat",
     "private community": "communauté privée",
     "your access": "votre accès",
     "privileges": "avantages",
@@ -58,6 +59,7 @@
     "select saved address": "sélectionner une adresse enregistrée",
     "order product thumbnail alt": "produit",
     "failed to load addresses": "impossible de charger les adresses",
+    "failed to load orders": "impossible de charger les commandes",
     "failed to delete address": "impossible de supprimer l’adresse",
     "failed to update address": "impossible de mettre à jour l’adresse",
     "invalid email": "e-mail invalide",
@@ -476,7 +478,7 @@
     "sizing": "taille",
     "characteristics": "caractéristiques",
     "care": "entretien",
-    "gender": "mlle, mme, ms",
+    "ms": "mlle, mme, ms",
     "mx": "mx",
     "mr": "m.",
     "i'd rather not say": "je préfère ne pas le dire",
@@ -593,7 +595,8 @@
     "cookie settings": "paramètres des cookies",
     "frequently asked questions": "questions fréquemment posées",
     "placing an order": "passer une commande, suivi de commande, politique de retour, services après-vente et développement durable.",
-    "membership policy": "politique d'adhésion"
+    "membership policy": "politique d'adhésion",
+    "content_load_error": "impossible de charger le contenu"
   },
   "colors": {
     "black": "noir",
@@ -640,6 +643,7 @@
     "notify_me_success": "nous vous préviendrons lorsque cet article sera de nouveau en stock.",
     "invalid_email": "veuillez saisir une adresse email valide",
     "email_copied": "email copié",
+    "copy_email": "copier l'email",
     "cart_outdated": "votre panier est obsolète",
     "cart_modified": "certains articles ont changé — votre panier a été mis à jour",
     "cart_unavailable": "les articles de votre panier ne sont plus disponibles",
@@ -676,7 +680,8 @@
     "title": "désinscription de la liste \"grbpwr\". en cliquant sur se désabonner, vous ne recevrez plus d'e-mails marketing.",
     "unsubscribe": "se désabonner",
     "success": "vous avez été désabonné de la newsletter.",
-    "error": "une erreur s'est produite. veuillez réessayer."
+    "error": "une erreur s'est produite. veuillez réessayer.",
+    "explore": "explorer les collections"
   },
   "categories": {
     "outerwear": "vestes_et_manteaux",
@@ -840,7 +845,9 @@
   "accessibility": {
     "mobile menu": "menu mobile grbpwr",
     "notify me dialog": "dialogue me notifier grbpwr",
-    "reason label": "raison"
+    "reason label": "raison",
+    "one-time code": "code à usage unique",
+    "code digit": "chiffre {index} sur {length}"
   },
   "empty-hero": {
     "shop now": "Acheter maintenant"
@@ -903,5 +910,11 @@
       "SLIGHTLY_LARGE": "Légèrement grand",
       "RUNS_LARGE": "Taille grand"
     }
+  },
+  "countdown": {
+    "days": "jours",
+    "hours": "heures",
+    "minutes": "minutes",
+    "seconds": "secondes"
   }
 }
