@@ -35,9 +35,6 @@ export function HeroDrop({
 
   const t = drop.translations?.find((x) => x.languageId === languageId);
   const released = countdown?.isComplete ?? false;
-  const hasMedia = Boolean(
-    drop.media?.landscape?.media || drop.media?.portrait?.media,
-  );
 
   const units = [
     { key: "days", value: countdown?.days, label: tUnits("days") },
@@ -47,12 +44,10 @@ export function HeroDrop({
   ];
 
   const content = (
-    <div
-      className={cn(
-        "relative z-20 flex flex-col items-center gap-6 p-6 text-center",
-        hasMedia ? "text-bgColor" : "text-textColor",
-      )}
-    >
+    // text-bgColor + mix-blend-exclusion auto-inverts the copy against whatever is
+    // behind it (plain background, dark or light media) — the same technique the
+    // header uses — so it stays legible without a hasMedia colour flip.
+    <div className="relative z-20 flex flex-col items-center gap-8 p-6 text-center text-bgColor mix-blend-exclusion">
       {drop.tag && <Text variant="uppercase">{drop.tag}</Text>}
       {t?.headline && (
         <Text component="h2" variant="uppercase">
