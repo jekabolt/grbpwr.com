@@ -85,6 +85,8 @@ export type common_HeroMediaFull = {
   portrait: common_MediaFull | undefined;
   landscape: common_MediaFull | undefined;
   disableOverlay: boolean | undefined;
+  disableTint: boolean | undefined;
+  stroke: boolean | undefined;
 };
 
 export type common_MediaFull = {
@@ -297,7 +299,7 @@ export type common_HeroFeaturedArchiveWithTranslations = {
 export type common_ArchiveFull = {
   archiveList: common_ArchiveList | undefined;
   mainMedia: common_MediaFull[] | undefined;
-  media: common_MediaFull[] | undefined;
+  items: common_ArchiveItemFull[] | undefined;
 };
 
 export type common_ArchiveList = {
@@ -313,6 +315,37 @@ export type common_ArchiveInsertTranslation = {
   languageId: number | undefined;
   heading: string | undefined;
   description: string | undefined;
+};
+
+// ArchiveItemFull is the resolved timeline body block (read side).
+export type common_ArchiveItemFull = {
+  type: common_ArchiveItemType | undefined;
+  media: common_MediaFull | undefined;
+  embedUrl: string | undefined;
+  product: common_Product | undefined;
+  tag: string | undefined;
+  products: common_Product[] | undefined;
+  translations: common_ArchiveItemTranslation[] | undefined;
+};
+
+// ArchiveItemType discriminates a timeline body block. The archive body is an
+// ordered, heterogeneous list of these blocks (Insert-form storage, like hero).
+export type common_ArchiveItemType =
+  | "ARCHIVE_ITEM_TYPE_UNKNOWN"
+  | "ARCHIVE_ITEM_TYPE_MEDIA"
+  | "ARCHIVE_ITEM_TYPE_TEXT"
+  | "ARCHIVE_ITEM_TYPE_EMBED"
+  | "ARCHIVE_ITEM_TYPE_PRODUCT"
+  | "ARCHIVE_ITEM_TYPE_PRODUCTS_TAG"
+  | "ARCHIVE_ITEM_TYPE_PRODUCTS_MANUAL";
+// ArchiveItemTranslation is the per-block translation for a timeline body item.
+// Each block type uses only the subset it needs:
+// text                         -> text
+// media/embed/product/products -> caption
+export type common_ArchiveItemTranslation = {
+  languageId: number | undefined;
+  caption: string | undefined;
+  text: string | undefined;
 };
 
 export type common_HeroEmbedWithTranslations = {
@@ -443,6 +476,7 @@ export type common_Dictionary = {
   isProd: boolean | undefined;
   // Hero section background color for the storefront (CSS). Empty if unset.
   backgroundHeroColor: string | undefined;
+  productTags: string[] | undefined;
 };
 
 // Category represents a hierarchical category structure

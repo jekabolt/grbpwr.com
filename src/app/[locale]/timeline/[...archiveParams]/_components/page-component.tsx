@@ -1,12 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { common_ArchiveFull } from "@/api/proto-http/frontend";
+import { useRef, useState, type ReactNode } from "react";
+import {
+  common_ArchiveFull,
+  common_ArchiveItemFull,
+  common_MediaFull,
+} from "@/api/proto-http/frontend";
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import {
   calculateAspectRatio,
+  cn,
   isVideo,
   resolveArchiveMedia,
 } from "@/lib/utils";
@@ -15,19 +20,24 @@ import ImageComponent from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 
 import { ArchiveMediaThumbnail } from "../../_components/archive-media-thumbnail";
+import { ProductItem } from "../../../_components/product-item";
+
+// Shared 2/4-col grid used by both the media run and the products blocks so the
+// two stay visually identical.
+const ARCHIVE_GRID_CLASS = "grid grid-cols-2 gap-2 md:grid-cols-4 lg:gap-4";
 
 function ArchiveMediaGridItem({
-  item,
+  media: mediaFull,
   id,
   heading,
 }: {
-  item: NonNullable<common_ArchiveFull["media"]>[number];
+  media: common_MediaFull | undefined;
   id: number;
   heading: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const isMobile = useMediaQuery("(max-width: 1023px)");
-  const media = resolveArchiveMedia(item.media);
+  const media = resolveArchiveMedia(mediaFull?.media);
   const isPriority = id < 4;
   const isVideoItem = media.type === "video";
 
@@ -41,7 +51,7 @@ function ArchiveMediaGridItem({
         media={media}
         alt={`${heading} image ${id + 1}`}
         aspectRatio="3/4"
-        blurhash={item.media?.blurhash}
+        blurhash={mediaFull?.media?.blurhash}
         priority={isPriority}
         loading={isPriority ? "eager" : "lazy"}
         playOnHover={!isMobile && isVideoItem && isHovered}
@@ -49,6 +59,161 @@ function ArchiveMediaGridItem({
       />
     </div>
   );
+}
+
+// Small uppercase label above a non-media block (product/products/embed caption).
+function ArchiveCaption({ children }: { children: string }) {
+  return (
+    <Text variant="uppercase" className="text-textInactiveColor">
+      {children}
+    </Text>
+  );
+}
+
+// EMBED block: a third-party iframe (Spline/3D/video). Mirrors the hero embed's
+// attributes and reveal-on-load so a CSP-blocked or failed embed just stays
+// blank instead of erroring. The origin must be allowlisted in the CSP
+// `frame-src` (see next.config.ts) for it to render.
+function ArchiveEmbed({ url, title }: { url: string; title: string }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className="relative aspect-video w-full overflow-hidden bg-black">
+      <iframe
+        src={url}
+        title={title || "grbpwr"}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+        allow="autoplay; fullscreen; encrypted-media; picture-in-picture; xr-spatial-tracking; accelerometer; gyroscope"
+        sandbox="allow-scripts allow-same-origin allow-popups allow-presentation"
+        className={cn(
+          "absolute inset-0 h-full w-full border-0 transition-opacity duration-500",
+          loaded ? "opacity-100" : "opacity-0",
+        )}
+      />
+    </div>
+  );
+}
+
+// One non-media timeline block. MEDIA is handled by the grid in <ArchiveBody>;
+// everything else renders full-width here by composing the shared primitives.
+function ArchiveItemBlock({
+  item,
+  heading,
+  languageId,
+}: {
+  item: common_ArchiveItemFull;
+  heading: string;
+  languageId: number;
+}) {
+  const tr =
+    item.translations?.find((t) => t.languageId === languageId) ||
+    item.translations?.[0];
+  const caption = tr?.caption;
+
+  switch (item.type) {
+    case "ARCHIVE_ITEM_TYPE_TEXT":
+      return tr?.text ? (
+        <div className="flex w-full items-center justify-center">
+          <div className="w-full max-w-[640px]">
+            <Text className="break-words text-justify lg:text-left">
+              {tr.text}
+            </Text>
+          </div>
+        </div>
+      ) : null;
+    case "ARCHIVE_ITEM_TYPE_EMBED":
+      return item.embedUrl ? (
+        <div className="space-y-2">
+          <ArchiveEmbed url={item.embedUrl} title={caption || heading} />
+          {caption && <ArchiveCaption>{caption}</ArchiveCaption>}
+        </div>
+      ) : null;
+    case "ARCHIVE_ITEM_TYPE_PRODUCT":
+      return item.product ? (
+        <div className="space-y-2">
+          {caption && <ArchiveCaption>{caption}</ArchiveCaption>}
+          <div className="flex w-full justify-center">
+            <div className="w-1/2 lg:w-1/4">
+              <ProductItem product={item.product} className="w-full" />
+            </div>
+          </div>
+        </div>
+      ) : null;
+    case "ARCHIVE_ITEM_TYPE_PRODUCTS_TAG":
+    case "ARCHIVE_ITEM_TYPE_PRODUCTS_MANUAL":
+      return item.products && item.products.length > 0 ? (
+        <div className="space-y-2">
+          {caption && <ArchiveCaption>{caption}</ArchiveCaption>}
+          <div className={ARCHIVE_GRID_CLASS}>
+            {item.products.map((p) => (
+              <ProductItem key={p.id} product={p} className="w-full" />
+            ))}
+          </div>
+        </div>
+      ) : null;
+    default:
+      return null;
+  }
+}
+
+// Renders the ordered, heterogeneous timeline body. Consecutive MEDIA blocks
+// collapse into the familiar 2/4-col grid (so existing media-only archives look
+// unchanged); every other block type renders full-width in document order,
+// mirroring the hero's block list.
+function ArchiveBody({
+  items,
+  heading,
+  languageId,
+}: {
+  items: common_ArchiveItemFull[];
+  heading: string;
+  languageId: number;
+}) {
+  const blocks: ReactNode[] = [];
+  let run: common_ArchiveItemFull[] = [];
+  let mediaCount = 0;
+
+  const flush = () => {
+    if (run.length === 0) return;
+    const start = mediaCount;
+    const cells = run;
+    blocks.push(
+      <div key={`media-${start}`} className={ARCHIVE_GRID_CLASS}>
+        {cells.map((it, i) => (
+          <ArchiveMediaGridItem
+            key={it.media?.id ?? `${start}-${i}`}
+            media={it.media}
+            id={start + i}
+            heading={heading}
+          />
+        ))}
+      </div>,
+    );
+    mediaCount += run.length;
+    run = [];
+  };
+
+  items.forEach((item, i) => {
+    if (item.type === "ARCHIVE_ITEM_TYPE_MEDIA") {
+      // Only renderable media joins the grid run; an empty/partial media block
+      // is dropped without splitting the surrounding grid or leaving a blank
+      // tile (resolveArchiveMedia needs the nested MediaItem, not just MediaFull).
+      if (item.media?.media) run.push(item);
+      return;
+    }
+    flush();
+    blocks.push(
+      <ArchiveItemBlock
+        key={`block-${i}`}
+        item={item}
+        heading={heading}
+        languageId={languageId}
+      />,
+    );
+  });
+  flush();
+
+  return <div className="space-y-10 lg:space-y-14">{blocks}</div>;
 }
 
 export default function PageComponent({
@@ -140,16 +305,13 @@ export default function PageComponent({
           </div>
         );
       })}
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:gap-4">
-        {archive?.media?.map((item, id) => (
-          <ArchiveMediaGridItem
-            key={item.id ?? id}
-            item={item}
-            id={id}
-            heading={currentTranslation?.heading || ""}
-          />
-        ))}
-      </div>
+      {archive?.items && archive.items.length > 0 && (
+        <ArchiveBody
+          items={archive.items}
+          heading={currentTranslation?.heading || ""}
+          languageId={languageId}
+        />
+      )}
     </div>
   );
 }

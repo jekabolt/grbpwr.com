@@ -20,22 +20,29 @@ export function ArchiveItem({
           className={cn("flex h-full w-full")}
           href={archive?.archiveList?.slug || ""}
         >
-          {archive?.media?.map((m, id) => (
-            <div key={m.id} className={cn("group relative", className)}>
-              <Image
-                src={m.media?.fullSize?.mediaUrl || ""}
-                alt="archive item"
-                aspectRatio={calculateAspectRatio(
-                  m.media?.fullSize?.width,
-                  m.media?.fullSize?.height,
-                )}
-                fit="contain"
-              />
-              <Text className="absolute right-4 top-1/2 block -translate-y-1/2 md:hidden md:group-hover:block">
-                {id}
-              </Text>
-            </div>
-          ))}
+          {archive?.items
+            ?.filter(
+              (it) => it.type === "ARCHIVE_ITEM_TYPE_MEDIA" && it.media?.media,
+            )
+            .map((it, id) => (
+              <div
+                key={it.media?.id ?? id}
+                className={cn("group relative", className)}
+              >
+                <Image
+                  src={it.media?.media?.fullSize?.mediaUrl || ""}
+                  alt="archive item"
+                  aspectRatio={calculateAspectRatio(
+                    it.media?.media?.fullSize?.width,
+                    it.media?.media?.fullSize?.height,
+                  )}
+                  fit="contain"
+                />
+                <Text className="absolute right-4 top-1/2 block -translate-y-1/2 md:hidden md:group-hover:block">
+                  {id}
+                </Text>
+              </div>
+            ))}
         </Link>
       </Button>
     </div>

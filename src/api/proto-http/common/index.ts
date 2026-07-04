@@ -21,6 +21,16 @@ export type ArchiveInsertTranslation = {
   description: string | undefined;
 };
 
+// ArchiveItemTranslation is the per-block translation for a timeline body item.
+// Each block type uses only the subset it needs:
+// text                         -> text
+// media/embed/product/products -> caption
+export type ArchiveItemTranslation = {
+  languageId: number | undefined;
+  caption: string | undefined;
+  text: string | undefined;
+};
+
 // HeroCopyTranslation is the single, shared translation for every hero block.
 // Each block type uses only the subset of fields it needs:
 // single/double        -> headline, explore_text
@@ -90,55 +100,6 @@ export type MediaInfo = {
   width: number | undefined;
   // height
   height: number | undefined;
-};
-
-export type ArchiveList = {
-  id: number | undefined;
-  translations: ArchiveInsertTranslation[] | undefined;
-  tag: string | undefined;
-  slug: string | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  thumbnail: MediaFull | undefined;
-};
-
-export type ArchiveFull = {
-  archiveList: ArchiveList | undefined;
-  mainMedia: MediaFull[] | undefined;
-  media: MediaFull[] | undefined;
-};
-
-export type ArchiveInsert = {
-  tag: string | undefined;
-  mediaIds: number[] | undefined;
-  mainMediaIds: number[] | undefined;
-  thumbnailId: number | undefined;
-  translations: ArchiveInsertTranslation[] | undefined;
-};
-
-export type Address = {
-  addressInsert: AddressInsert | undefined;
-};
-
-export type AddressInsert = {
-  country: string | undefined;
-  state: string | undefined;
-  city: string | undefined;
-  addressLineOne: string | undefined;
-  addressLineTwo: string | undefined;
-  company: string | undefined;
-  postalCode: string | undefined;
-};
-
-export type Buyer = {
-  buyerInsert: BuyerInsert | undefined;
-};
-
-export type BuyerInsert = {
-  firstName: string | undefined;
-  lastName: string | undefined;
-  email: string | undefined;
-  phone: string | undefined;
-  receivePromoEmails: boolean | undefined;
 };
 
 export type GenderEnum =
@@ -411,6 +372,89 @@ export type StockChange = {
   referenceId: string | undefined;
   reason?: StockChangeReason;
   comment?: string;
+};
+
+// ArchiveItemType discriminates a timeline body block. The archive body is an
+// ordered, heterogeneous list of these blocks (Insert-form storage, like hero).
+export type ArchiveItemType =
+  | "ARCHIVE_ITEM_TYPE_UNKNOWN"
+  | "ARCHIVE_ITEM_TYPE_MEDIA"
+  | "ARCHIVE_ITEM_TYPE_TEXT"
+  | "ARCHIVE_ITEM_TYPE_EMBED"
+  | "ARCHIVE_ITEM_TYPE_PRODUCT"
+  | "ARCHIVE_ITEM_TYPE_PRODUCTS_TAG"
+  | "ARCHIVE_ITEM_TYPE_PRODUCTS_MANUAL";
+export type ArchiveList = {
+  id: number | undefined;
+  translations: ArchiveInsertTranslation[] | undefined;
+  tag: string | undefined;
+  slug: string | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  thumbnail: MediaFull | undefined;
+};
+
+// ArchiveItemInsert is a single timeline body block (write side). Only the
+// fields relevant to `type` are used.
+export type ArchiveItemInsert = {
+  type: ArchiveItemType | undefined;
+  mediaId: number | undefined;
+  embedUrl: string | undefined;
+  productId: number | undefined;
+  tag: string | undefined;
+  limit: number | undefined;
+  productIds: number[] | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+// ArchiveItemFull is the resolved timeline body block (read side).
+export type ArchiveItemFull = {
+  type: ArchiveItemType | undefined;
+  media: MediaFull | undefined;
+  embedUrl: string | undefined;
+  product: Product | undefined;
+  tag: string | undefined;
+  products: Product[] | undefined;
+  translations: ArchiveItemTranslation[] | undefined;
+};
+
+export type ArchiveFull = {
+  archiveList: ArchiveList | undefined;
+  mainMedia: MediaFull[] | undefined;
+  items: ArchiveItemFull[] | undefined;
+};
+
+export type ArchiveInsert = {
+  tag: string | undefined;
+  mainMediaIds: number[] | undefined;
+  thumbnailId: number | undefined;
+  translations: ArchiveInsertTranslation[] | undefined;
+  items: ArchiveItemInsert[] | undefined;
+};
+
+export type Address = {
+  addressInsert: AddressInsert | undefined;
+};
+
+export type AddressInsert = {
+  country: string | undefined;
+  state: string | undefined;
+  city: string | undefined;
+  addressLineOne: string | undefined;
+  addressLineTwo: string | undefined;
+  company: string | undefined;
+  postalCode: string | undefined;
+};
+
+export type Buyer = {
+  buyerInsert: BuyerInsert | undefined;
+};
+
+export type BuyerInsert = {
+  firstName: string | undefined;
+  lastName: string | undefined;
+  email: string | undefined;
+  phone: string | undefined;
+  receivePromoEmails: boolean | undefined;
 };
 
 export type OrderFactor =
@@ -726,6 +770,7 @@ export type Dictionary = {
   isProd: boolean | undefined;
   // Hero section background color for the storefront (CSS). Empty if unset.
   backgroundHeroColor: string | undefined;
+  productTags: string[] | undefined;
 };
 
 export type Collection = {
@@ -839,11 +884,15 @@ export type HeroAudience =
   | "HERO_AUDIENCE_MEMBERS"
   | "HERO_AUDIENCE_TIER";
 // HeroMedia is a portrait/landscape media pair addressed by id (write side).
-// disable_overlay lives here so the scrim can be toggled per media slot.
+// The per-slot presentation modifiers live here: disable_overlay toggles the
+// scrim, disable_tint toggles the frontend's background colour tint, and stroke
+// toggles a border/outline around the media.
 export type HeroMedia = {
   portraitId: number | undefined;
   landscapeId: number | undefined;
   disableOverlay: boolean | undefined;
+  disableTint: boolean | undefined;
+  stroke: boolean | undefined;
 };
 
 // HeroMediaFull is the resolved form of HeroMedia (read side).
@@ -851,6 +900,8 @@ export type HeroMediaFull = {
   portrait: MediaFull | undefined;
   landscape: MediaFull | undefined;
   disableOverlay: boolean | undefined;
+  disableTint: boolean | undefined;
+  stroke: boolean | undefined;
 };
 
 export type HeroFullWithTranslations = {
