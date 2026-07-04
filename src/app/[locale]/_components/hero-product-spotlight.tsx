@@ -64,11 +64,7 @@ export function HeroProductSpotlight({
       </div>
       <div className="flex w-full flex-col items-center justify-center gap-6 p-6 text-center lg:h-screen lg:w-1/2">
         {t?.headline && (
-          <Text
-            component="h2"
-            variant="uppercase"
-            className="text-2xl leading-tight lg:text-4xl"
-          >
+          <Text component="h2" variant="uppercase">
             {t.headline}
           </Text>
         )}
