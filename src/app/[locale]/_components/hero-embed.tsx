@@ -30,7 +30,9 @@ export function HeroEmbed({
 
   if (!embed) return null;
 
-  const t = embed.translations?.find((x) => x.languageId === languageId);
+  const t =
+    embed.translations?.find((x) => x.languageId === languageId) ||
+    embed.translations?.[0];
   const headline = t?.headline;
   const ctaText = t?.ctaText;
 

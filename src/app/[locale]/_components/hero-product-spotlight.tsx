@@ -32,7 +32,9 @@ export function HeroProductSpotlight({
   if (!spotlight) return null;
 
   const product = spotlight.product;
-  const t = spotlight.translations?.find((x) => x.languageId === languageId);
+  const t =
+    spotlight.translations?.find((x) => x.languageId === languageId) ||
+    spotlight.translations?.[0];
 
   const currencyKey = currentCountry.currencyKey || "EUR";
   const currencySymbol = currencySymbols[currencyKey] || currencySymbols["EUR"];

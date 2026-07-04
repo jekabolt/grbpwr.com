@@ -28,9 +28,9 @@ export function HeroMarquee({
 }) {
   const { languageId } = useTranslationsStore((state) => state);
 
-  const translation = marquee?.translations?.find(
-    (t) => t.languageId === languageId,
-  );
+  const translation =
+    marquee?.translations?.find((t) => t.languageId === languageId) ||
+    marquee?.translations?.[0];
   const text = translation?.headline;
   if (!marquee || !text) return null;
 

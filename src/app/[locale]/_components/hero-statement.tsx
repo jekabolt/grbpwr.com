@@ -28,7 +28,9 @@ export function HeroStatement({
 
   if (!statement) return null;
 
-  const t = statement.translations?.find((x) => x.languageId === languageId);
+  const t =
+    statement.translations?.find((x) => x.languageId === languageId) ||
+    statement.translations?.[0];
   const bg =
     statement.media?.landscape?.media || statement.media?.portrait?.media;
   const bgUrl = bg?.fullSize?.mediaUrl || "";

@@ -60,9 +60,9 @@ export function HeroArchive({
   }, []);
 
   const archive = entity.featuredArchive;
-  const translation = archive?.translations?.find(
-    (t) => t.languageId === languageId,
-  );
+  const translation =
+    archive?.translations?.find((t) => t.languageId === languageId) ||
+    archive?.translations?.[0];
   return (
     <div className={className}>
       <div className="flex flex-col gap-3 px-2 lg:flex-row">

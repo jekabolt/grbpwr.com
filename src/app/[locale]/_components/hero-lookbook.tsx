@@ -27,13 +27,16 @@ export function HeroLookbook({
   const frames = lookbook?.frames ?? [];
   if (frames.length === 0) return null;
 
-  const t = lookbook?.translations?.find((x) => x.languageId === languageId);
+  const t =
+    lookbook?.translations?.find((x) => x.languageId === languageId) ||
+    lookbook?.translations?.[0];
 
   return (
     <section className="w-full">
       {frames.map((frame, idx) => {
-        const caption = frame.translations?.find(
-          (x) => x.languageId === languageId,
+        const caption = (
+          frame.translations?.find((x) => x.languageId === languageId) ||
+          frame.translations?.[0]
         )?.caption;
         return (
           <div key={idx} className="relative h-screen w-full">

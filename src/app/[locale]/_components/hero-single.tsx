@@ -43,9 +43,9 @@ export function HeroSingle({
 
   if (!single) return null;
 
-  const translation = single.translations?.find(
-    (t) => t.languageId === languageId,
-  );
+  const translation =
+    single.translations?.find((t) => t.languageId === languageId) ||
+    single.translations?.[0];
   const landscape = single.media?.landscape?.media;
   const portrait = single.media?.portrait?.media;
   const headline = translation?.headline;

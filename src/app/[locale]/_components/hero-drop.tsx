@@ -33,7 +33,9 @@ export function HeroDrop({
 
   if (!drop) return null;
 
-  const t = drop.translations?.find((x) => x.languageId === languageId);
+  const t =
+    drop.translations?.find((x) => x.languageId === languageId) ||
+    drop.translations?.[0];
   const released = countdown?.isComplete ?? false;
 
   const units = [

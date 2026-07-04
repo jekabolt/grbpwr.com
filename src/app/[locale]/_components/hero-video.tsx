@@ -28,9 +28,9 @@ export function HeroVideo({
 
   if (!video) return null;
 
-  const translation = video.translations?.find(
-    (t) => t.languageId === languageId,
-  );
+  const translation =
+    video.translations?.find((t) => t.languageId === languageId) ||
+    video.translations?.[0];
   const media = video.media?.media;
   // The playable URL can live in any size slot depending on the transcode; fall
   // back across them so a video that only populated one slot still renders.
