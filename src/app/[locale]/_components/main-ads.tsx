@@ -13,9 +13,12 @@ import { Text } from "@/components/ui/text";
 
 export function MainAds({
   main,
+  priority = true,
   children,
 }: {
   main?: common_HeroMainWithTranslations;
+  // The LCP hero (first block) eager-loads; later MAIN blocks lazy-load.
+  priority?: boolean;
   children?: React.ReactNode;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
@@ -56,8 +59,8 @@ export function MainAds({
             currentTranslation?.headline || currentTranslation?.tag || "GRBPWR"
           }
           fit="cover"
-          priority={true}
-          loading="eager"
+          priority={priority}
+          loading={priority ? "eager" : "lazy"}
           playOnHover={isHovered}
         />
       </div>
@@ -74,8 +77,8 @@ export function MainAds({
             currentTranslation?.headline || currentTranslation?.tag || "GRBPWR"
           }
           fit="cover"
-          priority={true}
-          loading="eager"
+          priority={priority}
+          loading={priority ? "eager" : "lazy"}
           playOnHover={isHovered}
           autoPlay={true}
         />

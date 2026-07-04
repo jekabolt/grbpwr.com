@@ -21,6 +21,7 @@ import { HeroSlideshow } from "./hero-slideshow";
 import { HeroSplit } from "./hero-split";
 import { HeroStatement } from "./hero-statement";
 import { HeroVideo } from "./hero-video";
+import { MainAds } from "./main-ads";
 
 export function Ads({
   entities,
@@ -39,6 +40,14 @@ export function Ads({
         const isPriorityAd = i === 0;
         const block = (() => {
           switch (e.type) {
+            case "HERO_TYPE_MAIN":
+              // MAIN renders inline like every other block, so any number of
+              // them can appear at any position (not just entities[0]).
+              return (
+                <div data-hero-block-index={i}>
+                  <MainAds main={e.main} priority={isPriorityAd} />
+                </div>
+              );
             case "HERO_TYPE_SINGLE":
               return (
                 <div data-hero-block-index={i}>
