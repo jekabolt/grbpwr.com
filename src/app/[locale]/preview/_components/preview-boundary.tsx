@@ -15,11 +15,12 @@ interface State {
   key: unknown;
 }
 
-// A malformed hero draft (missing media, unexpected shape) can throw inside the
-// hero blocks. Without a boundary that throw blanks the whole preview iframe and
-// the editor loses its canvas. Catching it shows a placeholder and recovers on
-// the next draft.
-export class HeroPreviewBoundary extends Component<Props, State> {
+// A malformed draft (missing media, unexpected shape) can throw inside the
+// previewed content. Without a boundary that throw blanks the whole preview
+// iframe and the editor loses its canvas. Catching it shows a placeholder and
+// recovers on the next draft. Shared by every /preview/* surface (hero,
+// timeline, product).
+export class PreviewBoundary extends Component<Props, State> {
   state: State = { failed: false, key: this.props.resetKey };
 
   static getDerivedStateFromError(): Partial<State> {
