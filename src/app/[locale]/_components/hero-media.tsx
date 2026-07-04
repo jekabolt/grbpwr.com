@@ -2,16 +2,17 @@
 
 import type { common_HeroMediaFull } from "@/api/proto-http/frontend";
 
-import { calculateAspectRatio, isVideo } from "@/lib/utils";
+import { calculateAspectRatio, cn, isVideo } from "@/lib/utils";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
 
 // Full-bleed background for a HeroMediaFull: portrait on mobile / landscape on
-// desktop (each falling back to the other slot), with the dark scrim honouring
-// the per-media `disableOverlay` modifier. Video backgrounds autoplay muted (as a
-// core brand hero, it does not pause under prefers-reduced-motion). Shared by the
-// media-backed heroes (DROP, NEWSLETTER, EMBED fallback, PRODUCT_SPOTLIGHT).
-// Renders nothing without a usable media URL.
+// desktop (each falling back to the other slot). Three per-media modifiers:
+// `disableOverlay` (the scrim), `disableTint` (a dark mask over the image — on
+// unless disabled) and `stroke` (our grey hairline border around the media).
+// Video backgrounds autoplay muted (as a core brand hero, it does not pause under
+// prefers-reduced-motion). Shared by the media-backed heroes (DROP, NEWSLETTER,
+// EMBED fallback, PRODUCT_SPOTLIGHT). Renders nothing without a usable media URL.
 export function HeroMedia({
   media,
   priority = false,
@@ -30,7 +31,12 @@ export function HeroMedia({
   if (!desktopUrl && !mobileUrl) return null;
 
   return (
-    <div className={className}>
+    <div
+      className={cn(
+        className,
+        media?.stroke && "border border-textInactiveColor",
+      )}
+    >
       <div className="hidden h-full w-full lg:block">
         <Image
           src={desktopUrl}
@@ -65,6 +71,12 @@ export function HeroMedia({
       </div>
       {!media?.disableOverlay && (
         <Overlay cover="container" disablePointerEvents />
+      )}
+      {!media?.disableTint && (
+        <div
+          className="pointer-events-none absolute inset-0 bg-overlay"
+          aria-hidden="true"
+        />
       )}
     </div>
   );
