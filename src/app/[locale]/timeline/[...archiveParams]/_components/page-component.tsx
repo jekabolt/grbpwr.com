@@ -30,10 +30,14 @@ function ArchiveMediaGridItem({
   media: mediaFull,
   id,
   heading,
+  blockIndex,
 }: {
   media: common_MediaFull | undefined;
   id: number;
   heading: string;
+  // items[] index of this tile — mirrors hero's data-hero-block-index. The
+  // /preview editor reads it on click; inert on the live /timeline page.
+  blockIndex: number;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const isMobile = useMediaQuery("(max-width: 1023px)");
@@ -44,6 +48,7 @@ function ArchiveMediaGridItem({
   return (
     <div
       className="relative aspect-[3/4] w-full overflow-hidden"
+      data-archive-block-index={blockIndex}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -170,7 +175,7 @@ function ArchiveBody({
   languageId: number;
 }) {
   const blocks: ReactNode[] = [];
-  let run: common_ArchiveItemFull[] = [];
+  let run: { item: common_ArchiveItemFull; index: number }[] = [];
   let mediaCount = 0;
 
   const flush = () => {
@@ -179,12 +184,13 @@ function ArchiveBody({
     const cells = run;
     blocks.push(
       <div key={`media-${start}`} className={ARCHIVE_GRID_CLASS}>
-        {cells.map((it, i) => (
+        {cells.map(({ item, index }, i) => (
           <ArchiveMediaGridItem
-            key={it.media?.id ?? `${start}-${i}`}
-            media={it.media}
+            key={item.media?.id ?? `${start}-${i}`}
+            media={item.media}
             id={start + i}
             heading={heading}
+            blockIndex={index}
           />
         ))}
       </div>,
@@ -198,17 +204,21 @@ function ArchiveBody({
       // Only renderable media joins the grid run; an empty/partial media block
       // is dropped without splitting the surrounding grid or leaving a blank
       // tile (resolveArchiveMedia needs the nested MediaItem, not just MediaFull).
-      if (item.media?.media) run.push(item);
+      if (item.media?.media) run.push({ item, index: i });
       return;
     }
     flush();
     blocks.push(
-      <ArchiveItemBlock
-        key={`block-${i}`}
-        item={item}
-        heading={heading}
-        languageId={languageId}
-      />,
+      // Full-width click target carrying the items[] index — mirrors hero, which
+      // wraps every block in a data-hero-block-index div. The block renders
+      // inside so the parent `space-y` rhythm is preserved; inert on /timeline.
+      <div key={`block-${i}`} data-archive-block-index={i}>
+        <ArchiveItemBlock
+          item={item}
+          heading={heading}
+          languageId={languageId}
+        />
+      </div>,
     );
   });
   flush();
