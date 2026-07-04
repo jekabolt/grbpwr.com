@@ -31,24 +31,25 @@ export function HeroNewsletter({
   );
 
   return (
-    <section className="relative flex min-h-screen w-full items-center justify-center">
+    <section className="relative flex min-h-screen w-full flex-col items-center justify-center gap-8 p-6">
       {hasMedia && <HeroMedia media={newsletter.media} priority={priority} />}
-      <div className="relative z-20 flex w-full max-w-xl flex-col items-center gap-8 p-6">
-        {(t?.headline || t?.body) && (
-          // Invert over any backdrop (media or the plain page) like the header,
-          // so the copy never sits white-on-white.
-          <div className="flex flex-col items-center gap-2 text-center text-bgColor mix-blend-exclusion">
-            {t?.headline && (
-              <Text component="h2" variant="uppercase">
-                {t.headline}
-              </Text>
-            )}
-            {t?.body && <Text>{t.body}</Text>}
-          </div>
-        )}
-        <div className="w-full border border-textInactiveColor bg-bgColor p-6 text-textColor">
-          <NewslatterForm />
+      {(t?.headline || t?.body) && (
+        // Direct child of the section (sibling to the media) so
+        // mix-blend-exclusion blends against the media/page behind it and
+        // inverts — the same structure as hero-drop. Nesting it inside another
+        // positioned (z-index) wrapper isolates the blend and it stops working,
+        // leaving the copy white-on-white.
+        <div className="relative z-20 flex max-w-xl flex-col items-center gap-2 text-center text-bgColor mix-blend-exclusion">
+          {t?.headline && (
+            <Text component="h2" variant="uppercase">
+              {t.headline}
+            </Text>
+          )}
+          {t?.body && <Text>{t.body}</Text>}
         </div>
+      )}
+      <div className="relative z-20 w-full max-w-xl border border-textInactiveColor bg-bgColor p-6 text-textColor">
+        <NewslatterForm />
       </div>
     </section>
   );
