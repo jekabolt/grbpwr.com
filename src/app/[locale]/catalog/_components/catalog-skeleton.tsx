@@ -106,7 +106,7 @@ export function ProductSkeleton() {
 
   return (
     <div className="flex flex-col">
-      <Skeleton className="aspect-[4/5] w-full" />
+      <Skeleton className="aspect-[3/4] w-full" />
       <div className="flex flex-col gap-2 pt-2">
         <Text variant="undrleineWithColors" className="leading-none">
           {scrambledText}
