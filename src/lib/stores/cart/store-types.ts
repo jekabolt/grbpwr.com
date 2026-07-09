@@ -1,4 +1,7 @@
-import type { common_OrderItem, ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
+import type {
+  common_OrderItem,
+  ValidateOrderItemsInsertResponse,
+} from "@/api/proto-http/frontend";
 import { StateCreator } from "zustand";
 import { PersistOptions } from "zustand/middleware";
 
@@ -39,7 +42,9 @@ export interface CartActions {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
-  setProductToRemove: (product: { id: number; size: string; index: number } | null) => void;
+  setProductToRemove: (
+    product: { id: number; size: string; index: number } | null,
+  ) => void;
 }
 
 export type CartStore = CartState & CartActions;

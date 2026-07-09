@@ -4,6 +4,13 @@ import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 
 import { isStripeCardPaymentMethod } from "../utils";
 
+// begin_checkout must fire once per checkout-start. A per-mount ref reset on
+// every remount of the form (login steps, currency sync, dev StrictMode),
+// firing ~10x/user. This module-level guard survives those remounts and resets
+// only when the cart empties (post-purchase or full removal), so a genuinely
+// new checkout fires again while remounts of the same one stay silent.
+let beginCheckoutFired = false;
+
 interface UseCheckoutFormAnalyticsProps {
   formRef: RefObject<HTMLFormElement | null>;
   products: unknown[];
@@ -24,7 +31,6 @@ export function useCheckoutFormAnalytics({
     handlePaymentMethodChange,
   } = useCheckoutAnalytics();
 
-  const checkoutEventFiredRef = useRef(false);
   const paymentInfoSentRef = useRef(false);
 
   useEffect(() => {
@@ -35,10 +41,14 @@ export function useCheckoutFormAnalytics({
   }, [formRef, handleFormStart]);
 
   useEffect(() => {
-    if (!checkoutEventFiredRef.current && products.length > 0) {
-      checkoutEventFiredRef.current = true;
-      handleBeginCheckoutEvent();
+    if (products.length === 0) {
+      // Cart drained (order placed or emptied) — arm the next checkout-start.
+      beginCheckoutFired = false;
+      return;
     }
+    if (beginCheckoutFired) return;
+    beginCheckoutFired = true;
+    handleBeginCheckoutEvent();
   }, [products, handleBeginCheckoutEvent]);
 
   // add_payment_info must fire exactly once, when payment info is genuinely

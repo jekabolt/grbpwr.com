@@ -3,10 +3,7 @@
 import { useCallback, useRef } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 
-import {
-  sendProductImageSwipeEvent,
-  sendProductImageViewEvent,
-} from "@/lib/analitycs/product-engagement";
+import { sendProductImageSwipeEvent } from "@/lib/analitycs/product-engagement";
 import { Carousel } from "@/components/ui/carousel";
 import ImageComponent from "@/components/ui/image";
 
@@ -56,13 +53,6 @@ export function ProductImagesCarousel({
             swipe_direction: direction,
           });
         }
-
-        sendProductImageViewEvent({
-          product_id: productId,
-          image_index: realIndex + 1,
-          image_total: productMedia.length,
-          product_name: productName || "",
-        });
       }
     },
     [productId, productName, productMedia.length],

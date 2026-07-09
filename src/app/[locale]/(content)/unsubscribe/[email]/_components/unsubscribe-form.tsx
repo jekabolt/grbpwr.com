@@ -38,7 +38,6 @@ export function UnsubscribeForm({ email }: Props) {
 
     if (result.success) {
       sendFormEvent({
-        email,
         formId: "unsubscribe",
       });
       setDone(true);
@@ -84,7 +83,7 @@ export function UnsubscribeForm({ email }: Props) {
         // flex (overriding the base `block`) keeps the label/Loader centered while
         // min-h-11 raises the touch target to >=44px; the disabled:!* overrides keep
         // the active ink fill during loading so the reverse paper Loader stays visible.
-        className="flex min-h-11 items-center justify-center uppercase disabled:!bg-textColor disabled:!border-textColor disabled:!text-bgColor"
+        className="flex min-h-11 items-center justify-center uppercase disabled:!border-textColor disabled:!bg-textColor disabled:!text-bgColor"
         onClick={handleUnsubscribe}
         loading={isLoading}
         disabled={isLoading}

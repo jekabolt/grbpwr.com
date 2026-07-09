@@ -103,7 +103,6 @@ export function RefundForm() {
       if (response.order) {
         handleRefundEvent(response.order, data.reason);
         sendFormEvent({
-          email: data.email,
           formId: "refund",
         });
         setToastMessage(

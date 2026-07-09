@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { common_OrderItem } from "@/api/proto-http/frontend";
 
-import { useCartAnalytics } from "@/lib/analitycs/useCartAnalytics";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import ItemRow from "@/app/[locale]/(checkout)/cart/_components/ItemRow";
 
@@ -14,16 +12,8 @@ export default function CartProductsList({
   disabled = false,
   disableProductLinks = false,
 }: Props) {
-  const { isOpen } = useCart((state) => state);
   const products = useCart((state) => state.products).map((v) => v.productData);
   const finalProducts = validatedProducts || products;
-  const { handleViewCartEvent } = useCartAnalytics({ finalProducts });
-
-  useEffect(() => {
-    if (!validatedProducts && isOpen && finalProducts.length > 0) {
-      handleViewCartEvent();
-    }
-  }, [isOpen, finalProducts.length, validatedProducts]);
 
   return (
     <>

@@ -5,12 +5,8 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
-import {
-  sendGenerateLeadEvent,
-  sendNewsletterSignupEvent,
-} from "@/lib/analitycs/form";
+import { sendNewsletterSignupEvent } from "@/lib/analitycs/form";
 import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import CheckboxField from "@/components/ui/form/fields/checkbox-field";
 import InputField from "@/components/ui/form/fields/input-field";
@@ -34,7 +30,6 @@ export default function ContactFieldsGroup({
   onToggle: () => void;
 }) {
   const { watch } = useFormContext();
-  const { currentCountry } = useTranslationsStore((state) => state);
   const email = watch("email");
   const subscribe = watch("subscribe");
   const prevSubscribeRef = useRef<boolean>(false);
@@ -44,11 +39,6 @@ export default function ContactFieldsGroup({
     if (subscribe && !prevSubscribeRef.current && email) {
       void (async () => {
         await pushUserIdToDataLayer(email);
-        sendGenerateLeadEvent({
-          currency: currentCountry.currencyKey || "EUR",
-          value: 0,
-          lead_source: "newsletter_checkout",
-        });
         sendNewsletterSignupEvent({
           signup_location: "checkout",
           page_path:
@@ -57,7 +47,7 @@ export default function ContactFieldsGroup({
       })();
     }
     prevSubscribeRef.current = subscribe;
-  }, [subscribe, email, currentCountry.currencyKey]);
+  }, [subscribe, email]);
 
   return (
     <FieldsGroupContainer

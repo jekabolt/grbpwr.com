@@ -18,7 +18,7 @@ export function mapItemsToAnalyticsItems(
   const originalPrice = parseFloat(item.productPrice || "0");
   const salePercentage = parseFloat(item.productSalePercentage || "0");
   const sizeId = item.orderItem?.sizeId;
-  const sizeName = sizeId != null && sizeMap ? (sizeMap[sizeId] || "") : "";
+  const sizeName = sizeId != null && sizeMap ? sizeMap[sizeId] || "" : "";
 
   return {
     item_id: item.sku || "",
@@ -130,16 +130,34 @@ export function sendPurchaseEvent(
 ): void {
   const validItems = items.filter(Boolean);
   if (!validItems.length) return;
-  if (!transactionId || transactionId === "false" || transactionId === "undefined") {
+  if (
+    !transactionId ||
+    transactionId === "false" ||
+    transactionId === "undefined"
+  ) {
     console.error("sendPurchaseEvent: Invalid transaction_id", transactionId);
+    return;
+  }
+
+  // Reject falsy/placeholder money fields so a half-populated order can never
+  // emit a `value=0 / currency="0"` purchase that GA4 would dedupe against the
+  // real one and zero out its revenue.
+  const value = options?.totalValue ?? calculateTotalValue(validItems);
+  if (!Number.isFinite(value) || value <= 0) {
+    console.error("sendPurchaseEvent: Invalid value", value);
+    return;
+  }
+  const normalizedCurrency = currency?.toUpperCase();
+  if (!normalizedCurrency || !/^[A-Z]{3}$/.test(normalizedCurrency)) {
+    console.error("sendPurchaseEvent: Invalid currency", currency);
     return;
   }
 
   const event: EcommerceEvent = {
     event: "purchase",
     ecommerce: {
-      currency: currency.toUpperCase(),
-      value: options?.totalValue ?? calculateTotalValue(validItems),
+      currency: normalizedCurrency,
+      value,
       transaction_id: transactionId,
       ...(options?.coupon && { coupon: options.coupon }),
       ...(options?.shipping != null && { shipping: options.shipping }),

@@ -10,7 +10,6 @@ import { useTranslations } from "next-intl";
 
 import {
   sendProductImageSwipeEvent,
-  sendProductImageViewEvent,
   sendProductZoomEvent,
 } from "@/lib/analitycs/product-engagement";
 import { calculateAspectRatio } from "@/lib/utils";
@@ -94,15 +93,6 @@ export function MobileImageCarousel({
 
       prevIndex = idx;
       setSelectedIndex(idx);
-
-      if (productId) {
-        sendProductImageViewEvent({
-          product_id: productId,
-          image_index: idx + 1,
-          image_total: media.length,
-          product_name: productName || "",
-        });
-      }
     };
     emblaApi.on("select", updateSelectedIndex);
     return () => {
@@ -202,9 +192,7 @@ export function MobileImageCarousel({
               onDoubleClick={handleDoubleClick}
               onClose={() => setIsOpen(false)}
               onPinchZoom={handlePinchZoom}
-              onSwipeMedia={
-                media.length > 1 ? handleSwipeMedia : undefined
-              }
+              onSwipeMedia={media.length > 1 ? handleSwipeMedia : undefined}
             >
               <ImageComponent
                 src={currentMedia.mediaUrl || ""}

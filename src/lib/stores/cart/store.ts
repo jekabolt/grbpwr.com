@@ -1,7 +1,11 @@
-import { persist, type PersistStorage, type StorageValue } from "zustand/middleware";
+import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
+import {
+  persist,
+  type PersistStorage,
+  type StorageValue,
+} from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 
-import type { ValidateOrderItemsInsertResponse } from "@/api/proto-http/frontend";
 import { validateCartItems } from "@/lib/cart/validate-cart-items";
 
 import { CartProduct, CartState, CartStore } from "./store-types";
@@ -10,7 +14,11 @@ const CART_TTL_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
 
 type CartPersistedState = Pick<
   CartStore,
-  "products" | "totalItems" | "totalPrice" | "subTotalPrice" | "validatedCurrency"
+  | "products"
+  | "totalItems"
+  | "totalPrice"
+  | "subTotalPrice"
+  | "validatedCurrency"
 >;
 
 const cartStorageWithTTL: PersistStorage<CartPersistedState> = {
@@ -85,7 +93,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           const { products } = get();
 
           const existingItemCount = products.filter(
-            p => p.id === productId
+            (p) => p.id === productId,
           ).length;
 
           if (existingItemCount + quantity > maxOrderItems) {
@@ -127,25 +135,25 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             const { response } = result;
 
             const validatedItemsForProduct = (response.validItems || []).filter(
-              item => item.orderItem?.productId === productId
+              (item) => item.orderItem?.productId === productId,
             );
 
             const totalValidatedQuantity = validatedItemsForProduct.reduce(
               (sum, item) => sum + (item.orderItem?.quantity || 0),
-              0
+              0,
             );
 
             if (totalValidatedQuantity > maxOrderItems) {
               return false;
             }
 
-            const validatedProducts = updatedProducts.map(product => ({
+            const validatedProducts = updatedProducts.map((product) => ({
               ...product,
               productData: response.validItems?.find(
-                item =>
+                (item) =>
                   item.orderItem?.productId === product.id &&
-                  item.orderItem?.sizeId === Number(product.size)
-              )
+                  item.orderItem?.sizeId === Number(product.size),
+              ),
             }));
 
             set({
@@ -170,25 +178,25 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           if (index !== undefined) {
             updatedProducts = [
               ...products.slice(0, index),
-              ...products.slice(index + 1)
+              ...products.slice(index + 1),
             ];
           } else {
             const productIndex = products.findIndex(
-              p => p.id === productId && p.size === size
+              (p) => p.id === productId && p.size === size,
             );
 
             if (productIndex === -1) return;
 
             updatedProducts = [
               ...products.slice(0, productIndex),
-              ...products.slice(productIndex + 1)
+              ...products.slice(productIndex + 1),
             ];
           }
 
           let newSubTotal = 0;
           let newTotal = 0;
 
-          updatedProducts.forEach(product => {
+          updatedProducts.forEach((product) => {
             if (product.productData) {
               const priceWithSale = product.productData.productPriceWithSale;
               const regularPrice = product.productData.productPrice;
@@ -302,13 +310,13 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
             const { response } = result;
 
-            const validatedProducts = products.map(product => ({
+            const validatedProducts = products.map((product) => ({
               ...product,
               productData: response.validItems?.find(
-                item =>
+                (item) =>
                   item.orderItem?.productId === product.id &&
-                  item.orderItem?.sizeId === Number(product.size)
-              )
+                  item.orderItem?.sizeId === Number(product.size),
+              ),
             }));
 
             set({

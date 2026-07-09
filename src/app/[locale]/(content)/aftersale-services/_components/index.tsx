@@ -88,7 +88,6 @@ export default function AftersaleForm() {
       });
 
       sendFormEvent({
-        email: data.email,
         formId: "aftersale-services",
       });
 

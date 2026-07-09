@@ -66,7 +66,6 @@ export default function OrderStatusForm() {
       });
 
       sendFormEvent({
-        email: data.email,
         formId: "order_status",
       });
 

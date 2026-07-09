@@ -13,8 +13,8 @@ import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
@@ -396,7 +396,6 @@ export default function NewOrderForm({
                   disabled={placeOrderDisabled}
                   loading={loading}
                   loadingType="order-processing"
-                  analyticsButtonId="place_order"
                 >
                   {placeOrderLabel}
                 </Button>
@@ -442,7 +441,6 @@ export default function NewOrderForm({
                       disabled={placeOrderDisabled}
                       loading={loading}
                       loadingType="order-processing"
-                      analyticsButtonId="place_order"
                     >
                       {placeOrderLabel}
                     </Button>
