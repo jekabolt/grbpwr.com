@@ -1,121 +1,126 @@
 import { common_Product, common_ProductFull } from "@/api/proto-http/frontend";
 
-import {
-    AnalyticsItem,
-    EcommerceEvent,
-    pushToDataLayer,
-} from "../utils";
+import { AnalyticsItem, EcommerceEvent, pushToDataLayer } from "../utils";
 
 export function mapItemsToDataLayer(
-    product: common_Product,
-    quantity: number,
-    topCategory: string,
-    subCategory: string,
-    selectedCurrency: string,
+  product: common_Product,
+  quantity: number,
+  topCategory: string,
+  subCategory: string,
+  selectedCurrency: string,
 ): AnalyticsItem {
-    const currencyKey = selectedCurrency || "EUR";
-    const productBody = product.productDisplay?.productBody?.productBodyInsert;
-    const price = product.prices?.find(
-        (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
+  const currencyKey = selectedCurrency || "EUR";
+  const productBody = product.productDisplay?.productBody?.productBodyInsert;
+  const price =
+    product.prices?.find(
+      (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
     ) || product.prices?.[0];
-    const priceValue = parseFloat(price?.price?.value || "0");
-    const salePercentage = parseFloat(productBody?.salePercentage?.value || "0");
-    const discount = (priceValue * salePercentage) / 100;
+  const priceValue = parseFloat(price?.price?.value || "0");
+  const salePercentage = parseFloat(productBody?.salePercentage?.value || "0");
+  const discount = (priceValue * salePercentage) / 100;
+  const salePrice = priceValue - discount;
 
-    return {
-        item_id: product.sku || "",
-        item_name:
-            product.productDisplay?.productBody?.translations?.[0]?.name || "",
-        item_brand: productBody?.brand || "",
-        item_category: topCategory || "",
-        item_category2: subCategory || "",
-        item_variant: productBody?.version || "",
-        discount: discount || 0,
-        price: priceValue || 0,
-        quantity: quantity || 1,
-    };
+  return {
+    item_id: product.sku || "",
+    item_name:
+      product.productDisplay?.productBody?.translations?.[0]?.name || "",
+    item_brand: productBody?.brand || "",
+    item_category: topCategory || "",
+    item_category2: subCategory || "",
+    item_variant: productBody?.version || "",
+    discount: discount > 0 ? discount : 0,
+    // Net (post-sale) unit price: GA4 item revenue is price × quantity and
+    // ignores the `discount` field, so a pre-sale price here inflates revenue.
+    price: salePrice > 0 ? salePrice : priceValue || 0,
+    quantity: quantity || 1,
+  };
 }
 
 export function sendViewItemListEvent(
-    products: common_Product[],
-    listName: string,
-    listId: string,
-    topCategory: string,
-    subCategory: string,
-    selectedCurrency: string,
+  products: common_Product[],
+  listName: string,
+  listId: string,
+  topCategory: string,
+  subCategory: string,
+  selectedCurrency: string,
 ) {
-    if (!products?.length || !listName || !listId) return;
+  if (!products?.length || !listName || !listId) return;
 
-    const currencyKey = selectedCurrency || "EUR";
-    const event: EcommerceEvent = {
-        event: "view_item_list",
-        ecommerce: {
-            currency: currencyKey.toUpperCase(),
-            item_list_id: listId,
-            item_list_name: listName,
-            items: products.map((p) =>
-                mapItemsToDataLayer(p, 1, topCategory, subCategory, selectedCurrency),
-            ),
-        },
-    };
+  const currencyKey = selectedCurrency || "EUR";
+  const event: EcommerceEvent = {
+    event: "view_item_list",
+    ecommerce: {
+      currency: currencyKey.toUpperCase(),
+      item_list_id: listId,
+      item_list_name: listName,
+      items: products.map((p) =>
+        mapItemsToDataLayer(p, 1, topCategory, subCategory, selectedCurrency),
+      ),
+    },
+  };
 
-    pushToDataLayer(event);
+  pushToDataLayer(event);
 }
 
 export function sendSelectItemEvent(
-    product: common_Product,
-    listName: string,
-    listId: string,
-    topCategory: string,
-    subCategory: string,
-    selectedCurrency: string,
+  product: common_Product,
+  listName: string,
+  listId: string,
+  topCategory: string,
+  subCategory: string,
+  selectedCurrency: string,
 ) {
-    if (!product || !listName || !listId) return;
+  if (!product || !listName || !listId) return;
 
-    const currencyKey = selectedCurrency || "EUR";
-    const event: EcommerceEvent = {
-        event: "select_item",
-        ecommerce: {
-            currency: currencyKey.toUpperCase(),
-            item_list_id: listId,
-            item_list_name: listName,
-            items: [mapItemsToDataLayer(product, 1, topCategory, subCategory, selectedCurrency)],
-        },
-    };
+  const currencyKey = selectedCurrency || "EUR";
+  const event: EcommerceEvent = {
+    event: "select_item",
+    ecommerce: {
+      currency: currencyKey.toUpperCase(),
+      item_list_id: listId,
+      item_list_name: listName,
+      items: [
+        mapItemsToDataLayer(
+          product,
+          1,
+          topCategory,
+          subCategory,
+          selectedCurrency,
+        ),
+      ],
+    },
+  };
 
-    pushToDataLayer(event);
+  pushToDataLayer(event);
 }
 
 export function sendViewItemEvent(
-    product: common_ProductFull,
-    topCategory: string,
-    subCategory: string,
-    selectedCurrency: string,
+  product: common_ProductFull,
+  topCategory: string,
+  subCategory: string,
+  selectedCurrency: string,
 ) {
-    if (!product || !product?.product) return;
+  if (!product || !product?.product) return;
 
-    const currencyKey = selectedCurrency || "EUR";
-    const price = product.product.prices?.find(
-        (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
-    ) || product.product.prices?.[0];
-    const priceValue = parseFloat(price?.price?.value || "0");
+  const currencyKey = selectedCurrency || "EUR";
+  // Reuse the mapped item so the event `value` matches the item's net price
+  // (post-sale) instead of the pre-sale list price.
+  const mappedItem = mapItemsToDataLayer(
+    product.product,
+    1,
+    topCategory,
+    subCategory,
+    selectedCurrency,
+  );
 
-    const event: EcommerceEvent = {
-        event: "view_item",
-        ecommerce: {
-            currency: currencyKey.toUpperCase(),
-            value: priceValue,
-            items: [
-                mapItemsToDataLayer(
-                    product.product,
-                    1,
-                    topCategory,
-                    subCategory,
-                    selectedCurrency,
-                ),
-            ],
-        },
-    };
+  const event: EcommerceEvent = {
+    event: "view_item",
+    ecommerce: {
+      currency: currencyKey.toUpperCase(),
+      value: mappedItem.price,
+      items: [mappedItem],
+    },
+  };
 
-    pushToDataLayer(event);
+  pushToDataLayer(event);
 }

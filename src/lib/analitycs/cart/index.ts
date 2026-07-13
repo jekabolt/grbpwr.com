@@ -12,26 +12,22 @@ export function sendAddToCartEvent(
   if (!item || !item.product) return;
 
   const currencyKey = selectedCurrency || "EUR";
-  const price =
-    item.product?.prices?.find(
-      (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
-    ) || item.product?.prices?.[0];
-  const totalValue = parseFloat(price?.price?.value || "0");
+  // Reuse the mapped item so the event `value` is the net (post-sale) price,
+  // consistent with the item-level `price` GA4 uses for revenue.
+  const mappedItem = mapItemsToDataLayer(
+    item.product,
+    1,
+    topCategory,
+    subCategory,
+    selectedCurrency,
+  );
 
   const event: EcommerceEvent = {
     event: "add_to_cart",
     ecommerce: {
       currency: currencyKey.toUpperCase(),
-      value: totalValue,
-      items: [
-        mapItemsToDataLayer(
-          item.product,
-          1,
-          topCategory,
-          subCategory,
-          selectedCurrency,
-        ),
-      ],
+      value: mappedItem.price * mappedItem.quantity,
+      items: [mappedItem],
     },
   };
 

@@ -16,7 +16,9 @@ export function mapItemsToAnalyticsItems(
   sizeMap?: SizeMap,
 ): AnalyticsItem {
   const originalPrice = parseFloat(item.productPrice || "0");
-  const salePercentage = parseFloat(item.productSalePercentage || "0");
+  const salePrice =
+    parseFloat(item.productPriceWithSale || "0") || originalPrice;
+  const discount = Math.max(0, originalPrice - salePrice);
   const sizeId = item.orderItem?.sizeId;
   const sizeName = sizeId != null && sizeMap ? sizeMap[sizeId] || "" : "";
 
@@ -27,8 +29,12 @@ export function mapItemsToAnalyticsItems(
     item_category: topCategory || "",
     item_category2: subCategory || "",
     item_variant: sizeName,
-    discount: (originalPrice * salePercentage) / 100,
-    price: originalPrice,
+    discount,
+    // GA4 item revenue is `price × quantity` and does NOT subtract the `discount`
+    // field, so `price` must be the net (post-sale) unit price or sale orders
+    // report inflated item revenue that no longer reconciles with the order
+    // total. `discount` stays as the informational per-unit saving.
+    price: salePrice,
     // Prefer the line item's real quantity so the item-level totals reconcile
     // with the event `value` (which already multiplies by quantity). The passed
     // `quantity` stays as a fallback for callers without an order-item context.
@@ -181,12 +187,33 @@ export function sendRefundEvent(
 ) {
   if (!orderData || !orderData.order) return;
 
+  const transactionId = orderData.order.uuid;
+  if (!transactionId) return;
+
+  // Mirror the purchase money exactly — same transaction_id, the order's own
+  // currency (not a hardcoded EUR default), and the settled total — so a full
+  // cancellation nets out against the purchase in GA4 instead of leaving a
+  // residual from summing pre-sale item prices in the wrong currency. Prefer the
+  // backend-computed refunded amount when it is already set (e.g. partial).
+  const normalizedCurrency = (
+    orderData.order.currency ||
+    currency ||
+    "EUR"
+  ).toUpperCase();
+  const refundedAmount = parseFloat(
+    orderData.order.refundedAmount?.value || "0",
+  );
+  const value =
+    refundedAmount > 0
+      ? refundedAmount
+      : parseFloat(orderData.order.totalPrice?.value || "0");
+
   const event: EcommerceEvent = {
     event: "refund",
     ecommerce: {
-      currency: currency.toUpperCase(),
-      value: calculateTotalValue(orderData.orderItems || []),
-      transaction_id: orderData.order.uuid,
+      currency: normalizedCurrency,
+      value,
+      transaction_id: transactionId,
       coupon: orderData.promoCode?.promoCodeInsert?.code || "not set",
       shipping: parseFloat(orderData.shipment?.cost?.value || "0") || 0,
       ...(returnReason && { return_reason: returnReason }),
