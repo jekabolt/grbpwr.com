@@ -653,7 +653,8 @@
     "validation_error": "qualcosa è andato storto. riprova.",
     "fill_required_fields": "alcuni campi obbligatori mancano",
     "email_required": "l'email è obbligatoria",
-    "required_terms": "consenso richiesto per l'iscrizione"
+    "required_terms": "consenso richiesto per l'iscrizione",
+    "too_many_requests": "troppi tentativi. attendi un momento e riprova."
   },
   "refund": {
     "return order": "restituisci ordine",

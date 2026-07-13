@@ -653,7 +653,8 @@
     "validation_error": "問題が発生しました。もう一度お試しください。",
     "fill_required_fields": "必須項目が未入力です",
     "email_required": "メールアドレスは必須です",
-    "required_terms": "登録するには同意が必要です"
+    "required_terms": "登録するには同意が必要です",
+    "too_many_requests": "リクエストが多すぎます。しばらくしてからもう一度お試しください。"
   },
   "refund": {
     "return order": "注文返品",

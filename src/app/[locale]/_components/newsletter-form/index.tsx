@@ -8,6 +8,7 @@ import { useForm, type UseFormReturn } from "react-hook-form";
 import { sendNewsletterSignupEvent } from "@/lib/analitycs/form";
 import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
+import { isInvalidInputError, isRateLimitError } from "@/lib/error-message";
 import { syncSignedInEmailToForm } from "@/lib/stores/account-onboarding/selectors";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { Form } from "@/components/ui/form";
@@ -74,9 +75,10 @@ export default function NewslatterForm({
       setToastOpen(true);
     } catch (error) {
       console.error("Failed to subscribe to newsletter:", error);
-      const message =
-        error instanceof Error && error.message
-          ? error.message
+      const message = isRateLimitError(error)
+        ? tToaster("too_many_requests")
+        : isInvalidInputError(error)
+          ? tToaster("invalid_email")
           : tToaster("failed_to_subscribe");
       setToastMessage(message);
       setToastOpen(true);
