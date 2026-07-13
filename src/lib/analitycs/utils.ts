@@ -262,7 +262,12 @@ export type SizeMap = Record<number, string>;
 
 export const calculateTotalValue = (items: common_OrderItem[]): number => {
   return items.reduce((sum, item) => {
-    const price = parseFloat(item.productPrice || "0");
+    // Net (post-sale) unit price so the funnel `value` (begin_checkout,
+    // add_shipping_info, add_payment_info) is on the same basis as the purchase
+    // total, instead of a pre-sale subtotal that never reconciles on sale orders.
+    const price =
+      parseFloat(item.productPriceWithSale || "0") ||
+      parseFloat(item.productPrice || "0");
     const quantity = item.orderItem?.quantity || 1;
     return sum + price * quantity;
   }, 0);
