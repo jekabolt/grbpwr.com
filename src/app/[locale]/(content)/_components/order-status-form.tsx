@@ -10,6 +10,7 @@ import { z } from "zod";
 
 import { sendFormEvent } from "@/lib/analitycs/form";
 import { serviceClient } from "@/lib/api";
+import { isRateLimitError } from "@/lib/error-message";
 import { useFixedWithinContainer } from "@/lib/hooks/useFixedWithinContainer";
 import { syncSignedInEmailToForm } from "@/lib/stores/account-onboarding/selectors";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
@@ -32,6 +33,7 @@ type OrderStatusData = z.infer<typeof orderStatusSchema>;
 
 export default function OrderStatusForm() {
   const t = useTranslations("order-status");
+  const tToaster = useTranslations("toaster");
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -77,10 +79,11 @@ export default function OrderStatusForm() {
       }
     } catch (error) {
       console.error(error);
-      const message =
-        error instanceof Error && error.message
-          ? error.message
-          : t("order not found");
+      // Never surface the raw server message; the 4 order endpoints share one
+      // rate-limit bucket (5 / 10 min / IP), so a burst can 429 a real order.
+      const message = isRateLimitError(error)
+        ? tToaster("too_many_requests")
+        : t("order not found");
       setToastMessage(message);
       setOpen(true);
     } finally {

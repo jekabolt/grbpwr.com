@@ -653,7 +653,8 @@
     "validation_error": "出了点问题。请重试。",
     "fill_required_fields": "部分必填字段尚未填写",
     "email_required": "邮箱为必填项",
-    "required_terms": "订阅需要同意"
+    "required_terms": "订阅需要同意",
+    "too_many_requests": "尝试次数过多。请稍后再试。"
   },
   "refund": {
     "return order": "退货订单",

@@ -1,7 +1,10 @@
 import { cache } from "react";
-
 import { createFrontendServiceClient } from "@/api/proto-http/frontend";
-import { ARCHIVES_CACHE_TAG, HERO_CACHE_TAG, PRODUCTS_CACHE_TAG } from "@/constants";
+import {
+  ARCHIVES_CACHE_TAG,
+  HERO_CACHE_TAG,
+  PRODUCTS_CACHE_TAG,
+} from "@/constants";
 
 type Object = {
   [key: string]: unknown;
@@ -50,7 +53,6 @@ const requestHandler = async (
   { path, method, body }: RequestHandlerParams,
   { method: serviceMethod }: ProtoMetaParams,
 ) => {
-
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`,
     {
@@ -60,14 +62,27 @@ const requestHandler = async (
     },
   );
 
-  const data = await response.json();
+  // Read the body as text first so a non-JSON error payload (e.g. a bare 429
+  // from a rate-limiter/proxy) can't throw a parse error that masks the real
+  // HTTP status — callers rely on being able to detect 429/400.
+  const text = await response.text();
+  let data: { message?: string; code?: number; [key: string]: unknown } | null =
+    null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = null;
+    }
+  }
 
   if (!response.ok) {
     const error = new Error(
-      (data?.message as string) || response.statusText || "Request failed",
-    ) as Error & { code?: number; details?: unknown };
-    error.code = data?.code;
-    error.details = data;
+      data?.message || response.statusText || "Request failed",
+    ) as Error & { code?: number; status?: number; details?: unknown };
+    error.code = data?.code; // gRPC code (3 = InvalidArgument, 8 = ResourceExhausted)
+    error.status = response.status; // HTTP status (400, 429, …)
+    error.details = data ?? text;
     throw error;
   }
 
