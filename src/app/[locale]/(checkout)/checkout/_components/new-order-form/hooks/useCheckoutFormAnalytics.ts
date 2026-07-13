@@ -1,15 +1,17 @@
-import { RefObject, useEffect, useRef } from "react";
+import { RefObject, useEffect } from "react";
 
 import { useCheckoutAnalytics } from "@/lib/analitycs/useCheckoutAnalytics";
 
 import { isStripeCardPaymentMethod } from "../utils";
 
-// begin_checkout must fire once per checkout-start. A per-mount ref reset on
-// every remount of the form (login steps, currency sync, dev StrictMode),
-// firing ~10x/user. This module-level guard survives those remounts and resets
-// only when the cart empties (post-purchase or full removal), so a genuinely
-// new checkout fires again while remounts of the same one stay silent.
+// begin_checkout / add_payment_info must fire once per checkout-start. A
+// per-mount ref reset on every remount of the form (login steps, currency sync,
+// dev StrictMode), firing ~10x/user. These module-level guards survive those
+// remounts and reset only when the cart empties (post-purchase or full removal),
+// so a genuinely new checkout fires again while remounts of the same one stay
+// silent.
 let beginCheckoutFired = false;
+let addPaymentInfoFired = false;
 
 interface UseCheckoutFormAnalyticsProps {
   formRef: RefObject<HTMLFormElement | null>;
@@ -31,8 +33,6 @@ export function useCheckoutFormAnalytics({
     handlePaymentMethodChange,
   } = useCheckoutAnalytics();
 
-  const paymentInfoSentRef = useRef(false);
-
   useEffect(() => {
     const el = formRef.current;
     if (!el) return;
@@ -44,6 +44,7 @@ export function useCheckoutFormAnalytics({
     if (products.length === 0) {
       // Cart drained (order placed or emptied) — arm the next checkout-start.
       beginCheckoutFired = false;
+      addPaymentInfoFired = false;
       return;
     }
     if (beginCheckoutFired) return;
@@ -56,22 +57,23 @@ export function useCheckoutFormAnalytics({
   // Stripe element reporting `complete` — not the method being pre-selected on
   // mount, which would fire prematurely and double-count alongside this event.
   useEffect(() => {
-    if (isPaymentElementComplete && !paymentInfoSentRef.current) {
-      paymentInfoSentRef.current = true;
+    if (isPaymentElementComplete && !addPaymentInfoFired) {
+      addPaymentInfoFired = true;
       handlePaymentElementComplete();
     }
   }, [isPaymentElementComplete, handlePaymentElementComplete]);
 
   // Non-card methods fire on selection; card variants are handled by the
-  // element-complete effect above. The shared `paymentInfoSentRef` guarantees a
-  // single add_payment_info regardless of which path wins.
+  // element-complete effect above. The shared `addPaymentInfoFired` guard
+  // guarantees a single add_payment_info regardless of which path wins and
+  // survives form remounts.
   useEffect(() => {
     if (
       paymentMethod &&
       !isStripeCardPaymentMethod(paymentMethod) &&
-      !paymentInfoSentRef.current
+      !addPaymentInfoFired
     ) {
-      paymentInfoSentRef.current = true;
+      addPaymentInfoFired = true;
       handlePaymentMethodChange(paymentMethod);
     }
   }, [paymentMethod, handlePaymentMethodChange]);

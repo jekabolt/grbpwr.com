@@ -32,21 +32,25 @@ export default function ContactFieldsGroup({
   const { watch } = useFormContext();
   const email = watch("email");
   const subscribe = watch("subscribe");
-  const prevSubscribeRef = useRef<boolean>(false);
+  const newsletterSentRef = useRef<boolean>(false);
   const t = useTranslations("checkout");
 
   useEffect(() => {
-    if (subscribe && !prevSubscribeRef.current && email) {
-      void (async () => {
-        await pushUserIdToDataLayer(email);
-        sendNewsletterSignupEvent({
-          signup_location: "checkout",
-          page_path:
-            typeof window !== "undefined" ? window.location.pathname : "",
-        });
-      })();
-    }
-    prevSubscribeRef.current = subscribe;
+    // Fire once per checkout when the user has opted in AND an email exists.
+    // Guarding on a "sent" flag (rather than the rising edge of `subscribe`)
+    // avoids a duplicate on uncheck→recheck and, crucially, still fires when the
+    // box is ticked before the email is typed — the rising-edge version missed
+    // that case entirely.
+    if (!subscribe || !email || newsletterSentRef.current) return;
+    newsletterSentRef.current = true;
+    void (async () => {
+      await pushUserIdToDataLayer(email);
+      sendNewsletterSignupEvent({
+        signup_location: "checkout",
+        page_path:
+          typeof window !== "undefined" ? window.location.pathname : "",
+      });
+    })();
   }, [subscribe, email]);
 
   return (

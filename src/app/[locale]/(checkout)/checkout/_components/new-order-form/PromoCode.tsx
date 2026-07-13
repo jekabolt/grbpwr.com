@@ -64,7 +64,13 @@ export default function PromoCode({
       }
 
       if (response?.promo) {
-        const discountAmount = parseFloat(response.promo.discount?.value || "0");
+        // `promo.discount` is a percentage; the event's `discount_amount` is a
+        // monetary value (it ships alongside `currency`), so convert against the
+        // subtotal instead of sending "10%" as if it were "10 EUR".
+        const promoPercent = parseFloat(response.promo.discount?.value || "0");
+        const subtotal = parseFloat(response.subtotal?.value || "0");
+        const discountAmount =
+          Math.round(((subtotal * promoPercent) / 100) * 100) / 100;
         sendCouponAppliedEvent(promoCode, discountAmount, currency);
       }
 
