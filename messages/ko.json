@@ -653,7 +653,8 @@
     "validation_error": "문제가 발생했습니다. 다시 시도해 주세요.",
     "fill_required_fields": "필수 항목이 입력되지 않았습니다",
     "email_required": "이메일은 필수입니다",
-    "required_terms": "구독하려면 동의가 필요합니다"
+    "required_terms": "구독하려면 동의가 필요합니다",
+    "too_many_requests": "시도가 너무 많습니다. 잠시 후 다시 시도해 주세요."
   },
   "refund": {
     "return order": "주문 반품",

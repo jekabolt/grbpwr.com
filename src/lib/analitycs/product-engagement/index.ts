@@ -17,13 +17,6 @@ interface OutOfStockClickEvent {
   currency: string;
 }
 
-interface ProductImageViewEvent {
-  product_id: string;
-  image_index: number;
-  image_total: number;
-  product_name: string;
-}
-
 interface ProductImageSwipeEvent {
   product_id: string;
   product_name: string;
@@ -56,9 +49,6 @@ interface NotifyMeIntentEvent {
   size_name?: string;
   action: "opened" | "submitted" | "closed_without_submit";
 }
-
-let lastImageViewTime = 0;
-const IMAGE_VIEW_THROTTLE_MS = 500;
 
 export function sendSizeGuideViewEvent(data: SizeGuideViewEvent): void {
   pushCustomEvent("size_guide_view", {
@@ -93,21 +83,6 @@ export function sendOutOfStockClickEvent(data: OutOfStockClickEvent): void {
   });
 }
 
-export function sendProductImageViewEvent(data: ProductImageViewEvent): void {
-  const now = Date.now();
-  if (now - lastImageViewTime < IMAGE_VIEW_THROTTLE_MS) {
-    return;
-  }
-  lastImageViewTime = now;
-  
-  pushCustomEvent("product_image_view", {
-    product_id: data.product_id,
-    image_index: data.image_index,
-    image_total: data.image_total,
-    product_name: data.product_name,
-  });
-}
-
 export function sendProductImageSwipeEvent(data: ProductImageSwipeEvent): void {
   pushCustomEvent("product_image_swipe", {
     product_id: data.product_id,
@@ -129,7 +104,9 @@ export function sendProductZoomEvent(data: ProductZoomEvent): void {
   });
 }
 
-export function sendProductDetailsExpansionEvent(data: ProductDetailsExpansionEvent): void {
+export function sendProductDetailsExpansionEvent(
+  data: ProductDetailsExpansionEvent,
+): void {
   if (data.action === "expand") {
     pushCustomEvent("details_expand", {
       product_id: data.product_id,
@@ -139,7 +116,10 @@ export function sendProductDetailsExpansionEvent(data: ProductDetailsExpansionEv
 }
 
 export function sendNotifyMeIntentEvent(data: NotifyMeIntentEvent): void {
-  pushCustomEvent("notify_me_action", {
+  // Event name must stay `notify_me_intent` — the backend BigQuery query
+  // (queries_engagement*) reads that name; renaming it to notify_me_action
+  // silently emptied bq_notify_me_intent for months.
+  pushCustomEvent("notify_me_intent", {
     product_id: data.product_id,
     action: data.action,
     product_name: data.product_name,

@@ -653,7 +653,8 @@
     "validation_error": "une erreur s'est produite. veuillez réessayer.",
     "fill_required_fields": "certains champs obligatoires sont manquants",
     "email_required": "l'e-mail est obligatoire",
-    "required_terms": "consentement requis pour s'abonner"
+    "required_terms": "consentement requis pour s'abonner",
+    "too_many_requests": "trop de tentatives. veuillez patienter un instant et réessayer."
   },
   "refund": {
     "return order": "retourner la commande",

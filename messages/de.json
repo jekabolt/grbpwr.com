@@ -654,7 +654,8 @@
     "validation_error": "etwas ist schiefgelaufen. bitte versuchen sie es erneut.",
     "fill_required_fields": "einige pflichtfelder fehlen",
     "email_required": "e-mail ist erforderlich",
-    "required_terms": "zustimmung zum abonnieren erforderlich"
+    "required_terms": "zustimmung zum abonnieren erforderlich",
+    "too_many_requests": "zu viele versuche. bitte warten sie einen moment und versuchen sie es erneut."
   },
   "refund": {
     "return order": "bestellung retournieren",

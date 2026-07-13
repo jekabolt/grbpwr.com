@@ -5,15 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useForm, type UseFormReturn } from "react-hook-form";
 
-import {
-  sendGenerateLeadEvent,
-  sendNewsletterSignupEvent,
-} from "@/lib/analitycs/form";
+import { sendNewsletterSignupEvent } from "@/lib/analitycs/form";
 import { pushUserIdToDataLayer } from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
+import { isInvalidInputError, isRateLimitError } from "@/lib/error-message";
 import { syncSignedInEmailToForm } from "@/lib/stores/account-onboarding/selectors";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
-import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { Form } from "@/components/ui/form";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
@@ -31,7 +28,6 @@ export default function NewslatterForm({
 }: {
   inactiveBgColor?: boolean;
 }) {
-  const { currentCountry } = useTranslationsStore((state) => state);
   const [isLoading, setIsLoading] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
@@ -68,11 +64,6 @@ export default function NewslatterForm({
     try {
       await serviceClient.SubscribeNewsletter(data);
       await pushUserIdToDataLayer(data.email ?? "");
-      sendGenerateLeadEvent({
-        currency: currentCountry.currencyKey || "EUR",
-        value: 0,
-        lead_source: "newsletter_footer",
-      });
       sendNewsletterSignupEvent({
         signup_location: "footer",
         page_path:
@@ -84,9 +75,10 @@ export default function NewslatterForm({
       setToastOpen(true);
     } catch (error) {
       console.error("Failed to subscribe to newsletter:", error);
-      const message =
-        error instanceof Error && error.message
-          ? error.message
+      const message = isRateLimitError(error)
+        ? tToaster("too_many_requests")
+        : isInvalidInputError(error)
+          ? tToaster("invalid_email")
           : tToaster("failed_to_subscribe");
       setToastMessage(message);
       setToastOpen(true);

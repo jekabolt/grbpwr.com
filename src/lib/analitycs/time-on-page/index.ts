@@ -1,6 +1,5 @@
 import { pushCustomEvent } from "../utils";
 
-const TIME_TRACKING_INTERVAL_MS = 15000;
 const VISIBILITY_THRESHOLD_MS = 1000;
 
 interface PageTimeData {
@@ -16,14 +15,23 @@ let lastVisibleTime = 0;
 let totalVisibleTime = 0;
 let isVisible = true;
 let currentPath = "";
-let trackingInterval: NodeJS.Timeout | null = null;
+
+// Only one tracker may be live at a time. A second init (React double-mount,
+// dev Fast Refresh, or a stray call) tears the previous one down first, so
+// listeners and the history patch can never stack. Previously this module ran
+// a setInterval kept in a module-level variable: any init without its matching
+// cleanup orphaned the old interval, which kept firing `time_on_page` forever.
+let activeTeardown: (() => void) | null = null;
 
 export function initTimeOnPageTracking(): () => void {
   if (typeof window === "undefined") return () => {};
 
+  activeTeardown?.();
+
   currentPath = window.location.pathname;
   pageStartTime = Date.now();
   lastVisibleTime = pageStartTime;
+  totalVisibleTime = 0;
   isVisible = !document.hidden;
 
   const handleVisibilityChange = () => {
@@ -47,20 +55,6 @@ export function initTimeOnPageTracking(): () => void {
     }
   };
 
-  const sendPeriodicUpdate = () => {
-    if (isVisible) {
-      const now = Date.now();
-      totalVisibleTime += now - lastVisibleTime;
-      lastVisibleTime = now;
-    }
-    sendTimeOnPageEvent(false);
-  };
-
-  document.addEventListener("visibilitychange", handleVisibilityChange);
-  window.addEventListener("popstate", handlePathChange);
-  
-  trackingInterval = setInterval(sendPeriodicUpdate, TIME_TRACKING_INTERVAL_MS);
-
   const originalPushState = window.history.pushState;
   const originalReplaceState = window.history.replaceState;
 
@@ -74,27 +68,32 @@ export function initTimeOnPageTracking(): () => void {
     handlePathChange();
   };
 
-  const handleBeforeUnload = () => {
+  // Emit once when the page is actually left. `pagehide` fires on mobile and
+  // bfcache navigations where `beforeunload` does not.
+  const handlePageHide = () => {
     sendTimeOnPageEvent(true);
   };
 
-  window.addEventListener("beforeunload", handleBeforeUnload);
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+  window.addEventListener("popstate", handlePathChange);
+  window.addEventListener("pagehide", handlePageHide);
 
-  return () => {
+  const teardown = () => {
+    if (activeTeardown !== teardown) return;
+    activeTeardown = null;
+
     document.removeEventListener("visibilitychange", handleVisibilityChange);
     window.removeEventListener("popstate", handlePathChange);
-    window.removeEventListener("beforeunload", handleBeforeUnload);
-    
-    if (trackingInterval) {
-      clearInterval(trackingInterval);
-      trackingInterval = null;
-    }
+    window.removeEventListener("pagehide", handlePageHide);
 
     window.history.pushState = originalPushState;
     window.history.replaceState = originalReplaceState;
-    
+
     sendTimeOnPageEvent(true);
   };
+
+  activeTeardown = teardown;
+  return teardown;
 }
 
 function sendTimeOnPageEvent(isFinal = false): void {
@@ -108,10 +107,13 @@ function sendTimeOnPageEvent(isFinal = false): void {
 
   const totalTime = Math.floor((now - pageStartTime) / 1000);
   const visibleTime = Math.floor(totalVisibleTime / 1000);
-  
+
   if (totalTime < 1) return;
 
-  const engagementScore = totalTime > 0 ? Math.min(100, Math.round((visibleTime / totalTime) * 100)) : 0;
+  const engagementScore =
+    totalTime > 0
+      ? Math.min(100, Math.round((visibleTime / totalTime) * 100))
+      : 0;
 
   const eventData: PageTimeData = {
     page_path: currentPath,

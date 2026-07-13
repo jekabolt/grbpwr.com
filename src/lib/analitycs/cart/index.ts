@@ -1,82 +1,39 @@
-import {
-    common_OrderItem,
-    common_ProductFull,
-} from "@/api/proto-http/frontend";
+import { common_ProductFull } from "@/api/proto-http/frontend";
 
-import { mapItemsToAnalyticsItems } from "../checkout";
 import { mapItemsToDataLayer } from "../product";
-import { calculateTotalValue, EcommerceEvent, pushToDataLayer, SizeMap } from "../utils";
+import { EcommerceEvent, pushToDataLayer } from "../utils";
 
 export function sendAddToCartEvent(
-    item: common_ProductFull,
-    topCategory: string,
-    subCategory: string,
-    selectedCurrency: string,
+  item: common_ProductFull,
+  topCategory: string,
+  subCategory: string,
+  selectedCurrency: string,
 ) {
-    if (!item || !item.product) return;
+  if (!item || !item.product) return;
 
-    const currencyKey = selectedCurrency || "EUR";
-    const price = item.product?.prices?.find(
-        (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
+  const currencyKey = selectedCurrency || "EUR";
+  const price =
+    item.product?.prices?.find(
+      (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
     ) || item.product?.prices?.[0];
-    const totalValue = parseFloat(price?.price?.value || "0");
+  const totalValue = parseFloat(price?.price?.value || "0");
 
-    const event: EcommerceEvent = {
-        event: "add_to_cart",
-        ecommerce: {
-            currency: currencyKey.toUpperCase(),
-            value: totalValue,
-            items: [mapItemsToDataLayer(item.product, 1, topCategory, subCategory, selectedCurrency)],
-        },
-    };
+  const event: EcommerceEvent = {
+    event: "add_to_cart",
+    ecommerce: {
+      currency: currencyKey.toUpperCase(),
+      value: totalValue,
+      items: [
+        mapItemsToDataLayer(
+          item.product,
+          1,
+          topCategory,
+          subCategory,
+          selectedCurrency,
+        ),
+      ],
+    },
+  };
 
-    pushToDataLayer(event);
-}
-
-export function sendRemoveFromCartEvent(
-    item: common_OrderItem,
-    topCategory: string,
-    subCategory: string,
-    currency: string = "EUR",
-    sizeMap?: SizeMap,
-) {
-    const totalValue = parseFloat(item.productPrice || "0");
-
-    if (!item) return;
-
-    const event: EcommerceEvent = {
-        event: "remove_from_cart",
-        ecommerce: {
-            currency: currency.toUpperCase(),
-            value: Math.max(0, totalValue),
-            items: [mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap)],
-        },
-    };
-
-    pushToDataLayer(event);
-}
-
-export function sendViewCartEvent(
-    items: common_OrderItem[],
-    topCategory: string,
-    subCategory: string,
-    currency: string = "EUR",
-    sizeMap?: SizeMap,
-) {
-    const totalValue = calculateTotalValue(items);
-
-    if (!items || !items?.length) return;
-
-    const event: EcommerceEvent = {
-        event: "view_cart",
-        ecommerce: {
-            currency: currency.toUpperCase(),
-            value: Math.max(0, totalValue),
-            items: items.map((item) =>
-                mapItemsToAnalyticsItems(item, 1, topCategory, subCategory, sizeMap),
-            ),
-        },
-    };
-
-    pushToDataLayer(event);
+  pushToDataLayer(event);
 }

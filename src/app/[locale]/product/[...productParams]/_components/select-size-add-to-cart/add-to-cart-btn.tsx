@@ -188,11 +188,6 @@ export function AddToCartBtn({
             variant="simpleReverse"
             size="lg"
             onAction={handleAddToCartClick}
-            analyticsButtonId="add_to_cart"
-            analyticsProductName={
-              product.product?.productDisplay?.productBody?.translations?.[0]
-                ?.name
-            }
             isLoadingExternal={isLoading}
             className="border-none"
             onMouseEnter={() => setIsHovered(true)}

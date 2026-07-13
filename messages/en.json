@@ -711,7 +711,8 @@
     "validation_error": "something went wrong. please try again.",
     "fill_required_fields": "some required fields are missing",
     "email_required": "email is required",
-    "required_terms": "consent required to subscribe"
+    "required_terms": "consent required to subscribe",
+    "too_many_requests": "too many attempts. please wait a moment and try again."
   },
   "refund": {
     "return order": "return order",

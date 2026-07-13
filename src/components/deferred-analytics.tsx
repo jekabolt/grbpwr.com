@@ -9,6 +9,22 @@ const GTM_ID = "GTM-WFC98J99";
 // visitors are still measured.
 const FALLBACK_MS = 6000;
 
+// Keep dev/localhost traffic out of the production GA property. Local hosts are
+// never measured; anything else only when this is a production build. (Preview/
+// beta deploys are intentionally left measurable.)
+function analyticsAllowed(): boolean {
+  if (typeof window === "undefined") return false;
+  const host = window.location.hostname;
+  const isLocalHost =
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host === "0.0.0.0" ||
+    host === "::1" ||
+    host.endsWith(".local");
+  if (isLocalHost) return false;
+  return process.env.NODE_ENV === "production";
+}
+
 // Loads GTM + gtag only after the first user interaction (or an idle fallback),
 // keeping ~125ms of third-party script work off the main thread during the
 // initial load — the biggest TBT contributor. Tracking behaviour is otherwise
@@ -35,6 +51,8 @@ function injectAnalytics() {
 
 export function DeferredAnalytics() {
   useEffect(() => {
+    if (!analyticsAllowed()) return;
+
     let loaded = false;
     const events = ["pointerdown", "keydown", "scroll", "touchstart"] as const;
 
