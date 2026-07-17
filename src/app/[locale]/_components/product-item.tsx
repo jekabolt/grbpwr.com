@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { common_Product } from "@/api/proto-http/frontend";
+import type { StorefrontColorway } from "@/api/proto-http/frontend";
 import {
   currencySymbols,
   EMPTY_PREORDER,
@@ -7,11 +7,9 @@ import {
 } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { formatPrice } from "@/lib/currency";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
-import { useDataContext } from "@/components/contexts/DataContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -29,7 +27,7 @@ export function ProductItem({
   infoClassName,
   imageFit = "contain",
 }: {
-  product: common_Product;
+  product: StorefrontColorway;
   className: string;
   isInfoVisible?: boolean;
   disableAnimations?: boolean;
@@ -48,8 +46,7 @@ export function ProductItem({
   const tFit = useTranslations("fit");
   const tProduct = useTranslations("product");
 
-  const { dictionary } = useDataContext();
-  const { currentCountry } = useTranslationsStore((s) => s);
+  const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const { handleSelectItemEvent } = useAnalytics();
   const visited = useVisitedLink(product?.slug);
 
@@ -59,20 +56,14 @@ export function ProductItem({
   const onPressEnd = () => setPressed(false);
 
   const currencyKey = currentCountry.currencyKey || "EUR";
-  const productBody = product.productDisplay?.productBody?.productBodyInsert;
-  const salePercentage = productBody?.salePercentage?.value || "0";
-  const isSaleApplied = salePercentage && salePercentage !== "0";
+  const display = product.display;
+  const salePercentage = display?.salePercentage?.value || "0";
+  const isSaleApplied = salePercentage !== "0" && parseFloat(salePercentage) > 0;
   const isSoldOut = product.soldOut;
-  const preorder = productBody?.preorder;
-  const fit = productBody?.fit ? tFit(productBody.fit) : "";
-  const topCategory = getTopCategoryName(
-    dictionary?.categories || [],
-    productBody?.topCategoryId || 0,
-  );
-  const subCategory = getSubCategoryName(
-    dictionary?.categories || [],
-    productBody?.subCategoryId || 0,
-  );
+  const preorder = display?.preorder;
+  const fit = display?.fit ? tFit(display.fit) : "";
+  // category_labels = resolved [top, sub, type] names.
+  const [topCategory, subCategory] = display?.categoryLabels || [];
   const categoryName = (subCategory || topCategory || "").toLowerCase();
   const singularCategory =
     PLURIAL_SINGLE_CATEGORY_MAP[categoryName] ||
@@ -82,11 +73,15 @@ export function ProductItem({
   const translatedCategory = singularCategory
     ? t(singularCategory.toLowerCase())
     : "";
-  // Objects use their category/sub-category name as-is (no "fit" prefix that
-  // garments get).
+  // Objects use their category name as-is (no "fit" prefix that garments get).
   const isObjects = topCategory?.toLowerCase() === "objects";
+  const currentTranslation =
+    display?.translations?.find((tr) => tr.languageId === languageId) ||
+    display?.translations?.[0];
   const name =
-    fit && !isObjects ? `${fit} ${translatedCategory}` : translatedCategory;
+    (fit && !isObjects ? `${fit} ${translatedCategory}` : translatedCategory) ||
+    currentTranslation?.name ||
+    "";
 
   const productPrice =
     product.prices?.find(
@@ -136,7 +131,7 @@ export function ProductItem({
         >
           <Image
             src={
-              product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
+              product.display?.thumbnail?.media?.thumbnail?.mediaUrl ||
               ""
             }
             alt={name}
@@ -146,7 +141,7 @@ export function ProductItem({
             // shots fill it without side letterboxing. Default `contain` keeps the
             // whole garment visible; `cover` crops it to fill the box exactly.
             aspectRatio="3/4"
-            blurhash={product.productDisplay?.thumbnail?.media?.blurhash}
+            blurhash={product.display?.thumbnail?.media?.blurhash}
             fit={imageFit}
             priority={imagePriority}
             loading={imagePriority ? "eager" : "lazy"}

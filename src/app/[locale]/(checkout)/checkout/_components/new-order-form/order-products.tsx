@@ -18,9 +18,8 @@ export function OrderProducts({
         Array.from({ length: item.orderItem?.quantity || 1 }, () => ({
           ...item,
           orderItem: {
-            productId: item.orderItem?.productId!,
+            variantSku: item.orderItem?.variantSku!,
             quantity: 1,
-            sizeId: item.orderItem?.sizeId!,
           },
         })),
       )

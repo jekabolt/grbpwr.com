@@ -1,7 +1,4 @@
-import type {
-  common_ProductSize,
-  common_Size,
-} from "@/api/proto-http/frontend";
+import type { StorefrontVariant } from "@/api/proto-http/frontend";
 import {
   COUNTRIES_BY_REGION,
   OrderFactorOption,
@@ -49,23 +46,22 @@ export function calculatePriceWithSale(
 }
 
 export function formatSizeData(
-  sizes: common_ProductSize[],
+  sizes: StorefrontVariant[],
   type: "shoe" | "ring",
-  dictionary: common_Size[],
 ) {
   const tableType =
     type === "shoe" ? SHOES_SIZE_CONVERSION : RING_SIZE_CONVERSION;
 
   return sizes
-    .filter((size) => size.id !== undefined)
-    .map((size) => {
-      const name = dictionary.find((item) => item.id === size.sizeId)?.name;
+    .filter((v) => v.size?.skuOrd !== undefined)
+    .map((v) => {
+      const name = (v.size?.name || v.size?.code || "").trim();
       const tableData = tableType[name as keyof typeof tableType];
 
       if (!tableData) return undefined;
 
       return {
-        id: size.sizeId,
+        id: v.size?.skuOrd,
         eu: tableData.EU,
         us: tableData.US,
         uk: tableData.UK,

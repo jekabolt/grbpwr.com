@@ -27,12 +27,12 @@ const fetchParams: Object = {
       tags: [HERO_CACHE_TAG],
     },
   },
-  GetProduct: {
+  GetColorway: {
     next: {
       tags: [PRODUCTS_CACHE_TAG],
     },
   },
-  GetProductsPaged: {
+  GetColorwaysPaged: {
     next: {
       tags: [PRODUCTS_CACHE_TAG],
     },
@@ -102,7 +102,7 @@ const EMPTY_FILTERS = {
   currency: "EUR",
   onSale: undefined,
   gender: undefined,
-  color: undefined,
+  colorCodes: undefined,
   topCategoryIds: undefined,
   subCategoryIds: undefined,
   excludeTopCategoryIds: undefined,
@@ -120,14 +120,14 @@ const EMPTY_FILTERS = {
 export const getLatestProductDate = cache(
   async (): Promise<string | undefined> => {
     try {
-      const { products } = await serviceClient.GetProductsPaged({
+      const { colorways } = await serviceClient.GetColorwaysPaged({
         limit: 1,
         offset: 0,
         sortFactors: ["SORT_FACTOR_UPDATED_AT"],
         orderFactor: "ORDER_FACTOR_DESC",
         filterConditions: EMPTY_FILTERS,
       });
-      return products?.[0]?.updatedAt ?? undefined;
+      return colorways?.[0]?.display?.updatedAt ?? undefined;
     } catch {
       return undefined;
     }

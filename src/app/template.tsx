@@ -1,7 +1,7 @@
 import type {
   GetArchivesPagedRequest,
   GetHeroResponse,
-  GetProductsPagedRequest,
+  GetColorwaysPagedRequest,
 } from "@/api/proto-http/frontend";
 import { QueryWrapper } from "@/providers/query-wrapper";
 
@@ -52,9 +52,9 @@ export default async function Template({
             "use server";
             return serviceClient.GetArchivesPaged(request);
           }}
-          GetProductsPaged={async (request: GetProductsPagedRequest) => {
+          GetColorwaysPaged={async (request: GetColorwaysPagedRequest) => {
             "use server";
-            return serviceClient.GetProductsPaged(request);
+            return serviceClient.GetColorwaysPaged(request);
           }}
         >
           <CartStoreProvider>

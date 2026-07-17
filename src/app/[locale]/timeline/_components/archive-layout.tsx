@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { common_ArchiveList } from "@/api/proto-http/frontend";
+import { StorefrontArchiveList } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import FlexibleLayout from "@/components/flexible-layout";
@@ -15,7 +15,7 @@ export function ArchiveLayout({
   archives,
   total,
 }: {
-  archives: common_ArchiveList[];
+  archives: StorefrontArchiveList[];
   total: number;
 }) {
   const [viewMode, setViewMode] = useState<ViewMode>("horizontal");

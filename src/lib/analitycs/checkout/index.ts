@@ -19,11 +19,15 @@ export function mapItemsToAnalyticsItems(
   const salePrice =
     parseFloat(item.productPriceWithSale || "0") || originalPrice;
   const discount = Math.max(0, originalPrice - salePrice);
-  const sizeId = item.orderItem?.sizeId;
-  const sizeName = sizeId != null && sizeMap ? sizeMap[sizeId] || "" : "";
+  // R2/R3: the order line carries frozen public identity snapshots — the variant
+  // SKU, its base SKU, and the size code — so item_variant reads the size snapshot
+  // directly (the legacy dictionary sizeMap is no longer needed).
+  void sizeMap;
+  const sizeName = item.sizeNameSnapshot || "";
 
   return {
-    item_id: item.sku || "",
+    item_id: item.variantSkuSnapshot || item.baseSkuSnapshot || "",
+    item_group_id: item.baseSkuSnapshot || "",
     item_name: item.translations?.[0]?.name || "",
     item_brand: item.productBrand || "",
     item_category: topCategory || "",

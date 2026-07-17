@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import type {
-  common_Product,
-  GetProductsPagedResponse,
+  GetColorwaysPagedResponse,
+  StorefrontColorway,
 } from "@/api/proto-http/frontend";
 import { CATALOG_LIMIT } from "@/constants";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -23,12 +23,12 @@ export function InfinityScrollCatalog({
   firstPageItems,
   total,
 }: {
-  firstPageItems: common_Product[];
+  firstPageItems: StorefrontColorway[];
   total: number;
 }) {
   const searchParams = useSearchParams();
   const { dictionary } = useDataContext();
-  const { GetProductsPaged } = useServerActionsContext();
+  const { GetColorwaysPaged } = useServerActionsContext();
   const { languageId, currentCountry } = useTranslationsStore((state) => state);
   const { gender, topCategory, subCategory } = useRouteParams();
   const { handleViewItemListEvent } = useAnalytics();
@@ -71,10 +71,10 @@ export function InfinityScrollCatalog({
     isFetchingNextPage,
     isFetching,
     isLoading,
-  } = useInfiniteQuery<GetProductsPagedResponse>({
+  } = useInfiniteQuery<GetColorwaysPagedResponse>({
     queryKey,
     queryFn: ({ pageParam }) =>
-      GetProductsPaged({
+      GetColorwaysPaged({
         limit: CATALOG_LIMIT,
         offset: pageParam as number,
         ...getProductsPagedQueryParams(
@@ -91,7 +91,7 @@ export function InfinityScrollCatalog({
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       const totalFetched = allPages.reduce(
-        (acc, page) => acc + (page.products?.length || 0),
+        (acc, page) => acc + (page.colorways?.length || 0),
         0,
       );
       return totalFetched < (lastPage.total || 0) ? totalFetched : undefined;
@@ -99,7 +99,7 @@ export function InfinityScrollCatalog({
     // Only use initialData when there are no filters (base route)
     initialData: !hasFilters
       ? {
-          pages: [{ products: firstPageItems, total }],
+          pages: [{ colorways: firstPageItems, total }],
           pageParams: [0],
         }
       : undefined,
@@ -111,7 +111,7 @@ export function InfinityScrollCatalog({
     gcTime: Infinity, // Keep in cache forever
   });
 
-  const items = data?.pages.flatMap((page) => page.products || []) || [];
+  const items = data?.pages.flatMap((page) => page.colorways || []) || [];
   const currentTotal = data?.pages[data.pages.length - 1]?.total || total;
 
   const isInitialLoading =

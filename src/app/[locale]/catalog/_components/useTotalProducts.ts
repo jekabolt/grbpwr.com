@@ -15,7 +15,7 @@ export const useTotalProducts = ({
     isModalOpen = true,
 }: Props) => {
     const { dictionary } = useDataContext();
-    const { GetProductsPaged } = useServerActionsContext();
+    const { GetColorwaysPaged } = useServerActionsContext();
     const currencyKey = useTranslationsStore((s) => s.currentCountry.currencyKey) || "EUR";
     const queryClient = useQueryClient();
     const { defaultValue: sizeValue } = useFilterQueryParams("size");
@@ -43,7 +43,7 @@ export const useTotalProducts = ({
     const { data: total = 0 } = useQuery({
         queryKey,
         queryFn: () =>
-            GetProductsPaged({
+            GetColorwaysPaged({
                 limit: CATALOG_LIMIT,
                 offset: 0,
                 ...getProductsPagedQueryParams(

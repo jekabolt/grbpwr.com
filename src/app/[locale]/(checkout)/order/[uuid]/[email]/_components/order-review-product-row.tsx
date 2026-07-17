@@ -53,7 +53,7 @@ export function OrderReviewProductRow({
 
   const productName =
     product.translations?.find((tr) => tr.languageId === languageId)?.name ||
-    product.sku ||
+    product.variantSkuSnapshot ||
     "";
 
   const lineQty = product.orderItem?.quantity ?? 1;
@@ -99,7 +99,7 @@ export function OrderReviewProductRow({
           </Text>
           <div className="flex shrink-0 items-start gap-2">
             <Text variant="uppercase">size</Text>
-            <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+            <CartItemSize sizeName={product.sizeNameSnapshot || ""} />
             {lineQty > 1 && (
               <Text variant="uppercase" className="text-textInactiveColor">
                 ×{lineQty}

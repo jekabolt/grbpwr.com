@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { common_ArchiveList } from "@/api/proto-http/frontend";
+import { StorefrontArchiveList } from "@/api/proto-http/frontend";
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { resolveArchiveMedia } from "@/lib/utils";
@@ -14,7 +14,7 @@ function ArchiveGridItem({
   item,
   languageId,
 }: {
-  item: common_ArchiveList;
+  item: StorefrontArchiveList;
   languageId: number;
 }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -56,14 +56,14 @@ export function ArchiveGrid({
   items,
   languageId,
 }: {
-  items: common_ArchiveList[];
+  items: StorefrontArchiveList[];
   languageId: number;
 }) {
   return (
     <div className="h-full px-2.5 pb-2.5 pt-20 lg:px-7 lg:pt-24">
       <div className="grid min-w-0 grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-10">
         {items.map((item) => (
-          <ArchiveGridItem key={item.id} item={item} languageId={languageId} />
+          <ArchiveGridItem key={item.code} item={item} languageId={languageId} />
         ))}
       </div>
     </div>

@@ -18,7 +18,7 @@ export const createLastViewedStore = (
           const { products } = get();
           const updatedProducts = [
             product,
-            ...products.filter((p) => p.id !== product.id),
+            ...products.filter((p) => p.baseSku !== product.baseSku),
           ].slice(0, 5);
           set({ products: updatedProducts });
         },
