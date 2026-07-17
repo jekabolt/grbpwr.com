@@ -1,23 +1,36 @@
 import type {
-  common_ColorwayFull,
   googletype_Decimal,
+  StorefrontColorway,
 } from "@/api/proto-http/frontend";
 
-// TODO(final-bump): The intermediate PR6 contract dropped per-colorway measurements —
-// the size chart is style-owned now (R5). The final storefront projection exposes it as
-// `StorefrontColorway.size_chart` (`PublicStyleSizeChart` / `PublicMeasurement`). When that
-// lands, map it here and delete this compat shape; the measurement UI keeps its prop types.
+// The size chart is style-owned (R5) and reaches the storefront as
+// `StorefrontColorway.size_chart` (`PublicStyleSizeChart` / `PublicMeasurement`).
+// A PublicMeasurement carries the public size (`size.sku_ord`, the storefront's
+// per-size key) and the measurement NAME as a string. The measurement UI
+// (measurements-table, categories-thumbnails, t-shirt) still matches rows by
+// `measurementNameId` + `productSizeId`, so we keep this compat shape: productSizeId
+// = the public size ordinal, and measurementNameId resolved from the dictionary by
+// name. The measurement-name dictionary is passed in because this stays a pure map.
 export type ProductMeasurementCompat = {
   productSizeId?: number;
   measurementNameId?: number;
   measurementValue?: googletype_Decimal;
 };
 
-// colorwayMeasurements returns the measurement rows for a colorway. The intermediate
-// contract carries none, so this is []; the measurement UI degrades to "no size table"
-// until the final bump wires `size_chart` in.
+type MeasurementDictEntry = { id?: number; name?: string };
+
+// colorwayMeasurements flattens the storefront size chart into the compat rows the
+// measurement UI consumes. Returns [] when the colourway carries no chart.
 export function colorwayMeasurements(
-  _colorway: common_ColorwayFull | undefined,
+  colorway: StorefrontColorway | undefined,
+  measurementDict?: MeasurementDictEntry[],
 ): ProductMeasurementCompat[] {
-  return [];
+  const cells = colorway?.sizeChart?.cells || [];
+  return cells.map((cell) => ({
+    productSizeId: cell.size?.skuOrd,
+    measurementNameId: measurementDict?.find(
+      (m) => m.name?.toLowerCase() === cell.measurementName?.toLowerCase(),
+    )?.id,
+    measurementValue: cell.value,
+  }));
 }

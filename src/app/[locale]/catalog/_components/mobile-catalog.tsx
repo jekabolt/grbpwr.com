@@ -1,6 +1,9 @@
 "use client";
 
-import { common_GenderEnum, common_Colorway } from "@/api/proto-http/frontend";
+import {
+  common_GenderEnum,
+  StorefrontColorway,
+} from "@/api/proto-http/frontend";
 
 import {
   getCategoryDescription,
@@ -18,7 +21,7 @@ export function MobileCatalog({
   firstPageItems,
   total,
 }: {
-  firstPageItems: common_Colorway[];
+  firstPageItems: StorefrontColorway[];
   total: number;
 }) {
   const { dictionary } = useDataContext();

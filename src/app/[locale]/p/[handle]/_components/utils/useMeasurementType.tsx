@@ -1,40 +1,31 @@
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
-
-import { useDataContext } from "@/components/contexts/DataContext";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 
 export type MeasurementType = "clothing" | "ring" | "shoe";
 
+// Category ids are not in the lean storefront projection (R3), so the size-guide
+// table type is derived from the variant's public size system (PublicSize.system)
+// instead: SHOE → the shoe conversion table, everything else → the clothing
+// measurement table. The garment-diagram icon (which needs category ids) degrades
+// to absent; the numeric measurement table still renders. Ring detection is lost
+// (no dedicated size system) and falls back to the clothing table.
 export function useMeasurementType({
   product,
 }: {
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
 }) {
-  const { dictionary } = useDataContext();
-  const productBody =
-    product.colorway?.display?.productBody?.productBodyInsert;
-  const categoryId = productBody?.topCategoryId;
-  const subCategoryId = productBody?.subCategoryId;
-  const typeId = productBody?.typeId;
+  const system = product.variants?.[0]?.size?.system;
 
-  const category = dictionary?.categories?.find(
-    (c) => c.id === categoryId,
-  )?.name;
+  // Cast keeps the exported type as the full MeasurementType union — TS otherwise
+  // flow-narrows the const to the ternary's "shoe" | "clothing", which would make
+  // downstream `=== "ring"` checks a type error even though ring stays a valid case.
+  const measurementType = (
+    system === "SIZE_SKU_SYSTEM_SHOE" ? "shoe" : "clothing"
+  ) as MeasurementType;
 
-  const getMeasurementType = (): MeasurementType => {
-    const type = dictionary?.categories
-      ?.find((c) => c.id === typeId)
-      ?.name?.toLowerCase();
-    if (type === "rings") return "ring";
-    if (category?.toLowerCase() === "shoes") return "shoe";
-
-    return "clothing";
-  };
-
-  const measurementType = getMeasurementType();
   return {
     measurementType,
-    subCategoryId,
-    typeId,
-    categoryId,
+    subCategoryId: undefined as number | undefined,
+    typeId: undefined as number | undefined,
+    categoryId: undefined as number | undefined,
   };
 }

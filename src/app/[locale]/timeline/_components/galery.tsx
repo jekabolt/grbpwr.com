@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import type {
-  common_ArchiveList,
   GetArchivesPagedResponse,
+  StorefrontArchiveList,
 } from "@/api/proto-http/frontend";
 import { ARCHIVE_LIMIT } from "@/constants";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -20,7 +20,7 @@ export function Galery({
   total,
   viewMode,
 }: {
-  archives: common_ArchiveList[];
+  archives: StorefrontArchiveList[];
   total: number;
   viewMode: ViewMode;
 }) {

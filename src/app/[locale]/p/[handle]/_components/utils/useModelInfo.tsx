@@ -1,29 +1,10 @@
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
-import { useTranslations } from "next-intl";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 
-import { useDataContext } from "@/components/contexts/DataContext";
-
-function getModelText(
-  height?: number | undefined,
-  sizeName?: string,
-  t?: (key: string) => string,
-): string {
-  return sizeName && height && t
-    ? `${t("model is")} ${height}cm ${t("and wears size")} ${sizeName}`
-    : "";
-}
-
-export function useModelInfo({ product }: { product: common_ColorwayFull }) {
-  const t = useTranslations("product");
-  const { dictionary } = useDataContext();
-  const productBody =
-    product.colorway?.display?.productBody?.productBodyInsert;
-  const modelSizeId = productBody?.modelWearsSizeId;
-  const modelSize = dictionary?.sizes?.find((s) => s.id === modelSizeId)?.name;
-  const modelHeight = productBody?.modelWearsHeightCm;
-  const modelWear = getModelText(modelHeight, modelSize, t);
-
+// Model-wears info (height + size) is not part of the lean storefront colourway
+// projection (R3), so the "model is 180cm and wears size M" line degrades to
+// absent. Kept as a hook so callers keep their shape.
+export function useModelInfo(_: { product: StorefrontColorway }) {
   return {
-    modelWear,
+    modelWear: "",
   };
 }

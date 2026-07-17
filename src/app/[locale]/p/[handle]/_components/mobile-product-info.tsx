@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 
 import { useElementHeight } from "@/lib/hooks/useBottomSheet";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -26,13 +26,13 @@ import { useProductSizes } from "./utils/useProductSizes";
 export function MobileProductInfo({
   product,
 }: {
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
 }) {
   const [hoveredOutOfStockSizeId, setHoveredOutOfStockSizeId] = useState<
     number | null
   >(null);
   const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
-  const { name, productId, productCategory, productSubCategory } =
+  const { name, baseSku, productCategory, productSubCategory } =
     useProductBasics({ product });
   const { sizeNames, isOneSize, sizeQuantity } = useProductSizes({ product });
   const {
@@ -49,14 +49,12 @@ export function MobileProductInfo({
     toastMessage: cartToastMessage,
     setToastOpen: setCartToastOpen,
   } = useHandlers({
-    id: productId,
     sizeNames,
     isOneSize,
     product,
   });
   const { currentCountry } = useTranslationsStore((s) => s);
   const { outOfStock, isMaxQuantity } = useDisabled({
-    id: productId,
     activeSizeId,
     product,
   });
@@ -89,11 +87,11 @@ export function MobileProductInfo({
 
   const currencyKey = currentCountry.currencyKey || "EUR";
   const productPrice =
-    product.colorway?.prices?.find(
+    product.prices?.find(
       (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
-    ) || product.colorway?.prices?.[0];
+    ) || product.prices?.[0];
   const sizePickerProductContext = {
-    productId: product.colorway?.baseSku || "",
+    productId: product.baseSku || "",
     productName: name || "",
     productCategory: productCategory || "",
     productPrice: parseFloat(productPrice?.price?.value || "0"),
@@ -110,7 +108,7 @@ export function MobileProductInfo({
   return (
     <div className="relative h-full overflow-y-hidden">
       <NotifyMe
-        id={productId}
+        baseSku={baseSku}
         open={isNotifyMeOpen}
         onOpenChange={setIsNotifyMeOpen}
         sizeNames={sizeNames}
@@ -124,7 +122,7 @@ export function MobileProductInfo({
           <div ref={carouselContainerRef} className="relative">
             <MobileImageCarousel
               media={product.media || []}
-              productId={product.colorway?.baseSku || ""}
+              productId={product.baseSku || ""}
               productName={name}
               productCategory={productCategory || ""}
               scrollDisabled={isMobileSizeDialogOpen}
@@ -178,9 +176,7 @@ export function MobileProductInfo({
                     productContext={sizePickerProductContext}
                   />
                 </div>
-                {product.colorway && (
-                  <LastViewedProducts product={product.colorway} />
-                )}
+                {product && <LastViewedProducts product={product} />}
               </div>
             </BottomSheet>
           )}

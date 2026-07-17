@@ -7,12 +7,14 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 import { Button } from "@/components/ui/button";
 
 type Props = {
-  id: number;
-  size: string;
+  variantSku: string;
   index?: number;
 };
 
-export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
+export default function ProductRemoveButton({
+  variantSku,
+  index = 0,
+}: Props) {
   const t = useTranslations("cart");
   const { removeProduct, productToRemove, setProductToRemove } = useCart(
     (state) => state,
@@ -21,8 +23,7 @@ export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
 
   const isRemoveConfirmed =
     productToRemove &&
-    productToRemove.id === id &&
-    productToRemove.size === size &&
+    productToRemove.variantSku === variantSku &&
     productToRemove.index === index;
 
   useEffect(() => {
@@ -48,10 +49,10 @@ export default function ProductRemoveButton({ id, size, index = 0 }: Props) {
     event.stopPropagation();
 
     if (isRemoveConfirmed) {
-      removeProduct(id, size, index);
+      removeProduct(variantSku, index);
       setProductToRemove(null);
     } else {
-      setProductToRemove({ id, size, index });
+      setProductToRemove({ variantSku, index });
     }
   };
 

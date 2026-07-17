@@ -67,7 +67,7 @@ export async function CatalogContent(props: CatalogContentProps) {
     <FlexibleLayout className="pt-16 lg:pt-0" headerType="catalog">
       <Catalog
         total={response.total || 0}
-        firstPageItems={response.products || []}
+        firstPageItems={response.colorways || []}
       />
       <div
         className={cn("block", {

@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import type { common_Variant } from "@/api/proto-http/frontend";
+import type { StorefrontVariant } from "@/api/proto-http/frontend";
 
 import { cn, formatSizeData } from "@/lib/utils";
-import { useDataContext } from "@/components/contexts/DataContext";
 import { Text } from "@/components/ui/text";
 
 type SizesTableProps = {
-  sizes: common_Variant[];
+  sizes: StorefrontVariant[];
   type: "shoe" | "ring";
   selectedSize?: number;
   handleSelectSize: (sizeId: number) => void;
@@ -22,10 +21,8 @@ export function SizesTable({
   selectedSize,
   handleSelectSize,
 }: SizesTableProps) {
-  const { dictionary } = useDataContext();
-
   const [hoveredCol, setHoveredCol] = useState<number | null>(null);
-  const sizeData = formatSizeData(sizes, type, dictionary?.sizes || []);
+  const sizeData = formatSizeData(sizes, type);
   const hideCM = type === "ring";
 
   const headerCells: HeaderCell[] = hideCM

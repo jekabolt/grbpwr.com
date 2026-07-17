@@ -220,39 +220,47 @@ export type MeasurementName = {
   name: string | undefined;
 };
 
-export type ColorwayNew = {
-  product: ColorwayInsert | undefined;
-  sizeMeasurements: SizeWithMeasurementInsert[] | undefined;
-  mediaIds: number[] | undefined;
-  tags: ColorwayTagInsert[] | undefined;
-  prices: ColorwayPriceInsert[] | undefined;
+export type ColorwayFull = {
+  colorway: Colorway | undefined;
+  variants: Variant[] | undefined;
+  media: MediaFull[] | undefined;
+  tags: ColorwayTag[] | undefined;
 };
 
-export type ColorwayInsert = {
-  productBodyInsert: ColorwayBodyInsert | undefined;
-  thumbnailMediaId: number | undefined;
+export type Colorway = {
+  id: number | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
+  slug: string | undefined;
+  baseSku: string | undefined;
+  display: ColorwayDisplay | undefined;
+  prices: ColorwayPrice[] | undefined;
+  soldOut: boolean | undefined;
+  // status is the colourway's stored lifecycle (R6). Type change string→enum on the same wire number
+  // (non-identity, big-bang regen). Only ACTIVE is exposed publicly; an UNKNOWN read fails closed.
+  status: ColorwayLifecycleStatus | undefined;
+  styleId: number | undefined;
+  lockVersion: number | undefined;
+  colorCode: string | undefined;
+  publishedAt: wellKnownTimestamp | undefined;
+};
+
+export type ColorwayDisplay = {
+  thumbnail: MediaFull | undefined;
+  secondaryThumbnail: MediaFull | undefined;
+  merchandising: ColorwayMerchandising | undefined;
   translations: ColorwayInsertTranslation[] | undefined;
-  secondaryThumbnailMediaId: number | undefined;
-  // Legacy duplicate of ColorwayNew.prices. New clients must use the top-level field.
-  // Kept during the compatibility window so already generated clients continue to decode.
-  prices: ColorwayPriceInsert[] | undefined;
-  // cost_price is the confidential per-unit cost of goods (COGS) in base currency (EUR),
-  // used for margin analytics. Omit/empty to leave the stored value unchanged on update.
-  // Deliberately on ColorwayInsert (write-only) and NOT on ColorwayBodyInsert, so it is
-  // never serialized on the storefront product read path.
-  costPrice: googletype_Decimal | undefined;
 };
 
-export type ColorwayBodyInsert = {
+// ColorwayMerchandising is the admin/internal READ projection of a colourway's display fields: the
+// colourway-owned merchandising PLUS the style-resolved garment facts (output-only), so the admin
+// detail view keeps rendering brand/season/collection/etc even though they are now written on the
+// Style. Never reachable from FrontendService (the storefront uses StorefrontColorway, R3).
+export type ColorwayMerchandising = {
   preorder: wellKnownTimestamp | undefined;
   brand: string | undefined;
-  // Optional per-colorway shade override. When absent, clients use dictionary_color.hex.
   colorHexOverride?: string;
   countryOfOrigin: string | undefined;
-  // REQUIRED canonical FK to Dictionary.colors; the sole color/SKU identity on writes.
-  colorCode: string | undefined;
-  // OUTPUT-ONLY resolved dictionary entry. Ignored on write.
-  dictionaryColor: Color | undefined;
   salePercentage: googletype_Decimal | undefined;
   topCategoryId: number | undefined;
   subCategoryId: number | undefined;
@@ -261,13 +269,14 @@ export type ColorwayBodyInsert = {
   modelWearsSizeId: number | undefined;
   careInstructions: string | undefined;
   composition: string | undefined;
-  hidden: boolean | undefined;
   targetGender: GenderEnum | undefined;
   season: SeasonEnum | undefined;
   collection: string | undefined;
   fit: string | undefined;
-  // min_tier is the minimum loyalty tier code required to buy (0/1/2/99).
   minTier: number | undefined;
+  colorCode: string | undefined;
+  dictionaryColor: Color | undefined;
+  countryCode: string | undefined;
 };
 
 // A representation of a decimal value, such as 2.5. Clients may convert values
@@ -324,66 +333,6 @@ export type googletype_Decimal = {
   value: string | undefined;
 };
 
-export type ColorwayPriceInsert = {
-  currency: string | undefined;
-  price: googletype_Decimal | undefined;
-};
-
-export type SizeWithMeasurementInsert = {
-  productSize: VariantInsert | undefined;
-  measurements: ProductMeasurementInsert[] | undefined;
-};
-
-export type VariantInsert = {
-  quantity: googletype_Decimal | undefined;
-  sizeId: number | undefined;
-};
-
-export type ProductMeasurementInsert = {
-  measurementNameId: number | undefined;
-  measurementValue: googletype_Decimal | undefined;
-};
-
-export type ColorwayTagInsert = {
-  tag: string | undefined;
-};
-
-export type ColorwayFull = {
-  colorway: Colorway | undefined;
-  variants: Variant[] | undefined;
-  media: MediaFull[] | undefined;
-  tags: ColorwayTag[] | undefined;
-};
-
-export type Colorway = {
-  id: number | undefined;
-  createdAt: wellKnownTimestamp | undefined;
-  updatedAt: wellKnownTimestamp | undefined;
-  slug: string | undefined;
-  baseSku: string | undefined;
-  display: ColorwayDisplay | undefined;
-  prices: ColorwayPrice[] | undefined;
-  soldOut: boolean | undefined;
-  // status is the colourway's stored lifecycle (R6). Type change string→enum on the same wire number
-  // (non-identity, big-bang regen). Only ACTIVE is exposed publicly; an UNKNOWN read fails closed.
-  status: ColorwayLifecycleStatus | undefined;
-  styleId: number | undefined;
-  lockVersion: number | undefined;
-  colorCode: string | undefined;
-  publishedAt: wellKnownTimestamp | undefined;
-};
-
-export type ColorwayDisplay = {
-  productBody: ColorwayBody | undefined;
-  thumbnail: MediaFull | undefined;
-  secondaryThumbnail: MediaFull | undefined;
-};
-
-export type ColorwayBody = {
-  productBodyInsert: ColorwayBodyInsert | undefined;
-  translations: ColorwayInsertTranslation[] | undefined;
-};
-
 export type ColorwayPrice = {
   currency: string | undefined;
   price: googletype_Decimal | undefined;
@@ -405,23 +354,33 @@ export type ColorwayTag = {
   tagInsert: ColorwayTagInsert | undefined;
 };
 
-export type ProductMeasurementUpdate = {
-  sizeId: number | undefined;
-  measurementNameId: number | undefined;
-  measurementValue: googletype_Decimal | undefined;
+export type ColorwayTagInsert = {
+  tag: string | undefined;
 };
 
-export type SizeWithMeasurement = {
-  productSize: Variant | undefined;
-  measurements: ProductMeasurement[] | undefined;
+// ColorwayMerchandisingInsert (R8: renamed from ColorwayBodyInsert) carries the colourway-owned
+// merchandising fields ONLY. The garment/style facts (brand, season, collection, target_gender, fit,
+// composition, care instructions, model-wears, categories) are owned by the Style and written via
+// UpdateStyle (R4/§14.7) — they are reserved here. The free-text country_of_origin is replaced by the
+// ISO country_code (R9).
+export type ColorwayMerchandisingInsert = {
+  preorder: wellKnownTimestamp | undefined;
+  // Optional per-colorway shade override. When absent, clients use dictionary_color.hex.
+  colorHexOverride?: string;
+  salePercentage: googletype_Decimal | undefined;
+  // min_tier is the minimum loyalty tier code required to buy (0/1/2/99).
+  minTier: number | undefined;
+  // REQUIRED canonical FK to Dictionary.colors; the sole color/SKU identity on writes.
+  colorCode: string | undefined;
+  // OUTPUT-ONLY resolved dictionary entry. Ignored on write.
+  dictionaryColor: Color | undefined;
+  // country_code is the ISO 3166-1 alpha-2 manufacture country (R9; FK Country dict). Colourway-owned.
+  countryCode: string | undefined;
 };
 
-export type ProductMeasurement = {
-  id: number | undefined;
-  productId: number | undefined;
-  productSizeId: number | undefined;
-  measurementNameId: number | undefined;
-  measurementValue: googletype_Decimal | undefined;
+export type ColorwayPriceInsert = {
+  currency: string | undefined;
+  price: googletype_Decimal | undefined;
 };
 
 export type StockChange = {
@@ -570,7 +529,7 @@ export type ArchiveMediaWithCaptionInsert = {
 };
 
 export type ArchiveProductInsert = {
-  productId: number | undefined;
+  colorwayId: number | undefined;
   translations: ArchiveItemTranslation[] | undefined;
 };
 
@@ -581,7 +540,7 @@ export type ArchiveProductsTagInsert = {
 };
 
 export type ArchiveProductsManualInsert = {
-  productIds: number[] | undefined;
+  colorwayIds: number[] | undefined;
   translations: ArchiveItemTranslation[] | undefined;
 };
 
@@ -841,9 +800,8 @@ export type OrderNew = {
 };
 
 export type OrderItemInsert = {
-  productId: number | undefined;
   quantity: number | undefined;
-  sizeId: number | undefined;
+  variantSku: string | undefined;
 };
 
 export type OrderFull = {
@@ -888,10 +846,14 @@ export type OrderItem = {
   topCategoryId: number | undefined;
   subCategoryId: number | undefined;
   typeId: number | undefined;
-  sku: string | undefined;
+  // R2/p021: the frozen variant SKU of the sold line (immutable snapshot; no live fallback). Renamed
+  // from `sku`.
+  variantSkuSnapshot: string | undefined;
   preorder: wellKnownTimestamp | undefined;
   orderItem: OrderItemInsert | undefined;
   translations: ColorwayInsertTranslation[] | undefined;
+  baseSkuSnapshot: string | undefined;
+  sizeNameSnapshot: string | undefined;
 };
 
 export type OrderStatusHistory = {
@@ -930,21 +892,20 @@ export type OrderItemReview = {
   createdAt: wellKnownTimestamp | undefined;
 };
 
-// CustomOrderItemInsert allows custom pricing per item (admin-only).
+// CustomOrderItemInsert allows custom pricing per item (admin-only). Admin addresses the variant by its
+// internal id (R2).
 export type CustomOrderItemInsert = {
-  productId: number | undefined;
   quantity: number | undefined;
-  sizeId: number | undefined;
   customPrice: googletype_Decimal | undefined;
+  variantId: number | undefined;
 };
 
 // OrderItemAdjustment describes a change made during order item validation.
 export type OrderItemAdjustment = {
-  productId: number | undefined;
-  sizeId: number | undefined;
   requestedQuantity: googletype_Decimal | undefined;
   adjustedQuantity: googletype_Decimal | undefined;
   reason: OrderItemAdjustmentReasonEnum | undefined;
+  variantSkuSnapshot: string | undefined;
 };
 
 export type OrderStatus = {
@@ -999,6 +960,7 @@ export type Collection = {
   countWomen: number | undefined;
   code: string | undefined;
   archived: boolean | undefined;
+  id: number | undefined;
 };
 
 // Country is an ISO 3166-1 alpha-2 controlled dictionary (R9). Arbitrary creation is forbidden — the

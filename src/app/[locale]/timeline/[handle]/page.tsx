@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/dist/client/components/not-found";
-import { common_ArchiveFull } from "@/api/proto-http/frontend";
+import { StorefrontArchiveFull } from "@/api/proto-http/frontend";
 import { LANGUAGE_CODE_TO_ID } from "@/constants";
 import { getTranslations } from "next-intl/server";
 
@@ -36,7 +36,7 @@ export async function generateMetadata({
       })
     : { archive: undefined };
 
-  const archive = archiveResponse.archive as common_ArchiveFull | undefined;
+  const archive = archiveResponse.archive as StorefrontArchiveFull | undefined;
   const currentTranslation =
     archive?.archiveList?.translations?.find(
       (t) => t.languageId === localeId,

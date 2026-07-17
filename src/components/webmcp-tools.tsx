@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import type { common_Colorway } from "@/api/proto-http/frontend";
+import type { StorefrontColorway } from "@/api/proto-http/frontend";
 
 import { useServerActionsContext } from "@/components/contexts/ServerActionsContext";
 
@@ -20,8 +20,8 @@ function productPath(slug: string | undefined): string | null {
   return i === -1 ? null : slug.slice(i);
 }
 
-function toCompactProduct(p: common_Colorway) {
-  const translations = p.display?.productBody?.translations;
+function toCompactProduct(p: StorefrontColorway) {
+  const translations = p.display?.translations;
   const name = (translations?.[0]?.name || p.baseSku || "").trim();
   const media = p.display?.thumbnail?.media;
   const image =
@@ -32,7 +32,7 @@ function toCompactProduct(p: common_Colorway) {
   const amount = (priceObj?.price as { value?: string } | undefined)?.value;
   const path = productPath(p.slug);
   return {
-    id: p.id,
+    id: p.baseSku,
     sku: p.baseSku,
     name,
     url: path ? `${SITE}${path}` : undefined,
@@ -88,7 +88,7 @@ export function WebMCPTools() {
         },
       });
 
-      const products = (res.products || []).map(toCompactProduct);
+      const products = (res.colorways || []).map(toCompactProduct);
       return {
         content: [
           {

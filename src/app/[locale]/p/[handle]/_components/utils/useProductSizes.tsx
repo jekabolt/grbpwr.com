@@ -1,46 +1,35 @@
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 
-import { useCart } from "@/lib/stores/cart/store-provider";
 import { formatSizeName } from "@/lib/utils";
-import { useDataContext } from "@/components/contexts/DataContext";
 
-import { useProductBasics } from "./useProductBasics";
+// Sizes are keyed on the public size ordinal (PublicSize.sku_ord) — a stable,
+// public number that is part of the variant SKU — replacing the internal size id.
+// The lean projection exposes stock only as a `sold_out` boolean per variant (no
+// count), so numeric "only N left" low-stock hints degrade: an available size
+// reports a sentinel above the low-stock threshold, a sold-out size reports 0.
+// Real per-unit limits are enforced server-side at order validation.
+const IN_STOCK_SENTINEL = 99;
 
-export function useProductSizes({ product }: { product: common_ColorwayFull }) {
-  const { dictionary } = useDataContext();
-  const { productId } = useProductBasics({ product });
-  const cartProducts = useCart((state) => state.products);
-
+export function useProductSizes({ product }: { product: StorefrontColorway }) {
   const sizes = product.variants;
-  const sizeNames = sizes?.map((s) => {
-    const dictSize = dictionary?.sizes?.find((dictS) => dictS.id === s.sizeId);
-    const rawName = (dictSize?.name || "").trim();
-    const formattedName = formatSizeName(rawName);
 
-    return {
-      id: s.sizeId as number,
-      name: formattedName,
-    };
-  });
+  const sizeNames = sizes?.map((v) => ({
+    id: v.size?.skuOrd as number,
+    name: formatSizeName((v.size?.name || v.size?.code || "").trim()),
+    variantSku: v.variantSku || "",
+  }));
 
   const sizeQuantity: Record<number, number> =
-    product.variants?.reduce(
-      (acc, size) => {
-        const sizeId = size.sizeId as number;
-        const backendQty = Number(size.quantity?.value || "0");
-        const inCartCount = cartProducts.filter(
-          (p) => p.id === productId && Number(p.size) === sizeId,
-        ).length;
-
-        acc[sizeId] = Math.max(0, backendQty - inCartCount);
+    sizes?.reduce(
+      (acc, v) => {
+        acc[v.size?.skuOrd ?? 0] = v.soldOut ? 0 : IN_STOCK_SENTINEL;
         return acc;
       },
       {} as Record<number, number>,
     ) || {};
 
   const isOneSize =
-    sizeNames?.length === 1 &&
-    sizeNames[0].name.toLowerCase() === "one size";
+    sizeNames?.length === 1 && sizeNames[0].name.toLowerCase() === "one size";
 
   return {
     sizes,

@@ -6,7 +6,7 @@ import {
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react";
-import type { common_ColorwayFull } from "@/api/proto-http/frontend";
+import type { StorefrontColorway } from "@/api/proto-http/frontend";
 
 import { Text } from "@/components/ui/text";
 import { MobileProductInfo } from "@/app/[locale]/p/[handle]/_components/mobile-product-info";
@@ -26,12 +26,12 @@ import { PreviewBoundary } from "../_components/preview-boundary";
 // protocol rationale (ready handshake, stale-rev drop, error boundary).
 type ProductDraftMessage = {
   type: "product-draft";
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
   rev: number;
 };
 
 export function ProductPreviewClient() {
-  const [product, setProduct] = useState<common_ColorwayFull | null>(null);
+  const [product, setProduct] = useState<StorefrontColorway | null>(null);
   // Latest applied revision — a ref so the listener drops stale/out-of-order
   // drafts without being torn down and re-subscribed each update.
   const revRef = useRef(-1);
@@ -64,7 +64,7 @@ export function ProductPreviewClient() {
     }
   }
 
-  if (!product || !product.colorway) {
+  if (!product) {
     return (
       <div className="flex min-h-dvh items-center justify-center bg-bgColor p-6">
         <Text variant="uppercase">waiting for editor…</Text>
@@ -73,8 +73,7 @@ export function ProductPreviewClient() {
   }
 
   const productMedia = [...(product.media || [])];
-  const productName =
-    product.colorway.display?.productBody?.translations?.[0]?.name || "";
+  const productName = product.display?.translations?.[0]?.name || "";
 
   return (
     <PreviewBoundary
@@ -95,7 +94,7 @@ export function ProductPreviewClient() {
           <div className="hidden lg:block">
             <ProductImagesCarousel
               productMedia={productMedia}
-              productId={product.colorway.baseSku || ""}
+              productId={product.baseSku || ""}
               productName={productName}
             />
             <ProductInfo product={product} />

@@ -52,12 +52,12 @@ export function SingleFeaturedItem({
   return (
     <div>
       {products?.map((p) => {
-        const productBody = p.display?.productBody?.productBodyInsert;
+        const merch = p.display?.merchandising;
         const price =
           p.prices?.find(
             (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
           ) || p.prices?.[0];
-        const salePercentage = productBody?.salePercentage?.value || "0";
+        const salePercentage = merch?.salePercentage?.value || "0";
         const salePercentageNum = parseInt(salePercentage, 10);
         const isSaleApplied = salePercentageNum > 0;
 
@@ -66,10 +66,9 @@ export function SingleFeaturedItem({
           salePercentage,
         );
 
-        const currentTranslation =
-          p.display?.productBody?.translations?.find(
-            (t) => t.languageId === languageId,
-          );
+        const currentTranslation = p.display?.translations?.find(
+          (t) => t.languageId === languageId,
+        );
         return (
           <div key={p.id} className="relative flex h-screen w-full justify-end">
             <div className="absolute inset-x-2.5 top-1/2 z-40 flex -translate-y-1/2 items-start text-bgColor mix-blend-exclusion selection:bg-inverted selection:text-textColor">

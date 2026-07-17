@@ -1,14 +1,13 @@
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 import { CARE_INSTRUCTIONS_MAP } from "@/constants";
 
-export function useGarmentInfo({ product }: { product: common_ColorwayFull }) {
-  const productBody =
-    product.colorway?.display?.productBody?.productBodyInsert;
+export function useGarmentInfo({ product }: { product: StorefrontColorway }) {
+  const display = product.display;
 
   const { formatted: composition, structured: compositionStructured } =
-    formatCompositionBySections(productBody?.composition || "");
+    formatCompositionBySections(display?.composition || "");
 
-  const careCodes = productBody?.careInstructions
+  const careCodes = display?.careInstructions
     ?.split(",")
     .map((c) => c.trim())
     .filter(Boolean);

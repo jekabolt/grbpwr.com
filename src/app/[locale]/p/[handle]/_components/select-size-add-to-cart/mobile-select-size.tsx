@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
@@ -21,7 +21,7 @@ export function MobileSelectSize({
   onOpenChange,
   handleSizeSelect,
 }: {
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
   activeSizeId: number | undefined;
   sizeQuantity: Record<number, number>;
   open: boolean;

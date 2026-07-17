@@ -2,6 +2,7 @@
 
 import type { common_HeroSplitWithTranslations } from "@/api/proto-http/frontend";
 
+import { heroColorwayToStorefront } from "@/lib/api-adapters/colorway";
 import { cn } from "@/lib/utils";
 import { Carousel } from "@/components/ui/carousel";
 
@@ -56,7 +57,7 @@ export function HeroSplit({
         // with the media box instead of sitting high above the name/price.
         <div className="w-1/2 lg:w-full lg:max-w-[65vh]">
           <ProductItem
-            product={products[0]}
+            product={heroColorwayToStorefront(products[0])}
             className="w-full"
             imagePriority={priority}
             infoClassName="lg:absolute lg:inset-x-0 lg:top-full"
@@ -74,7 +75,7 @@ export function HeroSplit({
               <ProductItem
                 key={p.id}
                 className="flex-[0_0_50%] px-3"
-                product={p}
+                product={heroColorwayToStorefront(p)}
                 imagePriority={priority && idx === 0}
               />
             ))}
@@ -85,7 +86,7 @@ export function HeroSplit({
           {products.map((p, idx) => (
             <ProductItem
               key={p.id}
-              product={p}
+              product={heroColorwayToStorefront(p)}
               className="w-full"
               imagePriority={priority && idx === 0}
             />

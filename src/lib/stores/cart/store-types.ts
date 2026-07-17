@@ -6,8 +6,9 @@ import { StateCreator } from "zustand";
 import { PersistOptions } from "zustand/middleware";
 
 export interface CartProduct {
-  id: number;
-  size: string;
+  // Public variant identity (R2/R3): encodes both colourway (leading base SKU)
+  // and size, replacing the internal (product id, size id) pair. One row per unit.
+  variantSku: string;
   quantity: number;
   productData?: common_OrderItem;
 }
@@ -18,7 +19,7 @@ export interface CartState {
   totalPrice: number;
   subTotalPrice: number;
   isOpen: boolean;
-  productToRemove: { id: number; size: string; index: number } | null;
+  productToRemove: { variantSku: string; index: number } | null;
   /** Currency code used for the last successful validation (keeps symbol in sync with prices) */
   validatedCurrency: string;
   isRevalidating: boolean;
@@ -26,13 +27,12 @@ export interface CartState {
 
 export interface CartActions {
   increaseQuantity: (
-    productId: number,
-    size: string,
+    variantSku: string,
     quantity?: number,
     currency?: string,
     maxOrderItems?: number,
   ) => Promise<boolean>;
-  removeProduct: (productId: number, size: string, index?: number) => void;
+  removeProduct: (variantSku: string, index?: number) => void;
   syncWithValidatedItems: (
     validationResponse: ValidateOrderItemsInsertResponse,
     maxOrderItems?: number,
@@ -43,7 +43,7 @@ export interface CartActions {
   closeCart: () => void;
   toggleCart: () => void;
   setProductToRemove: (
-    product: { id: number; size: string; index: number } | null,
+    product: { variantSku: string; index: number } | null,
   ) => void;
 }
 

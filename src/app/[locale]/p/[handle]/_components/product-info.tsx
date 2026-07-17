@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 
 import { sendViewItemEvent } from "@/lib/analitycs/product";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -20,7 +20,7 @@ import { useMeasurementSizes } from "./utils/useMeasurementSizes";
 import { useProductBasics } from "./utils/useProductBasics";
 import { useProductSizes } from "./utils/useProductSizes";
 
-export function ProductInfo({ product }: { product: common_ColorwayFull }) {
+export function ProductInfo({ product }: { product: StorefrontColorway }) {
   const sizePickerRef = useRef<HTMLDivElement>(null);
   const [hoveredOutOfStockSizeId, setHoveredOutOfStockSizeId] = useState<
     number | null
@@ -28,7 +28,7 @@ export function ProductInfo({ product }: { product: common_ColorwayFull }) {
   const [isNotifyMeOpen, setIsNotifyMeOpen] = useState(false);
 
   const { currentCountry } = useTranslationsStore((s) => s);
-  const { name, productId, productCategory, productSubCategory } =
+  const { name, baseSku, productCategory, productSubCategory } =
     useProductBasics({
       product,
     });
@@ -45,13 +45,11 @@ export function ProductInfo({ product }: { product: common_ColorwayFull }) {
     toastMessage: cartToastMessage,
     setToastOpen: setCartToastOpen,
   } = useHandlers({
-    id: productId,
     sizeNames,
     isOneSize,
     product,
   });
   const { outOfStock, isMaxQuantity } = useDisabled({
-    id: productId,
     activeSizeId,
     product,
   });
@@ -66,11 +64,11 @@ export function ProductInfo({ product }: { product: common_ColorwayFull }) {
 
   const currencyKey = currentCountry.currencyKey || "EUR";
   const productPrice =
-    product.colorway?.prices?.find(
+    product.prices?.find(
       (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
-    ) || product.colorway?.prices?.[0];
+    ) || product.prices?.[0];
   const sizePickerProductContext = {
-    productId: product.colorway?.baseSku || "",
+    productId: product.baseSku || "",
     productName: name || "",
     productCategory: productCategory || "",
     productPrice: parseFloat(productPrice?.price?.value || "0"),
@@ -98,7 +96,7 @@ export function ProductInfo({ product }: { product: common_ColorwayFull }) {
   return (
     <div className="relative">
       <NotifyMe
-        id={productId}
+        baseSku={baseSku}
         open={isNotifyMeOpen}
         onOpenChange={setIsNotifyMeOpen}
         sizeNames={sizeNames}

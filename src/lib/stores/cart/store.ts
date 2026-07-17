@@ -7,6 +7,7 @@ import {
 import { createStore } from "zustand/vanilla";
 
 import { validateCartItems } from "@/lib/cart/validate-cart-items";
+import { baseSkuOf } from "@/lib/slug-tail";
 
 import { CartProduct, CartState, CartStore } from "./store-types";
 
@@ -84,16 +85,16 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
         setProductToRemove: (product) => set({ productToRemove: product }),
 
         increaseQuantity: async (
-          productId: number,
-          size: string,
+          variantSku: string,
           quantity: number = 1,
           currency?: string,
           maxOrderItems: number = 3,
         ): Promise<boolean> => {
           const { products } = get();
 
+          const baseSku = baseSkuOf(variantSku);
           const existingItemCount = products.filter(
-            (p) => p.id === productId,
+            (p) => baseSkuOf(p.variantSku) === baseSku,
           ).length;
 
           if (existingItemCount + quantity > maxOrderItems) {
@@ -102,7 +103,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
           const newItems = Array(quantity)
             .fill(null)
-            .map(() => ({ id: productId, size, quantity }));
+            .map(() => ({ variantSku, quantity }));
 
           const updatedProducts = [...products, ...newItems];
 
@@ -135,7 +136,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             const { response } = result;
 
             const validatedItemsForProduct = (response.validItems || []).filter(
-              (item) => item.orderItem?.productId === productId,
+              (item) => baseSkuOf(item.orderItem?.variantSku) === baseSku,
             );
 
             const totalValidatedQuantity = validatedItemsForProduct.reduce(
@@ -150,9 +151,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             const validatedProducts = updatedProducts.map((product) => ({
               ...product,
               productData: response.validItems?.find(
-                (item) =>
-                  item.orderItem?.productId === product.id &&
-                  item.orderItem?.sizeId === Number(product.size),
+                (item) => item.orderItem?.variantSku === product.variantSku,
               ),
             }));
 
@@ -170,7 +169,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
           }
         },
 
-        removeProduct: (productId: number, size: string, index?: number) => {
+        removeProduct: (variantSku: string, index?: number) => {
           const { products } = get();
 
           let updatedProducts: typeof products;
@@ -182,7 +181,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             ];
           } else {
             const productIndex = products.findIndex(
-              (p) => p.id === productId && p.size === size,
+              (p) => p.variantSku === variantSku,
             );
 
             if (productIndex === -1) return;
@@ -237,26 +236,28 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
 
           let rebuiltProducts: CartProduct[] = [];
 
-          const itemsByProduct = new Map<number, typeof validItems>();
+          // Group by colourway (base SKU) so the per-colourway max still caps a
+          // rebuilt cart, then expand each validated line to one row per unit.
+          const itemsByColorway = new Map<string, typeof validItems>();
           for (const item of validItems) {
-            const orderItem = item.orderItem;
-            if (!orderItem?.productId || !orderItem.sizeId) continue;
+            const variantSku = item.orderItem?.variantSku;
+            if (!variantSku) continue;
 
-            const productId = orderItem.productId;
-            if (!itemsByProduct.has(productId)) {
-              itemsByProduct.set(productId, []);
+            const baseSku = baseSkuOf(variantSku);
+            if (!itemsByColorway.has(baseSku)) {
+              itemsByColorway.set(baseSku, []);
             }
-            itemsByProduct.get(productId)!.push(item);
+            itemsByColorway.get(baseSku)!.push(item);
           }
 
-          for (const [productId, productItems] of itemsByProduct) {
+          for (const [, colorwayItems] of itemsByColorway) {
             let totalItemsAdded = 0;
 
-            for (const item of productItems) {
-              const orderItem = item.orderItem;
-              if (!orderItem?.sizeId) continue;
+            for (const item of colorwayItems) {
+              const variantSku = item.orderItem?.variantSku;
+              if (!variantSku) continue;
 
-              const backendQty = orderItem.quantity || 0;
+              const backendQty = item.orderItem?.quantity || 0;
               if (backendQty <= 0) continue;
 
               const remainingLimit = maxOrderItems - totalItemsAdded;
@@ -266,8 +267,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
               if (itemsToAdd <= 0) continue;
 
               const newProducts = Array.from({ length: itemsToAdd }, () => ({
-                id: productId,
-                size: String(orderItem.sizeId),
+                variantSku,
                 quantity: 1,
                 productData: item,
               }));
@@ -313,9 +313,7 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             const validatedProducts = products.map((product) => ({
               ...product,
               productData: response.validItems?.find(
-                (item) =>
-                  item.orderItem?.productId === product.id &&
-                  item.orderItem?.sizeId === Number(product.size),
+                (item) => item.orderItem?.variantSku === product.variantSku,
               ),
             }));
 

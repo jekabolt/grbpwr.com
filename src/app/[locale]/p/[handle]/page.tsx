@@ -33,26 +33,23 @@ export async function generateMetadata({
   const localeId = LANGUAGE_CODE_TO_ID[locale];
 
   const baseSku = baseSkuFromHandle(handle);
-  const { product } = baseSku
-    ? await serviceClient.GetColorway({ sku: baseSku })
-    : { product: undefined };
+  const { colorway } = baseSku
+    ? await serviceClient.GetColorway({ baseSku })
+    : { colorway: undefined };
 
-  const productMedia = [...(product?.media || [])];
-  const productBody = product?.colorway?.display?.productBody;
+  const productMedia = [...(colorway?.media || [])];
+  const translations = colorway?.display?.translations;
 
-  const title = productBody?.translations?.find(
-    (t) => t.languageId === localeId,
-  )?.name;
-  const description = productBody?.translations?.find(
+  const title = translations?.find((t) => t.languageId === localeId)?.name;
+  const description = translations?.find(
     (t) => t.languageId === localeId,
   )?.description;
 
-  const insert = productBody?.productBodyInsert;
-  const color = insert?.dictionaryColor?.name ?? insert?.colorCode;
+  const color = colorway?.colorCode;
   // Use the product's thumbnail (compressed) as the link-preview image, falling
   // back to the first gallery media if no thumbnail is set.
   const productImage =
-    product?.colorway?.display?.thumbnail?.media?.compressed ??
+    colorway?.display?.thumbnail?.media?.compressed ??
     productMedia[0]?.media?.compressed;
 
   // type:"product" suppresses the default og:type=website; og:type=product and
@@ -86,18 +83,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const { product } = await serviceClient.GetColorway({ sku: baseSku });
+  const { colorway } = await serviceClient.GetColorway({ baseSku });
 
-  if (!product || !product.colorway) {
+  if (!colorway) {
     notFound();
   }
 
-  const productMedia = [...(product?.media || [])];
-  const jsonLd = productJsonLd(product, locale);
+  const productMedia = [...(colorway.media || [])];
+  const jsonLd = productJsonLd(colorway, locale);
   // Open Graph product tags. Rendered here (not via the metadata API, which
   // throws on og:type values outside its fixed union) as <meta property> JSX —
   // React hoists them into <head>.
-  const offer = productOfferForLocale(product, locale);
+  const offer = productOfferForLocale(colorway, locale);
 
   // Single descriptive H1 (the product name) rendered once at page level — both
   // the desktop and mobile info blocks are in the DOM (CSS-toggled), so putting
@@ -105,16 +102,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
   // shows in the info block.
   const localeId = LANGUAGE_CODE_TO_ID[locale];
   const productName =
-    product?.colorway?.display?.productBody?.translations?.find(
-      (t) => t.languageId === localeId,
-    )?.name ||
-    product?.colorway?.baseSku ||
+    colorway.display?.translations?.find((t) => t.languageId === localeId)
+      ?.name ||
+    colorway.baseSku ||
     "";
 
   // The gender segment is no longer in the URL; derive the back-nav fallback
   // catalog from the colorway's target gender.
-  const targetGender =
-    product?.colorway?.display?.productBody?.productBodyInsert?.targetGender;
+  const targetGender = colorway.display?.targetGender;
   const gender = targetGender ? GENDER_MAP_REVERSE[targetGender] : undefined;
 
   return (
@@ -134,19 +129,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
       )}
       {productName && <h1 className="sr-only">{productName}</h1>}
       <div className="block lg:hidden">
-        {product && <MobileProductInfo product={product} />}
+        <MobileProductInfo product={colorway} />
       </div>
       <div className="hidden lg:block">
         <ProductImagesCarousel
           productMedia={productMedia}
-          productId={product?.colorway?.baseSku || ""}
-          productName={
-            product?.colorway?.display?.productBody?.translations?.[0]?.name ||
-            ""
-          }
+          productId={colorway.baseSku || ""}
+          productName={colorway.display?.translations?.[0]?.name || ""}
         />
-        {product && <ProductInfo product={product} />}
-        {product?.colorway && <LastViewedProducts product={product.colorway} />}
+        <ProductInfo product={colorway} />
+        <LastViewedProducts product={colorway} />
       </div>
     </ProductPageLayout>
   );

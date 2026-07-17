@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
-import { common_Colorway } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 import { useInView } from "react-intersection-observer";
 
 import { useLastViewed } from "@/lib/stores/last-viewed/store-provider.";
@@ -17,7 +17,7 @@ const LastViewedList = dynamic(
 );
 
 interface LastViewedProductsProps {
-  product: common_Colorway;
+  product: StorefrontColorway;
 }
 
 export function LastViewedProducts({ product }: LastViewedProductsProps) {
@@ -38,7 +38,7 @@ export function LastViewedProducts({ product }: LastViewedProductsProps) {
 
   return (
     <div ref={ref}>
-      {inView && <LastViewedList currentProductId={product.id} />}
+      {inView && <LastViewedList currentProductId={product.baseSku} />}
     </div>
   );
 }

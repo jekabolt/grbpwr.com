@@ -1,4 +1,7 @@
-import type { common_FilterConditions, common_Colorway } from "@/api/proto-http/frontend";
+import type {
+  common_FilterConditions,
+  StorefrontColorway,
+} from "@/api/proto-http/frontend";
 import { LANGUAGE_CODE_TO_ID } from "@/constants";
 import { routing } from "@/i18n/routing";
 import { serviceClient } from "@/lib/api";
@@ -33,11 +36,14 @@ function productPathFromSlug(slug: string | undefined): string | null {
   return slug.slice(i);
 }
 
-function isProductIndexable(product: common_Colorway): boolean {
-  return product.display?.productBody?.productBodyInsert?.hidden !== true;
+function isProductIndexable(product: StorefrontColorway): boolean {
+  // The storefront colourway projection only exposes ACTIVE, public colourways
+  // (hidden/draft never reach it, R3/R6), so everything returned is indexable.
+  void product;
+  return true;
 }
 
-function primaryImageLoc(product: common_Colorway): string | undefined {
+function primaryImageLoc(product: StorefrontColorway): string | undefined {
   const media = product.display?.thumbnail?.media;
   const url =
     media?.compressed?.mediaUrl ||
@@ -46,9 +52,12 @@ function primaryImageLoc(product: common_Colorway): string | undefined {
   return url?.trim() || undefined;
 }
 
-function productNameForLocale(product: common_Colorway, locale: string): string {
+function productNameForLocale(
+  product: StorefrontColorway,
+  locale: string,
+): string {
   const languageId = LANGUAGE_CODE_TO_ID[locale];
-  const translations = product.display?.productBody?.translations;
+  const translations = product.display?.translations;
   const hit = translations?.find((t) => t.languageId === languageId);
   return (hit?.name || translations?.[0]?.name || product.baseSku || "").trim();
 }
@@ -58,7 +67,7 @@ export async function buildProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
   let offset = 0;
 
   for (;;) {
-    const { products, total } = await serviceClient.GetColorwaysPaged({
+    const { colorways, total } = await serviceClient.GetColorwaysPaged({
       limit: SITEMAP_PRODUCT_PAGE_SIZE,
       offset,
       sortFactors: ["SORT_FACTOR_UPDATED_AT"],
@@ -66,7 +75,7 @@ export async function buildProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
       filterConditions: productListFilters,
     });
 
-    const batch = products ?? [];
+    const batch = colorways ?? [];
 
     for (const p of batch) {
       if (!isProductIndexable(p)) continue;
@@ -74,7 +83,8 @@ export async function buildProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
       if (!productPath) continue;
 
       const imageLoc = primaryImageLoc(p);
-      const lastMod = p.updatedAt ? new Date(p.updatedAt) : new Date();
+      // The lean projection carries no per-colourway timestamp (R3); use "now".
+      const lastMod = new Date();
       const alternates = hreflangAlternates(productPath);
 
       for (const locale of routing.locales) {

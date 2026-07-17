@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import { sendProductDetailsExpansionEvent } from "@/lib/analitycs/product-engagement";
@@ -15,7 +15,7 @@ import { useProductBasics } from "./utils/useProductBasics";
 export function GarmentDescription({
   product,
 }: {
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
 }) {
   const { description, isComposition, isCare, collection } = useProductBasics({
     product,
@@ -30,9 +30,8 @@ export function GarmentDescription({
   const tCare = useTranslations("care");
 
   const [infoOpenItem, setInfoOpenItem] = useState<string>("");
-  const productId = product.colorway?.baseSku || "";
-  const productName =
-    product.colorway?.display?.productBody?.translations?.[0]?.name || "";
+  const productId = product.baseSku || "";
+  const productName = product.display?.translations?.[0]?.name || "";
 
   const handleValueChange = (value: string) => {
     const sectionMap: Record<string, "description" | "composition" | "care"> = {

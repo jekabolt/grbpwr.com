@@ -1,68 +1,61 @@
 import {
-  common_Colorway,
-  common_ColorwayFull,
-  common_Variant,
+  StorefrontColorway,
+  StorefrontVariant,
 } from "@/api/proto-http/frontend";
 
 import { AnalyticsItem, EcommerceEvent, pushToDataLayer } from "../utils";
 
-// R3: view events before a size is chosen use the first available variant in
-// canonical ordinal order. The final StorefrontVariant carries size.sku_ord; the
-// intermediate Variant only exposes size_id, so we stand in with size_id ordering
-// and ACTIVE status. TODO(final-bump): order by PublicSize.sku_ord.
+// R3: view/list events before a size is chosen use the first available variant in
+// canonical ordinal order (PublicSize.sku_ord), so item_id is always a real variant
+// SKU. Only ACTIVE colourways are served publicly; a sold-out variant is skipped.
 function firstAvailableVariant(
-  full: common_ColorwayFull | undefined,
-): common_Variant | undefined {
-  const active = (full?.variants || []).filter(
-    (v) => v.status === "VARIANT_LIFECYCLE_STATUS_ACTIVE",
-  );
-  return [...active].sort((a, b) => (a.sizeId || 0) - (b.sizeId || 0))[0];
+  colorway: StorefrontColorway | undefined,
+): StorefrontVariant | undefined {
+  const available = (colorway?.variants || []).filter((v) => !v.soldOut);
+  const pool = available.length ? available : colorway?.variants || [];
+  return [...pool].sort(
+    (a, b) => (a.size?.skuOrd || 0) - (b.size?.skuOrd || 0),
+  )[0];
 }
 
 export function mapItemsToDataLayer(
-  product: common_Colorway,
+  product: StorefrontColorway,
   quantity: number,
   topCategory: string,
   subCategory: string,
   selectedCurrency: string,
-  variant?: common_Variant,
+  variant?: StorefrontVariant,
 ): AnalyticsItem {
   const currencyKey = selectedCurrency || "EUR";
-  const productBody = product.display?.productBody?.productBodyInsert;
+  const display = product.display;
   const price =
     product.prices?.find(
       (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
     ) || product.prices?.[0];
   const priceValue = parseFloat(price?.price?.value || "0");
-  const salePercentage = parseFloat(productBody?.salePercentage?.value || "0");
-  const discount = (priceValue * salePercentage) / 100;
-  const salePrice = priceValue - discount;
+  const chosen = variant ?? firstAvailableVariant(product);
 
   return {
     // R3 identity: item_group_id = base SKU (colourway); item_id = a variant SKU.
-    // In list/grid contexts the intermediate contract exposes only the colourway
-    // (no variants), so item_id falls back to the base SKU.
-    // TODO(final-bump): item_id is always the variant SKU (StorefrontVariant).
-    item_id: variant?.variantSku || product.baseSku || "",
+    item_id: chosen?.variantSku || product.baseSku || "",
     item_group_id: product.baseSku || "",
-    item_name: product.display?.productBody?.translations?.[0]?.name || "",
-    item_brand: productBody?.brand || "",
+    item_name: display?.translations?.[0]?.name || "",
+    item_brand: display?.brand || "",
     item_category: topCategory || "",
     item_category2: subCategory || "",
-    // R3: item_variant = public size code. The intermediate variant carries only
-    // size_id, not the public code, so this stays empty for now.
-    // TODO(final-bump): StorefrontVariant.size.code.
-    item_variant: "",
-    discount: discount > 0 ? discount : 0,
-    // Net (post-sale) unit price: GA4 item revenue is price × quantity and
-    // ignores the `discount` field, so a pre-sale price here inflates revenue.
-    price: salePrice > 0 ? salePrice : priceValue || 0,
+    // R3: item_variant = the public size code (StorefrontVariant.size.code).
+    item_variant: chosen?.size?.code || "",
+    // The lean storefront projection carries no per-colourway sale percentage, so
+    // the storefront cannot compute a discount here; sale pricing is authoritative
+    // at order validation. Card/PDP analytics report the list price (discount 0).
+    discount: 0,
+    price: priceValue || 0,
     quantity: quantity || 1,
   };
 }
 
 export function sendViewItemListEvent(
-  products: common_Colorway[],
+  products: StorefrontColorway[],
   listName: string,
   listId: string,
   topCategory: string,
@@ -88,7 +81,7 @@ export function sendViewItemListEvent(
 }
 
 export function sendSelectItemEvent(
-  product: common_Colorway,
+  product: StorefrontColorway,
   listName: string,
   listId: string,
   topCategory: string,
@@ -120,18 +113,16 @@ export function sendSelectItemEvent(
 }
 
 export function sendViewItemEvent(
-  product: common_ColorwayFull,
+  product: StorefrontColorway,
   topCategory: string,
   subCategory: string,
   selectedCurrency: string,
 ) {
-  if (!product || !product?.colorway) return;
+  if (!product || !product.baseSku) return;
 
   const currencyKey = selectedCurrency || "EUR";
-  // Reuse the mapped item so the event `value` matches the item's net price
-  // (post-sale) instead of the pre-sale list price.
   const mappedItem = mapItemsToDataLayer(
-    product.colorway,
+    product,
     1,
     topCategory,
     subCategory,

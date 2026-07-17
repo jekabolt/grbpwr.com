@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
@@ -40,7 +40,7 @@ export function AddToCartBtn({
   product,
   handlers,
 }: {
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
   handlers?: Handlers;
 }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -61,7 +61,6 @@ export function AddToCartBtn({
     sizeQuantity: internalSizeQuantity,
   } = useProductSizes({ product });
   const internalHandlers = useHandlers({
-    id: product.colorway?.id || 0,
     sizeNames,
     isOneSize,
     product,
@@ -76,7 +75,6 @@ export function AddToCartBtn({
     outOfStock: internalOutOfStock,
     isMaxQuantity: internalIsMaxQuantity,
   } = useDisabled({
-    id: product.colorway?.id || 0,
     activeSizeId: internalHandlers.activeSizeId,
     product,
   });
@@ -103,7 +101,7 @@ export function AddToCartBtn({
   const isNoSizeSelected = !activeSizeId && isHovered && !isMobile;
   const isSelectedSizeOutOfStock = activeSizeId && outOfStock?.[activeSizeId];
   const isHoveringOutOfStock = hoveredOutOfStockSizeId !== null;
-  const isSoldOut = product.colorway?.soldOut === true;
+  const isSoldOut = product.soldOut === true;
   const t = useTranslations("product");
 
   const handleAddToCartClick = () => {
@@ -150,7 +148,7 @@ export function AddToCartBtn({
   return (
     <>
       <NotifyMe
-        id={product.colorway?.id || 0}
+        baseSku={product.baseSku || ""}
         open={isNotifyMeOpen}
         onOpenChange={setIsNotifyMeOpen}
         sizeNames={sizeNames}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import { sendAddToCartEvent } from "@/lib/analitycs/cart";
@@ -11,15 +11,13 @@ import { useDataContext } from "@/components/contexts/DataContext";
 import { useProductBasics } from "./useProductBasics";
 
 export function useHandlers({
-  id,
   sizeNames,
   isOneSize,
   product,
 }: {
-  id: number;
   sizeNames?: { name: string; id: number }[];
   isOneSize?: boolean;
-  product?: common_ColorwayFull;
+  product?: StorefrontColorway;
 }) {
   const { increaseQuantity, openCart } = useCart((state) => state);
   const { currentCountry } = useTranslationsStore((s) => s);
@@ -35,8 +33,12 @@ export function useHandlers({
   const maxOrderItems = dictionary?.maxOrderItems || 3;
 
   const { productCategory, productSubCategory } = useProductBasics({
-    product: product as common_ColorwayFull,
+    product: product as StorefrontColorway,
   });
+
+  // Resolve the public size ordinal (the UI key) to the variant the cart addresses.
+  const variantForOrd = (ord: number | undefined) =>
+    product?.variants?.find((v) => v.size?.skuOrd === ord);
 
   useEffect(() => {
     if (isOneSize && sizeNames?.length === 1 && !activeSizeId) {
@@ -72,9 +74,12 @@ export function useHandlers({
 
     try {
       const currency = currentCountry.currencyKey || "EUR";
+      const variant = variantForOrd(activeSizeId);
+      if (!variant?.variantSku) {
+        return false;
+      }
       const success = await increaseQuantity(
-        id,
-        activeSizeId?.toString() || "",
+        variant.variantSku,
         1,
         currency,
         maxOrderItems,
@@ -89,7 +94,8 @@ export function useHandlers({
           product,
           productCategory || "",
           productSubCategory || "",
-          currentCountry.currencyKey || "EUR",
+          currency,
+          variant,
         );
       }
 
@@ -122,9 +128,12 @@ export function useHandlers({
     if (fromMobileDialog || options?.addToCart) {
       try {
         const currency = currentCountry.currencyKey || "EUR";
+        const variant = variantForOrd(sizeId);
+        if (!variant?.variantSku) {
+          return false;
+        }
         const success = await increaseQuantity(
-          id,
-          sizeId.toString(),
+          variant.variantSku,
           1,
           currency,
           maxOrderItems,
@@ -139,7 +148,8 @@ export function useHandlers({
             product,
             productCategory || "",
             productSubCategory || "",
-            currentCountry.currencyKey || "EUR",
+            currency,
+            variant,
           );
         }
 

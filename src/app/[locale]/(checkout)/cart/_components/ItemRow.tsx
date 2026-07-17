@@ -83,7 +83,7 @@ export default function ItemRow({
         </Text>
         <div>
           <Text variant="uppercase">{tColors(product.color || "")}</Text>
-          <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+          <CartItemSize sizeName={product.sizeNameSnapshot || ""} />
         </div>
       </div>
       {preorderDate && isDateTodayOrFuture(rawPreorderDate || "") && (
@@ -139,8 +139,7 @@ export default function ItemRow({
         >
           {!hideQuantityButtons && (
             <ProductRemoveButton
-              id={product.orderItem?.productId || 0}
-              size={product.orderItem?.sizeId + "" || ""}
+              variantSku={product.variantSkuSnapshot || ""}
               index={index}
             />
           )}

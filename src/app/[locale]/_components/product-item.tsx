@@ -1,17 +1,11 @@
 import { useState } from "react";
-import type { common_Colorway } from "@/api/proto-http/frontend";
-import {
-  currencySymbols,
-  EMPTY_PREORDER,
-  PLURIAL_SINGLE_CATEGORY_MAP,
-} from "@/constants";
+import type { StorefrontColorway } from "@/api/proto-http/frontend";
+import { currencySymbols } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { getSubCategoryName, getTopCategoryName } from "@/lib/categories-map";
 import { formatPrice } from "@/lib/currency";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { cn, isDateTodayOrFuture } from "@/lib/utils";
-import { useDataContext } from "@/components/contexts/DataContext";
+import { cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -29,7 +23,7 @@ export function ProductItem({
   infoClassName,
   imageFit = "contain",
 }: {
-  product: common_Colorway;
+  product: StorefrontColorway;
   className: string;
   isInfoVisible?: boolean;
   disableAnimations?: boolean;
@@ -44,12 +38,9 @@ export function ProductItem({
   imageFit?: "contain" | "cover";
 }) {
   const tCatalog = useTranslations("catalog");
-  const t = useTranslations("categories");
   const tFit = useTranslations("fit");
-  const tProduct = useTranslations("product");
 
-  const { dictionary } = useDataContext();
-  const { currentCountry } = useTranslationsStore((s) => s);
+  const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const { handleSelectItemEvent } = useAnalytics();
   const visited = useVisitedLink(product?.slug);
 
@@ -59,34 +50,17 @@ export function ProductItem({
   const onPressEnd = () => setPressed(false);
 
   const currencyKey = currentCountry.currencyKey || "EUR";
-  const productBody = product.display?.productBody?.productBodyInsert;
-  const salePercentage = productBody?.salePercentage?.value || "0";
-  const isSaleApplied = salePercentage && salePercentage !== "0";
+  const display = product.display;
+  // The lean storefront projection (R3) carries no per-colourway sale percentage,
+  // category ids or preorder date, so the card shows the list price only and labels
+  // itself with the product's own translated name (falling back to the fit) instead
+  // of the former "{fit} {category}" caption.
   const isSoldOut = product.soldOut;
-  const preorder = productBody?.preorder;
-  const fit = productBody?.fit ? tFit(productBody.fit) : "";
-  const topCategory = getTopCategoryName(
-    dictionary?.categories || [],
-    productBody?.topCategoryId || 0,
-  );
-  const subCategory = getSubCategoryName(
-    dictionary?.categories || [],
-    productBody?.subCategoryId || 0,
-  );
-  const categoryName = (subCategory || topCategory || "").toLowerCase();
-  const singularCategory =
-    PLURIAL_SINGLE_CATEGORY_MAP[categoryName] ||
-    subCategory ||
-    topCategory ||
-    "";
-  const translatedCategory = singularCategory
-    ? t(singularCategory.toLowerCase())
-    : "";
-  // Objects use their category/sub-category name as-is (no "fit" prefix that
-  // garments get).
-  const isObjects = topCategory?.toLowerCase() === "objects";
-  const name =
-    fit && !isObjects ? `${fit} ${translatedCategory}` : translatedCategory;
+  const currentTranslation =
+    display?.translations?.find((tr) => tr.languageId === languageId) ||
+    display?.translations?.[0];
+  const fit = display?.fit ? tFit(display.fit) : "";
+  const name = currentTranslation?.name || fit || "";
 
   const productPrice =
     product.prices?.find(
@@ -96,15 +70,7 @@ export function ProductItem({
   const priceValue = productPrice?.price?.value || "0";
   const currencySymbol = currencySymbols[currencyKey] || currencySymbols["EUR"];
 
-  const priceWithSale =
-    (parseFloat(priceValue) * (100 - parseInt(salePercentage || "0"))) / 100;
-
   const formattedPrice = formatPrice(priceValue, currencyKey, currencySymbol);
-  const formattedPriceWithSale = formatPrice(
-    priceWithSale,
-    currencyKey,
-    currencySymbol,
-  );
 
   return (
     <div className={cn("relative", className)}>
@@ -183,18 +149,7 @@ export function ProductItem({
             {isSoldOut ? (
               <Text>{tCatalog("sold out")}</Text>
             ) : (
-              <>
-                <Text
-                  variant={isSaleApplied ? "strileTroughInactive" : "default"}
-                >
-                  {formattedPrice}
-                </Text>
-                {isSaleApplied && <Text>{formattedPriceWithSale}</Text>}
-                {preorder !== EMPTY_PREORDER &&
-                  isDateTodayOrFuture(preorder || "") && (
-                    <Text variant="inactive">{tProduct("preorder")}</Text>
-                  )}
-              </>
+              <Text>{formattedPrice}</Text>
             )}
           </div>
         </div>

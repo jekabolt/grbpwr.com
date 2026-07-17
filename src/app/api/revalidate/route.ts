@@ -23,10 +23,11 @@ export async function POST(request: Request) {
 
   if (Array.isArray(data.products) && data.products.length > 0) {
     revalidateTag(PRODUCTS_CACHE_TAG);
-    // Product pages are keyed by base SKU in /p/[handle]; the webhook only sends
-    // ids, so revalidate the product route as a whole (the tag above already
-    // refreshes the fetched data). TODO(final-bump): revalidate the exact
-    // /p/{handle} if the payload starts carrying base SKUs.
+    // Product pages are keyed by base SKU in /p/[handle]; the backend revalidation
+    // webhook payload (owned outside the proto contract) still sends ids, so we
+    // revalidate the product route as a whole — the tag above already refreshes the
+    // fetched data. If that payload ever carries base SKUs, this can narrow to the
+    // exact /p/{handle}.
     revalidatePath("/[locale]/p/[handle]", "page");
     // Revalidate all catalog pages (dynamic routes)
     revalidatePath("/catalog", "layout");

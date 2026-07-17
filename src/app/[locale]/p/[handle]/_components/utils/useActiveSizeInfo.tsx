@@ -1,6 +1,4 @@
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
-
-import { useDataContext } from "@/components/contexts/DataContext";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 
 import { useProductSizes } from "./useProductSizes";
 
@@ -27,10 +25,9 @@ export function useActiveSizeInfo({
   product,
   activeSizeId,
 }: {
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
   activeSizeId: number | undefined;
 }) {
-  const { dictionary } = useDataContext();
   const { sizeNames, sizeQuantity } = useProductSizes({ product });
 
   const activeSizeName = activeSizeId
@@ -43,12 +40,9 @@ export function useActiveSizeInfo({
       ? lowStockTextMap[activeSizeQuantity]
       : "";
 
-  const categoryId = dictionary?.categories?.find((c) =>
-    sizeNames?.some((s) => s.id === activeSizeId),
-  )?.id;
-  const categoryData = dictionary?.categories?.find((c) => c.id === categoryId);
-  const category = categoryData?.name || "";
-  const isShoes = category.toLowerCase().includes("shoes");
+  // Category ids are gone (R3); derive the shoe suffix from the public size system.
+  const isShoes =
+    product.variants?.[0]?.size?.system === "SIZE_SKU_SYSTEM_SHOE";
 
   const triggerText = activeSizeName
     ? getSizeText(isShoes, activeSizeName)

@@ -1,4 +1,4 @@
-import type { common_Colorway } from "@/api/proto-http/frontend";
+import type { StorefrontColorway } from "@/api/proto-http/frontend";
 import { CATALOG_LIMIT } from "@/constants";
 
 import { ProductSkeleton } from "../catalog/_components/catalog-skeleton";
@@ -9,7 +9,7 @@ export default function ProductsGridSection({
   isLoading,
   total,
 }: {
-  products: common_Colorway[] | undefined;
+  products: StorefrontColorway[] | undefined;
   isLoading: boolean;
   total: number;
 }) {
@@ -21,7 +21,7 @@ export default function ProductsGridSection({
         // Prioritize first 4 items (2 rows on mobile, 1 row on desktop)
         const isPriority = index < 4;
         return (
-          <div key={v.id}>
+          <div key={v.baseSku}>
             <ProductItem
               className="mx-auto"
               product={v}

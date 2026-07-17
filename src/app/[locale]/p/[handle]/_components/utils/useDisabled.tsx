@@ -1,26 +1,29 @@
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 
 import { useCart } from "@/lib/stores/cart/store-provider";
+import { baseSkuOf } from "@/lib/slug-tail";
 import { useDataContext } from "@/components/contexts/DataContext";
 
 type Props = {
-  id: number;
-  product?: common_ColorwayFull;
+  product?: StorefrontColorway;
   activeSizeId: number | undefined;
 };
 
-export function useDisabled({ id, activeSizeId, product }: Props) {
+export function useDisabled({ product }: Props) {
   const { dictionary } = useDataContext();
   const { products } = useCart((state) => state);
 
   const maxOrderItems = dictionary?.maxOrderItems || 3;
-  const existingItemCount = products.filter((p) => p.id === id).length;
+  const baseSku = product?.baseSku || "";
+  const existingItemCount = products.filter(
+    (p) => baseSkuOf(p.variantSku) === baseSku,
+  ).length;
   const isMaxQuantity = existingItemCount >= maxOrderItems;
 
   const outOfStock =
     product?.variants?.reduce(
-      (acc, size) => {
-        acc[size.sizeId || 0] = size.quantity?.value === "0";
+      (acc, v) => {
+        acc[v.size?.skuOrd ?? 0] = v.soldOut === true;
         return acc;
       },
       {} as Record<number, boolean>,

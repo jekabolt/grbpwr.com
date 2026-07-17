@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { common_Colorway } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 
 import {
   sendSelectItemEvent,
@@ -75,7 +75,7 @@ export function useAnalytics() {
   const currencyKey = currentCountry.currencyKey || "EUR";
 
   const handleSelectItemEvent = useCallback(
-    (product: common_Colorway) => {
+    (product: StorefrontColorway) => {
       sendSelectItemEvent(
         product,
         listName,
@@ -95,7 +95,7 @@ export function useAnalytics() {
   );
 
   const handleViewItemListEvent = useCallback(
-    (products: common_Colorway[]) => {
+    (products: StorefrontColorway[]) => {
       sendViewItemListEvent(
         products,
         listName,

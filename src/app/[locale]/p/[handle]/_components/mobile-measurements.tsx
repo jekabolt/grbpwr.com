@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
@@ -46,7 +46,7 @@ export function MobileMeasurements({
 
   const handleOpenChange = (isOpen: boolean) => {
     if (isOpen) {
-      const productId = product.colorway?.baseSku || "";
+      const productId = product.baseSku || "";
       const pageLocation =
         typeof window !== "undefined" ? window.location.pathname : "";
       sendSizeGuideClickEvent({
@@ -165,7 +165,7 @@ export function MobileMeasurements({
 }
 
 export type MobileMeasurementsProps = {
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
   selectedSize: number;
   outOfStock?: Record<number, boolean>;
   isOneSize?: boolean;

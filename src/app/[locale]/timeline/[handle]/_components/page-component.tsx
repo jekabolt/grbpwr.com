@@ -2,12 +2,12 @@
 
 import { Children, useRef, useState, type ReactNode } from "react";
 import {
-  common_ArchiveFull,
-  common_ArchiveItemFull,
   common_ArchiveItemTranslation,
   common_ArchiveMediaAspectRatio,
   common_MediaFull,
-  common_Colorway,
+  StorefrontArchiveFull,
+  StorefrontArchiveItemFull,
+  StorefrontColorway,
 } from "@/api/proto-http/frontend";
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
@@ -354,7 +354,7 @@ function ProductsBlock({
   products,
   caption,
 }: {
-  products: common_Colorway[];
+  products: StorefrontColorway[];
   caption: string | undefined;
 }) {
   const isMobile = useMediaQuery("(max-width: 1023px)");
@@ -362,7 +362,7 @@ function ProductsBlock({
 
   const cards = products.map((p, i) => (
     <ProductItem
-      key={p.id}
+      key={p.baseSku}
       product={p}
       className="mx-auto"
       imageFit="cover"
@@ -398,7 +398,7 @@ function renderArchiveBlock({
   languageId,
   priority,
 }: {
-  item: common_ArchiveItemFull;
+  item: StorefrontArchiveItemFull;
   heading: string;
   languageId: number;
   priority: boolean;
@@ -466,7 +466,7 @@ function renderArchiveBlock({
         item.product?.translations,
         languageId,
       )?.caption;
-      const product = item.product?.product;
+      const product = item.product?.colorway;
       return product ? (
         <ProductsBlock products={[product]} caption={caption} />
       ) : null;
@@ -478,7 +478,7 @@ function renderArchiveBlock({
       )?.caption;
       return (
         <ProductsBlock
-          products={item.productsTag?.products ?? []}
+          products={item.productsTag?.colorways ?? []}
           caption={caption}
         />
       );
@@ -490,7 +490,7 @@ function renderArchiveBlock({
       )?.caption;
       return (
         <ProductsBlock
-          products={item.productsManual?.products ?? []}
+          products={item.productsManual?.colorways ?? []}
           caption={caption}
         />
       );
@@ -509,7 +509,7 @@ function ArchiveBody({
   heading,
   languageId,
 }: {
-  items: common_ArchiveItemFull[];
+  items: StorefrontArchiveItemFull[];
   heading: string;
   languageId: number;
 }) {
@@ -533,7 +533,7 @@ function ArchiveBody({
 export default function PageComponent({
   archive,
 }: {
-  archive?: common_ArchiveFull;
+  archive?: StorefrontArchiveFull;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
   const currentYear = new Date().getFullYear();

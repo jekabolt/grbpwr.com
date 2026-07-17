@@ -19,7 +19,7 @@ type ServerActionsContextType = {
 
 const ServerActionsContext = createContext<ServerActionsContextType>({
   GetArchivesPaged: () => Promise.resolve({ archives: [], total: 0 }),
-  GetColorwaysPaged: () => Promise.resolve({ products: [], total: 0 }),
+  GetColorwaysPaged: () => Promise.resolve({ colorways: [], total: 0 }),
 });
 
 export function ServerActionsContextProvider({

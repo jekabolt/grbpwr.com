@@ -14,13 +14,13 @@ import { ProductItem } from "@/app/[locale]/_components/product-item";
 export function LastViewedList({
   currentProductId,
 }: {
-  currentProductId?: number;
+  currentProductId?: string;
 }) {
   const products = useLastViewed((state) => state.products);
   const t = useTranslations("product");
 
   const filteredProducts = products
-    .filter((viewedProduct) => viewedProduct.id !== currentProductId)
+    .filter((viewedProduct) => viewedProduct.baseSku !== currentProductId)
     .slice(0, 4);
 
   if (filteredProducts.length === 0) {
@@ -42,7 +42,7 @@ export function LastViewedList({
       <div className="flex justify-center gap-2 lg:gap-7">
         {filteredProducts.map((product, index) => (
           <div
-            key={product.id}
+            key={product.baseSku}
             className={cn("group relative w-40 lg:w-52", {
               "hidden lg:block": index >= 2,
             })}

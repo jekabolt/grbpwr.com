@@ -1,20 +1,20 @@
 "use client";
 
-import type { common_ArchiveList } from "@/api/proto-http/frontend";
+import type { StorefrontArchiveList } from "@/api/proto-http/frontend";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
 import { ArchiveGrid } from "./archive-grid";
 
 export interface HoverState {
-  item: common_ArchiveList;
+  item: StorefrontArchiveList;
   rect: DOMRect;
 }
 
 export function HorizontalGrid({
   archives,
 }: {
-  archives: common_ArchiveList[];
+  archives: StorefrontArchiveList[];
 }) {
   const { languageId } = useTranslationsStore((state) => state);
 

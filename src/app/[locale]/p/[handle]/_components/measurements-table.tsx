@@ -1,6 +1,6 @@
 "use client";
 
-import type { common_Variant } from "@/api/proto-http/frontend";
+import type { StorefrontVariant } from "@/api/proto-http/frontend";
 
 import type { ProductMeasurementCompat } from "@/lib/api-adapters/measurements";
 import { useMeasurementStore } from "@/lib/stores/measurement/store";
@@ -94,6 +94,6 @@ type Props = {
   unit: Unit;
   type: MeasurementType;
   measurements: ProductMeasurementCompat[];
-  sizes: common_Variant[];
+  sizes: StorefrontVariant[];
   handleSelectSize: (sizeId: number) => void;
 };

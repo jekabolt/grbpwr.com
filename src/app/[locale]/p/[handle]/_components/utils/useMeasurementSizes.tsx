@@ -1,6 +1,6 @@
 "use client";
 
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
@@ -9,15 +9,13 @@ import { getErrorMessage } from "@/lib/error-message";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 
-import { useProductBasics } from "./useProductBasics";
 import { useProductSizes } from "./useProductSizes";
 
 export function useMeasurementSizes({
   product,
 }: {
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
 }) {
-  const { productId } = useProductBasics({ product });
   const { sizes, sizeNames, isOneSize } = useProductSizes({ product });
   const { increaseQuantity, openCart } = useCart((state) => state);
   const { currentCountry } = useTranslationsStore((s) => s);
@@ -26,17 +24,22 @@ export function useMeasurementSizes({
 
   const outOfStock =
     product?.variants?.reduce(
-      (acc, size) => {
-        acc[size.sizeId || 0] = size.quantity?.value === "0";
+      (acc, v) => {
+        acc[v.size?.skuOrd ?? 0] = v.soldOut === true;
         return acc;
       },
       {} as Record<number, boolean>,
     ) || {};
 
+  // Resolve the public size ordinal chosen in the UI to the variant SKU the cart
+  // addresses (R2/R3).
+  const variantSkuForOrd = (ord: number | undefined): string | undefined =>
+    sizes?.find((v) => v.size?.skuOrd === ord)?.variantSku;
+
   const getInitialSize = () => {
     if (!sizes || sizes.length === 0) return undefined;
-    const firstInStockSize = sizes.find((size) => !outOfStock[size.sizeId || 0]);
-    return firstInStockSize ? firstInStockSize.sizeId : sizes[0].sizeId;
+    const firstInStockSize = sizes.find((v) => !v.soldOut);
+    return (firstInStockSize ?? sizes[0]).size?.skuOrd;
   };
 
   const [selectedSize, setSelectedSize] = useState<number | undefined>(
@@ -52,22 +55,19 @@ export function useMeasurementSizes({
     }
   }, [isOneSize, sizeNames, selectedSize]);
 
-  const handleSelectSize = (sizeId: number) => {
-    setSelectedSize(sizeId);
-  };
-
-  const getProductSizeId = (sizeId: number): number | undefined => {
-    return sizes?.find((s) => s.sizeId === sizeId)?.variantId;
+  const handleSelectSize = (sizeOrd: number) => {
+    setSelectedSize(sizeOrd);
   };
 
   async function handleMeasurementSizes() {
     if (!selectedSize) return false;
+    const variantSku = variantSkuForOrd(selectedSize);
+    if (!variantSku) return false;
 
     try {
       const currency = currentCountry.currencyKey || "EUR";
       const success = await increaseQuantity(
-        productId,
-        selectedSize?.toString() || "",
+        variantSku,
         1,
         currency,
         maxOrderItems,
@@ -86,9 +86,9 @@ export function useMeasurementSizes({
 
   return {
     selectedSize,
-    selectedProductSizeId: selectedSize
-      ? getProductSizeId(selectedSize)
-      : undefined,
+    // The measurement rows join on the same public size ordinal, so the selected
+    // ordinal is itself the measurement key (no internal variant id lookup).
+    selectedProductSizeId: selectedSize,
     handleSelectSize,
     handleMeasurementSizes,
     toastOpen,

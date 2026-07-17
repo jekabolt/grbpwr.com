@@ -39,8 +39,7 @@ export function HeroProductSpotlight({
   const currencyKey = currentCountry.currencyKey || "EUR";
   const currencySymbol = currencySymbols[currencyKey] || currencySymbols["EUR"];
   const salePercentage =
-    product?.display?.productBody?.productBodyInsert?.salePercentage
-      ?.value || "0";
+    product?.display?.merchandising?.salePercentage?.value || "0";
   const isSaleApplied = salePercentage !== "0";
   const productPrice =
     product?.prices?.find(

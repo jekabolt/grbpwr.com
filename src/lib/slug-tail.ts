@@ -29,6 +29,14 @@ export function baseSkuFromHandle(handle: string | undefined): string | null {
 // returns the upper-case archive code (the resolve key), or null when the tail is
 // not a valid code. The code is the token after the last hyphen; the pretty prefix,
 // if present, is ignored here (the backend validates it for canonicalisation).
+// baseSkuOf returns the colourway base SKU embedded in a public variant SKU. The
+// variant SKU is the 14-char base SKU (season+year-model-colour) plus a size
+// ordinal suffix, so the base SKU is its leading 14 chars — the storefront's
+// per-colourway grouping key now that internal ids are gone (R2/R3).
+export function baseSkuOf(variantSku: string | undefined): string {
+  return (variantSku || "").slice(0, BASE_SKU_LENGTH);
+}
+
 export function archiveCodeFromHandle(
   handle: string | undefined,
 ): string | null {

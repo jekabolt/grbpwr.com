@@ -1,4 +1,4 @@
-import type { common_ColorwayFull } from "@/api/proto-http/frontend";
+import type { StorefrontColorway } from "@/api/proto-http/frontend";
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 
 // schema.org Product/Offer JSON-LD for product pages. Gives search engines (and
@@ -58,10 +58,10 @@ export function jsonLdHtml(data: Record<string, unknown>): string {
  * Returns null when the product has no usable price.
  */
 export function productOfferForLocale(
-  productFull: common_ColorwayFull | undefined,
+  colorway: StorefrontColorway | undefined,
   locale: string,
 ): { currency: string; price: string } | null {
-  const prices = productFull?.colorway?.prices ?? [];
+  const prices = colorway?.prices ?? [];
   const currency = currencyForLocale(locale);
   const match =
     prices.find(
@@ -113,14 +113,14 @@ const SHIPPING_DETAILS = {
 };
 
 export function productJsonLd(
-  productFull: common_ColorwayFull | undefined,
+  colorway: StorefrontColorway | undefined,
   locale: string,
 ): Record<string, unknown> | null {
-  const p = productFull?.colorway;
+  const p = colorway;
   if (!p) return null;
 
   const langId = LANGUAGE_CODE_TO_ID[locale];
-  const translations = p.display?.productBody?.translations;
+  const translations = p.display?.translations;
   const t =
     translations?.find((x) => x.languageId === langId) ?? translations?.[0];
   const name = (t?.name || p.baseSku || "").trim();
@@ -133,7 +133,7 @@ export function productJsonLd(
       : null;
   const url = slug ? `${SITE}/${country}/${locale}${slug}` : undefined;
 
-  const image = (productFull?.media ?? [])
+  const image = (p.media ?? [])
     .map(
       (m) =>
         m?.media?.compressed?.mediaUrl ||
@@ -148,7 +148,7 @@ export function productJsonLd(
     ? "https://schema.org/OutOfStock"
     : "https://schema.org/InStock";
 
-  const offer = productOfferForLocale(productFull, locale);
+  const offer = productOfferForLocale(p, locale);
   const offers = offer
     ? [
         {
@@ -164,10 +164,8 @@ export function productJsonLd(
     : [];
 
   const description = (t?.description || "").trim();
-  const colorInsert = p.display?.productBody?.productBodyInsert;
-  const color = (
-    colorInsert?.dictionaryColor?.name ?? colorInsert?.colorCode
-  )?.trim();
+  // The lean projection exposes the colour code only (no resolved dictionary name).
+  const color = p.colorCode?.trim();
 
   const productNode = {
     "@type": "Product",
@@ -178,8 +176,6 @@ export function productJsonLd(
     brand: { "@type": "Brand", name: "GRBPWR" },
     ...(color ? { color } : {}),
     ...(url ? { url } : {}),
-    ...(p.createdAt ? { datePublished: p.createdAt } : {}),
-    ...(p.updatedAt ? { dateModified: p.updatedAt } : {}),
     ...(offers.length ? { offers } : {}),
   };
 

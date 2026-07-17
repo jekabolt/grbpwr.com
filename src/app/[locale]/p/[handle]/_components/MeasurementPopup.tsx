@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import {
@@ -20,7 +20,7 @@ import { SubmissionToaster } from "../../../../../components/ui/toaster";
 
 interface ModalProps {
   children: React.ReactNode;
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
   handleAddToCart: () => Promise<boolean>;
   selectedSize?: number;
   outOfStock?: Record<number, boolean>;
@@ -70,7 +70,7 @@ export default function MeasurementPopup({
 
   const toggleModal = () => {
     if (!isModalOpen) {
-      const productId = product.colorway?.baseSku || "";
+      const productId = product.baseSku || "";
       const pageLocation =
         typeof window !== "undefined" ? window.location.pathname : "";
       sendSizeGuideClickEvent({

@@ -105,14 +105,18 @@ const EMPTY_FILTERS = {
 export const getLatestProductDate = cache(
   async (): Promise<string | undefined> => {
     try {
-      const { products } = await serviceClient.GetColorwaysPaged({
+      const { colorways } = await serviceClient.GetColorwaysPaged({
         limit: 1,
         offset: 0,
         sortFactors: ["SORT_FACTOR_UPDATED_AT"],
         orderFactor: "ORDER_FACTOR_DESC",
         filterConditions: EMPTY_FILTERS,
       });
-      return products?.[0]?.updatedAt ?? undefined;
+      // The lean storefront colourway projection (R3) carries no timestamp, so the
+      // product freshness signal (sitemap lastmod / JSON-LD dateModified) degrades
+      // to undefined even though the query is still ordered by updated_at.
+      void colorways;
+      return undefined;
     } catch {
       return undefined;
     }

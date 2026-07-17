@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 import { MEASUREMENT_DESCRIPTIONS } from "@/constants";
 import { useTranslations } from "next-intl";
 
@@ -25,7 +25,7 @@ export function Measurements({
   isOneSize,
   handleSelectSize,
 }: {
-  product: common_ColorwayFull;
+  product: StorefrontColorway;
   selectedSize: number;
   outOfStock?: Record<number, boolean>;
   isOneSize?: boolean;
@@ -38,15 +38,14 @@ export function Measurements({
   });
   const { measurementType, subCategoryId, typeId, categoryId } =
     useMeasurementType({ product });
-  // TODO(final-bump): source from StorefrontColorway.size_chart once the final contract lands.
-  const measurements = colorwayMeasurements(product);
+  // Storefront size chart (StorefrontColorway.size_chart). Rows are keyed by the
+  // public size ordinal; measurement names are resolved to dictionary ids so the
+  // table/diagram keep matching as before.
+  const measurements = colorwayMeasurements(product, dictionary?.measurements);
 
-  // Convert sizeId to productSizeId for measurements
-  const getProductSizeId = (sizeId: number): number | undefined => {
-    return sizes?.find((s) => s.sizeId === sizeId)?.variantId;
-  };
-
-  const selectedProductSizeId = getProductSizeId(selectedSize);
+  // The size chart and the variants share the public size ordinal, so the selected
+  // size (an ordinal) is itself the measurement row key.
+  const selectedProductSizeId = selectedSize;
 
   const [unit, setUnit] = useState(Unit.CM);
   const isRing = measurementType === "ring";
@@ -98,10 +97,7 @@ export function Measurements({
               categoryId={categoryId}
               subCategoryId={subCategoryId}
               typeId={typeId}
-              gender={
-                product.colorway?.display?.productBody?.productBodyInsert
-                  ?.targetGender
-              }
+              gender={product.display?.targetGender}
               measurements={measurements}
               selectedSize={selectedProductSizeId}
               className="h-[450px]"

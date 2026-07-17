@@ -5,35 +5,30 @@ import type {
 
 import type { CartProduct } from "@/lib/stores/cart/store-types";
 
-// TODO(final-bump): the intermediate PR6 contract still addresses order items and
-// NotifyMe by the internal (product_id, size_id) pair. R2/R3 replace both with the
-// public variant_sku (OrderItemInsert.variant_sku, NotifyMeRequest.variant_sku).
-//
 // This module is the single boundary where the storefront's cart identity becomes
-// wire identity. When the final bump lands, switch these two builders here (reading
-// a variant SKU off the cart line / notify form) and every call site — order
-// validation, order submission, back-in-stock — follows without further edits.
+// wire identity. R2/R3: an order line and a back-in-stock request address a variant
+// by its public SKU (OrderItemInsert.variant_sku / NotifyMeRequest.variant_sku),
+// never the internal (product_id, size_id) pair — which no longer exists on the
+// storefront read path. Every call site (order validation, submission, notify)
+// flows through these two builders.
 
 // cartProductToOrderItemInsert maps one cart line to the wire order-item insert.
 export function cartProductToOrderItemInsert(
   product: CartProduct,
 ): common_OrderItemInsert {
   return {
-    productId: product.id,
+    variantSku: product.variantSku,
     quantity: product.quantity,
-    sizeId: Number(product.size),
   };
 }
 
 // buildNotifyMeRequest maps a back-in-stock request to its wire shape.
 export function buildNotifyMeRequest(args: {
   email: string;
-  productId: number;
-  sizeId: number;
+  variantSku: string;
 }): NotifyMeRequest {
   return {
     email: args.email,
-    productId: args.productId,
-    sizeId: args.sizeId,
+    variantSku: args.variantSku,
   };
 }

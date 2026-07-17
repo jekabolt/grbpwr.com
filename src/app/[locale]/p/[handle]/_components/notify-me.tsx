@@ -22,9 +22,9 @@ import { SizePicker } from "./size-picker";
 import { defaultData, notifySchema, NotifySchema } from "./utils/notify-schema";
 
 interface NotifyMeProps {
-  id: number;
+  baseSku: string;
   open: boolean;
-  sizeNames?: { name: string; id: number }[];
+  sizeNames?: { name: string; id: number; variantSku?: string }[];
   outOfStock?: Record<number, boolean>;
   activeSizeId?: number;
   onOpenChange: (open: boolean) => void;
@@ -33,7 +33,7 @@ interface NotifyMeProps {
 }
 
 export function NotifyMe({
-  id,
+  baseSku,
   open,
   onOpenChange,
   sizeNames,
@@ -64,7 +64,6 @@ export function NotifyMe({
     defaultValues: {
       ...defaultData,
       sizeId: activeSizeId || 0,
-      productId: id,
     },
     mode: "onSubmit",
   });
@@ -76,14 +75,13 @@ export function NotifyMe({
       form.reset({
         email: signedInEmail ?? "",
         sizeId: activeSizeId,
-        productId: id,
       });
       setHasInteracted(false);
       setIsChecked(false);
 
       const sizeName = sizeNames?.find((s) => s.id === activeSizeId)?.name;
       sendNotifyMeIntentEvent({
-        product_id: id.toString(),
+        product_id: baseSku,
         product_name: productName,
         product_category: productCategory,
         size_id: activeSizeId,
@@ -94,7 +92,7 @@ export function NotifyMe({
   }, [
     open,
     activeSizeId,
-    id,
+    baseSku,
     sizeNames,
     productName,
     productCategory,
@@ -111,7 +109,7 @@ export function NotifyMe({
     if (!isOpen && open && !hasInteracted) {
       const sizeName = sizeNames?.find((s) => s.id === selectedSizeId)?.name;
       sendNotifyMeIntentEvent({
-        product_id: id.toString(),
+        product_id: baseSku,
         product_name: productName,
         product_category: productCategory,
         size_id: selectedSizeId,
@@ -132,17 +130,18 @@ export function NotifyMe({
     }
     setIsLoading(true);
     try {
+      const variantSku =
+        sizeNames?.find((s) => s.id === data.sizeId)?.variantSku || "";
       await serviceClient.NotifyMe(
         buildNotifyMeRequest({
           email: data.email,
-          productId: data.productId,
-          sizeId: data.sizeId,
+          variantSku,
         }),
       );
 
       const sizeName = sizeNames?.find((s) => s.id === data.sizeId)?.name;
       sendNotifyMeIntentEvent({
-        product_id: id.toString(),
+        product_id: baseSku,
         product_name: productName,
         product_category: productCategory,
         size_id: data.sizeId,
