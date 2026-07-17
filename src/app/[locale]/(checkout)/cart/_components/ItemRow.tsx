@@ -139,7 +139,11 @@ export default function ItemRow({
         >
           {!hideQuantityButtons && (
             <ProductRemoveButton
-              variantSku={product.variantSkuSnapshot || ""}
+              variantSku={
+                product.orderItem?.variantSku ||
+                product.variantSkuSnapshot ||
+                ""
+              }
               index={index}
             />
           )}
