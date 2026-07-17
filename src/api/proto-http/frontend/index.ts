@@ -762,6 +762,14 @@ export type StorefrontColorwayDisplay = {
   composition: string | undefined;
   careInstructions: string | undefined;
   translations: common_ColorwayInsertTranslation[] | undefined;
+  // Merchandising facts the PDP/cards render (S-final finding: the lean projection had no source for
+  // sale %, preorder, model-wears, category labels and freshness dates — all public, none are PKs).
+  salePercentage: googletype_Decimal | undefined;
+  preorder: wellKnownTimestamp | undefined;
+  modelWearsHeightCm: number | undefined;
+  modelWearsSizeCode: string | undefined;
+  categoryLabels: string[] | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
 };
 
 export type StorefrontVariant = {

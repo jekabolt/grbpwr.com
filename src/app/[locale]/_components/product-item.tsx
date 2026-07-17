@@ -1,11 +1,15 @@
 import { useState } from "react";
 import type { StorefrontColorway } from "@/api/proto-http/frontend";
-import { currencySymbols } from "@/constants";
+import {
+  currencySymbols,
+  EMPTY_PREORDER,
+  PLURIAL_SINGLE_CATEGORY_MAP,
+} from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { formatPrice } from "@/lib/currency";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { cn } from "@/lib/utils";
+import { cn, isDateTodayOrFuture } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -38,7 +42,9 @@ export function ProductItem({
   imageFit?: "contain" | "cover";
 }) {
   const tCatalog = useTranslations("catalog");
+  const t = useTranslations("categories");
   const tFit = useTranslations("fit");
+  const tProduct = useTranslations("product");
 
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const { handleSelectItemEvent } = useAnalytics();
@@ -51,16 +57,31 @@ export function ProductItem({
 
   const currencyKey = currentCountry.currencyKey || "EUR";
   const display = product.display;
-  // The lean storefront projection (R3) carries no per-colourway sale percentage,
-  // category ids or preorder date, so the card shows the list price only and labels
-  // itself with the product's own translated name (falling back to the fit) instead
-  // of the former "{fit} {category}" caption.
+  const salePercentage = display?.salePercentage?.value || "0";
+  const isSaleApplied = salePercentage !== "0" && parseFloat(salePercentage) > 0;
   const isSoldOut = product.soldOut;
+  const preorder = display?.preorder;
+  const fit = display?.fit ? tFit(display.fit) : "";
+  // category_labels = resolved [top, sub, type] names.
+  const [topCategory, subCategory] = display?.categoryLabels || [];
+  const categoryName = (subCategory || topCategory || "").toLowerCase();
+  const singularCategory =
+    PLURIAL_SINGLE_CATEGORY_MAP[categoryName] ||
+    subCategory ||
+    topCategory ||
+    "";
+  const translatedCategory = singularCategory
+    ? t(singularCategory.toLowerCase())
+    : "";
+  // Objects use their category name as-is (no "fit" prefix that garments get).
+  const isObjects = topCategory?.toLowerCase() === "objects";
   const currentTranslation =
     display?.translations?.find((tr) => tr.languageId === languageId) ||
     display?.translations?.[0];
-  const fit = display?.fit ? tFit(display.fit) : "";
-  const name = currentTranslation?.name || fit || "";
+  const name =
+    (fit && !isObjects ? `${fit} ${translatedCategory}` : translatedCategory) ||
+    currentTranslation?.name ||
+    "";
 
   const productPrice =
     product.prices?.find(
@@ -70,7 +91,15 @@ export function ProductItem({
   const priceValue = productPrice?.price?.value || "0";
   const currencySymbol = currencySymbols[currencyKey] || currencySymbols["EUR"];
 
+  const priceWithSale =
+    (parseFloat(priceValue) * (100 - parseInt(salePercentage || "0"))) / 100;
+
   const formattedPrice = formatPrice(priceValue, currencyKey, currencySymbol);
+  const formattedPriceWithSale = formatPrice(
+    priceWithSale,
+    currencyKey,
+    currencySymbol,
+  );
 
   return (
     <div className={cn("relative", className)}>
@@ -149,7 +178,18 @@ export function ProductItem({
             {isSoldOut ? (
               <Text>{tCatalog("sold out")}</Text>
             ) : (
-              <Text>{formattedPrice}</Text>
+              <>
+                <Text
+                  variant={isSaleApplied ? "strileTroughInactive" : "default"}
+                >
+                  {formattedPrice}
+                </Text>
+                {isSaleApplied && <Text>{formattedPriceWithSale}</Text>}
+                {preorder !== EMPTY_PREORDER &&
+                  isDateTodayOrFuture(preorder || "") && (
+                    <Text variant="inactive">{tProduct("preorder")}</Text>
+                  )}
+              </>
             )}
           </div>
         </div>

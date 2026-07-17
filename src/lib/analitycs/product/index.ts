@@ -33,6 +33,9 @@ export function mapItemsToDataLayer(
       (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
     ) || product.prices?.[0];
   const priceValue = parseFloat(price?.price?.value || "0");
+  const salePercentage = parseFloat(display?.salePercentage?.value || "0");
+  const discount = (priceValue * salePercentage) / 100;
+  const salePrice = priceValue - discount;
   const chosen = variant ?? firstAvailableVariant(product);
 
   return {
@@ -45,11 +48,10 @@ export function mapItemsToDataLayer(
     item_category2: subCategory || "",
     // R3: item_variant = the public size code (StorefrontVariant.size.code).
     item_variant: chosen?.size?.code || "",
-    // The lean storefront projection carries no per-colourway sale percentage, so
-    // the storefront cannot compute a discount here; sale pricing is authoritative
-    // at order validation. Card/PDP analytics report the list price (discount 0).
-    discount: 0,
-    price: priceValue || 0,
+    discount: discount > 0 ? discount : 0,
+    // Net (post-sale) unit price: GA4 item revenue is price × quantity and ignores
+    // the `discount` field, so a pre-sale price here would inflate revenue.
+    price: salePrice > 0 ? salePrice : priceValue || 0,
     quantity: quantity || 1,
   };
 }

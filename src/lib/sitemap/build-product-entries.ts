@@ -83,8 +83,9 @@ export async function buildProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
       if (!productPath) continue;
 
       const imageLoc = primaryImageLoc(p);
-      // The lean projection carries no per-colourway timestamp (R3); use "now".
-      const lastMod = new Date();
+      const lastMod = p.display?.updatedAt
+        ? new Date(p.display.updatedAt)
+        : new Date();
       const alternates = hreflangAlternates(productPath);
 
       for (const locale of routing.locales) {

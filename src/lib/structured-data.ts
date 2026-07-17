@@ -176,6 +176,7 @@ export function productJsonLd(
     brand: { "@type": "Brand", name: "GRBPWR" },
     ...(color ? { color } : {}),
     ...(url ? { url } : {}),
+    ...(p.display?.updatedAt ? { dateModified: p.display.updatedAt } : {}),
     ...(offers.length ? { offers } : {}),
   };
 

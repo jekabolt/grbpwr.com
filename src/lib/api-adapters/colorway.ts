@@ -10,9 +10,13 @@ import type {
 // catalogue/archive read paths already return StorefrontColorway, so once a hero
 // product passes through here every downstream card renders one shape.
 //
-// The lean projection carries no variants/size-chart and no sale/category/preorder
-// (those live on the internal ColorwayMerchandising, deliberately not exposed to
-// the storefront), so hero cards degrade to the same fields catalogue cards show.
+// The merchandising facts the storefront cards render (sale %, preorder, model
+// height, updated_at) come from the admin read-projection ColorwayMerchandising.
+// Two of the storefront display's public fields can't be produced in a pure map:
+// model_wears_size_code and category_labels are id→name resolutions the backend
+// does for the real projection but which need the dictionary here — hero cards
+// don't surface model-wears, and their name falls back to the translation when no
+// category labels are present, so both are left unset.
 export function heroColorwayToStorefront(
   colorway: common_Colorway,
 ): StorefrontColorway {
@@ -30,6 +34,12 @@ export function heroColorwayToStorefront(
       composition: merch?.composition,
       careInstructions: merch?.careInstructions,
       translations: colorway.display?.translations,
+      salePercentage: merch?.salePercentage,
+      preorder: merch?.preorder,
+      modelWearsHeightCm: merch?.modelWearsHeightCm,
+      modelWearsSizeCode: undefined,
+      categoryLabels: undefined,
+      updatedAt: colorway.updatedAt,
     },
     variants: [],
     prices: colorway.prices,

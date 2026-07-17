@@ -1,8 +1,11 @@
 import { StorefrontColorway } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
+import { formatPreorderDate } from "@/app/[locale]/(checkout)/cart/_components/utils";
 
 export function useProductBasics({ product }: { product: StorefrontColorway }) {
+  const t = useTranslations("product");
   const { languageId } = useTranslationsStore((state) => state);
 
   const display = product.display;
@@ -13,23 +16,21 @@ export function useProductBasics({ product }: { product: StorefrontColorway }) {
 
   const name = currentTranslation?.name;
 
+  // category_labels is the resolved [top, sub, type] name list (locale-neutral).
+  const [topCategory, subCategory] = display?.categoryLabels || [];
+
   return {
     isComposition: display?.composition,
     isCare: display?.careInstructions,
-    // The lean storefront projection (R3) carries no preorder date, model-wears,
-    // category ids or sale percentage, so those PDP fields degrade to absent.
-    preorder: null as string | null,
-    preorderRaw: undefined as string | undefined,
+    preorder: formatPreorderDate(display?.preorder, t),
+    preorderRaw: display?.preorder,
     baseSku: product.baseSku || "",
     name,
     description: currentTranslation?.description,
-    topCategoryId: undefined as number | undefined,
-    subCategoryId: undefined as number | undefined,
-    typeId: undefined as number | undefined,
     gender: display?.targetGender,
     color: product.colorCode,
-    productCategory: "",
-    productSubCategory: "",
+    productCategory: topCategory || "",
+    productSubCategory: subCategory || "",
     collection: display?.collectionCode,
   };
 }

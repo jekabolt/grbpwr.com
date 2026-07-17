@@ -112,11 +112,7 @@ export const getLatestProductDate = cache(
         orderFactor: "ORDER_FACTOR_DESC",
         filterConditions: EMPTY_FILTERS,
       });
-      // The lean storefront colourway projection (R3) carries no timestamp, so the
-      // product freshness signal (sitemap lastmod / JSON-LD dateModified) degrades
-      // to undefined even though the query is still ordered by updated_at.
-      void colorways;
-      return undefined;
+      return colorways?.[0]?.display?.updatedAt ?? undefined;
     } catch {
       return undefined;
     }

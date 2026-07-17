@@ -1,31 +1,43 @@
 import { StorefrontColorway } from "@/api/proto-http/frontend";
 
+import { useDataContext } from "@/components/contexts/DataContext";
+
 export type MeasurementType = "clothing" | "ring" | "shoe";
 
-// Category ids are not in the lean storefront projection (R3), so the size-guide
-// table type is derived from the variant's public size system (PublicSize.system)
-// instead: SHOE → the shoe conversion table, everything else → the clothing
-// measurement table. The garment-diagram icon (which needs category ids) degrades
-// to absent; the numeric measurement table still renders. Ring detection is lost
-// (no dedicated size system) and falls back to the clothing table.
+// StorefrontColorwayDisplay.category_labels is the resolved [top, sub, type] name
+// list. We resolve those back to dictionary ids so the size-guide diagram (which is
+// keyed by category id) renders, and derive the table type from the labels: a
+// "rings" type → the ring table, a "shoes" top category → the shoe table, else the
+// clothing measurement table.
 export function useMeasurementType({
   product,
 }: {
   product: StorefrontColorway;
 }) {
-  const system = product.variants?.[0]?.size?.system;
+  const { dictionary } = useDataContext();
+  const [topLabel, subLabel, typeLabel] = product.display?.categoryLabels || [];
 
-  // Cast keeps the exported type as the full MeasurementType union — TS otherwise
-  // flow-narrows the const to the ternary's "shoe" | "clothing", which would make
-  // downstream `=== "ring"` checks a type error even though ring stays a valid case.
-  const measurementType = (
-    system === "SIZE_SKU_SYSTEM_SHOE" ? "shoe" : "clothing"
-  ) as MeasurementType;
+  const idForLabel = (label?: string): number | undefined =>
+    label
+      ? dictionary?.categories?.find(
+          (c) => c.name?.toLowerCase() === label.toLowerCase(),
+        )?.id
+      : undefined;
+
+  const categoryId = idForLabel(topLabel);
+  const subCategoryId = idForLabel(subLabel);
+  const typeId = idForLabel(typeLabel);
+
+  const getMeasurementType = (): MeasurementType => {
+    if (typeLabel?.toLowerCase() === "rings") return "ring";
+    if (topLabel?.toLowerCase() === "shoes") return "shoe";
+    return "clothing";
+  };
 
   return {
-    measurementType,
-    subCategoryId: undefined as number | undefined,
-    typeId: undefined as number | undefined,
-    categoryId: undefined as number | undefined,
+    measurementType: getMeasurementType(),
+    subCategoryId,
+    typeId,
+    categoryId,
   };
 }
