@@ -48,7 +48,7 @@ export async function CatalogContent(props: CatalogContentProps) {
   if (categoryName && !topCategory) notFound();
   if (subCategoryName && topCategory && !subCategory) notFound();
 
-  const response = await serviceClient.GetProductsPaged({
+  const response = await serviceClient.GetColorwaysPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
     ...getProductsPagedQueryParams(

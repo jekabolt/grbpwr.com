@@ -1,21 +1,21 @@
-import { common_ProductFull } from "@/api/proto-http/frontend";
+import { common_ColorwayFull } from "@/api/proto-http/frontend";
 
 import { mapItemsToDataLayer } from "../product";
 import { EcommerceEvent, pushToDataLayer } from "../utils";
 
 export function sendAddToCartEvent(
-  item: common_ProductFull,
+  item: common_ColorwayFull,
   topCategory: string,
   subCategory: string,
   selectedCurrency: string,
 ) {
-  if (!item || !item.product) return;
+  if (!item || !item.colorway) return;
 
   const currencyKey = selectedCurrency || "EUR";
   // Reuse the mapped item so the event `value` is the net (post-sale) price,
   // consistent with the item-level `price` GA4 uses for revenue.
   const mappedItem = mapItemsToDataLayer(
-    item.product,
+    item.colorway,
     1,
     topCategory,
     subCategory,

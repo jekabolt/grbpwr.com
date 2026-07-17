@@ -1,5 +1,5 @@
 import { SVGProps } from "react";
-import { common_ProductMeasurement } from "@/api/proto-http/frontend";
+import { ProductMeasurementCompat } from "@/lib/api-adapters/measurements";
 
 import {
   MeasurementLine,
@@ -40,7 +40,7 @@ const tshirtLines: MeasurementLine[] = [
 ];
 
 interface TShirtIconProps extends SVGProps<SVGSVGElement> {
-  measurements?: common_ProductMeasurement[];
+  measurements?: ProductMeasurementCompat[];
 }
 
 export function TShirtIcon({ measurements, ...props }: TShirtIconProps) {

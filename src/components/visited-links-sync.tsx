@@ -9,7 +9,7 @@ export function VisitedLinksSync() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname.includes("/product/")) {
+    if (pathname.includes("/p/")) {
       markVisited(pathname);
     }
   }, [pathname]);

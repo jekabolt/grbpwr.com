@@ -1,0 +1,40 @@
+import { common_ColorwayFull } from "@/api/proto-http/frontend";
+
+import { useDataContext } from "@/components/contexts/DataContext";
+
+export type MeasurementType = "clothing" | "ring" | "shoe";
+
+export function useMeasurementType({
+  product,
+}: {
+  product: common_ColorwayFull;
+}) {
+  const { dictionary } = useDataContext();
+  const productBody =
+    product.colorway?.display?.productBody?.productBodyInsert;
+  const categoryId = productBody?.topCategoryId;
+  const subCategoryId = productBody?.subCategoryId;
+  const typeId = productBody?.typeId;
+
+  const category = dictionary?.categories?.find(
+    (c) => c.id === categoryId,
+  )?.name;
+
+  const getMeasurementType = (): MeasurementType => {
+    const type = dictionary?.categories
+      ?.find((c) => c.id === typeId)
+      ?.name?.toLowerCase();
+    if (type === "rings") return "ring";
+    if (category?.toLowerCase() === "shoes") return "shoe";
+
+    return "clothing";
+  };
+
+  const measurementType = getMeasurementType();
+  return {
+    measurementType,
+    subCategoryId,
+    typeId,
+    categoryId,
+  };
+}

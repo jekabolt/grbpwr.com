@@ -1,0 +1,105 @@
+"use client";
+
+import { useEffect } from "react";
+import { common_ColorwayFull } from "@/api/proto-http/frontend";
+import * as DialogPrimitives from "@radix-ui/react-dialog";
+import { useTranslations } from "next-intl";
+
+import { ModalTransition } from "@/components/modal-transition";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+
+import { useActiveSizeInfo } from "../utils/useActiveSizeInfo";
+
+export function MobileSelectSize({
+  product,
+  activeSizeId,
+  sizeQuantity,
+  open,
+  outOfStock,
+  onNotifyMeOpen,
+  onOpenChange,
+  handleSizeSelect,
+}: {
+  product: common_ColorwayFull;
+  activeSizeId: number | undefined;
+  sizeQuantity: Record<number, number>;
+  open: boolean;
+  outOfStock?: Record<number, boolean>;
+  handleSizeSelect: (sizeId: number) => void;
+  onOpenChange: (open: boolean) => void;
+  onNotifyMeOpen?: (sizeId: number) => void;
+}) {
+  const { sizeNames } = useActiveSizeInfo({
+    product,
+    activeSizeId,
+  });
+  const tAccessibility = useTranslations("accessibility");
+
+  useEffect(() => {
+    if (open) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [open]);
+
+  const handleSizeClick = (sizeId: number) => {
+    if (outOfStock?.[sizeId]) {
+      onOpenChange(false);
+      setTimeout(() => {
+        onNotifyMeOpen?.(sizeId);
+      }, 100);
+    } else {
+      handleSizeSelect(sizeId);
+    }
+  };
+
+  return (
+    <DialogPrimitives.Root open={open} onOpenChange={onOpenChange}>
+      <DialogPrimitives.Portal>
+        <DialogPrimitives.Overlay className="fixed inset-0 z-40 h-screen bg-overlay" />
+        <ModalTransition
+          isOpen={open}
+          contentSlideFrom="bottom"
+          contentClassName="fixed inset-x-2 bottom-2 top-auto z-50 flex flex-col gap-10 border border-textInactiveColor bg-bgColor p-2.5 pb-10 text-textColor"
+          content={
+            <DialogPrimitives.Content className="flex h-full flex-col gap-10">
+              <DialogPrimitives.Title className="sr-only">
+                {tAccessibility("mobile menu")}
+              </DialogPrimitives.Title>
+              <DialogPrimitives.Close asChild>
+                <div className="flex items-center justify-between">
+                  <Text variant="uppercase">select size</Text>
+                  <Text variant="uppercase">[x]</Text>
+                </div>
+              </DialogPrimitives.Close>
+              <div className="grid grid-cols-4 gap-x-2 gap-y-7">
+                {sizeNames?.map(({ name, id }) => {
+                  const isOutOfStock =
+                    outOfStock?.[id] || sizeQuantity?.[id] === 0;
+
+                  return (
+                    <Button
+                      type="button"
+                      variant={isOutOfStock ? "strikeThrough" : "default"}
+                      className={
+                        isOutOfStock ? "cursor-pointer uppercase" : "uppercase"
+                      }
+                      key={id}
+                      onClick={() => handleSizeClick(id)}
+                    >
+                      {name}
+                    </Button>
+                  );
+                })}
+              </div>
+            </DialogPrimitives.Content>
+          }
+        />
+      </DialogPrimitives.Portal>
+    </DialogPrimitives.Root>
+  );
+}

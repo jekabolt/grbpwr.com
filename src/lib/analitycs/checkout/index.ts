@@ -23,7 +23,10 @@ export function mapItemsToAnalyticsItems(
   const sizeName = sizeId != null && sizeMap ? sizeMap[sizeId] || "" : "";
 
   return {
+    // TODO(final-bump): item_id → variant_sku_snapshot, item_group_id →
+    // base_sku_snapshot once the order projection carries variant identity (R2/R3).
     item_id: item.sku || "",
+    item_group_id: item.sku || "",
     item_name: item.translations?.[0]?.name || "",
     item_brand: item.productBrand || "",
     item_category: topCategory || "",

@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import type {
-  common_Product,
-  GetProductsPagedResponse,
+  common_Colorway,
+  GetColorwaysPagedResponse,
 } from "@/api/proto-http/frontend";
 import { CATALOG_LIMIT } from "@/constants";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -23,12 +23,12 @@ export function InfinityScrollCatalog({
   firstPageItems,
   total,
 }: {
-  firstPageItems: common_Product[];
+  firstPageItems: common_Colorway[];
   total: number;
 }) {
   const searchParams = useSearchParams();
   const { dictionary } = useDataContext();
-  const { GetProductsPaged } = useServerActionsContext();
+  const { GetColorwaysPaged } = useServerActionsContext();
   const { languageId, currentCountry } = useTranslationsStore((state) => state);
   const { gender, topCategory, subCategory } = useRouteParams();
   const { handleViewItemListEvent } = useAnalytics();
@@ -71,10 +71,10 @@ export function InfinityScrollCatalog({
     isFetchingNextPage,
     isFetching,
     isLoading,
-  } = useInfiniteQuery<GetProductsPagedResponse>({
+  } = useInfiniteQuery<GetColorwaysPagedResponse>({
     queryKey,
     queryFn: ({ pageParam }) =>
-      GetProductsPaged({
+      GetColorwaysPaged({
         limit: CATALOG_LIMIT,
         offset: pageParam as number,
         ...getProductsPagedQueryParams(

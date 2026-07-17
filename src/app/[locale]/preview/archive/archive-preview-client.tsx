@@ -12,7 +12,7 @@ import { useTranslations } from "next-intl";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
 import { PageBackground } from "@/app/[locale]/_components/page-background";
-import PageComponent from "@/app/[locale]/timeline/[...archiveParams]/_components/page-component";
+import PageComponent from "@/app/[locale]/timeline/[handle]/_components/page-component";
 
 import { ADMIN_ORIGINS } from "../_components/admin-origins";
 import { PreviewBoundary } from "../_components/preview-boundary";

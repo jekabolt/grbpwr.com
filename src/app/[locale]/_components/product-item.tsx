@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { common_Product } from "@/api/proto-http/frontend";
+import type { common_Colorway } from "@/api/proto-http/frontend";
 import {
   currencySymbols,
   EMPTY_PREORDER,
@@ -29,7 +29,7 @@ export function ProductItem({
   infoClassName,
   imageFit = "contain",
 }: {
-  product: common_Product;
+  product: common_Colorway;
   className: string;
   isInfoVisible?: boolean;
   disableAnimations?: boolean;
@@ -59,7 +59,7 @@ export function ProductItem({
   const onPressEnd = () => setPressed(false);
 
   const currencyKey = currentCountry.currencyKey || "EUR";
-  const productBody = product.productDisplay?.productBody?.productBodyInsert;
+  const productBody = product.display?.productBody?.productBodyInsert;
   const salePercentage = productBody?.salePercentage?.value || "0";
   const isSaleApplied = salePercentage && salePercentage !== "0";
   const isSoldOut = product.soldOut;
@@ -136,7 +136,7 @@ export function ProductItem({
         >
           <Image
             src={
-              product.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl ||
+              product.display?.thumbnail?.media?.thumbnail?.mediaUrl ||
               ""
             }
             alt={name}
@@ -146,7 +146,7 @@ export function ProductItem({
             // shots fill it without side letterboxing. Default `contain` keeps the
             // whole garment visible; `cover` crops it to fill the box exactly.
             aspectRatio="3/4"
-            blurhash={product.productDisplay?.thumbnail?.media?.blurhash}
+            blurhash={product.display?.thumbnail?.media?.blurhash}
             fit={imageFit}
             priority={imagePriority}
             loading={imagePriority ? "eager" : "lazy"}

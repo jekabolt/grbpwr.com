@@ -128,7 +128,7 @@ export function generateCommonMetadata({
   // Twitter/X card type. "summary" = small square thumbnail, "summary_large_image"
   // = large preview. Pass "summary" where a small preview is wanted (e.g. product).
   twitterCard?: "summary" | "summary_large_image";
-  // Pass locale + locale-relative path (e.g. "" or "/product/...") to emit a
+  // Pass locale + locale-relative path (e.g. "" or "/p/...") to emit a
   // canonical <link> and hreflang alternates. Omit on layout-level metadata so
   // leaf pages own them.
   locale?: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import type { common_Product } from "@/api/proto-http/frontend";
+import type { common_Colorway } from "@/api/proto-http/frontend";
 
 import { useServerActionsContext } from "@/components/contexts/ServerActionsContext";
 
@@ -10,20 +10,20 @@ import { useServerActionsContext } from "@/components/contexts/ServerActionsCont
 // Feature-detected and wrapped in try/catch, so it is a no-op everywhere the API
 // is absent (i.e. everywhere except Chrome's WebMCP preview). Intentionally NO
 // mutating actions (cart, checkout, account) — it only reads the public catalog
-// through the existing GetProductsPaged server action.
+// through the existing GetColorwaysPaged server action.
 
 const SITE = "https://grbpwr.com";
 
 function productPath(slug: string | undefined): string | null {
   if (!slug) return null;
-  const i = slug.indexOf("/product/");
+  const i = slug.indexOf("/p/");
   return i === -1 ? null : slug.slice(i);
 }
 
-function toCompactProduct(p: common_Product) {
-  const translations = p.productDisplay?.productBody?.translations;
-  const name = (translations?.[0]?.name || p.sku || "").trim();
-  const media = p.productDisplay?.thumbnail?.media;
+function toCompactProduct(p: common_Colorway) {
+  const translations = p.display?.productBody?.translations;
+  const name = (translations?.[0]?.name || p.baseSku || "").trim();
+  const media = p.display?.thumbnail?.media;
   const image =
     media?.compressed?.mediaUrl ||
     media?.fullSize?.mediaUrl ||
@@ -33,7 +33,7 @@ function toCompactProduct(p: common_Product) {
   const path = productPath(p.slug);
   return {
     id: p.id,
-    sku: p.sku,
+    sku: p.baseSku,
     name,
     url: path ? `${SITE}${path}` : undefined,
     image: image?.trim() || undefined,
@@ -43,7 +43,7 @@ function toCompactProduct(p: common_Product) {
 }
 
 export function WebMCPTools() {
-  const { GetProductsPaged } = useServerActionsContext();
+  const { GetColorwaysPaged } = useServerActionsContext();
 
   useEffect(() => {
     const mc = (navigator as any)?.modelContext;
@@ -64,7 +64,7 @@ export function WebMCPTools() {
           ? args.tag.trim()
           : undefined;
 
-      const res = await GetProductsPaged({
+      const res = await GetColorwaysPaged({
         limit,
         offset: 0,
         sortFactors,
@@ -75,7 +75,7 @@ export function WebMCPTools() {
           currency: undefined,
           onSale: args?.onSale ? true : undefined,
           gender: undefined,
-          color: undefined,
+          colorCodes: undefined,
           topCategoryIds: undefined,
           subCategoryIds: undefined,
           excludeTopCategoryIds: undefined,
@@ -140,7 +140,7 @@ export function WebMCPTools() {
     } catch {
       // Experimental API surface — ignore registration failures.
     }
-  }, [GetProductsPaged]);
+  }, [GetColorwaysPaged]);
 
   return null;
 }

@@ -1,9 +1,9 @@
 import { SVGProps } from "react";
-import { common_ProductMeasurement } from "@/api/proto-http/frontend";
+import { ProductMeasurementCompat } from "@/lib/api-adapters/measurements";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { Unit } from "@/app/[locale]/product/[...productParams]/_components/measurements-table";
+import { Unit } from "@/app/[locale]/p/[handle]/_components/measurements-table";
 
 import { HorizontalLine } from "../icons/guide-lines/horizontal-line";
 import { VerticalLine } from "../icons/guide-lines/vertical-line";
@@ -41,7 +41,7 @@ export type MeasurementLine = {
 };
 
 interface MeasurementSvgProps extends SVGProps<SVGSVGElement> {
-  measurements?: common_ProductMeasurement[];
+  measurements?: ProductMeasurementCompat[];
   lines: MeasurementLine[];
   originalViewBox?: string;
   children: React.ReactNode;
@@ -66,7 +66,7 @@ const normalizeSVGContainer = (originalViewBox: string) => {
 };
 
 const useMeasurementValue = (
-  measurements: common_ProductMeasurement[],
+  measurements: ProductMeasurementCompat[],
   selectedSize?: number,
 ) => {
   const { dictionary } = useDataContext();

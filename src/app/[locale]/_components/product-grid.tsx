@@ -1,4 +1,4 @@
-import type { common_Product } from "@/api/proto-http/frontend";
+import type { common_Colorway } from "@/api/proto-http/frontend";
 import { CATALOG_LIMIT } from "@/constants";
 
 import { ProductSkeleton } from "../catalog/_components/catalog-skeleton";
@@ -9,7 +9,7 @@ export default function ProductsGridSection({
   isLoading,
   total,
 }: {
-  products: common_Product[] | undefined;
+  products: common_Colorway[] | undefined;
   isLoading: boolean;
   total: number;
 }) {

@@ -13,7 +13,7 @@ import { HeroMedia } from "./hero-media";
 
 // PRODUCT_SPOTLIGHT hero: a big product shot (the block's HeroMediaFull) beside a
 // panel with the campaign headline, price and a CTA to the product. The panes
-// stack on mobile. Price/sale are derived from the light `common_Product` the
+// stack on mobile. Price/sale are derived from the light `common_Colorway` the
 // backend sends.
 //
 // Decision B (quick-add depth) — MVP: the CTA links to the product page ("view
@@ -39,7 +39,7 @@ export function HeroProductSpotlight({
   const currencyKey = currentCountry.currencyKey || "EUR";
   const currencySymbol = currencySymbols[currencyKey] || currencySymbols["EUR"];
   const salePercentage =
-    product?.productDisplay?.productBody?.productBodyInsert?.salePercentage
+    product?.display?.productBody?.productBodyInsert?.salePercentage
       ?.value || "0";
   const isSaleApplied = salePercentage !== "0";
   const productPrice =

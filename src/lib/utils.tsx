@@ -1,5 +1,5 @@
 import type {
-  common_ProductSize,
+  common_Variant,
   common_Size,
 } from "@/api/proto-http/frontend";
 import {
@@ -49,7 +49,7 @@ export function calculatePriceWithSale(
 }
 
 export function formatSizeData(
-  sizes: common_ProductSize[],
+  sizes: common_Variant[],
   type: "shoe" | "ring",
   dictionary: common_Size[],
 ) {
@@ -57,7 +57,7 @@ export function formatSizeData(
     type === "shoe" ? SHOES_SIZE_CONVERSION : RING_SIZE_CONVERSION;
 
   return sizes
-    .filter((size) => size.id !== undefined)
+    .filter((size) => size.variantId !== undefined)
     .map((size) => {
       const name = dictionary.find((item) => item.id === size.sizeId)?.name;
       const tableData = tableType[name as keyof typeof tableType];

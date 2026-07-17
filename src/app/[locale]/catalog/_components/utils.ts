@@ -3,7 +3,7 @@ import {
   common_GenderEnum,
   common_OrderFactor,
   common_SortFactor,
-  GetProductsPagedRequest
+  GetColorwaysPagedRequest
 } from "@/api/proto-http/frontend";
 import { GENDER_MAP, ORDER_MAP, SORT_MAP_URL } from "@/constants";
 
@@ -100,7 +100,7 @@ export function getProductsPagedQueryParams(
   },
   dictionary?: common_Dictionary
 ): Pick<
-  GetProductsPagedRequest,
+  GetColorwaysPagedRequest,
   "sortFactors" | "orderFactor" | "filterConditions"
 > {
   const sortFactor = getEnumFromUrl(sort, SORT_MAP_URL) as common_SortFactor | undefined;
@@ -153,7 +153,7 @@ export function getProductsPagedQueryParams(
       from: undefined,
       to: undefined,
       onSale: sale ? sale === "true" : undefined,
-      color: undefined,
+      colorCodes: undefined,
       preorder: undefined,
       byTag: validatedTag,
       gender: genderEnums,

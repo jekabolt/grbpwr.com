@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { common_Product } from "@/api/proto-http/frontend";
+import { common_Colorway } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
 import { formatPrice } from "@/lib/currency";
@@ -40,7 +40,7 @@ export function SingleFeaturedItem({
   products,
   headline,
 }: {
-  products: common_Product[];
+  products: common_Colorway[];
   headline?: string;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
@@ -52,7 +52,7 @@ export function SingleFeaturedItem({
   return (
     <div>
       {products?.map((p) => {
-        const productBody = p.productDisplay?.productBody?.productBodyInsert;
+        const productBody = p.display?.productBody?.productBodyInsert;
         const price =
           p.prices?.find(
             (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
@@ -67,7 +67,7 @@ export function SingleFeaturedItem({
         );
 
         const currentTranslation =
-          p.productDisplay?.productBody?.translations?.find(
+          p.display?.productBody?.translations?.find(
             (t) => t.languageId === languageId,
           );
         return (
@@ -121,12 +121,12 @@ export function SingleFeaturedItem({
             >
               <Image
                 src={
-                  p.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl || ""
+                  p.display?.thumbnail?.media?.thumbnail?.mediaUrl || ""
                 }
                 alt={currentTranslation?.name || ""}
                 aspectRatio={calculateAspectRatio(
-                  p.productDisplay?.thumbnail?.media?.thumbnail?.width,
-                  p.productDisplay?.thumbnail?.media?.thumbnail?.height,
+                  p.display?.thumbnail?.media?.thumbnail?.width,
+                  p.display?.thumbnail?.media?.thumbnail?.height,
                 )}
                 fit="contain"
                 priority={true}

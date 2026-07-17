@@ -1,4 +1,4 @@
-import { common_Product } from "@/api/proto-http/frontend";
+import { common_Colorway } from "@/api/proto-http/frontend";
 
 import { cn, internalHref } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -21,7 +21,7 @@ export function FeaturedItems({
   headline?: string;
   exploreText?: string;
   exploreLink?: string;
-  products?: common_Product[];
+  products?: common_Colorway[];
   tag?: string;
   itemsQuantity: number;
   onHeroClick?: () => void;
@@ -94,7 +94,7 @@ function FourFeaturedItems({
 
   href: string;
   linkText: string;
-  products?: common_Product[];
+  products?: common_Colorway[];
   onHeroClick?: () => void;
 }) {
   return (

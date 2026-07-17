@@ -1,4 +1,4 @@
-import { common_Product } from "@/api/proto-http/frontend";
+import { common_Colorway } from "@/api/proto-http/frontend";
 
 import { cn, internalHref } from "@/lib/utils";
 import { Carousel } from "@/components/ui/carousel";
@@ -14,7 +14,7 @@ export function MobileFeaturedItems({
   itemsQuantity,
   onHeroClick,
 }: {
-  products: common_Product[];
+  products: common_Colorway[];
   headline?: string;
   exploreText?: string;
   exploreLink?: string;

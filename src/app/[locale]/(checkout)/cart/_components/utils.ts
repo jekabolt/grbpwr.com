@@ -1,6 +1,6 @@
 import type {
   common_OrderItem,
-  common_ProductFull,
+  common_ColorwayFull,
 } from "@/api/proto-http/frontend";
 
 function isValidDate(date: string): boolean {
@@ -14,13 +14,13 @@ function isValidDate(date: string): boolean {
 }
 
 export function getPreorderDate(
-  product: common_OrderItem | common_ProductFull,
+  product: common_OrderItem | common_ColorwayFull,
   t: (key: string) => string,
 ): string | null {
   const preorderDate =
     "preorder" in product
       ? product.preorder
-      : product.product?.productDisplay?.productBody?.productBodyInsert
+      : product.colorway?.display?.productBody?.productBodyInsert
         ?.preorder;
   if (!preorderDate || !isValidDate(preorderDate)) return null;
 

@@ -1,4 +1,4 @@
-import type { common_ProductFull } from "@/api/proto-http/frontend";
+import type { common_ColorwayFull } from "@/api/proto-http/frontend";
 import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 
 // schema.org Product/Offer JSON-LD for product pages. Gives search engines (and
@@ -58,10 +58,10 @@ export function jsonLdHtml(data: Record<string, unknown>): string {
  * Returns null when the product has no usable price.
  */
 export function productOfferForLocale(
-  productFull: common_ProductFull | undefined,
+  productFull: common_ColorwayFull | undefined,
   locale: string,
 ): { currency: string; price: string } | null {
-  const prices = productFull?.product?.prices ?? [];
+  const prices = productFull?.colorway?.prices ?? [];
   const currency = currencyForLocale(locale);
   const match =
     prices.find(
@@ -113,23 +113,23 @@ const SHIPPING_DETAILS = {
 };
 
 export function productJsonLd(
-  productFull: common_ProductFull | undefined,
+  productFull: common_ColorwayFull | undefined,
   locale: string,
 ): Record<string, unknown> | null {
-  const p = productFull?.product;
+  const p = productFull?.colorway;
   if (!p) return null;
 
   const langId = LANGUAGE_CODE_TO_ID[locale];
-  const translations = p.productDisplay?.productBody?.translations;
+  const translations = p.display?.productBody?.translations;
   const t =
     translations?.find((x) => x.languageId === langId) ?? translations?.[0];
-  const name = (t?.name || p.sku || "").trim();
+  const name = (t?.name || p.baseSku || "").trim();
   if (!name) return null;
 
   const country = COUNTRY_BY_LOCALE[locale] ?? "gb";
   const slug =
-    p.slug && p.slug.includes("/product/")
-      ? p.slug.slice(p.slug.indexOf("/product/"))
+    p.slug && p.slug.includes("/p/")
+      ? p.slug.slice(p.slug.indexOf("/p/"))
       : null;
   const url = slug ? `${SITE}/${country}/${locale}${slug}` : undefined;
 
@@ -164,14 +164,17 @@ export function productJsonLd(
     : [];
 
   const description = (t?.description || "").trim();
-  const color = p.productDisplay?.productBody?.productBodyInsert?.color?.trim();
+  const colorInsert = p.display?.productBody?.productBodyInsert;
+  const color = (
+    colorInsert?.dictionaryColor?.name ?? colorInsert?.colorCode
+  )?.trim();
 
   const productNode = {
     "@type": "Product",
     name,
     ...(description ? { description } : {}),
     ...(image.length ? { image } : {}),
-    ...(p.sku ? { sku: p.sku } : {}),
+    ...(p.baseSku ? { sku: p.baseSku } : {}),
     brand: { "@type": "Brand", name: "GRBPWR" },
     ...(color ? { color } : {}),
     ...(url ? { url } : {}),
