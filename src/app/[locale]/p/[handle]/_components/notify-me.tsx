@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 
 import { sendNotifyMeIntentEvent } from "@/lib/analitycs/product-engagement";
 import { serviceClient } from "@/lib/api";
+import { buildNotifyMeRequest } from "@/lib/api-adapters/order";
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { Button } from "@/components/ui/button";
 import CheckboxGlobal from "@/components/ui/checkbox";
@@ -131,11 +132,13 @@ export function NotifyMe({
     }
     setIsLoading(true);
     try {
-      await serviceClient.NotifyMe({
-        email: data.email,
-        productId: data.productId,
-        sizeId: data.sizeId,
-      });
+      await serviceClient.NotifyMe(
+        buildNotifyMeRequest({
+          email: data.email,
+          productId: data.productId,
+          sizeId: data.sizeId,
+        }),
+      );
 
       const sizeName = sizeNames?.find((s) => s.id === data.sizeId)?.name;
       sendNotifyMeIntentEvent({
@@ -167,82 +170,82 @@ export function NotifyMe({
   return (
     <DialogPrimitives.Root open={open} onOpenChange={handleOpenChange}>
       <DialogPrimitives.Portal>
-        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay data-[state=open]:animate-modal-fade-in data-[state=closed]:animate-modal-fade-out" />
-        <DialogPrimitives.Content className="fixed inset-x-2.5 top-1/2 z-50 flex h-auto w-auto -translate-y-1/2 flex-col border border-textInactiveColor bg-bgColor p-2.5 text-textColor data-[state=open]:animate-modal-fade-in data-[state=closed]:animate-modal-fade-out lg:inset-x-auto lg:left-1/2 lg:w-80 lg:-translate-x-1/2">
-              <DialogPrimitives.Title className="sr-only">
-                {tAccessibility("notify me dialog")}
-              </DialogPrimitives.Title>
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(handleSubmit)}
-                  className="flex h-auto flex-col justify-between gap-10"
-                >
-                  <div className="flex items-center justify-between">
-                    <Text variant="uppercase">{tProduct("notify me")}</Text>
-                    <DialogPrimitives.Close asChild>
-                      <Button aria-label={tNav("close")}>[x]</Button>
-                    </DialogPrimitives.Close>
-                  </div>
-                  <div className="flex h-full flex-col justify-center space-y-10">
-                    <Text className="leading-none">
-                      {tProduct("notify-description")}
-                    </Text>
+        <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay data-[state=closed]:animate-modal-fade-out data-[state=open]:animate-modal-fade-in" />
+        <DialogPrimitives.Content className="fixed inset-x-2.5 top-1/2 z-50 flex h-auto w-auto -translate-y-1/2 flex-col border border-textInactiveColor bg-bgColor p-2.5 text-textColor data-[state=closed]:animate-modal-fade-out data-[state=open]:animate-modal-fade-in lg:inset-x-auto lg:left-1/2 lg:w-80 lg:-translate-x-1/2">
+          <DialogPrimitives.Title className="sr-only">
+            {tAccessibility("notify me dialog")}
+          </DialogPrimitives.Title>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="flex h-auto flex-col justify-between gap-10"
+            >
+              <div className="flex items-center justify-between">
+                <Text variant="uppercase">{tProduct("notify me")}</Text>
+                <DialogPrimitives.Close asChild>
+                  <Button aria-label={tNav("close")}>[x]</Button>
+                </DialogPrimitives.Close>
+              </div>
+              <div className="flex h-full flex-col justify-center space-y-10">
+                <Text className="leading-none">
+                  {tProduct("notify-description")}
+                </Text>
 
-                    <div className="space-y-16 lg:space-y-10">
-                      <div className="space-y-4">
-                        <Text>{tProduct("select size")}:</Text>
-                        <SizePicker
-                          sizeNames={outOfStockSizes}
-                          activeSizeId={selectedSizeId}
-                          handleSizeSelect={handleSizeSelect}
-                          view="grid"
-                        />
-                        {form.formState.errors.sizeId && (
-                          <Text className="text-errorColor">
-                            {form.formState.errors.sizeId.message}
-                          </Text>
-                        )}
-                      </div>
-                      <div className="space-y-4" data-nosnippet>
-                        <InputField
-                          name="email"
-                          label={t("email")}
-                          type="email"
-                          variant="secondary"
-                        />
-                        <CheckboxGlobal
-                          name="newsLetter"
-                          label={tProduct.rich("notify-agree", {
-                            privacy: (chunks) => (
-                              <Link
-                                href="/legal-notices?section=privacy"
-                                className="underline hover:no-underline"
-                              >
-                                {chunks}
-                              </Link>
-                            ),
-                          })}
-                          checked={isChecked}
-                          onCheckedChange={(checked: boolean) =>
-                            setIsChecked(checked)
-                          }
-                        />
-                      </div>
-                    </div>
+                <div className="space-y-16 lg:space-y-10">
+                  <div className="space-y-4">
+                    <Text>{tProduct("select size")}:</Text>
+                    <SizePicker
+                      sizeNames={outOfStockSizes}
+                      activeSizeId={selectedSizeId}
+                      handleSizeSelect={handleSizeSelect}
+                      view="grid"
+                    />
+                    {form.formState.errors.sizeId && (
+                      <Text className="text-errorColor">
+                        {form.formState.errors.sizeId.message}
+                      </Text>
+                    )}
                   </div>
+                  <div className="space-y-4" data-nosnippet>
+                    <InputField
+                      name="email"
+                      label={t("email")}
+                      type="email"
+                      variant="secondary"
+                    />
+                    <CheckboxGlobal
+                      name="newsLetter"
+                      label={tProduct.rich("notify-agree", {
+                        privacy: (chunks) => (
+                          <Link
+                            href="/legal-notices?section=privacy"
+                            className="underline hover:no-underline"
+                          >
+                            {chunks}
+                          </Link>
+                        ),
+                      })}
+                      checked={isChecked}
+                      onCheckedChange={(checked: boolean) =>
+                        setIsChecked(checked)
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
 
-                  <Button
-                    variant="main"
-                    type="submit"
-                    size="lg"
-                    className="w-full uppercase transition-opacity active:opacity-70"
-                    disabled={form.formState.isSubmitting || isLoading}
-                    loading={isLoading}
-                  >
-                    {tProduct("notify me")}
-                  </Button>
-                </form>
-              </Form>
+              <Button
+                variant="main"
+                type="submit"
+                size="lg"
+                className="w-full uppercase transition-opacity active:opacity-70"
+                disabled={form.formState.isSubmitting || isLoading}
+                loading={isLoading}
+              >
+                {tProduct("notify me")}
+              </Button>
+            </form>
+          </Form>
         </DialogPrimitives.Content>
       </DialogPrimitives.Portal>
       <SubmissionToaster
