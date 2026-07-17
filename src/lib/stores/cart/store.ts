@@ -338,6 +338,19 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
       {
         name: "cart-storage",
         storage: cartStorageWithTTL,
+        // Bumped for the PR6 variant-SKU cart re-key: a pre-bump cart line was
+        // {id, size}, which now deserializes with variantSku === undefined and
+        // would silently break validation/removal. Discard those incompatible
+        // carts on first load rather than migrate an internal (product_id, size_id)
+        // pair we can no longer resolve to a public variant SKU.
+        version: 1,
+        migrate: () => ({
+          products: [],
+          totalItems: 0,
+          totalPrice: 0,
+          subTotalPrice: 0,
+          validatedCurrency: "EUR",
+        }),
         partialize: (state) => ({
           products: state.products,
           totalItems: state.totalItems,
