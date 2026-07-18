@@ -97,7 +97,8 @@
     "failed to update account": "アカウントを更新できませんでした",
     "failed to set default address": "デフォルト住所を設定できませんでした",
     "failed to add address": "住所を追加できませんでした",
-    "start a return": "返品を開始"
+    "start a return": "返品を開始",
+    "exclusive": "限定"
   },
   "footer": {
     "legal notices": "法的通知",
@@ -159,7 +160,11 @@
       "sale": "セール"
     },
     "sold out": "売り切れ",
-    "no matches": "該当なし"
+    "no matches": "該当なし",
+    "members only": "メンバー限定",
+    "sign in to access": "サインインして表示",
+    "exclusive": "限定",
+    "exclusive description": "メンバー限定のピース"
   },
   "product": {
     "model is": "モデルは",

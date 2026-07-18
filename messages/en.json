@@ -96,7 +96,8 @@
     "failed to update account": "failed to update account",
     "failed to set default address": "failed to set default address",
     "failed to add address": "failed to add address",
-    "start a return": "start a return"
+    "start a return": "start a return",
+    "exclusive": "exclusive"
   },
   "footer": {
     "legal notices": "legal notices",
@@ -158,7 +159,11 @@
       "sale": "sale"
     },
     "sold out": "sold out",
-    "no matches": "no matches"
+    "no matches": "no matches",
+    "members only": "members only",
+    "sign in to access": "sign in to access",
+    "exclusive": "exclusive",
+    "exclusive description": "pieces reserved for members"
   },
   "product": {
     "model is": "model is",

@@ -1,7 +1,10 @@
 import { cache } from "react";
-
 import { createFrontendServiceClient } from "@/api/proto-http/frontend";
-import { ARCHIVES_CACHE_TAG, HERO_CACHE_TAG, PRODUCTS_CACHE_TAG } from "@/constants";
+import {
+  ARCHIVES_CACHE_TAG,
+  HERO_CACHE_TAG,
+  PRODUCTS_CACHE_TAG,
+} from "@/constants";
 
 type Object = {
   [key: string]: unknown;
@@ -50,7 +53,6 @@ const requestHandler = async (
   { path, method, body }: RequestHandlerParams,
   { method: serviceMethod }: ProtoMetaParams,
 ) => {
-
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`,
     {
@@ -97,6 +99,7 @@ const EMPTY_FILTERS = {
   byTag: undefined,
   collections: undefined,
   seasons: undefined,
+  exclusive: undefined,
 };
 
 // Freshness signals (sitemap lastmod / JSON-LD dateModified) for pages without a

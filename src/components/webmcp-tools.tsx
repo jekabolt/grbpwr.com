@@ -85,6 +85,7 @@ export function WebMCPTools() {
           byTag: tag,
           collections: undefined,
           seasons: undefined,
+          exclusive: undefined,
         },
       });
 

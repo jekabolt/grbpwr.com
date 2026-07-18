@@ -1,9 +1,13 @@
 import { useState } from "react";
+import Link from "next/link";
 import { StorefrontColorway } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import { lockedTeaserHref } from "@/lib/tier";
 import { cn, isDateTodayOrFuture } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { LockIcon } from "@/components/ui/icons/lock";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
@@ -74,6 +78,8 @@ export function AddToCartBtn({
   const {
     outOfStock: internalOutOfStock,
     isMaxQuantity: internalIsMaxQuantity,
+    locked,
+    isSignedIn,
   } = useDisabled({
     activeSizeId: internalHandlers.activeSizeId,
     product,
@@ -103,6 +109,10 @@ export function AddToCartBtn({
   const isHoveringOutOfStock = hoveredOutOfStockSizeId !== null;
   const isSoldOut = product.soldOut === true;
   const t = useTranslations("product");
+  const tCatalog = useTranslations("catalog");
+  const lockedLabel = isSignedIn
+    ? tCatalog("members only")
+    : tCatalog("sign in to access");
 
   const handleAddToCartClick = () => {
     if (isSoldOut || isSelectedSizeOutOfStock) {
@@ -177,50 +187,77 @@ export function AddToCartBtn({
         })}
       >
         <div>
-          {preorder && isDateTodayOrFuture(preorderRaw || "") && (
-            <Text className="bg-textInactiveColorAlpha p-1.5 text-center uppercase leading-none text-textColor">
-              {preorder}
-            </Text>
-          )}
-          <LoadingButton
-            variant="simpleReverse"
-            size="lg"
-            onAction={handleAddToCartClick}
-            isLoadingExternal={isLoading}
-            className="border-none"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            {isSoldOut || isSelectedSizeOutOfStock || isHoveringOutOfStock ? (
-              <Text className="w-full text-center uppercase" variant="inherit">
-                {t("notify me")}
-              </Text>
-            ) : isMaxQuantityFinal ? (
-              <Text className="w-full text-center uppercase" variant="inherit">
-                {t("order limit exceeded")}
-              </Text>
-            ) : isNoSizeSelected ? (
-              <Text className="w-full text-center" variant="inherit">
-                {t("select size")}
-              </Text>
-            ) : (
-              <>
-                <Text variant="inherit">
-                  {isValidPreorder ? t("preorder") : t("add")}
+          {locked ? (
+            // Tier-gated teaser: no purchase path (also blocked server-side).
+            // The buy button becomes an adaptive CTA — guests to sign-in,
+            // signed-in members below the tier to their account.
+            <Button
+              asChild
+              variant="simpleReverse"
+              size="lg"
+              className="blackTheme flex w-full items-center justify-center gap-2 border-none uppercase"
+            >
+              <Link href={lockedTeaserHref(isSignedIn)}>
+                <LockIcon className="h-4 w-4 shrink-0" />
+                <Text variant="inherit">{lockedLabel}</Text>
+              </Link>
+            </Button>
+          ) : (
+            <>
+              {preorder && isDateTodayOrFuture(preorderRaw || "") && (
+                <Text className="bg-textInactiveColorAlpha p-1.5 text-center uppercase leading-none text-textColor">
+                  {preorder}
                 </Text>
-                {isSaleApplied ? (
-                  <Text variant="inactive">
-                    {priceMinusSale}
-                    <Text component="span" className="text-textColor">
-                      {priceWithSale}
-                    </Text>
+              )}
+              <LoadingButton
+                variant="simpleReverse"
+                size="lg"
+                onAction={handleAddToCartClick}
+                isLoadingExternal={isLoading}
+                className="border-none"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                {isSoldOut ||
+                isSelectedSizeOutOfStock ||
+                isHoveringOutOfStock ? (
+                  <Text
+                    className="w-full text-center uppercase"
+                    variant="inherit"
+                  >
+                    {t("notify me")}
+                  </Text>
+                ) : isMaxQuantityFinal ? (
+                  <Text
+                    className="w-full text-center uppercase"
+                    variant="inherit"
+                  >
+                    {t("order limit exceeded")}
+                  </Text>
+                ) : isNoSizeSelected ? (
+                  <Text className="w-full text-center" variant="inherit">
+                    {t("select size")}
                   </Text>
                 ) : (
-                  <Text variant="inherit">{price}</Text>
+                  <>
+                    <Text variant="inherit">
+                      {isValidPreorder ? t("preorder") : t("add")}
+                    </Text>
+                    {isSaleApplied ? (
+                      <Text variant="inactive">
+                        {priceMinusSale}
+                        <Text component="span" className="text-textColor">
+                          {priceWithSale}
+                        </Text>
+                      </Text>
+                    ) : (
+                      <Text variant="inherit">{price}</Text>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-          </LoadingButton>
+              </LoadingButton>
+            </>
+          )}
         </div>
       </div>
       <SubmissionToaster

@@ -97,7 +97,8 @@
     "failed to update account": "konto konnte nicht aktualisiert werden",
     "failed to set default address": "standardadresse konnte nicht festgelegt werden",
     "failed to add address": "adresse konnte nicht hinzugefügt werden",
-    "start a return": "rücksendung starten"
+    "start a return": "rücksendung starten",
+    "exclusive": "exklusiv"
   },
   "footer": {
     "legal notices": "rechtliche hinweise",
@@ -159,7 +160,11 @@
       "sale": "sale"
     },
     "sold out": "ausverkauft",
-    "no matches": "keine treffer"
+    "no matches": "keine treffer",
+    "members only": "nur für mitglieder",
+    "sign in to access": "zum freischalten anmelden",
+    "exclusive": "exklusiv",
+    "exclusive description": "stücke exklusiv für mitglieder"
   },
   "product": {
     "model is": "modell ist",

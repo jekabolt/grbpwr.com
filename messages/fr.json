@@ -97,7 +97,8 @@
     "failed to update account": "impossible de mettre à jour le compte",
     "failed to set default address": "impossible de définir l’adresse par défaut",
     "failed to add address": "impossible d’ajouter l’adresse",
-    "start a return": "créer un retour"
+    "start a return": "créer un retour",
+    "exclusive": "exclusif"
   },
   "footer": {
     "legal notices": "mentions légales",
@@ -159,7 +160,11 @@
       "sale": "soldes"
     },
     "sold out": "rupture de stock",
-    "no matches": "aucun résultat"
+    "no matches": "aucun résultat",
+    "members only": "réservé aux membres",
+    "sign in to access": "connectez-vous pour accéder",
+    "exclusive": "exclusif",
+    "exclusive description": "pièces réservées aux membres"
   },
   "product": {
     "model is": "modèle est",

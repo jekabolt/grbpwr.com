@@ -205,6 +205,19 @@ export type Size = {
   skuSystem: SizeSkuSystem | undefined;
 };
 
+// CategorySizeSystem maps a category-tree node to a permitted SizeSkuSystem (S10/WS5, migration
+// 0175). A row targets EITHER category_id (a broad category/sub-category node) OR type_id (a specific
+// leaf type) -- never both set; 0 means unset. The admin size picker resolves a style's category
+// chain against this table (most specific match wins: type_id, then category_id) to filter which
+// size systems/sizes it offers; CreateVariant and the style's size-range write (UpdateTechCard)
+// enforce the same rule server-side.
+export type CategorySizeSystem = {
+  id: number | undefined;
+  categoryId: number | undefined;
+  typeId: number | undefined;
+  skuSystem: SizeSkuSystem | undefined;
+};
+
 // Color is a controlled colour-dictionary entry. code is exactly 3 chars and unique; it feeds the
 // colour segment of the SKU and is referenced by product.color_code.
 export type Color = {
@@ -381,6 +394,19 @@ export type ColorwayMerchandisingInsert = {
 export type ColorwayPriceInsert = {
   currency: string | undefined;
   price: googletype_Decimal | undefined;
+};
+
+// CompositionEntry is one fibre share of a style's structured composition (S17), resolved with its
+// dictionary display name. M1 fix: the typed replacement for overloading the free-text `composition`
+// field with an encoded array of these once style_composition gains rows — that overload is removed;
+// `composition` on the wire is legacy plain text ONLY, always, and composition_entries (StorefrontColorwayDisplay,
+// TechCard) is the structured projection, populated from style_composition, empty when the style has
+// none yet. percent mirrors style_composition.percent (DECIMAL(5,2)): a decimal, not int32, because an
+// equal-split derivation (S17, DeriveStyleComposition) can produce fractional shares (e.g. 33.33).
+export type CompositionEntry = {
+  fiberCode: string | undefined;
+  name: string | undefined;
+  percent: googletype_Decimal | undefined;
 };
 
 export type StockChange = {
@@ -622,6 +648,7 @@ export type FilterConditions = {
   seasons: SeasonEnum[] | undefined;
   excludeTopCategoryIds: number[] | undefined;
   colorCodes: string[] | undefined;
+  exclusive: boolean | undefined;
 };
 
 export type PaymentMethodNameEnum =
@@ -742,6 +769,12 @@ export type Shipment = {
   shippingDate: wellKnownTimestamp | undefined;
   estimatedArrivalDate: wellKnownTimestamp | undefined;
   freeShipping: boolean | undefined;
+  // actual_cost is the real carrier invoice for this shipment (EUR), distinct from cost
+  // (the price charged to the customer). NULL until an operator enters it.
+  actualCost: googletype_Decimal | undefined;
+  // return_shipping_cost is the reverse-logistics cost of a return (EUR), NULL when the
+  // order was not returned.
+  returnShippingCost: googletype_Decimal | undefined;
 };
 
 export type OrderItemAdjustmentReasonEnum =
@@ -830,6 +863,12 @@ export type Order = {
   refundReason: string | undefined;
   orderComment: string | undefined;
   refundedAmount: googletype_Decimal | undefined;
+  // Buyer identity for the order-list projection: populated by the paged ListOrders query (which
+  // already joins buyer), so the admin orders list shows who placed the order instead of a raw UUID.
+  // Empty on read paths that don't project the buyer — OrderFull carries a full Buyer message instead.
+  buyerEmail: string | undefined;
+  buyerFirstName: string | undefined;
+  buyerLastName: string | undefined;
 };
 
 export type OrderItem = {
@@ -949,9 +988,11 @@ export type Dictionary = {
   productTags: string[] | undefined;
   colors: Color[] | undefined;
   countries: Country[] | undefined;
+  fibers: Fiber[] | undefined;
   tags: Tag[] | undefined;
   skuContractVersion: string | undefined;
   revisions: DictionaryRevision[] | undefined;
+  categorySizeSystems: CategorySizeSystem[] | undefined;
 };
 
 export type Collection = {
@@ -969,6 +1010,15 @@ export type Country = {
   code: string | undefined;
   name: string | undefined;
   active: boolean | undefined;
+};
+
+// Fiber is one entry of the controlled fibre vocabulary (COT/POL/WOL/…): a material's structural
+// composition references these codes, and a style's composition is derived from its shell-fabric
+// materials' fibres. Authored via the dictionary (CreateFiber/ArchiveFiber).
+export type Fiber = {
+  code: string | undefined;
+  name: string | undefined;
+  archived: boolean | undefined;
 };
 
 // Tag is a controlled merchandising tag dictionary (R9). Storefront receives tags by code/name; id is
@@ -1079,16 +1129,39 @@ export type FittingCallout = {
   posY: googletype_Decimal | undefined;
 };
 
-// FittingChangeRequest is one structured change produced by a fitting (task 13): the target area
-// to change, a note, an optional link to a photo callout pin, and a resolved flag (set when the
-// change has been carried into the tech card). The lightweight replacement for the removed POM
-// feedback loop — it records WHY the spec changed without the full point/grade machinery.
+// FittingChangeRequest is one structured remark item produced by a fitting (S26, §2.7). target is the
+// change CATEGORY; zone + piece_id are the structured LOCATION (which replace the front's misuse of
+// target as a free "sleeve/collar" field, A2). status (open|resolved) replaces the old boolean
+// resolved; carried_from_id links this item to the one in the PREVIOUS round it continues, giving a
+// visible carry-over history (acceptance E.15). The free fitting.comment stays a separate free note.
 export type FittingChangeRequest = {
   id: number | undefined;
   target: string | undefined;
   note: string | undefined;
   calloutNumber: number | undefined;
   resolved: boolean | undefined;
+  zone: string | undefined;
+  pieceId: number | undefined;
+  status: string | undefined;
+  carriedFromId: number | undefined;
+  createdBy: string | undefined;
+  fittingId: number | undefined;
+  roundNumber: number | undefined;
+};
+
+// FittingChangeRequestInsert is the write payload for the dedicated change-request CRUD (S26). Unlike
+// the embedded initial batch on FittingInsert, these items are managed individually so their id is
+// STABLE — which carried_from_id (and the resolve/carry-over flow) depends on. created_by is stamped
+// server-side.
+export type FittingChangeRequestInsert = {
+  fittingId: number | undefined;
+  target: string | undefined;
+  note: string | undefined;
+  calloutNumber: number | undefined;
+  zone: string | undefined;
+  pieceId: number | undefined;
+  status: string | undefined;
+  carriedFromId: number | undefined;
 };
 
 // Fitting is a stored try-on session with resolved media for display.
@@ -1098,6 +1171,9 @@ export type Fitting = {
   media: MediaFull[] | undefined;
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
+  lockVersion: number | undefined;
+  createdBy: string | undefined;
+  updatedBy: string | undefined;
 };
 
 // FulfillmentColumn is a lane on the fulfillment board. Unlike TaskStatus (free
@@ -1557,6 +1633,18 @@ export type TechCardMediaKind =
   | "TECH_CARD_MEDIA_KIND_MOODBOARD"
   | "TECH_CARD_MEDIA_KIND_REFERENCE"
   | "TECH_CARD_MEDIA_KIND_SWATCH";
+// TechCardRole is a responsible-account role on a tech card (PLM-rework Q5). Replaces the free-text
+// designer/constructor/technologist/approved_by strings; approval is the APPROVER role plus a
+// server-stamped journal event, not a free-text name.
+export type TechCardRole =
+  | "TECH_CARD_ROLE_UNKNOWN"
+  | "TECH_CARD_ROLE_DESIGNER"
+  | "TECH_CARD_ROLE_CONSTRUCTOR"
+  | "TECH_CARD_ROLE_TECHNOLOGIST"
+  | "TECH_CARD_ROLE_PATTERN_MAKER"
+  | "TECH_CARD_ROLE_GRADER"
+  | "TECH_CARD_ROLE_APPROVER"
+  | "TECH_CARD_ROLE_OTHER";
 // TechCardBomSection groups a BOM line by material family (Sheet «Спецификация»).
 export type TechCardBomSection =
   | "TECH_CARD_BOM_SECTION_UNKNOWN"
@@ -1584,6 +1672,40 @@ export type TechCardPurpose =
   | "TECH_CARD_PURPOSE_UNKNOWN"
   | "TECH_CARD_PURPOSE_SELLABLE"
   | "TECH_CARD_PURPOSE_AUXILIARY";
+// TechCardAuxSubtype sub-classifies an AUXILIARY card (purpose=auxiliary) into the concrete kind of
+// non-sold item it produces (WS7). UNKNOWN=0 means unset — a sellable card, or an auxiliary card not yet
+// classified (stored NULL). Only meaningful with purpose=auxiliary.
+export type TechCardAuxSubtype =
+  | "TECH_CARD_AUX_SUBTYPE_UNKNOWN"
+  | "TECH_CARD_AUX_SUBTYPE_BRAND_LABEL"
+  | "TECH_CARD_AUX_SUBTYPE_CARE_LABEL"
+  | "TECH_CARD_AUX_SUBTYPE_SIZE_LABEL"
+  | "TECH_CARD_AUX_SUBTYPE_HANGTAG"
+  | "TECH_CARD_AUX_SUBTYPE_STICKER"
+  | "TECH_CARD_AUX_SUBTYPE_DUST_BAG"
+  | "TECH_CARD_AUX_SUBTYPE_BOX"
+  | "TECH_CARD_AUX_SUBTYPE_INSERT"
+  | "TECH_CARD_AUX_SUBTYPE_HANGER"
+  | "TECH_CARD_AUX_SUBTYPE_OTHER";
+// Material is a catalog material — shared nomenclature a tech-card BOM line can optionally link
+// to. Descriptive fields only; price lives in the append-only MaterialPrice history.
+// MaterialClass is the class-table-inheritance discriminant (S15): it selects which typed
+// attribute set a material carries. Mirrors entity.MaterialClass and the DB CHECK chk_material_class.
+export type MaterialClass =
+  | "MATERIAL_CLASS_UNKNOWN"
+  | "MATERIAL_CLASS_FABRIC"
+  | "MATERIAL_CLASS_HARDWARE"
+  | "MATERIAL_CLASS_THREAD"
+  | "MATERIAL_CLASS_PACKAGING"
+  | "MATERIAL_CLASS_OTHER";
+// MaterialPurpose (#40) marks whether a catalog material is used for samples, production, or both,
+// so the admin can mark and filter materials. Mirrors entity.ValidMaterialPurposes and the DB CHECK
+// chk_material_purpose. UNKNOWN defaults to BOTH on write.
+export type MaterialPurpose =
+  | "MATERIAL_PURPOSE_UNKNOWN"
+  | "MATERIAL_PURPOSE_SAMPLE"
+  | "MATERIAL_PURPOSE_PRODUCTION"
+  | "MATERIAL_PURPOSE_BOTH";
 // TechCardFabricDirection is the cutting layout a fabric requires.
 export type TechCardFabricDirection =
   | "TECH_CARD_FABRIC_DIRECTION_UNKNOWN"
@@ -1656,6 +1778,14 @@ export type TechCardSignoffState =
   | "TECH_CARD_SIGNOFF_STATE_PENDING"
   | "TECH_CARD_SIGNOFF_STATE_APPROVED"
   | "TECH_CARD_SIGNOFF_STATE_REJECTED";
+// StyleNumberSource records how a tech card's style_number was set (PLM-rework Q1): GENERATED = the
+// server proposed it from the season+sequence contract (SuggestStyleNumber); MANUAL = the owner
+// overrode the proposal (the value then passes the strict format validator). UNKNOWN defaults to
+// GENERATED on write.
+export type StyleNumberSource =
+  | "STYLE_NUMBER_SOURCE_UNKNOWN"
+  | "STYLE_NUMBER_SOURCE_GENERATED"
+  | "STYLE_NUMBER_SOURCE_MANUAL";
 // TechCardMediaItem is a writable sketch-media reference (id + kind).
 export type TechCardMediaItem = {
   mediaId: number | undefined;
@@ -1690,6 +1820,21 @@ export type TechCardRevision = {
   author: string | undefined;
   section: string | undefined;
   changeNote: string | undefined;
+  action: string | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+};
+
+// TechCardRoleAssignment is one "this admin account is <role> of this card" record (Q5), multi per
+// role. Managed via the AssignTechCardRole / RemoveTechCardRoleAssignment / ListTechCardRoleAssignments
+// RPCs, NOT through the tech-card full-replace. admin_username is resolved on read (never written).
+export type TechCardRoleAssignment = {
+  id: number | undefined;
+  techCardId: number | undefined;
+  role: TechCardRole | undefined;
+  adminId: number | undefined;
+  adminUsername: string | undefined;
+  assignedBy: string | undefined;
+  assignedAt: wellKnownTimestamp | undefined;
 };
 
 // ColorwayDevelopmentInsert carries the PLM / lab-dip development fields that moved onto the colourway
@@ -1736,6 +1881,16 @@ export type TechCardColorwayUsage = {
   // explicit presence: 0-based index into TechCardInsert.pieces saying which cut-piece this
   // consumption norm is about; unset = whole garment (informational, NF-05).
   pieceIndex?: number;
+  // bom_line_key references the owning style's BOM line by its stable line_key (S2/S3) — the durable
+  // reference the recipe write-path resolves to a real bom_item_id. Preferred over bom_item_index
+  // (which stays for the transition / legacy read). bom_item_id is the resolved FK on read.
+  bomLineKey: string | undefined;
+  bomItemId: number | undefined;
+  // piece_line_key references the cut-piece this norm is about by its stable TechCardPiece.line_key
+  // (WS4). The recipe write-path resolves it to the real piece_id FK (usage.piece_id RESTRICT).
+  // Preferred over the positional piece_index (kept for the transition). piece_id is the resolved FK.
+  pieceLineKey: string | undefined;
+  pieceId: number | undefined;
 };
 
 // TechCardBomSizeConsumption is the per-size consumption (норма расхода) of one BOM
@@ -1771,6 +1926,27 @@ export type AdminColorwayRef = {
   baseSku: string | undefined;
   colorCode: string | undefined;
   status: ColorwayLifecycleStatus | undefined;
+  // usages is this colourway's material recipe (H1 fix, WS3/S2-S3): the constructor view of a
+  // style now shows each colourway's recipe alongside its identity, instead of the recipe being
+  // write-only (UpdateColorwayRecipe persisted usages that no read path ever surfaced). Money
+  // fields (line_total/size_run_total) are stripped for an account without costing:read, same as
+  // the rest of the tech-card read (stripTechCardCosting).
+  usages: TechCardColorwayUsage[] | undefined;
+  // Lab-dip lifecycle mirrored from the colourway's development submessage (ColorwayDevelopmentInsert),
+  // so the tech-card colourways tab can READ the current lab-dip state inline instead of a second
+  // GetColorwayByID round-trip. These are written through the Colorway write path (UpdateColorway's
+  // development.*), never through the style; here they are output-only.
+  labDipStatus: TechCardLabDipStatus | undefined;
+  labDipRound: number | undefined;
+  labDipSubmittedAt: wellKnownTimestamp | undefined;
+  labDipDecidedAt: wellKnownTimestamp | undefined;
+  labDipDecidedBy: string | undefined;
+  labDipRejectReason: string | undefined;
+  // lock_version is the colourway's optimistic-lock token — its style's shared tech_card.lock_version
+  // (R2/R4). Echo it into UpdateColorwayRequest.expected_colorway_version; a stale value is rejected
+  // (ABORTED). Surfaced on the ref so a per-colourway lab-dip edit is optimistically locked straight
+  // from here, without the caller reaching up to the tech-card's top-level lock_version.
+  lockVersion: number | undefined;
 };
 
 // TechCardDetail is one aspect of the construction description (Sheet «Титул», lower block)
@@ -1805,10 +1981,51 @@ export type TechCardBomItem = {
   // material_id optionally links this line to a catalog Material (task 10). The line keeps its
   // own snapshot fields regardless; 0 means unlinked (free-text / legacy).
   materialId: number | undefined;
+  // id is the stable server-assigned PK (read-only). line_key is the client-generated ULID assigned
+  // when the line is first created in the UI, round-tripped on every save so the server keyed-
+  // reconciles by it (S2/S3) and keeps id stable — which is what lets operations/pieces/recipes hold
+  // a real FK instead of a fragile positional index.
+  id: number | undefined;
+  lineKey: string | undefined;
+  // material_snapshot is a read-only JSON snapshot of the linked material's descriptive fields at
+  // save time (S23), so the document is self-contained.
+  materialSnapshot: string | undefined;
 };
 
-// Material is a catalog material — shared nomenclature a tech-card BOM line can optionally link
-// to. Descriptive fields only; price lives in the append-only MaterialPrice history.
+// MaterialFabricAttrs are the typed attributes of a fabric-class material (material_fabric_attr).
+export type MaterialFabricAttrs = {
+  widthCm: googletype_Decimal | undefined;
+  weightGsm: googletype_Decimal | undefined;
+  fabricDirection: string | undefined;
+  shrinkagePct: googletype_Decimal | undefined;
+  rollLengthM: googletype_Decimal | undefined;
+};
+
+// MaterialHardwareAttrs are the typed attributes of a hardware-class material (material_hardware_attr).
+export type MaterialHardwareAttrs = {
+  diameterMm: googletype_Decimal | undefined;
+  dimensions: string | undefined;
+  finish: string | undefined;
+  baseMaterial: string | undefined;
+  weightG: googletype_Decimal | undefined;
+};
+
+// MaterialThreadAttrs are the typed attributes of a thread-class material (material_thread_attr).
+// Fibre composition is not here — it lives in the structural material_composition (S17).
+export type MaterialThreadAttrs = {
+  ticketTex: string | undefined;
+  lengthPerConeM: googletype_Decimal | undefined;
+  needleReco: string | undefined;
+};
+
+// MaterialPackagingAttrs are the typed attributes of a packaging-class material (material_packaging_attr).
+export type MaterialPackagingAttrs = {
+  substrate: string | undefined;
+  dimensions: string | undefined;
+  gsm: googletype_Decimal | undefined;
+  printMethod: string | undefined;
+};
+
 export type Material = {
   id: number | undefined;
   name: string | undefined;
@@ -1830,6 +2047,30 @@ export type Material = {
   pantone: string | undefined;
   minStock: googletype_Decimal | undefined;
   notes: string | undefined;
+  // lock_version is the optimistic-lock counter (S25, read-only). Echo it back in
+  // UpdateMaterialRequest.expected_lock_version; a stale value is rejected (Aborted).
+  lockVersion: number | undefined;
+  // CTI typing (S15): material_class selects which typed attribute set applies. Exactly one of the
+  // `attributes` oneof is populated for the four typed classes; other_attrs (a JSON object) is the
+  // escape-hatch used only when material_class = MATERIAL_CLASS_OTHER.
+  materialClass: MaterialClass | undefined;
+  fabricAttrs?: MaterialFabricAttrs;
+  hardwareAttrs?: MaterialHardwareAttrs;
+  threadAttrs?: MaterialThreadAttrs;
+  packagingAttrs?: MaterialPackagingAttrs;
+  otherAttrs: string | undefined;
+  // Structural fibre composition (S17): fiber_code + percent, summing to 100 when present. Replaces
+  // the free-text `composition` string (which stays legacy plain text). On write, only fiber_code +
+  // percent are read (name is resolved server-side from the fibre dictionary). Empty = unset. A
+  // shell-fabric material's composition is what a style's derived composition_entries is built from.
+  compositionEntries: CompositionEntry[] | undefined;
+  // Catalog image (#39): image_id is the write-side media reference (FK media(id); 0 = unset); image
+  // is the resolved MediaFull on read (null when unset). Mirrors Model.thumbnail_id / Model.thumbnail.
+  imageId: number | undefined;
+  image: MediaFull | undefined;
+  // purpose (#40) marks whether the material is used for samples, production, or both. Defaults to
+  // BOTH on write when UNKNOWN, so the admin can mark and filter materials.
+  purpose: MaterialPurpose | undefined;
 };
 
 // MaterialPrice is one point in a material's append-only price history. Prices are in the
@@ -1850,6 +2091,7 @@ export type TechCardReleaseMeta = {
   id: number | undefined;
   techCardId: number | undefined;
   version: string | undefined;
+  releaseNumber: number | undefined;
   releasedBy: string | undefined;
   unitCost: googletype_Decimal | undefined;
   currency: string | undefined;
@@ -1892,6 +2134,14 @@ export type TechCardDevCostByKind = {
   amountBase: googletype_Decimal | undefined;
 };
 
+// TechCardDevCostByRound is a style's development spend attributed to one fitting round (Q8 — the
+// attribution S20 asked to fix). round_number 0 collects expenses tied to no fitting round.
+export type TechCardDevCostByRound = {
+  roundNumber: number | undefined;
+  amountBase: googletype_Decimal | undefined;
+  expenseCount: number | undefined;
+};
+
 // TechCardDevCostSummary is the computed roll-up of a style's development spend (output-only).
 export type TechCardDevCostSummary = {
   totalBase: googletype_Decimal | undefined;
@@ -1902,6 +2152,12 @@ export type TechCardDevCostSummary = {
   // production unit cost is unavailable. NOT part of cost_price (development is a period cost).
   unitCostWithDev: googletype_Decimal | undefined;
   orderQty: number | undefined;
+  // Q8 rollup (read projection, built alongside — never seeded into cost_price):
+  byRound: TechCardDevCostByRound[] | undefined;
+  roundsToApproval: number | undefined;
+  firstExpenseAt: wellKnownTimestamp | undefined;
+  approvedAt: wellKnownTimestamp | undefined;
+  daysToApproval: number | undefined;
 };
 
 // TechCardSizeQuantity is the production order quantity for a size (size run).
@@ -1958,6 +2214,12 @@ export type TechCardOperation = {
   calloutNumber: number | undefined;
   zone: TechCardConstructionZone | undefined;
   placement: string | undefined;
+  // via the selected colourway's usages (match trim+lower; bom_item_index wins if set)
+  // bom_line_key references the BOM line by its stable line_key (WS3 follow-up: take positionality off
+  // the wire). Preferred over the positional bom_item_index (kept for the transition). The store
+  // resolves it to bom_item_id, the real FK on read.
+  bomLineKey: string | undefined;
+  bomItemId: number | undefined;
 };
 
 // TechCardIssue is a maker-flagged problem ("this seam is impossible") against an
@@ -1973,6 +2235,14 @@ export type TechCardIssue = {
 };
 
 // TechCardLabel is one label / tag spec (Sheet «Этикетки и упаковка»).
+// TechCardLabel is the garment's label/tag SPEC — one of the three historically-unconnected "label"
+// concepts (S21): (a) THIS spec, (b) the shipment label (common/shipment.proto — a shipping document,
+// deliberately NOT merged, a different domain), (c) the label MATERIAL as a BOM line
+// (tech_card_bom_item, section=label). WS7 unifies (a)↔(c) via bom_item_id below, and classifies the
+// auxiliary item via TechCard.aux_subtype. DEPRECATION (destructive → M3, not done here): once
+// bom_item_id + aux_subtype are adopted, label_type collapses into aux_subtype and the free-text
+// content/placement/attachment/size overlap (also carried structurally by the linked material + the
+// assembly bill's print_note/position_note) is dropped in a guarded migration.
 export type TechCardLabel = {
   labelType: TechCardLabelType | undefined;
   content: string | undefined;
@@ -1980,6 +2250,9 @@ export type TechCardLabel = {
   attachment: string | undefined;
   size: string | undefined;
   note: string | undefined;
+  // WS7/§2.8 (S21 unification bridge): FK to the physical label material's BOM line
+  // (tech_card_bom_item). 0 = unlinked. Links this free-text label SPEC to the material it prints on.
+  bomItemId: number | undefined;
 };
 
 // TechCardPackaging holds the packaging spec (Sheet «Этикетки и упаковка»).
@@ -2073,6 +2346,13 @@ export type TechCardPieceColorwayMaterial = {
   bomItemIndex?: number;
   fusingBomItemIndex?: number;
   note: string | undefined;
+  // bom_line_key / fusing_bom_line_key reference the fabric / fusing BOM line by its stable line_key
+  // (WS3 follow-up: positionality off the wire). Preferred over the positional *_index (kept for the
+  // transition). The store resolves them to the real FKs bom_item_id / fusing_bom_item_id (output).
+  bomLineKey: string | undefined;
+  fusingBomLineKey: string | undefined;
+  bomItemId: number | undefined;
+  fusingBomItemId: number | undefined;
 };
 
 // TechCardPiece is one structural cut-piece of the garment (полочка, спинка, обтачка горловины…):
@@ -2081,12 +2361,22 @@ export type TechCardPieceColorwayMaterial = {
 export type TechCardPiece = {
   name: string | undefined;
   piecesPerGarment: number | undefined;
+  // Q6: mirrored means the piece is CUT AS A MIRRORED PAIR (left+right), not a decorative flag. The
+  // cut-list (GetStyleCutList) expands a mirrored piece ×2 over pieces_per_garment.
   mirrored: boolean | undefined;
   grainline: string | undefined;
   fused: boolean | undefined;
   calloutNumber?: number;
   note: string | undefined;
   materials: TechCardPieceColorwayMaterial[] | undefined;
+  // line_key is the stable client-generated ULID identity of the cut-piece (S8, mirrors BOM's
+  // line_key): the store keyed-upserts by it so the piece id stays stable across saves, which is what
+  // lets a colourway recipe usage hold a real piece_id FK. Empty on a legacy payload → server mints one.
+  lineKey: string | undefined;
+  // detached is OUTPUT-ONLY: the store sets it when the piece's callout_number no longer resolves to a
+  // callout on the card (its source sketch callout was removed) — the piece survives, visibly
+  // detached, instead of being silently dropped (orphan-control, S8).
+  detached: boolean | undefined;
 };
 
 // SkuSeason is the normalized style-owned season used in every SKU. The pair is atomic: callers
@@ -2101,8 +2391,11 @@ export type TechCardInsert = {
   // identification (Sheet «Титул»)
   // Артикул. Required from the PROTO stage onward; OPTIONAL (empty) while stage == IDEA — an idea
   // is by definition pre-article (NF-03/B-2). Moving a card out of IDEA without a real style
-  // number is rejected with InvalidArgument.
+  // number is rejected with InvalidArgument. A hand-typed override must set style_number_source =
+  // MANUAL and pass the strict format validator; the global UNIQUE(style_number) index is the
+  // authority on collisions (Q1). Use SuggestStyleNumber to get the server proposal.
   styleNumber: string | undefined;
+  styleNumberSource: StyleNumberSource | undefined;
   name: string | undefined;
   brand: string | undefined;
   collection: string | undefined;
@@ -2111,16 +2404,15 @@ export type TechCardInsert = {
   stage: TechCardStage | undefined;
   status: string | undefined;
   approvalState: TechCardApprovalState | undefined;
-  approvedBy: string | undefined;
+  // approved_by (36) removed (Q5): approval is the APPROVER role + a server-stamped journal event,
+  // not a free-text name. version (10) / revision_date (11) removed (Q1): the card's version is the
+  // sequence of named releases (Rev.N) + the auto-journal, not a free-text string. designer (14) /
+  // constructor (15) / technologist (16) removed (Q5): roles are admin-account assignments now (see
+  // the role-assignment RPCs). All are dropped from tech_card in M3.
   releasedAt: wellKnownTimestamp | undefined;
   measurementUnit: TechCardMeasurementUnit | undefined;
-  version: string | undefined;
-  revisionDate: wellKnownTimestamp | undefined;
   baseModelId: number | undefined;
   baseSampleSizeId: number | undefined;
-  designer: string | undefined;
-  constructor: string | undefined;
-  technologist: string | undefined;
   // construction description (lower block of Sheet «Титул») now lives in details[]; the
   // header targets / currency were removed (pricing is on costing, single brand policy).
   notes: string | undefined;
@@ -2136,7 +2428,6 @@ export type TechCardInsert = {
   moodboardMedia: TechCardMediaItem[] | undefined;
   technicalMedia: TechCardMediaItem[] | undefined;
   callouts: TechCardCallout[] | undefined;
-  revisions: TechCardRevision[] | undefined;
   // materials (Phase 2): bill of materials (article catalog). Colourways are no longer style
   // children (R1 merge — a colourway is a product); their material recipe lives on the colourway via
   // ColorwayDevelopmentInsert.usages, keyed by an explicit colorway_id = product.id.
@@ -2170,6 +2461,8 @@ export type TechCardInsert = {
   purpose: TechCardPurpose | undefined;
   outputMaterialId: number | undefined;
   skuSeason: SkuSeason | undefined;
+  // WS7: sub-classifies an auxiliary card (UNKNOWN=unset). Ignored / must be UNKNOWN for a sellable card.
+  auxSubtype: TechCardAuxSubtype | undefined;
 };
 
 // TechCard is a stored tech card with resolved sketch media.
@@ -2179,12 +2472,34 @@ export type TechCard = {
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
   lockVersion: number | undefined;
+  // Server-stamped audit usernames (norm §2.11, GetAdminUsername). Read-only: set by the server on
+  // create/update, never accepted from the write payload.
+  createdBy: string | undefined;
+  updatedBy: string | undefined;
+  // Responsible-account roles (Q5), read-only here — managed via the role-assignment RPCs, not the
+  // tech-card write. Replaces the removed free-text designer/constructor/technologist strings.
+  roleAssignments: TechCardRoleAssignment[] | undefined;
+  // Server-stamped auto-journal (Q1): who/what/when across the card's significant transitions.
+  // Read-only — appended by the server, never client-supplied. Replaces the removed input `revisions`.
+  revisions: TechCardRevision[] | undefined;
   // Resolved sketch media (MediaFull), split to mirror the writable lists.
   resolvedMoodboardMedia: TechCardMediaFull[] | undefined;
   resolvedTechnicalMedia: TechCardMediaFull[] | undefined;
   // OUTPUT-ONLY derived colourways of this style (R1/§3.3): a style's colourways are its products.
   // Not writable through the style — created/relinked via the Colorway RPCs.
   colorways: AdminColorwayRef[] | undefined;
+  // composition_entries is the style's structured fibre composition (S17/M1 fix), resolved from
+  // style_composition; empty when the style has no structural composition data yet. Read-only,
+  // admin/constructor view — the storefront's equivalent is StorefrontColorwayDisplay.composition_entries.
+  compositionEntries: CompositionEntry[] | undefined;
+  // fit / composition (legacy free-text) / care_instructions are style catalogue facts stored on
+  // the tech_card row but WRITTEN via UpdateStyle (StylePatch), not the tech-card write — so they are
+  // read-only projections here, surfaced for the constructor to display and edit-in-place (the admin
+  // saves them through UpdateStyle). composition is always legacy plain text on the wire (M1); the
+  // structured fibre breakdown is composition_entries above.
+  fit: string | undefined;
+  composition: string | undefined;
+  careInstructions: string | undefined;
 };
 
 // TechCardListItem is a lightweight tech-card header for list views.
@@ -2208,6 +2523,8 @@ export type TechCardListItem = {
   // cards (dust bags, shoppers…) without an N+1 GetTechCard, mirroring TechCard.purpose.
   purpose: TechCardPurpose | undefined;
   skuSeason: SkuSeason | undefined;
+  // WS7: auxiliary sub-type badge for list views (UNKNOWN=unset), mirroring purpose above.
+  auxSubtype: TechCardAuxSubtype | undefined;
 };
 
 // MaterialMovementType is the kind of a material-stock movement (new-flow NF-01). quantity is
@@ -2507,6 +2824,37 @@ export type SampleInsert = {
   mediaIds: number[] | undefined;
   patternUrl: string | undefined;
   patternNote: string | undefined;
+  // Round spine (Q7/§2.7): a sample is the OBJECT of a development round.
+  roundNumber: number | undefined;
+  specReleaseId: number | undefined;
+  previousSampleId: number | undefined;
+};
+
+// SampleSubstitutionInsert records a dev-time deviation from the spec BOM on a sample (§2.7): a BOM
+// line was sewn with a different material. Q2 invariant: this is documentation, never COGS — the
+// authoritative spend stays in the stock ledger (actual) and the BOM line (plan).
+export type SampleSubstitutionInsert = {
+  sampleId: number | undefined;
+  bomItemId: number | undefined;
+  originalMaterialId: number | undefined;
+  substitutedMaterialId: number | undefined;
+  reason: string | undefined;
+  plannedQty: googletype_Decimal | undefined;
+  actualQty: googletype_Decimal | undefined;
+};
+
+// SampleSubstitution is a stored substitution (insert payload + identity, audit stamp and timestamp).
+export type SampleSubstitution = {
+  id: number | undefined;
+  sampleId: number | undefined;
+  bomItemId: number | undefined;
+  originalMaterialId: number | undefined;
+  substitutedMaterialId: number | undefined;
+  reason: string | undefined;
+  plannedQty: googletype_Decimal | undefined;
+  actualQty: googletype_Decimal | undefined;
+  createdBy: string | undefined;
+  createdAt: wellKnownTimestamp | undefined;
 };
 
 // SampleCost is the composed cost of a sample in the base currency (confidential; stripped without
@@ -2528,6 +2876,9 @@ export type Sample = {
   updatedAt: wellKnownTimestamp | undefined;
   cost: SampleCost | undefined;
   media: MediaFull[] | undefined;
+  lockVersion: number | undefined;
+  createdBy: string | undefined;
+  updatedBy: string | undefined;
 };
 
 // Subscriber represents the subscriber table

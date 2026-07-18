@@ -97,7 +97,8 @@
     "failed to update account": "계정을 업데이트하지 못했습니다",
     "failed to set default address": "기본 주소를 설정하지 못했습니다",
     "failed to add address": "주소를 추가하지 못했습니다",
-    "start a return": "반품 시작"
+    "start a return": "반품 시작",
+    "exclusive": "전용"
   },
   "footer": {
     "legal notices": "법적 고지",
@@ -159,7 +160,11 @@
       "sale": "세일"
     },
     "sold out": "품절",
-    "no matches": "일치하는 항목 없음"
+    "no matches": "일치하는 항목 없음",
+    "members only": "회원 전용",
+    "sign in to access": "로그인 후 이용",
+    "exclusive": "전용",
+    "exclusive description": "회원 전용 제품"
   },
   "product": {
     "model is": "모델은",

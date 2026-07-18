@@ -40,6 +40,7 @@ export function heroColorwayToStorefront(
       modelWearsSizeCode: undefined,
       categoryLabels: undefined,
       updatedAt: colorway.updatedAt,
+      compositionEntries: undefined,
     },
     variants: [],
     prices: colorway.prices,
@@ -48,5 +49,9 @@ export function heroColorwayToStorefront(
     colorCode: colorway.colorCode,
     soldOut: colorway.soldOut,
     status: colorway.status,
+    // Hero featured products are curated, never tier-gated teasers; leaving the
+    // gate fields unset keeps isProductLocked → false for every hero card.
+    locked: undefined,
+    requiredTier: undefined,
   };
 }

@@ -1,7 +1,9 @@
 import { StorefrontColorway } from "@/api/proto-http/frontend";
 
-import { useCart } from "@/lib/stores/cart/store-provider";
+import { useViewerTier } from "@/lib/hooks/use-viewer-tier";
 import { baseSkuOf } from "@/lib/slug-tail";
+import { useCart } from "@/lib/stores/cart/store-provider";
+import { isProductLocked } from "@/lib/tier";
 import { useDataContext } from "@/components/contexts/DataContext";
 
 type Props = {
@@ -12,6 +14,7 @@ type Props = {
 export function useDisabled({ product }: Props) {
   const { dictionary } = useDataContext();
   const { products } = useCart((state) => state);
+  const { accountTier, isSignedIn } = useViewerTier();
 
   const maxOrderItems = dictionary?.maxOrderItems || 3;
   const baseSku = product?.baseSku || "";
@@ -29,8 +32,15 @@ export function useDisabled({ product }: Props) {
       {} as Record<number, boolean>,
     ) || {};
 
+  // Locked teaser: the viewer can't buy this tier-gated piece (purchase is also
+  // blocked server-side). The PDP add-to-cart becomes an adaptive sign-in /
+  // members-only CTA instead. `isSignedIn` picks the wording and the route.
+  const locked = product ? isProductLocked(product, accountTier) : false;
+
   return {
     isMaxQuantity,
     outOfStock,
+    locked,
+    isSignedIn,
   };
 }
