@@ -1,5 +1,6 @@
-import { common_Product } from "@/api/proto-http/frontend";
+import { common_Colorway } from "@/api/proto-http/frontend";
 
+import { heroColorwayToStorefront } from "@/lib/api-adapters/colorway";
 import { cn, internalHref } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Carousel } from "@/components/ui/carousel";
@@ -21,7 +22,7 @@ export function FeaturedItems({
   headline?: string;
   exploreText?: string;
   exploreLink?: string;
-  products?: common_Product[];
+  products?: common_Colorway[];
   tag?: string;
   itemsQuantity: number;
   onHeroClick?: () => void;
@@ -71,7 +72,7 @@ export function FeaturedItems({
                   className={cn("w-[28rem]", {
                     "w-72": itemsQuantity === 3,
                   })}
-                  product={p}
+                  product={heroColorwayToStorefront(p)}
                   imagePriority={index === 0}
                 />
               ))}
@@ -94,7 +95,7 @@ function FourFeaturedItems({
 
   href: string;
   linkText: string;
-  products?: common_Product[];
+  products?: common_Colorway[];
   onHeroClick?: () => void;
 }) {
   return (
@@ -106,7 +107,7 @@ function FourFeaturedItems({
           <ProductItem
             key={p.id}
             className="flex-[0_0_25%] px-6"
-            product={p}
+            product={heroColorwayToStorefront(p)}
             imagePriority={index < 2}
           />
         ))}

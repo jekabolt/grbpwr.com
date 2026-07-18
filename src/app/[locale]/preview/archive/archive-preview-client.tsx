@@ -6,13 +6,13 @@ import {
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react";
-import type { common_ArchiveFull } from "@/api/proto-http/frontend";
+import type { StorefrontArchiveFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
 import { PageBackground } from "@/app/[locale]/_components/page-background";
-import PageComponent from "@/app/[locale]/timeline/[...archiveParams]/_components/page-component";
+import PageComponent from "@/app/[locale]/timeline/[handle]/_components/page-component";
 
 import { ADMIN_ORIGINS } from "../_components/admin-origins";
 import { PreviewBoundary } from "../_components/preview-boundary";
@@ -26,14 +26,14 @@ import { PreviewBoundary } from "../_components/preview-boundary";
 //                          { type: "archive-block-click", index }   // items[] index
 type ArchiveDraftMessage = {
   type: "archive-draft";
-  archive: common_ArchiveFull;
+  archive: StorefrontArchiveFull;
   rev: number;
 };
 
 export function ArchivePreviewClient({
   initialArchive,
 }: {
-  initialArchive: common_ArchiveFull | null;
+  initialArchive: StorefrontArchiveFull | null;
 }) {
   const t = useTranslations("navigation");
   const [archive, setArchive] = useState(initialArchive);

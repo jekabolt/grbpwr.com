@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { common_GenderEnum, common_Product } from "@/api/proto-http/frontend";
+import {
+  common_GenderEnum,
+  StorefrontColorway,
+} from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
 import {
@@ -24,7 +27,7 @@ export default function Catalog({
   firstPageItems,
 }: {
   total: number;
-  firstPageItems: common_Product[];
+  firstPageItems: StorefrontColorway[];
 }) {
   const { dictionary } = useDataContext();
   const { gender, topCategory } = useRouteParams();

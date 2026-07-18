@@ -7,6 +7,8 @@ import ReactMarkdown from "react-markdown";
 
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { cn } from "@/lib/utils";
+import { AnimatedButton } from "@/components/ui/animated-button";
+import { LockIcon } from "@/components/ui/icons/lock";
 import { Text } from "@/components/ui/text";
 import { createMarkdownComponents } from "@/app/[locale]/(content)/_components/markdown-components";
 import { useMarkdownContent } from "@/app/[locale]/(content)/_components/use-markdown-content";
@@ -90,6 +92,16 @@ export function PrivateCommunity() {
           )}
         </div>
       </div>
+      <AnimatedButton
+        href="/exclusive"
+        animationArea="text"
+        className="flex w-fit items-center gap-2 uppercase text-highlightColor"
+      >
+        <LockIcon className="h-3.5 w-3.5 shrink-0" />
+        <Text variant="uppercase" component="span">
+          {t("exclusive")}
+        </Text>
+      </AnimatedButton>
     </div>
   );
 }

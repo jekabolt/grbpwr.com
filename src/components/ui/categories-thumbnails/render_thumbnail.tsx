@@ -1,11 +1,9 @@
-import {
-  common_GenderEnum,
-  common_ProductMeasurement,
-} from "@/api/proto-http/frontend";
+import { common_GenderEnum } from "@/api/proto-http/frontend";
 
+import { ProductMeasurementCompat } from "@/lib/api-adapters/measurements";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { Unit } from "@/app/[locale]/product/[...productParams]/_components/measurements-table";
+import { Unit } from "@/app/[locale]/p/[handle]/_components/measurements-table";
 
 import { getIconByCategoryId } from "./map_categories";
 
@@ -14,14 +12,14 @@ interface CategoryThumbnailProps {
   subCategoryId: number | undefined;
   typeId: number | undefined;
   gender: common_GenderEnum | undefined;
-  measurements: common_ProductMeasurement[];
+  measurements: ProductMeasurementCompat[];
   className?: string;
   selectedSize?: number;
   unit?: Unit;
 }
 
 type IconComponentProps = React.SVGProps<SVGSVGElement> & {
-  measurements?: common_ProductMeasurement[];
+  measurements?: ProductMeasurementCompat[];
   selectedSize?: number;
   unit?: Unit;
 };

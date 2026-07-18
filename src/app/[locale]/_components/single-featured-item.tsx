@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { common_Product } from "@/api/proto-http/frontend";
+import { common_Colorway } from "@/api/proto-http/frontend";
 import { currencySymbols } from "@/constants";
 
 import { formatPrice } from "@/lib/currency";
@@ -40,7 +40,7 @@ export function SingleFeaturedItem({
   products,
   headline,
 }: {
-  products: common_Product[];
+  products: common_Colorway[];
   headline?: string;
 }) {
   const { languageId } = useTranslationsStore((state) => state);
@@ -52,12 +52,12 @@ export function SingleFeaturedItem({
   return (
     <div>
       {products?.map((p) => {
-        const productBody = p.productDisplay?.productBody?.productBodyInsert;
+        const merch = p.display?.merchandising;
         const price =
           p.prices?.find(
             (p) => p.currency?.toUpperCase() === currencyKey.toUpperCase(),
           ) || p.prices?.[0];
-        const salePercentage = productBody?.salePercentage?.value || "0";
+        const salePercentage = merch?.salePercentage?.value || "0";
         const salePercentageNum = parseInt(salePercentage, 10);
         const isSaleApplied = salePercentageNum > 0;
 
@@ -66,10 +66,9 @@ export function SingleFeaturedItem({
           salePercentage,
         );
 
-        const currentTranslation =
-          p.productDisplay?.productBody?.translations?.find(
-            (t) => t.languageId === languageId,
-          );
+        const currentTranslation = p.display?.translations?.find(
+          (t) => t.languageId === languageId,
+        );
         return (
           <div key={p.id} className="relative flex h-screen w-full justify-end">
             <div className="absolute inset-x-2.5 top-1/2 z-40 flex -translate-y-1/2 items-start text-bgColor mix-blend-exclusion selection:bg-inverted selection:text-textColor">
@@ -121,12 +120,12 @@ export function SingleFeaturedItem({
             >
               <Image
                 src={
-                  p.productDisplay?.thumbnail?.media?.thumbnail?.mediaUrl || ""
+                  p.display?.thumbnail?.media?.thumbnail?.mediaUrl || ""
                 }
                 alt={currentTranslation?.name || ""}
                 aspectRatio={calculateAspectRatio(
-                  p.productDisplay?.thumbnail?.media?.thumbnail?.width,
-                  p.productDisplay?.thumbnail?.media?.thumbnail?.height,
+                  p.display?.thumbnail?.media?.thumbnail?.width,
+                  p.display?.thumbnail?.media?.thumbnail?.height,
                 )}
                 fit="contain"
                 priority={true}

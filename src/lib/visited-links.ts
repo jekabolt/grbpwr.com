@@ -3,7 +3,7 @@ const EVT = "visited-links-change";
 
 export function normalizeHref(href: string) {
   const path = href.split(/[?#]/)[0];
-  const productIdx = path.indexOf("/product/");
+  const productIdx = path.indexOf("/p/");
   if (productIdx !== -1) return path.slice(productIdx);
   if (/^\/[a-z]{2}\/[a-z]{2}(?=\/|$)/i.test(path)) {
     return path.replace(/^\/[a-z]{2}\/([a-z]{2})(?=\/)/i, "/$1");

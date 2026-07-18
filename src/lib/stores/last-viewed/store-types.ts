@@ -1,11 +1,11 @@
-import { common_Product } from "@/api/proto-http/frontend";
+import { StorefrontColorway } from "@/api/proto-http/frontend";
 
 export interface LastViewedState {
-  products: common_Product[];
+  products: StorefrontColorway[];
 }
 
 export interface LastViewedActions {
-  addProduct: (product: common_Product) => void;
+  addProduct: (product: StorefrontColorway) => void;
 }
 
 export type LastViewedStore = LastViewedState & LastViewedActions;

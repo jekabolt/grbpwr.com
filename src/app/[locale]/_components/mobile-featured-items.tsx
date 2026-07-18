@@ -1,5 +1,6 @@
-import { common_Product } from "@/api/proto-http/frontend";
+import { common_Colorway } from "@/api/proto-http/frontend";
 
+import { heroColorwayToStorefront } from "@/lib/api-adapters/colorway";
 import { cn, internalHref } from "@/lib/utils";
 import { Carousel } from "@/components/ui/carousel";
 
@@ -14,7 +15,7 @@ export function MobileFeaturedItems({
   itemsQuantity,
   onHeroClick,
 }: {
-  products: common_Product[];
+  products: common_Colorway[];
   headline?: string;
   exploreText?: string;
   exploreLink?: string;
@@ -35,7 +36,7 @@ export function MobileFeaturedItems({
             "flex-[0_0_50%]": isMultipleItems,
             "w-44 px-0": itemsQuantity >= 3 && itemsQuantity !== 4,
           })}
-          product={p}
+          product={heroColorwayToStorefront(p)}
           imagePriority={index === 0}
         />
       ))}

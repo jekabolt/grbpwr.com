@@ -6,13 +6,13 @@ import {
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react";
-import type { common_ProductFull } from "@/api/proto-http/frontend";
+import type { StorefrontColorway } from "@/api/proto-http/frontend";
 
 import { Text } from "@/components/ui/text";
-import { MobileProductInfo } from "@/app/[locale]/product/[...productParams]/_components/mobile-product-info";
-import { ProductImagesCarousel } from "@/app/[locale]/product/[...productParams]/_components/product-images-carousel";
-import { ProductInfo } from "@/app/[locale]/product/[...productParams]/_components/product-info";
-import { ProductPageLayout } from "@/app/[locale]/product/[...productParams]/_components/product-page-layout";
+import { MobileProductInfo } from "@/app/[locale]/p/[handle]/_components/mobile-product-info";
+import { ProductImagesCarousel } from "@/app/[locale]/p/[handle]/_components/product-images-carousel";
+import { ProductInfo } from "@/app/[locale]/p/[handle]/_components/product-info";
+import { ProductPageLayout } from "@/app/[locale]/p/[handle]/_components/product-page-layout";
 
 import { ADMIN_ORIGINS } from "../_components/admin-origins";
 import { PreviewBoundary } from "../_components/preview-boundary";
@@ -26,12 +26,12 @@ import { PreviewBoundary } from "../_components/preview-boundary";
 // protocol rationale (ready handshake, stale-rev drop, error boundary).
 type ProductDraftMessage = {
   type: "product-draft";
-  product: common_ProductFull;
+  product: StorefrontColorway;
   rev: number;
 };
 
 export function ProductPreviewClient() {
-  const [product, setProduct] = useState<common_ProductFull | null>(null);
+  const [product, setProduct] = useState<StorefrontColorway | null>(null);
   // Latest applied revision — a ref so the listener drops stale/out-of-order
   // drafts without being torn down and re-subscribed each update.
   const revRef = useRef(-1);
@@ -64,7 +64,7 @@ export function ProductPreviewClient() {
     }
   }
 
-  if (!product || !product.product) {
+  if (!product) {
     return (
       <div className="flex min-h-dvh items-center justify-center bg-bgColor p-6">
         <Text variant="uppercase">waiting for editor…</Text>
@@ -73,8 +73,7 @@ export function ProductPreviewClient() {
   }
 
   const productMedia = [...(product.media || [])];
-  const productName =
-    product.product.productDisplay?.productBody?.translations?.[0]?.name || "";
+  const productName = product.display?.translations?.[0]?.name || "";
 
   return (
     <PreviewBoundary
@@ -95,7 +94,7 @@ export function ProductPreviewClient() {
           <div className="hidden lg:block">
             <ProductImagesCarousel
               productMedia={productMedia}
-              productId={product.product.sku || ""}
+              productId={product.baseSku || ""}
               productName={productName}
             />
             <ProductInfo product={product} />

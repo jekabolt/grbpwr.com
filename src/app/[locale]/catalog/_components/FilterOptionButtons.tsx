@@ -10,7 +10,10 @@ import { Text } from "@/components/ui/text";
 type FilterItem = common_Size | common_Collection;
 
 function getItemId(item: FilterItem): string {
-  return "id" in item ? String(item.id) : item.name || "";
+  // Both Size and Collection now carry an `id` (Collection gained one in R9), so
+  // `id` no longer discriminates the union; read it structurally.
+  const id = (item as { id?: number }).id;
+  return id != null ? String(id) : item.name || "";
 }
 
 function getItemName(item: FilterItem): string {

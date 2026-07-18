@@ -1,7 +1,4 @@
-import type {
-  common_OrderItem,
-  common_ProductFull,
-} from "@/api/proto-http/frontend";
+import type { common_OrderItem } from "@/api/proto-http/frontend";
 
 function isValidDate(date: string): boolean {
   if (!date) return false;
@@ -13,15 +10,13 @@ function isValidDate(date: string): boolean {
   return isValid && isAfterYear2000;
 }
 
-export function getPreorderDate(
-  product: common_OrderItem | common_ProductFull,
+// formatPreorderDate renders a preorder timestamp as "ship by DD.MM.YYYY", or null
+// when there is no valid future date. Shared by the order line (OrderItem.preorder)
+// and the product page (StorefrontColorwayDisplay.preorder).
+export function formatPreorderDate(
+  preorderDate: string | undefined,
   t: (key: string) => string,
 ): string | null {
-  const preorderDate =
-    "preorder" in product
-      ? product.preorder
-      : product.product?.productDisplay?.productBody?.productBodyInsert
-        ?.preorder;
   if (!preorderDate || !isValidDate(preorderDate)) return null;
 
   const date = new Date(preorderDate);
@@ -31,4 +26,11 @@ export function getPreorderDate(
   const year = date.getFullYear();
 
   return `${t("ship by")} ${day}.${month}.${year}`;
+}
+
+export function getPreorderDate(
+  product: common_OrderItem,
+  t: (key: string) => string,
+): string | null {
+  return formatPreorderDate(product.preorder, t);
 }

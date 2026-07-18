@@ -48,7 +48,7 @@ export async function CatalogContent(props: CatalogContentProps) {
   if (categoryName && !topCategory) notFound();
   if (subCategoryName && topCategory && !subCategory) notFound();
 
-  const response = await serviceClient.GetProductsPaged({
+  const response = await serviceClient.GetColorwaysPaged({
     limit: CATALOG_LIMIT,
     offset: 0,
     ...getProductsPagedQueryParams(
@@ -67,7 +67,7 @@ export async function CatalogContent(props: CatalogContentProps) {
     <FlexibleLayout className="pt-16 lg:pt-0" headerType="catalog">
       <Catalog
         total={response.total || 0}
-        firstPageItems={response.products || []}
+        firstPageItems={response.colorways || []}
       />
       <div
         className={cn("block", {

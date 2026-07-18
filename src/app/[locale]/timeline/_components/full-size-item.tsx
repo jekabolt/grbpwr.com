@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { common_ArchiveList } from "@/api/proto-http/frontend";
+import { StorefrontArchiveList } from "@/api/proto-http/frontend";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, isVideo } from "@/lib/utils";
@@ -8,7 +8,7 @@ import { Text } from "@/components/ui/text";
 
 interface Props {
   className?: string;
-  archive?: common_ArchiveList;
+  archive?: StorefrontArchiveList;
   highlightedItem?: boolean;
 }
 

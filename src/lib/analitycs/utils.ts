@@ -91,6 +91,8 @@ export interface EcommerceEvent {
 
 export interface AnalyticsItem {
   item_id: string;
+  // R3: base SKU (the colourway), the funnel/report aggregation key.
+  item_group_id?: string;
   item_name: string;
   item_brand: string;
   item_category: string;

@@ -23,10 +23,12 @@ export async function POST(request: Request) {
 
   if (Array.isArray(data.products) && data.products.length > 0) {
     revalidateTag(PRODUCTS_CACHE_TAG);
-    // Revalidate individual product pages
-    for (const id of data.products) {
-      revalidatePath(`/product/${id}`);
-    }
+    // Product pages are keyed by base SKU in /p/[handle]; the backend revalidation
+    // webhook payload (owned outside the proto contract) still sends ids, so we
+    // revalidate the product route as a whole — the tag above already refreshes the
+    // fetched data. If that payload ever carries base SKUs, this can narrow to the
+    // exact /p/{handle}.
+    revalidatePath("/[locale]/p/[handle]", "page");
     // Revalidate all catalog pages (dynamic routes)
     revalidatePath("/catalog", "layout");
   }
@@ -38,7 +40,9 @@ export async function POST(request: Request) {
 
   if (typeof data.archive === "number") {
     revalidateTag(ARCHIVES_CACHE_TAG);
-    revalidatePath(`/timeline/${data.archive}`);
+    // Archive pages are keyed by code in /timeline/[handle]; the webhook sends an
+    // id, so revalidate the timeline route as a whole (the tag refreshes data).
+    revalidatePath("/[locale]/timeline/[handle]", "page");
   }
 
   return Response.json({

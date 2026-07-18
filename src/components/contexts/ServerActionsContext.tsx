@@ -4,22 +4,22 @@ import { createContext, ReactNode, useContext } from "react";
 import type {
   GetArchivesPagedRequest,
   GetArchivesPagedResponse,
-  GetProductsPagedRequest,
-  GetProductsPagedResponse,
+  GetColorwaysPagedRequest,
+  GetColorwaysPagedResponse,
 } from "@/api/proto-http/frontend";
 
 type ServerActionsContextType = {
   GetArchivesPaged: (
     request: GetArchivesPagedRequest,
   ) => Promise<GetArchivesPagedResponse>;
-  GetProductsPaged: (
-    request: GetProductsPagedRequest,
-  ) => Promise<GetProductsPagedResponse>;
+  GetColorwaysPaged: (
+    request: GetColorwaysPagedRequest,
+  ) => Promise<GetColorwaysPagedResponse>;
 };
 
 const ServerActionsContext = createContext<ServerActionsContextType>({
   GetArchivesPaged: () => Promise.resolve({ archives: [], total: 0 }),
-  GetProductsPaged: () => Promise.resolve({ products: [], total: 0 }),
+  GetColorwaysPaged: () => Promise.resolve({ colorways: [], total: 0 }),
 });
 
 export function ServerActionsContextProvider({

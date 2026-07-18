@@ -85,7 +85,7 @@ function MobileOrderItemRow({
           <div className="flex h-full flex-row">
             <div className="w-full">
               <Text variant="uppercase">{tColors(product.color || "")}</Text>
-              <CartItemSize sizeId={product.orderItem?.sizeId + ""} />
+              <CartItemSize sizeName={product.sizeNameSnapshot || ""} />
             </div>
             <div className="flex w-full flex-col items-end justify-end gap-3">
               <div className="flex items-center whitespace-nowrap">

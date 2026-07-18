@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Button } from "@/components/ui/button";
+import { LockIcon } from "@/components/ui/icons/lock";
 import { Text } from "@/components/ui/text";
 
 import { AccountSectionContent } from "../_components/account-section-content";
@@ -87,12 +88,34 @@ export function AccountSessionPanel({ account }: Props) {
               </AnimatedButton>
             </div>
           ))}
+          {/* The exclusive catalogue is a route, not an account panel — it links
+              out rather than toggling a panel, on both desktop and mobile. */}
+          <div>
+            <AnimatedButton
+              animationArea="text"
+              className="hidden w-fit items-center gap-2 uppercase text-highlightColor lg:flex"
+              href="/exclusive"
+            >
+              <LockIcon className="h-3.5 w-3.5 shrink-0" />
+              <Text variant="uppercase" component="span">
+                {t("exclusive")}
+              </Text>
+            </AnimatedButton>
+            <AnimatedButton
+              animationDuration={1000}
+              animationArea="full-underline"
+              className="flex w-full items-center justify-between text-left uppercase text-highlightColor lg:hidden"
+              href="/exclusive"
+            >
+              <span className="flex items-center gap-2">
+                <LockIcon className="h-3.5 w-3.5 shrink-0" />
+                <Text component="span">{t("exclusive")}</Text>
+              </span>
+              <Text component="span">{">"}</Text>
+            </AnimatedButton>
+          </div>
         </div>
-        <Button
-          type="button"
-          className="self-start uppercase"
-          onClick={logout}
-        >
+        <Button type="button" className="self-start uppercase" onClick={logout}>
           {t("log out")}
         </Button>
       </div>

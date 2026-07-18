@@ -157,38 +157,44 @@ export type common_HeroMainWithTranslations = {
 };
 
 export type common_HeroFeaturedProductsWithTranslations = {
-  products: common_Product[] | undefined;
+  products: common_Colorway[] | undefined;
   exploreLink: string | undefined;
   translations: common_HeroCopyTranslation[] | undefined;
 };
 
-export type common_Product = {
+export type common_Colorway = {
   id: number | undefined;
   createdAt: wellKnownTimestamp | undefined;
   updatedAt: wellKnownTimestamp | undefined;
   slug: string | undefined;
-  sku: string | undefined;
-  productDisplay: common_ProductDisplay | undefined;
-  prices: common_ProductPrice[] | undefined;
+  baseSku: string | undefined;
+  display: common_ColorwayDisplay | undefined;
+  prices: common_ColorwayPrice[] | undefined;
   soldOut: boolean | undefined;
+  // status is the colourway's stored lifecycle (R6). Type change string→enum on the same wire number
+  // (non-identity, big-bang regen). Only ACTIVE is exposed publicly; an UNKNOWN read fails closed.
+  status: common_ColorwayLifecycleStatus | undefined;
+  styleId: number | undefined;
+  lockVersion: number | undefined;
+  colorCode: string | undefined;
+  publishedAt: wellKnownTimestamp | undefined;
 };
 
-export type common_ProductDisplay = {
-  productBody: common_ProductBody | undefined;
+export type common_ColorwayDisplay = {
   thumbnail: common_MediaFull | undefined;
   secondaryThumbnail: common_MediaFull | undefined;
+  merchandising: common_ColorwayMerchandising | undefined;
+  translations: common_ColorwayInsertTranslation[] | undefined;
 };
 
-export type common_ProductBody = {
-  productBodyInsert: common_ProductBodyInsert | undefined;
-  translations: common_ProductInsertTranslation[] | undefined;
-};
-
-export type common_ProductBodyInsert = {
+// ColorwayMerchandising is the admin/internal READ projection of a colourway's display fields: the
+// colourway-owned merchandising PLUS the style-resolved garment facts (output-only), so the admin
+// detail view keeps rendering brand/season/collection/etc even though they are now written on the
+// Style. Never reachable from FrontendService (the storefront uses StorefrontColorway, R3).
+export type common_ColorwayMerchandising = {
   preorder: wellKnownTimestamp | undefined;
   brand: string | undefined;
-  color: string | undefined;
-  colorHex: string | undefined;
+  colorHexOverride?: string;
   countryOfOrigin: string | undefined;
   salePercentage: googletype_Decimal | undefined;
   topCategoryId: number | undefined;
@@ -198,14 +204,14 @@ export type common_ProductBodyInsert = {
   modelWearsSizeId: number | undefined;
   careInstructions: string | undefined;
   composition: string | undefined;
-  hidden: boolean | undefined;
   targetGender: common_GenderEnum | undefined;
   season: common_SeasonEnum | undefined;
-  version: string | undefined;
   collection: string | undefined;
   fit: string | undefined;
-  // min_tier is the minimum loyalty tier code required to buy (0/1/2/99).
   minTier: number | undefined;
+  colorCode: string | undefined;
+  dictionaryColor: common_Color | undefined;
+  countryCode: string | undefined;
 };
 
 // A representation of a decimal value, such as 2.5. Clients may convert values
@@ -273,17 +279,36 @@ export type common_SeasonEnum =
   | "SEASON_ENUM_FW"
   | "SEASON_ENUM_PF"
   | "SEASON_ENUM_RC";
-export type common_ProductInsertTranslation = {
+// Color is a controlled colour-dictionary entry. code is exactly 3 chars and unique; it feeds the
+// colour segment of the SKU and is referenced by product.color_code.
+export type common_Color = {
+  id: number | undefined;
+  code: string | undefined;
+  name: string | undefined;
+  hex: string | undefined;
+  archived: boolean | undefined;
+};
+
+export type common_ColorwayInsertTranslation = {
   languageId: number | undefined;
   name: string | undefined;
   description: string | undefined;
 };
 
-export type common_ProductPrice = {
+export type common_ColorwayPrice = {
   currency: string | undefined;
   price: googletype_Decimal | undefined;
 };
 
+// ColorwayLifecycleStatus is the stored lifecycle of a colourway (R6). Numbers are fixed and match the
+// DB tinyint + entity.ColorwayStatus. UNKNOWN is rejected on write; an unknown read value fails closed
+// (the colourway is not shown). Only ACTIVE is exposed publicly.
+export type common_ColorwayLifecycleStatus =
+  | "COLORWAY_LIFECYCLE_STATUS_UNKNOWN"
+  | "COLORWAY_LIFECYCLE_STATUS_DRAFT"
+  | "COLORWAY_LIFECYCLE_STATUS_ACTIVE"
+  | "COLORWAY_LIFECYCLE_STATUS_HIDDEN"
+  | "COLORWAY_LIFECYCLE_STATUS_ARCHIVED";
 export type common_HeroFeaturedProductsTagWithTranslations = {
   tag: string | undefined;
   products: common_HeroFeaturedProductsWithTranslations | undefined;
@@ -308,6 +333,9 @@ export type common_ArchiveList = {
   slug: string | undefined;
   createdAt: wellKnownTimestamp | undefined;
   thumbnail: common_MediaFull | undefined;
+  // code is the stable, immutable public identifier used in the /timeline URL tail
+  // and by GetArchive to resolve the archive (id is no longer the public key).
+  code: string | undefined;
 };
 
 export type common_ArchiveInsertTranslation = {
@@ -397,20 +425,20 @@ export type common_ArchiveMediaWithCaptionFull = {
 
 // PRODUCT: a single product. Optional caption in translations.caption.
 export type common_ArchiveProductFull = {
-  product: common_Product | undefined;
+  product: common_Colorway | undefined;
   translations: common_ArchiveItemTranslation[] | undefined;
 };
 
 // PRODUCTS_TAG: products resolved by tag. Optional caption in translations.caption.
 export type common_ArchiveProductsTagFull = {
   tag: string | undefined;
-  products: common_Product[] | undefined;
+  products: common_Colorway[] | undefined;
   translations: common_ArchiveItemTranslation[] | undefined;
 };
 
 // PRODUCTS_MANUAL: hand-picked, ordered products. Optional caption.
 export type common_ArchiveProductsManualFull = {
-  products: common_Product[] | undefined;
+  products: common_Colorway[] | undefined;
   translations: common_ArchiveItemTranslation[] | undefined;
 };
 
@@ -430,7 +458,7 @@ export type common_HeroDropWithTranslations = {
 };
 
 export type common_HeroLastChanceWithTranslations = {
-  products: common_Product[] | undefined;
+  products: common_Colorway[] | undefined;
   exploreLink: string | undefined;
   translations: common_HeroCopyTranslation[] | undefined;
 };
@@ -442,7 +470,7 @@ export type common_HeroMarqueeWithTranslations = {
 };
 
 export type common_HeroNewArrivalsWithTranslations = {
-  products: common_Product[] | undefined;
+  products: common_Colorway[] | undefined;
   exploreLink: string | undefined;
   translations: common_HeroCopyTranslation[] | undefined;
 };
@@ -459,7 +487,7 @@ export type common_HeroMosaicWithTranslations = {
 
 export type common_HeroSplitWithTranslations = {
   media: common_HeroSingleWithTranslations | undefined;
-  products: common_Product[] | undefined;
+  products: common_Colorway[] | undefined;
   mediaLeft: boolean | undefined;
 };
 
@@ -474,7 +502,7 @@ export type common_HeroVideoWithTranslations = {
 };
 
 export type common_HeroProductSpotlightWithTranslations = {
-  product: common_Product | undefined;
+  product: common_Colorway | undefined;
   media: common_HeroMediaFull | undefined;
   exploreLink: string | undefined;
   translations: common_HeroCopyTranslation[] | undefined;
@@ -551,6 +579,13 @@ export type common_Dictionary = {
   // Hero section background color for the storefront (CSS). Empty if unset.
   backgroundHeroColor: string | undefined;
   productTags: string[] | undefined;
+  colors: common_Color[] | undefined;
+  countries: common_Country[] | undefined;
+  fibers: common_Fiber[] | undefined;
+  tags: common_Tag[] | undefined;
+  skuContractVersion: string | undefined;
+  revisions: common_DictionaryRevision[] | undefined;
+  categorySizeSystems: common_CategorySizeSystem[] | undefined;
 };
 
 // Category represents a hierarchical category structure
@@ -612,6 +647,12 @@ export type common_ShipmentCarrierInsert = {
   description: string | undefined;
   trackingUrl: string | undefined;
   expectedDeliveryTime: string | undefined;
+  // aftership_slug is the AfterShip courier slug used to auto-track this carrier's shipments.
+  // Empty = the carrier has no tracking API, so its orders are auto-delivered only by the timer.
+  aftershipSlug: string | undefined;
+  // auto_deliver_after_hours is the timer safety-net window: hours after shipment to silently mark
+  // an order delivered when no real delivery signal arrived. 0 = use the server default (14 days).
+  autoDeliverAfterHours: number | undefined;
 };
 
 export type common_ShipmentCarrierPrice = {
@@ -631,12 +672,23 @@ export type common_Size = {
   name: string | undefined;
   countMen: number | undefined;
   countWomen: number | undefined;
+  skuOrd: number | undefined;
+  skuSystem: common_SizeSkuSystem | undefined;
 };
 
+export type common_SizeSkuSystem =
+  | "SIZE_SKU_SYSTEM_UNKNOWN"
+  | "SIZE_SKU_SYSTEM_APPAREL"
+  | "SIZE_SKU_SYSTEM_SHOE"
+  | "SIZE_SKU_SYSTEM_COMPOSITE_TA"
+  | "SIZE_SKU_SYSTEM_COMPOSITE_BO";
 export type common_Collection = {
   name: string | undefined;
   countMen: number | undefined;
   countWomen: number | undefined;
+  code: string | undefined;
+  archived: boolean | undefined;
+  id: number | undefined;
 };
 
 export type common_Language = {
@@ -657,51 +709,142 @@ export type common_AnnounceTranslation = {
   text: string | undefined;
 };
 
-export type GetProductRequest = {
-  gender: string | undefined;
-  brand: string | undefined;
+// Country is an ISO 3166-1 alpha-2 controlled dictionary (R9). Arbitrary creation is forbidden — the
+// full ISO list is seeded and only activation toggles.
+export type common_Country = {
+  code: string | undefined;
   name: string | undefined;
+  active: boolean | undefined;
+};
+
+// Fiber is one entry of the controlled fibre vocabulary (COT/POL/WOL/…): a material's structural
+// composition references these codes, and a style's composition is derived from its shell-fabric
+// materials' fibres. Authored via the dictionary (CreateFiber/ArchiveFiber).
+export type common_Fiber = {
+  code: string | undefined;
+  name: string | undefined;
+  archived: boolean | undefined;
+};
+
+// Tag is a controlled merchandising tag dictionary (R9). Storefront receives tags by code/name; id is
+// admin-only.
+export type common_Tag = {
+  code: string | undefined;
+  name: string | undefined;
+  archived: boolean | undefined;
   id: number | undefined;
 };
 
-export type GetProductResponse = {
-  product: common_ProductFull | undefined;
+// DictionaryRevision is a per-namespace revision snapshot used for cross-instance cache invalidation (R9).
+export type common_DictionaryRevision = {
+  namespace: string | undefined;
+  revision: number | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
 };
 
-export type common_ProductFull = {
-  product: common_Product | undefined;
-  sizes: common_ProductSize[] | undefined;
-  measurements: common_ProductMeasurement[] | undefined;
+// CategorySizeSystem maps a category-tree node to a permitted SizeSkuSystem (S10/WS5, migration
+// 0175). A row targets EITHER category_id (a broad category/sub-category node) OR type_id (a specific
+// leaf type) -- never both set; 0 means unset. The admin size picker resolves a style's category
+// chain against this table (most specific match wins: type_id, then category_id) to filter which
+// size systems/sizes it offers; CreateVariant and the style's size-range write (UpdateTechCard)
+// enforce the same rule server-side.
+export type common_CategorySizeSystem = {
+  id: number | undefined;
+  categoryId: number | undefined;
+  typeId: number | undefined;
+  skuSystem: common_SizeSkuSystem | undefined;
+};
+
+export type GetColorwayRequest = {
+  baseSku: string | undefined;
+};
+
+export type GetColorwayResponse = {
+  colorway: StorefrontColorway | undefined;
+};
+
+export type StorefrontColorway = {
+  baseSku: string | undefined;
+  slug: string | undefined;
+  display: StorefrontColorwayDisplay | undefined;
+  variants: StorefrontVariant[] | undefined;
+  prices: common_ColorwayPrice[] | undefined;
   media: common_MediaFull[] | undefined;
-  tags: common_ProductTag[] | undefined;
+  sizeChart: PublicStyleSizeChart | undefined;
+  colorCode: string | undefined;
+  soldOut: boolean | undefined;
+  status: common_ColorwayLifecycleStatus | undefined;
+  // locked is TRUE when the requesting viewer's loyalty tier does not satisfy required_tier: the
+  // colourway is shown as a locked teaser (fully renderable) but cannot be purchased (the purchase
+  // block is enforced server-side on the order path). FALSE for viewers who qualify.
+  locked: boolean | undefined;
+  // required_tier is the minimum loyalty tier code required to purchase (0=member, 1=plus,
+  // 2=plus_plus, 99=hacker/invite-only). 0 for ordinary, ungated products.
+  requiredTier: number | undefined;
 };
 
-export type common_ProductSize = {
-  id: number | undefined;
-  quantity: googletype_Decimal | undefined;
-  productId: number | undefined;
-  sizeId: number | undefined;
+export type StorefrontColorwayDisplay = {
+  thumbnail: common_MediaFull | undefined;
+  secondaryThumbnail: common_MediaFull | undefined;
+  brand: string | undefined;
+  collectionCode: string | undefined;
+  targetGender: common_GenderEnum | undefined;
+  fit: string | undefined;
+  composition: string | undefined;
+  careInstructions: string | undefined;
+  translations: common_ColorwayInsertTranslation[] | undefined;
+  // Merchandising facts the PDP/cards render (S-final finding: the lean projection had no source for
+  // sale %, preorder, model-wears, category labels and freshness dates — all public, none are PKs).
+  salePercentage: googletype_Decimal | undefined;
+  preorder: wellKnownTimestamp | undefined;
+  modelWearsHeightCm: number | undefined;
+  modelWearsSizeCode: string | undefined;
+  categoryLabels: string[] | undefined;
+  updatedAt: wellKnownTimestamp | undefined;
+  // composition_entries is the structured fibre composition (S17/M1 fix), populated from
+  // style_composition; empty when the style has no structural composition data yet. Additive,
+  // typed replacement for the JSON-in-composition-string overload that was proposed and reverted —
+  // composition (above) stays legacy plain text always, never version- or data-gated JSON.
+  compositionEntries: common_CompositionEntry[] | undefined;
 };
 
-export type common_ProductMeasurement = {
-  id: number | undefined;
-  productId: number | undefined;
-  productSizeId: number | undefined;
-  measurementNameId: number | undefined;
-  measurementValue: googletype_Decimal | undefined;
+// CompositionEntry is one fibre share of a style's structured composition (S17), resolved with its
+// dictionary display name. M1 fix: the typed replacement for overloading the free-text `composition`
+// field with an encoded array of these once style_composition gains rows — that overload is removed;
+// `composition` on the wire is legacy plain text ONLY, always, and composition_entries (StorefrontColorwayDisplay,
+// TechCard) is the structured projection, populated from style_composition, empty when the style has
+// none yet. percent mirrors style_composition.percent (DECIMAL(5,2)): a decimal, not int32, because an
+// equal-split derivation (S17, DeriveStyleComposition) can produce fractional shares (e.g. 33.33).
+export type common_CompositionEntry = {
+  fiberCode: string | undefined;
+  name: string | undefined;
+  percent: googletype_Decimal | undefined;
 };
 
-export type common_ProductTag = {
-  id: number | undefined;
-  productId: number | undefined;
-  productTagInsert: common_ProductTagInsert | undefined;
+export type StorefrontVariant = {
+  variantSku: string | undefined;
+  size: PublicSize | undefined;
+  soldOut: boolean | undefined;
 };
 
-export type common_ProductTagInsert = {
-  tag: string | undefined;
+export type PublicSize = {
+  code: string | undefined;
+  name: string | undefined;
+  system: common_SizeSkuSystem | undefined;
+  skuOrd: number | undefined;
 };
 
-export type GetProductsPagedRequest = {
+export type PublicStyleSizeChart = {
+  cells: PublicMeasurement[] | undefined;
+};
+
+export type PublicMeasurement = {
+  size: PublicSize | undefined;
+  measurementName: string | undefined;
+  value: googletype_Decimal | undefined;
+};
+
+export type GetColorwaysPagedRequest = {
   limit: number | undefined;
   offset: number | undefined;
   sortFactors: common_SortFactor[] | undefined;
@@ -725,7 +868,6 @@ export type common_FilterConditions = {
   currency: string | undefined;
   onSale: boolean | undefined;
   gender: common_GenderEnum[] | undefined;
-  color: string | undefined;
   topCategoryIds: number[] | undefined;
   subCategoryIds: number[] | undefined;
   typeIds: number[] | undefined;
@@ -735,10 +877,12 @@ export type common_FilterConditions = {
   collections: string[] | undefined;
   seasons: common_SeasonEnum[] | undefined;
   excludeTopCategoryIds: number[] | undefined;
+  colorCodes: string[] | undefined;
+  exclusive: boolean | undefined;
 };
 
-export type GetProductsPagedResponse = {
-  products: common_Product[] | undefined;
+export type GetColorwaysPagedResponse = {
+  colorways: StorefrontColorway[] | undefined;
   total: number | undefined;
 };
 
@@ -760,9 +904,8 @@ export type common_OrderNew = {
 };
 
 export type common_OrderItemInsert = {
-  productId: number | undefined;
   quantity: number | undefined;
-  sizeId: number | undefined;
+  variantSku: string | undefined;
 };
 
 export type common_AddressInsert = {
@@ -797,6 +940,13 @@ export type common_PaymentInsert = {
   clientSecret: string | undefined;
   isTransactionDone: boolean | undefined;
   expiredAt: wellKnownTimestamp | undefined;
+  // payment_method_type is the most specific label for how the customer paid:
+  // the card wallet (apple_pay, google_pay, link) when tokenised through a wallet,
+  // otherwise the payment-method type (card, klarna, ...). Empty when uncaptured.
+  paymentMethodType: string | undefined;
+  // receipt_url is Stripe's hosted receipt for the charge (customer-facing). Empty
+  // for non-Stripe methods or when no receipt was produced.
+  receiptUrl: string | undefined;
 };
 
 export type GetOrderByUUIDAndEmailRequest = {
@@ -834,6 +984,12 @@ export type common_Order = {
   refundReason: string | undefined;
   orderComment: string | undefined;
   refundedAmount: googletype_Decimal | undefined;
+  // Buyer identity for the order-list projection: populated by the paged ListOrders query (which
+  // already joins buyer), so the admin orders list shows who placed the order instead of a raw UUID.
+  // Empty on read paths that don't project the buyer — OrderFull carries a full Buyer message instead.
+  buyerEmail: string | undefined;
+  buyerFirstName: string | undefined;
+  buyerLastName: string | undefined;
 };
 
 export type common_OrderItem = {
@@ -850,10 +1006,14 @@ export type common_OrderItem = {
   topCategoryId: number | undefined;
   subCategoryId: number | undefined;
   typeId: number | undefined;
-  sku: string | undefined;
+  // R2/p021: the frozen variant SKU of the sold line (immutable snapshot; no live fallback). Renamed
+  // from `sku`.
+  variantSkuSnapshot: string | undefined;
   preorder: wellKnownTimestamp | undefined;
   orderItem: common_OrderItemInsert | undefined;
-  translations: common_ProductInsertTranslation[] | undefined;
+  translations: common_ColorwayInsertTranslation[] | undefined;
+  baseSkuSnapshot: string | undefined;
+  sizeNameSnapshot: string | undefined;
 };
 
 // Payment represents the payment table
@@ -873,6 +1033,12 @@ export type common_Shipment = {
   shippingDate: wellKnownTimestamp | undefined;
   estimatedArrivalDate: wellKnownTimestamp | undefined;
   freeShipping: boolean | undefined;
+  // actual_cost is the real carrier invoice for this shipment (EUR), distinct from cost
+  // (the price charged to the customer). NULL until an operator enters it.
+  actualCost: googletype_Decimal | undefined;
+  // return_shipping_cost is the reverse-logistics cost of a return (EUR), NULL when the
+  // order was not returned.
+  returnShippingCost: googletype_Decimal | undefined;
 };
 
 // PromoCode represents the promo_code table
@@ -988,11 +1154,10 @@ export type ValidateOrderItemsInsertResponse = {
 
 // OrderItemAdjustment describes a change made during order item validation.
 export type common_OrderItemAdjustment = {
-  productId: number | undefined;
-  sizeId: number | undefined;
   requestedQuantity: googletype_Decimal | undefined;
   adjustedQuantity: googletype_Decimal | undefined;
   reason: common_OrderItemAdjustmentReasonEnum | undefined;
+  variantSkuSnapshot: string | undefined;
 };
 
 export type common_OrderItemAdjustmentReasonEnum =
@@ -1065,8 +1230,7 @@ export type UnsubscribeNewsletterResponse = {
 
 export type NotifyMeRequest = {
   email: string | undefined;
-  productId: number | undefined;
-  sizeId: number | undefined;
+  variantSku: string | undefined;
 };
 
 export type NotifyMeResponse = {
@@ -1079,18 +1243,64 @@ export type GetArchivesPagedRequest = {
 };
 
 export type GetArchivesPagedResponse = {
-  archives: common_ArchiveList[] | undefined;
+  archives: StorefrontArchiveList[] | undefined;
   total: number | undefined;
 };
 
+export type StorefrontArchiveList = {
+  translations: common_ArchiveInsertTranslation[] | undefined;
+  tag: string | undefined;
+  slug: string | undefined;
+  createdAt: wellKnownTimestamp | undefined;
+  thumbnail: common_MediaFull | undefined;
+  code: string | undefined;
+};
+
 export type GetArchiveRequest = {
+  // Legacy lookup fields. Kept on their original wire numbers during the coordinated URL cutover so
+  // an old serialized heading can never be interpreted as the new public code.
   heading: string | undefined;
   tag: string | undefined;
   id: number | undefined;
+  // code is the archive's stable public identifier (the tail of /timeline/{pretty}-{code}).
+  code: string | undefined;
 };
 
 export type GetArchiveResponse = {
-  archive: common_ArchiveFull | undefined;
+  archive: StorefrontArchiveFull | undefined;
+};
+
+export type StorefrontArchiveFull = {
+  archiveList: StorefrontArchiveList | undefined;
+  items: StorefrontArchiveItemFull[] | undefined;
+};
+
+export type StorefrontArchiveItemFull = {
+  type: common_ArchiveItemType | undefined;
+  mainMedia: common_ArchiveMainMediaFull | undefined;
+  mediaLine: common_ArchiveMediaLineFull | undefined;
+  text: common_ArchiveTextFull | undefined;
+  embed: common_ArchiveEmbedFull | undefined;
+  mediaWithCaption: common_ArchiveMediaWithCaptionFull | undefined;
+  product: StorefrontArchiveProductFull | undefined;
+  productsTag: StorefrontArchiveProductsTagFull | undefined;
+  productsManual: StorefrontArchiveProductsManualFull | undefined;
+};
+
+export type StorefrontArchiveProductFull = {
+  colorway: StorefrontColorway | undefined;
+  translations: common_ArchiveItemTranslation[] | undefined;
+};
+
+export type StorefrontArchiveProductsTagFull = {
+  tag: string | undefined;
+  colorways: StorefrontColorway[] | undefined;
+  translations: common_ArchiveItemTranslation[] | undefined;
+};
+
+export type StorefrontArchiveProductsManualFull = {
+  colorways: StorefrontColorway[] | undefined;
+  translations: common_ArchiveItemTranslation[] | undefined;
 };
 
 export type SubmitSupportTicketRequest = {
@@ -1312,10 +1522,10 @@ export type ListMyOrdersResponse = {
 export interface FrontendService {
   // Get hero information
   GetHero(request: GetHeroRequest): Promise<GetHeroResponse>;
-  // Get product brand and name
-  GetProduct(request: GetProductRequest): Promise<GetProductResponse>;
-  // Get paged products
-  GetProductsPaged(request: GetProductsPagedRequest): Promise<GetProductsPagedResponse>;
+  // Get a colourway by its public base SKU.
+  GetColorway(request: GetColorwayRequest): Promise<GetColorwayResponse>;
+  // Get paged colourways.
+  GetColorwaysPaged(request: GetColorwaysPagedRequest): Promise<GetColorwaysPagedResponse>;
   // Submit an order
   SubmitOrder(request: SubmitOrderRequest): Promise<SubmitOrderResponse>;
   // Retrieves an order by its ID
@@ -1334,10 +1544,13 @@ export interface FrontendService {
   UnsubscribeNewsletter(request: UnsubscribeNewsletterRequest): Promise<UnsubscribeNewsletterResponse>;
   // NotifyMe adds an email to the waitlist for a specific product/size when out of stock
   NotifyMe(request: NotifyMeRequest): Promise<NotifyMeResponse>;
-  // GetArchivesPaged retrieves paged archives.
-  GetArchivesPaged(request: GetArchivesPagedRequest): Promise<GetArchivesPagedResponse>;
-  // GetArchive retrieves an archive by its heading, tag and id.
+  // GetArchive retrieves an archive by its stable public code (the /timeline URL tail).
   GetArchive(request: GetArchiveRequest): Promise<GetArchiveResponse>;
+  // GetArchivesPaged retrieves paged archives. NOTE on ordering: grpc-gateway's mux prepends
+  // handlers, so the LAST-declared route for a method wins. The literal `/archive/paged` GET must be
+  // declared AFTER the `/archive/{code}` GET — otherwise {code} captures "paged" (beta smoke caught
+  // exactly that shadowing).
+  GetArchivesPaged(request: GetArchivesPagedRequest): Promise<GetArchivesPagedResponse>;
   // Submit a support ticket
   SubmitSupportTicket(request: SubmitSupportTicketRequest): Promise<SubmitSupportTicketResponse>;
   // Submit reviews for a delivered order (order-level + per-item, requires delivered order + buyer email)
@@ -1387,20 +1600,11 @@ export function createFrontendServiceClient(
         method: "GetHero",
       }) as Promise<GetHeroResponse>;
     },
-    GetProduct(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.gender) {
-        throw new Error("missing required field request.gender");
+    GetColorway(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.baseSku) {
+        throw new Error("missing required field request.base_sku");
       }
-      if (!request.brand) {
-        throw new Error("missing required field request.brand");
-      }
-      if (!request.name) {
-        throw new Error("missing required field request.name");
-      }
-      if (!request.id) {
-        throw new Error("missing required field request.id");
-      }
-      const path = `api/frontend/product/${request.gender}/${request.brand}/${request.name}/${request.id}`; // eslint-disable-line quotes
+      const path = `api/frontend/colorways/${request.baseSku}`; // eslint-disable-line quotes
       const body = null;
       const queryParams: string[] = [];
       let uri = path;
@@ -1413,11 +1617,11 @@ export function createFrontendServiceClient(
         body,
       }, {
         service: "FrontendService",
-        method: "GetProduct",
-      }) as Promise<GetProductResponse>;
+        method: "GetColorway",
+      }) as Promise<GetColorwayResponse>;
     },
-    GetProductsPaged(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      const path = `api/frontend/products/paged`; // eslint-disable-line quotes
+    GetColorwaysPaged(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      const path = `api/frontend/colorways/paged`; // eslint-disable-line quotes
       const body = null;
       const queryParams: string[] = [];
       if (request.limit) {
@@ -1450,9 +1654,6 @@ export function createFrontendServiceClient(
         request.filterConditions.gender.forEach((x) => {
           queryParams.push(`filterConditions.gender=${encodeURIComponent(x.toString())}`)
         })
-      }
-      if (request.filterConditions?.color) {
-        queryParams.push(`filterConditions.color=${encodeURIComponent(request.filterConditions.color.toString())}`)
       }
       if (request.filterConditions?.topCategoryIds) {
         request.filterConditions.topCategoryIds.forEach((x) => {
@@ -1495,6 +1696,14 @@ export function createFrontendServiceClient(
           queryParams.push(`filterConditions.excludeTopCategoryIds=${encodeURIComponent(x.toString())}`)
         })
       }
+      if (request.filterConditions?.colorCodes) {
+        request.filterConditions.colorCodes.forEach((x) => {
+          queryParams.push(`filterConditions.colorCodes=${encodeURIComponent(x.toString())}`)
+        })
+      }
+      if (request.filterConditions?.exclusive) {
+        queryParams.push(`filterConditions.exclusive=${encodeURIComponent(request.filterConditions.exclusive.toString())}`)
+      }
       let uri = path;
       if (queryParams.length > 0) {
         uri += `?${queryParams.join("&")}`
@@ -1505,8 +1714,8 @@ export function createFrontendServiceClient(
         body,
       }, {
         service: "FrontendService",
-        method: "GetProductsPaged",
-      }) as Promise<GetProductsPagedResponse>;
+        method: "GetColorwaysPaged",
+      }) as Promise<GetColorwaysPagedResponse>;
     },
     SubmitOrder(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/order/new`; // eslint-disable-line quotes
@@ -1702,6 +1911,35 @@ export function createFrontendServiceClient(
         method: "NotifyMe",
       }) as Promise<NotifyMeResponse>;
     },
+    GetArchive(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      if (!request.code) {
+        throw new Error("missing required field request.code");
+      }
+      const path = `api/frontend/archive/${request.code}`; // eslint-disable-line quotes
+      const body = null;
+      const queryParams: string[] = [];
+      if (request.heading) {
+        queryParams.push(`heading=${encodeURIComponent(request.heading.toString())}`)
+      }
+      if (request.tag) {
+        queryParams.push(`tag=${encodeURIComponent(request.tag.toString())}`)
+      }
+      if (request.id) {
+        queryParams.push(`id=${encodeURIComponent(request.id.toString())}`)
+      }
+      let uri = path;
+      if (queryParams.length > 0) {
+        uri += `?${queryParams.join("&")}`
+      }
+      return handler({
+        path: uri,
+        method: "GET",
+        body,
+      }, {
+        service: "FrontendService",
+        method: "GetArchive",
+      }) as Promise<GetArchiveResponse>;
+    },
     GetArchivesPaged(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/archive/paged`; // eslint-disable-line quotes
       const body = null;
@@ -1727,32 +1965,6 @@ export function createFrontendServiceClient(
         service: "FrontendService",
         method: "GetArchivesPaged",
       }) as Promise<GetArchivesPagedResponse>;
-    },
-    GetArchive(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
-      if (!request.heading) {
-        throw new Error("missing required field request.heading");
-      }
-      if (!request.tag) {
-        throw new Error("missing required field request.tag");
-      }
-      if (!request.id) {
-        throw new Error("missing required field request.id");
-      }
-      const path = `api/frontend/archive/${request.heading}/${request.tag}/${request.id}`; // eslint-disable-line quotes
-      const body = null;
-      const queryParams: string[] = [];
-      let uri = path;
-      if (queryParams.length > 0) {
-        uri += `?${queryParams.join("&")}`
-      }
-      return handler({
-        path: uri,
-        method: "GET",
-        body,
-      }, {
-        service: "FrontendService",
-        method: "GetArchive",
-      }) as Promise<GetArchiveResponse>;
     },
     SubmitSupportTicket(request) { // eslint-disable-line @typescript-eslint/no-unused-vars
       const path = `api/frontend/support/ticket`; // eslint-disable-line quotes
