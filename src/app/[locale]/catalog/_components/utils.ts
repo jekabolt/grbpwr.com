@@ -3,7 +3,7 @@ import {
   common_GenderEnum,
   common_OrderFactor,
   common_SortFactor,
-  GetColorwaysPagedRequest
+  GetColorwaysPagedRequest,
 } from "@/api/proto-http/frontend";
 import { GENDER_MAP, ORDER_MAP, SORT_MAP_URL } from "@/constants";
 
@@ -11,7 +11,7 @@ type EnumType = common_SortFactor | common_OrderFactor | common_GenderEnum;
 type MapType = typeof SORT_MAP_URL | typeof ORDER_MAP | typeof GENDER_MAP;
 
 export function getUrlKey(enumValue: EnumType, map: MapType): string {
-  return Object.keys(map).find(key => map[key] === enumValue) || "";
+  return Object.keys(map).find((key) => map[key] === enumValue) || "";
 }
 
 function decodeParam(param: string): string {
@@ -29,8 +29,8 @@ export function parseRouteParams(params: string[] = []): {
   categoryName: string;
   subCategoryName: string;
 } {
-  const [firstParam, secondParam, thirdParam] = params.map(param =>
-    param ? decodeParam(param) : param
+  const [firstParam, secondParam, thirdParam] = params.map((param) =>
+    param ? decodeParam(param) : param,
   );
 
   if (firstParam === "objects") {
@@ -42,7 +42,8 @@ export function parseRouteParams(params: string[] = []): {
   }
 
   // Check if firstParam is a valid gender
-  const isGender = firstParam && VALID_GENDERS.includes(firstParam.toLowerCase());
+  const isGender =
+    firstParam && VALID_GENDERS.includes(firstParam.toLowerCase());
 
   if (!isGender && firstParam) {
     return {
@@ -59,12 +60,17 @@ export function parseRouteParams(params: string[] = []): {
   };
 }
 
-export function getEnumFromUrl(urlKey: string | null | undefined, map: MapType): EnumType | undefined {
+export function getEnumFromUrl(
+  urlKey: string | null | undefined,
+  map: MapType,
+): EnumType | undefined {
   if (!urlKey) return undefined;
   return map[urlKey.toLowerCase()];
 }
 
-function parsePositiveIntArray(value: string | null | undefined): number[] | undefined {
+function parsePositiveIntArray(
+  value: string | null | undefined,
+): number[] | undefined {
   if (value == null || value === "") return undefined;
   const ids = value.split(",").map((s) => parseInt(s.trim(), 10));
   const valid = ids.filter((id) => Number.isFinite(id) && id > 0);
@@ -86,6 +92,7 @@ export function getProductsPagedQueryParams(
     tag,
     collection,
     currency,
+    exclusive,
   }: {
     sort?: string | null;
     order?: string | null;
@@ -97,15 +104,24 @@ export function getProductsPagedQueryParams(
     tag?: string | null;
     collection?: string | null;
     currency?: string | null;
+    // Storefront-only: restrict results to tier-gated pieces — the dedicated
+    // "exclusive" catalogue of locked teasers (common FilterConditions.exclusive).
+    exclusive?: boolean;
   },
-  dictionary?: common_Dictionary
+  dictionary?: common_Dictionary,
 ): Pick<
   GetColorwaysPagedRequest,
   "sortFactors" | "orderFactor" | "filterConditions"
 > {
-  const sortFactor = getEnumFromUrl(sort, SORT_MAP_URL) as common_SortFactor | undefined;
-  const orderFactor = getEnumFromUrl(order, ORDER_MAP) as common_OrderFactor | undefined;
-  const primaryGender = getEnumFromUrl(gender, GENDER_MAP) as common_GenderEnum | undefined;
+  const sortFactor = getEnumFromUrl(sort, SORT_MAP_URL) as
+    | common_SortFactor
+    | undefined;
+  const orderFactor = getEnumFromUrl(order, ORDER_MAP) as
+    | common_OrderFactor
+    | undefined;
+  const primaryGender = getEnumFromUrl(gender, GENDER_MAP) as
+    | common_GenderEnum
+    | undefined;
   const unisexEnum = GENDER_MAP.unisex as common_GenderEnum;
   const genderEnums: common_GenderEnum[] | undefined = primaryGender
     ? primaryGender === unisexEnum
@@ -115,16 +131,21 @@ export function getProductsPagedQueryParams(
 
   const sizeIds = size
     ? size
-      .split(",")
-      .map(s => dictionary?.sizes?.find(sz => sz.name?.toLowerCase() === s.toLowerCase())?.id)
-      .filter((id): id is number => id !== undefined)
+        .split(",")
+        .map(
+          (s) =>
+            dictionary?.sizes?.find(
+              (sz) => sz.name?.toLowerCase() === s.toLowerCase(),
+            )?.id,
+        )
+        .filter((id): id is number => id !== undefined)
     : undefined;
 
   const collections = collection
     ? collection
-      .split(",")
-      .map((c) => c.trim())
-      .filter((c) => c.length > 0 && c.length <= MAX_COLLECTION_LENGTH)
+        .split(",")
+        .map((c) => c.trim())
+        .filter((c) => c.length > 0 && c.length <= MAX_COLLECTION_LENGTH)
     : undefined;
 
   const validatedTopCategoryIds = parsePositiveIntArray(topCategoryIds ?? "");
@@ -139,7 +160,9 @@ export function getProductsPagedQueryParams(
     (c) => c.level === "top_category" && c.name?.toLowerCase() === "objects",
   )?.id;
   const excludeTopCategoryIds =
-    primaryGender && objectsCategoryId != null ? [objectsCategoryId] : undefined;
+    primaryGender && objectsCategoryId != null
+      ? [objectsCategoryId]
+      : undefined;
 
   return {
     sortFactors: sortFactor ? [sortFactor] : undefined,
@@ -157,9 +180,11 @@ export function getProductsPagedQueryParams(
       preorder: undefined,
       byTag: validatedTag,
       gender: genderEnums,
-      collections: collections && collections.length > 0 ? collections : undefined,
+      collections:
+        collections && collections.length > 0 ? collections : undefined,
       currency: currency?.toUpperCase() || undefined,
       seasons: undefined,
+      exclusive: exclusive || undefined,
     },
   };
 }

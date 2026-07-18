@@ -4,6 +4,7 @@ import type {
 } from "@/api/proto-http/frontend";
 import { LANGUAGE_CODE_TO_ID } from "@/constants";
 import { routing } from "@/i18n/routing";
+
 import { serviceClient } from "@/lib/api";
 
 import { hreflangAlternates, localizedSitemapUrl } from "./build-entries";
@@ -27,6 +28,7 @@ const productListFilters: common_FilterConditions = {
   collections: undefined,
   seasons: undefined,
   colorCodes: undefined,
+  exclusive: undefined,
 };
 
 function productPathFromSlug(slug: string | undefined): string | null {
@@ -91,7 +93,8 @@ export async function buildProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
       for (const locale of routing.locales) {
         const name = productNameForLocale(p, locale);
         const sku = (p.baseSku || "").trim();
-        const title = sku && name ? `${sku} | ${name}` : name || sku || "product";
+        const title =
+          sku && name ? `${sku} | ${name}` : name || sku || "product";
 
         const images =
           imageLoc != null

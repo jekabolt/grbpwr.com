@@ -22,9 +22,13 @@ import { useRouteParams } from "./useRouteParams";
 export function InfinityScrollCatalog({
   firstPageItems,
   total,
+  exclusive = false,
 }: {
   firstPageItems: StorefrontColorway[];
   total: number;
+  // Exclusive catalogue: restrict the feed to tier-gated teasers via
+  // filterConditions.exclusive and key the query apart from the main catalogue.
+  exclusive?: boolean;
 }) {
   const searchParams = useSearchParams();
   const { dictionary } = useDataContext();
@@ -58,10 +62,19 @@ export function InfinityScrollCatalog({
         topCategoryId: topCategory?.id,
         subCategoryId: subCategory?.id,
         currency: currencyKey,
+        exclusive,
         ...searchParamsObj,
       },
     ],
-    [languageId, gender, topCategory?.id, subCategory?.id, currencyKey, searchParamsObj],
+    [
+      languageId,
+      gender,
+      topCategory?.id,
+      subCategory?.id,
+      currencyKey,
+      exclusive,
+      searchParamsObj,
+    ],
   );
 
   const {
@@ -83,6 +96,7 @@ export function InfinityScrollCatalog({
             topCategoryIds: topCategory?.id?.toString(),
             subCategoryIds: subCategory?.id?.toString(),
             currency: currencyKey,
+            exclusive,
             ...searchParamsObj,
           },
           dictionary,

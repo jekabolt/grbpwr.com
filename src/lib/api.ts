@@ -112,6 +112,7 @@ const EMPTY_FILTERS = {
   byTag: undefined,
   collections: undefined,
   seasons: undefined,
+  exclusive: undefined,
 };
 
 // Freshness signals (sitemap lastmod / JSON-LD dateModified) for pages without a

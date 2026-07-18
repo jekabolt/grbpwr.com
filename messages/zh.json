@@ -97,7 +97,8 @@
     "failed to update account": "无法更新账户",
     "failed to set default address": "无法设置默认地址",
     "failed to add address": "无法添加地址",
-    "start a return": "发起退货"
+    "start a return": "发起退货",
+    "exclusive": "专属"
   },
   "footer": {
     "legal notices": "法律声明",
@@ -159,7 +160,11 @@
       "sale": "促销"
     },
     "sold out": "售罄",
-    "no matches": "无匹配结果"
+    "no matches": "无匹配结果",
+    "members only": "仅限会员",
+    "sign in to access": "登录后查看",
+    "exclusive": "专属",
+    "exclusive description": "会员专属单品"
   },
   "product": {
     "model is": "模特是",
