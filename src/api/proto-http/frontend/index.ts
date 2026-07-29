@@ -901,6 +901,10 @@ export type common_OrderNew = {
   shipmentCarrierId: number | undefined;
   promoCode: string | undefined;
   currency: string | undefined;
+  // locale is the storefront site locale at purchase time (ISO-639-1: en/fr/de/it/ja/zh/ko).
+  // Used to localize the order's transactional emails when the buyer has no explicit account
+  // language. Empty on the admin custom-order path.
+  locale: string | undefined;
 };
 
 export type common_OrderItemInsert = {
@@ -990,6 +994,18 @@ export type common_Order = {
   buyerEmail: string | undefined;
   buyerFirstName: string | undefined;
   buyerLastName: string | undefined;
+  // vat_regime is the VAT treatment snapshotted onto the order at accounting-posting time
+  // (customer_order.vat_regime): oss / pl_domestic / export / wdt / uk_stock_domestic / none. Empty
+  // until the order's sale event is posted. Surfaced so the invoice can print the legally-required
+  // note for zero-VAT regimes — notably wdt (intra-community B2B supply → reverse charge).
+  vatRegime: string | undefined;
+  // buyer_vat_id is the B2B buyer's EU VAT identifier (2-letter country prefix + digits), set on
+  // custom orders only; empty for B2C/storefront orders. Surfaced so a reverse-charge invoice can
+  // print the buyer's VAT number, which substantiates the zero-rated intra-community supply.
+  buyerVatId: string | undefined;
+  // locale is the storefront site locale captured at purchase (ISO-639-1). Surfaced for the
+  // admin order view. Empty on pre-feature orders and admin custom orders.
+  locale: string | undefined;
 };
 
 export type common_OrderItem = {
@@ -1210,6 +1226,10 @@ export type SubscribeNewsletterRequest = {
   subscribeNewsletter: boolean | undefined;
   subscribeNewArrivals: boolean | undefined;
   subscribeEvents: boolean | undefined;
+  // language is the active site locale at signup (ISO-639-1). Seeds the account's language
+  // so the welcome (and future account-based emails) go out in the language the user
+  // subscribed in.
+  language: string | undefined;
 };
 
 export type SubscribeNewsletterResponse = {
@@ -1390,6 +1410,10 @@ export type StorefrontAccount = {
   addresses: StorefrontSavedAddress[] | undefined;
   defaultCountry: string | undefined;
   defaultLanguage: string | undefined;
+  // email_language is the explicit, sticky preference for transactional email language
+  // (ISO-639-1). Empty = not chosen (mailer falls back to purchase locale then
+  // default_language then en). Distinct from default_language (auto-derived from site locale).
+  emailLanguage: string | undefined;
 };
 
 // Represents a whole or partial calendar date, such as a birthday. The time of
@@ -1466,6 +1490,7 @@ export type UpdateAccountRequest = {
   subscribeEvents?: boolean;
   defaultCountry?: string;
   defaultLanguage?: string;
+  emailLanguage?: string;
 };
 
 export type UpdateAccountResponse = {

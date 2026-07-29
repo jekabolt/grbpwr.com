@@ -830,6 +830,10 @@ export type OrderNew = {
   shipmentCarrierId: number | undefined;
   promoCode: string | undefined;
   currency: string | undefined;
+  // locale is the storefront site locale at purchase time (ISO-639-1: en/fr/de/it/ja/zh/ko).
+  // Used to localize the order's transactional emails when the buyer has no explicit account
+  // language. Empty on the admin custom-order path.
+  locale: string | undefined;
 };
 
 export type OrderItemInsert = {
@@ -869,6 +873,18 @@ export type Order = {
   buyerEmail: string | undefined;
   buyerFirstName: string | undefined;
   buyerLastName: string | undefined;
+  // vat_regime is the VAT treatment snapshotted onto the order at accounting-posting time
+  // (customer_order.vat_regime): oss / pl_domestic / export / wdt / uk_stock_domestic / none. Empty
+  // until the order's sale event is posted. Surfaced so the invoice can print the legally-required
+  // note for zero-VAT regimes — notably wdt (intra-community B2B supply → reverse charge).
+  vatRegime: string | undefined;
+  // buyer_vat_id is the B2B buyer's EU VAT identifier (2-letter country prefix + digits), set on
+  // custom orders only; empty for B2C/storefront orders. Surfaced so a reverse-charge invoice can
+  // print the buyer's VAT number, which substantiates the zero-rated intra-community supply.
+  buyerVatId: string | undefined;
+  // locale is the storefront site locale captured at purchase (ISO-639-1). Surfaced for the
+  // admin order view. Empty on pre-feature orders and admin custom orders.
+  locale: string | undefined;
 };
 
 export type OrderItem = {
@@ -1050,6 +1066,316 @@ export type OrderFactors = {
 export type SortFactors = {
   id: SortFactor | undefined;
   name: string | undefined;
+};
+
+// EmailBlockType identifies the payload carried by an EmailBlock.
+export type EmailBlockType =
+  | "EMAIL_BLOCK_TYPE_UNKNOWN"
+  | "EMAIL_BLOCK_TYPE_HEADER"
+  | "EMAIL_BLOCK_TYPE_IMAGE_LINK"
+  | "EMAIL_BLOCK_TYPE_RICH_TEXT"
+  | "EMAIL_BLOCK_TYPE_PRODUCT_CARD"
+  | "EMAIL_BLOCK_TYPE_PRODUCT_GRID"
+  | "EMAIL_BLOCK_TYPE_CTA_BUTTON"
+  | "EMAIL_BLOCK_TYPE_DIVIDER"
+  | "EMAIL_BLOCK_TYPE_SPACER"
+  | "EMAIL_BLOCK_TYPE_TWO_COLUMN"
+  | "EMAIL_BLOCK_TYPE_SOCIAL_LINKS"
+  | "EMAIL_BLOCK_TYPE_COUNTDOWN"
+  | "EMAIL_BLOCK_TYPE_VIDEO_THUMB";
+export type EmailCampaignTopic =
+  | "EMAIL_CAMPAIGN_TOPIC_UNKNOWN"
+  | "EMAIL_CAMPAIGN_TOPIC_NEWSLETTER"
+  | "EMAIL_CAMPAIGN_TOPIC_NEW_ARRIVALS"
+  | "EMAIL_CAMPAIGN_TOPIC_EVENTS";
+export type EmailCampaignStatus =
+  | "EMAIL_CAMPAIGN_STATUS_UNKNOWN"
+  | "EMAIL_CAMPAIGN_STATUS_DRAFT"
+  | "EMAIL_CAMPAIGN_STATUS_SCHEDULED"
+  | "EMAIL_CAMPAIGN_STATUS_SENDING"
+  | "EMAIL_CAMPAIGN_STATUS_PAUSED"
+  | "EMAIL_CAMPAIGN_STATUS_SENT"
+  | "EMAIL_CAMPAIGN_STATUS_CANCELLED";
+export type ABDimension =
+  | "AB_DIMENSION_UNKNOWN"
+  | "AB_DIMENSION_SUBJECT"
+  | "AB_DIMENSION_CONTENT";
+export type EmailCampaignRecipientStatus =
+  | "EMAIL_CAMPAIGN_RECIPIENT_STATUS_UNKNOWN"
+  | "EMAIL_CAMPAIGN_RECIPIENT_STATUS_PENDING"
+  | "EMAIL_CAMPAIGN_RECIPIENT_STATUS_SENT"
+  | "EMAIL_CAMPAIGN_RECIPIENT_STATUS_FAILED"
+  | "EMAIL_CAMPAIGN_RECIPIENT_STATUS_SKIPPED";
+export type EmailCampaignCohort =
+  | "EMAIL_CAMPAIGN_COHORT_UNKNOWN"
+  | "EMAIL_CAMPAIGN_COHORT_AB"
+  | "EMAIL_CAMPAIGN_COHORT_REMAINDER";
+export type SegmentOp =
+  | "SEGMENT_OP_UNKNOWN"
+  | "SEGMENT_OP_AND"
+  | "SEGMENT_OP_OR";
+// EmailLink is localized link copy used by header-style blocks.
+export type EmailLink = {
+  label: string | undefined;
+  url: string | undefined;
+};
+
+// EmailBlockTranslation is the shared translation superset for every block.
+// Each block type consumes only the fields it needs.
+export type EmailBlockTranslation = {
+  languageId: number | undefined;
+  heading: string | undefined;
+  subheading: string | undefined;
+  body: string | undefined;
+  caption: string | undefined;
+  ctaLabel: string | undefined;
+  ctaUrl: string | undefined;
+  altText: string | undefined;
+  preheader: string | undefined;
+  links: EmailLink[] | undefined;
+};
+
+export type EmailHeaderBlock = {
+  logoMediaId: number | undefined;
+};
+
+export type EmailImageLinkBlock = {
+  mediaId: number | undefined;
+  url: string | undefined;
+};
+
+export type EmailRichTextBlock = {
+};
+
+export type EmailProductCardBlock = {
+  productId: number | undefined;
+};
+
+export type EmailProductGridBlock = {
+  productIds: number[] | undefined;
+  columns: number | undefined;
+};
+
+export type EmailCTAButtonBlock = {
+  style: string | undefined;
+  alignment: string | undefined;
+};
+
+export type EmailDividerBlock = {
+  color: string | undefined;
+  height: number | undefined;
+};
+
+export type EmailSpacerBlock = {
+  height: number | undefined;
+};
+
+export type EmailTwoColumnBlock = {
+  left: EmailBlock[] | undefined;
+  right: EmailBlock[] | undefined;
+};
+
+// EmailBlock is an ordered, typed campaign-body block. Exactly the payload that
+// corresponds to type should be populated.
+export type EmailBlock = {
+  type: EmailBlockType | undefined;
+  header: EmailHeaderBlock | undefined;
+  imageLink: EmailImageLinkBlock | undefined;
+  richText: EmailRichTextBlock | undefined;
+  productCard: EmailProductCardBlock | undefined;
+  productGrid: EmailProductGridBlock | undefined;
+  ctaButton: EmailCTAButtonBlock | undefined;
+  divider: EmailDividerBlock | undefined;
+  spacer: EmailSpacerBlock | undefined;
+  twoColumn: EmailTwoColumnBlock | undefined;
+  socialLinks: EmailSocialLinksBlock | undefined;
+  countdown: EmailCountdownBlock | undefined;
+  videoThumb: EmailVideoThumbBlock | undefined;
+  backgroundColor: string | undefined;
+  translations: EmailBlockTranslation[] | undefined;
+};
+
+export type EmailSocialLinksBlock = {
+  links: EmailSocialLink[] | undefined;
+};
+
+export type EmailSocialLink = {
+  network: string | undefined;
+  url: string | undefined;
+};
+
+export type EmailCountdownBlock = {
+  endsAt: number | undefined;
+};
+
+export type EmailVideoThumbBlock = {
+  mediaId: number | undefined;
+  videoUrl: string | undefined;
+};
+
+export type ABConfig = {
+  enabled: boolean | undefined;
+  dimension: ABDimension | undefined;
+  testPct: number | undefined;
+  decisionAfterMinutes: number | undefined;
+  winnerVariantId: number | undefined;
+};
+
+export type SubjectTranslation = {
+  languageId: number | undefined;
+  subject: string | undefined;
+};
+
+export type EmailCampaignVariant = {
+  id: number | undefined;
+  label: string | undefined;
+  subjectI18n: SubjectTranslation[] | undefined;
+  // Empty means inherit the campaign-level body.
+  body: EmailBlock[] | undefined;
+  isWinner: boolean | undefined;
+};
+
+export type EmailCampaignInsert = {
+  name: string | undefined;
+  topic: EmailCampaignTopic | undefined;
+  body: EmailBlock[] | undefined;
+  backgroundColor: string | undefined;
+  fromName: string | undefined;
+  fromEmail: string | undefined;
+  replyTo: string | undefined;
+  scheduleAt: number | undefined;
+  abConfig: ABConfig | undefined;
+  variants: EmailCampaignVariant[] | undefined;
+  status: EmailCampaignStatus | undefined;
+  segmentId: number | undefined;
+};
+
+export type EmailCampaignFull = {
+  id: number | undefined;
+  name: string | undefined;
+  topic: EmailCampaignTopic | undefined;
+  body: EmailBlock[] | undefined;
+  backgroundColor: string | undefined;
+  fromName: string | undefined;
+  fromEmail: string | undefined;
+  replyTo: string | undefined;
+  scheduleAt: number | undefined;
+  abConfig: ABConfig | undefined;
+  variants: EmailCampaignVariant[] | undefined;
+  status: EmailCampaignStatus | undefined;
+  segmentId: number | undefined;
+  createdBy: string | undefined;
+  createdAt: number | undefined;
+  updatedAt: number | undefined;
+  sendingStartedAt: number | undefined;
+  sentAt: number | undefined;
+  audienceSnapshotAt: number | undefined;
+  fanoutMaxAccountId: number | undefined;
+  fanoutCursorAccountId: number | undefined;
+  audienceMaterializedAt: number | undefined;
+  recipientCount: number | undefined;
+  dispatchError: string | undefined;
+};
+
+export type EmailCampaignDispatchStatus = {
+  campaignId: number | undefined;
+  status: EmailCampaignStatus | undefined;
+  audienceMaterializedAt: number | undefined;
+  dispatchError: string | undefined;
+  recipientCount: number | undefined;
+  pending: number | undefined;
+  accepted: number | undefined;
+  failed: number | undefined;
+  skipped: number | undefined;
+};
+
+export type CampaignMetricCounts = {
+  total: number | undefined;
+  pending: number | undefined;
+  sent: number | undefined;
+  failed: number | undefined;
+  skipped: number | undefined;
+  delivered: number | undefined;
+  uniqueOpened: number | undefined;
+  totalOpens: number | undefined;
+  uniqueClicked: number | undefined;
+  totalClicks: number | undefined;
+  bounced: number | undefined;
+  complained: number | undefined;
+  unsubscribed: number | undefined;
+};
+
+export type CampaignMetricRates = {
+  deliveryRate: number | undefined;
+  openRate: number | undefined;
+  clickRate: number | undefined;
+  clickToOpenRate: number | undefined;
+  bounceRate: number | undefined;
+  complaintRate: number | undefined;
+};
+
+export type CampaignVariantMetrics = {
+  variantId: number | undefined;
+  label: string | undefined;
+  counts: CampaignMetricCounts | undefined;
+  rates: CampaignMetricRates | undefined;
+};
+
+// Read-only compute-on-read aggregates over email_campaign_recipient.
+export type CampaignMetrics = {
+  campaignId: number | undefined;
+  counts: CampaignMetricCounts | undefined;
+  rates: CampaignMetricRates | undefined;
+  variants: CampaignVariantMetrics[] | undefined;
+};
+
+// Public admin ledger projection. Provider idempotency/claim/hash/render
+// internals are deliberately absent.
+export type EmailCampaignRecipient = {
+  id: number | undefined;
+  campaignId: number | undefined;
+  accountId: number | undefined;
+  email: string | undefined;
+  languageId: number | undefined;
+  variantId: number | undefined;
+  cohort: EmailCampaignCohort | undefined;
+  status: EmailCampaignRecipientStatus | undefined;
+  attemptCount: number | undefined;
+  resendEmailId: string | undefined;
+  errorCode: string | undefined;
+  lastError: string | undefined;
+  nextAttemptAt: number | undefined;
+  sentAt: number | undefined;
+  completedAt: number | undefined;
+  createdAt: number | undefined;
+  updatedAt: number | undefined;
+};
+
+// SegmentNode is either a branch (op + children) or a leaf (field/operator/values).
+export type SegmentNode = {
+  op: SegmentOp | undefined;
+  children: SegmentNode[] | undefined;
+  field: string | undefined;
+  operator: string | undefined;
+  values: string[] | undefined;
+};
+
+export type SegmentPredicate = {
+  root: SegmentNode | undefined;
+};
+
+export type EmailSegment = {
+  id: number | undefined;
+  name: string | undefined;
+  description: string | undefined;
+  predicate: SegmentPredicate | undefined;
+  lastCount: number | undefined;
+  lastCountAt: number | undefined;
+};
+
+export type RenderWarning = {
+  blockIndex: number | undefined;
+  reason: string | undefined;
 };
 
 // FittingStatus is the lifecycle state of a fitting session.
@@ -2220,6 +2546,21 @@ export type TechCardOperation = {
   // resolves it to bom_item_id, the real FK on read.
   bomLineKey: string | undefined;
   bomItemId: number | undefined;
+  // piece_line_keys references the cut-pieces this operation works on, by their stable
+  // TechCardPiece.line_key (WS4) — the same durable reference TechCardColorwayUsage.piece_line_key
+  // uses. REPEATED, unlike the usage's single key, because an assembly operation genuinely spans
+  // pieces and there is no useful bound on how many. A consumption norm, by contrast, is about
+  // exactly one piece, which is why that side stays 1:1. Empty = not tied to specific pieces.
+  // `placement` above stays the human label (PDF/legacy) and is not a join key.
+  pieceLineKeys: string[] | undefined;
+  pieceIds: number[] | undefined;
+  // bom_line_keys references the BOM lines this operation itself consumes -- the off-part materials
+  // (thread, fusing) it joins with -- by their stable line_key. REPEATED for the same reason
+  // piece_line_keys is: one operation can join several materials. Supersedes the single
+  // bom_line_key = 19, which stays for the transition and is read as the first entry when this is
+  // empty. Distinct from piece_line_keys: those are the parts joined, these are what joins them.
+  bomLineKeys: string[] | undefined;
+  bomItemIds: number[] | undefined;
 };
 
 // TechCardIssue is a maker-flagged problem ("this seam is impossible") against an
@@ -2791,6 +3132,11 @@ export type ProductionRunInsert = {
   markerEfficiencyPct: googletype_Decimal | undefined;
   markerNotes: string | undefined;
   markers: ProductionRunMarker[] | undefined;
+  // Run ACTUAL cutting wastage % (0..100), entered per run once the marker/lay is known. When set it
+  // OVERRIDES the BOM line's estimate wastage_percent in the run's cost calc (planned-cost snapshot +
+  // material plan); unset falls back to the BOM estimate. Refines the plan side only — the run's ACTUAL
+  // cost still derives from real material issues.
+  actualWastagePercent: googletype_Decimal | undefined;
 };
 
 // ProductionRun is a stored run: the writable payload plus the server-owned identity, the frozen
