@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useForm, type UseFormReturn } from "react-hook-form";
 
 import { sendNewsletterSignupEvent } from "@/lib/analitycs/form";
@@ -33,6 +33,9 @@ export default function NewslatterForm({
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const tToaster = useTranslations("toaster");
+  // Signup site locale — seeds the account's language so the welcome (and future
+  // account-based emails) go out in the language the user subscribed in.
+  const locale = useLocale();
 
   const signedInEmail = useAccountOnboardingStore((s) =>
     s.isSignedIn ? s.account?.email?.trim() || undefined : undefined,
@@ -62,7 +65,7 @@ export default function NewslatterForm({
   async function onSubmit(data: NewsletterFormValues) {
     setIsLoading(true);
     try {
-      await serviceClient.SubscribeNewsletter(data);
+      await serviceClient.SubscribeNewsletter({ ...data, language: locale });
       await pushUserIdToDataLayer(data.email ?? "");
       sendNewsletterSignupEvent({
         signup_location: "footer",

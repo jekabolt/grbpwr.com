@@ -160,6 +160,7 @@ export function mapFormFieldToOrderDataFormat(
   data: CheckoutData,
   orderItems: common_OrderItemInsert[],
   currency: string,
+  locale?: string,
 ) {
   const shippingAddress: common_AddressInsert = {
     addressLineOne: data.address,
@@ -205,6 +206,10 @@ export function mapFormFieldToOrderDataFormat(
     shipmentCarrierId: parseInt(data.shipmentCarrierId),
     promoCode: data.promoCode,
     currency,
+    // Site locale at purchase, so the order's transactional emails go out in the
+    // language the buyer checked out in (backend precedence: account email_language
+    // → this locale → account default_language → en).
+    locale,
   };
 
   return newOrderData;

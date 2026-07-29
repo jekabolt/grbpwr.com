@@ -1,4 +1,5 @@
 import type { Stripe, StripeElements } from "@stripe/stripe-js";
+import { useLocale } from "next-intl";
 import { RefObject, useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
@@ -70,6 +71,8 @@ export function useCheckoutSubmit({
   const [isPaymentElementComplete, setIsPaymentElementComplete] = useState(false);
   const setIsSubmitting = useCheckoutStore((state) => state.setIsSubmitting);
   const { currentCountry, languageId } = useTranslationsStore((state) => state);
+  // Active site locale at purchase — captured on the order so its emails are localized.
+  const locale = useLocale();
 
   const setLoadingState = (value: boolean) => {
     setLoading(value);
@@ -248,6 +251,7 @@ export function useCheckoutSubmit({
         data,
         response?.validItems?.map((i: common_OrderItem) => i.orderItem!) || [],
         currentCountry.currencyKey || "",
+        locale,
       );
 
       const newOrderResponse = await submitNewOrder(
