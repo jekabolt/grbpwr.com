@@ -16,6 +16,9 @@ export const newsletterFormSchema = newsletterFormFields.transform(
     ...rest,
     email: email?.trim() || undefined,
     name: name.trim() || undefined,
+    // The signup site locale is filled in at submit time (the form schema has no
+    // access to it); see the SubscribeNewsletter call in the form component.
+    language: undefined,
   }),
 );
 
