@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -34,6 +34,7 @@ type Props = {
 
 export function AccountProfilePrompt({ account, onCompleted }: Props) {
   const t = useTranslations("account");
+  const locale = useLocale();
   const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const {
     pending,
@@ -57,7 +58,7 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
   const form = useForm<AccountSchema>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: useMemo(() => {
-      const fromAccount = getAccountFormDefaultValues(account);
+      const fromAccount = getAccountFormDefaultValues(account, locale);
       return {
         ...fromAccount,
         firstName: "",
@@ -65,7 +66,7 @@ export function AccountProfilePrompt({ account, onCompleted }: Props) {
         phone: "",
         birthDate: "",
       };
-    }, [account]),
+    }, [account, locale]),
   });
 
   async function onSubmit(data: AccountSchema) {

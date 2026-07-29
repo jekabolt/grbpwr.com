@@ -67,6 +67,9 @@ export function useEmailPreferences() {
       context: {
         languageId,
         currentCountryCode: currentCountry.countryCode,
+        // Only true once the user has actually touched the email-language toggle
+        // this session — read fresh at call time so it reflects current dirty state.
+        emailLanguageDirty: !!form.formState.dirtyFields.emailLanguage,
       },
       mode: "email",
       refresh,

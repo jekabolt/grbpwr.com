@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import type { StorefrontAccount } from "@/api/proto-http/frontend";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -35,6 +35,7 @@ export function AccountSectionContent({
 }: Props) {
   const { currentCountry } = useTranslationsStore((s) => s);
   const t = useTranslations("account");
+  const locale = useLocale();
   const accountFormSchema = useMemo(() => createAccountSchema(t), [t]);
   const selectedCountryCode =
     currentCountry.countryCode?.trim() ||
@@ -44,8 +45,8 @@ export function AccountSectionContent({
   const form = useForm<AccountSchema>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: useMemo(
-      () => getAccountFormDefaultValues(account),
-      [account],
+      () => getAccountFormDefaultValues(account, locale),
+      [account, locale],
     ),
   });
 

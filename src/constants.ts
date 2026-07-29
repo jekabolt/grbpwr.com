@@ -613,6 +613,41 @@ export const LANGUAGE_ID_TO_LOCALE: Record<number, string> = {
   7: "ko",
 };
 
+/**
+ * The 7 locales the storefront ships, in the same order as `src/i18n/routing.ts`'s
+ * `locales`. Backs the account "email language" toggle (`AccountSchema.emailLanguage`)
+ * — the explicit, per-account language used for transactional/marketing email,
+ * independent of whatever locale the customer happens to be browsing in right now.
+ */
+export const EMAIL_LANGUAGE_VALUES = [
+  "en",
+  "fr",
+  "de",
+  "it",
+  "ja",
+  "zh",
+  "ko",
+] as const;
+
+/**
+ * Native display name per locale. Deliberately duplicates the same strings already
+ * used as `displayLng` on the matching `COUNTRIES_BY_REGION` entries rather than
+ * deriving this by flattening+deduping that country table — that table is keyed by
+ * country, not locale, and a hand-written 7-entry map is simpler to eyeball-verify.
+ */
+export const LOCALE_DISPLAY_NAMES: Record<
+  (typeof EMAIL_LANGUAGE_VALUES)[number],
+  string
+> = {
+  en: "english",
+  fr: "français",
+  de: "deutsch",
+  it: "italiano",
+  ja: "日本語",
+  zh: "简体中文",
+  ko: "한국인",
+};
+
 export const CHECKOUT_ERROR_CITY_COUNTRY = "__checkout_city_country__";
 export const CHECKOUT_ERROR_PHONE_COUNTRY = "__checkout_phone_country__";
 

@@ -5,7 +5,7 @@ import type {
   UpdateAccountRequest,
   googletype_Date,
 } from "@/api/proto-http/frontend";
-import { EMAIL_PREFERENCES } from "@/constants";
+import { EMAIL_LANGUAGE_VALUES, EMAIL_PREFERENCES } from "@/constants";
 import { updateAccountResponse } from "@/lib/storefront-account/account-update";
 
 function parseBirthDate(raw: unknown): googletype_Date | undefined {
@@ -33,6 +33,14 @@ function isShoppingPreferenceEnum(v: unknown): v is ShoppingPreferenceEnum {
   return typeof v === "string" && ALLOWED_SHOPPING_PREFERENCES.has(v);
 }
 
+const ALLOWED_EMAIL_LANGUAGES = new Set<string>(EMAIL_LANGUAGE_VALUES);
+
+function isEmailLanguage(
+  v: unknown,
+): v is (typeof EMAIL_LANGUAGE_VALUES)[number] {
+  return typeof v === "string" && ALLOWED_EMAIL_LANGUAGES.has(v);
+}
+
 export async function POST(req: Request) {
   const raw = (await req.json()) as Record<string, unknown>;
   const body: UpdateAccountRequest = {};
@@ -54,6 +62,12 @@ export async function POST(req: Request) {
   }
   if (raw.defaultLanguage !== undefined && typeof raw.defaultLanguage === "string") {
     body.defaultLanguage = raw.defaultLanguage;
+  }
+  if (raw.emailLanguage !== undefined) {
+    if (!isEmailLanguage(raw.emailLanguage)) {
+      return NextResponse.json({ error: "invalid emailLanguage" }, { status: 400 });
+    }
+    body.emailLanguage = raw.emailLanguage;
   }
 
   if (raw.birthDate !== undefined) {

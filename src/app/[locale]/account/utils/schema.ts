@@ -1,5 +1,6 @@
 import {
     CHECKOUT_ERROR_PHONE_COUNTRY,
+    EMAIL_LANGUAGE_VALUES,
     EMAIL_PREFERENCES,
     errorMessages,
     SHOPPING_PREFERENCE_ENUM,
@@ -11,6 +12,7 @@ import {
 import { z } from "zod";
 
 export type AccountEmailPreference = (typeof SHOPPING_PREFERENCE_ENUM)[number];
+export type EmailLanguageValue = (typeof EMAIL_LANGUAGE_VALUES)[number];
 
 const accountFieldsSchema = ({
     invalidDate,
@@ -67,6 +69,7 @@ const accountFieldsSchema = ({
         subscribeEvents: z.boolean(),
         shoppingPreference: z.enum(SHOPPING_PREFERENCE_ENUM),
         defaultCountry: z.string(),
+        emailLanguage: z.enum(EMAIL_LANGUAGE_VALUES),
     }).superRefine((data, ctx) => {
         const countryForPhone =
             findIsoCountryFromPhoneNumber(data.phone ?? "") ??
@@ -141,4 +144,5 @@ export const defaultData: AccountSchema = {
     subscribeEvents: false,
     shoppingPreference: EMAIL_PREFERENCES.all,
     defaultCountry: "",
+    emailLanguage: "en",
 };

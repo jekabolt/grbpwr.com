@@ -8,6 +8,7 @@ import { SubmissionToaster } from "@/components/ui/toaster";
 import type { AccountSchema } from "@/app/[locale]/account/utils/schema";
 import { EMAIL_REFERENCE_STEPS } from "@/app/[locale]/account/utils/utility";
 
+import { EmailLanguage } from "../_components/email-language";
 import { EmailPreferenceStepRow } from "../_components/email-steps";
 import { NewArrivals } from "../_components/new-arrivals";
 import { UserLocation } from "../_components/user-location";
@@ -21,6 +22,10 @@ export function EmailPreferences() {
   const shoppingPreference = useWatch({
     control: form.control,
     name: "shoppingPreference",
+  });
+  const emailLanguage = useWatch({
+    control: form.control,
+    name: "emailLanguage",
   });
 
   return (
@@ -58,6 +63,21 @@ export function EmailPreferences() {
           <div className="hidden lg:block">
             <UserLocation pending={pending} />
           </div>
+        </div>
+
+        <div className="flex w-full flex-row justify-between lg:flex-col lg:justify-start lg:gap-6">
+          <Text variant="uppercase">{t("email language")}</Text>
+          <EmailLanguage
+            pending={pending}
+            value={emailLanguage}
+            onChange={(next) => {
+              form.setValue("emailLanguage", next, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+              scheduleSave();
+            }}
+          />
         </div>
       </div>
       <SubmissionToaster

@@ -78,11 +78,19 @@ export const EMAIL_REFERENCE_STEPS = [
 export type AccountUpdateContext = {
     languageId: number;
     currentCountryCode: string | undefined;
+    /**
+     * True only once the user has explicitly changed the email-language toggle in
+     * this form session (`form.formState.dirtyFields.emailLanguage`, threaded through
+     * by `useEmailPreferences`). Gates whether `emailLanguage` is included in the
+     * "email" mode payload — the clobber fix. Never set from ambient browsing locale.
+     */
+    emailLanguageDirty?: boolean;
 };
 
 
 export function getAccountFormDefaultValues(
     account: StorefrontAccount,
+    activeLocale: string,
 ): AccountSchema {
     return {
         ...defaultData,
@@ -98,6 +106,16 @@ export function getAccountFormDefaultValues(
                 ? (account.shoppingPreference as AccountEmailPreference)
                 : EMAIL_PREFERENCES.all,
         defaultCountry: account.defaultCountry?.trim().toLowerCase() ?? "",
+        /**
+         * Explicit account preference wins; then the last browsing locale the
+         * backend has on file for this account; then whatever locale the picker
+         * happens to be opened in right now. This only decides what the toggle
+         * *shows* pre-selected — it is never itself sent back to the server unless
+         * the user touches the toggle (see buildAccountUpdatePayload's dirty-gate).
+         */
+        emailLanguage: (account.emailLanguage?.trim() ||
+            account.defaultLanguage?.trim() ||
+            activeLocale) as AccountSchema["emailLanguage"],
     };
 }
 
@@ -130,6 +148,19 @@ export function buildAccountUpdatePayload(
             subscribeEvents: data.subscribeEvents,
             ...(data.subscribeNewArrivals
                 ? { shoppingPreference: data.shoppingPreference }
+                : {}),
+            /**
+             * `emailLanguage` is the EXPLICIT, sticky email-language choice — unlike
+             * `defaultLanguage` above, it must NEVER be derived from the ambient
+             * browsing locale. Only include it when the user actually touched the
+             * toggle this session (`ctx.emailLanguageDirty`, from RHF's
+             * dirtyFields.emailLanguage). This is the clobber fix: sending it
+             * unconditionally would let an unrelated save (new-arrivals, phone edit)
+             * overwrite the account's explicit email_language with the current
+             * browsing locale.
+             */
+            ...(ctx.emailLanguageDirty
+                ? { emailLanguage: data.emailLanguage }
                 : {}),
         };
     }
