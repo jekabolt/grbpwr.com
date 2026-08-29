@@ -98,9 +98,9 @@ export default async function RootLayout({ children, params }: Props) {
             third-party JS off the main thread during the initial load. */}
         <DeferredAnalytics />
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <CookieBanner />
           <ToastProvider>
             <MotionConfigProvider>
+              <CookieBanner />
               <PageTransition>
                 <SiteGuard>
                   <div className="relative min-h-dvh">{children}</div>

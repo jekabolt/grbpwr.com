@@ -262,11 +262,12 @@
     "cookie preferences": "preferenze dei cookie",
     "accept": "accetta",
     "accept all cookies": "accetta tutti i cookie",
+    "reject all cookies": "rifiuta tutti i cookie",
     "save preferences": "salva le preferenze",
     "content text 1": "Un cookie è un piccolo file di testo memorizzato in un'area dedicata sul tuo computer, tablet, smartphone o altro dispositivo quando utilizzi il tuo browser per visitare un servizio online. Un cookie consente al suo mittente di identificare il dispositivo su cui è memorizzato durante il periodo di validità del consenso, che non supera i 13 mesi.",
     "content text 2": "Questi cookie sono necessari per un funzionamento ottimale del sito web e non possono essere configurati. Ci consentono di offrire alle tue chiave funzionalità del sito web (lingua utilizzata, risoluzione di visualizzazione, accesso al tuo account, carrello, lista dei desideri, ecc.), di fornirti consigli online e di proteggere il nostro sito web da qualsiasi tentativo di frode.",
     "content text 3": "Questi cookie sono utilizzati per misurare e analizzare la nostra audience del sito web (volume dei visitatori, pagine visitate, tempo medio di navigazione, ecc.) per aiutarci a migliorare le sue prestazioni. Accettando questi cookie, ci aiuti a migliorare il nostro sito web.",
-    "content text 4": "Questi cookie sono utilizzati per le pubblicità di Off White visualizzate su siti web di terze parti, compresi i social media, e sono adattati alle tue preferenze per aiutarci a misurare l'efficacia delle nostre campagne pubblicitarie. Se disabiliti questi cookie, la pubblicità (compresa la nostra) continuerà ad essere visualizzata mentre navighi sul Web, anche se non sarà più specifica per i tuoi interessi personali e sarà quindi meno pertinente.",
+    "content text 4": "Questi cookie sono utilizzati per le pubblicità di grbpwr visualizzate su siti web di terze parti, compresi i social media, e sono adattati alle tue preferenze per aiutarci a misurare l'efficacia delle nostre campagne pubblicitarie. Se disabiliti questi cookie, la pubblicità (compresa la nostra) continuerà ad essere visualizzata mentre navighi sul Web, anche se non sarà più specifica per i tuoi interessi personali e sarà quindi meno pertinente.",
     "content text 5": "Questi cookie ci consentono di offrire ai tuoi prodotti, servizi e contenuti online o in negozio che corrispondono alle tue aspettative e preferenze. Accettando questi cookie, scegli un'esperienza più ricca e personalizzata.",
     "functional cookie (non-optional)": "cookie funzionale (non-opzionale)",
     "statistical analysis cookies": "cookie di analisi statistica",
@@ -850,6 +851,8 @@
     "email": "e-mail"
   },
   "accessibility": {
+    "close": "chiudi",
+    "cookie preferences": "preferenze dei cookie grbpwr",
     "mobile menu": "menu mobile grbpwr",
     "notify me dialog": "dialogo avvisami grbpwr",
     "reason label": "motivo",
