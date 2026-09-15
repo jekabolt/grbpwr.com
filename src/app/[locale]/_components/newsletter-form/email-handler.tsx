@@ -13,10 +13,14 @@ export const FIELD_PULSE_MS = 500;
 
 export function EmailHandler({
   inactiveBgColor = false,
+  consentOnFocus = false,
   emailValue,
   handleEmail,
 }: {
   inactiveBgColor?: boolean;
+  // Desktop hides the consent notice until the field is focused or filled,
+  // the same as mobile. Off by default: desktop shows it upfront.
+  consentOnFocus?: boolean;
   emailValue: string;
   handleEmail: (email: string) => void;
 }) {
@@ -119,7 +123,10 @@ export function EmailHandler({
           />
         </div>
         {mobileEmailExpanded && (
-          <Text variant="uppercase" className="leading-none lg:hidden">
+          <Text
+            variant="uppercase"
+            className={cn("leading-none", { "lg:hidden": !consentOnFocus })}
+          >
             {t.rich("consent_notice", {
               privacy: (chunks) => (
                 <Link
@@ -140,26 +147,28 @@ export function EmailHandler({
             })}
           </Text>
         )}
-        <Text variant="uppercase" className="hidden leading-none lg:block">
-          {t.rich("consent_notice", {
-            privacy: (chunks) => (
-              <Link
-                href="/legal-notices?section=privacy"
-                className="underline hover:no-underline"
-              >
-                {chunks}
-              </Link>
-            ),
-            terms: (chunks) => (
-              <Link
-                href="/legal-notices?section=terms"
-                className="underline hover:no-underline"
-              >
-                {chunks}
-              </Link>
-            ),
-          })}
-        </Text>
+        {!consentOnFocus && (
+          <Text variant="uppercase" className="hidden leading-none lg:block">
+            {t.rich("consent_notice", {
+              privacy: (chunks) => (
+                <Link
+                  href="/legal-notices?section=privacy"
+                  className="underline hover:no-underline"
+                >
+                  {chunks}
+                </Link>
+              ),
+              terms: (chunks) => (
+                <Link
+                  href="/legal-notices?section=terms"
+                  className="underline hover:no-underline"
+                >
+                  {chunks}
+                </Link>
+              ),
+            })}
+          </Text>
+        )}
       </div>
       {mobileEmailExpanded && (
         <Button

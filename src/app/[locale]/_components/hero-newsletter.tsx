@@ -49,7 +49,7 @@ export function HeroNewsletter({
         </div>
       )}
       <div className="relative z-20 w-full max-w-xl border border-textInactiveColor bg-bgColor p-6 text-textColor">
-        <NewslatterForm />
+        <NewslatterForm consentOnFocus />
       </div>
     </section>
   );

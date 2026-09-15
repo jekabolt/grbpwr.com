@@ -25,8 +25,10 @@ import {
 
 export default function NewslatterForm({
   inactiveBgColor = false,
+  consentOnFocus = false,
 }: {
   inactiveBgColor?: boolean;
+  consentOnFocus?: boolean;
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
@@ -95,6 +97,7 @@ export default function NewslatterForm({
       <Form {...form}>
         <EmailHandler
           inactiveBgColor={inactiveBgColor}
+          consentOnFocus={consentOnFocus}
           emailValue={emailValue ?? ""}
           handleEmail={handleEmail}
         />
