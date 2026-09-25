@@ -699,6 +699,18 @@ export const PLURIAL_SINGLE_CATEGORY_MAP: Record<string, string> = {
   belts: "belt",
   scarves: "scarf",
   backpacks: "backpack",
+  polos: "polo",
+  bodysuits: "bodysuit",
+  blouses: "blouse",
+  jumpsuits: "jumpsuit",
+  pyjamas: "pyjama",
+  wallets: "wallet",
+  keychains: "keychain",
+  ties: "tie",
+  dress_shoes: "dress_shoe",
+  belt_bags: "belt_bag",
+  clutches: "clutch",
+  pouches: "pouch",
 };
 
 export const TOP_CATEGORIES = [
@@ -720,6 +732,18 @@ export const FIT_OPTIONS = [
   "skinny",
   "cropped",
   "tailored",
+  "fitted",
+  "oversized",
+  "boxy",
+  "longline",
+  "straight",
+  "tapered",
+  "wide_leg",
+  "bootcut",
+  "flared",
+  "baggy",
+  "a_line",
+  "bodycon",
 ] as const;
 
 export const SHOPPING_PREFERENCE_ENUM = [
