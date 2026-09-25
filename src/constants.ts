@@ -711,6 +711,8 @@ export const PLURIAL_SINGLE_CATEGORY_MAP: Record<string, string> = {
   belt_bags: "belt_bag",
   clutches: "clutch",
   pouches: "pouch",
+  sets: "set",
+  duffle_bags: "duffle_bag",
 };
 
 export const TOP_CATEGORIES = [

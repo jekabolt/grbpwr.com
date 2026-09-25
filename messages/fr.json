@@ -883,7 +883,10 @@
     "cardholder": "porte-cartes",
     "bifold": "à deux volets",
     "derby": "derby",
-    "monk": "à boucle"
+    "monk": "à boucle",
+    "set": "ensemble",
+    "duffle_bags": "sacs polochon",
+    "duffle_bag": "sac polochon"
   },
   "fit": {
     "regular": "classique",

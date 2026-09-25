@@ -883,7 +883,10 @@
     "cardholder": "卡包",
     "bifold": "对折",
     "derby": "德比鞋",
-    "monk": "孟克鞋"
+    "monk": "孟克鞋",
+    "set": "套装",
+    "duffle_bags": "旅行袋",
+    "duffle_bag": "旅行袋"
   },
   "fit": {
     "regular": "常规版型",

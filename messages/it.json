@@ -883,7 +883,10 @@
     "cardholder": "portacarte",
     "bifold": "a libro",
     "derby": "derby",
-    "monk": "con fibbia"
+    "monk": "con fibbia",
+    "set": "coordinato",
+    "duffle_bags": "borsoni",
+    "duffle_bag": "borsone"
   },
   "fit": {
     "regular": "regolare",

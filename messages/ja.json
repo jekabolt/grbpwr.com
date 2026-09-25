@@ -883,7 +883,10 @@
     "cardholder": "カードケース",
     "bifold": "二つ折り",
     "derby": "ダービー",
-    "monk": "モンクストラップ"
+    "monk": "モンクストラップ",
+    "set": "セットアップ",
+    "duffle_bags": "ダッフルバッグ",
+    "duffle_bag": "ダッフルバッグ"
   },
   "fit": {
     "regular": "レギュラー",

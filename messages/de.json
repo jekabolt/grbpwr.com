@@ -884,7 +884,10 @@
     "cardholder": "kartenetui",
     "bifold": "bifold",
     "derby": "derby",
-    "monk": "monkstrap"
+    "monk": "monkstrap",
+    "set": "set",
+    "duffle_bags": "reisetaschen",
+    "duffle_bag": "reisetasche"
   },
   "fit": {
     "regular": "normal",

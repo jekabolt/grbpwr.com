@@ -883,7 +883,10 @@
     "cardholder": "카드지갑",
     "bifold": "반지갑",
     "derby": "더비",
-    "monk": "몽크스트랩"
+    "monk": "몽크스트랩",
+    "set": "세트",
+    "duffle_bags": "더플백",
+    "duffle_bag": "더플백"
   },
   "fit": {
     "regular": "레귤러핏",

@@ -941,7 +941,10 @@
     "cardholder": "cardholder",
     "bifold": "bifold",
     "derby": "derby",
-    "monk": "monk"
+    "monk": "monk",
+    "set": "set",
+    "duffle_bags": "duffle bags",
+    "duffle_bag": "duffle bag"
   },
   "fit": {
     "regular": "regular",
