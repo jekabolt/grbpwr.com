@@ -114,6 +114,7 @@
     "change country": "land ändern",
     "text": "Sie versenden derzeit nach {currentCountry} und Ihre Bestellung wird in {currency} abgerechnet.",
     "search location": "suchen nach einem land",
+    "clear search": "suche löschen",
     "language": "sprache",
     "not-found": "entschuldigung, wir konnten keine ergebnisse für ihre suche finden."
   },
@@ -317,7 +318,9 @@
     "VGW": "Sehr schonende Wäsche"
   },
   "geo-suggest": {
-    "message": "Wir denken, Sie sind in {country}. Aktualisieren Sie Ihre Standort?"
+    "message": "Wir denken, Sie sind in {country}. Aktualisieren Sie Ihre Standort?",
+    "accept": "Zu {country} wechseln",
+    "dismiss": "Auf {country} bleiben"
   },
   "update_location": {
     "message": "Sie sind derzeit in {currentCountry}. Beim Wechseln von Ländern/Regionen wird Ihr Warenkorb geleert. Sind Sie sicher, dass Sie fortfahren möchten?",

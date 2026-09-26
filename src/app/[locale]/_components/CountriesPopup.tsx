@@ -1,10 +1,11 @@
 "use client";
 
+import * as DialogPrimitives from "@radix-ui/react-dialog";
+
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { ModalTransition } from "@/components/modal-transition";
-import { Overlay } from "@/components/ui/overlay";
 
 import { CountriesContent } from "./CountriesContent";
 import { MobileCountriesPopup } from "./mobile-countries-popup";
@@ -13,32 +14,30 @@ export function CountriesPopup() {
   const { isOpen, closeCountryPopup } = useTranslationsStore((s) => s);
   const { dictionary } = useDataContext();
   const isWebsiteEnabled = dictionary?.siteEnabled;
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   return (
     <>
       <MobileCountriesPopup />
-      <div className="hidden lg:block">
-        {isOpen && (
-          <>
-            <Overlay
-              cover="screen"
-              onClick={closeCountryPopup}
-              disablePointerEvents={false}
-            />
-            <ModalTransition
-              isOpen={isOpen}
-              contentSlideFrom="right"
-              contentClassName={cn(
-                "fixed inset-y-2 right-2 z-[70] w-[460px] border border-textInactiveColor bg-bgColor p-2.5 text-textColor",
-                {
-                  blackTheme: !isWebsiteEnabled,
-                },
-              )}
-              content={<CountriesContent />}
-            />
-          </>
-        )}
-      </div>
+      <DialogPrimitives.Root
+        open={isDesktop && isOpen}
+        onOpenChange={closeCountryPopup}
+      >
+        <DialogPrimitives.Portal>
+          <DialogPrimitives.Overlay className="fixed inset-0 z-20 bg-overlay data-[state=open]:animate-modal-fade-in data-[state=closed]:animate-modal-fade-out" />
+          <DialogPrimitives.Content
+            aria-describedby={undefined}
+            className={cn(
+              "fixed inset-y-2 right-2 z-[70] w-[460px] overflow-y-auto border border-textInactiveColor bg-bgColor p-2.5 text-textColor data-[state=open]:animate-modal-fade-in data-[state=closed]:animate-modal-fade-out",
+              {
+                blackTheme: !isWebsiteEnabled,
+              },
+            )}
+          >
+            <CountriesContent />
+          </DialogPrimitives.Content>
+        </DialogPrimitives.Portal>
+      </DialogPrimitives.Root>
     </>
   );
 }

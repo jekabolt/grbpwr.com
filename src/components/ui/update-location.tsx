@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
@@ -28,6 +28,7 @@ export function UpdateLocation() {
     cancelNextCountry,
   } = useTranslationsStore((state) => state);
   const t = useTranslations("update_location");
+  const [isApplying, setIsApplying] = useState(false);
   const pathname = usePathname();
   const isCheckoutPage = /\/checkout(?:\/|$)/.test(pathname || "");
   const targetLocale =
@@ -62,6 +63,8 @@ export function UpdateLocation() {
       nextCountry.localeCode || LANGUAGE_ID_TO_LOCALE[languageId];
 
     if (!targetCountryCode || !newLocale) return;
+
+    setIsApplying(true);
 
     if (targetCountryCode) {
       const selectedSavedAddressId = Number(nextCountry.savedAddressId);
@@ -128,6 +131,8 @@ export function UpdateLocation() {
               variant="main"
               size="lg"
               className="w-full uppercase"
+              loading={isApplying}
+              disabled={isApplying}
               onClick={() => {
                 void handleApplyCountry();
               }}
@@ -139,6 +144,7 @@ export function UpdateLocation() {
               variant="simpleReverse"
               size="lg"
               className="w-full uppercase"
+              disabled={isApplying}
               onClick={handleCancelCountry}
             >
               {t("cancel")}

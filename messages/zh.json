@@ -114,6 +114,7 @@
     "change country": "更改国家",
     "text": "您目前的配送地址为{currentCountry}，您的订单将以{currency}计费。",
     "search location": "搜索国家",
+    "clear search": "清除搜索",
     "language": "语言",
     "not-found": "抱歉，我们找不到您搜索的结果。"
   },
@@ -316,7 +317,9 @@
     "VGW": "非常温和的水洗"
   },
   "geo-suggest": {
-    "message": "我们认为您在{country}。更新您的位置？"
+    "message": "我们认为您在{country}。更新您的位置？",
+    "accept": "切换到{country}",
+    "dismiss": "留在{country}"
   },
   "update_location": {
     "message": "您当前在{currentCountry}购物。更改国家/地区时，购物车将被清空。您确定要继续吗？",

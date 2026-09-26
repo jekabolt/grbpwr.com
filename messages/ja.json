@@ -114,6 +114,7 @@
     "change country": "国を変更",
     "text": "現在{currentCountry}への配送を行っており、ご注文は{currency}で請求されます。",
     "search location": "国を検索",
+    "clear search": "検索をクリア",
     "language": "言語",
     "not-found": "申し訳ありませんが、検索結果が見つかりませんでした。"
   },
@@ -316,7 +317,9 @@
     "VGW": "非常に弱い洗濯"
   },
   "geo-suggest": {
-    "message": "あなたは{country}にいると思います。場所を更新しますか？"
+    "message": "あなたは{country}にいると思います。場所を更新しますか？",
+    "accept": "{country}に切り替える",
+    "dismiss": "{country}のままにする"
   },
   "update_location": {
     "message": "あなたは現在{currentCountry}でショッピングしています。国/地域を変更すると、ショッピングカートが空になります。続行してもよろしいですか？",
