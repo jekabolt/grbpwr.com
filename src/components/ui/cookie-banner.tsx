@@ -1,7 +1,8 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import * as DialogPrimitives from "@radix-ui/react-dialog";
+import { useTranslations } from "next-intl";
 
 import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
 import { ModalTransition } from "@/components/modal-transition";
@@ -10,7 +11,6 @@ import { Text } from "@/components/ui/text";
 import { Banner } from "./banner";
 import { Button } from "./button";
 import { MobileCookieModal } from "./mobile-cookie-modal";
-import { Overlay } from "./overlay";
 
 export const defaultCookiePreferences = {
   functional: true,
@@ -55,6 +55,7 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
   const [open, setOpenStatus] = useState(false);
   const [preferences, setPreferences] = useState(defaultCookiePreferences);
   const t = useTranslations("cookies");
+  const tAccessibility = useTranslations("accessibility");
 
   useEffect(() => {
     const savedConsent = localStorage.getItem("cookieConsent");
@@ -64,11 +65,35 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
   }, []);
 
   const handleSaveCookies = () => {
-    localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    // "accept all" must grant every category, regardless of current toggles.
+    setPreferences(defaultCookiePreferences);
+    localStorage.setItem(
+      "cookieConsent",
+      JSON.stringify(defaultCookiePreferences),
+    );
     setConsentCookie();
-    updateConsentMode(preferences);
+    updateConsentMode(defaultCookiePreferences);
     window.dispatchEvent(new Event("cookie-consent-accepted"));
     setIsVisible(false);
+  };
+
+  const handleRejectCookies = () => {
+    // "reject all": deny every optional category; functional stays on.
+    const rejected = {
+      functional: true,
+      statistical: false,
+      advertising_social_media: false,
+      experience: false,
+    };
+    setPreferences(rejected);
+    localStorage.setItem("cookieConsent", JSON.stringify(rejected));
+    setConsentCookie();
+    updateConsentMode(rejected);
+    // Generic "decision made" signal, kept for parity with accept.
+    // It must NOT grant consent — analytics/ads are denied above.
+    window.dispatchEvent(new Event("cookie-consent-accepted"));
+    setIsVisible(false);
+    setOpenStatus(false);
   };
 
   const handlePreferenceChange = (key: string, value: boolean) => {
@@ -90,84 +115,104 @@ export function CookieBanner(_props: CookieBannerProps = {}) {
   if (!isVisible) return null;
 
   return (
-    <Banner>
+    <Banner role="region" ariaLabel={tAccessibility("cookie preferences")}>
       <div className="block lg:hidden">
         <MobileCookieModal
           isVisible={isVisible}
           preferences={preferences}
           handleSaveCookies={handleSaveCookies}
+          handleRejectCookies={handleRejectCookies}
           handleSavePreferences={handleSavePreferences}
           handlePreferenceChange={handlePreferenceChange}
         />
       </div>
-      <div className="hidden space-y-6 p-2.5 lg:block">
-        <span>
-          <Text component="span" variant="inherit">
-            {t("cookies title")}
-          </Text>
-          <Button
-            variant="underline"
-            className="inline"
-            onClick={() => setOpenStatus((v) => !v)}
-          >
-            {t("cookie preferences")}
-          </Button>
-        </span>
-        <Button
-          variant="secondary"
-          size="lg"
-          className="uppercase"
-          onClick={handleSaveCookies}
-        >
-          {t("accept")}
-        </Button>
+      <div className="hidden lg:block">
+        <DialogPrimitives.Root open={open} onOpenChange={setOpenStatus}>
+          <div className="space-y-6 p-2.5">
+            <span>
+              <Text component="span" variant="inherit">
+                {t("cookies title")}
+              </Text>
+              <DialogPrimitives.Trigger asChild>
+                <Button variant="underline" className="inline">
+                  {t("cookie preferences")}
+                </Button>
+              </DialogPrimitives.Trigger>
+            </span>
+            <div className="flex flex-col gap-2">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="w-full uppercase"
+                onClick={handleSaveCookies}
+              >
+                {t("accept all cookies")}
+              </Button>
+              <Button
+                variant="secondary"
+                size="lg"
+                className="w-full uppercase"
+                onClick={handleRejectCookies}
+              >
+                {t("reject all cookies")}
+              </Button>
+            </div>
+          </div>
+          <DialogPrimitives.Portal>
+            <DialogPrimitives.Overlay className="fixed inset-0 z-20 h-screen bg-overlay" />
+            <ModalTransition
+              isOpen={open}
+              contentSlideFrom="right"
+              contentClassName="fixed inset-y-2 right-2 z-30 w-[459px] border border-textInactiveColor bg-bgColor p-2.5 mix-blend-normal"
+              content={
+                <DialogPrimitives.Content className="flex h-full flex-col gap-y-6">
+                  <DialogPrimitives.Title className="sr-only">
+                    {tAccessibility("cookie preferences")}
+                  </DialogPrimitives.Title>
+                  <div className="flex items-center justify-between">
+                    <Text variant="uppercase">{t("cookie preferences")}</Text>
+                    <DialogPrimitives.Close asChild>
+                      <Button aria-label={tAccessibility("close")}>[x]</Button>
+                    </DialogPrimitives.Close>
+                  </div>
+                  <div className="h-full overflow-y-scroll border-b">
+                    <CookieContent
+                      preferences={preferences}
+                      onPreferenceChange={handlePreferenceChange}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      variant="main"
+                      onClick={handleSaveCookies}
+                      size="lg"
+                      className="w-full uppercase"
+                    >
+                      {t("accept all cookies")}
+                    </Button>
+                    <Button
+                      variant="main"
+                      onClick={handleRejectCookies}
+                      size="lg"
+                      className="w-full uppercase"
+                    >
+                      {t("reject all cookies")}
+                    </Button>
+                    <Button
+                      variant="simpleReverse"
+                      onClick={handleSavePreferences}
+                      size="lg"
+                      className="w-full uppercase"
+                    >
+                      {t("save preferences")}
+                    </Button>
+                  </div>
+                </DialogPrimitives.Content>
+              }
+            />
+          </DialogPrimitives.Portal>
+        </DialogPrimitives.Root>
       </div>
-      {open && (
-        <div className="hidden lg:block">
-          <Overlay
-            cover="screen"
-            onClick={() => setOpenStatus(false)}
-            disablePointerEvents={false}
-          />
-          <ModalTransition
-            isOpen={open}
-            contentSlideFrom="right"
-            contentClassName="fixed inset-y-2 right-2 z-30 w-[459px] border border-textInactiveColor bg-bgColor p-2.5 mix-blend-normal"
-            content={
-              <div className="flex h-full flex-col gap-y-6">
-                <div className="flex items-center justify-between">
-                  <Text variant="uppercase">{t("cookie preferences")}</Text>
-                  <Button onClick={() => setOpenStatus(false)}>[x]</Button>
-                </div>
-                <div className="h-full overflow-y-scroll border-b">
-                  <CookieContent
-                    preferences={preferences}
-                    onPreferenceChange={handlePreferenceChange}
-                  />
-                </div>
-                <div className="flex gap-x-6">
-                  <Button
-                    variant="main"
-                    onClick={handleSaveCookies}
-                    size="lg"
-                    className="w-1/2 uppercase"
-                  >
-                    {t("accept all cookies")}
-                  </Button>
-                  <Button
-                    variant="simpleReverse"
-                    onClick={handleSavePreferences}
-                    size="lg"
-                    className="uppercase"
-                  >
-                    {t("save preferences")}
-                  </Button>
-                </div>
-              </div>
-            }
-          />
-        </div>
-      )}
     </Banner>
   );
 }
