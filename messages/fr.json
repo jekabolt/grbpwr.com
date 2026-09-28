@@ -295,6 +295,7 @@
     "GW": "Lavage délicat",
     "HW": "Lavage à la main uniquement",
     "IH": "Repassage à haute température (200°C)",
+    "IA": "Repassage à toute température",
     "IL": "Repassage à basse température (110°C)",
     "IM": "Repassage à température moyenne (150°C)",
     "LD": "Séchage sur fil",
