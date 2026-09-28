@@ -216,6 +216,7 @@ export const CARE_INSTRUCTIONS_MAP: Record<string, string> = {
   GW: "Gentle Wash",
   HW: "Hand Wash Only",
   IH: "Iron at High Temperature (200°C)",
+  IA: "Iron at Any Temperature",
   IL: "Iron at Low Temperature (110°C)",
   IM: "Iron at Medium Temperature (150°C)",
   LD: "Line Dry",
