@@ -13,8 +13,11 @@ export function LazyArtIframe({ theme }: { theme?: "light" | "dark" }) {
     rootMargin: "300px 0px",
   });
 
+  // art.grbpwr.com/ is the gallery; the logos live on their own paths.
   const src =
-    theme === "dark" ? "https://art.grbpwr.com/invert" : "https://art.grbpwr.com";
+    theme === "dark"
+      ? "https://art.grbpwr.com/logo-white"
+      : "https://art.grbpwr.com/logo-black";
 
   return (
     <div ref={ref} className="h-56 w-56 lg:hidden">
