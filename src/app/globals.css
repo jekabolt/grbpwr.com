@@ -1,6 +1,24 @@
+@import "../fonts/cjk-pixel.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Feature Mono has no CJK. Its pixel companion (src/fonts/cjk-pixel.css) sits
+   right behind it so ja/zh/ko never reach the system font; the page language
+   picks whose regional glyph forms win for shared Han characters. */
+html {
+  --font-cjk: "GRBPWR Pixel JA", "GRBPWR Pixel ZH", "GRBPWR Pixel KO";
+}
+html:lang(zh) {
+  --font-cjk: "GRBPWR Pixel ZH", "GRBPWR Pixel JA", "GRBPWR Pixel KO";
+}
+html:lang(ko) {
+  --font-cjk: "GRBPWR Pixel KO", "GRBPWR Pixel JA", "GRBPWR Pixel ZH";
+}
+body {
+  font-family: var(--font-feature-mono), var(--font-cjk), system-ui, sans-serif;
+}
 
 /* Soft cross-fade for route View Transitions (PageTransition). */
 ::view-transition-old(root),

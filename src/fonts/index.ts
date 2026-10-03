@@ -20,6 +20,9 @@ export const FeatureMono = localFont({
   ],
   display: "swap",
   preload: true,
-  fallback: ["system-ui", "sans-serif"],
+  // system-ui comes after the CJK pixel faces in globals.css (body font-family);
+  // listing it here would put it ahead of them and swallow every ideograph.
+  fallback: [],
   adjustFontFallback: "Arial",
+  variable: "--font-feature-mono",
 });

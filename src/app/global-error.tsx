@@ -69,7 +69,7 @@ export default function GlobalError({ error, reset }: Props) {
           }}
         />
       </head>
-      <body className={FeatureMono.className}>
+      <body className={FeatureMono.variable}>
         <div className="relative min-h-dvh bg-bgColor">
           <div className="flex h-screen flex-col items-center justify-center gap-6 px-2.5 text-center">
             <Text variant="uppercase" component="h1">
