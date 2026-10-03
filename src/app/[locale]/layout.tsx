@@ -93,7 +93,7 @@ export default async function RootLayout({ children, params }: Props) {
           crossOrigin="anonymous"
         />
       </head>
-      <body className={FeatureMono.className}>
+      <body className={FeatureMono.variable}>
         {/* GTM + GA4 load on first interaction (or an idle fallback) to keep
             third-party JS off the main thread during the initial load. */}
         <DeferredAnalytics />

@@ -29,7 +29,7 @@ export default async function GlobalNotFound() {
           }}
         />
       </head>
-      <body className={FeatureMono.className}>
+      <body className={FeatureMono.variable}>
         <NotFoundTracker />
         <div className="relative min-h-dvh bg-bgColor">
           <div className="flex h-screen flex-col items-center justify-center gap-6">
