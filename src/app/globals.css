@@ -46,6 +46,12 @@ body {
   animation: caret-blink 1s step-end infinite;
 }
 
+/* FeatureMono ships coding ligatures under `liga` (</ -> <= >> || …) and browsers turn `liga` on by
+   default, so typed text glued pairs into one glyph that overlapped its neighbours. */
+* {
+  font-variant-ligatures: none;
+}
+
 @layer base {
   :root {
     /* COLORS */
