@@ -43,7 +43,7 @@ export function MobileNavCart({
       router.prefetch("/checkout");
     }
   }, [open, products.length, router]);
-  const itemsQuantity = Object.keys(products).length;
+  const itemsQuantity = products.length;
   const cartCount = itemsQuantity.toString().padStart(2, "0");
 
   return (
@@ -73,7 +73,7 @@ export function MobileNavCart({
                   id="mobile-cart-title"
                   className="sr-only"
                 >
-                  {tAccessibility("mobile menu")}
+                  {tCart("shopping cart")}
                 </DialogPrimitives.Title>
                 <div
                   className={cn(
@@ -83,7 +83,13 @@ export function MobileNavCart({
                 >
                   <Text variant="uppercase">{`${tCart("shopping cart")} ${itemsQuantity ? `[${cartCount}]` : ""}`}</Text>
                   <DialogPrimitives.Close asChild>
-                    <Button onClick={closeCart}>[x]</Button>
+                    <Button
+                      onClick={closeCart}
+                      aria-label={tAccessibility("close cart")}
+                      className="flex min-h-11 min-w-11 items-center justify-center"
+                    >
+                      [x]
+                    </Button>
                   </DialogPrimitives.Close>
                 </div>
                 {itemsQuantity > 0 ? (
