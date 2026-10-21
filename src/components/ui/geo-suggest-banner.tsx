@@ -172,7 +172,7 @@ export function GeoSuggestBanner({
             variant="main"
             onClick={onAccept}
           >
-            {suggestedCountryName}
+            {t("accept", { country: suggestedCountryName || "" })}
           </Button>
           <Button
             size="lg"
@@ -180,7 +180,7 @@ export function GeoSuggestBanner({
             variant="simpleReverse"
             onClick={onDismiss}
           >
-            {currentCountryName}
+            {t("dismiss", { country: currentCountryName || "" })}
           </Button>
         </div>
       </div>

@@ -1,7 +1,5 @@
 import { useTranslations } from "next-intl";
 
-import { cn } from "@/lib/utils";
-
 import { Button } from "./button";
 import Input, { InputProps } from "./input";
 import { Text } from "./text";
@@ -20,6 +18,7 @@ export function Searchbar({ value, noFound, handleSearch, ...props }: Props) {
         <div className="flex-1">
           <Input
             value={value}
+            aria-label={t("search location")}
             className="cursor-pointer border-none uppercase"
             autoComplete="off"
             autoCorrect="off"
@@ -31,6 +30,9 @@ export function Searchbar({ value, noFound, handleSearch, ...props }: Props) {
           />
         </div>
         <Button
+          aria-label={t("clear search")}
+          aria-hidden={!value}
+          tabIndex={value ? 0 : -1}
           className={`transform transition-[transform,opacity] duration-200 ease-out ${
             value
               ? "scale-100 opacity-100"
@@ -42,16 +44,13 @@ export function Searchbar({ value, noFound, handleSearch, ...props }: Props) {
         </Button>
       </div>
 
-      <Text
-        className={cn(
-          "border border-textInactiveColor px-4 py-1 opacity-0 transition-opacity duration-200 ease-in-out",
-          {
-            "opacity-100": value && noFound,
-          },
+      <div role="status" aria-live="polite">
+        {value && noFound && (
+          <Text className="border border-textInactiveColor px-4 py-1">
+            {t("not-found")}
+          </Text>
         )}
-      >
-        {t("not-found")}
-      </Text>
+      </div>
     </div>
   );
 }

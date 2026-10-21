@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { COUNTRIES_BY_REGION, LANGUAGE_ID_TO_LOCALE } from "@/constants";
+import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
@@ -19,11 +20,11 @@ export function CountriesContent({ className }: { className?: string }) {
   const [openSection, setOpenSection] = useState<number | null>(null);
   const regionsWithCountries = Object.entries(COUNTRIES_BY_REGION);
   const t = useTranslations("countries-popup");
+  const tNav = useTranslations("navigation");
 
   const { filteredCountries, query, searchQuery, handleSearch } =
     useSearchCountries();
-  const { currentCountry, languageId, closeCountryPopup } =
-    useTranslationsStore((s) => s);
+  const { currentCountry, languageId } = useTranslationsStore((s) => s);
   const {
     languagesForCurrentCountry,
     handleChangeLocaleOnly,
@@ -40,15 +41,24 @@ export function CountriesContent({ className }: { className?: string }) {
     <div className={cn("flex h-full flex-col justify-between", className)}>
       <div className="space-y-10 overflow-y-auto">
         <div className="sticky top-0 flex items-center justify-between bg-bgColor">
-          <Text variant="uppercase">{t("change country")}</Text>
-          <Button onClick={closeCountryPopup}>[x]</Button>
+          <DialogPrimitives.Title asChild>
+            <Text variant="uppercase">{t("change country")}</Text>
+          </DialogPrimitives.Title>
+          <DialogPrimitives.Close asChild>
+            <Button
+              aria-label={tNav("close")}
+              className="flex min-h-11 min-w-11 items-center justify-center"
+            >
+              [x]
+            </Button>
+          </DialogPrimitives.Close>
         </div>
 
         <div className="space-y-8">
           <Text className="uppercase">
             {t("text", {
               currentCountry: currentCountry.name,
-              currency: currentCountry.currencyKey || "",
+              currency: currentCountry.currencyKey || "EUR",
             })}
           </Text>
           {languagesForCurrentCountry &&
@@ -56,6 +66,7 @@ export function CountriesContent({ className }: { className?: string }) {
               <div className="mb-4 space-y-2.5">
                 <Text className="uppercase">{t("language")}</Text>
                 <RadioGroup
+                  aria-label={t("language")}
                   items={languagesForCurrentCountry.map((item, index) => {
                     const isSelected =
                       item.value === LANGUAGE_ID_TO_LOCALE[languageId];
@@ -93,12 +104,12 @@ export function CountriesContent({ className }: { className?: string }) {
               {filteredCountries.map((country) => (
                 <Button
                   key={`${country.countryCode}-${country.name}-${country.lng}`}
-                  className="flex w-full items-center justify-between px-4"
+                  className="flex min-h-11 w-full items-center justify-between px-4"
                   onClick={() => handleCountrySelect(country)}
                 >
                   <div className="flex items-center gap-3">
                     <Text className="uppercase">{country.name}</Text>
-                    <Text>{`[${country.currency}]`}</Text>
+                    <Text>{`[${country.currencyKey}]`}</Text>
                   </div>
                   <Text className="uppercase">{country.displayLng}</Text>
                 </Button>
@@ -119,7 +130,7 @@ export function CountriesContent({ className }: { className?: string }) {
                 <FieldsGroupContainer
                   key={region}
                   signType="plus-minus"
-                  clickableAreaClassName="h-9 items-start"
+                  clickableAreaClassName="min-h-11 items-start"
                   childrenSpacingClass="pb-4"
                   headerContentGapClass="space-y-2 lg:space-y-1"
                   title={region}
@@ -130,13 +141,13 @@ export function CountriesContent({ className }: { className?: string }) {
                     {countries.map((country) => (
                       <Button
                         key={`${region}-${country.name}-${country.lng}`}
-                        className="group flex w-full items-center justify-between px-4"
+                        className="group flex min-h-11 w-full items-center justify-between px-4"
                         onClick={() => handleCountrySelect(country)}
                       >
                         <div className="flex min-w-0 flex-1 items-center justify-between border-b border-transparent group-hover:border-textColor">
                           <div className="flex items-center gap-2">
                             <Text className="uppercase">{country.name}</Text>
-                            <Text>{`[${country.currency}]`}</Text>
+                            <Text>{`[${country.currencyKey}]`}</Text>
                           </div>
                           <Text className="uppercase">{country.displayLng}</Text>
                         </div>

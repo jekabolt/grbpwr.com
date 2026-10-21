@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  currencySymbols,
-  FOOTER_YEAR,
-  FOOTER_LINKS as links,
-} from "@/constants";
+import { FOOTER_YEAR, FOOTER_LINKS as links } from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
@@ -126,7 +122,7 @@ export function Footer({
             onClick={openCountryPopup}
           >
             {t("country")}: {currentCountry.name} /{" "}
-            {currencySymbols[currentCountry.currencyKey || "EUR"]}
+            {currentCountry.currencyKey || "EUR"}
           </Button>
           <MobileCountriesPopupTrigger />
         </div>
