@@ -20,18 +20,32 @@ export function scrubUrl(url: string): string {
   return scrubText(url.replace(/[?#][\s\S]*$/, ""));
 }
 
-function scrubValues<T extends Record<string, unknown>>(
-  values: T,
-  urlKeys: readonly string[] = [],
-): T {
-  const out: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(values)) {
-    if (typeof value !== "string") {
-      out[key] = value;
-    } else {
-      out[key] = urlKeys.includes(key) ? scrubUrl(value) : scrubText(value);
-    }
+// Keys whose string values are URLs or paths: everything from "?" or "#" on is dropped.
+const URL_KEYS = new Set([
+  "url",
+  "from",
+  "to",
+  "referer",
+  "request_path",
+  "path",
+]);
+const MAX_DEPTH = 6;
+
+/** Scrubs every string inside value (objects and arrays included, MAX_DEPTH levels deep). */
+function scrubDeep<T>(value: T, key = "", depth = 0): T {
+  if (typeof value === "string") {
+    return (
+      URL_KEYS.has(key.toLowerCase()) ? scrubUrl(value) : scrubText(value)
+    ) as T;
   }
+  if (value === null || typeof value !== "object" || depth >= MAX_DEPTH)
+    return value;
+  if (Array.isArray(value)) {
+    return value.map((item) => scrubDeep(item, key, depth + 1)) as T;
+  }
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(value))
+    out[k] = scrubDeep(v, k, depth + 1);
   return out as T;
 }
 
@@ -39,15 +53,14 @@ function scrubBreadcrumb(crumb: Breadcrumb): Breadcrumb {
   return {
     ...crumb,
     message: crumb.message ? scrubText(crumb.message) : crumb.message,
-    data: crumb.data
-      ? scrubValues(crumb.data, ["url", "from", "to"])
-      : crumb.data,
+    data: crumb.data ? scrubDeep(crumb.data) : crumb.data,
   };
 }
 
 /**
  * beforeSend for every runtime: drops query strings and fragments, emails, cookies, the
- * user and request bodies, and keeps only harmless request headers.
+ * user and request bodies, and keeps only harmless request headers. Contexts and extra are
+ * scrubbed too: Next.js puts the full request path (with its query) in contexts.nextjs.
  */
 export function scrubEvent(event: ErrorEvent): ErrorEvent {
   if (event.message) event.message = scrubText(event.message);
@@ -61,13 +74,12 @@ export function scrubEvent(event: ErrorEvent): ErrorEvent {
       method: event.request.method,
       url: url ? scrubUrl(url) : url,
       headers: headers
-        ? scrubValues(
+        ? scrubDeep(
             Object.fromEntries(
               Object.entries(headers).filter(([key]) =>
                 KEPT_HEADERS.has(key.toLowerCase()),
               ),
             ),
-            ["referer", "Referer"],
           )
         : headers,
     };
@@ -75,7 +87,9 @@ export function scrubEvent(event: ErrorEvent): ErrorEvent {
   if (event.breadcrumbs) {
     event.breadcrumbs = event.breadcrumbs.map(scrubBreadcrumb);
   }
-  if (event.tags) event.tags = scrubValues(event.tags, ["url"]);
+  if (event.tags) event.tags = scrubDeep(event.tags);
+  if (event.contexts) event.contexts = scrubDeep(event.contexts);
+  if (event.extra) event.extra = scrubDeep(event.extra);
   delete event.user;
   return event;
 }
