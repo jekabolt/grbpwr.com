@@ -1,6 +1,10 @@
 import type { NextConfig } from "next/types";
 import createNextIntlPlugin from "next-intl/plugin";
 
+import { assertSafeBackendEnvironment } from "./scripts/assert-safe-backend";
+
+assertSafeBackendEnvironment(process.env);
+
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {

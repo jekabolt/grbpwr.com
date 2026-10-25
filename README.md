@@ -39,7 +39,7 @@ pnpm install
 # 3. Initialize the submodule and generate the API client
 make init          # = submodules + clean + proto
 
-# 4. Create .env (see below), then run the dev server
+# 4. Create .env.local (see below), then run the dev server
 pnpm dev           # next dev --turbo → http://localhost:3000
 ```
 
@@ -47,17 +47,22 @@ If you cloned without `--recurse-submodules`, run `make submodules` first.
 
 ## Environment
 
-Create a `.env` file in the project root:
+Local development defaults to the beta backend through the committed
+`.env.development`. Copy `.env.example` to `.env.local` and fill in the keys you
+need:
 
 ```bash
-NEXT_PUBLIC_BACKEND_URL=https://backend.grbpwr.com
+NEXT_PUBLIC_BACKEND_URL=https://backend-beta.grbpwr.com
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=...      # address autocomplete in checkout
 NEXT_PUBLIC_GTM_ID=GTM-...               # analytics (optional in dev)
 ```
 
-All variables are `NEXT_PUBLIC_*` (consumed in the browser). `.env*` files are
-gitignored — never commit secrets.
+The dev server refuses to start if `NEXT_PUBLIC_BACKEND_URL` points to
+`backend.grbpwr.com`. For deliberate read-only production inspection, start it
+with `ALLOW_PROD_BACKEND=1 pnpm dev`. Personal overrides such as `.env.local` are
+gitignored; never commit secrets. The committed `.env.development` and
+`.env.example` contain safe defaults only.
 
 ## Scripts
 
