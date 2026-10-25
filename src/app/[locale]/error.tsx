@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
+import { reportErrorPage } from "@/lib/sentry/report";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
@@ -17,6 +18,7 @@ export default function ErrorPage({ error, reset }: Props) {
 
   useEffect(() => {
     console.error(error);
+    reportErrorPage(error);
   }, [error]);
 
   return (

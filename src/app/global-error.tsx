@@ -17,6 +17,7 @@ import zhMessages from "../../messages/zh.json";
 
 import "./globals.css";
 
+import { reportErrorPage } from "@/lib/sentry/report";
 import { resolveLocale } from "@/lib/utils";
 
 const messagesByLocale = {
@@ -56,6 +57,7 @@ export default function GlobalError({ error, reset }: Props) {
 
   useEffect(() => {
     console.error(error);
+    reportErrorPage(error);
     setLocale(getBrowserLocale());
   }, [error]);
 

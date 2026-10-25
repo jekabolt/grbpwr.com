@@ -1,4 +1,6 @@
+import { execSync } from "node:child_process";
 import type { NextConfig } from "next/types";
+import { withSentryConfig } from "@sentry/nextjs";
 import createNextIntlPlugin from "next-intl/plugin";
 
 import { assertSafeBackendEnvironment } from "./scripts/assert-safe-backend";
@@ -7,7 +9,48 @@ assertSafeBackendEnvironment(process.env);
 
 const withNextIntl = createNextIntlPlugin();
 
+// Sentry (error reporting). The config is wrapped only when a DSN or an upload token is set
+// for this build; without them no Sentry code is bundled (SENTRY_IN_BUILD below).
+const sentryClientDsn = process.env.NEXT_PUBLIC_SENTRY_DSN?.trim() ?? "";
+const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN?.trim() ?? "";
+const sentryOn = Boolean(
+  sentryClientDsn || process.env.SENTRY_DSN?.trim() || sentryAuthToken,
+);
+// Source maps are uploaded (and then deleted from the build) only with a token, org and project.
+const sentryUpload = Boolean(
+  sentryAuthToken && process.env.SENTRY_ORG && process.env.SENTRY_PROJECT,
+);
+
+function sentryRelease(): string | undefined {
+  const fromEnv =
+    process.env.SENTRY_RELEASE?.trim() || process.env.VERCEL_GIT_COMMIT_SHA;
+  if (fromEnv) return fromEnv;
+  try {
+    return execSync("git rev-parse HEAD", {
+      stdio: ["ignore", "pipe", "ignore"],
+    })
+      .toString()
+      .trim();
+  } catch {
+    return undefined;
+  }
+}
+
+// The browser posts errors straight to the DSN's ingest host, so CSP must allow it.
+function sentryOrigin(): string {
+  try {
+    return sentryClientDsn ? new URL(sentryClientDsn).origin : "";
+  } catch {
+    return "";
+  }
+}
+
 const nextConfig: NextConfig = {
+  env: {
+    // Inlined at build time: "" compiles every Sentry import out of the client, server and
+    // edge bundles; "1" keeps them (each still starts only with its DSN set).
+    SENTRY_IN_BUILD: sentryOn ? "1" : "",
+  },
   experimental: {
     reactCompiler: {
       compilationMode: "annotation",
@@ -86,6 +129,7 @@ const nextConfig: NextConfig = {
           "https://m.stripe.network",
           "https://r.stripe.com",
           "https://maps.googleapis.com",
+          sentryOrigin(),
           // Dev only: Turbopack HMR websocket + localhost backend.
           ...(isDev ? ["ws://localhost:*", "http://localhost:*"] : []),
         ]
@@ -199,4 +243,30 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withNextIntl(nextConfig);
+const config = withNextIntl(nextConfig);
+
+export default sentryOn
+  ? withSentryConfig(config, {
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      authToken: sentryAuthToken || undefined,
+      telemetry: false,
+      silent: true,
+      sourcemaps: { disable: !sentryUpload, deleteSourcemapsAfterUpload: true },
+      release: {
+        name: sentryRelease(),
+        create: sentryUpload,
+        finalize: sentryUpload,
+      },
+      widenClientFileUpload: false,
+      routeManifestInjection: false,
+      webpack: {
+        // Errors come from onRequestError and the error pages; server code stays unwrapped.
+        autoInstrumentServerFunctions: false,
+        autoInstrumentMiddleware: false,
+        autoInstrumentAppDirectory: false,
+        automaticVercelMonitors: false,
+        treeshake: { removeDebugLogging: true },
+      },
+    })
+  : config;
