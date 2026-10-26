@@ -2,8 +2,15 @@ import * as Sentry from "@sentry/nextjs";
 
 import { sharedOptions } from "./options";
 
-// Never part of the default integrations; listed so a future default cannot switch them on.
-const OFF = new Set(["Replay", "ReplayCanvas", "BrowserTracing", "Feedback"]);
+// BrowserSession is a default: it sends a session envelope on every page load and navigation,
+// with no error in it. The others are not defaults; listed so a future default stays off.
+const OFF = new Set([
+  "BrowserSession",
+  "Replay",
+  "ReplayCanvas",
+  "BrowserTracing",
+  "Feedback",
+]);
 
 let started = false;
 

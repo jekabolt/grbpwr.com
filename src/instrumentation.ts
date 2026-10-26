@@ -7,11 +7,14 @@ function serverDsn(): string {
   return process.env.SENTRY_DSN?.trim() ?? "";
 }
 
+// NEXT_RUNTIME is compared inline so each runtime's bundle keeps only its own SDK start.
 export async function register(): Promise<void> {
   if (process.env.SENTRY_IN_BUILD) {
     const dsn = serverDsn();
-    const runtime = process.env.NEXT_RUNTIME;
-    if (dsn && (runtime === "nodejs" || runtime === "edge")) {
+    if (dsn && process.env.NEXT_RUNTIME === "nodejs") {
+      (await import("./lib/sentry/server-node")).start(dsn);
+    }
+    if (dsn && process.env.NEXT_RUNTIME === "edge") {
       (await import("./lib/sentry/server")).start(dsn);
     }
   }
