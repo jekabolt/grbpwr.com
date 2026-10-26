@@ -1,9 +1,13 @@
 import type { Breadcrumb, ErrorEvent } from "@sentry/nextjs";
 
 // Anything that looks like an email, also URL-encoded (order and unsubscribe URLs carry one).
-const EMAIL = /[A-Z0-9._%+-]+(?:@|%40)[A-Z0-9-]+(?:\.[A-Z0-9-]+)*\.[A-Z]{2,}/gi;
-// A URL or path followed by a query string or fragment, inside free text.
-const URL_TAIL = /((?:https?:\/\/|\/)[^\s?#"'<>]*)[?#][^\s"'<>]*/g;
+// Bounded parts keep it linear on long strings (an unbounded local part is quadratic).
+const EMAIL = /[A-Z0-9._%+-]{1,64}(?:@|%40)[A-Z0-9.-]{1,253}\.[A-Z]{2,24}/gi;
+// A URL or path followed by a query string or fragment, inside free text. It starts only at
+// the string start or after a separator ($1), so a long run of "/" is scanned once, not once
+// per slash. No lookbehind: Safari 15.4 is supported.
+const URL_TAIL =
+  /(^|[\s"'<>()[\]{},;=:`])((?:https?:\/\/|\/)[^\s?#"'<>]*)[?#][^\s"'<>]*/g;
 const KEPT_HEADERS = new Set([
   "accept",
   "accept-language",
@@ -13,7 +17,10 @@ const KEPT_HEADERS = new Set([
 ]);
 
 export function scrubText(text: string): string {
-  return text.replace(URL_TAIL, "$1").replace(EMAIL, "[email]");
+  let out = text;
+  if (/[?#]/.test(out)) out = out.replace(URL_TAIL, "$1$2");
+  if (/@|%40/.test(out)) out = out.replace(EMAIL, "[email]");
+  return out;
 }
 
 export function scrubUrl(url: string): string {
