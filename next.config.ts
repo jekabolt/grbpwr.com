@@ -4,6 +4,8 @@ import { withSentryConfig } from "@sentry/nextjs";
 import createNextIntlPlugin from "next-intl/plugin";
 
 import { assertSafeBackendEnvironment } from "./scripts/assert-safe-backend";
+import { parseAdminOrigins } from "./src/lib/admin-origins";
+import { isProductionSiteEnvironment } from "./src/lib/site-environment";
 
 assertSafeBackendEnvironment(process.env);
 
@@ -81,6 +83,9 @@ const nextConfig: NextConfig = {
   pageExtensions: ["mdx", "ts", "tsx"],
   async headers() {
     const isDev = process.env.NODE_ENV !== "production";
+    const isProductionSite = isProductionSiteEnvironment(
+      process.env.NEXT_PUBLIC_SITE_ENV,
+    );
 
     // Backend origin for connect-src, derived from the public env var so dev
     // (localhost) and prod (backend.grbpwr.com) both work.
@@ -152,11 +157,10 @@ const nextConfig: NextConfig = {
     // Origins allowed to frame the hero-editor preview (/preview/*). Must match
     // the ADMIN_ORIGINS allowlist in hero-preview-client.tsx. localhost is dev
     // only — prod/beta storefront never needs a local framer.
-    const previewFrameAncestors = [
-      "https://admin.grbpwr.com",
-      "https://admin.beta.grbpwr.com",
-      ...(isDev ? ["http://localhost:4040"] : []),
-    ].join(" ");
+    const previewFrameAncestors = parseAdminOrigins(
+      process.env.NEXT_PUBLIC_ADMIN_ORIGINS,
+      isDev,
+    ).join(" ");
 
     const csp = buildCsp("'self'");
     const previewCsp = buildCsp(`'self' ${previewFrameAncestors}`);
@@ -166,6 +170,9 @@ const nextConfig: NextConfig = {
     const baseSecurityHeaders = [
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      ...(!isProductionSite
+        ? [{ key: "X-Robots-Tag", value: "noindex, nofollow" }]
+        : []),
       // Lock down powerful features the storefront doesn't use. Unlisted
       // features (e.g. payment for Stripe) keep their default allowlist.
       {
