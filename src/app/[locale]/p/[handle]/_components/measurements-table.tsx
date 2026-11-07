@@ -86,7 +86,7 @@ export function getUnit(value: string, unit: Unit) {
     return `${value} CM`;
   }
 
-  return `${(parseInt(value) * 0.393701).toFixed(1)} IN`;
+  return `${(parseFloat(value) * 0.393701).toFixed(1)} IN`;
 }
 
 type Props = {
