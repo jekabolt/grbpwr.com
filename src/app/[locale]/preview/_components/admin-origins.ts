@@ -1,10 +1,8 @@
-// Origins allowed to embed the /preview/* iframes and push editor drafts into
-// them — used both as the incoming-message origin gate and as the postMessage
-// target list. Keep in sync with the `frame-ancestors` allowlist for /preview/*
-// in next.config.ts (previewFrameAncestors). localhost is harmless in prod (no
-// such parent exists there) but lets the admin dev server frame a local build.
-export const ADMIN_ORIGINS = [
-  "https://admin.grbpwr.com",
-  "https://admin.beta.grbpwr.com",
-  "http://localhost:4040",
-];
+import { parseAdminOrigins } from "@/lib/admin-origins";
+
+// This message gate and next.config.ts's frame-ancestors directive share the
+// same parser, defaults and build-time environment value.
+export const ADMIN_ORIGINS = parseAdminOrigins(
+  process.env.NEXT_PUBLIC_ADMIN_ORIGINS,
+  true,
+);
