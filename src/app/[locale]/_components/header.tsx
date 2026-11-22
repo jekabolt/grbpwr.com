@@ -11,6 +11,7 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { Announce } from "@/components/ui/announce";
 import { Button } from "@/components/ui/button";
 import { MobileNavCart } from "@/components/ui/mobile-nav-cart";
@@ -28,6 +29,7 @@ export function Header({
   theme?: "light" | "dark";
 }) {
   const { dictionary } = useDataContext();
+  const { name: shopName } = useShopBrand();
   const { isOpen, toggleCart } = useCart((state) => state);
   const { products } = useCart((state) => state);
   const { isSignedIn, account } = useAccountOnboardingStore((s) => s);
@@ -107,7 +109,7 @@ export function Header({
           >
             {isSignedIn ? (
               <>
-                <Text component="span">grbpwr</Text>
+                <Text component="span">{shopName}</Text>
                 {showTierInHeader && tierText ? (
                   <Text
                     component="span"
@@ -120,7 +122,7 @@ export function Header({
                 ) : null}
               </>
             ) : (
-              "grbpwr"
+              shopName
             )}
           </Link>
         </Button>

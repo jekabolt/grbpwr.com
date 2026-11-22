@@ -3,15 +3,17 @@ import createMiddleware from "next-intl/middleware";
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
 import { homepageMarkdown } from "./lib/agent-markdown";
+import { normalizeShopHost } from "./lib/shop/host";
 import { clearSuggestCookies, getLocaleFromCountry, getNormalizedCountry, handleFromPickerAction, handleGeoAction, isAllowedWhenSiteDisabled, parseCountryLocalePath, parseLocaleOnlyPath, setMainCookies, setSuggestedCookies, supportedCountries } from "./lib/middleware-utils";
 
 const intlMiddleware = createMiddleware(routing);
 
-// Agent-discovery Link header (RFC 8288) for the homepage: advertise the API
-// catalog (RFC 9727), the markdown alternate (see Markdown-for-Agents above) and
-// the sitemap. Only resources that exist and are locale-agnostic are listed.
+// Agent-discovery Link header (RFC 8288) for the homepage: advertise the
+// markdown alternate (see Markdown-for-Agents above) and the sitemap. Only
+// resources that exist and are locale-agnostic are listed. (lekalo-shop: the
+// grbpwr API catalog / OpenAPI routes are gone — the API needs x-shop-host.)
 const HOMEPAGE_LINK_HEADER =
-    '</.well-known/api-catalog>; rel="api-catalog", </>; rel="alternate"; type="text/markdown", </sitemap.xml>; rel="sitemap"';
+    '</>; rel="alternate"; type="text/markdown", </sitemap.xml>; rel="sitemap"';
 
 // Locale-agnostic detail routes: src/app/[locale]/p/[handle] and
 // src/app/[locale]/timeline/[handle] are addressed by locale alone (no
@@ -161,11 +163,13 @@ export default async function middleware(req: NextRequest) {
     // homepage ("/" or "/{country}/{locale}") — other paths fall through to HTML.
     const isHomePathForMarkdown =
         pathname === "/" || /^\/[A-Za-z]{2}\/[a-z]{2}\/?$/.test(pathname);
+    const markdownHost = normalizeShopHost(host);
     if (
         isHomePathForMarkdown &&
+        markdownHost &&
         (req.headers.get("accept") || "").includes("text/markdown")
     ) {
-        return new NextResponse(homepageMarkdown(), {
+        return new NextResponse(homepageMarkdown(markdownHost), {
             headers: {
                 "Content-Type": "text/markdown; charset=utf-8",
                 Vary: "Accept",

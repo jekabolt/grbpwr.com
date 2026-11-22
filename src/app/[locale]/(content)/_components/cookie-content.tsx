@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { defaultCookiePreferences } from "@/components/ui/cookie-banner";
 import { Text } from "@/components/ui/text";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
@@ -29,6 +30,7 @@ export function CookieContent({
     defaultCookiePreferences,
   );
   const t = useTranslations("cookies");
+  const { name: shopName } = useShopBrand();
 
   useEffect(() => {
     if (autoSave) {
@@ -89,7 +91,9 @@ export function CookieContent({
       <Text className="lowercase">{t("content text 4")}</Text>
 
       <ToggleSwitch
-        label={t("cookies to personalize the grbpwr experience")}
+        label={t("cookies to personalize the grbpwr experience", {
+          brand: shopName,
+        })}
         checked={activePreferences?.experience}
         onCheckedChange={(checked) =>
           handlePreferenceChange("experience", checked)

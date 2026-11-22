@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { getHero, getLatestProductDate } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { getShopMeta } from "@/lib/shop/server";
 import { jsonLdHtml, siteJsonLd } from "@/lib/structured-data";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Disabled } from "@/components/ui/disabled";
@@ -15,32 +16,27 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
+  const brand = await getShopMeta();
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
 
-  const description = t("description");
+  const description = t("description", { brand: brand.name });
 
-  // Social preview is the brand logo (app-logo.webp), not the hero image — keep
-  // link previews consistent regardless of the current hero.
+  // Social preview is the shop's logo (from its brand block), not the hero
+  // image — keeps link previews consistent regardless of the current hero.
   return generateCommonMetadata({
-    title: "GRBPWR — Ready-to-wear & Archive",
-    description,
+    brand,
+    title: brand.name,
+    description: brand.description ?? description,
     locale,
     path: "",
-    ogParams: {
-      imageUrl: "/app-logo.webp",
-      imageWidth: 512,
-      imageHeight: 512,
-      imageAlt: "GRBPWR",
-    },
   });
 }
 
-// Mirror catalog/product: serve a statically generated (ISR) homepage so it is
-// CDN-cacheable instead of a full SSR + cache MISS on every request. Revalidated
-// on demand via /api/revalidate like the rest of the catalog.
-export const dynamic = "force-static";
-export const dynamicParams = true;
+// lekalo-shop: rendered per request — the page depends on the request host
+// (which shop). A static/ISR page would be built without a host and could be
+// served to every shop. Backend data stays in Next's data cache, keyed per shop.
+export const dynamic = "force-dynamic";
 
 export default async function Page() {
   // Fetch in parallel so the freshness query doesn't add latency to the homepage.
@@ -63,7 +59,7 @@ export default async function Page() {
     return <EmptyHero />;
   }
 
-  const jsonLd = siteJsonLd(latestProductDate);
+  const jsonLd = siteJsonLd(await getShopMeta(), latestProductDate);
 
   // A NEWSLETTER hero block already captures email on the page, so suppress the
   // duplicate footer newsletter when one is present.

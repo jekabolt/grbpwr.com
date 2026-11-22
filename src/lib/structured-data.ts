@@ -6,7 +6,8 @@ import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 // the site was missing. Read-only, derived from the product the page already
 // fetched; no extra requests.
 
-const SITE = "https://grbpwr.com";
+/** Shop on the request host (lekalo-shop): origin + brand name, never hard-coded. */
+export type JsonLdSite = { origin: string; name: string; logoUrl?: string };
 
 const COUNTRY_BY_LOCALE: Record<string, string> = {
   en: "gb",
@@ -113,9 +114,11 @@ const SHIPPING_DETAILS = {
 };
 
 export function productJsonLd(
+  site: JsonLdSite,
   colorway: StorefrontColorway | undefined,
   locale: string,
 ): Record<string, unknown> | null {
+  const SITE = site.origin;
   const p = colorway;
   if (!p) return null;
 
@@ -173,20 +176,20 @@ export function productJsonLd(
     ...(description ? { description } : {}),
     ...(image.length ? { image } : {}),
     ...(p.baseSku ? { sku: p.baseSku } : {}),
-    brand: { "@type": "Brand", name: "GRBPWR" },
+    brand: { "@type": "Brand", name: site.name },
     ...(color ? { color } : {}),
     ...(url ? { url } : {}),
     ...(p.display?.updatedAt ? { dateModified: p.display.updatedAt } : {}),
     ...(offers.length ? { offers } : {}),
   };
 
-  // Breadcrumb: GRBPWR > Catalog > {product}. Helps Google render a breadcrumb
+  // Breadcrumb: {shop} > Catalog > {product}. Helps Google render a breadcrumb
   // trail in product snippets instead of the bare URL.
   const homeUrl = `${SITE}/${country}/${locale}`;
   const breadcrumbNode = {
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "GRBPWR", item: homeUrl },
+      { "@type": "ListItem", position: 1, name: site.name, item: homeUrl },
       {
         "@type": "ListItem",
         position: 2,
@@ -208,16 +211,19 @@ export function productJsonLd(
 // client-side (infinite scroll), so there's no server-rendered product list to
 // enumerate; adding it would require a dedicated server fetch.
 export function catalogJsonLd({
+  site,
   locale,
   routeParams,
   name,
   description,
 }: {
+  site: JsonLdSite;
   locale: string;
   routeParams?: string[];
   name: string;
   description?: string;
 }): Record<string, unknown> {
+  const SITE = site.origin;
   const country = COUNTRY_BY_LOCALE[locale] ?? "gb";
   const homeUrl = `${SITE}/${country}/${locale}`;
   const catalogUrl = `${homeUrl}/catalog`;
@@ -227,7 +233,7 @@ export function catalogJsonLd({
   const category = routeParams?.[0];
 
   const itemListElement = [
-    { "@type": "ListItem", position: 1, name: "GRBPWR", item: homeUrl },
+    { "@type": "ListItem", position: 1, name: site.name, item: homeUrl },
     { "@type": "ListItem", position: 2, name: "Catalog", item: catalogUrl },
     ...(category
       ? [{ "@type": "ListItem", position: 3, name: category, item: url }]
@@ -255,23 +261,26 @@ export function catalogJsonLd({
 // Organization + WebSite JSON-LD for the homepage. Gives the homepage a content
 // freshness signal (dateModified, derived from the freshest product) and feeds
 // Google's brand knowledge panel / sitelinks search box.
-export function siteJsonLd(dateModified?: string): Record<string, unknown> {
+export function siteJsonLd(
+  site: JsonLdSite,
+  dateModified?: string,
+): Record<string, unknown> {
+  const SITE = site.origin;
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Organization",
         "@id": `${SITE}/#organization`,
-        name: "GRBPWR",
+        name: site.name,
         url: SITE,
-        logo: `${SITE}/app-logo.webp`,
-        sameAs: ["https://www.instagram.com/grb.pwr/"],
+        ...(site.logoUrl ? { logo: site.logoUrl } : {}),
       },
       {
         "@type": "WebSite",
         "@id": `${SITE}/#website`,
         url: SITE,
-        name: "GRBPWR",
+        name: site.name,
         publisher: { "@id": `${SITE}/#organization` },
         inLanguage: "en",
         ...(dateModified ? { dateModified } : {}),

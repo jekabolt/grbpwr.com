@@ -1,4 +1,7 @@
 {
+  "shop": {
+    "closed": "geschlossen"
+  },
   "navigation": {
     "men": "herren",
     "women": "damen",
@@ -272,7 +275,7 @@
     "functional cookie (non-optional)": "funktionelles cookie (nicht optional)",
     "statistical analysis cookies": "statistische analyse-cookies",
     "advertising and social media cookies": "werbe- und sozialmedia-cookies",
-    "cookies to personalize the grbpwr experience": "cookies zur persönlichen gestaltung der grbpwr-erfahrung"
+    "cookies to personalize the grbpwr experience": "cookies zur persönlichen gestaltung der {brand}-erfahrung"
   },
   "care": {
     "BA": "Bleichen erlaubt",
@@ -421,12 +424,12 @@
     "RWOL": "Recycelte Wolle"
   },
   "meta": {
-    "description": "GRBPWR diskutiert schwierige Themen durch unvollkommene Sprache und beherrscht sie. Kaufen Sie die neueste Ready-to-Wear.",
+    "description": "{brand}",
     "catalog": "katalog",
-    "catalog description": "durchstöbern Sie die vollständige GRBPWR-Kollektion. entdecken Sie Ready-to-Wear, Accessoires und kuratierte Stücke.",
-    "men description": "shoppen Sie Herrenmode und Accessoires. maßgeschneiderte Stücke, Oberbekleidung und Essentials von GRBPWR.",
-    "women description": "shoppen Sie Damenmode und Accessoires. kuratierte Kollektionen und Statement-Pieces von GRBPWR.",
-    "objects description": "entdecken Sie GRBPWR Objekte und Accessoires. Taschen, Lederwaren und Lifestyle-Artikel.",
+    "catalog description": "durchstöbern Sie die vollständige {brand}-Kollektion. entdecken Sie Ready-to-Wear, Accessoires und kuratierte Stücke.",
+    "men description": "shoppen Sie Herrenmode und Accessoires. maßgeschneiderte Stücke, Oberbekleidung und Essentials von {brand}.",
+    "women description": "shoppen Sie Damenmode und Accessoires. kuratierte Kollektionen und Statement-Pieces von {brand}.",
+    "objects description": "entdecken Sie {brand} Objekte und Accessoires. Taschen, Lederwaren und Lifestyle-Artikel.",
     "timeline": "zeitleiste",
     "timeline description": "archiv und updates entdecken",
     "main hero image": "hauptheldenbild"
@@ -686,7 +689,7 @@
     "reason": "grund"
   },
   "unsubscribe": {
-    "title": "abmeldung von der liste \"grbpwr\". durch klicken auf abmelden erhalten sie keine marketing-e-mails mehr.",
+    "title": "abmeldung von der liste \"{brand}\". durch klicken auf abmelden erhalten sie keine marketing-e-mails mehr.",
     "unsubscribe": "abmelden",
     "success": "sie wurden vom newsletter abgemeldet.",
     "error": "ein fehler ist aufgetreten. bitte versuchen sie es erneut.",
@@ -913,7 +916,7 @@
   },
   "client-services": {
     "title": "kundenservice",
-    "welcome": "willkommen bei grbpwr.",
+    "welcome": "willkommen bei {brand}.",
     "description": "für anfragen oder hilfe zögern sie bitte nicht, uns zu kontaktieren. wir sind montags bis samstags von 9 bis 19 uhr geöffnet, außer an feiertagen.",
     "faq title": "häufig gestellte fragen",
     "faq description": "sie können diesen bereich nutzen, um die faq's zu konsultieren, ihre bestellung zu verfolgen und ihre rücksendung zu verfolgen.",
@@ -922,8 +925,8 @@
     "email": "e-mail"
   },
   "accessibility": {
-    "mobile menu": "grbpwr mobiles menü",
-    "notify me dialog": "grbpwr benachrichtige mich",
+    "mobile menu": "mobiles menü",
+    "notify me dialog": "benachrichtige mich",
     "reason label": "grund",
     "one-time code": "einmalcode",
     "code digit": "ziffer {index} von {length}"

@@ -6,6 +6,7 @@ import type { common_HeroSingleWithTranslations } from "@/api/proto-http/fronten
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, internalHref, isVideo } from "@/lib/utils";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -37,6 +38,7 @@ export function HeroSingle({
   className?: string;
   copyClassName?: string;
 }) {
+  const { name: shopName } = useShopBrand();
   const { languageId } = useTranslationsStore((state) => state);
   const isMobile = useMediaQuery("(max-width: 1023px)");
   const [isHovered, setIsHovered] = useState(false);
@@ -50,7 +52,7 @@ export function HeroSingle({
   const portrait = single.media?.portrait?.media;
   const headline = translation?.headline;
   const exploreText = translation?.exploreText;
-  const alt = headline || "GRBPWR feature";
+  const alt = headline || shopName;
 
   const landscapeUrl = landscape?.thumbnail?.mediaUrl || "";
   const portraitUrl = portrait?.fullSize?.mediaUrl || "";

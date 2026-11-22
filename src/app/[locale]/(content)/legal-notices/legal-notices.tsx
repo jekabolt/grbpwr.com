@@ -27,21 +27,10 @@ export function LegalNotices() {
     }
   }, [searchParams]);
 
-  const selectedFile = legalSections[selectedSection].file || "";
-  const localizedCandidates = selectedFile
-    ? [
-        selectedFile
-          .replace("/content/legal/", `/content/legal/`)
-          .replace(".md", `/${locale}.md`),
-        selectedFile
-          .replace("/content/legal/", `/content/legal/`)
-          .replace(".md", "/en.md"),
-        selectedFile,
-      ]
-    : "";
-
-  const { content, loading, error, retry } =
-    useMarkdownContent(localizedCandidates);
+  const { content, loading, error, retry } = useMarkdownContent(
+    legalSections[selectedSection].file,
+    locale,
+  );
   return (
     <div className="flex w-full flex-col space-y-10 lg:flex-row lg:space-y-0">
       <div className="flex w-full flex-col lg:w-1/2 lg:gap-y-0">

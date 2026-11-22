@@ -4,6 +4,7 @@ import { useState } from "react";
 import { StorefrontArchiveList } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import FlexibleLayout from "@/components/flexible-layout";
 import { PageBackground } from "@/app/[locale]/_components/page-background";
 
@@ -18,6 +19,7 @@ export function ArchiveLayout({
   archives: StorefrontArchiveList[];
   total: number;
 }) {
+  const { primaryHost: shopHost } = useShopBrand();
   const [viewMode, setViewMode] = useState<ViewMode>("horizontal");
   const t = useTranslations("navigation");
 
@@ -31,7 +33,7 @@ export function ArchiveLayout({
       <FlexibleLayout
         headerType="archive"
         headerProps={{
-          left: "grbpwr.com",
+          left: shopHost,
           center: t("timeline"),
           // right: "change view",
           // onClick: handleChangeView,

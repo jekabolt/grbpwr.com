@@ -10,12 +10,14 @@ import {
 } from "next-intl/server";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { shopThemeCss, toShopBrand } from "@/lib/shop/profile";
+import { getShopMeta, getShopProfile } from "@/lib/shop/server";
 import { AnalyticsInit } from "@/components/analytics-init";
+import { ShopContextProvider } from "@/components/contexts/ShopContext";
 import { DeferredAnalytics } from "@/components/deferred-analytics";
 import { InternalNavigationTracker } from "@/components/internal-navigation-tracker";
 import { MotionConfigProvider } from "@/components/motion-config-provider";
 import { PageTransition } from "@/components/page-transition";
-import { ConsoleArtInit } from "@/components/ui/art/console-art-init";
 import { CookieBanner } from "@/components/ui/cookie-banner";
 import { GeoSuggestWrapper } from "@/components/ui/geo-suggest-wrapper";
 import { SiteGuard } from "@/components/ui/site-guard";
@@ -27,16 +29,14 @@ import "../globals.css";
 import { UpdateLocation } from "@/components/ui/update-location";
 
 import { CountriesPopup } from "./_components/CountriesPopup";
-
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+import { ShopClosed } from "./_components/shop-closed";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
+  const brand = await getShopMeta();
   const { locale } = await params;
   // Unknown single-segment paths (e.g. /llms.txt, /anything.ext that bypasses
   // middleware) match this [locale] route — reject them with a real 404 instead
@@ -47,7 +47,10 @@ export async function generateMetadata({
 
   const description = t("description");
 
-  return generateCommonMetadata({ description });
+  return generateCommonMetadata({
+    brand,
+    description,
+  });
 }
 
 export const viewport = {
@@ -69,11 +72,31 @@ export default async function RootLayout({ children, params }: Props) {
 
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+
+  // Which shop: the request host. No shop on this host → 404; backend down →
+  // error page (never a cached 404); shop switched off → closed page.
+  const shop = await getShopProfile();
+  if (shop.status === "unknown") notFound();
+  if (shop.status === "error") throw new Error("shop profile unavailable");
+  if (shop.status === "closed") {
+    return (
+      <html lang={locale}>
+        <body className={FeatureMono.variable}>
+          <ShopClosed name={shop.profile?.name} />
+        </body>
+      </html>
+    );
+  }
+  const brand = toShopBrand(shop.profile);
+  const themeCss = shopThemeCss(shop.profile.colors);
   const messages = await getMessages();
 
   return (
     <html lang={locale}>
       <head>
+        {themeCss ? (
+          <style dangerouslySetInnerHTML={{ __html: themeCss }} />
+        ) : null}
         <style
           dangerouslySetInnerHTML={{
             __html: `html{background-color:#fff}body{background-color:#fff;touch-action:manipulation}html.blackTheme,html.blackTheme body{background-color:#000}`,
@@ -84,37 +107,30 @@ export default async function RootLayout({ children, params }: Props) {
             __html: `(function(){var p=window.location.pathname;if(/\\/timeline(\\/|$)/.test(p))document.documentElement.classList.add("blackTheme");})();`,
           }}
         />
-        {/* files.grbpwr.com serves the LCP hero media — keep this preconnect.
-            backend.grbpwr.com is only called server-side, so a browser preconnect
-            is wasted; dropped along with the redundant dns-prefetch hints. */}
-        <link
-          rel="preconnect"
-          href="https://files.grbpwr.com"
-          crossOrigin="anonymous"
-        />
       </head>
       <body className={FeatureMono.variable}>
         {/* GTM + GA4 load on first interaction (or an idle fallback) to keep
             third-party JS off the main thread during the initial load. */}
         <DeferredAnalytics />
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <CookieBanner />
-          <ToastProvider>
-            <MotionConfigProvider>
-              <PageTransition>
-                <SiteGuard>
-                  <div className="relative min-h-dvh">{children}</div>
-                </SiteGuard>
-              </PageTransition>
-              <CountriesPopup />
-              <GeoSuggestWrapper />
-              <UpdateLocation />
-              <AnalyticsInit />
-              <InternalNavigationTracker />
-              <VisitedLinksSync />
-              <ConsoleArtInit />
-            </MotionConfigProvider>
-          </ToastProvider>
+          <ShopContextProvider brand={brand}>
+            <CookieBanner />
+            <ToastProvider>
+              <MotionConfigProvider>
+                <PageTransition>
+                  <SiteGuard>
+                    <div className="relative min-h-dvh">{children}</div>
+                  </SiteGuard>
+                </PageTransition>
+                <CountriesPopup />
+                <GeoSuggestWrapper />
+                <UpdateLocation />
+                <AnalyticsInit />
+                <InternalNavigationTracker />
+                <VisitedLinksSync />
+              </MotionConfigProvider>
+            </ToastProvider>
+          </ShopContextProvider>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -1,14 +1,21 @@
 {
-  "name": "grbpwr.com",
+  "name": "lekalo-shop",
   "version": "0.1.0",
   "private": true,
+  "imports": {
+    "#shop-current-host": {
+      "react-server": "./src/lib/shop/current-host.server.ts",
+      "default": "./src/lib/shop/current-host.client.ts"
+    }
+  },
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "format": "pnpm prettier --write .",
-    "gen": "cd proto && git pull origin main && cd .. && make proto"
+    "gen": "cd proto && git pull origin main && cd .. && make proto",
+    "test": "node --test src/lib/shop/*.test.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",

@@ -1,4 +1,7 @@
 {
+  "shop": {
+    "closed": "closed"
+  },
   "navigation": {
     "men": "men",
     "women": "women",
@@ -270,7 +273,7 @@
     "functional cookie (non-optional)": "functional cookie (non-optional)",
     "statistical analysis cookies": "statistical analysis cookies",
     "advertising and social media cookies": "advertising and social media cookies",
-    "cookies to personalize the grbpwr experience": "cookies to personalize the grbpwr experience"
+    "cookies to personalize the grbpwr experience": "cookies to personalize the {brand} experience"
   },
   "care": {
     "BA": "Bleach Allowed",
@@ -419,12 +422,12 @@
     "RWOL": "Recycled Wool"
   },
   "meta": {
-    "description": "GRBPWR discusses difficult topics by imperfect language and master it. Shop latest ready-to-wear.",
+    "description": "{brand}",
     "catalog": "catalog",
-    "catalog description": "browse the full GRBPWR collection. discover ready-to-wear, accessories, and curated pieces.",
-    "men description": "shop men's ready-to-wear and accessories. tailored pieces, outerwear, and essentials from GRBPWR.",
-    "women description": "shop women's ready-to-wear and accessories. curated collections and statement pieces from GRBPWR.",
-    "objects description": "explore GRBPWR objects and accessories. bags, small leather goods, and lifestyle pieces.",
+    "catalog description": "browse the full {brand} collection. discover ready-to-wear, accessories, and curated pieces.",
+    "men description": "shop men's ready-to-wear and accessories. tailored pieces, outerwear, and essentials from {brand}.",
+    "women description": "shop women's ready-to-wear and accessories. curated collections and statement pieces from {brand}.",
+    "objects description": "explore {brand} objects and accessories. bags, small leather goods, and lifestyle pieces.",
     "timeline": "timeline",
     "timeline description": "discover archive and updates",
     "main hero image": "main hero image"
@@ -743,7 +746,7 @@
     "reason": "reason"
   },
   "unsubscribe": {
-    "title": "unsubscribing from list \"grbpwr\". by clicking unsubscribe, you will no longer receive marketing emails.",
+    "title": "unsubscribing from list \"{brand}\". by clicking unsubscribe, you will no longer receive marketing emails.",
     "unsubscribe": "unsubscribe",
     "success": "you have been unsubscribed from the newsletter.",
     "error": "an error occurred. please try again.",
@@ -970,7 +973,7 @@
   },
   "client-services": {
     "title": "client service",
-    "welcome": "welcome to grbpwr.",
+    "welcome": "welcome to {brand}.",
     "description": "for inquiries or assistance please do not hesitate to contact us. we are open monday through saturday 9 am until 7 pm, excluding holidays.",
     "faq title": "frequently asked questions",
     "faq description": "you can use this area to consult the faq's, follow your order and track your return.",
@@ -979,8 +982,8 @@
     "email": "email"
   },
   "accessibility": {
-    "mobile menu": "grbpwr mobile menu",
-    "notify me dialog": "grbpwr notify me",
+    "mobile menu": "mobile menu",
+    "notify me dialog": "notify me",
     "reason label": "reason",
     "one-time code": "one-time code",
     "code digit": "digit {index} of {length}"

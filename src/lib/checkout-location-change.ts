@@ -2,7 +2,7 @@ export const CHECKOUT_LOCATION_CHANGE_CANCELLED =
   "checkout:location-change-cancelled";
 
 const CHECKOUT_LOCALE_SWITCH_ACCEPTED_KEY =
-  "grbpwr.checkout.localeSwitchAccepted";
+  "shop.checkout.localeSwitchAccepted";
 
 type AcceptedLocaleSwitch = {
   addressId: number;

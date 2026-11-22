@@ -6,6 +6,7 @@ import type {
 import { QueryWrapper } from "@/providers/query-wrapper";
 
 import { getHero, serviceClient } from "@/lib/api";
+import { getShopProfile } from "@/lib/shop/server";
 import { getStorefrontAccount } from "@/lib/storefront-account/get-storefront-account";
 import { AccountOnboardingStoreProvider } from "@/lib/stores/account-onboarding/store-provider";
 import { CartCurrencySyncWrapper } from "@/lib/stores/cart/cart-currency-sync-wrapper";
@@ -26,6 +27,11 @@ export default async function Template({
 }: {
   children: React.ReactNode;
 }) {
+  // lekalo-shop: no open shop on this host (unknown, closed, build-time
+  // prerender) → no backend calls; the locale layout renders 404 / closed.
+  const shop = await getShopProfile();
+  if (shop.status !== "ok") return <>{children}</>;
+
   const heroData = await getHero();
   const initialTranslationState = await getInitialTranslationState();
   const account = await getStorefrontAccount();

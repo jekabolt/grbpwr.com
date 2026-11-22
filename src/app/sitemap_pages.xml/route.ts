@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 
+import { getShopOrigin } from "@/lib/shop/server";
 import { buildPagesSitemapEntries, serializeUrlset } from "@/lib/sitemap";
 
-export const revalidate = 3600;
+// Per shop: the host decides which catalog and which base URL.
+export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const entries = await buildPagesSitemapEntries();
+  const base = await getShopOrigin();
+  if (!base) return new NextResponse("not found", { status: 404 });
+  const entries = await buildPagesSitemapEntries(base);
   const xml = serializeUrlset(entries);
   return new NextResponse(xml, {
     headers: {

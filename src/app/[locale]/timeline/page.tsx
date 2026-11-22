@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { getShopMeta } from "@/lib/shop/server";
 
 import { ArchiveLayout } from "./_components/archive-layout";
 
@@ -12,9 +13,11 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
+  const brand = await getShopMeta();
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
   return generateCommonMetadata({
+    brand,
     title: t("timeline"),
     description: t("timeline description"),
     locale,

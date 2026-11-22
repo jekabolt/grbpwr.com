@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { getShopMeta } from "@/lib/shop/server";
 import { getInitialTranslationState } from "@/lib/stores/translations/cookie-utils";
 import FlexibleLayout from "@/components/flexible-layout";
 
@@ -22,10 +23,12 @@ interface ExclusivePageProps {
 export async function generateMetadata({
   params,
 }: ExclusivePageProps): Promise<Metadata> {
+  const brand = await getShopMeta();
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "catalog" });
 
   return generateCommonMetadata({
+    brand,
     title: t("exclusive").toUpperCase(),
     description: t("exclusive description"),
     locale,

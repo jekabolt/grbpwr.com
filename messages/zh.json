@@ -1,4 +1,7 @@
 {
+  "shop": {
+    "closed": "已关闭"
+  },
   "navigation": {
     "men": "男装",
     "women": "女装",
@@ -271,7 +274,7 @@
     "functional cookie (non-optional)": "功能性cookie（非可选）",
     "statistical analysis cookies": "统计分析cookie",
     "advertising and social media cookies": "广告和社交媒体cookie",
-    "cookies to personalize the grbpwr experience": "个性化grbpwr体验的cookie"
+    "cookies to personalize the grbpwr experience": "个性化{brand}体验的cookie"
   },
   "care": {
     "BA": "允许漂白",
@@ -420,12 +423,12 @@
     "RWOL": "再生羊毛"
   },
   "meta": {
-    "description": "GRBPWR通过不完美的语言讨论困难的话题，并掌握它。购买最新的成衣系列。",
+    "description": "{brand}",
     "catalog": "目录",
-    "catalog description": "浏览完整GRBPWR系列。发现成衣、配饰及精选单品。",
-    "men description": "选购男士成衣与配饰。GRBPWR定制款、外套及必备单品。",
-    "women description": "选购女士成衣与配饰。GRBPWR精选系列与标志性单品。",
-    "objects description": "探索GRBPWR物件与配饰。包袋、皮具及生活方式单品。",
+    "catalog description": "浏览完整{brand}系列。发现成衣、配饰及精选单品。",
+    "men description": "选购男士成衣与配饰。{brand}定制款、外套及必备单品。",
+    "women description": "选购女士成衣与配饰。{brand}精选系列与标志性单品。",
+    "objects description": "探索{brand}物件与配饰。包袋、皮具及生活方式单品。",
     "timeline": "时间轴",
     "timeline description": "发现档案和更新",
     "main hero image": "主英雄图片"
@@ -685,7 +688,7 @@
     "reason": "原因"
   },
   "unsubscribe": {
-    "title": "取消订阅列表\"grbpwr\"。点击取消订阅后，您将不再接收营销电子邮件。",
+    "title": "取消订阅列表\"{brand}\"。点击取消订阅后，您将不再接收营销电子邮件。",
     "unsubscribe": "取消订阅",
     "success": "您已取消订阅新闻通讯。",
     "error": "发生错误。请再试一次。",
@@ -912,7 +915,7 @@
   },
   "client-services": {
     "title": "客户服务",
-    "welcome": "欢迎来到grbpwr.",
+    "welcome": "欢迎来到{brand}.",
     "description": "如需咨询或帮助，请随时与我们联系。我们周一至周六上午9点至下午7点营业，节假日除外。",
     "faq title": "常见问题",
     "faq description": "您可以使用此区域查询常见问题、跟踪订单和退货。",
@@ -921,8 +924,8 @@
     "email": "电子邮件"
   },
   "accessibility": {
-    "mobile menu": "grbpwr移动菜单",
-    "notify me dialog": "grbpwr通知对话框",
+    "mobile menu": "移动菜单",
+    "notify me dialog": "通知对话框",
     "reason label": "原因",
     "one-time code": "一次性验证码",
     "code digit": "第 {index} 位，共 {length} 位"

@@ -13,6 +13,7 @@ import {
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, cn, resolveArchiveMedia } from "@/lib/utils";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { Button } from "@/components/ui/button";
 import { Carousel } from "@/components/ui/carousel";
 import ImageComponent from "@/components/ui/image";
@@ -323,12 +324,13 @@ function MediaWithCaptionBlock({
 // blank instead of erroring. The origin must be allowlisted in the CSP
 // `frame-src` (see next.config.ts) for it to render.
 function ArchiveEmbed({ url, title }: { url: string; title: string }) {
+  const { name: shopName } = useShopBrand();
   const [loaded, setLoaded] = useState(false);
   return (
     <div className="relative aspect-video w-full overflow-hidden bg-black">
       <iframe
         src={url}
-        title={title || "grbpwr"}
+        title={title || shopName}
         loading="lazy"
         onLoad={() => setLoaded(true)}
         allow="autoplay; fullscreen; encrypted-media; picture-in-picture; xr-spatial-tracking; accelerometer; gyroscope"

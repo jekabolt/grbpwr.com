@@ -1,6 +1,6 @@
 import { scrubEvent } from "./scrub";
 
-const PROD_BACKEND_HOSTNAME = "backend.grbpwr.com";
+const PROD_BACKEND_HOSTNAME = "api.lekalo.studio";
 
 /** "prod" for the storefront that talks to the prod backend, "beta" for everything else. */
 export function sentryEnvironment(
