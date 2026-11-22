@@ -7,28 +7,30 @@ import ReactMarkdown from "react-markdown";
 
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { cn } from "@/lib/utils";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { LockIcon } from "@/components/ui/icons/lock";
 import { Text } from "@/components/ui/text";
 import { createMarkdownComponents } from "@/app/[locale]/(content)/_components/markdown-components";
 import { useMarkdownContent } from "@/app/[locale]/(content)/_components/use-markdown-content";
 
-import { tierPrivilegesMarkdownCandidates } from "../utils/tier-privileges-content";
+import { tierPrivilegesMarkdownKey } from "../utils/tier-privileges-content";
 
 export function PrivateCommunity() {
   const locale = useLocale();
   const t = useTranslations("account");
+  const { name: shopName } = useShopBrand();
   const { account } = useAccountOnboardingStore((s) => s);
 
   const userTier = account?.accountTier ? USER_TIER[account.accountTier] : "";
   const isHacker = account?.accountTier === "ACCOUNT_TIER_ENUM_HACKER";
   const tierText = isHacker ? "hacker" : userTier;
 
-  const mdPaths = tierPrivilegesMarkdownCandidates(
-    account?.accountTier,
+  const { content, loading } = useMarkdownContent(
+    tierPrivilegesMarkdownKey(account?.accountTier),
     locale,
+    "none",
   );
-  const { content, loading } = useMarkdownContent(mdPaths);
 
   const markdownComponents = createMarkdownComponents(undefined, {
     paragraphTone: "tier-privileges",
@@ -56,7 +58,7 @@ export function PrivateCommunity() {
               component="span"
               className="text-highlightColor"
             >
-              grbpwr
+              {shopName}
             </Text>
             {tierText && (
               <Text
@@ -75,7 +77,7 @@ export function PrivateCommunity() {
           <Text variant="uppercase" className="leading-none">
             {t("privileges")}
           </Text>
-          {mdPaths.length > 0 && !loading && content && (
+          {!loading && content && (
             <Text
               component="div"
               className={cn(

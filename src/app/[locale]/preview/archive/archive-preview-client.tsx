@@ -9,6 +9,7 @@ import {
 import type { StorefrontArchiveFull } from "@/api/proto-http/frontend";
 import { useTranslations } from "next-intl";
 
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Text } from "@/components/ui/text";
 import { PageBackground } from "@/app/[locale]/_components/page-background";
@@ -35,6 +36,7 @@ export function ArchivePreviewClient({
 }: {
   initialArchive: StorefrontArchiveFull | null;
 }) {
+  const { primaryHost: shopHost } = useShopBrand();
   const t = useTranslations("navigation");
   const [archive, setArchive] = useState(initialArchive);
   // Latest applied revision — a ref so the listener drops stale/out-of-order
@@ -114,7 +116,7 @@ export function ArchivePreviewClient({
         <PageBackground backgroundColor="#000000" splitBackground={false} />
         <FlexibleLayout
           headerType="archive"
-          headerProps={{ left: "grbpwr.com", center: t("timeline") }}
+          headerProps={{ left: shopHost, center: t("timeline") }}
           theme="dark"
         >
           <div className="space-y-20 px-2.5 pt-20 lg:space-y-10 lg:px-7">

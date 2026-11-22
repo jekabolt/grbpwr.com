@@ -8,14 +8,20 @@ import "../globals.css";
 import { useTranslations } from "next-intl";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { getShopMeta } from "@/lib/shop/server";
 import FlexibleLayout from "@/components/flexible-layout";
 
 import { NotFoundTracker } from "./_components/not-found-tracker";
 
-export const dynamic = "force-static";
+// lekalo-shop: rendered per request — the page depends on the request host
+// (which shop). A static/ISR page would be built without a host and could be
+// served to every shop. Backend data stays in Next's data cache, keyed per shop.
+export const dynamic = "force-dynamic";
 
-export function generateMetadata() {
+export async function generateMetadata() {
+  const brand = await getShopMeta();
   return generateCommonMetadata({
+    brand,
     title: "page not found".toUpperCase(),
     description: "page not found",
   });

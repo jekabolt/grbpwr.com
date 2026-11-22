@@ -6,6 +6,7 @@ import { common_HeroMainWithTranslations } from "@/api/proto-http/frontend";
 import { sendHeroEvent } from "@/lib/analitycs/hero";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { calculateAspectRatio, internalHref, isVideo } from "@/lib/utils";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -21,6 +22,7 @@ export function MainAds({
   priority?: boolean;
   children?: React.ReactNode;
 }) {
+  const { name: shopName } = useShopBrand();
   const { languageId } = useTranslationsStore((state) => state);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -56,7 +58,7 @@ export function MainAds({
             main.media?.landscape?.media?.fullSize?.height,
           )}
           alt={
-            currentTranslation?.headline || currentTranslation?.tag || "GRBPWR"
+            currentTranslation?.headline || currentTranslation?.tag || shopName
           }
           fit="cover"
           priority={priority}
@@ -74,7 +76,7 @@ export function MainAds({
             mobileMedia?.fullSize?.height,
           )}
           alt={
-            currentTranslation?.headline || currentTranslation?.tag || "GRBPWR"
+            currentTranslation?.headline || currentTranslation?.tag || shopName
           }
           fit="cover"
           priority={priority}

@@ -47,6 +47,14 @@ function sentryOrigin(): string {
   }
 }
 
+// lekalo-shop: hosts serving shop media (images, video). Comma list of hostnames,
+// a leading "*." allowed (e.g. "*.digitaloceanspaces.com"). No grbpwr hosts baked in.
+const mediaHosts = (process.env.NEXT_PUBLIC_MEDIA_HOSTS ?? "")
+  .split(",")
+  .map((h) => h.trim().toLowerCase())
+  .filter((h) => /^(\*\.)?[a-z0-9.-]+$/.test(h));
+const mediaOrigins = mediaHosts.map((h) => `https://${h}`).join(" ");
+
 const nextConfig: NextConfig = {
   env: {
     // Inlined at build time: "" compiles every Sentry import out of the client, server and
@@ -62,14 +70,11 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "files.grbpwr.com",
-      },
-      {
-        protocol: "https",
-        hostname: "art.grbpwr.com",
-      },
+      ...mediaHosts.map((h) => ({
+        protocol: "https" as const,
+        // next/image wants "**." for a subdomain wildcard.
+        hostname: h.startsWith("*.") ? `*${h}` : h,
+      })),
       {
         protocol: "https",
         hostname: "cdn.builder.io",
@@ -88,7 +93,7 @@ const nextConfig: NextConfig = {
     );
 
     // Backend origin for connect-src, derived from the public env var so dev
-    // (localhost) and prod (backend.grbpwr.com) both work.
+    // (localhost) and prod (api.lekalo.studio) both work.
     let backendOrigin = "";
     try {
       backendOrigin = new URL(process.env.NEXT_PUBLIC_BACKEND_URL ?? "").origin;
@@ -116,10 +121,10 @@ const nextConfig: NextConfig = {
         `default-src 'self'`,
         `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://www.google-analytics.com https://js.stripe.com https://maps.googleapis.com`,
         `style-src 'self' 'unsafe-inline'`,
-        `img-src 'self' data: blob: https://files.grbpwr.com https://art.grbpwr.com https://cdn.builder.io https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://maps.googleapis.com https://maps.gstatic.com https://*.googleusercontent.com https://*.stripe.com`,
+        `img-src 'self' data: blob: ${mediaOrigins} https://cdn.builder.io https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://maps.googleapis.com https://maps.gstatic.com https://*.googleusercontent.com https://*.stripe.com`,
         // <video>/<audio> load via media-src (not img-src); without this they fall
         // back to default-src 'self' and CDN clips (hero VIDEO/SINGLE) are blocked.
-        `media-src 'self' data: blob: https://files.grbpwr.com`,
+        `media-src 'self' data: blob: ${mediaOrigins}`,
         `font-src 'self' data:`,
         [
           `connect-src 'self'`,
@@ -140,11 +145,11 @@ const nextConfig: NextConfig = {
         ]
           .filter(Boolean)
           .join(" "),
-        // Stripe (payments) + art.grbpwr.com (footer logo) + curated hero EMBED
+        // Stripe (payments) + curated hero EMBED
         // providers (Spline 3D, YouTube/Vimeo campaign embeds). An unlisted or
         // blocked embed degrades to the block's fallback media, so this stays a
         // tight allowlist rather than a wildcard.
-        `frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://art.grbpwr.com https://my.spline.design https://prod.spline.design https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com`,
+        `frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://my.spline.design https://prod.spline.design https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com`,
         `worker-src 'self' blob:`,
         `object-src 'none'`,
         `base-uri 'self'`,
@@ -179,7 +184,7 @@ const nextConfig: NextConfig = {
         key: "Permissions-Policy",
         value: "camera=(), microphone=(), browsing-topics=()",
       },
-      // HSTS incl. subdomains (files/art.grbpwr.com are HTTPS); no `preload`.
+      // HSTS incl. subdomains; no `preload`.
       {
         key: "Strict-Transport-Security",
         value: "max-age=63072000; includeSubDomains",

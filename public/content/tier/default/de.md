@@ -1,1 +1,0 @@
-keine zusätzlichen vorteile enthalten

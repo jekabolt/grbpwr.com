@@ -45,7 +45,7 @@ import ShippingFieldsGroup from "./shipping-fields-group";
 import { isStripeCardPaymentMethod, resolveCardPaymentMethod } from "./utils";
 
 const CHECKOUT_PROFILE_COMPLETED_EMAIL_KEY =
-  "grbpwr.checkout.profileCompletedEmail";
+  "shop.checkout.profileCompletedEmail";
 
 type NewOrderFormProps = {
   guestCheckout: boolean;

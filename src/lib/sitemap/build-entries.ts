@@ -12,7 +12,6 @@ import {
 } from "./catalog-paths";
 import type { SitemapUrlEntry } from "./serialize-xml";
 
-export const SITEMAP_PUBLIC_BASE_URL = "https://grbpwr.com";
 
 export const CANONICAL_COUNTRY_BY_LOCALE = {
   en: "gb",
@@ -47,31 +46,34 @@ function pagesPriority(path: string): number {
 
 /** Absolute URL for a relative path in a given locale's canonical country. */
 export function localizedSitemapUrl(
+  base: string,
   locale: (typeof routing.locales)[number],
   relPath: string,
 ): string {
   const country = CANONICAL_COUNTRY_BY_LOCALE[locale];
-  return `${SITEMAP_PUBLIC_BASE_URL}/${country}/${locale}${relPath}`;
+  return `${base}/${country}/${locale}${relPath}`;
 }
 
 /** hreflang alternates for a relative path: every locale + x-default (default locale). */
 export function hreflangAlternates(
+  base: string,
   relPath: string,
 ): { hreflang: string; href: string }[] {
   const alternates: { hreflang: string; href: string }[] = routing.locales.map(
     (locale) => ({
       hreflang: locale,
-      href: localizedSitemapUrl(locale, relPath),
+      href: localizedSitemapUrl(base, locale, relPath),
     }),
   );
   alternates.push({
     hreflang: "x-default",
-    href: localizedSitemapUrl(routing.defaultLocale, relPath),
+    href: localizedSitemapUrl(base, routing.defaultLocale, relPath),
   });
   return alternates;
 }
 
 function expandRelPaths(
+  base: string,
   relPaths: readonly string[],
   priorityFor: (path: string) => number,
   // Real content date per path (not build time) — omitted when unavailable.
@@ -80,11 +82,11 @@ function expandRelPaths(
   const entries: SitemapUrlEntry[] = [];
 
   for (const path of relPaths) {
-    const alternates = hreflangAlternates(path);
+    const alternates = hreflangAlternates(base, path);
     const lastModified = lastModifiedFor?.(path);
     for (const locale of routing.locales) {
       entries.push({
-        url: localizedSitemapUrl(locale, path),
+        url: localizedSitemapUrl(base, locale, path),
         ...(lastModified ? { lastModified } : {}),
         changeFrequency: "daily",
         priority: priorityFor(path),
@@ -96,19 +98,24 @@ function expandRelPaths(
   return entries;
 }
 
-export async function buildPagesSitemapEntries(): Promise<SitemapUrlEntry[]> {
+/** `base` = https origin of the shop on this request (no trailing slash). */
+export async function buildPagesSitemapEntries(
+  base: string,
+): Promise<SitemapUrlEntry[]> {
   // Freshness from real content: homepage tracks the newest product, timeline the
   // newest archive.
   const [productDate, archiveDate] = await Promise.all([
     getLatestProductDate(),
     getLatestArchiveDate(),
   ]);
-  return expandRelPaths(PAGES_SITEMAP_PATHS, pagesPriority, (path) =>
+  return expandRelPaths(base, PAGES_SITEMAP_PATHS, pagesPriority, (path) =>
     path === "/timeline" ? archiveDate : productDate,
   );
 }
 
-export async function buildCatalogSitemapEntries(): Promise<SitemapUrlEntry[]> {
+export async function buildCatalogSitemapEntries(
+  base: string,
+): Promise<SitemapUrlEntry[]> {
   let relPaths: string[] = [...CATALOG_SITEMAP_HUB_PATHS];
 
   const [{ categories } = { categories: undefined }, productDate] =
@@ -122,5 +129,5 @@ export async function buildCatalogSitemapEntries(): Promise<SitemapUrlEntry[]> {
 
   if (categories?.length) relPaths = collectCatalogSitemapPaths(categories);
 
-  return expandRelPaths(relPaths, catalogPriority, () => productDate);
+  return expandRelPaths(base, relPaths, catalogPriority, () => productDate);
 }

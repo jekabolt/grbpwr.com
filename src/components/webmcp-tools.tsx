@@ -12,7 +12,9 @@ import { useServerActionsContext } from "@/components/contexts/ServerActionsCont
 // mutating actions (cart, checkout, account) — it only reads the public catalog
 // through the existing GetColorwaysPaged server action.
 
-const SITE = "https://grbpwr.com";
+// lekalo-shop: absolute URLs use the origin of the shop the visitor is on.
+const siteOrigin = () =>
+  typeof window === "undefined" ? "" : window.location.origin;
 
 function productPath(slug: string | undefined): string | null {
   if (!slug) return null;
@@ -35,7 +37,7 @@ function toCompactProduct(p: StorefrontColorway) {
     id: p.baseSku,
     sku: p.baseSku,
     name,
-    url: path ? `${SITE}${path}` : undefined,
+    url: path ? `${siteOrigin()}${path}` : undefined,
     image: image?.trim() || undefined,
     price: amount ? { amount, currency: priceObj?.currency } : undefined,
     soldOut: p.soldOut ?? false,
@@ -110,7 +112,7 @@ export function WebMCPTools() {
           {
             name: "list_products",
             description:
-              "Browse the grbpwr storefront catalog (read-only). Returns products with name, price, product-page URL and image.",
+              "Browse this storefront's catalog (read-only). Returns products with name, price, product-page URL and image.",
             inputSchema: {
               type: "object",
               properties: {

@@ -1,6 +1,6 @@
-export const CHECKOUT_GUEST_SESSION_KEY = "grbpwr.checkout.guestCheckout";
-export const CHECKOUT_GUEST_COOKIE = "grbpwr.checkout.guest";
-export const CHECKOUT_UNLOAD_RELOAD_KEY = "grbpwr.checkout.unloadReload";
+export const CHECKOUT_GUEST_SESSION_KEY = "shop.checkout.guestCheckout";
+export const CHECKOUT_GUEST_COOKIE = "shop.checkout.guest";
+export const CHECKOUT_UNLOAD_RELOAD_KEY = "shop.checkout.unloadReload";
 
 export function isGuestCheckoutCookie(value: string | undefined): boolean {
   return value === "1";

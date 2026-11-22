@@ -6,6 +6,7 @@ import { getTranslations } from "next-intl/server";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { getShopMeta } from "@/lib/shop/server";
 import { archiveCodeFromHandle } from "@/lib/slug-tail";
 import FlexibleLayout from "@/components/flexible-layout";
 
@@ -23,6 +24,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; handle: string }>;
 }): Promise<Metadata> {
+  const brand = await getShopMeta();
   const { handle, locale } = await params;
   const localeId = LANGUAGE_CODE_TO_ID[locale];
   const code = archiveCodeFromHandle(handle);
@@ -51,7 +53,7 @@ export async function generateMetadata({
     (firstText?.find((t) => t.languageId === localeId) || firstText?.[0])
       ?.text ||
     currentTranslation?.heading ||
-    "grbpwr archive";
+    `${brand.name} archive`;
 
   // OG image: the archive thumbnail, else the first media-carrying block.
   const firstBlockMedia = archive?.items?.reduce<string | undefined>(
@@ -65,6 +67,7 @@ export async function generateMetadata({
   );
 
   return generateCommonMetadata({
+    brand,
     title:
       currentTranslation?.heading?.toUpperCase() || "heading".toUpperCase(),
     description,
@@ -80,11 +83,15 @@ export async function generateMetadata({
   });
 }
 
-export const dynamic = "force-static";
+// lekalo-shop: rendered per request — the page depends on the request host
+// (which shop). A static/ISR page would be built without a host and could be
+// served to every shop. Backend data stays in Next's data cache, keyed per shop.
+export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: ArchivePageParams) {
   const { handle } = await params;
   const t = await getTranslations("navigation");
+  const brand = await getShopMeta();
 
   const code = archiveCodeFromHandle(handle);
   if (!code) {
@@ -119,7 +126,7 @@ export default async function Page({ params }: ArchivePageParams) {
       <FlexibleLayout
         headerType="archive"
         headerProps={{
-          left: "grbpwr.com",
+          left: new URL(brand.origin).host,
           center: t("timeline"),
         }}
         theme="dark"

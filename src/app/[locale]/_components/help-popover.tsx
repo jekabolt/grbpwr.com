@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";
 import { MinusIcon } from "@/components/ui/icons/minus";
@@ -11,6 +12,7 @@ import { Text } from "@/components/ui/text";
 
 export default function HelpPopover({ theme }: { theme: "light" | "dark" }) {
   const t = useTranslations("footer");
+  const { email: shopEmail } = useShopBrand();
   return (
     <GenericPopover
       variant="no-borders"
@@ -29,11 +31,13 @@ export default function HelpPopover({ theme }: { theme: "light" | "dark" }) {
       )}
     >
       <div className="space-y-2">
-        <CopyText
-          text="CLIENT@GRBPWR.COM"
-          variant={theme === "dark" ? "underlined" : "undrleineWithColors"}
-          mode="toaster"
-        />
+        {shopEmail ? (
+          <CopyText
+            text={shopEmail.toUpperCase()}
+            variant={theme === "dark" ? "underlined" : "undrleineWithColors"}
+            mode="toaster"
+          />
+        ) : null}
         <Button asChild className="uppercase">
           <Link href="/aftersale-services">{t("aftersale services")}</Link>
         </Button>

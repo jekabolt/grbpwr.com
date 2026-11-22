@@ -17,6 +17,7 @@ import { useCart } from "@/lib/stores/cart/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { SubmissionToaster } from "@/components/ui/toaster";
 
 import { CheckoutLoadingShell } from "./checkout-skeleton";
@@ -32,10 +33,18 @@ export function CheckoutFormWrapper({
   initialGuestCheckout?: boolean;
 }) {
   const router = useRouter();
+  const { stripePublishableKey, stripeAccountId } = useShopBrand();
   // Lazy-init so the Stripe SDK only kicks off on mount of the checkout form,
-  // not at module evaluation time.
+  // not at module evaluation time. lekalo-shop: a team that pasted its own keys
+  // uses its own publishable key; a Connect team uses the platform key with
+  // its connected account (direct charges).
   const [stripePromise] = useState(() =>
-    loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!),
+    stripePublishableKey
+      ? loadStripe(stripePublishableKey)
+      : loadStripe(
+          process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+          stripeAccountId ? { stripeAccount: stripeAccountId } : undefined,
+        ),
   );
   const products = useCart((s) => s.products);
   const isSignedIn = useAccountOnboardingStore((s) => s.isSignedIn);

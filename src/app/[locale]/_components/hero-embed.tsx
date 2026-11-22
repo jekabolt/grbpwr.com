@@ -5,6 +5,7 @@ import type { common_HeroEmbedWithTranslations } from "@/api/proto-http/frontend
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn, internalHref } from "@/lib/utils";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Text } from "@/components/ui/text";
 
@@ -25,6 +26,7 @@ export function HeroEmbed({
   priority?: boolean;
   onHeroClick?: () => void;
 }) {
+  const { name: shopName } = useShopBrand();
   const { languageId } = useTranslationsStore((state) => state);
   const [loaded, setLoaded] = useState(false);
 
@@ -62,7 +64,7 @@ export function HeroEmbed({
       {embed.embedUrl && (
         <iframe
           src={embed.embedUrl}
-          title={headline || "GRBPWR"}
+          title={headline || shopName}
           loading={priority ? "eager" : "lazy"}
           onLoad={() => setLoaded(true)}
           allow="autoplay; fullscreen; encrypted-media; picture-in-picture; xr-spatial-tracking; accelerometer; gyroscope"

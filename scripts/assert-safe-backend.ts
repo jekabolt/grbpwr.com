@@ -4,7 +4,10 @@ interface BackendEnvironment {
   ALLOW_PROD_BACKEND?: string;
 }
 
-const PRODUCTION_BACKEND_HOSTNAME = "backend.grbpwr.com";
+const PRODUCTION_BACKEND_HOSTNAMES = [
+  "api.lekalo.studio",
+  "backend.grbpwr.com",
+];
 
 export function assertSafeBackendEnvironment(env: BackendEnvironment): void {
   if (env.NODE_ENV !== "development" || env.ALLOW_PROD_BACKEND === "1") {
@@ -21,9 +24,9 @@ export function assertSafeBackendEnvironment(env: BackendEnvironment): void {
     return;
   }
 
-  if (hostname === PRODUCTION_BACKEND_HOSTNAME) {
+  if (PRODUCTION_BACKEND_HOSTNAMES.includes(hostname)) {
     throw new Error(
-      "Refusing to start next dev with NEXT_PUBLIC_BACKEND_URL pointing to backend.grbpwr.com; set ALLOW_PROD_BACKEND=1 to override.",
+      "Refusing to start next dev with NEXT_PUBLIC_BACKEND_URL pointing to a production backend; set ALLOW_PROD_BACKEND=1 to override.",
     );
   }
 }

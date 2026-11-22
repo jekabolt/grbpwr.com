@@ -1,4 +1,4 @@
-const KEY = "grbpwr-visited";
+const KEY = "shop.visited";
 const EVT = "visited-links-change";
 
 export function normalizeHref(href: string) {
