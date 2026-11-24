@@ -5,7 +5,12 @@ import { common_HeroMainWithTranslations } from "@/api/proto-http/frontend";
 
 import { sendHeroEvent } from "@/lib/analitycs/hero";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, internalHref, isVideo } from "@/lib/utils";
+import {
+  calculateAspectRatio,
+  getPixelPreview,
+  internalHref,
+  isVideo,
+} from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -29,6 +34,7 @@ export function MainAds({
   const currentTranslation = main.translations?.find(
     (t) => t.languageId === languageId,
   );
+  const landscapeMedia = main.media?.landscape?.media;
 
   // Mobile hero uses the portrait media (falls back to landscape if missing).
   const mobileMedia =
@@ -44,16 +50,13 @@ export function MainAds({
     >
       <div className="hidden h-full lg:block">
         <Image
-          src={main.media?.landscape?.media?.fullSize?.mediaUrl || ""}
-          blurhash={main.media?.landscape?.media?.blurhash}
-          type={
-            isVideo(main.media?.landscape?.media?.fullSize?.mediaUrl)
-              ? "video"
-              : "image"
-          }
+          src={landscapeMedia?.fullSize?.mediaUrl || ""}
+          blurhash={landscapeMedia?.blurhash}
+          pixelPreview={getPixelPreview(landscapeMedia)}
+          type={isVideo(landscapeMedia?.fullSize?.mediaUrl) ? "video" : "image"}
           aspectRatio={calculateAspectRatio(
-            main.media?.landscape?.media?.fullSize?.width,
-            main.media?.landscape?.media?.fullSize?.height,
+            landscapeMedia?.fullSize?.width,
+            landscapeMedia?.fullSize?.height,
           )}
           alt={
             currentTranslation?.headline || currentTranslation?.tag || "GRBPWR"
@@ -68,6 +71,7 @@ export function MainAds({
         <Image
           src={mobileMedia?.fullSize?.mediaUrl || ""}
           blurhash={mobileMedia?.blurhash}
+          pixelPreview={getPixelPreview(mobileMedia)}
           type={isVideo(mobileMedia?.fullSize?.mediaUrl) ? "video" : "image"}
           aspectRatio={calculateAspectRatio(
             mobileMedia?.fullSize?.width,

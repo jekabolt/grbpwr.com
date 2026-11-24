@@ -2,7 +2,12 @@
 
 import type { common_HeroMediaFull } from "@/api/proto-http/frontend";
 
-import { calculateAspectRatio, cn, isVideo } from "@/lib/utils";
+import {
+  calculateAspectRatio,
+  cn,
+  getPixelPreview,
+  isVideo,
+} from "@/lib/utils";
 import Image from "@/components/ui/image";
 
 // Full-bleed background for a HeroMediaFull: portrait on mobile / landscape on
@@ -48,6 +53,7 @@ export function HeroMedia({
         <Image
           src={desktopUrl}
           blurhash={desktop?.blurhash}
+          pixelPreview={getPixelPreview(desktop)}
           alt="GRBPWR"
           aspectRatio={calculateAspectRatio(
             desktop?.fullSize?.width,
@@ -64,6 +70,7 @@ export function HeroMedia({
         <Image
           src={mobileUrl}
           blurhash={mobile?.blurhash}
+          pixelPreview={getPixelPreview(mobile)}
           alt="GRBPWR"
           aspectRatio={calculateAspectRatio(
             mobile?.fullSize?.width,

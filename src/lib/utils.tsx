@@ -177,6 +177,12 @@ export function isVideo(mediaUrl: string | undefined): boolean {
   return extension ? VIDEO_EXTENSIONS.has(extension) : false;
 }
 
+export function getPixelPreview(media: unknown): string | undefined {
+  if (!media || typeof media !== "object") return undefined;
+  const preview = (media as { pixelPreview?: unknown }).pixelPreview;
+  return typeof preview === "string" ? preview : undefined;
+}
+
 type ArchiveMediaSource = {
   fullSize?: { mediaUrl?: string };
   thumbnail?: { mediaUrl?: string };

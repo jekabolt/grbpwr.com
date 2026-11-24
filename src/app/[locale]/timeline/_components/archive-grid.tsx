@@ -5,7 +5,7 @@ import Link from "next/link";
 import { StorefrontArchiveList } from "@/api/proto-http/frontend";
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
-import { resolveArchiveMedia } from "@/lib/utils";
+import { getPixelPreview, resolveArchiveMedia } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
 
 import { ArchiveMediaThumbnail } from "./archive-media-thumbnail";
@@ -38,6 +38,7 @@ function ArchiveGridItem({
           alt={currentTranslation?.heading || item.tag || ""}
           aspectRatio="3/4"
           blurhash={item.thumbnail?.media?.blurhash}
+          pixelPreview={getPixelPreview(item.thumbnail?.media)}
           playOnHover={!isMobile && isVideoItem && isHovered}
           autoPlay={isMobile && isVideoItem}
           fit="fill"
@@ -63,7 +64,11 @@ export function ArchiveGrid({
     <div className="h-full px-2.5 pb-2.5 pt-20 lg:px-7 lg:pt-24">
       <div className="grid min-w-0 grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-10">
         {items.map((item) => (
-          <ArchiveGridItem key={item.code} item={item} languageId={languageId} />
+          <ArchiveGridItem
+            key={item.code}
+            item={item}
+            languageId={languageId}
+          />
         ))}
       </div>
     </div>

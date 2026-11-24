@@ -12,7 +12,12 @@ import {
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, cn, resolveArchiveMedia } from "@/lib/utils";
+import {
+  calculateAspectRatio,
+  cn,
+  getPixelPreview,
+  resolveArchiveMedia,
+} from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Carousel } from "@/components/ui/carousel";
 import ImageComponent from "@/components/ui/image";
@@ -161,6 +166,7 @@ function MainMediaBlock({
         aspectRatio={ratio}
         fit="cover"
         blurhash={mediaFull?.media?.blurhash}
+        pixelPreview={getPixelPreview(mediaFull?.media)}
         priority={priority}
         loading={priority ? "eager" : "lazy"}
       />
@@ -198,6 +204,7 @@ function MediaLineTile({
         alt={alt}
         aspectRatio={aspectRatio}
         blurhash={mediaFull?.media?.blurhash}
+        pixelPreview={getPixelPreview(mediaFull?.media)}
         priority={priority}
         loading={priority ? "eager" : "lazy"}
         playOnHover={!isMobile && isVideoItem && isHovered}
@@ -294,6 +301,7 @@ function MediaWithCaptionBlock({
         alt={caption || heading || "archive"}
         aspectRatio={ratio}
         blurhash={mediaFull?.media?.blurhash}
+        pixelPreview={getPixelPreview(mediaFull?.media)}
         autoPlay={media.type === "video"}
       />
     </div>

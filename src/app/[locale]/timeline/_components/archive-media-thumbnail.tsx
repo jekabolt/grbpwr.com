@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import ImageComponent from "@/components/ui/image";
+
 import { resolveArchiveMedia } from "@/lib/utils";
+import ImageComponent from "@/components/ui/image";
 
 type ArchiveMediaThumbnailProps = {
   media: ReturnType<typeof resolveArchiveMedia>;
   alt: string;
   aspectRatio: string;
   blurhash?: string;
+  pixelPreview?: string;
   fit?: "cover" | "contain" | "fill" | "scale-down";
   priority?: boolean;
   loading?: "lazy" | "eager";
@@ -21,6 +23,7 @@ export function ArchiveMediaThumbnail({
   alt,
   aspectRatio,
   blurhash,
+  pixelPreview,
   fit = "cover",
   priority,
   loading,
@@ -61,6 +64,7 @@ export function ArchiveMediaThumbnail({
       alt={alt}
       src={media.src}
       blurhash={blurhash}
+      pixelPreview={pixelPreview}
       aspectRatio={aspectRatio}
       fit={fit}
       priority={priority}

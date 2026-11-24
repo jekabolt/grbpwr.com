@@ -5,7 +5,13 @@ import type { common_HeroSingleWithTranslations } from "@/api/proto-http/fronten
 
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, cn, internalHref, isVideo } from "@/lib/utils";
+import {
+  calculateAspectRatio,
+  cn,
+  getPixelPreview,
+  internalHref,
+  isVideo,
+} from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -62,6 +68,7 @@ export function HeroSingle({
         <Image
           src={landscapeUrl}
           blurhash={landscape?.blurhash}
+          pixelPreview={getPixelPreview(landscape)}
           alt={alt}
           aspectRatio={calculateAspectRatio(
             landscape?.thumbnail?.width,
@@ -79,6 +86,7 @@ export function HeroSingle({
         <Image
           src={portraitUrl}
           blurhash={portrait?.blurhash}
+          pixelPreview={getPixelPreview(portrait)}
           alt={alt}
           aspectRatio={calculateAspectRatio(
             portrait?.fullSize?.width,
@@ -97,6 +105,7 @@ export function HeroSingle({
     <Image
       src={landscapeUrl}
       blurhash={landscape?.blurhash}
+      pixelPreview={getPixelPreview(landscape)}
       alt={alt}
       aspectRatio={calculateAspectRatio(
         landscape?.thumbnail?.width,

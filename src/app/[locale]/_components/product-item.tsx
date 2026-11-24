@@ -11,7 +11,7 @@ import { formatPrice } from "@/lib/currency";
 import { useViewerTier } from "@/lib/hooks/use-viewer-tier";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { lockedTeaserHref } from "@/lib/tier";
-import { cn, isDateTodayOrFuture } from "@/lib/utils";
+import { cn, getPixelPreview, isDateTodayOrFuture } from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { LockIcon } from "@/components/ui/icons/lock";
 import Image from "@/components/ui/image";
@@ -75,6 +75,7 @@ export function ProductItem({
 
   const currencyKey = currentCountry.currencyKey || "EUR";
   const display = product.display;
+  const thumbnail = display?.thumbnail?.media;
   const salePercentage = display?.salePercentage?.value || "0";
   const isSaleApplied =
     salePercentage !== "0" && parseFloat(salePercentage) > 0;
@@ -152,7 +153,7 @@ export function ProductItem({
           )}
         >
           <Image
-            src={product.display?.thumbnail?.media?.thumbnail?.mediaUrl || ""}
+            src={thumbnail?.thumbnail?.mediaUrl || ""}
             alt={name}
             // Fixed 3/4 box (matches the catalog skeleton) so every card is the
             // same height wherever cards sit side by side — grid, carousel or the
@@ -160,7 +161,8 @@ export function ProductItem({
             // shots fill it without side letterboxing. Default `contain` keeps the
             // whole garment visible; `cover` crops it to fill the box exactly.
             aspectRatio="3/4"
-            blurhash={product.display?.thumbnail?.media?.blurhash}
+            blurhash={thumbnail?.blurhash}
+            pixelPreview={getPixelPreview(thumbnail)}
             fit={imageFit}
             priority={imagePriority}
             loading={imagePriority ? "eager" : "lazy"}

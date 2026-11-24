@@ -12,7 +12,7 @@ import {
   sendProductImageSwipeEvent,
   sendProductZoomEvent,
 } from "@/lib/analitycs/product-engagement";
-import { calculateAspectRatio } from "@/lib/utils";
+import { calculateAspectRatio, getPixelPreview } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ui/image";
 
@@ -148,7 +148,8 @@ export function MobileImageCarousel({
         <div ref={emblaRef} className="relative overflow-hidden bg-bgColor">
           <div className="flex h-full w-full">
             {media.map((m, index) => {
-              const compressed = m?.media?.compressed;
+              const mediaItem = m?.media;
+              const compressed = mediaItem?.compressed;
               const isPriority = index === 0;
               return (
                 <div
@@ -162,7 +163,8 @@ export function MobileImageCarousel({
                     fit="contain"
                     priority={isPriority}
                     loading={isPriority ? "eager" : "lazy"}
-                    blurhash={m?.media?.blurhash}
+                    blurhash={mediaItem?.blurhash}
+                    pixelPreview={getPixelPreview(mediaItem)}
                   />
                 </div>
               );
@@ -202,6 +204,7 @@ export function MobileImageCarousel({
                   currentMedia.height,
                 )}
                 blurhash={media?.[selectedIndex]?.media?.blurhash}
+                pixelPreview={getPixelPreview(media?.[selectedIndex]?.media)}
               />
             </ImageZoom>
           )}

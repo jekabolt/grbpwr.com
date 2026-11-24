@@ -4,6 +4,7 @@ import { useCallback, useRef } from "react";
 import { common_MediaFull } from "@/api/proto-http/frontend";
 
 import { sendProductImageSwipeEvent } from "@/lib/analitycs/product-engagement";
+import { getPixelPreview } from "@/lib/utils";
 import { Carousel } from "@/components/ui/carousel";
 import ImageComponent from "@/components/ui/image";
 
@@ -70,19 +71,21 @@ export function ProductImagesCarousel({
       >
         {mediaForCarousel.map((m, index) => {
           const isPriority = index >= startIndex && index < startIndex + 2;
+          const media = m?.media;
           return (
             <div
               key={`${m.id}-${index}`}
               className="h-full w-full flex-[0_0_48%]"
             >
               <ImageComponent
-                src={m?.media?.compressed?.mediaUrl!}
+                src={media?.compressed?.mediaUrl!}
                 alt="Product image"
                 aspectRatio="4/5"
                 fit="contain"
                 priority={isPriority}
                 loading={isPriority ? "eager" : "lazy"}
-                blurhash={m?.media?.blurhash}
+                blurhash={media?.blurhash}
+                pixelPreview={getPixelPreview(media)}
               />
             </div>
           );

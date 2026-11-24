@@ -3,7 +3,11 @@
 import type { common_HeroVideoWithTranslations } from "@/api/proto-http/frontend";
 
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
-import { calculateAspectRatio, internalHref } from "@/lib/utils";
+import {
+  calculateAspectRatio,
+  getPixelPreview,
+  internalHref,
+} from "@/lib/utils";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -57,6 +61,7 @@ export function HeroVideo({
             type="image"
             alt={headline || "GRBPWR"}
             blurhash={media?.blurhash}
+            pixelPreview={getPixelPreview(media)}
             aspectRatio={calculateAspectRatio(
               video.posterMedia?.media?.fullSize?.width,
               video.posterMedia?.media?.fullSize?.height,
@@ -74,6 +79,7 @@ export function HeroVideo({
             type="video"
             alt={headline || "GRBPWR"}
             blurhash={media?.blurhash}
+            pixelPreview={getPixelPreview(media)}
             aspectRatio={calculateAspectRatio(
               media?.fullSize?.width,
               media?.fullSize?.height,
