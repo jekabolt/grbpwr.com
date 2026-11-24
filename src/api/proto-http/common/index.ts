@@ -99,6 +99,8 @@ export type MediaItem = {
   compressed: MediaInfo | undefined;
   // BlurHash
   blurhash: string | undefined;
+  // Tiny color preview, 6px wide, as a data URI; drawn as a pixel mosaic while the image loads
+  pixelPreview: string | undefined;
 };
 
 export type MediaInfo = {
