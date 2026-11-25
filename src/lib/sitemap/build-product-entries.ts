@@ -64,7 +64,9 @@ function productNameForLocale(
   return (hit?.name || translations?.[0]?.name || product.baseSku || "").trim();
 }
 
-export async function buildProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
+export async function buildProductSitemapEntries(
+  base: string,
+): Promise<SitemapUrlEntry[]> {
   const entries: SitemapUrlEntry[] = [];
   let offset = 0;
 
@@ -88,7 +90,7 @@ export async function buildProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
       const lastMod = p.display?.updatedAt
         ? new Date(p.display.updatedAt)
         : new Date();
-      const alternates = hreflangAlternates(productPath);
+      const alternates = hreflangAlternates(base, productPath);
 
       for (const locale of routing.locales) {
         const name = productNameForLocale(p, locale);
@@ -102,7 +104,7 @@ export async function buildProductSitemapEntries(): Promise<SitemapUrlEntry[]> {
             : undefined;
 
         entries.push({
-          url: localizedSitemapUrl(locale, productPath),
+          url: localizedSitemapUrl(base, locale, productPath),
           lastModified: lastMod,
           changeFrequency: "daily",
           priority: 0.65,

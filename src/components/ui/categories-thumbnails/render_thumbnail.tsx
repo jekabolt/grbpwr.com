@@ -3,7 +3,7 @@ import { common_GenderEnum } from "@/api/proto-http/frontend";
 import { ProductMeasurementCompat } from "@/lib/api-adapters/measurements";
 import { cn } from "@/lib/utils";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { Unit } from "@/app/[locale]/p/[handle]/_components/measurements-table";
+import { Unit } from "@/app/[shop]/[locale]/p/[handle]/_components/measurements-table";
 
 import { getIconByCategoryId } from "./map_categories";
 

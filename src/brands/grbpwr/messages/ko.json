@@ -1,0 +1,22 @@
+{
+  "cookies": {
+    "cookies to personalize the grbpwr experience": "grbpwr 경험을 개인화하는 쿠키"
+  },
+  "meta": {
+    "description": "GRBPWR은 불완전한 언어로 어려운 주제를 논의하고 이를 마스터합니다. 최신 레디-투-웨어를 쇼핑하세요.",
+    "catalog description": "전체 GRBPWR 컬렉션을 둘러보세요. 레디-투-웨어, 악세서리, 큐레이션된 피스를 발견하세요.",
+    "men description": "남성 레디-투-웨어와 악세서리를 쇼핑하세요. GRBPWR의 테일러드, 아우터, 에센셜.",
+    "women description": "여성 레디-투-웨어와 악세서리를 쇼핑하세요. GRBPWR의 큐레이션된 컬렉션과 스테이트먼트 피스.",
+    "objects description": "GRBPWR 오브젝트와 악세서리를 탐색하세요. 가방, 소가죽 제품, 라이프스타일 피스."
+  },
+  "unsubscribe": {
+    "title": "목록 \"grbpwr\"에서 구독이 취소됩니다. 구독 취소를 클릭하면 마케팅 이메일을 더 이상 받지 않습니다."
+  },
+  "client-services": {
+    "welcome": "grbpwr에 오신 것을 환영합니다."
+  },
+  "accessibility": {
+    "mobile menu": "grbpwr 모바일 메뉴",
+    "notify me dialog": "grbpwr 알림 대화상자"
+  }
+}

@@ -14,13 +14,6 @@ export const FOOTER_YEAR = Math.floor(Date.now() / 1000);
 
 export const EMPTY_PREORDER = "0001-01-01T00:00:00Z";
 
-export const FOOTER_LINKS: { text: string; href: string }[] = [
-  { text: "ss", href: "https://substack.com/@grbpwr" },
-  { text: "gh", href: "https://www.github.com/grbpwr/" },
-  { text: "ig", href: "https://www.instagram.com/grb.pwr/" },
-  { text: "tg", href: "https://www.t.me/grbpwr/" },
-];
-
 /** Internal routes still reachable when the storefront is disabled (footer & help). */
 export const SITE_DISABLED_ALLOWED_REST_PATHS: readonly string[] = [
   "/account",
@@ -48,7 +41,7 @@ export const USER_TIER: Partial<Record<AccountTierEnum, string>> = {
   ACCOUNT_TIER_ENUM_HACKER: "hacker",
 } as const;
 
-/** Subfolder under `public/content/tier/` for tier privileges markdown (`{slug}/{locale}.md`). */
+/** Tier slug; the privileges markdown is the shop profile `legal["tier-{slug}"]`. */
 export const USER_TIER_CONTENT_SLUG: Partial<Record<AccountTierEnum, string>> =
   {
     ACCOUNT_TIER_ENUM_UNKNOWN: "default",

@@ -1,13 +1,17 @@
 import { scrubEvent } from "./scrub";
 
-const PROD_BACKEND_HOSTNAME = "backend.grbpwr.com";
+// lekalo prod, and grbpwr's backend until it moves onto lekalo.
+const PROD_BACKEND_HOSTNAMES = new Set([
+  "api.lekalo.studio",
+  "backend.grbpwr.com",
+]);
 
 /** "prod" for the storefront that talks to the prod backend, "beta" for everything else. */
 export function sentryEnvironment(
   backendUrl: string | undefined,
 ): "prod" | "beta" {
   try {
-    return new URL(backendUrl ?? "").hostname === PROD_BACKEND_HOSTNAME
+    return PROD_BACKEND_HOSTNAMES.has(new URL(backendUrl ?? "").hostname)
       ? "prod"
       : "beta";
   } catch {

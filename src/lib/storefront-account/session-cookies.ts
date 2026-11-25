@@ -2,66 +2,44 @@ import type {
   RefreshAccountSessionResponse,
   VerifyAccountLoginResponse,
 } from "@/api/proto-http/frontend";
+import { getCurrentShopHost } from "#shop-current-host";
 
-export const ACCESS_COOKIE = "grbpwr_access";
-export const REFRESH_COOKIE = "grbpwr_refresh";
-const ACCESS_EXPIRES_COOKIE = "grbpwr_access_exp";
+import {
+  ACCESS_COOKIE,
+  REFRESH_COOKIE,
+  sessionCookieClears,
+  sessionCookieWrites,
+  sessionTokensFrom,
+  type CookieReader,
+} from "./session-tokens";
 
-const baseCookie = {
-  httpOnly: true,
-  // Always Secure: session/refresh tokens must never travel over plain HTTP
-  // (e.g. a preview/staging deploy on a real domain). Browsers still send
-  // Secure cookies over http://localhost, so local dev is unaffected.
-  secure: true,
-  sameSite: "lax" as const,
-  path: "/",
+export { ACCESS_COOKIE, REFRESH_COOKIE, sessionTokensFrom };
+
+type CookieSink = {
+  cookies: { set: (n: string, v: string, o: object) => void };
 };
 
-function maxAgeSecondsFromAccessExpiry(
-  accessExpiresAt: string | undefined,
-): number | undefined {
-  if (!accessExpiresAt) return undefined;
-  const ms = Date.parse(accessExpiresAt);
-  if (Number.isNaN(ms)) return undefined;
-  return Math.max(0, Math.floor((ms - Date.now()) / 1000));
+/** Session tokens of this request (grbpwr's legacy cookies on its own hosts). */
+export async function readSessionTokens(
+  store: CookieReader,
+): Promise<{ access?: string; refresh?: string }> {
+  return sessionTokensFrom(store, await getCurrentShopHost());
 }
 
-const FALLBACK_ACCESS_MAX_AGE = 60 * 15;
-
-export function applySessionCookies(
-  res: { cookies: { set: (n: string, v: string, o: object) => void } },
+/** Sets the rotated session (both cookie sets on grbpwr's hosts). */
+export async function applySessionCookies(
+  res: CookieSink,
   payload: VerifyAccountLoginResponse | RefreshAccountSessionResponse,
-) {
-  const access = payload.accessToken;
-  const refresh = payload.refreshToken;
-  const exp = payload.accessExpiresAt;
-
-  if (!access || !refresh) return;
-
-  const accessMaxAge =
-    maxAgeSecondsFromAccessExpiry(exp) ?? FALLBACK_ACCESS_MAX_AGE;
-
-  res.cookies.set(ACCESS_COOKIE, access, {
-    ...baseCookie,
-    maxAge: accessMaxAge,
-  });
-  res.cookies.set(REFRESH_COOKIE, refresh, {
-    ...baseCookie,
-    maxAge: 60 * 60 * 24 * 30,
-  });
-  if (exp) {
-    res.cookies.set(ACCESS_EXPIRES_COOKIE, exp, {
-      ...baseCookie,
-      maxAge: accessMaxAge,
-    });
+): Promise<void> {
+  const host = await getCurrentShopHost();
+  for (const c of sessionCookieWrites(payload, host)) {
+    res.cookies.set(c.name, c.value, c.options);
   }
 }
 
-export function clearSessionCookies(res: {
-  cookies: { set: (n: string, v: string, o: object) => void };
-}) {
-  const clear = { ...baseCookie, maxAge: 0 };
-  res.cookies.set(ACCESS_COOKIE, "", clear);
-  res.cookies.set(REFRESH_COOKIE, "", clear);
-  res.cookies.set(ACCESS_EXPIRES_COOKIE, "", clear);
+/** Ends the session: clears the new and the legacy cookies. */
+export function clearSessionCookies(res: CookieSink) {
+  for (const c of sessionCookieClears()) {
+    res.cookies.set(c.name, c.value, c.options);
+  }
 }

@@ -1,9 +1,9 @@
 import { SVGProps } from "react";
-import { ProductMeasurementCompat } from "@/lib/api-adapters/measurements";
 
+import { ProductMeasurementCompat } from "@/lib/api-adapters/measurements";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { useDataContext } from "@/components/contexts/DataContext";
-import { Unit } from "@/app/[locale]/p/[handle]/_components/measurements-table";
+import { Unit } from "@/app/[shop]/[locale]/p/[handle]/_components/measurements-table";
 
 import { HorizontalLine } from "../icons/guide-lines/horizontal-line";
 import { VerticalLine } from "../icons/guide-lines/vertical-line";

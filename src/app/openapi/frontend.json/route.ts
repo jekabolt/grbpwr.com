@@ -1,16 +1,22 @@
 import { NextResponse } from "next/server";
+import { GRBPWR_API, GRBPWR_PACK } from "@/brands/grbpwr/config";
+
+import { getShopPack } from "@/lib/shop/server";
 
 // Serves a public, frontend-only view of the backend OpenAPI (Swagger 2.0) spec.
 // The upstream document bundles AdminService + AuthService + FrontendService;
 // we keep only /api/frontend/* paths and the definitions they transitively
 // reference, so admin/auth operations and schemas are not advertised.
+// grbpwr pack only (see /.well-known/api-catalog); any other host → 404.
 
-const UPSTREAM =
-  "https://backend.grbpwr.com/static/swagger/api.swagger.json";
+const UPSTREAM = GRBPWR_API.swagger;
 const PREFIX = "/api/frontend/";
 const REF = "#/definitions/";
 
-export const revalidate = 86400; // 1 day
+// Host-dependent (pack check), so rendered per request; the upstream spec
+// stays in the data cache for a day.
+export const dynamic = "force-dynamic";
+const UPSTREAM_TTL_SECONDS = 86400; // 1 day
 
 function collectRefs(node: any, into: Set<string>): void {
   if (!node || typeof node !== "object") return;
@@ -28,7 +34,12 @@ function collectRefs(node: any, into: Set<string>): void {
 }
 
 export async function GET() {
-  const upstream = await fetch(UPSTREAM, { next: { revalidate } });
+  if ((await getShopPack()) !== GRBPWR_PACK) {
+    return new NextResponse("Not Found", { status: 404 });
+  }
+  const upstream = await fetch(UPSTREAM, {
+    next: { revalidate: UPSTREAM_TTL_SECONDS },
+  });
   if (!upstream.ok) {
     return NextResponse.json(
       { error: "upstream spec unavailable" },
@@ -63,12 +74,13 @@ export async function GET() {
 
   const filtered = {
     ...spec,
-    host: "backend.grbpwr.com",
+    host: new URL(GRBPWR_API.anchor).host,
     schemes: ["https"],
     info: {
       ...spec.info,
-      title: "grbpwr frontend REST API",
-      description: "Public read API for the grbpwr storefront (products, archives, hero).",
+      title: GRBPWR_API.title,
+      description:
+        "Public read API for the grbpwr storefront (products, archives, hero).",
     },
     paths,
     definitions,

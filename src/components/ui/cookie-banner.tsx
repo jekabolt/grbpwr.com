@@ -1,11 +1,11 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
-import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
 import { ModalTransition } from "@/components/modal-transition";
 import { Text } from "@/components/ui/text";
+import { CookieContent } from "@/app/[shop]/[locale]/(content)/_components/cookie-content";
 
 import { Banner } from "./banner";
 import { Button } from "./button";
@@ -36,9 +36,7 @@ function updateConsentMode(prefs: typeof defaultCookiePreferences) {
 
 const hasConsentCookie = () =>
   typeof document !== "undefined" &&
-  document.cookie
-    .split("; ")
-    .some((c) => c.startsWith("cookieConsent="));
+  document.cookie.split("; ").some((c) => c.startsWith("cookieConsent="));
 
 const setConsentCookie = () => {
   const secure =

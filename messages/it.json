@@ -1,4 +1,7 @@
 {
+  "shop": {
+    "closed": "chiuso"
+  },
   "navigation": {
     "men": "uomo",
     "women": "donna",
@@ -271,7 +274,7 @@
     "functional cookie (non-optional)": "cookie funzionale (non-opzionale)",
     "statistical analysis cookies": "cookie di analisi statistica",
     "advertising and social media cookies": "cookie pubblicitari e social media",
-    "cookies to personalize the grbpwr experience": "cookie per personalizzare l'esperienza grbpwr"
+    "cookies to personalize the grbpwr experience": "cookie per personalizzare l'esperienza {brand}"
   },
   "care": {
     "BA": "Candeggio consentito",
@@ -420,12 +423,12 @@
     "RWOL": "Lana riciclata"
   },
   "meta": {
-    "description": "GRBPWR discute argomenti difficili con un linguaggio imperfetto e lo padroneggia. Acquista l'ultima collezione di prêt-à-porter.",
+    "description": "{brand}",
     "catalog": "catalogo",
-    "catalog description": "sfoglia la collezione completa GRBPWR. scopri prêt-à-porter, accessori e pezzi curati.",
-    "men description": "acquista moda e accessori uomo. capi su misura, outerwear ed essentials GRBPWR.",
-    "women description": "acquista moda e accessori donna. collezioni curate e pezzi statement GRBPWR.",
-    "objects description": "esplora oggetti e accessori GRBPWR. borse, piccola pelletteria e pezzi lifestyle.",
+    "catalog description": "sfoglia la collezione completa {brand}. scopri prêt-à-porter, accessori e pezzi curati.",
+    "men description": "acquista moda e accessori uomo. capi su misura, outerwear ed essentials {brand}.",
+    "women description": "acquista moda e accessori donna. collezioni curate e pezzi statement {brand}.",
+    "objects description": "esplora oggetti e accessori {brand}. borse, piccola pelletteria e pezzi lifestyle.",
     "timeline": "cronologia",
     "timeline description": "scopri l'archivio e le aggiornamenti",
     "main hero image": "immagine hero principale"
@@ -685,7 +688,7 @@
     "reason": "motivo"
   },
   "unsubscribe": {
-    "title": "annullamento dell'iscrizione alla lista \"grbpwr\". cliccando su annulla iscrizione, non riceverai più email di marketing.",
+    "title": "annullamento dell'iscrizione alla lista \"{brand}\". cliccando su annulla iscrizione, non riceverai più email di marketing.",
     "unsubscribe": "annulla iscrizione",
     "success": "sei stato disiscritto dalla newsletter.",
     "error": "si è verificato un errore. per favore riprova.",
@@ -912,7 +915,7 @@
   },
   "client-services": {
     "title": "servizio clienti",
-    "welcome": "benvenuti a grbpwr.",
+    "welcome": "benvenuti a {brand}.",
     "description": "per richieste o assistenza non esitate a contattarci. siamo aperti dal lunedì al sabato dalle 9 alle 19, esclusi i giorni festivi.",
     "faq title": "domande frequenti",
     "faq description": "puoi utilizzare questa area per consultare le faq, seguire il tuo ordine e tracciare il tuo reso.",
@@ -921,8 +924,8 @@
     "email": "e-mail"
   },
   "accessibility": {
-    "mobile menu": "menu mobile grbpwr",
-    "notify me dialog": "dialogo avvisami grbpwr",
+    "mobile menu": "menu mobile",
+    "notify me dialog": "dialogo avvisami",
     "reason label": "motivo",
     "one-time code": "codice monouso",
     "code digit": "cifra {index} di {length}"

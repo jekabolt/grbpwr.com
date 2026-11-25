@@ -1,8 +1,9 @@
 import { Metadata } from "next";
 
-import logo from "../../public/app-logo.webp";
+import type { ShopMeta } from "@/lib/shop/server";
 
-const SITE_URL = "https://grbpwr.com";
+// lekalo-shop: no brand is baked in. Every URL and name comes from the shop that
+// owns the request host (`brand`, from getShopMeta()).
 
 // Canonical country per locale — kept in sync with the sitemap/hreflang
 // (CANONICAL_COUNTRY_BY_LOCALE in lib/sitemap/build-entries). Country variants
@@ -42,13 +43,14 @@ const OG_LOCALE_BY_LOCALE: Record<string, string> = {
 
 /** Absolute canonical URL for a page, given its locale and locale-relative path. */
 export function canonicalUrl(
+  origin: string,
   locale?: string,
   path = "",
 ): string | undefined {
   if (!locale) return undefined;
   const country = CANONICAL_COUNTRY_BY_LOCALE[locale];
   if (!country) return undefined;
-  return `${SITE_URL}/${country}/${locale}${path}`;
+  return `${origin}/${country}/${locale}${path}`;
 }
 
 /**
@@ -56,15 +58,15 @@ export function canonicalUrl(
  * at its canonical country version (so non-canonical country variants don't
  * compete), plus an x-default fallback on /gb/en — consistent with canonicalUrl.
  */
-function languageAlternates(path = ""): Record<string, string> {
+function languageAlternates(origin: string, path = ""): Record<string, string> {
   const languages: Record<string, string> = {};
   for (const [locale, country] of Object.entries(CANONICAL_COUNTRY_BY_LOCALE)) {
     const hreflang = HREFLANG_BY_LOCALE[locale];
     if (hreflang) {
-      languages[hreflang] = `${SITE_URL}/${country}/${locale}${path}`;
+      languages[hreflang] = `${origin}/${country}/${locale}${path}`;
     }
   }
-  languages["x-default"] = `${SITE_URL}/gb/en${path}`;
+  languages["x-default"] = `${origin}/gb/en${path}`;
   return languages;
 }
 
@@ -85,15 +87,18 @@ type GenerateOgParams = {
   type?: "website" | "product";
 };
 
-export function generateOpenGraph({
-  title = "grbpwr.com",
-  description = "GRBPWR discusses difficult topics by imperfect language and master it. Shop latest ready-to-wear.",
-  imageUrl = logo.src,
-  imageWidth,
-  imageHeight,
-  imageAlt = "GRBPWR",
-  type = "website",
-}: GenerateOgParams = {}): Metadata["openGraph"] {
+export function generateOpenGraph(
+  brand: ShopMeta,
+  {
+    title = brand.name,
+    description = brand.description ?? brand.name,
+    imageUrl = brand.ogImageUrl ?? brand.logoUrl,
+    imageWidth,
+    imageHeight,
+    imageAlt = brand.brandName,
+    type = "website",
+  }: GenerateOgParams = {},
+): Metadata["openGraph"] {
   return {
     title,
     description,
@@ -101,26 +106,32 @@ export function generateOpenGraph({
     // type:"product" to suppress it and render og:type=product themselves (see
     // the `type` note above).
     ...(type === "website" ? { type } : {}),
-    siteName: "grbpwr.com",
-    images: [
-      {
-        url: imageUrl,
-        ...(imageWidth ? { width: imageWidth } : {}),
-        ...(imageHeight ? { height: imageHeight } : {}),
-        alt: imageAlt,
-      },
-    ],
+    siteName: brand.name,
+    ...(imageUrl
+      ? {
+          images: [
+            {
+              url: imageUrl,
+              ...(imageWidth ? { width: imageWidth } : {}),
+              ...(imageHeight ? { height: imageHeight } : {}),
+              alt: imageAlt,
+            },
+          ],
+        }
+      : {}),
   };
 }
 
 export function generateCommonMetadata({
-  title = "grbpwr.com",
-  description = "GRBPWR discusses difficult topics by imperfect language and master it. Shop latest ready-to-wear.",
+  brand,
+  title = brand.name,
+  description = brand.description ?? brand.name,
   ogParams = {},
   twitterCard = "summary_large_image",
   locale,
   path,
 }: {
+  brand: ShopMeta;
   title?: string;
   templateTitle?: string;
   description?: string;
@@ -133,9 +144,9 @@ export function generateCommonMetadata({
   // leaf pages own them.
   locale?: string;
   path?: string;
-} = {}): Metadata {
-  const canonical = canonicalUrl(locale, path);
-  const languages = locale ? languageAlternates(path) : undefined;
+}): Metadata {
+  const canonical = canonicalUrl(brand.origin, locale, path);
+  const languages = locale ? languageAlternates(brand.origin, path) : undefined;
 
   // og:locale / og:locale:alternate (only when the page's locale is known).
   const ogLocale = locale ? OG_LOCALE_BY_LOCALE[locale] : undefined;
@@ -143,10 +154,15 @@ export function generateCommonMetadata({
     ? Object.values(OG_LOCALE_BY_LOCALE).filter((l) => l !== ogLocale)
     : undefined;
 
+  const image = ogParams.imageUrl || brand.ogImageUrl || brand.logoUrl;
+  const icons =
+    brand.icons ??
+    (brand.logoUrl ? { icon: brand.logoUrl, apple: brand.logoUrl } : undefined);
   return {
+    metadataBase: new URL(brand.origin),
     title: {
       default: title,
-      template: "%s - grbpwr.com",
+      template: `%s - ${brand.name}`,
     },
     description,
     ...(canonical || languages
@@ -161,13 +177,11 @@ export function generateCommonMetadata({
     appleWebApp: {
       capable: true,
       statusBarStyle: "default",
-      title: "GRBPWR",
+      title: brand.brandName,
     },
-    icons: {
-      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
-    },
+    ...(icons ? { icons } : {}),
     openGraph: {
-      ...generateOpenGraph({
+      ...generateOpenGraph(brand, {
         title,
         description: description,
         ...ogParams,
@@ -180,7 +194,7 @@ export function generateCommonMetadata({
       card: twitterCard,
       title,
       description: description,
-      images: [ogParams.imageUrl || logo.src],
+      ...(image ? { images: [image] } : {}),
     },
   };
 }

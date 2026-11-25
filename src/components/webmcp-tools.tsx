@@ -2,8 +2,10 @@
 
 import { useEffect } from "react";
 import type { StorefrontColorway } from "@/api/proto-http/frontend";
+import { GRBPWR_PACK, GRBPWR_SITE } from "@/brands/grbpwr/config";
 
 import { useServerActionsContext } from "@/components/contexts/ServerActionsContext";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 
 // Minimal, read-only WebMCP integration: exposes a single catalog-browsing tool
 // to in-browser AI agents via the experimental navigator.modelContext API.
@@ -12,7 +14,10 @@ import { useServerActionsContext } from "@/components/contexts/ServerActionsCont
 // mutating actions (cart, checkout, account) — it only reads the public catalog
 // through the existing GetColorwaysPaged server action.
 
-const SITE = "https://grbpwr.com";
+// Absolute URLs: the grbpwr pack keeps its canonical origin; any other shop
+// uses the origin the visitor is on.
+const visitorOrigin = () =>
+  typeof window === "undefined" ? "" : window.location.origin;
 
 function productPath(slug: string | undefined): string | null {
   if (!slug) return null;
@@ -20,7 +25,7 @@ function productPath(slug: string | undefined): string | null {
   return i === -1 ? null : slug.slice(i);
 }
 
-function toCompactProduct(p: StorefrontColorway) {
+function toCompactProduct(p: StorefrontColorway, origin: string) {
   const translations = p.display?.translations;
   const name = (translations?.[0]?.name || p.baseSku || "").trim();
   const media = p.display?.thumbnail?.media;
@@ -35,7 +40,7 @@ function toCompactProduct(p: StorefrontColorway) {
     id: p.baseSku,
     sku: p.baseSku,
     name,
-    url: path ? `${SITE}${path}` : undefined,
+    url: path ? `${origin}${path}` : undefined,
     image: image?.trim() || undefined,
     price: amount ? { amount, currency: priceObj?.currency } : undefined,
     soldOut: p.soldOut ?? false,
@@ -44,6 +49,8 @@ function toCompactProduct(p: StorefrontColorway) {
 
 export function WebMCPTools() {
   const { GetColorwaysPaged } = useServerActionsContext();
+  const { pack } = useShopBrand();
+  const isGrbpwr = pack === GRBPWR_PACK;
 
   useEffect(() => {
     const mc = (navigator as any)?.modelContext;
@@ -89,7 +96,10 @@ export function WebMCPTools() {
         },
       });
 
-      const products = (res.colorways || []).map(toCompactProduct);
+      const origin = isGrbpwr ? GRBPWR_SITE.origin : visitorOrigin();
+      const products = (res.colorways || []).map((c) =>
+        toCompactProduct(c, origin),
+      );
       return {
         content: [
           {
@@ -109,8 +119,9 @@ export function WebMCPTools() {
         tools: [
           {
             name: "list_products",
-            description:
-              "Browse the grbpwr storefront catalog (read-only). Returns products with name, price, product-page URL and image.",
+            description: isGrbpwr
+              ? "Browse the grbpwr storefront catalog (read-only). Returns products with name, price, product-page URL and image."
+              : "Browse this storefront's catalog (read-only). Returns products with name, price, product-page URL and image.",
             inputSchema: {
               type: "object",
               properties: {
@@ -141,7 +152,7 @@ export function WebMCPTools() {
     } catch {
       // Experimental API surface — ignore registration failures.
     }
-  }, [GetColorwaysPaged]);
+  }, [GetColorwaysPaged, isGrbpwr]);
 
   return null;
 }

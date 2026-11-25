@@ -1,0 +1,51 @@
+"use client";
+
+import { useState } from "react";
+import { StorefrontArchiveList } from "@/api/proto-http/frontend";
+import { useTranslations } from "next-intl";
+
+import { useShopBrand } from "@/components/contexts/ShopContext";
+import FlexibleLayout from "@/components/flexible-layout";
+import { PageBackground } from "@/app/[shop]/[locale]/_components/page-background";
+
+import { Galery } from "./galery";
+
+export type ViewMode = "horizontal" | "vertical";
+
+export function ArchiveLayout({
+  archives,
+  total,
+}: {
+  archives: StorefrontArchiveList[];
+  total: number;
+}) {
+  const { primaryHost: shopHost } = useShopBrand();
+  const [viewMode, setViewMode] = useState<ViewMode>("horizontal");
+  const t = useTranslations("navigation");
+
+  // const handleChangeView = () => {
+  //   setViewMode(viewMode === "horizontal" ? "vertical" : "horizontal");
+  // };
+
+  return (
+    <>
+      <PageBackground backgroundColor="#000000" splitBackground={false} />
+      <FlexibleLayout
+        headerType="archive"
+        headerProps={{
+          left: shopHost,
+          center: t("timeline"),
+          // right: "change view",
+          // onClick: handleChangeView,
+        }}
+        theme="dark"
+      >
+        <Galery
+          archives={archives || []}
+          total={total || 0}
+          viewMode={viewMode}
+        />
+      </FlexibleLayout>
+    </>
+  );
+}

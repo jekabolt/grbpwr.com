@@ -1,0 +1,22 @@
+{
+  "cookies": {
+    "cookies to personalize the grbpwr experience": "个性化grbpwr体验的cookie"
+  },
+  "meta": {
+    "description": "GRBPWR通过不完美的语言讨论困难的话题，并掌握它。购买最新的成衣系列。",
+    "catalog description": "浏览完整GRBPWR系列。发现成衣、配饰及精选单品。",
+    "men description": "选购男士成衣与配饰。GRBPWR定制款、外套及必备单品。",
+    "women description": "选购女士成衣与配饰。GRBPWR精选系列与标志性单品。",
+    "objects description": "探索GRBPWR物件与配饰。包袋、皮具及生活方式单品。"
+  },
+  "unsubscribe": {
+    "title": "取消订阅列表\"grbpwr\"。点击取消订阅后，您将不再接收营销电子邮件。"
+  },
+  "client-services": {
+    "welcome": "欢迎来到grbpwr."
+  },
+  "accessibility": {
+    "mobile menu": "grbpwr移动菜单",
+    "notify me dialog": "grbpwr通知对话框"
+  }
+}

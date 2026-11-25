@@ -3,7 +3,7 @@ import * as DialogPrimitives from "@radix-ui/react-dialog";
 import { useTranslations } from "next-intl";
 
 import { Text } from "@/components/ui/text";
-import { CookieContent } from "@/app/[locale]/(content)/_components/cookie-content";
+import { CookieContent } from "@/app/[shop]/[locale]/(content)/_components/cookie-content";
 
 import { ModalTransition } from "../modal-transition";
 import { Button } from "./button";

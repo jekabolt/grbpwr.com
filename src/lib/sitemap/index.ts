@@ -3,7 +3,6 @@ export {
   buildPagesSitemapEntries,
   CANONICAL_COUNTRY_BY_LOCALE,
   SITEMAP_CHILD_DOCUMENT_RELATIVE,
-  SITEMAP_PUBLIC_BASE_URL,
   SITEMAP_REVALIDATE_SECONDS
 } from "./build-entries";
 export { buildProductSitemapEntries } from "./build-product-entries";

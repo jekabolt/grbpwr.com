@@ -82,5 +82,7 @@ export function isCheckoutLocaleSwitchPendingNavigation(
   const storeCountry = normalizeCountryCode(storeCountryCode);
   const urlCountry = normalizeCountryCode(urlCountryCode);
 
-  return storeCountry === accepted.countryCode && urlCountry !== accepted.countryCode;
+  return (
+    storeCountry === accepted.countryCode && urlCountry !== accepted.countryCode
+  );
 }

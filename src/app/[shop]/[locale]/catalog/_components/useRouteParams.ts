@@ -1,0 +1,38 @@
+"use client";
+
+import { useParams } from "next/navigation";
+
+import { resolveCategories } from "@/lib/categories-map";
+import { useDataContext } from "@/components/contexts/DataContext";
+
+import { parseRouteParams } from "./utils";
+
+interface RouteParams {
+  gender: string;
+  categoryName: string;
+  subCategoryName: string;
+  topCategory?: any;
+  subCategory?: any;
+}
+
+export function useRouteParams(): RouteParams {
+  const { dictionary } = useDataContext();
+
+  const routeParams = useParams() as { params?: string[] };
+  const { gender, categoryName, subCategoryName } = parseRouteParams(
+    routeParams.params,
+  );
+  const { topCategory, subCategory } = resolveCategories(
+    dictionary?.categories,
+    categoryName,
+    subCategoryName,
+  );
+
+  return {
+    gender: gender || "",
+    categoryName,
+    subCategoryName,
+    topCategory,
+    subCategory,
+  };
+}

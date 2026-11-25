@@ -5,6 +5,14 @@ import {
   HERO_CACHE_TAG,
   PRODUCTS_CACHE_TAG,
 } from "@/constants";
+import { getCurrentShopHost } from "#shop-current-host";
+
+import {
+  MissingShopHostError,
+  SHOP_HOST_HEADER,
+  shopBackendUrl,
+  shopCacheTag,
+} from "@/lib/shop/host";
 
 type Object = {
   [key: string]: unknown;
@@ -53,12 +61,27 @@ const requestHandler = async (
   { path, method, body }: RequestHandlerParams,
   { method: serviceMethod }: ProtoMetaParams,
 ) => {
+  // Multi-shop: every call names its shop (header for the backend, query param
+  // so Next's data cache key differs per shop, tags namespaced per shop). No
+  // host = no call: falling back to a default team would leak its catalog.
+  const host = await getCurrentShopHost();
+  if (!host) throw new MissingShopHostError();
+  const params = fetchParams[serviceMethod] as
+    | { next?: { tags?: string[]; revalidate?: number } }
+    | undefined;
+  const next = params?.next
+    ? {
+        ...params.next,
+        tags: params.next.tags?.map((tag) => shopCacheTag(host, tag)),
+      }
+    : undefined;
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`,
+    shopBackendUrl(process.env.NEXT_PUBLIC_BACKEND_URL ?? "", path, host),
     {
       method,
       body,
-      ...(fetchParams[serviceMethod] as Object),
+      headers: { [SHOP_HOST_HEADER]: host },
+      ...(next ? { next } : {}),
     },
   );
 
