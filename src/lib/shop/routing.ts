@@ -13,7 +13,7 @@ import {
   GRBPWR_STAY_HOSTS,
 } from "../../brands/grbpwr/config.ts";
 import type { ShopPack } from "../../brands/index.ts";
-import { isDevelopmentHost } from "./host.ts";
+import { isDevelopmentHost, normalizeShopHost, shopHostList } from "./host.ts";
 
 /** Root route handlers that read the host themselves (no `[shop]` segment). */
 const ROOT_ROUTE_HANDLERS = new Set([
@@ -83,16 +83,20 @@ export function mayRedirectToPrimary(host: string): boolean {
 }
 
 /**
- * Host to 308 to, from the shop profile's primary host: only a real, different,
- * listed host; never from a dev/preview host or a host the pack pins in place.
+ * Host to 308 to, from the shop profile's primary host: only a real, different
+ * host that is in the profile's non-empty, validated host list; never from a
+ * dev/preview host or a host the pack pins in place. Fails closed (no
+ * redirect) on anything else, so a profile can never make this an open redirect.
  */
 export function primaryHostRedirect(
   host: string,
-  profile: { primaryHost?: string; hosts?: string[] } | null | undefined,
+  profile: { primaryHost?: unknown; hosts?: unknown } | null | undefined,
 ): string | null {
-  if (!profile?.primaryHost || !mayRedirectToPrimary(host)) return null;
-  const primary = profile.primaryHost.toLowerCase();
-  if (primary === host || isDevelopmentHost(primary)) return null;
-  if (profile.hosts?.length && !profile.hosts.includes(primary)) return null;
-  return primary;
+  if (!profile || !mayRedirectToPrimary(host)) return null;
+  const primary =
+    typeof profile.primaryHost === "string"
+      ? normalizeShopHost(profile.primaryHost)
+      : null;
+  if (!primary || primary === host || isDevelopmentHost(primary)) return null;
+  return shopHostList(profile.hosts).includes(primary) ? primary : null;
 }

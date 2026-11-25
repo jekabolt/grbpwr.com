@@ -37,6 +37,35 @@ export function isDevelopmentHost(host: string): boolean {
 }
 
 /**
+ * The profile's live hosts, normalized and deduplicated; anything that is not a
+ * plain public DNS name (junk, schemes, paths, dev / preview hosts) is dropped.
+ */
+export function shopHostList(raw: unknown): string[] {
+  if (!Array.isArray(raw)) return [];
+  const out: string[] = [];
+  for (const item of raw) {
+    const host = typeof item === "string" ? normalizeShopHost(item) : null;
+    if (host && !isDevelopmentHost(host) && !out.includes(host)) out.push(host);
+  }
+  return out;
+}
+
+/**
+ * The profile's primary host, trusted only when it is one of the validated
+ * `hosts`. Otherwise (no list, empty list, not listed, junk) it fails closed to
+ * the request host: never a redirect target or canonical origin of its own.
+ */
+export function trustedPrimaryHost(
+  rawPrimary: unknown,
+  hosts: readonly string[],
+  requestHost: string,
+): string {
+  const primary =
+    typeof rawPrimary === "string" ? normalizeShopHost(rawPrimary) : null;
+  return primary && hosts.includes(primary) ? primary : requestHost;
+}
+
+/**
  * Resolves the shop host for a raw request host. On localhost / *.vercel.app the
  * shop named by `devHost` (NEXT_PUBLIC_SHOP_DEV_HOST) is used instead, so a
  * preview deployment or `pnpm dev` can render a real shop. Elsewhere the

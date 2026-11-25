@@ -6,6 +6,11 @@ import createNextIntlPlugin from "next-intl/plugin";
 import { assertSafeBackendEnvironment } from "./scripts/assert-safe-backend";
 import { GRBPWR_SITE } from "./src/brands/grbpwr/config";
 import { parseAdminOrigins } from "./src/lib/admin-origins";
+import {
+  HSTS_HOST_ONLY,
+  HSTS_SUBDOMAIN_HOSTS,
+  HSTS_WITH_SUBDOMAINS,
+} from "./src/lib/shop/hsts";
 import { isProductionSiteEnvironment } from "./src/lib/site-environment";
 
 assertSafeBackendEnvironment(process.env);
@@ -194,11 +199,7 @@ const nextConfig: NextConfig = {
         key: "Permissions-Policy",
         value: "camera=(), microphone=(), browsing-topics=()",
       },
-      // HSTS incl. subdomains; no `preload`.
-      {
-        key: "Strict-Transport-Security",
-        value: "max-age=63072000; includeSubDomains",
-      },
+      // HSTS is per host: see the two host rules at the end of `headers`.
       // Reporting target for the CSP above (modern Reporting API).
       { key: "Reporting-Endpoints", value: 'csp-endpoint="/api/csp-report"' },
     ];
@@ -220,6 +221,8 @@ const nextConfig: NextConfig = {
     ];
     const headers: {
       source: string;
+      has?: { type: "host"; value: string }[];
+      missing?: { type: "host"; value: string }[];
       headers: { key: string; value: string }[];
     }[] = [
       // Preview framing rules first. These paths are EXCLUDED from the global
@@ -239,6 +242,20 @@ const nextConfig: NextConfig = {
         // substring "preview" still match and keep the strict headers.
         source: "/((?!(?:[^/]+/){0,2}preview/).*)",
         headers: securityHeaders,
+      },
+      // HSTS, no `preload`: includeSubDomains only on grbpwr / lekalo hosts
+      // (every subdomain is ours); a customer's own domain gets host-only HSTS.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: HSTS_SUBDOMAIN_HOSTS }],
+        headers: [
+          { key: "Strict-Transport-Security", value: HSTS_WITH_SUBDOMAINS },
+        ],
+      },
+      {
+        source: "/:path*",
+        missing: [{ type: "host", value: HSTS_SUBDOMAIN_HOSTS }],
+        headers: [{ key: "Strict-Transport-Security", value: HSTS_HOST_ONLY }],
       },
       {
         source: "/:all*(svg|jpg|jpeg|png|webp|avif|gif|ico)",

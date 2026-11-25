@@ -9,7 +9,11 @@ import {
   grbpwrMarkdownPaths,
 } from "../../brands/grbpwr/config.ts";
 import { resolvePack } from "../../brands/index.ts";
-import { sessionTokensFrom } from "../storefront-account/session-tokens.ts";
+import {
+  sessionCookieClears,
+  sessionCookieWrites,
+  sessionTokensFrom,
+} from "../storefront-account/session-tokens.ts";
 import { shopIdentityMarkdown, shopMarkdown } from "./content.ts";
 import {
   normalizeShopHost,
@@ -18,8 +22,10 @@ import {
   shopBackendUrl,
   shopCacheTag,
 } from "./host.ts";
+import { HSTS_HOST_ONLY, HSTS_WITH_SUBDOMAINS, hstsFor } from "./hsts.ts";
 import {
   fetchShopProfile,
+  parseShopProfile,
   shopThemeCss,
   toShopBrand,
   type ShopProfileResult,
@@ -277,6 +283,38 @@ describe("routing", () => {
   it("308s to the primary host only when it is real, different and listed", () => {
     const p = { primaryHost: A, hosts: [A, `www.${A}`] };
     assert.equal(primaryHostRedirect(`www.${A}`, p), A);
+    // Fails closed: no list, an empty list, or junk never makes a target.
+    assert.equal(primaryHostRedirect(`www.${A}`, { primaryHost: A }), null);
+    assert.equal(
+      primaryHostRedirect(`www.${A}`, { primaryHost: A, hosts: [] }),
+      null,
+    );
+    assert.equal(
+      primaryHostRedirect(`www.${A}`, {
+        primaryHost: "evil.example",
+        hosts: ["https://evil.example/x", "evil.example:443/"],
+      }),
+      null,
+    );
+    assert.equal(
+      primaryHostRedirect(`www.${A}`, {
+        primaryHost: "evil.example/phish",
+        hosts: ["evil.example/phish"],
+      }),
+      null,
+    );
+    assert.equal(
+      primaryHostRedirect(`www.${A}`, { primaryHost: 42, hosts: "x" }),
+      null,
+    );
+    // Normalized on both sides before comparing.
+    assert.equal(
+      primaryHostRedirect(`www.${A}`, {
+        primaryHost: ` ${A.toUpperCase()}. `,
+        hosts: [`${A}:443`],
+      }),
+      A,
+    );
     assert.equal(primaryHostRedirect(A, p), null);
     assert.equal(primaryHostRedirect("localhost", p), null);
     assert.equal(
@@ -292,6 +330,27 @@ describe("routing", () => {
     assert.equal(primaryHostRedirect("grbpwr.com", { primaryHost: A }), null);
     assert.equal(staticHostRedirect("www.grbpwr.com"), "grbpwr.com");
     assert.equal(staticHostRedirect(`www.${A}`), null);
+  });
+  it("profile primary host is trusted only when listed, else the request host", () => {
+    const parse = (extra: Record<string, unknown>) =>
+      parseShopProfile({ shopKey: "k", name: "N", ...extra }, `www.${A}`)!;
+    const listed = parse({
+      primaryHost: A.toUpperCase(),
+      hosts: [A, `WWW.${A}.`, A, "localhost", "x.vercel.app", "https://e.x/"],
+    });
+    assert.equal(listed.primaryHost, A);
+    assert.deepEqual(listed.hosts, [A, `www.${A}`]);
+    // Canonical / sitemap origin falls back to the request host.
+    assert.equal(
+      parse({ primaryHost: "evil.example" }).primaryHost,
+      `www.${A}`,
+    );
+    assert.equal(
+      parse({ primaryHost: "evil.example", hosts: [A] }).primaryHost,
+      `www.${A}`,
+    );
+    assert.equal(parse({ primaryHost: A, hosts: [] }).primaryHost, `www.${A}`);
+    assert.deepEqual(parse({}).hosts, []);
   });
   it("serves pack icons and files only on pack hosts", () => {
     assert.equal(
@@ -351,26 +410,104 @@ describe("session cookie bridge", () => {
   const jar = (c: Record<string, string>) => ({
     get: (n: string) => (n in c ? { value: c[n]! } : undefined),
   });
-  it("new cookies first, legacy grbpwr cookies only on grbpwr hosts", () => {
+  const NEW = [
+    "__Host-shop_access",
+    "__Host-shop_refresh",
+    "__Host-shop_access_exp",
+  ];
+  const OLD = ["grbpwr_access", "grbpwr_refresh", "grbpwr_access_exp"];
+  const session = {
+    accessToken: "a2",
+    refreshToken: "r2",
+    accessExpiresAt: "2030-01-01T00:15:00Z",
+  };
+  const now = Date.parse("2030-01-01T00:00:00Z");
+
+  it("grbpwr hosts read the legacy cookies; other hosts only the new ones", () => {
     const legacy = jar({ grbpwr_access: "old-a", grbpwr_refresh: "old-r" });
     assert.deepEqual(sessionTokensFrom(legacy, "grbpwr.com"), {
       access: "old-a",
       refresh: "old-r",
     });
-    assert.deepEqual(sessionTokensFrom(legacy, A), {});
+    const none = { access: undefined, refresh: undefined };
+    assert.deepEqual(sessionTokensFrom(legacy, A), none);
     assert.deepEqual(
       sessionTokensFrom(legacy, "grbpwr.shop.lekalo.studio"),
-      {},
+      none,
     );
-    const both = jar({
-      "__Host-shop_access": "new-a",
-      "__Host-shop_refresh": "new-r",
+    const fresh = jar({
+      "__Host-shop_access": "a",
+      "__Host-shop_refresh": "r",
+    });
+    assert.deepEqual(sessionTokensFrom(fresh, A), {
+      access: "a",
+      refresh: "r",
+    });
+    // The old storefront (after a rollback) rotated only the legacy set: that
+    // set is the live one on grbpwr hosts.
+    const rolledBack = jar({
+      "__Host-shop_access": "stale-a",
+      "__Host-shop_refresh": "stale-r",
       grbpwr_access: "old-a",
+      grbpwr_refresh: "old-r",
     });
-    assert.deepEqual(sessionTokensFrom(both, "grbpwr.com"), {
-      access: "new-a",
-      refresh: "new-r",
+    assert.deepEqual(sessionTokensFrom(rolledBack, "grbpwr.com"), {
+      access: "old-a",
+      refresh: "old-r",
     });
+  });
+
+  it("login / refresh writes both sets on grbpwr hosts, never deletes the legacy ones", () => {
+    const writes = sessionCookieWrites(session, "grbpwr.com", now);
+    assert.deepEqual(
+      writes.map((w) => w.name),
+      [...NEW, ...OLD],
+    );
+    for (const w of writes) {
+      assert.ok(w.options.maxAge > 0, `${w.name} is set, not cleared`);
+      assert.equal(w.options.secure, true);
+      assert.equal(w.options.httpOnly, true);
+      assert.equal(w.options.path, "/");
+      assert.equal("domain" in w.options, false);
+    }
+    const byName = Object.fromEntries(writes.map((w) => [w.name, w]));
+    assert.equal(byName.grbpwr_access!.value, "a2");
+    assert.equal(byName.grbpwr_refresh!.value, "r2");
+    assert.equal(byName.grbpwr_access!.options.maxAge, 15 * 60);
+    assert.equal(byName.grbpwr_refresh!.options.maxAge, 60 * 60 * 24 * 30);
+    // What the old storefront would read after a rollback: the rotated tokens.
+    const afterRollback = jar(
+      Object.fromEntries(writes.map((w) => [w.name, w.value])),
+    );
+    assert.deepEqual(sessionTokensFrom(afterRollback, "grbpwr.com"), {
+      access: "a2",
+      refresh: "r2",
+    });
+  });
+
+  it("other shops get only the __Host- set; no tokens, no cookies", () => {
+    assert.deepEqual(
+      sessionCookieWrites(session, A, now).map((w) => w.name),
+      NEW,
+    );
+    assert.deepEqual(
+      sessionCookieWrites(session, null, now).map((w) => w.name),
+      NEW,
+    );
+    assert.deepEqual(
+      sessionCookieWrites({ accessToken: "a" }, "grbpwr.com", now),
+      [],
+    );
+  });
+
+  it("logout clears both sets", () => {
+    const clears = sessionCookieClears();
+    assert.deepEqual(clears.map((c) => c.name).sort(), [...NEW, ...OLD].sort());
+    for (const c of clears) {
+      assert.equal(c.value, "");
+      assert.equal(c.options.maxAge, 0);
+      assert.equal(c.options.path, "/");
+    }
   });
 });
 
@@ -415,5 +552,30 @@ describe("revalidation secret bridge", () => {
         pack: GRBPWR_PACK,
       })),
     );
+  });
+});
+
+describe("HSTS", () => {
+  it("includeSubDomains only on grbpwr and lekalo hosts", () => {
+    for (const h of [
+      "grbpwr.com",
+      "www.grbpwr.com",
+      "beta.grbpwr.com",
+      A,
+      "x7-test.shop.beta.lekalo.studio",
+    ]) {
+      assert.equal(hstsFor(h), HSTS_WITH_SUBDOMAINS, h);
+    }
+    for (const h of [
+      "brand.com",
+      "shop.brand.com",
+      "grbpwr.com.evil.example",
+      "notgrbpwr.com",
+      "lekalo.studio.example",
+      "x.vercel.app",
+    ]) {
+      assert.equal(hstsFor(h), HSTS_HOST_ONLY, h);
+    }
+    assert.equal(HSTS_HOST_ONLY.includes("includeSubDomains"), false);
   });
 });

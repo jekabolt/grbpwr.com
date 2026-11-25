@@ -55,7 +55,7 @@ export async function POST(request: Request) {
   const hosts = new Set<string>();
   if (shop.host) hosts.add(shop.host);
   if (pack === GRBPWR_PACK) for (const h of GRBPWR_HOSTS) hosts.add(h);
-  for (const h of [profile.primaryHost, ...(profile.hosts ?? [])]) {
+  for (const h of [profile.primaryHost, ...profile.hosts]) {
     const n = normalizeShopHost(h);
     if (n) hosts.add(n);
   }

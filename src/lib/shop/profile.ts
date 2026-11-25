@@ -6,7 +6,14 @@
 //   404 otherwise                             no shop on this host
 // Pure module: no Next/React imports (fetch is injected), so the node test runner
 // can exercise it directly.
-import { SHOP_HOST_HEADER, shopBackendUrl, shopCacheTag } from "./host.ts";
+import {
+  normalizeShopHost,
+  SHOP_HOST_HEADER,
+  shopBackendUrl,
+  shopCacheTag,
+  shopHostList,
+  trustedPrimaryHost,
+} from "./host.ts";
 
 export type ShopColors = {
   /** Highlight / selection colour (grbpwr: electric blue). */
@@ -33,10 +40,13 @@ export type ShopProfile = {
   address?: string;
   colors?: ShopColors;
   socials?: ShopLink[];
-  /** Host the shop is canonically served on (sitemap, canonical, og:url). */
+  /**
+   * Host the shop is canonically served on (sitemap, canonical, og:url, 308
+   * target): the backend's value only when it is in `hosts`, else the request host.
+   */
   primaryHost: string;
-  /** Every live host of the shop, primary included (revalidation fans out to all). */
-  hosts?: string[];
+  /** Every live host of the shop, normalized and validated (revalidation fans out to all). */
+  hosts: string[];
   currencies?: string[];
   baseCurrency?: string;
   /** Stripe Connect account (`acct_…`) for direct charges; empty = team pasted its own keys. */
@@ -111,9 +121,8 @@ export function parseShopProfile(
         .map((s) => ({ text: str(s?.text), href: httpsUrl(s?.href) }))
         .filter((s): s is ShopLink => Boolean(s.text && s.href))
     : undefined;
-  const hosts = Array.isArray(p.hosts)
-    ? (p.hosts as unknown[]).map(str).filter((h): h is string => Boolean(h))
-    : undefined;
+  const hosts = shopHostList(p.hosts);
+  const requestHost = normalizeShopHost(host) ?? host;
   const legal =
     p.legal && typeof p.legal === "object"
       ? Object.fromEntries(
@@ -137,7 +146,7 @@ export function parseShopProfile(
       text: color(c.text),
     },
     socials,
-    primaryHost: str(p.primaryHost) ?? host,
+    primaryHost: trustedPrimaryHost(p.primaryHost, hosts, requestHost),
     hosts,
     currencies: Array.isArray(p.currencies)
       ? (p.currencies as unknown[])

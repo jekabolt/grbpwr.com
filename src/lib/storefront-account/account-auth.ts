@@ -92,7 +92,7 @@ export async function verifyAccountLoginCodeResponse(
     email,
     code: code.trim(),
   });
-  return jsonWithSessionCookies({ account: session.account }, session);
+  return await jsonWithSessionCookies({ account: session.account }, session);
 }
 
 export async function verifyAccountMagicLinkResponse(
@@ -101,7 +101,7 @@ export async function verifyAccountMagicLinkResponse(
   const session = await serviceClient.VerifyAccountMagicLink({
     token: token.trim(),
   });
-  return jsonWithSessionCookies({ account: session.account }, session);
+  return await jsonWithSessionCookies({ account: session.account }, session);
 }
 
 export async function refreshAccountSessionResponse(): Promise<NextResponse> {
@@ -112,7 +112,7 @@ export async function refreshAccountSessionResponse(): Promise<NextResponse> {
 
   try {
     const session = await refreshAccountSession(refresh);
-    return jsonWithSessionCookies({}, session);
+    return await jsonWithSessionCookies({}, session);
   } catch {
     const res = NextResponse.json(
       { error: "failed to refresh session" },
