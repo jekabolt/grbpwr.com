@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { getShopMeta } from "@/lib/shop/server";
 import FlexibleLayout from "@/components/flexible-layout";
 import { Button } from "@/components/ui/button";
 import CopyText from "@/components/ui/copy-text";
@@ -15,6 +16,7 @@ export default async function ClientServices({
   setRequestLocale(locale);
   const t = await getTranslations("client-services");
   const tContent = await getTranslations("content");
+  const brand = await getShopMeta();
 
   return (
     <FlexibleLayout>
@@ -24,7 +26,7 @@ export default async function ClientServices({
             {t("title")}
           </Text>
           <div className="space-y-3 lg:max-w-2xl">
-            <Text>{t("welcome")}</Text>
+            <Text>{t("welcome", { brand: brand.name })}</Text>
             <Text>{t("description")}</Text>
           </div>
         </div>
@@ -53,10 +55,12 @@ export default async function ClientServices({
               <Text>{t("after sales description")}</Text>
             </div>
           </div>
-          <div className="space-y-8">
-            <Text className="uppercase">{t("email")}</Text>
-            <CopyText variant="color" mode="toaster" text="info@grbpwr.com" />
-          </div>
+          {brand.email ? (
+            <div className="space-y-8">
+              <Text className="uppercase">{t("email")}</Text>
+              <CopyText variant="color" mode="toaster" text={brand.email} />
+            </div>
+          ) : null}
         </div>
       </div>
     </FlexibleLayout>

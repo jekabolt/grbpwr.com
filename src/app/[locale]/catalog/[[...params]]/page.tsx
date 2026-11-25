@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { getShopMeta } from "@/lib/shop/server";
 import { catalogJsonLd, jsonLdHtml } from "@/lib/structured-data";
 
 import { CatalogContent } from "../_components/catalog-content";
@@ -46,23 +47,17 @@ interface CatalogPageProps {
   }>;
 }
 
-export async function generateStaticParams() {
-  return [
-    { params: [] },
-    { params: ["men"] },
-    { params: ["women"] },
-    { params: ["objects"] },
-  ];
-}
-
-export const dynamic = "force-static";
-export const dynamicParams = true;
+// lekalo-shop: rendered per request — the page depends on the request host
+// (which shop). A static/ISR page would be built without a host and could be
+// served to every shop. Backend data stays in Next's data cache, keyed per shop.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string; params?: string[] }>;
 }): Promise<Metadata> {
+  const brand = await getShopMeta();
   const { locale, params: routeParams } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
 
@@ -70,8 +65,9 @@ export async function generateMetadata({
   const displayTitle = title === "catalog" ? t("catalog") : title;
 
   return generateCommonMetadata({
+    brand,
     title: displayTitle.toUpperCase(),
-    description: t(descriptionKey),
+    description: t(descriptionKey, { brand: brand.name }),
     locale,
     path: routeParams?.length
       ? `/catalog/${routeParams.join("/")}`
@@ -80,16 +76,18 @@ export async function generateMetadata({
 }
 
 export default async function CatalogPage(props: CatalogPageProps) {
+  const brand = await getShopMeta();
   const { locale, params: routeParams } = await props.params;
   const t = await getTranslations({ locale, namespace: "meta" });
   const { title, descriptionKey } = resolveCatalogCopy(routeParams?.[0]);
   const displayTitle = title === "catalog" ? t("catalog") : title;
 
   const jsonLd = catalogJsonLd({
+    site: brand,
     locale,
     routeParams,
     name: displayTitle.toUpperCase(),
-    description: t(descriptionKey),
+    description: t(descriptionKey, { brand: brand.name }),
   });
 
   return (

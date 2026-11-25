@@ -8,6 +8,7 @@ import {
   getPixelPreview,
   internalHref,
 } from "@/lib/utils";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -28,6 +29,7 @@ export function HeroVideo({
   priority?: boolean;
   onHeroClick?: () => void;
 }) {
+  const { name: shopName } = useShopBrand();
   const { languageId } = useTranslationsStore((state) => state);
 
   if (!video) return null;
@@ -59,7 +61,7 @@ export function HeroVideo({
           <Image
             src={posterUrl}
             type="image"
-            alt={headline || "GRBPWR"}
+            alt={headline || shopName}
             blurhash={media?.blurhash}
             pixelPreview={getPixelPreview(media)}
             aspectRatio={calculateAspectRatio(
@@ -77,7 +79,7 @@ export function HeroVideo({
           <Image
             src={videoUrl}
             type="video"
-            alt={headline || "GRBPWR"}
+            alt={headline || shopName}
             blurhash={media?.blurhash}
             pixelPreview={getPixelPreview(media)}
             aspectRatio={calculateAspectRatio(

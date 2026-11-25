@@ -3,9 +3,12 @@ import type {
   VerifyAccountLoginResponse,
 } from "@/api/proto-http/frontend";
 
-export const ACCESS_COOKIE = "grbpwr_access";
-export const REFRESH_COOKIE = "grbpwr_refresh";
-const ACCESS_EXPIRES_COOKIE = "grbpwr_access_exp";
+// lekalo-shop: `__Host-` cookies are bound by the browser to the exact shop host
+// (Secure, Path=/, no Domain allowed), so a session on one shop is never sent to
+// another shop on a sibling *.shop.lekalo.studio host. Never add a `domain`.
+export const ACCESS_COOKIE = "__Host-shop_access";
+export const REFRESH_COOKIE = "__Host-shop_refresh";
+const ACCESS_EXPIRES_COOKIE = "__Host-shop_access_exp";
 
 const baseCookie = {
   httpOnly: true,

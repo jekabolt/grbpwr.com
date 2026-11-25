@@ -1,4 +1,7 @@
 {
+  "shop": {
+    "closed": "영업 종료"
+  },
   "navigation": {
     "men": "남성",
     "women": "여성",
@@ -271,7 +274,7 @@
     "functional cookie (non-optional)": "기능적 쿠키(필수)",
     "statistical analysis cookies": "통계 분석 쿠키",
     "advertising and social media cookies": "광고 및 소셜 미디어 쿠키",
-    "cookies to personalize the grbpwr experience": "grbpwr 경험을 개인화하는 쿠키"
+    "cookies to personalize the grbpwr experience": "{brand} 경험을 개인화하는 쿠키"
   },
   "care": {
     "BA": "표백 가능",
@@ -420,12 +423,12 @@
     "RWOL": "재활용 울"
   },
   "meta": {
-    "description": "GRBPWR은 불완전한 언어로 어려운 주제를 논의하고 이를 마스터합니다. 최신 레디-투-웨어를 쇼핑하세요.",
+    "description": "{brand}",
     "catalog": "카탈로그",
-    "catalog description": "전체 GRBPWR 컬렉션을 둘러보세요. 레디-투-웨어, 악세서리, 큐레이션된 피스를 발견하세요.",
-    "men description": "남성 레디-투-웨어와 악세서리를 쇼핑하세요. GRBPWR의 테일러드, 아우터, 에센셜.",
-    "women description": "여성 레디-투-웨어와 악세서리를 쇼핑하세요. GRBPWR의 큐레이션된 컬렉션과 스테이트먼트 피스.",
-    "objects description": "GRBPWR 오브젝트와 악세서리를 탐색하세요. 가방, 소가죽 제품, 라이프스타일 피스.",
+    "catalog description": "전체 {brand} 컬렉션을 둘러보세요. 레디-투-웨어, 악세서리, 큐레이션된 피스를 발견하세요.",
+    "men description": "남성 레디-투-웨어와 악세서리를 쇼핑하세요. {brand}의 테일러드, 아우터, 에센셜.",
+    "women description": "여성 레디-투-웨어와 악세서리를 쇼핑하세요. {brand}의 큐레이션된 컬렉션과 스테이트먼트 피스.",
+    "objects description": "{brand} 오브젝트와 악세서리를 탐색하세요. 가방, 소가죽 제품, 라이프스타일 피스.",
     "timeline": "타임라인",
     "timeline description": "아카이브와 업데이트 발견",
     "main hero image": "메인 히어로 이미지"
@@ -685,7 +688,7 @@
     "reason": "사유"
   },
   "unsubscribe": {
-    "title": "목록 \"grbpwr\"에서 구독이 취소됩니다. 구독 취소를 클릭하면 마케팅 이메일을 더 이상 받지 않습니다.",
+    "title": "목록 \"{brand}\"에서 구독이 취소됩니다. 구독 취소를 클릭하면 마케팅 이메일을 더 이상 받지 않습니다.",
     "unsubscribe": "구독 취소",
     "success": "뉴스레터 구독이 취소되었습니다.",
     "error": "오류가 발생했습니다. 다시 시도해주세요.",
@@ -912,7 +915,7 @@
   },
   "client-services": {
     "title": "고객 서비스",
-    "welcome": "grbpwr에 오신 것을 환영합니다.",
+    "welcome": "{brand}에 오신 것을 환영합니다.",
     "description": "문의 사항이나 도움이 필요하시면 언제든지 문의해 주세요. 공휴일을 제외한 월요일부터 토요일 오전 9시부터 오후 7시까지 영업합니다.",
     "faq title": "자주 묻는 질문",
     "faq description": "이 영역을 사용하여 FAQ를 참조하고 주문을 추적하고 반품을 추적할 수 있습니다.",
@@ -921,8 +924,8 @@
     "email": "이메일"
   },
   "accessibility": {
-    "mobile menu": "grbpwr 모바일 메뉴",
-    "notify me dialog": "grbpwr 알림 대화상자",
+    "mobile menu": "모바일 메뉴",
+    "notify me dialog": "알림 대화상자",
     "reason label": "이유",
     "one-time code": "일회용 코드",
     "code digit": "{length}자리 중 {index}번째"

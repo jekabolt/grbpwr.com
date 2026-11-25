@@ -2,24 +2,19 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  currencySymbols,
-  FOOTER_YEAR,
-  FOOTER_LINKS as links,
-} from "@/constants";
+import { currencySymbols, FOOTER_YEAR } from "@/constants";
 import { useTranslations } from "next-intl";
 
 import { useAccountOnboardingStore } from "@/lib/stores/account-onboarding/store-provider";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { Button } from "@/components/ui/button";
-import { WhiteLogo } from "@/components/ui/icons/white-logo";
-import { Logo } from "@/components/ui/logo";
+import { ShopLogo } from "@/components/ui/shop-logo";
 import { Text } from "@/components/ui/text";
 
 import { FooterNavMobile } from "./footer-nav-mobile";
 import HelpPopover from "./help-popover";
-import { LazyArtIframe } from "./lazy-art-iframe";
 import { MobileCountriesPopupTrigger } from "./mobile-countries-popup";
 import NewslatterForm from "./newsletter-form";
 
@@ -57,6 +52,7 @@ export function Footer({
   hideNewsletter?: boolean;
 }) {
   const t = useTranslations("footer");
+  const { name: shopName, socials: links } = useShopBrand();
 
   const { currentCountry, openCountryPopup } = useTranslationsStore((s) => s);
   const { isSignedIn } = useAccountOnboardingStore((s) => s);
@@ -67,12 +63,7 @@ export function Footer({
         <div className="flex justify-center pt-16 lg:py-52">
           <div className="flex w-full flex-col gap-y-16 lg:w-auto lg:flex-row lg:items-start lg:gap-x-20">
             <div className="flex justify-center lg:justify-end">
-              <LazyArtIframe theme={theme} />
-              {theme === "dark" ? (
-                <Logo className="hidden aspect-square h-full w-40 lg:block" />
-              ) : (
-                <WhiteLogo className="hidden aspect-square h-full w-40 lg:block" />
-              )}
+              <ShopLogo className="aspect-square h-full w-40" />
             </div>
             {!isSignedIn && !hideNewsletter && (
               <div className="w-full lg:w-[346px]">
@@ -95,7 +86,7 @@ export function Footer({
             variant="uppercase"
             className="uppercase transition-colors hover:text-textInactiveColor active:text-highlightColor"
           >
-            grbpwr
+            {shopName}
           </Text>
           <LiveClock />
         </div>

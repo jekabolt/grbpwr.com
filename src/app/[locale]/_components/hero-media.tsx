@@ -8,6 +8,7 @@ import {
   getPixelPreview,
   isVideo,
 } from "@/lib/utils";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import Image from "@/components/ui/image";
 
 // Full-bleed background for a HeroMediaFull: portrait on mobile / landscape on
@@ -32,6 +33,7 @@ export function HeroMedia({
   // crop hard. Mobile always prefers portrait.
   preferPortrait?: boolean;
 }) {
+  const { name: shopName } = useShopBrand();
   const landscape = media?.landscape?.media;
   const portrait = media?.portrait?.media;
   const desktop = preferPortrait
@@ -54,7 +56,7 @@ export function HeroMedia({
           src={desktopUrl}
           blurhash={desktop?.blurhash}
           pixelPreview={getPixelPreview(desktop)}
-          alt="GRBPWR"
+          alt={shopName}
           aspectRatio={calculateAspectRatio(
             desktop?.fullSize?.width,
             desktop?.fullSize?.height,
@@ -71,7 +73,7 @@ export function HeroMedia({
           src={mobileUrl}
           blurhash={mobile?.blurhash}
           pixelPreview={getPixelPreview(mobile)}
-          alt="GRBPWR"
+          alt={shopName}
           aspectRatio={calculateAspectRatio(
             mobile?.fullSize?.width,
             mobile?.fullSize?.height,

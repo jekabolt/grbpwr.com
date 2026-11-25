@@ -2,17 +2,20 @@ import { NextResponse } from "next/server";
 
 import {
   SITEMAP_CHILD_DOCUMENT_RELATIVE,
-  SITEMAP_PUBLIC_BASE_URL,
   serializeSitemapIndex,
 } from "@/lib/sitemap";
+import { getShopOrigin } from "@/lib/shop/server";
 
-export const revalidate = 3600;
+// Per shop: the host decides which catalog and which base URL.
+export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const base = await getShopOrigin();
+  if (!base) return new NextResponse("not found", { status: 404 });
   const locs = [
-    `${SITEMAP_PUBLIC_BASE_URL}${SITEMAP_CHILD_DOCUMENT_RELATIVE.pages}`,
-    `${SITEMAP_PUBLIC_BASE_URL}${SITEMAP_CHILD_DOCUMENT_RELATIVE.catalog}`,
-    `${SITEMAP_PUBLIC_BASE_URL}${SITEMAP_CHILD_DOCUMENT_RELATIVE.products}`,
+    `${base}${SITEMAP_CHILD_DOCUMENT_RELATIVE.pages}`,
+    `${base}${SITEMAP_CHILD_DOCUMENT_RELATIVE.catalog}`,
+    `${base}${SITEMAP_CHILD_DOCUMENT_RELATIVE.products}`,
   ];
   const xml = serializeSitemapIndex(locs);
   return new NextResponse(xml, {

@@ -14,10 +14,7 @@ export default function FaqPage() {
   const locale = useLocale();
   const t = useTranslations("content");
   const { dictionary } = useDataContext();
-  const { content, loading, error, retry } = useMarkdownContent([
-    `/content/faq/faq.${locale}.md`,
-    "/content/faq/faq.md",
-  ]);
+  const { content, loading, error, retry } = useMarkdownContent("faq", locale);
 
   const isWebsiteEnabled = dictionary?.siteEnabled;
   return (

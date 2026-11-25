@@ -1,76 +1,26 @@
-import { useEffect, useState } from "react";
-
+import { shopIdentityMarkdown, shopMarkdown } from "@/lib/shop/content";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 
 export interface MarkdownContentHook {
-    content: string;
-    loading: boolean;
-    error: string | null;
-    retry: () => void;
+  content: string;
+  loading: boolean;
+  error: string | null;
+  retry: () => void;
 }
 
 /**
- * Loads markdown content from one or more candidate paths.
- * If multiple paths are provided, the first successful response is used.
+ * lekalo-shop: markdown of the shop on this host, from its profile (no fetch,
+ * no brand texts in /public). `fallback: "identity"` shows the shop's legal
+ * name / address / email when the shop has not written this page.
  */
 export const useMarkdownContent = (
-    filePathOrPaths: string | string[],
+  key: string | undefined,
+  locale: string,
+  fallback: "identity" | "none" = "identity",
 ): MarkdownContentHook => {
-    const [content, setContent] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const [reloadKey, setReloadKey] = useState<number>(0);
-
-    useEffect(() => {
-        const loadContent = async () => {
-            setLoading(true);
-            setError(null);
-            setContent("");
-
-            const candidates = Array.isArray(filePathOrPaths)
-                ? filePathOrPaths.filter(Boolean)
-                : [filePathOrPaths].filter(Boolean);
-
-            if (candidates.length === 0) {
-                setContent("");
-                setLoading(false);
-                return;
-            }
-
-            let lastError: string | null = null;
-            for (const path of candidates) {
-                try {
-                    const response = await fetch(path);
-                    if (!response.ok) {
-                        lastError = `Failed to fetch content: ${response.status}`;
-                        continue;
-                    }
-                    const text = await response.text();
-                    setContent(text);
-                    setLoading(false);
-                    setError(null);
-                    return;
-                } catch (err) {
-                    lastError = err instanceof Error ? err.message : "Unknown error occurred";
-                }
-            }
-
-            setError(lastError || "Unable to load content from provided paths");
-            setContent("");
-            setLoading(false);
-        };
-
-        loadContent();
-    }, [
-        Array.isArray(filePathOrPaths)
-            ? filePathOrPaths.join("\0")
-            : filePathOrPaths,
-        reloadKey,
-    ]);
-
-    return {
-        content,
-        loading,
-        error,
-        retry: () => setReloadKey((k) => k + 1),
-    };
+  const brand = useShopBrand();
+  const own = key ? shopMarkdown(brand.legal, key, locale) : undefined;
+  const content =
+    own ?? (key && fallback === "identity" ? shopIdentityMarkdown(brand) : "");
+  return { content, loading: false, error: null, retry: () => {} };
 };

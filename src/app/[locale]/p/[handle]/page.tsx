@@ -4,6 +4,7 @@ import { GENDER_MAP_REVERSE, LANGUAGE_CODE_TO_ID } from "@/constants";
 
 import { serviceClient } from "@/lib/api";
 import { generateCommonMetadata } from "@/lib/common-metadata";
+import { getShopMeta } from "@/lib/shop/server";
 import { baseSkuFromHandle } from "@/lib/slug-tail";
 import {
   jsonLdHtml,
@@ -29,6 +30,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; handle: string }>;
 }): Promise<Metadata> {
+  const brand = await getShopMeta();
   const { handle, locale } = await params;
   const localeId = LANGUAGE_CODE_TO_ID[locale];
 
@@ -56,6 +58,7 @@ export async function generateMetadata({
   // product:price:* are rendered as <meta property> JSX in the component below,
   // since Next's metadata API can't emit og:type=product.
   return generateCommonMetadata({
+    brand,
     title: title?.toUpperCase(),
     description: `${description}'\n'${color}`,
     locale,
@@ -73,7 +76,10 @@ export async function generateMetadata({
   });
 }
 
-export const dynamic = "force-static";
+// lekalo-shop: rendered per request — the page depends on the request host
+// (which shop). A static/ISR page would be built without a host and could be
+// served to every shop. Backend data stays in Next's data cache, keyed per shop.
+export const dynamic = "force-dynamic";
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { handle, locale } = await params;
@@ -90,7 +96,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const productMedia = [...(colorway.media || [])];
-  const jsonLd = productJsonLd(colorway, locale);
+  const jsonLd = productJsonLd(await getShopMeta(), colorway, locale);
   // Open Graph product tags. Rendered here (not via the metadata API, which
   // throws on og:type values outside its fixed union) as <meta property> JSX —
   // React hoists them into <head>.

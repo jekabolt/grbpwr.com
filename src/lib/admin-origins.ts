@@ -1,6 +1,6 @@
 const DEFAULT_ADMIN_ORIGINS = [
-  "https://admin.grbpwr.com",
-  "https://admin.beta.grbpwr.com",
+  "https://lekalo.studio",
+  "https://beta.lekalo.studio",
 ] as const;
 
 const LOCAL_ADMIN_ORIGIN = "http://localhost:4040";

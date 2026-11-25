@@ -1,4 +1,7 @@
 {
+  "shop": {
+    "closed": "休業中"
+  },
   "navigation": {
     "men": "メンズ",
     "women": "レディース",
@@ -271,7 +274,7 @@
     "functional cookie (non-optional)": "機能的クッキー（非オプション）",
     "statistical analysis cookies": "統計分析クッキー",
     "advertising and social media cookies": "広告とソーシャルメディアクッキー",
-    "cookies to personalize the grbpwr experience": "grbpwr体験を個性化するクッキー"
+    "cookies to personalize the grbpwr experience": "{brand}体験を個性化するクッキー"
   },
   "care": {
     "BA": "漂白可",
@@ -420,12 +423,12 @@
     "RWOL": "リサイクルウール"
   },
   "meta": {
-    "description": "GRBPWRは不完全な言葉で難しいトピックを議論し、それを習得します。最新のレディ・トゥ・ウェアをご購入ください。",
+    "description": "{brand}",
     "catalog": "カタログ",
-    "catalog description": "GRBPWRコレクション全体をご覧ください。レディ・トゥ・ウェア、アクセサリー、厳選アイテムをお探しください。",
-    "men description": "メンズレディ・トゥ・ウェアとアクセサリーをお買い求めください。GRBPWRのテーラード、アウター、エッセンシャル。",
-    "women description": "レディースレディ・トゥ・ウェアとアクセサリーをお買い求めください。GRBPWRの厳選コレクションとスタートメントピース。",
-    "objects description": "GRBPWRのオブジェクトとアクセサリーをご覧ください。バッグ、革小物、ライフスタイルアイテム。",
+    "catalog description": "{brand}コレクション全体をご覧ください。レディ・トゥ・ウェア、アクセサリー、厳選アイテムをお探しください。",
+    "men description": "メンズレディ・トゥ・ウェアとアクセサリーをお買い求めください。{brand}のテーラード、アウター、エッセンシャル。",
+    "women description": "レディースレディ・トゥ・ウェアとアクセサリーをお買い求めください。{brand}の厳選コレクションとスタートメントピース。",
+    "objects description": "{brand}のオブジェクトとアクセサリーをご覧ください。バッグ、革小物、ライフスタイルアイテム。",
     "timeline": "タイムライン",
     "timeline description": "アーカイブと更新を発見",
     "main hero image": "メインヒーロー画像"
@@ -685,7 +688,7 @@
     "reason": "理由"
   },
   "unsubscribe": {
-    "title": "リスト「grbpwr」からの配信を停止します。購読解除をクリックすると、今後マーケティングメールは受信されません。",
+    "title": "リスト「{brand}」からの配信を停止します。購読解除をクリックすると、今後マーケティングメールは受信されません。",
     "unsubscribe": "購読解除",
     "success": "ニュースレターの配信を停止しました。",
     "error": "エラーが発生しました。もう一度お試しください。",
@@ -912,7 +915,7 @@
   },
   "client-services": {
     "title": "カスタマーサービス",
-    "welcome": "grbpwrへようこそ。",
+    "welcome": "{brand}へようこそ。",
     "description": "お問い合わせやサポートが必要な場合は、お気軽にご連絡ください。祝日を除く月曜日から土曜日の午前9時から午後7時まで営業しています。",
     "faq title": "よくある質問",
     "faq description": "このエリアを使用して、FAQを参照したり、ご注文を追跡したり、返品を追跡したりできます。",
@@ -921,8 +924,8 @@
     "email": "メール"
   },
   "accessibility": {
-    "mobile menu": "grbpwrモバイルメニュー",
-    "notify me dialog": "grbpwr通知ダイアログ",
+    "mobile menu": "モバイルメニュー",
+    "notify me dialog": "通知ダイアログ",
     "reason label": "理由",
     "one-time code": "ワンタイムコード",
     "code digit": "{length}桁中{index}桁目"

@@ -4,7 +4,7 @@ import { getStoredCampaignParams } from "./campaign";
 
 export const GA4_MEASUREMENT_ID = "G-YX09JT9HVC";
 
-const GA4_CLIENT_ID_SESSION_KEY = "grbpwr_ga4_client_id";
+const GA4_CLIENT_ID_SESSION_KEY = "shop.ga4_client_id";
 
 declare global {
   interface Window {

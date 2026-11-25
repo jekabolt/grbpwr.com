@@ -7,33 +7,33 @@ export type LegalSection =
     | "legal-notice"
     | "membership";
 
-export const legalSections: Record<LegalSection, { title: string; file?: string }> = {
+export const legalSections: Record<LegalSection, { title: string; /** Key of the page in the shop profile `legal` map. */ file?: string }> = {
     privacy: {
         title: "privacy policy",
-        file: "/content/legal/privacy-policy.md",
+        file: "privacy-policy",
     },
     terms: {
         title: "terms and conditions of use",
-        file: "/content/legal/terms-conditions.md",
+        file: "terms-conditions",
     },
     "terms-of-sale": {
         title: "terms and conditions of sale",
-        file: "/content/legal/terms-of-sale.md",
+        file: "terms-of-sale",
     },
     "legal-notice": {
         title: "legal notice",
-        file: "/content/legal/legal-notice.md",
+        file: "legal-notice",
     },
     "return-exchange": {
         title: "return and exchange policy",
-        file: "/content/legal/return-exchange.md",
+        file: "return-exchange",
     },
     cookies: {
         title: "cookie settings",
     },
     membership: {
         title: "membership policy",
-        file: "/content/legal/membership.md",
+        file: "membership",
     },
 };
 

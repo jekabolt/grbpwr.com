@@ -11,6 +11,7 @@ import {
   internalHref,
   isVideo,
 } from "@/lib/utils";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import Image from "@/components/ui/image";
 import { Overlay } from "@/components/ui/overlay";
@@ -29,6 +30,7 @@ export function HeroStatement({
   priority?: boolean;
   onHeroClick?: () => void;
 }) {
+  const { name: shopName } = useShopBrand();
   const { languageId } = useTranslationsStore((state) => state);
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
@@ -49,7 +51,7 @@ export function HeroStatement({
         <div className="absolute inset-0">
           <Image
             src={bgUrl}
-            alt={t?.headline || "GRBPWR"}
+            alt={t?.headline || shopName}
             blurhash={bg?.blurhash}
             pixelPreview={getPixelPreview(bg)}
             type={bgIsVideo ? "video" : "image"}

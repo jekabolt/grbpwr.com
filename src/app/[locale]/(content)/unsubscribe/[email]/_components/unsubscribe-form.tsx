@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { sendFormEvent } from "@/lib/analitycs/form";
+import { useShopBrand } from "@/components/contexts/ShopContext";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { SubmissionToaster } from "@/components/ui/toaster";
@@ -17,6 +18,7 @@ interface Props {
 
 export function UnsubscribeForm({ email }: Props) {
   const t = useTranslations("unsubscribe");
+  const { name: shopName } = useShopBrand();
   const [isLoading, setIsLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
@@ -75,7 +77,7 @@ export function UnsubscribeForm({ email }: Props) {
       {/* The <h1> deliberately carries the full instructional sentence; no new
           all-locale copy is invented to split it into a separate heading. */}
       <Text component="h1" className="w-full px-5 text-center lg:w-[400px]">
-        {t("title")}
+        {t("title", { brand: shopName })}
       </Text>
       <Button
         size="lg"
