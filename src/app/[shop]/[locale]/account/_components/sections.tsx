@@ -1,0 +1,55 @@
+"use client";
+
+import type { StorefrontAccount } from "@/api/proto-http/frontend";
+
+import { AddressesSection } from "@/app/[shop]/[locale]/account/sections/addresses";
+import { EmailPreferences } from "@/app/[shop]/[locale]/account/sections/email-preferences";
+
+import { OrderReturns } from "../sections/order-returns";
+import { PersonalInfo } from "../sections/personal-info";
+import { PrivateCommunity } from "../sections/private-community";
+import type { ActivePanel } from "../utils/utility";
+
+type Props = {
+  activePanel: ActivePanel;
+  selectedCountryCode?: string;
+  account: StorefrontAccount;
+  addressOptions?: {
+    editResetKey?: number;
+    onEditModeChange?: (isEditing: boolean) => void;
+  };
+};
+
+export function ActiveAccountSection({
+  activePanel,
+  selectedCountryCode,
+  account,
+  addressOptions,
+}: Props) {
+  switch (activePanel) {
+    case "personal":
+      return <PersonalInfo selectedCountryCode={selectedCountryCode} />;
+    case "email":
+      return <EmailPreferences />;
+    case "addresses":
+      return (
+        <div className="flex h-full min-h-0 flex-col">
+          <AddressesSection
+            account={account}
+            editResetKey={addressOptions?.editResetKey}
+            onEditModeChange={addressOptions?.onEditModeChange}
+          />
+        </div>
+      );
+    case "order&returns":
+      return (
+        <div className="flex h-full min-h-0 flex-col">
+          <OrderReturns account={account} />
+        </div>
+      );
+    case "private community":
+      return <PrivateCommunity />;
+    default:
+      return null;
+  }
+}

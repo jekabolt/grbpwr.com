@@ -4,6 +4,7 @@ import { withSentryConfig } from "@sentry/nextjs";
 import createNextIntlPlugin from "next-intl/plugin";
 
 import { assertSafeBackendEnvironment } from "./scripts/assert-safe-backend";
+import { GRBPWR_SITE } from "./src/brands/grbpwr/config";
 import { parseAdminOrigins } from "./src/lib/admin-origins";
 import { isProductionSiteEnvironment } from "./src/lib/site-environment";
 
@@ -47,12 +48,21 @@ function sentryOrigin(): string {
   }
 }
 
-// lekalo-shop: hosts serving shop media (images, video). Comma list of hostnames,
-// a leading "*." allowed (e.g. "*.digitaloceanspaces.com"). No grbpwr hosts baked in.
-const mediaHosts = (process.env.NEXT_PUBLIC_MEDIA_HOSTS ?? "")
-  .split(",")
-  .map((h) => h.trim().toLowerCase())
-  .filter((h) => /^(\*\.)?[a-z0-9.-]+$/.test(h));
+// Hosts serving shop media (images, video): the grbpwr pack's media and art
+// hosts (grbpwr.com keeps working with no new env), plus NEXT_PUBLIC_MEDIA_HOSTS
+// — comma list of hostnames, a leading "*." allowed (e.g. "*.digitaloceanspaces.com").
+const grbpwrMediaHost = new URL(GRBPWR_SITE.mediaOrigin).host;
+const grbpwrArtHost = new URL(GRBPWR_SITE.artOrigin).host;
+const mediaHosts = [
+  ...new Set([
+    grbpwrMediaHost,
+    grbpwrArtHost,
+    ...(process.env.NEXT_PUBLIC_MEDIA_HOSTS ?? "")
+      .split(",")
+      .map((h) => h.trim().toLowerCase())
+      .filter((h) => /^(\*\.)?[a-z0-9.-]+$/.test(h)),
+  ]),
+];
 const mediaOrigins = mediaHosts.map((h) => `https://${h}`).join(" ");
 
 const nextConfig: NextConfig = {
@@ -145,11 +155,11 @@ const nextConfig: NextConfig = {
         ]
           .filter(Boolean)
           .join(" "),
-        // Stripe (payments) + curated hero EMBED
+        // Stripe (payments) + grbpwr's footer art + curated hero EMBED
         // providers (Spline 3D, YouTube/Vimeo campaign embeds). An unlisted or
         // blocked embed degrades to the block's fallback media, so this stays a
         // tight allowlist rather than a wildcard.
-        `frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://my.spline.design https://prod.spline.design https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com`,
+        `frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://m.stripe.network ${GRBPWR_SITE.artOrigin} https://my.spline.design https://prod.spline.design https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com`,
         `worker-src 'self' blob:`,
         `object-src 'none'`,
         `base-uri 'self'`,

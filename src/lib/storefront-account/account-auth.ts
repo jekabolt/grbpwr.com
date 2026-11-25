@@ -1,16 +1,12 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import type { RefreshAccountSessionResponse } from "@/api/proto-http/frontend";
 
 import { serviceClient } from "@/lib/api";
-import type { RefreshAccountSessionResponse } from "@/api/proto-http/frontend";
 
 import { jsonWithSessionCookies } from "./account-response-builders";
 import { createAccountServiceClient } from "./authed-client";
-import {
-  ACCESS_COOKIE,
-  REFRESH_COOKIE,
-  clearSessionCookies,
-} from "./session-cookies";
+import { clearSessionCookies, readSessionTokens } from "./session-cookies";
 
 type RefreshFlight = {
   promise: Promise<RefreshAccountSessionResponse>;
@@ -20,10 +16,11 @@ type RefreshFlight = {
 
 const REFRESH_RESULT_REUSE_MS = 10_000;
 
-const refreshFlights =
-  ((globalThis as typeof globalThis & {
+const refreshFlights = ((
+  globalThis as typeof globalThis & {
     __accountRefreshFlights?: Map<string, RefreshFlight>;
-  }).__accountRefreshFlights ??= new Map<string, RefreshFlight>());
+  }
+).__accountRefreshFlights ??= new Map<string, RefreshFlight>());
 
 function pruneExpiredRefreshFlights(now: number) {
   for (const [token, flight] of refreshFlights) {
@@ -86,7 +83,10 @@ export async function verifyAccountLoginCodeResponse(
   code: string,
 ): Promise<NextResponse> {
   if (!email.trim() || !code.trim()) {
-    return NextResponse.json({ error: "email and code are required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "email and code are required" },
+      { status: 400 },
+    );
   }
   const session = await serviceClient.VerifyAccountLoginCode({
     email,
@@ -95,14 +95,17 @@ export async function verifyAccountLoginCodeResponse(
   return jsonWithSessionCookies({ account: session.account }, session);
 }
 
-export async function verifyAccountMagicLinkResponse(token: string): Promise<NextResponse> {
-  const session = await serviceClient.VerifyAccountMagicLink({ token: token.trim() });
+export async function verifyAccountMagicLinkResponse(
+  token: string,
+): Promise<NextResponse> {
+  const session = await serviceClient.VerifyAccountMagicLink({
+    token: token.trim(),
+  });
   return jsonWithSessionCookies({ account: session.account }, session);
 }
 
 export async function refreshAccountSessionResponse(): Promise<NextResponse> {
-  const store = await cookies();
-  const refresh = store.get(REFRESH_COOKIE)?.value;
+  const { refresh } = await readSessionTokens(await cookies());
   if (!refresh) {
     return NextResponse.json({ error: "no session found" }, { status: 401 });
   }
@@ -111,7 +114,10 @@ export async function refreshAccountSessionResponse(): Promise<NextResponse> {
     const session = await refreshAccountSession(refresh);
     return jsonWithSessionCookies({}, session);
   } catch {
-    const res = NextResponse.json({ error: "failed to refresh session" }, { status: 401 });
+    const res = NextResponse.json(
+      { error: "failed to refresh session" },
+      { status: 401 },
+    );
     clearSessionCookies(res);
     return res;
   }
@@ -125,8 +131,7 @@ export function isUnauthorizedError(error: unknown): boolean {
 }
 
 export async function tryRefreshAccountSessionFromCookies(): Promise<RefreshAccountSessionResponse | null> {
-  const store = await cookies();
-  const refresh = store.get(REFRESH_COOKIE)?.value;
+  const { refresh } = await readSessionTokens(await cookies());
   if (!refresh) return null;
 
   try {
@@ -137,9 +142,7 @@ export async function tryRefreshAccountSessionFromCookies(): Promise<RefreshAcco
 }
 
 export async function revokeAccountSessionResponse(): Promise<NextResponse> {
-  const store = await cookies();
-  const access = store.get(ACCESS_COOKIE)?.value;
-  const refresh = store.get(REFRESH_COOKIE)?.value;
+  const { access, refresh } = await readSessionTokens(await cookies());
 
   const res = NextResponse.json({});
 

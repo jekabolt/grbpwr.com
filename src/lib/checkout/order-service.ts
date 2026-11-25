@@ -1,81 +1,83 @@
 import type { common_OrderNew } from "@/api/proto-http/frontend";
+
+import {
+  ensureGtag,
+  getGa4MeasurementId,
+  normalizeGtagClientIdField,
+  readGa4ClientIdFromDocumentCookie,
+  readStoredGa4ClientId,
+  writeStoredGa4ClientId,
+} from "@/lib/analitycs/utils";
 import { serviceClient } from "@/lib/api";
 import { getErrorMessage } from "@/lib/error-message";
-import {
-    GA4_MEASUREMENT_ID,
-    ensureGtag,
-    normalizeGtagClientIdField,
-    readGa4ClientIdFromDocumentCookie,
-    readStoredGa4ClientId,
-    writeStoredGa4ClientId,
-} from "@/lib/analitycs/utils";
 
 export type SubmitOrderResult =
-    | { ok: true; order: Awaited<ReturnType<typeof serviceClient.SubmitOrder>> }
-    | { ok: false; error?: string };
+  | { ok: true; order: Awaited<ReturnType<typeof serviceClient.SubmitOrder>> }
+  | { ok: false; error?: string };
 
 const GA4_CLIENT_ID_GET_MS = 4000;
 
 function getGA4ClientId(): Promise<string | undefined> {
-    const cached = readStoredGa4ClientId();
-    if (cached) return Promise.resolve(cached);
+  const cached = readStoredGa4ClientId();
+  if (cached) return Promise.resolve(cached);
 
-    return new Promise((resolve) => {
-        if (typeof window === "undefined") {
-            resolve(undefined);
-            return;
-        }
-        ensureGtag();
+  return new Promise((resolve) => {
+    const measurementId = getGa4MeasurementId();
+    if (typeof window === "undefined" || !measurementId) {
+      resolve(undefined);
+      return;
+    }
+    ensureGtag();
 
-        const settle = (gtagValue: string | undefined) => {
-            const fromCookie = readGa4ClientIdFromDocumentCookie();
-            const best = gtagValue || fromCookie;
-            if (best) writeStoredGa4ClientId(best);
-            resolve(best);
-        };
+    const settle = (gtagValue: string | undefined) => {
+      const fromCookie = readGa4ClientIdFromDocumentCookie();
+      const best = gtagValue || fromCookie;
+      if (best) writeStoredGa4ClientId(best);
+      resolve(best);
+    };
 
-        const timeout = setTimeout(() => settle(undefined), GA4_CLIENT_ID_GET_MS);
-        try {
-            window.gtag!("get", GA4_MEASUREMENT_ID, "client_id", (raw: unknown) => {
-                clearTimeout(timeout);
-                settle(normalizeGtagClientIdField(raw));
-            });
-        } catch {
-            clearTimeout(timeout);
-            settle(undefined);
-        }
-    });
+    const timeout = setTimeout(() => settle(undefined), GA4_CLIENT_ID_GET_MS);
+    try {
+      window.gtag!("get", measurementId, "client_id", (raw: unknown) => {
+        clearTimeout(timeout);
+        settle(normalizeGtagClientIdField(raw));
+      });
+    } catch {
+      clearTimeout(timeout);
+      settle(undefined);
+    }
+  });
 }
 
 export async function submitNewOrder(
-    newOrderData: common_OrderNew,
-    paymentIntentId: string,
+  newOrderData: common_OrderNew,
+  paymentIntentId: string,
 ): Promise<SubmitOrderResult> {
-    try {
-        const gaClientId = await getGA4ClientId();
+  try {
+    const gaClientId = await getGA4ClientId();
 
-        const submitOrderResponse = await serviceClient.SubmitOrder({
-            order: newOrderData,
-            paymentIntentId: paymentIntentId,
-            gaClientId: gaClientId,
-        });
+    const submitOrderResponse = await serviceClient.SubmitOrder({
+      order: newOrderData,
+      paymentIntentId: paymentIntentId,
+      gaClientId: gaClientId,
+    });
 
-        if (!submitOrderResponse?.orderUuid) {
-            return {
-                ok: false,
-                error: "Failed to create order",
-            };
-        }
-
-        return {
-            ok: true,
-            order: submitOrderResponse,
-        };
-    } catch (error) {
-        console.error("Error submitting new order:", error);
-        return {
-            ok: false,
-            error: getErrorMessage(error, "Failed to submit order"),
-        };
+    if (!submitOrderResponse?.orderUuid) {
+      return {
+        ok: false,
+        error: "Failed to create order",
+      };
     }
+
+    return {
+      ok: true,
+      order: submitOrderResponse,
+    };
+  } catch (error) {
+    console.error("Error submitting new order:", error);
+    return {
+      ok: false,
+      error: getErrorMessage(error, "Failed to submit order"),
+    };
+  }
 }

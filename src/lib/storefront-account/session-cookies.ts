@@ -2,13 +2,27 @@ import type {
   RefreshAccountSessionResponse,
   VerifyAccountLoginResponse,
 } from "@/api/proto-http/frontend";
+import { getCurrentShopHost } from "#shop-current-host";
 
-// lekalo-shop: `__Host-` cookies are bound by the browser to the exact shop host
-// (Secure, Path=/, no Domain allowed), so a session on one shop is never sent to
-// another shop on a sibling *.shop.lekalo.studio host. Never add a `domain`.
-export const ACCESS_COOKIE = "__Host-shop_access";
-export const REFRESH_COOKIE = "__Host-shop_refresh";
-const ACCESS_EXPIRES_COOKIE = "__Host-shop_access_exp";
+import {
+  ACCESS_COOKIE,
+  ACCESS_EXPIRES_COOKIE,
+  LEGACY_ACCESS_COOKIE,
+  LEGACY_ACCESS_EXPIRES_COOKIE,
+  LEGACY_REFRESH_COOKIE,
+  REFRESH_COOKIE,
+  sessionTokensFrom,
+  type CookieReader,
+} from "./session-tokens";
+
+export { ACCESS_COOKIE, REFRESH_COOKIE, sessionTokensFrom };
+
+/** Session tokens of this request (new `__Host-` cookies, else grbpwr's legacy ones). */
+export async function readSessionTokens(
+  store: CookieReader,
+): Promise<{ access?: string; refresh?: string }> {
+  return sessionTokensFrom(store, await getCurrentShopHost());
+}
 
 const baseCookie = {
   httpOnly: true,
@@ -58,6 +72,17 @@ export function applySessionCookies(
       maxAge: accessMaxAge,
     });
   }
+  clearLegacySessionCookies(res);
+}
+
+/** Drops grbpwr's legacy cookies once the session lives under the new names. */
+function clearLegacySessionCookies(res: {
+  cookies: { set: (n: string, v: string, o: object) => void };
+}) {
+  const clear = { ...baseCookie, maxAge: 0 };
+  res.cookies.set(LEGACY_ACCESS_COOKIE, "", clear);
+  res.cookies.set(LEGACY_REFRESH_COOKIE, "", clear);
+  res.cookies.set(LEGACY_ACCESS_EXPIRES_COOKIE, "", clear);
 }
 
 export function clearSessionCookies(res: {
@@ -67,4 +92,5 @@ export function clearSessionCookies(res: {
   res.cookies.set(ACCESS_COOKIE, "", clear);
   res.cookies.set(REFRESH_COOKIE, "", clear);
   res.cookies.set(ACCESS_EXPIRES_COOKIE, "", clear);
+  clearLegacySessionCookies(res);
 }

@@ -1,0 +1,22 @@
+{
+  "cookies": {
+    "cookies to personalize the grbpwr experience": "grbpwr体験を個性化するクッキー"
+  },
+  "meta": {
+    "description": "GRBPWRは不完全な言葉で難しいトピックを議論し、それを習得します。最新のレディ・トゥ・ウェアをご購入ください。",
+    "catalog description": "GRBPWRコレクション全体をご覧ください。レディ・トゥ・ウェア、アクセサリー、厳選アイテムをお探しください。",
+    "men description": "メンズレディ・トゥ・ウェアとアクセサリーをお買い求めください。GRBPWRのテーラード、アウター、エッセンシャル。",
+    "women description": "レディースレディ・トゥ・ウェアとアクセサリーをお買い求めください。GRBPWRの厳選コレクションとスタートメントピース。",
+    "objects description": "GRBPWRのオブジェクトとアクセサリーをご覧ください。バッグ、革小物、ライフスタイルアイテム。"
+  },
+  "unsubscribe": {
+    "title": "リスト「grbpwr」からの配信を停止します。購読解除をクリックすると、今後マーケティングメールは受信されません。"
+  },
+  "client-services": {
+    "welcome": "grbpwrへようこそ。"
+  },
+  "accessibility": {
+    "mobile menu": "grbpwrモバイルメニュー",
+    "notify me dialog": "grbpwr通知ダイアログ"
+  }
+}

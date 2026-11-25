@@ -1,0 +1,47 @@
+"use client";
+
+import Link from "next/link";
+
+import { useLocalizedHref } from "@/lib/navigation/use-localized-href";
+import { Button } from "@/components/ui/button";
+import { MobileNavMenu } from "@/components/ui/mobile-nav-menu";
+import { DesktopNavigationMenu } from "@/app/[shop]/[locale]/_components/desktop-nav-menu";
+
+export function HeaderLeftNav({
+  showAnnounce,
+  isBigMenuEnabled,
+  isWebsiteEnabled,
+  onNavOpenChange,
+}: {
+  showAnnounce?: boolean;
+  isBigMenuEnabled?: boolean;
+  isWebsiteEnabled?: boolean;
+  onNavOpenChange: (isOpen: boolean) => void;
+}) {
+  const localized = useLocalizedHref();
+  return (
+    <div className="grow basis-0">
+      <div className="hidden lg:block">
+        <DesktopNavigationMenu
+          showAnnounce={showAnnounce}
+          onNavOpenChange={onNavOpenChange}
+          isBigMenuEnabled={isBigMenuEnabled}
+        />
+      </div>
+
+      <div className="block lg:hidden">
+        {!isWebsiteEnabled ? (
+          <Button
+            asChild
+            size="lg"
+            className="transition-colors hover:opacity-70 active:opacity-50"
+          >
+            <Link href={localized("/account")}>account</Link>
+          </Button>
+        ) : (
+          <MobileNavMenu isBigMenuEnabled={isBigMenuEnabled} />
+        )}
+      </div>
+    </div>
+  );
+}

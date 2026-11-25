@@ -2,9 +2,19 @@ import { common_OrderItem } from "@/api/proto-http/frontend";
 
 import { getStoredCampaignParams } from "./campaign";
 
-export const GA4_MEASUREMENT_ID = "G-YX09JT9HVC";
+// GA4 property of the shop on this page: set by DeferredAnalytics from the
+// shop's pack (grbpwr), undefined for every other shop (no gtag calls then).
+let ga4MeasurementId: string | undefined;
 
-const GA4_CLIENT_ID_SESSION_KEY = "shop.ga4_client_id";
+export function setGa4MeasurementId(id: string | undefined): void {
+  ga4MeasurementId = id;
+}
+
+export function getGa4MeasurementId(): string | undefined {
+  return ga4MeasurementId;
+}
+
+const GA4_CLIENT_ID_SESSION_KEY = "grbpwr_ga4_client_id";
 
 declare global {
   interface Window {
@@ -49,9 +59,11 @@ export function writeStoredGa4ClientId(clientId: string): void {
 /** Ask gtag for client_id and cache when available (safe to call often). */
 export function refreshGa4ClientIdToStorage(): void {
   if (typeof window === "undefined") return;
+  const measurementId = getGa4MeasurementId();
+  if (!measurementId) return;
   ensureGtag();
   try {
-    window.gtag!("get", GA4_MEASUREMENT_ID, "client_id", (raw: unknown) => {
+    window.gtag!("get", measurementId, "client_id", (raw: unknown) => {
       const id = normalizeGtagClientIdField(raw);
       if (id) writeStoredGa4ClientId(id);
     });

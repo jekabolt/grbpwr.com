@@ -1,15 +1,21 @@
 // Markdown representation of the site served to AI agents that request
 // `Accept: text/markdown` (Markdown for Agents / content negotiation).
 // Kept intentionally small and link-focused so it stays accurate.
-// lekalo-shop: one deployment serves many shops, so links are built from the
-// request host; no brand is hard-coded here.
+// One deployment serves many shops, so links are built from the request host;
+// the grbpwr pack keeps its own title and canonical origin.
+import { GRBPWR_SITE } from "../brands/grbpwr/config.ts";
+import type { ShopPack } from "../brands/index.ts";
 
 /** Markdown overview returned for the homepage under text/markdown negotiation. */
-export function homepageMarkdown(host: string): string {
-  const site = `https://${host}`;
-  return `# ${host}
+export function homepageMarkdown(host: string, pack?: ShopPack): string {
+  const site = pack ? GRBPWR_SITE.origin : `https://${host}`;
+  const title = pack ? GRBPWR_SITE.brandName : host;
+  const intro = pack
+    ? `Online store and archive for ${GRBPWR_SITE.brandName}.`
+    : "Online store and archive.";
+  return `# ${title}
 
-Online store and archive.
+${intro}
 
 ## Sections
 

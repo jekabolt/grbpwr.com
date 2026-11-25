@@ -1,12 +1,15 @@
 "use client";
 
 import { createContext, ReactNode, useContext } from "react";
+import type { ShopPack } from "@/brands";
 
 import type { ShopLink } from "@/lib/shop/profile";
 
 /** Public brand fields of the shop on this host (no secrets, no ids shown). */
 export type ShopBrand = {
   name: string;
+  /** Brand as a proper name (image alt / titles); defaults to `name`. */
+  brandName?: string;
   legalName: string;
   logoUrl?: string;
   email?: string;
@@ -18,6 +21,8 @@ export type ShopBrand = {
   /** Team's own publishable key (pasted keys); empty → platform key from env. */
   stripePublishableKey?: string;
   legal?: Record<string, string>;
+  /** Code pack of the shop (grbpwr's own footer art, legal texts, analytics). */
+  pack?: ShopPack;
 };
 
 const ShopContext = createContext<ShopBrand>({

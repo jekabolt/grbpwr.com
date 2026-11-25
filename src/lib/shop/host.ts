@@ -14,14 +14,15 @@ const HOST_RE = new RegExp(`^(?=.{1,253}$)${LABEL}(?:\\.${LABEL})*$`);
 
 /**
  * Canonical form of a request host: lower case, first value of a comma list,
- * no port, no trailing dot, no leading `www.`. Anything that is not a plain DNS
- * name (IPv6 literals, empty, junk) yields null — callers fail closed on null.
+ * no port, no trailing dot. `www.` is kept: it is a host of its own (the
+ * backend lists it, the middleware 308s it to the primary host). Anything that
+ * is not a plain DNS name (IPv6 literals, empty, junk) yields null — callers
+ * fail closed on null.
  */
 export function normalizeShopHost(raw?: string | null): string | null {
   if (!raw) return null;
   let host = raw.split(",")[0]!.trim().toLowerCase();
   host = host.replace(/:\d{1,5}$/, "").replace(/\.$/, "");
-  if (host.startsWith("www.")) host = host.slice(4);
   return HOST_RE.test(host) ? host : null;
 }
 

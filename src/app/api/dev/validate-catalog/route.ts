@@ -5,11 +5,14 @@
  */
 import { NextResponse } from "next/server";
 
-import { getProductsPagedQueryParams } from "@/app/[locale]/catalog/_components/utils";
+import { getProductsPagedQueryParams } from "@/app/[shop]/[locale]/catalog/_components/utils";
 
 export async function GET(request: Request) {
   if (process.env.NODE_ENV === "production") {
-    return NextResponse.json({ error: "Not available in production" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Not available in production" },
+      { status: 404 },
+    );
   }
 
   const { searchParams } = new URL(request.url);

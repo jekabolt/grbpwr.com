@@ -5,14 +5,14 @@ import { usePathname } from "next/navigation";
 import { LANGUAGE_ID_TO_LOCALE } from "@/constants";
 import { useTranslations } from "next-intl";
 
-import { parseCountryLocalePath } from "@/lib/middleware-utils";
 import {
   markCheckoutLocaleSwitchAccepted,
   notifyCheckoutLocationChangeCancelled,
 } from "@/lib/checkout-location-change";
+import { parseCountryLocalePath } from "@/lib/middleware-utils";
 import { useTranslationsStore } from "@/lib/stores/translations/store-provider";
 import { cn } from "@/lib/utils";
-import { setDefaultAddressRequest } from "@/app/[locale]/account/utils/address-actions";
+import { setDefaultAddressRequest } from "@/app/[shop]/[locale]/account/utils/address-actions";
 
 import { Banner } from "./banner";
 import { Button } from "./button";

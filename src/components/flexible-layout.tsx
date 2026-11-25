@@ -1,14 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { AdditionalHeader } from "@/app/[locale]/_components/additional-header";
-import { Footer } from "@/app/[locale]/_components/footer";
-import { Header } from "@/app/[locale]/_components/header";
-import { HeaderArchive } from "@/app/[locale]/_components/header-archive";
-import { MobileProductInfoHeader } from "@/app/[locale]/_components/mobile-product-info-header";
-import CartPopup from "@/app/[locale]/(checkout)/cart/_components/CartPopup";
-import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartProductsList";
-import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
+import { AdditionalHeader } from "@/app/[shop]/[locale]/_components/additional-header";
+import { Footer } from "@/app/[shop]/[locale]/_components/footer";
+import { Header } from "@/app/[shop]/[locale]/_components/header";
+import { HeaderArchive } from "@/app/[shop]/[locale]/_components/header-archive";
+import { MobileProductInfoHeader } from "@/app/[shop]/[locale]/_components/mobile-product-info-header";
+import CartPopup from "@/app/[shop]/[locale]/(checkout)/cart/_components/CartPopup";
+import CartProductsList from "@/app/[shop]/[locale]/(checkout)/cart/_components/CartProductsList";
+import CartTotalPrice from "@/app/[shop]/[locale]/(checkout)/cart/_components/CartTotalPrice";
 
 export default function FlexibleLayout({
   children,

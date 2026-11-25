@@ -1,5 +1,8 @@
 import type { StorefrontColorway } from "@/api/proto-http/frontend";
-import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
+import type { ShopPack } from "@/brands";
+import { GRBPWR_PACK } from "@/brands/grbpwr/config";
+import { GRBPWR_OFFER_POLICY } from "@/brands/grbpwr/structured-data";
+import { LANGUAGE_CODE_TO_ID } from "@/constants";
 
 // schema.org Product/Offer JSON-LD for product pages. Gives search engines (and
 // AI agents) machine-readable price/availability/brand — the "commerce signal"
@@ -7,7 +10,21 @@ import { COUNTRIES_BY_REGION, LANGUAGE_CODE_TO_ID } from "@/constants";
 // fetched; no extra requests.
 
 /** Shop on the request host (lekalo-shop): origin + brand name, never hard-coded. */
-export type JsonLdSite = { origin: string; name: string; logoUrl?: string };
+export type JsonLdSite = {
+  origin: string;
+  name: string;
+  /** Brand as a proper name (falls back to `name`). */
+  brandName?: string;
+  logoUrl?: string;
+  sameAs?: string[];
+  /**
+   * Shipping / return policy markup is a shop's legal promise: only a pack that
+   * carries its own policy (grbpwr) emits it, never another shop.
+   */
+  pack?: ShopPack;
+};
+
+const brandOf = (site: JsonLdSite) => site.brandName ?? site.name;
 
 const COUNTRY_BY_LOCALE: Record<string, string> = {
   en: "gb",
@@ -72,47 +89,6 @@ export function productOfferForLocale(
   return price ? { currency, price } : null;
 }
 
-// Uppercase ISO codes of every country the storefront ships to (deduped).
-const SHIPPING_COUNTRIES = Array.from(
-  new Set(
-    Object.values(COUNTRIES_BY_REGION)
-      .flat()
-      .map((c) => c.countryCode.toUpperCase()),
-  ),
-);
-
-// Return policy mirrors /legal/return-exchange: 14 calendar days, free returns
-// via a prepaid label (ReturnByMail). Kept in sync with that page.
-const RETURN_POLICY = {
-  "@type": "MerchantReturnPolicy",
-  applicableCountry: SHIPPING_COUNTRIES,
-  returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
-  merchantReturnDays: 14,
-  returnMethod: "https://schema.org/ReturnByMail",
-  returnFees: "https://schema.org/FreeReturn",
-};
-
-// Shipping: real destinations + delivery window (5–7 business days, per
-// /legal/terms-of-sale). shippingRate is intentionally omitted — the rate is
-// region-dependent and shown at checkout, so any fixed value would be inaccurate
-// (authoritative rates belong in Google Merchant Center).
-const SHIPPING_DETAILS = {
-  "@type": "OfferShippingDetails",
-  shippingDestination: {
-    "@type": "DefinedRegion",
-    addressCountry: SHIPPING_COUNTRIES,
-  },
-  deliveryTime: {
-    "@type": "ShippingDeliveryTime",
-    transitTime: {
-      "@type": "QuantitativeValue",
-      minValue: 5,
-      maxValue: 7,
-      unitCode: "DAY",
-    },
-  },
-};
-
 export function productJsonLd(
   site: JsonLdSite,
   colorway: StorefrontColorway | undefined,
@@ -160,8 +136,7 @@ export function productJsonLd(
           price: offer.price,
           availability,
           ...(url ? { url } : {}),
-          hasMerchantReturnPolicy: RETURN_POLICY,
-          shippingDetails: SHIPPING_DETAILS,
+          ...(site.pack === GRBPWR_PACK ? GRBPWR_OFFER_POLICY : {}),
         },
       ]
     : [];
@@ -176,7 +151,7 @@ export function productJsonLd(
     ...(description ? { description } : {}),
     ...(image.length ? { image } : {}),
     ...(p.baseSku ? { sku: p.baseSku } : {}),
-    brand: { "@type": "Brand", name: site.name },
+    brand: { "@type": "Brand", name: brandOf(site) },
     ...(color ? { color } : {}),
     ...(url ? { url } : {}),
     ...(p.display?.updatedAt ? { dateModified: p.display.updatedAt } : {}),
@@ -189,7 +164,7 @@ export function productJsonLd(
   const breadcrumbNode = {
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: site.name, item: homeUrl },
+      { "@type": "ListItem", position: 1, name: brandOf(site), item: homeUrl },
       {
         "@type": "ListItem",
         position: 2,
@@ -233,7 +208,7 @@ export function catalogJsonLd({
   const category = routeParams?.[0];
 
   const itemListElement = [
-    { "@type": "ListItem", position: 1, name: site.name, item: homeUrl },
+    { "@type": "ListItem", position: 1, name: brandOf(site), item: homeUrl },
     { "@type": "ListItem", position: 2, name: "Catalog", item: catalogUrl },
     ...(category
       ? [{ "@type": "ListItem", position: 3, name: category, item: url }]
@@ -272,15 +247,16 @@ export function siteJsonLd(
       {
         "@type": "Organization",
         "@id": `${SITE}/#organization`,
-        name: site.name,
+        name: brandOf(site),
         url: SITE,
         ...(site.logoUrl ? { logo: site.logoUrl } : {}),
+        ...(site.sameAs?.length ? { sameAs: site.sameAs } : {}),
       },
       {
         "@type": "WebSite",
         "@id": `${SITE}/#website`,
         url: SITE,
-        name: site.name,
+        name: brandOf(site),
         publisher: { "@id": `${SITE}/#organization` },
         inLanguage: "en",
         ...(dateModified ? { dateModified } : {}),

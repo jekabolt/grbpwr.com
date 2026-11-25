@@ -46,6 +46,11 @@ export type ShopProfile = {
   open: boolean;
   /** Optional per-shop legal markdown, keyed by page slug (e.g. "terms-conditions"). */
   legal?: Record<string, string>;
+  /**
+   * Code pack the operator assigned ("grbpwr"), exactly as sent: undefined when
+   * the backend does not send the field yet, "" when the shop has none.
+   */
+  pack?: string;
 };
 
 export type ShopProfileResult =
@@ -57,8 +62,12 @@ export type ShopProfileResult =
 
 export const SHOP_PROFILE_PATH = "api/frontend/shop/profile";
 export const SHOP_PROFILE_TAG = "profile";
-/** Brand changes reach every shop within a minute even without a revalidation call. */
-export const SHOP_PROFILE_TTL_SECONDS = 60;
+/**
+ * Safety net only: the backend revalidates `shop:<host>:profile` on every brand
+ * change. The lowest fetch TTL becomes the page's ISR interval, so a short TTL
+ * would re-render every page of every shop that often.
+ */
+export const SHOP_PROFILE_TTL_SECONDS = 3600;
 
 type FetchLike = (
   input: string,
@@ -140,6 +149,7 @@ export function parseShopProfile(
     stripePublishableKey: str(p.stripePublishableKey),
     open: p.open !== false,
     legal,
+    pack: typeof p.pack === "string" ? p.pack.trim() : undefined,
   };
 }
 

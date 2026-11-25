@@ -1,4 +1,6 @@
 import { revalidateTag } from "next/cache";
+import { resolvePack } from "@/brands";
+import { GRBPWR_HOSTS, GRBPWR_PACK } from "@/brands/grbpwr/config";
 import {
   ARCHIVES_CACHE_TAG,
   HERO_CACHE_TAG,
@@ -7,17 +9,16 @@ import {
 
 import { normalizeShopHost, shopCacheTag } from "@/lib/shop/host";
 import { SHOP_PROFILE_TAG } from "@/lib/shop/profile";
-import {
-  deriveShopRevalidateSecret,
-  safeEqual,
-} from "@/lib/shop/revalidate-secret";
+import { revalidateSecretAccepted } from "@/lib/shop/revalidate-secret";
 import { getShopProfile } from "@/lib/shop/server";
 
 // lekalo-shop: revalidation is per shop. The backend posts to
 // https://<shop host>/api/revalidate?secret=<HKDF(SHOP_REVALIDATE_MASTER,
 // "revalidate:"+shopKey)> (or header x-revalidate-secret); only that shop's
-// tags (`shop:<host>:<tag>`, every host of the shop) are dropped. Pages are
-// rendered dynamically, so no revalidatePath is needed.
+// tags (`shop:<host>:<tag>`, every host of the shop) are dropped. ISR pages
+// carry the tags of the fetches they made, so dropping a tag also re-renders
+// that shop's pages; no revalidatePath is needed. grbpwr's backend still posts
+// the old WEBHOOK_REVALIDATE_SECRET: accepted on grbpwr pack hosts only.
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
@@ -33,20 +34,27 @@ export async function POST(request: Request) {
     );
   }
 
-  const master = process.env.SHOP_REVALIDATE_MASTER;
   const shop = await getShopProfile();
   const profile =
     shop.status === "ok" || shop.status === "closed" ? shop.profile : undefined;
-  if (!master || !profile) {
+  if (!profile) {
     return Response.json({ error: "Invalid secret" }, { status: 401 });
   }
-  const expected = await deriveShopRevalidateSecret(master, profile.shopKey);
-  if (!safeEqual(secret, expected)) {
+  const pack = resolvePack(profile.pack, shop.host);
+  const accepted = await revalidateSecretAccepted({
+    secret,
+    shopKey: profile.shopKey,
+    master: process.env.SHOP_REVALIDATE_MASTER,
+    pack,
+    legacySecret: process.env.WEBHOOK_REVALIDATE_SECRET,
+  });
+  if (!accepted) {
     return Response.json({ error: "Invalid secret" }, { status: 401 });
   }
 
   const hosts = new Set<string>();
   if (shop.host) hosts.add(shop.host);
+  if (pack === GRBPWR_PACK) for (const h of GRBPWR_HOSTS) hosts.add(h);
   for (const h of [profile.primaryHost, ...(profile.hosts ?? [])]) {
     const n = normalizeShopHost(h);
     if (n) hosts.add(n);

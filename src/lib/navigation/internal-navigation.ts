@@ -3,7 +3,7 @@
 // the prev/last ping-pong the old implementation suffered from. Forward vs back
 // is inferred by comparing the new path with the previous stack entry.
 
-const STACK_KEY = "shop.nav_stack";
+const STACK_KEY = "grbpwr_nav_stack";
 
 function getStack(): string[] {
   try {

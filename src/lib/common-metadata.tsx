@@ -58,10 +58,7 @@ export function canonicalUrl(
  * at its canonical country version (so non-canonical country variants don't
  * compete), plus an x-default fallback on /gb/en — consistent with canonicalUrl.
  */
-function languageAlternates(
-  origin: string,
-  path = "",
-): Record<string, string> {
+function languageAlternates(origin: string, path = ""): Record<string, string> {
   const languages: Record<string, string> = {};
   for (const [locale, country] of Object.entries(CANONICAL_COUNTRY_BY_LOCALE)) {
     const hreflang = HREFLANG_BY_LOCALE[locale];
@@ -95,10 +92,10 @@ export function generateOpenGraph(
   {
     title = brand.name,
     description = brand.description ?? brand.name,
-    imageUrl = brand.logoUrl,
+    imageUrl = brand.ogImageUrl ?? brand.logoUrl,
     imageWidth,
     imageHeight,
-    imageAlt = brand.name,
+    imageAlt = brand.brandName,
     type = "website",
   }: GenerateOgParams = {},
 ): Metadata["openGraph"] {
@@ -157,7 +154,10 @@ export function generateCommonMetadata({
     ? Object.values(OG_LOCALE_BY_LOCALE).filter((l) => l !== ogLocale)
     : undefined;
 
-  const image = ogParams.imageUrl || brand.logoUrl;
+  const image = ogParams.imageUrl || brand.ogImageUrl || brand.logoUrl;
+  const icons =
+    brand.icons ??
+    (brand.logoUrl ? { icon: brand.logoUrl, apple: brand.logoUrl } : undefined);
   return {
     metadataBase: new URL(brand.origin),
     title: {
@@ -177,11 +177,9 @@ export function generateCommonMetadata({
     appleWebApp: {
       capable: true,
       statusBarStyle: "default",
-      title: brand.name,
+      title: brand.brandName,
     },
-    ...(brand.logoUrl
-      ? { icons: { icon: brand.logoUrl, apple: brand.logoUrl } }
-      : {}),
+    ...(icons ? { icons } : {}),
     openGraph: {
       ...generateOpenGraph(brand, {
         title,

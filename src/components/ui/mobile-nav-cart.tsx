@@ -10,8 +10,8 @@ import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useCart } from "@/lib/stores/cart/store-provider";
 import { cn } from "@/lib/utils";
 import { ModalTransition } from "@/components/modal-transition";
-import CartProductsList from "@/app/[locale]/(checkout)/cart/_components/CartProductsList";
-import CartTotalPrice from "@/app/[locale]/(checkout)/cart/_components/CartTotalPrice";
+import CartProductsList from "@/app/[shop]/[locale]/(checkout)/cart/_components/CartProductsList";
+import CartTotalPrice from "@/app/[shop]/[locale]/(checkout)/cart/_components/CartTotalPrice";
 
 import { Button } from "./button";
 import { Text } from "./text";

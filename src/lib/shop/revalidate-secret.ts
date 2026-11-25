@@ -41,3 +41,24 @@ export function safeEqual(a: string, b: string): boolean {
   for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return diff === 0;
 }
+
+/**
+ * Does `secret` revalidate this shop? The per-shop HKDF secret always; the
+ * pre-lekalo WEBHOOK_REVALIDATE_SECRET only on a pack host (grbpwr's backend
+ * still posts it until it derives per-shop secrets).
+ */
+export async function revalidateSecretAccepted(opts: {
+  secret: string;
+  shopKey: string;
+  master: string | undefined;
+  /** Pack of the request's shop; the legacy secret needs one. */
+  pack: string | undefined;
+  legacySecret: string | undefined;
+}): Promise<boolean> {
+  const { secret, shopKey, master, pack, legacySecret } = opts;
+  if (master) {
+    const expected = await deriveShopRevalidateSecret(master, shopKey);
+    if (safeEqual(secret, expected)) return true;
+  }
+  return Boolean(pack && legacySecret && safeEqual(secret, legacySecret));
+}

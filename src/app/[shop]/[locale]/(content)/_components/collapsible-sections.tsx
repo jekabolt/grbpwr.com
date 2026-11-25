@@ -1,0 +1,109 @@
+"use client";
+
+import type { CSSProperties } from "react";
+import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+
+import { cn } from "@/lib/utils";
+import { Text } from "@/components/ui/text";
+import FieldsGroupContainer from "@/app/[shop]/[locale]/(checkout)/checkout/_components/new-order-form/fields-group-container";
+
+import {
+  CONTENT_PROSE_CLASSNAME,
+  createMarkdownComponents,
+} from "./markdown-components";
+
+export function CollapsibleSections({
+  content,
+  skipFirstSectionNumber = false,
+  showDirectly = false,
+  autoOpenFirst = false,
+  onSectionChange,
+}: {
+  content: string;
+  skipFirstSectionNumber?: boolean;
+  showDirectly?: boolean;
+  autoOpenFirst?: boolean;
+  onSectionChange?: (section: string) => void;
+}) {
+  const [openSection, setOpenSection] = useState<number | null>(
+    autoOpenFirst ? 0 : null,
+  );
+
+  const sections = content.split(/(?=^## )/m).filter(Boolean);
+  const contentSections = sections;
+
+  const toggleSection = (index: number) => {
+    setOpenSection((prev) => (prev === index ? null : index));
+  };
+
+  const markdownComponents = createMarkdownComponents(onSectionChange);
+  const proseStyle = {
+    "--tw-prose-bullets": "hsl(var(--textColor))",
+    "--tw-prose-counters": "hsl(var(--textColor))",
+    "--tw-prose-headings": "hsl(var(--textColor))",
+    "--tw-prose-body": "hsl(var(--textColor))",
+  } as CSSProperties;
+
+  const proseClassName = cn(
+    "prose max-w-none pb-4 lg:pb-8",
+    CONTENT_PROSE_CLASSNAME,
+  );
+
+  if (showDirectly) {
+    return (
+      <Text component="div" className={proseClassName} style={proseStyle}>
+        <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
+      </Text>
+    );
+  }
+
+  return (
+    <div>
+      <div>
+        {contentSections.map((section, index) => {
+          const lines = section.split("\n");
+          const heading = lines[0].replace("## ", "");
+          const sectionContent = lines.slice(1).join("\n");
+
+          return (
+            <div
+              key={index}
+              className={cn("border-b border-textColor", {
+                "border-transparent": index === contentSections.length - 1,
+              })}
+            >
+              <FieldsGroupContainer
+                key={index}
+                stage={
+                  skipFirstSectionNumber && index === 0
+                    ? ""
+                    : String(
+                        skipFirstSectionNumber ? index : index + 1,
+                      ).padStart(2, "0")
+                }
+                title={heading}
+                headingComponent="h2"
+                isOpen={openSection === index}
+                onToggle={() => toggleSection(index)}
+                clickableAreaClassName="w-full min-h-16 h-auto gap-x-4 py-4 max-lg:items-start lg:h-16 lg:items-center lg:py-0"
+                titleClassName="max-lg:whitespace-normal max-lg:break-words lg:truncate"
+                titleWrapperClassName="min-w-0 max-lg:pr-2"
+              >
+                <Text
+                  component="div"
+                  className={proseClassName}
+                  style={proseStyle}
+                >
+                  <ReactMarkdown components={markdownComponents}>
+                    {sectionContent}
+                  </ReactMarkdown>
+                </Text>
+              </FieldsGroupContainer>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

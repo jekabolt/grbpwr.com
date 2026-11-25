@@ -1,12 +1,16 @@
 import { cookies } from "next/headers";
-
 import type { RefreshAccountSessionResponse } from "@/api/proto-http/frontend";
 
+import {
+  isUnauthorizedError,
+  tryRefreshAccountSessionFromCookies,
+} from "./account-auth";
 import { createAccountServiceClient } from "./authed-client";
-import { isUnauthorizedError, tryRefreshAccountSessionFromCookies } from "./account-auth";
-import { ACCESS_COOKIE, REFRESH_COOKIE } from "./session-cookies";
+import { readSessionTokens } from "./session-cookies";
 
-export type AccountServiceClient = ReturnType<typeof createAccountServiceClient>;
+export type AccountServiceClient = ReturnType<
+  typeof createAccountServiceClient
+>;
 
 /**
  * Successful RPC after at most one refresh retry.
@@ -18,15 +22,17 @@ export type AccountSessionOk<T> = {
   refreshed: RefreshAccountSessionResponse | null;
 };
 
-export type AccountSessionFail = {
-  ok: false;
-  /** No usable account session cookies */
-  reason: "no_access";
-} | {
-  ok: false;
-  /** 401 on RPC but refresh missing or backend refresh failed */
-  reason: "refresh_failed";
-};
+export type AccountSessionFail =
+  | {
+      ok: false;
+      /** No usable account session cookies */
+      reason: "no_access";
+    }
+  | {
+      ok: false;
+      /** 401 on RPC but refresh missing or backend refresh failed */
+      reason: "refresh_failed";
+    };
 
 export type AccountSessionResult<T> = AccountSessionOk<T> | AccountSessionFail;
 
@@ -38,9 +44,7 @@ export type AccountSessionResult<T> = AccountSessionOk<T> | AccountSessionFail;
 export async function executeWithAccountSession<T>(
   call: (client: AccountServiceClient) => Promise<T>,
 ): Promise<AccountSessionResult<T>> {
-  const store = await cookies();
-  const access = store.get(ACCESS_COOKIE)?.value;
-  const refresh = store.get(REFRESH_COOKIE)?.value;
+  const { access, refresh } = await readSessionTokens(await cookies());
   if (!access && !refresh) {
     return { ok: false, reason: "no_access" };
   }

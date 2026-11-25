@@ -3,9 +3,10 @@ import Link from "next/link";
 import { FeatureMono } from "@/fonts";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { getShopMeta } from "@/lib/shop/server";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { NotFoundTracker } from "@/app/[locale]/_components/not-found-tracker";
+import { NotFoundTracker } from "@/app/[shop]/[locale]/_components/not-found-tracker";
 
 import "./globals.css";
 
@@ -17,11 +18,12 @@ export default async function GlobalNotFound() {
 
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "not-found" });
+  const { name: siteName } = await getShopMeta();
 
   return (
     <html lang={locale}>
       <head>
-        <title>{`404 — ${t("title")}`}</title>
+        <title>{`404 — ${t("title")} · ${siteName}`}</title>
         <style
           dangerouslySetInnerHTML={{
             __html:
